@@ -1,0 +1,7 @@
+export const TICKET_DATE = {
+  HOURS_IN_A_DAY: 24,
+  MS_IN_A_SECOND: 1000,
+  SECONDS_IN_A_MINUTE: 60,
+  MINUTES_IN_AN_HOUR: 60,
+  LOCALE_ES_MX: "es-MX",
+};

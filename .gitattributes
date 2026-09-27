@@ -1,0 +1,13 @@
+# Every text file is stored and checked out with LF, on every machine.
+# Without this, Windows checkouts rewrite whole files as CRLF and every
+# diff turns into "the entire file changed".
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary

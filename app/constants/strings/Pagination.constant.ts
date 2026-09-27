@@ -1,0 +1,14 @@
+export const PAGINATION = {
+  DEFAULT_PAGE: 0,
+  INITIAL_BLOCK: 0,
+  ZERO_RESULTS: 0,
+  ONE_PAGE: 1,
+  BUTTONS_HALF: 2,
+  NUMBER_OF_ITEMS_PER_PAGE: 5,
+  NUMBER_OF_ITEMS_PER_BLOCK: 10,
+  DEFAULT_PAGE_SIZE: 10,
+  QUERY_PARAMS: {
+    PAGE: "page",
+    PAGE_SIZE: "pageSize",
+  },
+} as const;

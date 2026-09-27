@@ -1,0 +1,32 @@
+name: Stories to Jira
+
+on:
+  push:
+    branches: [develop]
+    paths:
+      - docs/proyecto/historias-de-usuario.md
+  workflow_dispatch:
+
+concurrency:
+  group: stories-to-jira
+
+jobs:
+  sync:
+    name: Copy the user stories into Jira
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Sync
+        env:
+          JIRA_BASE_URL: ${{ vars.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ vars.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        run: node scripts/stories-to-jira.mjs

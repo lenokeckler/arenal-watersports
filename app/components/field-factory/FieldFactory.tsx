@@ -1,0 +1,302 @@
+"use client";
+
+import React, { forwardRef, useState } from "react";
+import { FieldFactoryProps } from "../field-factory/models/FieldFactoryProps.interface";
+import {
+  STRING,
+  INPUT_TYPES,
+  DISPLAY_NAME,
+  ICON_PATHS,
+  ICON_ALTS,
+  BUTTON,
+} from "@/app/constants";
+import { useFieldFactoryViewModel } from "./hooks/useFieldFactoryViewModel";
+import Button from "../button/Button";
+import Icon from "../icons/icon/Icon";
+import {
+  FIELD_FACTORY_CHECKBOX_INPUT_CLASS,
+  FIELD_FACTORY_CHECKBOX_LABEL_CLASS,
+  FIELD_FACTORY_CHECKBOX_WRAPPER_CLASS,
+  FIELD_FACTORY_OPTION_CLASS,
+  FIELD_FACTORY_PASSWORD_ICON_CLASS,
+  FIELD_FACTORY_PASSWORD_TOGGLE_CLASS,
+  FIELD_FACTORY_PASSWORD_WRAPPER_CLASS,
+  FIELD_FACTORY_PLACEHOLDER_OPTION_CLASS,
+  resolveFieldFactorySelectClassName,
+  resolveFieldFactoryTextareaClassName,
+} from "./styles/FieldFactory.styles";
+
+const FieldFactory = forwardRef<
+  HTMLInputElement,
+  FieldFactoryProps
+>(
+  (
+    {
+      id,
+      name,
+      value,
+      type = INPUT_TYPES.TEXT,
+      options = [],
+      checked,
+      placeholder = STRING.Empty,
+      baseClassName,
+      handleChange,
+      readOnly = false,
+      disabled = false,
+      selectSizeClassName,
+      onKeyDown,
+      onSearch,
+      reference,
+      isSearch,
+      accept,
+    },
+    ref
+  ) => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    const { handleSearchKeyDown, handleOnChangeSearch } =
+      useFieldFactoryViewModel(
+        onSearch,
+        handleChange,
+        isSearch
+      );
+
+    const toggleVisibility = () => {
+      setIsVisible((prev) => !prev);
+    };
+
+    switch (type) {
+      case INPUT_TYPES.TEXTAREA:
+        return (
+          <textarea
+            id={id}
+            name={name}
+            value={value}
+            onChange={handleChange}
+            className={resolveFieldFactoryTextareaClassName(
+              baseClassName
+            )}
+            placeholder={placeholder}
+            aria-describedby={`${id}-error`}
+            readOnly={readOnly}
+            disabled={disabled}
+          />
+        );
+
+      case INPUT_TYPES.SELECT:
+        return (
+          <select
+            id={id}
+            name={name}
+            value={value}
+            disabled={disabled}
+            onChange={handleChange}
+            onKeyDown={onKeyDown}
+            className={resolveFieldFactorySelectClassName(
+              baseClassName,
+              value === STRING.Empty,
+              selectSizeClassName
+            )}
+            aria-describedby={`${id}-error`}
+          >
+            {placeholder && (
+              <option
+                value={STRING.Empty}
+                disabled
+                hidden
+                className={
+                  FIELD_FACTORY_PLACEHOLDER_OPTION_CLASS
+                }
+              >
+                {placeholder}
+              </option>
+            )}
+            {options &&
+              options.map((option) => (
+                <option
+                  key={option.key}
+                  value={option.value}
+                  className={FIELD_FACTORY_OPTION_CLASS}
+                >
+                  {option.label}
+                </option>
+              ))}
+          </select>
+        );
+
+      case INPUT_TYPES.CHECKBOX:
+        return (
+          <div
+            className={FIELD_FACTORY_CHECKBOX_WRAPPER_CLASS}
+          >
+            <input
+              id={id}
+              name={name}
+              type={type}
+              checked={checked}
+              onChange={handleChange}
+              readOnly={readOnly}
+              disabled={disabled}
+              className={FIELD_FACTORY_CHECKBOX_INPUT_CLASS}
+              aria-describedby={`${id}-error`}
+            />
+            <label
+              htmlFor={id}
+              className={FIELD_FACTORY_CHECKBOX_LABEL_CLASS}
+            >
+              {value}
+            </label>
+          </div>
+        );
+
+      case INPUT_TYPES.SEARCH:
+        return (
+          <input
+            id={id}
+            name={name}
+            value={value}
+            onChange={handleOnChangeSearch}
+            onKeyDown={handleSearchKeyDown}
+            type={INPUT_TYPES.TEXT}
+            readOnly={readOnly}
+            disabled={disabled}
+            className={baseClassName}
+            placeholder={placeholder}
+            aria-describedby={`${id}-error`}
+            ref={reference ?? ref}
+          />
+        );
+
+      case INPUT_TYPES.FILE:
+        return (
+          <input
+            id={id}
+            name={name}
+            type={INPUT_TYPES.FILE}
+            onChange={handleChange}
+            className={baseClassName}
+            accept={accept}
+            readOnly={readOnly}
+            disabled={disabled}
+            aria-describedby={`${id}-error`}
+            ref={reference ?? ref}
+          />
+        );
+
+      case INPUT_TYPES.SELECT_SEARCH:
+        return (
+          <select
+            id={id}
+            name={name}
+            value={value}
+            disabled={disabled}
+            onChange={handleOnChangeSearch}
+            onKeyDown={handleSearchKeyDown}
+            className={resolveFieldFactorySelectClassName(
+              baseClassName,
+              value === STRING.Empty,
+              selectSizeClassName
+            )}
+            aria-describedby={`${id}-error`}
+          >
+            {placeholder && (
+              <option
+                value={STRING.Empty}
+                disabled
+                hidden
+                className={
+                  FIELD_FACTORY_PLACEHOLDER_OPTION_CLASS
+                }
+              >
+                {placeholder}
+              </option>
+            )}
+            {options &&
+              options.map((option) => (
+                <option
+                  key={option.key}
+                  value={option.value}
+                  className={FIELD_FACTORY_OPTION_CLASS}
+                >
+                  {option.label}
+                </option>
+              ))}
+          </select>
+        );
+
+      case INPUT_TYPES.PASSWORD:
+        return (
+          <div
+            className={FIELD_FACTORY_PASSWORD_WRAPPER_CLASS}
+          >
+            <input
+              id={id}
+              name={name}
+              value={value}
+              onChange={handleChange}
+              onKeyDown={onKeyDown}
+              type={
+                isVisible
+                  ? INPUT_TYPES.TEXT
+                  : INPUT_TYPES.PASSWORD
+              }
+              readOnly={readOnly}
+              disabled={disabled}
+              className={baseClassName}
+              placeholder={placeholder}
+              aria-describedby={`${id}-error`}
+              ref={ref}
+            />
+            <Button
+              type="button"
+              variant={BUTTON.BASE}
+              className={
+                FIELD_FACTORY_PASSWORD_TOGGLE_CLASS
+              }
+              onClick={toggleVisibility}
+              tabIndex={0}
+            >
+              <Icon
+                src={
+                  isVisible
+                    ? ICON_PATHS.EYE_VISIBLE
+                    : ICON_PATHS.EYE_HIDDEN
+                }
+                alt={
+                  isVisible
+                    ? ICON_ALTS.EYE_VISIBLE
+                    : ICON_ALTS.EYE_HIDDEN
+                }
+                size={20}
+                className={
+                  FIELD_FACTORY_PASSWORD_ICON_CLASS
+                }
+              />
+            </Button>
+          </div>
+        );
+
+      default:
+        return (
+          <input
+            id={id}
+            name={name}
+            value={value}
+            onChange={handleChange}
+            onKeyDown={onKeyDown}
+            type={type}
+            readOnly={readOnly}
+            disabled={disabled}
+            className={baseClassName}
+            placeholder={placeholder}
+            aria-describedby={`${id}-error`}
+            ref={ref}
+          />
+        );
+    }
+  }
+);
+
+FieldFactory.displayName = DISPLAY_NAME.FIELD_FACTORY;
+
+export default FieldFactory;

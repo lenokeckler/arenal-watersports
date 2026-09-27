@@ -1,0 +1,16 @@
+---
+description: Route all agents to AGENTS.md and the centralized .agents/skills catalog
+alwaysApply: true
+---
+
+# Arenal Water Sports skill routing
+
+Before implementing or changing code:
+
+1. Read and follow `AGENTS.md` at the repository root (contract + skill router).
+2. Default to the **elite senior Next.js engineer** bar in `AGENTS.md` on every prompt — no junior syntax, tutorial patterns, or weak typing.
+3. Load every relevant skill from `.agents/skills/<name>/SKILL.md` as listed in that catalog.
+4. Treat `.agents/skills/*/SKILL.md` as the single source of truth. Do not duplicate or override skill content in other rule files.
+5. For branches, commits and pull requests, follow `.agents/skills/pull-request-workflow/SKILL.md`.
+
+IDE-specific files (`CLAUDE.md`, `.github/copilot-instructions.md`, this rule) are pointers only.
