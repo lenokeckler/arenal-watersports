@@ -14,13 +14,67 @@ Next.js 16 (App Router) · React 19 · TypeScript · Redux Toolkit · Tailwind C
 
 ## Getting started
 
+### What you need installed
+
+- Git and a GitHub account that accepted the invitation to this repository
+- Node.js 22 or newer (`node -v`)
+- Docker Desktop, running: the local Supabase lives in containers
+
+### First run
+
 ```bash
-npm install
-cp .env.example .env.local   # fill in the Supabase keys
+git clone https://github.com/lenokeckler/arenal-watersports.git
+cd arenal-watersports
+git switch develop
+npm ci
+npm run db:start             # first time downloads the Supabase images; takes a few minutes
+npx supabase status          # prints the local API URL and keys
+cp .env.example .env.local
+```
+
+Fill `.env.local` with the values `npx supabase status` printed:
+
+| Variable                        | Value from `supabase status`         |
+| ------------------------------- | ------------------------------------ |
+| `NEXT_PUBLIC_SUPABASE_URL`      | `API URL` (`http://127.0.0.1:54321`) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `anon key` (or `Publishable key`)    |
+| `SUPABASE_SERVICE_ROLE_KEY`     | `service_role key` (or `Secret key`) |
+
+```bash
+npm run dev                  # http://localhost:3000
+```
+
+The local database is built from `supabase/migrations/` and filled from `supabase/seed.sql`. It
+already has one Administración account for the login screen: username `admin`, password
+`Arenal.2026`. That password only exists in the local database.
+
+### Check that everything works
+
+```bash
+npm run lint && npm run typecheck && npm run test:run && npm run build
+npm run db:test              # rebuilds the local database and runs the pgTAP tests
+```
+
+### Before your first story
+
+1. Find your stories in Jira (filter the backlog by your avatar) or in the `Dueño / Voluntario`
+   column of `docs/proyecto/product-backlog.md`.
+2. Read the story: `npm run story -- US-ACC-01`.
+3. Follow `.agents/skills/story-workflow/SKILL.md`: branch from `develop`, draft pull request,
+   small commits. Every commit and every push is shown and approved before it happens.
+
+Develop against the local database only. The cloud database is updated by
+`.github/workflows/supabase-migrations.yml` when migrations reach `main`.
+
+### Daily
+
+```bash
+git switch develop && git pull
+npm run db:start             # if Docker was restarted
 npm run dev
 ```
 
-The application runs on http://localhost:3000.
+After pulling new migrations, `npm run db:reset` rebuilds the local database from scratch.
 
 ## Commands
 
