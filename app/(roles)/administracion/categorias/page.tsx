@@ -5,7 +5,9 @@ import { CATEGORY_LIST_METADATA } from "@/app/components/category-catalog/consta
 export const metadata: Metadata = CATEGORY_LIST_METADATA;
 
 const CategoriesPage = (): React.JSX.Element => (
-  <CategoryList />
+  <main>
+    <CategoryList />
+  </main>
 );
 
 export default CategoriesPage;
