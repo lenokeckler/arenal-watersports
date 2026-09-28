@@ -53,7 +53,11 @@ already has one Administración account for the login screen: username `admin`, 
 ```bash
 npm run lint && npm run typecheck && npm run test:run && npm run build
 npm run db:test              # rebuilds the local database and runs the pgTAP tests
+npm run db:reset             # reloads the seeded data, including the admin account
 ```
+
+`npm run db:test` starts from an empty database without the seed, so run `npm run db:reset`
+afterwards to get the seeded data and the `admin` account back.
 
 ### Before your first story
 
