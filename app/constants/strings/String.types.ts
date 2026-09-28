@@ -21,6 +21,7 @@ export const STRING = {
   FORM: "form",
   HASH: "#",
   DASH: "-",
+  MIDDLE_DOT: "·",
   CONTENT: "content",
   OBJECT: "object",
   MESSAGE: "message",
