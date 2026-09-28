@@ -2,7 +2,7 @@
 
 ## Feature
 
-- ADM-02.12: Inventory category catalog — manage the inventory's categories: create them, edit their behavior, mark them inactive once used, delete them while still empty, and group the ones that share a card (US-ADM-12 · Jira key pending)
+- ADM-02.12.01: Category catalog foundations and read path — the admin authorization check for Server Actions, the category-catalog constants/models vocabulary, and the server-side read path that lists categories with whether each ever had units or stock (US-ADM-12 · Jira key pending)
 - chore - Team onboarding and backlog owners — first-run guide in the README and each story's owner in the product backlog
 
 ## Bugfix
