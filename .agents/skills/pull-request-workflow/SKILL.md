@@ -18,7 +18,7 @@ in Spanish. User-facing copy inside the app is Spanish (`AGENTS.md`).
 | Integration     | `develop` (protected)                                                    |
 | Production      | `main` (protected)                                                       |
 | Merge method    | Squash only; the head branch is deleted on merge                         |
-| Who merges      | The repository owner merges into `develop`; nobody else                  |
+| Who merges      | The author, once a teammate approved and labelled it `QA Approved`       |
 | Stories         | `docs/proyecto/historias-de-usuario.md` — `US-ACC-01`, epics `EP-ACC-01` |
 | Jira            | `https://arenal-watersports.atlassian.net/browse/AWS-<n>`                |
 | Package manager | npm                                                                      |
@@ -359,9 +359,18 @@ gh pr view <n> --json files --jq '[.files[].path] | index("CHANGELOG.md")'
 
 ## 9. Review and merge
 
-- **Nobody merges their own PR.** The repository owner merges into `develop`, by hand, when the PR has
-  `QA Approved`, an `APPROVED` review, and base `develop`. A PR stacked on an unmerged parent
-  waits whatever its labels say. AI tools never merge anything.
+- **Every teammate is a reviewer.** Each PR requests the whole team minus the author; one review is
+  enough. A reviewer usually comes from a neighbouring area — reservations with charges,
+  dispatch with catalogue, app structure with access — but anyone may take it.
+- **The reviewer approves and labels.** An `APPROVED` review plus the `QA Approved` label, together.
+  The author never approves or labels their own PR; `develop` and `main` require one approval.
+- **The author merges their own PR** into `develop`, by hand, with _Squash and merge_, once it has
+  `QA Approved`, an `APPROVED` review and base `develop`. Whatever the merge breaks, the author
+  fixes in a new PR. A PR stacked on an unmerged parent waits whatever its labels say.
+- **AI tools never merge anything.** The merge button is always pressed by a person.
+- **Say it when a PR touches sensitive ground.** A PR that changes `supabase/migrations/`,
+  `.github/` or the skills and agents (`.agents/`, `.claude/`, `AGENTS.md`) says so in
+  _Developer Notes_, so the reviewer reads it with extra care.
 - `develop` reaches `main` only through a `release/*` PR.
 - After a review: fix **every** thread and every other occurrence of the same pattern in the PR,
   push new commits, reply in each thread saying what changed, and swap `Code Review Rejected` /
@@ -384,4 +393,5 @@ gh pr view <n> --json files --jq '[.files[].path] | index("CHANGELOG.md")'
 - [ ] Prettier, lint, typecheck, unit tests, build and E2E green
 - [ ] `structure-standards` pre-flight and `styles-standards` guard clean over the PR's files
 - [ ] Ready: `gh pr ready`, `In Progress` → `Waiting for QA`
-- [ ] Review fixes as new commits, every thread answered; nobody merges their own PR
+- [ ] Review fixes as new commits, every thread answered
+- [ ] Merged by the author only after an `APPROVED` review and `QA Approved` from a teammate
