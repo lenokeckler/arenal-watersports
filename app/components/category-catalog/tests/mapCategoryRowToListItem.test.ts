@@ -34,4 +34,33 @@ describe("mapCategoryRowToListItem", () => {
 
     expect(categoryListItem.groupName).toBeNull();
   });
+
+  it("carries an empty-string group_name through unchanged rather than normalizing it to null", () => {
+    const categoryRow = {
+      ...DEFAULT_EQUIPMENT_CATEGORY_ROW,
+      group_name: "",
+    };
+
+    const categoryListItem = mapCategoryRowToListItem(
+      categoryRow,
+      new Set()
+    );
+
+    expect(categoryListItem.groupName).toBe("");
+  });
+
+  it("maps id, name, status and trackingMode straight from the row", () => {
+    const categoryListItem = mapCategoryRowToListItem(
+      DEFAULT_EQUIPMENT_CATEGORY_ROW,
+      new Set()
+    );
+
+    expect(categoryListItem).toMatchObject({
+      id: DEFAULT_EQUIPMENT_CATEGORY_ROW.id,
+      name: DEFAULT_EQUIPMENT_CATEGORY_ROW.name,
+      status: DEFAULT_EQUIPMENT_CATEGORY_ROW.status,
+      trackingMode:
+        DEFAULT_EQUIPMENT_CATEGORY_ROW.tracking_mode,
+    });
+  });
 });

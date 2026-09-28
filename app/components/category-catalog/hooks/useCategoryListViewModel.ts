@@ -1,0 +1,68 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { LENGTH, PATHS } from "@/app/constants";
+import { CATEGORY_LIST_VIEW_STATE } from "../constants/CategoryListViewState.constants";
+import type { CategoryCardViewModel } from "../models/CategoryCardViewModel.interface";
+import type { CategoryListItem } from "../models/CategoryListItem.interface";
+import type { CategoryListViewModel } from "../models/CategoryListViewModel.interface";
+import type { CategoryListViewProps } from "../models/CategoryListViewProps.interface";
+import type { CategoryListViewState } from "../models/CategoryListViewState.type";
+import { resolveCategoryCardActionState } from "../utils/resolveCategoryCardActionState";
+
+const ignoreCardAction = (): void => undefined;
+
+const resolveCategoryListViewState = (
+  fetchFailed: boolean,
+  categoryCount: number
+): CategoryListViewState => {
+  if (fetchFailed) {
+    return CATEGORY_LIST_VIEW_STATE.ERROR;
+  }
+
+  if (categoryCount === LENGTH.ZERO) {
+    return CATEGORY_LIST_VIEW_STATE.EMPTY;
+  }
+
+  return CATEGORY_LIST_VIEW_STATE.READY;
+};
+
+const buildCategoryCardViewModel = (
+  category: CategoryListItem
+): CategoryCardViewModel => ({
+  category,
+  actionState: resolveCategoryCardActionState(
+    category,
+    false
+  ),
+  isActionLoading: false,
+  onCancelClick: ignoreCardAction,
+  onConfirmDeleteClick: ignoreCardAction,
+  onDeleteClick: ignoreCardAction,
+  onMarkInactiveClick: ignoreCardAction,
+});
+
+export const useCategoryListViewModel = ({
+  categories,
+  fetchFailed,
+}: CategoryListViewProps): CategoryListViewModel => {
+  const router = useRouter();
+
+  const onCreateCategory = (): void => {
+    router.push(PATHS.ADMINISTRATION.CATEGORIES_NEW);
+  };
+
+  const onRetry = (): void => {
+    router.refresh();
+  };
+
+  return {
+    cards: categories.map(buildCategoryCardViewModel),
+    onCreateCategory,
+    onRetry,
+    viewState: resolveCategoryListViewState(
+      fetchFailed,
+      categories.length
+    ),
+  };
+};
