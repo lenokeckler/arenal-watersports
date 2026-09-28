@@ -184,9 +184,10 @@ Run the pre-flight checks of `.agents/skills/pull-request-workflow/SKILL.md`
 3. Confirm the whole team minus the author is still requested.
 4. Stop here. Report the PR and what was done.
 
-**Nobody merges their own PR, and no AI tool merges anything.** The repository owner
-merges into `develop` by hand once a PR carries `QA Approved`, an `APPROVED` review,
-and a `develop` base — `.agents/skills/pull-request-workflow/SKILL.md` §9.
+**The author merges their own PR, and no AI tool merges anything.** Once a teammate
+has approved it with an `APPROVED` review and the `QA Approved` label, and its base is
+`develop`, the author merges it by hand with _Squash and merge_ and owns whatever it
+breaks — `.agents/skills/pull-request-workflow/SKILL.md` §9.
 
 **Work does not stop while a PR waits for review.** Start the next story; a
 different epic almost always has no dependency on the open one.

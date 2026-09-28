@@ -202,7 +202,7 @@ The whole workflow — GitFlow, branch and commit names, PR title, body, labels 
 - Commits are one short English sentence in the imperative, with no prefix: `Add username and password login form`. The first commit, `Start login form`, carries the PR's CHANGELOG line.
 - Draft PR first, titled with the epic and story number, `ACC-01.01: Login form`, with the five headings of `.github/pull_request_template.md`, the whole team minus the author as reviewers, and `In Progress` + `Enhancement`.
 - Under 1000 changed lines per PR, measured before adding work; stack only on a real code dependency.
-- Nobody merges their own PR; the repository owner merges into `develop`. AI agents never merge anything.
+- A teammate approves a PR with an `APPROVED` review and the `QA Approved` label; then the author merges it into `develop` and fixes whatever it breaks. AI agents never merge anything.
 
 ## Commands
 
