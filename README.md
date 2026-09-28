@@ -28,17 +28,18 @@ cd arenal-watersports
 git switch develop
 npm ci
 npm run db:start             # first time downloads the Supabase images; takes a few minutes
-npx supabase status          # prints the local API URL and keys
+npx supabase status -o env   # prints the local URL and keys as NAME=value lines
+npx playwright install chromium   # the browser the end-to-end tests run in
 cp .env.example .env.local
 ```
 
-Fill `.env.local` with the values `npx supabase status` printed:
+Fill `.env.local` with the values `npx supabase status -o env` printed:
 
-| Variable                        | Value from `supabase status`         |
+| Variable                        | Value from `supabase status -o env`  |
 | ------------------------------- | ------------------------------------ |
-| `NEXT_PUBLIC_SUPABASE_URL`      | `API URL` (`http://127.0.0.1:54321`) |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `anon key` (or `Publishable key`)    |
-| `SUPABASE_SERVICE_ROLE_KEY`     | `service_role key` (or `Secret key`) |
+| `NEXT_PUBLIC_SUPABASE_URL`      | `API_URL` (`http://127.0.0.1:54321`) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `ANON_KEY`                           |
+| `SUPABASE_SERVICE_ROLE_KEY`     | `SERVICE_ROLE_KEY`                   |
 
 ```bash
 npm run dev                  # http://localhost:3000
@@ -52,6 +53,7 @@ already has one Administración account for the login screen: username `admin`, 
 
 ```bash
 npm run lint && npm run typecheck && npm run test:run && npm run build
+npm run test:e2e             # end-to-end tests on a phone and a desktop viewport
 npm run db:test              # rebuilds the local database and runs the pgTAP tests
 npm run db:reset             # reloads the seeded data, including the admin account
 ```
