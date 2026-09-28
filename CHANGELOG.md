@@ -3,6 +3,7 @@
 ## Feature
 
 - chore - Team onboarding and backlog owners — first-run guide in the README and each story's owner in the product backlog
+- ACC-01.01.01: Sign-in service and session proxy — username and password sign-in against Supabase and the proxy that sends signed-out workers to /acceso/ingreso (US-ACC-01 · AWS-30)
 
 ## Bugfix
 
