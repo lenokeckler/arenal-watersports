@@ -1,0 +1,10 @@
+import type { Metadata } from "next";
+import { CATEGORY_CATALOG_COPY } from "./CategoryCatalog.copy";
+
+export const CATEGORY_LIST_METADATA: Metadata = {
+  title: CATEGORY_CATALOG_COPY.LIST_TITLE,
+};
+
+export const CATEGORY_CREATE_FORM_METADATA: Metadata = {
+  title: CATEGORY_CATALOG_COPY.CREATE_FORM_TITLE,
+};
