@@ -107,6 +107,7 @@ const FormField = ({
         onSearch={onSearch}
         reference={reference}
         isSearch={isSearch}
+        hasError={Boolean(error)}
       />
     </div>
   );

@@ -13,6 +13,7 @@ import {
 import { useFieldFactoryViewModel } from "./hooks/useFieldFactoryViewModel";
 import Button from "../button/Button";
 import Icon from "../icons/icon/Icon";
+import { resolveFieldAriaAttributes } from "./utils/resolveFieldAriaAttributes";
 import {
   FIELD_FACTORY_CHECKBOX_INPUT_CLASS,
   FIELD_FACTORY_CHECKBOX_LABEL_CLASS,
@@ -49,6 +50,7 @@ const FieldFactory = forwardRef<
       reference,
       isSearch,
       accept,
+      hasError = false,
     },
     ref
   ) => {
@@ -60,6 +62,11 @@ const FieldFactory = forwardRef<
         handleChange,
         isSearch
       );
+
+    const ariaAttributes = resolveFieldAriaAttributes(
+      id,
+      hasError
+    );
 
     const toggleVisibility = () => {
       setIsVisible((prev) => !prev);
@@ -77,7 +84,7 @@ const FieldFactory = forwardRef<
               baseClassName
             )}
             placeholder={placeholder}
-            aria-describedby={`${id}-error`}
+            {...ariaAttributes}
             readOnly={readOnly}
             disabled={disabled}
           />
@@ -97,7 +104,7 @@ const FieldFactory = forwardRef<
               value === STRING.Empty,
               selectSizeClassName
             )}
-            aria-describedby={`${id}-error`}
+            {...ariaAttributes}
           >
             {placeholder && (
               <option
@@ -138,7 +145,7 @@ const FieldFactory = forwardRef<
               readOnly={readOnly}
               disabled={disabled}
               className={FIELD_FACTORY_CHECKBOX_INPUT_CLASS}
-              aria-describedby={`${id}-error`}
+              {...ariaAttributes}
             />
             <label
               htmlFor={id}
@@ -162,7 +169,7 @@ const FieldFactory = forwardRef<
             disabled={disabled}
             className={baseClassName}
             placeholder={placeholder}
-            aria-describedby={`${id}-error`}
+            {...ariaAttributes}
             ref={reference ?? ref}
           />
         );
@@ -178,7 +185,7 @@ const FieldFactory = forwardRef<
             accept={accept}
             readOnly={readOnly}
             disabled={disabled}
-            aria-describedby={`${id}-error`}
+            {...ariaAttributes}
             ref={reference ?? ref}
           />
         );
@@ -197,7 +204,7 @@ const FieldFactory = forwardRef<
               value === STRING.Empty,
               selectSizeClassName
             )}
-            aria-describedby={`${id}-error`}
+            {...ariaAttributes}
           >
             {placeholder && (
               <option
@@ -244,8 +251,8 @@ const FieldFactory = forwardRef<
               disabled={disabled}
               className={baseClassName}
               placeholder={placeholder}
-              aria-describedby={`${id}-error`}
-              ref={ref}
+              {...ariaAttributes}
+              ref={reference ?? ref}
             />
             <Button
               type="button"
@@ -289,8 +296,8 @@ const FieldFactory = forwardRef<
             disabled={disabled}
             className={baseClassName}
             placeholder={placeholder}
-            aria-describedby={`${id}-error`}
-            ref={ref}
+            {...ariaAttributes}
+            ref={reference ?? ref}
           />
         );
     }
