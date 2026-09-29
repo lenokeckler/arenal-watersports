@@ -37,6 +37,7 @@ export { POSITION } from "./strings/Position.types";
 export type { Position } from "./strings/Position.types";
 export { KEYBOARD } from "./strings/Keyboard.types";
 export { PATHS } from "./strings/Paths.constants";
+export { COSTA_RICA } from "./time/CostaRica.constants";
 export {
   SPINNER_SIZE,
   SPINNER_ARIA,
