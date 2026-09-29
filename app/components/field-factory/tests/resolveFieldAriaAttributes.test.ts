@@ -6,18 +6,24 @@ import {
 } from "./FieldFactory.constants";
 
 describe("resolveFieldAriaAttributes", () => {
-  it("marks the field invalid and points at its error id when it has an error", () => {
+  it("marks the field invalid and points at its error id when the error text is rendered", () => {
     expect(
-      resolveFieldAriaAttributes(FIELD_ID, true)
+      resolveFieldAriaAttributes(FIELD_ID, true, true)
     ).toEqual({
       "aria-invalid": true,
       "aria-describedby": EXPECTED_DESCRIBEDBY,
     });
   });
 
+  it("marks the field invalid without describedby when the error text is hidden", () => {
+    expect(
+      resolveFieldAriaAttributes(FIELD_ID, true, false)
+    ).toEqual({ "aria-invalid": true });
+  });
+
   it("returns no attributes when the field has no error", () => {
     expect(
-      resolveFieldAriaAttributes(FIELD_ID, false)
+      resolveFieldAriaAttributes(FIELD_ID, false, false)
     ).toEqual({});
   });
 });

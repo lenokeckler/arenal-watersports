@@ -107,6 +107,7 @@ const FormField = ({
         reference={reference}
         isSearch={isSearch}
         hasError={Boolean(error)}
+        hasErrorText={Boolean(error) && showErrorText}
       />
       {error && showErrorText && (
         <Text

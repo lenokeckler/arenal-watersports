@@ -27,10 +27,10 @@ describe("MaterialIcon", () => {
 
   it("uses the Material Symbols class", () => {
     render(
-      <MaterialIcon name={MATERIAL_ICON_NAME.LOGIN} />
+      <MaterialIcon name={MATERIAL_ICON_NAME.VISIBILITY} />
     );
     const page = createMaterialIconPage(
-      MATERIAL_ICON_NAME.LOGIN
+      MATERIAL_ICON_NAME.VISIBILITY
     );
 
     expect(page.getIcon()).toHaveClass(MATERIAL_ICON_CLASS);
@@ -39,12 +39,12 @@ describe("MaterialIcon", () => {
   it("appends the caller class", () => {
     render(
       <MaterialIcon
-        name={MATERIAL_ICON_NAME.ERROR}
+        name={MATERIAL_ICON_NAME.VISIBILITY}
         className={CALLER_CLASS}
       />
     );
     const page = createMaterialIconPage(
-      MATERIAL_ICON_NAME.ERROR
+      MATERIAL_ICON_NAME.VISIBILITY
     );
 
     expect(page.getIcon()).toHaveClass(
@@ -56,11 +56,11 @@ describe("MaterialIcon", () => {
   it("is hidden from assistive technology", () => {
     render(
       <MaterialIcon
-        name={MATERIAL_ICON_NAME.PROGRESS_ACTIVITY}
+        name={MATERIAL_ICON_NAME.VISIBILITY_OFF}
       />
     );
     const page = createMaterialIconPage(
-      MATERIAL_ICON_NAME.PROGRESS_ACTIVITY
+      MATERIAL_ICON_NAME.VISIBILITY_OFF
     );
 
     expect(page.getIcon()).toHaveAttribute(

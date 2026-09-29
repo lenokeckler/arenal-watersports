@@ -40,6 +40,7 @@ const renderField = (
       baseClassName={BASE_CLASS_NAME}
       handleChange={vi.fn()}
       hasError={hasError}
+      hasErrorText={hasError}
       reference={reference}
     />
   );

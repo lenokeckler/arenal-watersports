@@ -50,6 +50,7 @@ const FieldFactory = forwardRef<
       isSearch,
       accept,
       hasError = false,
+      hasErrorText = false,
     },
     ref
   ) => {
@@ -64,7 +65,8 @@ const FieldFactory = forwardRef<
 
     const ariaAttributes = resolveFieldAriaAttributes(
       id,
-      hasError
+      hasError,
+      hasErrorText
     );
 
     const toggleVisibility = () => {

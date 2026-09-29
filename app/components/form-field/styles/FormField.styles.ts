@@ -1,16 +1,7 @@
 import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
 import { FORM_FIELD_VARIANT } from "../constants/FormFieldVariant.constants";
 import type { FormFieldVariant } from "../models/FormFieldVariant.type";
-
-type FormFieldInputClassNameOptions = {
-  classNameField: string;
-  hasError: boolean;
-  isPlaceholderValue: boolean;
-  isInteractive: boolean;
-  readOnly: boolean;
-  disabled: boolean;
-  variant: FormFieldVariant;
-};
+import type { FormFieldInputClassNameOptions } from "../models/FormFieldInputClassNameOptions.interface";
 
 export const FORM_FIELD_WRAPPER_CLASS = "w-full";
 

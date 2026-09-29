@@ -33,4 +33,5 @@ export interface FieldFactoryProps extends Omit<
   isSearch?: boolean;
   accept?: string;
   hasError?: boolean;
+  hasErrorText?: boolean;
 }

@@ -101,8 +101,6 @@
   --spacing-sm: 0.75rem;
   --spacing-xl: 5rem;
   --spacing-xs: 0.25rem;
-
-  --container-form: 28rem;
 }
 
 :root[data-theme="light"] {

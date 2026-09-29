@@ -111,4 +111,17 @@ describe("FormField error text", () => {
 
     expect(page.queryError()).toBeNull();
   });
+
+  it("does not point aria-describedby at a missing id when the text is hidden", () => {
+    renderField(
+      FORM_FIELD_VARIANT.GLASS,
+      ERROR_MESSAGE,
+      false
+    );
+    const page = createFormFieldPage(ERROR_MESSAGE);
+
+    expect(page.getInput()).not.toHaveAttribute(
+      ARIA_DESCRIBEDBY_ATTRIBUTE
+    );
+  });
 });
