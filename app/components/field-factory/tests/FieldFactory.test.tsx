@@ -1,8 +1,13 @@
 import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import FieldFactory from "../FieldFactory";
-import { INPUT_TYPES } from "@/app/constants";
+import {
+  INPUT_TYPES,
+  MATERIAL_ICON_NAME,
+} from "@/app/constants";
+import { PASSWORD_TOGGLE_LABEL } from "../constants/PasswordToggle.constants";
 import {
   ARIA_DESCRIBEDBY_ATTRIBUTE,
   ARIA_INVALID_ATTRIBUTE,
@@ -12,7 +17,9 @@ import {
   FIELD_ID,
   FIELD_NAME,
   FIELD_VALUE,
+  BUTTON_ROLE,
   TEXTBOX_ROLE,
+  TYPE_ATTRIBUTE,
 } from "./FieldFactory.constants";
 
 const renderField = (
@@ -86,5 +93,53 @@ describe("FieldFactory reference", () => {
     expect(reference.current).toBe(
       container.querySelector("input")
     );
+  });
+});
+
+describe("FieldFactory password toggle", () => {
+  it("starts hidden with the show label and the visibility icon", () => {
+    const { container } = renderField(
+      false,
+      undefined,
+      INPUT_TYPES.PASSWORD
+    );
+
+    expect(
+      screen.getByRole(BUTTON_ROLE, {
+        name: PASSWORD_TOGGLE_LABEL.SHOW,
+      })
+    ).toHaveAttribute(TYPE_ATTRIBUTE, BUTTON_ROLE);
+    expect(
+      screen.getByText(MATERIAL_ICON_NAME.VISIBILITY)
+    ).toBeInTheDocument();
+    expect(
+      container.querySelector("input")
+    ).toHaveAttribute(TYPE_ATTRIBUTE, INPUT_TYPES.PASSWORD);
+  });
+
+  it("reveals the password and switches label and icon on click", async () => {
+    const { container } = renderField(
+      false,
+      undefined,
+      INPUT_TYPES.PASSWORD
+    );
+
+    await userEvent.click(
+      screen.getByRole(BUTTON_ROLE, {
+        name: PASSWORD_TOGGLE_LABEL.SHOW,
+      })
+    );
+
+    expect(
+      screen.getByRole(BUTTON_ROLE, {
+        name: PASSWORD_TOGGLE_LABEL.HIDE,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(MATERIAL_ICON_NAME.VISIBILITY_OFF)
+    ).toBeInTheDocument();
+    expect(
+      container.querySelector("input")
+    ).toHaveAttribute(TYPE_ATTRIBUTE, INPUT_TYPES.TEXT);
   });
 });

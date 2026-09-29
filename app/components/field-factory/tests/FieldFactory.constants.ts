@@ -8,3 +8,5 @@ export const ARIA_DESCRIBEDBY_ATTRIBUTE =
 export const ARIA_INVALID_VALUE = "true";
 export const EXPECTED_DESCRIBEDBY = "username-error";
 export const TEXTBOX_ROLE = "textbox";
+export const BUTTON_ROLE = "button";
+export const TYPE_ATTRIBUTE = "type";

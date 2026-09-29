@@ -30,10 +30,7 @@ export const FIELD_FACTORY_PASSWORD_WRAPPER_CLASS =
   "relative w-full";
 
 export const FIELD_FACTORY_PASSWORD_TOGGLE_CLASS =
-  "absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center focus:ring-2 focus:ring-primary focus:outline-none cursor-pointer";
-
-export const FIELD_FACTORY_PASSWORD_ICON_CLASS =
-  "cursor-pointer";
+  "absolute right-1 top-1/2 size-11 -translate-y-1/2 flex items-center justify-center focus:ring-2 focus:ring-primary focus:outline-none cursor-pointer";
 
 export const resolveFieldFactoryTextareaClassName = (
   baseClassName: string
