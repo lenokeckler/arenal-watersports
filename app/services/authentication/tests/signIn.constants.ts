@@ -6,6 +6,7 @@ import {
 import type { SignInCredentials } from "../models/SignInCredentials.interface";
 
 const FILLER_CHARACTER = "a";
+const MULTIBYTE_CHARACTER = "é";
 
 export const DEFAULT_SIGN_IN_CREDENTIALS: SignInCredentials =
   {
@@ -33,5 +34,9 @@ export const BLANK_USERNAME = STRING.SPACE.repeat(
 export const PASSWORD_AT_MAX = FILLER_CHARACTER.repeat(
   PASSWORD_LENGTH.MAX
 );
+export const PASSWORD_MULTIBYTE_ABOVE_MAX_BYTES =
+  MULTIBYTE_CHARACTER.repeat(
+    Math.floor(PASSWORD_LENGTH.MAX / 2) + 1
+  );
 export const PASSWORD_ONE_ABOVE_MAX =
   FILLER_CHARACTER.repeat(PASSWORD_LENGTH.MAX + 1);

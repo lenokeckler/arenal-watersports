@@ -4,11 +4,13 @@ import {
   PASSWORD_RULE_ORDER,
 } from "@/app/constants";
 import type { PasswordRuleId } from "@/app/constants";
+import type { NullableUndefined } from "@/app/types";
 import { checkPasswordRules } from "../checkPasswordRules";
 import {
   EMPTY_PASSWORD,
   PASSWORD_AT_MAX,
   PASSWORD_AT_MIN,
+  PASSWORD_MULTIBYTE_ABOVE_MAX_BYTES,
   PASSWORD_ONE_ABOVE_MAX,
   PASSWORD_ONE_BELOW_MIN,
   PASSWORD_WITHOUT_DIGIT,
@@ -24,7 +26,7 @@ import {
 const isRuleMet = (
   password: string,
   id: PasswordRuleId
-): boolean | undefined =>
+): NullableUndefined<boolean> =>
   checkPasswordRules(password).find(
     (result) => result.id === id
   )?.isMet;
@@ -113,6 +115,15 @@ describe("checkPasswordRules", () => {
     expect(
       isRuleMet(
         PASSWORD_ONE_ABOVE_MAX,
+        PASSWORD_RULE_ID.MAX_LENGTH
+      )
+    ).toBe(false);
+  });
+
+  it("measures the maximum length in bytes", () => {
+    expect(
+      isRuleMet(
+        PASSWORD_MULTIBYTE_ABOVE_MAX_BYTES,
         PASSWORD_RULE_ID.MAX_LENGTH
       )
     ).toBe(false);

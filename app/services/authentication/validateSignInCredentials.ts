@@ -5,6 +5,7 @@ import {
   USERNAME,
 } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
+import { getPasswordByteLength } from "@/app/utils/password/getPasswordByteLength";
 import { normalizeUsername } from "@/app/utils/username/normalizeUsername";
 import { createSignInError } from "./createSignInError";
 import type { SignInCredentials } from "./models/SignInCredentials.interface";
@@ -37,7 +38,9 @@ export const validateSignInCredentials = ({
     );
   }
 
-  if (password.length > PASSWORD_LENGTH.MAX) {
+  if (
+    getPasswordByteLength(password) > PASSWORD_LENGTH.MAX
+  ) {
     return createSignInError(
       SIGN_IN_ERROR_CODE.PASSWORD_TOO_LONG
     );
