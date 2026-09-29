@@ -2,6 +2,8 @@
 
 ## Feature
 
+- RES-01.01.02: Calendar preferences — device-local calendar view storage and Redux state (US-RES-01 · Jira key pending verification)
+
 - RES-01.01: Calendar views — daily, weekly, monthly and annual calendar views for reservations, with daily and weekly views for operations (US-RES-01 · Jira key pending verification)
 
 - chore - Team onboarding and backlog owners — first-run guide in the README and each story's owner in the product backlog
