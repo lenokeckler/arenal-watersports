@@ -7,4 +7,5 @@ export const IMAGES_PATHS = {
   TOP_STRIPES: "/images/top-stripes.svg",
   BOTTOM_STRIPES: "/images/bottom-stripes.svg",
   INVITE_INTRODUCTION: "/images/invite-page.png",
+  ARENAL_LOGO: "/equipos/logo.webp",
 };
