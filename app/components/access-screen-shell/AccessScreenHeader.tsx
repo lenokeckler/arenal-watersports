@@ -1,4 +1,4 @@
-import { Image, Text, Title } from "@/app/components";
+import { Image, Title } from "@/app/components";
 import { TitleVariant } from "@/app/components/title/constants";
 import {
   IMAGE_ALTS,
@@ -12,7 +12,6 @@ import {
 import {
   ACCESS_HEADER_CLASS,
   ACCESS_HEADER_LOGO_CLASS,
-  ACCESS_HEADER_SUBTITLE_CLASS,
   ACCESS_HEADER_TITLE_CLASS,
 } from "./styles/AccessScreenHeader.styles";
 
@@ -32,9 +31,6 @@ const AccessScreenHeader = (): React.JSX.Element => (
       text={ACCESS_SCREEN_COPY.TITLE}
       className={ACCESS_HEADER_TITLE_CLASS}
     />
-    <Text className={ACCESS_HEADER_SUBTITLE_CLASS}>
-      {ACCESS_SCREEN_COPY.SUBTITLE}
-    </Text>
   </header>
 );
 

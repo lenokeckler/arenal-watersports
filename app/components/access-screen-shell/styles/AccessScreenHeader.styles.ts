@@ -6,6 +6,3 @@ export const ACCESS_HEADER_LOGO_CLASS =
 
 export const ACCESS_HEADER_TITLE_CLASS =
   "text-headline-lg-mobile text-primary md:text-headline-lg";
-
-export const ACCESS_HEADER_SUBTITLE_CLASS =
-  "text-body-base text-on-surface-variant";

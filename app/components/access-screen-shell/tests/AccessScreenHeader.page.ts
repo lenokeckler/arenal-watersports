@@ -11,8 +11,6 @@ export const createAccessScreenHeaderPage = () => {
       level: 1,
       name: ACCESS_SCREEN_COPY.TITLE,
     });
-  const getSubtitle = () =>
-    screen.getByText(ACCESS_SCREEN_COPY.SUBTITLE);
 
-  return { getLogo, getTitle, getSubtitle };
+  return { getLogo, getTitle };
 };

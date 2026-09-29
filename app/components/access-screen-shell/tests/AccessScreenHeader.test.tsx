@@ -21,11 +21,4 @@ describe("AccessScreenHeader", () => {
       ACCESS_SCREEN_TITLE_ID
     );
   });
-
-  it("renders the subtitle", () => {
-    render(<AccessScreenHeader />);
-    const page = createAccessScreenHeaderPage();
-
-    expect(page.getSubtitle()).toBeInTheDocument();
-  });
 });
