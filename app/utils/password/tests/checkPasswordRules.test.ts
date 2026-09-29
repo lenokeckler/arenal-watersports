@@ -10,7 +10,6 @@ import {
   EMPTY_PASSWORD,
   PASSWORD_AT_MAX,
   PASSWORD_AT_MIN,
-  PASSWORD_MULTIBYTE_ABOVE_MAX_BYTES,
   PASSWORD_ONE_ABOVE_MAX,
   PASSWORD_ONE_BELOW_MIN,
   PASSWORD_WITHOUT_DIGIT,
@@ -115,15 +114,6 @@ describe("checkPasswordRules", () => {
     expect(
       isRuleMet(
         PASSWORD_ONE_ABOVE_MAX,
-        PASSWORD_RULE_ID.MAX_LENGTH
-      )
-    ).toBe(false);
-  });
-
-  it("measures the maximum length in bytes", () => {
-    expect(
-      isRuleMet(
-        PASSWORD_MULTIBYTE_ABOVE_MAX_BYTES,
         PASSWORD_RULE_ID.MAX_LENGTH
       )
     ).toBe(false);

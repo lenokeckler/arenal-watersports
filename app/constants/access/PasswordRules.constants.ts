@@ -1,5 +1,5 @@
 export const PASSWORD_LENGTH = {
-  MAX: 72,
+  MAX: 64,
   MIN: 8,
 } as const;
 

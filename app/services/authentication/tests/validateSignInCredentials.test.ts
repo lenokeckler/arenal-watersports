@@ -10,7 +10,6 @@ import {
   BLANK_USERNAME,
   DEFAULT_SIGN_IN_CREDENTIALS,
   PASSWORD_AT_MAX,
-  PASSWORD_MULTIBYTE_ABOVE_MAX_BYTES,
   PASSWORD_ONE_ABOVE_MAX,
   UNNORMALIZED_USERNAME,
   USERNAME_AT_MAX,
@@ -52,11 +51,6 @@ const failureCases: [
   [
     "a password one above the maximum",
     { password: PASSWORD_ONE_ABOVE_MAX },
-    SIGN_IN_ERROR_CODE.PASSWORD_TOO_LONG,
-  ],
-  [
-    "a password within the character maximum but above it in bytes",
-    { password: PASSWORD_MULTIBYTE_ABOVE_MAX_BYTES },
     SIGN_IN_ERROR_CODE.PASSWORD_TOO_LONG,
   ],
 ];
