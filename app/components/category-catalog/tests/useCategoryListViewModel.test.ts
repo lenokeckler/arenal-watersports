@@ -1,4 +1,8 @@
-import { renderHook } from "@testing-library/react";
+import {
+  act,
+  renderHook,
+  waitFor,
+} from "@testing-library/react";
 import {
   beforeEach,
   describe,
@@ -6,13 +10,19 @@ import {
   it,
   vi,
 } from "vitest";
+import { STATUS } from "@/app/constants";
 import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalog.copy";
 import { CATEGORY_LIST_VIEW_STATE } from "../constants/CategoryListViewState.constants";
+import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import { CATEGORY_STATUS } from "../constants/CategoryStatus.constants";
 import { useCategoryListViewModel } from "../hooks/useCategoryListViewModel";
+import type { CategoryMutationResult } from "../models/CategoryMutationResult.interface";
 import { DEFAULT_CATEGORY_LIST_ITEM } from "./CategoryListItem.constants";
 
 const mockRefresh = vi.fn();
+const mockShowToast = vi.fn();
+const mockMarkCategoryInactiveAction = vi.fn();
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
@@ -20,9 +30,20 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
+vi.mock("@/app/components/toast/utils/useToast", () => ({
+  useToast: () => ({ showToast: mockShowToast }),
+}));
+
+vi.mock("../services/markCategoryInactiveAction", () => ({
+  markCategoryInactiveAction: (categoryId: string) =>
+    mockMarkCategoryInactiveAction(categoryId),
+}));
+
 describe("useCategoryListViewModel", () => {
   beforeEach(() => {
     mockRefresh.mockClear();
+    mockShowToast.mockClear();
+    mockMarkCategoryInactiveAction.mockReset();
   });
 
   it("returns the ready view state when categories exist and the fetch succeeded", () => {
@@ -77,7 +98,7 @@ describe("useCategoryListViewModel", () => {
     );
   });
 
-  it("hardcodes every card's action state to NONE regardless of the underlying category", () => {
+  it("resolves each card's action state from its own category", () => {
     const categoryWithRecords = {
       ...DEFAULT_CATEGORY_LIST_ITEM,
       id: "with-records",
@@ -108,8 +129,8 @@ describe("useCategoryListViewModel", () => {
     expect(
       result.current.cards.map((card) => card.actionState)
     ).toEqual([
-      CATEGORY_CARD_ACTION_STATE.NONE,
-      CATEGORY_CARD_ACTION_STATE.NONE,
+      CATEGORY_CARD_ACTION_STATE.MARK_INACTIVE,
+      CATEGORY_CARD_ACTION_STATE.DELETE,
       CATEGORY_CARD_ACTION_STATE.NONE,
     ]);
   });
@@ -140,7 +161,7 @@ describe("useCategoryListViewModel", () => {
     );
   });
 
-  it("does not throw when a card's action handlers are invoked before mutations are wired", () => {
+  it("does not throw when a card's still-unwired action handlers are invoked", () => {
     const { result } = renderHook(() =>
       useCategoryListViewModel({
         categories: [DEFAULT_CATEGORY_LIST_ITEM],
@@ -151,7 +172,6 @@ describe("useCategoryListViewModel", () => {
 
     expect(() => {
       card.onDeleteClick();
-      card.onMarkInactiveClick();
       card.onCancelClick();
       card.onConfirmDeleteClick();
     }).not.toThrow();
@@ -168,5 +188,128 @@ describe("useCategoryListViewModel", () => {
     result.current.onRetry();
 
     expect(mockRefresh).toHaveBeenCalledOnce();
+  });
+
+  describe("marking a category inactive", () => {
+    it("calls the mark-inactive action with the clicked category's id", async () => {
+      mockMarkCategoryInactiveAction.mockResolvedValue({
+        status: CATEGORY_MUTATION_STATUS.SUCCESS,
+      });
+      const { result } = renderHook(() =>
+        useCategoryListViewModel({
+          categories: [DEFAULT_CATEGORY_LIST_ITEM],
+          fetchFailed: false,
+        })
+      );
+
+      act(() => {
+        result.current.cards[0].onMarkInactiveClick();
+      });
+
+      await waitFor(() => {
+        expect(
+          mockMarkCategoryInactiveAction
+        ).toHaveBeenCalledWith(
+          DEFAULT_CATEGORY_LIST_ITEM.id
+        );
+      });
+    });
+
+    it("marks only the clicked card as loading while its action is in flight", async () => {
+      let resolveAction: () => void = () => undefined;
+      mockMarkCategoryInactiveAction.mockReturnValue(
+        new Promise<CategoryMutationResult>((resolve) => {
+          resolveAction = () =>
+            resolve({
+              status: CATEGORY_MUTATION_STATUS.SUCCESS,
+            });
+        })
+      );
+      const otherCategory = {
+        ...DEFAULT_CATEGORY_LIST_ITEM,
+        id: "other-category-id",
+      };
+      const { result } = renderHook(() =>
+        useCategoryListViewModel({
+          categories: [
+            DEFAULT_CATEGORY_LIST_ITEM,
+            otherCategory,
+          ],
+          fetchFailed: false,
+        })
+      );
+
+      act(() => {
+        result.current.cards[0].onMarkInactiveClick();
+      });
+
+      expect(result.current.cards[0].isActionLoading).toBe(
+        true
+      );
+      expect(result.current.cards[1].isActionLoading).toBe(
+        false
+      );
+
+      act(() => {
+        resolveAction();
+      });
+
+      await waitFor(() => {
+        expect(
+          result.current.cards[0].isActionLoading
+        ).toBe(false);
+      });
+    });
+
+    it("shows a success toast and refreshes the list when the action succeeds", async () => {
+      mockMarkCategoryInactiveAction.mockResolvedValue({
+        status: CATEGORY_MUTATION_STATUS.SUCCESS,
+      });
+      const { result } = renderHook(() =>
+        useCategoryListViewModel({
+          categories: [DEFAULT_CATEGORY_LIST_ITEM],
+          fetchFailed: false,
+        })
+      );
+
+      act(() => {
+        result.current.cards[0].onMarkInactiveClick();
+      });
+
+      await waitFor(() => {
+        expect(mockShowToast).toHaveBeenCalledWith(
+          STATUS.SUCCESS,
+          CATEGORY_CATALOG_COPY.MARK_INACTIVE_SUCCESS_TOAST
+        );
+      });
+      expect(mockRefresh).toHaveBeenCalledOnce();
+    });
+
+    it("shows a generic error toast, does not refresh, and clears the loading state when the action throws", async () => {
+      mockMarkCategoryInactiveAction.mockRejectedValue(
+        new Error("boom")
+      );
+      const { result } = renderHook(() =>
+        useCategoryListViewModel({
+          categories: [DEFAULT_CATEGORY_LIST_ITEM],
+          fetchFailed: false,
+        })
+      );
+
+      act(() => {
+        result.current.cards[0].onMarkInactiveClick();
+      });
+
+      await waitFor(() => {
+        expect(mockShowToast).toHaveBeenCalledWith(
+          STATUS.ERROR,
+          CATEGORY_CATALOG_COPY.GENERIC_MUTATION_ERROR
+        );
+      });
+      expect(mockRefresh).not.toHaveBeenCalled();
+      expect(result.current.cards[0].isActionLoading).toBe(
+        false
+      );
+    });
   });
 });

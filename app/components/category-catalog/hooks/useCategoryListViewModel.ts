@@ -2,13 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { LENGTH } from "@/app/constants";
-import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
+import type { Nullable } from "@/app/types";
 import { CATEGORY_LIST_VIEW_STATE } from "../constants/CategoryListViewState.constants";
+import { useCategoryCardActions } from "./useCategoryCardActions";
 import type { CategoryCardViewModel } from "../models/CategoryCardViewModel.interface";
 import type { CategoryListItem } from "../models/CategoryListItem.interface";
 import type { CategoryListViewModel } from "../models/CategoryListViewModel.interface";
 import type { CategoryListViewProps } from "../models/CategoryListViewProps.interface";
 import type { CategoryListViewState } from "../models/CategoryListViewState.type";
+import { resolveCategoryCardActionState } from "../utils/resolveCategoryCardActionState";
 
 const ignoreCardAction = (): void => undefined;
 
@@ -28,15 +30,22 @@ const resolveCategoryListViewState = (
 };
 
 const buildCategoryCardViewModel = (
-  category: CategoryListItem
+  category: CategoryListItem,
+  pendingCategoryId: Nullable<string>,
+  onMarkInactiveClick: (
+    categoryId: string
+  ) => () => Promise<void>
 ): CategoryCardViewModel => ({
   category,
-  actionState: CATEGORY_CARD_ACTION_STATE.NONE,
-  isActionLoading: false,
+  actionState: resolveCategoryCardActionState(
+    category,
+    false
+  ),
+  isActionLoading: category.id === pendingCategoryId,
   onCancelClick: ignoreCardAction,
   onConfirmDeleteClick: ignoreCardAction,
   onDeleteClick: ignoreCardAction,
-  onMarkInactiveClick: ignoreCardAction,
+  onMarkInactiveClick: onMarkInactiveClick(category.id),
 });
 
 export const useCategoryListViewModel = ({
@@ -44,13 +53,21 @@ export const useCategoryListViewModel = ({
   fetchFailed,
 }: CategoryListViewProps): CategoryListViewModel => {
   const router = useRouter();
+  const { pendingCategoryId, onMarkInactiveClick } =
+    useCategoryCardActions();
 
   const onRetry = (): void => {
     router.refresh();
   };
 
   return {
-    cards: categories.map(buildCategoryCardViewModel),
+    cards: categories.map((category) =>
+      buildCategoryCardViewModel(
+        category,
+        pendingCategoryId,
+        onMarkInactiveClick
+      )
+    ),
     onRetry,
     viewState: resolveCategoryListViewState(
       fetchFailed,

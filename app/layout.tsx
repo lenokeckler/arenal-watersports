@@ -6,6 +6,9 @@ import {
   APP_NAME,
   DOCUMENT_LANGUAGE,
 } from "@/app/constants";
+import { ToastContainer } from "@/app/components";
+import { CheckDeviceWidth_Provider } from "@/app/components/check-device-width";
+import { ReduxProvider } from "@/app/providers";
 import { buildThemeInitScript } from "@/app/utils/theme/Theme";
 
 const hankenGrotesk = localFont({
@@ -52,7 +55,12 @@ const RootLayout = ({
         materialSymbolsOutlined.variable
       )}
     >
-      {children}
+      <ReduxProvider>
+        <CheckDeviceWidth_Provider>
+          {children}
+          <ToastContainer />
+        </CheckDeviceWidth_Provider>
+      </ReduxProvider>
     </body>
   </html>
 );

@@ -11,6 +11,8 @@ export const CATEGORY_CATALOG_COPY = {
   EMPTY_STATE_TITLE: "Todavía no hay categorías.",
   FETCH_ERROR_MESSAGE:
     "No se pudieron cargar las categorías.",
+  GENERIC_MUTATION_ERROR:
+    "No se pudo completar la acción. Intenta de nuevo.",
   GROUP_CONFLICT_ERROR:
     "Este grupo ya tiene categorías por cantidad; esta es por unidad.",
   GROUP_FIELD_LABEL: "Grupo",
