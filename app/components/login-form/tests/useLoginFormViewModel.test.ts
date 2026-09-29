@@ -10,6 +10,7 @@ import {
   SIGN_IN_ERROR_CODE,
   SIGN_IN_FIELD,
 } from "@/app/constants";
+import type { SignInError } from "@/app/services/authentication/models/SignInError.interface";
 import { createSignInError } from "@/app/services/authentication/createSignInError";
 import { submitSignIn } from "../actions/submitSignIn";
 import { SIGN_IN_ERROR_COPY } from "../constants/SignInErrorCopy.constants";
@@ -20,6 +21,7 @@ import {
   createSubmitEvent,
 } from "./createLoginFormEvents";
 import {
+  NETWORK_FAILURE_MESSAGE,
   PARTIAL_PASSWORD,
   VALID_LOGIN_CREDENTIALS,
 } from "./useLoginFormViewModel.constants";
@@ -142,5 +144,81 @@ describe("useLoginFormViewModel", () => {
     expect(
       result.current.fieldErrors[SIGN_IN_FIELD.PASSWORD]
     ).toBeNull();
+  });
+
+  it("ignores a second submit while the first is pending", async () => {
+    vi.mocked(submitSignIn).mockReturnValue(
+      new Promise(() => undefined)
+    );
+    const { result } = renderHook(useLoginFormViewModel);
+    fillValidCredentials(result);
+
+    await act(() =>
+      Promise.resolve(
+        result.current.handleSubmit(createSubmitEvent())
+      )
+    );
+    await act(() =>
+      Promise.resolve(
+        result.current.handleSubmit(createSubmitEvent())
+      )
+    );
+
+    expect(result.current.isPending).toBe(true);
+    expect(submitSignIn).toHaveBeenCalledTimes(1);
+  });
+
+  it("drops a server error that arrives after the user edited a field", async () => {
+    let resolveAction: (error: SignInError) => void = () =>
+      undefined;
+    vi.mocked(submitSignIn).mockReturnValue(
+      new Promise((resolve) => {
+        resolveAction = resolve;
+      })
+    );
+    const { result } = renderHook(useLoginFormViewModel);
+    fillValidCredentials(result);
+
+    await act(() =>
+      Promise.resolve(
+        result.current.handleSubmit(createSubmitEvent())
+      )
+    );
+    act(() => {
+      result.current.handlePasswordChange(
+        createChangeEvent(PARTIAL_PASSWORD)
+      );
+    });
+    await act(() =>
+      Promise.resolve(
+        resolveAction(
+          createSignInError(
+            SIGN_IN_ERROR_CODE.INVALID_CREDENTIALS
+          )
+        )
+      )
+    );
+
+    expect(
+      result.current.fieldErrors[SIGN_IN_FIELD.PASSWORD]
+    ).toBeNull();
+  });
+
+  it("shows the network error when the action request fails", async () => {
+    vi.mocked(submitSignIn).mockRejectedValue(
+      new Error(NETWORK_FAILURE_MESSAGE)
+    );
+    const { result } = renderHook(useLoginFormViewModel);
+    fillValidCredentials(result);
+
+    await act(() =>
+      Promise.resolve(
+        result.current.handleSubmit(createSubmitEvent())
+      )
+    );
+
+    expect(
+      result.current.fieldErrors[SIGN_IN_FIELD.FORM]
+    ).toBe(SIGN_IN_ERROR_COPY[SIGN_IN_ERROR_CODE.NETWORK]);
   });
 });

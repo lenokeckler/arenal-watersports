@@ -1,4 +1,7 @@
-import { useState, useTransition } from "react";
+import { unstable_rethrow } from "next/navigation";
+import { useRef, useState, useTransition } from "react";
+import { SIGN_IN_ERROR_CODE } from "@/app/constants/access/SignInError.constants";
+import { createSignInError } from "@/app/services/authentication/createSignInError";
 import { validateSignInCredentials } from "@/app/services/authentication/validateSignInCredentials";
 import type { SignInCredentials } from "@/app/services/authentication/models/SignInCredentials.interface";
 import type { SignInError } from "@/app/services/authentication/models/SignInError.interface";
@@ -12,7 +15,23 @@ export const useSignInSubmission = (): SignInSubmission => {
     useState<NullableRef<SignInError>>(null);
   const [isPending, startTransition] = useTransition();
 
-  const clearServerError = (): void => setServerError(null);
+  const latestSubmissionId = useRef(0);
+
+  const clearServerError = (): void => {
+    latestSubmissionId.current += 1;
+    setServerError(null);
+  };
+
+  const requestSignIn = async (
+    credentials: SignInCredentials
+  ): Promise<SignInError> => {
+    try {
+      return await submitSignIn(credentials);
+    } catch (error) {
+      unstable_rethrow(error);
+      return createSignInError(SIGN_IN_ERROR_CODE.NETWORK);
+    }
+  };
 
   const submit = (credentials: SignInCredentials): void => {
     if (isPending) {
@@ -20,14 +39,18 @@ export const useSignInSubmission = (): SignInSubmission => {
     }
 
     setHasSubmitted(true);
-    setServerError(null);
+    clearServerError();
+    const submissionId = latestSubmissionId.current;
 
     if (validateSignInCredentials(credentials)) {
       return;
     }
 
     startTransition(async () => {
-      setServerError(await submitSignIn(credentials));
+      const result = await requestSignIn(credentials);
+      if (submissionId === latestSubmissionId.current) {
+        setServerError(result);
+      }
     });
   };
 
