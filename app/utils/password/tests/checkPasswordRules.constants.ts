@@ -1,0 +1,29 @@
+import { PASSWORD_LENGTH } from "@/app/constants";
+
+export const FILLER_CHARACTER = "a";
+export const VALID_PASSWORD = "Abcdef1!";
+export const EMPTY_PASSWORD = "";
+export const PASSWORD_WITHOUT_UPPERCASE = "abcdef1!";
+export const PASSWORD_WITHOUT_LOWERCASE = "ABCDEF1!";
+export const PASSWORD_WITHOUT_DIGIT = "Abcdefg!";
+export const PASSWORD_WITHOUT_SYMBOL = "Abcdefg1";
+export const PASSWORD_WITH_SPACE_ONLY = "Abcdef1 ";
+export const PASSWORD_WITH_ACCENTED_UPPERCASE = "Ñ";
+export const PASSWORD_WITH_ACCENTED_LOWERCASE = "ñ";
+
+export const PASSWORD_ONE_BELOW_MIN = VALID_PASSWORD.slice(
+  0,
+  PASSWORD_LENGTH.MIN - 1
+);
+export const PASSWORD_AT_MIN = VALID_PASSWORD.padEnd(
+  PASSWORD_LENGTH.MIN,
+  FILLER_CHARACTER
+);
+export const PASSWORD_AT_MAX = VALID_PASSWORD.padEnd(
+  PASSWORD_LENGTH.MAX,
+  FILLER_CHARACTER
+);
+export const PASSWORD_ONE_ABOVE_MAX = VALID_PASSWORD.padEnd(
+  PASSWORD_LENGTH.MAX + 1,
+  FILLER_CHARACTER
+);
