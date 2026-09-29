@@ -2,6 +2,8 @@
 
 ## Feature
 
+- RES-01.01.04: Calendar preview — development-only calendar examples and browser coverage (US-RES-01 · Jira key pending verification)
+
 - RES-01.01.03: Calendar presentation — interactive calendar periods and accessible view controls (US-RES-01 · Jira key pending verification)
 
 - RES-01.01.02: Calendar preferences — device-local calendar view storage and Redux state (US-RES-01 · Jira key pending verification)

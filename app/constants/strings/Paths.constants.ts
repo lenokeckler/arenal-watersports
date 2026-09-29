@@ -1,6 +1,9 @@
 export const PATHS = {
-  HOME: "/",
   ACCESS: {
     LOGIN: "/acceso/ingreso",
+  },
+  HOME: "/",
+  RESERVATIONS: {
+    CALENDAR_PREVIEW: "/reservas/calendario/vista-previa",
   },
 } as const;
