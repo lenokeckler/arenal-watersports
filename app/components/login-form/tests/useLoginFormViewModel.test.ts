@@ -1,4 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
+import { redirect } from "next/navigation";
 import {
   beforeEach,
   describe,
@@ -7,6 +8,7 @@ import {
   vi,
 } from "vitest";
 import {
+  PATHS,
   SIGN_IN_ERROR_CODE,
   SIGN_IN_FIELD,
 } from "@/app/constants";
@@ -23,6 +25,7 @@ import {
 import {
   NETWORK_FAILURE_MESSAGE,
   PARTIAL_PASSWORD,
+  REDIRECT_ERROR_MESSAGE,
   VALID_LOGIN_CREDENTIALS,
 } from "./useLoginFormViewModel.constants";
 
@@ -147,8 +150,12 @@ describe("useLoginFormViewModel", () => {
   });
 
   it("ignores a second submit while the first is pending", async () => {
+    let resolveAction: (error: SignInError) => void = () =>
+      undefined;
     vi.mocked(submitSignIn).mockReturnValue(
-      new Promise(() => undefined)
+      new Promise((resolve) => {
+        resolveAction = resolve;
+      })
     );
     const { result } = renderHook(useLoginFormViewModel);
     fillValidCredentials(result);
@@ -166,6 +173,13 @@ describe("useLoginFormViewModel", () => {
 
     expect(result.current.isPending).toBe(true);
     expect(submitSignIn).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      resolveAction(
+        createSignInError(SIGN_IN_ERROR_CODE.UNKNOWN)
+      );
+      await Promise.resolve();
+    });
   });
 
   it("drops a server error that arrives after the user edited a field", async () => {
@@ -220,5 +234,98 @@ describe("useLoginFormViewModel", () => {
     expect(
       result.current.fieldErrors[SIGN_IN_FIELD.FORM]
     ).toBe(SIGN_IN_ERROR_COPY[SIGN_IN_ERROR_CODE.NETWORK]);
+  });
+
+  it("does not turn a redirect rejection into a network error", async () => {
+    vi.mocked(submitSignIn).mockImplementation(() =>
+      Promise.resolve().then(() => redirect(PATHS.HOME))
+    );
+    const { result } = renderHook(useLoginFormViewModel);
+    fillValidCredentials(result);
+
+    const submission = async (): Promise<void> => {
+      await act(() =>
+        Promise.resolve(
+          result.current.handleSubmit(createSubmitEvent())
+        )
+      );
+    };
+
+    await expect(submission()).rejects.toThrow(
+      REDIRECT_ERROR_MESSAGE
+    );
+  });
+
+  it("shows the result of a new submit after an edit and a resolved stale one", async () => {
+    const resolvers: Array<(error: SignInError) => void> =
+      [];
+    vi.mocked(submitSignIn).mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolvers.push(resolve);
+        })
+    );
+    const { result } = renderHook(useLoginFormViewModel);
+    fillValidCredentials(result);
+
+    await act(() =>
+      Promise.resolve(
+        result.current.handleSubmit(createSubmitEvent())
+      )
+    );
+    fillValidCredentials(result);
+    await act(async () => {
+      resolvers[0](
+        createSignInError(SIGN_IN_ERROR_CODE.UNKNOWN)
+      );
+      await Promise.resolve();
+    });
+    await act(() =>
+      Promise.resolve(
+        result.current.handleSubmit(createSubmitEvent())
+      )
+    );
+    await act(() =>
+      Promise.resolve(
+        resolvers[1](
+          createSignInError(
+            SIGN_IN_ERROR_CODE.INVALID_CREDENTIALS
+          )
+        )
+      )
+    );
+
+    expect(
+      result.current.fieldErrors[SIGN_IN_FIELD.PASSWORD]
+    ).not.toBeNull();
+    expect(submitSignIn).toHaveBeenCalledTimes(2);
+  });
+
+  it("drops a network failure that arrives after the user edited a field", async () => {
+    let rejectAction: (reason: Error) => void = () =>
+      undefined;
+    vi.mocked(submitSignIn).mockReturnValue(
+      new Promise((_resolve, reject) => {
+        rejectAction = reject;
+      })
+    );
+    const { result } = renderHook(useLoginFormViewModel);
+    fillValidCredentials(result);
+
+    await act(() =>
+      Promise.resolve(
+        result.current.handleSubmit(createSubmitEvent())
+      )
+    );
+    fillValidCredentials(result);
+    await act(() =>
+      Promise.resolve(
+        rejectAction(new Error(NETWORK_FAILURE_MESSAGE))
+      )
+    );
+
+    expect(
+      result.current.fieldErrors[SIGN_IN_FIELD.FORM]
+    ).toBeNull();
   });
 });

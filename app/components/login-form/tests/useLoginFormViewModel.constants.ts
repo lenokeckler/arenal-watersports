@@ -8,3 +8,4 @@ export const VALID_LOGIN_CREDENTIALS: SignInCredentials = {
 export const PARTIAL_PASSWORD = "abc";
 
 export const NETWORK_FAILURE_MESSAGE = "Failed to fetch";
+export const REDIRECT_ERROR_MESSAGE = "NEXT_REDIRECT";
