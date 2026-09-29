@@ -101,6 +101,8 @@
   --spacing-sm: 0.75rem;
   --spacing-xl: 5rem;
   --spacing-xs: 0.25rem;
+
+  --container-form: 28rem;
 }
 
 :root[data-theme="light"] {
@@ -170,19 +172,21 @@
   --color-placeholder: #3c4a46cc;
 }
 
-.material-symbols-outlined {
-  font-family: var(--font-material-symbols);
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  font-feature-settings: "liga";
-  -webkit-font-feature-settings: "liga";
-  -webkit-font-smoothing: antialiased;
+@layer components {
+  .material-symbols-outlined {
+    font-family: var(--font-material-symbols);
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: "liga";
+    -webkit-font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+  }
 }
