@@ -3,11 +3,13 @@ import { FormFieldProps } from "./models/FormFieldProps.interface";
 import FieldFactory from "../field-factory/FieldFactory";
 import { STRING, INPUT_TYPES } from "@/app/constants";
 import { useFormFieldViewModel } from "./hooks/useFormFieldViewModel";
+import { FORM_FIELD_VARIANT } from "./constants/FormFieldVariant.constants";
+import { FIELD_ERROR_ID_SUFFIX } from "../field-factory/constants/FieldFactory.constants";
 import Text from "../text/Text";
 import InlineText from "../text/InlineText";
 import {
-  FORM_FIELD_ERROR_TEXT_CLASS,
-  FORM_FIELD_LABEL_CLASS,
+  FORM_FIELD_ERROR_TEXT_CLASSES,
+  FORM_FIELD_LABEL_CLASSES,
   FORM_FIELD_LABEL_SUFFIX_CLASS,
   FORM_FIELD_WRAPPER_CLASS,
 } from "./styles/FormField.styles";
@@ -34,6 +36,7 @@ const FormField = ({
   onSearch,
   reference,
   isSearch = false,
+  variant = FORM_FIELD_VARIANT.DEFAULT,
 }: FormFieldProps) => {
   const { computedClassName, handleChange, handleKeyDown } =
     useFormFieldViewModel({
@@ -46,6 +49,7 @@ const FormField = ({
       disabled,
       selectSizeClassName,
       preventEnterSubmit,
+      variant,
     });
 
   const handleKeyDownCombined = (
@@ -67,15 +71,10 @@ const FormField = ({
 
   return (
     <div className={FORM_FIELD_WRAPPER_CLASS}>
-      {error && showErrorText && (
-        <Text className={FORM_FIELD_ERROR_TEXT_CLASS}>
-          {error}
-        </Text>
-      )}
       {type !== INPUT_TYPES.CHECKBOX && (
         <label
           htmlFor={id}
-          className={FORM_FIELD_LABEL_CLASS}
+          className={FORM_FIELD_LABEL_CLASSES[variant]}
         >
           {label}
           {STRING.SPACE}
@@ -109,6 +108,14 @@ const FormField = ({
         isSearch={isSearch}
         hasError={Boolean(error)}
       />
+      {error && showErrorText && (
+        <Text
+          id={`${id}${FIELD_ERROR_ID_SUFFIX}`}
+          className={FORM_FIELD_ERROR_TEXT_CLASSES[variant]}
+        >
+          {error}
+        </Text>
+      )}
     </div>
   );
 };
