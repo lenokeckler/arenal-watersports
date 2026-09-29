@@ -3,6 +3,7 @@
 ## Feature
 
 - chore - Team onboarding and backlog owners — first-run guide in the README and each story's owner in the product backlog
+- chore - Access screen base components — FormField shows its error below the field with a dark glass variant, the password toggle uses a Material icon with Spanish labels and a 44 px target, a MaterialIcon component, and Text no longer fixes size and color
 
 ## Bugfix
 
