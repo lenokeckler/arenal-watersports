@@ -22,6 +22,7 @@ import {
   FIELD_FACTORY_PASSWORD_TOGGLE_CLASS,
   FIELD_FACTORY_PASSWORD_WRAPPER_CLASS,
   FIELD_FACTORY_PLACEHOLDER_OPTION_CLASS,
+  resolveFieldFactoryPasswordInputClassName,
   resolveFieldFactorySelectClassName,
   resolveFieldFactoryTextareaClassName,
 } from "./styles/FieldFactory.styles";
@@ -250,7 +251,9 @@ const FieldFactory = forwardRef<
               }
               readOnly={readOnly}
               disabled={disabled}
-              className={baseClassName}
+              className={resolveFieldFactoryPasswordInputClassName(
+                baseClassName
+              )}
               placeholder={placeholder}
               {...ariaAttributes}
               ref={reference ?? ref}

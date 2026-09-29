@@ -17,6 +17,7 @@ import {
   FIELD_ID,
   FIELD_NAME,
   FIELD_VALUE,
+  PASSWORD_INPUT_PADDING_CLASS,
   BUTTON_ROLE,
   TEXTBOX_ROLE,
   TYPE_ATTRIBUTE,
@@ -142,5 +143,27 @@ describe("FieldFactory password toggle", () => {
     expect(
       container.querySelector("input")
     ).toHaveAttribute(TYPE_ATTRIBUTE, INPUT_TYPES.TEXT);
+  });
+});
+
+describe("FieldFactory password input padding", () => {
+  it("reserves right padding for the toggle on the password input", () => {
+    const { container } = renderField(
+      false,
+      undefined,
+      INPUT_TYPES.PASSWORD
+    );
+
+    expect(container.querySelector("input")).toHaveClass(
+      PASSWORD_INPUT_PADDING_CLASS
+    );
+  });
+
+  it("does not add the padding to a text input", () => {
+    renderField(false);
+
+    expect(screen.getByRole(TEXTBOX_ROLE)).not.toHaveClass(
+      PASSWORD_INPUT_PADDING_CLASS
+    );
   });
 });
