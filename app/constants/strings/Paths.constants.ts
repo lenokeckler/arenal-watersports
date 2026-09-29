@@ -1,6 +1,9 @@
 export const PATHS = {
-  HOME: "/",
   ACCESS: {
     LOGIN: "/acceso/ingreso",
+  },
+  HOME: "/",
+  OPERATIONS: {
+    PENDING_DISPATCHES: "/operaciones/despacho",
   },
 } as const;
