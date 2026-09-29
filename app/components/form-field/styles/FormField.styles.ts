@@ -18,7 +18,7 @@ export const FORM_FIELD_LABEL_CLASS =
   "block mb-1 font-bold text-sm md:text-base text-on-surface";
 
 export const FORM_FIELD_LABEL_SUFFIX_CLASS =
-  "font-bold text-on-surface";
+  "text-base font-bold text-on-surface";
 
 export const FORM_FIELD_INPUT_BASE_CLASS =
   "bg-surface-container-highest placeholder:text-placeholder rounded-2xl w-full p-4 text-sm md:text-base border";
