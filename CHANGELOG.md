@@ -2,6 +2,8 @@
 
 ## Feature
 
+- RES-01.01.03: Calendar presentation — interactive calendar periods and accessible view controls (US-RES-01 · Jira key pending verification)
+
 - RES-01.01.02: Calendar preferences — device-local calendar view storage and Redux state (US-RES-01 · Jira key pending verification)
 
 - RES-01.01: Calendar views — daily, weekly, monthly and annual calendar views for reservations, with daily and weekly views for operations (US-RES-01 · Jira key pending verification)
