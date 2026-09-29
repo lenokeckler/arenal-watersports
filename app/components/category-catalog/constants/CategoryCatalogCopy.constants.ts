@@ -6,6 +6,9 @@ export const CATEGORY_CATALOG_COPY = {
   DELETE_CATEGORY_BUTTON: "Eliminar categoría",
   DELETE_CONFIRM_MESSAGE:
     "¿Eliminar esta categoría? No se puede deshacer.",
+  DELETE_HAS_RECORDS_ERROR:
+    "Esta categoría ya tiene unidades o existencias registradas y no se puede eliminar.",
+  DELETE_SUCCESS_TOAST: "Categoría eliminada.",
   EMPTY_STATE_BODY:
     "Cada categoría que agregues aparece aquí.",
   EMPTY_STATE_TITLE: "Todavía no hay categorías.",

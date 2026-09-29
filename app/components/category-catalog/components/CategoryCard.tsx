@@ -2,6 +2,7 @@ import InlineText from "@/app/components/text/InlineText";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
 import { STRING, TitleVariant } from "@/app/constants";
+import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_STATUS } from "../constants/CategoryStatus.constants";
 import { CATEGORY_TRACKING_MODE } from "../constants/CategoryTrackingMode.constants";
@@ -34,6 +35,9 @@ const CategoryCard = ({
 }: CategoryCardViewModel): React.JSX.Element => {
   const isInactive =
     category.status === CATEGORY_STATUS.INACTIVE;
+  const isConfirmingDelete =
+    cardActionProps.actionState ===
+    CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE;
   const groupPrefixLabel = [
     CATEGORY_CATALOG_COPY.GROUP_PREFIX_LABEL,
     STRING.MIDDLE_DOT,
@@ -42,7 +46,8 @@ const CategoryCard = ({
   return (
     <div
       className={resolveCategoryCardContainerClassName(
-        isInactive
+        isInactive,
+        isConfirmingDelete
       )}
     >
       <div className={CATEGORY_CARD_NAME_ROW_CLASS}>
@@ -80,6 +85,10 @@ const CategoryCard = ({
       <CategoryCardActions
         actionState={cardActionProps.actionState}
         isActionLoading={cardActionProps.isActionLoading}
+        onCancelClick={cardActionProps.onCancelClick}
+        onConfirmDeleteClick={
+          cardActionProps.onConfirmDeleteClick
+        }
         onDeleteClick={cardActionProps.onDeleteClick}
         onMarkInactiveClick={
           cardActionProps.onMarkInactiveClick

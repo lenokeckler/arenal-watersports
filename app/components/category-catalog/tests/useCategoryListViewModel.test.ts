@@ -23,6 +23,7 @@ import { DEFAULT_CATEGORY_LIST_ITEM } from "./CategoryListItem.constants";
 const mockRefresh = vi.fn();
 const mockShowToast = vi.fn();
 const mockMarkCategoryInactiveAction = vi.fn();
+const mockDeleteCategoryAction = vi.fn();
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
@@ -39,11 +40,17 @@ vi.mock("../services/markCategoryInactiveAction", () => ({
     mockMarkCategoryInactiveAction(categoryId),
 }));
 
+vi.mock("../services/deleteCategoryAction", () => ({
+  deleteCategoryAction: (categoryId: string) =>
+    mockDeleteCategoryAction(categoryId),
+}));
+
 describe("useCategoryListViewModel", () => {
   beforeEach(() => {
     mockRefresh.mockClear();
     mockShowToast.mockClear();
     mockMarkCategoryInactiveAction.mockReset();
+    mockDeleteCategoryAction.mockReset();
   });
 
   it("returns the ready view state when categories exist and the fetch succeeded", () => {
@@ -159,22 +166,6 @@ describe("useCategoryListViewModel", () => {
     expect(result.current.cards[0].isActionLoading).toBe(
       false
     );
-  });
-
-  it("does not throw when a card's still-unwired action handlers are invoked", () => {
-    const { result } = renderHook(() =>
-      useCategoryListViewModel({
-        categories: [DEFAULT_CATEGORY_LIST_ITEM],
-        fetchFailed: false,
-      })
-    );
-    const [card] = result.current.cards;
-
-    expect(() => {
-      card.onDeleteClick();
-      card.onCancelClick();
-      card.onConfirmDeleteClick();
-    }).not.toThrow();
   });
 
   it("refreshes the current route when onRetry is called", () => {
@@ -310,6 +301,227 @@ describe("useCategoryListViewModel", () => {
       expect(result.current.cards[0].isActionLoading).toBe(
         false
       );
+    });
+  });
+
+  describe("deleting a category", () => {
+    it("swaps the clicked card into the confirm-delete state without calling the delete action", () => {
+      const { result } = renderHook(() =>
+        useCategoryListViewModel({
+          categories: [DEFAULT_CATEGORY_LIST_ITEM],
+          fetchFailed: false,
+        })
+      );
+
+      act(() => {
+        result.current.cards[0].onDeleteClick();
+      });
+
+      expect(result.current.cards[0].actionState).toBe(
+        CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
+      );
+      expect(
+        mockDeleteCategoryAction
+      ).not.toHaveBeenCalled();
+    });
+
+    it("returns the clicked card to its default state when onCancelClick is called", () => {
+      const { result } = renderHook(() =>
+        useCategoryListViewModel({
+          categories: [DEFAULT_CATEGORY_LIST_ITEM],
+          fetchFailed: false,
+        })
+      );
+
+      act(() => {
+        result.current.cards[0].onDeleteClick();
+      });
+      act(() => {
+        result.current.cards[0].onCancelClick();
+      });
+
+      expect(result.current.cards[0].actionState).toBe(
+        CATEGORY_CARD_ACTION_STATE.DELETE
+      );
+    });
+
+    it("only puts the clicked card into the confirm-delete state, leaving every other card untouched", () => {
+      const otherCategory = {
+        ...DEFAULT_CATEGORY_LIST_ITEM,
+        id: "other-category-id",
+      };
+      const { result } = renderHook(() =>
+        useCategoryListViewModel({
+          categories: [
+            DEFAULT_CATEGORY_LIST_ITEM,
+            otherCategory,
+          ],
+          fetchFailed: false,
+        })
+      );
+
+      act(() => {
+        result.current.cards[0].onDeleteClick();
+      });
+
+      expect(result.current.cards[0].actionState).toBe(
+        CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
+      );
+      expect(result.current.cards[1].actionState).toBe(
+        CATEGORY_CARD_ACTION_STATE.DELETE
+      );
+    });
+
+    it("calls the delete action with the clicked category's id when the deletion is confirmed", async () => {
+      mockDeleteCategoryAction.mockResolvedValue({
+        status: CATEGORY_MUTATION_STATUS.SUCCESS,
+      });
+      const { result } = renderHook(() =>
+        useCategoryListViewModel({
+          categories: [DEFAULT_CATEGORY_LIST_ITEM],
+          fetchFailed: false,
+        })
+      );
+
+      act(() => {
+        result.current.cards[0].onConfirmDeleteClick();
+      });
+
+      await waitFor(() => {
+        expect(
+          mockDeleteCategoryAction
+        ).toHaveBeenCalledWith(
+          DEFAULT_CATEGORY_LIST_ITEM.id
+        );
+      });
+    });
+
+    it("shows a success toast, refreshes, and exits the confirm state when the deletion succeeds", async () => {
+      mockDeleteCategoryAction.mockResolvedValue({
+        status: CATEGORY_MUTATION_STATUS.SUCCESS,
+      });
+      const { result } = renderHook(() =>
+        useCategoryListViewModel({
+          categories: [DEFAULT_CATEGORY_LIST_ITEM],
+          fetchFailed: false,
+        })
+      );
+
+      act(() => {
+        result.current.cards[0].onConfirmDeleteClick();
+      });
+
+      await waitFor(() => {
+        expect(mockShowToast).toHaveBeenCalledWith(
+          STATUS.SUCCESS,
+          CATEGORY_CATALOG_COPY.DELETE_SUCCESS_TOAST
+        );
+      });
+      expect(mockRefresh).toHaveBeenCalledOnce();
+      expect(result.current.cards[0].actionState).toBe(
+        CATEGORY_CARD_ACTION_STATE.DELETE
+      );
+    });
+
+    it("shows the action's own error message, does not refresh, and exits the confirm state when the delete is rejected with records", async () => {
+      mockDeleteCategoryAction.mockResolvedValue({
+        status: CATEGORY_MUTATION_STATUS.ERROR,
+        message:
+          CATEGORY_CATALOG_COPY.DELETE_HAS_RECORDS_ERROR,
+      });
+      const { result } = renderHook(() =>
+        useCategoryListViewModel({
+          categories: [DEFAULT_CATEGORY_LIST_ITEM],
+          fetchFailed: false,
+        })
+      );
+
+      act(() => {
+        result.current.cards[0].onConfirmDeleteClick();
+      });
+
+      await waitFor(() => {
+        expect(mockShowToast).toHaveBeenCalledWith(
+          STATUS.ERROR,
+          CATEGORY_CATALOG_COPY.DELETE_HAS_RECORDS_ERROR
+        );
+      });
+      expect(mockRefresh).not.toHaveBeenCalled();
+      expect(result.current.cards[0].actionState).toBe(
+        CATEGORY_CARD_ACTION_STATE.DELETE
+      );
+    });
+
+    it("shows a generic error toast and exits the confirm state when the delete action throws", async () => {
+      mockDeleteCategoryAction.mockRejectedValue(
+        new Error("boom")
+      );
+      const { result } = renderHook(() =>
+        useCategoryListViewModel({
+          categories: [DEFAULT_CATEGORY_LIST_ITEM],
+          fetchFailed: false,
+        })
+      );
+
+      act(() => {
+        result.current.cards[0].onConfirmDeleteClick();
+      });
+
+      await waitFor(() => {
+        expect(mockShowToast).toHaveBeenCalledWith(
+          STATUS.ERROR,
+          CATEGORY_CATALOG_COPY.GENERIC_MUTATION_ERROR
+        );
+      });
+      expect(result.current.cards[0].actionState).toBe(
+        CATEGORY_CARD_ACTION_STATE.DELETE
+      );
+    });
+
+    it("marks only the clicked card as loading while the deletion is in flight", async () => {
+      let resolveAction: () => void = () => undefined;
+      mockDeleteCategoryAction.mockReturnValue(
+        new Promise<CategoryMutationResult>((resolve) => {
+          resolveAction = () =>
+            resolve({
+              status: CATEGORY_MUTATION_STATUS.SUCCESS,
+            });
+        })
+      );
+      const otherCategory = {
+        ...DEFAULT_CATEGORY_LIST_ITEM,
+        id: "other-category-id",
+      };
+      const { result } = renderHook(() =>
+        useCategoryListViewModel({
+          categories: [
+            DEFAULT_CATEGORY_LIST_ITEM,
+            otherCategory,
+          ],
+          fetchFailed: false,
+        })
+      );
+
+      act(() => {
+        result.current.cards[0].onConfirmDeleteClick();
+      });
+
+      expect(result.current.cards[0].isActionLoading).toBe(
+        true
+      );
+      expect(result.current.cards[1].isActionLoading).toBe(
+        false
+      );
+
+      act(() => {
+        resolveAction();
+      });
+
+      await waitFor(() => {
+        expect(
+          result.current.cards[0].isActionLoading
+        ).toBe(false);
+      });
     });
   });
 });

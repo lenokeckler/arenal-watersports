@@ -5,10 +5,13 @@ import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import type { CategoryCardActionsProps } from "../models/CategoryCardActionsProps.interface";
 import { CATEGORY_CARD_ACTIONS_BUTTON_CLASS } from "../styles/CategoryCardActions.styles";
+import CategoryCardConfirmDeleteActions from "./CategoryCardConfirmDeleteActions";
 
 const CategoryCardActions = ({
   actionState,
   isActionLoading,
+  onCancelClick,
+  onConfirmDeleteClick,
   onDeleteClick,
   onMarkInactiveClick,
 }: CategoryCardActionsProps): NullableRef<React.JSX.Element> => {
@@ -45,6 +48,19 @@ const CategoryCardActions = ({
       >
         {CATEGORY_CATALOG_COPY.MARK_INACTIVE_BUTTON}
       </Button>
+    );
+  }
+
+  if (
+    actionState ===
+    CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
+  ) {
+    return (
+      <CategoryCardConfirmDeleteActions
+        isActionLoading={isActionLoading}
+        onCancelClick={onCancelClick}
+        onConfirmDeleteClick={onConfirmDeleteClick}
+      />
     );
   }
 

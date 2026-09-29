@@ -2,17 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { LENGTH } from "@/app/constants";
-import type { Nullable } from "@/app/types";
 import { CATEGORY_LIST_VIEW_STATE } from "../constants/CategoryListViewState.constants";
 import { useCategoryCardActions } from "./useCategoryCardActions";
+import type { CategoryCardActionsViewModel } from "../models/CategoryCardActionsViewModel.interface";
 import type { CategoryCardViewModel } from "../models/CategoryCardViewModel.interface";
 import type { CategoryListItem } from "../models/CategoryListItem.interface";
 import type { CategoryListViewModel } from "../models/CategoryListViewModel.interface";
 import type { CategoryListViewProps } from "../models/CategoryListViewProps.interface";
 import type { CategoryListViewState } from "../models/CategoryListViewState.type";
 import { resolveCategoryCardActionState } from "../utils/resolveCategoryCardActionState";
-
-const ignoreCardAction = (): void => undefined;
 
 const resolveCategoryListViewState = (
   fetchFailed: boolean,
@@ -31,21 +29,23 @@ const resolveCategoryListViewState = (
 
 const buildCategoryCardViewModel = (
   category: CategoryListItem,
-  pendingCategoryId: Nullable<string>,
-  onMarkInactiveClick: (
-    categoryId: string
-  ) => () => Promise<void>
+  cardActions: CategoryCardActionsViewModel
 ): CategoryCardViewModel => ({
   category,
   actionState: resolveCategoryCardActionState(
     category,
-    false
+    category.id === cardActions.confirmingCategoryId
   ),
-  isActionLoading: category.id === pendingCategoryId,
-  onCancelClick: ignoreCardAction,
-  onConfirmDeleteClick: ignoreCardAction,
-  onDeleteClick: ignoreCardAction,
-  onMarkInactiveClick: onMarkInactiveClick(category.id),
+  isActionLoading:
+    category.id === cardActions.pendingCategoryId,
+  onCancelClick: cardActions.onCancelClick(category.id),
+  onConfirmDeleteClick: cardActions.onConfirmDeleteClick(
+    category.id
+  ),
+  onDeleteClick: cardActions.onDeleteClick(category.id),
+  onMarkInactiveClick: cardActions.onMarkInactiveClick(
+    category.id
+  ),
 });
 
 export const useCategoryListViewModel = ({
@@ -53,8 +53,7 @@ export const useCategoryListViewModel = ({
   fetchFailed,
 }: CategoryListViewProps): CategoryListViewModel => {
   const router = useRouter();
-  const { pendingCategoryId, onMarkInactiveClick } =
-    useCategoryCardActions();
+  const cardActions = useCategoryCardActions();
 
   const onRetry = (): void => {
     router.refresh();
@@ -62,11 +61,7 @@ export const useCategoryListViewModel = ({
 
   return {
     cards: categories.map((category) =>
-      buildCategoryCardViewModel(
-        category,
-        pendingCategoryId,
-        onMarkInactiveClick
-      )
+      buildCategoryCardViewModel(category, cardActions)
     ),
     onRetry,
     viewState: resolveCategoryListViewState(

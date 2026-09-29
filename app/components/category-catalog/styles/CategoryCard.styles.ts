@@ -1,16 +1,26 @@
 import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
 
-export const CATEGORY_CARD_CONTAINER_CLASS =
-  "flex flex-col gap-3 rounded-2xl border border-outline-variant bg-surface-container p-4 md:flex-row md:flex-wrap md:items-center md:gap-3";
+export const CATEGORY_CARD_CONTAINER_BASE_CLASS =
+  "flex flex-col gap-3 rounded-2xl border bg-surface-container p-4 md:flex-row md:flex-wrap md:items-center md:gap-3";
+
+export const CATEGORY_CARD_CONTAINER_BORDER_CLASS =
+  "border-outline-variant";
+
+export const CATEGORY_CARD_CONTAINER_BORDER_CONFIRM_DELETE_CLASS =
+  "border-error";
 
 export const CATEGORY_CARD_CONTAINER_INACTIVE_CLASS =
   "opacity-70";
 
 export const resolveCategoryCardContainerClassName = (
-  isInactive: boolean
+  isInactive: boolean,
+  isConfirmingDelete: boolean
 ): string =>
   joinClassNames(
-    CATEGORY_CARD_CONTAINER_CLASS,
+    CATEGORY_CARD_CONTAINER_BASE_CLASS,
+    isConfirmingDelete
+      ? CATEGORY_CARD_CONTAINER_BORDER_CONFIRM_DELETE_CLASS
+      : CATEGORY_CARD_CONTAINER_BORDER_CLASS,
     isInactive && CATEGORY_CARD_CONTAINER_INACTIVE_CLASS
   );
 
