@@ -49,13 +49,12 @@ con la finalidad de llegar a las pantallas que me corresponden según mi rol.
 
 **Descripción:**
 
-El trabajador abre la aplicación y encuentra el formulario de ingreso con su nombre de usuario y su contraseña. Las reglas que debe cumplir la contraseña se muestran desde antes de escribirla, y un ojito permite verla mientras se digita, porque en la playa se teclea con las manos mojadas y el error es fácil. Si algo falla, el mensaje aparece en rojo junto al campo que lo provoca.
+El trabajador abre la aplicación y encuentra el formulario de ingreso con su nombre de usuario y su contraseña. Un ojito permite ver la contraseña mientras se digita, porque en la playa se teclea con las manos mojadas y el error es fácil. Si algo falla, el mensaje aparece en rojo junto al campo que lo provoca.
 
 **Criterios de aceptación:**
 
 - Ingreso por nombre de usuario y contraseña.
 - Ojito para ver u ocultar la contraseña.
-- Las reglas de la contraseña se muestran desde antes de escribirla, no después de fallar.
 - Los errores se muestran en mensajes rojos junto al campo que los provoca.
 - Autenticación resuelta con Supabase.
 
@@ -110,6 +109,7 @@ Administración crea la cuenta con una contraseña temporal de un solo uso. La p
 - Se confirma la contraseña temporal, se escribe la nueva y se repite.
 - No se avanza a ninguna pantalla del sistema hasta completarlo.
 - La contraseña nueva cumple los requisitos de seguridad.
+- Las reglas de la contraseña se muestran desde antes de escribirla, no después de fallar.
 
 ---
 
@@ -133,6 +133,7 @@ Desde su perfil el trabajador confirma la contraseña actual, escribe la nueva y
 
 - Se confirma la actual, se escribe la nueva y se repite.
 - La contraseña nueva cumple los requisitos de seguridad.
+- Las reglas de la contraseña se muestran desde antes de escribirla, no después de fallar.
 
 ---
 
@@ -179,6 +180,7 @@ El trabajador pide recuperar su contraseña y el sistema envía un PIN de un sol
 
 - El sistema envía un PIN al correo personal registrado en la cuenta.
 - Se escribe el PIN en pantalla, después la contraseña nueva, y se repite.
+- Las reglas de la contraseña se muestran desde antes de escribirla, no después de fallar.
 - El PIN es de un solo uso y vence a los pocos minutos.
 - Si la cuenta no tiene correo registrado, administración genera una contraseña temporal.
 - No hay inicio de sesión con Google ni con ningún otro proveedor: el ingreso es siempre por usuario y contraseña.
@@ -2896,7 +2898,7 @@ Reglas que aplican a todo el sistema. Se listan aquí una sola vez en lugar de r
 | ID      | Requisito                                                                                                                                                                                               |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | RNF-001 | Autenticación resuelta con Supabase. Cada persona entra con su propio usuario y nadie digita la contraseña de otro.                                                                                     |
-| RNF-002 | La contraseña exige mayúscula, minúscula, número y símbolo, con largo mínimo y largo máximo. Las reglas se muestran desde antes de escribirla.                                                          |
+| RNF-002 | La contraseña exige mayúscula, minúscula, número y símbolo, con largo mínimo y largo máximo. Las reglas se muestran desde antes de escribirla donde se escoge una contraseña nueva.                     |
 | RNF-003 | La cuenta de un trabajador se bloquea al llegar a diez intentos fallidos seguidos y solo administración la desbloquea.                                                                                  |
 | RNF-004 | La recuperación de contraseña se hace con un PIN de un solo uso enviado al correo personal, para todos los roles. No hay inicio de sesión con Google ni con otro proveedor.                             |
 | RNF-005 | El sistema tiene una sola cuenta de administración. No se bloquea nunca: pasados los diez intentos entra al proceso de recuperación, que es su única salida.                                            |
