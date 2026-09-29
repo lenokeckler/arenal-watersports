@@ -92,3 +92,11 @@ export {
   type PasswordRuleId,
 } from "./access/PasswordRules.constants";
 export { USERNAME } from "./access/Username.constants";
+export {
+  SIGN_IN_ERROR_CODE,
+  SIGN_IN_ERROR_FIELD,
+  SIGN_IN_FIELD,
+  type SignInErrorCode,
+  type SignInField,
+} from "./access/SignInError.constants";
+export { SUPABASE_AUTH_ERROR_CODE } from "./supabase/SupabaseAuthErrorCode.constants";
