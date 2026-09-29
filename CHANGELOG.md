@@ -3,7 +3,7 @@
 ## Feature
 
 - chore - Team onboarding and backlog owners — first-run guide in the README and each story's owner in the product backlog
-- ACC-01.01.01: Sign-in service — username and password sign-in against Supabase, the password rules and the username to auth email mapping (US-ACC-01 · AWS-30)
+- ACC-01.01.01: Sign-in service — username and password sign-in against Supabase with the username to auth email mapping and the password length limits (US-ACC-01 · AWS-30)
 
 ## Bugfix
 

@@ -84,13 +84,7 @@ export {
   THEME_STORAGE_KEY,
   type Theme,
 } from "./theme/Theme.constants";
-export {
-  PASSWORD_LENGTH,
-  PASSWORD_RULE_ID,
-  PASSWORD_RULE_ORDER,
-  PASSWORD_RULE_PATTERN,
-  type PasswordRuleId,
-} from "./access/PasswordRules.constants";
+export { PASSWORD_LENGTH } from "./access/PasswordLength.constants";
 export { USERNAME } from "./access/Username.constants";
 export {
   SIGN_IN_ERROR_CODE,
