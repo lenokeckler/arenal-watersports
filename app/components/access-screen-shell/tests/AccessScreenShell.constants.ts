@@ -5,5 +5,3 @@ export const TITLE_TEXT = "Shell test title";
 export const CHILD_TEXT = "Shell test child";
 
 export const REGION_ROLE = "region";
-
-export const ARIA_HIDDEN_SELECTOR = "[aria-hidden=true]";

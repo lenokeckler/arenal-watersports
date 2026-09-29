@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
+import { ACCESS_SHELL_BACKDROP_TEST_ID } from "../constants/AccessScreenShell.constants";
 import {
-  ARIA_HIDDEN_SELECTOR,
   CHILD_TEXT,
   REGION_ROLE,
   TITLE_TEXT,
@@ -11,7 +11,7 @@ export const createAccessScreenShellPage = () => {
     screen.getByRole(REGION_ROLE, { name: TITLE_TEXT });
   const getChild = () => screen.getByText(CHILD_TEXT);
   const getBackdrop = () =>
-    document.querySelector(ARIA_HIDDEN_SELECTOR);
+    screen.getByTestId(ACCESS_SHELL_BACKDROP_TEST_ID);
 
   return { getCard, getChild, getBackdrop };
 };

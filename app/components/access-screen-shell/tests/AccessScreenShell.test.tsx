@@ -38,8 +38,12 @@ describe("AccessScreenShell", () => {
     const page = createAccessScreenShellPage();
 
     expect(page.getBackdrop()).toBeInTheDocument();
+    expect(page.getBackdrop()).toHaveAttribute(
+      "aria-hidden",
+      "true"
+    );
     expect(page.getCard()).not.toContainElement(
-      page.getBackdrop() as HTMLElement
+      page.getBackdrop()
     );
   });
 });
