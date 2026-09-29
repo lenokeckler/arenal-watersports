@@ -2,6 +2,7 @@
 
 ## Feature
 
+- OPE-01.02: Pending dispatch query — Secure, paginated Supabase read for today's pending reservations (US-OPE-01 · AWS-117)
 - OPE-01.01: Pending dispatch contracts and Costa Rica day range — Shared reservation types and Costa Rica day range calculation (US-OPE-01 · AWS-117)
 - chore - Team onboarding and backlog owners — first-run guide in the README and each story's owner in the product backlog
 

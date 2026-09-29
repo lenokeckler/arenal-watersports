@@ -6,10 +6,12 @@ import type { Database } from "@/app/types";
 const ignoreCookieWriteFromServerComponent = (): void =>
   undefined;
 
-export const createClient = async () => {
+export const createClient = async <
+  Schema extends Database = Database,
+>() => {
   const cookieStore = await cookies();
 
-  return createServerClient<Database>(
+  return createServerClient<Schema>(
     SUPABASE.URL,
     SUPABASE.ANON_KEY,
     {
