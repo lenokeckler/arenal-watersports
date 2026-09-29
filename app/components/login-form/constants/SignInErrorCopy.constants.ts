@@ -19,7 +19,7 @@ export const SIGN_IN_ERROR_COPY: Record<
   [SIGN_IN_ERROR_CODE.TOO_MANY_REQUESTS]:
     "Demasiados intentos. Espere un momento e intente de nuevo.",
   [SIGN_IN_ERROR_CODE.UNKNOWN]:
-    "No pudimos ingresarlo. Intente de nuevo.",
+    "No se pudo completar el ingreso. Intente de nuevo.",
   [SIGN_IN_ERROR_CODE.USERNAME_LENGTH]: `El nombre de usuario debe tener entre ${USERNAME.LENGTH.MIN} y ${USERNAME.LENGTH.MAX} caracteres.`,
   [SIGN_IN_ERROR_CODE.USERNAME_REQUIRED]:
     "Escriba su nombre de usuario.",
