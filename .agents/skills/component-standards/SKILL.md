@@ -1,11 +1,11 @@
 ---
 name: component-standards
-description: Standards for UI components and Storybook — reuse existing app/components bases; defers ViewModel / no-logic-in-tsx rules to component-architecture; stories and Nullable types.
+description: Standards for UI components — reuse existing app/components bases; defers ViewModel / no-logic-in-tsx rules to component-architecture; no Storybook; Nullable types.
 ---
 
-# Front-End Component and Storybook Standards
+# Front-End Component Standards
 
-When building or working with UI components and stories in this codebase, adhere strictly to the following rules based on the project's established conventions.
+When building or working with UI components in this codebase, adhere strictly to the following rules based on the project's established conventions.
 
 Hard-coded string literals and magic numbers must use `@/app/constants` — follow `constants-standards` (also required by `code-style-standards`).
 
@@ -196,69 +196,11 @@ That skill is the single source of truth for:
 
 Presentational components with props → JSX only may skip a ViewModel (see that skill).
 
-## 3. New Components Must Have Storybook Stories
+## 3. No Storybook
 
-Every new UI component must be accompanied by a Storybook story file (`ComponentName.stories.tsx`) in the same directory. Stories must cover the component's key states and variants so the component can be developed, reviewed, and tested in isolation.
+This project does not use Storybook. Do not add `*.stories.tsx` files, a `storybookMocks.json`, `STORYBOOK_LAYOUT` constants or any `@storybook/*` package. A component's states are shown by its unit tests with a page object (`unit-testing-standards`), by the Playwright spec of the screen that renders it, and by the mobile and desktop captures in the PR body (`pull-request-workflow` §7).
 
 Only add a **new** component after §1 — and document why existing bases were insufficient if the work introduces another primitive-like wrapper.
-
-- Place the story file alongside the component: `ComponentName/ComponentName.stories.tsx`.
-- Use `STORYBOOK_LAYOUT` constants instead of raw layout strings (see `constants-standards`).
-- Export a `Default` story at minimum; add named stories for each meaningful variant or state (e.g., `Loading`, `Empty`, `WithError`).
-- Pass only realistic props — no inline placeholder strings. Import string mocks from `@/app/constants/storybook/storybookMocks.json` instead (see below).
-
-**Incorrect:**
-
-```tsx
-// MyCard/MyCard.stories.tsx
-export default {
-  title: "MyCard",
-  layout: "centered",
-};
-
-export const Default = () => (
-  <MyCard
-    title="Some title"
-    description="Some description"
-  />
-);
-```
-
-**Correct:**
-
-```tsx
-// MyCard/MyCard.stories.tsx
-import type { Meta, StoryObj } from "@storybook/react";
-import { STORYBOOK_LAYOUT } from "@/app/constants";
-import mocks from "@/app/constants/storybook/storybookMocks.json";
-import MyCard from "./MyCard";
-
-const meta: Meta<typeof MyCard> = {
-  title: "Components/MyCard",
-  component: MyCard,
-  parameters: { layout: STORYBOOK_LAYOUT.CENTERED },
-};
-export default meta;
-
-type Story = StoryObj<typeof MyCard>;
-
-export const Default: Story = {
-  args: {
-    title: mocks.featuredSection.items[0].title,
-    description: mocks.featuredSection.items[0].description,
-  },
-};
-export const Loading: Story = {
-  args: {
-    title: mocks.featuredSection.items[0].title,
-    isLoading: true,
-  },
-};
-```
-
-### Adding new mocks
-
-If no existing entry in `storybookMocks.json` fits your component, add a new top-level key for it rather than inlining strings in the story file. Keep mock values realistic (no `"foo"` / `"test"` / `"string"`).
 
 ## 4. Use Nullable Utility Types
 

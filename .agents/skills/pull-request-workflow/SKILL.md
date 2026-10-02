@@ -348,9 +348,11 @@ npm run test:e2e          # every UI story
 CI runs the first five on every PR to `develop`; a red PR does not leave draft.
 
 Then run the review guards over the PR's own files — the pre-flight greps of
-`structure-standards` and the `className` guard of `styles-standards` — and confirm the diff
-shows this PR's CHANGELOG line (§5). Every hit is fixed or named in _Developer Notes_ with the
-reason it stays; a rule a reviewer has to point out costs a full review round.
+`structure-standards`, the `className` guard of `styles-standards` and the usted guard of
+`constants-standards` §9 — and confirm the diff shows this PR's CHANGELOG line (§5). A PR that
+renders a screen is also compared with its Stitch screen for palette and style
+(`styles-standards`, _Visual reference — Stitch_). Every hit is fixed or named in _Developer
+Notes_ with the reason it stays; a rule a reviewer has to point out costs a full review round.
 
 ```bash
 git diff --name-only origin/<base>...HEAD
