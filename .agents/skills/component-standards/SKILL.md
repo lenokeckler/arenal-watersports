@@ -184,7 +184,7 @@ Do **not** keep separate rules here for ViewModels. Whenever a `.tsx` component 
 
 That skill is the single source of truth for:
 
-- Feature-based folders under `app/components/<feature-name>/`
+- Feature-based folders under `app/features/<module>/<feature-name>/`, shared bases under `app/components/<base>/`
 - Spec-Driven Development (`specs/SPEC.md` before non-trivial implementation)
 - SOLID principles and intentional design patterns
 - Local mini components so main `.tsx` returns stay short and readable
