@@ -3,6 +3,7 @@
 ## Feature
 
 - chore - Team onboarding and backlog owners — first-run guide in the README and each story's owner in the product backlog
+- chore - Stitch local references — the Stitch screens live in docs/referencia/stitch/ on each machine, ignored by git, and .mcp.json never ships
 
 ## Bugfix
 
