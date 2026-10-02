@@ -351,7 +351,7 @@ the lint selectors — is in `styles-standards`.
 ## 12. No magic numbers — tests, doubles and E2E included
 
 `constants-standards` owns magic numbers in application code. The same rule reaches **test
-doubles, page objects, Storybook stories, E2E specs and capture scripts**: a number whose
+doubles, page objects, E2E specs and capture scripts**: a number whose
 meaning is not the number itself — a timeout, an index into a result, a count, a retry, a
 viewport — gets a named constant.
 
