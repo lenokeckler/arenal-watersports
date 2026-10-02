@@ -28,12 +28,12 @@ component — that is still a violation of this skill.
 
 ## Where
 
-| Scope                                                       | Path                                                    |
-| ----------------------------------------------------------- | ------------------------------------------------------- |
-| Feature component                                           | `app/components/<feature>/styles/<Component>.styles.ts` |
-| Shared base component                                       | `app/components/<base>/styles/<Base>.styles.ts`         |
-| Route files (`page.tsx`, `layout.tsx`) and app-level chrome | `app/styles/<Screen>.styles.ts`                         |
-| Cross-feature primitives (card, bottom sheet, field error)  | `app/styles/<Primitive>.styles.ts`                      |
+| Scope                                                       | Path                                                           |
+| ----------------------------------------------------------- | -------------------------------------------------------------- |
+| Feature component                                           | `app/features/<module>/<feature>/styles/<Component>.styles.ts` |
+| Shared base component                                       | `app/components/<base>/styles/<Base>.styles.ts`                |
+| Route files (`page.tsx`, `layout.tsx`) and app-level chrome | `app/styles/<Screen>.styles.ts`                                |
+| Cross-feature primitives (card, bottom sheet, field error)  | `app/styles/<Primitive>.styles.ts`                             |
 
 One `.styles.ts` per component, or per small group that always renders together (a form and its
 fields). `constants/` never holds class strings — it holds copy, ids, routes, limits and enums
@@ -46,7 +46,7 @@ moved to the matching `styles/` file.
 one object with keys:
 
 ```ts
-// ✅ app/components/reservation-list/styles/ReservationList.styles.ts
+// ✅ app/features/reservations/reservation-list/styles/ReservationList.styles.ts
 export const RESERVATION_LIST_WRAPPER_CLASS =
   "flex flex-col gap-2 px-4 py-3 md:px-8";
 

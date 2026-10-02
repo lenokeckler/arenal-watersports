@@ -2,6 +2,7 @@
 
 ## Feature
 
+- chore - Feature folder rules — screens live in app/features by story module, shared bases stay in app/components, routes sit under app/access and app/(system), and every folder and URL segment is English
 - chore - Team onboarding and backlog owners — first-run guide in the README and each story's owner in the product backlog
 - chore - Stitch local references — the Stitch screens live in docs/referencia/stitch/ on each machine, ignored by git, and .mcp.json never ships
 

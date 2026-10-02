@@ -221,7 +221,7 @@ and the story plus its Jira key.
 
 ## Feature
 
-- ACC-01.01: Login form — username and password login screen at /acceso/ingreso (US-ACC-01 · AWS-30)
+- ACC-01.01: Login form — username and password login screen at /access/login (US-ACC-01 · AWS-30)
 - chore - Playwright tooling — Playwright configuration and capture helper
 
 ## Bugfix

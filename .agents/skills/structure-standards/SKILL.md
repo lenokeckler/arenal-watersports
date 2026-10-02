@@ -26,7 +26,7 @@ Never written by hand at each call site, never declared in the file that execute
 // ❌ the same event shape in the hook, the ViewModel and two components
 onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
 
-// ✅ app/components/charge-form/models/ChargeFormFieldChangeHandler.type.ts
+// ✅ app/features/reservations/charge-form/models/ChargeFormFieldChangeHandler.type.ts
 export type ChargeFormFieldChangeEvent = React.ChangeEvent<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 >;
@@ -66,7 +66,7 @@ const buildDailyBoard = (
   closures: DayClosure[]
 ) => …
 
-// ✅ app/components/daily-board/models/DailyBoardSources.interface.ts
+// ✅ app/features/board/daily-board/models/DailyBoardSources.interface.ts
 export interface DailyBoardSources {
   closures: DayClosure[];
   dispatches: ReservationDispatch[];
@@ -127,7 +127,7 @@ Test and E2E helpers that fill a form take their defaults from **one** typed obj
 overrides are spread over it. Never a `??` per field with a literal glued to the call site.
 
 ```ts
-// ❌ app/components/login-form/tests/LoginForm.page.ts
+// ❌ app/features/access/login-form/tests/LoginForm.page.ts
 await user.type(
   getUsernameInput(),
   overrides.username ?? "operaciones1"
@@ -137,7 +137,7 @@ await user.type(
   overrides.password ?? "local-test-password"
 );
 
-// ✅ app/components/login-form/tests/LoginForm.constants.ts
+// ✅ app/features/access/login-form/tests/LoginForm.constants.ts
 export const DEFAULT_LOGIN_FORM_INPUT: LoginFormValues = {
   password: "local-test-password",
   username: "operaciones1",
@@ -240,7 +240,7 @@ type ChargeListState = "loading" | "ready" | "empty";
 if (state === "empty") { … }
 interface ContactButtonProps { channel: "phone" | "whatsapp"; }
 
-// ✅ app/components/charge-list/constants/ChargeListState.constants.ts
+// ✅ app/features/reservations/charge-list/constants/ChargeListState.constants.ts
 export const CHARGE_LIST_STATE = {
   EMPTY: "empty",
   LOADING: "loading",
@@ -323,7 +323,7 @@ const goTo = async (): Promise<void> => {
 
 // ❌
 const openLoginPage = async () =>
-  page.goto("/acceso/ingreso");
+  page.goto("/access/login");
 ```
 
 ## 10. Search the repository for an existing type or constant before declaring one
