@@ -1,8 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
+import { Text, Title } from "@/app/components";
+import { TitleVariant } from "@/app/components/title/constants";
 import AccessScreenShell from "../AccessScreenShell";
 import { createAccessScreenShellPage } from "./AccessScreenShell.page";
 import {
+  ARIA_HIDDEN_ATTRIBUTE,
+  ARIA_HIDDEN_VALUE,
   CHILD_TEXT,
   TITLE_ID,
   TITLE_TEXT,
@@ -11,8 +15,12 @@ import {
 const renderShell = () =>
   render(
     <AccessScreenShell titleId={TITLE_ID}>
-      <h1 id={TITLE_ID}>{TITLE_TEXT}</h1>
-      <p>{CHILD_TEXT}</p>
+      <Title
+        id={TITLE_ID}
+        variant={TitleVariant.PRIMARY}
+        text={TITLE_TEXT}
+      />
+      <Text>{CHILD_TEXT}</Text>
     </AccessScreenShell>
   );
 
@@ -39,8 +47,8 @@ describe("AccessScreenShell", () => {
 
     expect(page.getBackdrop()).toBeInTheDocument();
     expect(page.getBackdrop()).toHaveAttribute(
-      "aria-hidden",
-      "true"
+      ARIA_HIDDEN_ATTRIBUTE,
+      ARIA_HIDDEN_VALUE
     );
     expect(page.getCard()).not.toContainElement(
       page.getBackdrop()

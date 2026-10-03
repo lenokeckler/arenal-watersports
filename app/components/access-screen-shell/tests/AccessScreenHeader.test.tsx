@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import AccessScreenHeader from "../AccessScreenHeader";
 import { ACCESS_SCREEN_TITLE_ID } from "../constants/AccessScreen.constants";
+import { ID_ATTRIBUTE } from "./AccessScreenHeader.constants";
 import { createAccessScreenHeaderPage } from "./AccessScreenHeader.page";
 
 describe("AccessScreenHeader", () => {
@@ -17,7 +18,7 @@ describe("AccessScreenHeader", () => {
     const page = createAccessScreenHeaderPage();
 
     expect(page.getTitle()).toHaveAttribute(
-      "id",
+      ID_ATTRIBUTE,
       ACCESS_SCREEN_TITLE_ID
     );
   });
