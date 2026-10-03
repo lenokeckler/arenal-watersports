@@ -2,6 +2,7 @@
 
 ## Feature
 
+- ACC-01.01.02: Login form logic — the sign-in error copy, sign-in Server Action, error-to-field mapping and view model (US-ACC-01 · AWS-30)
 - ACC-01.01.01: Sign-in service — username and password sign-in against Supabase with the username to auth email mapping and the password maximum length (US-ACC-01 · AWS-30)
 - chore - Access screen shell — the shared frame of the access screens from Stitch: background glow, glass card, Arenal logo and title, and the main landmark under /acceso
 - chore - Access screen base components — FormField shows its error below the field with a dark glass variant, the password toggle uses a Material icon with Spanish labels and a 44 px target, a MaterialIcon component, and Text no longer fixes size and color
