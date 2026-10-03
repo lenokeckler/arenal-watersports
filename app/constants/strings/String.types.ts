@@ -42,6 +42,7 @@ export const STRING = {
   D_LETTER: "D",
   NEW_LINE: "\n",
   DOLLAR: "$",
+  AT: "@",
 } as const;
 
 export type String = (typeof STRING)[keyof typeof STRING];
