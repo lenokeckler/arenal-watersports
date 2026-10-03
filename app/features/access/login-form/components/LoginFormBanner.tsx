@@ -1,7 +1,7 @@
 import { Text } from "@/app/components";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
 import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
-import { ALERT_ROLE } from "../constants/LoginFormAccessibility.constants";
+import { ARIA_ROLE } from "@/app/constants";
 import type { LoginFormBannerProps } from "../models/LoginFormBannerProps.interface";
 import {
   LOGIN_FORM_BANNER_CLASS,
@@ -14,7 +14,7 @@ const LoginFormBanner = ({
 }: LoginFormBannerProps): React.JSX.Element | null =>
   message ? (
     <div
-      role={ALERT_ROLE}
+      role={ARIA_ROLE.ALERT}
       className={LOGIN_FORM_BANNER_CLASS}
     >
       <MaterialIcon
