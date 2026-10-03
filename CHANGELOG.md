@@ -2,6 +2,7 @@
 
 ## Feature
 
+- ACC-01.01.05: Session proxy — a worker without a session who opens any screen outside /access is sent to the login, and the session cookie is refreshed on every request (US-ACC-01 · AWS-30)
 - ACC-01.01.04: Login focus and E2E — after a failed submit the first field in error takes the focus, and a Playwright spec with mobile and desktop captures covers the login screen (US-ACC-01 · AWS-30)
 - ACC-01.01.03: Login screen — the login screen at /access/login with username and password, a password visibility toggle and each error in red next to its field (US-ACC-01 · AWS-30)
 - chore - Feature folder structure — the login moves to app/features/access with its route under app/access at /access/login, the access layout renders the shared access screen, and ESLint blocks imports of a feature from shared folders or from another feature
