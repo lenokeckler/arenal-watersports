@@ -199,4 +199,21 @@ describe("CategoryCard", () => {
 
     expect(onConfirmDeleteClick).toHaveBeenCalledOnce();
   });
+
+  it("disables the confirm row's Cancelar button while the deletion is in flight, so cancelling cannot desync from a delete that still completes", () => {
+    render(
+      <CategoryCard
+        {...DEFAULT_CATEGORY_CARD_VIEW_MODEL}
+        actionState={
+          CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
+        }
+        isActionLoading
+      />
+    );
+    const categoryCardPage = createCategoryCardPage();
+
+    expect(categoryCardPage.isCancelButtonDisabled()).toBe(
+      true
+    );
+  });
 });

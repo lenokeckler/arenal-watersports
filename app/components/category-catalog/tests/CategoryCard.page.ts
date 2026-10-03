@@ -42,6 +42,13 @@ export const createCategoryCardPage = () => {
       CATEGORY_CATALOG_COPY.DELETE_CONFIRM_MESSAGE
     );
 
+  const isCancelButtonDisabled = () =>
+    screen
+      .getByRole(ARIA_ROLE.BUTTON, {
+        name: CATEGORY_CATALOG_COPY.CANCEL_BUTTON,
+      })
+      .hasAttribute("disabled");
+
   const clickCancelButton = async (): Promise<void> => {
     await user.click(
       screen.getByRole(ARIA_ROLE.BUTTON, {
@@ -68,6 +75,7 @@ export const createCategoryCardPage = () => {
     getCancelButton,
     getConfirmDeleteButton,
     getConfirmDeleteMessage,
+    isCancelButtonDisabled,
     clickCancelButton,
     clickConfirmDeleteButton,
   };

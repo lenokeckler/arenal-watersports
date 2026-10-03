@@ -30,6 +30,7 @@ const CategoryCardConfirmDeleteActions = ({
     >
       <Button
         variant={BUTTON.SECONDARY}
+        disabled={isActionLoading}
         onClick={onCancelClick}
         className={
           CATEGORY_CARD_ACTIONS_CONFIRM_BUTTON_CLASS

@@ -12,11 +12,12 @@ import {
 } from "vitest";
 import { STATUS } from "@/app/constants";
 import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
-import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalog.copy";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_LIST_VIEW_STATE } from "../constants/CategoryListViewState.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import { CATEGORY_STATUS } from "../constants/CategoryStatus.constants";
 import { useCategoryListViewModel } from "../hooks/useCategoryListViewModel";
+import type { CategoryListItem } from "../models/CategoryListItem.interface";
 import type { CategoryMutationResult } from "../models/CategoryMutationResult.interface";
 import { DEFAULT_CATEGORY_LIST_ITEM } from "./CategoryListItem.constants";
 
@@ -522,6 +523,147 @@ describe("useCategoryListViewModel", () => {
           result.current.cards[0].isActionLoading
         ).toBe(false);
       });
+    });
+  });
+
+  describe("cross-card interaction", () => {
+    it("moves the confirm-delete state to the newly clicked card and reverts the previous one, without cancelling first", () => {
+      const otherCategory = {
+        ...DEFAULT_CATEGORY_LIST_ITEM,
+        id: "other-category-id",
+      };
+      const { result } = renderHook(() =>
+        useCategoryListViewModel({
+          categories: [
+            DEFAULT_CATEGORY_LIST_ITEM,
+            otherCategory,
+          ],
+          fetchFailed: false,
+        })
+      );
+
+      act(() => {
+        result.current.cards[0].onDeleteClick();
+      });
+
+      expect(result.current.cards[0].actionState).toBe(
+        CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
+      );
+
+      act(() => {
+        result.current.cards[1].onDeleteClick();
+      });
+
+      expect(result.current.cards[0].actionState).toBe(
+        CATEGORY_CARD_ACTION_STATE.DELETE
+      );
+      expect(result.current.cards[1].actionState).toBe(
+        CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
+      );
+    });
+
+    it("leaves the confirming card untouched when a different card's cancel handler is called", () => {
+      const otherCategory = {
+        ...DEFAULT_CATEGORY_LIST_ITEM,
+        id: "other-category-id",
+      };
+      const { result } = renderHook(() =>
+        useCategoryListViewModel({
+          categories: [
+            DEFAULT_CATEGORY_LIST_ITEM,
+            otherCategory,
+          ],
+          fetchFailed: false,
+        })
+      );
+
+      act(() => {
+        result.current.cards[0].onDeleteClick();
+      });
+      act(() => {
+        result.current.cards[1].onCancelClick();
+      });
+
+      expect(result.current.cards[0].actionState).toBe(
+        CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
+      );
+    });
+
+    it("leaves the confirming card untouched while a different card is marked inactive", async () => {
+      mockMarkCategoryInactiveAction.mockResolvedValue({
+        status: CATEGORY_MUTATION_STATUS.SUCCESS,
+      });
+      const categoryWithRecords = {
+        ...DEFAULT_CATEGORY_LIST_ITEM,
+        id: "with-records",
+        hasRecords: true,
+      };
+      const { result } = renderHook(() =>
+        useCategoryListViewModel({
+          categories: [
+            DEFAULT_CATEGORY_LIST_ITEM,
+            categoryWithRecords,
+          ],
+          fetchFailed: false,
+        })
+      );
+
+      act(() => {
+        result.current.cards[0].onDeleteClick();
+      });
+      act(() => {
+        result.current.cards[1].onMarkInactiveClick();
+      });
+
+      expect(result.current.cards[0].actionState).toBe(
+        CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
+      );
+
+      await waitFor(() => {
+        expect(mockRefresh).toHaveBeenCalledOnce();
+      });
+      expect(result.current.cards[0].actionState).toBe(
+        CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
+      );
+    });
+
+    it("drops the confirming card cleanly instead of crashing when a refresh removes it from the list", () => {
+      const otherCategory = {
+        ...DEFAULT_CATEGORY_LIST_ITEM,
+        id: "other-category-id",
+      };
+      const { result, rerender } = renderHook(
+        (props: { categories: CategoryListItem[] }) =>
+          useCategoryListViewModel({
+            categories: props.categories,
+            fetchFailed: false,
+          }),
+        {
+          initialProps: {
+            categories: [
+              DEFAULT_CATEGORY_LIST_ITEM,
+              otherCategory,
+            ],
+          },
+        }
+      );
+
+      act(() => {
+        result.current.cards[0].onDeleteClick();
+      });
+      expect(result.current.cards[0].actionState).toBe(
+        CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
+      );
+
+      rerender({ categories: [otherCategory] });
+
+      expect(result.current.cards).toHaveLength(1);
+      expect(result.current.cards[0].category.id).toBe(
+        otherCategory.id
+      );
+      expect(result.current.cards[0].actionState).toBe(
+        CATEGORY_CARD_ACTION_STATE.DELETE
+      );
     });
   });
 });
