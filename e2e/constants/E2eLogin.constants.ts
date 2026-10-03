@@ -1,5 +1,5 @@
-import { ACCESS_SCREEN_COPY } from "@/app/features/access/access-screen-shell/constants/AccessScreen.constants";
-import { PASSWORD_TOGGLE_LABEL } from "@/app/components/field-factory/constants/PasswordToggle.constants";
+import { ACCESS_SCREEN_COPY } from "@/app/features/access/access-screen-shell/constants/AccessScreenCopy.constants";
+import { PASSWORD_TOGGLE_COPY } from "@/app/components/field-factory/constants/PasswordToggleCopy.constants";
 import { LOGIN_FORM_COPY } from "@/app/features/access/login-form/constants/LoginFormCopy.constants";
 import { SIGN_IN_ERROR_COPY } from "@/app/features/access/login-form/constants/SignInErrorCopy.constants";
 import {
@@ -29,7 +29,7 @@ export const E2E_LOGIN_COPY = {
     ],
 } as const;
 
-export const E2E_LOGIN_TOGGLE_LABEL = PASSWORD_TOGGLE_LABEL;
+export const E2E_LOGIN_TOGGLE_LABEL = PASSWORD_TOGGLE_COPY;
 
 export const E2E_LOGIN_FIELD_ID = SIGN_IN_FIELD;
 
