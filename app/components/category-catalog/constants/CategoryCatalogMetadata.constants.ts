@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CATEGORY_CATALOG_COPY } from "./CategoryCatalog.copy";
+import { CATEGORY_CATALOG_COPY } from "./CategoryCatalogCopy.constants";
 
 export const CATEGORY_LIST_METADATA: Metadata = {
   title: CATEGORY_CATALOG_COPY.LIST_TITLE,
