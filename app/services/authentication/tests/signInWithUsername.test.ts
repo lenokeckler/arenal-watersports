@@ -14,7 +14,7 @@ import {
   DEFAULT_SIGN_IN_CREDENTIALS,
   NORMALIZED_AUTH_EMAIL,
   UNNORMALIZED_USERNAME,
-} from "./signIn.constants";
+} from "@/app/utils/sign-in/tests/signIn.constants";
 
 vi.mock("@/app/services/supabase", () => ({
   createServerSupabaseClient: vi.fn(),
