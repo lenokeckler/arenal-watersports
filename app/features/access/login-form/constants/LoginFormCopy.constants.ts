@@ -1,4 +1,5 @@
 export const LOGIN_FORM_COPY = {
+  METADATA_TITLE: "Ingreso — Arenal Water Sports",
   PASSWORD_LABEL: "Contraseña",
   PASSWORD_PLACEHOLDER: "••••••••",
   SUBMIT: "Entrar al sistema",

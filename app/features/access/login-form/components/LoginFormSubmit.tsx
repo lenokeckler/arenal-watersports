@@ -1,4 +1,4 @@
-import { Button } from "@/app/components";
+import { Button, InlineText } from "@/app/components";
 import { BUTTON } from "@/app/components/button/constants";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
 import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
@@ -18,11 +18,11 @@ const LoginFormSubmit = ({
     aria-disabled={isPending}
     className={resolveLoginFormSubmitClassName(isPending)}
   >
-    <span>
+    <InlineText>
       {isPending
         ? LOGIN_FORM_COPY.SUBMITTING
         : LOGIN_FORM_COPY.SUBMIT}
-    </span>
+    </InlineText>
     <MaterialIcon
       name={
         isPending
