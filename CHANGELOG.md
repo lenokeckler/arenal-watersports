@@ -2,6 +2,7 @@
 
 ## Feature
 
+- chore - Feature folder structure — the login moves to app/features/access with its route under app/access at /access/login, the access layout renders the shared access screen, and ESLint blocks imports of a feature from shared folders or from another feature
 - chore - Route type helpers — pages and layouts are typed with the PageProps and LayoutProps types Next.js generates from the routes, and typecheck generates them first so they exist in CI
 - ACC-01.01.02: Login form logic — the sign-in error copy, sign-in Server Action, error-to-field mapping and view model (US-ACC-01 · AWS-30)
 - ACC-01.01.01: Sign-in service — username and password sign-in against Supabase with the username to auth email mapping and the password maximum length (US-ACC-01 · AWS-30)
