@@ -7,8 +7,16 @@ const fetchCategoryListViewProps =
     try {
       const categories = await listCategories();
       return { categories, fetchFailed: false };
-    } catch {
-      return { categories: [], fetchFailed: true };
+    } catch (error) {
+      const fetchError = new Error(
+        "Failed to load the category list",
+        { cause: error }
+      );
+      return {
+        categories: [],
+        fetchError,
+        fetchFailed: true,
+      };
     }
   };
 
