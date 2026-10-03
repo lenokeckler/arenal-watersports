@@ -1,4 +1,4 @@
-import { CATEGORY_CATALOG_COPY } from "./CategoryCatalog.copy";
+import { CATEGORY_CATALOG_COPY } from "./CategoryCatalogCopy.constants";
 import { CATEGORY_TRACKING_MODE } from "./CategoryTrackingMode.constants";
 
 export const CATEGORY_TRACKING_MODE_OPTIONS: Array<{
