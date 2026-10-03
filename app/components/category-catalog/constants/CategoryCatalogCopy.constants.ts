@@ -32,6 +32,8 @@ export const CATEGORY_CATALOG_COPY = {
     "Categoría marcada como inactiva.",
   NAME_FIELD_LABEL: "Nombre",
   NAME_FIELD_PLACEHOLDER: "Ej. Kayak doble",
+  NAME_FIELD_REQUIRED_ERROR:
+    "Escriba el nombre de la categoría.",
   RETRY_BUTTON: "Reintentar",
   STATUS_PILL_INACTIVE: "INACTIVA",
   SUBMIT_BUTTON: "Guardar categoría",
@@ -41,4 +43,6 @@ export const CATEGORY_CATALOG_COPY = {
   TRACKING_MODE_FIELD_PLACEHOLDER: "Selecciona un modo",
   TRACKING_MODE_MICRO_LABEL_BY_QUANTITY: "POR CANTIDAD",
   TRACKING_MODE_MICRO_LABEL_BY_UNIT: "POR UNIDAD",
+  TRACKING_MODE_REQUIRED_ERROR:
+    "Seleccione un modo de conteo.",
 } as const;
