@@ -1,16 +1,11 @@
 import { SIGN_IN_ERROR_CODE } from "@/app/constants";
-import { createSignInError } from "@/app/services/authentication/createSignInError";
+import { createSignInError } from "@/app/utils/sign-in/createSignInError";
 import type { SignInCredentials } from "@/app/services/authentication";
-
-export const DEFAULT_SUBMIT_CREDENTIALS: SignInCredentials =
-  {
-    password: "Local-test-password1!",
-    username: "admin",
-  };
+import { DEFAULT_SIGN_IN_CREDENTIALS } from "@/app/utils/sign-in/tests/signIn.constants";
 
 export const WRONG_PASSWORD_CREDENTIALS: SignInCredentials =
   {
-    ...DEFAULT_SUBMIT_CREDENTIALS,
+    ...DEFAULT_SIGN_IN_CREDENTIALS,
     password: "Wrong-password1!",
   };
 

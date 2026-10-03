@@ -8,9 +8,9 @@ import {
 import { redirect } from "next/navigation";
 import { PATHS } from "@/app/constants";
 import { signInWithUsername } from "@/app/services/authentication";
+import { DEFAULT_SIGN_IN_CREDENTIALS } from "@/app/utils/sign-in/tests/signIn.constants";
 import { submitSignIn } from "../actions/submitSignIn";
 import {
-  DEFAULT_SUBMIT_CREDENTIALS,
   INVALID_CREDENTIALS_ERROR,
   REDIRECT_SIGNAL_MESSAGE,
   SERVICE_FAILURE_MESSAGE,
@@ -40,11 +40,11 @@ describe("submitSignIn", () => {
     });
 
     await expect(
-      submitSignIn(DEFAULT_SUBMIT_CREDENTIALS)
+      submitSignIn(DEFAULT_SIGN_IN_CREDENTIALS)
     ).rejects.toThrow(REDIRECT_SIGNAL_MESSAGE);
 
     expect(signInWithUsername).toHaveBeenCalledWith(
-      DEFAULT_SUBMIT_CREDENTIALS
+      DEFAULT_SIGN_IN_CREDENTIALS
     );
     expect(redirect).toHaveBeenCalledWith(PATHS.HOME);
   });
@@ -68,7 +68,7 @@ describe("submitSignIn", () => {
     );
 
     await expect(
-      submitSignIn(DEFAULT_SUBMIT_CREDENTIALS)
+      submitSignIn(DEFAULT_SIGN_IN_CREDENTIALS)
     ).resolves.toEqual(UNKNOWN_ERROR);
 
     expect(redirect).not.toHaveBeenCalled();

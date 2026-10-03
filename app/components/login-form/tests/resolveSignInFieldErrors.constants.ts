@@ -2,7 +2,7 @@ import {
   SIGN_IN_ERROR_CODE,
   SIGN_IN_FIELD,
 } from "@/app/constants";
-import type { FieldErrorCase } from "../models/FieldErrorCase.interface";
+import type { FieldErrorCase } from "./FieldErrorCase.interface";
 
 export const FIELD_ERROR_CASES: FieldErrorCase[] = [
   {

@@ -1,5 +1,5 @@
-import type { SignInCredentials } from "@/app/services/authentication/models/SignInCredentials.interface";
-import type { SignInError } from "@/app/services/authentication/models/SignInError.interface";
+import type { SignInCredentials } from "@/app/utils/sign-in/models/SignInCredentials.interface";
+import type { SignInError } from "@/app/utils/sign-in/models/SignInError.interface";
 import type { NullableRef } from "@/app/types";
 
 export interface SignInSubmission {
