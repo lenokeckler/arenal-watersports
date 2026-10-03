@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { STATUS } from "@/app/constants";
 import type { Nullable } from "@/app/types";
 import { useToast } from "@/app/components/toast/utils/useToast";
-import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalog.copy";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import type { CategoryCardActionsViewModel } from "../models/CategoryCardActionsViewModel.interface";
 import { deleteCategoryAction } from "../services/deleteCategoryAction";

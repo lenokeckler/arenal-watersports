@@ -1,7 +1,7 @@
 import Button from "@/app/components/button/Button";
 import Text from "@/app/components/text/Text";
 import { BUTTON } from "@/app/constants";
-import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalog.copy";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import type { CategoryCardConfirmDeleteActionsProps } from "../models/CategoryCardConfirmDeleteActionsProps.interface";
 import {
   CATEGORY_CARD_ACTIONS_CONFIRM_BUTTON_CLASS,

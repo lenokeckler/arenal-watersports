@@ -6,7 +6,7 @@ import {
   createServiceRoleSupabaseClient,
 } from "@/app/services/supabase";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
-import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalog.copy";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import type { CategoryMutationResult } from "../models/CategoryMutationResult.interface";
 import {
