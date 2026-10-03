@@ -14,9 +14,9 @@ import { submitSignIn } from "../actions/submitSignIn";
 import { LOGIN_FORM_COPY } from "../constants/LoginFormCopy.constants";
 import { SIGN_IN_ERROR_COPY } from "../constants/SignInErrorCopy.constants";
 import LoginFormView from "../LoginFormView";
-import { VALID_LOGIN_CREDENTIALS } from "./useLoginFormViewModel.constants";
 import { createLoginFormViewPage } from "./LoginFormView.page";
-import { PASSWORD_TOGGLE_LABEL } from "@/app/components/field-factory/constants/PasswordToggle.constants";
+import { PASSWORD_TOGGLE_COPY } from "@/app/components/field-factory/constants/PasswordToggleCopy.constants";
+import { DEFAULT_SIGN_IN_CREDENTIALS } from "@/app/utils/sign-in/tests/signIn.constants";
 import {
   ARIA_DESCRIBEDBY_ATTRIBUTE,
   ARIA_INVALID_ATTRIBUTE,
@@ -83,7 +83,7 @@ describe("LoginFormView", () => {
     );
     const page = renderView();
 
-    await page.fillCredentials(VALID_LOGIN_CREDENTIALS);
+    await page.fillCredentials(DEFAULT_SIGN_IN_CREDENTIALS);
     await page.submit();
 
     expect(
@@ -101,7 +101,7 @@ describe("LoginFormView", () => {
     );
     const page = renderView();
 
-    await page.fillCredentials(VALID_LOGIN_CREDENTIALS);
+    await page.fillCredentials(DEFAULT_SIGN_IN_CREDENTIALS);
     await page.submit();
 
     expect(await page.findBanner()).toHaveTextContent(
@@ -117,14 +117,14 @@ describe("LoginFormView", () => {
       INPUT_TYPES.PASSWORD
     );
 
-    await page.clickToggle(PASSWORD_TOGGLE_LABEL.SHOW);
+    await page.clickToggle(PASSWORD_TOGGLE_COPY.SHOW);
 
     expect(page.getPasswordInput()).toHaveAttribute(
       TYPE_ATTRIBUTE,
       INPUT_TYPES.TEXT
     );
     expect(
-      page.getToggle(PASSWORD_TOGGLE_LABEL.HIDE)
+      page.getToggle(PASSWORD_TOGGLE_COPY.HIDE)
     ).toBeInTheDocument();
   });
 
@@ -134,7 +134,7 @@ describe("LoginFormView", () => {
     );
     const page = renderView();
 
-    await page.fillCredentials(VALID_LOGIN_CREDENTIALS);
+    await page.fillCredentials(DEFAULT_SIGN_IN_CREDENTIALS);
     await page.submit();
 
     expect(

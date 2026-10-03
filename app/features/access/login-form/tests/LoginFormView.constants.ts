@@ -3,7 +3,7 @@ import {
   SIGN_IN_FIELD,
 } from "@/app/constants";
 import { FIELD_ERROR_ID_SUFFIX } from "@/app/components/field-factory/constants/FieldFactory.constants";
-import { createSignInError } from "@/app/services/authentication/createSignInError";
+import { createSignInError } from "@/app/utils/sign-in/createSignInError";
 
 export const TYPE_ATTRIBUTE = "type";
 export const ARIA_INVALID_ATTRIBUTE = "aria-invalid";

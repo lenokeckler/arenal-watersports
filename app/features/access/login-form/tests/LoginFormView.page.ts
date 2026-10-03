@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
 import { LOGIN_FORM_COPY } from "../constants/LoginFormCopy.constants";
 import { createLoginFormControlsPage } from "./LoginFormControls.page";
-import type { SignInCredentials } from "@/app/services/authentication/models/SignInCredentials.interface";
+import type { SignInCredentials } from "@/app/utils/sign-in/models/SignInCredentials.interface";
 
 export const createLoginFormViewPage = () => {
   const user = userEvent.setup();
