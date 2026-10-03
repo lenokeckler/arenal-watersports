@@ -195,11 +195,11 @@ the check on every PR.
 
 ## Branching and pull requests
 
-The whole workflow — GitFlow, branch and commit names, PR title, body, labels and reviewers, the CHANGELOG line, the 1000-line rule, stacked PRs and merging — lives in [`pull-request-workflow`](.agents/skills/pull-request-workflow/SKILL.md). The summary below never overrides it.
+The whole workflow — GitFlow, branch and commit names, PR title, body, labels and reviewers, the changelog fragment, the 1000-line rule, stacked PRs and merging — lives in [`pull-request-workflow`](.agents/skills/pull-request-workflow/SKILL.md). The summary below never overrides it.
 
 - `main` is production and `develop` is integration; both are protected, merges are squash-only, and a merged branch is deleted.
 - One story is one branch and one PR. Working branches come from `develop` and target `develop`, named after the epic and the story: `feat/acc-01/us-01-login-form`. Work outside any story goes in `chore/<slug>`. Only `release/*` and `hotfix` target `main`. Never rename a branch with an open PR.
-- Commits are one short English sentence in the imperative, with no prefix: `Add username and password login form`. The first commit, `Start login form`, carries the PR's CHANGELOG line.
+- Commits are one short English sentence in the imperative, with no prefix: `Add username and password login form`. The first commit, `Start login form`, adds the PR's changelog fragment: one line in `changelog/unreleased/feature/<branch-with-dashes>.md`. `CHANGELOG.md` changes only in a `release/*` PR, where `npm run changelog` collects the fragments.
 - Draft PR first, titled with the epic and story number, `ACC-01.01: Login form`, with the five headings of `.github/pull_request_template.md`, the whole team minus the author as reviewers, and `In Progress` + `Enhancement`.
 - Under 1000 changed lines per PR, measured before adding work; stack only on a real code dependency.
 - A teammate approves a PR with an `APPROVED` review and the `QA Approved` label; then the author merges it into `develop` and fixes whatever it breaks. AI agents never merge anything.
@@ -223,6 +223,8 @@ npm run story -- --list         # Index every module, epic and story
 npm run stories:jira -- --dry-run  # List what the Jira copy of the stories is missing (needs JIRA_* env)
 npm run agents:sync            # Regenerate .github/agents/ and .codex/agents/ from .claude/agents/
 npm run agents:check           # Fail if the generated agent files have drifted
+npm run changelog:check -- origin/develop  # This PR adds exactly one changelog fragment (CI runs it)
+npm run changelog              # Release only: move every fragment into CHANGELOG.md
 ```
 
 Before opening a PR for review, `npm run format`, `npm run lint`, `npm run typecheck`, `npm run test:run` and `npm run build` must all succeed — CI runs the same set (with `prettier --check`) on every PR — plus `npm run test:e2e` for any story with UI.
