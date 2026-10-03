@@ -1,6 +1,6 @@
 const AccessLayout = ({
   children,
-}: LayoutProps<"/acceso">): React.JSX.Element => (
+}: LayoutProps<"/access">): React.JSX.Element => (
   <main>{children}</main>
 );
 

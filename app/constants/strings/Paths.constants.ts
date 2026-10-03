@@ -1,6 +1,6 @@
 export const PATHS = {
   HOME: "/",
   ACCESS: {
-    LOGIN: "/acceso/ingreso",
+    LOGIN: "/access/login",
   },
 } as const;
