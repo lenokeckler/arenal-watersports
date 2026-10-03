@@ -132,15 +132,15 @@ UI).
 
 ### The whole loop runs, every time
 
-| Stage                             | When it is mandatory for a story in this repository                                         |
-| --------------------------------- | ------------------------------------------------------------------------------------------- |
-| `design-director`                 | Any story that renders or changes UI                                                        |
-| `code-architect`                  | Any story touching more than one module, introducing folders, or touching Supabase access   |
-| `implementer`                     | Always — it is the only role allowed to write the story's code                              |
-| `standards-auditor` ‖ `qa-tester` | **Always.** Run in parallel                                                                 |
-| Fix loop                          | Until zero critical and zero high findings, capped at 3 rounds                              |
-| `qa-tester` last                  | It closes every round, including the final one                                              |
-| Playwright E2E + screenshots      | Every story that renders or changes UI — `.agents/skills/pull-request-workflow/SKILL.md` §7 |
+| Stage                             | When it is mandatory for a story in this repository                                                                  |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `design-director`                 | Any story that renders or changes UI — handed the story's Stitch screen as the visual reference (`styles-standards`) |
+| `code-architect`                  | Any story touching more than one module, introducing folders, or touching Supabase access                            |
+| `implementer`                     | Always — it is the only role allowed to write the story's code                                                       |
+| `standards-auditor` ‖ `qa-tester` | **Always.** Run in parallel                                                                                          |
+| Fix loop                          | Until zero critical and zero high findings, capped at 3 rounds                                                       |
+| `qa-tester` last                  | It closes every round, including the final one                                                                       |
+| Playwright E2E + screenshots      | Every story that renders or changes UI — `.agents/skills/pull-request-workflow/SKILL.md` §7                          |
 
 - **Never skip the review round.** A story with passing checks and no audit is
   not done. Green `lint` + `build` is not a substitute for `standards-auditor`.
