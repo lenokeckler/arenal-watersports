@@ -2,7 +2,7 @@
 
 ## Feature
 
-- ACC-01.01.02: Login form logic — the login form's Spanish copy, sign-in Server Action, error-to-field mapping and view model (US-ACC-01 · AWS-30)
+- ACC-01.01.02: Login form logic — the sign-in error copy, sign-in Server Action, error-to-field mapping and view model (US-ACC-01 · AWS-30)
 - ACC-01.01.01: Sign-in service — username and password sign-in against Supabase with the username to auth email mapping and the password maximum length (US-ACC-01 · AWS-30)
 - chore - UI copy and Storybook rules — user-facing copy addresses the worker as usted, the project does not use Storybook, and the Stitch screens are the reference for the app's palette and style, not a blueprint
 - chore - Feature folder rules — screens live in app/features by story module, shared bases stay in app/components, routes sit under app/access and app/(system), and every folder and URL segment is English
