@@ -10,4 +10,4 @@ export const EXPECTED_DESCRIBEDBY = "username-error";
 export const TEXTBOX_ROLE = "textbox";
 export const BUTTON_ROLE = "button";
 export const TYPE_ATTRIBUTE = "type";
-export const PASSWORD_INPUT_PADDING_CLASS = "pr-12";
+export const INPUT_SELECTOR = "input";
