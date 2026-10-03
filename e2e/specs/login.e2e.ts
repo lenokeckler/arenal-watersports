@@ -4,7 +4,6 @@ import {
   E2E_LOGIN_ACCOUNT,
   E2E_LOGIN_ATTRIBUTE,
   E2E_LOGIN_COPY,
-  E2E_LOGIN_ERROR_ID_SUFFIX,
   E2E_LOGIN_FIELD_ID,
   E2E_LOGIN_TOGGLE_LABEL,
   E2E_LOGIN_WRONG_PASSWORD,
@@ -46,7 +45,7 @@ test.describe("Login", () => {
       loginPage.getUsernameInput()
     ).toHaveAttribute(
       E2E_LOGIN_ATTRIBUTE.DESCRIBED_BY,
-      `${E2E_LOGIN_FIELD_ID.USERNAME}${E2E_LOGIN_ERROR_ID_SUFFIX}`
+      loginPage.getFieldErrorId(E2E_LOGIN_FIELD_ID.USERNAME)
     );
     await expect(
       loginPage.getUsernameInput()

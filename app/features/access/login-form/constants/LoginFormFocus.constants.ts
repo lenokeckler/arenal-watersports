@@ -1,4 +1,4 @@
-import { SIGN_IN_FIELD } from "@/app/constants/access/SignInError.constants";
+import { SIGN_IN_FIELD } from "@/app/constants";
 import type { LoginFocusField } from "../models/LoginFocusField.type";
 
 export const LOGIN_FOCUS_ORDER: readonly LoginFocusField[] =

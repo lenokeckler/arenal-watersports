@@ -29,7 +29,10 @@ export const useLoginFormViewModel =
       submission.serverError ?? validationError
     );
 
-    const fieldRefs = useLoginFormFocus(fieldErrors);
+    const fieldRefs = useLoginFormFocus(
+      fieldErrors,
+      submission.submitAttempt
+    );
 
     return {
       fieldErrors,

@@ -5,7 +5,7 @@ import { SIGN_IN_ERROR_COPY } from "@/app/features/access/login-form/constants/S
 import {
   SIGN_IN_ERROR_CODE,
   SIGN_IN_FIELD,
-} from "@/app/constants/access/SignInError.constants";
+} from "@/app/constants";
 
 export const E2E_LOGIN_ACCOUNT = {
   PASSWORD: "Arenal.2026",
@@ -32,8 +32,6 @@ export const E2E_LOGIN_COPY = {
 export const E2E_LOGIN_TOGGLE_LABEL = PASSWORD_TOGGLE_LABEL;
 
 export const E2E_LOGIN_FIELD_ID = SIGN_IN_FIELD;
-
-export const E2E_LOGIN_ERROR_ID_SUFFIX = "-error";
 
 export const E2E_LOGIN_ATTRIBUTE = {
   DESCRIBED_BY: "aria-describedby",

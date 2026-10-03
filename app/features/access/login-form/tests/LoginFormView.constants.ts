@@ -21,3 +21,4 @@ export const NETWORK_ERROR = createSignInError(
 );
 
 export const EXTRA_USERNAME_TEXT = "x";
+export const MULTI_CHARACTER_USERNAME = "admin";

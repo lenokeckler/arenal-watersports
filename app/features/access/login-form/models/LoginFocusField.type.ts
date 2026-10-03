@@ -1,7 +1,7 @@
 import type {
   SIGN_IN_FIELD,
   SignInField,
-} from "@/app/constants/access/SignInError.constants";
+} from "@/app/constants";
 
 export type LoginFocusField = Exclude<
   SignInField,

@@ -11,6 +11,7 @@ import type { SignInSubmission } from "../models/SignInSubmission.interface";
 
 export const useSignInSubmission = (): SignInSubmission => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [submitAttempt, setSubmitAttempt] = useState(0);
   const [serverError, setServerError] =
     useState<NullableRef<SignInError>>(null);
   const [isPending, startTransition] = useTransition();
@@ -39,6 +40,7 @@ export const useSignInSubmission = (): SignInSubmission => {
     }
 
     setHasSubmitted(true);
+    setSubmitAttempt((attempt) => attempt + 1);
     clearServerError();
     const submissionId = latestSubmissionId.current;
 
@@ -50,6 +52,7 @@ export const useSignInSubmission = (): SignInSubmission => {
       const result = await requestSignIn(credentials);
       if (submissionId === latestSubmissionId.current) {
         setServerError(result);
+        setSubmitAttempt((attempt) => attempt + 1);
       }
     });
   };
@@ -60,5 +63,6 @@ export const useSignInSubmission = (): SignInSubmission => {
     isPending,
     serverError,
     submit,
+    submitAttempt,
   };
 };

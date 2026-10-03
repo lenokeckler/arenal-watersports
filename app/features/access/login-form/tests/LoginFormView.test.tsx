@@ -23,6 +23,7 @@ import {
   ARIA_INVALID_VALUE,
   EXTRA_USERNAME_TEXT,
   INVALID_CREDENTIALS_ERROR,
+  MULTI_CHARACTER_USERNAME,
   NETWORK_ERROR,
   PASSWORD_ERROR_ID,
   TYPE_ATTRIBUTE,
@@ -104,6 +105,22 @@ describe("LoginFormView", () => {
     await waitFor(() =>
       expect(page.getUsernameInput()).toHaveFocus()
     );
+  });
+
+  it("keeps the focus on the username while typing after an empty submit", async () => {
+    const page = renderView();
+
+    await page.submit();
+    await waitFor(() =>
+      expect(page.getUsernameInput()).toHaveFocus()
+    );
+    await page.typeUsername(MULTI_CHARACTER_USERNAME);
+
+    expect(page.getUsernameInput()).toHaveFocus();
+    expect(page.getUsernameInput()).toHaveValue(
+      MULTI_CHARACTER_USERNAME
+    );
+    expect(page.getPasswordInput()).not.toHaveFocus();
   });
 
   it("focuses the password on invalid credentials and keeps focus while typing", async () => {
