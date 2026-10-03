@@ -33,9 +33,7 @@ export const metadata: Metadata = {
 
 const RootLayout = ({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>): React.JSX.Element => (
+}: LayoutProps<"/">): React.JSX.Element => (
   <html
     lang={DOCUMENT_LANGUAGE}
     suppressHydrationWarning

@@ -1,8 +1,6 @@
-import type { AccessLayoutProps } from "./models/AccessLayoutProps.interface";
-
 const AccessLayout = ({
   children,
-}: AccessLayoutProps): React.JSX.Element => (
+}: LayoutProps<"/acceso">): React.JSX.Element => (
   <main>{children}</main>
 );
 
