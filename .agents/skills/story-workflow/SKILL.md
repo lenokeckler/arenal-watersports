@@ -9,7 +9,7 @@ This is the step-by-step sequence for building one of this project's 114 user
 stories. It never duplicates a rule that already has a home:
 
 - Everything about branches, commits, PR title/body/labels/reviewers, the
-  CHANGELOG line, the 1000-line rule and stacked PRs lives in
+  changelog fragment, the 1000-line rule and stacked PRs lives in
   `.agents/skills/pull-request-workflow/SKILL.md`. This skill agrees with it
   everywhere and points to it instead of repeating it.
 - Everything about running the actual implementation through the agent
