@@ -23,6 +23,7 @@ import {
   ARIA_INVALID_VALUE,
   EXTRA_USERNAME_TEXT,
   INVALID_CREDENTIALS_ERROR,
+  KEYBOARD_TEXT,
   MULTI_CHARACTER_USERNAME,
   NETWORK_ERROR,
   PASSWORD_ERROR_ID,
@@ -139,6 +140,80 @@ describe("LoginFormView", () => {
     await page.typeUsername(EXTRA_USERNAME_TEXT);
 
     expect(page.getUsernameInput()).toHaveFocus();
+  });
+
+  it("keeps the focus on the password while typing after invalid credentials", async () => {
+    vi.mocked(submitSignIn).mockResolvedValue(
+      INVALID_CREDENTIALS_ERROR
+    );
+    const page = renderView();
+
+    await page.fillCredentials(VALID_LOGIN_CREDENTIALS);
+    await page.submit();
+    await waitFor(() =>
+      expect(page.getPasswordInput()).toHaveFocus()
+    );
+    await page.typeWithoutClicking(KEYBOARD_TEXT);
+
+    expect(page.getPasswordInput()).toHaveFocus();
+    expect(page.getUsernameInput()).not.toHaveFocus();
+  });
+
+  it("focuses the password again when a second submit returns the same error", async () => {
+    vi.mocked(submitSignIn).mockResolvedValue(
+      INVALID_CREDENTIALS_ERROR
+    );
+    const page = renderView();
+
+    await page.fillCredentials(VALID_LOGIN_CREDENTIALS);
+    await page.submit();
+    await waitFor(() =>
+      expect(page.getPasswordInput()).toHaveFocus()
+    );
+    await page.typeUsername(EXTRA_USERNAME_TEXT);
+    await page.submit();
+
+    await waitFor(() =>
+      expect(page.getPasswordInput()).toHaveFocus()
+    );
+    expect(submitSignIn).toHaveBeenCalledTimes(2);
+  });
+
+  it("does not move the focus when the result is stale", async () => {
+    let resolveSignIn: (
+      error: typeof INVALID_CREDENTIALS_ERROR
+    ) => void = () => undefined;
+    vi.mocked(submitSignIn).mockReturnValue(
+      new Promise((resolve) => {
+        resolveSignIn = resolve;
+      })
+    );
+    const page = renderView();
+
+    await page.fillCredentials(VALID_LOGIN_CREDENTIALS);
+    await page.submit();
+    await page.typeUsername(EXTRA_USERNAME_TEXT);
+    resolveSignIn(INVALID_CREDENTIALS_ERROR);
+
+    await waitFor(() =>
+      expect(page.getIdleSubmit()).toBeInTheDocument()
+    );
+    expect(page.getUsernameInput()).toHaveFocus();
+    expect(page.getPasswordInput()).not.toHaveFocus();
+  });
+
+  it("does not move the focus to a field for a network error", async () => {
+    vi.mocked(submitSignIn).mockResolvedValue(
+      NETWORK_ERROR
+    );
+    const page = renderView();
+
+    await page.fillCredentials(VALID_LOGIN_CREDENTIALS);
+    await page.submit();
+    await page.findBanner();
+
+    expect(page.getUsernameInput()).not.toHaveFocus();
+    expect(page.getPasswordInput()).not.toHaveFocus();
   });
 
   it("announces a network error in the banner", async () => {

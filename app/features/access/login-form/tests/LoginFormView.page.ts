@@ -31,6 +31,9 @@ export const createLoginFormViewPage = () => {
   const typeUsername = async (text: string) => {
     await user.type(getUsernameInput(), text);
   };
+  const typeWithoutClicking = async (text: string) => {
+    await user.keyboard(text);
+  };
   const submit = async () => {
     await user.click(getIdleSubmit());
   };
@@ -50,5 +53,6 @@ export const createLoginFormViewPage = () => {
     getUsernameInput,
     submit,
     typeUsername,
+    typeWithoutClicking,
   };
 };
