@@ -2,8 +2,6 @@
 
 ## Feature
 
-- ACC-01.01.04: Login focus and E2E — after a failed submit the first field in error takes the focus, and a Playwright spec with mobile and desktop captures covers the login screen (US-ACC-01 · AWS-30)
-- ACC-01.01.03: Login screen — the login screen at /access/login with username and password, a password visibility toggle and each error in red next to its field (US-ACC-01 · AWS-30)
 - chore - Feature folder structure — the login moves to app/features/access with its route under app/access at /access/login, the access layout renders the shared access screen, and ESLint blocks imports of a feature from shared folders or from another feature
 - chore - Route type helpers — pages and layouts are typed with the PageProps and LayoutProps types Next.js generates from the routes, and typecheck generates them first so they exist in CI
 - ACC-01.01.02: Login form logic — the sign-in error copy, sign-in Server Action, error-to-field mapping and view model (US-ACC-01 · AWS-30)
