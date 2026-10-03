@@ -1,4 +1,4 @@
-import type { SignInCredentials } from "@/app/services/authentication/models/SignInCredentials.interface";
+import type { SignInCredentials } from "@/app/utils/sign-in/models/SignInCredentials.interface";
 import type { LoginFormFieldChangeHandler } from "./LoginFormFieldChangeHandler.type";
 
 export interface LoginFormValues {

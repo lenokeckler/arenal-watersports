@@ -8,7 +8,7 @@ import {
   type SignInError,
   type SignInResult,
 } from "@/app/services/authentication";
-import { createSignInError } from "@/app/services/authentication/createSignInError";
+import { createSignInError } from "@/app/utils/sign-in/createSignInError";
 
 const runSignIn = async (
   credentials: SignInCredentials

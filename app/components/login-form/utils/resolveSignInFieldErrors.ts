@@ -1,4 +1,4 @@
-import type { SignInError } from "@/app/services/authentication/models/SignInError.interface";
+import type { SignInError } from "@/app/utils/sign-in/models/SignInError.interface";
 import type { NullableRef } from "@/app/types";
 import { NO_SIGN_IN_FIELD_ERRORS } from "../constants/LoginFormDefaults.constants";
 import { SIGN_IN_ERROR_COPY } from "../constants/SignInErrorCopy.constants";

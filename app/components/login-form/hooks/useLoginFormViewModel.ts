@@ -1,4 +1,4 @@
-import { validateSignInCredentials } from "@/app/services/authentication/validateSignInCredentials";
+import { validateSignInCredentials } from "@/app/utils/sign-in/validateSignInCredentials";
 import type { LoginFormSubmitHandler } from "../models/LoginFormSubmitHandler.type";
 import type { LoginFormViewModel } from "../models/LoginFormViewModel.interface";
 import { resolveSignInFieldErrors } from "../utils/resolveSignInFieldErrors";

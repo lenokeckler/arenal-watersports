@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SIGN_IN_FIELD } from "@/app/constants/access/SignInError.constants";
-import type { SignInCredentials } from "@/app/services/authentication/models/SignInCredentials.interface";
+import type { SignInCredentials } from "@/app/utils/sign-in/models/SignInCredentials.interface";
 import { EMPTY_SIGN_IN_CREDENTIALS } from "../constants/LoginFormDefaults.constants";
 import type { LoginFormFieldChangeHandler } from "../models/LoginFormFieldChangeHandler.type";
 import type { LoginFormValues } from "../models/LoginFormValues.interface";
