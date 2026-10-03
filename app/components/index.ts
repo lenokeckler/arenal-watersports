@@ -2,6 +2,7 @@ export { default as Spinner } from "./spinner/Spinner";
 export { default as FieldFactory } from "./field-factory/FieldFactory";
 export { default as UnorderedList } from "./list/UnorderedList";
 export { default as Icon } from "./icons/icon/Icon";
+export { default as MaterialIcon } from "./icons/material-icon/MaterialIcon";
 export { default as Logo } from "./logo/Logo";
 export { default as Image } from "./image/Image";
 export { default as Link } from "./link/Link";
