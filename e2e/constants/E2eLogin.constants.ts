@@ -39,3 +39,11 @@ export const E2E_LOGIN_ATTRIBUTE = {
   DESCRIBED_BY: "aria-describedby",
   TYPE: "type",
 } as const;
+
+export const E2E_LOGIN_SCREENSHOT_BASENAME = {
+  EMPTY_FORM: "01-login-empty-form",
+  FIELD_ERRORS: "02-login-field-errors",
+  WRONG_CREDENTIALS: "03-login-wrong-credentials",
+  PASSWORD_VISIBLE: "04-login-password-visible",
+  SIGNED_IN: "05-login-signed-in",
+} as const;
