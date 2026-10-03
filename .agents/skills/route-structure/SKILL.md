@@ -1,6 +1,6 @@
 ---
 name: route-structure
-description: Where a screen's route lives — app/(system)/<area>/<resource> for every signed-in screen, pre-login screens under app/access/, English URL segments, route folders holding only page.tsx and layout.tsx, access checked by proxy.ts, server functions and Row Level Security (never by a layout), the page as a thin shell over a feature, and PATHS as the only source of URLs. Use before creating or moving any page.tsx, layout.tsx or route handler.
+description: Where a screen's route lives — app/(system)/<area>/<resource> for every signed-in screen, pre-login screens under app/access/, English URL segments, route folders holding only page.tsx and layout.tsx typed with Next's PageProps and LayoutProps, access checked by proxy.ts, server functions and Row Level Security (never by a layout), the page as a thin shell over a feature, and PATHS as the only source of URLs. Use before creating or moving any page.tsx, layout.tsx or route handler.
 ---
 
 # Route structure
@@ -80,9 +80,10 @@ Every segment is English, kebab-case. A second folder for the same area in anoth
 ### Route folders hold only `page.tsx` and `layout.tsx`
 
 A route folder holds `page.tsx`, `layout.tsx`, and the Next.js route files when a screen needs
-them (`loading.tsx`, `error.tsx`, `not-found.tsx`, `route.ts`), plus the `models/` those files
-type themselves with. Components, hooks, styles, constants, specs and tests live in the screen's
-feature folder (§3), so the route tree reads as an index of screens.
+them (`loading.tsx`, `error.tsx`, `not-found.tsx`, `route.ts`). Components, hooks, styles,
+constants, models, specs and tests live in the screen's feature folder (§3), so the route tree
+reads as an index of screens. The props of a page or a layout are typed with Next's route types
+(§3), so a route folder never needs a `models/` of its own.
 
 ```
 ❌ app/(system)/reservations/charges/ChargeSummary.tsx       belongs to the feature
@@ -127,7 +128,7 @@ export const metadata: Metadata =
 
 const ReservationChargesPage = async ({
   params,
-}: ReservationChargesPageProps) => {
+}: PageProps<"/reservations/charges/[reservationId]">) => {
   const { reservationId } = await params;
   return (
     <ReservationCharges reservationId={reservationId} />
@@ -145,6 +146,31 @@ const Page = () => {
   return <div className="…">{items.map(…)}</div>;
 };
 ```
+
+### Pages and layouts are typed with Next's route types
+
+`PageProps<"/route">` and `LayoutProps<"/route">` are global types Next.js generates from the
+folders under `app/`. They know each route's params, and TypeScript fails when the route string
+does not exist, so a moved folder cannot leave a stale type behind. A page or a layout never
+declares its own props interface.
+
+```tsx
+// ✅ app/access/layout.tsx
+const AccessLayout = ({
+  children,
+}: LayoutProps<"/access">): React.JSX.Element => (
+  <main>{children}</main>
+);
+
+// ❌ a hand-written props type for a route file
+interface AccessLayoutProps {
+  children: ReactNode;
+}
+```
+
+The types are written to `.next/types/` by `next typegen`, which `npm run typecheck` runs first,
+so they exist on a fresh clone and in CI. A test that renders a layout passes its `params`
+through a test constant typed `LayoutProps<"/route">["params"]`.
 
 The screen itself lives in `app/features/<module>/<feature>/` (`component-architecture`): a server entry
 component that reads the first data through `services/`, a client view with no hooks of its own
@@ -189,4 +215,5 @@ one joins them, the third finds URL literals that should be `PATHS`.
 - [ ] The route folder holds only `page.tsx`, `layout.tsx` and Next.js route files; the screen lives in `app/features/` (§1, §3)
 - [ ] Access checked by `proxy.ts`, by the server functions in `app/services/` and by Row Level Security — never by a layout; allowed and refused accounts tested (§2)
 - [ ] `page.tsx` only exports metadata, reads params and renders one view
+- [ ] Pages and layouts typed with `PageProps<"/route">` / `LayoutProps<"/route">`, never a props interface of their own (§3)
 - [ ] The URL is a `PATHS` entry; no literal URL in code or tests

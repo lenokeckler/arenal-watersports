@@ -35,6 +35,8 @@ export type ChargeFormFieldChangeHandler = (
 ) => void;
 ```
 
+- The props of a `page.tsx` or a `layout.tsx` are not declared at all: they use the route types
+  Next.js generates, `PageProps<"/route">` and `LayoutProps<"/route">` (`route-structure` §3).
 - Declare **both** the event and the handler when a test builds a fake event: the test needs the
   event type, the ViewModel needs the handler.
 - The union must match what it is passed to. A handler bound to the shared `FormField` accepts

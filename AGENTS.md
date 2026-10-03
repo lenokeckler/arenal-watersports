@@ -210,7 +210,7 @@ The whole workflow — GitFlow, branch and commit names, PR title, body, labels 
 npm run dev                    # Next.js + Turbopack
 npm run build                  # Production build
 npm run lint                   # ESLint
-npm run typecheck              # tsc --noEmit
+npm run typecheck              # next typegen + tsc --noEmit (route types first)
 npm run format                 # Prettier write, whole repo
 npm run test:run               # Vitest, once (never `npm test`: it is watch mode)
 npm run test:e2e               # Playwright, headless
