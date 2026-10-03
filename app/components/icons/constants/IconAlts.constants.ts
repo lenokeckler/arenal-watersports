@@ -39,6 +39,4 @@ export const ICON_ALTS = {
   ARROW_DOWN: "Arrow Down icon",
   RECOVER: "Recover icon",
   CHECK_MARK: "Check Mark Icon",
-  EYE_VISIBLE: "Eye visible icon",
-  EYE_HIDDEN: "Eye hidden icon",
 };

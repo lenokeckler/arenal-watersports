@@ -20,7 +20,7 @@ export const SESSION_TIMEOUT_WARNING_DESCRIPTION_CLASS =
   "text-sm text-on-surface mb-4";
 
 export const SESSION_TIMEOUT_WARNING_COUNTDOWN_CLASS =
-  "font-semibold text-error";
+  "text-base font-semibold text-error";
 
 export const SESSION_TIMEOUT_WARNING_ACTIONS_CLASS =
   "flex gap-3";
