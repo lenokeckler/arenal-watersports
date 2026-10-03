@@ -2,7 +2,7 @@
 
 ## Intent
 
-Let a worker sign in at `/acceso/ingreso` with a username and a password, seeing any failure in red
+Let a worker sign in at `/access/login` with a username and a password, seeing any failure in red
 next to the field that caused it.
 
 ## In scope
