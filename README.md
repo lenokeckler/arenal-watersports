@@ -106,6 +106,7 @@ Before opening a pull request, format, lint, typecheck, tests and build must all
 | Agent roles (`agent-dev` pipeline)                                         | `.claude/agents/*.md`                        |
 | Requirements: flow, 114 stories, backlog                                   | `docs/proyecto/`                             |
 | Feature folder pattern example                                             | `docs/referencia/ejemplo-feature-userLists/` |
+| Stitch screens — local only, from the team package, never committed        | `docs/referencia/stitch/`                    |
 
 ## How each tool picks this up
 

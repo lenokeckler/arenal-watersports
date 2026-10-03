@@ -2,8 +2,11 @@
 
 ## Feature
 
-- chore - Team onboarding and backlog owners — first-run guide in the README and each story's owner in the product backlog
 - chore - Access screen base components — FormField shows its error below the field with a dark glass variant, the password toggle uses a Material icon with Spanish labels and a 44 px target, a MaterialIcon component, and Text no longer fixes size and color
+- chore - UI copy and Storybook rules — user-facing copy addresses the worker as usted, the project does not use Storybook, and the Stitch screens are the reference for the app's palette and style, not a blueprint
+- chore - Feature folder rules — screens live in app/features by story module, shared bases stay in app/components, routes sit under app/access and app/(system), and every folder and URL segment is English
+- chore - Team onboarding and backlog owners — first-run guide in the README and each story's owner in the product backlog
+- chore - Stitch local references — the Stitch screens live in docs/referencia/stitch/ on each machine, ignored by git, and .mcp.json never ships
 
 ## Bugfix
 
