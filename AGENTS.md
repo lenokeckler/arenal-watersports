@@ -227,7 +227,7 @@ npm run changelog:check -- origin/develop  # This PR adds exactly one changelog 
 npm run changelog              # Release only: move every fragment into CHANGELOG.md
 ```
 
-Before opening a PR for review, `npm run format`, `npm run lint`, `npm run typecheck`, `npm run test:run` and `npm run build` must all succeed — CI runs the same set (with `prettier --check`) on every PR — plus `npm run test:e2e` for any story with UI.
+Before opening a PR for review, `npm run format`, `npm run lint`, `npm run typecheck`, `npm run test:run` and `npm run build` must all succeed — CI runs the same set (with `prettier --check`) on every pull request, stacked ones included, — plus `npm run test:e2e` for any story with UI.
 
 ## Adding a skill (maintainers)
 
