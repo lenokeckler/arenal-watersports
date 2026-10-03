@@ -10,7 +10,6 @@ describe("CategoryListBody", () => {
     render(
       <CategoryListBody
         cards={[DEFAULT_CATEGORY_CARD_VIEW_MODEL]}
-        onCreateCategory={vi.fn()}
         onRetry={vi.fn()}
         viewState={CATEGORY_LIST_VIEW_STATE.ERROR}
       />
@@ -35,7 +34,6 @@ describe("CategoryListBody", () => {
     render(
       <CategoryListBody
         cards={[DEFAULT_CATEGORY_CARD_VIEW_MODEL]}
-        onCreateCategory={vi.fn()}
         onRetry={vi.fn()}
         viewState={CATEGORY_LIST_VIEW_STATE.EMPTY}
       />
@@ -57,7 +55,6 @@ describe("CategoryListBody", () => {
     render(
       <CategoryListBody
         cards={[DEFAULT_CATEGORY_CARD_VIEW_MODEL]}
-        onCreateCategory={vi.fn()}
         onRetry={vi.fn()}
         viewState={CATEGORY_LIST_VIEW_STATE.READY}
       />
@@ -83,7 +80,6 @@ describe("CategoryListBody", () => {
     render(
       <CategoryListBody
         cards={[]}
-        onCreateCategory={vi.fn()}
         onRetry={onRetry}
         viewState={CATEGORY_LIST_VIEW_STATE.ERROR}
       />
@@ -94,23 +90,5 @@ describe("CategoryListBody", () => {
     await categoryListBodyPage.clickRetry();
 
     expect(onRetry).toHaveBeenCalledOnce();
-  });
-
-  it("calls onCreateCategory when the empty-state CTA is clicked", async () => {
-    const onCreateCategory = vi.fn();
-    render(
-      <CategoryListBody
-        cards={[]}
-        onCreateCategory={onCreateCategory}
-        onRetry={vi.fn()}
-        viewState={CATEGORY_LIST_VIEW_STATE.EMPTY}
-      />
-    );
-    const categoryListBodyPage =
-      createCategoryListBodyPage();
-
-    await categoryListBodyPage.clickCreateCta();
-
-    expect(onCreateCategory).toHaveBeenCalledOnce();
   });
 });

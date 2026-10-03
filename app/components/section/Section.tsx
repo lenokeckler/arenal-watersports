@@ -9,7 +9,7 @@ const Section = forwardRef<HTMLElement, SectionProps>(
     <section
       id={id}
       role="region"
-      aria-label={ariaLabel}
+      aria-labelledby={ariaLabel}
       className={className}
       ref={ref}
       {...rest}

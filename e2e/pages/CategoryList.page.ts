@@ -16,11 +16,6 @@ export const createCategoryListPage = (page: Page) => {
       name: CATEGORY_CATALOG_COPY.LIST_TITLE,
     });
 
-  const getCreateCtaButton = (): Locator =>
-    page.getByRole(ARIA_ROLE.BUTTON, {
-      name: CATEGORY_CATALOG_COPY.CREATE_CTA,
-    });
-
   const getCategoryCard = (categoryName: string): Locator =>
     page.locator(CATEGORY_CARD_SELECTOR).filter({
       has: page.getByRole(ARIA_ROLE.HEADING, {
@@ -28,26 +23,6 @@ export const createCategoryListPage = (page: Page) => {
         name: categoryName,
       }),
     });
-
-  const getCategoryDeleteButton = (
-    categoryName: string
-  ): Locator =>
-    getCategoryCard(categoryName).getByRole(
-      ARIA_ROLE.BUTTON,
-      {
-        name: CATEGORY_CATALOG_COPY.DELETE_CATEGORY_BUTTON,
-      }
-    );
-
-  const getCategoryMarkInactiveButton = (
-    categoryName: string
-  ): Locator =>
-    getCategoryCard(categoryName).getByRole(
-      ARIA_ROLE.BUTTON,
-      {
-        name: CATEGORY_CATALOG_COPY.MARK_INACTIVE_BUTTON,
-      }
-    );
 
   const getCategoryGroupMeta = (
     categoryName: string
@@ -59,10 +34,7 @@ export const createCategoryListPage = (page: Page) => {
   return {
     goTo,
     getHeading,
-    getCreateCtaButton,
     getCategoryCard,
-    getCategoryDeleteButton,
-    getCategoryMarkInactiveButton,
     getCategoryGroupMeta,
   };
 };

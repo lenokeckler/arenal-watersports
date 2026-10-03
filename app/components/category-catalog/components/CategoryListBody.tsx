@@ -6,7 +6,6 @@ import CategoryListErrorState from "./CategoryListErrorState";
 
 const CategoryListBody = ({
   cards,
-  onCreateCategory,
   onRetry,
   viewState,
 }: CategoryListBodyProps): React.JSX.Element => {
@@ -15,11 +14,7 @@ const CategoryListBody = ({
   }
 
   if (viewState === CATEGORY_LIST_VIEW_STATE.EMPTY) {
-    return (
-      <CategoryListEmptyState
-        onCreateCategory={onCreateCategory}
-      />
-    );
+    return <CategoryListEmptyState />;
   }
 
   return <CategoryListCards cards={cards} />;

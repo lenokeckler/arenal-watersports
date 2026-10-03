@@ -6,26 +6,22 @@ import {
   it,
   vi,
 } from "vitest";
-import { PATHS } from "@/app/constants";
 import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
 import { CATEGORY_LIST_VIEW_STATE } from "../constants/CategoryListViewState.constants";
 import { CATEGORY_STATUS } from "../constants/CategoryStatus.constants";
 import { useCategoryListViewModel } from "../hooks/useCategoryListViewModel";
 import { DEFAULT_CATEGORY_LIST_ITEM } from "./CategoryListItem.constants";
 
-const mockPush = vi.fn();
 const mockRefresh = vi.fn();
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
-    push: mockPush,
     refresh: mockRefresh,
   }),
 }));
 
 describe("useCategoryListViewModel", () => {
   beforeEach(() => {
-    mockPush.mockClear();
     mockRefresh.mockClear();
   });
 
@@ -81,7 +77,7 @@ describe("useCategoryListViewModel", () => {
     );
   });
 
-  it("builds one card per category carrying its own resolved action state", () => {
+  it("hardcodes every card's action state to NONE regardless of the underlying category", () => {
     const categoryWithRecords = {
       ...DEFAULT_CATEGORY_LIST_ITEM,
       id: "with-records",
@@ -112,8 +108,8 @@ describe("useCategoryListViewModel", () => {
     expect(
       result.current.cards.map((card) => card.actionState)
     ).toEqual([
-      CATEGORY_CARD_ACTION_STATE.MARK_INACTIVE,
-      CATEGORY_CARD_ACTION_STATE.DELETE,
+      CATEGORY_CARD_ACTION_STATE.NONE,
+      CATEGORY_CARD_ACTION_STATE.NONE,
       CATEGORY_CARD_ACTION_STATE.NONE,
     ]);
   });
@@ -159,21 +155,6 @@ describe("useCategoryListViewModel", () => {
       card.onCancelClick();
       card.onConfirmDeleteClick();
     }).not.toThrow();
-  });
-
-  it("navigates to the create-category route when onCreateCategory is called", () => {
-    const { result } = renderHook(() =>
-      useCategoryListViewModel({
-        categories: [],
-        fetchFailed: false,
-      })
-    );
-
-    result.current.onCreateCategory();
-
-    expect(mockPush).toHaveBeenCalledWith(
-      PATHS.ADMINISTRATION.CATEGORIES_NEW
-    );
   });
 
   it("refreshes the current route when onRetry is called", () => {

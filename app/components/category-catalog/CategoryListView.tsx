@@ -3,8 +3,7 @@
 import Section from "@/app/components/section/Section";
 import CategoryListBody from "./components/CategoryListBody";
 import CategoryListHeader from "./components/CategoryListHeader";
-import CategoryListStickyCta from "./components/CategoryListStickyCta";
-import { CATEGORY_CATALOG_COPY } from "./constants/CategoryCatalogCopy.constants";
+import { CATEGORY_LIST_TITLE_ID } from "./constants/CategoryListTitleId.constants";
 import { useCategoryListViewModel } from "./hooks/useCategoryListViewModel";
 import type { CategoryListViewProps } from "./models/CategoryListViewProps.interface";
 import {
@@ -16,28 +15,22 @@ const CategoryListView = ({
   categories,
   fetchFailed,
 }: CategoryListViewProps): React.JSX.Element => {
-  const { cards, onCreateCategory, onRetry, viewState } =
+  const { cards, onRetry, viewState } =
     useCategoryListViewModel({ categories, fetchFailed });
 
   return (
     <Section
-      ariaLabel={CATEGORY_CATALOG_COPY.LIST_TITLE}
+      ariaLabel={CATEGORY_LIST_TITLE_ID}
       className={CATEGORY_LIST_WRAPPER_CLASS}
     >
       <div className={CATEGORY_LIST_CONTENT_CLASS}>
-        <CategoryListHeader
-          onCreateCategory={onCreateCategory}
-        />
+        <CategoryListHeader />
         <CategoryListBody
           cards={cards}
-          onCreateCategory={onCreateCategory}
           onRetry={onRetry}
           viewState={viewState}
         />
       </div>
-      <CategoryListStickyCta
-        onCreateCategory={onCreateCategory}
-      />
     </Section>
   );
 };
