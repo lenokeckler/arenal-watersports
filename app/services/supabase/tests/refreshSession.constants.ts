@@ -3,4 +3,13 @@ export const SESSION_FIXTURE = {
   PATHNAME: "/tablero",
   CLAIMS: { sub: "worker-id" },
   ERROR_MESSAGE: "invalid jwt",
+  REQUEST_COOKIE: {
+    name: "sb-request",
+    value: "from-request",
+  },
+  REFRESHED_COOKIE: {
+    name: "sb-access-token",
+    value: "refreshed",
+    options: { path: "/" },
+  },
 } as const;
