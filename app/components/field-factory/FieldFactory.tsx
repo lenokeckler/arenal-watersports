@@ -12,7 +12,7 @@ import {
 import { useFieldFactoryViewModel } from "./hooks/useFieldFactoryViewModel";
 import Button from "../button/Button";
 import MaterialIcon from "../icons/material-icon/MaterialIcon";
-import { PASSWORD_TOGGLE_LABEL } from "./constants/PasswordToggle.constants";
+import { PASSWORD_TOGGLE_COPY } from "./constants/PasswordToggleCopy.constants";
 import { resolveFieldAriaAttributes } from "./utils/resolveFieldAriaAttributes";
 import {
   FIELD_FACTORY_CHECKBOX_INPUT_CLASS,
@@ -267,8 +267,8 @@ const FieldFactory = forwardRef<
               onClick={toggleVisibility}
               aria-label={
                 isVisible
-                  ? PASSWORD_TOGGLE_LABEL.HIDE
-                  : PASSWORD_TOGGLE_LABEL.SHOW
+                  ? PASSWORD_TOGGLE_COPY.HIDE
+                  : PASSWORD_TOGGLE_COPY.SHOW
               }
               aria-controls={id}
             >
