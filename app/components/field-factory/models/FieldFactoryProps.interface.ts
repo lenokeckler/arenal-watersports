@@ -32,4 +32,6 @@ export interface FieldFactoryProps extends Omit<
   reference?: RefObject<NullableRef<HTMLInputElement>>;
   isSearch?: boolean;
   accept?: string;
+  hasError?: boolean;
+  hasErrorText?: boolean;
 }

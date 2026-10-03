@@ -4,6 +4,7 @@ import {
   KEYBOARD,
 } from "@/app/constants";
 import React from "react";
+import { FORM_FIELD_VARIANT } from "../constants/FormFieldVariant.constants";
 import { FormFieldViewModel } from "../models/FormFieldViewModel.interface";
 import { resolveFormFieldInputClassName } from "../styles/FormField.styles";
 
@@ -16,6 +17,7 @@ export const useFormFieldViewModel = ({
   readOnly = false,
   disabled = false,
   preventEnterSubmit = false,
+  variant = FORM_FIELD_VARIANT.DEFAULT,
 }: FormFieldViewModel & {
   readOnly?: boolean;
   disabled?: boolean;
@@ -41,6 +43,7 @@ export const useFormFieldViewModel = ({
     isInteractive: !readOnly && !disabled,
     readOnly,
     disabled,
+    variant,
   });
 
   const handleChange = (
