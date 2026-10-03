@@ -8,8 +8,8 @@ import {
   SIGN_IN_ERROR_CODE,
   SUPABASE_AUTH_ERROR_CODE,
 } from "@/app/constants";
-import { createSignInError } from "./createSignInError";
-import type { SignInError } from "./models/SignInError.interface";
+import { createSignInError } from "@/app/utils/sign-in/createSignInError";
+import type { SignInError } from "@/app/utils/sign-in/models/SignInError.interface";
 
 export const mapSignInAuthError = (
   error: AuthError
