@@ -2,6 +2,7 @@
 
 ## Feature
 
+- chore - Access screen shell — the shared frame of the access screens from Stitch: background glow, glass card, Arenal logo and title, and the main landmark under /acceso
 - chore - UI copy and Storybook rules — user-facing copy addresses the worker as usted, the project does not use Storybook, and the Stitch screens are the reference for the app's palette and style, not a blueprint
 - chore - Feature folder rules — screens live in app/features by story module, shared bases stay in app/components, routes sit under app/access and app/(system), and every folder and URL segment is English
 - chore - Team onboarding and backlog owners — first-run guide in the README and each story's owner in the product backlog
