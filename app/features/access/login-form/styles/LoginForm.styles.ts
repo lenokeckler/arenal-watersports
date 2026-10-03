@@ -12,7 +12,10 @@ export const LOGIN_FORM_BANNER_MESSAGE_CLASS =
   "flex-1 text-on-error-container";
 
 export const LOGIN_FORM_SUBMIT_CLASS =
-  "mt-sm inline-flex min-h-14 w-full items-center justify-center gap-sm rounded-lg bg-primary px-md py-sm text-button font-semibold uppercase tracking-widest text-on-primary shadow-md transition duration-200 hover:brightness-110 active:scale-98 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none motion-reduce:active:scale-100";
+  "mt-sm inline-flex min-h-14 w-full items-center justify-center gap-sm rounded-lg bg-primary px-md py-sm text-button font-semibold uppercase tracking-widest text-on-primary shadow-md transition duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none motion-reduce:active:scale-100";
+
+export const LOGIN_FORM_SUBMIT_INTERACTIVE_CLASS =
+  "hover:brightness-110 active:scale-98";
 
 export const LOGIN_FORM_SUBMIT_PENDING_CLASS = "opacity-70";
 
@@ -26,7 +29,9 @@ export const resolveLoginFormSubmitClassName = (
 ): string =>
   joinClassNames(
     LOGIN_FORM_SUBMIT_CLASS,
-    isPending && LOGIN_FORM_SUBMIT_PENDING_CLASS
+    isPending
+      ? LOGIN_FORM_SUBMIT_PENDING_CLASS
+      : LOGIN_FORM_SUBMIT_INTERACTIVE_CLASS
   );
 
 export const resolveLoginFormSubmitIconClassName = (

@@ -1,3 +1,4 @@
+import { SIGN_IN_FIELD } from "@/app/constants/access/SignInError.constants";
 import { validateSignInCredentials } from "@/app/utils/sign-in/validateSignInCredentials";
 import type { LoginFormSubmitHandler } from "../models/LoginFormSubmitHandler.type";
 import type { LoginFormViewModel } from "../models/LoginFormViewModel.interface";
@@ -23,14 +24,20 @@ export const useLoginFormViewModel =
       submission.submit(form.values);
     };
 
+    const fieldErrors = resolveSignInFieldErrors(
+      submission.serverError ?? validationError
+    );
+
     return {
-      fieldErrors: resolveSignInFieldErrors(
-        submission.serverError ?? validationError
-      ),
+      fieldErrors,
       handlePasswordChange: form.handlePasswordChange,
       handleSubmit,
       handleUsernameChange: form.handleUsernameChange,
       isPending: submission.isPending,
+      passwordError:
+        fieldErrors[SIGN_IN_FIELD.PASSWORD] ?? undefined,
+      usernameError:
+        fieldErrors[SIGN_IN_FIELD.USERNAME] ?? undefined,
       values: form.values,
     };
   };

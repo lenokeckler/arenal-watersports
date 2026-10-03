@@ -16,6 +16,7 @@ import { SIGN_IN_ERROR_COPY } from "../constants/SignInErrorCopy.constants";
 import LoginFormView from "../LoginFormView";
 import { VALID_LOGIN_CREDENTIALS } from "./useLoginFormViewModel.constants";
 import { createLoginFormViewPage } from "./LoginFormView.page";
+import { PASSWORD_TOGGLE_LABEL } from "@/app/components/field-factory/constants/PasswordToggle.constants";
 import {
   ARIA_DESCRIBEDBY_ATTRIBUTE,
   ARIA_INVALID_ATTRIBUTE,
@@ -23,8 +24,6 @@ import {
   INVALID_CREDENTIALS_ERROR,
   NETWORK_ERROR,
   PASSWORD_ERROR_ID,
-  PASSWORD_TOGGLE_HIDE_LABEL,
-  PASSWORD_TOGGLE_SHOW_LABEL,
   TYPE_ATTRIBUTE,
   USERNAME_ERROR_ID,
 } from "./LoginFormView.constants";
@@ -118,14 +117,14 @@ describe("LoginFormView", () => {
       INPUT_TYPES.PASSWORD
     );
 
-    await page.clickToggle(PASSWORD_TOGGLE_SHOW_LABEL);
+    await page.clickToggle(PASSWORD_TOGGLE_LABEL.SHOW);
 
     expect(page.getPasswordInput()).toHaveAttribute(
       TYPE_ATTRIBUTE,
       INPUT_TYPES.TEXT
     );
     expect(
-      page.getToggle(PASSWORD_TOGGLE_HIDE_LABEL)
+      page.getToggle(PASSWORD_TOGGLE_LABEL.HIDE)
     ).toBeInTheDocument();
   });
 

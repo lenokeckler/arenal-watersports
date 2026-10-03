@@ -17,6 +17,8 @@ const LoginFormView = (): React.JSX.Element => {
     handleSubmit,
     handleUsernameChange,
     isPending,
+    passwordError,
+    usernameError,
     values,
   } = useLoginFormViewModel();
 
@@ -40,9 +42,7 @@ const LoginFormView = (): React.JSX.Element => {
           labelSuffix={STRING.Empty}
           value={values.username}
           onChange={handleUsernameChange}
-          error={
-            fieldErrors[SIGN_IN_FIELD.USERNAME] ?? undefined
-          }
+          error={usernameError}
           showErrorText
         />
         <FormField
@@ -55,9 +55,7 @@ const LoginFormView = (): React.JSX.Element => {
           labelSuffix={STRING.Empty}
           value={values.password}
           onChange={handlePasswordChange}
-          error={
-            fieldErrors[SIGN_IN_FIELD.PASSWORD] ?? undefined
-          }
+          error={passwordError}
           showErrorText
         />
         <LoginFormSubmit isPending={isPending} />

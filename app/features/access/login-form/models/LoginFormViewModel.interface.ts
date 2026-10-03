@@ -1,3 +1,4 @@
+import type { NullableUndefined } from "@/app/types";
 import type { SignInCredentials } from "@/app/utils/sign-in/models/SignInCredentials.interface";
 import type { LoginFormFieldChangeHandler } from "./LoginFormFieldChangeHandler.type";
 import type { LoginFormSubmitHandler } from "./LoginFormSubmitHandler.type";
@@ -9,5 +10,7 @@ export interface LoginFormViewModel {
   handleSubmit: LoginFormSubmitHandler;
   handleUsernameChange: LoginFormFieldChangeHandler;
   isPending: boolean;
+  passwordError: NullableUndefined<string>;
+  usernameError: NullableUndefined<string>;
   values: SignInCredentials;
 }
