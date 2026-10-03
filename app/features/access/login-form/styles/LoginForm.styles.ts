@@ -1,3 +1,5 @@
+import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
+
 export const LOGIN_FORM_CLASS = "flex flex-col gap-md";
 
 export const LOGIN_FORM_BANNER_CLASS =
@@ -18,3 +20,19 @@ export const LOGIN_FORM_SUBMIT_ICON_CLASS = "text-lg";
 
 export const LOGIN_FORM_SUBMIT_ICON_SPIN_CLASS =
   "animate-spin motion-reduce:animate-none";
+
+export const resolveLoginFormSubmitClassName = (
+  isPending: boolean
+): string =>
+  joinClassNames(
+    LOGIN_FORM_SUBMIT_CLASS,
+    isPending && LOGIN_FORM_SUBMIT_PENDING_CLASS
+  );
+
+export const resolveLoginFormSubmitIconClassName = (
+  isPending: boolean
+): string =>
+  joinClassNames(
+    LOGIN_FORM_SUBMIT_ICON_CLASS,
+    isPending && LOGIN_FORM_SUBMIT_ICON_SPIN_CLASS
+  );
