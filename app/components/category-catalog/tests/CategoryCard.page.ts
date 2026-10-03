@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import { ARIA_ROLE } from "@/app/constants";
-import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalog.copy";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 
 export const createCategoryCardPage = () => {
   const getNameHeading = (name: string) =>

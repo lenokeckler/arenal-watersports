@@ -1,6 +1,6 @@
 import Button from "@/app/components/button/Button";
 import { BUTTON, SIZE } from "@/app/constants";
-import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalog.copy";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import type { CategoryListCreateCtaProps } from "../models/CategoryListCreateCtaProps.interface";
 import {
   CATEGORY_LIST_STICKY_CTA_BUTTON_CLASS,

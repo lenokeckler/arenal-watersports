@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { PATHS, STRING } from "@/app/constants";
-import { CATEGORY_CATALOG_COPY } from "@/app/components/category-catalog/constants/CategoryCatalog.copy";
+import { CATEGORY_CATALOG_COPY } from "@/app/components/category-catalog/constants/CategoryCatalogCopy.constants";
 import { createCategoryListPage } from "../pages/CategoryList.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 import {

@@ -2,7 +2,7 @@ import Button from "@/app/components/button/Button";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
 import { BUTTON, TitleVariant } from "@/app/constants";
-import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalog.copy";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import type { CategoryListCreateCtaProps } from "../models/CategoryListCreateCtaProps.interface";
 import {
   CATEGORY_LIST_STATE_BODY_CLASS,

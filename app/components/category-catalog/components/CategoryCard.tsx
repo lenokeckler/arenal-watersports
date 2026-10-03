@@ -2,7 +2,7 @@ import InlineText from "@/app/components/text/InlineText";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
 import { STRING, TitleVariant } from "@/app/constants";
-import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalog.copy";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_STATUS } from "../constants/CategoryStatus.constants";
 import { CATEGORY_TRACKING_MODE } from "../constants/CategoryTrackingMode.constants";
 import type { CategoryCardViewModel } from "../models/CategoryCardViewModel.interface";

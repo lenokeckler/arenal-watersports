@@ -1,6 +1,6 @@
 import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE, PATHS } from "@/app/constants";
-import { CATEGORY_CATALOG_COPY } from "@/app/components/category-catalog/constants/CategoryCatalog.copy";
+import { CATEGORY_CATALOG_COPY } from "@/app/components/category-catalog/constants/CategoryCatalogCopy.constants";
 import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
 
 const CATEGORY_CARD_SELECTOR = "div:has(> div > h3)";

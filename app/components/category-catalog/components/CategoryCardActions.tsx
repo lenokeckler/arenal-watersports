@@ -2,7 +2,7 @@ import Button from "@/app/components/button/Button";
 import { BUTTON, SIZE } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
-import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalog.copy";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import type { CategoryCardActionsProps } from "../models/CategoryCardActionsProps.interface";
 import { CATEGORY_CARD_ACTIONS_BUTTON_CLASS } from "../styles/CategoryCardActions.styles";
 

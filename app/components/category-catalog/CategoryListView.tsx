@@ -4,7 +4,7 @@ import Section from "@/app/components/section/Section";
 import CategoryListBody from "./components/CategoryListBody";
 import CategoryListHeader from "./components/CategoryListHeader";
 import CategoryListStickyCta from "./components/CategoryListStickyCta";
-import { CATEGORY_CATALOG_COPY } from "./constants/CategoryCatalog.copy";
+import { CATEGORY_CATALOG_COPY } from "./constants/CategoryCatalogCopy.constants";
 import { useCategoryListViewModel } from "./hooks/useCategoryListViewModel";
 import type { CategoryListViewProps } from "./models/CategoryListViewProps.interface";
 import {
