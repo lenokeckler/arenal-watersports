@@ -4,6 +4,9 @@
 
 - ACC-01.01.02: Login form logic — the sign-in error copy, sign-in Server Action, error-to-field mapping and view model (US-ACC-01 · AWS-30)
 - ACC-01.01.01: Sign-in service — username and password sign-in against Supabase with the username to auth email mapping and the password maximum length (US-ACC-01 · AWS-30)
+- chore - Access screen shell — the shared frame of the access screens from Stitch: background glow, glass card, Arenal logo and title, and the main landmark under /acceso
+- chore - Access screen base components — FormField shows its error below the field with a dark glass variant, the password toggle uses a Material icon with Spanish labels and a 44 px target, a MaterialIcon component, and Text no longer fixes size and color
+- chore - Password rules criterion on password change — the password rules checklist moves from the login (US-ACC-01) to the screens where a new password is chosen (US-ACC-03, US-ACC-04, US-ACC-06)
 - chore - UI copy and Storybook rules — user-facing copy addresses the worker as usted, the project does not use Storybook, and the Stitch screens are the reference for the app's palette and style, not a blueprint
 - chore - Feature folder rules — screens live in app/features by story module, shared bases stay in app/components, routes sit under app/access and app/(system), and every folder and URL segment is English
 - chore - Team onboarding and backlog owners — first-run guide in the README and each story's owner in the product backlog
