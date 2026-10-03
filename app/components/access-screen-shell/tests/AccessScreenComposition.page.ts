@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react";
-import { ACCESS_SCREEN_COPY } from "../constants/AccessScreen.constants";
+import { ACCESS_SCREEN_COPY } from "../constants/AccessScreenCopy.constants";
 import { REGION_ROLE } from "./AccessScreenShell.constants";
 
 export const createAccessScreenCompositionPage = () => {
