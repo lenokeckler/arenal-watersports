@@ -1,3 +1,4 @@
+import { loadEnvConfig } from "@next/env";
 import { defineConfig, devices } from "@playwright/test";
 import {
   E2E_ARTIFACT_MODE,
@@ -15,6 +16,8 @@ import {
   E2E_TIMEOUT_MS,
   E2E_WORKER_COUNT,
 } from "./e2e/constants/E2eRuntime.constants";
+
+loadEnvConfig(process.cwd());
 
 const isContinuousIntegration = Boolean(process.env.CI);
 const mobileChromium = {
