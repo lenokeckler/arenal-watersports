@@ -122,6 +122,50 @@ const eslintConfig = [
     },
   },
   {
+    files: [
+      "app/components/**/*.{ts,tsx}",
+      "app/constants/**/*.{ts,tsx}",
+      "app/providers/**/*.{ts,tsx}",
+      "app/services/**/*.{ts,tsx}",
+      "app/store/**/*.{ts,tsx}",
+      "app/styles/**/*.{ts,tsx}",
+      "app/types/**/*.{ts,tsx}",
+      "app/utils/**/*.{ts,tsx}",
+    ],
+    ignores: ["app/store/index.ts"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@/app/features/**"],
+              message:
+                "A shared folder never imports a feature (component-architecture §1).",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ["app/features/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@/app/features/**"],
+              message:
+                "A feature never imports another feature; it imports its own files with relative paths (component-architecture §1).",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     files: [".github/scripts/**/*.mjs", "scripts/**/*.mjs"],
     languageOptions: {
       globals: {
