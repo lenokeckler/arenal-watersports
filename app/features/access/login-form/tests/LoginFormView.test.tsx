@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import {
   beforeEach,
   describe,
@@ -21,6 +21,7 @@ import {
   ARIA_DESCRIBEDBY_ATTRIBUTE,
   ARIA_INVALID_ATTRIBUTE,
   ARIA_INVALID_VALUE,
+  EXTRA_USERNAME_TEXT,
   INVALID_CREDENTIALS_ERROR,
   NETWORK_ERROR,
   PASSWORD_ERROR_ID,
@@ -93,6 +94,34 @@ describe("LoginFormView", () => {
         ]
       )
     ).toHaveAttribute("id", PASSWORD_ERROR_ID);
+  });
+
+  it("focuses the username after an empty submit", async () => {
+    const page = renderView();
+
+    await page.submit();
+
+    await waitFor(() =>
+      expect(page.getUsernameInput()).toHaveFocus()
+    );
+  });
+
+  it("focuses the password on invalid credentials and keeps focus while typing", async () => {
+    vi.mocked(submitSignIn).mockResolvedValue(
+      INVALID_CREDENTIALS_ERROR
+    );
+    const page = renderView();
+
+    await page.fillCredentials(VALID_LOGIN_CREDENTIALS);
+    await page.submit();
+
+    await waitFor(() =>
+      expect(page.getPasswordInput()).toHaveFocus()
+    );
+
+    await page.typeUsername(EXTRA_USERNAME_TEXT);
+
+    expect(page.getUsernameInput()).toHaveFocus();
   });
 
   it("announces a network error in the banner", async () => {

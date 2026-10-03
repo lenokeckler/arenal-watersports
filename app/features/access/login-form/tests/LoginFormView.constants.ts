@@ -19,3 +19,5 @@ export const INVALID_CREDENTIALS_ERROR = createSignInError(
 export const NETWORK_ERROR = createSignInError(
   SIGN_IN_ERROR_CODE.NETWORK
 );
+
+export const EXTRA_USERNAME_TEXT = "x";

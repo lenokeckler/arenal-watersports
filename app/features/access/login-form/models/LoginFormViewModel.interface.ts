@@ -2,10 +2,12 @@ import type { NullableUndefined } from "@/app/types";
 import type { SignInCredentials } from "@/app/utils/sign-in/models/SignInCredentials.interface";
 import type { LoginFormFieldChangeHandler } from "./LoginFormFieldChangeHandler.type";
 import type { LoginFormSubmitHandler } from "./LoginFormSubmitHandler.type";
+import type { LoginFormFieldRefs } from "./LoginFormFieldRefs.type";
 import type { SignInFieldErrors } from "./SignInFieldErrors.type";
 
 export interface LoginFormViewModel {
   fieldErrors: SignInFieldErrors;
+  fieldRefs: LoginFormFieldRefs;
   handlePasswordChange: LoginFormFieldChangeHandler;
   handleSubmit: LoginFormSubmitHandler;
   handleUsernameChange: LoginFormFieldChangeHandler;

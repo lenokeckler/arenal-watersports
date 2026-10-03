@@ -28,6 +28,9 @@ export const createLoginFormViewPage = () => {
     await user.type(getUsernameInput(), username);
     await user.type(getPasswordInput(), password);
   };
+  const typeUsername = async (text: string) => {
+    await user.type(getUsernameInput(), text);
+  };
   const submit = async () => {
     await user.click(getIdleSubmit());
   };
@@ -46,5 +49,6 @@ export const createLoginFormViewPage = () => {
     getToggle,
     getUsernameInput,
     submit,
+    typeUsername,
   };
 };

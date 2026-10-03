@@ -13,6 +13,7 @@ import { LOGIN_FORM_CLASS } from "./styles/LoginForm.styles";
 const LoginFormView = (): React.JSX.Element => {
   const {
     fieldErrors,
+    fieldRefs,
     handlePasswordChange,
     handleSubmit,
     handleUsernameChange,
@@ -43,6 +44,7 @@ const LoginFormView = (): React.JSX.Element => {
           value={values.username}
           onChange={handleUsernameChange}
           error={usernameError}
+          reference={fieldRefs[SIGN_IN_FIELD.USERNAME]}
           showErrorText
         />
         <FormField
@@ -56,6 +58,7 @@ const LoginFormView = (): React.JSX.Element => {
           value={values.password}
           onChange={handlePasswordChange}
           error={passwordError}
+          reference={fieldRefs[SIGN_IN_FIELD.PASSWORD]}
           showErrorText
         />
         <LoginFormSubmit isPending={isPending} />

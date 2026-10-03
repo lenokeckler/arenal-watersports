@@ -3,6 +3,7 @@ import { validateSignInCredentials } from "@/app/utils/sign-in/validateSignInCre
 import type { LoginFormSubmitHandler } from "../models/LoginFormSubmitHandler.type";
 import type { LoginFormViewModel } from "../models/LoginFormViewModel.interface";
 import { resolveSignInFieldErrors } from "../utils/resolveSignInFieldErrors";
+import { useLoginFormFocus } from "./useLoginFormFocus";
 import { useLoginFormValues } from "./useLoginFormValues";
 import { useSignInSubmission } from "./useSignInSubmission";
 
@@ -28,8 +29,11 @@ export const useLoginFormViewModel =
       submission.serverError ?? validationError
     );
 
+    const fieldRefs = useLoginFormFocus(fieldErrors);
+
     return {
       fieldErrors,
+      fieldRefs,
       handlePasswordChange: form.handlePasswordChange,
       handleSubmit,
       handleUsernameChange: form.handleUsernameChange,
