@@ -304,6 +304,8 @@ it.
 - **Merge bottom-up only.** Nothing in the middle goes first.
 - When the bottom PR merges, the repository deletes its branch and GitHub **retargets the next PR
   to `develop` on its own**. Never delete or rename a branch that has an open PR.
+- A retarget alone does not start CI. The next PR already ran CI against its old base; when
+  `develop` is merged into it, that push runs CI against `develop` before it merges.
 - A lower branch that must change after review propagates up with `git merge`, never with rebase
   plus force-push: `git switch feat/res-07/us-28-refunds && git merge feat/res-07/us-26-charges --no-edit`.
 
@@ -350,7 +352,7 @@ npm run build
 npm run test:e2e          # every UI story
 ```
 
-CI runs the first five on every PR to `develop`; a red PR does not leave draft.
+CI runs the first five, plus the changelog check, on every pull request — whatever its base, so a stacked PR is checked from its first push — and again on every push to `develop` and `main`. A newer push to the same PR cancels the run it replaces. A red PR does not leave draft.
 
 Then run the review guards over the PR's own files — the pre-flight greps of
 `structure-standards`, the `className` guard of `styles-standards` and the usted guard of
