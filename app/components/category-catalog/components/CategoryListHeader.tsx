@@ -1,10 +1,12 @@
+import Link from "@/app/components/link/Link";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
-import { TitleVariant } from "@/app/constants";
+import { PATHS, TitleVariant } from "@/app/constants";
 import { CATEGORY_LIST_TITLE_ID } from "../constants/CategoryListTitleId.constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import {
   CATEGORY_LIST_HEADER_CLASS,
+  CATEGORY_LIST_HEADER_CREATE_LINK_CLASS,
   CATEGORY_LIST_HEADER_PURPOSE_CLASS,
   CATEGORY_LIST_HEADER_TITLE_CLASS,
 } from "../styles/CategoryListHeader.styles";
@@ -22,6 +24,12 @@ const CategoryListHeader = (): React.JSX.Element => (
         {CATEGORY_CATALOG_COPY.LIST_PURPOSE}
       </Text>
     </div>
+    <Link
+      href={PATHS.ADMINISTRATION.CATEGORIES_NEW}
+      className={CATEGORY_LIST_HEADER_CREATE_LINK_CLASS}
+    >
+      {CATEGORY_CATALOG_COPY.CREATE_CTA}
+    </Link>
   </div>
 );
 
