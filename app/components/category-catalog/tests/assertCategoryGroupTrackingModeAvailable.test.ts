@@ -43,7 +43,7 @@ describe("assertCategoryGroupTrackingModeAvailable", () => {
     ).resolves.toBeUndefined();
   });
 
-  it("throws CategoryGroupConflictError when a category in the group uses a different tracking mode", async () => {
+  it("throws CategoryGroupConflictError carrying the conflicting category's tracking mode", async () => {
     const supabase = createFakeServerSupabaseClient(
       buildFakeCategoriesQuery(
         [
@@ -61,7 +61,10 @@ describe("assertCategoryGroupTrackingModeAvailable", () => {
         groupName: FAKE_GROUP_NAME,
         trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
       })
-    ).rejects.toThrow(CategoryGroupConflictError);
+    ).rejects.toMatchObject({
+      existingTrackingMode:
+        CATEGORY_TRACKING_MODE.BY_QUANTITY,
+    });
   });
 
   it("throws CategoryGroupConflictError when the conflicting group name differs only in case", async () => {

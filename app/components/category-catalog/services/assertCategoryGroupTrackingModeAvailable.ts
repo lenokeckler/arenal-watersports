@@ -3,8 +3,15 @@ import { LENGTH } from "@/app/constants";
 import { escapeLikePattern } from "@/app/utils/like-pattern/escapeLikePattern";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import type { CategoryGroupTrackingModeCheck } from "../models/CategoryGroupTrackingModeCheck.interface";
+import type { CategoryTrackingMode } from "../models/CategoryTrackingMode.type";
 
-export class CategoryGroupConflictError extends Error {}
+export class CategoryGroupConflictError extends Error {
+  constructor(
+    public readonly existingTrackingMode: CategoryTrackingMode
+  ) {
+    super();
+  }
+}
 
 export const assertCategoryGroupTrackingModeAvailable =
   async (
@@ -26,10 +33,12 @@ export const assertCategoryGroupTrackingModeAvailable =
       "assertCategoryGroupTrackingModeAvailable"
     );
 
-    const hasConflict =
-      (conflictingCategories ?? []).length > LENGTH.ZERO;
+    const [conflictingCategory] =
+      conflictingCategories ?? [];
 
-    if (hasConflict) {
-      throw new CategoryGroupConflictError();
+    if (conflictingCategory) {
+      throw new CategoryGroupConflictError(
+        conflictingCategory.tracking_mode
+      );
     }
   };

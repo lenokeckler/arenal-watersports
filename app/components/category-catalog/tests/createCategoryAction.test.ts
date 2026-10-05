@@ -7,7 +7,6 @@ import {
 } from "vitest";
 import { NotAuthorizedError } from "@/app/services/authorization/NotAuthorizedError";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
-import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import { CATEGORY_TRACKING_MODE } from "../constants/CategoryTrackingMode.constants";
 import { CategoryGroupConflictError } from "../services/assertCategoryGroupTrackingModeAvailable";
@@ -134,12 +133,14 @@ describe("createCategoryAction", () => {
     });
   });
 
-  it("returns the group conflict error without inserting when the group mixes tracking modes", async () => {
+  it("returns the direction-correct group conflict error without inserting when the group mixes tracking modes", async () => {
     mockAssertIsAdminWorker.mockResolvedValue(
       FAKE_ADMIN_WORKER_ID
     );
     mockAssertCategoryGroupTrackingModeAvailable.mockRejectedValue(
-      new CategoryGroupConflictError()
+      new CategoryGroupConflictError(
+        CATEGORY_TRACKING_MODE.BY_QUANTITY
+      )
     );
 
     const result = await createCategoryAction({
@@ -151,7 +152,7 @@ describe("createCategoryAction", () => {
     expect(result).toEqual({
       status: CATEGORY_MUTATION_STATUS.ERROR,
       groupNameError:
-        CATEGORY_CATALOG_COPY.GROUP_CONFLICT_ERROR,
+        "Este grupo ya tiene categorías por cantidad; esta es por unidad.",
     });
     expect(mockInsert).not.toHaveBeenCalled();
   });

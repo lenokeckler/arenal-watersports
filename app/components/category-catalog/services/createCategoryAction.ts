@@ -4,10 +4,10 @@ import { assertIsAdminWorker } from "@/app/services/authorization/assertIsAdminW
 import { createServerSupabaseClient } from "@/app/services/supabase";
 import { STRING } from "@/app/constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
-import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import type { CreateCategoryInput } from "../models/CreateCategoryInput.interface";
 import type { CreateCategoryResult } from "../models/CreateCategoryResult.interface";
+import { resolveGroupConflictErrorMessage } from "../utils/resolveGroupConflictErrorMessage";
 import {
   assertCategoryGroupTrackingModeAvailable,
   CategoryGroupConflictError,
@@ -35,8 +35,10 @@ export const createCategoryAction = async (
       if (error instanceof CategoryGroupConflictError) {
         return {
           status: CATEGORY_MUTATION_STATUS.ERROR,
-          groupNameError:
-            CATEGORY_CATALOG_COPY.GROUP_CONFLICT_ERROR,
+          groupNameError: resolveGroupConflictErrorMessage(
+            error.existingTrackingMode,
+            input.trackingMode
+          ),
         };
       }
       throw error;
