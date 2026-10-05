@@ -22,3 +22,12 @@ export const E2E_CATEGORY_WITH_GROUP_NAME = "Kayak doble";
 export const E2E_CATEGORY_GROUP_LABEL = "Kayak";
 
 export const E2E_CATEGORY_WITHOUT_GROUP_NAME = "Chaleco";
+
+export const E2E_CREATED_CATEGORY_BASE_NAME =
+  "E2E Fixture — Nueva categoría";
+
+export const resolveCreatedCategoryName = (
+  projectName: string,
+  scenario: string
+): string =>
+  `${E2E_CREATED_CATEGORY_BASE_NAME} (${projectName} · ${scenario})`;
