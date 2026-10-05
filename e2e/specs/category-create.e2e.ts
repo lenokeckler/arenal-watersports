@@ -168,6 +168,47 @@ test.describe("Category create", () => {
     }
   });
 
+  test("treats a group name that only differs by case as the same group", async ({
+    page,
+  }, testInfo) => {
+    const categoryName = resolveCreatedCategoryName(
+      testInfo.project.name,
+      "group-conflict-case-insensitive"
+    );
+    const categoryCreateFormPage =
+      createCategoryCreateFormPage(page);
+    const categoryListPage = createCategoryListPage(page);
+
+    try {
+      await categoryCreateFormPage.goTo();
+      await categoryCreateFormPage.fillName(categoryName);
+      await categoryCreateFormPage.selectTrackingMode(
+        CATEGORY_CATALOG_COPY.TRACKING_MODE_BY_QUANTITY_LABEL
+      );
+      await categoryCreateFormPage.fillGroupName(
+        E2E_CATEGORY_GROUP_LABEL.toLowerCase()
+      );
+      await categoryCreateFormPage.submit();
+
+      await expect(
+        categoryCreateFormPage.getGroupNameError()
+      ).toHaveText(
+        CATEGORY_CATALOG_COPY.GROUP_CONFLICT_ERROR
+      );
+      await expect(page).toHaveURL(
+        PATHS.ADMINISTRATION.CATEGORIES_NEW
+      );
+
+      await categoryListPage.goTo();
+
+      await expect(
+        categoryListPage.getCategoryCard(categoryName)
+      ).toHaveCount(0);
+    } finally {
+      await removeDeletableCategory(categoryName);
+    }
+  });
+
   test("Cancelar navigates back to the list without creating anything", async ({
     page,
   }, testInfo) => {
