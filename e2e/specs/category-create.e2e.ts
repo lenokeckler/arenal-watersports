@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { PATHS } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "@/app/components/category-catalog/constants/CategoryCatalogCopy.constants";
+import { CATEGORY_TRACKING_MODE } from "@/app/components/category-catalog/constants/CategoryTrackingMode.constants";
+import { resolveGroupConflictErrorMessage } from "@/app/components/category-catalog/utils/resolveGroupConflictErrorMessage";
 import { createCategoryCreateFormPage } from "../pages/CategoryCreateForm.page";
 import { createCategoryListPage } from "../pages/CategoryList.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
@@ -152,7 +154,10 @@ test.describe("Category create", () => {
       await expect(
         categoryCreateFormPage.getGroupNameError()
       ).toHaveText(
-        CATEGORY_CATALOG_COPY.GROUP_CONFLICT_ERROR
+        resolveGroupConflictErrorMessage(
+          CATEGORY_TRACKING_MODE.BY_UNIT,
+          CATEGORY_TRACKING_MODE.BY_QUANTITY
+        )
       );
       await expect(page).toHaveURL(
         PATHS.ADMINISTRATION.CATEGORIES_NEW
@@ -193,7 +198,10 @@ test.describe("Category create", () => {
       await expect(
         categoryCreateFormPage.getGroupNameError()
       ).toHaveText(
-        CATEGORY_CATALOG_COPY.GROUP_CONFLICT_ERROR
+        resolveGroupConflictErrorMessage(
+          CATEGORY_TRACKING_MODE.BY_UNIT,
+          CATEGORY_TRACKING_MODE.BY_QUANTITY
+        )
       );
       await expect(page).toHaveURL(
         PATHS.ADMINISTRATION.CATEGORIES_NEW
