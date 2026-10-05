@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { PATHS, STATUS } from "@/app/constants";
+import { PATHS } from "@/app/constants";
 import { useToast } from "@/app/components/toast/utils/useToast";
-import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
-import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import { EMPTY_CATEGORY_CREATE_FORM_VALUES } from "../constants/EmptyCategoryCreateFormValues.constants";
 import type { CategoryCreateFormErrors } from "../models/CategoryCreateFormErrors.interface";
 import type { CategoryCreateFormValues } from "../models/CategoryCreateFormValues.interface";
@@ -13,8 +11,9 @@ import type { CategoryCreateFormViewModel } from "../models/CategoryCreateFormVi
 import type { CategoryFormFieldChangeEvent } from "../models/CategoryFormFieldChangeEvent.type";
 import type { CategoryTrackingMode } from "../models/CategoryTrackingMode.type";
 import type { CreateCategoryInput } from "../models/CreateCategoryInput.interface";
-import type { CreateCategoryResult } from "../models/CreateCategoryResult.interface";
 import { createCategoryAction } from "../services/createCategoryAction";
+import { handleCreateCategoryResult } from "../utils/handleCreateCategoryResult";
+import { showGenericMutationErrorToast } from "../utils/showGenericMutationErrorToast";
 import { validateCategoryCreateFormValues } from "../utils/validateCategoryCreateFormValues";
 
 const buildCreateCategoryInput = (
@@ -36,6 +35,7 @@ export const useCategoryCreateFormViewModel =
     const [errors, setErrors] =
       useState<CategoryCreateFormErrors>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const isSubmittingRef = useRef(false);
 
     const clearFieldError = (
       fieldName: keyof CategoryCreateFormErrors
@@ -84,35 +84,14 @@ export const useCategoryCreateFormViewModel =
       router.push(PATHS.ADMINISTRATION.CATEGORIES);
     };
 
-    const handleCreateCategoryResult = (
-      result: CreateCategoryResult
-    ): void => {
-      if (
-        result.status === CATEGORY_MUTATION_STATUS.SUCCESS
-      ) {
-        showToast(
-          STATUS.SUCCESS,
-          CATEGORY_CATALOG_COPY.CREATE_SUCCESS_TOAST
-        );
-        router.push(PATHS.ADMINISTRATION.CATEGORIES);
-        return;
-      }
-
-      if (result.groupNameError) {
-        setErrors({ groupName: result.groupNameError });
-        return;
-      }
-
-      showToast(
-        STATUS.ERROR,
-        CATEGORY_CATALOG_COPY.GENERIC_MUTATION_ERROR
-      );
-    };
-
     const onSubmit = async (
       event: React.FormEvent
     ): Promise<void> => {
       event.preventDefault();
+
+      if (isSubmittingRef.current) {
+        return;
+      }
 
       const validationErrors =
         validateCategoryCreateFormValues(values);
@@ -122,19 +101,24 @@ export const useCategoryCreateFormViewModel =
       }
 
       setErrors({});
+      isSubmittingRef.current = true;
       setIsSubmitting(true);
 
       try {
         const result = await createCategoryAction(
           buildCreateCategoryInput(values)
         );
-        handleCreateCategoryResult(result);
+        handleCreateCategoryResult(result, {
+          showToast,
+          onSuccess: () =>
+            router.push(PATHS.ADMINISTRATION.CATEGORIES),
+          onGroupNameError: (groupNameError) =>
+            setErrors({ groupName: groupNameError }),
+        });
       } catch {
-        showToast(
-          STATUS.ERROR,
-          CATEGORY_CATALOG_COPY.GENERIC_MUTATION_ERROR
-        );
+        showGenericMutationErrorToast(showToast);
       } finally {
+        isSubmittingRef.current = false;
         setIsSubmitting(false);
       }
     };
