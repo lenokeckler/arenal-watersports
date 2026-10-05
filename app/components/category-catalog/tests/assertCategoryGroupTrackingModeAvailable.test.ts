@@ -9,13 +9,14 @@ import {
 } from "../services/assertCategoryGroupTrackingModeAvailable";
 
 const FAKE_GROUP_NAME = "fake-group-name";
+const DIFFERENTLY_CASED_GROUP_NAME = "FAKE-GROUP-NAME";
 
 const buildFakeCategoriesQuery = (
   data: NullableRef<unknown[]>,
   error: unknown
 ) => ({
   select: vi.fn(() => ({
-    eq: vi.fn(() => ({
+    ilike: vi.fn(() => ({
       neq: vi.fn(() => ({
         limit: vi.fn().mockResolvedValue({ data, error }),
       })),
@@ -58,6 +59,27 @@ describe("assertCategoryGroupTrackingModeAvailable", () => {
     await expect(
       assertCategoryGroupTrackingModeAvailable(supabase, {
         groupName: FAKE_GROUP_NAME,
+        trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
+      })
+    ).rejects.toThrow(CategoryGroupConflictError);
+  });
+
+  it("throws CategoryGroupConflictError when the conflicting group name differs only in case", async () => {
+    const supabase = createFakeServerSupabaseClient(
+      buildFakeCategoriesQuery(
+        [
+          {
+            tracking_mode:
+              CATEGORY_TRACKING_MODE.BY_QUANTITY,
+          },
+        ],
+        null
+      )
+    );
+
+    await expect(
+      assertCategoryGroupTrackingModeAvailable(supabase, {
+        groupName: DIFFERENTLY_CASED_GROUP_NAME,
         trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
       })
     ).rejects.toThrow(CategoryGroupConflictError);

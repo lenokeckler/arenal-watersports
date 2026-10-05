@@ -1,5 +1,6 @@
 import type { ServerSupabaseClient } from "@/app/services/supabase/AppSupabaseClient.type";
 import { LENGTH } from "@/app/constants";
+import { escapeLikePattern } from "@/app/utils/like-pattern/escapeLikePattern";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import type { CategoryGroupTrackingModeCheck } from "../models/CategoryGroupTrackingModeCheck.interface";
 
@@ -14,7 +15,10 @@ export const assertCategoryGroupTrackingModeAvailable =
       await supabase
         .from("equipment_categories")
         .select("tracking_mode")
-        .eq("group_name", check.groupName)
+        .ilike(
+          "group_name",
+          escapeLikePattern(check.groupName)
+        )
         .neq("tracking_mode", check.trackingMode)
         .limit(LENGTH.ONE);
     throwIfSupabaseError(
