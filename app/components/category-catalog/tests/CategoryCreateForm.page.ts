@@ -49,6 +49,11 @@ export const createCategoryCreateFormPage = () => {
       name: CATEGORY_CATALOG_COPY.SUBMIT_BUTTON,
     });
 
+  const getLoadingSubmitButton = () =>
+    screen.getByRole(ARIA_ROLE.BUTTON, {
+      name: CATEGORY_CATALOG_COPY.LOADING_TEXT_CREATING,
+    });
+
   const isSubmitButtonLoading = () =>
     screen.queryByRole(ARIA_ROLE.BUTTON, {
       name: CATEGORY_CATALOG_COPY.LOADING_TEXT_CREATING,
@@ -74,6 +79,11 @@ export const createCategoryCreateFormPage = () => {
     await user.click(getSubmitButton());
   };
 
+  const clickLoadingSubmitButton =
+    async (): Promise<void> => {
+      await user.click(getLoadingSubmitButton());
+    };
+
   const cancel = async (): Promise<void> => {
     await user.click(getCancelButton());
   };
@@ -92,6 +102,7 @@ export const createCategoryCreateFormPage = () => {
     selectTrackingMode,
     fillGroupName,
     submit,
+    clickLoadingSubmitButton,
     cancel,
   };
 };
