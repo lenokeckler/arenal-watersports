@@ -3,5 +3,6 @@ export const STORYBOOK_LAYOUT = {
 } as const;
 
 export const STORYBOOK_TITLE = {
+  INVENTORY_COUNTS: "Operations/Inventory/Counts",
   INVENTORY_ERROR: "Operations/Inventory/Error",
 } as const;
