@@ -5,7 +5,10 @@ import {
 } from "@/app/constants";
 import { createSignInError } from "../createSignInError";
 import { resolveSignInNotice } from "../resolveSignInNotice";
-import { UNSUPPORTED_REASONS } from "./resolveSignInNotice.constants";
+import {
+  UNSUPPORTED_REASON_LISTS,
+  UNSUPPORTED_REASONS,
+} from "./resolveSignInNotice.constants";
 
 describe("resolveSignInNotice", () => {
   it("turns the inactive reason into the session inactive error", () => {
@@ -39,6 +42,13 @@ describe("resolveSignInNotice", () => {
     "returns null for the unsupported reason %j",
     (reason) => {
       expect(resolveSignInNotice(reason)).toBeNull();
+    }
+  );
+
+  it.each(UNSUPPORTED_REASON_LISTS.map((list) => [list]))(
+    "returns null for the reason list %j",
+    (reasons) => {
+      expect(resolveSignInNotice(reasons)).toBeNull();
     }
   );
 });
