@@ -3,13 +3,17 @@ import path from "node:path";
 import {
   APP_DIRECTORY,
   SOURCE_FILE_PATTERN,
+  TEXT_ENCODING,
   TEST_PATH_PATTERN,
 } from "./serviceRoleBoundary.constants";
 
 const POSIX_SEPARATOR = "/";
 
 export const listProductionSources = (): string[] =>
-  readdirSync(APP_DIRECTORY, { recursive: true })
+  readdirSync(APP_DIRECTORY, {
+    recursive: true,
+    encoding: TEXT_ENCODING,
+  })
     .map((file) =>
       file.split(path.sep).join(POSIX_SEPARATOR)
     )
