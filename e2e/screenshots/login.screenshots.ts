@@ -7,6 +7,7 @@ import { resolveDeviceScreenshotFileName } from "../constants/E2eScreenshot.cons
 import {
   E2E_LOGIN_ACCOUNT,
   E2E_LOGIN_COPY,
+  E2E_LOGIN_SAMPLE_PASSWORD,
   E2E_LOGIN_SCREENSHOT_BASENAME,
   E2E_LOGIN_TOGGLE_LABEL,
   E2E_LOGIN_WRONG_PASSWORD,
@@ -82,9 +83,7 @@ test.describe("Login screenshots", () => {
     await loginPage.fillUsername(
       E2E_LOGIN_ACCOUNT.USERNAME
     );
-    await loginPage.fillPassword(
-      E2E_LOGIN_ACCOUNT.PASSWORD
-    );
+    await loginPage.fillPassword(E2E_LOGIN_SAMPLE_PASSWORD);
 
     await loginPage.togglePasswordVisibility(
       E2E_LOGIN_TOGGLE_LABEL.SHOW
