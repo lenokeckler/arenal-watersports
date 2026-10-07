@@ -8,6 +8,10 @@ import {
 import { SIGN_IN_ERROR_CODE } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
 import { signInWithUsername } from "../signInWithUsername";
+import {
+  mockSignInClient,
+  signInWithPassword,
+} from "./mockSignInClient";
 import { INVALID_CREDENTIALS_ERROR } from "./mapSignInAuthError.constants";
 import {
   BLANK_USERNAME,
@@ -20,19 +24,18 @@ vi.mock("@/app/services/supabase", () => ({
   createServerSupabaseClient: vi.fn(),
 }));
 
-const signInWithPassword = vi.fn();
+vi.mock("../recordFailedSignIn", () => ({
+  recordFailedSignIn: vi.fn(),
+}));
+
+vi.mock("../recordSuccessfulSignIn", () => ({
+  recordSuccessfulSignIn: vi.fn(),
+}));
 
 describe("signInWithUsername", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    signInWithPassword.mockResolvedValue({ error: null });
-    vi.mocked(createServerSupabaseClient).mockResolvedValue(
-      {
-        auth: { signInWithPassword },
-      } as unknown as Awaited<
-        ReturnType<typeof createServerSupabaseClient>
-      >
-    );
+    mockSignInClient();
   });
 
   it("sends the normalized auth email and the untouched password", async () => {

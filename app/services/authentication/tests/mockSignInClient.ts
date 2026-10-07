@@ -1,0 +1,17 @@
+import { vi } from "vitest";
+import { createServerSupabaseClient } from "@/app/services/supabase";
+import { SIGNED_IN_USER_ID } from "./recordSignIn.constants";
+
+export const signInWithPassword = vi.fn();
+
+export const mockSignInClient = (): void => {
+  signInWithPassword.mockResolvedValue({
+    data: { user: { id: SIGNED_IN_USER_ID } },
+    error: null,
+  });
+  vi.mocked(createServerSupabaseClient).mockResolvedValue({
+    auth: { signInWithPassword },
+  } as unknown as Awaited<
+    ReturnType<typeof createServerSupabaseClient>
+  >);
+};
