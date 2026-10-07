@@ -10,11 +10,11 @@ import { submitSignIn } from "../actions/submitSignIn";
 import { DEFAULT_SIGN_IN_CREDENTIALS } from "@/app/utils/sign-in/tests/signIn.constants";
 import {
   EXTRA_USERNAME_TEXT,
-  INVALID_CREDENTIALS_ERROR,
   KEYBOARD_TEXT,
   MULTI_CHARACTER_USERNAME,
   NETWORK_ERROR,
 } from "./LoginFormView.constants";
+import { INVALID_CREDENTIALS_ERROR } from "./submitSignIn.constants";
 import { renderLoginFormView as renderView } from "./renderLoginFormView";
 
 vi.mock("../actions/submitSignIn", () => ({

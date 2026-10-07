@@ -5,52 +5,46 @@ import { LOGIN_FORM_COPY } from "../constants/LoginFormCopy.constants";
 import { createLoginFormControlsPage } from "./LoginFormControls.page";
 import type { SignInCredentials } from "@/app/utils/sign-in/models/SignInCredentials.interface";
 
+const createLoginFormViewQueries = () => ({
+  ...createLoginFormControlsPage(),
+  findBanner: () => screen.findByRole(ARIA_ROLE.ALERT),
+  findText: (text: string) => screen.findByText(text),
+  getPasswordInput: () =>
+    screen.getByLabelText(LOGIN_FORM_COPY.PASSWORD_LABEL),
+  getToggle: (label: string) =>
+    screen.getByRole(ARIA_ROLE.BUTTON, { name: label }),
+  getUsernameInput: () =>
+    screen.getByLabelText(LOGIN_FORM_COPY.USERNAME_LABEL),
+});
+
 export const createLoginFormViewPage = () => {
   const user = userEvent.setup();
-  const { getIdleSubmit, getPendingSubmit } =
-    createLoginFormControlsPage();
-
-  const getUsernameInput = () =>
-    screen.getByLabelText(LOGIN_FORM_COPY.USERNAME_LABEL);
-  const getPasswordInput = () =>
-    screen.getByLabelText(LOGIN_FORM_COPY.PASSWORD_LABEL);
-  const getToggle = (label: string) =>
-    screen.getByRole(ARIA_ROLE.BUTTON, { name: label });
-  const findText = (text: string) =>
-    screen.findByText(text);
-  const findBanner = () =>
-    screen.findByRole(ARIA_ROLE.ALERT);
+  const queries = createLoginFormViewQueries();
 
   const fillCredentials = async ({
     password,
     username,
   }: SignInCredentials) => {
-    await user.type(getUsernameInput(), username);
-    await user.type(getPasswordInput(), password);
+    await user.type(queries.getUsernameInput(), username);
+    await user.type(queries.getPasswordInput(), password);
   };
   const typeUsername = async (text: string) => {
-    await user.type(getUsernameInput(), text);
+    await user.type(queries.getUsernameInput(), text);
   };
   const typeWithoutClicking = async (text: string) => {
     await user.keyboard(text);
   };
   const submit = async () => {
-    await user.click(getIdleSubmit());
+    await user.click(queries.getIdleSubmit());
   };
   const clickToggle = async (label: string) => {
-    await user.click(getToggle(label));
+    await user.click(queries.getToggle(label));
   };
 
   return {
+    ...queries,
     clickToggle,
     fillCredentials,
-    findBanner,
-    findText,
-    getIdleSubmit,
-    getPasswordInput,
-    getPendingSubmit,
-    getToggle,
-    getUsernameInput,
     submit,
     typeUsername,
     typeWithoutClicking,

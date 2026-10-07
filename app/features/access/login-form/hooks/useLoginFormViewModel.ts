@@ -5,14 +5,17 @@ import type { LoginFormViewModel } from "../models/LoginFormViewModel.interface"
 import { resolveSignInFieldErrors } from "../utils/resolveSignInFieldErrors";
 import { useLoginFormFocus } from "./useLoginFormFocus";
 import { useLoginFormValues } from "./useLoginFormValues";
+import { useSignInFallback } from "./useSignInFallback";
 import { useSignInSubmission } from "./useSignInSubmission";
 
 export const useLoginFormViewModel =
   (): LoginFormViewModel => {
     const submission = useSignInSubmission();
-    const form = useLoginFormValues(
-      submission.clearServerError
-    );
+    const fallback = useSignInFallback();
+    const form = useLoginFormValues(() => {
+      fallback.dismiss();
+      submission.clearServerError();
+    });
 
     const validationError = submission.hasSubmitted
       ? validateSignInCredentials(form.values)
@@ -22,11 +25,14 @@ export const useLoginFormViewModel =
       event
     ) => {
       event.preventDefault();
+      fallback.dismiss();
       submission.submit(form.values);
     };
 
     const fieldErrors = resolveSignInFieldErrors(
-      submission.serverError ?? validationError
+      submission.serverError ??
+        validationError ??
+        fallback.error
     );
 
     const fieldRefs = useLoginFormFocus(
@@ -37,6 +43,7 @@ export const useLoginFormViewModel =
     return {
       fieldErrors,
       fieldRefs,
+      formAction: fallback.action,
       handlePasswordChange: form.handlePasswordChange,
       handleSubmit,
       handleUsernameChange: form.handleUsernameChange,

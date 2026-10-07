@@ -4,10 +4,12 @@ import type { LoginFormFieldChangeHandler } from "./LoginFormFieldChangeHandler.
 import type { LoginFormSubmitHandler } from "./LoginFormSubmitHandler.type";
 import type { LoginFormFieldRefs } from "./LoginFormFieldRefs.type";
 import type { SignInFieldErrors } from "./SignInFieldErrors.type";
+import type { SignInFormAction } from "./SignInFormAction.type";
 
 export interface LoginFormViewModel {
   fieldErrors: SignInFieldErrors;
   fieldRefs: LoginFormFieldRefs;
+  formAction: SignInFormAction;
   handlePasswordChange: LoginFormFieldChangeHandler;
   handleSubmit: LoginFormSubmitHandler;
   handleUsernameChange: LoginFormFieldChangeHandler;
