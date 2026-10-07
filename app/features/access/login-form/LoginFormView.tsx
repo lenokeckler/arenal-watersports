@@ -13,6 +13,7 @@ import { LOGIN_FORM_CLASS } from "./styles/LoginForm.styles";
 const LoginFormView = (): React.JSX.Element => {
   const {
     fieldErrors,
+    formAction,
     handlePasswordChange,
     handleSubmit,
     handleUsernameChange,
@@ -29,6 +30,7 @@ const LoginFormView = (): React.JSX.Element => {
       />
       <form
         noValidate
+        action={formAction}
         onSubmit={handleSubmit}
         className={LOGIN_FORM_CLASS}
       >

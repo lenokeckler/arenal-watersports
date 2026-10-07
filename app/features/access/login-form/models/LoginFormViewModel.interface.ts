@@ -3,9 +3,11 @@ import type { SignInCredentials } from "@/app/utils/sign-in/models/SignInCredent
 import type { LoginFormFieldChangeHandler } from "./LoginFormFieldChangeHandler.type";
 import type { LoginFormSubmitHandler } from "./LoginFormSubmitHandler.type";
 import type { SignInFieldErrors } from "./SignInFieldErrors.type";
+import type { SignInFormAction } from "./SignInFormAction.type";
 
 export interface LoginFormViewModel {
   fieldErrors: SignInFieldErrors;
+  formAction: SignInFormAction;
   handlePasswordChange: LoginFormFieldChangeHandler;
   handleSubmit: LoginFormSubmitHandler;
   handleUsernameChange: LoginFormFieldChangeHandler;
