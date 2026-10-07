@@ -11,7 +11,6 @@ import {
   SIGN_IN_FIELD,
 } from "@/app/constants";
 import { createSignInError } from "@/app/utils/sign-in/createSignInError";
-import type { SignInError } from "@/app/utils/sign-in/models/SignInError.interface";
 import { submitSignIn } from "../actions/submitSignIn";
 import { useLoginFormViewModel } from "../hooks/useLoginFormViewModel";
 import { createChangeEvent } from "./createLoginFormEvents";
@@ -23,10 +22,8 @@ import {
   NETWORK_FAILURE_MESSAGE,
   PARTIAL_PASSWORD,
 } from "./useLoginFormViewModel.constants";
-import {
-  SIGN_IN_CALL_COUNT,
-  SUBMISSION_INDEX,
-} from "./SignInSubmissionCount.constants";
+import { deferSignInResult } from "./deferSignInResult";
+import { SIGN_IN_CALL_COUNT } from "./SignInSubmissionCount.constants";
 
 vi.mock("../actions/submitSignIn", () => ({
   submitSignIn: vi.fn(),
@@ -38,12 +35,9 @@ describe("useLoginFormViewModel stale results", () => {
   });
 
   it("drops a server error that arrives after the user edited a field", async () => {
-    let resolveAction: (error: SignInError) => void = () =>
-      undefined;
+    const pendingSignIn = deferSignInResult();
     vi.mocked(submitSignIn).mockReturnValue(
-      new Promise((resolve) => {
-        resolveAction = resolve;
-      })
+      pendingSignIn.promise
     );
     const { result } = renderHook(useLoginFormViewModel);
     fillValidCredentials(result);
@@ -56,7 +50,7 @@ describe("useLoginFormViewModel stale results", () => {
     });
     await act(() =>
       Promise.resolve(
-        resolveAction(
+        pendingSignIn.resolve(
           createSignInError(
             SIGN_IN_ERROR_CODE.INVALID_CREDENTIALS
           )
@@ -70,21 +64,18 @@ describe("useLoginFormViewModel stale results", () => {
   });
 
   it("shows the result of a new submit after an edit and a resolved stale one", async () => {
-    const resolvers: Array<(error: SignInError) => void> =
-      [];
-    vi.mocked(submitSignIn).mockImplementation(
-      () =>
-        new Promise((resolve) => {
-          resolvers.push(resolve);
-        })
-    );
+    const staleSignIn = deferSignInResult();
+    const newSignIn = deferSignInResult();
+    vi.mocked(submitSignIn)
+      .mockReturnValueOnce(staleSignIn.promise)
+      .mockReturnValueOnce(newSignIn.promise);
     const { result } = renderHook(useLoginFormViewModel);
     fillValidCredentials(result);
 
     await submitForm(result);
     fillValidCredentials(result);
     await act(async () => {
-      resolvers[SUBMISSION_INDEX.FIRST](
+      staleSignIn.resolve(
         createSignInError(SIGN_IN_ERROR_CODE.UNKNOWN)
       );
       await Promise.resolve();
@@ -92,7 +83,7 @@ describe("useLoginFormViewModel stale results", () => {
     await submitForm(result);
     await act(() =>
       Promise.resolve(
-        resolvers[SUBMISSION_INDEX.SECOND](
+        newSignIn.resolve(
           createSignInError(
             SIGN_IN_ERROR_CODE.INVALID_CREDENTIALS
           )

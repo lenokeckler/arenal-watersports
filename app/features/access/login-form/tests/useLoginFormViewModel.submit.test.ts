@@ -11,7 +11,6 @@ import {
   SIGN_IN_FIELD,
 } from "@/app/constants";
 import { createSignInError } from "@/app/utils/sign-in/createSignInError";
-import type { SignInError } from "@/app/utils/sign-in/models/SignInError.interface";
 import { DEFAULT_SIGN_IN_CREDENTIALS } from "@/app/utils/sign-in/tests/signIn.constants";
 import { submitSignIn } from "../actions/submitSignIn";
 import { SIGN_IN_ERROR_COPY } from "../constants/SignInErrorCopy.constants";
@@ -22,7 +21,7 @@ import {
   submitForm,
 } from "./loginFormActions";
 import { PARTIAL_PASSWORD } from "./useLoginFormViewModel.constants";
-import { SIGN_IN_CALL_COUNT } from "./SignInSubmissionCount.constants";
+import { deferSignInResult } from "./deferSignInResult";
 
 vi.mock("../actions/submitSignIn", () => ({
   submitSignIn: vi.fn(),
@@ -83,12 +82,9 @@ describe("useLoginFormViewModel submit", () => {
   });
 
   it("ignores a second submit while the first is pending", async () => {
-    let resolveAction: (error: SignInError) => void = () =>
-      undefined;
+    const pendingSignIn = deferSignInResult();
     vi.mocked(submitSignIn).mockReturnValue(
-      new Promise((resolve) => {
-        resolveAction = resolve;
-      })
+      pendingSignIn.promise
     );
     const { result } = renderHook(useLoginFormViewModel);
     fillValidCredentials(result);
@@ -97,12 +93,10 @@ describe("useLoginFormViewModel submit", () => {
     await submitForm(result);
 
     expect(result.current.isPending).toBe(true);
-    expect(submitSignIn).toHaveBeenCalledTimes(
-      SIGN_IN_CALL_COUNT.ONE_SUBMIT
-    );
+    expect(submitSignIn).toHaveBeenCalledOnce();
 
     await act(async () => {
-      resolveAction(
+      pendingSignIn.resolve(
         createSignInError(SIGN_IN_ERROR_CODE.UNKNOWN)
       );
       await Promise.resolve();

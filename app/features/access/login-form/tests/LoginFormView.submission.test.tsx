@@ -12,7 +12,6 @@ import { SIGN_IN_ERROR_COPY } from "../constants/SignInErrorCopy.constants";
 import LoginFormView from "../LoginFormView";
 import { createLoginFormViewPage } from "./LoginFormView.page";
 import { INVALID_CREDENTIALS_ERROR } from "./submitSignIn.constants";
-import { SIGN_IN_CALL_COUNT } from "./SignInSubmissionCount.constants";
 
 vi.mock("../actions/submitSignIn", () => ({
   submitSignIn: vi.fn(),
@@ -38,8 +37,6 @@ describe("LoginFormView submission", () => {
         SIGN_IN_ERROR_COPY[INVALID_CREDENTIALS_ERROR.code]
       )
     ).toBeInTheDocument();
-    expect(submitSignIn).toHaveBeenCalledTimes(
-      SIGN_IN_CALL_COUNT.ONE_SUBMIT
-    );
+    expect(submitSignIn).toHaveBeenCalledOnce();
   });
 });
