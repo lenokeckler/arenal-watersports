@@ -102,13 +102,13 @@ US-ACC-01, as written in `docs/proyecto/historias-de-usuario.md` after #8:
 US-ACC-02:
 
 - [x] Usuario no registrado. — shows `invalidCredentials`, the same text as a wrong password;
-      `signInWithUsername.recording.test.ts` and `e2e/specs/login-errors.e2e.ts`.
+      `signInWithUsername.recording.test.ts`. The end to end check arrives with ACC-01.02.05.
 - [x] Contraseña incorrecta. — `invalidCredentials` under the password; `e2e/specs/login.e2e.ts`.
 - [x] Cuenta bloqueada por intentos fallidos. — `accountBlockedByAttempts` in the banner;
-      `mapSignInAuthError.test.ts` and `e2e/specs/login-errors.e2e.ts`.
+      `mapSignInAuthError.test.ts`. The end to end check arrives with ACC-01.02.05.
 - [x] Cuenta bloqueada por administración. — `accountBlockedByAdministration` in the banner;
-      `mapSignInAuthError.test.ts` and `e2e/specs/login-errors.e2e.ts`.
+      `mapSignInAuthError.test.ts`. The end to end check arrives with ACC-01.02.05.
 - [x] Sesión cerrada por inactividad. — `sessionInactive` from `?reason=inactive`;
-      `LoginForm.test.tsx`, `LoginFormView.notice.test.tsx` and `e2e/specs/login-errors.e2e.ts`.
+      `LoginForm.test.tsx` and `LoginFormView.notice.test.tsx`.
 - [x] El mensaje nunca revela cuáles nombres de usuario existen en el sistema. — one text for an
       unknown user and a wrong password; the blocked messages need the correct password.
