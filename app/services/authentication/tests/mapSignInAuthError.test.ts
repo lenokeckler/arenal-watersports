@@ -17,6 +17,9 @@ import {
 import {
   INVALID_CREDENTIALS_ERROR,
   NETWORK_ERROR,
+  NON_API_ERROR,
+  NON_API_ERROR_WITH_HOOK_REJECTION,
+  NON_API_ERROR_WITH_INVALID_CREDENTIALS_CODE,
   RATE_LIMIT_BY_CODE_ERROR,
   RATE_LIMIT_BY_STATUS_ERROR,
   SERVER_ERROR,
@@ -106,5 +109,22 @@ describe("mapSignInAuthError", () => {
         mapSignInAuthError(UNKNOWN_TOKEN_ERROR)
       )
     ).not.toContain(UNKNOWN_TOKEN_MESSAGE);
+  });
+
+  it.each([
+    ["an unclassified error", NON_API_ERROR],
+    [
+      "a non-API error carrying the invalid credentials code",
+      NON_API_ERROR_WITH_INVALID_CREDENTIALS_CODE,
+    ],
+    [
+      "a non-API error carrying a hook rejection",
+      NON_API_ERROR_WITH_HOOK_REJECTION,
+    ],
+  ])("maps %s to unknown", (_name, error) => {
+    expect(mapSignInAuthError(error)).toEqual({
+      code: SIGN_IN_ERROR_CODE.UNKNOWN,
+      field: SIGN_IN_FIELD.FORM,
+    });
   });
 });
