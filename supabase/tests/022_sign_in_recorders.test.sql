@@ -1,5 +1,5 @@
 begin;
-select plan(17);
+select plan(20);
 
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local'),
@@ -106,7 +106,20 @@ select is(
   'un ingreso exitoso no toca una cuenta bloqueada'
 );
 
+update workers set failed_attempts = 4 where username = 'retirada';
+select record_successful_sign_in('55555555-5555-5555-5555-555555555555');
+select is(
+  (select failed_attempts::integer from workers where username = 'retirada'),
+  4,
+  'un ingreso exitoso no reinicia el contador de un trabajador retirado'
+);
+
 set local role anon;
+select throws_ok(
+  $$ select sign_in_attempt_limit() $$,
+  '42501', null,
+  'una sesion anonima no ejecuta la lectura del limite de intentos'
+);
 select throws_ok(
   $$ select record_failed_sign_in('ismael') $$,
   '42501', null,
@@ -119,6 +132,11 @@ select throws_ok(
   $$ select record_failed_sign_in('ismael') $$,
   '42501', null,
   'un trabajador autenticado no ejecuta el registro de intentos fallidos'
+);
+select throws_ok(
+  $$ select sign_in_attempt_limit() $$,
+  '42501', null,
+  'un trabajador autenticado no ejecuta la lectura del limite de intentos'
 );
 select throws_ok(
   $$ select record_successful_sign_in('33333333-3333-3333-3333-333333333333') $$,

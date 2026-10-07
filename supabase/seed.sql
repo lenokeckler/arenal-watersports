@@ -67,7 +67,7 @@ insert into workers
    must_change_password, created_by)
 values
   ('00000000-0000-0000-0000-000000000003', 'bloqueo_intentos', 'Bloqueo por intentos',
-   'operaciones', 'blocked', 'failed_attempts', 10, false, '00000000-0000-0000-0000-000000000001'),
+   'operaciones', 'blocked', 'failed_attempts', sign_in_attempt_limit(), false, '00000000-0000-0000-0000-000000000001'),
   ('00000000-0000-0000-0000-000000000004', 'bloqueo_admin', 'Bloqueo por administración',
    'operaciones', 'blocked', 'administration', 0, false, '00000000-0000-0000-0000-000000000001')
 on conflict do nothing;

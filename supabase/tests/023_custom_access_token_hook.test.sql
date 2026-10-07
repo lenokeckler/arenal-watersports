@@ -1,5 +1,5 @@
 begin;
-select plan(12);
+select plan(15);
 
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local'),
@@ -91,8 +91,23 @@ select ok(
   'el servidor de autenticacion ejecuta el gancho del token'
 );
 select ok(
-  not has_column_privilege('supabase_auth_admin', 'public.workers', 'personal_email', 'select'),
-  'el servidor de autenticacion no lee el correo personal'
+  has_schema_privilege('supabase_auth_admin', 'public', 'usage'),
+  'el servidor de autenticacion usa el esquema publico'
+);
+select ok(
+  has_column_privilege('supabase_auth_admin', 'public.workers', 'status', 'select')
+    and has_column_privilege('supabase_auth_admin', 'public.workers', 'blocked_reason', 'select')
+    and has_column_privilege('supabase_auth_admin', 'public.workers', 'deleted_at', 'select'),
+  'el servidor de autenticacion lee estado, motivo de bloqueo y fecha de retiro'
+);
+select ok(
+  not has_column_privilege('supabase_auth_admin', 'public.workers', 'personal_email', 'select')
+    and not has_column_privilege('supabase_auth_admin', 'public.workers', 'national_id', 'select'),
+  'el servidor de autenticacion no lee el correo personal ni la cedula'
+);
+select policy_roles_are(
+  'public', 'workers', 'workers_select_token_hook', array['supabase_auth_admin'],
+  'la politica de lectura del gancho solo aplica al servidor de autenticacion'
 );
 
 set local role authenticated;
