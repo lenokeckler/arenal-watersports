@@ -22,6 +22,7 @@ import {
   submitForm,
 } from "./loginFormActions";
 import { PARTIAL_PASSWORD } from "./useLoginFormViewModel.constants";
+import { SIGN_IN_CALL_COUNT } from "./SignInSubmissionCount.constants";
 
 vi.mock("../actions/submitSignIn", () => ({
   submitSignIn: vi.fn(),
@@ -96,7 +97,9 @@ describe("useLoginFormViewModel submit", () => {
     await submitForm(result);
 
     expect(result.current.isPending).toBe(true);
-    expect(submitSignIn).toHaveBeenCalledTimes(1);
+    expect(submitSignIn).toHaveBeenCalledTimes(
+      SIGN_IN_CALL_COUNT.ONE_SUBMIT
+    );
 
     await act(async () => {
       resolveAction(
