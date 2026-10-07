@@ -6,7 +6,10 @@ import {
   it,
   vi,
 } from "vitest";
-import { SIGN_IN_FIELD } from "@/app/constants";
+import {
+  SIGN_IN_ERROR_CODE,
+  SIGN_IN_FIELD,
+} from "@/app/constants";
 import { submitSignIn } from "../actions/submitSignIn";
 import { SIGN_IN_ERROR_COPY } from "../constants/SignInErrorCopy.constants";
 import { useLoginFormViewModel } from "../hooks/useLoginFormViewModel";
@@ -61,6 +64,10 @@ describe("useLoginFormViewModel notice", () => {
     expect(
       result.current.fieldErrors[SIGN_IN_FIELD.FORM]
     ).toBeNull();
-    expect(result.current.usernameError).toBeDefined();
+    expect(result.current.usernameError).toBe(
+      SIGN_IN_ERROR_COPY[
+        SIGN_IN_ERROR_CODE.USERNAME_REQUIRED
+      ]
+    );
   });
 });

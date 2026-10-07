@@ -1,10 +1,11 @@
+import { resolveSignInNotice } from "@/app/utils/sign-in/resolveSignInNotice";
 import LoginFormView from "./LoginFormView";
-import type { LoginFormOptions } from "./models/LoginFormOptions.interface";
+import type { LoginFormProps } from "./models/LoginFormProps.interface";
 
 const LoginForm = ({
-  notice,
-}: LoginFormOptions): React.JSX.Element => (
-  <LoginFormView notice={notice} />
+  reason,
+}: LoginFormProps): React.JSX.Element => (
+  <LoginFormView notice={resolveSignInNotice(reason)} />
 );
 
 export default LoginForm;

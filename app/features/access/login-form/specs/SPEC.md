@@ -46,14 +46,14 @@ next to the field that caused it.
   rejection only with status 403, code `unknown` and a message that is exactly one token of
   `SIGN_IN_HOOK_REJECTION`. A retired worker (`account_unavailable`) shows `invalidCredentials`.
   The upstream message is never forwarded.
-- `/access/login?reason=inactive` shows `sessionInactive` in the banner. The page resolves the
-  param with `resolveSignInNotice` against `SIGN_IN_NOTICE_REASON`; arrays, empty values, other
-  case and any other text show nothing, and URL text is never rendered.
+- `/access/login?reason=inactive` shows `sessionInactive` in the banner. The page passes the
+  raw param to `LoginForm`, which resolves it with `resolveSignInNotice` against
+  `SIGN_IN_NOTICE_REASON`; arrays, empty values, other case and any other text show nothing, and URL text is never rendered.
 - The notice disappears at the first submit, and a server, validation or posted-form error always
   wins over it.
 - The server records a failed attempt only when Supabase answers `invalid_credentials`, with the
   same call for any username, and the end of the streak on a success. A recorder failure returns
-  `unknown`.
+  `unknown`, and when the success recorder fails the session just opened is closed.
 
 ## Focus after a submit
 
@@ -101,10 +101,14 @@ US-ACC-01, as written in `docs/proyecto/historias-de-usuario.md` after #8:
 
 US-ACC-02:
 
-- [x] Usuario no registrado. — shows `invalidCredentials`, the same text as a wrong password.
-- [x] Contraseña incorrecta. — `invalidCredentials` under the password.
-- [x] Cuenta bloqueada por intentos fallidos. — `accountBlockedByAttempts` in the banner.
-- [x] Cuenta bloqueada por administración. — `accountBlockedByAdministration` in the banner.
-- [x] Sesión cerrada por inactividad. — `sessionInactive` from `?reason=inactive`.
+- [x] Usuario no registrado. — shows `invalidCredentials`, the same text as a wrong password;
+      `signInWithUsername.recording.test.ts` and `e2e/specs/login-errors.e2e.ts`.
+- [x] Contraseña incorrecta. — `invalidCredentials` under the password; `e2e/specs/login.e2e.ts`.
+- [x] Cuenta bloqueada por intentos fallidos. — `accountBlockedByAttempts` in the banner;
+      `mapSignInAuthError.test.ts` and `e2e/specs/login-errors.e2e.ts`.
+- [x] Cuenta bloqueada por administración. — `accountBlockedByAdministration` in the banner;
+      `mapSignInAuthError.test.ts` and `e2e/specs/login-errors.e2e.ts`.
+- [x] Sesión cerrada por inactividad. — `sessionInactive` from `?reason=inactive`;
+      `LoginForm.test.tsx`, `LoginFormView.notice.test.tsx` and `e2e/specs/login-errors.e2e.ts`.
 - [x] El mensaje nunca revela cuáles nombres de usuario existen en el sistema. — one text for an
       unknown user and a wrong password; the blocked messages need the correct password.
