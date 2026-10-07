@@ -7,7 +7,11 @@ import {
   vi,
 } from "vitest";
 import { refreshSupabaseSession } from "../refreshSession";
-import { SESSION_FIXTURE } from "./refreshSession.constants";
+import {
+  SERVER_CLIENT_CALL,
+  SESSION_FIXTURE,
+} from "./refreshSession.constants";
+import type { SessionCookieAdapter } from "./SessionCookieAdapter.type";
 
 const { getClaims, createServerClient } = vi.hoisted(
   () => ({
@@ -17,17 +21,6 @@ const { getClaims, createServerClient } = vi.hoisted(
 );
 
 vi.mock("@supabase/ssr", () => ({ createServerClient }));
-
-type CookieAdapter = {
-  getAll: () => { name: string; value: string }[];
-  setAll: (
-    cookies: {
-      name: string;
-      value: string;
-      options: Record<string, unknown>;
-    }[]
-  ) => void;
-};
 
 const buildRequest = (): NextRequest =>
   new NextRequest(
@@ -39,8 +32,10 @@ const buildRequest = (): NextRequest =>
     }
   );
 
-const capturedCookies = (): CookieAdapter =>
-  createServerClient.mock.calls[0][2].cookies;
+const capturedCookies = (): SessionCookieAdapter =>
+  createServerClient.mock.calls[SERVER_CLIENT_CALL.FIRST][
+    SERVER_CLIENT_CALL.OPTIONS_ARGUMENT
+  ].cookies;
 
 describe("refreshSupabaseSession", () => {
   beforeEach(() => {
