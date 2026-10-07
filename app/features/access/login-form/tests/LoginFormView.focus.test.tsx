@@ -15,6 +15,7 @@ import {
   NETWORK_ERROR,
 } from "./LoginFormView.constants";
 import { INVALID_CREDENTIALS_ERROR } from "./submitSignIn.constants";
+import { deferSignInResult } from "./deferSignInResult";
 import { renderLoginFormView as renderView } from "./renderLoginFormView";
 import { SIGN_IN_CALL_COUNT } from "./SignInSubmissionCount.constants";
 
@@ -111,20 +112,16 @@ describe("LoginFormView focus", () => {
   });
 
   it("does not move the focus when the result is stale", async () => {
-    let resolveSignIn: (
-      error: typeof INVALID_CREDENTIALS_ERROR
-    ) => void = () => undefined;
+    const staleSignIn = deferSignInResult();
     vi.mocked(submitSignIn).mockReturnValue(
-      new Promise((resolve) => {
-        resolveSignIn = resolve;
-      })
+      staleSignIn.promise
     );
     const page = renderView();
 
     await page.fillCredentials(DEFAULT_SIGN_IN_CREDENTIALS);
     await page.submit();
     await page.typeUsername(EXTRA_USERNAME_TEXT);
-    resolveSignIn(INVALID_CREDENTIALS_ERROR);
+    staleSignIn.resolve(INVALID_CREDENTIALS_ERROR);
 
     await waitFor(() =>
       expect(page.getIdleSubmit()).toBeInTheDocument()
