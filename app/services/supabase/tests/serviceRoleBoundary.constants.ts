@@ -14,6 +14,16 @@ export const SERVICES_PATH_PATTERN = /^services\//;
 export const SERVICE_ROLE_REFERENCE_PATTERN =
   /createServiceRoleSupabaseClient|supabase\/serviceRole/;
 
+export const SERVICE_ROLE_KEY_PATTERN = /SERVICE_ROLE_KEY/;
+
+export const SERVICE_ROLE_KEY_ALLOWED_FILES = [
+  "constants/supabase/Supabase.constants.ts",
+  "services/supabase/serviceRole.ts",
+];
+
+export const CLIENT_SIDE_PATH_PATTERN =
+  /^features\/.+\/(hooks|components)\/|\.tsx$/;
+
 export const CLIENT_DIRECTIVE_PATTERN =
   /^\s*["']use client["']/;
 

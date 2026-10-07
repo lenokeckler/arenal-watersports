@@ -11,7 +11,7 @@ const POSIX_SEPARATOR = "/";
 export const listProductionSources = (): string[] =>
   readdirSync(APP_DIRECTORY, { recursive: true })
     .map((file) =>
-      String(file).split(path.sep).join(POSIX_SEPARATOR)
+      file.split(path.sep).join(POSIX_SEPARATOR)
     )
     .filter(
       (file) =>

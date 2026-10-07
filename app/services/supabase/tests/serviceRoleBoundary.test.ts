@@ -5,6 +5,9 @@ import { listProductionSources } from "./listProductionSources";
 import {
   APP_DIRECTORY,
   CLIENT_DIRECTIVE_PATTERN,
+  CLIENT_SIDE_PATH_PATTERN,
+  SERVICE_ROLE_KEY_ALLOWED_FILES,
+  SERVICE_ROLE_KEY_PATTERN,
   SERVICE_ROLE_REFERENCE_PATTERN,
   SERVICES_BARREL_IMPORT_PATTERN,
   SERVICES_PATH_PATTERN,
@@ -30,13 +33,24 @@ describe("service role boundary", () => {
     expect(offenders).toEqual([]);
   });
 
+  it("reads the service role key only where it is declared", () => {
+    const offenders = listProductionSources().filter(
+      (file) =>
+        !SERVICE_ROLE_KEY_ALLOWED_FILES.includes(file) &&
+        SERVICE_ROLE_KEY_PATTERN.test(readSource(file))
+    );
+
+    expect(offenders).toEqual([]);
+  });
+
   it("never imports a services barrel from a client module", () => {
     const offenders = listProductionSources().filter(
       (file) => {
         const source = readSource(file);
 
         return (
-          CLIENT_DIRECTIVE_PATTERN.test(source) &&
+          (CLIENT_SIDE_PATH_PATTERN.test(file) ||
+            CLIENT_DIRECTIVE_PATTERN.test(source)) &&
           SERVICES_BARREL_IMPORT_PATTERN.test(source)
         );
       }
