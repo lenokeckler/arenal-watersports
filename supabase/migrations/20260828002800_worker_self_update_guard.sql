@@ -7,6 +7,8 @@ declare
   self_editable_columns constant text[] := array['personal_email', 'last_work_area'];
   update_refused_message constant text :=
     'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo';
+  retired_refused_message constant text :=
+    'Un trabajador eliminado no cambia nada en su cuenta';
   insert_refused_message constant text :=
     'Un guia externo nuevo nace activo, sin bloqueo y con cambio de contrasena pendiente';
 begin
@@ -15,6 +17,9 @@ begin
   end if;
 
   if tg_op = 'UPDATE' then
+    if old.deleted_at is not null then
+      raise exception '%', retired_refused_message using errcode = '42501';
+    end if;
     if (to_jsonb(new) - self_editable_columns) is distinct from (to_jsonb(old) - self_editable_columns) then
       raise exception '%', update_refused_message using errcode = '42501';
     end if;
