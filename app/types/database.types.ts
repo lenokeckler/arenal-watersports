@@ -1276,7 +1276,7 @@ export type Database = {
           created_by: string;
           dispatched_at: string;
           duration_minutes: number;
-          ends_at?: string | null;
+          ends_at?: never;
           extra_time_minutes?: number;
           id?: string;
           reservation_id: string;
@@ -1290,7 +1290,7 @@ export type Database = {
           created_by?: string;
           dispatched_at?: string;
           duration_minutes?: number;
-          ends_at?: string | null;
+          ends_at?: never;
           extra_time_minutes?: number;
           id?: string;
           reservation_id?: string;
@@ -1736,7 +1736,7 @@ export type Database = {
           customer_name: string;
           dispatched_at?: string | null;
           duration_minutes: number;
-          ends_at?: string | null;
+          ends_at?: never;
           extra_time_minutes?: number;
           id?: string;
           parent_reservation_id?: string | null;
@@ -1757,7 +1757,7 @@ export type Database = {
           customer_name?: string;
           dispatched_at?: string | null;
           duration_minutes?: number;
-          ends_at?: string | null;
+          ends_at?: never;
           extra_time_minutes?: number;
           id?: string;
           parent_reservation_id?: string | null;
@@ -2079,6 +2079,9 @@ export type Database = {
       workers: {
         Row: {
           base_role: Database["public"]["Enums"]["work_area"];
+          blocked_reason:
+            | Database["public"]["Enums"]["worker_blocked_reason"]
+            | null;
           created_at: string;
           created_by: string | null;
           deleted_at: string | null;
@@ -2099,6 +2102,9 @@ export type Database = {
         };
         Insert: {
           base_role: Database["public"]["Enums"]["work_area"];
+          blocked_reason?:
+            | Database["public"]["Enums"]["worker_blocked_reason"]
+            | null;
           created_at?: string;
           created_by?: string | null;
           deleted_at?: string | null;
@@ -2119,6 +2125,9 @@ export type Database = {
         };
         Update: {
           base_role?: Database["public"]["Enums"]["work_area"];
+          blocked_reason?:
+            | Database["public"]["Enums"]["worker_blocked_reason"]
+            | null;
           created_at?: string;
           created_by?: string | null;
           deleted_at?: string | null;
@@ -2425,6 +2434,10 @@ export type Database = {
           usable: number;
         }[];
       };
+      custom_access_token_hook: {
+        Args: { event: Json };
+        Returns: Json;
+      };
       has_area: {
         Args: {
           target: Database["public"]["Enums"]["work_area"];
@@ -2437,14 +2450,29 @@ export type Database = {
         };
         Returns: boolean;
       };
-      is_admin: { Args: never; Returns: boolean };
+      is_admin: {
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
       next_reservation_code: {
-        Args: never;
+        Args: Record<PropertyKey, never>;
         Returns: string;
       };
       purge_expired_history: {
-        Args: never;
+        Args: Record<PropertyKey, never>;
         Returns: undefined;
+      };
+      record_failed_sign_in: {
+        Args: { p_username: string };
+        Returns: undefined;
+      };
+      record_successful_sign_in: {
+        Args: { p_user_id: string };
+        Returns: undefined;
+      };
+      sign_in_attempt_limit: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
       };
       unit_conflicts: {
         Args: {
@@ -2498,6 +2526,8 @@ export type Database = {
       usage_metric: "engine_hours" | "kilometers";
       work_area:
         "administracion" | "reservas" | "operaciones";
+      worker_blocked_reason:
+        "failed_attempts" | "administration";
       worker_mark:
         | "guia"
         | "encargado_general"
@@ -2686,6 +2716,10 @@ export const Constants = {
         "administracion",
         "reservas",
         "operaciones",
+      ],
+      worker_blocked_reason: [
+        "failed_attempts",
+        "administration",
       ],
       worker_mark: [
         "guia",
