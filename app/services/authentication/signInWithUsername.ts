@@ -20,6 +20,20 @@ const rejectSignIn = async (
   return { ok: false, error: mapSignInAuthError(error) };
 };
 
+const recordSuccessOrSignOut = async (
+  supabase: Awaited<
+    ReturnType<typeof createServerSupabaseClient>
+  >,
+  userId: string
+): Promise<void> => {
+  try {
+    await recordSuccessfulSignIn(userId);
+  } catch (error) {
+    await supabase.auth.signOut();
+    throw error;
+  }
+};
+
 export const signInWithUsername = async (
   credentials: SignInCredentials
 ): Promise<SignInResult> => {
@@ -41,7 +55,7 @@ export const signInWithUsername = async (
     return rejectSignIn(error, credentials.username);
   }
 
-  await recordSuccessfulSignIn(data.user.id);
+  await recordSuccessOrSignOut(supabase, data.user.id);
 
   return { ok: true };
 };

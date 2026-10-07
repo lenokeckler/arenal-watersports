@@ -7,6 +7,7 @@ import {
 } from "vitest";
 import { SIGN_IN_ERROR_CODE } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
+import { recordFailedSignIn } from "../recordFailedSignIn";
 import { signInWithUsername } from "../signInWithUsername";
 import {
   mockSignInClient,
@@ -20,17 +21,20 @@ import {
   UNNORMALIZED_USERNAME,
 } from "@/app/utils/sign-in/tests/signIn.constants";
 
-vi.mock("@/app/services/supabase", () => ({
-  createServerSupabaseClient: vi.fn(),
-}));
+vi.mock(
+  "@/app/services/supabase",
+  () => import("./mocks/supabaseServices.mock")
+);
 
-vi.mock("../recordFailedSignIn", () => ({
-  recordFailedSignIn: vi.fn(),
-}));
+vi.mock(
+  "../recordFailedSignIn",
+  () => import("./mocks/recordFailedSignIn.mock")
+);
 
-vi.mock("../recordSuccessfulSignIn", () => ({
-  recordSuccessfulSignIn: vi.fn(),
-}));
+vi.mock(
+  "../recordSuccessfulSignIn",
+  () => import("./mocks/recordSuccessfulSignIn.mock")
+);
 
 describe("signInWithUsername", () => {
   beforeEach(() => {
@@ -77,7 +81,7 @@ describe("signInWithUsername", () => {
     });
   });
 
-  it("fails on invalid input without creating a client", async () => {
+  it("never reaches Supabase on invalid input", async () => {
     const result = await signInWithUsername({
       ...DEFAULT_SIGN_IN_CREDENTIALS,
       username: BLANK_USERNAME,
@@ -92,5 +96,6 @@ describe("signInWithUsername", () => {
     expect(
       createServerSupabaseClient
     ).not.toHaveBeenCalled();
+    expect(recordFailedSignIn).not.toHaveBeenCalled();
   });
 });

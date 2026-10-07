@@ -25,17 +25,20 @@ import {
   SIGNED_IN_USER_ID,
 } from "./recordSignIn.constants";
 
-vi.mock("@/app/services/supabase", () => ({
-  createServerSupabaseClient: vi.fn(),
-}));
+vi.mock(
+  "@/app/services/supabase",
+  () => import("./mocks/supabaseServices.mock")
+);
 
-vi.mock("../recordFailedSignIn", () => ({
-  recordFailedSignIn: vi.fn(),
-}));
+vi.mock(
+  "../recordFailedSignIn",
+  () => import("./mocks/recordFailedSignIn.mock")
+);
 
-vi.mock("../recordSuccessfulSignIn", () => ({
-  recordSuccessfulSignIn: vi.fn(),
-}));
+vi.mock(
+  "../recordSuccessfulSignIn",
+  () => import("./mocks/recordSuccessfulSignIn.mock")
+);
 
 describe("signInWithUsername recording", () => {
   beforeEach(() => {
