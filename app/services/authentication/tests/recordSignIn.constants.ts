@@ -11,3 +11,5 @@ export const RPC_FAILURE = new PostgrestError({
 });
 
 export const OTHER_USERNAME = "someoneelse";
+
+export const SIGN_OUT_FAILURE_MESSAGE = "sign out failed";

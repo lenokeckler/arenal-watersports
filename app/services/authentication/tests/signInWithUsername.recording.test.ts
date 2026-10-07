@@ -10,11 +10,22 @@ import { DEFAULT_SIGN_IN_CREDENTIALS } from "@/app/utils/sign-in/tests/signIn.co
 import { recordFailedSignIn } from "../recordFailedSignIn";
 import { recordSuccessfulSignIn } from "../recordSuccessfulSignIn";
 import { signInWithUsername } from "../signInWithUsername";
-import { BLOCKED_BY_ATTEMPTS_ERROR } from "./hookRejectionErrors.constants";
+import {
+  BLOCKED_BY_ADMINISTRATION_ERROR,
+  BLOCKED_BY_ATTEMPTS_ERROR,
+  TOKEN_WITH_WRONG_CODE_ERROR,
+  TOKEN_WITH_WRONG_STATUS_ERROR,
+  UNAVAILABLE_ERROR,
+  UNKNOWN_TOKEN_ERROR,
+} from "./hookRejectionErrors.constants";
 import {
   INVALID_CREDENTIALS_ERROR,
   NETWORK_ERROR,
+  NON_API_ERROR,
+  NON_API_ERROR_WITH_INVALID_CREDENTIALS_CODE,
   RATE_LIMIT_BY_CODE_ERROR,
+  RATE_LIMIT_BY_STATUS_ERROR,
+  SERVER_ERROR,
 } from "./mapSignInAuthError.constants";
 import {
   mockSignInClient,
@@ -76,9 +87,30 @@ describe("signInWithUsername recording", () => {
   );
 
   it.each([
-    ["a hook rejection", BLOCKED_BY_ATTEMPTS_ERROR],
+    ["a block by attempts", BLOCKED_BY_ATTEMPTS_ERROR],
+    [
+      "a block by administration",
+      BLOCKED_BY_ADMINISTRATION_ERROR,
+    ],
+    ["an unavailable account", UNAVAILABLE_ERROR],
+    ["an unknown hook token", UNKNOWN_TOKEN_ERROR],
+    [
+      "a hook token with the wrong status",
+      TOKEN_WITH_WRONG_STATUS_ERROR,
+    ],
+    [
+      "a hook token with the wrong code",
+      TOKEN_WITH_WRONG_CODE_ERROR,
+    ],
     ["a network error", NETWORK_ERROR],
-    ["a rate limit", RATE_LIMIT_BY_CODE_ERROR],
+    ["a rate limit by code", RATE_LIMIT_BY_CODE_ERROR],
+    ["a rate limit by status", RATE_LIMIT_BY_STATUS_ERROR],
+    ["a server error", SERVER_ERROR],
+    ["an unclassified error", NON_API_ERROR],
+    [
+      "a non-API error carrying the invalid credentials code",
+      NON_API_ERROR_WITH_INVALID_CREDENTIALS_CODE,
+    ],
   ])(
     "does not record a failure for %s",
     async (_name, error) => {
