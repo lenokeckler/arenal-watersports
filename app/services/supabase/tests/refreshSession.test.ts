@@ -7,11 +7,8 @@ import {
   vi,
 } from "vitest";
 import { refreshSupabaseSession } from "../refreshSession";
-import {
-  SERVER_CLIENT_CALL,
-  SESSION_FIXTURE,
-} from "./refreshSession.constants";
-import type { SessionCookieAdapter } from "./SessionCookieAdapter.type";
+import type { CookieMethodsServer } from "@supabase/ssr";
+import { SESSION_FIXTURE } from "./refreshSession.constants";
 
 const { getClaims, createServerClient } = vi.hoisted(
   () => ({
@@ -32,18 +29,18 @@ const buildRequest = (): NextRequest =>
     }
   );
 
-const capturedCookies = (): SessionCookieAdapter =>
-  createServerClient.mock.calls[SERVER_CLIENT_CALL.FIRST][
-    SERVER_CLIENT_CALL.OPTIONS_ARGUMENT
-  ].cookies;
+let sessionCookies: Required<CookieMethodsServer>;
 
 describe("refreshSupabaseSession", () => {
   beforeEach(() => {
     getClaims.mockReset();
     createServerClient.mockReset();
-    createServerClient.mockReturnValue({
-      auth: { getClaims },
-    });
+    createServerClient.mockImplementation(
+      (_url, _key, { cookies }) => {
+        sessionCookies = cookies;
+        return { auth: { getClaims } };
+      }
+    );
     getClaims.mockResolvedValue({
       data: null,
       error: null,
@@ -89,7 +86,7 @@ describe("refreshSupabaseSession", () => {
   it("reads the cookies of the incoming request", async () => {
     await refreshSupabaseSession(buildRequest());
 
-    expect(capturedCookies().getAll()).toEqual([
+    expect(await sessionCookies.getAll()).toEqual([
       expect.objectContaining(
         SESSION_FIXTURE.REQUEST_COOKIE
       ),
@@ -97,11 +94,11 @@ describe("refreshSupabaseSession", () => {
   });
 
   it("writes refreshed cookies to the request and the response", async () => {
-    getClaims.mockImplementation(() => {
-      capturedCookies().setAll([
+    getClaims.mockImplementation(async () => {
+      await sessionCookies.setAll([
         SESSION_FIXTURE.REFRESHED_COOKIE,
       ]);
-      return Promise.resolve({ data: null, error: null });
+      return { data: null, error: null };
     });
     const request = buildRequest();
     const { response } =

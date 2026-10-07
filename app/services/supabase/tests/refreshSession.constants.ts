@@ -13,8 +13,3 @@ export const SESSION_FIXTURE = {
     options: { path: "/" },
   },
 } as const;
-
-export const SERVER_CLIENT_CALL = {
-  FIRST: 0,
-  OPTIONS_ARGUMENT: 2,
-} as const;
