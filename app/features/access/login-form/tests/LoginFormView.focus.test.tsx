@@ -16,6 +16,7 @@ import {
 } from "./LoginFormView.constants";
 import { INVALID_CREDENTIALS_ERROR } from "./submitSignIn.constants";
 import { renderLoginFormView as renderView } from "./renderLoginFormView";
+import { SIGN_IN_CALL_COUNT } from "./SignInSubmissionCount.constants";
 
 vi.mock("../actions/submitSignIn", () => ({
   submitSignIn: vi.fn(),
@@ -104,7 +105,9 @@ describe("LoginFormView focus", () => {
     await waitFor(() =>
       expect(page.getPasswordInput()).toHaveFocus()
     );
-    expect(submitSignIn).toHaveBeenCalledTimes(2);
+    expect(submitSignIn).toHaveBeenCalledTimes(
+      SIGN_IN_CALL_COUNT.TWO_SUBMITS
+    );
   });
 
   it("does not move the focus when the result is stale", async () => {
