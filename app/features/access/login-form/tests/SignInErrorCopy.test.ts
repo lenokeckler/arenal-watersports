@@ -6,15 +6,10 @@ import {
 } from "@/app/constants";
 import { SIGN_IN_ERROR_COPY } from "../constants/SignInErrorCopy.constants";
 import {
+  ACCOUNT_AND_SESSION_CODES,
   GENERIC_CREDENTIALS_COPY,
   NON_USTED_WORDS_PATTERN,
 } from "./SignInErrorCopy.constants";
-
-const ACCOUNT_AND_SESSION_CODES = [
-  SIGN_IN_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION,
-  SIGN_IN_ERROR_CODE.ACCOUNT_BLOCKED_BY_ATTEMPTS,
-  SIGN_IN_ERROR_CODE.SESSION_INACTIVE,
-];
 
 describe("sign-in error copy", () => {
   it.each(Object.values(SIGN_IN_ERROR_CODE))(
