@@ -1,38 +1,18 @@
-import { unstable_rethrow } from "next/navigation";
-import { useRef, useState, useTransition } from "react";
-import { SIGN_IN_ERROR_CODE } from "@/app/constants/access/SignInError.constants";
-import { createSignInError } from "@/app/utils/sign-in/createSignInError";
+import { useState, useTransition } from "react";
 import { validateSignInCredentials } from "@/app/utils/sign-in/validateSignInCredentials";
 import type { SignInCredentials } from "@/app/utils/sign-in/models/SignInCredentials.interface";
-import type { SignInError } from "@/app/utils/sign-in/models/SignInError.interface";
-import type { NullableRef } from "@/app/types";
-import { submitSignIn } from "../actions/submitSignIn";
 import type { SignInSubmission } from "../models/SignInSubmission.interface";
+import { requestSignIn } from "../utils/requestSignIn";
+import { useLatestServerError } from "./useLatestServerError";
+
+const nextAttempt = (attempt: number): number =>
+  attempt + 1;
 
 export const useSignInSubmission = (): SignInSubmission => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [submitAttempt, setSubmitAttempt] = useState(0);
-  const [serverError, setServerError] =
-    useState<NullableRef<SignInError>>(null);
   const [isPending, startTransition] = useTransition();
-
-  const latestSubmissionId = useRef(0);
-
-  const clearServerError = (): void => {
-    latestSubmissionId.current += 1;
-    setServerError(null);
-  };
-
-  const requestSignIn = async (
-    credentials: SignInCredentials
-  ): Promise<SignInError> => {
-    try {
-      return await submitSignIn(credentials);
-    } catch (error) {
-      unstable_rethrow(error);
-      return createSignInError(SIGN_IN_ERROR_CODE.NETWORK);
-    }
-  };
+  const serverError = useLatestServerError();
 
   const submit = (credentials: SignInCredentials): void => {
     if (isPending) {
@@ -40,9 +20,8 @@ export const useSignInSubmission = (): SignInSubmission => {
     }
 
     setHasSubmitted(true);
-    setSubmitAttempt((attempt) => attempt + 1);
-    clearServerError();
-    const submissionId = latestSubmissionId.current;
+    setSubmitAttempt(nextAttempt);
+    const submissionId = serverError.clear();
 
     if (validateSignInCredentials(credentials)) {
       return;
@@ -50,18 +29,17 @@ export const useSignInSubmission = (): SignInSubmission => {
 
     startTransition(async () => {
       const result = await requestSignIn(credentials);
-      if (submissionId === latestSubmissionId.current) {
-        setServerError(result);
-        setSubmitAttempt((attempt) => attempt + 1);
+      if (serverError.settle(submissionId, result)) {
+        setSubmitAttempt(nextAttempt);
       }
     });
   };
 
   return {
-    clearServerError,
+    clearServerError: serverError.clear,
     hasSubmitted,
     isPending,
-    serverError,
+    serverError: serverError.error,
     submit,
     submitAttempt,
   };
