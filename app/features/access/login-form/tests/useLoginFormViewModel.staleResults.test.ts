@@ -23,6 +23,10 @@ import {
   NETWORK_FAILURE_MESSAGE,
   PARTIAL_PASSWORD,
 } from "./useLoginFormViewModel.constants";
+import {
+  SIGN_IN_CALL_COUNT,
+  SUBMISSION_INDEX,
+} from "./SignInSubmissionCount.constants";
 
 vi.mock("../actions/submitSignIn", () => ({
   submitSignIn: vi.fn(),
@@ -80,7 +84,7 @@ describe("useLoginFormViewModel stale results", () => {
     await submitForm(result);
     fillValidCredentials(result);
     await act(async () => {
-      resolvers[0](
+      resolvers[SUBMISSION_INDEX.FIRST](
         createSignInError(SIGN_IN_ERROR_CODE.UNKNOWN)
       );
       await Promise.resolve();
@@ -88,7 +92,7 @@ describe("useLoginFormViewModel stale results", () => {
     await submitForm(result);
     await act(() =>
       Promise.resolve(
-        resolvers[1](
+        resolvers[SUBMISSION_INDEX.SECOND](
           createSignInError(
             SIGN_IN_ERROR_CODE.INVALID_CREDENTIALS
           )
@@ -99,7 +103,9 @@ describe("useLoginFormViewModel stale results", () => {
     expect(
       result.current.fieldErrors[SIGN_IN_FIELD.PASSWORD]
     ).not.toBeNull();
-    expect(submitSignIn).toHaveBeenCalledTimes(2);
+    expect(submitSignIn).toHaveBeenCalledTimes(
+      SIGN_IN_CALL_COUNT.TWO_SUBMITS
+    );
   });
 
   it("drops a network failure that arrives after the user edited a field", async () => {
