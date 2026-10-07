@@ -14,6 +14,8 @@ export const E2E_LOGIN_ACCOUNT = {
 
 export const E2E_LOGIN_WRONG_PASSWORD = "Wrong.2026";
 
+export const E2E_LOGIN_SAMPLE_PASSWORD = "Sample.2026";
+
 export const E2E_LOGIN_COPY = {
   HEADING: ACCESS_SCREEN_COPY.TITLE,
   INVALID_CREDENTIALS:

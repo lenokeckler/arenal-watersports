@@ -1,5 +1,6 @@
 import { Button, InlineText } from "@/app/components";
 import { BUTTON } from "@/app/components/button/constants";
+import { BUTTON_TYPES } from "@/app/constants";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
 import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
 import { LOGIN_FORM_COPY } from "../constants/LoginFormCopy.constants";
@@ -13,7 +14,7 @@ const LoginFormSubmit = ({
   isPending,
 }: LoginFormSubmitProps): React.JSX.Element => (
   <Button
-    type="submit"
+    type={BUTTON_TYPES.SUBMIT}
     variant={BUTTON.BASE}
     aria-disabled={isPending}
     className={resolveLoginFormSubmitClassName(isPending)}

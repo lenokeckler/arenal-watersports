@@ -69,6 +69,12 @@ test.describe("Login", () => {
     );
     await expect(
       loginPage.getPasswordInput()
+    ).toHaveAttribute(
+      E2E_LOGIN_ATTRIBUTE.DESCRIBED_BY,
+      loginPage.getFieldErrorId(E2E_LOGIN_FIELD_ID.PASSWORD)
+    );
+    await expect(
+      loginPage.getPasswordInput()
     ).toBeFocused();
   });
 
