@@ -16,3 +16,7 @@ export const PASSWORD_ERROR_ID = `${SIGN_IN_FIELD.PASSWORD}${FIELD_ERROR_ID_SUFF
 export const NETWORK_ERROR = createSignInError(
   SIGN_IN_ERROR_CODE.NETWORK
 );
+
+export const EXTRA_USERNAME_TEXT = "x";
+export const MULTI_CHARACTER_USERNAME = "admin";
+export const KEYBOARD_TEXT = "abc";

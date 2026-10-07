@@ -6,6 +6,7 @@ import { LOGIN_FORM_COPY } from "../constants/LoginFormCopy.constants";
 import type { LoginFormFieldsProps } from "../models/LoginFormFieldsProps.interface";
 
 const LoginFormFields = ({
+  fieldRefs,
   onPasswordChange,
   onUsernameChange,
   passwordError,
@@ -24,6 +25,7 @@ const LoginFormFields = ({
       value={values.username}
       onChange={onUsernameChange}
       error={usernameError}
+      reference={fieldRefs[SIGN_IN_FIELD.USERNAME]}
       showErrorText
     />
     <FormField
@@ -37,6 +39,7 @@ const LoginFormFields = ({
       value={values.password}
       onChange={onPasswordChange}
       error={passwordError}
+      reference={fieldRefs[SIGN_IN_FIELD.PASSWORD]}
       showErrorText
     />
   </>

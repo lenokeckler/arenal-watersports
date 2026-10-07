@@ -14,6 +14,7 @@ next to the field that caused it.
 - Spanish copy for each sign-in error code.
 - Mapping one `SignInError` to the message shown under its field.
 - Signing in before the page hydrates or with JavaScript off, through a native `POST`.
+- Moving the focus to the field that caused an error after a submit.
 
 ## Out of scope
 
@@ -21,8 +22,7 @@ next to the field that caused it.
   password.
 - The password rules checklist: it is shown only where a new password is chosen (US-ACC-03,
   US-ACC-04, US-ACC-06), moved there by #8.
-- Focus on the first field with an error (`ACC-01.01.04`) and the session proxy
-  (`ACC-01.01.05`).
+- The session proxy (`ACC-01.01.05`).
 
 ## Requirements
 
@@ -34,6 +34,20 @@ next to the field that caused it.
   and the server validates, signs in and redirects, or renders the error under its field.
 - Once hydrated, the submit handler prevents the native post and calls `submitSignIn` itself, so a
   submit reaches the server exactly once.
+
+## Focus after a submit
+
+- Each submit moves the focus to the first field with an error, in the order of
+  `LOGIN_FOCUS_ORDER`: username, then password. `invalidCredentials` is a password error, so it
+  focuses the password.
+- Only a submit moves the focus. Typing, and the revalidation that follows each edit, never do.
+- A second submit that returns the same error focuses that field again.
+- A result dropped as stale (the worker edited a field while it was pending) does not move the
+  focus.
+- A form-wide error (network, unknown) is announced in the banner and leaves the focus where it
+  is.
+- Covered by `tests/LoginFormView.focus.test.tsx` and, in the browser, by the empty-submit and
+  wrong-password cases of `e2e/specs/login.e2e.ts`.
 
 ## Edge cases & errors
 

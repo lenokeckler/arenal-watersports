@@ -1,4 +1,3 @@
-import { render } from "@testing-library/react";
 import {
   beforeEach,
   describe,
@@ -13,8 +12,7 @@ import {
 import { submitSignIn } from "../actions/submitSignIn";
 import { LOGIN_FORM_COPY } from "../constants/LoginFormCopy.constants";
 import { SIGN_IN_ERROR_COPY } from "../constants/SignInErrorCopy.constants";
-import LoginFormView from "../LoginFormView";
-import { createLoginFormViewPage } from "./LoginFormView.page";
+import { renderLoginFormView as renderView } from "./renderLoginFormView";
 import { PASSWORD_TOGGLE_COPY } from "@/app/components/field-factory/constants/PasswordToggleCopy.constants";
 import { DEFAULT_SIGN_IN_CREDENTIALS } from "@/app/utils/sign-in/tests/signIn.constants";
 import {
@@ -35,11 +33,6 @@ import {
 vi.mock("../actions/submitSignIn", () => ({
   submitSignIn: vi.fn(),
 }));
-
-const renderView = () => {
-  render(<LoginFormView />);
-  return createLoginFormViewPage();
-};
 
 describe("LoginFormView", () => {
   beforeEach(() => {

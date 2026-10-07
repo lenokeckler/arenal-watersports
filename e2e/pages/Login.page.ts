@@ -13,31 +13,43 @@ import {
   E2E_LOGIN_COPY,
   E2E_LOGIN_FIELD_ID,
 } from "../constants/E2eLogin.constants";
+import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
 import { getMainRegion } from "../support/mainRegion";
 
+const getFieldErrorId = (field: SignInField): string =>
+  `${field}${FIELD_ERROR_ID_SUFFIX}`;
+
 const createLoginLocators = (page: Page) => {
+  const main = getMainRegion(page);
   const getFieldError = (field: SignInField): Locator =>
-    getMainRegion(page).locator(
-      `#${field}${FIELD_ERROR_ID_SUFFIX}`
-    );
+    main.locator(`#${getFieldErrorId(field)}`);
 
   return {
+    getHeading: (): Locator =>
+      main.getByRole(ARIA_ROLE.HEADING, {
+        level: HEADING_LEVEL.PAGE,
+      }),
     getPasswordError: (): Locator =>
       getFieldError(E2E_LOGIN_FIELD_ID.PASSWORD),
     getPasswordInput: (): Locator =>
-      getMainRegion(page).getByLabel(
-        E2E_LOGIN_COPY.PASSWORD_LABEL,
-        { exact: true }
-      ),
+      main.getByLabel(E2E_LOGIN_COPY.PASSWORD_LABEL, {
+        exact: true,
+      }),
+    getPasswordToggle: (label: string): Locator =>
+      main.getByRole(ARIA_ROLE.BUTTON, {
+        name: label,
+        exact: true,
+      }),
     getSubmitButton: (): Locator =>
-      getMainRegion(page).getByRole(ARIA_ROLE.BUTTON, {
+      main.getByRole(ARIA_ROLE.BUTTON, {
         name: E2E_LOGIN_COPY.SUBMIT,
       }),
+    getUsernameError: (): Locator =>
+      getFieldError(E2E_LOGIN_FIELD_ID.USERNAME),
     getUsernameInput: (): Locator =>
-      getMainRegion(page).getByLabel(
-        E2E_LOGIN_COPY.USERNAME_LABEL,
-        { exact: true }
-      ),
+      main.getByLabel(E2E_LOGIN_COPY.USERNAME_LABEL, {
+        exact: true,
+      }),
   };
 };
 
@@ -54,11 +66,16 @@ export const createLoginPage = (page: Page) => {
       locators.getPasswordInput().fill(password),
     fillUsername: (username: string): Promise<void> =>
       locators.getUsernameInput().fill(username),
+    getFieldErrorId,
     goTo: async (): Promise<void> => {
       await page.goto(PATHS.ACCESS.LOGIN);
     },
     submit: (): Promise<void> =>
       locators.getSubmitButton().click(),
+    togglePasswordVisibility: (
+      currentLabel: string
+    ): Promise<void> =>
+      locators.getPasswordToggle(currentLabel).click(),
     waitForSubmission: (): Promise<Request> =>
       page.waitForRequest(isLoginNavigation),
   };

@@ -10,6 +10,7 @@ import { LOGIN_FORM_CLASS } from "./styles/LoginForm.styles";
 const LoginFormView = (): React.JSX.Element => {
   const {
     fieldErrors,
+    fieldRefs,
     formAction,
     handlePasswordChange,
     handleSubmit,
@@ -32,6 +33,7 @@ const LoginFormView = (): React.JSX.Element => {
         className={LOGIN_FORM_CLASS}
       >
         <LoginFormFields
+          fieldRefs={fieldRefs}
           onPasswordChange={handlePasswordChange}
           onUsernameChange={handleUsernameChange}
           passwordError={passwordError}

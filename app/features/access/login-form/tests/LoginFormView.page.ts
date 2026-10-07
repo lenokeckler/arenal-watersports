@@ -28,6 +28,12 @@ export const createLoginFormViewPage = () => {
     await user.type(queries.getUsernameInput(), username);
     await user.type(queries.getPasswordInput(), password);
   };
+  const typeUsername = async (text: string) => {
+    await user.type(queries.getUsernameInput(), text);
+  };
+  const typeWithoutClicking = async (text: string) => {
+    await user.keyboard(text);
+  };
   const submit = async () => {
     await user.click(queries.getIdleSubmit());
   };
@@ -40,5 +46,7 @@ export const createLoginFormViewPage = () => {
     clickToggle,
     fillCredentials,
     submit,
+    typeUsername,
+    typeWithoutClicking,
   };
 };
