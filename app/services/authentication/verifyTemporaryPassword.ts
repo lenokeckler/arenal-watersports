@@ -1,45 +1,57 @@
-import {
-  SUPABASE_AUTH_OPERATION,
-  SUPABASE_SIGN_OUT_SCOPE,
-} from "@/app/constants";
-import { createStatelessSupabaseClient } from "@/app/services/supabase";
-import type { NullableRef } from "@/app/types";
-import type { FirstSignInError } from "@/app/utils/first-sign-in/models/FirstSignInError.interface";
-import { throwIfSupabaseAuthError } from "@/app/utils/supabase-error/SupabaseAuthError";
-import { toAuthEmail } from "@/app/utils/username/toAuthEmail";
+import type { AuthError } from "@supabase/supabase-js";
+import type { FirstPasswordChangeInput } from "@/app/utils/first-sign-in/models/FirstPasswordChangeInput.interface";
+import { checkWorkerPassword } from "./checkWorkerPassword";
 import { isInvalidCredentialsAuthError } from "./isInvalidCredentialsAuthError";
 import { mapTemporaryPasswordError } from "./mapTemporaryPasswordError";
 import type { FirstSignInWorker } from "./models/FirstSignInWorker.interface";
+import type { TemporaryPasswordVerification } from "./models/TemporaryPasswordVerification.interface";
 import { recordFailedSignIn } from "./recordFailedSignIn";
+
+const confirmed = (
+  passwordAlreadyUpdated: boolean
+): TemporaryPasswordVerification => ({
+  error: null,
+  passwordAlreadyUpdated,
+});
+
+const rejected = (
+  error: AuthError
+): TemporaryPasswordVerification => ({
+  error: mapTemporaryPasswordError(error),
+  passwordAlreadyUpdated: false,
+});
 
 export const verifyTemporaryPassword = async (
   worker: FirstSignInWorker,
-  password: string
-): Promise<NullableRef<FirstSignInError>> => {
-  const throwawayClient = createStatelessSupabaseClient();
-  const { error } =
-    await throwawayClient.auth.signInWithPassword({
-      email: toAuthEmail(worker.username),
-      password,
-    });
-
-  if (error) {
-    if (isInvalidCredentialsAuthError(error)) {
-      await recordFailedSignIn(worker.username);
-    }
-
-    return mapTemporaryPasswordError(error);
-  }
-
-  const { error: signOutError } =
-    await throwawayClient.auth.signOut({
-      scope: SUPABASE_SIGN_OUT_SCOPE.LOCAL,
-    });
-
-  throwIfSupabaseAuthError(
-    signOutError,
-    SUPABASE_AUTH_OPERATION.SIGN_OUT_THROWAWAY
+  input: FirstPasswordChangeInput
+): Promise<TemporaryPasswordVerification> => {
+  const temporaryError = await checkWorkerPassword(
+    worker.username,
+    input.currentPassword
   );
 
-  return null;
+  if (!temporaryError) {
+    return confirmed(false);
+  }
+
+  if (!isInvalidCredentialsAuthError(temporaryError)) {
+    return rejected(temporaryError);
+  }
+
+  const newPasswordError = await checkWorkerPassword(
+    worker.username,
+    input.newPassword
+  );
+
+  if (!newPasswordError) {
+    return confirmed(true);
+  }
+
+  if (!isInvalidCredentialsAuthError(newPasswordError)) {
+    return rejected(newPasswordError);
+  }
+
+  await recordFailedSignIn(worker.username);
+
+  return rejected(temporaryError);
 };

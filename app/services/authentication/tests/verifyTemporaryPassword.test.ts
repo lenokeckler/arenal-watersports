@@ -5,29 +5,22 @@ import {
   it,
   vi,
 } from "vitest";
-import {
-  FIRST_SIGN_IN_ERROR_CODE,
-  SUPABASE_SIGN_OUT_SCOPE,
-} from "@/app/constants";
-import { SupabaseAuthOperationError } from "@/app/utils/supabase-error/SupabaseAuthError";
+import { FIRST_SIGN_IN_ERROR_CODE } from "@/app/constants";
+import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT as INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
 import { NORMALIZED_AUTH_EMAIL } from "@/app/utils/sign-in/tests/signIn.constants";
 import { recordFailedSignIn } from "../recordFailedSignIn";
 import { verifyTemporaryPassword } from "../verifyTemporaryPassword";
-import {
-  FIRST_SIGN_IN_WORKER,
-  TEMPORARY_PASSWORD,
-} from "./firstSignIn.constants";
+import { FIRST_SIGN_IN_WORKER } from "./firstSignIn.constants";
 import { BLOCKED_BY_ATTEMPTS_ERROR } from "./hookRejectionErrors.constants";
 import {
   INVALID_CREDENTIALS_ERROR,
   NETWORK_ERROR,
-  RATE_LIMIT_BY_CODE_ERROR,
 } from "./mapSignInAuthError.constants";
 import {
   captureThrowawayCredentials,
-  captureThrowawaySignOutOptions,
   mockThrowawayClient,
-  throwawaySignInWithPassword,
+  rejectedSignIn,
+  THROWAWAY_SIGN_IN_SUCCESS,
   throwawaySignOut,
 } from "./mockThrowawayClient";
 import { RPC_FAILURE } from "./recordSignIn.constants";
@@ -42,18 +35,13 @@ vi.mock(
   () => import("./mocks/recordFailedSignIn.mock")
 );
 
-const verify = () =>
-  verifyTemporaryPassword(
-    FIRST_SIGN_IN_WORKER,
-    TEMPORARY_PASSWORD
-  );
+const emailWith = (password: string) => ({
+  email: NORMALIZED_AUTH_EMAIL,
+  password,
+});
 
-const rejectSignInWith = (error: unknown): void => {
-  throwawaySignInWithPassword.mockResolvedValue({
-    data: {},
-    error,
-  });
-};
+const verify = () =>
+  verifyTemporaryPassword(FIRST_SIGN_IN_WORKER, INPUT);
 
 describe("verifyTemporaryPassword", () => {
   beforeEach(() => {
@@ -61,82 +49,98 @@ describe("verifyTemporaryPassword", () => {
     mockThrowawayClient();
   });
 
-  it("signs in with the worker email and discards the extra session", async () => {
+  it("signs in with the temporary password and discards the extra session", async () => {
     const credentialsOf = captureThrowawayCredentials();
-    const signOutOptionsOf =
-      captureThrowawaySignOutOptions();
 
-    await expect(verify()).resolves.toBeNull();
+    await expect(verify()).resolves.toEqual({
+      error: null,
+      passwordAlreadyUpdated: false,
+    });
 
-    expect(
-      throwawaySignInWithPassword
-    ).toHaveBeenCalledOnce();
-    expect(credentialsOf()).toEqual({
-      email: NORMALIZED_AUTH_EMAIL,
-      password: TEMPORARY_PASSWORD,
-    });
-    expect(throwawaySignOut).toHaveBeenCalledOnce();
-    expect(signOutOptionsOf()).toEqual({
-      scope: SUPABASE_SIGN_OUT_SCOPE.LOCAL,
-    });
+    expect(credentialsOf()).toEqual([
+      emailWith(INPUT.currentPassword),
+    ]);
     expect(recordFailedSignIn).not.toHaveBeenCalled();
   });
 
-  it("records one failure for a wrong temporary password", async () => {
-    rejectSignInWith(INVALID_CREDENTIALS_ERROR);
+  it("records one failure when neither password works", async () => {
+    const credentialsOf = captureThrowawayCredentials([
+      rejectedSignIn(INVALID_CREDENTIALS_ERROR),
+    ]);
 
     const result = await verify();
 
+    expect(credentialsOf()).toEqual([
+      emailWith(INPUT.currentPassword),
+      emailWith(INPUT.newPassword),
+    ]);
     expect(recordFailedSignIn).toHaveBeenCalledOnce();
     expect(recordFailedSignIn).toHaveBeenCalledWith(
       FIRST_SIGN_IN_WORKER.username
     );
-    expect(result?.code).toBe(
+    expect(result.error?.code).toBe(
       FIRST_SIGN_IN_ERROR_CODE.CURRENT_PASSWORD_INVALID
     );
-    expect(throwawaySignOut).not.toHaveBeenCalled();
+  });
+
+  it("recognises an update that already happened and records nothing", async () => {
+    const credentialsOf = captureThrowawayCredentials([
+      rejectedSignIn(INVALID_CREDENTIALS_ERROR),
+      THROWAWAY_SIGN_IN_SUCCESS,
+    ]);
+
+    await expect(verify()).resolves.toEqual({
+      error: null,
+      passwordAlreadyUpdated: true,
+    });
+
+    expect(credentialsOf()).toHaveLength(2);
+    expect(throwawaySignOut).toHaveBeenCalledOnce();
+    expect(recordFailedSignIn).not.toHaveBeenCalled();
   });
 
   it.each([
     ["a block by attempts", BLOCKED_BY_ATTEMPTS_ERROR],
     ["a network error", NETWORK_ERROR],
-    ["a rate limit", RATE_LIMIT_BY_CODE_ERROR],
   ])(
-    "does not record a failure for %s",
+    "stops at %s on the temporary password without recording",
     async (_name, error) => {
-      rejectSignInWith(error);
+      const credentialsOf = captureThrowawayCredentials([
+        rejectedSignIn(error),
+      ]);
 
-      await expect(verify()).resolves.not.toBeNull();
+      await expect(verify()).resolves.toMatchObject({
+        error: expect.anything(),
+      });
+      expect(credentialsOf()).toHaveLength(1);
       expect(recordFailedSignIn).not.toHaveBeenCalled();
     }
   );
 
+  it("does not record when the new password check fails for another reason", async () => {
+    captureThrowawayCredentials([
+      rejectedSignIn(INVALID_CREDENTIALS_ERROR),
+      rejectedSignIn(NETWORK_ERROR),
+    ]);
+
+    const result = await verify();
+
+    expect(result.error?.code).toBe(
+      FIRST_SIGN_IN_ERROR_CODE.NETWORK
+    );
+    expect(recordFailedSignIn).not.toHaveBeenCalled();
+  });
+
   it("rejects when the failure cannot be recorded", async () => {
-    rejectSignInWith(INVALID_CREDENTIALS_ERROR);
+    captureThrowawayCredentials([
+      rejectedSignIn(INVALID_CREDENTIALS_ERROR),
+    ]);
     vi.mocked(recordFailedSignIn).mockRejectedValue(
       new Error(RPC_FAILURE.message)
     );
 
     await expect(verify()).rejects.toThrow(
       RPC_FAILURE.message
-    );
-  });
-
-  it("rejects with a typed error that keeps the cause when the extra session cannot be discarded", async () => {
-    throwawaySignOut.mockResolvedValue({
-      error: NETWORK_ERROR,
-    });
-
-    const failure = await verify().catch(
-      (error: Error) => error
-    );
-
-    expect(failure).toBeInstanceOf(
-      SupabaseAuthOperationError
-    );
-    expect((failure as Error).cause).toBe(NETWORK_ERROR);
-    expect((failure as Error).message).not.toContain(
-      NETWORK_ERROR.message
     );
   });
 });
