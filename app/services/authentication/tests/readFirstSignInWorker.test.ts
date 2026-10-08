@@ -51,6 +51,20 @@ describe("readFirstSignInWorker", () => {
     );
   });
 
+  it("reads the username and the pending flag of the signed-in worker only", async () => {
+    let selectedColumns: unknown;
+    select.mockImplementation(((columns: unknown) => {
+      selectedColumns = columns;
+      return { eq };
+    }) as unknown as typeof select);
+
+    await readFirstSignInWorker(supabase);
+
+    expect(selectedColumns).toBe(
+      "username, must_change_password"
+    );
+  });
+
   it("returns null without a signed-in user and reads nothing", async () => {
     getUser.mockResolvedValue({ data: { user: null } });
 

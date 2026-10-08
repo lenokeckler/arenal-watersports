@@ -10,3 +10,5 @@ export const FIRST_SIGN_IN_WORKER: FirstSignInWorker = {
 
 export const TEMPORARY_PASSWORD =
   DEFAULT_FIRST_PASSWORD_CHANGE_INPUT.currentPassword;
+
+export const PADDED_TEMPORARY_PASSWORD = ` ${TEMPORARY_PASSWORD} `;
