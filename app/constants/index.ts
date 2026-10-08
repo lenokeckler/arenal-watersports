@@ -107,6 +107,7 @@ export {
   type SignInHookRejection,
 } from "./access/SignInHookRejection.constants";
 export { SUPABASE_RPC } from "./supabase/SupabaseRpc.constants";
+export { SESSION_CLAIM } from "./supabase/SessionClaim.constants";
 export {
   PASSWORD_RULE,
   type PasswordRule,
