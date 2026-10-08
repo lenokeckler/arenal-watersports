@@ -1,5 +1,6 @@
-import { vi, type Mock } from "vitest";
+import { vi } from "vitest";
 import { createStatelessSupabaseClient } from "@/app/services/supabase";
+import { captureArguments } from "./captureArguments";
 
 export const throwawaySignInWithPassword = vi.fn();
 export const throwawaySignOut = vi.fn();
@@ -20,24 +21,31 @@ export const mockThrowawayClient = (): void => {
   >);
 };
 
-const captureFirstArgument = (
-  mock: Mock,
-  result: unknown
-): (() => unknown) => {
-  let captured: unknown;
-  mock.mockImplementation((argument: unknown) => {
-    captured = argument;
-    return Promise.resolve(result);
-  });
-
-  return () => captured;
+export const THROWAWAY_SIGN_IN_SUCCESS = {
+  data: {},
+  error: null,
 };
+const THROWAWAY_SIGN_OUT_SUCCESS = { error: null };
 
-export const captureThrowawayCredentials = () =>
-  captureFirstArgument(throwawaySignInWithPassword, {
-    data: {},
-    error: null,
-  });
+const firstArguments =
+  (callsOf: () => unknown[][]) => (): unknown[] =>
+    callsOf().map(([argument]) => argument);
+
+export const captureThrowawayCredentials = (
+  results: unknown[] = [THROWAWAY_SIGN_IN_SUCCESS]
+) =>
+  firstArguments(
+    captureArguments(throwawaySignInWithPassword, results)
+  );
 
 export const captureThrowawaySignOutOptions = () =>
-  captureFirstArgument(throwawaySignOut, { error: null });
+  firstArguments(
+    captureArguments(throwawaySignOut, [
+      THROWAWAY_SIGN_OUT_SUCCESS,
+    ])
+  );
+
+export const rejectedSignIn = (error: unknown) => ({
+  data: {},
+  error,
+});
