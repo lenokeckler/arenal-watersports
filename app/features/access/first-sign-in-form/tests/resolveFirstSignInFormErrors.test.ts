@@ -8,8 +8,8 @@ import {
   CURRENT_PASSWORD_INVALID_ERROR,
   NETWORK_ERROR,
   NEW_PASSWORD_RULES_ERROR,
-  WEAK_NEW_PASSWORD_INPUT,
-} from "./resolveFirstSignInFormErrors.constants";
+} from "./firstSignInErrors.constants";
+import { WEAK_NEW_PASSWORD_INPUT } from "./resolveFirstSignInFormErrors.constants";
 
 describe("resolveFirstSignInFormErrors", () => {
   it("shows no error before the first submit", () => {
