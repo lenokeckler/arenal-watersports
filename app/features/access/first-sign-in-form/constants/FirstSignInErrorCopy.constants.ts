@@ -1,4 +1,4 @@
-import { ACCESS_SHARED_COPY } from "@/app/constants/access/AccessSharedCopy.constants";
+import { ACCESS_SHARED_COPY } from "@/app/constants";
 import {
   FIRST_SIGN_IN_ERROR_CODE,
   type FirstSignInErrorCode,
