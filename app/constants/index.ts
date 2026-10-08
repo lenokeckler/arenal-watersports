@@ -71,6 +71,7 @@ export {
 export { MODAL } from "./strings/Modal.constants";
 export { LENGTH } from "./strings/Length.constants";
 export {
+  AUTOCOMPLETE,
   INPUT_TYPES,
   BUTTON_TYPES,
 } from "@/app/components/form-field/constants/InputTypes.constants";
