@@ -1,77 +1,67 @@
-import { expect } from "@playwright/test";
+import { PASSWORD_RULE } from "@/app/constants";
+import { FIRST_SIGN_IN_FIELD } from "@/app/constants/access/FirstSignInError.constants";
 import {
   E2E_FIRST_SIGN_IN_COPY,
   E2E_FIRST_SIGN_IN_PASSWORDS,
   E2E_FIRST_SIGN_IN_SCREENSHOT_BASENAME,
   E2E_PASSWORD_RULE_STATE,
-  E2E_PASSWORD_RULES,
 } from "../constants/E2eFirstSignIn.constants";
-import { resolveDeviceScreenshotFileName } from "../constants/E2eScreenshot.constants";
-import { createFirstSignInPage } from "../pages/FirstSignIn.page";
-import { captureViewport } from "../support/captureViewport";
-import { test } from "../support/pendingWorkerTest";
-import { signInAsPendingWorker } from "../support/signInAsPendingWorker";
+import { captureFullPage } from "../support/captureFullPage";
+import { expect, test } from "../support/pendingWorkerTest";
 
 test.describe("First sign-in screenshots", () => {
   test("captures the screen with the rules before typing", async ({
+    firstSignInPage,
     page,
-    pendingWorker,
   }, testInfo) => {
-    await signInAsPendingWorker(page, pendingWorker);
-    const firstSignInPage = createFirstSignInPage(page);
     await expect(
       firstSignInPage.getRulesTitle()
     ).toBeVisible();
 
-    await captureViewport(
+    await captureFullPage(
       page,
-      resolveDeviceScreenshotFileName(
-        E2E_FIRST_SIGN_IN_SCREENSHOT_BASENAME.INITIAL,
-        testInfo.project.name
-      )
+      E2E_FIRST_SIGN_IN_SCREENSHOT_BASENAME.INITIAL,
+      testInfo.project.name
     );
   });
 
   test("captures the rules partly met", async ({
+    firstSignInPage,
     page,
-    pendingWorker,
   }, testInfo) => {
-    await signInAsPendingWorker(page, pendingWorker);
-    const firstSignInPage = createFirstSignInPage(page);
-
     await firstSignInPage.fillNewPassword(
       E2E_FIRST_SIGN_IN_PASSWORDS.LOWERCASE_ONLY
     );
+    await firstSignInPage.revealPassword(
+      FIRST_SIGN_IN_FIELD.NEW_PASSWORD
+    );
     await expect(
       firstSignInPage.getRuleItem(
-        E2E_PASSWORD_RULES[0],
+        PASSWORD_RULE.LENGTH,
         E2E_PASSWORD_RULE_STATE.MET
       )
     ).toBeVisible();
 
-    await captureViewport(
+    await captureFullPage(
       page,
-      resolveDeviceScreenshotFileName(
-        E2E_FIRST_SIGN_IN_SCREENSHOT_BASENAME.RULES_PARTLY_MET,
-        testInfo.project.name
-      )
+      E2E_FIRST_SIGN_IN_SCREENSHOT_BASENAME.RULES_PARTLY_MET,
+      testInfo.project.name
     );
   });
 
   test("captures the wrong temporary password error", async ({
+    firstSignInPage,
     page,
-    pendingWorker,
   }, testInfo) => {
-    await signInAsPendingWorker(page, pendingWorker);
-    const firstSignInPage = createFirstSignInPage(page);
-    await firstSignInPage.fillCurrentPassword(
-      E2E_FIRST_SIGN_IN_PASSWORDS.WRONG_TEMPORARY
-    );
-    await firstSignInPage.fillNewPassword(
-      E2E_FIRST_SIGN_IN_PASSWORDS.NEW
-    );
-    await firstSignInPage.fillConfirmPassword(
-      E2E_FIRST_SIGN_IN_PASSWORDS.NEW
+    await firstSignInPage.fillForm({
+      confirmPassword: E2E_FIRST_SIGN_IN_PASSWORDS.NEW,
+      currentPassword:
+        E2E_FIRST_SIGN_IN_PASSWORDS.WRONG_TEMPORARY,
+      newPassword: E2E_FIRST_SIGN_IN_PASSWORDS.NEW,
+    });
+
+    await firstSignInPage.revealPassword(
+      FIRST_SIGN_IN_FIELD.CURRENT_PASSWORD
     );
 
     await firstSignInPage.submit();
@@ -81,29 +71,26 @@ test.describe("First sign-in screenshots", () => {
       E2E_FIRST_SIGN_IN_COPY.CURRENT_PASSWORD_INVALID
     );
 
-    await captureViewport(
+    await captureFullPage(
       page,
-      resolveDeviceScreenshotFileName(
-        E2E_FIRST_SIGN_IN_SCREENSHOT_BASENAME.WRONG_TEMPORARY,
-        testInfo.project.name
-      )
+      E2E_FIRST_SIGN_IN_SCREENSHOT_BASENAME.WRONG_TEMPORARY,
+      testInfo.project.name
     );
   });
 
   test("captures the weak password error", async ({
+    firstSignInPage,
     page,
     pendingWorker,
   }, testInfo) => {
-    await signInAsPendingWorker(page, pendingWorker);
-    const firstSignInPage = createFirstSignInPage(page);
-    await firstSignInPage.fillCurrentPassword(
-      pendingWorker.temporaryPassword
-    );
-    await firstSignInPage.fillNewPassword(
-      E2E_FIRST_SIGN_IN_PASSWORDS.WEAK
-    );
-    await firstSignInPage.fillConfirmPassword(
-      E2E_FIRST_SIGN_IN_PASSWORDS.WEAK
+    await firstSignInPage.fillForm({
+      confirmPassword: E2E_FIRST_SIGN_IN_PASSWORDS.WEAK,
+      currentPassword: pendingWorker.temporaryPassword,
+      newPassword: E2E_FIRST_SIGN_IN_PASSWORDS.WEAK,
+    });
+
+    await firstSignInPage.revealPassword(
+      FIRST_SIGN_IN_FIELD.NEW_PASSWORD
     );
 
     await firstSignInPage.submit();
@@ -111,29 +98,29 @@ test.describe("First sign-in screenshots", () => {
       firstSignInPage.getNewPasswordError()
     ).toHaveText(E2E_FIRST_SIGN_IN_COPY.NEW_PASSWORD_RULES);
 
-    await captureViewport(
+    await captureFullPage(
       page,
-      resolveDeviceScreenshotFileName(
-        E2E_FIRST_SIGN_IN_SCREENSHOT_BASENAME.WEAK_PASSWORD,
-        testInfo.project.name
-      )
+      E2E_FIRST_SIGN_IN_SCREENSHOT_BASENAME.WEAK_PASSWORD,
+      testInfo.project.name
     );
   });
 
   test("captures the mismatched repetition error", async ({
+    firstSignInPage,
     page,
     pendingWorker,
   }, testInfo) => {
-    await signInAsPendingWorker(page, pendingWorker);
-    const firstSignInPage = createFirstSignInPage(page);
-    await firstSignInPage.fillCurrentPassword(
-      pendingWorker.temporaryPassword
+    await firstSignInPage.fillForm({
+      confirmPassword: E2E_FIRST_SIGN_IN_PASSWORDS.OTHER,
+      currentPassword: pendingWorker.temporaryPassword,
+      newPassword: E2E_FIRST_SIGN_IN_PASSWORDS.NEW,
+    });
+
+    await firstSignInPage.revealPassword(
+      FIRST_SIGN_IN_FIELD.NEW_PASSWORD
     );
-    await firstSignInPage.fillNewPassword(
-      E2E_FIRST_SIGN_IN_PASSWORDS.NEW
-    );
-    await firstSignInPage.fillConfirmPassword(
-      E2E_FIRST_SIGN_IN_PASSWORDS.OTHER
+    await firstSignInPage.revealPassword(
+      FIRST_SIGN_IN_FIELD.CONFIRM_PASSWORD
     );
 
     await firstSignInPage.submit();
@@ -143,12 +130,10 @@ test.describe("First sign-in screenshots", () => {
       E2E_FIRST_SIGN_IN_COPY.CONFIRMATION_MISMATCH
     );
 
-    await captureViewport(
+    await captureFullPage(
       page,
-      resolveDeviceScreenshotFileName(
-        E2E_FIRST_SIGN_IN_SCREENSHOT_BASENAME.MISMATCH,
-        testInfo.project.name
-      )
+      E2E_FIRST_SIGN_IN_SCREENSHOT_BASENAME.MISMATCH,
+      testInfo.project.name
     );
   });
 });

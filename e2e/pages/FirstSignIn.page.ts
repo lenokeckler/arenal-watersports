@@ -16,6 +16,7 @@ import {
   E2E_FIRST_SIGN_IN_RULES_LIST_ID,
   E2E_PASSWORD_RULES_COPY,
 } from "../constants/E2eFirstSignIn.constants";
+import type { FirstSignInFormValues } from "../support/models/FirstSignInFormValues.interface";
 import { getMainRegion } from "../support/mainRegion";
 
 const createFirstSignInLocators = (page: Page) => {
@@ -46,6 +47,13 @@ const createFirstSignInLocators = (page: Page) => {
       getError(FIRST_SIGN_IN_FIELD.NEW_PASSWORD),
     getNewPasswordInput: (): Locator =>
       getInput(E2E_FIRST_SIGN_IN_COPY.NEW_PASSWORD_LABEL),
+    getPasswordToggle: (field: FirstSignInField): Locator =>
+      main
+        .getByRole(ARIA_ROLE.BUTTON, {
+          name: E2E_FIRST_SIGN_IN_COPY.SHOW_PASSWORD,
+          exact: true,
+        })
+        .and(main.locator(`[aria-controls="${field}"]`)),
     getRulesList: (): Locator =>
       main.locator(`#${E2E_FIRST_SIGN_IN_RULES_LIST_ID}`),
     getRulesTitle: (): Locator =>
@@ -64,14 +72,21 @@ export const createFirstSignInPage = (page: Page) => {
 
   return {
     ...locators,
-    fillConfirmPassword: (
-      password: string
-    ): Promise<void> =>
-      locators.getConfirmPasswordInput().fill(password),
-    fillCurrentPassword: (
-      password: string
-    ): Promise<void> =>
-      locators.getCurrentPasswordInput().fill(password),
+    fillForm: async ({
+      confirmPassword,
+      currentPassword,
+      newPassword,
+    }: FirstSignInFormValues): Promise<void> => {
+      await locators
+        .getCurrentPasswordInput()
+        .fill(currentPassword);
+      await locators
+        .getNewPasswordInput()
+        .fill(newPassword);
+      await locators
+        .getConfirmPasswordInput()
+        .fill(confirmPassword);
+    },
     fillNewPassword: (password: string): Promise<void> =>
       locators.getNewPasswordInput().fill(password),
     getRuleItem: (
@@ -84,6 +99,10 @@ export const createFirstSignInPage = (page: Page) => {
     goTo: async (): Promise<void> => {
       await page.goto(PATHS.ACCESS.FIRST_SIGN_IN);
     },
+    revealPassword: (
+      field: FirstSignInField
+    ): Promise<void> =>
+      locators.getPasswordToggle(field).click(),
     submit: (): Promise<void> =>
       locators.getSubmitButton().click(),
   };

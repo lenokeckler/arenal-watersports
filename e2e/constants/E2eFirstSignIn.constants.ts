@@ -3,6 +3,7 @@ import {
   type PasswordRule,
 } from "@/app/constants";
 import { FIRST_SIGN_IN_ERROR_CODE } from "@/app/constants/access/FirstSignInError.constants";
+import { PASSWORD_TOGGLE_COPY } from "@/app/components/field-factory/constants/PasswordToggleCopy.constants";
 import { PASSWORD_RULE_STATE } from "@/app/components/password-rules-checklist/constants/PasswordRuleState.constants";
 import { PASSWORD_RULES_COPY } from "@/app/components/password-rules-checklist/constants/PasswordRulesCopy.constants";
 import { FIRST_SIGN_IN_ERROR_COPY } from "@/app/features/access/first-sign-in-form/constants/FirstSignInErrorCopy.constants";
@@ -30,6 +31,7 @@ export const E2E_FIRST_SIGN_IN_COPY = {
       FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_RULES
     ],
   RULES_TITLE: PASSWORD_RULES_COPY.TITLE,
+  SHOW_PASSWORD: PASSWORD_TOGGLE_COPY.SHOW,
   SUBMIT: FIRST_SIGN_IN_FORM_COPY.SUBMIT,
 } as const;
 
