@@ -60,8 +60,11 @@ describe("FirstSignInFormView states", () => {
   });
 
   it("shows the saving label and locks the fields while pending", async () => {
+    let settle: () => void = () => undefined;
     vi.mocked(submitFirstPasswordChange).mockReturnValue(
-      new Promise(() => undefined)
+      new Promise((resolve) => {
+        settle = () => resolve(null);
+      })
     );
     const page = renderView();
 
@@ -73,6 +76,10 @@ describe("FirstSignInFormView states", () => {
     );
     expect(page.getNewInput()).toHaveAttribute(
       READONLY_ATTRIBUTE
+    );
+    settle();
+    await waitFor(() =>
+      expect(page.queryPendingSubmit()).toBeNull()
     );
   });
 });
