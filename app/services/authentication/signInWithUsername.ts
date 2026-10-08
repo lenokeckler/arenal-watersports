@@ -3,6 +3,7 @@ import { toAuthEmail } from "@/app/utils/username/toAuthEmail";
 import { isInvalidCredentialsAuthError } from "./isInvalidCredentialsAuthError";
 import { mapSignInAuthError } from "./mapSignInAuthError";
 import { recordFailedSignIn } from "./recordFailedSignIn";
+import { readMustChangePasswordClaim } from "./readMustChangePasswordClaim";
 import { recordSuccessfulSignIn } from "./recordSuccessfulSignIn";
 import type { AuthError } from "@supabase/supabase-js";
 import type { SignInCredentials } from "@/app/utils/sign-in/models/SignInCredentials.interface";
@@ -57,5 +58,9 @@ export const signInWithUsername = async (
 
   await recordSuccessOrSignOut(supabase, data.user.id);
 
-  return { ok: true };
+  return {
+    ok: true,
+    mustChangePassword:
+      await readMustChangePasswordClaim(supabase),
+  };
 };

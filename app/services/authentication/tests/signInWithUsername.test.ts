@@ -61,7 +61,10 @@ describe("signInWithUsername", () => {
       DEFAULT_SIGN_IN_CREDENTIALS
     );
 
-    expect(result).toEqual({ ok: true });
+    expect(result).toEqual({
+      ok: true,
+      mustChangePassword: false,
+    });
   });
 
   it("returns the mapped error when Supabase rejects the credentials", async () => {
