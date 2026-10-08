@@ -9,7 +9,8 @@ const nextCount = (count: number): number => count + 1;
 
 export const useFirstSignInSubmitGuard = (
   values: FirstPasswordChangeInput,
-  dismissServerError: () => void
+  dismissServerError: () => void,
+  isPending: boolean
 ): FirstSignInSubmitGuard => {
   const [invalidSubmitCount, setInvalidSubmitCount] =
     useState(0);
@@ -17,6 +18,10 @@ export const useFirstSignInSubmitGuard = (
     useState<NullableRef<string>>(null);
 
   const onSubmit: FirstSignInSubmitHandler = (event) => {
+    if (isPending) {
+      event.preventDefault();
+      return;
+    }
     if (validateFirstPasswordChange(values) === null) {
       return;
     }

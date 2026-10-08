@@ -89,6 +89,7 @@ const FieldFactory = forwardRef<
               baseClassName
             )}
             placeholder={placeholder}
+            autoComplete={autoComplete}
             {...ariaAttributes}
             readOnly={readOnly}
             disabled={disabled}
@@ -109,6 +110,7 @@ const FieldFactory = forwardRef<
               value === STRING.Empty,
               selectSizeClassName
             )}
+            autoComplete={autoComplete}
             {...ariaAttributes}
           >
             {placeholder && (
@@ -209,6 +211,7 @@ const FieldFactory = forwardRef<
               value === STRING.Empty,
               selectSizeClassName
             )}
+            autoComplete={autoComplete}
             {...ariaAttributes}
           >
             {placeholder && (
