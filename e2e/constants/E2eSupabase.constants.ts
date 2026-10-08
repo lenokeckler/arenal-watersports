@@ -10,7 +10,9 @@ export const E2E_LOCAL_SUPABASE_HOSTS: readonly string[] = [
 ];
 
 export const E2E_SUPABASE_TABLE = {
+  PASSWORD_RESET_PINS: "password_reset_pins",
   WORKER_AREAS: "worker_areas",
+  WORKER_MARKS: "worker_marks",
   WORKERS: "workers",
 } as const;
 
@@ -32,4 +34,5 @@ export const E2E_SUPABASE_ERROR = {
     operation: string,
     reason: string
   ): string => `E2E could not ${operation}: ${reason}`,
+  REASON_SEPARATOR: "; ",
 } as const;

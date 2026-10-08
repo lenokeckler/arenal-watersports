@@ -8,26 +8,18 @@ import {
 } from "../constants/E2eFirstSignIn.constants";
 import {
   E2E_SUPABASE_CLIENT_OPTIONS,
-  E2E_SUPABASE_COLUMN,
   E2E_SUPABASE_ERROR,
   E2E_SUPABASE_TABLE,
 } from "../constants/E2eSupabase.constants";
+import { failE2eOperation } from "./failE2eOperation";
 import type { PendingWorker } from "./models/PendingWorker.interface";
 import { readLocalSupabaseEnvironment } from "./readLocalSupabaseEnvironment";
+import { removePendingWorker } from "./removePendingWorker";
 
 const buildUsername = (): string =>
   `${E2E_PENDING_WORKER.USERNAME_PREFIX}${randomUUID()
     .replaceAll("-", STRING.Empty)
     .slice(0, E2E_PENDING_WORKER.USERNAME_SUFFIX_LENGTH)}`;
-
-const failWith = (
-  operation: string,
-  reason: string
-): never => {
-  throw new Error(
-    E2E_SUPABASE_ERROR.OPERATION_FAILED(operation, reason)
-  );
-};
 
 export const createPendingWorker =
   async (): Promise<PendingWorker> => {
@@ -50,35 +42,13 @@ export const createPendingWorker =
       });
 
     if (createUserError) {
-      return failWith(
+      return failE2eOperation(
         "create the auth user",
         createUserError.message
       );
     }
 
     const workerId = data.user.id;
-
-    const remove = async (): Promise<void> => {
-      const { error: areasError } = await supabase
-        .from(E2E_SUPABASE_TABLE.WORKER_AREAS)
-        .delete()
-        .eq(E2E_SUPABASE_COLUMN.WORKER_ID, workerId);
-      const { error: workerError } = await supabase
-        .from(E2E_SUPABASE_TABLE.WORKERS)
-        .delete()
-        .eq(E2E_SUPABASE_COLUMN.ID, workerId);
-      const { error: userError } =
-        await supabase.auth.admin.deleteUser(workerId);
-      const failure =
-        areasError ?? workerError ?? userError;
-
-      if (failure) {
-        failWith(
-          "remove the pending worker",
-          failure.message
-        );
-      }
-    };
 
     const { error: insertError } = await supabase
       .from(E2E_SUPABASE_TABLE.WORKERS)
@@ -91,12 +61,22 @@ export const createPendingWorker =
       });
 
     if (insertError) {
-      await supabase.auth.admin.deleteUser(workerId);
-      return failWith(
+      const { error: rollbackError } =
+        await supabase.auth.admin.deleteUser(workerId);
+      const reasons = [
+        insertError.message,
+        rollbackError?.message,
+      ].filter(Boolean);
+
+      return failE2eOperation(
         "insert the pending worker",
-        insertError.message
+        reasons.join(E2E_SUPABASE_ERROR.REASON_SEPARATOR)
       );
     }
 
-    return { remove, temporaryPassword, username };
+    return {
+      remove: () => removePendingWorker(supabase, workerId),
+      temporaryPassword,
+      username,
+    };
   };
