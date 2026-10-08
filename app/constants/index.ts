@@ -127,3 +127,4 @@ export { SUPABASE_AUTH_OPERATION } from "./supabase/SupabaseAuthOperation.consta
 export { SUPABASE_WORKER_COLUMN } from "./supabase/SupabaseWorkerColumn.constants";
 export { PASSWORD_UPDATE_ERROR_CODE } from "./access/PasswordUpdateErrorCode.constants";
 export { SESSION_REFRESH_ERROR_MESSAGE } from "./access/SessionRefreshErrorMessage.constants";
+export { ACCESS_SHARED_COPY } from "./access/AccessSharedCopy.constants";
