@@ -1,4 +1,5 @@
-import { renderHook } from "@testing-library/react";
+import { startTransition } from "react";
+import { act, renderHook } from "@testing-library/react";
 import {
   beforeEach,
   describe,
@@ -14,6 +15,8 @@ import {
 } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
 import { FIRST_SIGN_IN_ERROR_CODE } from "@/app/constants";
 import { FIRST_SIGN_IN_ERROR_COPY } from "../constants/FirstSignInErrorCopy.constants";
+import { submitFirstPasswordChange } from "../actions/submitFirstPasswordChange";
+import { createFirstSignInFormData } from "./createFirstSignInFormData";
 import { useFirstSignInFormViewModel } from "../hooks/useFirstSignInFormViewModel";
 import {
   fillForm,
@@ -75,5 +78,30 @@ describe("useFirstSignInFormViewModel submit", () => {
         FIRST_SIGN_IN_ERROR_CODE.CONFIRMATION_MISMATCH
       ]
     );
+  });
+
+  it("ignores a submit while pending", async () => {
+    vi.mocked(submitFirstPasswordChange).mockReturnValue(
+      new Promise(() => undefined)
+    );
+    const { result } = renderHook(
+      useFirstSignInFormViewModel
+    );
+    fillForm(result, DEFAULT_FIRST_PASSWORD_CHANGE_INPUT);
+    await act(() => {
+      startTransition(() => {
+        result.current.formAction(
+          createFirstSignInFormData(
+            DEFAULT_FIRST_PASSWORD_CHANGE_INPUT
+          )
+        );
+      });
+      return Promise.resolve();
+    });
+
+    const event = submitForm(result);
+
+    expect(result.current.isPending).toBe(true);
+    expect(event.preventDefault).toHaveBeenCalledOnce();
   });
 });

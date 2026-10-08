@@ -14,7 +14,8 @@ export const useFirstSignInFormViewModel =
     );
     const guard = useFirstSignInSubmitGuard(
       form.values,
-      submission.dismiss
+      submission.dismiss,
+      submission.isPending
     );
     const fieldErrors = resolveFirstSignInFormErrors({
       hasSubmitted: guard.hasSubmitted,
