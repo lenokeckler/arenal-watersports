@@ -45,6 +45,7 @@ select lives_ok(
 );
 
 reset role;
+select set_config('request.jwt.claims', '', true);
 select lives_ok(
   $$ update workers set must_change_password = false where username = 'ismael' $$,
   'el servidor limpia la marca sin sesion de cliente'
