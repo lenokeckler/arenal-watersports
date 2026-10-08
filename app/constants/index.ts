@@ -113,3 +113,10 @@ export {
 } from "./access/PasswordRule.constants";
 export { PASSWORD_SYMBOLS } from "./access/PasswordSymbols.constants";
 export { PASSWORD_CHARACTER_RANGE } from "./access/PasswordCharacterRange.constants";
+export {
+  FIRST_SIGN_IN_ERROR_CODE,
+  FIRST_SIGN_IN_ERROR_FIELD,
+  FIRST_SIGN_IN_FIELD,
+  type FirstSignInErrorCode,
+  type FirstSignInField,
+} from "./access/FirstSignInError.constants";
