@@ -14,3 +14,4 @@ export const ARIA_INVALID_VALUE = "true";
 export const AUTOCOMPLETE_ATTRIBUTE = "autocomplete";
 export const READONLY_ATTRIBUTE = "readonly";
 export const SINGLE_CALL = 1;
+export const ENTER_KEY = "{Enter}";

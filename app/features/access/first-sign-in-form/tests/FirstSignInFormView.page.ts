@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
 import type { FirstPasswordChangeInput } from "@/app/utils/first-sign-in/models/FirstPasswordChangeInput.interface";
+import { ENTER_KEY } from "./FirstSignInFormView.constants";
 import { FIRST_SIGN_IN_FORM_COPY } from "../constants/FirstSignInFormCopy.constants";
 
 const getInput = (label: string) =>
@@ -42,6 +43,16 @@ export const createFirstSignInFormViewPage = () => {
     );
   };
 
+  const pressEnterInConfirm = async () => {
+    await user.type(getConfirmInput(), ENTER_KEY);
+  };
+
+  const submitWhilePending = async () => {
+    await user.click(
+      getSubmit(FIRST_SIGN_IN_FORM_COPY.SUBMITTING)
+    );
+  };
+
   return {
     fill,
     findBanner: () => screen.findByRole(ARIA_ROLE.ALERT),
@@ -51,8 +62,16 @@ export const createFirstSignInFormViewPage = () => {
     getItems: () => screen.getAllByRole(ARIA_ROLE.LISTITEM),
     getList: () => screen.getByRole(ARIA_ROLE.LIST),
     getNewInput,
+    pressEnterInConfirm,
+    queryPendingSubmit: () =>
+      screen.queryByRole(ARIA_ROLE.BUTTON, {
+        name: new RegExp(
+          FIRST_SIGN_IN_FORM_COPY.SUBMITTING
+        ),
+      }),
     getPendingSubmit: () =>
       getSubmit(FIRST_SIGN_IN_FORM_COPY.SUBMITTING),
     submit,
+    submitWhilePending,
   };
 };
