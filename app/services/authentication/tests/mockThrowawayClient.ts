@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { vi, type Mock } from "vitest";
 import { createStatelessSupabaseClient } from "@/app/services/supabase";
 
 export const throwawaySignInWithPassword = vi.fn();
@@ -19,3 +19,25 @@ export const mockThrowawayClient = (): void => {
     typeof createStatelessSupabaseClient
   >);
 };
+
+const captureFirstArgument = (
+  mock: Mock,
+  result: unknown
+): (() => unknown) => {
+  let captured: unknown;
+  mock.mockImplementation((argument: unknown) => {
+    captured = argument;
+    return Promise.resolve(result);
+  });
+
+  return () => captured;
+};
+
+export const captureThrowawayCredentials = () =>
+  captureFirstArgument(throwawaySignInWithPassword, {
+    data: {},
+    error: null,
+  });
+
+export const captureThrowawaySignOutOptions = () =>
+  captureFirstArgument(throwawaySignOut, { error: null });

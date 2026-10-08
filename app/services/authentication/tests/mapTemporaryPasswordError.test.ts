@@ -10,7 +10,10 @@ import {
   INVALID_CREDENTIALS_ERROR,
   NETWORK_ERROR,
   NON_API_ERROR,
+  NON_API_ERROR_WITH_HOOK_REJECTION,
+  NON_API_ERROR_WITH_INVALID_CREDENTIALS_CODE,
   RATE_LIMIT_BY_CODE_ERROR,
+  RATE_LIMIT_BY_STATUS_ERROR,
   SERVER_ERROR,
 } from "./mapSignInAuthError.constants";
 
@@ -45,6 +48,21 @@ describe("mapTemporaryPasswordError", () => {
       "a rate limit",
       RATE_LIMIT_BY_CODE_ERROR,
       FIRST_SIGN_IN_ERROR_CODE.TOO_MANY_REQUESTS,
+    ],
+    [
+      "a rate limit by status",
+      RATE_LIMIT_BY_STATUS_ERROR,
+      FIRST_SIGN_IN_ERROR_CODE.TOO_MANY_REQUESTS,
+    ],
+    [
+      "an invalid credentials code on a non API error",
+      NON_API_ERROR_WITH_INVALID_CREDENTIALS_CODE,
+      FIRST_SIGN_IN_ERROR_CODE.UNKNOWN,
+    ],
+    [
+      "a hook rejection on a non API error",
+      NON_API_ERROR_WITH_HOOK_REJECTION,
+      FIRST_SIGN_IN_ERROR_CODE.UNKNOWN,
     ],
     [
       "a server error",

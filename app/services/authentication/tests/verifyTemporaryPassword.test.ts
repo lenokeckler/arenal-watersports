@@ -9,6 +9,7 @@ import {
   FIRST_SIGN_IN_ERROR_CODE,
   SUPABASE_SIGN_OUT_SCOPE,
 } from "@/app/constants";
+import { SupabaseAuthOperationError } from "@/app/utils/supabase-error/SupabaseAuthError";
 import { NORMALIZED_AUTH_EMAIL } from "@/app/utils/sign-in/tests/signIn.constants";
 import { recordFailedSignIn } from "../recordFailedSignIn";
 import { verifyTemporaryPassword } from "../verifyTemporaryPassword";
@@ -23,6 +24,8 @@ import {
   RATE_LIMIT_BY_CODE_ERROR,
 } from "./mapSignInAuthError.constants";
 import {
+  captureThrowawayCredentials,
+  captureThrowawaySignOutOptions,
   mockThrowawayClient,
   throwawaySignInWithPassword,
   throwawaySignOut,
@@ -59,16 +62,21 @@ describe("verifyTemporaryPassword", () => {
   });
 
   it("signs in with the worker email and discards the extra session", async () => {
+    const credentialsOf = captureThrowawayCredentials();
+    const signOutOptionsOf =
+      captureThrowawaySignOutOptions();
+
     await expect(verify()).resolves.toBeNull();
 
     expect(
       throwawaySignInWithPassword
-    ).toHaveBeenCalledWith({
+    ).toHaveBeenCalledOnce();
+    expect(credentialsOf()).toEqual({
       email: NORMALIZED_AUTH_EMAIL,
       password: TEMPORARY_PASSWORD,
     });
     expect(throwawaySignOut).toHaveBeenCalledOnce();
-    expect(throwawaySignOut).toHaveBeenCalledWith({
+    expect(signOutOptionsOf()).toEqual({
       scope: SUPABASE_SIGN_OUT_SCOPE.LOCAL,
     });
     expect(recordFailedSignIn).not.toHaveBeenCalled();
@@ -114,11 +122,21 @@ describe("verifyTemporaryPassword", () => {
     );
   });
 
-  it("rejects when the extra session cannot be discarded", async () => {
+  it("rejects with a typed error that keeps the cause when the extra session cannot be discarded", async () => {
     throwawaySignOut.mockResolvedValue({
       error: NETWORK_ERROR,
     });
 
-    await expect(verify()).rejects.toBe(NETWORK_ERROR);
+    const failure = await verify().catch(
+      (error: Error) => error
+    );
+
+    expect(failure).toBeInstanceOf(
+      SupabaseAuthOperationError
+    );
+    expect((failure as Error).cause).toBe(NETWORK_ERROR);
+    expect((failure as Error).message).not.toContain(
+      NETWORK_ERROR.message
+    );
   });
 });
