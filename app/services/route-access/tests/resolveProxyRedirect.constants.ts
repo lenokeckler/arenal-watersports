@@ -2,10 +2,16 @@ import { PATHS } from "@/app/constants";
 
 export const PROTECTED_PATHNAME = "/board";
 
-const RECOVERY_PATHNAME = "/access/recovery";
+const SAMPLE_PRE_LOGIN_PATHNAME = "/access/recovery";
 
 const UPPERCASE_FIRST_SIGN_IN_PATHNAME =
   "/ACCESS/first-sign-in";
+
+const DOUBLE_SLASH_FIRST_SIGN_IN_PATHNAME =
+  "/access//first-sign-in";
+
+const TRAILING_SLASH_FIRST_SIGN_IN_PATHNAME =
+  "/access/first-sign-in/";
 
 export const PROTECTED_PATHS = [
   PATHS.HOME,
@@ -18,7 +24,7 @@ export const PROTECTED_PATHS = [
 export const PRE_LOGIN_PATHS = [
   PATHS.ACCESS.ROOT,
   PATHS.ACCESS.LOGIN,
-  RECOVERY_PATHNAME,
+  SAMPLE_PRE_LOGIN_PATHNAME,
 ] as const;
 
 export const SIGNED_OUT = {
@@ -44,7 +50,7 @@ export const PENDING_PASSWORD = {
 const GATED_PATHS = [
   ...PROTECTED_PATHS,
   PATHS.ACCESS.ROOT,
-  RECOVERY_PATHNAME,
+  SAMPLE_PRE_LOGIN_PATHNAME,
 ] as const;
 
 export const GATE_MATRIX = [
@@ -79,6 +85,14 @@ export const GATE_MATRIX = [
     UPPERCASE_FIRST_SIGN_IN_PATHNAME,
     PATHS.ACCESS.FIRST_SIGN_IN,
   ],
+  ...[
+    DOUBLE_SLASH_FIRST_SIGN_IN_PATHNAME,
+    TRAILING_SLASH_FIRST_SIGN_IN_PATHNAME,
+  ].flatMap((pathname) => [
+    [SIGNED_OUT, pathname, PATHS.ACCESS.LOGIN] as const,
+    [SIGNED_IN, pathname, PATHS.HOME] as const,
+    [PENDING_PASSWORD, pathname, null] as const,
+  ]),
   [
     SIGNED_OUT_WITH_PENDING_CLAIM,
     PATHS.HOME,

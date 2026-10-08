@@ -123,4 +123,18 @@ describe("handleProxyRequest", () => {
 
     expect(result).toBe(refreshed);
   });
+
+  it("sends a signed-out visitor on a slash variant of the first sign-in to the login", async () => {
+    givenRefresh(SIGNED_OUT);
+
+    const result = await handleProxyRequest(
+      buildRequest(
+        PROXY_FIXTURE.SLASH_VARIANT_FIRST_SIGN_IN_PATHNAME
+      )
+    );
+
+    expect(
+      result.headers.get(PROXY_FIXTURE.LOCATION_HEADER)
+    ).toBe(`${PROXY_FIXTURE.ORIGIN}${PATHS.ACCESS.LOGIN}`);
+  });
 });
