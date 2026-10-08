@@ -1,0 +1,1 @@
+ACC-01.03.06: First password change service — the server confirms the temporary password with Supabase, saves the new one, lets only the server clear the first sign-in flag and refreshes the session (US-ACC-03 · AWS-32)
