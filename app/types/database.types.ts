@@ -2434,6 +2434,10 @@ export type Database = {
           usable: number;
         }[];
       };
+      complete_first_password_change: {
+        Args: { p_user_id: string };
+        Returns: undefined;
+      };
       custom_access_token_hook: {
         Args: { event: Json };
         Returns: Json;
