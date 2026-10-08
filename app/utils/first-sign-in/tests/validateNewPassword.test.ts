@@ -54,9 +54,13 @@ describe("validateNewPassword", () => {
     ).toBeNull();
   });
 
-  it("rejects a 64-character password whose UTF-8 encoding exceeds 72 bytes", () => {
+  it("flags a password within the character limit whose UTF-8 encoding exceeds the byte limit as too long", () => {
     expect(
       validateNewPassword(ACCENTED_PASSWORD_AT_MAX)
-    ).not.toBeNull();
+    ).toEqual(
+      createFirstSignInError(
+        FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_TOO_LONG
+      )
+    );
   });
 });

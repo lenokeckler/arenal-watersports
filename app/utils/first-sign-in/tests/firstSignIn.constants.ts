@@ -3,6 +3,7 @@ import type { FirstPasswordChangeInput } from "../models/FirstPasswordChangeInpu
 
 const COMPLIANT_PREFIX = "Aa1!";
 const FILLER_CHARACTER = "a";
+const TWO_BYTE_CHARACTER = "á";
 
 export const DEFAULT_FIRST_PASSWORD_CHANGE_INPUT: FirstPasswordChangeInput =
   {
@@ -38,6 +39,6 @@ export const WEAK_PASSWORD_ABOVE_MAX = "a".repeat(
 );
 export const ACCENTED_PASSWORD_AT_MAX =
   COMPLIANT_PREFIX +
-  "\u00E1".repeat(
+  TWO_BYTE_CHARACTER.repeat(
     PASSWORD_LENGTH.MAX - COMPLIANT_PREFIX.length
   );
