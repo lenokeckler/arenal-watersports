@@ -2,6 +2,7 @@ import { PASSWORD_LENGTH, STRING } from "@/app/constants";
 import type { CharacterRange } from "../models/CharacterRange.interface";
 
 const LOWERCASE_FILLER = "a";
+const TWO_BYTE_CHARACTER = "á";
 
 export const COMPLIANT_PASSWORD = "Abcdef1!";
 
@@ -41,8 +42,11 @@ export const buildPasswordOfLength = (
   length: number
 ): string => LOWERCASE_FILLER.repeat(length);
 
+export const EMPTY_LENGTH = 0;
+export const SINGLE_CHARACTER_LENGTH = 1;
+
 export const LENGTH_CASES: [number, boolean][] = [
-  [0, false],
+  [EMPTY_LENGTH, false],
   [PASSWORD_LENGTH.MIN - 1, false],
   [PASSWORD_LENGTH.MIN, true],
   [PASSWORD_LENGTH.MAX, true],
@@ -84,3 +88,27 @@ export const LOOKALIKE_CLASS_PASSWORDS = [
   `${PASSWORD_WITHOUT_SYMBOL_PREFIX}\t`,
   `${PASSWORD_WITHOUT_SYMBOL_PREFIX}\u00A0`,
 ];
+
+const buildMaxLengthPasswordWithExtraBytes = (
+  extraBytes: number
+): string =>
+  LOWERCASE_FILLER.repeat(
+    PASSWORD_LENGTH.MAX - extraBytes
+  ) + TWO_BYTE_CHARACTER.repeat(extraBytes);
+
+const EXTRA_BYTES_AT_BYTE_LIMIT =
+  PASSWORD_LENGTH.MAX_BYTES - PASSWORD_LENGTH.MAX;
+
+export const MAX_LENGTH_PASSWORD_AT_BYTE_LIMIT =
+  buildMaxLengthPasswordWithExtraBytes(
+    EXTRA_BYTES_AT_BYTE_LIMIT
+  );
+export const MAX_LENGTH_PASSWORD_ONE_BYTE_ABOVE_LIMIT =
+  buildMaxLengthPasswordWithExtraBytes(
+    EXTRA_BYTES_AT_BYTE_LIMIT + 1
+  );
+export const MAX_LENGTH_PASSWORD_OF_TWO_BYTE_CHARACTERS =
+  COMPLIANT_PREFIX +
+  TWO_BYTE_CHARACTER.repeat(
+    PASSWORD_LENGTH.MAX - COMPLIANT_PREFIX.length
+  );
