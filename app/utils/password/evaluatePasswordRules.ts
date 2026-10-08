@@ -6,6 +6,7 @@ import { hasDigit } from "./hasDigit";
 import { hasLowercase } from "./hasLowercase";
 import { hasSymbol } from "./hasSymbol";
 import { hasUppercase } from "./hasUppercase";
+import { isPasswordTooLong } from "./isPasswordTooLong";
 import type { PasswordRuleResults } from "./models/PasswordRuleResults.type";
 
 export const evaluatePasswordRules = (
@@ -13,7 +14,7 @@ export const evaluatePasswordRules = (
 ): PasswordRuleResults => ({
   [PASSWORD_RULE.LENGTH]:
     password.length >= PASSWORD_LENGTH.MIN &&
-    password.length <= PASSWORD_LENGTH.MAX,
+    !isPasswordTooLong(password),
   [PASSWORD_RULE.UPPERCASE]: hasUppercase(password),
   [PASSWORD_RULE.LOWERCASE]: hasLowercase(password),
   [PASSWORD_RULE.DIGIT]: hasDigit(password),
