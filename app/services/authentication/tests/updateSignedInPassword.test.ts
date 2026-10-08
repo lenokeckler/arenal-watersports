@@ -9,6 +9,7 @@ import { FIRST_SIGN_IN_ERROR_CODE } from "@/app/constants";
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
 import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
 import { updateSignedInPassword } from "../updateSignedInPassword";
+import { captureArguments } from "./captureArguments";
 import { SAME_PASSWORD_ERROR } from "./passwordUpdateErrors.constants";
 
 const NEW_PASSWORD =
@@ -25,14 +26,17 @@ describe("updateSignedInPassword", () => {
   });
 
   it("updates the password of the signed-in user", async () => {
+    const argumentsOf = captureArguments(updateUser, [
+      { error: null },
+    ]);
+
     await expect(
       updateSignedInPassword(supabase, NEW_PASSWORD)
     ).resolves.toBeNull();
 
-    expect(updateUser).toHaveBeenCalledOnce();
-    expect(updateUser).toHaveBeenCalledWith({
-      password: NEW_PASSWORD,
-    });
+    expect(argumentsOf()).toEqual([
+      [{ password: NEW_PASSWORD }],
+    ]);
   });
 
   it("returns the mapped error when the update is rejected", async () => {

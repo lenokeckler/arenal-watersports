@@ -1,8 +1,8 @@
 import { vi } from "vitest";
 import { createServerSupabaseClient } from "@/app/services/supabase";
+import { checkWorkerPassword } from "../checkWorkerPassword";
 import { readFirstSignInWorker } from "../readFirstSignInWorker";
 import { updateSignedInPassword } from "../updateSignedInPassword";
-import { verifyTemporaryPassword } from "../verifyTemporaryPassword";
 import { FIRST_SIGN_IN_WORKER } from "./firstSignIn.constants";
 
 export const SUPABASE_CLIENT = {};
@@ -15,8 +15,6 @@ export const arrangeSuccessfulPasswordChange = (): void => {
   vi.mocked(readFirstSignInWorker).mockResolvedValue(
     FIRST_SIGN_IN_WORKER
   );
-  vi.mocked(verifyTemporaryPassword).mockResolvedValue(
-    null
-  );
+  vi.mocked(checkWorkerPassword).mockResolvedValue(null);
   vi.mocked(updateSignedInPassword).mockResolvedValue(null);
 };

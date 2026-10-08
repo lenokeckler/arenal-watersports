@@ -8,6 +8,7 @@ import {
 import { SUPABASE_RPC } from "@/app/constants";
 import { createServiceRoleSupabaseClient } from "@/app/services/supabase";
 import { completeFirstPasswordChange } from "../completeFirstPasswordChange";
+import { captureArguments } from "./captureArguments";
 import {
   RPC_FAILURE,
   SIGNED_IN_USER_ID,
@@ -31,13 +32,18 @@ describe("completeFirstPasswordChange", () => {
   });
 
   it("calls the completion with the user id", async () => {
+    const argumentsOf = captureArguments(rpc, [
+      { error: null },
+    ]);
+
     await completeFirstPasswordChange(SIGNED_IN_USER_ID);
 
-    expect(rpc).toHaveBeenCalledOnce();
-    expect(rpc).toHaveBeenCalledWith(
-      SUPABASE_RPC.COMPLETE_FIRST_PASSWORD_CHANGE,
-      { p_user_id: SIGNED_IN_USER_ID }
-    );
+    expect(argumentsOf()).toEqual([
+      [
+        SUPABASE_RPC.COMPLETE_FIRST_PASSWORD_CHANGE,
+        { p_user_id: SIGNED_IN_USER_ID },
+      ],
+    ]);
   });
 
   it("throws when the database rejects the call", async () => {

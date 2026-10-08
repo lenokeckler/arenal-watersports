@@ -3,12 +3,10 @@ import { createServerSupabaseClient } from "@/app/services/supabase";
 import { createFirstSignInError } from "@/app/utils/first-sign-in/createFirstSignInError";
 import type { FirstPasswordChangeInput } from "@/app/utils/first-sign-in/models/FirstPasswordChangeInput.interface";
 import { validateFirstPasswordChange } from "@/app/utils/first-sign-in/validateFirstPasswordChange";
-import { completeFirstPasswordChange } from "./completeFirstPasswordChange";
+import { changePendingPassword } from "./changePendingPassword";
 import type { FirstPasswordChangeResult } from "./models/FirstPasswordChangeResult.type";
 import { readFirstSignInWorker } from "./readFirstSignInWorker";
 import { refreshFirstSignInSession } from "./refreshFirstSignInSession";
-import { updateSignedInPassword } from "./updateSignedInPassword";
-import { verifyTemporaryPassword } from "./verifyTemporaryPassword";
 
 export const changeFirstPassword = async (
   input: FirstPasswordChangeInput
@@ -32,26 +30,11 @@ export const changeFirstPassword = async (
     };
   }
 
-  const temporaryError = await verifyTemporaryPassword(
-    worker,
-    input.currentPassword
-  );
+  if (!worker.mustChangePassword) {
+    await refreshFirstSignInSession(supabase);
 
-  if (temporaryError) {
-    return { ok: false, error: temporaryError };
+    return { ok: true };
   }
 
-  const updateError = await updateSignedInPassword(
-    supabase,
-    input.newPassword
-  );
-
-  if (updateError) {
-    return { ok: false, error: updateError };
-  }
-
-  await completeFirstPasswordChange(worker.id);
-  await refreshFirstSignInSession(supabase);
-
-  return { ok: true };
+  return changePendingPassword(supabase, worker, input);
 };

@@ -5,74 +5,65 @@ import {
   it,
   vi,
 } from "vitest";
-import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
+import "./changeFirstPassword.setup";
+import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT as INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
 import { changeFirstPassword } from "../changeFirstPassword";
+import { checkWorkerPassword } from "../checkWorkerPassword";
 import { completeFirstPasswordChange } from "../completeFirstPasswordChange";
+import { readFirstSignInWorker } from "../readFirstSignInWorker";
+import { recordSuccessfulSignIn } from "../recordSuccessfulSignIn";
 import { refreshFirstSignInSession } from "../refreshFirstSignInSession";
 import { updateSignedInPassword } from "../updateSignedInPassword";
-import { verifyTemporaryPassword } from "../verifyTemporaryPassword";
-import {} from "./changeFirstPassword.constants";
 import {
   SUPABASE_CLIENT,
   arrangeSuccessfulPasswordChange,
 } from "./arrangeSuccessfulPasswordChange";
-import { FIRST_SIGN_IN_WORKER } from "./firstSignIn.constants";
-
-vi.mock(
-  "@/app/services/supabase",
-  () => import("./mocks/supabaseServices.mock")
-);
-vi.mock(
-  "../readFirstSignInWorker",
-  () => import("./mocks/readFirstSignInWorker.mock")
-);
-vi.mock(
-  "../verifyTemporaryPassword",
-  () => import("./mocks/verifyTemporaryPassword.mock")
-);
-vi.mock(
-  "../updateSignedInPassword",
-  () => import("./mocks/updateSignedInPassword.mock")
-);
-vi.mock(
-  "../completeFirstPasswordChange",
-  () => import("./mocks/completeFirstPasswordChange.mock")
-);
-vi.mock(
-  "../refreshFirstSignInSession",
-  () => import("./mocks/refreshFirstSignInSession.mock")
-);
-
-const INPUT = DEFAULT_FIRST_PASSWORD_CHANGE_INPUT;
+import { captureArguments } from "./captureArguments";
+import {
+  ALREADY_CHANGED_WORKER,
+  FIRST_SIGN_IN_WORKER,
+} from "./firstSignIn.constants";
 
 describe("changeFirstPassword", () => {
   beforeEach(arrangeSuccessfulPasswordChange);
 
   it("changes the password and refreshes the session in order", async () => {
+    const readArgumentsOf = captureArguments(
+      vi.mocked(readFirstSignInWorker),
+      [FIRST_SIGN_IN_WORKER]
+    );
+    const updateArgumentsOf = captureArguments(
+      vi.mocked(updateSignedInPassword),
+      [null]
+    );
+    const streakArgumentsOf = captureArguments(
+      vi.mocked(recordSuccessfulSignIn)
+    );
+    const completeArgumentsOf = captureArguments(
+      vi.mocked(completeFirstPasswordChange)
+    );
+    const refreshArgumentsOf = captureArguments(
+      vi.mocked(refreshFirstSignInSession)
+    );
+
     await expect(
       changeFirstPassword(INPUT)
     ).resolves.toEqual({ ok: true });
 
-    expect(verifyTemporaryPassword).toHaveBeenCalledWith(
-      FIRST_SIGN_IN_WORKER,
-      INPUT.currentPassword
-    );
-    expect(updateSignedInPassword).toHaveBeenCalledWith(
-      SUPABASE_CLIENT,
-      INPUT.newPassword
-    );
-    expect(
-      completeFirstPasswordChange
-    ).toHaveBeenCalledOnce();
-    expect(
-      completeFirstPasswordChange
-    ).toHaveBeenCalledWith(FIRST_SIGN_IN_WORKER.id);
-    expect(
-      refreshFirstSignInSession
-    ).toHaveBeenCalledOnce();
-    expect(refreshFirstSignInSession).toHaveBeenCalledWith(
-      SUPABASE_CLIENT
-    );
+    expect(readArgumentsOf()).toHaveLength(1);
+    expect(readArgumentsOf()[0][0]).toBe(SUPABASE_CLIENT);
+    expect(updateArgumentsOf()).toEqual([
+      [SUPABASE_CLIENT, INPUT.newPassword],
+    ]);
+    expect(streakArgumentsOf()).toEqual([
+      [FIRST_SIGN_IN_WORKER.id],
+    ]);
+    expect(completeArgumentsOf()).toEqual([
+      [FIRST_SIGN_IN_WORKER.id],
+    ]);
+    expect(refreshArgumentsOf()).toEqual([
+      [SUPABASE_CLIENT],
+    ]);
     expect(
       vi.mocked(updateSignedInPassword).mock
         .invocationCallOrder[0]
@@ -80,5 +71,25 @@ describe("changeFirstPassword", () => {
       vi.mocked(completeFirstPasswordChange).mock
         .invocationCallOrder[0]
     );
+  });
+
+  it("only refreshes the session when the change was already completed", async () => {
+    vi.mocked(readFirstSignInWorker).mockResolvedValue(
+      ALREADY_CHANGED_WORKER
+    );
+
+    await expect(
+      changeFirstPassword(INPUT)
+    ).resolves.toEqual({ ok: true });
+
+    expect(
+      refreshFirstSignInSession
+    ).toHaveBeenCalledOnce();
+    expect(checkWorkerPassword).not.toHaveBeenCalled();
+    expect(updateSignedInPassword).not.toHaveBeenCalled();
+    expect(
+      completeFirstPasswordChange
+    ).not.toHaveBeenCalled();
+    expect(recordSuccessfulSignIn).not.toHaveBeenCalled();
   });
 });

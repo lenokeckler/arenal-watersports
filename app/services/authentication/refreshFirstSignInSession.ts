@@ -1,10 +1,10 @@
-import { SESSION_CLAIM } from "@/app/constants";
+import {
+  SESSION_CLAIM,
+  SESSION_REFRESH_ERROR_MESSAGE,
+  SUPABASE_AUTH_OPERATION,
+} from "@/app/constants";
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
-
-const PENDING_CHANGE_MESSAGE =
-  "The refreshed session still requires a password change";
-const MISSING_CLAIMS_MESSAGE =
-  "The refreshed session carries no claims";
+import { throwIfSupabaseAuthError } from "@/app/utils/supabase-error/SupabaseAuthError";
 
 export const refreshFirstSignInSession = async (
   supabase: ServerSupabaseClient
@@ -12,25 +12,31 @@ export const refreshFirstSignInSession = async (
   const { error: refreshError } =
     await supabase.auth.refreshSession();
 
-  if (refreshError) {
-    throw refreshError;
-  }
+  throwIfSupabaseAuthError(
+    refreshError,
+    SUPABASE_AUTH_OPERATION.REFRESH_SESSION
+  );
 
   const { data, error: claimsError } =
     await supabase.auth.getClaims();
 
-  if (claimsError) {
-    throw claimsError;
-  }
+  throwIfSupabaseAuthError(
+    claimsError,
+    SUPABASE_AUTH_OPERATION.GET_CLAIMS
+  );
 
   if (!data) {
-    throw new Error(MISSING_CLAIMS_MESSAGE);
+    throw new Error(
+      SESSION_REFRESH_ERROR_MESSAGE.MISSING_CLAIMS
+    );
   }
 
   if (
     data.claims[SESSION_CLAIM.MUST_CHANGE_PASSWORD] !==
     false
   ) {
-    throw new Error(PENDING_CHANGE_MESSAGE);
+    throw new Error(
+      SESSION_REFRESH_ERROR_MESSAGE.PENDING_CHANGE
+    );
   }
 };

@@ -125,3 +125,5 @@ export { SUPABASE_TABLE } from "./supabase/SupabaseTable.constants";
 export { SUPABASE_SIGN_OUT_SCOPE } from "./supabase/SupabaseSignOutScope.constants";
 export { SUPABASE_AUTH_OPERATION } from "./supabase/SupabaseAuthOperation.constants";
 export { SUPABASE_WORKER_COLUMN } from "./supabase/SupabaseWorkerColumn.constants";
+export { PASSWORD_UPDATE_ERROR_CODE } from "./access/PasswordUpdateErrorCode.constants";
+export { SESSION_REFRESH_ERROR_MESSAGE } from "./access/SessionRefreshErrorMessage.constants";

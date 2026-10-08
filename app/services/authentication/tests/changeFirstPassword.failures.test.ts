@@ -5,48 +5,24 @@ import {
   it,
   vi,
 } from "vitest";
+import "./changeFirstPassword.setup";
 import { FIRST_SIGN_IN_ERROR_CODE } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
-import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
+import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT as INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
 import { changeFirstPassword } from "../changeFirstPassword";
+import { checkWorkerPassword } from "../checkWorkerPassword";
 import { completeFirstPasswordChange } from "../completeFirstPasswordChange";
 import { readFirstSignInWorker } from "../readFirstSignInWorker";
+import { recordSuccessfulSignIn } from "../recordSuccessfulSignIn";
 import { refreshFirstSignInSession } from "../refreshFirstSignInSession";
 import { updateSignedInPassword } from "../updateSignedInPassword";
-import { verifyTemporaryPassword } from "../verifyTemporaryPassword";
 import { arrangeSuccessfulPasswordChange } from "./arrangeSuccessfulPasswordChange";
 import {
   PASSWORD_UPDATE_REJECTION,
   TEMPORARY_PASSWORD_REJECTION,
 } from "./changeFirstPassword.constants";
+import { BLOCKED_BY_ATTEMPTS_ERROR } from "./hookRejectionErrors.constants";
 import { RPC_FAILURE } from "./recordSignIn.constants";
-
-vi.mock(
-  "@/app/services/supabase",
-  () => import("./mocks/supabaseServices.mock")
-);
-vi.mock(
-  "../readFirstSignInWorker",
-  () => import("./mocks/readFirstSignInWorker.mock")
-);
-vi.mock(
-  "../verifyTemporaryPassword",
-  () => import("./mocks/verifyTemporaryPassword.mock")
-);
-vi.mock(
-  "../updateSignedInPassword",
-  () => import("./mocks/updateSignedInPassword.mock")
-);
-vi.mock(
-  "../completeFirstPasswordChange",
-  () => import("./mocks/completeFirstPasswordChange.mock")
-);
-vi.mock(
-  "../refreshFirstSignInSession",
-  () => import("./mocks/refreshFirstSignInSession.mock")
-);
-
-const INPUT = DEFAULT_FIRST_PASSWORD_CHANGE_INPUT;
 
 describe("changeFirstPassword failures", () => {
   beforeEach(arrangeSuccessfulPasswordChange);
@@ -68,7 +44,7 @@ describe("changeFirstPassword failures", () => {
     ).not.toHaveBeenCalled();
   });
 
-  it("reports an inactive session when no worker is pending", async () => {
+  it("reports an inactive session when no worker is signed in", async () => {
     vi.mocked(readFirstSignInWorker).mockResolvedValue(
       null
     );
@@ -81,12 +57,12 @@ describe("changeFirstPassword failures", () => {
         code: FIRST_SIGN_IN_ERROR_CODE.SESSION_INACTIVE,
       },
     });
-    expect(verifyTemporaryPassword).not.toHaveBeenCalled();
+    expect(checkWorkerPassword).not.toHaveBeenCalled();
   });
 
   it("does not update when the temporary password is rejected", async () => {
-    vi.mocked(verifyTemporaryPassword).mockResolvedValue(
-      TEMPORARY_PASSWORD_REJECTION
+    vi.mocked(checkWorkerPassword).mockResolvedValue(
+      BLOCKED_BY_ATTEMPTS_ERROR
     );
 
     await expect(
@@ -95,6 +71,21 @@ describe("changeFirstPassword failures", () => {
       ok: false,
       error: TEMPORARY_PASSWORD_REJECTION,
     });
+    expect(recordSuccessfulSignIn).not.toHaveBeenCalled();
+    expect(updateSignedInPassword).not.toHaveBeenCalled();
+    expect(
+      completeFirstPasswordChange
+    ).not.toHaveBeenCalled();
+  });
+
+  it("stops before the update when the verification throws", async () => {
+    vi.mocked(checkWorkerPassword).mockRejectedValue(
+      new Error(RPC_FAILURE.message)
+    );
+
+    await expect(
+      changeFirstPassword(INPUT)
+    ).rejects.toThrow(RPC_FAILURE.message);
     expect(updateSignedInPassword).not.toHaveBeenCalled();
     expect(
       completeFirstPasswordChange
