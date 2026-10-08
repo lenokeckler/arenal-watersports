@@ -2,5 +2,6 @@ import type { UnorderedListItem } from "@/app/components/list/UnorderedListProps
 
 export interface PasswordRulesChecklistViewModel {
   items: UnorderedListItem[];
+  summary: string;
   titleId: string;
 }
