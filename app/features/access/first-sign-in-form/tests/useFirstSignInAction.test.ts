@@ -11,22 +11,8 @@ import { FIRST_SIGN_IN_FIELD } from "@/app/constants/access/FirstSignInError.con
 import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
 import { submitFirstPasswordChange } from "../actions/submitFirstPasswordChange";
 import { useFirstSignInAction } from "../hooks/useFirstSignInAction";
-import { createFirstSignInFormData } from "./createFirstSignInFormData";
 import { CURRENT_PASSWORD_INVALID_ERROR } from "./firstSignInErrors.constants";
-
-const postDefaultForm = async (
-  action: (formData: FormData) => void
-): Promise<void> => {
-  await act(() =>
-    Promise.resolve(
-      action(
-        createFirstSignInFormData(
-          DEFAULT_FIRST_PASSWORD_CHANGE_INPUT
-        )
-      )
-    )
-  );
-};
+import { postDefaultForm } from "./firstSignInFormActions";
 
 describe("useFirstSignInAction", () => {
   beforeEach(() => {

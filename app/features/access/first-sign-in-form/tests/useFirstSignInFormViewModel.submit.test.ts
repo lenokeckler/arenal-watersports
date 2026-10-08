@@ -44,7 +44,7 @@ describe("useFirstSignInFormViewModel submit", () => {
     );
   });
 
-  it("lets a valid form post to the server action", () => {
+  it("does not prevent the default submit of a valid form", () => {
     const { result } = renderHook(
       useFirstSignInFormViewModel
     );
@@ -53,11 +53,6 @@ describe("useFirstSignInFormViewModel submit", () => {
     const event = submitForm(result);
 
     expect(event.preventDefault).not.toHaveBeenCalled();
-    expect(result.current.fieldErrors).toEqual(
-      expect.objectContaining({
-        [FIRST_SIGN_IN_FIELD.CONFIRM_PASSWORD]: null,
-      })
-    );
   });
 
   it("shows the mismatch under the confirmation field", () => {

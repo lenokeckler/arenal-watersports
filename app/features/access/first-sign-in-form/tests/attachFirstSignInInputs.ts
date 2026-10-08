@@ -1,3 +1,4 @@
+import { onTestFinished } from "vitest";
 import { FIRST_SIGN_IN_FOCUS_ORDER } from "../constants/FirstSignInFocus.constants";
 import type { FirstSignInFieldRefs } from "../models/FirstSignInFieldRefs.type";
 import type { FirstSignInFocusField } from "../models/FirstSignInFocusField.type";
@@ -9,6 +10,7 @@ export const attachFirstSignInInputs = (
     FIRST_SIGN_IN_FOCUS_ORDER.map((field) => {
       const input = document.createElement("input");
       document.body.append(input);
+      onTestFinished(() => input.remove());
       fieldRefs[field].current = input;
       return [field, input];
     })

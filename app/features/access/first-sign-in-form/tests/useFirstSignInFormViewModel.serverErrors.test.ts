@@ -8,18 +8,16 @@ import {
 } from "vitest";
 import "./firstSignInAction.setup";
 import { FIRST_SIGN_IN_FIELD } from "@/app/constants/access/FirstSignInError.constants";
-import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
 import { submitFirstPasswordChange } from "../actions/submitFirstPasswordChange";
 import { FIRST_SIGN_IN_ERROR_COPY } from "../constants/FirstSignInErrorCopy.constants";
 import { useFirstSignInFormViewModel } from "../hooks/useFirstSignInFormViewModel";
 import { attachFirstSignInInputs } from "./attachFirstSignInInputs";
-import { createFirstSignInFormData } from "./createFirstSignInFormData";
 import {
   CURRENT_PASSWORD_INVALID_ERROR,
   NETWORK_ERROR,
 } from "./firstSignInErrors.constants";
 import {
-  postForm,
+  postDefaultForm,
   typeInto,
 } from "./firstSignInFormActions";
 import { EDITED_VALUE } from "./firstSignInHooks.constants";
@@ -40,12 +38,7 @@ describe("useFirstSignInFormViewModel server errors", () => {
       result.current.fieldRefs
     );
 
-    await postForm(
-      result,
-      createFirstSignInFormData(
-        DEFAULT_FIRST_PASSWORD_CHANGE_INPUT
-      )
-    );
+    await postDefaultForm(result.current.formAction);
 
     expect(
       result.current.fieldErrors[
@@ -67,12 +60,7 @@ describe("useFirstSignInFormViewModel server errors", () => {
       useFirstSignInFormViewModel
     );
 
-    await postForm(
-      result,
-      createFirstSignInFormData(
-        DEFAULT_FIRST_PASSWORD_CHANGE_INPUT
-      )
-    );
+    await postDefaultForm(result.current.formAction);
 
     expect(
       result.current.fieldErrors[FIRST_SIGN_IN_FIELD.FORM]
@@ -86,12 +74,7 @@ describe("useFirstSignInFormViewModel server errors", () => {
     const { result } = renderHook(
       useFirstSignInFormViewModel
     );
-    await postForm(
-      result,
-      createFirstSignInFormData(
-        DEFAULT_FIRST_PASSWORD_CHANGE_INPUT
-      )
-    );
+    await postDefaultForm(result.current.formAction);
 
     typeInto(
       result,
