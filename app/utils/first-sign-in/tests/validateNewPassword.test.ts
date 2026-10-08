@@ -6,6 +6,7 @@ import {
 import { createFirstSignInError } from "../createFirstSignInError";
 import { validateNewPassword } from "../validateNewPassword";
 import {
+  ACCENTED_PASSWORD_AT_MAX,
   COMPLIANT_PASSWORD_AT_MAX,
   DEFAULT_FIRST_PASSWORD_CHANGE_INPUT,
   PASSWORD_ONE_ABOVE_MAX,
@@ -51,5 +52,11 @@ describe("validateNewPassword", () => {
     expect(
       validateNewPassword(COMPLIANT_PASSWORD_AT_MAX)
     ).toBeNull();
+  });
+
+  it("rejects a 64-character password whose UTF-8 encoding exceeds 72 bytes", () => {
+    expect(
+      validateNewPassword(ACCENTED_PASSWORD_AT_MAX)
+    ).not.toBeNull();
   });
 });
