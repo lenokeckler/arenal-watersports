@@ -1,5 +1,5 @@
 begin;
-select plan(5);
+select plan(7);
 
 insert into auth.users (id, email) values
   ('22222222-2222-2222-2222-222222222222', 'ismael@arenal.local'),
@@ -53,6 +53,17 @@ select throws_ok(
              now() + interval '30 days', false) $$,
   '42501', null,
   'reservas no registra un guia externo con la marca de cambio ya limpia'
+);
+
+select is(
+  (select proconfig from pg_proc where oid = 'public.complete_first_password_change(uuid)'::regprocedure),
+  array['search_path=""'],
+  'completar el primer cambio fija un search_path vacio'
+);
+select is(
+  (select proconfig from pg_proc where oid = 'public.guard_first_sign_in_flag()'::regprocedure),
+  array['search_path=""'],
+  'el guardian de la marca fija un search_path vacio'
 );
 
 select * from finish();
