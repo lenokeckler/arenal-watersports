@@ -19,8 +19,7 @@ import {
 import type { FirstSignInFormValues } from "../support/models/FirstSignInFormValues.interface";
 import { getMainRegion } from "../support/mainRegion";
 
-const createFirstSignInLocators = (page: Page) => {
-  const main = getMainRegion(page);
+const createFieldLocators = (main: Locator) => {
   const getInput = (label: string): Locator =>
     main.getByLabel(label, { exact: true });
   const getError = (field: FirstSignInField): Locator =>
@@ -39,33 +38,41 @@ const createFirstSignInLocators = (page: Page) => {
       getInput(
         E2E_FIRST_SIGN_IN_COPY.CURRENT_PASSWORD_LABEL
       ),
-    getHeading: (): Locator =>
-      main.getByRole(ARIA_ROLE.HEADING, {
-        name: E2E_FIRST_SIGN_IN_COPY.HEADING,
-      }),
     getNewPasswordError: (): Locator =>
       getError(FIRST_SIGN_IN_FIELD.NEW_PASSWORD),
     getNewPasswordInput: (): Locator =>
       getInput(E2E_FIRST_SIGN_IN_COPY.NEW_PASSWORD_LABEL),
-    getPasswordToggle: (field: FirstSignInField): Locator =>
-      main
-        .getByRole(ARIA_ROLE.BUTTON, {
-          name: E2E_FIRST_SIGN_IN_COPY.SHOW_PASSWORD,
-          exact: true,
-        })
-        .and(main.locator(`[aria-controls="${field}"]`)),
-    getRulesList: (): Locator =>
-      main.locator(`#${E2E_FIRST_SIGN_IN_RULES_LIST_ID}`),
-    getRulesTitle: (): Locator =>
-      main.getByText(E2E_FIRST_SIGN_IN_COPY.RULES_TITLE, {
-        exact: true,
-      }),
-    getSubmitButton: (): Locator =>
-      main.getByRole(ARIA_ROLE.BUTTON, {
-        name: E2E_FIRST_SIGN_IN_COPY.SUBMIT,
-      }),
   };
 };
+
+const createChromeLocators = (main: Locator) => ({
+  getHeading: (): Locator =>
+    main.getByRole(ARIA_ROLE.HEADING, {
+      name: E2E_FIRST_SIGN_IN_COPY.HEADING,
+    }),
+  getPasswordToggle: (field: FirstSignInField): Locator =>
+    main
+      .getByRole(ARIA_ROLE.BUTTON, {
+        name: E2E_FIRST_SIGN_IN_COPY.SHOW_PASSWORD,
+        exact: true,
+      })
+      .and(main.locator(`[aria-controls="${field}"]`)),
+  getRulesList: (): Locator =>
+    main.locator(`#${E2E_FIRST_SIGN_IN_RULES_LIST_ID}`),
+  getRulesTitle: (): Locator =>
+    main.getByText(E2E_FIRST_SIGN_IN_COPY.RULES_TITLE, {
+      exact: true,
+    }),
+  getSubmitButton: (): Locator =>
+    main.getByRole(ARIA_ROLE.BUTTON, {
+      name: E2E_FIRST_SIGN_IN_COPY.SUBMIT,
+    }),
+});
+
+const createFirstSignInLocators = (page: Page) => ({
+  ...createFieldLocators(getMainRegion(page)),
+  ...createChromeLocators(getMainRegion(page)),
+});
 
 export const createFirstSignInPage = (page: Page) => {
   const locators = createFirstSignInLocators(page);
