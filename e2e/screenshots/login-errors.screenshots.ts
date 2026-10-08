@@ -1,13 +1,13 @@
 import { expect, test } from "@playwright/test";
-import { captureViewport } from "../support/captureViewport";
+import { captureFullPage } from "../support/captureFullPage";
 import { createLoginPage } from "../pages/Login.page";
-import { resolveDeviceScreenshotFileName } from "../constants/E2eScreenshot.constants";
 import {
   E2E_LOGIN_BLOCKED_ACCOUNT,
   E2E_LOGIN_COPY,
   E2E_LOGIN_NOTICE_REASON,
   E2E_LOGIN_SCREENSHOT_BASENAME,
   E2E_LOGIN_SEEDED_PASSWORD,
+  E2E_LOGIN_TOGGLE_LABEL,
   E2E_LOGIN_WRONG_PASSWORD,
 } from "../constants/E2eLogin.constants";
 
@@ -27,12 +27,10 @@ test.describe("Login error screenshots", () => {
       E2E_LOGIN_COPY.BLOCKED_BY_ATTEMPTS
     );
 
-    await captureViewport(
+    await captureFullPage(
       page,
-      resolveDeviceScreenshotFileName(
-        E2E_LOGIN_SCREENSHOT_BASENAME.BLOCKED_BY_ATTEMPTS,
-        testInfo.project.name
-      )
+      E2E_LOGIN_SCREENSHOT_BASENAME.BLOCKED_BY_ATTEMPTS,
+      testInfo.project.name
     );
   });
 
@@ -51,12 +49,10 @@ test.describe("Login error screenshots", () => {
       E2E_LOGIN_COPY.BLOCKED_BY_ADMINISTRATION
     );
 
-    await captureViewport(
+    await captureFullPage(
       page,
-      resolveDeviceScreenshotFileName(
-        E2E_LOGIN_SCREENSHOT_BASENAME.BLOCKED_BY_ADMINISTRATION,
-        testInfo.project.name
-      )
+      E2E_LOGIN_SCREENSHOT_BASENAME.BLOCKED_BY_ADMINISTRATION,
+      testInfo.project.name
     );
   });
 
@@ -74,13 +70,14 @@ test.describe("Login error screenshots", () => {
     await expect(loginPage.getPasswordError()).toHaveText(
       E2E_LOGIN_COPY.INVALID_CREDENTIALS
     );
+    await loginPage.togglePasswordVisibility(
+      E2E_LOGIN_TOGGLE_LABEL.SHOW
+    );
 
-    await captureViewport(
+    await captureFullPage(
       page,
-      resolveDeviceScreenshotFileName(
-        E2E_LOGIN_SCREENSHOT_BASENAME.GENERIC_CREDENTIALS,
-        testInfo.project.name
-      )
+      E2E_LOGIN_SCREENSHOT_BASENAME.GENERIC_CREDENTIALS,
+      testInfo.project.name
     );
   });
 
@@ -94,12 +91,10 @@ test.describe("Login error screenshots", () => {
       E2E_LOGIN_COPY.INACTIVITY_NOTICE
     );
 
-    await captureViewport(
+    await captureFullPage(
       page,
-      resolveDeviceScreenshotFileName(
-        E2E_LOGIN_SCREENSHOT_BASENAME.INACTIVITY_NOTICE,
-        testInfo.project.name
-      )
+      E2E_LOGIN_SCREENSHOT_BASENAME.INACTIVITY_NOTICE,
+      testInfo.project.name
     );
   });
 });
