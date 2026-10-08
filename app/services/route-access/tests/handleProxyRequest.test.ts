@@ -8,7 +8,13 @@ import {
 } from "vitest";
 import { PATHS } from "@/app/constants";
 import { handleProxyRequest } from "../handleProxyRequest";
+import type { SessionAccess } from "@/app/services/supabase/models/SessionAccess.interface";
 import { PROXY_FIXTURE } from "./handleProxyRequest.constants";
+import {
+  PENDING_PASSWORD,
+  SIGNED_IN,
+  SIGNED_OUT,
+} from "./resolveProxyRedirect.constants";
 
 const { refreshSupabaseSession } = vi.hoisted(() => ({
   refreshSupabaseSession: vi.fn(),
@@ -22,7 +28,7 @@ const buildRequest = (pathname: string): NextRequest =>
   new NextRequest(`${PROXY_FIXTURE.ORIGIN}${pathname}`);
 
 const givenRefresh = (
-  hasSession: boolean
+  session: SessionAccess
 ): NextResponse => {
   const response = NextResponse.next();
   response.cookies.set(
@@ -30,7 +36,7 @@ const givenRefresh = (
     PROXY_FIXTURE.COOKIE.value
   );
   refreshSupabaseSession.mockResolvedValue({
-    hasSession,
+    ...session,
     response,
   });
   return response;
@@ -42,7 +48,7 @@ describe("handleProxyRequest", () => {
   });
 
   it("redirects a signed-out visitor to the login and keeps the refreshed cookies", async () => {
-    givenRefresh(false);
+    givenRefresh(SIGNED_OUT);
 
     const result = await handleProxyRequest(
       buildRequest(PROXY_FIXTURE.PROTECTED_PATHNAME)
@@ -57,7 +63,7 @@ describe("handleProxyRequest", () => {
   });
 
   it("returns the refreshed response for a signed-in visitor", async () => {
-    const refreshed = givenRefresh(true);
+    const refreshed = givenRefresh(SIGNED_IN);
 
     const result = await handleProxyRequest(
       buildRequest(PROXY_FIXTURE.PROTECTED_PATHNAME)
@@ -67,12 +73,29 @@ describe("handleProxyRequest", () => {
   });
 
   it("lets a signed-out visitor reach the login", async () => {
-    const refreshed = givenRefresh(false);
+    const refreshed = givenRefresh(SIGNED_OUT);
 
     const result = await handleProxyRequest(
       buildRequest(PATHS.ACCESS.LOGIN)
     );
 
     expect(result).toBe(refreshed);
+  });
+
+  it("redirects a pending account to the first sign-in and keeps the refreshed cookies", async () => {
+    givenRefresh(PENDING_PASSWORD);
+
+    const result = await handleProxyRequest(
+      buildRequest(PROXY_FIXTURE.PROTECTED_PATHNAME)
+    );
+
+    expect(
+      result.headers.get(PROXY_FIXTURE.LOCATION_HEADER)
+    ).toBe(
+      `${PROXY_FIXTURE.ORIGIN}${PATHS.ACCESS.FIRST_SIGN_IN}`
+    );
+    expect(
+      result.cookies.get(PROXY_FIXTURE.COOKIE.name)?.value
+    ).toBe(PROXY_FIXTURE.COOKIE.value);
   });
 });

@@ -8,11 +8,11 @@ import { resolveProxyRedirect } from "./resolveProxyRedirect";
 export const handleProxyRequest = async (
   request: NextRequest
 ): Promise<NextResponse> => {
-  const { hasSession, response } =
+  const { response, ...sessionAccess } =
     await refreshSupabaseSession(request);
   const redirectPath = resolveProxyRedirect(
     request.nextUrl.pathname,
-    hasSession
+    sessionAccess
   );
 
   if (redirectPath === null) {
