@@ -92,10 +92,10 @@ describe("FirstSignInFormView", () => {
   });
 
   it("posts the three typed values to the server action once for a valid form", async () => {
-    const received: FormData[] = [];
+    let submitted = new FormData();
     vi.mocked(submitFirstPasswordChange).mockImplementation(
       (_previousError, formData) => {
-        received.push(formData);
+        submitted = formData;
         return Promise.resolve(null);
       }
     );
@@ -109,7 +109,7 @@ describe("FirstSignInFormView", () => {
         submitFirstPasswordChange
       ).toHaveBeenCalledOnce()
     );
-    expect(Object.fromEntries(received[0])).toEqual(
+    expect(Object.fromEntries(submitted)).toEqual(
       DEFAULT_FIRST_PASSWORD_CHANGE_INPUT
     );
   });
