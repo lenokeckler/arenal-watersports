@@ -25,6 +25,7 @@ import {
   NETWORK_ERROR,
 } from "./mapSignInAuthError.constants";
 import {
+  captureThrowawayCredentials,
   mockThrowawayClient,
   throwawaySignInWithPassword,
   throwawaySignOut,
@@ -40,18 +41,6 @@ vi.mock(
   () => import("./mocks/recordFailedSignIn.mock")
 );
 
-const captureCredentials = (): (() => unknown) => {
-  let captured: unknown;
-  throwawaySignInWithPassword.mockImplementation(
-    (credentials: unknown) => {
-      captured = credentials;
-      return Promise.resolve({ data: {}, error: null });
-    }
-  );
-
-  return () => captured;
-};
-
 describe("verifyTemporaryPassword boundaries", () => {
   beforeEach(() => {
     vi.resetAllMocks();
@@ -59,7 +48,7 @@ describe("verifyTemporaryPassword boundaries", () => {
   });
 
   it("builds the email from a username typed with spaces and capitals", async () => {
-    const credentialsOf = captureCredentials();
+    const credentialsOf = captureThrowawayCredentials();
 
     await verifyTemporaryPassword(
       {
@@ -76,7 +65,7 @@ describe("verifyTemporaryPassword boundaries", () => {
   });
 
   it("sends the password exactly as typed", async () => {
-    const credentialsOf = captureCredentials();
+    const credentialsOf = captureThrowawayCredentials();
 
     await verifyTemporaryPassword(
       FIRST_SIGN_IN_WORKER,
