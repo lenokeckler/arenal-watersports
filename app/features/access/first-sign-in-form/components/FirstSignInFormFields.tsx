@@ -3,25 +3,15 @@ import { FIRST_SIGN_IN_FIELD } from "@/app/constants/access/FirstSignInError.con
 import { FIRST_SIGN_IN_FORM_COPY } from "../constants/FirstSignInFormCopy.constants";
 import type { FirstSignInFocusField } from "../models/FirstSignInFocusField.type";
 import type { FirstSignInFormFieldsProps } from "../models/FirstSignInFormFieldsProps.interface";
+import { createFirstSignInSharedFieldProps } from "../utils/createFirstSignInSharedFieldProps";
 import FirstSignInNewPasswordGroup from "./FirstSignInNewPasswordGroup";
 import FirstSignInPasswordField from "./FirstSignInPasswordField";
 
-const FirstSignInFormFields = ({
-  fieldErrors,
-  fieldRefs,
-  isPending,
-  onChange,
-  passwordRules,
-  showFailures,
-  values,
-}: FirstSignInFormFieldsProps): React.JSX.Element => {
-  const sharedProps = (field: FirstSignInFocusField) => ({
-    error: fieldErrors[field],
-    inputRef: fieldRefs[field],
-    isPending,
-    onChange,
-    value: values[field],
-  });
+const FirstSignInFormFields = (
+  props: FirstSignInFormFieldsProps
+): React.JSX.Element => {
+  const sharedProps = (field: FirstSignInFocusField) =>
+    createFirstSignInSharedFieldProps(props, field);
 
   return (
     <>
@@ -37,8 +27,8 @@ const FirstSignInFormFields = ({
       />
       <FirstSignInNewPasswordGroup
         {...sharedProps(FIRST_SIGN_IN_FIELD.NEW_PASSWORD)}
-        passwordRules={passwordRules}
-        showFailures={showFailures}
+        passwordRules={props.passwordRules}
+        showFailures={props.showFailures}
       />
       <FirstSignInPasswordField
         {...sharedProps(
