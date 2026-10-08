@@ -109,6 +109,18 @@ describe("refreshSupabaseSession", () => {
     expect(result.hasSession).toBe(false);
   });
 
+  it("does not report a pending password change when verification returns an error", async () => {
+    getClaims.mockResolvedValue({
+      data: { claims: SESSION_FIXTURE.PENDING_CLAIMS },
+      error: new Error(SESSION_FIXTURE.ERROR_MESSAGE),
+    });
+
+    const result =
+      await refreshSupabaseSession(buildRequest());
+
+    expect(result.mustChangePassword).toBe(false);
+  });
+
   it("reads the cookies of the incoming request", async () => {
     await refreshSupabaseSession(buildRequest());
 

@@ -98,4 +98,29 @@ describe("handleProxyRequest", () => {
       result.cookies.get(PROXY_FIXTURE.COOKIE.name)?.value
     ).toBe(PROXY_FIXTURE.COOKIE.value);
   });
+
+  it("redirects a settled account away from the first sign-in and keeps the refreshed cookies", async () => {
+    givenRefresh(SIGNED_IN);
+
+    const result = await handleProxyRequest(
+      buildRequest(PATHS.ACCESS.FIRST_SIGN_IN)
+    );
+
+    expect(
+      result.headers.get(PROXY_FIXTURE.LOCATION_HEADER)
+    ).toBe(`${PROXY_FIXTURE.ORIGIN}${PATHS.HOME}`);
+    expect(
+      result.cookies.get(PROXY_FIXTURE.COOKIE.name)?.value
+    ).toBe(PROXY_FIXTURE.COOKIE.value);
+  });
+
+  it("lets a pending account stay on the first sign-in", async () => {
+    const refreshed = givenRefresh(PENDING_PASSWORD);
+
+    const result = await handleProxyRequest(
+      buildRequest(PATHS.ACCESS.FIRST_SIGN_IN)
+    );
+
+    expect(result).toBe(refreshed);
+  });
 });

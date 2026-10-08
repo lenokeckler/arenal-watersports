@@ -4,6 +4,9 @@ export const PROTECTED_PATHNAME = "/board";
 
 const RECOVERY_PATHNAME = "/access/recovery";
 
+const UPPERCASE_FIRST_SIGN_IN_PATHNAME =
+  "/ACCESS/first-sign-in";
+
 export const PROTECTED_PATHS = [
   PATHS.HOME,
   PROTECTED_PATHNAME,
@@ -26,6 +29,11 @@ export const SIGNED_OUT = {
 export const SIGNED_IN = {
   hasSession: true,
   mustChangePassword: false,
+} as const;
+
+export const SIGNED_OUT_WITH_PENDING_CLAIM = {
+  hasSession: false,
+  mustChangePassword: true,
 } as const;
 
 export const PENDING_PASSWORD = {
@@ -66,4 +74,19 @@ export const GATE_MATRIX = [
   ),
   [PENDING_PASSWORD, PATHS.ACCESS.FIRST_SIGN_IN, null],
   [PENDING_PASSWORD, PATHS.ACCESS.LOGIN, null],
+  [
+    PENDING_PASSWORD,
+    UPPERCASE_FIRST_SIGN_IN_PATHNAME,
+    PATHS.ACCESS.FIRST_SIGN_IN,
+  ],
+  [
+    SIGNED_OUT_WITH_PENDING_CLAIM,
+    PATHS.HOME,
+    PATHS.ACCESS.LOGIN,
+  ],
+  [
+    SIGNED_OUT_WITH_PENDING_CLAIM,
+    PATHS.ACCESS.FIRST_SIGN_IN,
+    PATHS.ACCESS.LOGIN,
+  ],
 ] as const;
