@@ -109,4 +109,12 @@ describe("PasswordRulesChecklist states", () => {
       );
     });
   });
+
+  it("keeps the live status outside the described list", () => {
+    const { page } = renderChecklist();
+
+    expect(page.getList()).not.toContainElement(
+      page.getStatus()
+    );
+  });
 });
