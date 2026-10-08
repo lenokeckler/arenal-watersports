@@ -108,7 +108,3 @@ export {
   type SignInField,
 } from "./access/SignInError.constants";
 export { SUPABASE_AUTH_ERROR_CODE } from "./supabase/SupabaseAuthErrorCode.constants";
-export {
-  STORYBOOK_LAYOUT,
-  STORYBOOK_TITLE,
-} from "./storybook/Storybook.constants";
