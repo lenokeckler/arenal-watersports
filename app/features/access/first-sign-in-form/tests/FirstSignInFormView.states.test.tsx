@@ -6,6 +6,7 @@ import {
   it,
   vi,
 } from "vitest";
+import "./firstSignInAction.setup";
 import {
   AUTOCOMPLETE,
   FIRST_SIGN_IN_ERROR_CODE,
@@ -19,10 +20,6 @@ import {
   READONLY_ATTRIBUTE,
 } from "./FirstSignInFormView.constants";
 import { renderFirstSignInFormView as renderView } from "./renderFirstSignInFormView";
-
-vi.mock("../actions/submitFirstPasswordChange", () => ({
-  submitFirstPasswordChange: vi.fn(),
-}));
 
 describe("FirstSignInFormView states", () => {
   beforeEach(() => {

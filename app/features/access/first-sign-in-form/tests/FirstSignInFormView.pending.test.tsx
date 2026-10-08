@@ -6,15 +6,11 @@ import {
   it,
   vi,
 } from "vitest";
+import "./firstSignInAction.setup";
 import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
 import { submitFirstPasswordChange } from "../actions/submitFirstPasswordChange";
-import { SINGLE_CALL } from "./FirstSignInFormView.constants";
 import { NETWORK_ERROR } from "./firstSignInErrors.constants";
 import { renderFirstSignInFormView as renderView } from "./renderFirstSignInFormView";
-
-vi.mock("../actions/submitFirstPasswordChange", () => ({
-  submitFirstPasswordChange: vi.fn(),
-}));
 
 const startPendingSubmit = async () => {
   let settle: () => void = () => undefined;
@@ -50,9 +46,9 @@ describe("FirstSignInFormView while saving", () => {
       expect(page.queryPendingSubmit()).toBeNull()
     );
     await page.findBanner();
-    expect(submitFirstPasswordChange).toHaveBeenCalledTimes(
-      SINGLE_CALL
-    );
+    expect(
+      submitFirstPasswordChange
+    ).toHaveBeenCalledOnce();
   });
 
   it("ignores Enter pressed in a field", async () => {
@@ -65,8 +61,8 @@ describe("FirstSignInFormView while saving", () => {
       expect(page.queryPendingSubmit()).toBeNull()
     );
     await page.findBanner();
-    expect(submitFirstPasswordChange).toHaveBeenCalledTimes(
-      SINGLE_CALL
-    );
+    expect(
+      submitFirstPasswordChange
+    ).toHaveBeenCalledOnce();
   });
 });

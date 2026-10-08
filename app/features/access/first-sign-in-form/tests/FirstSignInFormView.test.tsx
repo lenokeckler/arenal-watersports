@@ -6,6 +6,7 @@ import {
   it,
   vi,
 } from "vitest";
+import "./firstSignInAction.setup";
 import { FIRST_SIGN_IN_ERROR_CODE } from "@/app/constants";
 import {
   DEFAULT_FIRST_PASSWORD_CHANGE_INPUT,
@@ -13,7 +14,10 @@ import {
 } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
 import { submitFirstPasswordChange } from "../actions/submitFirstPasswordChange";
 import { FIRST_SIGN_IN_ERROR_COPY } from "../constants/FirstSignInErrorCopy.constants";
-import { FIRST_SIGN_IN_RULES_ID } from "../constants/FirstSignInRules.constants";
+import {
+  FIRST_SIGN_IN_NEW_PASSWORD_DESCRIBED_BY,
+  FIRST_SIGN_IN_RULES_ID,
+} from "../constants/FirstSignInRules.constants";
 import {
   ARIA_DESCRIBEDBY_ATTRIBUTE,
   ARIA_INVALID_ATTRIBUTE,
@@ -21,13 +25,8 @@ import {
   CURRENT_PASSWORD_ERROR_ID,
   NEW_PASSWORD_DESCRIPTION_WITH_ERROR,
   RULE_COUNT,
-  SINGLE_CALL,
 } from "./FirstSignInFormView.constants";
 import { renderFirstSignInFormView as renderView } from "./renderFirstSignInFormView";
-
-vi.mock("../actions/submitFirstPasswordChange", () => ({
-  submitFirstPasswordChange: vi.fn(),
-}));
 
 describe("FirstSignInFormView", () => {
   beforeEach(() => {
@@ -44,7 +43,7 @@ describe("FirstSignInFormView", () => {
     );
     expect(page.getNewInput()).toHaveAttribute(
       ARIA_DESCRIBEDBY_ATTRIBUTE,
-      FIRST_SIGN_IN_RULES_ID
+      FIRST_SIGN_IN_NEW_PASSWORD_DESCRIBED_BY
     );
   });
 
@@ -92,7 +91,14 @@ describe("FirstSignInFormView", () => {
     ).not.toHaveBeenCalled();
   });
 
-  it("calls the server action once for a valid form", async () => {
+  it("posts the three typed values to the server action once for a valid form", async () => {
+    const received: FormData[] = [];
+    vi.mocked(submitFirstPasswordChange).mockImplementation(
+      (_previousError, formData) => {
+        received.push(formData);
+        return Promise.resolve(null);
+      }
+    );
     const page = renderView();
 
     await page.fill(DEFAULT_FIRST_PASSWORD_CHANGE_INPUT);
@@ -101,7 +107,10 @@ describe("FirstSignInFormView", () => {
     await waitFor(() =>
       expect(
         submitFirstPasswordChange
-      ).toHaveBeenCalledTimes(SINGLE_CALL)
+      ).toHaveBeenCalledOnce()
+    );
+    expect(Object.fromEntries(received[0])).toEqual(
+      DEFAULT_FIRST_PASSWORD_CHANGE_INPUT
     );
   });
 });
