@@ -120,3 +120,5 @@ export {
   type FirstSignInErrorCode,
   type FirstSignInField,
 } from "./access/FirstSignInError.constants";
+export { SUPABASE_TABLE } from "./supabase/SupabaseTable.constants";
+export { SUPABASE_SIGN_OUT_SCOPE } from "./supabase/SupabaseSignOutScope.constants";

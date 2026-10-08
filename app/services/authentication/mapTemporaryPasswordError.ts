@@ -1,0 +1,47 @@
+import type { AuthError } from "@supabase/supabase-js";
+import {
+  FIRST_SIGN_IN_ERROR_CODE,
+  SIGN_IN_ERROR_CODE,
+  type FirstSignInErrorCode,
+  type SignInErrorCode,
+} from "@/app/constants";
+import { createFirstSignInError } from "@/app/utils/first-sign-in/createFirstSignInError";
+import type { FirstSignInError } from "@/app/utils/first-sign-in/models/FirstSignInError.interface";
+import { mapSignInAuthError } from "./mapSignInAuthError";
+
+const TEMPORARY_PASSWORD_ERROR_CODE: Record<
+  SignInErrorCode,
+  FirstSignInErrorCode
+> = {
+  [SIGN_IN_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION]:
+    FIRST_SIGN_IN_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION,
+  [SIGN_IN_ERROR_CODE.ACCOUNT_BLOCKED_BY_ATTEMPTS]:
+    FIRST_SIGN_IN_ERROR_CODE.ACCOUNT_BLOCKED_BY_ATTEMPTS,
+  [SIGN_IN_ERROR_CODE.INVALID_CREDENTIALS]:
+    FIRST_SIGN_IN_ERROR_CODE.CURRENT_PASSWORD_INVALID,
+  [SIGN_IN_ERROR_CODE.NETWORK]:
+    FIRST_SIGN_IN_ERROR_CODE.NETWORK,
+  [SIGN_IN_ERROR_CODE.PASSWORD_REQUIRED]:
+    FIRST_SIGN_IN_ERROR_CODE.UNKNOWN,
+  [SIGN_IN_ERROR_CODE.PASSWORD_TOO_LONG]:
+    FIRST_SIGN_IN_ERROR_CODE.UNKNOWN,
+  [SIGN_IN_ERROR_CODE.SESSION_INACTIVE]:
+    FIRST_SIGN_IN_ERROR_CODE.SESSION_INACTIVE,
+  [SIGN_IN_ERROR_CODE.TOO_MANY_REQUESTS]:
+    FIRST_SIGN_IN_ERROR_CODE.TOO_MANY_REQUESTS,
+  [SIGN_IN_ERROR_CODE.UNKNOWN]:
+    FIRST_SIGN_IN_ERROR_CODE.UNKNOWN,
+  [SIGN_IN_ERROR_CODE.USERNAME_LENGTH]:
+    FIRST_SIGN_IN_ERROR_CODE.UNKNOWN,
+  [SIGN_IN_ERROR_CODE.USERNAME_REQUIRED]:
+    FIRST_SIGN_IN_ERROR_CODE.UNKNOWN,
+};
+
+export const mapTemporaryPasswordError = (
+  error: AuthError
+): FirstSignInError =>
+  createFirstSignInError(
+    TEMPORARY_PASSWORD_ERROR_CODE[
+      mapSignInAuthError(error).code
+    ]
+  );
