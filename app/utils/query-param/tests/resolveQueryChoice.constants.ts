@@ -1,0 +1,22 @@
+import type { NullableUndefined } from "@/app/types";
+
+export const CHOICES = ["alpha", "beta"] as const;
+
+export const MEMBER_CASES = [
+  ["alpha", "alpha"],
+  ["beta", "beta"],
+] as const;
+
+export const NON_MEMBER_VALUES: readonly NullableUndefined<
+  string | string[]
+>[] = [
+  undefined,
+  "",
+  "gamma",
+  "ALPHA",
+  " alpha",
+  "<script>",
+  ["alpha"],
+  ["alpha", "beta"],
+  [],
+];

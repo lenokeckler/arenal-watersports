@@ -34,6 +34,7 @@ export const STRING = {
   THREE_DOTS: "…",
   COMMA_SPACE: ", ",
   SLASH: "/",
+  QUESTION_MARK: "?",
   SMOOTH: "smooth",
   HIDDEN: "hidden",
   AUTO: "auto",
