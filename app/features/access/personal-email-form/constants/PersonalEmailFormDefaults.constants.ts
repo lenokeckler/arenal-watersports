@@ -1,5 +1,6 @@
 import {
   PERSONAL_EMAIL_FIELD,
+  PERSONAL_EMAIL_INTENT,
   STRING,
 } from "@/app/constants";
 import type { PersonalEmailChangeInput } from "@/app/utils/personal-email/models/PersonalEmailChangeInput.interface";
@@ -18,3 +19,6 @@ export const NO_PERSONAL_EMAIL_FORM_ERRORS: PersonalEmailFormErrors =
     [PERSONAL_EMAIL_FIELD.EMAIL]: null,
     [PERSONAL_EMAIL_FIELD.FORM]: null,
   };
+
+export const DEFAULT_PERSONAL_EMAIL_INTENT =
+  PERSONAL_EMAIL_INTENT.SAVE;
