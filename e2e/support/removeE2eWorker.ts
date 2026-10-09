@@ -25,7 +25,7 @@ const DEPENDENT_TABLES = [
   },
 ] as const;
 
-export const removePendingWorker = async (
+export const removeE2eWorker = async (
   supabase: SupabaseClient,
   workerId: string
 ): Promise<void> => {
@@ -51,7 +51,7 @@ export const removePendingWorker = async (
 
   if (failures.length > 0) {
     failE2eOperation(
-      "remove the pending worker",
+      "remove the E2E worker",
       failures.join(E2E_SUPABASE_ERROR.REASON_SEPARATOR)
     );
   }

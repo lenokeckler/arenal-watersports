@@ -5,11 +5,15 @@ import {
   E2E_SUPABASE_TABLE,
 } from "../constants/E2eSupabase.constants";
 import { failE2eOperation } from "./failE2eOperation";
+import type { E2eWorkerRecord } from "./models/E2eWorkerRecord.interface";
 
-export const insertPendingWorker = async (
+export const insertE2eWorker = async (
   supabase: SupabaseClient,
-  workerId: string,
-  username: string
+  {
+    mustChangePassword,
+    username,
+    workerId,
+  }: E2eWorkerRecord
 ): Promise<void> => {
   const { error: insertError } = await supabase
     .from(E2E_SUPABASE_TABLE.WORKERS)
@@ -17,7 +21,7 @@ export const insertPendingWorker = async (
       base_role: E2E_PENDING_WORKER.BASE_ROLE,
       full_name: E2E_PENDING_WORKER.FULL_NAME,
       id: workerId,
-      must_change_password: true,
+      must_change_password: mustChangePassword,
       username,
     });
   if (!insertError) {
@@ -31,7 +35,7 @@ export const insertPendingWorker = async (
   ].filter(Boolean);
 
   failE2eOperation(
-    "insert the pending worker",
+    "insert the E2E worker",
     reasons.join(E2E_SUPABASE_ERROR.REASON_SEPARATOR)
   );
 };

@@ -17,7 +17,9 @@ export const E2E_SUPABASE_TABLE = {
 } as const;
 
 export const E2E_SUPABASE_COLUMN = {
+  FAILED_ATTEMPTS: "failed_attempts",
   ID: "id",
+  STATUS: "status",
   WORKER_ID: "worker_id",
 } as const;
 
