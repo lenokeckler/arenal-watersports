@@ -4,18 +4,18 @@ import {
   type AuthError,
 } from "@supabase/supabase-js";
 import {
-  FIRST_SIGN_IN_ERROR_CODE,
+  PASSWORD_CHANGE_ERROR_CODE,
   PASSWORD_UPDATE_ERROR_CODE,
 } from "@/app/constants";
-import { createFirstSignInError } from "@/app/utils/first-sign-in/createFirstSignInError";
-import type { FirstSignInError } from "@/app/utils/first-sign-in/models/FirstSignInError.interface";
+import { createPasswordChangeError } from "@/app/utils/password-change/createPasswordChangeError";
+import type { PasswordChangeError } from "@/app/utils/password-change/models/PasswordChangeError.interface";
 
 export const mapPasswordUpdateError = (
   error: AuthError
-): FirstSignInError => {
+): PasswordChangeError => {
   if (isAuthRetryableFetchError(error)) {
-    return createFirstSignInError(
-      FIRST_SIGN_IN_ERROR_CODE.NETWORK
+    return createPasswordChangeError(
+      PASSWORD_CHANGE_ERROR_CODE.NETWORK
     );
   }
 
@@ -24,7 +24,7 @@ export const mapPasswordUpdateError = (
       ? PASSWORD_UPDATE_ERROR_CODE[error.code]
       : undefined;
 
-  return createFirstSignInError(
-    code ?? FIRST_SIGN_IN_ERROR_CODE.UNKNOWN
+  return createPasswordChangeError(
+    code ?? PASSWORD_CHANGE_ERROR_CODE.UNKNOWN
   );
 };

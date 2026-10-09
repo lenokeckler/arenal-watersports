@@ -6,13 +6,13 @@ import {
   vi,
 } from "vitest";
 import "./changeFirstPassword.setup";
-import { FIRST_SIGN_IN_ERROR_CODE } from "@/app/constants";
+import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
-import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT as INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
+import { DEFAULT_PASSWORD_CHANGE_INPUT as INPUT } from "@/app/utils/password-change/tests/passwordChange.constants";
 import { changeFirstPassword } from "../changeFirstPassword";
 import { checkWorkerPassword } from "../checkWorkerPassword";
 import { completeFirstPasswordChange } from "../completeFirstPasswordChange";
-import { readFirstSignInWorker } from "../readFirstSignInWorker";
+import { readSignedInWorker } from "../readSignedInWorker";
 import { recordSuccessfulSignIn } from "../recordSuccessfulSignIn";
 import { refreshFirstSignInSession } from "../refreshFirstSignInSession";
 import { updateSignedInPassword } from "../updateSignedInPassword";
@@ -36,7 +36,7 @@ describe("changeFirstPassword failures", () => {
     expect(result).toMatchObject({
       ok: false,
       error: {
-        code: FIRST_SIGN_IN_ERROR_CODE.CONFIRMATION_MISMATCH,
+        code: PASSWORD_CHANGE_ERROR_CODE.CONFIRMATION_MISMATCH,
       },
     });
     expect(
@@ -45,16 +45,14 @@ describe("changeFirstPassword failures", () => {
   });
 
   it("reports an inactive session when no worker is signed in", async () => {
-    vi.mocked(readFirstSignInWorker).mockResolvedValue(
-      null
-    );
+    vi.mocked(readSignedInWorker).mockResolvedValue(null);
 
     const result = await changeFirstPassword(INPUT);
 
     expect(result).toMatchObject({
       ok: false,
       error: {
-        code: FIRST_SIGN_IN_ERROR_CODE.SESSION_INACTIVE,
+        code: PASSWORD_CHANGE_ERROR_CODE.SESSION_INACTIVE,
       },
     });
     expect(checkWorkerPassword).not.toHaveBeenCalled();
