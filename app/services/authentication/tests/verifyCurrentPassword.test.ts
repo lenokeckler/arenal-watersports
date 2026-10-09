@@ -21,9 +21,14 @@ import {
   rejectedSignIn,
   throwawaySignOut,
 } from "./mockThrowawayClient";
+import { REQUEST_SUPABASE_CLIENT as SUPABASE } from "./requestSupabaseClient.constants";
 
 const verify = () =>
-  verifyCurrentPassword(WORKER, INPUT.currentPassword);
+  verifyCurrentPassword(
+    SUPABASE,
+    WORKER,
+    INPUT.currentPassword
+  );
 
 describe("verifyCurrentPassword", () => {
   beforeEach(() => {
@@ -83,6 +88,7 @@ describe("verifyCurrentPassword", () => {
     );
     expect(isBlockedByAttempts).toHaveBeenCalledOnce();
     expect(isBlockedByAttempts).toHaveBeenCalledWith(
+      SUPABASE,
       WORKER.id
     );
     expect(

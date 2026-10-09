@@ -29,9 +29,14 @@ import {
   rejectedSignIn,
 } from "./mockThrowawayClient";
 import { RPC_FAILURE } from "./recordSignIn.constants";
+import { REQUEST_SUPABASE_CLIENT as SUPABASE } from "./requestSupabaseClient.constants";
 
 const verify = () =>
-  verifyCurrentPassword(WORKER, INPUT.currentPassword);
+  verifyCurrentPassword(
+    SUPABASE,
+    WORKER,
+    INPUT.currentPassword
+  );
 
 describe("verifyCurrentPassword failures", () => {
   beforeEach(() => {

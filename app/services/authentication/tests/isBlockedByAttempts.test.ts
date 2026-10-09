@@ -10,21 +10,24 @@ import {
   SUPABASE_WORKER_BLOCKED_REASON,
   SUPABASE_WORKER_COLUMN,
 } from "@/app/constants";
-import { createServiceRoleSupabaseClient } from "@/app/services/supabase";
+import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
 import { isBlockedByAttempts } from "../isBlockedByAttempts";
 import {
   RPC_FAILURE,
   SIGNED_IN_USER_ID,
 } from "./recordSignIn.constants";
 
-vi.mock("@/app/services/supabase", () => ({
-  createServiceRoleSupabaseClient: vi.fn(),
-}));
-
 const maybeSingle = vi.fn();
 const eq = vi.fn();
 const select = vi.fn();
 const from = vi.fn();
+const supabase = {
+  from,
+} as unknown as ServerSupabaseClient;
+
+let readTable: unknown;
+let selectedColumns: unknown;
+let filter: unknown[];
 
 const reasonRow = (blockedReason: unknown) => ({
   data: { blocked_reason: blockedReason },
@@ -35,31 +38,34 @@ describe("isBlockedByAttempts", () => {
   beforeEach(() => {
     vi.resetAllMocks();
     maybeSingle.mockResolvedValue(reasonRow(null));
-    eq.mockReturnValue({ maybeSingle });
-    select.mockReturnValue({ eq });
-    from.mockReturnValue({ select });
-    vi.mocked(
-      createServiceRoleSupabaseClient
-    ).mockReturnValue({ from } as unknown as ReturnType<
-      typeof createServiceRoleSupabaseClient
-    >);
+    eq.mockImplementation((...args: unknown[]) => {
+      filter = args;
+      return { maybeSingle };
+    });
+    select.mockImplementation((columns: unknown) => {
+      selectedColumns = columns;
+      return { eq };
+    });
+    from.mockImplementation((table: unknown) => {
+      readTable = table;
+      return { select };
+    });
   });
 
-  it("reads only the blocked reason of the worker", async () => {
-    await isBlockedByAttempts(SIGNED_IN_USER_ID);
+  it("reads only the blocked reason of the worker with the given client", async () => {
+    await isBlockedByAttempts(supabase, SIGNED_IN_USER_ID);
 
     expect(from).toHaveBeenCalledOnce();
-    expect(from).toHaveBeenCalledWith(
-      SUPABASE_TABLE.WORKERS
-    );
-    expect(select).toHaveBeenCalledWith(
+    expect(readTable).toBe(SUPABASE_TABLE.WORKERS);
+    expect(select).toHaveBeenCalledOnce();
+    expect(selectedColumns).toBe(
       SUPABASE_WORKER_COLUMN.BLOCKED_REASON
     );
     expect(eq).toHaveBeenCalledOnce();
-    expect(eq).toHaveBeenCalledWith(
+    expect(filter).toEqual([
       SUPABASE_WORKER_COLUMN.ID,
-      SIGNED_IN_USER_ID
-    );
+      SIGNED_IN_USER_ID,
+    ]);
   });
 
   it.each([
@@ -85,7 +91,7 @@ describe("isBlockedByAttempts", () => {
       maybeSingle.mockResolvedValue(row);
 
       await expect(
-        isBlockedByAttempts(SIGNED_IN_USER_ID)
+        isBlockedByAttempts(supabase, SIGNED_IN_USER_ID)
       ).resolves.toBe(expected);
     }
   );
@@ -97,7 +103,7 @@ describe("isBlockedByAttempts", () => {
     });
 
     await expect(
-      isBlockedByAttempts(SIGNED_IN_USER_ID)
+      isBlockedByAttempts(supabase, SIGNED_IN_USER_ID)
     ).rejects.toThrow(SUPABASE_TABLE.WORKERS);
   });
 });

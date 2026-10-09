@@ -1,4 +1,5 @@
 import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants";
+import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
 import type { NullableRef } from "@/app/types";
 import { createPasswordChangeError } from "@/app/utils/password-change/createPasswordChangeError";
 import type { PasswordChangeError } from "@/app/utils/password-change/models/PasswordChangeError.interface";
@@ -11,6 +12,7 @@ import { recordFailedSignIn } from "./recordFailedSignIn";
 import { recordSuccessfulSignIn } from "./recordSuccessfulSignIn";
 
 export const verifyCurrentPassword = async (
+  supabase: ServerSupabaseClient,
   worker: SignedInWorker,
   currentPassword: string
 ): Promise<NullableRef<PasswordChangeError>> => {
@@ -31,7 +33,10 @@ export const verifyCurrentPassword = async (
 
   await recordFailedSignIn(worker.username);
 
-  const blocked = await isBlockedByAttempts(worker.id);
+  const blocked = await isBlockedByAttempts(
+    supabase,
+    worker.id
+  );
 
   return createPasswordChangeError(
     blocked
