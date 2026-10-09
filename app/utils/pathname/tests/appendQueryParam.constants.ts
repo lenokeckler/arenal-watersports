@@ -25,3 +25,8 @@ export const APPEND_CASES = [
   ],
   ["/profile", "notice", "", "/profile?notice="],
 ] as const;
+
+export const EDGE_CASES = [
+  ["/profile#top", "/profile#top?notice=done"],
+  ["/profile?tab=1", "/profile?tab=1?notice=done"],
+] as const;

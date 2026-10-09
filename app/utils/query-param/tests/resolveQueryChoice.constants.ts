@@ -20,3 +20,10 @@ export const NON_MEMBER_VALUES: readonly NullableUndefined<
   ["alpha", "beta"],
   [],
 ];
+
+export const PROTOTYPE_KEYS = [
+  "__proto__",
+  "constructor",
+  "toString",
+  "hasOwnProperty",
+] as const;
