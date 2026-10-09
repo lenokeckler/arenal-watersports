@@ -17,6 +17,8 @@ export const PROTECTED_PATHS = [
   PATHS.HOME,
   PROTECTED_PATHNAME,
   "/administration/workers",
+  PATHS.PROFILE.ROOT,
+  PATHS.PROFILE.PASSWORD,
   "/accessory",
   "/access-private/login",
 ] as const;
