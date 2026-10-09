@@ -12,7 +12,11 @@ import { readOwnPersonalEmail } from "@/app/services/authentication";
 import { PERSONAL_EMAIL_REQUIRED_COPY } from "../constants/PersonalEmailErrorCopy.constants";
 import PersonalEmailForm from "../PersonalEmailForm";
 import { REDIRECT_SIGNAL_MESSAGE } from "@/app/utils/server-action/tests/redirectSignal.constants";
-import { REGISTERED_ADDRESS } from "./personalEmailScreen.constants";
+import { listAttributeValuesHoldingText } from "./listAttributeValuesHoldingText";
+import {
+  REGISTERED_ADDRESS,
+  VALUE_ATTRIBUTE,
+} from "./personalEmailScreen.constants";
 import { createPersonalEmailFormViewPage } from "./PersonalEmailFormView.page";
 
 vi.mock("../actions/submitPersonalEmail", () => ({
@@ -87,6 +91,16 @@ describe("PersonalEmailForm", () => {
       REGISTERED_ADDRESS
     );
     expect(page.queryText(REGISTERED_ADDRESS)).toBeNull();
+    expect(
+      listAttributeValuesHoldingText(
+        container,
+        REGISTERED_ADDRESS,
+        {
+          attribute: VALUE_ATTRIBUTE,
+          element: page.getEmailInput(),
+        }
+      )
+    ).toEqual([]);
   });
 
   it("explains an empty save to administration with the required copy", async () => {
