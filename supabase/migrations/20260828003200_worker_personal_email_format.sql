@@ -8,6 +8,4 @@ alter table workers
       and char_length(split_part(personal_email, '@', 1)) <= 64
       and personal_email ~ '^[a-zA-Z0-9.!#$%&''*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$'
     )
-  ) not valid;
-
-alter table workers validate constraint workers_personal_email_format;
+  );
