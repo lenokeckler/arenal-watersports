@@ -67,6 +67,8 @@ export const createProfilePasswordFormPage = () => {
     getRulesTitle: () =>
       screen.getByText(PASSWORD_RULES_COPY.TITLE),
     getSubmit,
+    getUsernameInput: (username: string) =>
+      screen.getByDisplayValue(username),
     getTitle: () =>
       screen.getByRole(ARIA_ROLE.HEADING, {
         level: HEADING_LEVEL,
