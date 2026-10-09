@@ -1,0 +1,48 @@
+import {
+  BLOCKED_PASSWORD_CHANGE_ERROR_CODES,
+  PASSWORD_CHANGE_ERROR_CODE,
+  PATHS,
+  PROFILE_NOTICE,
+  PROFILE_NOTICE_QUERY_PARAM,
+  SIGN_IN_NOTICE_QUERY_PARAM,
+  SIGN_IN_NOTICE_REASON,
+} from "@/app/constants";
+import { appendQueryParam } from "@/app/utils/pathname/appendQueryParam";
+
+export const SERVICE_FAILURE_MESSAGE =
+  "service unavailable";
+export const REDIRECT_SIGNAL_MESSAGE = "NEXT_REDIRECT";
+export const FORGED_USERNAME_FIELD = "username";
+export const FORGED_USERNAME_VALUE = "someone-else";
+
+export const PASSWORD_CHANGED_TARGET = appendQueryParam(
+  PATHS.PROFILE.ROOT,
+  PROFILE_NOTICE_QUERY_PARAM,
+  PROFILE_NOTICE.PASSWORD_CHANGED
+);
+
+export const BLOCKED_CASES = [
+  [
+    PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ATTEMPTS,
+    appendQueryParam(
+      PATHS.ACCESS.LOGIN,
+      SIGN_IN_NOTICE_QUERY_PARAM,
+      SIGN_IN_NOTICE_REASON.BLOCKED_BY_ATTEMPTS
+    ),
+  ],
+  [
+    PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION,
+    appendQueryParam(
+      PATHS.ACCESS.LOGIN,
+      SIGN_IN_NOTICE_QUERY_PARAM,
+      SIGN_IN_NOTICE_REASON.BLOCKED_BY_ADMINISTRATION
+    ),
+  ],
+] as const;
+
+export const RETURNED_ERROR_CODES = Object.values(
+  PASSWORD_CHANGE_ERROR_CODE
+).filter(
+  (code) =>
+    !BLOCKED_PASSWORD_CHANGE_ERROR_CODES.includes(code)
+);
