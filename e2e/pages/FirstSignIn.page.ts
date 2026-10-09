@@ -8,38 +8,38 @@ import {
   type PasswordRule,
 } from "@/app/constants";
 import {
-  FIRST_SIGN_IN_FIELD,
-  type FirstSignInField,
-} from "@/app/constants/access/FirstSignInError.constants";
+  PASSWORD_CHANGE_FIELD,
+  type PasswordChangeField,
+} from "@/app/constants/access/PasswordChangeError.constants";
 import {
   E2E_FIRST_SIGN_IN_COPY,
   E2E_FIRST_SIGN_IN_RULES_LIST_ID,
   E2E_PASSWORD_RULES_COPY,
 } from "../constants/E2eFirstSignIn.constants";
-import type { FirstSignInFormValues } from "../support/models/FirstSignInFormValues.interface";
+import type { PasswordChangeFormValues } from "../support/models/PasswordChangeFormValues.interface";
 import { getMainRegion } from "../support/mainRegion";
 
 const createFieldLocators = (main: Locator) => {
   const getInput = (label: string): Locator =>
     main.getByLabel(label, { exact: true });
-  const getError = (field: FirstSignInField): Locator =>
+  const getError = (field: PasswordChangeField): Locator =>
     main.locator(`#${field}${FIELD_ERROR_ID_SUFFIX}`);
 
   return {
     getConfirmPasswordError: (): Locator =>
-      getError(FIRST_SIGN_IN_FIELD.CONFIRM_PASSWORD),
+      getError(PASSWORD_CHANGE_FIELD.CONFIRM_PASSWORD),
     getConfirmPasswordInput: (): Locator =>
       getInput(
         E2E_FIRST_SIGN_IN_COPY.CONFIRM_PASSWORD_LABEL
       ),
     getCurrentPasswordError: (): Locator =>
-      getError(FIRST_SIGN_IN_FIELD.CURRENT_PASSWORD),
+      getError(PASSWORD_CHANGE_FIELD.CURRENT_PASSWORD),
     getCurrentPasswordInput: (): Locator =>
       getInput(
         E2E_FIRST_SIGN_IN_COPY.CURRENT_PASSWORD_LABEL
       ),
     getNewPasswordError: (): Locator =>
-      getError(FIRST_SIGN_IN_FIELD.NEW_PASSWORD),
+      getError(PASSWORD_CHANGE_FIELD.NEW_PASSWORD),
     getNewPasswordInput: (): Locator =>
       getInput(E2E_FIRST_SIGN_IN_COPY.NEW_PASSWORD_LABEL),
   };
@@ -50,7 +50,9 @@ const createChromeLocators = (main: Locator) => ({
     main.getByRole(ARIA_ROLE.HEADING, {
       name: E2E_FIRST_SIGN_IN_COPY.HEADING,
     }),
-  getPasswordToggle: (field: FirstSignInField): Locator =>
+  getPasswordToggle: (
+    field: PasswordChangeField
+  ): Locator =>
     main
       .getByRole(ARIA_ROLE.BUTTON, {
         name: E2E_FIRST_SIGN_IN_COPY.SHOW_PASSWORD,
@@ -83,7 +85,7 @@ export const createFirstSignInPage = (page: Page) => {
       confirmPassword,
       currentPassword,
       newPassword,
-    }: FirstSignInFormValues): Promise<void> => {
+    }: PasswordChangeFormValues): Promise<void> => {
       await locators
         .getCurrentPasswordInput()
         .fill(currentPassword);
@@ -107,7 +109,7 @@ export const createFirstSignInPage = (page: Page) => {
       await page.goto(PATHS.ACCESS.FIRST_SIGN_IN);
     },
     revealPassword: (
-      field: FirstSignInField
+      field: PasswordChangeField
     ): Promise<void> =>
       locators.getPasswordToggle(field).click(),
     submit: (): Promise<void> =>

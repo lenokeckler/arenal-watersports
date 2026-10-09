@@ -2,24 +2,24 @@ import {
   PASSWORD_RULE,
   type PasswordRule,
 } from "@/app/constants";
-import { FIRST_SIGN_IN_ERROR_CODE } from "@/app/constants/access/FirstSignInError.constants";
+import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants/access/PasswordChangeError.constants";
 import { PASSWORD_TOGGLE_COPY } from "@/app/components/field-factory/constants/PasswordToggleCopy.constants";
 import { PASSWORD_RULE_STATE } from "@/app/components/password-rules-checklist/constants/PasswordRuleState.constants";
 import { PASSWORD_RULES_COPY } from "@/app/components/password-rules-checklist/constants/PasswordRulesCopy.constants";
-import { FIRST_SIGN_IN_ERROR_COPY } from "@/app/features/access/first-sign-in-form/constants/FirstSignInErrorCopy.constants";
-import { FIRST_SIGN_IN_FORM_COPY } from "@/app/features/access/first-sign-in-form/constants/FirstSignInFormCopy.constants";
-import { FIRST_SIGN_IN_RULES_ID } from "@/app/features/access/first-sign-in-form/constants/FirstSignInRules.constants";
+import { FIRST_SIGN_IN_ERROR_COPY } from "@/app/features/access/password-change-form/constants/FirstSignInErrorCopy.constants";
+import { FIRST_SIGN_IN_FORM_COPY } from "@/app/features/access/password-change-form/constants/FirstSignInFormCopy.constants";
+import { PASSWORD_CHANGE_RULES_ID } from "@/app/features/access/password-change-form/constants/PasswordChangeRules.constants";
 
 export const E2E_FIRST_SIGN_IN_COPY = {
   CONFIRM_PASSWORD_LABEL:
     FIRST_SIGN_IN_FORM_COPY.CONFIRM_PASSWORD_LABEL,
   CONFIRMATION_MISMATCH:
     FIRST_SIGN_IN_ERROR_COPY[
-      FIRST_SIGN_IN_ERROR_CODE.CONFIRMATION_MISMATCH
+      PASSWORD_CHANGE_ERROR_CODE.CONFIRMATION_MISMATCH
     ],
   CURRENT_PASSWORD_INVALID:
     FIRST_SIGN_IN_ERROR_COPY[
-      FIRST_SIGN_IN_ERROR_CODE.CURRENT_PASSWORD_INVALID
+      PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_INVALID
     ],
   CURRENT_PASSWORD_LABEL:
     FIRST_SIGN_IN_FORM_COPY.CURRENT_PASSWORD_LABEL,
@@ -28,7 +28,7 @@ export const E2E_FIRST_SIGN_IN_COPY = {
     FIRST_SIGN_IN_FORM_COPY.NEW_PASSWORD_LABEL,
   NEW_PASSWORD_RULES:
     FIRST_SIGN_IN_ERROR_COPY[
-      FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_RULES
+      PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_RULES
     ],
   RULES_TITLE: PASSWORD_RULES_COPY.TITLE,
   SHOW_PASSWORD: PASSWORD_TOGGLE_COPY.SHOW,
@@ -36,7 +36,7 @@ export const E2E_FIRST_SIGN_IN_COPY = {
 } as const;
 
 export const E2E_FIRST_SIGN_IN_RULES_LIST_ID =
-  FIRST_SIGN_IN_RULES_ID;
+  PASSWORD_CHANGE_RULES_ID;
 
 export const E2E_PASSWORD_RULES: readonly PasswordRule[] = [
   PASSWORD_RULE.LENGTH,

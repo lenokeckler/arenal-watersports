@@ -1,5 +1,5 @@
 import { PASSWORD_RULE } from "@/app/constants";
-import { FIRST_SIGN_IN_FIELD } from "@/app/constants/access/FirstSignInError.constants";
+import { PASSWORD_CHANGE_FIELD } from "@/app/constants/access/PasswordChangeError.constants";
 import {
   E2E_FIRST_SIGN_IN_COPY,
   E2E_FIRST_SIGN_IN_PASSWORDS,
@@ -33,7 +33,7 @@ test.describe("First sign-in screenshots", () => {
       E2E_FIRST_SIGN_IN_PASSWORDS.LOWERCASE_ONLY
     );
     await firstSignInPage.revealPassword(
-      FIRST_SIGN_IN_FIELD.NEW_PASSWORD
+      PASSWORD_CHANGE_FIELD.NEW_PASSWORD
     );
     await expect(
       firstSignInPage.getRuleItem(
@@ -61,7 +61,7 @@ test.describe("First sign-in screenshots", () => {
     });
 
     await firstSignInPage.revealPassword(
-      FIRST_SIGN_IN_FIELD.CURRENT_PASSWORD
+      PASSWORD_CHANGE_FIELD.CURRENT_PASSWORD
     );
 
     await firstSignInPage.submit();
@@ -90,7 +90,7 @@ test.describe("First sign-in screenshots", () => {
     });
 
     await firstSignInPage.revealPassword(
-      FIRST_SIGN_IN_FIELD.NEW_PASSWORD
+      PASSWORD_CHANGE_FIELD.NEW_PASSWORD
     );
 
     await firstSignInPage.submit();
@@ -117,10 +117,10 @@ test.describe("First sign-in screenshots", () => {
     });
 
     await firstSignInPage.revealPassword(
-      FIRST_SIGN_IN_FIELD.NEW_PASSWORD
+      PASSWORD_CHANGE_FIELD.NEW_PASSWORD
     );
     await firstSignInPage.revealPassword(
-      FIRST_SIGN_IN_FIELD.CONFIRM_PASSWORD
+      PASSWORD_CHANGE_FIELD.CONFIRM_PASSWORD
     );
 
     await firstSignInPage.submit();
