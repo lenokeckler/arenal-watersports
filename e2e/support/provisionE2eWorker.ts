@@ -17,6 +17,7 @@ const buildUsername = (): string =>
 export const provisionE2eWorker = async ({
   mustChangePassword,
   password,
+  personalEmail = null,
 }: E2eWorkerOptions): Promise<ProvisionedE2eWorker> => {
   const supabase = createServiceRoleClient();
   const username = buildUsername();
@@ -28,6 +29,7 @@ export const provisionE2eWorker = async ({
   try {
     await insertE2eWorker(supabase, {
       mustChangePassword,
+      personalEmail,
       username,
       workerId,
     });
