@@ -1,24 +1,24 @@
 import { describe, expect, it } from "vitest";
 import {
-  FIRST_SIGN_IN_ERROR_CODE,
+  PASSWORD_CHANGE_ERROR_CODE,
   STRING,
-  type FirstSignInErrorCode,
+  type PasswordChangeErrorCode,
 } from "@/app/constants";
-import { createFirstSignInError } from "../createFirstSignInError";
-import type { FirstPasswordChangeInput } from "../models/FirstPasswordChangeInput.interface";
+import { createPasswordChangeError } from "../createPasswordChangeError";
+import type { PasswordChangeInput } from "../models/PasswordChangeInput.interface";
 import {
-  DEFAULT_FIRST_PASSWORD_CHANGE_INPUT,
+  DEFAULT_PASSWORD_CHANGE_INPUT,
   MISMATCHED_CONFIRMATION,
   PASSWORD_ONE_ABOVE_MAX,
   WEAK_PASSWORD,
   WEAK_PASSWORD_ABOVE_MAX,
-} from "./firstSignIn.constants";
+} from "./passwordChange.constants";
 import { validateWithOverrides } from "./validateWithOverrides";
 
 const precedenceCases: [
   string,
-  Partial<FirstPasswordChangeInput>,
-  FirstSignInErrorCode,
+  Partial<PasswordChangeInput>,
+  PasswordChangeErrorCode,
 ][] = [
   [
     "the temporary password before the new password",
@@ -26,7 +26,7 @@ const precedenceCases: [
       currentPassword: STRING.Empty,
       newPassword: STRING.Empty,
     },
-    FIRST_SIGN_IN_ERROR_CODE.CURRENT_PASSWORD_REQUIRED,
+    PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_REQUIRED,
   ],
   [
     "the rules before equality with the temporary password",
@@ -34,21 +34,21 @@ const precedenceCases: [
       currentPassword: WEAK_PASSWORD,
       newPassword: WEAK_PASSWORD,
     },
-    FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_RULES,
+    PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_RULES,
   ],
   [
     "equality with the temporary password before the confirmation",
     {
       confirmPassword: STRING.Empty,
       currentPassword:
-        DEFAULT_FIRST_PASSWORD_CHANGE_INPUT.newPassword,
+        DEFAULT_PASSWORD_CHANGE_INPUT.newPassword,
     },
-    FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_SAME_AS_CURRENT,
+    PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_SAME_AS_CURRENT,
   ],
   [
     "the maximum length before the rules",
     { newPassword: WEAK_PASSWORD_ABOVE_MAX },
-    FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_TOO_LONG,
+    PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_TOO_LONG,
   ],
   [
     "the maximum length before equality with the temporary password",
@@ -56,7 +56,7 @@ const precedenceCases: [
       currentPassword: PASSWORD_ONE_ABOVE_MAX,
       newPassword: PASSWORD_ONE_ABOVE_MAX,
     },
-    FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_TOO_LONG,
+    PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_TOO_LONG,
   ],
   [
     "the rules before an empty confirmation",
@@ -64,7 +64,7 @@ const precedenceCases: [
       confirmPassword: STRING.Empty,
       newPassword: WEAK_PASSWORD,
     },
-    FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_RULES,
+    PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_RULES,
   ],
   [
     "the rules before a confirmation mismatch",
@@ -72,30 +72,30 @@ const precedenceCases: [
       confirmPassword: MISMATCHED_CONFIRMATION,
       newPassword: WEAK_PASSWORD,
     },
-    FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_RULES,
+    PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_RULES,
   ],
   [
     "equality with the temporary password before a mismatch",
     {
       confirmPassword: MISMATCHED_CONFIRMATION,
       currentPassword:
-        DEFAULT_FIRST_PASSWORD_CHANGE_INPUT.newPassword,
+        DEFAULT_PASSWORD_CHANGE_INPUT.newPassword,
     },
-    FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_SAME_AS_CURRENT,
+    PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_SAME_AS_CURRENT,
   ],
   [
     "a missing confirmation before a mismatch",
     { confirmPassword: STRING.Empty },
-    FIRST_SIGN_IN_ERROR_CODE.CONFIRMATION_REQUIRED,
+    PASSWORD_CHANGE_ERROR_CODE.CONFIRMATION_REQUIRED,
   ],
 ];
 
-describe("validateFirstPasswordChange precedence", () => {
+describe("validatePasswordChange precedence", () => {
   it.each(precedenceCases)(
     "reports %s",
     (_, overrides, code) => {
       expect(validateWithOverrides(overrides)).toEqual(
-        createFirstSignInError(code)
+        createPasswordChangeError(code)
       );
     }
   );

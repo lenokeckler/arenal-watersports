@@ -1,11 +1,11 @@
 import { PASSWORD_LENGTH } from "@/app/constants";
-import type { FirstPasswordChangeInput } from "../models/FirstPasswordChangeInput.interface";
+import type { PasswordChangeInput } from "../models/PasswordChangeInput.interface";
 
 const COMPLIANT_PREFIX = "Aa1!";
 const FILLER_CHARACTER = "a";
 const TWO_BYTE_CHARACTER = "á";
 
-export const DEFAULT_FIRST_PASSWORD_CHANGE_INPUT: FirstPasswordChangeInput =
+export const DEFAULT_PASSWORD_CHANGE_INPUT: PasswordChangeInput =
   {
     confirmPassword: "Nueva-clave-1!",
     currentPassword: "Temporal-1!",
@@ -24,9 +24,9 @@ export const PASSWORD_ONE_ABOVE_MAX =
   COMPLIANT_PASSWORD_AT_MAX + FILLER_CHARACTER;
 
 const TEMPORARY_PASSWORD =
-  DEFAULT_FIRST_PASSWORD_CHANGE_INPUT.currentPassword;
+  DEFAULT_PASSWORD_CHANGE_INPUT.currentPassword;
 const NEW_PASSWORD =
-  DEFAULT_FIRST_PASSWORD_CHANGE_INPUT.newPassword;
+  DEFAULT_PASSWORD_CHANGE_INPUT.newPassword;
 
 export const TEMPORARY_PASSWORD_IN_OTHER_CASE =
   TEMPORARY_PASSWORD.toUpperCase();

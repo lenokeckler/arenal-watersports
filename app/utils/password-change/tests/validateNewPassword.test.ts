@@ -1,23 +1,23 @@
 import { describe, expect, it } from "vitest";
 import {
-  FIRST_SIGN_IN_ERROR_CODE,
+  PASSWORD_CHANGE_ERROR_CODE,
   STRING,
 } from "@/app/constants";
-import { createFirstSignInError } from "../createFirstSignInError";
+import { createPasswordChangeError } from "../createPasswordChangeError";
 import { validateNewPassword } from "../validateNewPassword";
 import {
   ACCENTED_PASSWORD_AT_MAX,
   COMPLIANT_PASSWORD_AT_MAX,
-  DEFAULT_FIRST_PASSWORD_CHANGE_INPUT,
+  DEFAULT_PASSWORD_CHANGE_INPUT,
   PASSWORD_ONE_ABOVE_MAX,
   WEAK_PASSWORD,
-} from "./firstSignIn.constants";
+} from "./passwordChange.constants";
 
 describe("validateNewPassword", () => {
   it("requires a password", () => {
     expect(validateNewPassword(STRING.Empty)).toEqual(
-      createFirstSignInError(
-        FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_REQUIRED
+      createPasswordChangeError(
+        PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_REQUIRED
       )
     );
   });
@@ -26,16 +26,16 @@ describe("validateNewPassword", () => {
     expect(
       validateNewPassword(PASSWORD_ONE_ABOVE_MAX)
     ).toEqual(
-      createFirstSignInError(
-        FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_TOO_LONG
+      createPasswordChangeError(
+        PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_TOO_LONG
       )
     );
   });
 
   it("rejects a password that breaks a rule", () => {
     expect(validateNewPassword(WEAK_PASSWORD)).toEqual(
-      createFirstSignInError(
-        FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_RULES
+      createPasswordChangeError(
+        PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_RULES
       )
     );
   });
@@ -43,7 +43,7 @@ describe("validateNewPassword", () => {
   it("accepts a compliant password", () => {
     expect(
       validateNewPassword(
-        DEFAULT_FIRST_PASSWORD_CHANGE_INPUT.newPassword
+        DEFAULT_PASSWORD_CHANGE_INPUT.newPassword
       )
     ).toBeNull();
   });
@@ -58,8 +58,8 @@ describe("validateNewPassword", () => {
     expect(
       validateNewPassword(ACCENTED_PASSWORD_AT_MAX)
     ).toEqual(
-      createFirstSignInError(
-        FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_TOO_LONG
+      createPasswordChangeError(
+        PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_TOO_LONG
       )
     );
   });
