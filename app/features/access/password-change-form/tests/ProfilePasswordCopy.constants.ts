@@ -16,6 +16,3 @@ export const PROFILE_ERROR_COPY_OVERRIDES = [
     "La contraseña nueva debe ser distinta de la actual.",
   ],
 ] as const;
-
-export const VOSEO_WORDS_PATTERN =
-  /(^|[^\p{L}])(vos|sos|podés|tenés|querés|debés|escribí|ingresá|elegí|repetí|volvé|guardá|intentá|revisá|seleccioná|cambiá)(?![\p{L}])/iu;

@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { PERSONAL_EMAIL_ERROR_CODE } from "@/app/constants";
 import {
+  TUTEO_WORDS_PATTERN,
+  VOSEO_WORDS_PATTERN,
+} from "@/app/utils/copy/tests/ustedCopyPatterns";
+import {
   PERSONAL_EMAIL_ERROR_COPY,
   PERSONAL_EMAIL_REQUIRED_COPY,
 } from "../constants/PersonalEmailErrorCopy.constants";
@@ -12,9 +16,7 @@ import {
   APPROVED_FORM_COPY,
   APPROVED_REQUIRED_COPY,
   TUTEO_SAMPLES,
-  TUTEO_WORDS_PATTERN,
   VOSEO_SAMPLES,
-  VOSEO_WORDS_PATTERN,
 } from "./PersonalEmailCopy.constants";
 
 describe("personal email copy", () => {
