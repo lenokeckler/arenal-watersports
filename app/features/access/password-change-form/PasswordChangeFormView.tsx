@@ -7,7 +7,7 @@ import { PASSWORD_CHANGE_FIELD } from "@/app/constants/access/PasswordChangeErro
 import PasswordChangeFormFields from "./components/PasswordChangeFormFields";
 import { usePasswordChangeFormViewModel } from "./hooks/usePasswordChangeFormViewModel";
 import type { PasswordChangeFormViewProps } from "./models/PasswordChangeFormViewProps.interface";
-import { PASSWORD_CHANGE_FORM_CLASS } from "./styles/PasswordChangeForm.styles";
+import { FORM_STACK_CLASS } from "@/app/components/form-layout/styles/FormLayout.styles";
 
 const PasswordChangeFormView = ({
   action,
@@ -32,7 +32,7 @@ const PasswordChangeFormView = ({
         noValidate
         action={formAction}
         onSubmit={onSubmit}
-        className={PASSWORD_CHANGE_FORM_CLASS}
+        className={FORM_STACK_CLASS}
       >
         {beforeFields}
         <PasswordChangeFormFields

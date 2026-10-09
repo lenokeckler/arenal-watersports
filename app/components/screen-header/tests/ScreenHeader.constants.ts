@@ -5,3 +5,4 @@ export const HEADING_LEVEL = 1;
 export const ID_ATTRIBUTE = "id";
 export const ARIA_HIDDEN_ATTRIBUTE = "aria-hidden";
 export const ARIA_HIDDEN_FALSE = "false";
+export const HEADING_INSTRUCTION = "Revise sus datos.";

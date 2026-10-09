@@ -1,4 +1,5 @@
 import { Text } from "@/app/components";
+import { FORM_GROUP_CLASS } from "@/app/components/form-layout/styles/FormLayout.styles";
 import FormField from "@/app/components/form-field/FormField";
 import { FORM_FIELD_VARIANT } from "@/app/components/form-field/constants/FormFieldVariant.constants";
 import {
@@ -12,10 +13,7 @@ import {
 import { PERSONAL_EMAIL_HINT_ID } from "../constants/PersonalEmailFieldIds.constants";
 import { PERSONAL_EMAIL_FORM_COPY } from "../constants/PersonalEmailFormCopy.constants";
 import type { PersonalEmailFieldProps } from "../models/PersonalEmailFieldProps.interface";
-import {
-  PERSONAL_EMAIL_GROUP_CLASS,
-  PERSONAL_EMAIL_HINT_CLASS,
-} from "../styles/PersonalEmailForm.styles";
+import { PERSONAL_EMAIL_HINT_CLASS } from "../styles/PersonalEmailForm.styles";
 
 const PersonalEmailField = ({
   error,
@@ -24,7 +22,7 @@ const PersonalEmailField = ({
   onChange,
   value,
 }: PersonalEmailFieldProps): React.JSX.Element => (
-  <div className={PERSONAL_EMAIL_GROUP_CLASS}>
+  <div className={FORM_GROUP_CLASS}>
     <FormField
       id={PERSONAL_EMAIL_FIELD.EMAIL}
       name={PERSONAL_EMAIL_FIELD.EMAIL}
