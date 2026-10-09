@@ -3,6 +3,7 @@ import { BUTTON } from "@/app/components/button/constants";
 import { BUTTON_TYPES } from "@/app/constants";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
 import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
+import { FORM_SUBMIT_BUTTON_TONE } from "./constants/FormSubmitButtonTone.constants";
 import type { FormSubmitButtonProps } from "./models/FormSubmitButtonProps.interface";
 import {
   resolveFormSubmitClassName,
@@ -16,6 +17,7 @@ const FormSubmitButton = ({
   name,
   pendingLabel,
   showsProgress = true,
+  tone = FORM_SUBMIT_BUTTON_TONE.PRIMARY,
   value,
 }: FormSubmitButtonProps): React.JSX.Element => {
   const isShowingProgress = isPending && showsProgress;
@@ -27,7 +29,10 @@ const FormSubmitButton = ({
       name={name}
       value={value}
       aria-disabled={isPending}
-      className={resolveFormSubmitClassName(isPending)}
+      className={resolveFormSubmitClassName(
+        isPending,
+        tone
+      )}
     >
       <InlineText>
         {isShowingProgress ? pendingLabel : label}
