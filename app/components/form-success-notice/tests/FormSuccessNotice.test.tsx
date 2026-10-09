@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import FormSuccessNotice from "../FormSuccessNotice";
 import {
+  ARIA_HIDDEN_ATTRIBUTE,
+  ARIA_HIDDEN_VALUE,
   EMPTY_MESSAGE,
   NOTICE_MESSAGE,
 } from "./FormSuccessNotice.constants";
@@ -30,5 +32,29 @@ describe("FormSuccessNotice", () => {
     expect(
       createFormSuccessNoticePage().queryNotice()
     ).toHaveTextContent(NOTICE_MESSAGE);
+  });
+
+  it("hides the decorative icon from assistive technology", () => {
+    render(<FormSuccessNotice message={NOTICE_MESSAGE} />);
+
+    expect(
+      createFormSuccessNoticePage().getIcon()
+    ).toHaveAttribute(
+      ARIA_HIDDEN_ATTRIBUTE,
+      ARIA_HIDDEN_VALUE
+    );
+  });
+
+  it("does not move focus when it appears", () => {
+    const { rerender } = render(
+      <FormSuccessNotice message={null} />
+    );
+    const focusedBefore = document.activeElement;
+
+    rerender(
+      <FormSuccessNotice message={NOTICE_MESSAGE} />
+    );
+
+    expect(document.activeElement).toBe(focusedBefore);
   });
 });

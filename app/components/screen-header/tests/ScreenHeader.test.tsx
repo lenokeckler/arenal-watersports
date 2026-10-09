@@ -6,6 +6,8 @@ import {
   HEADER_TITLE,
   HEADER_TITLE_ID,
   ID_ATTRIBUTE,
+  ARIA_HIDDEN_ATTRIBUTE,
+  ARIA_HIDDEN_FALSE,
 } from "./ScreenHeader.constants";
 import { createScreenHeaderPage } from "./ScreenHeader.page";
 
@@ -41,5 +43,16 @@ describe("ScreenHeader", () => {
     expect(
       createScreenHeaderPage().getTitle()
     ).toHaveAttribute(ID_ATTRIBUTE, HEADER_TITLE_ID);
+  });
+
+  it("keeps the logo exposed to assistive technology", () => {
+    renderScreenHeader();
+
+    expect(
+      createScreenHeaderPage().getLogo()
+    ).toHaveAttribute(
+      ARIA_HIDDEN_ATTRIBUTE,
+      ARIA_HIDDEN_FALSE
+    );
   });
 });
