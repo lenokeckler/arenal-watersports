@@ -27,7 +27,7 @@ export const workerRow = (mustChangePassword: boolean) => ({
   error: null,
 });
 
-export const ALREADY_CHANGED_WORKER: FirstSignInWorker = {
+export const ALREADY_CHANGED_WORKER: SignedInWorker = {
   ...FIRST_SIGN_IN_WORKER,
   mustChangePassword: false,
 };
