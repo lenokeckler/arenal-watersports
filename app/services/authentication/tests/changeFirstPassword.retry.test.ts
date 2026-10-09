@@ -7,12 +7,12 @@ import {
   type Mock,
 } from "vitest";
 import "./changeFirstPassword.setup";
-import { FIRST_SIGN_IN_ERROR_CODE } from "@/app/constants";
-import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT as INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
+import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants";
+import { DEFAULT_PASSWORD_CHANGE_INPUT as INPUT } from "@/app/utils/password-change/tests/passwordChange.constants";
 import { changeFirstPassword } from "../changeFirstPassword";
 import { checkWorkerPassword } from "../checkWorkerPassword";
 import { completeFirstPasswordChange } from "../completeFirstPasswordChange";
-import { readFirstSignInWorker } from "../readFirstSignInWorker";
+import { readSignedInWorker } from "../readSignedInWorker";
 import { recordFailedSignIn } from "../recordFailedSignIn";
 import { recordSuccessfulSignIn } from "../recordSuccessfulSignIn";
 import { refreshFirstSignInSession } from "../refreshFirstSignInSession";
@@ -63,7 +63,7 @@ describe("changeFirstPassword retried with the same inputs", () => {
     await interruptedAttemptAt(
       vi.mocked(refreshFirstSignInSession)
     );
-    vi.mocked(readFirstSignInWorker).mockResolvedValue(
+    vi.mocked(readSignedInWorker).mockResolvedValue(
       ALREADY_CHANGED_WORKER
     );
 
@@ -92,7 +92,7 @@ describe("changeFirstPassword retried with the same inputs", () => {
     ).resolves.toMatchObject({
       ok: false,
       error: {
-        code: FIRST_SIGN_IN_ERROR_CODE.CURRENT_PASSWORD_INVALID,
+        code: PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_INVALID,
       },
     });
 

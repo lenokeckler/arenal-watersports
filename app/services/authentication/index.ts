@@ -3,4 +3,4 @@ export type { SignInCredentials } from "@/app/utils/sign-in/models/SignInCredent
 export type { SignInError } from "@/app/utils/sign-in/models/SignInError.interface";
 export type { SignInResult } from "./models/SignInResult.type";
 export { changeFirstPassword } from "./changeFirstPassword";
-export type { FirstPasswordChangeResult } from "./models/FirstPasswordChangeResult.type";
+export type { PasswordChangeResult } from "./models/PasswordChangeResult.type";

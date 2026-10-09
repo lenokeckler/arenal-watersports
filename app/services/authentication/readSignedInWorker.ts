@@ -8,11 +8,11 @@ import type { ServerSupabaseClient } from "@/app/services/supabase/models/Server
 import type { NullableRef } from "@/app/types";
 import { throwIfSupabaseAuthError } from "@/app/utils/supabase-error/SupabaseAuthError";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
-import type { FirstSignInWorker } from "./models/FirstSignInWorker.interface";
+import type { SignedInWorker } from "./models/SignedInWorker.interface";
 
-export const readFirstSignInWorker = async (
+export const readSignedInWorker = async (
   supabase: ServerSupabaseClient
-): Promise<NullableRef<FirstSignInWorker>> => {
+): Promise<NullableRef<SignedInWorker>> => {
   const { data: userData, error: userError } =
     await supabase.auth.getUser();
 
