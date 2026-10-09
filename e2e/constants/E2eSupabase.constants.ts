@@ -59,3 +59,12 @@ export const E2E_SUPABASE_ERROR = {
     "delete the auth user after the worker insert failed",
   REASON_SEPARATOR: "; ",
 } as const;
+
+export const E2E_AUTH_SESSIONS = {
+  DATABASE: "postgres",
+  DATABASE_CONTAINER: "supabase_db_arenal-watersports",
+  DATABASE_USER: "postgres",
+  QUERY:
+    "select count(*) from auth.sessions where user_id = :'uid'",
+  USER_ID_VARIABLE: "uid",
+} as const;
