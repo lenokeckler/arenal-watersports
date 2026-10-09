@@ -16,6 +16,7 @@ import { ALREADY_CHANGED_WORKER as WORKER } from "./firstSignIn.constants";
 import {
   BLOCKED_BY_ADMINISTRATION_ERROR,
   BLOCKED_BY_ATTEMPTS_ERROR,
+  UNAVAILABLE_ERROR,
 } from "./hookRejectionErrors.constants";
 import {
   INVALID_CREDENTIALS_ERROR,
@@ -48,6 +49,11 @@ describe("verifyCurrentPassword failures", () => {
       "a block by administration",
       BLOCKED_BY_ADMINISTRATION_ERROR,
       PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION,
+    ],
+    [
+      "an unavailable account",
+      UNAVAILABLE_ERROR,
+      PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_INVALID,
     ],
     [
       "a network error",
