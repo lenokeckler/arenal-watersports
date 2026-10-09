@@ -13,26 +13,37 @@ const FormSubmitButton = ({
   icon,
   isPending,
   label,
+  name,
   pendingLabel,
-}: FormSubmitButtonProps): React.JSX.Element => (
-  <Button
-    type={BUTTON_TYPES.SUBMIT}
-    variant={BUTTON.BASE}
-    aria-disabled={isPending}
-    className={resolveFormSubmitClassName(isPending)}
-  >
-    <InlineText>
-      {isPending ? pendingLabel : label}
-    </InlineText>
-    <MaterialIcon
-      name={
-        isPending
-          ? MATERIAL_ICON_NAME.PROGRESS_ACTIVITY
-          : icon
-      }
-      className={resolveFormSubmitIconClassName(isPending)}
-    />
-  </Button>
-);
+  showsProgress = true,
+  value,
+}: FormSubmitButtonProps): React.JSX.Element => {
+  const isShowingProgress = isPending && showsProgress;
+
+  return (
+    <Button
+      type={BUTTON_TYPES.SUBMIT}
+      variant={BUTTON.BASE}
+      name={name}
+      value={value}
+      aria-disabled={isPending}
+      className={resolveFormSubmitClassName(isPending)}
+    >
+      <InlineText>
+        {isShowingProgress ? pendingLabel : label}
+      </InlineText>
+      <MaterialIcon
+        name={
+          isShowingProgress
+            ? MATERIAL_ICON_NAME.PROGRESS_ACTIVITY
+            : icon
+        }
+        className={resolveFormSubmitIconClassName(
+          isShowingProgress
+        )}
+      />
+    </Button>
+  );
+};
 
 export default FormSubmitButton;
