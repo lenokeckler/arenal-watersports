@@ -1,4 +1,5 @@
 import { submitFirstPasswordChange } from "./actions/submitFirstPasswordChange";
+import FirstSignInFormHeading from "./components/FirstSignInFormHeading";
 import { FIRST_SIGN_IN_ERROR_COPY } from "./constants/FirstSignInErrorCopy.constants";
 import { FIRST_SIGN_IN_FORM_COPY } from "./constants/FirstSignInFormCopy.constants";
 import PasswordChangeFormView from "./PasswordChangeFormView";
@@ -8,6 +9,7 @@ const FirstSignInForm = (): React.JSX.Element => (
     action={submitFirstPasswordChange}
     copy={FIRST_SIGN_IN_FORM_COPY}
     errorCopy={FIRST_SIGN_IN_ERROR_COPY}
+    heading={<FirstSignInFormHeading />}
   />
 );
 

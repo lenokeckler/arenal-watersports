@@ -5,22 +5,24 @@ import FormSubmitButton from "@/app/components/form-submit-button/FormSubmitButt
 import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
 import { PASSWORD_CHANGE_FIELD } from "@/app/constants/access/PasswordChangeError.constants";
 import PasswordChangeFormFields from "./components/PasswordChangeFormFields";
-import FirstSignInFormHeading from "./components/FirstSignInFormHeading";
 import { usePasswordChangeFormViewModel } from "./hooks/usePasswordChangeFormViewModel";
 import type { PasswordChangeFormViewProps } from "./models/PasswordChangeFormViewProps.interface";
 import { PASSWORD_CHANGE_FORM_CLASS } from "./styles/PasswordChangeForm.styles";
 
 const PasswordChangeFormView = ({
   action,
+  beforeFields,
   copy,
   errorCopy,
+  footer,
+  heading,
 }: PasswordChangeFormViewProps): React.JSX.Element => {
   const { formAction, onSubmit, ...fields } =
     usePasswordChangeFormViewModel({ action, errorCopy });
 
   return (
     <>
-      <FirstSignInFormHeading />
+      {heading}
       <FormErrorBanner
         message={
           fields.fieldErrors[PASSWORD_CHANGE_FIELD.FORM]
@@ -32,6 +34,7 @@ const PasswordChangeFormView = ({
         onSubmit={onSubmit}
         className={PASSWORD_CHANGE_FORM_CLASS}
       >
+        {beforeFields}
         <PasswordChangeFormFields
           {...fields}
           copy={copy}
@@ -42,6 +45,7 @@ const PasswordChangeFormView = ({
           label={copy.SUBMIT}
           pendingLabel={copy.SUBMITTING}
         />
+        {footer}
       </form>
     </>
   );
