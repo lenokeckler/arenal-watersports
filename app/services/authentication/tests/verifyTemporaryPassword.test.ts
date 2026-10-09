@@ -5,8 +5,8 @@ import {
   it,
   vi,
 } from "vitest";
-import { FIRST_SIGN_IN_ERROR_CODE } from "@/app/constants";
-import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT as INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
+import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants";
+import { DEFAULT_PASSWORD_CHANGE_INPUT as INPUT } from "@/app/utils/password-change/tests/passwordChange.constants";
 import { NORMALIZED_AUTH_EMAIL } from "@/app/utils/sign-in/tests/signIn.constants";
 import { recordFailedSignIn } from "../recordFailedSignIn";
 import { verifyTemporaryPassword } from "../verifyTemporaryPassword";
@@ -79,7 +79,7 @@ describe("verifyTemporaryPassword", () => {
       FIRST_SIGN_IN_WORKER.username
     );
     expect(result.error?.code).toBe(
-      FIRST_SIGN_IN_ERROR_CODE.CURRENT_PASSWORD_INVALID
+      PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_INVALID
     );
   });
 
@@ -126,7 +126,7 @@ describe("verifyTemporaryPassword", () => {
     const result = await verify();
 
     expect(result.error?.code).toBe(
-      FIRST_SIGN_IN_ERROR_CODE.NETWORK
+      PASSWORD_CHANGE_ERROR_CODE.NETWORK
     );
     expect(recordFailedSignIn).not.toHaveBeenCalled();
   });
