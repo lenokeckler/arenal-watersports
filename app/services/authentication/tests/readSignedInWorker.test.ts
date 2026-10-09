@@ -12,7 +12,7 @@ import {
 } from "@/app/constants";
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
 import { SupabaseAuthOperationError } from "@/app/utils/supabase-error/SupabaseAuthError";
-import { readFirstSignInWorker } from "../readFirstSignInWorker";
+import { readSignedInWorker } from "../readSignedInWorker";
 import {
   FIRST_SIGN_IN_WORKER,
   SIGNED_IN_USER_RESULT,
@@ -35,7 +35,7 @@ let readTable: unknown;
 let selectedColumns: unknown;
 let filter: unknown[];
 
-describe("readFirstSignInWorker", () => {
+describe("readSignedInWorker", () => {
   beforeEach(() => {
     vi.resetAllMocks();
     getUser.mockResolvedValue(SIGNED_IN_USER_RESULT);
@@ -56,7 +56,7 @@ describe("readFirstSignInWorker", () => {
 
   it("returns the worker whose change is pending", async () => {
     await expect(
-      readFirstSignInWorker(supabase)
+      readSignedInWorker(supabase)
     ).resolves.toEqual(FIRST_SIGN_IN_WORKER);
     expect(from).toHaveBeenCalledOnce();
     expect(readTable).toBe(SUPABASE_TABLE.WORKERS);
@@ -68,7 +68,7 @@ describe("readFirstSignInWorker", () => {
   });
 
   it("reads the username and the pending flag only", async () => {
-    await readFirstSignInWorker(supabase);
+    await readSignedInWorker(supabase);
 
     expect(select).toHaveBeenCalledOnce();
     expect(selectedColumns).toBe(
@@ -80,7 +80,7 @@ describe("readFirstSignInWorker", () => {
     maybeSingle.mockResolvedValue(workerRow(false));
 
     await expect(
-      readFirstSignInWorker(supabase)
+      readSignedInWorker(supabase)
     ).resolves.toEqual({
       ...FIRST_SIGN_IN_WORKER,
       mustChangePassword: false,
@@ -99,7 +99,7 @@ describe("readFirstSignInWorker", () => {
       });
 
       await expect(
-        readFirstSignInWorker(supabase)
+        readSignedInWorker(supabase)
       ).resolves.toBeNull();
       expect(from).not.toHaveBeenCalled();
     }
@@ -112,7 +112,7 @@ describe("readFirstSignInWorker", () => {
     });
 
     await expect(
-      readFirstSignInWorker(supabase)
+      readSignedInWorker(supabase)
     ).rejects.toMatchObject({
       cause: NETWORK_ERROR,
       name: SupabaseAuthOperationError.name,
@@ -127,7 +127,7 @@ describe("readFirstSignInWorker", () => {
     });
 
     await expect(
-      readFirstSignInWorker(supabase)
+      readSignedInWorker(supabase)
     ).resolves.toBeNull();
   });
 
@@ -138,7 +138,7 @@ describe("readFirstSignInWorker", () => {
     });
 
     await expect(
-      readFirstSignInWorker(supabase)
+      readSignedInWorker(supabase)
     ).rejects.toThrow(RPC_FAILURE.message);
   });
 });

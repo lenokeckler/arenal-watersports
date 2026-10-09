@@ -1,9 +1,9 @@
 import type { AuthError } from "@supabase/supabase-js";
-import type { FirstPasswordChangeInput } from "@/app/utils/first-sign-in/models/FirstPasswordChangeInput.interface";
+import type { PasswordChangeInput } from "@/app/utils/password-change/models/PasswordChangeInput.interface";
 import { checkWorkerPassword } from "./checkWorkerPassword";
 import { isInvalidCredentialsAuthError } from "./isInvalidCredentialsAuthError";
-import { mapTemporaryPasswordError } from "./mapTemporaryPasswordError";
-import type { FirstSignInWorker } from "./models/FirstSignInWorker.interface";
+import { mapCurrentPasswordError } from "./mapCurrentPasswordError";
+import type { SignedInWorker } from "./models/SignedInWorker.interface";
 import type { TemporaryPasswordVerification } from "./models/TemporaryPasswordVerification.interface";
 import { recordFailedSignIn } from "./recordFailedSignIn";
 
@@ -17,13 +17,13 @@ const confirmed = (
 const rejected = (
   error: AuthError
 ): TemporaryPasswordVerification => ({
-  error: mapTemporaryPasswordError(error),
+  error: mapCurrentPasswordError(error),
   passwordAlreadyUpdated: false,
 });
 
 export const verifyTemporaryPassword = async (
-  worker: FirstSignInWorker,
-  input: FirstPasswordChangeInput
+  worker: SignedInWorker,
+  input: PasswordChangeInput
 ): Promise<TemporaryPasswordVerification> => {
   const temporaryError = await checkWorkerPassword(
     worker.username,

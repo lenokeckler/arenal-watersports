@@ -115,12 +115,12 @@ export {
 export { PASSWORD_SYMBOLS } from "./access/PasswordSymbols.constants";
 export { PASSWORD_CHARACTER_RANGE } from "./access/PasswordCharacterRange.constants";
 export {
-  FIRST_SIGN_IN_ERROR_CODE,
-  FIRST_SIGN_IN_ERROR_FIELD,
-  FIRST_SIGN_IN_FIELD,
-  type FirstSignInErrorCode,
-  type FirstSignInField,
-} from "./access/FirstSignInError.constants";
+  PASSWORD_CHANGE_ERROR_CODE,
+  PASSWORD_CHANGE_ERROR_FIELD,
+  PASSWORD_CHANGE_FIELD,
+  type PasswordChangeErrorCode,
+  type PasswordChangeField,
+} from "./access/PasswordChangeError.constants";
 export { SUPABASE_TABLE } from "./supabase/SupabaseTable.constants";
 export { SUPABASE_SIGN_OUT_SCOPE } from "./supabase/SupabaseSignOutScope.constants";
 export { SUPABASE_AUTH_OPERATION } from "./supabase/SupabaseAuthOperation.constants";
