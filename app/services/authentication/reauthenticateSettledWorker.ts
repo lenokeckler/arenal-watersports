@@ -1,7 +1,7 @@
 import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants";
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
 import { createPasswordChangeError } from "@/app/utils/password-change/createPasswordChangeError";
-import { isBlockedPasswordChangeError } from "@/app/utils/password-change/isBlockedPasswordChangeError";
+import { isBlockedReauthenticationError } from "@/app/utils/reauthentication/isBlockedReauthenticationError";
 import type { ReauthenticationResult } from "./models/ReauthenticationResult.type";
 import { readSignedInWorker } from "./readSignedInWorker";
 import { signOutEverywhere } from "./signOutEverywhere";
@@ -29,7 +29,7 @@ export const reauthenticateSettledWorker = async (
   );
 
   if (verificationError) {
-    if (isBlockedPasswordChangeError(verificationError)) {
+    if (isBlockedReauthenticationError(verificationError)) {
       await signOutEverywhere(supabase);
     }
 

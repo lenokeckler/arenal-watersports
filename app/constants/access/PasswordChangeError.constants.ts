@@ -69,6 +69,6 @@ export const PASSWORD_CHANGE_ERROR_FIELD: Record<
     PASSWORD_CHANGE_FIELD.FORM,
 };
 
-export type BlockedPasswordChangeErrorCode =
+export type BlockedReauthenticationErrorCode =
   | typeof PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION
   | typeof PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ATTEMPTS;
