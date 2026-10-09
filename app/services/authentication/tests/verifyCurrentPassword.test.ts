@@ -21,9 +21,14 @@ import {
   rejectedSignIn,
   throwawaySignOut,
 } from "./mockThrowawayClient";
+import { REQUEST_SUPABASE_CLIENT as SUPABASE } from "./requestSupabaseClient.constants";
 
 const verify = () =>
-  verifyCurrentPassword(WORKER, INPUT.currentPassword);
+  verifyCurrentPassword(
+    SUPABASE,
+    WORKER,
+    INPUT.currentPassword
+  );
 
 describe("verifyCurrentPassword", () => {
   beforeEach(() => {
@@ -70,11 +75,18 @@ describe("verifyCurrentPassword", () => {
     expect(recordSuccessfulSignIn).not.toHaveBeenCalled();
   });
 
-  it("reports the block when this very attempt blocked the account", async () => {
+  it("reads the block state only after this attempt was recorded", async () => {
     captureThrowawayCredentials([
       rejectedSignIn(INVALID_CREDENTIALS_ERROR),
     ]);
-    vi.mocked(isBlockedByAttempts).mockResolvedValue(true);
+    let failureRecorded = false;
+    vi.mocked(recordFailedSignIn).mockImplementation(() => {
+      failureRecorded = true;
+      return Promise.resolve();
+    });
+    vi.mocked(isBlockedByAttempts).mockImplementation(() =>
+      Promise.resolve(failureRecorded)
+    );
 
     const result = await verify();
 
@@ -83,14 +95,8 @@ describe("verifyCurrentPassword", () => {
     );
     expect(isBlockedByAttempts).toHaveBeenCalledOnce();
     expect(isBlockedByAttempts).toHaveBeenCalledWith(
+      SUPABASE,
       WORKER.id
-    );
-    expect(
-      vi.mocked(recordFailedSignIn).mock
-        .invocationCallOrder[0]
-    ).toBeLessThan(
-      vi.mocked(isBlockedByAttempts).mock
-        .invocationCallOrder[0]
     );
   });
 });

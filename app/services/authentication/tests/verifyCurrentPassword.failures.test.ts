@@ -16,6 +16,7 @@ import { ALREADY_CHANGED_WORKER as WORKER } from "./firstSignIn.constants";
 import {
   BLOCKED_BY_ADMINISTRATION_ERROR,
   BLOCKED_BY_ATTEMPTS_ERROR,
+  UNAVAILABLE_ERROR,
 } from "./hookRejectionErrors.constants";
 import {
   INVALID_CREDENTIALS_ERROR,
@@ -28,9 +29,14 @@ import {
   rejectedSignIn,
 } from "./mockThrowawayClient";
 import { RPC_FAILURE } from "./recordSignIn.constants";
+import { REQUEST_SUPABASE_CLIENT as SUPABASE } from "./requestSupabaseClient.constants";
 
 const verify = () =>
-  verifyCurrentPassword(WORKER, INPUT.currentPassword);
+  verifyCurrentPassword(
+    SUPABASE,
+    WORKER,
+    INPUT.currentPassword
+  );
 
 describe("verifyCurrentPassword failures", () => {
   beforeEach(() => {
@@ -48,6 +54,11 @@ describe("verifyCurrentPassword failures", () => {
       "a block by administration",
       BLOCKED_BY_ADMINISTRATION_ERROR,
       PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION,
+    ],
+    [
+      "an unavailable account",
+      UNAVAILABLE_ERROR,
+      PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_INVALID,
     ],
     [
       "a network error",
