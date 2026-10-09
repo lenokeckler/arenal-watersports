@@ -13,5 +13,6 @@ export interface PasswordChangeFormFieldProps {
   isPending: boolean;
   label: string;
   onChange: PasswordChangeFieldChangeHandler;
+  placeholder: string;
   value: string;
 }

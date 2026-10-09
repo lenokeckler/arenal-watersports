@@ -8,6 +8,7 @@ import { EMPTY_CURRENT_PASSWORD_INPUT } from "./resolvePasswordChangeFormErrors.
 describe("resolvePasswordChangeFormErrors priority", () => {
   it("shows the server error over the validation error on the same field", () => {
     const errors = resolvePasswordChangeFormErrors({
+      errorCopy: FIRST_SIGN_IN_ERROR_COPY,
       hasSubmitted: true,
       serverError: CURRENT_PASSWORD_INVALID_ERROR,
       values: EMPTY_CURRENT_PASSWORD_INPUT,

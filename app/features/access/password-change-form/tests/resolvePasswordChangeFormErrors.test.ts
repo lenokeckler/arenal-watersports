@@ -15,6 +15,7 @@ describe("resolvePasswordChangeFormErrors", () => {
   it("shows no error before the first submit", () => {
     expect(
       resolvePasswordChangeFormErrors({
+        errorCopy: FIRST_SIGN_IN_ERROR_COPY,
         hasSubmitted: false,
         serverError: null,
         values: WEAK_NEW_PASSWORD_INPUT,
@@ -25,6 +26,7 @@ describe("resolvePasswordChangeFormErrors", () => {
   it("shows the validation error under its field after a submit", () => {
     expect(
       resolvePasswordChangeFormErrors({
+        errorCopy: FIRST_SIGN_IN_ERROR_COPY,
         hasSubmitted: true,
         serverError: null,
         values: WEAK_NEW_PASSWORD_INPUT,
@@ -41,6 +43,7 @@ describe("resolvePasswordChangeFormErrors", () => {
   it("shows no error for valid values after a submit", () => {
     expect(
       resolvePasswordChangeFormErrors({
+        errorCopy: FIRST_SIGN_IN_ERROR_COPY,
         hasSubmitted: true,
         serverError: null,
         values: DEFAULT_PASSWORD_CHANGE_INPUT,
@@ -51,6 +54,7 @@ describe("resolvePasswordChangeFormErrors", () => {
   it("shows the server error under its field before any client submit", () => {
     expect(
       resolvePasswordChangeFormErrors({
+        errorCopy: FIRST_SIGN_IN_ERROR_COPY,
         hasSubmitted: false,
         serverError: CURRENT_PASSWORD_INVALID_ERROR,
         values: DEFAULT_PASSWORD_CHANGE_INPUT,
@@ -66,6 +70,7 @@ describe("resolvePasswordChangeFormErrors", () => {
 
   it("keeps the validation error of another field next to the server error", () => {
     const errors = resolvePasswordChangeFormErrors({
+      errorCopy: FIRST_SIGN_IN_ERROR_COPY,
       hasSubmitted: true,
       serverError: NETWORK_ERROR,
       values: WEAK_NEW_PASSWORD_INPUT,

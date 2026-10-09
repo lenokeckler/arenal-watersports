@@ -9,6 +9,7 @@ import { usePasswordChangeSubmitGuard } from "./usePasswordChangeSubmitGuard";
 
 export const usePasswordChangeFormViewModel = ({
   action,
+  errorCopy,
 }: PasswordChangeFormViewModelOptions): PasswordChangeFormViewModel => {
   const submission = usePasswordChangeAction(action);
   const form = usePasswordChangeFormValues(
@@ -20,6 +21,7 @@ export const usePasswordChangeFormViewModel = ({
     submission.isPending
   );
   const fieldErrors = resolvePasswordChangeFormErrors({
+    errorCopy,
     hasSubmitted: guard.hasSubmitted,
     serverError: submission.error,
     values: form.values,

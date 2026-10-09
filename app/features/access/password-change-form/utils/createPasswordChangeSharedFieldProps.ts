@@ -1,5 +1,5 @@
 import type { PasswordChangeFocusField } from "../models/PasswordChangeFocusField.type";
-import type { PasswordChangeFormFieldsProps } from "../models/PasswordChangeFormFieldsProps.interface";
+import type { PasswordChangeFormFieldsState } from "../models/PasswordChangeFormFieldsState.type";
 import type { PasswordChangeSharedFieldProps } from "../models/PasswordChangeSharedFieldProps.type";
 
 export const createPasswordChangeSharedFieldProps = (
@@ -9,7 +9,7 @@ export const createPasswordChangeSharedFieldProps = (
     isPending,
     onChange,
     values,
-  }: PasswordChangeFormFieldsProps,
+  }: PasswordChangeFormFieldsState,
   field: PasswordChangeFocusField
 ): PasswordChangeSharedFieldProps => ({
   error: fieldErrors[field],
