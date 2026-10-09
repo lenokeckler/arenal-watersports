@@ -1,4 +1,9 @@
-import { PASSWORD_LENGTH } from "@/app/constants";
+import {
+  PASSWORD_CHANGE_FIELD,
+  PASSWORD_LENGTH,
+  type PasswordChangeErrorCode,
+} from "@/app/constants";
+import type { PasswordChangeError } from "../models/PasswordChangeError.interface";
 import type { PasswordChangeInput } from "../models/PasswordChangeInput.interface";
 
 const COMPLIANT_PREFIX = "Aa1!";
@@ -42,3 +47,14 @@ export const ACCENTED_PASSWORD_AT_MAX =
   TWO_BYTE_CHARACTER.repeat(
     PASSWORD_LENGTH.MAX - COMPLIANT_PREFIX.length
   );
+
+export const PROTOTYPE_KEY_ERRORS: readonly PasswordChangeError[] =
+  [
+    "__proto__",
+    "constructor",
+    "toString",
+    "hasOwnProperty",
+  ].map((key) => ({
+    code: key as unknown as PasswordChangeErrorCode,
+    field: PASSWORD_CHANGE_FIELD.FORM,
+  }));

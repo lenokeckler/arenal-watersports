@@ -1,12 +1,13 @@
 import {
   BLOCKED_PASSWORD_CHANGE_ERROR_CODES,
+  BLOCKED_PASSWORD_CHANGE_NOTICE_REASON,
   PASSWORD_CHANGE_ERROR_CODE,
   PATHS,
   PROFILE_NOTICE,
   PROFILE_NOTICE_QUERY_PARAM,
   SIGN_IN_NOTICE_QUERY_PARAM,
-  SIGN_IN_NOTICE_REASON,
 } from "@/app/constants";
+import { isBlockedPasswordChangeErrorCode } from "@/app/utils/password-change/isBlockedPasswordChangeErrorCode";
 import { appendQueryParam } from "@/app/utils/pathname/appendQueryParam";
 
 export const SERVICE_FAILURE_MESSAGE =
@@ -21,28 +22,19 @@ export const PASSWORD_CHANGED_TARGET = appendQueryParam(
   PROFILE_NOTICE.PASSWORD_CHANGED
 );
 
-export const BLOCKED_CASES = [
-  [
-    PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ATTEMPTS,
-    appendQueryParam(
-      PATHS.ACCESS.LOGIN,
-      SIGN_IN_NOTICE_QUERY_PARAM,
-      SIGN_IN_NOTICE_REASON.BLOCKED_BY_ATTEMPTS
-    ),
-  ],
-  [
-    PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION,
-    appendQueryParam(
-      PATHS.ACCESS.LOGIN,
-      SIGN_IN_NOTICE_QUERY_PARAM,
-      SIGN_IN_NOTICE_REASON.BLOCKED_BY_ADMINISTRATION
-    ),
-  ],
-] as const;
+export const BLOCKED_CASES =
+  BLOCKED_PASSWORD_CHANGE_ERROR_CODES.map(
+    (code) =>
+      [
+        code,
+        appendQueryParam(
+          PATHS.ACCESS.LOGIN,
+          SIGN_IN_NOTICE_QUERY_PARAM,
+          BLOCKED_PASSWORD_CHANGE_NOTICE_REASON[code]
+        ),
+      ] as const
+  );
 
 export const RETURNED_ERROR_CODES = Object.values(
   PASSWORD_CHANGE_ERROR_CODE
-).filter(
-  (code) =>
-    !BLOCKED_PASSWORD_CHANGE_ERROR_CODES.includes(code)
-);
+).filter((code) => !isBlockedPasswordChangeErrorCode(code));
