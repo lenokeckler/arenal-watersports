@@ -1,5 +1,6 @@
 import { PATHS } from "@/app/constants";
 import { E2E_ACTIVE_WORKER_ATTEMPTS } from "../constants/E2eActiveWorker.constants";
+import { E2E_TIMEOUT_MS } from "../constants/E2eRuntime.constants";
 import {
   E2E_BLOCKED_ACCOUNT_STATUS,
   E2E_BLOCKED_BY_ATTEMPTS_LOGIN_PATH,
@@ -33,7 +34,8 @@ test.describe("Profile password lock", () => {
     await passwordPage.submit();
 
     await expect(page).toHaveURL(
-      E2E_BLOCKED_BY_ATTEMPTS_LOGIN_PATH
+      E2E_BLOCKED_BY_ATTEMPTS_LOGIN_PATH,
+      { timeout: E2E_TIMEOUT_MS.POST_SUBMIT }
     );
     await createProfilePage(page).goTo();
     await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
