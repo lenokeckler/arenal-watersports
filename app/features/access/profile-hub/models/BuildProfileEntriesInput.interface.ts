@@ -1,3 +1,5 @@
+import type { PersonalEmailState } from "./PersonalEmailState.type";
+
 export interface BuildProfileEntriesInput {
-  hasPersonalEmail: boolean;
+  personalEmailState: PersonalEmailState;
 }

@@ -5,22 +5,26 @@ import {
   it,
   vi,
 } from "vitest";
+import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
 import { PATHS } from "@/app/constants";
 import { listAttributeValuesHoldingText } from "@/app/utils/dom/tests/listAttributeValuesHoldingText";
 import { PROFILE_COPY } from "../constants/ProfileCopy.constants";
 import {
-  ANY_WHITESPACE,
   ARIA_HIDDEN_ATTRIBUTE,
   ARIA_HIDDEN_VALUE,
-  CHEVRON_RIGHT_ICON_NAME,
-  ENTRY_COUNT,
+  EMAIL_ENTRY_NOT_REGISTERED_NAME,
+  EMAIL_ENTRY_REGISTERED_NAME,
+  EMAIL_ENTRY_WITHOUT_STATUS_NAME,
+  ENTRY_DEFINITIONS,
   HREF_ATTRIBUTE,
-  LOCK_RESET_ICON_NAME,
   NOT_REGISTERED_STATE,
   OWN_PERSONAL_EMAIL_ADDRESS,
 } from "./ProfileHub.constants";
 import { createProfileHubPage } from "./ProfileHub.page";
-import { renderProfileHub } from "./renderProfileHub";
+import {
+  renderProfileHub,
+  renderProfileHubWithFailedRead,
+} from "./renderProfileHub";
 
 vi.mock("@/app/services/authentication", () => ({
   readOwnPersonalEmail: vi.fn(),
@@ -37,7 +41,7 @@ describe("ProfileHub entries", () => {
 
     expect(page.getEntryList()).toBeVisible();
     expect(page.getEntryListItems()).toHaveLength(
-      ENTRY_COUNT
+      ENTRY_DEFINITIONS.length
     );
   });
 
@@ -46,9 +50,7 @@ describe("ProfileHub entries", () => {
 
     expect(
       createProfileHubPage().getEmailEntryLink(
-        new RegExp(
-          `${PROFILE_COPY.PERSONAL_EMAIL_ENTRY}${ANY_WHITESPACE}${PROFILE_COPY.STATUS_REGISTERED}`
-        )
+        EMAIL_ENTRY_REGISTERED_NAME
       )
     ).toHaveAttribute(HREF_ATTRIBUTE, PATHS.PROFILE.EMAIL);
   });
@@ -58,11 +60,26 @@ describe("ProfileHub entries", () => {
 
     expect(
       createProfileHubPage().getEmailEntryLink(
-        new RegExp(
-          `${PROFILE_COPY.PERSONAL_EMAIL_ENTRY}${ANY_WHITESPACE}${PROFILE_COPY.STATUS_NOT_REGISTERED}`
-        )
+        EMAIL_ENTRY_NOT_REGISTERED_NAME
       )
     ).toBeVisible();
+  });
+
+  it("keeps both entries and shows no status when the read fails", async () => {
+    await renderProfileHubWithFailedRead();
+    const page = createProfileHubPage();
+
+    expect(page.getEntryListItems()).toHaveLength(
+      ENTRY_DEFINITIONS.length
+    );
+    expect(
+      page.getEmailEntryLink(
+        EMAIL_ENTRY_WITHOUT_STATUS_NAME
+      )
+    ).toHaveAttribute(HREF_ATTRIBUTE, PATHS.PROFILE.EMAIL);
+    expect(
+      page.queryText(PROFILE_COPY.STATUS_NOT_REGISTERED)
+    ).not.toBeInTheDocument();
   });
 
   it("adds no status line to the password entry", async () => {
@@ -71,7 +88,7 @@ describe("ProfileHub entries", () => {
     expect(
       createProfileHubPage().getEntryLink().textContent
     ).toBe(
-      `${LOCK_RESET_ICON_NAME}${PROFILE_COPY.PASSWORD_ENTRY}${CHEVRON_RIGHT_ICON_NAME}`
+      `${MATERIAL_ICON_NAME.LOCK_RESET}${PROFILE_COPY.PASSWORD_ENTRY}${MATERIAL_ICON_NAME.CHEVRON_RIGHT}`
     );
   });
 
