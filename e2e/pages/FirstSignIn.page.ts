@@ -16,6 +16,7 @@ import {
   E2E_FIRST_SIGN_IN_RULES_LIST_ID,
   E2E_PASSWORD_RULES_COPY,
 } from "../constants/E2eFirstSignIn.constants";
+import { E2E_CONTROLS_SELECTOR } from "../constants/E2eRuntime.constants";
 import type { PasswordChangeFormValues } from "../support/models/PasswordChangeFormValues.interface";
 import { getMainRegion } from "../support/mainRegion";
 
@@ -58,7 +59,7 @@ const createChromeLocators = (main: Locator) => ({
         name: E2E_FIRST_SIGN_IN_COPY.SHOW_PASSWORD,
         exact: true,
       })
-      .and(main.locator(`[aria-controls="${field}"]`)),
+      .and(main.locator(E2E_CONTROLS_SELECTOR(field))),
   getRulesList: (): Locator =>
     main.locator(`#${E2E_FIRST_SIGN_IN_RULES_LIST_ID}`),
   getRulesTitle: (): Locator =>

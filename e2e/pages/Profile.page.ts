@@ -20,7 +20,8 @@ export const createProfilePage = (page: Page) => {
       main.getByRole(ARIA_ROLE.STATUS),
     getPasswordEntry: (): Locator =>
       main.getByRole(ARIA_ROLE.LINK, {
-        name: new RegExp(E2E_PROFILE_COPY.PASSWORD_ENTRY),
+        name: E2E_PROFILE_COPY.PASSWORD_ENTRY,
+        exact: true,
       }),
     goTo: async (): Promise<void> => {
       await page.goto(PATHS.PROFILE.ROOT);

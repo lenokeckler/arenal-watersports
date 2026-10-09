@@ -68,3 +68,6 @@ export const E2E_ARTIFACT_MODE = {
 export const HEADING_LEVEL = {
   PAGE: 1,
 } as const;
+
+export const E2E_CONTROLS_SELECTOR = (id: string): string =>
+  `[aria-controls="${id}"]`;

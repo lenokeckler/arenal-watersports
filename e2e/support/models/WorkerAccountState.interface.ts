@@ -1,4 +1,6 @@
+import type { Database } from "@/app/types";
+
 export interface WorkerAccountState {
   failedAttempts: number;
-  status: string;
+  status: Database["public"]["Enums"]["worker_status"];
 }

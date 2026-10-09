@@ -6,7 +6,10 @@ import {
   type PasswordChangeField,
 } from "@/app/constants/access/PasswordChangeError.constants";
 import { E2E_PROFILE_COPY } from "../constants/E2eProfile.constants";
-import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
+import {
+  E2E_CONTROLS_SELECTOR,
+  HEADING_LEVEL,
+} from "../constants/E2eRuntime.constants";
 import type { PasswordChangeFormValues } from "../support/models/PasswordChangeFormValues.interface";
 import { getMainRegion } from "../support/mainRegion";
 
@@ -26,7 +29,7 @@ export const createProfilePasswordPage = (page: Page) => {
         name: E2E_PROFILE_COPY.SHOW_PASSWORD,
         exact: true,
       })
-      .and(main.locator(`[aria-controls="${field}"]`));
+      .and(main.locator(E2E_CONTROLS_SELECTOR(field)));
 
   return {
     fillForm: async ({
