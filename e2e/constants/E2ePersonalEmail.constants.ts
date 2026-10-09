@@ -1,4 +1,3 @@
-import { PASSWORD_TOGGLE_COPY } from "@/app/components/field-factory/constants/PasswordToggleCopy.constants";
 import {
   PERSONAL_EMAIL,
   PERSONAL_EMAIL_ERROR_CODE,
@@ -9,6 +8,7 @@ import {
   PERSONAL_EMAIL_REQUIRED_COPY,
 } from "@/app/features/access/personal-email-form/constants/PersonalEmailErrorCopy.constants";
 import { PERSONAL_EMAIL_FORM_COPY } from "@/app/features/access/personal-email-form/constants/PersonalEmailFormCopy.constants";
+import { E2E_PROFILE_COPY } from "./E2eProfile.constants";
 import { PROFILE_COPY } from "@/app/features/access/profile-hub/constants/ProfileCopy.constants";
 
 export const E2E_PERSONAL_EMAIL_COPY = {
@@ -21,7 +21,6 @@ export const E2E_PERSONAL_EMAIL_COPY = {
   REMOVED_NOTICE: PROFILE_COPY.EMAIL_REMOVED_NOTICE,
   SAVE: PERSONAL_EMAIL_FORM_COPY.SUBMIT,
   SAVED_NOTICE: PROFILE_COPY.EMAIL_SAVED_NOTICE,
-  SHOW_PASSWORD: PASSWORD_TOGGLE_COPY.SHOW,
 } as const;
 
 export const E2E_PERSONAL_EMAIL_ERROR_COPY = {
@@ -61,29 +60,23 @@ export const E2E_PERSONAL_EMAIL_ADDRESS = {
 } as const;
 
 export const E2E_PERSONAL_EMAIL_ENTRY_NAME = {
-  NOT_REGISTERED: `${PROFILE_COPY.PERSONAL_EMAIL_ENTRY}${STRING.SPACE}${PROFILE_COPY.STATUS_NOT_REGISTERED}`,
-  REGISTERED: `${PROFILE_COPY.PERSONAL_EMAIL_ENTRY}${STRING.SPACE}${PROFILE_COPY.STATUS_REGISTERED}`,
+  NOT_REGISTERED: `${E2E_PROFILE_COPY.PERSONAL_EMAIL_ENTRY}${STRING.SPACE}${PROFILE_COPY.STATUS_NOT_REGISTERED}`,
+  REGISTERED: `${E2E_PROFILE_COPY.PERSONAL_EMAIL_ENTRY}${STRING.SPACE}${PROFILE_COPY.STATUS_REGISTERED}`,
 } as const;
 
 export const E2E_PERSONAL_EMAIL_PASSWORD = {
   WRONG: "Equivocada.2026!",
 } as const;
 
-export const E2E_HTTP_METHOD = {
-  POST: "POST",
-} as const;
-
 export const E2E_PERSONAL_EMAIL_SCREENSHOT_BASENAME = {
   FORM_EMPTY: "03-personal-email-form-empty",
   FORM_ERRORS: "05-personal-email-form-errors",
   FORM_REGISTERED: "04-personal-email-form-registered",
+  FORM_WRONG_PASSWORD_TYPED:
+    "06-personal-email-form-wrong-password-typed",
   FORM_WRONG_PASSWORD:
-    "06-personal-email-form-wrong-password",
+    "07-personal-email-form-wrong-password",
   HUB_NOT_REGISTERED: "01-profile-hub-email-not-registered",
   HUB_REGISTERED: "02-profile-hub-email-registered",
-  HUB_SAVED: "07-profile-hub-email-saved",
-} as const;
-
-export const E2E_PERSONAL_EMAIL_REQUESTS = {
-  NONE: 0,
+  HUB_SAVED: "08-profile-hub-email-saved",
 } as const;

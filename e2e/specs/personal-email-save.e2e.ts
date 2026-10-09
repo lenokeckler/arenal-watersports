@@ -50,7 +50,7 @@ test.describe("Personal email save", () => {
       profilePage.findText(
         E2E_PERSONAL_EMAIL_ADDRESS.STORED
       )
-    ).toHaveCount(0);
+    ).toBeHidden();
   });
 
   test.describe("with a registered address", () => {

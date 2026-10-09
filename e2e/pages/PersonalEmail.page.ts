@@ -2,13 +2,14 @@ import type { Locator, Page } from "@playwright/test";
 import { FIELD_ERROR_ID_SUFFIX } from "@/app/components/field-factory/constants/FieldFactory.constants";
 import {
   ARIA_ROLE,
+  KEYBOARD,
   PATHS,
   PERSONAL_EMAIL_FIELD,
 } from "@/app/constants";
 import { E2E_PERSONAL_EMAIL_COPY } from "../constants/E2ePersonalEmail.constants";
+import { E2E_PROFILE_COPY } from "../constants/E2eProfile.constants";
 import {
   E2E_CONTROLS_SELECTOR,
-  E2E_KEY,
   HEADING_LEVEL,
 } from "../constants/E2eRuntime.constants";
 import { getMainRegion } from "../support/mainRegion";
@@ -18,7 +19,10 @@ export const createPersonalEmailPage = (page: Page) => {
   const getInput = (label: string): Locator =>
     main.getByLabel(label, { exact: true });
   const getEmailInput = (): Locator =>
-    main.locator(`#${PERSONAL_EMAIL_FIELD.EMAIL}`);
+    main.getByRole(ARIA_ROLE.TEXTBOX, {
+      name: E2E_PERSONAL_EMAIL_COPY.EMAIL_LABEL,
+      exact: true,
+    });
   const getPasswordInput = (): Locator =>
     getInput(
       E2E_PERSONAL_EMAIL_COPY.CURRENT_PASSWORD_LABEL
@@ -61,7 +65,7 @@ export const createPersonalEmailPage = (page: Page) => {
     revealPassword: (): Promise<void> =>
       main
         .getByRole(ARIA_ROLE.BUTTON, {
-          name: E2E_PERSONAL_EMAIL_COPY.SHOW_PASSWORD,
+          name: E2E_PROFILE_COPY.SHOW_PASSWORD,
           exact: true,
         })
         .and(
@@ -74,6 +78,6 @@ export const createPersonalEmailPage = (page: Page) => {
         .click(),
     save: (): Promise<void> => getSaveButton().click(),
     submitWithEnter: (): Promise<void> =>
-      getPasswordInput().press(E2E_KEY.ENTER),
+      getPasswordInput().press(KEYBOARD.ENTER),
   };
 };

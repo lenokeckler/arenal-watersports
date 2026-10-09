@@ -1,12 +1,11 @@
 import { STRING } from "@/app/constants";
-import {
-  E2E_PERSONAL_EMAIL_ERROR_COPY,
-  E2E_PERSONAL_EMAIL_REQUESTS,
-} from "../constants/E2ePersonalEmail.constants";
+import { E2E_PERSONAL_EMAIL_ERROR_COPY } from "../constants/E2ePersonalEmail.constants";
+import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 import { createPersonalEmailPage } from "../pages/PersonalEmail.page";
 import { expect, test } from "@playwright/test";
 import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
 import { trackPostRequests } from "../support/trackPostRequests";
+import { waitForNetworkIdle } from "../support/waitForNetworkIdle";
 
 test.describe("Personal email administration rules", () => {
   test.beforeEach(async ({ page }) => {
@@ -24,9 +23,7 @@ test.describe("Personal email administration rules", () => {
     await expect(emailPage.getEmailInput()).not.toHaveValue(
       STRING.Empty
     );
-    await expect(emailPage.getRemoveButton()).toHaveCount(
-      0
-    );
+    await expect(emailPage.getRemoveButton()).toBeHidden();
   });
 
   test("explains that administration needs an email when the field is emptied, without a request", async ({
@@ -42,8 +39,7 @@ test.describe("Personal email administration rules", () => {
     await expect(emailPage.getEmailError()).toHaveText(
       E2E_PERSONAL_EMAIL_ERROR_COPY.ADMINISTRATION_REQUIRED
     );
-    expect(posts.count()).toBe(
-      E2E_PERSONAL_EMAIL_REQUESTS.NONE
-    );
+    await waitForNetworkIdle(page);
+    expect(posts.count()).toBe(E2E_COUNT.NONE);
   });
 });

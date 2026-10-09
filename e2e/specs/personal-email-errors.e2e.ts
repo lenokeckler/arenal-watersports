@@ -4,12 +4,13 @@ import {
   E2E_PERSONAL_EMAIL_ADDRESS,
   E2E_PERSONAL_EMAIL_ERROR_COPY,
   E2E_PERSONAL_EMAIL_PASSWORD,
-  E2E_PERSONAL_EMAIL_REQUESTS,
 } from "../constants/E2ePersonalEmail.constants";
+import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 import { createPersonalEmailPage } from "../pages/PersonalEmail.page";
 import { expect, test } from "../support/activeWorkerTest";
 import { readWorkerAccountState } from "../support/readWorkerAccountState";
 import { trackPostRequests } from "../support/trackPostRequests";
+import { waitForNetworkIdle } from "../support/waitForNetworkIdle";
 
 test.describe("Personal email errors", () => {
   test("rejects an invalid address without a request or an attempt", async ({
@@ -29,9 +30,8 @@ test.describe("Personal email errors", () => {
     await expect(emailPage.getEmailError()).toHaveText(
       E2E_PERSONAL_EMAIL_ERROR_COPY.EMAIL_INVALID
     );
-    expect(posts.count()).toBe(
-      E2E_PERSONAL_EMAIL_REQUESTS.NONE
-    );
+    await waitForNetworkIdle(page);
+    expect(posts.count()).toBe(E2E_COUNT.NONE);
     const { failedAttempts } = await readWorkerAccountState(
       activeWorker.id
     );
@@ -57,9 +57,8 @@ test.describe("Personal email errors", () => {
     await expect(emailPage.getEmailError()).toHaveText(
       E2E_PERSONAL_EMAIL_ERROR_COPY.EMAIL_TOO_LONG
     );
-    expect(posts.count()).toBe(
-      E2E_PERSONAL_EMAIL_REQUESTS.NONE
-    );
+    await waitForNetworkIdle(page);
+    expect(posts.count()).toBe(E2E_COUNT.NONE);
   });
 
   test("asks for an address when none is registered", async ({
@@ -76,9 +75,8 @@ test.describe("Personal email errors", () => {
     await expect(emailPage.getEmailError()).toHaveText(
       E2E_PERSONAL_EMAIL_ERROR_COPY.EMAIL_REQUIRED_UNREGISTERED
     );
-    expect(posts.count()).toBe(
-      E2E_PERSONAL_EMAIL_REQUESTS.NONE
-    );
+    await waitForNetworkIdle(page);
+    expect(posts.count()).toBe(E2E_COUNT.NONE);
   });
 
   test("rejects a wrong password, clears it, keeps the address and counts one attempt", async ({
@@ -133,9 +131,8 @@ test.describe("Personal email errors", () => {
       await expect(emailPage.getEmailError()).toHaveText(
         E2E_PERSONAL_EMAIL_ERROR_COPY.EMAIL_REQUIRED_REGISTERED
       );
-      expect(posts.count()).toBe(
-        E2E_PERSONAL_EMAIL_REQUESTS.NONE
-      );
+      await waitForNetworkIdle(page);
+      expect(posts.count()).toBe(E2E_COUNT.NONE);
     });
   });
 });

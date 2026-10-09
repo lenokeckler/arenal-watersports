@@ -1,14 +1,15 @@
 import type { Page } from "@playwright/test";
 import type { PostRequestTracker } from "./models/PostRequestTracker.interface";
-import { E2E_HTTP_METHOD } from "../constants/E2ePersonalEmail.constants";
+import { API } from "@/app/constants";
+import { E2E_PAGE_EVENT } from "../constants/E2eRuntime.constants";
 
 export const trackPostRequests = (
   page: Page
 ): PostRequestTracker => {
   let postCount = 0;
 
-  page.on("request", (request) => {
-    if (request.method() === E2E_HTTP_METHOD.POST) {
+  page.on(E2E_PAGE_EVENT.REQUEST, (request) => {
+    if (request.method() === API.METHODS.POST) {
       postCount += 1;
     }
   });

@@ -48,7 +48,7 @@ test.describe("Personal email form screenshots", () => {
     );
   });
 
-  test("captures the email form after a wrong password", async ({
+  test("captures the email form with the wrong password typed and after it is rejected", async ({
     signedInPage: page,
   }, testInfo) => {
     const emailPage = createPersonalEmailPage(page);
@@ -60,6 +60,11 @@ test.describe("Personal email form screenshots", () => {
       E2E_PERSONAL_EMAIL_PASSWORD.WRONG
     );
     await emailPage.revealPassword();
+    await captureFullPage(
+      page,
+      E2E_PERSONAL_EMAIL_SCREENSHOT_BASENAME.FORM_WRONG_PASSWORD_TYPED,
+      testInfo.project.name
+    );
 
     await emailPage.save();
 
