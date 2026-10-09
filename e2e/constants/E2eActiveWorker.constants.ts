@@ -10,6 +10,7 @@ export const E2E_ACTIVE_WORKER_ATTEMPTS = {
 } as const;
 
 export const E2E_OPEN_SESSIONS = {
+  AFTER_BLOCK: 0,
   AFTER_CHANGE: 1,
   BEFORE_CHANGE: 2,
 } as const;
