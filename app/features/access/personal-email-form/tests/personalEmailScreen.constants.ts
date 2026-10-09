@@ -24,3 +24,4 @@ export const IDLE_REMOVE_BUTTON_PROPS: PersonalEmailRemoveButtonProps =
     isPending: false,
     pendingIntent: null,
   };
+export const PLACEHOLDER_PROPERTY = "placeholder";
