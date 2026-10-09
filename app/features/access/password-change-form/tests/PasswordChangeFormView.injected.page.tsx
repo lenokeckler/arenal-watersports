@@ -5,6 +5,7 @@ import type { PasswordChangeInput } from "@/app/utils/password-change/models/Pas
 import { DEFAULT_PASSWORD_CHANGE_INPUT } from "@/app/utils/password-change/tests/passwordChange.constants";
 import type { PasswordChangeServerAction } from "../models/PasswordChangeServerAction.type";
 import PasswordChangeFormView from "../PasswordChangeFormView";
+import { DEFAULT_PASSWORD_CHANGE_FORM_VIEW_PROPS } from "./PasswordChangeFormView.defaults.constants";
 import {
   OWN_HEADING,
   OWN_PASSWORD_CHANGE_COPY as copy,
@@ -21,6 +22,7 @@ export const renderInjectedPasswordChangeFormView = (
 ) => {
   render(
     <PasswordChangeFormView
+      {...DEFAULT_PASSWORD_CHANGE_FORM_VIEW_PROPS}
       action={action}
       copy={copy}
       errorCopy={OWN_PASSWORD_CHANGE_ERROR_COPY}

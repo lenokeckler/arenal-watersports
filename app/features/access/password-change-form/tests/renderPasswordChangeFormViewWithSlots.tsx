@@ -1,8 +1,6 @@
 import { render } from "@testing-library/react";
-import { submitFirstPasswordChange } from "../actions/submitFirstPasswordChange";
-import { FIRST_SIGN_IN_ERROR_COPY } from "../constants/FirstSignInErrorCopy.constants";
-import { FIRST_SIGN_IN_FORM_COPY } from "../constants/FirstSignInFormCopy.constants";
 import PasswordChangeFormView from "../PasswordChangeFormView";
+import { DEFAULT_PASSWORD_CHANGE_FORM_VIEW_PROPS } from "./PasswordChangeFormView.defaults.constants";
 import { createPasswordChangeFormViewPage } from "./PasswordChangeFormView.page";
 import {
   BEFORE_FIELDS_TEXT,
@@ -13,10 +11,8 @@ import {
 export const renderPasswordChangeFormViewWithSlots = () => {
   render(
     <PasswordChangeFormView
-      action={submitFirstPasswordChange}
+      {...DEFAULT_PASSWORD_CHANGE_FORM_VIEW_PROPS}
       beforeFields={<span>{BEFORE_FIELDS_TEXT}</span>}
-      copy={FIRST_SIGN_IN_FORM_COPY}
-      errorCopy={FIRST_SIGN_IN_ERROR_COPY}
       footer={<span>{FOOTER_TEXT}</span>}
       heading={<h1>{HEADING_TEXT}</h1>}
     />
