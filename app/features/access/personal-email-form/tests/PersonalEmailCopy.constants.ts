@@ -11,12 +11,6 @@ export const ALL_COPY = [
   ...Object.entries(PERSONAL_EMAIL_REQUIRED_COPY),
 ];
 
-export const VOSEO_WORDS_PATTERN =
-  /(^|[^\p{L}])(vos|sos|podés|tenés|querés|debés|escribí|ingresá|elegí|repetí|volvé|guardá|intentá|revisá|seleccioná|cambiá|quitá|registrá)(?![\p{L}])/iu;
-
-export const TUTEO_WORDS_PATTERN =
-  /(^|[^\p{L}])(tienes|puedes|quieres|debes|tu|tus|te|ti|contigo|ingresa|intenta|selecciona|escribe|revisa|vuelve|repite|elige|quita|registra)(?![\p{L}])/iu;
-
 export const VOSEO_SAMPLES = [
   "Escribí su correo",
   "Podés quitarlo",
@@ -64,4 +58,8 @@ export const APPROVED_ERROR_COPY = {
     "Escriba un correo válido, por ejemplo nombre@gmail.com.",
   [PERSONAL_EMAIL_ERROR_CODE.EMAIL_TOO_LONG]:
     "El correo es demasiado largo.",
+  [PERSONAL_EMAIL_ERROR_CODE.INTENT_INVALID]:
+    "No se pudo guardar el correo. Intente de nuevo.",
+  [PERSONAL_EMAIL_ERROR_CODE.UNKNOWN]:
+    "No se pudo guardar el correo. Intente de nuevo.",
 };
