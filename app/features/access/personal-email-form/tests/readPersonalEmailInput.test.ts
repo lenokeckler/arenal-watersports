@@ -12,8 +12,10 @@ import {
   OTHER_INTENT,
   REMOVE_INPUT,
   SAVE_INPUT,
+  SECOND_ADDRESS,
   UPLOADED_FILE_CONTENT,
   UPLOADED_FILE_NAME,
+  UPPERCASE_SAVE_INTENT,
 } from "./personalEmailForm.constants";
 
 describe("readPersonalEmailInput", () => {
@@ -73,6 +75,30 @@ describe("readPersonalEmailInput", () => {
 
     expect(readPersonalEmailInput(formData)).toEqual(
       SAVE_INPUT
+    );
+  });
+
+  it("keeps an uppercase intent as raw text", () => {
+    expect(
+      readPersonalEmailInput(
+        createPersonalEmailFormData({
+          ...SAVE_INPUT,
+          intent: UPPERCASE_SAVE_INTENT,
+        })
+      ).intent
+    ).toBe(UPPERCASE_SAVE_INTENT);
+  });
+
+  it("reads the first value of a repeated field", () => {
+    const formData =
+      createPersonalEmailFormData(SAVE_INPUT);
+    formData.append(
+      PERSONAL_EMAIL_FIELD.EMAIL,
+      SECOND_ADDRESS
+    );
+
+    expect(readPersonalEmailInput(formData).email).toBe(
+      SAVE_INPUT.email
     );
   });
 });

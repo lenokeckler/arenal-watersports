@@ -7,7 +7,9 @@ import {
 import { resolvePersonalEmailErrorCopy } from "../utils/resolvePersonalEmailErrorCopy";
 import {
   ADMINISTRATION_OPTIONS,
+  REMOVE_BUTTON_MENTION,
   REQUIRED_COPY_CASES,
+  UNREGISTERED_ADMINISTRATION_OPTIONS,
   UNREGISTERED_OPTIONS,
 } from "./resolvePersonalEmailErrorCopy.constants";
 
@@ -20,6 +22,20 @@ describe("resolvePersonalEmailErrorCopy", () => {
           PERSONAL_EMAIL_ERROR_CODE.EMAIL_REQUIRED
         ]
       ).toBe(expected);
+    }
+  );
+
+  it.each([
+    ADMINISTRATION_OPTIONS,
+    UNREGISTERED_ADMINISTRATION_OPTIONS,
+  ])(
+    "never tells administration to use the remove button",
+    (options) => {
+      expect(
+        resolvePersonalEmailErrorCopy(options)[
+          PERSONAL_EMAIL_ERROR_CODE.EMAIL_REQUIRED
+        ]
+      ).not.toContain(REMOVE_BUTTON_MENTION);
     }
   );
 

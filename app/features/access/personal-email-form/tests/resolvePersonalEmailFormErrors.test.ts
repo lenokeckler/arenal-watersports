@@ -9,9 +9,14 @@ import type { PersonalEmailFormErrorSources } from "../models/PersonalEmailFormE
 import { resolvePersonalEmailFormErrors } from "../utils/resolvePersonalEmailFormErrors";
 import { SAVE_INPUT } from "./personalEmailForm.constants";
 import {
+  EMPTY_PASSWORD_INPUT,
   INVALID_ADDRESS_AND_PASSWORD_INPUT,
   INVALID_ADDRESS_INPUT,
+  INVALID_INTENT_INPUT,
   NETWORK_ERROR,
+  REMOVE_WITH_INVALID_ADDRESS_INPUT,
+  TOO_MANY_REQUESTS_ERROR,
+  UNKNOWN_ERROR,
   WRONG_PASSWORD_ERROR,
 } from "./resolvePersonalEmailFormErrors.constants";
 
@@ -97,6 +102,56 @@ describe("resolvePersonalEmailFormErrors", () => {
         ],
       [PERSONAL_EMAIL_FIELD.FORM]:
         PERSONAL_EMAIL_ERROR_COPY[NETWORK_ERROR.code],
+    });
+  });
+
+  it.each([
+    ["network", NETWORK_ERROR],
+    ["too many requests", TOO_MANY_REQUESTS_ERROR],
+    ["unknown", UNKNOWN_ERROR],
+  ])(
+    "puts the %s server error on the form banner only",
+    (_name, serverError) => {
+      expect(resolveErrors({ serverError })).toEqual({
+        ...NO_PERSONAL_EMAIL_FORM_ERRORS,
+        [PERSONAL_EMAIL_FIELD.FORM]:
+          PERSONAL_EMAIL_ERROR_COPY[serverError.code],
+      });
+    }
+  );
+
+  it("lets the server error replace the validation error of the same field", () => {
+    expect(
+      resolveErrors({
+        serverError: WRONG_PASSWORD_ERROR,
+        values: EMPTY_PASSWORD_INPUT,
+      })
+    ).toEqual({
+      ...NO_PERSONAL_EMAIL_FORM_ERRORS,
+      [PERSONAL_EMAIL_FIELD.CURRENT_PASSWORD]:
+        PERSONAL_EMAIL_ERROR_COPY[
+          WRONG_PASSWORD_ERROR.code
+        ],
+    });
+  });
+
+  it("ignores the email field when removing", () => {
+    expect(
+      resolveErrors({
+        values: REMOVE_WITH_INVALID_ADDRESS_INPUT,
+      })
+    ).toEqual(NO_PERSONAL_EMAIL_FORM_ERRORS);
+  });
+
+  it("puts an unknown intent on the form banner", () => {
+    expect(
+      resolveErrors({ values: INVALID_INTENT_INPUT })
+    ).toEqual({
+      ...NO_PERSONAL_EMAIL_FORM_ERRORS,
+      [PERSONAL_EMAIL_FIELD.FORM]:
+        PERSONAL_EMAIL_ERROR_COPY[
+          PERSONAL_EMAIL_ERROR_CODE.INTENT_INVALID
+        ],
     });
   });
 });

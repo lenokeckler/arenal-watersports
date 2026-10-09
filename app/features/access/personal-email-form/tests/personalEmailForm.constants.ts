@@ -22,3 +22,5 @@ export const FORGED_IDENTITY_FIELD = "workerId";
 export const FORGED_IDENTITY_VALUE = "someone-else";
 export const UPLOADED_FILE_CONTENT = "content";
 export const UPLOADED_FILE_NAME = "email.txt";
+export const UPPERCASE_SAVE_INTENT = "SAVE";
+export const SECOND_ADDRESS = "otra.persona@correo.com";

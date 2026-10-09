@@ -1,10 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { PERSONAL_EMAIL_ERROR_CODE } from "@/app/constants";
-import { PERSONAL_EMAIL_ERROR_COPY } from "../constants/PersonalEmailErrorCopy.constants";
+import {
+  PERSONAL_EMAIL_ERROR_COPY,
+  PERSONAL_EMAIL_REQUIRED_COPY,
+} from "../constants/PersonalEmailErrorCopy.constants";
 import { PERSONAL_EMAIL_FORM_COPY } from "../constants/PersonalEmailFormCopy.constants";
 import { PERSONAL_EMAIL_FORM_METADATA } from "../constants/PersonalEmailFormMetadata.constants";
 import {
   ALL_COPY,
+  APPROVED_ERROR_COPY,
+  APPROVED_FORM_COPY,
+  APPROVED_REQUIRED_COPY,
   TUTEO_SAMPLES,
   TUTEO_WORDS_PATTERN,
   VOSEO_SAMPLES,
@@ -41,6 +47,24 @@ describe("personal email copy", () => {
       expect(text).toMatch(TUTEO_WORDS_PATTERN);
     }
   );
+
+  it("matches the approved form text exactly", () => {
+    expect(PERSONAL_EMAIL_FORM_COPY).toMatchObject(
+      APPROVED_FORM_COPY
+    );
+  });
+
+  it("matches the approved required-email text exactly", () => {
+    expect(PERSONAL_EMAIL_REQUIRED_COPY).toEqual(
+      APPROVED_REQUIRED_COPY
+    );
+  });
+
+  it("matches the approved error text exactly", () => {
+    expect(PERSONAL_EMAIL_ERROR_COPY).toMatchObject(
+      APPROVED_ERROR_COPY
+    );
+  });
 
   it("titles the page with its metadata title", () => {
     expect(PERSONAL_EMAIL_FORM_METADATA.title).toBe(
