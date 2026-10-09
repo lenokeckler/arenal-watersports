@@ -145,7 +145,6 @@ export { PROFILE_SCREEN_TITLE_ID } from "./access/ProfileScreen.constants";
 export { PERSONAL_EMAIL } from "./access/PersonalEmail.constants";
 export {
   PERSONAL_EMAIL_INTENT,
-  PERSONAL_EMAIL_INTENT_FIELD,
   type PersonalEmailIntent,
 } from "./access/PersonalEmailIntent.constants";
 export {
@@ -159,4 +158,3 @@ export {
   REAUTHENTICATION_ERROR_CODE,
   type ReauthenticationErrorCode,
 } from "./access/Reauthentication.constants";
-export { SUPABASE_WORK_AREA } from "./supabase/SupabaseWorkArea.constants";

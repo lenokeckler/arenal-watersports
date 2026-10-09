@@ -9,6 +9,7 @@ import {
   ADDRESS_ONE_ABOVE_MAX,
   GROWING_LOWERCASE_ADDRESS,
   INVALID_ADDRESS_CASES,
+  LOCAL_PART_ONE_ABOVE_MAX,
 } from "./personalEmail.constants";
 
 describe("validatePersonalEmailAddress", () => {
@@ -45,6 +46,15 @@ describe("validatePersonalEmailAddress", () => {
   it("reports the length before the pattern", () => {
     expect(
       validatePersonalEmailAddress(ADDRESS_ONE_ABOVE_MAX)
+    ).toEqual({
+      code: PERSONAL_EMAIL_ERROR_CODE.EMAIL_TOO_LONG,
+      ok: false,
+    });
+  });
+
+  it("rejects a local part above 64 characters", () => {
+    expect(
+      validatePersonalEmailAddress(LOCAL_PART_ONE_ABOVE_MAX)
     ).toEqual({
       code: PERSONAL_EMAIL_ERROR_CODE.EMAIL_TOO_LONG,
       ok: false,

@@ -25,6 +25,17 @@ export const validatePersonalEmailAddress = (
     };
   }
 
+  const [localPart] = address.split(STRING.AT);
+
+  if (
+    localPart.length > PERSONAL_EMAIL.LOCAL_PART_MAX_LENGTH
+  ) {
+    return {
+      code: PERSONAL_EMAIL_ERROR_CODE.EMAIL_TOO_LONG,
+      ok: false,
+    };
+  }
+
   if (!PERSONAL_EMAIL.PATTERN.test(address)) {
     return {
       code: PERSONAL_EMAIL_ERROR_CODE.EMAIL_INVALID,

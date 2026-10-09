@@ -1,4 +1,3 @@
-import path from "node:path";
 import {
   PASSWORD_LENGTH,
   PERSONAL_EMAIL,
@@ -13,6 +12,11 @@ const FILLER = "a";
 const LABEL_FILLER = "b";
 const SURROUNDING_SPACES = "  ";
 const MAX_LABEL = LABEL_FILLER.repeat(LABEL_MAX_LENGTH);
+const LAST_LABEL_LENGTH = 61;
+const LAST_LABEL = LABEL_FILLER.repeat(LAST_LABEL_LENGTH);
+const LOCAL_PART_FILLER = FILLER.repeat(
+  PERSONAL_EMAIL.LOCAL_PART_MAX_LENGTH
+);
 
 export const VALID_ADDRESS = "ana.perez@correo.com";
 export const PASSWORD = "Clave-actual-1!";
@@ -26,12 +30,12 @@ export const NEWLINE_INJECTION =
 export const EMBEDDED_NUL = "ana\u0000@correo.com";
 export const ZERO_WIDTH_SPACE = "ana\u200b@correo.com";
 
-export const ADDRESS_AT_MAX =
-  FILLER.repeat(
-    PERSONAL_EMAIL.MAX_LENGTH - DOMAIN_SUFFIX.length
-  ) + DOMAIN_SUFFIX;
-export const ADDRESS_ONE_ABOVE_MAX =
-  FILLER + ADDRESS_AT_MAX;
+export const ADDRESS_AT_MAX = `${LOCAL_PART_FILLER}@${MAX_LABEL}.${MAX_LABEL}.${LAST_LABEL}`;
+export const ADDRESS_ONE_ABOVE_MAX = `${ADDRESS_AT_MAX}${LABEL_FILLER}`;
+export const LOCAL_PART_AT_MAX =
+  LOCAL_PART_FILLER + DOMAIN_SUFFIX;
+export const LOCAL_PART_ONE_ABOVE_MAX =
+  FILLER + LOCAL_PART_AT_MAX;
 
 export const ACCEPTED_ADDRESS_CASES: [
   string,
@@ -76,6 +80,11 @@ export const ACCEPTED_ADDRESS_CASES: [
     "kelvin@correo.com",
   ],
   [
+    "a local part of 64 characters",
+    LOCAL_PART_AT_MAX,
+    LOCAL_PART_AT_MAX,
+  ],
+  [
     "the longest allowed length",
     ADDRESS_AT_MAX,
     ADDRESS_AT_MAX,
@@ -109,16 +118,6 @@ export const GROWING_LOWERCASE_ADDRESS =
   GROWING_LOWERCASE_LETTER.repeat(
     Math.ceil(PERSONAL_EMAIL.MAX_LENGTH / 2)
   ) + DOMAIN_SUFFIX;
-
-export const MIGRATION_PATH = path.join(
-  process.cwd(),
-  "supabase",
-  "migrations",
-  "20260828003200_worker_personal_email_format.sql"
-);
-export const MIGRATION_ENCODING = "utf8";
-export const SQL_QUOTE = "'";
-export const SQL_QUOTE_ESCAPED = "''";
 
 export const DEFAULT_PERSONAL_EMAIL_CHANGE_INPUT: PersonalEmailChangeInput =
   {
