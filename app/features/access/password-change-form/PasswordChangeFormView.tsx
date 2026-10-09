@@ -8,11 +8,14 @@ import PasswordChangeFormFields from "./components/PasswordChangeFormFields";
 import FirstSignInFormHeading from "./components/FirstSignInFormHeading";
 import { FIRST_SIGN_IN_FORM_COPY } from "./constants/FirstSignInFormCopy.constants";
 import { usePasswordChangeFormViewModel } from "./hooks/usePasswordChangeFormViewModel";
+import type { PasswordChangeFormViewProps } from "./models/PasswordChangeFormViewProps.interface";
 import { PASSWORD_CHANGE_FORM_CLASS } from "./styles/PasswordChangeForm.styles";
 
-const PasswordChangeFormView = (): React.JSX.Element => {
+const PasswordChangeFormView = ({
+  action,
+}: PasswordChangeFormViewProps): React.JSX.Element => {
   const { formAction, onSubmit, ...fields } =
-    usePasswordChangeFormViewModel();
+    usePasswordChangeFormViewModel({ action });
 
   return (
     <>

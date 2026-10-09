@@ -1,5 +1,5 @@
 import { startTransition } from "react";
-import { act, renderHook } from "@testing-library/react";
+import { act } from "@testing-library/react";
 import {
   beforeEach,
   describe,
@@ -8,6 +8,7 @@ import {
   vi,
 } from "vitest";
 import "./firstSignInAction.setup";
+import { renderPasswordChangeViewModel } from "./renderPasswordChangeViewModel";
 import { PASSWORD_CHANGE_FIELD } from "@/app/constants/access/PasswordChangeError.constants";
 import {
   DEFAULT_PASSWORD_CHANGE_INPUT,
@@ -17,7 +18,6 @@ import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants";
 import { FIRST_SIGN_IN_ERROR_COPY } from "../constants/FirstSignInErrorCopy.constants";
 import { submitFirstPasswordChange } from "../actions/submitFirstPasswordChange";
 import { createPasswordChangeFormData } from "./createPasswordChangeFormData";
-import { usePasswordChangeFormViewModel } from "../hooks/usePasswordChangeFormViewModel";
 import {
   fillForm,
   submitForm,
@@ -29,9 +29,7 @@ describe("usePasswordChangeFormViewModel submit", () => {
   });
 
   it("prevents the default submit of an invalid form and shows its error", () => {
-    const { result } = renderHook(
-      usePasswordChangeFormViewModel
-    );
+    const { result } = renderPasswordChangeViewModel();
 
     const event = submitForm(result);
 
@@ -48,9 +46,7 @@ describe("usePasswordChangeFormViewModel submit", () => {
   });
 
   it("does not prevent the default submit of a valid form", () => {
-    const { result } = renderHook(
-      usePasswordChangeFormViewModel
-    );
+    const { result } = renderPasswordChangeViewModel();
     fillForm(result, DEFAULT_PASSWORD_CHANGE_INPUT);
 
     const event = submitForm(result);
@@ -59,9 +55,7 @@ describe("usePasswordChangeFormViewModel submit", () => {
   });
 
   it("shows the mismatch under the confirmation field", () => {
-    const { result } = renderHook(
-      usePasswordChangeFormViewModel
-    );
+    const { result } = renderPasswordChangeViewModel();
     fillForm(result, {
       ...DEFAULT_PASSWORD_CHANGE_INPUT,
       confirmPassword: MISMATCHED_CONFIRMATION,
@@ -84,9 +78,7 @@ describe("usePasswordChangeFormViewModel submit", () => {
     vi.mocked(submitFirstPasswordChange).mockReturnValue(
       new Promise(() => undefined)
     );
-    const { result } = renderHook(
-      usePasswordChangeFormViewModel
-    );
+    const { result } = renderPasswordChangeViewModel();
     fillForm(result, DEFAULT_PASSWORD_CHANGE_INPUT);
     await act(() => {
       startTransition(() => {
