@@ -43,6 +43,7 @@ export const STRING = {
   NEW_LINE: "\n",
   DOLLAR: "$",
   AT: "@",
+  AMPERSAND: "&",
 } as const;
 
 export type String = (typeof STRING)[keyof typeof STRING];
