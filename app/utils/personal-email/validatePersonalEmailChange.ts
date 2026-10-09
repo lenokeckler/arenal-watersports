@@ -1,10 +1,9 @@
 import {
   PERSONAL_EMAIL_ERROR_CODE,
   PERSONAL_EMAIL_INTENT,
-  STRING,
 } from "@/app/constants";
-import { isPasswordTooLong } from "@/app/utils/password/isPasswordTooLong";
-import { createPersonalEmailError } from "./createPersonalEmailError";
+import { validateCurrentPassword } from "@/app/utils/reauthentication/validateCurrentPassword";
+import { createInvalidPersonalEmailChange } from "./createInvalidPersonalEmailChange";
 import { isPersonalEmailIntent } from "./isPersonalEmailIntent";
 import type { PersonalEmailChangeInput } from "./models/PersonalEmailChangeInput.interface";
 import type { PersonalEmailValidation } from "./models/PersonalEmailValidation.type";
@@ -16,12 +15,9 @@ export const validatePersonalEmailChange = ({
   intent,
 }: PersonalEmailChangeInput): PersonalEmailValidation => {
   if (!isPersonalEmailIntent(intent)) {
-    return {
-      error: createPersonalEmailError(
-        PERSONAL_EMAIL_ERROR_CODE.INTENT_INVALID
-      ),
-      ok: false,
-    };
+    return createInvalidPersonalEmailChange(
+      PERSONAL_EMAIL_ERROR_CODE.INTENT_INVALID
+    );
   }
 
   const address =
@@ -30,28 +26,16 @@ export const validatePersonalEmailChange = ({
       : null;
 
   if (address && !address.ok) {
-    return {
-      error: createPersonalEmailError(address.code),
-      ok: false,
-    };
+    return createInvalidPersonalEmailChange(address.code);
   }
 
-  if (currentPassword === STRING.Empty) {
-    return {
-      error: createPersonalEmailError(
-        PERSONAL_EMAIL_ERROR_CODE.CURRENT_PASSWORD_REQUIRED
-      ),
-      ok: false,
-    };
-  }
+  const passwordErrorCode =
+    validateCurrentPassword(currentPassword);
 
-  if (isPasswordTooLong(currentPassword)) {
-    return {
-      error: createPersonalEmailError(
-        PERSONAL_EMAIL_ERROR_CODE.CURRENT_PASSWORD_TOO_LONG
-      ),
-      ok: false,
-    };
+  if (passwordErrorCode) {
+    return createInvalidPersonalEmailChange(
+      passwordErrorCode
+    );
   }
 
   if (address) {
