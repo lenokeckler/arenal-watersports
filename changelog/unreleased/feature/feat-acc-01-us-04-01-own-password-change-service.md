@@ -1,0 +1,1 @@
+ACC-01.04.01: Own password change service — a signed-in worker changes their own password after confirming the current one; each wrong current password counts one failed attempt and a lock closes every session (US-ACC-04 · AWS-33)
