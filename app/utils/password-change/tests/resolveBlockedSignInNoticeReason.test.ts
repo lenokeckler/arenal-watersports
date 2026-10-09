@@ -3,9 +3,9 @@ import {
   BLOCKED_PASSWORD_CHANGE_ERROR_CODES,
   BLOCKED_PASSWORD_CHANGE_NOTICE_REASON,
 } from "@/app/constants";
-import { createPasswordChangeError } from "@/app/utils/password-change/createPasswordChangeError";
-import { resolveBlockedSignInNoticeReason } from "../utils/resolveBlockedSignInNoticeReason";
-import { PROTOTYPE_KEY_ERRORS } from "@/app/utils/password-change/tests/passwordChange.constants";
+import { createPasswordChangeError } from "../createPasswordChangeError";
+import { resolveBlockedSignInNoticeReason } from "../resolveBlockedSignInNoticeReason";
+import { PROTOTYPE_KEY_ERRORS } from "./passwordChange.constants";
 import { NON_BLOCKED_CODES } from "./resolveBlockedSignInNoticeReason.constants";
 
 describe("resolveBlockedSignInNoticeReason", () => {

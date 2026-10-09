@@ -11,7 +11,7 @@ import { changeOwnPassword } from "@/app/services/authentication";
 import { appendQueryParam } from "@/app/utils/pathname/appendQueryParam";
 import type { PasswordChangeServerAction } from "../models/PasswordChangeServerAction.type";
 import { readPasswordChangeInput } from "../utils/readPasswordChangeInput";
-import { resolveBlockedSignInNoticeReason } from "../utils/resolveBlockedSignInNoticeReason";
+import { resolveBlockedSignInNoticeReason } from "@/app/utils/password-change/resolveBlockedSignInNoticeReason";
 import { runPasswordChange } from "../utils/runPasswordChange";
 
 export const submitOwnPasswordChange: PasswordChangeServerAction =

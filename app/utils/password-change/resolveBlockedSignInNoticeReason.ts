@@ -3,12 +3,12 @@ import {
   type SignInNoticeReason,
 } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
-import { isBlockedPasswordChangeErrorCode } from "@/app/utils/password-change/isBlockedPasswordChangeErrorCode";
-import type { PasswordChangeError } from "@/app/utils/password-change/models/PasswordChangeError.interface";
+import { isBlockedPasswordChangeErrorCode } from "./isBlockedPasswordChangeErrorCode";
+import type { CodedError } from "./models/CodedError.interface";
 
 export const resolveBlockedSignInNoticeReason = ({
   code,
-}: PasswordChangeError): NullableRef<SignInNoticeReason> =>
+}: CodedError): NullableRef<SignInNoticeReason> =>
   isBlockedPasswordChangeErrorCode(code)
     ? BLOCKED_PASSWORD_CHANGE_NOTICE_REASON[code]
     : null;
