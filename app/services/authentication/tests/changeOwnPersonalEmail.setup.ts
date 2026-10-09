@@ -9,10 +9,6 @@ vi.mock(
   () => import("./mocks/reauthenticateSettledWorker.mock")
 );
 vi.mock(
-  "../readOwnPersonalEmail",
-  () => import("./mocks/readOwnPersonalEmail.mock")
-);
-vi.mock(
   "../updateOwnPersonalEmail",
   () => import("./mocks/updateOwnPersonalEmail.mock")
 );

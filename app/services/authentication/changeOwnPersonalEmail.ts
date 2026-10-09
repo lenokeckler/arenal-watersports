@@ -1,8 +1,7 @@
-import { PERSONAL_EMAIL_INTENT } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
-import { createPersonalEmailError } from "@/app/utils/personal-email/createPersonalEmailError";
+import { mapReauthenticationError } from "@/app/utils/personal-email/mapReauthenticationError";
 import type { PersonalEmailChangeInput } from "@/app/utils/personal-email/models/PersonalEmailChangeInput.interface";
-import { resolvePersonalEmailErrorCode } from "@/app/utils/personal-email/resolvePersonalEmailErrorCode";
+import { resolveWrittenAddress } from "@/app/utils/personal-email/resolveWrittenAddress";
 import { validatePersonalEmailChange } from "@/app/utils/personal-email/validatePersonalEmailChange";
 import { findPersonalEmailRemovalError } from "./findPersonalEmailRemovalError";
 import type { PersonalEmailChangeResult } from "./models/PersonalEmailChangeResult.type";
@@ -29,28 +28,24 @@ export const changeOwnPersonalEmail = async (
   if (!reauthentication.ok) {
     return {
       ok: false,
-      error: createPersonalEmailError(
-        resolvePersonalEmailErrorCode(
-          reauthentication.error.code
-        )
+      error: mapReauthenticationError(
+        reauthentication.error
       ),
     };
   }
 
-  if (change.intent === PERSONAL_EMAIL_INTENT.REMOVE) {
-    const removalError =
-      await findPersonalEmailRemovalError(supabase);
+  const removalError = findPersonalEmailRemovalError(
+    change,
+    reauthentication.worker.baseRole
+  );
 
-    if (removalError) {
-      return { ok: false, error: removalError };
-    }
+  if (removalError) {
+    return { ok: false, error: removalError };
   }
 
   await updateOwnPersonalEmail(
     supabase,
-    change.intent === PERSONAL_EMAIL_INTENT.SAVE
-      ? change.address
-      : null
+    resolveWrittenAddress(change)
   );
 
   return { ok: true, intent: change.intent };

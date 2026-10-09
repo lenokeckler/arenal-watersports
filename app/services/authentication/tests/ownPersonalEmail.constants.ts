@@ -1,6 +1,16 @@
-import { SUPABASE_WORK_AREA } from "@/app/constants";
+import {
+  PERSONAL_EMAIL_INTENT,
+  SUPABASE_WORK_AREA,
+} from "@/app/constants";
+import {
+  PASSWORD,
+  VALID_ADDRESS,
+} from "@/app/utils/personal-email/tests/personalEmail.constants";
 import type { Database } from "@/app/types/Database";
-import { SIGNED_IN_USER_RESULT } from "./firstSignIn.constants";
+import {
+  ALREADY_CHANGED_WORKER,
+  SIGNED_IN_USER_RESULT,
+} from "./firstSignIn.constants";
 import type { OwnPersonalEmail } from "../models/OwnPersonalEmail.interface";
 
 export const WORKER_ID = SIGNED_IN_USER_RESULT.data.user.id;
@@ -27,5 +37,21 @@ export const OPTIONAL_OWN_PERSONAL_EMAIL: OwnPersonalEmail =
 export const REQUIRED_OWN_PERSONAL_EMAIL: OwnPersonalEmail =
   { address: OWN_ADDRESS, isRequired: true };
 
+export const ADMINISTRATION_WORKER = {
+  ...ALREADY_CHANGED_WORKER,
+  baseRole: ADMINISTRATION_AREA,
+};
+
 export const FOREIGN_SESSION_USER_ID =
   "00000000-0000-4000-8000-0000000000f0";
+
+export const REMOVAL = {
+  currentPassword: PASSWORD,
+  intent: PERSONAL_EMAIL_INTENT.REMOVE,
+} as const;
+
+export const REPLACEMENT = {
+  address: VALID_ADDRESS,
+  currentPassword: PASSWORD,
+  intent: PERSONAL_EMAIL_INTENT.SAVE,
+} as const;

@@ -1,64 +1,47 @@
+import { describe, expect, it } from "vitest";
 import {
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
-import "./changeOwnPersonalEmail.setup";
-import { PERSONAL_EMAIL_ERROR_CODE } from "@/app/constants";
+  PERSONAL_EMAIL_ERROR_CODE,
+  SUPABASE_WORK_AREA,
+} from "@/app/constants";
 import { createPersonalEmailError } from "@/app/utils/personal-email/createPersonalEmailError";
 import { findPersonalEmailRemovalError } from "../findPersonalEmailRemovalError";
-import { readOwnPersonalEmail } from "../readOwnPersonalEmail";
-import { arrangeSuccessfulOwnPersonalEmailChange } from "./arrangeSuccessfulOwnPersonalEmailChange";
 import {
-  OPTIONAL_OWN_PERSONAL_EMAIL,
-  REQUIRED_OWN_PERSONAL_EMAIL,
+  REMOVAL,
+  REPLACEMENT,
 } from "./ownPersonalEmail.constants";
-import { SUPABASE_CLIENT } from "./supabaseClient.constants";
 
 describe("findPersonalEmailRemovalError", () => {
-  beforeEach(arrangeSuccessfulOwnPersonalEmailChange);
+  it.each([
+    SUPABASE_WORK_AREA.OPERATIONS,
+    SUPABASE_WORK_AREA.RESERVATIONS,
+  ])(
+    "finds nothing when the %s area removes its address",
+    (area) => {
+      expect(
+        findPersonalEmailRemovalError(REMOVAL, area)
+      ).toBeNull();
+    }
+  );
 
-  it("finds nothing when the account does not require an address", async () => {
-    vi.mocked(readOwnPersonalEmail).mockResolvedValue(
-      OPTIONAL_OWN_PERSONAL_EMAIL
-    );
-
-    await expect(
+  it("finds the administration requirement when the administration area removes its address", () => {
+    expect(
       findPersonalEmailRemovalError(
-        SUPABASE_CLIENT as never
+        REMOVAL,
+        SUPABASE_WORK_AREA.ADMINISTRATION
       )
-    ).resolves.toBeNull();
-  });
-
-  it("finds the administration requirement when the account requires an address", async () => {
-    vi.mocked(readOwnPersonalEmail).mockResolvedValue(
-      REQUIRED_OWN_PERSONAL_EMAIL
-    );
-
-    await expect(
-      findPersonalEmailRemovalError(
-        SUPABASE_CLIENT as never
-      )
-    ).resolves.toEqual(
+    ).toEqual(
       createPersonalEmailError(
         PERSONAL_EMAIL_ERROR_CODE.ADMINISTRATION_EMAIL_REQUIRED
       )
     );
   });
 
-  it("finds an inactive session when the own row is gone", async () => {
-    vi.mocked(readOwnPersonalEmail).mockResolvedValue(null);
-
-    await expect(
+  it("finds nothing when the administration area replaces its address", () => {
+    expect(
       findPersonalEmailRemovalError(
-        SUPABASE_CLIENT as never
+        REPLACEMENT,
+        SUPABASE_WORK_AREA.ADMINISTRATION
       )
-    ).resolves.toEqual(
-      createPersonalEmailError(
-        PERSONAL_EMAIL_ERROR_CODE.SESSION_INACTIVE
-      )
-    );
+    ).toBeNull();
   });
 });

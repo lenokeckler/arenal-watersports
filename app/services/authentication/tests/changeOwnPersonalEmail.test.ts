@@ -17,13 +17,15 @@ import {
   UNKNOWN_INTENT,
 } from "@/app/utils/personal-email/tests/personalEmail.constants";
 import { changeOwnPersonalEmail } from "../changeOwnPersonalEmail";
-import { readOwnPersonalEmail } from "../readOwnPersonalEmail";
 import { reauthenticateSettledWorker } from "../reauthenticateSettledWorker";
 import { updateOwnPersonalEmail } from "../updateOwnPersonalEmail";
 import { arrangeSuccessfulOwnPersonalEmailChange } from "./arrangeSuccessfulOwnPersonalEmailChange";
 import { captureArguments } from "./captureArguments";
 import { ALREADY_CHANGED_WORKER } from "./firstSignIn.constants";
-import { PADDED_MIXED_CASE_ADDRESS } from "./changeOwnPersonalEmail.constants";
+import {
+  EMPTY_PASSWORD,
+  PADDED_MIXED_CASE_ADDRESS,
+} from "./changeOwnPersonalEmail.constants";
 import { SUPABASE_CLIENT } from "./supabaseClient.constants";
 
 describe("changeOwnPersonalEmail", () => {
@@ -62,7 +64,6 @@ describe("changeOwnPersonalEmail", () => {
           .invocationCallOrder
       )
     );
-    expect(readOwnPersonalEmail).not.toHaveBeenCalled();
   });
 
   it("writes the normalised address", async () => {
@@ -98,7 +99,6 @@ describe("changeOwnPersonalEmail", () => {
     expect(updateArgumentsOf()).toEqual([
       [SUPABASE_CLIENT, null],
     ]);
-    expect(readOwnPersonalEmail).toHaveBeenCalledOnce();
   });
 
   it.each([
@@ -114,7 +114,7 @@ describe("changeOwnPersonalEmail", () => {
     ],
     [
       "no password",
-      { ...INPUT, currentPassword: "" },
+      { ...INPUT, currentPassword: EMPTY_PASSWORD },
       PERSONAL_EMAIL_ERROR_CODE.CURRENT_PASSWORD_REQUIRED,
     ],
   ])(
