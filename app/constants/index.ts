@@ -117,6 +117,7 @@ export {
 export { PASSWORD_SYMBOLS } from "./access/PasswordSymbols.constants";
 export { PASSWORD_CHARACTER_RANGE } from "./access/PasswordCharacterRange.constants";
 export {
+  BLOCKED_PASSWORD_CHANGE_ERROR_CODES,
   PASSWORD_CHANGE_ERROR_CODE,
   PASSWORD_CHANGE_ERROR_FIELD,
   PASSWORD_CHANGE_FIELD,
