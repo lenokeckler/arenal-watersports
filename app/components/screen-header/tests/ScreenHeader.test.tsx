@@ -5,7 +5,6 @@ import {
   HEADER_LOGO_ALT,
   HEADER_TITLE,
   HEADER_TITLE_ID,
-  ID_ATTRIBUTE,
   ARIA_HIDDEN_ATTRIBUTE,
   ARIA_HIDDEN_FALSE,
 } from "./ScreenHeader.constants";
@@ -40,9 +39,9 @@ describe("ScreenHeader", () => {
   it("gives the heading the given id", () => {
     renderScreenHeader();
 
-    expect(
-      createScreenHeaderPage().getTitle()
-    ).toHaveAttribute(ID_ATTRIBUTE, HEADER_TITLE_ID);
+    expect(createScreenHeaderPage().getTitleId()).toBe(
+      HEADER_TITLE_ID
+    );
   });
 
   it("keeps the logo exposed to assistive technology", () => {
