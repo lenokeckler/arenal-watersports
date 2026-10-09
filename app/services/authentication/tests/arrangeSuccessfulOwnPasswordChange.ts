@@ -4,7 +4,7 @@ import { readSignedInWorker } from "../readSignedInWorker";
 import { signOutEverywhere } from "../signOutEverywhere";
 import { updateOwnPassword } from "../updateOwnPassword";
 import { verifyCurrentPassword } from "../verifyCurrentPassword";
-import { SUPABASE_CLIENT } from "./arrangeSuccessfulPasswordChange";
+import { SUPABASE_CLIENT } from "./supabaseClient.constants";
 import { ALREADY_CHANGED_WORKER } from "./firstSignIn.constants";
 
 export const arrangeSuccessfulOwnPasswordChange =

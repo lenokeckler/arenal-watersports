@@ -14,15 +14,13 @@ import { readSignedInWorker } from "../readSignedInWorker";
 import { recordSuccessfulSignIn } from "../recordSuccessfulSignIn";
 import { refreshFirstSignInSession } from "../refreshFirstSignInSession";
 import { updateSignedInPassword } from "../updateSignedInPassword";
-import {
-  SUPABASE_CLIENT,
-  arrangeSuccessfulPasswordChange,
-} from "./arrangeSuccessfulPasswordChange";
+import { arrangeSuccessfulPasswordChange } from "./arrangeSuccessfulPasswordChange";
 import { captureArguments } from "./captureArguments";
 import {
   ALREADY_CHANGED_WORKER,
   FIRST_SIGN_IN_WORKER,
 } from "./firstSignIn.constants";
+import { SUPABASE_CLIENT } from "./supabaseClient.constants";
 
 describe("changeFirstPassword", () => {
   beforeEach(arrangeSuccessfulPasswordChange);

@@ -16,11 +16,11 @@ import { changeOwnPassword } from "../changeOwnPassword";
 import { signOutEverywhere } from "../signOutEverywhere";
 import { updateOwnPassword } from "../updateOwnPassword";
 import { verifyCurrentPassword } from "../verifyCurrentPassword";
-import { SUPABASE_CLIENT } from "./arrangeSuccessfulPasswordChange";
 import { arrangeSuccessfulOwnPasswordChange } from "./arrangeSuccessfulOwnPasswordChange";
 import { captureArguments } from "./captureArguments";
 import { PASSWORD_UPDATE_REJECTION } from "./changeFirstPassword.constants";
 import { RPC_FAILURE } from "./recordSignIn.constants";
+import { SUPABASE_CLIENT } from "./supabaseClient.constants";
 
 const errorOf = (code: PasswordChangeErrorCode) =>
   createPasswordChangeError(code);
@@ -29,12 +29,8 @@ describe("changeOwnPassword failures", () => {
   beforeEach(arrangeSuccessfulOwnPasswordChange);
 
   it.each([
-    [
-      PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ATTEMPTS,
-    ],
-    [
-      PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION,
-    ],
+    PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ATTEMPTS,
+    PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION,
   ])(
     "signs out everywhere and does not update on %s",
     async (code) => {
@@ -60,9 +56,9 @@ describe("changeOwnPassword failures", () => {
   );
 
   it.each([
-    [PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_INVALID],
-    [PASSWORD_CHANGE_ERROR_CODE.NETWORK],
-    [PASSWORD_CHANGE_ERROR_CODE.TOO_MANY_REQUESTS],
+    PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_INVALID,
+    PASSWORD_CHANGE_ERROR_CODE.NETWORK,
+    PASSWORD_CHANGE_ERROR_CODE.TOO_MANY_REQUESTS,
   ])(
     "returns %s without signing out or updating",
     async (code) => {
