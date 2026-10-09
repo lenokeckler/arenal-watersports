@@ -9,14 +9,16 @@ import type { PersonalEmailFormErrorSources } from "../models/PersonalEmailFormE
 import { resolvePersonalEmailFormErrors } from "../utils/resolvePersonalEmailFormErrors";
 import { SAVE_INPUT } from "./personalEmailForm.constants";
 import {
+  NETWORK_ERROR,
+  TOO_MANY_REQUESTS_ERROR,
+  UNKNOWN_ERROR,
+} from "./personalEmailErrors.constants";
+import {
   EMPTY_PASSWORD_INPUT,
   INVALID_ADDRESS_AND_PASSWORD_INPUT,
   INVALID_ADDRESS_INPUT,
   INVALID_INTENT_INPUT,
-  NETWORK_ERROR,
   REMOVE_WITH_INVALID_ADDRESS_INPUT,
-  TOO_MANY_REQUESTS_ERROR,
-  UNKNOWN_ERROR,
   WRONG_PASSWORD_ERROR,
 } from "./resolvePersonalEmailFormErrors.constants";
 

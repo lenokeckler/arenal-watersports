@@ -4,11 +4,10 @@ import { redirect } from "next/navigation";
 import {
   PATHS,
   PROFILE_NOTICE_QUERY_PARAM,
-  SIGN_IN_NOTICE_QUERY_PARAM,
 } from "@/app/constants";
 import { changeOwnPersonalEmail } from "@/app/services/authentication";
 import { appendQueryParam } from "@/app/utils/pathname/appendQueryParam";
-import { resolveBlockedSignInNoticeReason } from "@/app/utils/reauthentication/resolveBlockedSignInNoticeReason";
+import { redirectWhenSignInBlocked } from "@/app/utils/server-action/redirectWhenSignInBlocked";
 import { PROFILE_NOTICE_BY_INTENT } from "../constants/PersonalEmailNotice.constants";
 import type { PersonalEmailServerAction } from "../models/PersonalEmailServerAction.type";
 import { readPersonalEmailInput } from "../utils/readPersonalEmailInput";
@@ -31,19 +30,7 @@ export const submitPersonalEmail: PersonalEmailServerAction =
       );
     }
 
-    const blockedReason = resolveBlockedSignInNoticeReason(
-      result.error
-    );
-
-    if (blockedReason) {
-      redirect(
-        appendQueryParam(
-          PATHS.ACCESS.LOGIN,
-          SIGN_IN_NOTICE_QUERY_PARAM,
-          blockedReason
-        )
-      );
-    }
+    redirectWhenSignInBlocked(result.error);
 
     return result.error;
   };

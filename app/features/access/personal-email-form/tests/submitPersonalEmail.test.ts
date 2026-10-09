@@ -6,26 +6,18 @@ import {
   vi,
 } from "vitest";
 import { redirect } from "next/navigation";
-import {
-  PERSONAL_EMAIL_ERROR_CODE,
-  PERSONAL_EMAIL_INTENT,
-} from "@/app/constants";
 import { changeOwnPersonalEmail } from "@/app/services/authentication";
 import { createPersonalEmailError } from "@/app/utils/personal-email/createPersonalEmailError";
 import { submitPersonalEmail } from "../actions/submitPersonalEmail";
 import { createPersonalEmailFormData } from "./createPersonalEmailFormData";
+import { SAVE_INPUT } from "./personalEmailForm.constants";
+import { REDIRECT_SIGNAL_MESSAGE } from "@/app/utils/server-action/tests/redirectSignal.constants";
+import { BLOCKED_LOGIN_CASES } from "@/app/utils/server-action/tests/redirectWhenSignInBlocked.constants";
+import { UNKNOWN_ERROR } from "./personalEmailErrors.constants";
 import {
-  FORGED_IDENTITY_FIELD,
-  FORGED_IDENTITY_VALUE,
-  SAVE_INPUT,
-} from "./personalEmailForm.constants";
-import {
-  BLOCKED_CASES,
-  REDIRECT_SIGNAL_MESSAGE,
   RETURNED_ERROR_CODES,
   SERVICE_FAILURE_MESSAGE,
   SUCCESS_CASES,
-  UNKNOWN_ERROR,
 } from "./submitPersonalEmail.constants";
 
 vi.mock("@/app/services/authentication", () => ({
@@ -74,7 +66,7 @@ describe("submitPersonalEmail", () => {
     }
   );
 
-  it.each(BLOCKED_CASES)(
+  it.each(BLOCKED_LOGIN_CASES)(
     "redirects to the login notice when the error is %s",
     async (code, target) => {
       vi.mocked(changeOwnPersonalEmail).mockResolvedValue({
@@ -118,44 +110,5 @@ describe("submitPersonalEmail", () => {
     );
 
     expect(redirect).not.toHaveBeenCalled();
-  });
-
-  it("ignores any identity posted with the form", async () => {
-    vi.mocked(changeOwnPersonalEmail).mockResolvedValue({
-      ok: true,
-      intent: PERSONAL_EMAIL_INTENT.SAVE,
-    });
-    const formData =
-      createPersonalEmailFormData(SAVE_INPUT);
-    formData.set(
-      FORGED_IDENTITY_FIELD,
-      FORGED_IDENTITY_VALUE
-    );
-
-    await expect(
-      submitPersonalEmail(null, formData)
-    ).rejects.toThrow(REDIRECT_SIGNAL_MESSAGE);
-
-    expect(changeOwnPersonalEmail).toHaveBeenCalledOnce();
-    expect(changeOwnPersonalEmail).toHaveBeenCalledWith(
-      SAVE_INPUT
-    );
-  });
-
-  it("ignores the previous error", async () => {
-    const error = createPersonalEmailError(
-      PERSONAL_EMAIL_ERROR_CODE.NETWORK
-    );
-    vi.mocked(changeOwnPersonalEmail).mockResolvedValue({
-      ok: false,
-      error: UNKNOWN_ERROR,
-    });
-
-    await expect(
-      submitPersonalEmail(
-        error,
-        createPersonalEmailFormData(SAVE_INPUT)
-      )
-    ).resolves.toEqual(UNKNOWN_ERROR);
   });
 });

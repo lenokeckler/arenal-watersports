@@ -5,7 +5,7 @@ import { SAVE_INPUT } from "./personalEmailForm.constants";
 import {
   NETWORK_ERROR,
   UNKNOWN_ERROR,
-} from "./resolvePersonalEmailFormErrors.constants";
+} from "./personalEmailErrors.constants";
 import { SERVICE_FAILURE_MESSAGE } from "./submitPersonalEmail.constants";
 
 describe("runPersonalEmailChange", () => {
