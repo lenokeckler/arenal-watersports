@@ -1,1 +1,1 @@
-ACC-01.05.04: Own personal email service — a signed-in worker saves or removes their personal email after confirming the current password; administration cannot remove it (US-ACC-05 · AWS-34)
+ACC-01.05.04: Own personal email data access — read the signed-in worker's personal email and write only that column of their own row (US-ACC-05 · AWS-34)
