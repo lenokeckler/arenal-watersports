@@ -9,6 +9,7 @@ import {
   FIELD_ERROR_MESSAGE,
   ID_ATTRIBUTE,
   INPUT_MODE_ATTRIBUTE,
+  PLACEHOLDER_PROPERTY,
   READONLY_PROPERTY,
   REGISTERED_ADDRESS,
   SPELLCHECK_ATTRIBUTE,
@@ -84,7 +85,7 @@ describe("PersonalEmailField", () => {
     expect(
       renderPersonalEmailField().getInput()
     ).toHaveProperty(
-      "placeholder",
+      PLACEHOLDER_PROPERTY,
       PERSONAL_EMAIL_FORM_COPY.EMAIL_PLACEHOLDER
     );
   });
