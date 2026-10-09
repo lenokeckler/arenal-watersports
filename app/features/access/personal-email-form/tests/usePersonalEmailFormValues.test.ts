@@ -7,14 +7,15 @@ import { usePersonalEmailFormValues } from "../hooks/usePersonalEmailFormValues"
 import { createChangeEvent } from "./createPersonalEmailEvents";
 import {
   CURRENT_PASSWORD_INVALID_ERROR,
-  EDITED_VALUE,
   EMAIL_FIELD_NAME,
   EMAIL_INVALID_ERROR,
   INITIAL_EMAIL,
   NO_SERVER_ERROR_PROPS,
   PASSWORD_FIELD_NAME,
+  REPEATED_CURRENT_PASSWORD_INVALID_ERROR,
   UNKNOWN_FIELD_NAME,
 } from "./personalEmailHooks.constants";
+import { SECOND_ADDRESS } from "./personalEmailForm.constants";
 
 const renderValues = (dismiss = vi.fn()) =>
   renderHook(
@@ -43,13 +44,13 @@ describe("usePersonalEmailFormValues", () => {
 
     act(() =>
       result.current.onChange(
-        createChangeEvent(EMAIL_FIELD_NAME, EDITED_VALUE)
+        createChangeEvent(EMAIL_FIELD_NAME, SECOND_ADDRESS)
       )
     );
 
     expect(result.current.values).toEqual({
       currentPassword: STRING.Empty,
-      email: EDITED_VALUE,
+      email: SECOND_ADDRESS,
     });
     expect(dismiss).toHaveBeenCalledOnce();
   });
@@ -60,7 +61,10 @@ describe("usePersonalEmailFormValues", () => {
 
     act(() =>
       result.current.onChange(
-        createChangeEvent(UNKNOWN_FIELD_NAME, EDITED_VALUE)
+        createChangeEvent(
+          UNKNOWN_FIELD_NAME,
+          SECOND_ADDRESS
+        )
       )
     );
 
@@ -84,6 +88,30 @@ describe("usePersonalEmailFormValues", () => {
       currentPassword: STRING.Empty,
       email: INITIAL_EMAIL,
     });
+  });
+
+  it("clears the password again after a second wrong-password response", () => {
+    const { result, rerender } = renderValues();
+    const typePassword = () =>
+      act(() =>
+        result.current.onChange(
+          createChangeEvent(PASSWORD_FIELD_NAME, PASSWORD)
+        )
+      );
+    typePassword();
+    rerender({
+      serverError: CURRENT_PASSWORD_INVALID_ERROR,
+    });
+    typePassword();
+    rerender(NO_SERVER_ERROR_PROPS);
+
+    rerender({
+      serverError: REPEATED_CURRENT_PASSWORD_INVALID_ERROR,
+    });
+
+    expect(result.current.values.currentPassword).toBe(
+      STRING.Empty
+    );
   });
 
   it("keeps the password after any other server error", () => {
