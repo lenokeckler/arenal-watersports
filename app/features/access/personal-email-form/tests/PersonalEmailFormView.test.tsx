@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  AUTOCOMPLETE,
   PATHS,
   PERSONAL_EMAIL_INTENT,
   PERSONAL_EMAIL_INTENT_FIELD,
@@ -8,6 +9,7 @@ import {
 import { PERSONAL_EMAIL_HINT_ID } from "../constants/PersonalEmailFieldIds.constants";
 import { isPersonalEmailNodeBefore } from "./isPersonalEmailNodeBefore";
 import {
+  AUTOCOMPLETE_ATTRIBUTE,
   DESCRIBED_BY_ATTRIBUTE,
   NAME_ATTRIBUTE,
   REGISTERED_ADDRESS,
@@ -25,6 +27,15 @@ describe("PersonalEmailFormView", () => {
     );
     expect(page.getPasswordInput()).toHaveValue(
       STRING.Empty
+    );
+  });
+
+  it("asks the browser for the current password, not a new one", () => {
+    const page = renderPersonalEmailFormView();
+
+    expect(page.getPasswordInput()).toHaveAttribute(
+      AUTOCOMPLETE_ATTRIBUTE,
+      AUTOCOMPLETE.CURRENT_PASSWORD
     );
   });
 
