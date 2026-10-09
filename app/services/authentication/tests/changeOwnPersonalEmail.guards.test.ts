@@ -60,6 +60,31 @@ describe("changeOwnPersonalEmail guards", () => {
     }
   );
 
+  it("re-authenticates before checking whether the account may remove its address", async () => {
+    vi.mocked(readOwnPersonalEmail).mockResolvedValue(
+      REQUIRED_OWN_PERSONAL_EMAIL
+    );
+    vi.mocked(
+      reauthenticateSettledWorker
+    ).mockResolvedValue({
+      ok: false,
+      error: createPasswordChangeError(
+        PERSONAL_EMAIL_ERROR_CODE.CURRENT_PASSWORD_INVALID
+      ),
+    });
+
+    await expect(
+      changeOwnPersonalEmail(REMOVE_INPUT)
+    ).resolves.toMatchObject({
+      ok: false,
+      error: {
+        code: PERSONAL_EMAIL_ERROR_CODE.CURRENT_PASSWORD_INVALID,
+      },
+    });
+    expect(readOwnPersonalEmail).not.toHaveBeenCalled();
+    expect(updateOwnPersonalEmail).not.toHaveBeenCalled();
+  });
+
   it("reports a re-authentication code it does not know as unknown", async () => {
     vi.mocked(
       reauthenticateSettledWorker
