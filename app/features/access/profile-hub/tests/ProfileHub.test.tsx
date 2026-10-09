@@ -2,10 +2,8 @@ import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import {
   PATHS,
-  PROFILE_NOTICE,
   PROFILE_SCREEN_TITLE_ID,
 } from "@/app/constants";
-import { PROFILE_COPY } from "../constants/ProfileCopy.constants";
 import ProfileHub from "../ProfileHub";
 import {
   ARIA_HIDDEN_ATTRIBUTE,
@@ -13,6 +11,7 @@ import {
   ARRAY_NOTICE,
   HREF_ATTRIBUTE,
   ID_ATTRIBUTE,
+  NOTICE_CASES,
   UNKNOWN_NOTICE,
 } from "./ProfileHub.constants";
 import { createProfileHubPage } from "./ProfileHub.page";
@@ -69,19 +68,16 @@ describe("ProfileHub without a notice", () => {
 });
 
 describe("ProfileHub with a notice param", () => {
-  it("shows the password changed notice", () => {
-    render(
-      <ProfileHub
-        notice={PROFILE_NOTICE.PASSWORD_CHANGED}
-      />
-    );
+  it.each(NOTICE_CASES)(
+    "shows the message of the %s notice",
+    (notice, message) => {
+      render(<ProfileHub notice={notice} />);
 
-    expect(
-      createProfileHubPage().queryNotice()
-    ).toHaveTextContent(
-      PROFILE_COPY.PASSWORD_CHANGED_NOTICE
-    );
-  });
+      expect(
+        createProfileHubPage().queryNotice()
+      ).toHaveTextContent(message);
+    }
+  );
 
   it("shows no notice for an unknown value", () => {
     render(<ProfileHub notice={UNKNOWN_NOTICE} />);
