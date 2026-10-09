@@ -21,6 +21,11 @@ export const PASSWORD_ONE_ABOVE_MAX = FILLER.repeat(
   PASSWORD_LENGTH.MAX + 1
 );
 
+export const NEWLINE_INJECTION =
+  "ana@correo.com\r\nBcc:x@y.com";
+export const EMBEDDED_NUL = "ana\u0000@correo.com";
+export const ZERO_WIDTH_SPACE = "ana\u200b@correo.com";
+
 export const ADDRESS_AT_MAX =
   FILLER.repeat(
     PERSONAL_EMAIL.MAX_LENGTH - DOMAIN_SUFFIX.length
@@ -91,8 +96,19 @@ export const INVALID_ADDRESS_CASES: [string, string][] = [
   ],
   ["a space inside", "an a@correo.com"],
   ["a comma", "ana,perez@correo.com"],
+  ["a newline injection", NEWLINE_INJECTION],
+  ["an embedded NUL", EMBEDDED_NUL],
+  ["a zero-width space", ZERO_WIDTH_SPACE],
   ["an underscore in the domain", "ana@mi_correo.com"],
 ];
+
+export const UPPERCASE_INTENT = "SAVE";
+export const INVALID_ADDRESS = "not-an-address";
+export const GROWING_LOWERCASE_LETTER = "\u0130";
+export const GROWING_LOWERCASE_ADDRESS =
+  GROWING_LOWERCASE_LETTER.repeat(
+    Math.ceil(PERSONAL_EMAIL.MAX_LENGTH / 2)
+  ) + DOMAIN_SUFFIX;
 
 export const MIGRATION_PATH = path.join(
   process.cwd(),
