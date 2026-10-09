@@ -1,6 +1,8 @@
 export const MATERIAL_ICON_NAME = {
+  ARROW_BACK: "arrow_back",
   CANCEL: "cancel",
   CHECK_CIRCLE: "check_circle",
+  CHEVRON_RIGHT: "chevron_right",
   ERROR: "error",
   LOCK_RESET: "lock_reset",
   LOGIN: "login",
