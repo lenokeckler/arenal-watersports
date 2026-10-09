@@ -5,3 +5,4 @@ export type { SignInResult } from "./models/SignInResult.type";
 export { changeFirstPassword } from "./changeFirstPassword";
 export type { PasswordChangeResult } from "./models/PasswordChangeResult.type";
 export { changeOwnPassword } from "./changeOwnPassword";
+export { readSignedInUsername } from "./readSignedInUsername";
