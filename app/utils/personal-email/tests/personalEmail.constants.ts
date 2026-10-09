@@ -21,6 +21,7 @@ const LOCAL_PART_FILLER = FILLER.repeat(
 export const VALID_ADDRESS = "ana.perez@correo.com";
 export const PASSWORD = "Clave-actual-1!";
 export const UNKNOWN_INTENT = "archive";
+export const PROTOTYPE_KEY_CODE = "toString";
 export const PASSWORD_ONE_ABOVE_MAX = FILLER.repeat(
   PASSWORD_LENGTH.MAX + 1
 );

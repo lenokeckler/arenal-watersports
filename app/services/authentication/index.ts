@@ -6,3 +6,7 @@ export { changeFirstPassword } from "./changeFirstPassword";
 export type { PasswordChangeResult } from "./models/PasswordChangeResult.type";
 export { changeOwnPassword } from "./changeOwnPassword";
 export { readSignedInUsername } from "./readSignedInUsername";
+export { changeOwnPersonalEmail } from "./changeOwnPersonalEmail";
+export { readOwnPersonalEmail } from "./readOwnPersonalEmail";
+export type { OwnPersonalEmail } from "./models/OwnPersonalEmail.interface";
+export type { PersonalEmailChangeResult } from "./models/PersonalEmailChangeResult.type";
