@@ -32,6 +32,7 @@ export const changeOwnPassword = async (
   }
 
   const verificationError = await verifyCurrentPassword(
+    supabase,
     worker,
     input.currentPassword
   );

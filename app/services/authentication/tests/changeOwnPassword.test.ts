@@ -40,7 +40,11 @@ describe("changeOwnPassword", () => {
     );
 
     expect(verifyArgumentsOf()).toEqual([
-      [ALREADY_CHANGED_WORKER, INPUT.currentPassword],
+      [
+        SUPABASE_CLIENT,
+        ALREADY_CHANGED_WORKER,
+        INPUT.currentPassword,
+      ],
     ]);
     expect(updateArgumentsOf()).toEqual([
       [SUPABASE_CLIENT, INPUT],
