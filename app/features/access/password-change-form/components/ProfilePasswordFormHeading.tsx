@@ -1,7 +1,7 @@
 import { Text } from "@/app/components";
 import ScreenHeader from "@/app/components/screen-header/ScreenHeader";
 import {
-  PROFILE_SCREEN_LOGO_ALT,
+  IMAGE_ALTS,
   PROFILE_SCREEN_TITLE_ID,
 } from "@/app/constants";
 import { PROFILE_PASSWORD_FORM_COPY } from "../constants/ProfilePasswordFormCopy.constants";
@@ -16,7 +16,7 @@ const ProfilePasswordFormHeading =
       <ScreenHeader
         title={PROFILE_PASSWORD_FORM_COPY.HEADING}
         titleId={PROFILE_SCREEN_TITLE_ID}
-        logoAlt={PROFILE_SCREEN_LOGO_ALT}
+        logoAlt={IMAGE_ALTS.COMPANY_LOGO}
       />
       <Text className={PASSWORD_CHANGE_INSTRUCTION_CLASS}>
         {PROFILE_PASSWORD_FORM_COPY.INSTRUCTION}

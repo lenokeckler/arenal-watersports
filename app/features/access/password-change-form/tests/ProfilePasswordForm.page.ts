@@ -1,10 +1,7 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { PASSWORD_RULES_COPY } from "@/app/components/password-rules-checklist/constants/PasswordRulesCopy.constants";
-import {
-  ARIA_ROLE,
-  PROFILE_SCREEN_LOGO_ALT,
-} from "@/app/constants";
+import { ARIA_ROLE, IMAGE_ALTS } from "@/app/constants";
 import type { PasswordChangeInput } from "@/app/utils/password-change/models/PasswordChangeInput.interface";
 import { PROFILE_PASSWORD_FORM_COPY } from "../constants/ProfilePasswordFormCopy.constants";
 import {
@@ -62,7 +59,7 @@ export const createProfilePasswordFormPage = () => {
         PROFILE_PASSWORD_FORM_COPY.INSTRUCTION
       ),
     getLogo: () =>
-      screen.getByAltText(PROFILE_SCREEN_LOGO_ALT),
+      screen.getByAltText(IMAGE_ALTS.COMPANY_LOGO),
     getNewInput: () =>
       getInput(
         PROFILE_PASSWORD_FORM_COPY.NEW_PASSWORD_LABEL

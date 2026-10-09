@@ -141,7 +141,4 @@ export {
   PROFILE_NOTICE_QUERY_PARAM,
   type ProfileNotice,
 } from "./access/ProfileNotice.constants";
-export {
-  PROFILE_SCREEN_LOGO_ALT,
-  PROFILE_SCREEN_TITLE_ID,
-} from "./access/ProfileScreen.constants";
+export { PROFILE_SCREEN_TITLE_ID } from "./access/ProfileScreen.constants";

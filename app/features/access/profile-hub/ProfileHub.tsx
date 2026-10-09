@@ -1,7 +1,7 @@
 import FormSuccessNotice from "@/app/components/form-success-notice/FormSuccessNotice";
 import ScreenHeader from "@/app/components/screen-header/ScreenHeader";
 import {
-  PROFILE_SCREEN_LOGO_ALT,
+  IMAGE_ALTS,
   PROFILE_SCREEN_TITLE_ID,
 } from "@/app/constants";
 import { PROFILE_COPY } from "./constants/ProfileCopy.constants";
@@ -20,7 +20,7 @@ const ProfileHub = ({
       <ScreenHeader
         title={PROFILE_COPY.TITLE}
         titleId={PROFILE_SCREEN_TITLE_ID}
-        logoAlt={PROFILE_SCREEN_LOGO_ALT}
+        logoAlt={IMAGE_ALTS.COMPANY_LOGO}
       />
       <FormSuccessNotice message={noticeMessage} />
       <ProfileEntryLink />

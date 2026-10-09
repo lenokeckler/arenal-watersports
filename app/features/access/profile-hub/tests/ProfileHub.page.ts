@@ -1,8 +1,5 @@
 import { screen } from "@testing-library/react";
-import {
-  ARIA_ROLE,
-  PROFILE_SCREEN_LOGO_ALT,
-} from "@/app/constants";
+import { ARIA_ROLE, IMAGE_ALTS } from "@/app/constants";
 import { PROFILE_COPY } from "../constants/ProfileCopy.constants";
 import {
   CHEVRON_RIGHT_ICON_NAME,
@@ -20,7 +17,7 @@ export const createProfileHubPage = () => ({
   getLeadingIcon: () =>
     screen.getByText(LOCK_RESET_ICON_NAME),
   getLogo: () =>
-    screen.getByAltText(PROFILE_SCREEN_LOGO_ALT),
+    screen.getByAltText(IMAGE_ALTS.COMPANY_LOGO),
   getTitle: () =>
     screen.getByRole(ARIA_ROLE.HEADING, {
       level: HEADING_LEVEL,
