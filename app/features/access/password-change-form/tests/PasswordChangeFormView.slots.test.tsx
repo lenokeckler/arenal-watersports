@@ -6,23 +6,18 @@ import {
   it,
   vi,
 } from "vitest";
-import "./firstSignInAction.setup";
 import { ARIA_ROLE } from "@/app/constants";
+import { FIRST_SIGN_IN_FORM_COPY } from "../constants/FirstSignInFormCopy.constants";
+import "./firstSignInAction.setup";
+import { isNodeBefore } from "./isNodeBefore";
 import {
   BEFORE_FIELDS_TEXT,
   FOOTER_TEXT,
   FORM_SELECTOR,
   HEADING_TEXT,
 } from "./PasswordChangeFormView.slots.constants";
-import { renderPasswordChangeFormViewWithSlots } from "./renderPasswordChangeFormViewWithSlots";
 import { renderPasswordChangeFormView } from "./renderPasswordChangeFormView";
-import { FIRST_SIGN_IN_FORM_COPY } from "../constants/FirstSignInFormCopy.constants";
-
-const isBefore = (first: Node, second: Node): boolean =>
-  Boolean(
-    first.compareDocumentPosition(second) &
-    Node.DOCUMENT_POSITION_FOLLOWING
-  );
+import { renderPasswordChangeFormViewWithSlots } from "./renderPasswordChangeFormViewWithSlots";
 
 describe("PasswordChangeFormView slots", () => {
   beforeEach(() => {
@@ -46,7 +41,7 @@ describe("PasswordChangeFormView slots", () => {
     const slot = screen.getByText(BEFORE_FIELDS_TEXT);
 
     expect(slot.closest(FORM_SELECTOR)).not.toBeNull();
-    expect(isBefore(slot, page.getCurrentInput())).toBe(
+    expect(isNodeBefore(slot, page.getCurrentInput())).toBe(
       true
     );
   });
@@ -58,7 +53,7 @@ describe("PasswordChangeFormView slots", () => {
 
     expect(slot.closest(FORM_SELECTOR)).not.toBeNull();
     expect(
-      isBefore(
+      isNodeBefore(
         screen.getByRole(ARIA_ROLE.BUTTON, {
           name: FIRST_SIGN_IN_FORM_COPY.SUBMIT,
         }),
