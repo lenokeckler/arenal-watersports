@@ -1,23 +1,23 @@
-import { FormField } from "@/app/components";
-import { FORM_FIELD_VARIANT } from "@/app/components/form-field/constants/FormFieldVariant.constants";
+import FormField from "../form-field/FormField";
+import { FORM_FIELD_VARIANT } from "../form-field/constants/FormFieldVariant.constants";
 import { INPUT_TYPES, STRING } from "@/app/constants";
-import type { PasswordChangeFormFieldProps } from "../models/PasswordChangeFormFieldProps.interface";
+import type { PasswordFieldProps } from "./models/PasswordFieldProps.interface";
 
-const PasswordChangeFormField = ({
+const PasswordField = ({
   autoComplete,
   describedBy,
   error,
-  field,
   inputRef,
   isPending,
   label,
+  name,
   onChange,
   placeholder,
   value,
-}: PasswordChangeFormFieldProps): React.JSX.Element => (
+}: PasswordFieldProps): React.JSX.Element => (
   <FormField
-    id={field}
-    name={field}
+    id={name}
+    name={name}
     label={label}
     placeholder={placeholder}
     type={INPUT_TYPES.PASSWORD}
@@ -34,4 +34,4 @@ const PasswordChangeFormField = ({
   />
 );
 
-export default PasswordChangeFormField;
+export default PasswordField;

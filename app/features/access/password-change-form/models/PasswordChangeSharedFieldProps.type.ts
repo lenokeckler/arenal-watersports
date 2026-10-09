@@ -1,7 +1,7 @@
-import type { PasswordChangeFormFieldProps } from "./PasswordChangeFormFieldProps.interface";
+import type { PasswordFieldProps } from "@/app/components/password-field/models/PasswordFieldProps.interface";
 
 export type PasswordChangeSharedFieldProps = Pick<
-  PasswordChangeFormFieldProps,
+  PasswordFieldProps,
   | "error"
   | "inputRef"
   | "isPending"
