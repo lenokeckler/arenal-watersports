@@ -1,31 +1,30 @@
-import { FIRST_SIGN_IN_ERROR_CODE } from "@/app/constants";
+import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
-import { createFirstSignInError } from "@/app/utils/first-sign-in/createFirstSignInError";
-import type { FirstPasswordChangeInput } from "@/app/utils/first-sign-in/models/FirstPasswordChangeInput.interface";
-import { validateFirstPasswordChange } from "@/app/utils/first-sign-in/validateFirstPasswordChange";
+import { createPasswordChangeError } from "@/app/utils/password-change/createPasswordChangeError";
+import type { PasswordChangeInput } from "@/app/utils/password-change/models/PasswordChangeInput.interface";
+import { validatePasswordChange } from "@/app/utils/password-change/validatePasswordChange";
 import { changePendingPassword } from "./changePendingPassword";
-import type { FirstPasswordChangeResult } from "./models/FirstPasswordChangeResult.type";
-import { readFirstSignInWorker } from "./readFirstSignInWorker";
+import type { PasswordChangeResult } from "./models/PasswordChangeResult.type";
+import { readSignedInWorker } from "./readSignedInWorker";
 import { refreshFirstSignInSession } from "./refreshFirstSignInSession";
 
 export const changeFirstPassword = async (
-  input: FirstPasswordChangeInput
-): Promise<FirstPasswordChangeResult> => {
-  const validationError =
-    validateFirstPasswordChange(input);
+  input: PasswordChangeInput
+): Promise<PasswordChangeResult> => {
+  const validationError = validatePasswordChange(input);
 
   if (validationError) {
     return { ok: false, error: validationError };
   }
 
   const supabase = await createServerSupabaseClient();
-  const worker = await readFirstSignInWorker(supabase);
+  const worker = await readSignedInWorker(supabase);
 
   if (!worker) {
     return {
       ok: false,
-      error: createFirstSignInError(
-        FIRST_SIGN_IN_ERROR_CODE.SESSION_INACTIVE
+      error: createPasswordChangeError(
+        PASSWORD_CHANGE_ERROR_CODE.SESSION_INACTIVE
       ),
     };
   }

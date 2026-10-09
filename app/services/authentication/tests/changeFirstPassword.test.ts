@@ -6,11 +6,11 @@ import {
   vi,
 } from "vitest";
 import "./changeFirstPassword.setup";
-import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT as INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
+import { DEFAULT_PASSWORD_CHANGE_INPUT as INPUT } from "@/app/utils/password-change/tests/passwordChange.constants";
 import { changeFirstPassword } from "../changeFirstPassword";
 import { checkWorkerPassword } from "../checkWorkerPassword";
 import { completeFirstPasswordChange } from "../completeFirstPasswordChange";
-import { readFirstSignInWorker } from "../readFirstSignInWorker";
+import { readSignedInWorker } from "../readSignedInWorker";
 import { recordSuccessfulSignIn } from "../recordSuccessfulSignIn";
 import { refreshFirstSignInSession } from "../refreshFirstSignInSession";
 import { updateSignedInPassword } from "../updateSignedInPassword";
@@ -29,7 +29,7 @@ describe("changeFirstPassword", () => {
 
   it("changes the password and refreshes the session in order", async () => {
     const readArgumentsOf = captureArguments(
-      vi.mocked(readFirstSignInWorker),
+      vi.mocked(readSignedInWorker),
       [FIRST_SIGN_IN_WORKER]
     );
     const updateArgumentsOf = captureArguments(
@@ -74,7 +74,7 @@ describe("changeFirstPassword", () => {
   });
 
   it("only refreshes the session when the change was already completed", async () => {
-    vi.mocked(readFirstSignInWorker).mockResolvedValue(
+    vi.mocked(readSignedInWorker).mockResolvedValue(
       ALREADY_CHANGED_WORKER
     );
 

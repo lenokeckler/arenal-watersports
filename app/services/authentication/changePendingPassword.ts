@@ -1,8 +1,8 @@
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
-import type { FirstPasswordChangeInput } from "@/app/utils/first-sign-in/models/FirstPasswordChangeInput.interface";
+import type { PasswordChangeInput } from "@/app/utils/password-change/models/PasswordChangeInput.interface";
 import { completeFirstPasswordChange } from "./completeFirstPasswordChange";
-import type { FirstPasswordChangeResult } from "./models/FirstPasswordChangeResult.type";
-import type { FirstSignInWorker } from "./models/FirstSignInWorker.interface";
+import type { PasswordChangeResult } from "./models/PasswordChangeResult.type";
+import type { SignedInWorker } from "./models/SignedInWorker.interface";
 import { recordSuccessfulSignIn } from "./recordSuccessfulSignIn";
 import { refreshFirstSignInSession } from "./refreshFirstSignInSession";
 import { updateSignedInPassword } from "./updateSignedInPassword";
@@ -10,9 +10,9 @@ import { verifyTemporaryPassword } from "./verifyTemporaryPassword";
 
 export const changePendingPassword = async (
   supabase: ServerSupabaseClient,
-  worker: FirstSignInWorker,
-  input: FirstPasswordChangeInput
-): Promise<FirstPasswordChangeResult> => {
+  worker: SignedInWorker,
+  input: PasswordChangeInput
+): Promise<PasswordChangeResult> => {
   const verification = await verifyTemporaryPassword(
     worker,
     input
