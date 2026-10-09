@@ -27,3 +27,6 @@ export const PROTOTYPE_KEYS = [
   "toString",
   "hasOwnProperty",
 ] as const;
+
+export const EMPTY_CHOICES: readonly string[] = [];
+export const MEMBER_VALUE = "alpha";

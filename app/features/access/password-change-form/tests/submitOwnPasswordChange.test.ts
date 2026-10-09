@@ -11,7 +11,10 @@ import { createPasswordChangeError } from "@/app/utils/password-change/createPas
 import { DEFAULT_PASSWORD_CHANGE_INPUT } from "@/app/utils/password-change/tests/passwordChange.constants";
 import { submitOwnPasswordChange } from "../actions/submitOwnPasswordChange";
 import { createPasswordChangeFormData } from "./createPasswordChangeFormData";
-import { UNKNOWN_ERROR } from "./passwordChangeErrors.constants";
+import {
+  SERVICE_FAILURE_MESSAGE,
+  UNKNOWN_ERROR,
+} from "./passwordChangeErrors.constants";
 import {
   BLOCKED_CASES,
   FORGED_USERNAME_FIELD,
@@ -19,7 +22,6 @@ import {
   PASSWORD_CHANGED_TARGET,
   REDIRECT_SIGNAL_MESSAGE,
   RETURNED_ERROR_CODES,
-  SERVICE_FAILURE_MESSAGE,
 } from "./submitOwnPasswordChange.constants";
 
 vi.mock("@/app/services/authentication", () => ({

@@ -10,8 +10,6 @@ import {
 import { isBlockedPasswordChangeErrorCode } from "@/app/utils/password-change/isBlockedPasswordChangeErrorCode";
 import { appendQueryParam } from "@/app/utils/pathname/appendQueryParam";
 
-export const SERVICE_FAILURE_MESSAGE =
-  "service unavailable";
 export const REDIRECT_SIGNAL_MESSAGE = "NEXT_REDIRECT";
 export const FORGED_USERNAME_FIELD = "username";
 export const FORGED_USERNAME_VALUE = "someone-else";

@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import { resolveQueryChoice } from "../resolveQueryChoice";
 import {
   CHOICES,
+  EMPTY_CHOICES,
   MEMBER_CASES,
+  MEMBER_VALUE,
   NON_MEMBER_VALUES,
 } from "./resolveQueryChoice.constants";
 
@@ -24,6 +26,8 @@ describe("resolveQueryChoice", () => {
   );
 
   it("returns null when there are no choices", () => {
-    expect(resolveQueryChoice("alpha", [])).toBeNull();
+    expect(
+      resolveQueryChoice(MEMBER_VALUE, EMPTY_CHOICES)
+    ).toBeNull();
   });
 });
