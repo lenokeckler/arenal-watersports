@@ -72,3 +72,7 @@ export const HEADING_LEVEL = {
 
 export const E2E_CONTROLS_SELECTOR = (id: string): string =>
   `[aria-controls="${id}"]`;
+
+export const E2E_KEY = {
+  ENTER: "Enter",
+} as const;
