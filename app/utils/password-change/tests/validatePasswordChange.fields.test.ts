@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
 import {
-  FIRST_SIGN_IN_ERROR_CODE,
+  PASSWORD_CHANGE_ERROR_CODE,
   STRING,
-  type FirstSignInErrorCode,
+  type PasswordChangeErrorCode,
 } from "@/app/constants";
-import { createFirstSignInError } from "../createFirstSignInError";
-import type { FirstPasswordChangeInput } from "../models/FirstPasswordChangeInput.interface";
-import { validateFirstPasswordChange } from "../validateFirstPasswordChange";
+import { createPasswordChangeError } from "../createPasswordChangeError";
+import type { PasswordChangeInput } from "../models/PasswordChangeInput.interface";
+import { validatePasswordChange } from "../validatePasswordChange";
 import {
-  DEFAULT_FIRST_PASSWORD_CHANGE_INPUT,
+  DEFAULT_PASSWORD_CHANGE_INPUT,
   MISMATCHED_CONFIRMATION,
   NEW_PASSWORD_IN_OTHER_CASE,
   NEW_PASSWORD_WITH_TRAILING_SPACE,
@@ -16,77 +16,77 @@ import {
   TEMPORARY_PASSWORD_IN_OTHER_CASE,
   WEAK_PASSWORD,
   WHITESPACE_ONLY_PASSWORD,
-} from "./firstSignIn.constants";
+} from "./passwordChange.constants";
 import { validateWithOverrides } from "./validateWithOverrides";
 
 const failureCases: [
   string,
-  Partial<FirstPasswordChangeInput>,
-  FirstSignInErrorCode,
+  Partial<PasswordChangeInput>,
+  PasswordChangeErrorCode,
 ][] = [
   [
     "an empty temporary password",
     { currentPassword: STRING.Empty },
-    FIRST_SIGN_IN_ERROR_CODE.CURRENT_PASSWORD_REQUIRED,
+    PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_REQUIRED,
   ],
   [
     "an empty new password",
     { newPassword: STRING.Empty },
-    FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_REQUIRED,
+    PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_REQUIRED,
   ],
   [
     "a new password above the maximum length",
     { newPassword: PASSWORD_ONE_ABOVE_MAX },
-    FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_TOO_LONG,
+    PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_TOO_LONG,
   ],
   [
     "a new password that breaks the rules",
     { newPassword: WEAK_PASSWORD },
-    FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_RULES,
+    PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_RULES,
   ],
   [
     "a new password equal to the temporary one",
     {
       currentPassword:
-        DEFAULT_FIRST_PASSWORD_CHANGE_INPUT.newPassword,
+        DEFAULT_PASSWORD_CHANGE_INPUT.newPassword,
     },
-    FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_SAME_AS_CURRENT,
+    PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_SAME_AS_CURRENT,
   ],
   [
     "an empty confirmation",
     { confirmPassword: STRING.Empty },
-    FIRST_SIGN_IN_ERROR_CODE.CONFIRMATION_REQUIRED,
+    PASSWORD_CHANGE_ERROR_CODE.CONFIRMATION_REQUIRED,
   ],
   [
     "a confirmation that differs from the new password",
     { confirmPassword: MISMATCHED_CONFIRMATION },
-    FIRST_SIGN_IN_ERROR_CODE.CONFIRMATION_MISMATCH,
+    PASSWORD_CHANGE_ERROR_CODE.CONFIRMATION_MISMATCH,
   ],
   [
     "a confirmation that differs only in case",
     { confirmPassword: NEW_PASSWORD_IN_OTHER_CASE },
-    FIRST_SIGN_IN_ERROR_CODE.CONFIRMATION_MISMATCH,
+    PASSWORD_CHANGE_ERROR_CODE.CONFIRMATION_MISMATCH,
   ],
   [
     "a confirmation with a trailing space",
     { confirmPassword: NEW_PASSWORD_WITH_TRAILING_SPACE },
-    FIRST_SIGN_IN_ERROR_CODE.CONFIRMATION_MISMATCH,
+    PASSWORD_CHANGE_ERROR_CODE.CONFIRMATION_MISMATCH,
   ],
   [
     "a whitespace-only new password",
     { newPassword: WHITESPACE_ONLY_PASSWORD },
-    FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_RULES,
+    PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_RULES,
   ],
   [
     "a whitespace-only confirmation",
     { confirmPassword: WHITESPACE_ONLY_PASSWORD },
-    FIRST_SIGN_IN_ERROR_CODE.CONFIRMATION_MISMATCH,
+    PASSWORD_CHANGE_ERROR_CODE.CONFIRMATION_MISMATCH,
   ],
 ];
 
 const acceptedCases: [
   string,
-  Partial<FirstPasswordChangeInput>,
+  Partial<PasswordChangeInput>,
 ][] = [
   [
     "a temporary password that differs only in case",
@@ -97,7 +97,7 @@ const acceptedCases: [
     {
       confirmPassword: NEW_PASSWORD_WITH_TRAILING_SPACE,
       currentPassword:
-        DEFAULT_FIRST_PASSWORD_CHANGE_INPUT.newPassword,
+        DEFAULT_PASSWORD_CHANGE_INPUT.newPassword,
       newPassword: NEW_PASSWORD_WITH_TRAILING_SPACE,
     },
   ],
@@ -107,12 +107,10 @@ const acceptedCases: [
   ],
 ];
 
-describe("validateFirstPasswordChange fields", () => {
+describe("validatePasswordChange fields", () => {
   it("accepts a complete, compliant, confirmed change", () => {
     expect(
-      validateFirstPasswordChange(
-        DEFAULT_FIRST_PASSWORD_CHANGE_INPUT
-      )
+      validatePasswordChange(DEFAULT_PASSWORD_CHANGE_INPUT)
     ).toBeNull();
   });
 
@@ -124,7 +122,7 @@ describe("validateFirstPasswordChange fields", () => {
     "rejects %s",
     (_, overrides, code) => {
       expect(validateWithOverrides(overrides)).toEqual(
-        createFirstSignInError(code)
+        createPasswordChangeError(code)
       );
     }
   );
