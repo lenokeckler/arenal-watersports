@@ -9,12 +9,8 @@ import PasswordChangeFormField from "./PasswordChangeFormField";
 const PasswordChangeFormFields = (
   props: PasswordChangeFormFieldsProps
 ): React.JSX.Element => {
-  const sharedProps = (
-    field: PasswordChangeFocusField
-  ) => ({
-    ...createPasswordChangeSharedFieldProps(props, field),
-    placeholder: props.copy.PASSWORD_PLACEHOLDER,
-  });
+  const sharedProps = (field: PasswordChangeFocusField) =>
+    createPasswordChangeSharedFieldProps(props, field);
 
   return (
     <>

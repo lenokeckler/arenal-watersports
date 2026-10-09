@@ -2,5 +2,10 @@ import type { PasswordChangeFormFieldProps } from "./PasswordChangeFormFieldProp
 
 export type PasswordChangeSharedFieldProps = Pick<
   PasswordChangeFormFieldProps,
-  "error" | "inputRef" | "isPending" | "onChange" | "value"
+  | "error"
+  | "inputRef"
+  | "isPending"
+  | "onChange"
+  | "placeholder"
+  | "value"
 >;
