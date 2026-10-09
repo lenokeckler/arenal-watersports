@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { FIRST_SIGN_IN_ERROR_CODE } from "@/app/constants";
+import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants";
 import { mapPasswordUpdateError } from "../mapPasswordUpdateError";
 import {
   NETWORK_ERROR,
@@ -18,37 +18,37 @@ describe("mapPasswordUpdateError", () => {
     [
       "the same password",
       SAME_PASSWORD_ERROR,
-      FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_SAME_AS_CURRENT,
+      PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_SAME_AS_CURRENT,
     ],
     [
       "a weak password",
       WEAK_PASSWORD_ERROR,
-      FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_RULES,
+      PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_RULES,
     ],
     [
       "a failed validation",
       VALIDATION_FAILED_ERROR,
-      FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_TOO_LONG,
+      PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_TOO_LONG,
     ],
     [
       "a network error",
       NETWORK_ERROR,
-      FIRST_SIGN_IN_ERROR_CODE.NETWORK,
+      PASSWORD_CHANGE_ERROR_CODE.NETWORK,
     ],
     [
       "a rate limit",
       RATE_LIMIT_BY_CODE_ERROR,
-      FIRST_SIGN_IN_ERROR_CODE.TOO_MANY_REQUESTS,
+      PASSWORD_CHANGE_ERROR_CODE.TOO_MANY_REQUESTS,
     ],
     [
       "a server error",
       SERVER_ERROR,
-      FIRST_SIGN_IN_ERROR_CODE.UNKNOWN,
+      PASSWORD_CHANGE_ERROR_CODE.UNKNOWN,
     ],
     [
       "an unclassified error",
       NON_API_ERROR,
-      FIRST_SIGN_IN_ERROR_CODE.UNKNOWN,
+      PASSWORD_CHANGE_ERROR_CODE.UNKNOWN,
     ],
   ])("maps %s", (_name, error, code) => {
     expect(mapPasswordUpdateError(error).code).toBe(code);

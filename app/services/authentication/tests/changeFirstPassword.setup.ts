@@ -5,8 +5,8 @@ vi.mock(
   () => import("./mocks/supabaseServices.mock")
 );
 vi.mock(
-  "../readFirstSignInWorker",
-  () => import("./mocks/readFirstSignInWorker.mock")
+  "../readSignedInWorker",
+  () => import("./mocks/readSignedInWorker.mock")
 );
 vi.mock(
   "../checkWorkerPassword",

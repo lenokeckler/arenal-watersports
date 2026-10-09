@@ -5,15 +5,15 @@ import {
   it,
   vi,
 } from "vitest";
-import { FIRST_SIGN_IN_ERROR_CODE } from "@/app/constants";
+import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants";
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
-import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
+import { DEFAULT_PASSWORD_CHANGE_INPUT } from "@/app/utils/password-change/tests/passwordChange.constants";
 import { updateSignedInPassword } from "../updateSignedInPassword";
 import { captureArguments } from "./captureArguments";
 import { SAME_PASSWORD_ERROR } from "./passwordUpdateErrors.constants";
 
 const NEW_PASSWORD =
-  DEFAULT_FIRST_PASSWORD_CHANGE_INPUT.newPassword;
+  DEFAULT_PASSWORD_CHANGE_INPUT.newPassword;
 const updateUser = vi.fn();
 const supabase = {
   auth: { updateUser },
@@ -50,7 +50,7 @@ describe("updateSignedInPassword", () => {
     );
 
     expect(result?.code).toBe(
-      FIRST_SIGN_IN_ERROR_CODE.NEW_PASSWORD_SAME_AS_CURRENT
+      PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_SAME_AS_CURRENT
     );
     expect(JSON.stringify(result)).not.toContain(
       SAME_PASSWORD_ERROR.message
