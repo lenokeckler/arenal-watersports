@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import FormSuccessNotice from "../FormSuccessNotice";
 import {
+  BLANK_MESSAGE,
   ARIA_HIDDEN_ATTRIBUTE,
   ARIA_HIDDEN_VALUE,
   EMPTY_MESSAGE,
@@ -20,6 +21,14 @@ describe("FormSuccessNotice", () => {
 
   it("renders nothing for an empty message", () => {
     render(<FormSuccessNotice message={EMPTY_MESSAGE} />);
+
+    expect(
+      createFormSuccessNoticePage().queryNotice()
+    ).not.toBeInTheDocument();
+  });
+
+  it("renders nothing for a blank message", () => {
+    render(<FormSuccessNotice message={BLANK_MESSAGE} />);
 
     expect(
       createFormSuccessNoticePage().queryNotice()

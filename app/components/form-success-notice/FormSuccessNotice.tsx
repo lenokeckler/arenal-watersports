@@ -13,7 +13,7 @@ import {
 const FormSuccessNotice = ({
   message,
 }: FormSuccessNoticeProps): NullableRef<React.JSX.Element> =>
-  message ? (
+  message?.trim() ? (
     <div
       role={ARIA_ROLE.STATUS}
       className={FORM_SUCCESS_NOTICE_CLASS}
