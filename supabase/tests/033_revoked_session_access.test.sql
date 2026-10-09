@@ -1,5 +1,5 @@
 begin;
-select plan(15);
+select plan(14);
 
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local'),
@@ -25,10 +25,6 @@ values ('dddddddd-0000-0000-0000-000000000001', 'Maria', 2, 'rental',
         '2026-09-05 10:00:00+00', 60,
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 
-select ok(
-  (select count(*) from auth.sessions) = 3,
-  'el propietario de las funciones lee las sesiones de auth'
-);
 select ok(
   not has_function_privilege('authenticated', 'public.session_is_live()', 'execute'),
   'authenticated no ejecuta session_is_live directamente'

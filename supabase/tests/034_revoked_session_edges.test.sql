@@ -1,5 +1,5 @@
 begin;
-select plan(8);
+select plan(10);
 
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local'),
@@ -36,10 +36,16 @@ set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","
 select ok(not has_mark('guia'), 'una sesion inexistente pierde la marca de guia');
 
 set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated","session_id":"not-a-uuid"}';
-select throws_ok(
-  'select has_area(''reservas'')', '22P02', null,
-  'un reclamo de sesion malformado falla en vez de conceder acceso'
+select ok(not has_area('reservas'), 'un reclamo de sesion malformado niega el area sin fallar');
+
+set local request.jwt.claims to '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated","session_id":"not-a-uuid"}';
+select is(
+  (select count(*) from workers where id <> auth.uid()), 0::bigint,
+  'un reclamo malformado no devuelve filas ajenas protegidas por administracion'
 );
+
+set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated","session_id":"bbbbbbbb-0000-0000-0000-000000000003"}';
+select ok(not has_area('reservas'), 'una sesion viva de otra cuenta no sirve en este token');
 
 reset role;
 delete from auth.sessions where id = 'bbbbbbbb-0000-0000-0000-000000000001';

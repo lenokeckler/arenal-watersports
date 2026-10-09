@@ -5,7 +5,8 @@ language sql stable security definer set search_path = '' as $$
     else exists (
       select 1
       from auth.sessions s
-      where s.id = (auth.jwt() ->> 'session_id')::uuid
+      where s.id::text = auth.jwt() ->> 'session_id'
+        and s.user_id = auth.uid()
         and (s.not_after is null or s.not_after > now())
     )
   end;
