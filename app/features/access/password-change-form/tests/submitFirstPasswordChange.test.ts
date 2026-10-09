@@ -8,13 +8,13 @@ import {
 import { redirect } from "next/navigation";
 import { PATHS } from "@/app/constants";
 import { changeFirstPassword } from "@/app/services/authentication";
-import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
+import { DEFAULT_PASSWORD_CHANGE_INPUT } from "@/app/utils/password-change/tests/passwordChange.constants";
 import { submitFirstPasswordChange } from "../actions/submitFirstPasswordChange";
-import { createFirstSignInFormData } from "./createFirstSignInFormData";
+import { createPasswordChangeFormData } from "./createPasswordChangeFormData";
 import {
   CURRENT_PASSWORD_INVALID_ERROR,
   UNKNOWN_ERROR,
-} from "./firstSignInErrors.constants";
+} from "./passwordChangeErrors.constants";
 import {
   REDIRECT_SIGNAL_MESSAGE,
   SERVICE_FAILURE_MESSAGE,
@@ -31,8 +31,8 @@ vi.mock("next/navigation", () => ({
 const submitDefaultForm = () =>
   submitFirstPasswordChange(
     null,
-    createFirstSignInFormData(
-      DEFAULT_FIRST_PASSWORD_CHANGE_INPUT
+    createPasswordChangeFormData(
+      DEFAULT_PASSWORD_CHANGE_INPUT
     )
   );
 
@@ -55,7 +55,7 @@ describe("submitFirstPasswordChange", () => {
 
     expect(changeFirstPassword).toHaveBeenCalledOnce();
     expect(changeFirstPassword).toHaveBeenCalledWith(
-      DEFAULT_FIRST_PASSWORD_CHANGE_INPUT
+      DEFAULT_PASSWORD_CHANGE_INPUT
     );
     expect(redirect).toHaveBeenCalledOnce();
     expect(redirect).toHaveBeenCalledWith(PATHS.HOME);

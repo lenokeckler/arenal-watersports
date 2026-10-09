@@ -6,14 +6,14 @@ import {
   vi,
 } from "vitest";
 import { redirect } from "next/navigation";
-import { FIRST_SIGN_IN_ERROR_CODE } from "@/app/constants";
-import { FIRST_SIGN_IN_FIELD } from "@/app/constants/access/FirstSignInError.constants";
+import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants";
+import { PASSWORD_CHANGE_FIELD } from "@/app/constants/access/PasswordChangeError.constants";
 import { changeFirstPassword } from "@/app/services/authentication";
-import { createFirstSignInError } from "@/app/utils/first-sign-in/createFirstSignInError";
-import { DEFAULT_FIRST_PASSWORD_CHANGE_INPUT } from "@/app/utils/first-sign-in/tests/firstSignIn.constants";
+import { createPasswordChangeError } from "@/app/utils/password-change/createPasswordChangeError";
+import { DEFAULT_PASSWORD_CHANGE_INPUT } from "@/app/utils/password-change/tests/passwordChange.constants";
 import { submitFirstPasswordChange } from "../actions/submitFirstPasswordChange";
-import { createFirstSignInFormData } from "./createFirstSignInFormData";
-import { UNKNOWN_ERROR } from "./firstSignInErrors.constants";
+import { createPasswordChangeFormData } from "./createPasswordChangeFormData";
+import { UNKNOWN_ERROR } from "./passwordChangeErrors.constants";
 import {
   DUPLICATED_FIELD_VALUE,
   NON_ERROR_REJECTION,
@@ -32,8 +32,8 @@ vi.mock("next/navigation", () => ({
 const submitDefaultForm = () =>
   submitFirstPasswordChange(
     null,
-    createFirstSignInFormData(
-      DEFAULT_FIRST_PASSWORD_CHANGE_INPUT
+    createPasswordChangeFormData(
+      DEFAULT_PASSWORD_CHANGE_INPUT
     )
   );
 
@@ -45,10 +45,10 @@ describe("submitFirstPasswordChange edge cases", () => {
     });
   });
 
-  it.each(Object.values(FIRST_SIGN_IN_ERROR_CODE))(
+  it.each(Object.values(PASSWORD_CHANGE_ERROR_CODE))(
     "returns the %s error exactly as the service reports it",
     async (code) => {
-      const error = createFirstSignInError(code);
+      const error = createPasswordChangeError(code);
       vi.mocked(changeFirstPassword).mockResolvedValue({
         ok: false,
         error,
@@ -76,11 +76,11 @@ describe("submitFirstPasswordChange edge cases", () => {
     vi.mocked(changeFirstPassword).mockResolvedValue({
       ok: true,
     });
-    const formData = createFirstSignInFormData(
-      DEFAULT_FIRST_PASSWORD_CHANGE_INPUT
+    const formData = createPasswordChangeFormData(
+      DEFAULT_PASSWORD_CHANGE_INPUT
     );
     formData.append(
-      FIRST_SIGN_IN_FIELD.NEW_PASSWORD,
+      PASSWORD_CHANGE_FIELD.NEW_PASSWORD,
       DUPLICATED_FIELD_VALUE
     );
 
@@ -90,7 +90,7 @@ describe("submitFirstPasswordChange edge cases", () => {
 
     expect(changeFirstPassword).toHaveBeenCalledOnce();
     expect(changeFirstPassword).toHaveBeenCalledWith(
-      DEFAULT_FIRST_PASSWORD_CHANGE_INPUT
+      DEFAULT_PASSWORD_CHANGE_INPUT
     );
   });
 
@@ -107,7 +107,7 @@ describe("submitFirstPasswordChange edge cases", () => {
     await expect(
       submitFirstPasswordChange(
         null,
-        createFirstSignInFormData(oversizedInput)
+        createPasswordChangeFormData(oversizedInput)
       )
     ).rejects.toThrow(REDIRECT_SIGNAL_MESSAGE);
 
@@ -120,8 +120,8 @@ describe("submitFirstPasswordChange edge cases", () => {
   it("never returns any posted password", async () => {
     vi.mocked(changeFirstPassword).mockResolvedValue({
       ok: false,
-      error: createFirstSignInError(
-        FIRST_SIGN_IN_ERROR_CODE.CURRENT_PASSWORD_INVALID
+      error: createPasswordChangeError(
+        PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_INVALID
       ),
     });
 
@@ -129,10 +129,10 @@ describe("submitFirstPasswordChange edge cases", () => {
       await submitDefaultForm()
     );
 
-    Object.values(
-      DEFAULT_FIRST_PASSWORD_CHANGE_INPUT
-    ).forEach((password) => {
-      expect(serializedState).not.toContain(password);
-    });
+    Object.values(DEFAULT_PASSWORD_CHANGE_INPUT).forEach(
+      (password) => {
+        expect(serializedState).not.toContain(password);
+      }
+    );
   });
 });
