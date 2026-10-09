@@ -48,7 +48,6 @@ export const changeOwnPersonalEmail = async (
 
   await updateOwnPersonalEmail(
     supabase,
-    reauthentication.worker.id,
     change.intent === PERSONAL_EMAIL_INTENT.SAVE
       ? change.address
       : null

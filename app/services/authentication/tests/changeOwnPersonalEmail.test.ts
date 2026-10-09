@@ -23,7 +23,7 @@ import { updateOwnPersonalEmail } from "../updateOwnPersonalEmail";
 import { arrangeSuccessfulOwnPersonalEmailChange } from "./arrangeSuccessfulOwnPersonalEmailChange";
 import { captureArguments } from "./captureArguments";
 import { ALREADY_CHANGED_WORKER } from "./firstSignIn.constants";
-import { PADDED_MIXED_CASE_ADDRESS } from "./ownPersonalEmail.constants";
+import { PADDED_MIXED_CASE_ADDRESS } from "./changeOwnPersonalEmail.constants";
 import { SUPABASE_CLIENT } from "./supabaseClient.constants";
 
 describe("changeOwnPersonalEmail", () => {
@@ -49,11 +49,7 @@ describe("changeOwnPersonalEmail", () => {
       [SUPABASE_CLIENT, INPUT.currentPassword],
     ]);
     expect(updateArgumentsOf()).toEqual([
-      [
-        SUPABASE_CLIENT,
-        ALREADY_CHANGED_WORKER.id,
-        INPUT.email,
-      ],
+      [SUPABASE_CLIENT, INPUT.email],
     ]);
     expect(
       Math.max(
@@ -80,11 +76,7 @@ describe("changeOwnPersonalEmail", () => {
     });
 
     expect(updateArgumentsOf()).toEqual([
-      [
-        SUPABASE_CLIENT,
-        ALREADY_CHANGED_WORKER.id,
-        INPUT.email,
-      ],
+      [SUPABASE_CLIENT, INPUT.email],
     ]);
   });
 
@@ -104,7 +96,7 @@ describe("changeOwnPersonalEmail", () => {
     });
 
     expect(updateArgumentsOf()).toEqual([
-      [SUPABASE_CLIENT, ALREADY_CHANGED_WORKER.id, null],
+      [SUPABASE_CLIENT, null],
     ]);
     expect(readOwnPersonalEmail).toHaveBeenCalledOnce();
   });

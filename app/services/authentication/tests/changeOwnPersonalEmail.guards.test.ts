@@ -19,7 +19,7 @@ import { readOwnPersonalEmail } from "../readOwnPersonalEmail";
 import { reauthenticateSettledWorker } from "../reauthenticateSettledWorker";
 import { updateOwnPersonalEmail } from "../updateOwnPersonalEmail";
 import { arrangeSuccessfulOwnPersonalEmailChange } from "./arrangeSuccessfulOwnPersonalEmailChange";
-import { REMOVE_INPUT } from "./ownPersonalEmail.constants";
+import { REMOVE_INPUT } from "./changeOwnPersonalEmail.constants";
 import { REQUIRED_OWN_PERSONAL_EMAIL } from "./ownPersonalEmail.constants";
 import { RPC_FAILURE } from "./recordSignIn.constants";
 
