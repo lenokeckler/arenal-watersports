@@ -6,6 +6,7 @@ export const PATHS = {
     ROOT: "/access",
   },
   PROFILE: {
+    EMAIL: "/profile/email",
     PASSWORD: "/profile/password",
     ROOT: "/profile",
   },
