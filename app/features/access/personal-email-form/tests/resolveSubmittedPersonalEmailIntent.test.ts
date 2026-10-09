@@ -38,4 +38,15 @@ describe("resolveSubmittedPersonalEmailIntent", () => {
       PERSONAL_EMAIL_INTENT.SAVE
     );
   });
+
+  it("treats a submitter that is not a button as save", () => {
+    const submitter = document.createElement("input");
+    submitter.value = PERSONAL_EMAIL_INTENT.REMOVE;
+
+    expect(
+      resolveSubmittedPersonalEmailIntent(
+        createSubmitEvent(submitter)
+      )
+    ).toBe(PERSONAL_EMAIL_INTENT.SAVE);
+  });
 });
