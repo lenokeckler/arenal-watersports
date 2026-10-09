@@ -12,7 +12,7 @@ import { readOwnPersonalEmail } from "@/app/services/authentication";
 import { PERSONAL_EMAIL_REQUIRED_COPY } from "../constants/PersonalEmailErrorCopy.constants";
 import PersonalEmailForm from "../PersonalEmailForm";
 import { REDIRECT_SIGNAL_MESSAGE } from "@/app/utils/server-action/tests/redirectSignal.constants";
-import { listAttributeValuesHoldingText } from "./listAttributeValuesHoldingText";
+import { listAttributeValuesHoldingText } from "@/app/utils/dom/tests/listAttributeValuesHoldingText";
 import {
   REGISTERED_ADDRESS,
   VALUE_ATTRIBUTE,
