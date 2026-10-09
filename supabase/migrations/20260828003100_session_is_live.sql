@@ -5,7 +5,12 @@ language sql stable security definer set search_path = '' as $$
     else exists (
       select 1
       from auth.sessions s
-      where s.id::text = auth.jwt() ->> 'session_id'
+      where s.id = (
+          select case
+            when pg_catalog.pg_input_is_valid(auth.jwt() ->> 'session_id', 'uuid')
+              then (auth.jwt() ->> 'session_id')::uuid
+          end
+        )
         and s.user_id = auth.uid()
         and (s.not_after is null or s.not_after > now())
     )
