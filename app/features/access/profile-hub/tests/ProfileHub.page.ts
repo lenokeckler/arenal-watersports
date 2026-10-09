@@ -5,15 +5,23 @@ import {
   CHEVRON_RIGHT_ICON_NAME,
   HEADING_LEVEL,
   LOCK_RESET_ICON_NAME,
+  MAIL_ICON_NAME,
 } from "./ProfileHub.constants";
 
 export const createProfileHubPage = () => ({
-  getChevron: () =>
-    screen.getByText(CHEVRON_RIGHT_ICON_NAME),
+  getChevrons: () =>
+    screen.getAllByText(CHEVRON_RIGHT_ICON_NAME),
   getEntryLink: () =>
     screen.getByRole(ARIA_ROLE.LINK, {
       name: new RegExp(PROFILE_COPY.PASSWORD_ENTRY),
     }),
+  getEmailEntryLink: (name: RegExp) =>
+    screen.getByRole(ARIA_ROLE.LINK, { name }),
+  getEntryList: () => screen.getByRole(ARIA_ROLE.LIST),
+  getEntryListItems: () =>
+    screen.getAllByRole(ARIA_ROLE.LISTITEM),
+  getMailIcon: () => screen.getByText(MAIL_ICON_NAME),
+  queryText: (text: string) => screen.queryByText(text),
   getLeadingIcon: () =>
     screen.getByText(LOCK_RESET_ICON_NAME),
   getLogo: () =>

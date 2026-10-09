@@ -4,7 +4,14 @@ export const PROFILE_ENTRY_CLASS =
 export const PROFILE_ENTRY_ICON_CLASS =
   "shrink-0 text-primary";
 
-export const PROFILE_ENTRY_LABEL_CLASS = "flex-1";
+export const PROFILE_ENTRY_LABEL_CLASS =
+  "flex flex-1 flex-col";
 
 export const PROFILE_ENTRY_CHEVRON_CLASS =
   "shrink-0 text-on-surface-variant";
+
+export const PROFILE_ENTRY_LIST_CLASS =
+  "flex w-full flex-col gap-sm";
+
+export const PROFILE_ENTRY_STATUS_CLASS =
+  "block text-body-base font-normal text-on-surface-variant";

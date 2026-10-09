@@ -28,3 +28,18 @@ export const ARIA_HIDDEN_ATTRIBUTE = "aria-hidden";
 export const ARIA_HIDDEN_VALUE = "true";
 export const LOCK_RESET_ICON_NAME = "lock_reset";
 export const CHEVRON_RIGHT_ICON_NAME = "chevron_right";
+export const MAIL_ICON_NAME = "mail";
+export const OWN_PERSONAL_EMAIL_ADDRESS =
+  "worker.personal@example.com";
+export const ENTRY_COUNT = 2;
+export const REGISTERED_STATE = {
+  address: OWN_PERSONAL_EMAIL_ADDRESS,
+  isRequired: false,
+} as const;
+export const NOT_REGISTERED_STATE = {
+  address: null,
+  isRequired: false,
+} as const;
+export const HUB_TEST_ID = "profile-hub";
+export const HUB_NOTICE_ATTRIBUTE = "data-notice";
+export const ANY_WHITESPACE = "\\s*";

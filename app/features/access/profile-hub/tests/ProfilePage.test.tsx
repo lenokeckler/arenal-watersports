@@ -1,12 +1,22 @@
-import { describe, expect, it } from "vitest";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import ProfilePage from "@/app/(system)/profile/page";
 import { PROFILE_NOTICE_QUERY_PARAM } from "@/app/constants";
-import { createProfileHubPage } from "./ProfileHub.page";
+import type { ProfileHubProps } from "../models/ProfileHubProps.interface";
 import {
+  HUB_NOTICE_ATTRIBUTE,
+  HUB_TEST_ID,
   NOTICE_CASES,
-  UNKNOWN_NOTICE,
 } from "./ProfileHub.constants";
+
+vi.mock("../ProfileHub", () => ({
+  default: ({ notice }: ProfileHubProps) => (
+    <div
+      data-testid={HUB_TEST_ID}
+      data-notice={notice?.toString()}
+    />
+  ),
+}));
 
 const renderPage = async (
   searchParams: Record<
@@ -23,33 +33,23 @@ const renderPage = async (
 
 describe("ProfilePage", () => {
   it.each(NOTICE_CASES)(
-    "shows the message of the %s notice from the notice query param",
-    async (notice, message) => {
+    "hands the %s notice query param to the hub",
+    async (notice) => {
       await renderPage({
         [PROFILE_NOTICE_QUERY_PARAM]: notice,
       });
 
       expect(
-        createProfileHubPage().queryNotice()
-      ).toHaveTextContent(message);
+        screen.getByTestId(HUB_TEST_ID)
+      ).toHaveAttribute(HUB_NOTICE_ATTRIBUTE, notice);
     }
   );
 
-  it("shows no notice when the query is empty", async () => {
+  it("hands no notice to the hub when the query is empty", async () => {
     await renderPage({});
 
     expect(
-      createProfileHubPage().queryNotice()
-    ).not.toBeInTheDocument();
-  });
-
-  it("ignores a notice query param it does not know", async () => {
-    await renderPage({
-      [PROFILE_NOTICE_QUERY_PARAM]: UNKNOWN_NOTICE,
-    });
-
-    expect(
-      createProfileHubPage().queryNotice()
-    ).not.toBeInTheDocument();
+      screen.getByTestId(HUB_TEST_ID)
+    ).not.toHaveAttribute(HUB_NOTICE_ATTRIBUTE);
   });
 });

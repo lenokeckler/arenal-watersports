@@ -4,16 +4,22 @@ import {
   IMAGE_ALTS,
   PROFILE_SCREEN_TITLE_ID,
 } from "@/app/constants";
+import { readOwnPersonalEmail } from "@/app/services/authentication";
 import { PROFILE_COPY } from "./constants/ProfileCopy.constants";
 import type { ProfileHubProps } from "./models/ProfileHubProps.interface";
-import ProfileEntryLink from "./ProfileEntryLink";
+import ProfileEntryList from "./ProfileEntryList";
 import ProfileNoticeUrlCleaner from "./ProfileNoticeUrlCleaner";
+import { buildProfileEntries } from "./utils/buildProfileEntries";
 import { resolveProfileNoticeMessage } from "./utils/resolveProfileNoticeMessage";
 
-const ProfileHub = ({
+const ProfileHub = async ({
   notice,
-}: ProfileHubProps): React.JSX.Element => {
+}: ProfileHubProps): Promise<React.JSX.Element> => {
   const noticeMessage = resolveProfileNoticeMessage(notice);
+  const personalEmail = await readOwnPersonalEmail();
+  const entries = buildProfileEntries({
+    hasPersonalEmail: Boolean(personalEmail?.address),
+  });
 
   return (
     <>
@@ -23,7 +29,7 @@ const ProfileHub = ({
         logoAlt={IMAGE_ALTS.COMPANY_LOGO}
       />
       <FormSuccessNotice message={noticeMessage} />
-      <ProfileEntryLink />
+      <ProfileEntryList entries={entries} />
       {noticeMessage ? <ProfileNoticeUrlCleaner /> : null}
     </>
   );
