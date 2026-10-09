@@ -15,3 +15,7 @@ export const COMBOBOX_ROLE = "combobox";
 export const BUTTON_ROLE = "button";
 export const TYPE_ATTRIBUTE = "type";
 export const INPUT_SELECTOR = "input";
+export const INPUT_MODE_ATTRIBUTE = "inputmode";
+export const AUTOCAPITALIZE_ATTRIBUTE = "autocapitalize";
+export const SPELLCHECK_ATTRIBUTE = "spellcheck";
+export const SPELLCHECK_OFF = "false";
