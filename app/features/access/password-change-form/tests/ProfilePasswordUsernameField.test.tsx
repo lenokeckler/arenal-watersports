@@ -1,34 +1,24 @@
-import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { AUTOCOMPLETE } from "@/app/constants";
-import { SCREEN_READER_ONLY_CLASS } from "@/app/styles/ScreenReader.styles";
-import ProfilePasswordUsernameField from "../components/ProfilePasswordUsernameField";
 import { PASSWORD_CHANGE_FIELD } from "@/app/constants/access/PasswordChangeError.constants";
+import { SCREEN_READER_ONLY_CLASS } from "@/app/styles/ScreenReader.styles";
 import { PROFILE_PASSWORD_USERNAME_FIELD } from "../constants/ProfilePasswordUsernameField.constants";
 import {
   ARIA_HIDDEN_ATTRIBUTE,
-  AUTOCOMPLETE_ATTRIBUTE,
   ARIA_HIDDEN_VALUE,
+} from "./ProfilePasswordForm.constants";
+import {
+  AUTOCOMPLETE_ATTRIBUTE,
   READONLY_ATTRIBUTE,
   TAB_INDEX_ATTRIBUTE,
-  USERNAME_FIELD_QUERY,
   USERNAME_VALUE,
 } from "./ProfilePasswordUsernameField.constants";
-
-const renderField = (): HTMLInputElement => {
-  const { container } = render(
-    <ProfilePasswordUsernameField
-      username={USERNAME_VALUE}
-    />
-  );
-  return container.querySelector(
-    USERNAME_FIELD_QUERY
-  ) as HTMLInputElement;
-};
+import { renderProfilePasswordUsernameField } from "./ProfilePasswordUsernameField.page";
 
 describe("ProfilePasswordUsernameField", () => {
   it("offers the signed-in username to password managers", () => {
-    const input = renderField();
+    const input =
+      renderProfilePasswordUsernameField().getUsernameInput();
 
     expect(input).toHaveValue(USERNAME_VALUE);
     expect(input).toHaveAttribute(
@@ -39,7 +29,8 @@ describe("ProfilePasswordUsernameField", () => {
   });
 
   it("is not one of the three password fields", () => {
-    const input = renderField();
+    const input =
+      renderProfilePasswordUsernameField().getUsernameInput();
 
     expect(
       Object.values(PASSWORD_CHANGE_FIELD)
@@ -50,7 +41,8 @@ describe("ProfilePasswordUsernameField", () => {
   });
 
   it("stays out of sight, focus order and the accessibility tree", () => {
-    const input = renderField();
+    const input =
+      renderProfilePasswordUsernameField().getUsernameInput();
 
     expect(input).toHaveClass(SCREEN_READER_ONLY_CLASS);
     expect(input).toHaveAttribute(

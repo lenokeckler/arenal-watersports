@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { STRING } from "@/app/constants";
 import { PASSWORD_CHANGE_FIELD } from "@/app/constants/access/PasswordChangeError.constants";
 import { DEFAULT_PASSWORD_CHANGE_INPUT } from "@/app/utils/password-change/tests/passwordChange.constants";
-import { PROFILE_PASSWORD_USERNAME_FIELD } from "../constants/ProfilePasswordUsernameField.constants";
 import { EMPTY_PASSWORD_CHANGE_INPUT } from "../constants/PasswordChangeDefaults.constants";
+import { PROFILE_PASSWORD_USERNAME_FIELD } from "../constants/ProfilePasswordUsernameField.constants";
 import { readPasswordChangeInput } from "../utils/readPasswordChangeInput";
 import { createPasswordChangeFormData } from "./createPasswordChangeFormData";
 import {
