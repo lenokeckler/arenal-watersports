@@ -51,6 +51,8 @@ export const createPersonalEmailFormViewPage = () => {
     getPasswordInput,
     getRemove,
     getSave,
+    queryAlerts: () =>
+      screen.queryAllByRole(ARIA_ROLE.ALERT),
     queryRemove: () =>
       screen.queryByRole(ARIA_ROLE.BUTTON, {
         name: new RegExp(PERSONAL_EMAIL_FORM_COPY.REMOVE),

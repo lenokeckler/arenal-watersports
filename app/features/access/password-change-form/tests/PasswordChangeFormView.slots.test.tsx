@@ -9,7 +9,7 @@ import {
 import { ARIA_ROLE } from "@/app/constants";
 import { FIRST_SIGN_IN_FORM_COPY } from "../constants/FirstSignInFormCopy.constants";
 import "./firstSignInAction.setup";
-import { isNodeBefore } from "./isNodeBefore";
+import { isNodeBefore } from "@/app/utils/dom/tests/isNodeBefore";
 import {
   BEFORE_FIELDS_TEXT,
   FOOTER_TEXT,
