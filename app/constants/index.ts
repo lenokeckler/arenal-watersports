@@ -120,14 +120,14 @@ export {
   PASSWORD_CHANGE_ERROR_CODE,
   PASSWORD_CHANGE_ERROR_FIELD,
   PASSWORD_CHANGE_FIELD,
-  type BlockedPasswordChangeErrorCode,
+  type BlockedReauthenticationErrorCode,
   type PasswordChangeErrorCode,
   type PasswordChangeField,
 } from "./access/PasswordChangeError.constants";
 export {
-  BLOCKED_PASSWORD_CHANGE_ERROR_CODES,
-  BLOCKED_PASSWORD_CHANGE_NOTICE_REASON,
-} from "./access/BlockedPasswordChange.constants";
+  BLOCKED_REAUTHENTICATION_ERROR_CODES,
+  BLOCKED_REAUTHENTICATION_NOTICE_REASON,
+} from "./access/BlockedReauthentication.constants";
 export { SUPABASE_TABLE } from "./supabase/SupabaseTable.constants";
 export { SUPABASE_SIGN_OUT_SCOPE } from "./supabase/SupabaseSignOutScope.constants";
 export { SUPABASE_AUTH_OPERATION } from "./supabase/SupabaseAuthOperation.constants";

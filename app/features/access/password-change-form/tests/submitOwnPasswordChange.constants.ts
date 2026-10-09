@@ -1,13 +1,13 @@
 import {
-  BLOCKED_PASSWORD_CHANGE_ERROR_CODES,
-  BLOCKED_PASSWORD_CHANGE_NOTICE_REASON,
+  BLOCKED_REAUTHENTICATION_ERROR_CODES,
+  BLOCKED_REAUTHENTICATION_NOTICE_REASON,
   PASSWORD_CHANGE_ERROR_CODE,
   PATHS,
   PROFILE_NOTICE,
   PROFILE_NOTICE_QUERY_PARAM,
   SIGN_IN_NOTICE_QUERY_PARAM,
 } from "@/app/constants";
-import { isBlockedPasswordChangeErrorCode } from "@/app/utils/password-change/isBlockedPasswordChangeErrorCode";
+import { isBlockedReauthenticationErrorCode } from "@/app/utils/reauthentication/isBlockedReauthenticationErrorCode";
 import { appendQueryParam } from "@/app/utils/pathname/appendQueryParam";
 
 export const REDIRECT_SIGNAL_MESSAGE = "NEXT_REDIRECT";
@@ -21,18 +21,20 @@ export const PASSWORD_CHANGED_TARGET = appendQueryParam(
 );
 
 export const BLOCKED_CASES =
-  BLOCKED_PASSWORD_CHANGE_ERROR_CODES.map(
+  BLOCKED_REAUTHENTICATION_ERROR_CODES.map(
     (code) =>
       [
         code,
         appendQueryParam(
           PATHS.ACCESS.LOGIN,
           SIGN_IN_NOTICE_QUERY_PARAM,
-          BLOCKED_PASSWORD_CHANGE_NOTICE_REASON[code]
+          BLOCKED_REAUTHENTICATION_NOTICE_REASON[code]
         ),
       ] as const
   );
 
 export const RETURNED_ERROR_CODES = Object.values(
   PASSWORD_CHANGE_ERROR_CODE
-).filter((code) => !isBlockedPasswordChangeErrorCode(code));
+).filter(
+  (code) => !isBlockedReauthenticationErrorCode(code)
+);

@@ -1,14 +1,14 @@
 import {
   PASSWORD_CHANGE_ERROR_CODE,
-  type BlockedPasswordChangeErrorCode,
+  type BlockedReauthenticationErrorCode,
 } from "./PasswordChangeError.constants";
 import {
   SIGN_IN_NOTICE_REASON,
   type SignInNoticeReason,
 } from "./SignInNotice.constants";
 
-export const BLOCKED_PASSWORD_CHANGE_NOTICE_REASON: Record<
-  BlockedPasswordChangeErrorCode,
+export const BLOCKED_REAUTHENTICATION_NOTICE_REASON: Record<
+  BlockedReauthenticationErrorCode,
   SignInNoticeReason
 > = {
   [PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION]:
@@ -17,7 +17,7 @@ export const BLOCKED_PASSWORD_CHANGE_NOTICE_REASON: Record<
     SIGN_IN_NOTICE_REASON.BLOCKED_BY_ATTEMPTS,
 };
 
-export const BLOCKED_PASSWORD_CHANGE_ERROR_CODES =
+export const BLOCKED_REAUTHENTICATION_ERROR_CODES =
   Object.keys(
-    BLOCKED_PASSWORD_CHANGE_NOTICE_REASON
-  ) as BlockedPasswordChangeErrorCode[];
+    BLOCKED_REAUTHENTICATION_NOTICE_REASON
+  ) as BlockedReauthenticationErrorCode[];
