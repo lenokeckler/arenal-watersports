@@ -22,6 +22,8 @@ export const REPEATED_CURRENT_PASSWORD_INVALID_ERROR =
 export const EMAIL_INVALID_ERROR = createPersonalEmailError(
   PERSONAL_EMAIL_ERROR_CODE.EMAIL_INVALID
 );
+export const FIRST_INVALID_SUBMIT = 1;
+export const NO_INVALID_SUBMITS = 0;
 export const INITIAL_EMAIL = VALID_ADDRESS;
 export const UNKNOWN_FIELD_NAME = "workerId";
 export const PASSWORD_FIELD_NAME =

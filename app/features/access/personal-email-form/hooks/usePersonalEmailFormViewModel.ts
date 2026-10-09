@@ -28,13 +28,14 @@ export const usePersonalEmailFormViewModel = ({
     serverError: submission.error,
     values: { ...form.values, intent: guard.intent },
   });
+  const fieldRefs = usePersonalEmailFocus(fieldErrors, {
+    invalidSubmitCount: guard.invalidSubmitCount,
+    serverError: submission.error,
+  });
 
   return {
     fieldErrors,
-    fieldRefs: usePersonalEmailFocus(fieldErrors, {
-      invalidSubmitCount: guard.invalidSubmitCount,
-      serverError: submission.error,
-    }),
+    fieldRefs,
     formAction: submission.action,
     isPending: submission.isPending,
     onChange: form.onChange,

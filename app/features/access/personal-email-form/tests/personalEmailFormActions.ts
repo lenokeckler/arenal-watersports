@@ -7,10 +7,7 @@ import type { PersonalEmailFormViewModel } from "../models/PersonalEmailFormView
 import type { PersonalEmailServerAction } from "../models/PersonalEmailServerAction.type";
 import { createChangeEvent } from "./createPersonalEmailEvents";
 import { createPersonalEmailFormData } from "./createPersonalEmailFormData";
-import {
-  createPressedButton,
-  createSubmitEvent,
-} from "./createPersonalEmailSubmitEvent";
+import { createIntentSubmitEvent } from "./createPersonalEmailSubmitEvent";
 import type { PersonalEmailViewModelResult } from "./PersonalEmailViewModelResult.type";
 import { INITIAL_EMAIL } from "./personalEmailHooks.constants";
 
@@ -40,9 +37,7 @@ export const submitForm = (
   result: PersonalEmailViewModelResult,
   intent?: string
 ) => {
-  const event = createSubmitEvent(
-    intent ? createPressedButton(intent) : null
-  );
+  const event = createIntentSubmitEvent(intent);
   act(() => {
     result.current.onSubmit(event);
   });

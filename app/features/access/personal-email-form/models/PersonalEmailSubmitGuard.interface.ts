@@ -1,5 +1,5 @@
 import type { PersonalEmailIntent } from "@/app/constants";
-import type { Nullable } from "@/app/types";
+import type { NullableRef } from "@/app/types";
 import type { PersonalEmailSubmitHandler } from "./PersonalEmailSubmitHandler.type";
 
 export interface PersonalEmailSubmitGuard {
@@ -7,5 +7,5 @@ export interface PersonalEmailSubmitGuard {
   intent: PersonalEmailIntent;
   invalidSubmitCount: number;
   onSubmit: PersonalEmailSubmitHandler;
-  pendingIntent: Nullable<PersonalEmailIntent>;
+  pendingIntent: NullableRef<PersonalEmailIntent>;
 }

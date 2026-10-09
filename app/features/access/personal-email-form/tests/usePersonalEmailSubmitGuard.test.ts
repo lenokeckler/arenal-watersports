@@ -4,13 +4,12 @@ import { PERSONAL_EMAIL_INTENT } from "@/app/constants";
 import type { PersonalEmailGuardProps } from "./PersonalEmailGuardProps.interface";
 import { usePersonalEmailSubmitGuard } from "../hooks/usePersonalEmailSubmitGuard";
 import type { PersonalEmailFieldValues } from "../models/PersonalEmailFieldValues.type";
-import {
-  createPressedButton,
-  createSubmitEvent,
-} from "./createPersonalEmailSubmitEvent";
+import { createIntentSubmitEvent } from "./createPersonalEmailSubmitEvent";
 import {
   EMPTY_VALUES,
   FILLED_VALUES,
+  FIRST_INVALID_SUBMIT,
+  NO_INVALID_SUBMITS,
   REMOVE_VALUES,
   IDLE_PROPS,
 } from "./personalEmailHooks.constants";
@@ -33,9 +32,7 @@ const submit = (
   result: ReturnType<typeof renderGuard>["result"],
   intent?: string
 ) => {
-  const event = createSubmitEvent(
-    intent ? createPressedButton(intent) : null
-  );
+  const event = createIntentSubmitEvent(intent);
   act(() => result.current.onSubmit(event));
   return event;
 };
@@ -81,7 +78,9 @@ describe("usePersonalEmailSubmitGuard", () => {
 
     expect(event.preventDefault).toHaveBeenCalledOnce();
     expect(dismiss).toHaveBeenCalledOnce();
-    expect(result.current.invalidSubmitCount).toBe(1);
+    expect(result.current.invalidSubmitCount).toBe(
+      FIRST_INVALID_SUBMIT
+    );
     expect(result.current.hasSubmitted).toBe(true);
   });
 
@@ -106,7 +105,9 @@ describe("usePersonalEmailSubmitGuard", () => {
     );
 
     expect(event.preventDefault).toHaveBeenCalledOnce();
-    expect(result.current.invalidSubmitCount).toBe(0);
+    expect(result.current.invalidSubmitCount).toBe(
+      NO_INVALID_SUBMITS
+    );
   });
 
   it("exposes the pressed intent as pending only while pending", () => {

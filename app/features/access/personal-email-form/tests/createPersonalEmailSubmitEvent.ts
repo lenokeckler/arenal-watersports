@@ -1,4 +1,5 @@
 import { vi } from "vitest";
+import type { NullableRef } from "@/app/types";
 import type { PersonalEmailSubmitEvent } from "../models/PersonalEmailSubmitEvent.type";
 
 export const createPressedButton = (
@@ -10,9 +11,16 @@ export const createPressedButton = (
 };
 
 export const createSubmitEvent = (
-  submitter: HTMLElement | null = null
+  submitter: NullableRef<HTMLElement> = null
 ): PersonalEmailSubmitEvent =>
   ({
     nativeEvent: { submitter },
     preventDefault: vi.fn(),
   }) as unknown as PersonalEmailSubmitEvent;
+
+export const createIntentSubmitEvent = (
+  intent?: string
+): PersonalEmailSubmitEvent =>
+  createSubmitEvent(
+    intent ? createPressedButton(intent) : null
+  );

@@ -16,10 +16,12 @@ import {
   renderPersonalEmailViewModel,
   typeInto,
 } from "./personalEmailFormActions";
-import { SAVE_INPUT } from "./personalEmailForm.constants";
+import {
+  SAVE_INPUT,
+  SECOND_ADDRESS,
+} from "./personalEmailForm.constants";
 import {
   CURRENT_PASSWORD_INVALID_ERROR,
-  EDITED_VALUE,
   EMAIL_FIELD_NAME,
   EMAIL_INVALID_ERROR,
   PASSWORD_FIELD_NAME,
@@ -90,7 +92,7 @@ describe("usePersonalEmailFormViewModel server errors", () => {
     const { result } = renderTypedForm();
     await postForm(result, SAVE_INPUT);
 
-    typeInto(result, EMAIL_FIELD_NAME, EDITED_VALUE);
+    typeInto(result, EMAIL_FIELD_NAME, SECOND_ADDRESS);
 
     expect(
       result.current.fieldErrors[PERSONAL_EMAIL_FIELD.EMAIL]

@@ -1,5 +1,5 @@
 import type { PersonalEmailIntent } from "@/app/constants";
-import type { Nullable } from "@/app/types";
+import type { NullableRef } from "@/app/types";
 import type { PersonalEmailFieldRefs } from "./PersonalEmailFieldRefs.type";
 import type { PersonalEmailFormAction } from "./PersonalEmailFormAction.type";
 import type { PersonalEmailFormErrors } from "./PersonalEmailFormErrors.type";
@@ -12,5 +12,5 @@ export interface PersonalEmailFormViewModel extends PersonalEmailFormValues {
   formAction: PersonalEmailFormAction;
   isPending: boolean;
   onSubmit: PersonalEmailSubmitHandler;
-  pendingIntent: Nullable<PersonalEmailIntent>;
+  pendingIntent: NullableRef<PersonalEmailIntent>;
 }
