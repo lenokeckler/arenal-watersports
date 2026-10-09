@@ -8,6 +8,8 @@ import {
   SERVER_ERROR,
 } from "./mapSignInAuthError.constants";
 import {
+  CURRENT_PASSWORD_MISMATCH_ERROR,
+  CURRENT_PASSWORD_REQUIRED_ERROR,
   SAME_PASSWORD_ERROR,
   VALIDATION_FAILED_ERROR,
   WEAK_PASSWORD_ERROR,
@@ -29,6 +31,16 @@ describe("mapPasswordUpdateError", () => {
       "a failed validation",
       VALIDATION_FAILED_ERROR,
       PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_TOO_LONG,
+    ],
+    [
+      "a wrong current password",
+      CURRENT_PASSWORD_MISMATCH_ERROR,
+      PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_INVALID,
+    ],
+    [
+      "a missing current password",
+      CURRENT_PASSWORD_REQUIRED_ERROR,
+      PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_REQUIRED,
     ],
     [
       "a network error",
