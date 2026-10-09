@@ -1,23 +1,23 @@
 import { describe, expect, it, vi } from "vitest";
-import { runWithUnknownFallback } from "../runWithUnknownFallback";
+import { runWithFallback } from "../runWithFallback";
 import {
   FALLBACK_RESULT,
   OPERATION_FAILURE_MESSAGE,
   OPERATION_INPUT,
   OPERATION_RESULT,
-} from "./runWithUnknownFallback.constants";
+} from "./runWithFallback.constants";
 
-describe("runWithUnknownFallback", () => {
+describe("runWithFallback", () => {
   it("passes the input to the operation and returns its result", async () => {
     const operation = vi
       .fn()
       .mockResolvedValue(OPERATION_RESULT);
 
     await expect(
-      runWithUnknownFallback(
+      runWithFallback(
         operation,
         OPERATION_INPUT,
-        FALLBACK_RESULT
+        () => FALLBACK_RESULT
       )
     ).resolves.toBe(OPERATION_RESULT);
 
@@ -33,11 +33,23 @@ describe("runWithUnknownFallback", () => {
       );
 
     await expect(
-      runWithUnknownFallback(
+      runWithFallback(
         operation,
         OPERATION_INPUT,
-        FALLBACK_RESULT
+        () => FALLBACK_RESULT
       )
     ).resolves.toBe(FALLBACK_RESULT);
+  });
+
+  it("does not build the fallback when the operation succeeds", async () => {
+    const buildFallback = vi.fn();
+
+    await runWithFallback(
+      vi.fn().mockResolvedValue(OPERATION_RESULT),
+      OPERATION_INPUT,
+      buildFallback
+    );
+
+    expect(buildFallback).not.toHaveBeenCalled();
   });
 });

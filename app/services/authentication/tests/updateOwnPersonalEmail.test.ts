@@ -1,3 +1,4 @@
+import { AuthSessionMissingError } from "@supabase/supabase-js";
 import {
   beforeEach,
   describe,
@@ -11,7 +12,9 @@ import {
 } from "@/app/constants";
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
 import { SupabaseNoRowsAffectedError } from "@/app/utils/supabase-error/SupabaseNoRowsAffectedError";
+import { SIGNED_IN_USER_RESULT } from "./firstSignIn.constants";
 import {
+  FOREIGN_SESSION_USER_ID,
   OWN_ADDRESS,
   WORKER_ID,
 } from "./ownPersonalEmail.constants";
@@ -22,7 +25,9 @@ const select = vi.fn();
 const eq = vi.fn();
 const update = vi.fn();
 const from = vi.fn();
+const getUser = vi.fn();
 const supabase = {
+  auth: { getUser },
   from,
 } as unknown as ServerSupabaseClient;
 
@@ -34,6 +39,7 @@ let returnedColumns: unknown;
 describe("updateOwnPersonalEmail", () => {
   beforeEach(() => {
     vi.resetAllMocks();
+    getUser.mockResolvedValue(SIGNED_IN_USER_RESULT);
     select.mockImplementation((columns: unknown) => {
       returnedColumns = columns;
       return Promise.resolve({
@@ -55,13 +61,9 @@ describe("updateOwnPersonalEmail", () => {
     });
   });
 
-  it("writes only the personal email of the given worker", async () => {
+  it("writes only the personal email of the signed-in worker", async () => {
     await expect(
-      updateOwnPersonalEmail(
-        supabase,
-        WORKER_ID,
-        OWN_ADDRESS
-      )
+      updateOwnPersonalEmail(supabase, OWN_ADDRESS)
     ).resolves.toBeUndefined();
 
     expect(from).toHaveBeenCalledOnce();
@@ -79,22 +81,45 @@ describe("updateOwnPersonalEmail", () => {
   });
 
   it("writes null to remove the address", async () => {
-    await updateOwnPersonalEmail(supabase, WORKER_ID, null);
+    await updateOwnPersonalEmail(supabase, null);
 
     expect(writtenValues).toEqual({
       [SUPABASE_WORKER_COLUMN.PERSONAL_EMAIL]: null,
     });
   });
 
+  it("filters by the session user id and takes no other id", async () => {
+    getUser.mockResolvedValue({
+      data: { user: { id: FOREIGN_SESSION_USER_ID } },
+      error: null,
+    });
+
+    expect(updateOwnPersonalEmail).toHaveLength(2);
+    await updateOwnPersonalEmail(supabase, OWN_ADDRESS);
+
+    expect(filter).toEqual([
+      SUPABASE_WORKER_COLUMN.ID,
+      FOREIGN_SESSION_USER_ID,
+    ]);
+  });
+
+  it("writes nothing and throws when there is no session", async () => {
+    getUser.mockResolvedValue({
+      data: { user: null },
+      error: new AuthSessionMissingError(),
+    });
+
+    await expect(
+      updateOwnPersonalEmail(supabase, OWN_ADDRESS)
+    ).rejects.toBeInstanceOf(SupabaseNoRowsAffectedError);
+    expect(from).not.toHaveBeenCalled();
+  });
+
   it("throws when no row was changed", async () => {
     select.mockResolvedValue({ data: [], error: null });
 
     await expect(
-      updateOwnPersonalEmail(
-        supabase,
-        WORKER_ID,
-        OWN_ADDRESS
-      )
+      updateOwnPersonalEmail(supabase, OWN_ADDRESS)
     ).rejects.toBeInstanceOf(SupabaseNoRowsAffectedError);
   });
 
@@ -105,11 +130,7 @@ describe("updateOwnPersonalEmail", () => {
     });
 
     await expect(
-      updateOwnPersonalEmail(
-        supabase,
-        WORKER_ID,
-        OWN_ADDRESS
-      )
+      updateOwnPersonalEmail(supabase, OWN_ADDRESS)
     ).rejects.toMatchObject({ cause: RPC_FAILURE });
   });
 });

@@ -1,22 +1,22 @@
 import { describe, expect, it } from "vitest";
 import {
-  BLOCKED_PASSWORD_CHANGE_ERROR_CODES,
-  BLOCKED_PASSWORD_CHANGE_NOTICE_REASON,
+  BLOCKED_REAUTHENTICATION_ERROR_CODES,
+  BLOCKED_REAUTHENTICATION_NOTICE_REASON,
 } from "@/app/constants";
-import { createPasswordChangeError } from "../createPasswordChangeError";
+import { createPasswordChangeError } from "@/app/utils/password-change/createPasswordChangeError";
 import { resolveBlockedSignInNoticeReason } from "../resolveBlockedSignInNoticeReason";
-import { PROTOTYPE_KEY_ERRORS } from "./passwordChange.constants";
+import { PROTOTYPE_KEY_ERRORS } from "./prototypeKeyErrors.constants";
 import { NON_BLOCKED_CODES } from "./resolveBlockedSignInNoticeReason.constants";
 
 describe("resolveBlockedSignInNoticeReason", () => {
-  it.each(BLOCKED_PASSWORD_CHANGE_ERROR_CODES)(
+  it.each(BLOCKED_REAUTHENTICATION_ERROR_CODES)(
     "resolves the notice reason of %s",
     (code) => {
       expect(
         resolveBlockedSignInNoticeReason(
           createPasswordChangeError(code)
         )
-      ).toBe(BLOCKED_PASSWORD_CHANGE_NOTICE_REASON[code]);
+      ).toBe(BLOCKED_REAUTHENTICATION_NOTICE_REASON[code]);
     }
   );
 

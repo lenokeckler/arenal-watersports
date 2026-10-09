@@ -1,11 +1,11 @@
-export const runWithUnknownFallback = async <Input, Result>(
+export const runWithFallback = async <Input, Result>(
   operation: (input: Input) => Promise<Result>,
   input: Input,
-  fallback: Result
+  buildFallback: () => Result
 ): Promise<Result> => {
   try {
     return await operation(input);
   } catch {
-    return fallback;
+    return buildFallback();
   }
 };
