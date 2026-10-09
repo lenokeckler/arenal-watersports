@@ -4,10 +4,14 @@ import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constan
 import FormSubmitButton from "../FormSubmitButton";
 import type { FormSubmitButtonProps } from "../models/FormSubmitButtonProps.interface";
 import {
+  ARIA_DISABLED_ATTRIBUTE,
+  ARIA_DISABLED_TRUE,
   IDLE_LABEL,
   INTENT_NAME,
   INTENT_VALUE,
+  NAME_ATTRIBUTE,
   PENDING_LABEL,
+  VALUE_ATTRIBUTE,
 } from "./FormSubmitButton.constants";
 import { DEFAULT_PROPS } from "./FormSubmitButton.defaults.constants";
 import { createFormSubmitButtonPage } from "./FormSubmitButton.page";
@@ -32,11 +36,11 @@ describe("FormSubmitButton intent", () => {
     });
 
     expect(page.getButton(IDLE_LABEL)).toHaveAttribute(
-      "name",
+      NAME_ATTRIBUTE,
       INTENT_NAME
     );
     expect(page.getButton(IDLE_LABEL)).toHaveAttribute(
-      "value",
+      VALUE_ATTRIBUTE,
       INTENT_VALUE
     );
   });
@@ -45,10 +49,10 @@ describe("FormSubmitButton intent", () => {
     const page = renderButton();
 
     expect(page.getButton(IDLE_LABEL)).not.toHaveAttribute(
-      "name"
+      NAME_ATTRIBUTE
     );
     expect(page.getButton(IDLE_LABEL)).not.toHaveAttribute(
-      "value"
+      VALUE_ATTRIBUTE
     );
   });
 
@@ -59,8 +63,8 @@ describe("FormSubmitButton intent", () => {
     });
 
     expect(page.getButton(IDLE_LABEL)).toHaveAttribute(
-      "aria-disabled",
-      "true"
+      ARIA_DISABLED_ATTRIBUTE,
+      ARIA_DISABLED_TRUE
     );
     expect(page.queryText(PENDING_LABEL)).toBeNull();
     expect(

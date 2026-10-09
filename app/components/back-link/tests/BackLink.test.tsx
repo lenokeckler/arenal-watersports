@@ -1,13 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { ARIA_ROLE } from "@/app/constants";
 import BackLink from "../BackLink";
+import { BACK_LINK_CLASS } from "../styles/BackLink.styles";
 import {
   ARROW_BACK_GLYPH,
   BACK_HREF,
   BACK_LABEL,
-  FOCUS_VISIBLE_CLASS,
-  LINK_ROLE,
-  TAP_TARGET_CLASS,
 } from "./BackLink.constants";
 
 const renderBackLink = () => {
@@ -17,7 +16,7 @@ const renderBackLink = () => {
       label={BACK_LABEL}
     />
   );
-  return screen.getByRole(LINK_ROLE, {
+  return screen.getByRole(ARIA_ROLE.LINK, {
     name: new RegExp(BACK_LABEL),
   });
 };
@@ -36,12 +35,9 @@ describe("BackLink", () => {
     expect(link).toHaveTextContent(ARROW_BACK_GLYPH);
   });
 
-  it("keeps a 56px tap target with a visible focus outline", () => {
+  it("applies the shared back link style", () => {
     const link = renderBackLink();
 
-    expect(link).toHaveClass(
-      TAP_TARGET_CLASS,
-      FOCUS_VISIBLE_CLASS
-    );
+    expect(link).toHaveClass(BACK_LINK_CLASS);
   });
 });
