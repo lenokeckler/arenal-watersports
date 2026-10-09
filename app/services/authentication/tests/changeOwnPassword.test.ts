@@ -50,11 +50,15 @@ describe("changeOwnPassword", () => {
       [SUPABASE_CLIENT, INPUT],
     ]);
     expect(
-      vi.mocked(verifyCurrentPassword).mock
-        .invocationCallOrder[0]
+      Math.max(
+        ...vi.mocked(verifyCurrentPassword).mock
+          .invocationCallOrder
+      )
     ).toBeLessThan(
-      vi.mocked(updateOwnPassword).mock
-        .invocationCallOrder[0]
+      Math.min(
+        ...vi.mocked(updateOwnPassword).mock
+          .invocationCallOrder
+      )
     );
     expect(signOutEverywhere).not.toHaveBeenCalled();
   });
