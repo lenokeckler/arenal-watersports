@@ -4,7 +4,18 @@ import {
   type CurrencyCode,
 } from "./CurrencyCode.constants";
 
-const MAX_FRACTION_DIGITS = 2;
+const NO_FRACTION_DIGITS = 0;
+const CENTS_FRACTION_DIGITS = 2;
+
+const WITHOUT_FRACTION: Intl.NumberFormatOptions = {
+  minimumFractionDigits: NO_FRACTION_DIGITS,
+  maximumFractionDigits: NO_FRACTION_DIGITS,
+};
+
+const WITH_CENTS: Intl.NumberFormatOptions = {
+  minimumFractionDigits: CENTS_FRACTION_DIGITS,
+  maximumFractionDigits: CENTS_FRACTION_DIGITS,
+};
 
 export const MONEY_FORMAT: Record<
   CurrencyCode,
@@ -12,16 +23,12 @@ export const MONEY_FORMAT: Record<
 > = {
   [CURRENCY_CODE.CRC]: {
     locale: "es-CR",
-    options: {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: MAX_FRACTION_DIGITS,
-    },
+    wholeAmountOptions: WITHOUT_FRACTION,
+    fractionalAmountOptions: WITH_CENTS,
   },
   [CURRENCY_CODE.USD]: {
     locale: "en-US",
-    options: {
-      minimumFractionDigits: MAX_FRACTION_DIGITS,
-      maximumFractionDigits: MAX_FRACTION_DIGITS,
-    },
+    wholeAmountOptions: WITH_CENTS,
+    fractionalAmountOptions: WITH_CENTS,
   },
 };

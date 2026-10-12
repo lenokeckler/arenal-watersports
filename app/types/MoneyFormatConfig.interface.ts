@@ -1,4 +1,5 @@
 export interface MoneyFormatConfig {
   locale: string;
-  options: Intl.NumberFormatOptions;
+  wholeAmountOptions: Intl.NumberFormatOptions;
+  fractionalAmountOptions: Intl.NumberFormatOptions;
 }
