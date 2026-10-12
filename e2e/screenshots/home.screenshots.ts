@@ -3,11 +3,13 @@ import { captureViewport } from "../support/captureViewport";
 import { createHomePage } from "../pages/Home.page";
 import { resolveDeviceScreenshotFileName } from "../constants/E2eScreenshot.constants";
 import { E2E_HOME_SCREENSHOT_BASENAME } from "../constants/E2eHome.constants";
+import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
 
 test.describe("Home screenshots", () => {
   test("captures the home page", async ({
     page,
   }, testInfo) => {
+    await signInAsSeededWorker(page);
     const homePage = createHomePage(page);
 
     await homePage.goTo();

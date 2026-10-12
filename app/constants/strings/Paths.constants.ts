@@ -2,6 +2,7 @@ export const PATHS = {
   HOME: "/",
   ACCESS: {
     LOGIN: "/access/login",
+    ROOT: "/access",
   },
   ADMINISTRATION: {
     CATEGORIES: "/administracion/categorias",
