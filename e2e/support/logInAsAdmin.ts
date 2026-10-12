@@ -1,8 +1,5 @@
-import type { BrowserContext } from "@playwright/test";
-import { E2E_ADMIN_ACCOUNT } from "../constants/E2eAccounts.constants";
-import { authenticateAs } from "./authenticateAs";
+import type { Page } from "@playwright/test";
+import { signInAsSeededWorker } from "./signInAsSeededWorker";
 
-export const logInAsAdmin = (
-  context: BrowserContext
-): Promise<void> =>
-  authenticateAs(context, E2E_ADMIN_ACCOUNT);
+export const logInAsAdmin = (page: Page): Promise<void> =>
+  signInAsSeededWorker(page);
