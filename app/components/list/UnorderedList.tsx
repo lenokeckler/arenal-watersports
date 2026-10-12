@@ -1,5 +1,8 @@
+"use client";
+
 import { UnorderedListProps } from "./UnorderedListProps.interface";
-import { STRING } from "@/app/constants";
+import { ARIA_ROLE, STRING } from "@/app/constants";
+import { UNORDERED_LIST } from "./UnorderedList.constants";
 import { useUnorderedListViewModel } from "./hooks/useUnorderedListViewModel";
 import { resolveUnorderedListWrapperClassName } from "./styles/UnorderedList.styles";
 
@@ -7,16 +10,21 @@ const UnorderedList = ({
   validationMessages,
   items = [],
   variant,
+  ariaLabel,
   className = STRING.Empty,
   style = {},
 }: UnorderedListProps) => {
-  const { finalItems, variantStyles, styleClasses } =
-    useUnorderedListViewModel({
-      validationMessages,
-      items,
-      variant,
-      style,
-    });
+  const {
+    finalItems,
+    finalVariant,
+    variantStyles,
+    styleClasses,
+  } = useUnorderedListViewModel({
+    validationMessages,
+    items,
+    variant,
+    style,
+  });
   return (
     <div
       className={resolveUnorderedListWrapperClassName(
@@ -26,7 +34,15 @@ const UnorderedList = ({
       )}
       style={style}
     >
-      <ul className={variantStyles.listClass}>
+      <ul
+        className={variantStyles.listClass}
+        role={
+          finalVariant === UNORDERED_LIST.VARIANTS.PLAIN
+            ? ARIA_ROLE.LIST
+            : undefined
+        }
+        aria-label={ariaLabel}
+      >
         {finalItems.map((item, index) => {
           const text =
             typeof item === "string" ? item : item.text;
