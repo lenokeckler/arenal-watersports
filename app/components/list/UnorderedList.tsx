@@ -1,8 +1,7 @@
 "use client";
 
 import { UnorderedListProps } from "./UnorderedListProps.interface";
-import { ARIA_ROLE, STRING } from "@/app/constants";
-import { UNORDERED_LIST } from "./UnorderedList.constants";
+import { STRING } from "@/app/constants";
 import { useUnorderedListViewModel } from "./hooks/useUnorderedListViewModel";
 import { resolveUnorderedListWrapperClassName } from "./styles/UnorderedList.styles";
 
@@ -16,7 +15,7 @@ const UnorderedList = ({
 }: UnorderedListProps) => {
   const {
     finalItems,
-    finalVariant,
+    listRole,
     variantStyles,
     styleClasses,
   } = useUnorderedListViewModel({
@@ -36,11 +35,7 @@ const UnorderedList = ({
     >
       <ul
         className={variantStyles.listClass}
-        role={
-          finalVariant === UNORDERED_LIST.VARIANTS.PLAIN
-            ? ARIA_ROLE.LIST
-            : undefined
-        }
+        role={listRole}
         aria-label={ariaLabel}
       >
         {finalItems.map((item, index) => {

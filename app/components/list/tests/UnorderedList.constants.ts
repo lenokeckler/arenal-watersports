@@ -1,4 +1,4 @@
-export const LIST_ROLE = "list";
+export const ROLE_ATTRIBUTE = "role";
 export const LIST_ITEM_ROLE = "listitem";
 export const LIST_ARIA_LABEL = "Pending deposits";
 export const PLAIN_ITEM_TEST_IDS = [

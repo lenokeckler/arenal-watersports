@@ -6,6 +6,7 @@ import {
   OBJECT_ITEM_TEXT,
   PLAIN_ITEM_TEST_IDS,
   PLAIN_ITEM_TEXTS,
+  ROLE_ATTRIBUTE,
   STRING_ITEMS,
 } from "./UnorderedList.constants";
 import { renderUnorderedList } from "./renderUnorderedList";
@@ -14,9 +15,7 @@ describe("UnorderedList plain variant", () => {
   const items = PLAIN_ITEM_TEST_IDS.map((id, index) => ({
     id,
     text: (
-      <span data-testid={id}>
-        {PLAIN_ITEM_TEXTS[index]}
-      </span>
+      <div data-testid={id}>{PLAIN_ITEM_TEXTS[index]}</div>
     ),
   }));
 
@@ -64,6 +63,17 @@ describe("UnorderedList existing variants", () => {
     expect(
       page.getItems().map((item) => item.textContent)
     ).toEqual([...STRING_ITEMS]);
+  });
+
+  it("does not set a list role on non-plain variants", () => {
+    const page = renderUnorderedList({
+      items: [...STRING_ITEMS],
+      variant: UNORDERED_LIST.VARIANTS.DEFAULT,
+    });
+
+    expect(page.getListElement()).not.toHaveAttribute(
+      ROLE_ATTRIBUTE
+    );
   });
 
   it("renders object items by their text", () => {

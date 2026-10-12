@@ -93,6 +93,17 @@ describe("fetchDepositsByStatus", () => {
     ).rejects.toBeInstanceOf(SupabaseQueryError);
   });
 
+  it("does not return data when the query fails", async () => {
+    DepositsQueryPage.respondingWith({
+      data: [USD_DEPOSIT_ROW],
+      error: POSTGREST_ERROR,
+    });
+
+    await expect(
+      fetchDepositsByStatus({ statuses: MULTIPLE_STATUSES })
+    ).rejects.toBeInstanceOf(SupabaseQueryError);
+  });
+
   it("returns an empty array without creating a client when no status is requested", async () => {
     const page = DepositsQueryPage.respondingWith({
       data: [],

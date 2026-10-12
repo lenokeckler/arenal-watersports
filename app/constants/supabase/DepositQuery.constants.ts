@@ -1,8 +1,8 @@
 export const DEPOSIT_QUERY = {
-  TABLE: "deposits",
+  OPERATION: "fetch deposits by status",
+  ORDER_COLUMN: "created_at",
   SELECT:
     "id, amount, currency, status, reservations(code, customer_name)",
   STATUS_COLUMN: "status",
-  ORDER_COLUMN: "created_at",
-  OPERATION: "fetch deposits by status",
+  TABLE: "deposits",
 } as const;

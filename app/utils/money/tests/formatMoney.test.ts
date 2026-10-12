@@ -1,22 +1,28 @@
 import { describe, expect, it } from "vitest";
 import { formatMoney } from "../formatMoney";
 import {
+  CRC_FOUR_DIGITS,
   CRC_INTEGER,
   CRC_MILLIONS,
   CRC_ONE_DECIMAL,
   CRC_THOUSANDS,
   CRC_WITH_CENTS,
+  CRC_ZERO,
+  EXPECTED_CRC_FOUR_DIGITS,
   EXPECTED_CRC_INTEGER,
   EXPECTED_CRC_MILLIONS,
   EXPECTED_CRC_ONE_DECIMAL,
   EXPECTED_CRC_THOUSANDS,
   EXPECTED_CRC_WITH_CENTS,
+  EXPECTED_CRC_ZERO,
   EXPECTED_USD_INTEGER,
   EXPECTED_USD_THOUSANDS,
   EXPECTED_USD_WITH_CENTS,
+  EXPECTED_USD_ZERO,
   USD_INTEGER,
   USD_THOUSANDS,
   USD_WITH_CENTS,
+  USD_ZERO,
 } from "./formatMoney.constants";
 
 describe("formatMoney", () => {
@@ -66,5 +72,19 @@ describe("formatMoney", () => {
     expect(formatMoney(CRC_ONE_DECIMAL)).toBe(
       EXPECTED_CRC_ONE_DECIMAL
     );
+  });
+
+  it("groups a four-digit colon amount with a non-breaking space", () => {
+    expect(formatMoney(CRC_FOUR_DIGITS)).toBe(
+      EXPECTED_CRC_FOUR_DIGITS
+    );
+  });
+
+  it("prints a zero dollar amount with two decimals", () => {
+    expect(formatMoney(USD_ZERO)).toBe(EXPECTED_USD_ZERO);
+  });
+
+  it("prints a zero colon amount without decimals", () => {
+    expect(formatMoney(CRC_ZERO)).toBe(EXPECTED_CRC_ZERO);
   });
 });
