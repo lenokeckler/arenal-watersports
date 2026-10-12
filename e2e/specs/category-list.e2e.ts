@@ -26,8 +26,8 @@ const buildGroupMetaText = (groupName: string): string =>
   ].join(STRING.SPACE);
 
 test.describe("Category list", () => {
-  test.beforeEach(async ({ context }) => {
-    await logInAsAdmin(context);
+  test.beforeEach(async ({ page }) => {
+    await logInAsAdmin(page);
   });
 
   test("shows the page heading", async ({ page }) => {
