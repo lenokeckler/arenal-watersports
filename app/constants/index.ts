@@ -105,3 +105,7 @@ export {
   type DepositStatus,
 } from "./money/DepositStatus.constants";
 export { MONEY_FORMAT } from "./money/MoneyFormat.constants";
+export {
+  CURRENCY_SYMBOL,
+  CURRENCY_SYMBOL_SEPARATOR,
+} from "./money/CurrencySymbol.constants";
