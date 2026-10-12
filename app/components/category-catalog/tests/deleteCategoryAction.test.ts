@@ -5,6 +5,7 @@ import {
   it,
   vi,
 } from "vitest";
+import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { NotAuthorizedError } from "@/app/services/authorization/NotAuthorizedError";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
@@ -143,6 +144,32 @@ describe("deleteCategoryAction", () => {
     );
     expect(result).toEqual({
       status: CATEGORY_MUTATION_STATUS.SUCCESS,
+    });
+  });
+
+  it("returns the has-records error result when a record is inserted between the check and the delete", async () => {
+    mockAssertIsAdminWorker.mockResolvedValue(
+      FAKE_ADMIN_WORKER_ID
+    );
+    mockAssertCategoryHasNoRecords.mockResolvedValue(
+      undefined
+    );
+    mockDeleteEq.mockResolvedValue({
+      error: {
+        code: POSTGRES_ERROR_CODE.FOREIGN_KEY_VIOLATION,
+        message:
+          "update or delete on table violates foreign key constraint",
+      },
+    });
+
+    const result = await deleteCategoryAction(
+      FAKE_CATEGORY_ID
+    );
+
+    expect(result).toEqual({
+      status: CATEGORY_MUTATION_STATUS.ERROR,
+      message:
+        CATEGORY_CATALOG_COPY.DELETE_HAS_RECORDS_ERROR,
     });
   });
 

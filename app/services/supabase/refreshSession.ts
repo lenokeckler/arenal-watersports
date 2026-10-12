@@ -1,0 +1,43 @@
+import { createServerClient } from "@supabase/ssr";
+import {
+  NextResponse,
+  type NextRequest,
+} from "next/server";
+import { SUPABASE } from "@/app/constants";
+import type { Database } from "@/app/types";
+import type { SessionRefresh } from "./models/SessionRefresh.interface";
+
+export const refreshSupabaseSession = async (
+  request: NextRequest
+): Promise<SessionRefresh> => {
+  let response = NextResponse.next({ request });
+
+  const supabaseClient = createServerClient<Database>(
+    SUPABASE.URL,
+    SUPABASE.ANON_KEY,
+    {
+      cookies: {
+        getAll: () => request.cookies.getAll(),
+        setAll: (cookiesToSet) => {
+          cookiesToSet.forEach(({ name, value }) => {
+            request.cookies.set(name, value);
+          });
+          response = NextResponse.next({ request });
+          cookiesToSet.forEach(
+            ({ name, value, options }) => {
+              response.cookies.set(name, value, options);
+            }
+          );
+        },
+      },
+    }
+  );
+
+  const { data, error } =
+    await supabaseClient.auth.getClaims();
+
+  return {
+    hasSession: !error && Boolean(data?.claims),
+    response,
+  };
+};
