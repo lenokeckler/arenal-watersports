@@ -95,6 +95,7 @@ export {
   type SignInField,
 } from "./access/SignInError.constants";
 export { SUPABASE_AUTH_ERROR_CODE } from "./supabase/SupabaseAuthErrorCode.constants";
+export { DEPOSIT_QUERY } from "./supabase/DepositQuery.constants";
 export {
   CURRENCY_CODE,
   type CurrencyCode,
