@@ -5,6 +5,7 @@ import {
   createServerSupabaseClient,
   createServiceRoleSupabaseClient,
 } from "@/app/services/supabase";
+import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
@@ -43,6 +44,17 @@ export const deleteCategoryAction = async (
     .from("equipment_categories")
     .delete()
     .eq("id", categoryId);
+
+  if (
+    error?.code ===
+    POSTGRES_ERROR_CODE.FOREIGN_KEY_VIOLATION
+  ) {
+    return {
+      status: CATEGORY_MUTATION_STATUS.ERROR,
+      message:
+        CATEGORY_CATALOG_COPY.DELETE_HAS_RECORDS_ERROR,
+    };
+  }
   throwIfSupabaseError(error, "deleteCategoryAction");
 
   return { status: CATEGORY_MUTATION_STATUS.SUCCESS };
