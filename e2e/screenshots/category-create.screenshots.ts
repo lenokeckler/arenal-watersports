@@ -8,12 +8,11 @@ import { E2E_CATEGORY_CREATE_SCREENSHOT_BASENAME } from "../constants/E2eCategor
 test.describe("Category create screenshots", () => {
   test("captures the ready state of the create form", async ({
     page,
-    context,
   }, testInfo) => {
     const categoryCreateFormPage =
       createCategoryCreateFormPage(page);
 
-    await logInAsAdmin(context);
+    await logInAsAdmin(page);
     await categoryCreateFormPage.goTo();
     await categoryCreateFormPage.getHeading().waitFor();
 

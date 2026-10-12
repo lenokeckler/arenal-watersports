@@ -13,8 +13,8 @@ import {
 } from "../constants/E2eCategoryFixtures.constants";
 
 test.describe("Category create", () => {
-  test.beforeEach(async ({ context }) => {
-    await logInAsAdmin(context);
+  test.beforeEach(async ({ page }) => {
+    await logInAsAdmin(page);
   });
 
   test("shows the page heading and all three fields", async ({
