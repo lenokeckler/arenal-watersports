@@ -34,7 +34,6 @@ test.describe("Category list screenshots", () => {
 
   test("captures the confirm-delete state of a card", async ({
     page,
-    context,
   }, testInfo) => {
     const categoryName = resolveDeletableCategoryName(
       testInfo.project.name,
@@ -44,7 +43,7 @@ test.describe("Category list screenshots", () => {
     const categoryListPage = createCategoryListPage(page);
 
     try {
-      await logInAsAdmin(context);
+      await logInAsAdmin(page);
       await categoryListPage.goTo();
       await categoryListPage.getHeading().waitFor();
       await categoryListPage.clickCategoryDeleteButton(
