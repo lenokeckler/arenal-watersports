@@ -1,1 +1,1 @@
-RES-07.33: Pending deposits — read-only list of held deposits at /reservations/deposits (US-RES-33 · AWS-116)
+RES-07.33.01: Pending deposits data — pending deposits service, money formatting, plain list variant and screen copy (US-RES-33 · AWS-116)
