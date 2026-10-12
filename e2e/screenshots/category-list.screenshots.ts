@@ -16,11 +16,10 @@ import { resolveDeletableCategoryName } from "../constants/E2eCategoryFixtures.c
 test.describe("Category list screenshots", () => {
   test("captures the ready state with cards", async ({
     page,
-    context,
   }, testInfo) => {
     const categoryListPage = createCategoryListPage(page);
 
-    await logInAsAdmin(context);
+    await logInAsAdmin(page);
     await categoryListPage.goTo();
     await categoryListPage.getHeading().waitFor();
 
