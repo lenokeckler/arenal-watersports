@@ -1,5 +1,6 @@
 import { act } from "@testing-library/react";
 import { DEFAULT_SIGN_IN_CREDENTIALS } from "@/app/utils/sign-in/tests/signIn.constants";
+import { createSignInFormData } from "./createSignInFormData";
 import type { LoginFormResult } from "./LoginFormResult.type";
 import {
   createChangeEvent,
@@ -29,6 +30,18 @@ export const submitForm = async (
   await act(() =>
     Promise.resolve(
       result.current.handleSubmit(createSubmitEvent())
+    )
+  );
+};
+
+export const postFormWithoutJavaScript = async (
+  result: LoginFormResult
+): Promise<void> => {
+  await act(() =>
+    Promise.resolve(
+      result.current.formAction(
+        createSignInFormData(DEFAULT_SIGN_IN_CREDENTIALS)
+      )
     )
   );
 };
