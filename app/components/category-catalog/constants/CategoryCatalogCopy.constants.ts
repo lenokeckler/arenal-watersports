@@ -1,8 +1,15 @@
 export const CATEGORY_CATALOG_COPY = {
   CANCEL_BUTTON: "Cancelar",
+  CAN_BE_DAMAGED_FIELD_LABEL: "Puede dañarse",
+  CONSUMES_FUEL_FIELD_LABEL: "Consume combustible",
   CREATE_CTA: "+ Agregar categoría",
   CREATE_FORM_TITLE: "Nueva categoría",
   CREATE_SUCCESS_TOAST: "Categoría creada.",
+  DEFAULT_DURATION_MINUTES_FIELD_LABEL:
+    "Duración predeterminada (minutos)",
+  DEFAULT_DURATION_MINUTES_FIELD_PLACEHOLDER: "Ej. 60",
+  DEFAULT_DURATION_MINUTES_REQUIRED_WHEN_RESERVABLE_ERROR:
+    "Ingrese la duración predeterminada en minutos para una categoría reservable.",
   DELETE_BUTTON: "Eliminar",
   DELETE_CATEGORY_BUTTON: "Eliminar categoría",
   DELETE_CONFIRM_MESSAGE:
@@ -20,6 +27,11 @@ export const CATEGORY_CATALOG_COPY = {
   GROUP_FIELD_LABEL: "Grupo",
   GROUP_FIELD_PLACEHOLDER: "Opcional — ej. Kayaks",
   GROUP_PREFIX_LABEL: "GRUPO",
+  GUIDE_ONLY_FIELD_LABEL: "Uso exclusivo de guías",
+  HAS_CONDITION_PHOTOS_FIELD_LABEL:
+    "Requiere fotos de condición",
+  HAS_MOTOR_FIELD_LABEL: "Tiene motor",
+  IS_RESERVABLE_FIELD_LABEL: "Es reservable",
   LIST_PURPOSE:
     "Todo lo que la empresa posee, listo para contar.",
   LIST_TITLE: "Categorías del inventario",
@@ -46,4 +58,9 @@ export const CATEGORY_CATALOG_COPY = {
   TRACKING_MODE_MICRO_LABEL_BY_UNIT: "POR UNIDAD",
   TRACKING_MODE_REQUIRED_ERROR:
     "Seleccione un modo de conteo.",
+  UNITS_ARE_INTERCHANGEABLE_FIELD_LABEL:
+    "Las unidades son intercambiables",
+  USAGE_METRIC_ENGINE_HOURS_LABEL: "Horas de motor",
+  USAGE_METRIC_FIELD_LABEL: "Métrica de uso",
+  USAGE_METRIC_KILOMETERS_LABEL: "Kilómetros",
 } as const;
