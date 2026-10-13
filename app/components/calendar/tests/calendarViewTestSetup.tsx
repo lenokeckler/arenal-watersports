@@ -11,26 +11,40 @@ import type { CalendarViewProps } from "../models/CalendarViewProps.interface";
 import { CALENDAR_FIXTURE } from "./Calendar.constants";
 
 export const renderCalendar = (
-  allowedViews: CalendarViewProps["allowedViews"] = CALENDAR_ALLOWED_VIEWS.RESERVATIONS
-) =>
-  render(
+  initialAllowedViews: CalendarViewProps["allowedViews"] = CALENDAR_ALLOWED_VIEWS.RESERVATIONS
+) => {
+  const result = render(
     <Provider store={store}>
       <CalendarView
         today={CALENDAR_FIXTURE.leapEnd}
-        allowedViews={allowedViews}
+        allowedViews={initialAllowedViews}
       />
     </Provider>
   );
+  const rerenderCalendar = ({
+    today,
+    allowedViews,
+  }: CalendarViewProps) =>
+    result.rerender(
+      <Provider store={store}>
+        <CalendarView
+          today={today}
+          allowedViews={allowedViews}
+        />
+      </Provider>
+    );
+  return { ...result, rerenderCalendar };
+};
 
 export const setupCalendarViewTests = (): void => {
   beforeEach(() => {
     window.localStorage.clear();
+    store.dispatch(calendarActions.setAnchor(null));
     store.dispatch(
-      calendarActions.setCalendar({
-        anchor: null,
-        selectedView: CALENDAR_VIEW.DAY,
-        preferenceError: null,
-      })
+      calendarActions.setSelectedView(CALENDAR_VIEW.DAY)
+    );
+    store.dispatch(
+      calendarActions.setPreferenceError(null)
     );
   });
   afterEach(() => {

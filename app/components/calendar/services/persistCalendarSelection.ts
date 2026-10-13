@@ -3,7 +3,7 @@ import type { CalendarView } from "../models";
 import {
   getCalendarPreferenceError,
   writeCalendarPreference,
-} from "../services/calendarPreference";
+} from "./calendarPreference";
 
 export const persistCalendarSelection = (
   view: CalendarView

@@ -9,7 +9,7 @@ import type { CalendarState } from "../store/CalendarState.interface";
 import type { CalendarActions } from "../models/CalendarActions.type";
 import type { CalendarViewProps } from "../models/CalendarViewProps.interface";
 import { navigateCalendarPeriod } from "../utils";
-import { persistCalendarSelection } from "../utils/persistCalendarSelection";
+import { persistCalendarSelection } from "../services/persistCalendarSelection";
 
 export const useCalendarActions = (
   props: CalendarViewProps,
@@ -17,23 +17,25 @@ export const useCalendarActions = (
 ): CalendarActions => {
   const dispatch = useAppDispatch();
   const anchor = state.anchor ?? props.today;
-  const update = (next: CalendarState) =>
-    dispatch(calendarActions.setCalendar(next));
   const navigate = (direction: CalendarNavigation) =>
-    update({
-      ...state,
-      anchor: navigateCalendarPeriod(
-        anchor,
-        state.selectedView,
-        direction
-      ),
-    });
+    dispatch(
+      calendarActions.setAnchor(
+        navigateCalendarPeriod(
+          anchor,
+          state.selectedView,
+          direction
+        )
+      )
+    );
   const onSelect = (view: CalendarView) => {
     if (!props.allowedViews.includes(view)) {
       return;
     }
     const preferenceError = persistCalendarSelection(view);
-    update({ anchor, selectedView: view, preferenceError });
+    dispatch(calendarActions.setSelectedView(view));
+    dispatch(
+      calendarActions.setPreferenceError(preferenceError)
+    );
   };
   return {
     onSelect,
@@ -41,6 +43,6 @@ export const useCalendarActions = (
       navigate(CALENDAR_NAVIGATION.PREVIOUS),
     onNext: () => navigate(CALENDAR_NAVIGATION.NEXT),
     onToday: () =>
-      update({ ...state, anchor: props.today }),
+      dispatch(calendarActions.setAnchor(props.today)),
   };
 };

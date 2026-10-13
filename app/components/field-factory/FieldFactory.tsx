@@ -6,22 +6,23 @@ import {
   STRING,
   INPUT_TYPES,
   DISPLAY_NAME,
-  ICON_PATHS,
-  ICON_ALTS,
   BUTTON,
+  MATERIAL_ICON_NAME,
 } from "@/app/constants";
 import { useFieldFactoryViewModel } from "./hooks/useFieldFactoryViewModel";
 import Button from "../button/Button";
-import Icon from "../icons/icon/Icon";
+import MaterialIcon from "../icons/material-icon/MaterialIcon";
+import { PASSWORD_TOGGLE_COPY } from "./constants/PasswordToggleCopy.constants";
+import { resolveFieldAriaAttributes } from "./utils/resolveFieldAriaAttributes";
 import {
   FIELD_FACTORY_CHECKBOX_INPUT_CLASS,
   FIELD_FACTORY_CHECKBOX_LABEL_CLASS,
   FIELD_FACTORY_CHECKBOX_WRAPPER_CLASS,
   FIELD_FACTORY_OPTION_CLASS,
-  FIELD_FACTORY_PASSWORD_ICON_CLASS,
   FIELD_FACTORY_PASSWORD_TOGGLE_CLASS,
   FIELD_FACTORY_PASSWORD_WRAPPER_CLASS,
   FIELD_FACTORY_PLACEHOLDER_OPTION_CLASS,
+  resolveFieldFactoryPasswordInputClassName,
   resolveFieldFactorySelectClassName,
   resolveFieldFactoryTextareaClassName,
 } from "./styles/FieldFactory.styles";
@@ -49,6 +50,8 @@ const FieldFactory = forwardRef<
       reference,
       isSearch,
       accept,
+      hasError = false,
+      hasErrorText = false,
     },
     ref
   ) => {
@@ -60,6 +63,12 @@ const FieldFactory = forwardRef<
         handleChange,
         isSearch
       );
+
+    const ariaAttributes = resolveFieldAriaAttributes(
+      id,
+      hasError,
+      hasErrorText
+    );
 
     const toggleVisibility = () => {
       setIsVisible((prev) => !prev);
@@ -77,7 +86,7 @@ const FieldFactory = forwardRef<
               baseClassName
             )}
             placeholder={placeholder}
-            aria-describedby={`${id}-error`}
+            {...ariaAttributes}
             readOnly={readOnly}
             disabled={disabled}
           />
@@ -97,7 +106,7 @@ const FieldFactory = forwardRef<
               value === STRING.Empty,
               selectSizeClassName
             )}
-            aria-describedby={`${id}-error`}
+            {...ariaAttributes}
           >
             {placeholder && (
               <option
@@ -138,7 +147,7 @@ const FieldFactory = forwardRef<
               readOnly={readOnly}
               disabled={disabled}
               className={FIELD_FACTORY_CHECKBOX_INPUT_CLASS}
-              aria-describedby={`${id}-error`}
+              {...ariaAttributes}
             />
             <label
               htmlFor={id}
@@ -162,7 +171,7 @@ const FieldFactory = forwardRef<
             disabled={disabled}
             className={baseClassName}
             placeholder={placeholder}
-            aria-describedby={`${id}-error`}
+            {...ariaAttributes}
             ref={reference ?? ref}
           />
         );
@@ -178,7 +187,7 @@ const FieldFactory = forwardRef<
             accept={accept}
             readOnly={readOnly}
             disabled={disabled}
-            aria-describedby={`${id}-error`}
+            {...ariaAttributes}
             ref={reference ?? ref}
           />
         );
@@ -197,7 +206,7 @@ const FieldFactory = forwardRef<
               value === STRING.Empty,
               selectSizeClassName
             )}
-            aria-describedby={`${id}-error`}
+            {...ariaAttributes}
           >
             {placeholder && (
               <option
@@ -242,10 +251,12 @@ const FieldFactory = forwardRef<
               }
               readOnly={readOnly}
               disabled={disabled}
-              className={baseClassName}
+              className={resolveFieldFactoryPasswordInputClassName(
+                baseClassName
+              )}
               placeholder={placeholder}
-              aria-describedby={`${id}-error`}
-              ref={ref}
+              {...ariaAttributes}
+              ref={reference ?? ref}
             />
             <Button
               type="button"
@@ -254,22 +265,18 @@ const FieldFactory = forwardRef<
                 FIELD_FACTORY_PASSWORD_TOGGLE_CLASS
               }
               onClick={toggleVisibility}
-              tabIndex={0}
+              aria-label={
+                isVisible
+                  ? PASSWORD_TOGGLE_COPY.HIDE
+                  : PASSWORD_TOGGLE_COPY.SHOW
+              }
+              aria-controls={id}
             >
-              <Icon
-                src={
+              <MaterialIcon
+                name={
                   isVisible
-                    ? ICON_PATHS.EYE_VISIBLE
-                    : ICON_PATHS.EYE_HIDDEN
-                }
-                alt={
-                  isVisible
-                    ? ICON_ALTS.EYE_VISIBLE
-                    : ICON_ALTS.EYE_HIDDEN
-                }
-                size={20}
-                className={
-                  FIELD_FACTORY_PASSWORD_ICON_CLASS
+                    ? MATERIAL_ICON_NAME.VISIBILITY_OFF
+                    : MATERIAL_ICON_NAME.VISIBILITY
                 }
               />
             </Button>
@@ -289,8 +296,8 @@ const FieldFactory = forwardRef<
             disabled={disabled}
             className={baseClassName}
             placeholder={placeholder}
-            aria-describedby={`${id}-error`}
-            ref={ref}
+            {...ariaAttributes}
+            ref={reference ?? ref}
           />
         );
     }

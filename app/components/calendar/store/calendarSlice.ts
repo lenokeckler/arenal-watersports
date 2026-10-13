@@ -18,10 +18,26 @@ const calendarSlice = createSlice({
   name: STORE_SLICES.CALENDAR,
   initialState,
   reducers: {
-    setCalendar: (
-      _state,
-      action: PayloadAction<CalendarState>
-    ) => action.payload,
+    setSelectedView: (
+      state,
+      action: PayloadAction<CalendarState["selectedView"]>
+    ) => {
+      state.selectedView = action.payload;
+    },
+    setAnchor: (
+      state,
+      action: PayloadAction<CalendarState["anchor"]>
+    ) => {
+      state.anchor = action.payload;
+    },
+    setPreferenceError: (
+      state,
+      action: PayloadAction<
+        CalendarState["preferenceError"]
+      >
+    ) => {
+      state.preferenceError = action.payload;
+    },
   },
 });
 

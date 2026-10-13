@@ -23,10 +23,7 @@ import {
 
 const CalendarPeriods = (
   calendar: CalendarViewModel
-): NullableRef<ReactElement> => {
-  if (!calendar.hasAccess) {
-    return null;
-  }
+): ReactElement => {
   if (calendar.selectedView === CALENDAR_VIEW.YEAR) {
     return (
       <div className={CALENDAR_YEAR_CLASS}>
@@ -58,8 +55,11 @@ const CalendarPeriods = (
 
 export const CalendarView = (
   props: CalendarViewProps
-): ReactElement => {
+): NullableRef<ReactElement> => {
   const calendar = useCalendarViewModel(props);
+  if (!calendar.hasAccess) {
+    return null;
+  }
   return (
     <Section
       ariaLabel={CALENDAR_PRESENTATION.TITLE_ID}

@@ -53,7 +53,6 @@ Rol: todos los trabajadores. Es la puerta de entrada al sistema. Cada persona en
 
 - Ingreso por nombre de usuario y contraseña.
 - Ojito para ver u ocultar la contraseña.
-- Las reglas de la contraseña se muestran desde antes de escribirla, no después de fallar.
 - Los errores se muestran en mensajes rojos junto al campo que los provoca.
 - Autenticación resuelta con Supabase.
 
@@ -72,11 +71,13 @@ Rol: todos los trabajadores. Es la puerta de entrada al sistema. Cada persona en
 - Se confirma la contraseña temporal, se escribe la nueva y se repite.
 - No se avanza a ninguna pantalla del sistema hasta completarlo.
 - La contraseña nueva cumple los requisitos de seguridad.
+- Las reglas de la contraseña se muestran desde antes de escribirla, no después de fallar.
 
 **US-ACC-04 — Como trabajador cambio mi contraseña cuando yo quiera**
 
 - Se confirma la actual, se escribe la nueva y se repite.
 - La contraseña nueva cumple los requisitos de seguridad.
+- Las reglas de la contraseña se muestran desde antes de escribirla, no después de fallar.
 
 **US-ACC-05 — Como trabajador registro mi correo personal en mi cuenta**
 
@@ -87,6 +88,7 @@ Rol: todos los trabajadores. Es la puerta de entrada al sistema. Cada persona en
 
 - El sistema envía un PIN al correo personal registrado en la cuenta.
 - Se escribe el PIN en pantalla, después la contraseña nueva, y se repite.
+- Las reglas de la contraseña se muestran desde antes de escribirla, no después de fallar.
 - El PIN es de un solo uso y vence a los pocos minutos.
 - Si la cuenta no tiene correo registrado, administración genera una contraseña temporal.
 - No hay inicio de sesión con Google ni con ningún otro proveedor: el ingreso es siempre por usuario y contraseña.
@@ -875,7 +877,7 @@ Reglas que aplican a todo el sistema. Se listan aquí una sola vez en lugar de r
 ### Seguridad y sesión
 
 - Autenticación resuelta con Supabase. Cada persona entra con su propio usuario y nadie digita la contraseña de otro.
-- La contraseña exige mayúscula, minúscula, número y símbolo, con largo mínimo y largo máximo. Las reglas se muestran desde antes de escribirla.
+- La contraseña exige mayúscula, minúscula, número y símbolo, con largo mínimo y largo máximo. Las reglas se muestran desde antes de escribirla donde se escoge una contraseña nueva.
 - La cuenta de un trabajador se bloquea al llegar a diez intentos fallidos seguidos y solo administración la desbloquea.
 - La recuperación de contraseña se hace con un PIN de un solo uso enviado al correo personal, para todos los roles. No hay inicio de sesión con Google ni con otro proveedor.
 - El sistema tiene una sola cuenta de administración. No se bloquea nunca: pasados los diez intentos entra al proceso de recuperación, que es su única salida.

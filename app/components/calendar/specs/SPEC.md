@@ -17,7 +17,7 @@ The allowed-view policy accepts a work area already verified by its caller, usin
 
 The interactive view selects daily, weekly, monthly and annual periods and navigates backward, forward or to the supplied server date. Week layouts stack on mobile; month grids start on Monday; annual layouts show twelve month grids. Today has an accessible date marker. View selection persists locally under RNF-052; invalid or restricted preferences fall back to day without overwriting storage. Storage failures retain the selection and show a Spanish error.
 
-The view accepts an externally verified allowed-view policy and a server-supplied Costa Rica date. A dependent development preview will demonstrate static policy examples without authenticated data. Real active-mode authorization remains dependent on US-ACC-11/US-TAB-07; automatic refresh across midnight remains pending authenticated integration. Typed component stories exist, but no Storybook runner is installed.
+The view accepts an externally verified allowed-view policy and a server-supplied Costa Rica date. A dependent development preview will demonstrate static policy examples without authenticated data. Real active-mode authorization remains dependent on US-ACC-11/US-TAB-07; automatic refresh across midnight remains pending authenticated integration.
 
 ## Pending integration
 
