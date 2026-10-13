@@ -61,4 +61,44 @@ describe("mapCategoryRowToBehavior", () => {
       categoryBehavior.defaultDurationMinutes
     ).toBeNull();
   });
+
+  it("maps each boolean field to its own behavior field without swapping them", () => {
+    const categoryRow = {
+      ...DEFAULT_EQUIPMENT_CATEGORY_ROW,
+      is_reservable: false,
+      has_motor: true,
+      consumes_fuel: false,
+      can_be_damaged: true,
+      has_condition_photos: false,
+      guide_only: true,
+      units_are_interchangeable: false,
+    };
+
+    const categoryBehavior =
+      mapCategoryRowToBehavior(categoryRow);
+
+    expect(categoryBehavior.isReservable).toBe(false);
+    expect(categoryBehavior.hasMotor).toBe(true);
+    expect(categoryBehavior.consumesFuel).toBe(false);
+    expect(categoryBehavior.canBeDamaged).toBe(true);
+    expect(categoryBehavior.hasConditionPhotos).toBe(false);
+    expect(categoryBehavior.guideOnly).toBe(true);
+    expect(categoryBehavior.unitsAreInterchangeable).toBe(
+      false
+    );
+  });
+
+  it("maps a kilometers usage metric straight through", () => {
+    const categoryRow = {
+      ...DEFAULT_EQUIPMENT_CATEGORY_ROW,
+      usage_metric: USAGE_METRIC.KILOMETERS,
+    };
+
+    const categoryBehavior =
+      mapCategoryRowToBehavior(categoryRow);
+
+    expect(categoryBehavior.usageMetric).toBe(
+      USAGE_METRIC.KILOMETERS
+    );
+  });
 });
