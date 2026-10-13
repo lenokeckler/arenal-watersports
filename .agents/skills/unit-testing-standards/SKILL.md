@@ -38,7 +38,7 @@ Follow `code-style-standards` (arrow functions, descriptive names) and `constant
 Tests live **inside the feature folder** (same architecture as `component-architecture`):
 
 ```
-app/components/<feature-name>/
+app/features/<module>/<feature-name>/
   FeatureName.tsx
   hooks/
     useFeatureNameViewModel.ts
@@ -193,7 +193,7 @@ When `component-architecture` SDD applies:
 
 ## 7. Checklist
 
-- [ ] Tests colocated under `app/components/<feature>/tests/`
+- [ ] Tests colocated under `app/features/<module>/<feature>/tests/`
 - [ ] UI tests go through a `*.page.ts` Page Object (no duplicated raw queries in specs)
 - [ ] Page Object has no `expect` calls; specs own assertions
 - [ ] Queries prefer roles/labels; constants used when the app uses them

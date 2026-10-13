@@ -1,0 +1,1 @@
+chore - Changelog fragments — each pull request writes its changelog line in its own file under changelog/unreleased/, CI checks it, and npm run changelog moves the lines into CHANGELOG.md when a release is cut

@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -23,6 +23,8 @@
     "db:test": "supabase db reset --no-seed && supabase test db",
     "db:types": "supabase gen types typescript --local > app/types/database.types.ts",
     "story": "node scripts/story.mjs",
+    "changelog": "node scripts/changelog.mjs",
+    "changelog:check": "node scripts/changelog.mjs --check",
     "stories:jira": "node scripts/stories-to-jira.mjs",
     "agents:sync": "node scripts/sync-agents.mjs",
     "agents:check": "node scripts/sync-agents.mjs --check"
