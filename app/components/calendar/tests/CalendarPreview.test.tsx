@@ -12,7 +12,7 @@ import {
   CALENDAR_PREVIEW,
 } from "@/app/constants";
 import { CalendarPreviewEntry } from "../CalendarPreviewEntry";
-import { CALENDAR_TEST } from "./CalendarPresentation.constants";
+import { CALENDAR_PREVIEW_TEST } from "./CalendarPreview.constants";
 import { createCalendarViewPage } from "./CalendarView.page";
 
 vi.mock("next/navigation", () => ({
@@ -28,18 +28,18 @@ describe("CalendarPreviewEntry", () => {
 
   it("rejects the preview in production before supplying view data", () => {
     vi.mocked(notFound).mockImplementation(() => {
-      throw new Error(CALENDAR_TEST.NOT_FOUND);
+      throw new Error(CALENDAR_PREVIEW_TEST.NOT_FOUND);
     });
     vi.stubEnv(
-      CALENDAR_TEST.ENVIRONMENT,
-      CALENDAR_TEST.PRODUCTION
+      CALENDAR_PREVIEW_TEST.ENVIRONMENT,
+      CALENDAR_PREVIEW_TEST.PRODUCTION
     );
 
     expect(() =>
       CalendarPreviewEntry({
         example: CALENDAR_PREVIEW.OPERATIONS_EXAMPLE,
       })
-    ).toThrow(CALENDAR_TEST.NOT_FOUND);
+    ).toThrow(CALENDAR_PREVIEW_TEST.NOT_FOUND);
   });
 
   it.each([
@@ -52,7 +52,7 @@ describe("CalendarPreviewEntry", () => {
     "supplies the development example policy for %s",
     (example, allowedViews) => {
       vi.stubEnv(
-        CALENDAR_TEST.ENVIRONMENT,
+        CALENDAR_PREVIEW_TEST.ENVIRONMENT,
         CALENDAR_PREVIEW.DEVELOPMENT
       );
 

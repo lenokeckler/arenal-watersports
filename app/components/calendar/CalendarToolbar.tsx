@@ -4,6 +4,7 @@ import {
   BUTTON,
   CALENDAR_TEXT,
   CALENDAR_PRESENTATION,
+  ARIA_ROLE,
   TitleVariant,
 } from "@/app/constants";
 import type { CalendarToolbarProps } from "./models/CalendarToolbarProps.interface";
@@ -11,6 +12,7 @@ import {
   CALENDAR_TOOLBAR_CLASS,
   CALENDAR_TITLE_CLASS,
   CALENDAR_ACTIONS_CLASS,
+  CALENDAR_VIEW_GROUP_CLASS,
   CALENDAR_BUTTON_CLASS,
   resolveCalendarButtonClass,
 } from "./styles/Calendar.styles";
@@ -20,6 +22,30 @@ const CalendarViewSelector = ({
   allowedViews,
   onSelect,
 }: CalendarToolbarProps): ReactElement => (
+  <div
+    className={CALENDAR_VIEW_GROUP_CLASS}
+    role={ARIA_ROLE.GROUP}
+    aria-label={CALENDAR_TEXT.VIEWS}
+  >
+    {allowedViews.map((view) => (
+      <Button
+        key={view}
+        variant={BUTTON.BASE}
+        className={resolveCalendarButtonClass(
+          view === selectedView
+        )}
+        aria-pressed={view === selectedView}
+        onClick={() => onSelect(view)}
+      >
+        {CALENDAR_TEXT.LABELS[view]}
+      </Button>
+    ))}
+  </div>
+);
+
+export const CalendarToolbar = (
+  props: CalendarToolbarProps
+): ReactElement => (
   <div>
     <div className={CALENDAR_TOOLBAR_CLASS}>
       <Title
@@ -28,33 +54,8 @@ const CalendarViewSelector = ({
         id={CALENDAR_PRESENTATION.TITLE_ID}
         className={CALENDAR_TITLE_CLASS}
       />
-      <div
-        className={CALENDAR_ACTIONS_CLASS}
-        aria-label={CALENDAR_TEXT.VIEWS}
-      >
-        {allowedViews.map((view) => (
-          <Button
-            key={view}
-            variant={BUTTON.BASE}
-            className={resolveCalendarButtonClass(
-              view === selectedView
-            )}
-            aria-pressed={view === selectedView}
-            onClick={() => onSelect(view)}
-          >
-            {CALENDAR_TEXT.LABELS[view]}
-          </Button>
-        ))}
-      </div>
+      <CalendarViewSelector {...props} />
     </div>
-  </div>
-);
-
-export const CalendarToolbar = (
-  props: CalendarToolbarProps
-): ReactElement => (
-  <div>
-    <CalendarViewSelector {...props} />
     <Title
       variant={TitleVariant.SECONDARY}
       text={props.title}

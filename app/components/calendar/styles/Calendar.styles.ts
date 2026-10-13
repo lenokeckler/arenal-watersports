@@ -8,12 +8,13 @@ export const CALENDAR_TOOLBAR_CLASS =
   "flex flex-wrap items-center justify-between gap-4";
 export const CALENDAR_ACTIONS_CLASS =
   "flex flex-wrap gap-2";
+export const CALENDAR_VIEW_GROUP_CLASS =
+  "flex flex-wrap gap-1 rounded-lg bg-surface-container-low p-1";
 export const CALENDAR_BUTTON_CLASS =
   "min-h-12 min-w-12 rounded-lg border border-outline px-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 export const CALENDAR_SELECTED_CLASS =
-  "bg-primary text-on-primary";
-export const CALENDAR_UNSELECTED_CLASS =
-  "bg-surface-container text-on-surface";
+  "bg-primary-container/20 text-primary";
+export const CALENDAR_UNSELECTED_CLASS = "text-on-surface";
 export const CALENDAR_DAYS_CLASS =
   "grid gap-3 md:grid-cols-7";
 export const CALENDAR_SINGLE_DAY_CLASS = "grid gap-3";

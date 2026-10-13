@@ -10,11 +10,13 @@ import {
 import type { NullableRef } from "@/app/types";
 import type { CalendarView } from "@/app/components/calendar/models";
 import { E2E_CALENDAR } from "../constants/E2eCalendar.constants";
+import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
 
 const goToCalendar = async (
   page: Page,
   operations: boolean
 ): Promise<void> => {
+  await signInAsSeededWorker(page);
   const query = operations
     ? `?${CALENDAR_PREVIEW.EXAMPLE_QUERY}=${CALENDAR_PREVIEW.OPERATIONS_EXAMPLE}`
     : STRING.Empty;

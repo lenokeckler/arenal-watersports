@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   CALENDAR_ALLOWED_VIEWS,
   CALENDAR_PREFERENCE,
-  CALENDAR_TEXT,
+  CALENDAR_PREFERENCE_COPY,
   CALENDAR_VIEW,
 } from "@/app/constants";
 import { CALENDAR_FIXTURE as fixture } from "./Calendar.constants";
@@ -20,7 +20,6 @@ describe("CalendarView", () => {
     async (view) => {
       renderCalendar();
       const calendar = createCalendarViewPage();
-
       await calendar.selectView(view);
 
       expect(calendar.getView(view)).toHaveAttribute(
@@ -63,7 +62,6 @@ describe("CalendarView", () => {
     expect(
       calendar.getView(CALENDAR_VIEW.MONTH)
     ).toBeNull();
-    expect(calendar.getView(CALENDAR_VIEW.YEAR)).toBeNull();
     expect(
       calendar.getView(CALENDAR_VIEW.DAY)
     ).toHaveAttribute(
@@ -85,29 +83,11 @@ describe("CalendarView", () => {
     ).toBe(CALENDAR_VIEW.WEEK);
   });
 
-  it("navigates month and year and returns to today", async () => {
-    renderCalendar();
-    const calendar = createCalendarViewPage();
-    await calendar.selectView(CALENDAR_VIEW.MONTH);
-    const originalMonth = calendar.getTitle()?.textContent;
-
-    await calendar.navigate(CALENDAR_TEXT.NEXT);
-    expect(calendar.getTitle()?.textContent).not.toBe(
-      originalMonth
-    );
-    await calendar.navigate(CALENDAR_TEXT.PREVIOUS);
-    expect(calendar.getTitle()?.textContent).toBe(
-      originalMonth
-    );
-    await calendar.selectView(CALENDAR_VIEW.YEAR);
-    await calendar.navigate(CALENDAR_TEXT.NEXT);
-    expect(calendar.getTitle()).toHaveTextContent(
-      fixture.nextYearStart.year.toString()
-    );
-    await calendar.navigate(CALENDAR_TEXT.TODAY);
-    expect(calendar.getTitle()).toHaveTextContent(
-      fixture.leapEnd.year.toString()
-    );
+  it("shows no calendar when no views are allowed", () => {
+    renderCalendar([]);
+    expect(
+      createCalendarViewPage().getCalendar()
+    ).toBeNull();
   });
 
   it("shows a Spanish storage error and keeps interactions usable", async () => {
@@ -115,22 +95,25 @@ describe("CalendarView", () => {
       Storage.prototype,
       "getItem"
     ).mockImplementation(() => {
-      throw new Error(CALENDAR_PREFERENCE.ERROR);
+      throw new Error(CALENDAR_PREFERENCE_COPY.ERROR);
     });
     vi.spyOn(
       Storage.prototype,
       "setItem"
     ).mockImplementation(() => {
-      throw new Error(CALENDAR_PREFERENCE.ERROR);
+      throw new Error(CALENDAR_PREFERENCE_COPY.ERROR);
     });
-    renderCalendar();
+    const { rerenderCalendar } = renderCalendar();
     const calendar = createCalendarViewPage();
 
     await calendar.selectView(CALENDAR_VIEW.MONTH);
-    await calendar.navigate(CALENDAR_TEXT.NEXT);
+    rerenderCalendar({
+      today: fixture.marchStart,
+      allowedViews: CALENDAR_ALLOWED_VIEWS.RESERVATIONS,
+    });
 
     expect(calendar.getError()).toHaveTextContent(
-      CALENDAR_PREFERENCE.ERROR
+      CALENDAR_PREFERENCE_COPY.ERROR
     );
     expect(
       calendar.getView(CALENDAR_VIEW.MONTH)

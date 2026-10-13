@@ -84,8 +84,8 @@ When a skill applies, follow it **and** meet this seniority bar.
 
 ### Language convention
 
-- **Code identifiers are English**: variables, types, functions, files, constant keys.
-- **User-facing text and URL segments are Spanish**, because every user is a Spanish-speaking worker: `PATHS.ACCESS.LOGIN` resolves to `/acceso/ingreso`.
+- **Code is English**: variables, types, functions, files, folders, constant keys and URL segments — `PATHS.ACCESS.LOGIN` resolves to `/access/login`.
+- **User-facing text is Spanish**, because every user is a Spanish-speaking worker; it lives in `*Copy.constants.ts` files, never inline.
 - **Commit messages, branch names, PR titles, PR bodies and PR comments are English.** Conversation with the user is Spanish, and so is everything in Jira, because the backlog it was built from is Spanish.
 
 ### Requirements are binding
@@ -134,21 +134,21 @@ catalog names, exactly like every other tool.
 
 #### Stack-specific
 
-| Skill                      | Path                                               | Use when                                                                                                                                                                                                                                                     |
-| -------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `code-style-standards`     | `.agents/skills/code-style-standards/SKILL.md`     | Writing or refactoring components/hooks; naming; arrow-function style; defers literals and magic numbers to `constants-standards`                                                                                                                            |
-| `eslint-standards`         | `.agents/skills/eslint-standards/SKILL.md`         | Writing or changing JS/TS/TSX; lint errors; applying or updating `eslint.config.mjs`                                                                                                                                                                         |
-| `prettier-standards`       | `.agents/skills/prettier-standards/SKILL.md`       | Writing or formatting files; format drift; applying or updating `.prettierrc.json`                                                                                                                                                                           |
-| `component-architecture`   | `.agents/skills/component-architecture/SKILL.md`   | Feature-based folders; SDD; SOLID and patterns; local mini components for readable returns; `.tsx` plus `use*ViewModel.ts`                                                                                                                                   |
-| `component-standards`      | `.agents/skills/component-standards/SKILL.md`      | Building UI — reuse existing bases; defers ViewModel separation to `component-architecture`; Nullable types                                                                                                                                                  |
-| `styles-standards`         | `.agents/skills/styles-standards/SKILL.md`         | Any `.tsx` that renders markup; every Tailwind class lives in a `styles/*.styles.ts` constant — naming, composition, variant maps, guard grep                                                                                                                |
-| `route-structure`          | `.agents/skills/route-structure/SKILL.md`          | Creating or moving any `page.tsx`, `layout.tsx` or route — `app/(roles)/<area>/<resource>`, pre-login under `app/acceso/`, access checked by proxy.ts, server functions and Row Level Security (never by a layout), page as a shell, `PATHS` only            |
-| `constants-standards`      | `.agents/skills/constants-standards/SKILL.md`      | Hard-coded strings and magic numbers to `@/app/constants`; creating and structuring constant files; defers Tailwind classes to `styles-standards`                                                                                                            |
-| `structure-standards`      | `.agents/skills/structure-standards/SKILL.md`      | Writing or reviewing any code, tests, SQL and E2E included — no comments, many small single-responsibility files, types in `models/`, `Nullable` family, defaults objects, no nested ternaries, enum-like constants, base components, `goTo`, review threads |
-| `api-mutation-standards`   | `.agents/skills/api-mutation-standards/SKILL.md`   | Adding or changing `useApiMutation` usage or mutation types                                                                                                                                                                                                  |
-| `redux-store-architecture` | `.agents/skills/redux-store-architecture/SKILL.md` | Adding or changing Redux slices, store registration, or shared state                                                                                                                                                                                         |
-| `unit-testing-standards`   | `.agents/skills/unit-testing-standards/SKILL.md`   | Unit and component tests with Vitest, Testing Library, and Page Object Model                                                                                                                                                                                 |
-| `pull-request-workflow`    | `.agents/skills/pull-request-workflow/SKILL.md`    | Cutting a branch, committing, opening or updating a PR, answering a review — GitFlow, naming, labels, CHANGELOG, the 1000-line rule, stacked PRs                                                                                                             |
+| Skill                      | Path                                               | Use when                                                                                                                                                                                                                                                             |
+| -------------------------- | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `code-style-standards`     | `.agents/skills/code-style-standards/SKILL.md`     | Writing or refactoring components/hooks; naming; arrow-function style; defers literals and magic numbers to `constants-standards`                                                                                                                                    |
+| `eslint-standards`         | `.agents/skills/eslint-standards/SKILL.md`         | Writing or changing JS/TS/TSX; lint errors; applying or updating `eslint.config.mjs`                                                                                                                                                                                 |
+| `prettier-standards`       | `.agents/skills/prettier-standards/SKILL.md`       | Writing or formatting files; format drift; applying or updating `.prettierrc.json`                                                                                                                                                                                   |
+| `component-architecture`   | `.agents/skills/component-architecture/SKILL.md`   | `app/features/<module>/<feature>` versus shared `app/components/<base>`; one-way imports; SDD; SOLID; local mini components; `.tsx` plus `use*ViewModel.ts`                                                                                                          |
+| `component-standards`      | `.agents/skills/component-standards/SKILL.md`      | Building UI — reuse existing bases; defers ViewModel separation to `component-architecture`; Nullable types                                                                                                                                                          |
+| `styles-standards`         | `.agents/skills/styles-standards/SKILL.md`         | Any `.tsx` that renders markup; every Tailwind class lives in a `styles/*.styles.ts` constant — naming, composition, variant maps, guard grep, Stitch as the visual reference                                                                                        |
+| `route-structure`          | `.agents/skills/route-structure/SKILL.md`          | Creating or moving any `page.tsx`, `layout.tsx` or route — `app/(system)/<area>/<resource>`, pre-login under `app/access/`, English segments, access checked by proxy.ts, server functions and Row Level Security (never by a layout), page as a shell, `PATHS` only |
+| `constants-standards`      | `.agents/skills/constants-standards/SKILL.md`      | Hard-coded strings and magic numbers to `@/app/constants`; creating and structuring constant files; user-facing copy in Spanish, addressed as usted; defers Tailwind classes to `styles-standards`                                                                   |
+| `structure-standards`      | `.agents/skills/structure-standards/SKILL.md`      | Writing or reviewing any code, tests, SQL and E2E included — no comments, many small single-responsibility files, types in `models/`, `Nullable` family, defaults objects, no nested ternaries, enum-like constants, base components, `goTo`, review threads         |
+| `api-mutation-standards`   | `.agents/skills/api-mutation-standards/SKILL.md`   | Adding or changing `useApiMutation` usage or mutation types                                                                                                                                                                                                          |
+| `redux-store-architecture` | `.agents/skills/redux-store-architecture/SKILL.md` | Adding or changing Redux slices, store registration, or shared state                                                                                                                                                                                                 |
+| `unit-testing-standards`   | `.agents/skills/unit-testing-standards/SKILL.md`   | Unit and component tests with Vitest, Testing Library, and Page Object Model                                                                                                                                                                                         |
+| `pull-request-workflow`    | `.agents/skills/pull-request-workflow/SKILL.md`    | Cutting a branch, committing, opening or updating a PR, answering a review — GitFlow, naming, labels, CHANGELOG, the 1000-line rule, stacked PRs                                                                                                                     |
 
 #### Language-agnostic and workflow
 
@@ -195,11 +195,11 @@ the check on every PR.
 
 ## Branching and pull requests
 
-The whole workflow — GitFlow, branch and commit names, PR title, body, labels and reviewers, the CHANGELOG line, the 1000-line rule, stacked PRs and merging — lives in [`pull-request-workflow`](.agents/skills/pull-request-workflow/SKILL.md). The summary below never overrides it.
+The whole workflow — GitFlow, branch and commit names, PR title, body, labels and reviewers, the changelog fragment, the 1000-line rule, stacked PRs and merging — lives in [`pull-request-workflow`](.agents/skills/pull-request-workflow/SKILL.md). The summary below never overrides it.
 
 - `main` is production and `develop` is integration; both are protected, merges are squash-only, and a merged branch is deleted.
 - One story is one branch and one PR. Working branches come from `develop` and target `develop`, named after the epic and the story: `feat/acc-01/us-01-login-form`. Work outside any story goes in `chore/<slug>`. Only `release/*` and `hotfix` target `main`. Never rename a branch with an open PR.
-- Commits are one short English sentence in the imperative, with no prefix: `Add username and password login form`. The first commit, `Start login form`, carries the PR's CHANGELOG line.
+- Commits are one short English sentence in the imperative, with no prefix: `Add username and password login form`. The first commit, `Start login form`, adds the PR's changelog fragment: one line in `changelog/unreleased/feature/<branch-with-dashes>.md`. `CHANGELOG.md` changes only in a `release/*` PR, where `npm run changelog` collects the fragments.
 - Draft PR first, titled with the epic and story number, `ACC-01.01: Login form`, with the five headings of `.github/pull_request_template.md`, the whole team minus the author as reviewers, and `In Progress` + `Enhancement`.
 - Under 1000 changed lines per PR, measured before adding work; stack only on a real code dependency.
 - A teammate approves a PR with an `APPROVED` review and the `QA Approved` label; then the author merges it into `develop` and fixes whatever it breaks. AI agents never merge anything.
@@ -210,7 +210,7 @@ The whole workflow — GitFlow, branch and commit names, PR title, body, labels 
 npm run dev                    # Next.js + Turbopack
 npm run build                  # Production build
 npm run lint                   # ESLint
-npm run typecheck              # tsc --noEmit
+npm run typecheck              # next typegen + tsc --noEmit (route types first)
 npm run format                 # Prettier write, whole repo
 npm run test:run               # Vitest, once (never `npm test`: it is watch mode)
 npm run test:e2e               # Playwright, headless
@@ -223,9 +223,11 @@ npm run story -- --list         # Index every module, epic and story
 npm run stories:jira -- --dry-run  # List what the Jira copy of the stories is missing (needs JIRA_* env)
 npm run agents:sync            # Regenerate .github/agents/ and .codex/agents/ from .claude/agents/
 npm run agents:check           # Fail if the generated agent files have drifted
+npm run changelog:check -- origin/develop  # This PR adds exactly one changelog fragment (CI runs it)
+npm run changelog              # Release only: move every fragment into CHANGELOG.md
 ```
 
-Before opening a PR for review, `npm run format`, `npm run lint`, `npm run typecheck`, `npm run test:run` and `npm run build` must all succeed — CI runs the same set (with `prettier --check`) on every PR — plus `npm run test:e2e` for any story with UI.
+Before opening a PR for review, `npm run format`, `npm run lint`, `npm run typecheck`, `npm run test:run` and `npm run build` must all succeed — CI runs the same set (with `prettier --check`) on every pull request, stacked ones included, — plus `npm run test:e2e` for any story with UI.
 
 ## Adding a skill (maintainers)
 
