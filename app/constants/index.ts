@@ -1,5 +1,6 @@
 export { PAGINATION } from "./strings/Pagination.constant";
 export { CALENDAR_PREFERENCE } from "./calendar/CalendarPreference.constants";
+export { CALENDAR_PREFERENCE_COPY } from "./calendar/CalendarPreferenceCopy.constants";
 export {
   CALENDAR_ALLOWED_VIEWS,
   CALENDAR_NAVIGATION,

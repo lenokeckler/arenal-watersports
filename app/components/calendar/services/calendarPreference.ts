@@ -1,5 +1,6 @@
 import {
   CALENDAR_PREFERENCE,
+  CALENDAR_PREFERENCE_COPY,
   CALENDAR_VIEW,
 } from "@/app/constants";
 import type { CalendarView } from "../models";
@@ -28,6 +29,6 @@ export const writeCalendarPreference = (
 export const getCalendarPreferenceError = (
   error: unknown
 ): string =>
-  new Error(CALENDAR_PREFERENCE.ERROR, {
+  new Error(CALENDAR_PREFERENCE_COPY.ERROR, {
     cause: error,
   }).message;
