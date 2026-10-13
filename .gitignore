@@ -61,3 +61,6 @@ docs/proyecto/PROGRESO.md
 # Working artifacts for the agent pipeline (plans, scratch notes) never ship.
 .agents/tmp/*
 !.agents/tmp/.gitkeep
+
+docs/referencia/stitch/
+.mcp.json
