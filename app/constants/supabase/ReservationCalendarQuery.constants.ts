@@ -19,6 +19,13 @@ export const RESERVATION_CALENDAR_QUERY = {
   },
   COUNT: "exact",
   MATCHING_DISPATCHES: "matching_dispatches",
+  OPERATORS: {
+    EQUAL: "eq",
+    GREATER_THAN: "gt",
+    IS_NULL: "is.null",
+    LESS_THAN: "lt",
+    NOT_NULL: "not.is.null",
+  },
   PROJECTION: `
     id,customer_name,starts_at,ends_at,status,
     reservation_items!reservation_items_reservation_id_fkey(
@@ -34,5 +41,18 @@ export const RESERVATION_CALENDAR_QUERY = {
     ),
     matching_dispatches:reservation_dispatches!reservation_dispatches_reservation_id_fkey()
   `,
+  SYNTAX: {
+    AND: "and",
+    CLOSE_GROUP: ")",
+    FIELD_SEPARATOR: ".",
+    OPEN_GROUP: "(",
+  },
   TABLE: "reservations",
+} as const;
+
+export const RESERVATION_CALENDAR_WINDOW_FORMAT = {
+  CIVIL_PREFIX_LENGTH: 19,
+  INSTANT_PATTERN:
+    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/,
+  UTC_SUFFIX: "Z",
 } as const;

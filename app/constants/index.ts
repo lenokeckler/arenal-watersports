@@ -112,5 +112,6 @@ export { SUPABASE_AUTH_ERROR_CODE } from "./supabase/SupabaseAuthErrorCode.const
 export {
   RESERVATION_CALENDAR_ACTIVE_STATUS,
   RESERVATION_CALENDAR_QUERY,
+  RESERVATION_CALENDAR_WINDOW_FORMAT,
 } from "./supabase/ReservationCalendarQuery.constants";
 export { RESERVATION_CALENDAR_QUERY_ERROR } from "./supabase/ReservationCalendarQueryError.constants";
