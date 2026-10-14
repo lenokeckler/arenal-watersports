@@ -1,1 +1,1 @@
-RES-01.01.04: Calendar preview — calendar views aligned with Stitch and the development-only preview removed (US-RES-01 · AWS-84)
+RES-01.01.04: Shared calendar views — align the official Reservations calendar with Stitch and remove the development preview (US-RES-01 · AWS-84)
