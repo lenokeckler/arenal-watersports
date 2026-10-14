@@ -3,7 +3,7 @@ import languageReducer from "./slices/languageSlice";
 import { STORE_SLICES } from "./constants";
 import toastReducer from "@/app/components/toast/store/toastSlice";
 import sessionReducer from "@/app/components/session/store/sessionSlice";
-import calendarReducer from "@/app/features/reservations/calendar/store/calendarSlice";
+import calendarReducer from "./slices/calendarSlice";
 
 export const store = configureStore({
   reducer: {
@@ -20,4 +20,4 @@ export { default as languageReducer } from "./slices/languageSlice";
 export { useLanguage } from "./useLanguage";
 export { toastActions } from "@/app/components/toast/store/toastSlice";
 export { sessionActions } from "@/app/components/session/store/sessionSlice";
-export { calendarActions } from "@/app/features/reservations/calendar/store/calendarSlice";
+export { calendarActions } from "./slices/calendarSlice";

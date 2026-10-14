@@ -5,7 +5,7 @@ import type {
   CalendarNavigation,
   CalendarView,
 } from "../models";
-import type { CalendarState } from "../store/CalendarState.interface";
+import type { CalendarState } from "@/app/store/slices/CalendarState.interface";
 import type { CalendarActions } from "../models/CalendarActions.type";
 import type { CalendarViewProps } from "../models/CalendarViewProps.interface";
 import { navigateCalendarPeriod } from "../utils";
