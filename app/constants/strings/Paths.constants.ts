@@ -5,6 +5,6 @@ export const PATHS = {
   },
   HOME: "/",
   RESERVATIONS: {
-    CALENDAR_PREVIEW: "/reservas/calendario/vista-previa",
+    CALENDAR: "/reservations/calendar",
   },
 } as const;

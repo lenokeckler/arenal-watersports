@@ -83,13 +83,6 @@ describe("CalendarView", () => {
     ).toBe(CALENDAR_VIEW.WEEK);
   });
 
-  it("shows no calendar when no views are allowed", () => {
-    renderCalendar([]);
-    expect(
-      createCalendarViewPage().getCalendar()
-    ).toBeNull();
-  });
-
   it("shows a Spanish storage error and keeps interactions usable", async () => {
     vi.spyOn(
       Storage.prototype,

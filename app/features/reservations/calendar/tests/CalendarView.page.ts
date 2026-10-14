@@ -32,19 +32,16 @@ export const createCalendarViewPage = () => {
           heading.textContent !== CALENDAR_TEXT.TITLE
       );
   const getError = () => screen.getByRole(ARIA_ROLE.ALERT);
-  const getCalendar = () =>
-    screen.queryByRole(ARIA_ROLE.REGION);
   const getToday = () =>
-    getCalendar()?.querySelector(
-      CALENDAR_TEST.TODAY_SELECTOR
-    );
+    screen
+      .queryByRole(ARIA_ROLE.REGION)
+      ?.querySelector(CALENDAR_TEST.TODAY_SELECTOR);
   return {
     getView,
     selectView,
     navigate,
     getTitle,
     getError,
-    getCalendar,
     getToday,
   };
 };

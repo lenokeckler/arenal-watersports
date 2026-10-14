@@ -6,7 +6,7 @@ import {
   CALENDAR_VIEW,
 } from "@/app/constants";
 import { store, calendarActions } from "@/app/store";
-import { CalendarView } from "../CalendarView";
+import { CalendarView } from "../CalendarView.client";
 import type { CalendarViewProps } from "../models/CalendarViewProps.interface";
 import { CALENDAR_FIXTURE } from "./Calendar.constants";
 
