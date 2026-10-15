@@ -2076,6 +2076,45 @@ export type Database = {
           },
         ];
       };
+      worker_session_modes: {
+        Row: {
+          area:
+            Database["public"]["Enums"]["work_area"] | null;
+          revision: number;
+          session_id: string;
+          worker_id: string;
+        };
+        Insert: {
+          area?:
+            Database["public"]["Enums"]["work_area"] | null;
+          revision?: number;
+          session_id: string;
+          worker_id: string;
+        };
+        Update: {
+          area?:
+            Database["public"]["Enums"]["work_area"] | null;
+          revision?: number;
+          session_id?: string;
+          worker_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "worker_session_modes_worker_id_fkey";
+            columns: ["worker_id"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "worker_session_modes_worker_id_fkey";
+            columns: ["worker_id"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       workers: {
         Row: {
           base_role: Database["public"]["Enums"]["work_area"];
@@ -2469,6 +2508,35 @@ export type Database = {
       record_successful_sign_in: {
         Args: { p_user_id: string };
         Returns: undefined;
+      };
+      require_work_mode_session: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
+      };
+      resolve_session_work_area: {
+        Args: {
+          current_area: Database["public"]["Enums"]["work_area"];
+          granted: Database["public"]["Enums"]["work_area"][];
+        };
+        Returns: Database["public"]["Enums"]["work_area"];
+      };
+      resolve_work_mode: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          active_area: Database["public"]["Enums"]["work_area"];
+          allowed_areas: Database["public"]["Enums"]["work_area"][];
+          session_revision: number;
+        }[];
+      };
+      select_work_mode: {
+        Args: {
+          target: Database["public"]["Enums"]["work_area"];
+        };
+        Returns: {
+          active_area: Database["public"]["Enums"]["work_area"];
+          allowed_areas: Database["public"]["Enums"]["work_area"][];
+          session_revision: number;
+        }[];
       };
       sign_in_attempt_limit: {
         Args: Record<PropertyKey, never>;
