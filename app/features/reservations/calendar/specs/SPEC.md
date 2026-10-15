@@ -116,6 +116,7 @@ Reservations workers answer customers using visible reservation times, committed
 - The supplied snapshot adapter places reservation blocks in day and week date containers and renders one grouped agenda beneath month and year grids. Snapshot absence, incomplete time coverage, incomplete result pages and complete empty periods have separate Spanish messages.
 - The adapter performs no database read, permission check or navigation. Protected route integration, authenticated E2E coverage and real application screenshots remain pending US-ACC-11 and US-TAB-07.
 - US-OPE-07 part 1 extracts the existing daily projection for reuse without changing Reservations behavior, rendering, persistence or data access. The Operations adapter remains a separate checkpoint; this extraction does not complete its day/week screen or authenticated integration.
+- The shared daily projection optionally reports snapshot coverage using the same messages as the period agenda. Reservations keeps its existing rendering because daily coverage messages are disabled by default.
 
 ## Acceptance criteria
 
