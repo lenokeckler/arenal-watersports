@@ -1,6 +1,6 @@
 import type { NullableRef } from "@/app/types";
-import { RESERVATION_CALENDAR_ERROR } from "../constants/ReservationCalendarProjection.constants";
-import type { ReservationCalendarEquipment } from "../models/ReservationCalendarEquipment.interface";
+import { RESERVATION_CALENDAR_ERROR } from "@/app/components/reservation-calendar/constants/ReservationCalendarProjection.constants";
+import type { ReservationCalendarEquipment } from "@/app/components/reservation-calendar/models/ReservationCalendarEquipment.interface";
 import type { ReservationCalendarItemSource } from "../models/ReservationCalendarItemSource.interface";
 
 const isConcreteUnitCommitment = (

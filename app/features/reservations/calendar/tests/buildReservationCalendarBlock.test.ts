@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { RESERVATIONS_CALENDAR_COPY as copy } from "@/app/constants";
-import { buildReservationCalendarBlock } from "../utils/buildReservationCalendarBlock";
-import { formatReservationCalendarDateTime } from "../utils/formatReservationCalendarDateTime";
+import { buildReservationCalendarBlock } from "@/app/components/reservation-calendar/utils/buildReservationCalendarBlock";
+import { formatReservationCalendarDateTime } from "@/app/components/reservation-calendar/utils/formatReservationCalendarDateTime";
 import { INVALID_CALENDAR_INSTANTS } from "./ReservationCalendar.constants";
 import {
   CALENDAR_BLOCK_ENTRY as entry,

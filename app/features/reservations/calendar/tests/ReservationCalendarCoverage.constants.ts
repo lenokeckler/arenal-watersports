@@ -1,5 +1,5 @@
 import type { CalendarDate } from "@/app/types";
-import type { ReservationCalendarSnapshot } from "../models/ReservationCalendarSnapshot.interface";
+import type { ReservationCalendarSnapshot } from "@/app/components/reservation-calendar/models/ReservationCalendarSnapshot.interface";
 import { CALENDAR_BLOCK_ENTRY } from "./ReservationCalendarDisplay.constants";
 
 export const COVERAGE_DAY: CalendarDate = {

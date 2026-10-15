@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CALENDAR_DATE_ERROR } from "@/app/constants";
-import { RESERVATION_CALENDAR_COVERAGE_ERROR as error } from "../constants/ReservationCalendarCoverage.constants";
-import { validateReservationCalendarSnapshot } from "../utils/validateReservationCalendarSnapshot";
+import { RESERVATION_CALENDAR_COVERAGE_ERROR as error } from "@/app/components/reservation-calendar/constants/ReservationCalendarCoverage.constants";
+import { validateReservationCalendarSnapshot } from "@/app/components/reservation-calendar/utils/validateReservationCalendarSnapshot";
 import {
   COVERAGE_DAY,
   COVERAGE_SNAPSHOT,

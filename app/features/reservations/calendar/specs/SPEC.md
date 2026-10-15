@@ -92,7 +92,10 @@ Reservations workers answer customers using visible reservation times, committed
 - Source contracts under `models/` derive persisted fields from generated Supabase Row types and use the `NullableRef` family for nullable relations.
 - Calendar entries contain scheduled timestamps, customer name, status, committed equipment summaries and actual departure groups.
 - Shared calendar components accept neutral content slots and never import Reservations models or services.
-- Projection utilities belong to this feature; shared reservation queries expose transport projections without importing the feature.
+- Snapshot contracts, daily content, reservation blocks and projection utilities live under `app/components/reservation-calendar/`; shared reservation queries expose transport projections without importing the feature.
+- Reservations retains source-row mapping, month/year agenda presentation and its feature ViewModel.
+- Shared reservation content imports no feature and preserves the existing snapshot signatures, Spanish labels and Costa Rica date rules.
+- Existing Reservations tests consume the shared projection directly and retain coverage of the Reservations adapter.
 - Query builders may be reviewed before protected reads exist. No endpoint or Server Action exposes reservations without the verified active-mode contract.
 - Each stacked PR targets its real dependency branch, beginning with US-RES-01.04 (PR #17), and remains below the project change-size limit.
 
@@ -112,6 +115,7 @@ Reservations workers answer customers using visible reservation times, committed
 - Day, week, month and year content grouping remains a pure preparation contract. Principal-view placement and the binding acceptance criterion remain pending protected calendar integration.
 - The supplied snapshot adapter places reservation blocks in day and week date containers and renders one grouped agenda beneath month and year grids. Snapshot absence, incomplete time coverage, incomplete result pages and complete empty periods have separate Spanish messages.
 - The adapter performs no database read, permission check or navigation. Protected route integration, authenticated E2E coverage and real application screenshots remain pending US-ACC-11 and US-TAB-07.
+- US-OPE-07 part 1 extracts the existing daily projection for reuse without changing Reservations behavior, rendering, persistence or data access. The Operations adapter remains a separate checkpoint; this extraction does not complete its day/week screen or authenticated integration.
 
 ## Acceptance criteria
 

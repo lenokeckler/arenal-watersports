@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render } from "@testing-library/react";
 import { RESERVATIONS_CALENDAR_COPY } from "@/app/constants";
-import { ReservationCalendarBlock } from "../components/ReservationCalendarBlock";
-import type { ReservationCalendarBlock as Block } from "../models/ReservationCalendarBlock.interface";
-import { buildReservationCalendarBlock } from "../utils/buildReservationCalendarBlock";
+import { ReservationCalendarBlock } from "@/app/components/reservation-calendar/components/ReservationCalendarBlock";
+import type { ReservationCalendarBlock as Block } from "@/app/components/reservation-calendar/models/ReservationCalendarBlock.interface";
+import { buildReservationCalendarBlock } from "@/app/components/reservation-calendar/utils/buildReservationCalendarBlock";
 import type { ReservationCalendarBlockPage } from "./models/ReservationCalendarBlockPage.interface";
 import { createReservationCalendarBlockPage } from "./ReservationCalendarBlock.page";
 import { CALENDAR_RESERVATION } from "./ReservationCalendar.constants";

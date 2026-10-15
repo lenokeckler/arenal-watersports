@@ -1,9 +1,9 @@
-import { RESERVATION_CALENDAR_ERROR } from "../constants/ReservationCalendarProjection.constants";
-import type { ReservationCalendarEntry } from "../models/ReservationCalendarEntry.interface";
+import { RESERVATION_CALENDAR_ERROR } from "@/app/components/reservation-calendar/constants/ReservationCalendarProjection.constants";
+import type { ReservationCalendarEntry } from "@/app/components/reservation-calendar/models/ReservationCalendarEntry.interface";
 import type { ReservationCalendarSource } from "../models/ReservationCalendarSource.interface";
 import { mapReservationCalendarDispatch } from "./mapReservationCalendarDispatch";
 import { mapReservationCalendarEquipment } from "./mapReservationCalendarEquipment";
-import { parseReservationCalendarInstant } from "./parseReservationCalendarInstant";
+import { parseReservationCalendarInstant } from "@/app/components/reservation-calendar/utils/parseReservationCalendarInstant";
 
 export const mapReservationCalendarEntry = (
   source: ReservationCalendarSource

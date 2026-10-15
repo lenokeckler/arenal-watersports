@@ -1,5 +1,5 @@
 import { RESERVATIONS_CALENDAR_COPY } from "@/app/constants";
-import type { ReservationCalendarContent } from "../models/ReservationCalendarContent.interface";
+import type { ReservationCalendarContent } from "@/app/components/reservation-calendar/models/ReservationCalendarContent.interface";
 
 export const getReservationCalendarMessages = (
   content: ReservationCalendarContent

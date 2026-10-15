@@ -1,5 +1,5 @@
-import type { ReservationCalendarEntry } from "../models/ReservationCalendarEntry.interface";
-import type { ReservationCalendarDispatch } from "../models/ReservationCalendarDispatch.interface";
+import type { ReservationCalendarEntry } from "@/app/components/reservation-calendar/models/ReservationCalendarEntry.interface";
+import type { ReservationCalendarDispatch } from "@/app/components/reservation-calendar/models/ReservationCalendarDispatch.interface";
 import { mapReservationCalendarEntry } from "../utils/mapReservationCalendarEntry";
 import { CALENDAR_RESERVATION } from "./ReservationCalendar.constants";
 

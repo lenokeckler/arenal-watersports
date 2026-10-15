@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { CALENDAR_VIEW } from "@/app/constants";
 import { calendarActions, store } from "@/app/store";
 import type { NullableUndefined } from "@/app/types";
-import type { ReservationCalendarSnapshot } from "../models/ReservationCalendarSnapshot.interface";
+import type { ReservationCalendarSnapshot } from "@/app/components/reservation-calendar/models/ReservationCalendarSnapshot.interface";
 import { ReservationsCalendar } from "../ReservationsCalendar";
 
 export const renderReservationsCalendar = (

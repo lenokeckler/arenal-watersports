@@ -5,7 +5,7 @@ import {
   addCalendarDays,
   buildCalendarDays,
 } from "@/app/components/calendar/utils/calendarDateArithmetic";
-import { buildReservationCalendarContent } from "../utils/buildReservationCalendarContent";
+import { buildReservationCalendarContent } from "@/app/components/reservation-calendar/utils/buildReservationCalendarContent";
 import {
   COVERAGE_DAY,
   COVERAGE_SNAPSHOT,
