@@ -5,6 +5,8 @@ import {
   CALENDAR_PREFERENCE_COPY,
   CALENDAR_VIEW,
 } from "@/app/constants";
+import type { CalendarDayContent } from "../models/CalendarDayContent.type";
+import type { CalendarPeriodContent } from "../models/CalendarPeriodContent.type";
 import { CALENDAR_FIXTURE as fixture } from "./Calendar.constants";
 import { createCalendarViewPage } from "./CalendarView.page";
 import { CALENDAR_TEST } from "./CalendarPresentation.constants";
@@ -103,6 +105,26 @@ describe("CalendarView", () => {
     const { container } = renderCalendar([]);
 
     expect(container).toBeEmptyDOMElement();
+  });
+
+  it("passes the original civil date cell to its day content outlet", () => {
+    const dayContent = vi.fn<CalendarDayContent>(
+      () => null
+    );
+    const periodContent = vi.fn<CalendarPeriodContent>(
+      () => null
+    );
+    renderCalendar(
+      CALENDAR_ALLOWED_VIEWS.RESERVATIONS,
+      dayContent,
+      periodContent
+    );
+
+    const cellDate = dayContent.mock.calls[0][0];
+    const periodDate =
+      periodContent.mock.calls[0][0].days[0];
+
+    expect(cellDate).toBe(periodDate);
   });
 
   it("shows a Spanish storage error and keeps interactions usable", async () => {

@@ -12,7 +12,9 @@ import { CALENDAR_FIXTURE } from "./Calendar.constants";
 import { CALENDAR_TEST } from "./CalendarPresentation.constants";
 
 export const renderCalendar = (
-  initialAllowedViews: CalendarViewProps["allowedViews"] = CALENDAR_ALLOWED_VIEWS.RESERVATIONS
+  initialAllowedViews: CalendarViewProps["allowedViews"] = CALENDAR_ALLOWED_VIEWS.RESERVATIONS,
+  dayContent?: CalendarViewProps["dayContent"],
+  periodContent?: CalendarViewProps["periodContent"]
 ) => {
   const result = render(
     <Provider store={store}>
@@ -20,6 +22,8 @@ export const renderCalendar = (
         heading={CALENDAR_TEST.HEADING}
         today={CALENDAR_FIXTURE.leapEnd}
         allowedViews={initialAllowedViews}
+        dayContent={dayContent}
+        periodContent={periodContent}
       />
     </Provider>
   );
@@ -34,6 +38,8 @@ export const renderCalendar = (
           heading={heading}
           today={today}
           allowedViews={allowedViews}
+          dayContent={dayContent}
+          periodContent={periodContent}
         />
       </Provider>
     );

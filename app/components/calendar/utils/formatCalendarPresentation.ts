@@ -47,6 +47,7 @@ export const buildCalendarCells = (
       date.month === today.month &&
       date.day === today.day;
     return {
+      date,
       key: toCalendarUtcDate(date).toISOString(),
       label: date.day.toString(),
       fullLabel: formatCalendarDate(date),

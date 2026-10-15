@@ -9,6 +9,7 @@ export const CALENDAR_TEXT = {
   },
   NEXT: "Siguiente",
   PREVIOUS: "Anterior",
+  PERIOD_CONTENT: "Contenido del período",
   TODAY: "Hoy",
   VIEWS: "Vista del calendario",
   WEEKDAYS: [
