@@ -1,1 +1,1 @@
-ACC-01.06.31: Recovery routes — the two recovery screens at /access/recovery and /access/recovery/reset: ask for a PIN by username, then type the PIN and the new password twice with the rules visible before typing (US-ACC-06 · AWS-35)
+ACC-01.06.33: Recovery routes — the two recovery screens at /access/recovery and /access/recovery/reset: ask for a PIN by username, then type the PIN and the new password twice with the rules visible before typing (US-ACC-06 · AWS-35)
