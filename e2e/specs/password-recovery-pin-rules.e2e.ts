@@ -1,6 +1,11 @@
 import { STRING } from "@/app/constants";
 import { E2E_RECOVERY_COPY } from "../constants/E2ePasswordRecovery.constants";
-import { E2E_RECOVERY_PASSWORDS } from "../constants/E2ePasswordRecoveryPin.constants";
+import { E2E_ACTIVE_WORKER } from "../constants/E2eActiveWorker.constants";
+import {
+  E2E_NEW_PASSWORDS,
+  E2E_RECOVERY_PASSWORDS,
+  E2E_RECOVERY_PIN_LIMITS,
+} from "../constants/E2ePasswordRecoveryPin.constants";
 import { createPasswordRecoveryResetPage } from "../pages/PasswordRecoveryReset.page";
 import { backdateRecoveryPins } from "../support/backdateRecoveryPins";
 import { expectRecoveredLogin } from "../support/expectRecoveredLogin";
@@ -8,13 +13,9 @@ import { expectRecoveryResetScreen } from "../support/expectRecoveryResetScreen"
 import { expect, test } from "../support/recoveryTest";
 import { requestAndReadRecoveryPin } from "../support/requestAndReadRecoveryPin";
 import { requestRecoveryPin } from "../support/requestRecoveryPin";
+import { signInWithCredentials } from "../support/signInWithCredentials";
 import { trackPostRequests } from "../support/trackPostRequests";
 import { waitForNewRecoveryPin } from "../support/waitForNewRecoveryPin";
-
-const NEW_PASSWORDS = {
-  confirmPassword: E2E_RECOVERY_PASSWORDS.NEW,
-  newPassword: E2E_RECOVERY_PASSWORDS.NEW,
-} as const;
 
 test.describe("Password recovery PIN rules", () => {
   test("makes the older PIN useless once a second one is requested", async ({
@@ -26,7 +27,10 @@ test.describe("Password recovery PIN rules", () => {
       page,
       recoveryAccount
     );
-    await backdateRecoveryPins(recoveryAccount.username);
+    await backdateRecoveryPins(
+      recoveryAccount.username,
+      E2E_RECOVERY_PIN_LIMITS.BACKDATE_MS
+    );
     await requestRecoveryPin(
       page,
       recoveryAccount.username
@@ -41,7 +45,7 @@ test.describe("Password recovery PIN rules", () => {
     );
 
     await resetPage.fillForm({
-      ...NEW_PASSWORDS,
+      ...E2E_NEW_PASSWORDS,
       pin: olderPin,
     });
     await resetPage.submit();
@@ -52,6 +56,33 @@ test.describe("Password recovery PIN rules", () => {
     await resetPage.submit();
 
     await expectRecoveredLogin(page);
+  });
+
+  test("refuses the right PIN once it has expired and leaves the old password working", async ({
+    page,
+    recoveryAccount,
+  }) => {
+    const resetPage = createPasswordRecoveryResetPage(page);
+    const pin = await requestAndReadRecoveryPin(
+      page,
+      recoveryAccount
+    );
+    await backdateRecoveryPins(
+      recoveryAccount.username,
+      E2E_RECOVERY_PIN_LIMITS.EXPIRED_AGE_MS
+    );
+
+    await resetPage.fillForm({ ...E2E_NEW_PASSWORDS, pin });
+    await resetPage.submit();
+
+    await expect(resetPage.getPinError()).toHaveText(
+      E2E_RECOVERY_COPY.PIN_INVALID
+    );
+    await signInWithCredentials(
+      page,
+      recoveryAccount.username,
+      E2E_ACTIVE_WORKER.PASSWORD
+    );
   });
 
   test("shows the password rules before typing and refuses a weak password without spending the PIN", async ({
@@ -78,7 +109,7 @@ test.describe("Password recovery PIN rules", () => {
       resetPage.getNewPasswordError()
     ).toHaveText(E2E_RECOVERY_COPY.NEW_PASSWORD_RULES);
     expect(posts.count()).toBe(postsBeforeSubmit);
-    await resetPage.fillForm({ ...NEW_PASSWORDS, pin });
+    await resetPage.fillForm({ ...E2E_NEW_PASSWORDS, pin });
     await resetPage.submit();
     await expectRecoveredLogin(page);
   });

@@ -8,13 +8,18 @@ import { failE2eOperation } from "./failE2eOperation";
 import { readWorkerIdByUsername } from "./readWorkerIdByUsername";
 
 export const backdateRecoveryPins = async (
-  username: string
+  username: string,
+  ageMs: number
 ): Promise<void> => {
+  const createdAt = Date.now() - ageMs;
   const { error } = await createServiceRoleClient()
     .from(E2E_SUPABASE_TABLE.PASSWORD_RESET_PINS)
     .update({
       [E2E_SUPABASE_COLUMN.CREATED_AT]: new Date(
-        Date.now() - E2E_RECOVERY_PIN_LIMITS.BACKDATE_MS
+        createdAt
+      ).toISOString(),
+      [E2E_SUPABASE_COLUMN.EXPIRES_AT]: new Date(
+        createdAt + E2E_RECOVERY_PIN_LIMITS.LIFETIME_MS
       ).toISOString(),
     })
     .eq(

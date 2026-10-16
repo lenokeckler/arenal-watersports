@@ -1,7 +1,7 @@
 import { STRING } from "@/app/constants";
 import { E2E_RECOVERY_COPY } from "../constants/E2ePasswordRecovery.constants";
 import {
-  E2E_RECOVERY_PASSWORDS,
+  E2E_NEW_PASSWORDS,
   E2E_RECOVERY_PIN_LIMITS,
 } from "../constants/E2ePasswordRecoveryPin.constants";
 import { createPasswordRecoveryResetPage } from "../pages/PasswordRecoveryReset.page";
@@ -9,11 +9,7 @@ import { buildWrongPin } from "../support/buildWrongPin";
 import { expectRecoveredLogin } from "../support/expectRecoveredLogin";
 import { expect, test } from "../support/recoveryTest";
 import { requestAndReadRecoveryPin } from "../support/requestAndReadRecoveryPin";
-
-const NEW_PASSWORDS = {
-  confirmPassword: E2E_RECOVERY_PASSWORDS.NEW,
-  newPassword: E2E_RECOVERY_PASSWORDS.NEW,
-} as const;
+import { signInWithCredentials } from "../support/signInWithCredentials";
 
 test.describe("Password recovery PIN errors", () => {
   test("shows one generic message on a wrong PIN, empties the PIN and keeps the passwords", async ({
@@ -27,7 +23,7 @@ test.describe("Password recovery PIN errors", () => {
     );
 
     await resetPage.fillForm({
-      ...NEW_PASSWORDS,
+      ...E2E_NEW_PASSWORDS,
       pin: buildWrongPin(pin),
     });
     await resetPage.submit();
@@ -40,10 +36,10 @@ test.describe("Password recovery PIN errors", () => {
     );
     await expect(
       resetPage.getNewPasswordInput()
-    ).toHaveValue(NEW_PASSWORDS.newPassword);
+    ).toHaveValue(E2E_NEW_PASSWORDS.newPassword);
     await expect(
       resetPage.getConfirmPasswordInput()
-    ).toHaveValue(NEW_PASSWORDS.confirmPassword);
+    ).toHaveValue(E2E_NEW_PASSWORDS.confirmPassword);
   });
 
   test("rejects the right PIN with the same message once five wrong PINs spent it", async ({
@@ -56,7 +52,7 @@ test.describe("Password recovery PIN errors", () => {
       recoveryAccount
     );
     await resetPage.fillForm({
-      ...NEW_PASSWORDS,
+      ...E2E_NEW_PASSWORDS,
       pin: buildWrongPin(pin),
     });
 
@@ -91,13 +87,18 @@ test.describe("Password recovery PIN errors", () => {
       page,
       recoveryAccount
     );
-    await resetPage.fillForm({ ...NEW_PASSWORDS, pin });
+    await resetPage.fillForm({ ...E2E_NEW_PASSWORDS, pin });
 
     await resetPage.submit();
 
     await expectRecoveredLogin(page);
+    await signInWithCredentials(
+      page,
+      recoveryAccount.username,
+      E2E_NEW_PASSWORDS.newPassword
+    );
     await resetPage.goTo(recoveryAccount.username);
-    await resetPage.fillForm({ ...NEW_PASSWORDS, pin });
+    await resetPage.fillForm({ ...E2E_NEW_PASSWORDS, pin });
     await resetPage.submit();
     await expect(resetPage.getPinError()).toHaveText(
       E2E_RECOVERY_COPY.PIN_INVALID

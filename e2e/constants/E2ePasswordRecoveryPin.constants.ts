@@ -10,9 +10,16 @@ export const E2E_RECOVERY_PASSWORDS = {
   WEAK: "abc",
 } as const;
 
+export const E2E_NEW_PASSWORDS = {
+  confirmPassword: E2E_RECOVERY_PASSWORDS.NEW,
+  newPassword: E2E_RECOVERY_PASSWORDS.NEW,
+} as const;
+
 export const E2E_RECOVERY_PIN_LIMITS = {
   ATTEMPTS: 5,
   BACKDATE_MS: 120_000,
+  EXPIRED_AGE_MS: 660_000,
+  LIFETIME_MS: 600_000,
   DIGIT_SHIFT: 1,
   FIRST_ATTEMPT: 0,
 } as const;

@@ -23,6 +23,7 @@ export const E2E_SUPABASE_FILTER = {
 
 export const E2E_SUPABASE_COLUMN = {
   CREATED_AT: "created_at",
+  EXPIRES_AT: "expires_at",
   DELETED_AT: "deleted_at",
   FAILED_ATTEMPTS: "failed_attempts",
   ID: "id",
