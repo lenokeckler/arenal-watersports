@@ -1,14 +1,12 @@
 import path from "node:path";
 
-export const MIGRATION_PATH = path.join(
-  import.meta.dirname,
-  "..",
-  "..",
-  "..",
-  "..",
+const MIGRATION_FILE_NAME =
+  "20261016000200_issue_password_reset_pin.sql";
+
+export const MIGRATION_PATH = path.resolve(
   "supabase",
   "migrations",
-  "20261016000200_issue_password_reset_pin.sql"
+  MIGRATION_FILE_NAME
 );
 export const MIGRATION_ENCODING = "utf8";
 export const WHITESPACE_RUN = /\s+/g;

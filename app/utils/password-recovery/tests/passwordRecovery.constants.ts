@@ -18,7 +18,7 @@ export const VALID_PIN =
 export const VALID_PIN_WITH_SPACES = "482 913";
 export const VALID_PIN_WITH_MIXED_WHITESPACE =
   " 48\t29\n13 ";
-export const VALID_PIN_WITH_NO_BREAK_SPACE = "482 913";
+export const VALID_PIN_WITH_NO_BREAK_SPACE = "482\u00A0913";
 export const EMPTY_PIN = STRING.Empty;
 export const BLANK_PIN = "  \t ";
 export const PIN_ONE_DIGIT_SHORT = "0".repeat(
@@ -31,7 +31,9 @@ export const PIN_WITH_LETTER = "48291a";
 export const PIN_WITH_SYMBOL = "48291-";
 export const PIN_WITH_ARABIC_INDIC_DIGITS = "٤٨٢٩١٣";
 export const PIN_WITH_FULL_WIDTH_DIGITS = "４８２９１３";
-export const PIN_WITH_NEWLINE_SUFFIX = "482913\nabc";
+export const PIN_WITH_LETTERS_AFTER_NEWLINE = "482913\nabc";
+export const VALID_PIN_WITH_TRAILING_NEWLINE = "482913\n";
+export const UNLISTED_ERROR_CODE = "notARecoveryCode";
 
 export const SHORT_USERNAME = "ab";
 export const WEAK_NEW_PASSWORD = "nueva";
