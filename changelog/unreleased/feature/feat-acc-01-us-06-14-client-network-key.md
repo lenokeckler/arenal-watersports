@@ -1,0 +1,1 @@
+ACC-01.06.14: Client network key — the server derives a keyed hash of the caller's address (HMAC-SHA256 with a server secret) for the per-network recovery limit, never storing the address itself (US-ACC-06 · AWS-35)
