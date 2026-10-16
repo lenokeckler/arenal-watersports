@@ -1,0 +1,1 @@
+ACC-01.06.21: Recovery request form logic — the action and the form state behind asking for a PIN: it checks the username, reads the network key, asks the service and sends the worker to the PIN step with the same answer for every account (US-ACC-06 · AWS-35)
