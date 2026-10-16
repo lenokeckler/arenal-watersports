@@ -1,4 +1,7 @@
-import { PASSWORD_RESET_PIN } from "@/app/constants";
+import {
+  ACCESS_SHARED_COPY,
+  PASSWORD_RESET_PIN,
+} from "@/app/constants";
 
 export const PASSWORD_RECOVERY_RESET_COPY = {
   CONFIRMATION:
@@ -10,6 +13,8 @@ export const PASSWORD_RECOVERY_RESET_COPY = {
   NEW_PASSWORD_LABEL: "Contraseña nueva",
   NOT_RECEIVED_NOTE:
     "¿No le llegó? Revise el correo no deseado o pida otro PIN.",
+  PASSWORD_PLACEHOLDER:
+    ACCESS_SHARED_COPY.PASSWORD_PLACEHOLDER,
   PIN_HINT: `Son ${PASSWORD_RESET_PIN.LENGTH} dígitos.`,
   PIN_LABEL: "PIN",
   REQUEST_ANOTHER_PIN: "Pedir otro PIN",
