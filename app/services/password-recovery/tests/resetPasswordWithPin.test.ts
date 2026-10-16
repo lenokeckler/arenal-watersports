@@ -5,13 +5,17 @@ import {
   it,
   vi,
 } from "vitest";
-import { PASSWORD_RECOVERY_ERROR_CODE } from "@/app/constants";
+import {
+  PASSWORD_RECOVERY_ERROR_CODE,
+  PASSWORD_RECOVERY_FINISH_ATTEMPTS,
+} from "@/app/constants";
 import { setWorkerPassword } from "@/app/services/authentication";
 import { consumePasswordResetPin } from "../consumePasswordResetPin";
-import { deliverPasswordChangedNotice } from "../deliverPasswordChangedNotice";
+import { deliverPasswordChangedNoticeQuietly } from "../deliverPasswordChangedNoticeQuietly";
 import { finishPasswordRecovery } from "../finishPasswordRecovery";
 import { resetPasswordWithPin } from "../resetPasswordWithPin";
 import {
+  NETWORK_PASSWORD_ERROR,
   OTHER_PASSWORD_ERROR,
   RESET_FINISH_FAILURE_MESSAGE,
   RESET_INPUT,
@@ -37,8 +41,8 @@ vi.mock("../consumePasswordResetPin", () => ({
 vi.mock("../finishPasswordRecovery", () => ({
   finishPasswordRecovery: vi.fn(),
 }));
-vi.mock("../deliverPasswordChangedNotice", () => ({
-  deliverPasswordChangedNotice: vi.fn(),
+vi.mock("../deliverPasswordChangedNoticeQuietly", () => ({
+  deliverPasswordChangedNoticeQuietly: vi.fn(),
 }));
 vi.mock("@/app/services/authentication", () => ({
   setWorkerPassword: vi.fn(),
@@ -65,7 +69,7 @@ describe("resetPasswordWithPin", () => {
       undefined
     );
     vi.mocked(
-      deliverPasswordChangedNotice
+      deliverPasswordChangedNoticeQuietly
     ).mockResolvedValue(undefined);
   });
 
@@ -160,38 +164,31 @@ describe("resetPasswordWithPin", () => {
     );
   });
 
-  it("maps a password rules failure and never finishes", async () => {
-    vi.mocked(setWorkerPassword).mockResolvedValue(
-      RULES_PASSWORD_ERROR
-    );
+  it.each([
+    ["a rules failure", RULES_PASSWORD_ERROR],
+    ["a network failure", NETWORK_PASSWORD_ERROR],
+    ["an unmapped failure", OTHER_PASSWORD_ERROR],
+  ])(
+    "answers password not saved for %s and never finishes",
+    async (_label, passwordError) => {
+      vi.mocked(setWorkerPassword).mockResolvedValue(
+        passwordError
+      );
 
-    const result = await reset();
+      const result = await reset();
 
-    expect(result).toMatchObject({
-      error: {
-        code: PASSWORD_RECOVERY_ERROR_CODE.NEW_PASSWORD_RULES,
-      },
-      ok: false,
-    });
-    expect(finishPasswordRecovery).not.toHaveBeenCalled();
-    expect(defer).not.toHaveBeenCalled();
-  });
+      expect(result).toMatchObject({
+        error: {
+          code: PASSWORD_RECOVERY_ERROR_CODE.PASSWORD_NOT_SAVED,
+        },
+        ok: false,
+      });
+      expect(finishPasswordRecovery).not.toHaveBeenCalled();
+      expect(defer).not.toHaveBeenCalled();
+    }
+  );
 
-  it("maps any other password failure to unknown and never finishes", async () => {
-    vi.mocked(setWorkerPassword).mockResolvedValue(
-      OTHER_PASSWORD_ERROR
-    );
-
-    const result = await reset();
-
-    expect(result).toMatchObject({
-      error: { code: PASSWORD_RECOVERY_ERROR_CODE.UNKNOWN },
-      ok: false,
-    });
-    expect(finishPasswordRecovery).not.toHaveBeenCalled();
-  });
-
-  it("answers unknown and never finishes when setting the password throws", async () => {
+  it("answers password not saved and never finishes when setting the password throws", async () => {
     vi.mocked(setWorkerPassword).mockRejectedValue(
       new Error(RESET_SET_FAILURE_MESSAGE)
     );
@@ -199,7 +196,9 @@ describe("resetPasswordWithPin", () => {
     const result = await reset();
 
     expect(result).toMatchObject({
-      error: { code: PASSWORD_RECOVERY_ERROR_CODE.UNKNOWN },
+      error: {
+        code: PASSWORD_RECOVERY_ERROR_CODE.PASSWORD_NOT_SAVED,
+      },
       ok: false,
     });
     expect(finishPasswordRecovery).not.toHaveBeenCalled();
@@ -221,7 +220,21 @@ describe("resetPasswordWithPin", () => {
     );
   });
 
-  it("answers unknown without a notice when finishing fails", async () => {
+  it("retries finishing and answers ok with the notice when a retry succeeds", async () => {
+    vi.mocked(finishPasswordRecovery)
+      .mockRejectedValueOnce(
+        new Error(RESET_FINISH_FAILURE_MESSAGE)
+      )
+      .mockResolvedValue(undefined);
+
+    const result = await reset();
+
+    expect(result).toEqual({ ok: true });
+    expect(finishPasswordRecovery).toHaveBeenCalledTimes(2);
+    expect(defer).toHaveBeenCalledOnce();
+  });
+
+  it("answers unknown without a notice after every finish attempt fails", async () => {
     vi.mocked(finishPasswordRecovery).mockRejectedValue(
       new Error(RESET_FINISH_FAILURE_MESSAGE)
     );
@@ -232,6 +245,9 @@ describe("resetPasswordWithPin", () => {
       error: { code: PASSWORD_RECOVERY_ERROR_CODE.UNKNOWN },
       ok: false,
     });
+    expect(finishPasswordRecovery).toHaveBeenCalledTimes(
+      PASSWORD_RECOVERY_FINISH_ATTEMPTS
+    );
     expect(defer).not.toHaveBeenCalled();
   });
 
@@ -245,7 +261,7 @@ describe("resetPasswordWithPin", () => {
     await task();
 
     expect(
-      deliverPasswordChangedNotice
+      deliverPasswordChangedNoticeQuietly
     ).toHaveBeenCalledWith(RESET_WORKER_ID);
   });
 

@@ -9,9 +9,9 @@ import {
   buildPasswordChangedMail,
   createSmtpMailTransport,
 } from "@/app/services/mail";
-import { deliverPasswordChangedNotice } from "../deliverPasswordChangedNotice";
+import { deliverPasswordChangedNoticeQuietly } from "../deliverPasswordChangedNoticeQuietly";
 import { readWorkerPersonalEmail } from "../readWorkerPersonalEmail";
-import { schedulePasswordChangedNotice } from "../schedulePasswordChangedNotice";
+import { schedulePasswordChangedNoticeQuietly } from "../schedulePasswordChangedNoticeQuietly";
 import { DEFER_FAILURE_MESSAGE } from "./passwordRecovery.constants";
 import {
   RESET_EMAIL_READ_FAILURE_MESSAGE,
@@ -32,7 +32,7 @@ vi.mock("@/app/services/mail", async (importOriginal) => ({
 
 const transport = vi.fn();
 
-describe("deliverPasswordChangedNotice", () => {
+describe("deliverPasswordChangedNoticeQuietly", () => {
   beforeEach(() => {
     vi.resetAllMocks();
     transport.mockResolvedValue(undefined);
@@ -42,7 +42,7 @@ describe("deliverPasswordChangedNotice", () => {
   });
 
   it("sends the changed notice to the registered address", async () => {
-    await deliverPasswordChangedNotice(
+    await deliverPasswordChangedNoticeQuietly(
       RESET_WORKER_ID,
       transport
     );
@@ -62,7 +62,9 @@ describe("deliverPasswordChangedNotice", () => {
       transport
     );
 
-    await deliverPasswordChangedNotice(RESET_WORKER_ID);
+    await deliverPasswordChangedNoticeQuietly(
+      RESET_WORKER_ID
+    );
 
     expect(transport).toHaveBeenCalledOnce();
   });
@@ -72,7 +74,7 @@ describe("deliverPasswordChangedNotice", () => {
       null
     );
 
-    await deliverPasswordChangedNotice(
+    await deliverPasswordChangedNoticeQuietly(
       RESET_WORKER_ID,
       transport
     );
@@ -86,7 +88,7 @@ describe("deliverPasswordChangedNotice", () => {
     );
 
     await expect(
-      deliverPasswordChangedNotice(
+      deliverPasswordChangedNoticeQuietly(
         RESET_WORKER_ID,
         transport
       )
@@ -100,7 +102,7 @@ describe("deliverPasswordChangedNotice", () => {
     );
 
     await expect(
-      deliverPasswordChangedNotice(
+      deliverPasswordChangedNoticeQuietly(
         RESET_WORKER_ID,
         transport
       )
@@ -115,28 +117,33 @@ describe("deliverPasswordChangedNotice", () => {
     );
 
     await expect(
-      deliverPasswordChangedNotice(RESET_WORKER_ID)
+      deliverPasswordChangedNoticeQuietly(RESET_WORKER_ID)
     ).resolves.toBeUndefined();
   });
 });
 
-describe("schedulePasswordChangedNotice", () => {
-  it("reports false instead of throwing when deferring throws", () => {
+describe("schedulePasswordChangedNoticeQuietly", () => {
+  it("resolves instead of throwing when deferring throws", async () => {
     const defer = vi.fn(() => {
       throw new Error(DEFER_FAILURE_MESSAGE);
     });
 
-    expect(
-      schedulePasswordChangedNotice(defer, RESET_WORKER_ID)
-    ).toBe(false);
+    await expect(
+      schedulePasswordChangedNoticeQuietly(
+        defer,
+        RESET_WORKER_ID
+      )
+    ).resolves.toBeUndefined();
   });
 
-  it("reports true when the notice was deferred", () => {
+  it("defers one delivery for the worker", async () => {
     const defer = vi.fn();
 
-    expect(
-      schedulePasswordChangedNotice(defer, RESET_WORKER_ID)
-    ).toBe(true);
+    await schedulePasswordChangedNoticeQuietly(
+      defer,
+      RESET_WORKER_ID
+    );
+
     expect(defer).toHaveBeenCalledOnce();
   });
 });

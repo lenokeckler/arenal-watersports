@@ -1,26 +1,18 @@
-import { PASSWORD_RECOVERY_ERROR_CODE } from "@/app/constants";
 import { setWorkerPassword } from "@/app/services/authentication";
-import type { NullableRef } from "@/app/types";
-import { createPasswordRecoveryError } from "@/app/utils/password-recovery/createPasswordRecoveryError";
-import { mapPasswordChangeErrorToRecovery } from "@/app/utils/password-recovery/mapPasswordChangeErrorToRecovery";
-import type { PasswordRecoveryError } from "@/app/utils/password-recovery/models/PasswordRecoveryError.interface";
+import type { PasswordRecoveryStepOutcome } from "./models/PasswordRecoveryStepOutcome.type";
 
 export const attemptWorkerPasswordSet = async (
   workerId: string,
   newPassword: string
-): Promise<NullableRef<PasswordRecoveryError>> => {
+): Promise<PasswordRecoveryStepOutcome> => {
   try {
     const error = await setWorkerPassword(
       workerId,
       newPassword
     );
 
-    return error
-      ? mapPasswordChangeErrorToRecovery(error)
-      : null;
+    return error ? { failed: true } : { failed: false };
   } catch {
-    return createPasswordRecoveryError(
-      PASSWORD_RECOVERY_ERROR_CODE.UNKNOWN
-    );
+    return { failed: true };
   }
 };

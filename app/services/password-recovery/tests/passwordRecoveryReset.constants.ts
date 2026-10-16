@@ -33,3 +33,7 @@ export const OTHER_PASSWORD_ERROR =
     PASSWORD_CHANGE_ERROR_CODE.SESSION_INACTIVE
   );
 export const RESET_SHORT_PIN = "12";
+export const NETWORK_PASSWORD_ERROR =
+  createPasswordChangeError(
+    PASSWORD_CHANGE_ERROR_CODE.NETWORK
+  );

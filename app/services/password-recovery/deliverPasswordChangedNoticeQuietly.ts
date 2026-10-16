@@ -1,7 +1,7 @@
 import type { MailTransport } from "@/app/services/mail";
 import { sendPasswordChangedNotice } from "./sendPasswordChangedNotice";
 
-export const deliverPasswordChangedNotice = async (
+export const deliverPasswordChangedNoticeQuietly = async (
   workerId: string,
   transport?: MailTransport
 ): Promise<void> => {
