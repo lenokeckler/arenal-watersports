@@ -2,7 +2,6 @@ import {
   ACCESS_SHARED_COPY,
   PASSWORD_RECOVERY_ERROR_CODE,
 } from "@/app/constants";
-import { PASSWORD_RECOVERY_REQUEST_COPY } from "../constants/PasswordRecoveryRequestCopy.constants";
 import { PASSWORD_RECOVERY_RESET_COPY } from "../constants/PasswordRecoveryResetCopy.constants";
 import { PASSWORD_RECOVERY_RESET_ERROR_COPY } from "../constants/PasswordRecoveryResetErrorCopy.constants";
 
@@ -21,7 +20,7 @@ export const APPROVED_RESET_COPY = {
     "Restablecer contraseña — Arenal Water Sports",
   NEW_PASSWORD_LABEL: "Contraseña nueva",
   NO_EMAIL_NOTE:
-    PASSWORD_RECOVERY_REQUEST_COPY.NO_EMAIL_NOTE,
+    "Si su cuenta no tiene correo registrado, pídale a administración una contraseña temporal.",
   NOT_RECEIVED_NOTE:
     "¿No le llegó? Revise el correo no deseado o pida otro PIN.",
   PIN_HINT: "Son 6 dígitos.",
