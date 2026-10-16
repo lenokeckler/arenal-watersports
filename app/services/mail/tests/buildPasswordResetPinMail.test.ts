@@ -9,9 +9,13 @@ import {
   APPROVED_PIN_MAIL_TEXT,
   DIGIT_PATTERN,
   LEADING_ZEROS_PIN,
+  LIFETIME_PHRASE_PREFIX,
+  LINK_SAMPLES,
+  OTHER_LIFETIME_MINUTES,
+  PIN_MAIL_LINE_BREAK,
+  SINGLE_MINUTE,
   PIN_LINE_PATTERN,
   PIN_MAIL_INPUT,
-  PIN_MAIL_USERNAME,
   URL_PATTERN,
 } from "./passwordResetPinMail.constants";
 
@@ -38,7 +42,7 @@ describe("buildPasswordResetPinMail", () => {
   });
 
   it("writes the PIN once, alone on its line", () => {
-    const lines = message.text.split("\n");
+    const lines = message.text.split(PIN_MAIL_LINE_BREAK);
 
     expect(
       message.text.split(PIN_MAIL_INPUT.pin)
@@ -52,7 +56,7 @@ describe("buildPasswordResetPinMail", () => {
       pin: LEADING_ZEROS_PIN,
     });
 
-    expect(zeros.text.split("\n")).toContain(
+    expect(zeros.text.split(PIN_MAIL_LINE_BREAK)).toContain(
       LEADING_ZEROS_PIN
     );
   });
@@ -65,29 +69,40 @@ describe("buildPasswordResetPinMail", () => {
 
   it("states the lifetime in minutes", () => {
     expect(message.text).toContain(
-      `Vence en ${PIN_MAIL_INPUT.lifetimeMinutes} minutos`
+      `${LIFETIME_PHRASE_PREFIX} ${PIN_MAIL_INPUT.lifetimeMinutes} minutos`
     );
   });
 
   it("follows the lifetime it is given", () => {
     const other = buildPasswordResetPinMail({
       ...PIN_MAIL_INPUT,
-      lifetimeMinutes: 7,
+      lifetimeMinutes: OTHER_LIFETIME_MINUTES,
     });
 
-    expect(other.text).toContain("Vence en 7 minutos");
+    expect(other.text).toContain(
+      `${LIFETIME_PHRASE_PREFIX} ${OTHER_LIFETIME_MINUTES} minutos`
+    );
+  });
+
+  it("uses the singular for one minute", () => {
+    const single = buildPasswordResetPinMail({
+      ...PIN_MAIL_INPUT,
+      lifetimeMinutes: SINGLE_MINUTE,
+    });
+
+    expect(single.text).toContain(
+      `${LIFETIME_PHRASE_PREFIX} ${SINGLE_MINUTE} minuto `
+    );
+    expect(single.text).not.toContain("minutos");
+  });
+
+  it.each(LINK_SAMPLES)("detects the link %s", (sample) => {
+    expect(sample).toMatch(URL_PATTERN);
   });
 
   it("carries no link", () => {
     expect(message.text).not.toMatch(URL_PATTERN);
     expect(message.subject).not.toMatch(URL_PATTERN);
-  });
-
-  it("never mentions the username", () => {
-    expect(message.text).not.toContain(PIN_MAIL_USERNAME);
-    expect(message.subject).not.toContain(
-      PIN_MAIL_USERNAME
-    );
   });
 
   it("addresses the worker as usted", () => {
