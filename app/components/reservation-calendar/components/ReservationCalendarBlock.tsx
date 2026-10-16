@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import {
+  InlineText,
   Section,
   Text,
   UnorderedList,
@@ -79,20 +80,20 @@ export const ReservationCalendarBlock = ({
             }
             key={`${guide.type}-${guide.fullName}-${index}`}
           >
-            <span
+            <InlineText
               className={
                 RESERVATION_CALENDAR_BLOCK_GUIDE_NAME_CLASS
               }
             >
               {guide.fullName}
-            </span>
-            <span
+            </InlineText>
+            <InlineText
               className={
                 RESERVATION_CALENDAR_BLOCK_GUIDE_TYPE_CLASS
               }
             >
               {getGuideTypeLabel(guide.type)}
-            </span>
+            </InlineText>
           </Text>
         ))}
       </div>
