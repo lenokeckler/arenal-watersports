@@ -87,7 +87,7 @@ describe("PasswordRecoveryResetFormView", () => {
     });
   });
 
-  it("puts the another-PIN link and the back link after the form", () => {
+  it("puts the another-PIN link, the no-email note and the back link after the form", () => {
     const page = renderPasswordRecoveryResetFormView();
 
     expect(page.getAnotherPinLink()).toHaveAttribute(
@@ -107,6 +107,12 @@ describe("PasswordRecoveryResetFormView", () => {
     expect(
       isNodeBefore(
         page.getAnotherPinLink(),
+        page.getNoEmailNote()
+      )
+    ).toBe(true);
+    expect(
+      isNodeBefore(
+        page.getNoEmailNote(),
         page.getBackLink()
       )
     ).toBe(true);

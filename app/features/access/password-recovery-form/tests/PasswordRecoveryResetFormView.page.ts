@@ -66,6 +66,10 @@ export const createPasswordRecoveryResetFormViewPage =
           name: PASSWORD_RECOVERY_RESET_COPY.HEADING,
         }),
       getNewPasswordInput,
+      getNoEmailNote: () =>
+        screen.getByText(
+          PASSWORD_RECOVERY_REQUEST_COPY.NO_EMAIL_NOTE
+        ),
       getNotice: () =>
         screen.getByText(
           PASSWORD_RECOVERY_RESET_COPY.CONFIRMATION
