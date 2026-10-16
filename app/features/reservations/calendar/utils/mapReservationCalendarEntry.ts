@@ -3,6 +3,7 @@ import type { ReservationCalendarEntry } from "@/app/components/reservation-cale
 import type { ReservationCalendarSource } from "../models/ReservationCalendarSource.interface";
 import { mapReservationCalendarDispatch } from "./mapReservationCalendarDispatch";
 import { mapReservationCalendarEquipment } from "./mapReservationCalendarEquipment";
+import { mapReservationCalendarGuide } from "./mapReservationCalendarGuide";
 import { parseReservationCalendarInstant } from "@/app/components/reservation-calendar/utils/parseReservationCalendarInstant";
 
 export const mapReservationCalendarEntry = (
@@ -30,6 +31,9 @@ export const mapReservationCalendarEntry = (
           mapReservationCalendarEquipment(item);
         return equipment === null ? [] : [equipment];
       }
+    ),
+    guides: source.reservation_guides.map(
+      mapReservationCalendarGuide
     ),
     id: source.id,
     startsAt: source.starts_at,

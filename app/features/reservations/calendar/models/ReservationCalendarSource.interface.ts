@@ -1,6 +1,7 @@
 import type { Database } from "@/app/types";
 import type { ReservationCalendarDispatchSource } from "./ReservationCalendarDispatchSource.interface";
 import type { ReservationCalendarItemSource } from "./ReservationCalendarItemSource.interface";
+import type { ReservationCalendarGuideAssignmentSource } from "./ReservationCalendarGuideAssignmentSource.interface";
 
 export interface ReservationCalendarSource extends Pick<
   Database["public"]["Tables"]["reservations"]["Row"],
@@ -12,4 +13,5 @@ export interface ReservationCalendarSource extends Pick<
 > {
   reservation_dispatches: ReservationCalendarDispatchSource[];
   reservation_items: ReservationCalendarItemSource[];
+  reservation_guides: ReservationCalendarGuideAssignmentSource[];
 }

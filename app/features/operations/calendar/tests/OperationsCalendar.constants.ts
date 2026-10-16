@@ -25,6 +25,7 @@ export const OPERATIONS_CALENDAR_SNAPSHOT: ReservationCalendarSnapshot =
         dispatches: [],
         endsAt: "2026-10-15T18:00:00Z",
         equipment: [],
+        guides: [],
         id: "operations-calendar-reservation",
         startsAt: "2026-10-15T16:00:00Z",
         status: "scheduled",

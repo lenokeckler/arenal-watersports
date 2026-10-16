@@ -2,6 +2,7 @@ export { PAGINATION } from "./strings/Pagination.constant";
 export { CALENDAR_PREFERENCE } from "./calendar/CalendarPreference.constants";
 export { CALENDAR_PREFERENCE_COPY } from "./calendar/CalendarPreferenceCopy.constants";
 export { CALENDAR_TEXT } from "./calendar/CalendarPresentationCopy.constants";
+export { RESERVATION_CALENDAR_GUIDE_TYPE } from "./calendar/ReservationCalendarGuide.constants";
 export { RESERVATIONS_CALENDAR_COPY } from "./calendar/ReservationsCalendarCopy.constants";
 export { OPERATIONS_CALENDAR_COPY } from "./calendar/OperationsCalendarCopy.constants";
 export { CALENDAR_PRESENTATION } from "./calendar/CalendarPresentation.constants";

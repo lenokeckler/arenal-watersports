@@ -1,6 +1,7 @@
 import type { ReservationCalendarCategorySource } from "../models/ReservationCalendarCategorySource.type";
 import type { ReservationCalendarDispatchSource } from "../models/ReservationCalendarDispatchSource.interface";
 import type { ReservationCalendarItemSource } from "../models/ReservationCalendarItemSource.interface";
+import type { ReservationCalendarGuideAssignmentSource } from "../models/ReservationCalendarGuideAssignmentSource.interface";
 import type { ReservationCalendarSource } from "../models/ReservationCalendarSource.interface";
 
 export const CALENDAR_CATEGORY: ReservationCalendarCategorySource =
@@ -54,12 +55,36 @@ export const CALENDAR_DISPATCH: ReservationCalendarDispatchSource =
     id: "dispatch-open",
   };
 
+export const CALENDAR_INTERNAL_GUIDE_NAME =
+  "María Fernández Vargas";
+export const CALENDAR_EXTERNAL_GUIDE_NAME =
+  "Carlos Mora Sánchez";
+
+export const INTERNAL_CALENDAR_GUIDE: ReservationCalendarGuideAssignmentSource =
+  {
+    worker_id: "worker-internal-guide",
+    workers: {
+      full_name: CALENDAR_INTERNAL_GUIDE_NAME,
+      is_external_guide: false,
+    },
+  };
+
+export const EXTERNAL_CALENDAR_GUIDE: ReservationCalendarGuideAssignmentSource =
+  {
+    worker_id: "worker-external-guide",
+    workers: {
+      full_name: CALENDAR_EXTERNAL_GUIDE_NAME,
+      is_external_guide: true,
+    },
+  };
+
 export const CALENDAR_RESERVATION: ReservationCalendarSource =
   {
     customer_name: "María Fernández Vargas",
     ends_at: "2026-10-14T17:00:00Z",
     id: "reservation-01",
     reservation_dispatches: [],
+    reservation_guides: [],
     reservation_items: [CATEGORY_COMMITMENT],
     starts_at: "2026-10-14T16:00:00Z",
     status: "scheduled",
