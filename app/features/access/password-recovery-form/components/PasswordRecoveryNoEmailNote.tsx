@@ -1,6 +1,6 @@
 import { Text } from "@/app/components";
-import { PASSWORD_RECOVERY_REQUEST_COPY } from "../constants/PasswordRecoveryRequestCopy.constants";
 import { FORM_HINT_CLASS } from "@/app/components/form-layout/styles/FormLayout.styles";
+import { PASSWORD_RECOVERY_REQUEST_COPY } from "../constants/PasswordRecoveryRequestCopy.constants";
 
 const PasswordRecoveryNoEmailNote =
   (): React.JSX.Element => (

@@ -14,6 +14,7 @@ export const ACCESS_SHARED_COPY = {
   NEW_PASSWORD_REQUIRED: "Escriba la contraseña nueva.",
   NEW_PASSWORD_RULES:
     "La contraseña nueva no cumple los requisitos.",
+  PASSWORD_PLACEHOLDER: "••••••••",
   PASSWORD_TOO_LONG: `La contraseña no puede tener más de ${PASSWORD_LENGTH.MAX} caracteres.`,
   SESSION_INACTIVE:
     "Su sesión se cerró por inactividad. Ingrese de nuevo.",
