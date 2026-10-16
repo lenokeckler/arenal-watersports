@@ -1,0 +1,1 @@
+ACC-01.06.01: Password reset PIN rules — the database keeps the recovery PIN limits (10-minute life, 5 wrong tries, 60-second cooldown, 5 PINs an hour per account, 10 an hour per network) and the columns that track tries, the requesting network and failed deliveries (US-ACC-06 · AWS-35)
