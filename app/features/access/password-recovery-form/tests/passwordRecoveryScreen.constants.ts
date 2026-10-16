@@ -17,3 +17,5 @@ export const PLACEHOLDER_PROPERTY = "placeholder";
 export const TYPED_USERNAME = "ana.mora";
 export const TYPED_PIN = "123456";
 export const FIELD_ERROR_MESSAGE = "Escriba el PIN.";
+export const USERNAME_ERROR_MESSAGE = "Escriba su usuario.";
+export const CHANGED_VALUE = "ana.mora2";
