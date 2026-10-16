@@ -11,10 +11,6 @@ export const SMALL_RANDOM_PIN = "000042";
 export const PIN_BOUND =
   PASSWORD_RESET_PIN.RADIX ** PASSWORD_RESET_PIN.LENGTH;
 export const GENERATION_SAMPLE_SIZE = 200;
-export const PIN_SHAPE = new RegExp(
-  `^[0-9]{${PASSWORD_RESET_PIN.LENGTH}}$`
-);
-
 export const ISSUED_PIN: IssuedPasswordResetPin = {
   lifetimeMinutes: 10,
   personalEmail: "worker.one@example.com",
@@ -39,3 +35,5 @@ export const MARK_FAILURE_MESSAGE = "mark failed";
 export const MISSING_MAIL_ENVIRONMENT_MESSAGE =
   "mail environment missing";
 export const INVALID_USERNAME = "";
+export const DEFER_FAILURE_MESSAGE =
+  "outside request scope";

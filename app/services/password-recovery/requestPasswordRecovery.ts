@@ -1,14 +1,12 @@
 import { PASSWORD_RECOVERY_ERROR_CODE } from "@/app/constants";
-import type { NullableRef } from "@/app/types";
 import { createPasswordRecoveryError } from "@/app/utils/password-recovery/createPasswordRecoveryError";
 import { validatePasswordRecoveryRequest } from "@/app/utils/password-recovery/validatePasswordRecoveryRequest";
-import { deliverPasswordResetPin } from "./deliverPasswordResetPin";
+import { attemptPasswordResetPinIssue } from "./attemptPasswordResetPinIssue";
 import { generatePasswordResetPin } from "./generatePasswordResetPin";
-import { issuePasswordResetPin } from "./issuePasswordResetPin";
-import type { IssuedPasswordResetPin } from "./models/IssuedPasswordResetPin.interface";
 import type { DeferredTask } from "./models/DeferredTask.type";
 import type { NetworkPasswordRecoveryRequestInput } from "./models/NetworkPasswordRecoveryRequestInput.interface";
 import type { PasswordRecoveryRequestResult } from "./models/PasswordRecoveryRequestResult.type";
+import { schedulePasswordResetPinDelivery } from "./schedulePasswordResetPinDelivery";
 
 export const requestPasswordRecovery = async (
   input: NetworkPasswordRecoveryRequestInput,
@@ -22,16 +20,13 @@ export const requestPasswordRecovery = async (
   }
 
   const pin = generatePasswordResetPin();
+  const outcome = await attemptPasswordResetPinIssue({
+    networkKey: input.networkKey,
+    pin,
+    username: input.username,
+  });
 
-  let issued: NullableRef<IssuedPasswordResetPin>;
-
-  try {
-    issued = await issuePasswordResetPin({
-      networkKey: input.networkKey,
-      pin,
-      username: input.username,
-    });
-  } catch {
+  if (outcome.failed) {
     return {
       error: createPasswordRecoveryError(
         PASSWORD_RECOVERY_ERROR_CODE.UNKNOWN
@@ -40,9 +35,12 @@ export const requestPasswordRecovery = async (
     };
   }
 
-  if (issued) {
-    const delivery = issued;
-    defer(() => deliverPasswordResetPin(delivery, pin));
+  if (outcome.issued) {
+    await schedulePasswordResetPinDelivery(
+      defer,
+      outcome.issued,
+      pin
+    );
   }
 
   return { ok: true };

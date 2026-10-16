@@ -3,16 +3,8 @@ import {
   createSmtpMailTransport,
   type MailTransport,
 } from "@/app/services/mail";
-import { markPasswordResetPinUndelivered } from "./markPasswordResetPinUndelivered";
+import { markPasswordResetPinUndeliveredQuietly } from "./markPasswordResetPinUndeliveredQuietly";
 import type { IssuedPasswordResetPin } from "./models/IssuedPasswordResetPin.interface";
-
-const markUndeliveredQuietly = async (
-  pinId: string
-): Promise<void> => {
-  await markPasswordResetPinUndelivered(pinId).catch(
-    () => undefined
-  );
-};
 
 export const deliverPasswordResetPin = async (
   issued: IssuedPasswordResetPin,
@@ -30,6 +22,8 @@ export const deliverPasswordResetPin = async (
       })
     );
   } catch {
-    await markUndeliveredQuietly(issued.pinId);
+    await markPasswordResetPinUndeliveredQuietly(
+      issued.pinId
+    );
   }
 };

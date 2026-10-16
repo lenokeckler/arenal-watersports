@@ -8,9 +8,11 @@ import {
 import { PASSWORD_RECOVERY_ERROR_CODE } from "@/app/constants";
 import { deliverPasswordResetPin } from "../deliverPasswordResetPin";
 import { generatePasswordResetPin } from "../generatePasswordResetPin";
+import { markPasswordResetPinUndelivered } from "../markPasswordResetPinUndelivered";
 import { issuePasswordResetPin } from "../issuePasswordResetPin";
 import { requestPasswordRecovery } from "../requestPasswordRecovery";
 import {
+  DEFER_FAILURE_MESSAGE,
   INVALID_USERNAME,
   ISSUED_PIN,
   NETWORK_KEY_VALUE,
@@ -25,6 +27,9 @@ vi.mock("../issuePasswordResetPin", () => ({
 }));
 vi.mock("../deliverPasswordResetPin", () => ({
   deliverPasswordResetPin: vi.fn(),
+}));
+vi.mock("../markPasswordResetPinUndelivered", () => ({
+  markPasswordResetPinUndelivered: vi.fn(),
 }));
 vi.mock("../generatePasswordResetPin", () => ({
   generatePasswordResetPin: vi.fn(),
@@ -50,6 +55,9 @@ describe("requestPasswordRecovery", () => {
     vi.mocked(deliverPasswordResetPin).mockResolvedValue(
       undefined
     );
+    vi.mocked(
+      markPasswordResetPinUndelivered
+    ).mockResolvedValue(undefined);
   });
 
   it("rejects an invalid username without issuing a pin", async () => {
@@ -135,5 +143,27 @@ describe("requestPasswordRecovery", () => {
     );
 
     expect(serialized).not.toContain(RPC_FAILURE.message);
+  });
+
+  it("answers like a refusal and marks the pin when deferring throws", async () => {
+    vi.mocked(issuePasswordResetPin).mockResolvedValue(
+      null
+    );
+    const refusedResult = await request(
+      NORMALIZED_USERNAME
+    );
+    vi.mocked(issuePasswordResetPin).mockResolvedValue(
+      ISSUED_PIN
+    );
+    defer.mockImplementation(() => {
+      throw new Error(DEFER_FAILURE_MESSAGE);
+    });
+
+    const result = await request(NORMALIZED_USERNAME);
+
+    expect(result).toEqual(refusedResult);
+    expect(
+      markPasswordResetPinUndelivered
+    ).toHaveBeenCalledWith(ISSUED_PIN.pinId);
   });
 });

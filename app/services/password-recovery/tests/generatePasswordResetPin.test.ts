@@ -10,7 +10,6 @@ import { generatePasswordResetPin } from "../generatePasswordResetPin";
 import {
   GENERATION_SAMPLE_SIZE,
   PIN_BOUND,
-  PIN_SHAPE,
   SMALL_RANDOM_PIN,
   SMALL_RANDOM_VALUE,
 } from "./passwordRecovery.constants";
@@ -43,7 +42,7 @@ describe("generatePasswordResetPin", () => {
     ) {
       const pin = generatePasswordResetPin();
 
-      expect(pin).toMatch(PIN_SHAPE);
+      expect(pin).toMatch(PASSWORD_RESET_PIN.PATTERN);
       expect(pin).toHaveLength(PASSWORD_RESET_PIN.LENGTH);
     }
   });
