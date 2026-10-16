@@ -24,7 +24,7 @@ caused it.
 
 - The services, the database rules and the mails: `app/services/password-recovery`,
   `app/utils/password-recovery`, `supabase/migrations`.
-- The login entry link and its success notice (rung 24) and the end-to-end specs (rungs 25, 26).
+- The login entry link and its success notice and the end-to-end specs.
 - Temporary passwords issued by administration (US-ADM-07).
 
 ## Requirements
@@ -72,14 +72,14 @@ caused it.
 US-ACC-06, as written in `docs/proyecto/historias-de-usuario.md`:
 
 - [ ] El sistema envía un PIN al correo personal registrado en la cuenta. — request form logic
-      (`submitPasswordRecoveryRequest`); the screens arrive in rung 23.
-- [ ] Se escribe el PIN en pantalla, después la contraseña nueva, y se repite. — reset form
-      (rungs 22 and 23).
+      (`submitPasswordRecoveryRequest`); the recovery screens arrive in a later part.
+- [ ] Se escribe el PIN en pantalla, después la contraseña nueva, y se repite. — reset form,
+      delivered by the reset form logic and the recovery screens, later parts.
 - [ ] Las reglas de la contraseña se muestran desde antes de escribirla, no después de fallar. —
-      reset screen (rung 23).
+      delivered by the recovery screens, a later part.
 - [ ] El PIN es de un solo uso y vence a los pocos minutos. — enforced by the database rules and
-      the services; surfaced by the reset form (rung 22).
+      the services; surfaced by the reset form logic, a later part.
 - [ ] Si la cuenta no tiene correo registrado, administración genera una contraseña temporal. —
-      static sentence `NO_EMAIL_NOTE` on both screens (rung 23).
+      static sentence `NO_EMAIL_NOTE` on both screens, delivered by the recovery screens, a later part.
 - [ ] No hay inicio de sesión con Google ni con ningún otro proveedor: el ingreso es siempre por
       usuario y contraseña. — no provider is offered by either form.
