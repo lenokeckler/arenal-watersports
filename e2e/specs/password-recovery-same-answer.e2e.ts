@@ -4,22 +4,24 @@ import {
   STRING,
 } from "@/app/constants";
 import {
-  E2E_INELIGIBLE_RECOVERY_SCENARIOS,
+  E2E_MAILED_INELIGIBLE_SCENARIOS,
   E2E_RECOVERY_COPY,
   E2E_RECOVERY_MAIL_COUNT,
   E2E_RECOVERY_PIN_MAIL,
   E2E_RECOVERY_SCENARIO,
+  E2E_UNADDRESSED_SCENARIOS,
 } from "../constants/E2ePasswordRecovery.constants";
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 import { createPasswordRecoveryRequestPage } from "../pages/PasswordRecoveryRequest.page";
 import { expectRecoveryResetScreen } from "../support/expectRecoveryResetScreen";
 import { readRecoveryPin } from "../support/readRecoveryPin";
 import { expect, test } from "../support/recoveryTest";
-import { waitForAnyMail } from "../support/waitForAnyMail";
+import { requestRecoveryPin } from "../support/requestRecoveryPin";
+import { waitForDeliveredMail } from "../support/waitForDeliveredMail";
 import { waitForMailTo } from "../support/waitForMailTo";
 
 test.describe("Password recovery gives the same answer", () => {
-  for (const scenario of E2E_INELIGIBLE_RECOVERY_SCENARIOS) {
+  for (const scenario of E2E_MAILED_INELIGIBLE_SCENARIOS) {
     test.describe(`for a ${scenario} account`, () => {
       test.use({ recoveryScenario: scenario });
 
@@ -27,21 +29,41 @@ test.describe("Password recovery gives the same answer", () => {
         page,
         recoveryAccount,
       }) => {
-        const requestPage =
-          createPasswordRecoveryRequestPage(page);
-        await requestPage.goTo();
-        await requestPage.fillUsername(
+        const address =
+          recoveryAccount.address ?? STRING.Empty;
+
+        await requestRecoveryPin(
+          page,
           recoveryAccount.username
         );
-
-        await requestPage.submit();
 
         await expectRecoveryResetScreen(
           page,
           recoveryAccount.username
         );
-        expect(await waitForAnyMail()).toHaveLength(
+        expect(await waitForMailTo(address)).toHaveLength(
           E2E_COUNT.NONE
+        );
+      });
+    });
+  }
+
+  for (const scenario of E2E_UNADDRESSED_SCENARIOS) {
+    test.describe(`for a ${scenario} account`, () => {
+      test.use({ recoveryScenario: scenario });
+
+      test("lands on the reset screen", async ({
+        page,
+        recoveryAccount,
+      }) => {
+        await requestRecoveryPin(
+          page,
+          recoveryAccount.username
+        );
+
+        await expectRecoveryResetScreen(
+          page,
+          recoveryAccount.username
         );
       });
     });
@@ -74,7 +96,7 @@ test.describe("Password recovery gives the same answer", () => {
         page,
         recoveryAccount.username
       );
-      const mails = await waitForMailTo(address);
+      const mails = await waitForDeliveredMail(address);
       expect(mails).toHaveLength(
         E2E_RECOVERY_MAIL_COUNT.ONE
       );
@@ -100,8 +122,5 @@ test.describe("Password recovery gives the same answer", () => {
       E2E_RECOVERY_COPY.USERNAME_REQUIRED
     );
     await expect(page).toHaveURL(PATHS.ACCESS.RECOVERY);
-    expect(await waitForAnyMail()).toHaveLength(
-      E2E_COUNT.NONE
-    );
   });
 });

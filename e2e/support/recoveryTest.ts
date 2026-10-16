@@ -1,26 +1,19 @@
 import { test as base } from "@playwright/test";
 import { E2E_RECOVERY_SCENARIO } from "../constants/E2ePasswordRecovery.constants";
-import { clearMailbox } from "./clearMailbox";
-import type { RecoveryAccount } from "./models/RecoveryAccount.interface";
-import type { RecoveryScenario } from "./models/RecoveryScenario.type";
+import type { RecoveryTestFixtures } from "./models/RecoveryTestFixtures.interface";
 import { provisionRecoveryAccount } from "./provisionRecoveryAccount";
-import { resetPasswordRecoveryRecords } from "./resetPasswordRecoveryRecords";
+import { resetPasswordRecoveryRequests } from "./resetPasswordRecoveryRequests";
 
-export const test = base.extend<{
-  recoveryAccount: RecoveryAccount;
-  recoveryScenario: RecoveryScenario;
-}>({
+export const test = base.extend<RecoveryTestFixtures>({
   recoveryAccount: [
     async ({ recoveryScenario }, provide) => {
-      await resetPasswordRecoveryRecords();
-      await clearMailbox();
+      await resetPasswordRecoveryRequests();
       const account = await provisionRecoveryAccount(
         recoveryScenario
       );
 
       await provide(account);
       await account.remove();
-      await resetPasswordRecoveryRecords();
     },
     { auto: true },
   ],

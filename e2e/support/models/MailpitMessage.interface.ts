@@ -1,6 +1,4 @@
-export interface MailpitRecipient {
-  Address: string;
-}
+import type { MailpitRecipient } from "./MailpitRecipient.interface";
 
 export interface MailpitMessage {
   ID: string;

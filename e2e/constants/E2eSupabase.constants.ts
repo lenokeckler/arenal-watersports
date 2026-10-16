@@ -21,11 +21,6 @@ export const E2E_SUPABASE_FILTER = {
   IS: "is",
 } as const;
 
-export const E2E_RECOVERY_TABLES = [
-  E2E_SUPABASE_TABLE.PASSWORD_RESET_PINS,
-  E2E_SUPABASE_TABLE.PASSWORD_RESET_REQUESTS,
-] as const;
-
 export const E2E_SUPABASE_COLUMN = {
   DELETED_AT: "deleted_at",
   FAILED_ATTEMPTS: "failed_attempts",

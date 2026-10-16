@@ -32,6 +32,8 @@ export const createPasswordRecoveryResetPage = (
     });
   const getNotReceivedNote = (): Locator =>
     main.getByText(E2E_RECOVERY_COPY.NOT_RECEIVED_NOTE);
+  const getNoEmailNote = (): Locator =>
+    main.getByText(E2E_RECOVERY_COPY.NO_EMAIL_NOTE);
   const getAnotherPinLink = (): Locator =>
     getLink(E2E_RECOVERY_COPY.REQUEST_ANOTHER_PIN);
   const getBackLink = (): Locator =>
@@ -51,6 +53,7 @@ export const createPasswordRecoveryResetPage = (
     getConfirmPasswordInput,
     getHeading,
     getNewPasswordInput,
+    getNoEmailNote,
     getNotReceivedNote,
     getNotice,
     getPinInput,
@@ -64,6 +67,7 @@ export const createPasswordRecoveryResetPage = (
       getNewPasswordInput(),
       getConfirmPasswordInput(),
       getSubmitButton(),
+      getNoEmailNote(),
       getNotReceivedNote(),
       getAnotherPinLink(),
       getBackLink(),

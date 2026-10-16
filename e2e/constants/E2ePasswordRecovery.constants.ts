@@ -20,9 +20,7 @@ export const E2E_RECOVERY_SERVER_ENV = {
 
 export const E2E_MAILPIT = {
   BASE_URL: "http://127.0.0.1:54324",
-  CLEAR_METHOD: "DELETE",
   MESSAGE_PATH: "/api/v1/message",
-  MESSAGES_PATH: "/api/v1/messages",
   RECIPIENT_QUERY: "to:",
   SEARCH_PATH: "/api/v1/search",
   SEARCH_PARAM: "query",
@@ -51,13 +49,23 @@ export const E2E_RECOVERY_SCENARIO = {
   UNKNOWN: "unknown",
 } as const;
 
-export const E2E_INELIGIBLE_RECOVERY_SCENARIOS = [
-  E2E_RECOVERY_SCENARIO.UNKNOWN,
+export const E2E_MAILED_INELIGIBLE_SCENARIOS = [
   E2E_RECOVERY_SCENARIO.BLOCKED_BY_ATTEMPTS,
   E2E_RECOVERY_SCENARIO.BLOCKED_BY_ADMINISTRATION,
   E2E_RECOVERY_SCENARIO.RETIRED,
+] as const;
+
+export const E2E_UNADDRESSED_SCENARIOS = [
+  E2E_RECOVERY_SCENARIO.UNKNOWN,
   E2E_RECOVERY_SCENARIO.NO_EMAIL,
 ] as const;
+
+export const E2E_MAIL_MISSING_MESSAGE = (
+  address: string
+): string =>
+  `no mail reached ${address}. A dev server that was already running (reuseExistingServer) may lack ${Object.keys(
+    E2E_RECOVERY_SERVER_ENV
+  ).join(", ")}.`;
 
 export const E2E_RECOVERY_BLOCK = {
   ADMINISTRATION: {
