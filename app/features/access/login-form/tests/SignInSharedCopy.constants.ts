@@ -1,6 +1,7 @@
 import {
   PASSWORD_LENGTH,
   SIGN_IN_ERROR_CODE,
+  USERNAME,
 } from "@/app/constants";
 
 export const SHARED_COPY_AS_SHIPPED = [
@@ -31,5 +32,13 @@ export const SHARED_COPY_AS_SHIPPED = [
   [
     SIGN_IN_ERROR_CODE.UNKNOWN,
     "No se pudo completar el ingreso. Intente de nuevo.",
+  ],
+  [
+    SIGN_IN_ERROR_CODE.USERNAME_LENGTH,
+    `El nombre de usuario debe tener entre ${USERNAME.LENGTH.MIN} y ${USERNAME.LENGTH.MAX} caracteres.`,
+  ],
+  [
+    SIGN_IN_ERROR_CODE.USERNAME_REQUIRED,
+    "Escriba su nombre de usuario.",
   ],
 ] as const;

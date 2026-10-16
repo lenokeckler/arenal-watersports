@@ -1,4 +1,5 @@
 import { PASSWORD_LENGTH } from "./PasswordLength.constants";
+import { USERNAME } from "./Username.constants";
 
 export const ACCESS_SHARED_COPY = {
   ACCOUNT_BLOCKED_BY_ADMINISTRATION:
@@ -14,4 +15,6 @@ export const ACCESS_SHARED_COPY = {
     "Demasiados intentos. Espere un momento e intente de nuevo.",
   UNKNOWN:
     "No se pudo completar el ingreso. Intente de nuevo.",
+  USERNAME_LENGTH: `El nombre de usuario debe tener entre ${USERNAME.LENGTH.MIN} y ${USERNAME.LENGTH.MAX} caracteres.`,
+  USERNAME_REQUIRED: "Escriba su nombre de usuario.",
 } as const;
