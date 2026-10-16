@@ -11,6 +11,20 @@ const DOUBLE_SLASH_FIRST_SIGN_IN_PATHNAME =
 const TRAILING_SLASH_FIRST_SIGN_IN_PATHNAME =
   "/access/first-sign-in/";
 
+const UPPERCASE_RECOVERY_RESET_PATHNAME =
+  "/ACCESS/Recovery/Reset";
+
+const TRAILING_SLASH_RECOVERY_PATHNAME =
+  "/access/recovery/";
+
+const DOUBLE_SLASH_RECOVERY_RESET_PATHNAME =
+  "/access//recovery//reset";
+
+const RECOVERY_VARIANT_PATHS = [
+  TRAILING_SLASH_RECOVERY_PATHNAME,
+  DOUBLE_SLASH_RECOVERY_RESET_PATHNAME,
+] as const;
+
 export const PROTECTED_PATHS = [
   PATHS.HOME,
   PROTECTED_PATHNAME,
@@ -95,6 +109,20 @@ export const GATE_MATRIX = [
     [SIGNED_OUT, pathname, PATHS.ACCESS.LOGIN] as const,
     [SIGNED_IN, pathname, PATHS.HOME] as const,
     [PENDING_PASSWORD, pathname, null] as const,
+  ]),
+  [
+    SIGNED_OUT,
+    UPPERCASE_RECOVERY_RESET_PATHNAME,
+    PATHS.ACCESS.LOGIN,
+  ],
+  ...RECOVERY_VARIANT_PATHS.flatMap((pathname) => [
+    [SIGNED_OUT, pathname, null] as const,
+    [SIGNED_IN, pathname, null] as const,
+    [
+      PENDING_PASSWORD,
+      pathname,
+      PATHS.ACCESS.FIRST_SIGN_IN,
+    ] as const,
   ]),
   [
     SIGNED_OUT_WITH_PENDING_CLAIM,
