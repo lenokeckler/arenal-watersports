@@ -2467,6 +2467,18 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
       };
+      issue_password_reset_pin: {
+        Args: {
+          p_ip_hash: string;
+          p_pin: string;
+          p_username: string;
+        };
+        Returns: {
+          lifetime_minutes: number;
+          personal_email: string;
+          pin_id: string;
+        }[];
+      };
       next_reservation_code: {
         Args: Record<PropertyKey, never>;
         Returns: string;
@@ -2476,6 +2488,14 @@ export type Database = {
         Returns: number;
       };
       password_reset_pin_attempt_limit: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      password_reset_pin_hash_cost: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      password_reset_pin_length: {
         Args: Record<PropertyKey, never>;
         Returns: number;
       };

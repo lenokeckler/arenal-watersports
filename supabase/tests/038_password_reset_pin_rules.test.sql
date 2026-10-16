@@ -125,8 +125,8 @@ select is(
 );
 select is(
   (select count(*) from pg_proc where proname like 'password\_reset\_%' and prokind = 'f' and provolatile = 'i' and proconfig = array['search_path=""']),
-  5::bigint,
-  'las cinco funciones de limites son inmutables y fijan search_path'
+  7::bigint,
+  'las siete funciones de limites son inmutables y fijan search_path'
 );
 select is(
   (select count(*) from pg_proc, aclexplode(proacl) as privilege where proname like 'password\_reset\_%' and privilege.grantee = 0),
