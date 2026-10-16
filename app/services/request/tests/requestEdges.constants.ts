@@ -64,3 +64,17 @@ export const PROPERTY_SECRETS: ReadonlyArray<string> = [
   "\u{1f600}".repeat(32),
   "0123456789abcdef0123456789ABCDEF",
 ];
+
+export const ZONED_MAPPED_IPV6 = "::ffff:203.0.113.7%eth0";
+export const MAPPED_IPV4_RESULT = "203.0.113.7";
+export const BRACKETED_ZONED_IPV6 = "[fe80::1%eth0]:80";
+export const BRACKETED_ZONED_IPV6_PREFIX = "fe80:0:0:0::";
+export const UNTRUSTED_VERCEL_VALUES = [
+  "0",
+  "true",
+  "",
+  " 1",
+  "1 ",
+  "2",
+  "TRUE",
+] as const;

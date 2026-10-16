@@ -21,6 +21,7 @@ import {
   VALID_SECRET,
   VERCEL_HEADER,
 } from "./request.constants";
+import { UNTRUSTED_VERCEL_VALUES } from "./requestEdges.constants";
 
 const headersMock = vi.hoisted(() => vi.fn());
 
@@ -71,6 +72,21 @@ describe("readClientNetworkKey", () => {
       deriveClientNetworkKey(null, VALID_SECRET)
     );
   });
+
+  it.each(UNTRUSTED_VERCEL_VALUES)(
+    "ignores a spoofed address when VERCEL is %j",
+    async (value) => {
+      stubSecret(VALID_SECRET);
+      stubVercel(value);
+      headersMock.mockResolvedValue(
+        createHeaders({ [VERCEL_HEADER]: SPOOFED_ADDRESS })
+      );
+
+      await expect(readClientNetworkKey()).resolves.toBe(
+        deriveClientNetworkKey(null, VALID_SECRET)
+      );
+    }
+  );
 
   it("uses the shared bucket when no address arrives", async () => {
     stubSecret(VALID_SECRET);
