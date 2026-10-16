@@ -33,6 +33,12 @@ describe("readNetworkKeySecret", () => {
     expect(readNetworkKeySecret()).toBe(VALID_SECRET);
   });
 
+  it("returns the trimmed secret when padding surrounds a valid one", () => {
+    stubSecret(`  ${VALID_SECRET}  `);
+
+    expect(readNetworkKeySecret()).toBe(VALID_SECRET);
+  });
+
   it("throws a code-only error when the secret is missing", () => {
     vi.stubEnv(
       NETWORK_KEY.SECRET_ENVIRONMENT_NAME,

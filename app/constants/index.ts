@@ -188,7 +188,10 @@ export {
 } from "./mail";
 
 export {
+  ADDRESS_FORMAT,
   CLIENT_ADDRESS,
+  CLIENT_RUNTIME,
+  IP_VERSION,
   NETWORK_KEY,
   NETWORK_KEY_ERROR_CODE,
   type NetworkKeyErrorCode,

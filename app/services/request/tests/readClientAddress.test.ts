@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { readClientAddress } from "../readClientAddress";
+import { readTrustedAddress } from "./readTrustedAddress";
 import { createHeaders } from "./createHeaders";
 import {
   BLANK_VALUE,
@@ -8,7 +8,7 @@ import {
   FORWARDED_HEADER,
   IPV4_ADDRESS,
   IPV6_ADDRESS,
-  LOWERCASE_IPV6_ADDRESS,
+  IPV6_PREFIX,
   OTHER_IPV4_ADDRESS,
   PADDED_ADDRESS,
   PROXY_CHAIN,
@@ -22,7 +22,7 @@ describe("readClientAddress", () => {
       [FORWARDED_HEADER]: OTHER_IPV4_ADDRESS,
     });
 
-    expect(readClientAddress(headers)).toBe(IPV4_ADDRESS);
+    expect(readTrustedAddress(headers)).toBe(IPV4_ADDRESS);
   });
 
   it("falls back to the forwarded header", () => {
@@ -30,7 +30,7 @@ describe("readClientAddress", () => {
       [FORWARDED_HEADER]: OTHER_IPV4_ADDRESS,
     });
 
-    expect(readClientAddress(headers)).toBe(
+    expect(readTrustedAddress(headers)).toBe(
       OTHER_IPV4_ADDRESS
     );
   });
@@ -41,7 +41,7 @@ describe("readClientAddress", () => {
       [FORWARDED_HEADER]: OTHER_IPV4_ADDRESS,
     });
 
-    expect(readClientAddress(headers)).toBe(
+    expect(readTrustedAddress(headers)).toBe(
       OTHER_IPV4_ADDRESS
     );
   });
@@ -51,7 +51,7 @@ describe("readClientAddress", () => {
       [VERCEL_HEADER]: PROXY_CHAIN,
     });
 
-    expect(readClientAddress(headers)).toBe(IPV4_ADDRESS);
+    expect(readTrustedAddress(headers)).toBe(IPV4_ADDRESS);
   });
 
   it("trims the address", () => {
@@ -59,21 +59,21 @@ describe("readClientAddress", () => {
       [VERCEL_HEADER]: PADDED_ADDRESS,
     });
 
-    expect(readClientAddress(headers)).toBe(IPV4_ADDRESS);
+    expect(readTrustedAddress(headers)).toBe(IPV4_ADDRESS);
   });
 
-  it("lowercases an IPv6 address", () => {
+  it("reduces an IPv6 address to its lowercase /64 prefix", () => {
     const headers = createHeaders({
       [VERCEL_HEADER]: IPV6_ADDRESS,
     });
 
-    expect(readClientAddress(headers)).toBe(
-      LOWERCASE_IPV6_ADDRESS
-    );
+    expect(readTrustedAddress(headers)).toBe(IPV6_PREFIX);
   });
 
   it("returns null without any header", () => {
-    expect(readClientAddress(createHeaders({}))).toBeNull();
+    expect(
+      readTrustedAddress(createHeaders({}))
+    ).toBeNull();
   });
 
   it.each([EMPTY_VALUE, BLANK_VALUE, EMPTY_FIRST_HOP])(
@@ -83,7 +83,7 @@ describe("readClientAddress", () => {
         [VERCEL_HEADER]: value,
       });
 
-      expect(readClientAddress(headers)).toBeNull();
+      expect(readTrustedAddress(headers)).toBeNull();
     }
   );
 });

@@ -1,4 +1,4 @@
-import type { NetworkKeyError } from "../NetworkKeyError";
+import { NetworkKeyError } from "../NetworkKeyError";
 
 export const captureNetworkKeyError = (
   action: () => unknown
@@ -6,7 +6,11 @@ export const captureNetworkKeyError = (
   try {
     action();
   } catch (error) {
-    return error as NetworkKeyError;
+    if (error instanceof NetworkKeyError) {
+      return error;
+    }
+
+    throw error;
   }
 
   throw new Error("expected the action to throw");
