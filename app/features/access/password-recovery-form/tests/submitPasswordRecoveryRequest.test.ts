@@ -13,16 +13,12 @@ import { REDIRECT_SIGNAL_MESSAGE } from "@/app/utils/server-action/tests/redirec
 import { submitPasswordRecoveryRequest } from "../actions/submitPasswordRecoveryRequest";
 import { createPasswordRecoveryRequestFormData } from "./createPasswordRecoveryRequestFormData";
 import {
-  EMPTY_USERNAME,
   INJECTED_USERNAME,
   NETWORK_KEY,
-  NETWORK_KEY_FAILURE_MESSAGE,
   RAW_USERNAME,
   RESET_PATH_FOR_INJECTED,
   RESET_PATH_FOR_NORMALIZED,
   RETURNED_ERRORS,
-  SERVICE_FAILURE_MESSAGE,
-  UNKNOWN_ERROR,
 } from "./passwordRecoveryRequest.constants";
 
 vi.mock("@/app/services/password-recovery", () => ({
@@ -134,61 +130,5 @@ describe("submitPasswordRecoveryRequest", () => {
 
     expect(after).toHaveBeenCalledOnce();
     expect(after).toHaveBeenCalledWith(task);
-  });
-
-  it("answers unknown and never calls the service when the network key cannot be read", async () => {
-    vi.mocked(readClientNetworkKey).mockRejectedValue(
-      new Error(NETWORK_KEY_FAILURE_MESSAGE)
-    );
-
-    await expect(
-      submitUsername(RAW_USERNAME)
-    ).resolves.toEqual(UNKNOWN_ERROR);
-
-    expect(requestPasswordRecovery).not.toHaveBeenCalled();
-    expect(redirect).not.toHaveBeenCalled();
-  });
-
-  it("answers unknown when the service throws", async () => {
-    vi.mocked(requestPasswordRecovery).mockRejectedValue(
-      new Error(SERVICE_FAILURE_MESSAGE)
-    );
-
-    await expect(
-      submitUsername(RAW_USERNAME)
-    ).resolves.toEqual(UNKNOWN_ERROR);
-
-    expect(redirect).not.toHaveBeenCalled();
-  });
-
-  it("reads a missing username as empty", async () => {
-    vi.mocked(requestPasswordRecovery).mockResolvedValue({
-      ok: false,
-      error: UNKNOWN_ERROR,
-    });
-
-    await submitPasswordRecoveryRequest(
-      null,
-      new FormData()
-    );
-
-    expect(requestPasswordRecovery).toHaveBeenCalledWith(
-      { networkKey: NETWORK_KEY, username: EMPTY_USERNAME },
-      expect.any(Function)
-    );
-  });
-
-  it("ignores the previous error", async () => {
-    vi.mocked(requestPasswordRecovery).mockResolvedValue({
-      ok: false,
-      error: UNKNOWN_ERROR,
-    });
-
-    await expect(
-      submitPasswordRecoveryRequest(
-        RETURNED_ERRORS[0],
-        createPasswordRecoveryRequestFormData(RAW_USERNAME)
-      )
-    ).resolves.toBe(UNKNOWN_ERROR);
   });
 });

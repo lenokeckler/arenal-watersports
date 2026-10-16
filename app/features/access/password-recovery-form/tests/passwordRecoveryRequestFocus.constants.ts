@@ -7,6 +7,7 @@ import type { PasswordRecoveryFocusProps } from "./PasswordRecoveryFocusProps.in
 import {
   FIELD_ERROR_TEXT,
   UNKNOWN_ERROR,
+  USERNAME_REQUIRED_ERROR,
 } from "./passwordRecoveryRequest.constants";
 
 export const USERNAME_ERRORS: PasswordRecoveryFormErrors = {
@@ -30,4 +31,9 @@ export const BANNER_ERROR_TRIGGER: PasswordRecoveryFocusTrigger =
   {
     invalidSubmitCount: 0,
     serverError: UNKNOWN_ERROR,
+  };
+export const SERVER_USERNAME_ERROR_TRIGGER: PasswordRecoveryFocusTrigger =
+  {
+    invalidSubmitCount: 0,
+    serverError: USERNAME_REQUIRED_ERROR,
   };

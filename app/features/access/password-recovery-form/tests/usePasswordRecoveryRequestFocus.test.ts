@@ -9,6 +9,7 @@ import {
   FAILED_SUBMIT_TRIGGER,
   FORM_ERRORS,
   NO_ERRORS_PROPS,
+  SERVER_USERNAME_ERROR_TRIGGER,
   USERNAME_ERRORS,
 } from "./passwordRecoveryRequestFocus.constants";
 
@@ -46,6 +47,18 @@ describe("usePasswordRecoveryRequestFocus", () => {
     rerender({
       errors: USERNAME_ERRORS,
       trigger: FAILED_SUBMIT_TRIGGER,
+    });
+
+    expect(input).toHaveFocus();
+  });
+
+  it("focuses the username when the server rejects it", () => {
+    const { input, rerender } =
+      renderFocus(NO_ERRORS_PROPS);
+
+    rerender({
+      errors: USERNAME_ERRORS,
+      trigger: SERVER_USERNAME_ERROR_TRIGGER,
     });
 
     expect(input).toHaveFocus();
