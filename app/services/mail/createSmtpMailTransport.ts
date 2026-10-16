@@ -4,20 +4,23 @@ import {
   MAIL_TRANSPORT,
 } from "@/app/constants";
 import { containsLineBreak } from "./containsLineBreak";
+import { isPlainMailAddress } from "./isPlainMailAddress";
 import { MailError } from "./MailError";
 import type { MailConfiguration } from "./models/MailConfiguration.interface";
 import type { MailMessage } from "./models/MailMessage.interface";
 import type { MailTransport } from "./models/MailTransport.type";
 import { readMailConfiguration } from "./readMailConfiguration";
 
-const assertNoHeaderInjection = (
-  message: MailMessage
-): void => {
+const assertSafeMessage = (message: MailMessage): void => {
   if (
     containsLineBreak(message.to) ||
     containsLineBreak(message.subject)
   ) {
     throw new MailError(MAIL_ERROR_CODE.HEADER_INJECTION);
+  }
+
+  if (!isPlainMailAddress(message.to)) {
+    throw new MailError(MAIL_ERROR_CODE.RECIPIENT_INVALID);
   }
 };
 
@@ -44,13 +47,19 @@ export const createSmtpMailTransport = (
   });
 
   return async (message) => {
-    assertNoHeaderInjection(message);
+    assertSafeMessage(message);
 
-    await transporter.sendMail({
-      from: `${MAIL_TRANSPORT.SENDER_NAME} <${configuration.from}>`,
-      subject: message.subject,
-      text: message.text,
-      to: message.to,
-    });
+    try {
+      await transporter.sendMail({
+        from: `${MAIL_TRANSPORT.SENDER_NAME} <${configuration.from}>`,
+        subject: message.subject,
+        text: message.text,
+        to: message.to,
+      });
+    } catch (cause) {
+      throw new MailError(MAIL_ERROR_CODE.SEND_FAILED, {
+        cause,
+      });
+    }
   };
 };

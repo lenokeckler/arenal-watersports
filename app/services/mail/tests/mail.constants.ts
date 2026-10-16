@@ -24,12 +24,6 @@ export const VALID_LOOPBACK_ENVIRONMENT = {
   [MAIL_ENVIRONMENT.SMTP_USER]: "",
 };
 
-export const LOOPBACK_HOSTS = [
-  "127.0.0.1",
-  "localhost",
-  "::1",
-];
-
 export const INVALID_PORTS = [
   "0",
   "65536",
@@ -48,3 +42,48 @@ export const LINE_BREAK_VALUES = [
   "a@example.test\nBcc: x@example.test",
   "Su PIN\rBcc: x@example.test",
 ];
+
+export const NON_DECIMAL_PORTS = [
+  "5e2",
+  "0x1F",
+  "+587",
+  "5 87",
+];
+export const BOUNDARY_PORTS = ["1", "65535"];
+export const PADDED_PORT = " 587 ";
+export const LOOKALIKE_LOOPBACK_HOSTS = [
+  "LOCALHOST",
+  "127.0.0.2",
+  "[::1]",
+  "localhost.example.test",
+];
+export const BLANK_VALUE = "   ";
+export const FROM_WITH_EXTRA_MAILBOX =
+  "a@example.test>, evil@example.test";
+export const INVALID_RECIPIENTS = [
+  "a@example.test, evil@example.test",
+  "a@example.test;evil@example.test",
+  "Bcc: evil@example.test",
+  "<a@example.test>",
+  "Worker <a@example.test>",
+  `${JSON.stringify("a")}@example.test`,
+  "(note)a@example.test",
+  "a@example.test (note)",
+  "a\\b@example.test",
+  "a b@example.test",
+  " a@example.test",
+  "a@example.test\u2028",
+  "a\u0085@example.test",
+  "a@@example.test",
+  "plainaddress",
+  "",
+];
+export const UNICODE_LINE_SEPARATORS = ["\u2028", "\u0085"];
+export const PADDED_PASSWORD = "  padded password  ";
+export const WHITESPACE_ONLY_PASSWORD = "   ";
+export const UNTRIMMED_INVALID_SENDERS =
+  INVALID_RECIPIENTS.filter(
+    (value) => value !== "" && value.trim() === value
+  );
+export const SMTP_RESPONSE_TEXT =
+  "535 5.7.8 Username and Password not accepted";

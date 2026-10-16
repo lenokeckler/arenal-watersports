@@ -6,6 +6,8 @@ export const MAIL_TRANSPORT = {
   LOOPBACK_HOSTS: ["127.0.0.1", "localhost", "::1"],
   MAXIMUM_PORT: 65535,
   MINIMUM_PORT: 1,
+  PLAIN_ADDRESS_PATTERN:
+    /^[^\s\u0085@<>()[\]\\,;:"]+@[^\s\u0085@<>()[\]\\,;:"]+$/,
   PORT_PATTERN: /^\d+$/,
   SENDER_NAME: "Arenal Water Sports",
   SOCKET_TIMEOUT_MILLISECONDS: 10000,
