@@ -8,7 +8,6 @@ import type { ReservationFormFieldsProps } from "../models/ReservationFormFields
 import {
   RESERVATION_FORM_EQUIPMENT_NOTE_CLASS,
   RESERVATION_FORM_FIELD_CLASS,
-  RESERVATION_FORM_INPUT_CLASS,
 } from "../styles/ReservationFormView.styles";
 
 const ReservationEquipmentFields = ({
@@ -28,7 +27,6 @@ const ReservationEquipmentFields = ({
           id={RESERVATION_FORM_FIELD_ID.CATEGORY}
           name={RESERVATION_FORM_FIELD_ID.CATEGORY}
           label={RESERVATION_FORM_UI_COPY.CATEGORY}
-          classNameField={RESERVATION_FORM_INPUT_CLASS}
           type={INPUT_TYPES.SELECT}
           value={viewModel.values.categoryId}
           options={categoryOptions}
@@ -51,7 +49,6 @@ const ReservationEquipmentFields = ({
           id={RESERVATION_FORM_FIELD_ID.QUANTITY}
           name={RESERVATION_FORM_FIELD_ID.QUANTITY}
           label={RESERVATION_FORM_UI_COPY.QUANTITY}
-          classNameField={RESERVATION_FORM_INPUT_CLASS}
           type={INPUT_TYPES.NUMBER}
           value={String(viewModel.values.quantity)}
           onChange={(event) =>

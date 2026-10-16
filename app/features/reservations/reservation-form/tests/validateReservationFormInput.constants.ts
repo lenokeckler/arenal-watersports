@@ -15,7 +15,6 @@ export const INVALID_DATE = "2027-02-29";
 export const INVALID_TIME = "24:00";
 export const EARLY_VALID_DATE = "0099-01-01";
 export const SUBMINUTE_DURATION_HOURS = 0.01;
-export const ZERO_DURATION_HOURS = 0;
 export const EXPECTED_DURATION_MINUTES = 90;
 export const FRACTIONAL_COUNT = 1.5;
 export const INVALID_QUANTITY = 0;

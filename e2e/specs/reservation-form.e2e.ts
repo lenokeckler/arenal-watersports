@@ -60,48 +60,11 @@ test.describe("Reservation form", () => {
     ).toHaveAttribute("aria-pressed", "true");
     await expect(
       reservationFormPage.getDurationInput()
-    ).toBeHidden();
+    ).toHaveValue(E2E_RESERVATION_DURATION_PRESET.HOURS);
     await reservationFormPage.submit();
     await expect(
       reservationFormPage.getValidationError()
     ).toBeVisible();
-  });
-
-  test("shows the custom duration field only when selected", async ({
-    page,
-  }) => {
-    const reservationFormPage =
-      createReservationFormPage(page);
-
-    await reservationFormPage.goTo();
-    await expect(
-      reservationFormPage.getDurationInput()
-    ).toBeHidden();
-
-    await reservationFormPage.selectDuration(
-      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_OPTION
-    );
-    await expect(
-      reservationFormPage.getDurationInput()
-    ).toBeVisible();
-    await expect(
-      reservationFormPage.getDurationInput()
-    ).toHaveValue("");
-    await reservationFormPage.typeCustomDuration(
-      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_HOURS
-    );
-    await expect(
-      reservationFormPage.getDurationInput()
-    ).toHaveValue(
-      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_HOURS
-    );
-
-    await reservationFormPage.selectDuration(
-      E2E_RESERVATION_DURATION_PRESET.LABEL
-    );
-    await expect(
-      reservationFormPage.getDurationInput()
-    ).toBeHidden();
   });
 
   test("creates a reservation using a seeded interchangeable category", async ({

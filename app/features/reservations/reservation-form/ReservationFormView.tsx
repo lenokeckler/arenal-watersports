@@ -14,7 +14,6 @@ import { useReservationFormViewModel } from "./hooks/useReservationFormViewModel
 import type { ReservationFormViewProps } from "./models/ReservationFormViewProps.interface";
 import {
   RESERVATION_FORM_ACTIONS_CLASS,
-  RESERVATION_FORM_BACK_CLASS,
   RESERVATION_FORM_CARD_CLASS,
   RESERVATION_FORM_DESCRIPTION_CLASS,
   RESERVATION_FORM_ERROR_CLASS,
@@ -45,14 +44,6 @@ const ReservationFormView = ({
     <main className={RESERVATION_FORM_MAIN_CLASS}>
       <div className={RESERVATION_FORM_PAGE_CLASS}>
         <header className={RESERVATION_FORM_HEADER_CLASS}>
-          <Button
-            type="button"
-            variant={BUTTON.BASE}
-            className={RESERVATION_FORM_BACK_CLASS}
-            onClick={viewModel.handleBack}
-          >
-            {RESERVATION_FORM_UI_COPY.BACK_TO_CALENDAR}
-          </Button>
           <Title
             id={RESERVATION_FORM_FIELD_ID.HEADING}
             variant={TitleVariant.PRIMARY}
@@ -99,11 +90,7 @@ const ReservationFormView = ({
                 {RESERVATION_FORM_UI_COPY.SUCCESS}
               </Text>
             )}
-            <div
-              role="group"
-              aria-label={RESERVATION_FORM_UI_COPY.ACTIONS}
-              className={RESERVATION_FORM_ACTIONS_CLASS}
-            >
+            <div className={RESERVATION_FORM_ACTIONS_CLASS}>
               <Button
                 type="submit"
                 variant={BUTTON.PRIMARY}

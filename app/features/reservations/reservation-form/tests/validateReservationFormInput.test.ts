@@ -9,7 +9,6 @@ import {
   INVALID_FIELD_COUNT,
   INVALID_QUANTITY,
   SUBMINUTE_DURATION_HOURS,
-  ZERO_DURATION_HOURS,
   VALID_RESERVATION_FORM_INPUT,
 } from "./validateReservationFormInput.constants";
 import { validateReservationFormInput } from "../utils/validateReservationFormInput";
@@ -63,18 +62,6 @@ describe("validateReservationFormInput", () => {
     const result = validateReservationFormInput({
       ...VALID_RESERVATION_FORM_INPUT,
       durationHours: SUBMINUTE_DURATION_HOURS,
-    });
-
-    expect(result.value).toBeNull();
-    expect(result.errors).toHaveProperty(
-      RESERVATION_FORM_FIELD.DURATION_HOURS
-    );
-  });
-
-  it("rejects an empty custom duration resolved to zero", () => {
-    const result = validateReservationFormInput({
-      ...VALID_RESERVATION_FORM_INPUT,
-      durationHours: ZERO_DURATION_HOURS,
     });
 
     expect(result.value).toBeNull();

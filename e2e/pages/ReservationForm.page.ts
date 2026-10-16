@@ -3,24 +3,11 @@ import { ARIA_ROLE, PATHS } from "@/app/constants";
 import { E2E_RESERVATION_FORM_COPY } from "../constants/E2eReservationForm.constants";
 import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
 import { getMainRegion } from "../support/mainRegion";
-import { createReservationFormSubmissionPage } from "./ReservationFormSubmission.page";
 
 export const createReservationFormPage = (page: Page) => {
   const main = getMainRegion(page);
-  const submissionPage =
-    createReservationFormSubmissionPage(page);
 
   return {
-    ...submissionPage,
-    getBackButton: (): Locator =>
-      main.getByRole(ARIA_ROLE.BUTTON, {
-        name: E2E_RESERVATION_FORM_COPY.BACK_TO_CALENDAR,
-        exact: true,
-      }),
-    getSubmitActionBar: (): Locator =>
-      main.getByLabel(E2E_RESERVATION_FORM_COPY.ACTIONS, {
-        exact: true,
-      }),
     getCategorySelect: (): Locator =>
       main.getByLabel(
         E2E_RESERVATION_FORM_COPY.CATEGORY_FIELD_NAME,
@@ -103,16 +90,6 @@ export const createReservationFormPage = (page: Page) => {
         })
         .click();
     },
-    typeCustomDuration: async (
-      value: string
-    ): Promise<void> => {
-      await main
-        .getByLabel(
-          E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION,
-          { exact: false }
-        )
-        .pressSequentially(value);
-    },
     scrollToSubmit: async (): Promise<void> => {
       await main
         .getByRole(ARIA_ROLE.BUTTON, {
@@ -120,6 +97,30 @@ export const createReservationFormPage = (page: Page) => {
           exact: true,
         })
         .scrollIntoViewIfNeeded();
+    },
+    submitReservation: async (): Promise<void> => {
+      await main
+        .getByLabel(
+          E2E_RESERVATION_FORM_COPY.CUSTOMER_NAME,
+          { exact: false }
+        )
+        .fill(
+          E2E_RESERVATION_FORM_COPY.CUSTOMER_NAME_VALID
+        );
+      await main
+        .getByLabel(
+          E2E_RESERVATION_FORM_COPY.CATEGORY_FIELD_NAME,
+          { exact: true }
+        )
+        .selectOption({
+          label: E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION,
+        });
+      await main
+        .getByRole(ARIA_ROLE.BUTTON, {
+          name: E2E_RESERVATION_FORM_COPY.SUBMIT,
+          exact: true,
+        })
+        .click();
     },
     submit: (): Promise<void> =>
       main
