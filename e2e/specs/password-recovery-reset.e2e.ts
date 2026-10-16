@@ -1,4 +1,5 @@
-import { PATHS, STRING } from "@/app/constants";
+import { readRecoveryAddress } from "../support/readRecoveryAddress";
+import { PATHS } from "@/app/constants";
 import { E2E_LOGIN_COPY } from "../constants/E2eLogin.constants";
 import { E2E_ACTIVE_WORKER } from "../constants/E2eActiveWorker.constants";
 import { E2E_RECOVERY_PASSWORDS } from "../constants/E2ePasswordRecoveryPin.constants";
@@ -21,7 +22,7 @@ test.describe("Password recovery reset", () => {
     page,
     recoveryAccount,
   }) => {
-    const address = recoveryAccount.address ?? STRING.Empty;
+    const address = readRecoveryAddress(recoveryAccount);
     const loginPage = createLoginPage(page);
     const requestPage =
       createPasswordRecoveryRequestPage(page);
@@ -90,18 +91,19 @@ test.describe("Password recovery reset", () => {
     page,
     recoveryAccount,
   }) => {
-    const address = recoveryAccount.address ?? STRING.Empty;
+    const address = readRecoveryAddress(recoveryAccount);
 
-    await recoverPassword(page, recoveryAccount);
+    const pin = await recoverPassword(
+      page,
+      recoveryAccount
+    );
 
     const notice = await waitForMailWithSubject(
       address,
       E2E_PASSWORD_CHANGED_MAIL.SUBJECT
     );
     const text = await readMailText(notice.ID);
-    expect(text).not.toMatch(
-      E2E_PASSWORD_CHANGED_MAIL.PIN_PATTERN
-    );
+    expect(text).not.toContain(pin);
     expect(text).not.toMatch(
       E2E_PASSWORD_CHANGED_MAIL.LINK_PATTERN
     );

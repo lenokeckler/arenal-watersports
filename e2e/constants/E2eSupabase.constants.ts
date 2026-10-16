@@ -17,6 +17,10 @@ export const E2E_SUPABASE_TABLE = {
   WORKERS: "workers",
 } as const;
 
+export const E2E_SUPABASE_COUNT = {
+  EXACT: "exact",
+} as const;
+
 export const E2E_SUPABASE_FILTER = {
   IS: "is",
 } as const;
@@ -30,6 +34,7 @@ export const E2E_SUPABASE_COLUMN = {
   MUST_CHANGE_PASSWORD: "must_change_password",
   PERSONAL_EMAIL: "personal_email",
   STATUS: "status",
+  USED_AT: "used_at",
   USERNAME: "username",
   WORKER_ID: "worker_id",
 } as const;

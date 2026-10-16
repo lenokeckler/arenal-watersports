@@ -1,4 +1,4 @@
-import { STRING } from "@/app/constants";
+import { readRecoveryAddress } from "../support/readRecoveryAddress";
 import { E2E_RECOVERY_COPY } from "../constants/E2ePasswordRecovery.constants";
 import { E2E_ACTIVE_WORKER } from "../constants/E2eActiveWorker.constants";
 import {
@@ -40,7 +40,7 @@ test.describe("Password recovery PIN rules", () => {
       recoveryAccount.username
     );
     const newerPin = await waitForNewRecoveryPin(
-      recoveryAccount.address ?? STRING.Empty,
+      readRecoveryAddress(recoveryAccount),
       olderPin
     );
 

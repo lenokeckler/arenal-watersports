@@ -9,7 +9,7 @@ export const recoverPassword = async (
   page: Page,
   account: RecoveryAccount,
   newPassword: string = E2E_RECOVERY_PASSWORDS.NEW
-): Promise<void> => {
+): Promise<string> => {
   const resetPage = createPasswordRecoveryResetPage(page);
   const pin = await requestAndReadRecoveryPin(
     page,
@@ -23,4 +23,6 @@ export const recoverPassword = async (
   });
   await resetPage.submit();
   await expectRecoveredLogin(page);
+
+  return pin;
 };

@@ -1,5 +1,5 @@
+import { readRecoveryAddress } from "./readRecoveryAddress";
 import type { Page } from "@playwright/test";
-import { STRING } from "@/app/constants";
 import { expectRecoveryResetScreen } from "./expectRecoveryResetScreen";
 import type { RecoveryAccount } from "./models/RecoveryAccount.interface";
 import { readDeliveredRecoveryPin } from "./readDeliveredRecoveryPin";
@@ -13,6 +13,6 @@ export const requestAndReadRecoveryPin = async (
   await expectRecoveryResetScreen(page, account.username);
 
   return readDeliveredRecoveryPin(
-    account.address ?? STRING.Empty
+    readRecoveryAddress(account)
   );
 };

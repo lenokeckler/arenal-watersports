@@ -1,3 +1,4 @@
+import { E2E_MUST_CHANGE_PASSWORD_OPERATION } from "../constants/E2ePasswordRecoveryReset.constants";
 import {
   E2E_SUPABASE_COLUMN,
   E2E_SUPABASE_TABLE,
@@ -19,7 +20,7 @@ export const setWorkerMustChangePassword = async (
 
   if (error) {
     failE2eOperation(
-      "set the worker must change password flag",
+      E2E_MUST_CHANGE_PASSWORD_OPERATION,
       error.message
     );
   }

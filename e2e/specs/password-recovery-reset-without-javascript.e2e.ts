@@ -1,4 +1,12 @@
-import { API, PATHS, STRING } from "@/app/constants";
+import { readRecoveryAddress } from "../support/readRecoveryAddress";
+import {
+  API,
+  LOGIN_NOTICE_QUERY_PARAM,
+} from "@/app/constants";
+import {
+  E2E_RECOVERY_ALLOWED_PARAMS,
+  E2E_RECOVERY_SECRET_PARAMS,
+} from "../constants/E2ePasswordRecoveryReset.constants";
 import { E2E_RECOVERY_PASSWORDS } from "../constants/E2ePasswordRecoveryPin.constants";
 import { createPasswordRecoveryRequestPage } from "../pages/PasswordRecoveryRequest.page";
 import { createPasswordRecoveryResetPage } from "../pages/PasswordRecoveryReset.page";
@@ -7,6 +15,7 @@ import { expectRecoveryResetScreen } from "../support/expectRecoveryResetScreen"
 import { readDeliveredRecoveryPin } from "../support/readDeliveredRecoveryPin";
 import { expect, test } from "../support/recoveryTest";
 import { requestRecoveryPin } from "../support/requestRecoveryPin";
+import { trackNavigationUrls } from "../support/trackNavigationUrls";
 import { waitForPostNavigation } from "../support/waitForPostNavigation";
 
 test.describe("Password recovery without JavaScript", () => {
@@ -40,6 +49,7 @@ test.describe("Password recovery without JavaScript", () => {
     recoveryAccount,
   }) => {
     const resetPage = createPasswordRecoveryResetPage(page);
+    const tracker = trackNavigationUrls(page);
     await requestRecoveryPin(
       page,
       recoveryAccount.username
@@ -49,7 +59,7 @@ test.describe("Password recovery without JavaScript", () => {
       recoveryAccount.username
     );
     const pin = await readDeliveredRecoveryPin(
-      recoveryAccount.address ?? STRING.Empty
+      readRecoveryAddress(recoveryAccount)
     );
     await resetPage.fillForm({
       confirmPassword: E2E_RECOVERY_PASSWORDS.NEW,
@@ -62,13 +72,29 @@ test.describe("Password recovery without JavaScript", () => {
 
     const request = await submission;
     expect(request.method()).toBe(API.METHODS.POST);
-    expect(request.url()).not.toContain(
-      E2E_RECOVERY_PASSWORDS.NEW
-    );
-    expect(request.url()).not.toContain(pin);
     await expectRecoveredLogin(page);
-    expect(new URL(page.url()).pathname).toBe(
-      PATHS.ACCESS.LOGIN
-    );
+    for (const url of tracker.urls()) {
+      const { search, searchParams } = new URL(url);
+      const keys = [...searchParams.keys()];
+      for (const secretParam of E2E_RECOVERY_SECRET_PARAMS) {
+        expect(keys).not.toContain(secretParam);
+      }
+      expect(
+        keys.filter(
+          (key) =>
+            !E2E_RECOVERY_ALLOWED_PARAMS.includes(key)
+        )
+      ).toEqual([]);
+      expect(search).not.toContain(pin);
+      expect(search).not.toContain(
+        encodeURIComponent(E2E_RECOVERY_PASSWORDS.NEW)
+      );
+      expect(search).not.toContain(
+        E2E_RECOVERY_PASSWORDS.NEW
+      );
+    }
+    expect([
+      ...new URL(page.url()).searchParams.keys(),
+    ]).toEqual([LOGIN_NOTICE_QUERY_PARAM]);
   });
 });

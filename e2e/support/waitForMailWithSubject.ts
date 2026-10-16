@@ -1,4 +1,5 @@
 import { E2E_MAIL_WAIT_MS } from "../constants/E2ePasswordRecovery.constants";
+import { E2E_NOTICE_MAIL_ERROR } from "../constants/E2ePasswordRecoveryReset.constants";
 import { failE2eOperation } from "./failE2eOperation";
 import { listMailTo } from "./listMailTo";
 import type { MailpitMessage } from "./models/MailpitMessage.interface";
@@ -19,8 +20,8 @@ export const waitForMailWithSubject = async (
   return (
     message ??
     failE2eOperation(
-      "receive the password changed mail",
-      `no mail with subject "${subject}" reached ${address}`
+      E2E_NOTICE_MAIL_ERROR.OPERATION,
+      E2E_NOTICE_MAIL_ERROR.MISSING(address, subject)
     )
   );
 };

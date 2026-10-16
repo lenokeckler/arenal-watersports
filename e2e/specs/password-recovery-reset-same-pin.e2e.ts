@@ -1,19 +1,25 @@
 import { E2E_LOGIN_COPY } from "../constants/E2eLogin.constants";
-import { E2E_RECOVERY_COPY } from "../constants/E2ePasswordRecovery.constants";
 import {
+  E2E_RECOVERY_COPY,
+  E2E_RECOVERY_MAIL_COUNT,
+} from "../constants/E2ePasswordRecovery.constants";
+import {
+  E2E_PARALLEL_CONSUMPTIONS,
   E2E_RECOVERY_OUTCOME,
-  E2E_RECOVERY_OUTCOME_COUNT,
   E2E_RECOVERY_RESET_PASSWORDS,
 } from "../constants/E2ePasswordRecoveryReset.constants";
 import { createLoginPage } from "../pages/Login.page";
 import { createPasswordRecoveryResetPage } from "../pages/PasswordRecoveryReset.page";
+import { consumeRecoveryPinConcurrently } from "../support/consumeRecoveryPinConcurrently";
+import { countSpentRecoveryPins } from "../support/countSpentRecoveryPins";
 import { readRecoveryOutcome } from "../support/readRecoveryOutcome";
+import { readWorkerIdByUsername } from "../support/readWorkerIdByUsername";
 import { expect, test } from "../support/recoveryTest";
 import { requestAndReadRecoveryPin } from "../support/requestAndReadRecoveryPin";
 import { signInWithCredentials } from "../support/signInWithCredentials";
 
 test.describe("Password recovery with one PIN used twice at once", () => {
-  test("accepts the PIN once and signs in with exactly one of the two passwords", async ({
+  test("ends with one recovered sign-in, one generic PIN error and exactly one working password", async ({
     context,
     page,
     recoveryAccount,
@@ -59,7 +65,7 @@ test.describe("Password recovery with one PIN used twice at once", () => {
         (outcome) =>
           outcome === E2E_RECOVERY_OUTCOME.RECOVERED
       )
-    ).toHaveLength(E2E_RECOVERY_OUTCOME_COUNT.EXACTLY_ONE);
+    ).toHaveLength(E2E_RECOVERY_MAIL_COUNT.ONE);
     const winner =
       racers[
         outcomes.indexOf(E2E_RECOVERY_OUTCOME.RECOVERED)
@@ -85,6 +91,30 @@ test.describe("Password recovery with one PIN used twice at once", () => {
       winner.page,
       recoveryAccount.username,
       winner.password
+    );
+  });
+
+  test("lets exactly one of two parallel consumptions of the same PIN through and spends it once", async ({
+    page,
+    recoveryAccount,
+  }) => {
+    const pin = await requestAndReadRecoveryPin(
+      page,
+      recoveryAccount
+    );
+    const workerId = await readWorkerIdByUsername(
+      recoveryAccount.username
+    );
+
+    const results = await consumeRecoveryPinConcurrently(
+      recoveryAccount.username,
+      pin
+    );
+
+    expect(results).toHaveLength(E2E_PARALLEL_CONSUMPTIONS);
+    expect(results.filter(Boolean)).toEqual([workerId]);
+    expect(await countSpentRecoveryPins(workerId)).toBe(
+      E2E_RECOVERY_MAIL_COUNT.ONE
     );
   });
 });
