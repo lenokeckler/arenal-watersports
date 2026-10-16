@@ -1,5 +1,5 @@
 begin;
-select plan(28);
+select plan(32);
 
 insert into auth.users (id, email)
 select ('aaaaaaaa-0000-0000-0000-' || lpad(n::text, 12, '0'))::uuid, 'user' || n || '@arenal.local'
@@ -101,6 +101,33 @@ select is(
   array['search_path=""'],
   'mark_password_reset_pin_undelivered fija search_path vacio'
 );
+
+select lives_ok(
+  $$ select public.mark_password_reset_pin_undelivered(null) $$,
+  'marcar un id nulo no falla'
+);
+select is(
+  (select count(*) from password_reset_pins where delivery_failed_at is not null and worker_id = 'aaaaaaaa-0000-0000-0000-000000000005'),
+  0::bigint,
+  'marcar un id nulo no cambia ningun PIN'
+);
+
+set local role anon;
+select throws_ok(
+  $$ select public.mark_password_reset_pin_undelivered('00000000-0000-0000-0000-000000000000') $$,
+  '42501',
+  null,
+  'anon recibe permiso denegado al marcar un PIN'
+);
+reset role;
+set local role authenticated;
+select throws_ok(
+  $$ select public.mark_password_reset_pin_undelivered('00000000-0000-0000-0000-000000000000') $$,
+  '42501',
+  null,
+  'authenticated recibe permiso denegado al marcar un PIN'
+);
+reset role;
 
 select * from finish();
 rollback;
