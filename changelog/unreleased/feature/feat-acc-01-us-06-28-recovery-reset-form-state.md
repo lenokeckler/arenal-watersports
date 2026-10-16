@@ -1,0 +1,1 @@
+ACC-01.06.28: Recovery reset form state — the values, double-submit guard, focus and view model of the form where the worker types the username, the PIN and the new password twice, with the live password rules and every field checked before it is sent (US-ACC-06 · AWS-35)
