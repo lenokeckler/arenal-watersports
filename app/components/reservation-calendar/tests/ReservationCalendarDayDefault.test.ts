@@ -1,4 +1,8 @@
-import { render, renderHook } from "@testing-library/react";
+import {
+  render,
+  renderHook,
+  screen,
+} from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { RESERVATIONS_CALENDAR_COPY as copy } from "@/app/constants";
 import { useReservationCalendarDayContent } from "../hooks/useReservationCalendarDayContent";
@@ -6,6 +10,7 @@ import { CALENDAR_DAY_COVERAGE_CASES } from "./ReservationCalendarDayCases.const
 import {
   CALENDAR_DAY_DATE,
   CALENDAR_DAY_EMPTY,
+  CALENDAR_DAY_GUIDE_TEST,
   CALENDAR_DAY_SNAPSHOT,
 } from "./ReservationCalendarDay.constants";
 import { createReservationCalendarDayPage } from "./ReservationCalendarDay.page";
@@ -36,6 +41,31 @@ describe("Reservation calendar default daily content", () => {
 
     expect(page.getCustomer()).toBeVisible();
   });
+
+  it("does not expose guide attribution in the default Reservations content", () => {
+    const snapshot = {
+      ...CALENDAR_DAY_SNAPSHOT,
+      entries: [
+        {
+          ...CALENDAR_DAY_SNAPSHOT.entries[0],
+          guides: [
+            {
+              fullName: CALENDAR_DAY_GUIDE_TEST.FULL_NAME,
+              type: CALENDAR_DAY_GUIDE_TEST.TYPE,
+            },
+          ],
+        },
+      ],
+    };
+    renderReservationCalendarDay(snapshot);
+
+    expect(
+      screen.queryByText(CALENDAR_DAY_GUIDE_TEST.FULL_NAME)
+    ).toBeNull();
+    expect(
+      screen.queryByText(CALENDAR_DAY_GUIDE_TEST.TYPE_LABEL)
+    ).toBeNull();
+  });
 });
 
 describe("Reservation calendar daily coverage updates", () => {
@@ -44,7 +74,7 @@ describe("Reservation calendar daily coverage updates", () => {
       (showCoverageMessages: boolean) =>
         useReservationCalendarDayContent(
           CALENDAR_DAY_EMPTY,
-          showCoverageMessages
+          { showCoverageMessages }
         ),
       { initialProps: false }
     );
