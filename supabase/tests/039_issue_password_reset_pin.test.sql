@@ -1,5 +1,5 @@
 begin;
-select plan(89);
+select plan(92);
 
 insert into auth.users (id, email) values
   ('aaaaaaaa-0000-0000-0000-000000000001', 'celso@arenal.local'),
@@ -102,6 +102,13 @@ select 'aaaaaaaa-0000-0000-0000-000000000018', 'hash', now() + interval '5 minut
   from generate_series(0, 4) as n;
 update workers set personal_email = null where username = 'tina';
 
+insert into password_reset_requests (network_key, created_at)
+select repeat('9', 64), now() - make_interval(mins => 60 * (n = 0)::int, secs => 5 * n)
+  from generate_series(0, 9) as n;
+insert into password_reset_requests (network_key, created_at)
+select repeat('8', 64), now() - case n when 0 then interval '59 minutes 59 seconds' else make_interval(mins => 5 * n) end
+  from generate_series(0, 9) as n;
+
 create temp table issued as
 select * from public.issue_password_reset_pin('celso', '482913', repeat('a', 64));
 
@@ -190,6 +197,10 @@ select is((select count(*) from password_reset_requests where network_key = repe
 select is_empty($$ select * from public.issue_password_reset_pin('xavi', '123456', repeat('d', 64)) $$, 'la solicitud once de una red se rechaza aunque la cuenta sea elegible');
 select is((select count(*) from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000024'), 0::bigint, 'la solicitud rechazada por red no inserta PIN');
 select is((select count(*) from password_reset_requests where network_key = repeat('d', 64)), 10::bigint, 'la solicitud rechazada por red no suma otra fila');
+
+select isnt_empty($$ select * from public.issue_password_reset_pin('gina', '123456', repeat('9', 64)) $$, 'una solicitud de red justo de hace una hora no cuenta para el tope');
+select is_empty($$ select * from public.issue_password_reset_pin('xavi', '123456', repeat('8', 64)) $$, 'diez solicitudes de red, la mas vieja a un segundo de salir, bloquean la solicitud');
+select is((select count(*) from password_reset_requests where network_key = repeat('8', 64)), 10::bigint, 'el tope de red en el limite no suma otra fila');
 
 create temp table request_totals as
 select count(*) as total from password_reset_requests;
