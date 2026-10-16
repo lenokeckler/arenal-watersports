@@ -28,6 +28,6 @@ export const CLIENT_DIRECTIVE_PATTERN =
   /^\s*["']use client["']/;
 
 export const SERVICES_BARREL_IMPORT_PATTERN =
-  /from\s+["']@\/app\/services(\/supabase)?["']/;
+  /from\s+["']@\/app\/services(\/(supabase|mail))?["']/;
 
 export const TEXT_ENCODING = "utf-8";
