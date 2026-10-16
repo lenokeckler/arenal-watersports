@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { PASSWORD_RECOVERY_FIELD } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
+import { isNewFocusRequest } from "@/app/utils/form-focus/isNewFocusRequest";
 import {
   NO_HANDLED_PASSWORD_RECOVERY_FOCUS_TRIGGER,
   PASSWORD_RECOVERY_REQUEST_FOCUS_ORDER,
@@ -9,15 +10,6 @@ import type { PasswordRecoveryFocusTrigger } from "../models/PasswordRecoveryFoc
 import type { PasswordRecoveryFormErrors } from "../models/PasswordRecoveryFormErrors.type";
 import type { PasswordRecoveryRequestFieldRefs } from "../models/PasswordRecoveryRequestFieldRefs.type";
 import type { PasswordRecoveryRequestFocusField } from "../models/PasswordRecoveryRequestFocusField.type";
-
-const isNewFocusRequest = (
-  handled: PasswordRecoveryFocusTrigger,
-  current: PasswordRecoveryFocusTrigger
-): boolean =>
-  current.invalidSubmitCount !==
-    handled.invalidSubmitCount ||
-  (current.serverError !== null &&
-    current.serverError !== handled.serverError);
 
 export const usePasswordRecoveryRequestFocus = (
   fieldErrors: PasswordRecoveryFormErrors,

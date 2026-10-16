@@ -1,10 +1,9 @@
 import { useState } from "react";
+import { nextCount } from "@/app/utils/form-submit/nextCount";
 import type { PasswordRecoveryRequestInput } from "@/app/utils/password-recovery/models/PasswordRecoveryRequestInput.interface";
 import { validatePasswordRecoveryRequest } from "@/app/utils/password-recovery/validatePasswordRecoveryRequest";
 import type { PasswordRecoveryRequestSubmitGuard } from "../models/PasswordRecoveryRequestSubmitGuard.interface";
 import type { PasswordRecoverySubmitHandler } from "../models/PasswordRecoverySubmitHandler.type";
-
-const nextCount = (count: number): number => count + 1;
 
 export const usePasswordRecoveryRequestSubmitGuard = (
   values: PasswordRecoveryRequestInput,
