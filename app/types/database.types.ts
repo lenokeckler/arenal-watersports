@@ -2484,7 +2484,7 @@ export type Database = {
       };
       issue_password_reset_pin: {
         Args: {
-          p_ip_hash: string;
+          p_network_key: string;
           p_pin: string;
           p_username: string;
         };

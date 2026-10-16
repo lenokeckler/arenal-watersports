@@ -11,7 +11,7 @@ $$;
 create function issue_password_reset_pin(
   p_username text,
   p_pin text,
-  p_ip_hash text
+  p_network_key text
 ) returns table (pin_id uuid, personal_email text, lifetime_minutes integer)
 language plpgsql security definer set search_path = '' as $$
 declare
@@ -24,6 +24,29 @@ begin
      or p_pin !~ format('^[0-9]{%s}$', public.password_reset_pin_length()) then
     raise exception 'El PIN debe tener % digitos', public.password_reset_pin_length()
       using errcode = '22023';
+  end if;
+
+  if p_network_key is not null and p_network_key !~ '^[0-9a-f]{64}$' then
+    raise exception 'La clave de red no es valida'
+      using errcode = '22023';
+  end if;
+
+  if p_network_key is not null then
+    perform pg_advisory_xact_lock(hashtext(p_network_key));
+
+    if (
+      select count(*)
+        from public.password_reset_requests r
+       where r.network_key = p_network_key
+         and r.created_at > now() - make_interval(
+           mins => public.password_reset_limit_window_minutes()
+         )
+    ) >= public.password_reset_network_hourly_limit() then
+      return;
+    end if;
+
+    insert into public.password_reset_requests (network_key)
+    values (p_network_key);
   end if;
 
   pin_hash_value := extensions.crypt(
@@ -61,22 +84,11 @@ begin
     select count(*)
       from public.password_reset_pins p
      where p.worker_id = target_worker_id
-       and p.created_at > now() - interval '1 hour'
+       and p.created_at > now() - make_interval(
+         mins => public.password_reset_limit_window_minutes()
+       )
   ) >= public.password_reset_request_hourly_limit() then
     return;
-  end if;
-
-  if p_ip_hash is not null then
-    perform pg_advisory_xact_lock(hashtextextended(p_ip_hash, 0));
-
-    if (
-      select count(*)
-        from public.password_reset_pins p
-       where p.requested_ip_hash = p_ip_hash
-         and p.created_at > now() - interval '1 hour'
-    ) >= public.password_reset_network_hourly_limit() then
-      return;
-    end if;
   end if;
 
   update public.password_reset_pins p
@@ -84,13 +96,11 @@ begin
    where p.worker_id = target_worker_id
      and p.used_at is null;
 
-  insert into public.password_reset_pins (
-    worker_id, pin_hash, expires_at, requested_ip_hash
-  ) values (
+  insert into public.password_reset_pins (worker_id, pin_hash, expires_at)
+  values (
     target_worker_id,
     pin_hash_value,
-    now() + make_interval(mins => public.password_reset_pin_lifetime_minutes()),
-    p_ip_hash
+    now() + make_interval(mins => public.password_reset_pin_lifetime_minutes())
   ) returning id into new_pin_id;
 
   return query select

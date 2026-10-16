@@ -1,5 +1,5 @@
 begin;
-select plan(73);
+select plan(89);
 
 insert into auth.users (id, email) values
   ('aaaaaaaa-0000-0000-0000-000000000001', 'celso@arenal.local'),
@@ -23,11 +23,10 @@ insert into auth.users (id, email) values
   ('aaaaaaaa-0000-0000-0000-000000000019', 'rosa@arenal.local'),
   ('aaaaaaaa-0000-0000-0000-000000000020', 'nora@arenal.local'),
   ('aaaaaaaa-0000-0000-0000-000000000021', 'tina@arenal.local'),
-  ('aaaaaaaa-0000-0000-0000-000000000022', 'vera@arenal.local');
-insert into auth.users (id, email)
-select format('bbbbbbbb-0000-0000-0000-%s', lpad(n::text, 12, '0'))::uuid,
-       format('network%s@arenal.local', n)
-  from generate_series(1, 10) as n;
+  ('aaaaaaaa-0000-0000-0000-000000000022', 'vera@arenal.local'),
+  ('aaaaaaaa-0000-0000-0000-000000000023', 'wanda@arenal.local'),
+  ('aaaaaaaa-0000-0000-0000-000000000024', 'xavi@arenal.local'),
+  ('aaaaaaaa-0000-0000-0000-000000000025', 'yara@arenal.local');
 
 insert into workers (id, username, full_name, personal_email, base_role) values
   ('aaaaaaaa-0000-0000-0000-000000000001', 'celso', 'Celso', 'celso@example.com', 'reservas'),
@@ -49,17 +48,13 @@ insert into workers (id, username, full_name, personal_email, base_role) values
   ('aaaaaaaa-0000-0000-0000-000000000019', 'rosa', 'Rosa', 'rosa@example.com', 'reservas'),
   ('aaaaaaaa-0000-0000-0000-000000000020', 'nora', 'Nora', 'nora@example.com', 'reservas'),
   ('aaaaaaaa-0000-0000-0000-000000000021', 'tina', 'Tina', 'tina@example.com', 'reservas'),
-  ('aaaaaaaa-0000-0000-0000-000000000022', 'vera', 'Vera', 'vera@example.com', 'reservas');
+  ('aaaaaaaa-0000-0000-0000-000000000022', 'vera', 'Vera', 'vera@example.com', 'reservas'),
+  ('aaaaaaaa-0000-0000-0000-000000000023', 'wanda', 'Wanda', 'wanda@example.com', 'reservas'),
+  ('aaaaaaaa-0000-0000-0000-000000000024', 'xavi', 'Xavi', 'xavi@example.com', 'reservas'),
+  ('aaaaaaaa-0000-0000-0000-000000000025', 'yara', 'Yara', 'yara@example.com', 'reservas');
 insert into workers (id, username, full_name, personal_email, base_role, is_external_guide, national_id, expires_at) values
   ('aaaaaaaa-0000-0000-0000-000000000006', 'expired', 'Guia vencido', 'expired@example.com', 'operaciones', true, '1-1111-1111', now() - interval '1 day'),
   ('aaaaaaaa-0000-0000-0000-000000000007', 'guide', 'Guia vigente', 'guide@example.com', 'operaciones', true, '2-2222-2222', now() + interval '1 day');
-insert into workers (id, username, full_name, personal_email, base_role)
-select format('bbbbbbbb-0000-0000-0000-%s', lpad(n::text, 12, '0'))::uuid,
-       format('network%s', n),
-       format('Red %s', n),
-       format('network%s@example.com', n),
-       'reservas'
-  from generate_series(1, 10) as n;
 
 update workers set status = 'blocked', blocked_reason = 'failed_attempts' where username = 'blocka';
 update workers set status = 'blocked', blocked_reason = 'administration' where username in ('blockb', 'vera');
@@ -83,10 +78,9 @@ select id, 'hash', now() - interval '1 hour', now() - make_interval(mins => 60 +
   from workers, generate_series(1, 5) as n
  where username = 'mara';
 
-insert into password_reset_pins (worker_id, pin_hash, expires_at, created_at, requested_ip_hash)
-select id, 'hash', now() + interval '5 minutes', now() - interval '5 minutes', repeat('b', 64)
-  from workers
- where username like 'network%';
+insert into password_reset_requests (network_key, created_at)
+select repeat('b', 64), now() - interval '5 minutes'
+  from generate_series(1, 10);
 
 insert into password_reset_pins (worker_id, pin_hash, expires_at, created_at)
 values ('aaaaaaaa-0000-0000-0000-000000000014', 'old-hash', now() + interval '5 minutes', now() - interval '2 minutes');
@@ -120,7 +114,8 @@ select isnt((select pin_hash from password_reset_pins where worker_id = 'aaaaaaa
 select ok((select extensions.crypt('482913', pin_hash) = pin_hash from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000001'), 'el hash corresponde al PIN');
 select is((select expires_at - created_at from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000001'), interval '10 minutes', 'el PIN vence a los 10 minutos');
 select is((select attempts from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000001'), 0::smallint, 'el PIN empieza con cero intentos');
-select is((select requested_ip_hash from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000001'), repeat('a', 64), 'guarda el hash de la red');
+select is((select count(*) from password_reset_requests where network_key = repeat('a', 64)), 1::bigint, 'la solicitud queda registrada en su red');
+select ok((select left(pin_hash, 7) = '$2a$' || lpad(password_reset_pin_hash_cost()::text, 2, '0') || '$' from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000001'), 'el hash es bcrypt con el costo de la regla');
 select is((select used_at from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000001'), null::timestamptz, 'el PIN nuevo no esta gastado');
 
 select isnt_empty($$ select * from public.issue_password_reset_pin('  KIRA ', '123456', null) $$, 'el usuario se normaliza');
@@ -161,6 +156,7 @@ select isnt_empty($$ select * from public.issue_password_reset_pin('ines', '1234
 select isnt_empty($$ select * from public.issue_password_reset_pin('jorge', '123456', null) $$, 'jorge recibe un PIN nuevo');
 select is((select used_at is not null from password_reset_pins where pin_hash = 'old-hash'), true, 'el PIN nuevo gasta el PIN anterior sin usar');
 select is((select count(*) from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000014' and used_at is null), 1::bigint, 'queda un solo PIN vigente');
+select is((select count(*) from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000008' and used_at is null), 5::bigint, 'emitir un PIN no gasta los PIN de otras cuentas');
 
 select isnt_empty($$ select * from public.issue_password_reset_pin(' LUIS ', '123456', null) $$, 'una solicitud justo a los 60 segundos de la anterior pasa');
 select isnt_empty($$ select * from public.issue_password_reset_pin('omar', '123456', null) $$, 'un PIN justo de hace una hora no cuenta para el tope');
@@ -176,8 +172,36 @@ select is((select count(*) from password_reset_pins where worker_id = 'aaaaaaaa-
 select is_empty($$ select * from public.issue_password_reset_pin('tina', '123456', null) $$, 'una cuenta a la que se le quito el correo no recibe fila');
 select is((select count(*) from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000021' and used_at is null), 1::bigint, 'quitar el correo no gasta el PIN anterior');
 select is_empty($$ select * from public.issue_password_reset_pin(null, '123456', null) $$, 'un usuario nulo no recibe fila');
-select is((select requested_ip_hash from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000013' and used_at is null), null::text, 'sin hash de red el PIN se guarda sin hash');
 select is((select lifetime_minutes from issued), password_reset_pin_lifetime_minutes()::integer, 'la vigencia devuelta es la de la regla');
+
+select is((select count(*) from password_reset_requests where network_key = repeat('b', 64)), 10::bigint, 'una solicitud refusada por el tope de red no suma otra fila');
+
+select is_empty($$ select * from public.issue_password_reset_pin('nobody', '123456', repeat('e', 64)) $$, 'un usuario desconocido no recibe fila con clave de red');
+select is((select count(*) from password_reset_requests where network_key = repeat('e', 64)), 1::bigint, 'una solicitud de un usuario desconocido tambien se registra');
+
+do $$
+begin
+  for attempt in 1..5 loop
+    perform public.issue_password_reset_pin('nobody', '123456', repeat('d', 64));
+    perform public.issue_password_reset_pin('wanda', '123456', repeat('d', 64));
+  end loop;
+end $$;
+select is((select count(*) from password_reset_requests where network_key = repeat('d', 64)), 10::bigint, 'cada solicitud suma una fila, sea de una cuenta elegible o no');
+select is_empty($$ select * from public.issue_password_reset_pin('xavi', '123456', repeat('d', 64)) $$, 'la solicitud once de una red se rechaza aunque la cuenta sea elegible');
+select is((select count(*) from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000024'), 0::bigint, 'la solicitud rechazada por red no inserta PIN');
+select is((select count(*) from password_reset_requests where network_key = repeat('d', 64)), 10::bigint, 'la solicitud rechazada por red no suma otra fila');
+
+create temp table request_totals as
+select count(*) as total from password_reset_requests;
+select isnt_empty($$ select * from public.issue_password_reset_pin('yara', '123456', null) $$, 'una solicitud sin clave de red pasa');
+select is((select count(*) from password_reset_requests), (select total from request_totals), 'una solicitud sin clave de red no registra fila');
+
+select throws_ok($$ select * from public.issue_password_reset_pin('celso', '123456', 'abc') $$, '22023', null, 'una clave de red corta se rechaza');
+select throws_ok(format($$ select * from public.issue_password_reset_pin('celso', '123456', %L) $$, repeat('A', 64)), '22023', null, 'una clave de red en mayusculas se rechaza');
+select throws_ok(format($$ select * from public.issue_password_reset_pin('celso', '123456', %L) $$, repeat('a', 63) || 'g'), '22023', null, 'una clave de red fuera de hexadecimal se rechaza');
+select throws_ok($$ select * from public.issue_password_reset_pin('celso', '123456', '') $$, '22023', null, 'una clave de red vacia se rechaza');
+select throws_ok(format($$ select * from public.issue_password_reset_pin('celso', '12345', %L) $$, repeat('f', 64)), '22023', null, 'un PIN mal formado se rechaza antes de registrar la red');
+select is((select count(*) from password_reset_requests), (select total from request_totals), 'los parametros mal formados no registran filas');
 
 select throws_ok($$ select * from public.issue_password_reset_pin('celso', '12345', null) $$, '22023', null, 'un PIN de cinco digitos se rechaza');
 select throws_ok($$ select * from public.issue_password_reset_pin('celso', '1234567', null) $$, '22023', null, 'un PIN de siete digitos se rechaza');
