@@ -1,0 +1,1 @@
+ACC-01.06.10: Mail transport — the server can send a plain-text mail through SMTP, configured only by environment variables, with TLS required outside the local machine and the local Inbucket inbox in development (US-ACC-06 · AWS-35)
