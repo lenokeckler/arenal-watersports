@@ -9,6 +9,14 @@ export const createChangeEvent = (
     target: { value },
   }) as PasswordRecoveryFieldChangeEvent;
 
+export const createNamedChangeEvent = (
+  name: string,
+  value: string
+): PasswordRecoveryFieldChangeEvent =>
+  ({
+    target: { name, value },
+  }) as PasswordRecoveryFieldChangeEvent;
+
 export const createSubmitEvent =
   (): PasswordRecoverySubmitEvent =>
     ({
