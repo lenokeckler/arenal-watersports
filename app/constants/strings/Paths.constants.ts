@@ -4,4 +4,7 @@ export const PATHS = {
     LOGIN: "/access/login",
     ROOT: "/access",
   },
+  RESERVATIONS: {
+    NEW: "/reservations/new",
+  },
 } as const;
