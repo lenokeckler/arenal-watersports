@@ -1,5 +1,5 @@
 begin;
-select plan(19);
+select plan(22);
 
 insert into auth.users (id, email) values
   ('aaaaaaaa-0000-0000-0000-000000000001', 'user1@arenal.local');
@@ -43,12 +43,19 @@ select is((select count(*) from password_reset_pins where id = 'bbbbbbbb-0000-00
 select is((select count(*) from password_reset_requests where id = 'cccccccc-0000-0000-0000-000000000001'), 0::bigint, 'una solicitud de mas de 24 horas se borra');
 select is((select count(*) from password_reset_requests where id = 'cccccccc-0000-0000-0000-000000000002'), 1::bigint, 'una solicitud de exactamente 24 horas se conserva');
 select is((select count(*) from password_reset_requests where id = 'cccccccc-0000-0000-0000-000000000003'), 1::bigint, 'una solicitud reciente se conserva');
+select is((select count(*) from password_reset_pins), 3::bigint, 'solo sobreviven los tres PIN dentro de la retencion');
+select is((select count(*) from password_reset_requests), 2::bigint, 'solo sobreviven las dos solicitudes dentro de la retencion');
 select is((select count(*) from workers where id = 'aaaaaaaa-0000-0000-0000-000000000001'), 1::bigint, 'la purga no toca la cuenta del trabajador');
 
 select is(
-  (select schedule || '|' || command from cron.job where jobname = 'purge-password-reset-records'),
-  '0 * * * *| select public.purge_password_reset_records(); ',
-  'la purga esta programada cada hora con su comando'
+  (select schedule from cron.job where jobname = 'purge-password-reset-records'),
+  '0 * * * *',
+  'la purga esta programada cada hora'
+);
+select is(
+  (select trim(command) from cron.job where jobname = 'purge-password-reset-records'),
+  'select public.purge_password_reset_records();',
+  'la purga programada llama a su funcion'
 );
 select is((select count(*) from cron.job where jobname = 'purge-password-reset-records'), 1::bigint, 'la purga esta programada una sola vez');
 
