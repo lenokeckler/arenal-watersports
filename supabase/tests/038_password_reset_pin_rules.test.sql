@@ -1,5 +1,5 @@
 begin;
-select plan(49);
+select plan(54);
 
 insert into auth.users (id, email) values
   ('22222222-2222-2222-2222-222222222222', 'celso@arenal.local');
@@ -109,6 +109,24 @@ select ok(not has_table_privilege('anon', 'public.password_reset_requests', 'sel
 select ok(not has_table_privilege('anon', 'public.password_reset_requests', 'insert'), 'anon no registra solicitudes');
 select ok(not has_table_privilege('authenticated', 'public.password_reset_requests', 'select'), 'authenticated no lee las solicitudes');
 select ok(not has_table_privilege('authenticated', 'public.password_reset_requests', 'insert'), 'authenticated no registra solicitudes');
+
+select is(
+  (select count(*) from unnest(array['select', 'insert', 'update', 'delete', 'truncate', 'references', 'trigger']) as privilege where has_table_privilege('anon', 'public.password_reset_requests', privilege)),
+  0::bigint,
+  'anon no tiene ningun privilegio sobre las solicitudes'
+);
+select ok(not has_any_column_privilege('anon', 'public.password_reset_requests', 'select, insert, update, references'), 'anon no tiene privilegios por columna sobre las solicitudes');
+select is(
+  (select count(*) from unnest(array['select', 'insert', 'update', 'delete', 'truncate', 'references', 'trigger']) as privilege where has_table_privilege('authenticated', 'public.password_reset_requests', privilege)),
+  0::bigint,
+  'authenticated no tiene ningun privilegio sobre las solicitudes'
+);
+select ok(not has_any_column_privilege('authenticated', 'public.password_reset_requests', 'select, insert, update, references'), 'authenticated no tiene privilegios por columna sobre las solicitudes');
+select is(
+  (select count(*) from password_reset_requests where network_key = repeat('a', 64) and id is not null and created_at = now()),
+  1::bigint,
+  'una solicitud recibe id y la hora actual por defecto'
+);
 
 select is(password_reset_pin_lifetime_minutes(), 10::smallint, 'el PIN vive 10 minutos');
 select is(password_reset_pin_attempt_limit(), 5::smallint, 'cada PIN admite 5 intentos');
