@@ -1,9 +1,9 @@
 begin;
-select plan(64);
+select plan(75);
 
 insert into auth.users (id, email)
 select ('aaaaaaaa-0000-0000-0000-' || lpad(n::text, 12, '0'))::uuid, 'user' || n || '@arenal.local'
-  from generate_series(1, 20) as n;
+  from generate_series(1, 30) as n;
 
 insert into workers (id, username, full_name, personal_email, base_role) values
   ('aaaaaaaa-0000-0000-0000-000000000001', 'celso', 'Celso', 'celso@example.com', 'reservas'),
@@ -22,15 +22,23 @@ insert into workers (id, username, full_name, personal_email, base_role) values
   ('aaaaaaaa-0000-0000-0000-000000000016', 'nina', 'Nina', 'nina@example.com', 'reservas'),
   ('aaaaaaaa-0000-0000-0000-000000000017', 'elena', 'Elena', 'elena@example.com', 'reservas'),
   ('aaaaaaaa-0000-0000-0000-000000000018', 'olga', 'Olga', 'olga@example.com', 'reservas'),
-  ('aaaaaaaa-0000-0000-0000-000000000019', 'pablo', 'Pablo', null, 'reservas');
+  ('aaaaaaaa-0000-0000-0000-000000000019', 'pablo', 'Pablo', null, 'reservas'),
+  ('aaaaaaaa-0000-0000-0000-000000000021', 'rosa', 'Rosa', 'rosa@example.com', 'reservas'),
+  ('aaaaaaaa-0000-0000-0000-000000000023', 'tina', 'Tina', 'tina@example.com', 'reservas'),
+  ('aaaaaaaa-0000-0000-0000-000000000024', 'quique', 'Quique', 'quique@example.com', 'reservas');
 insert into workers (id, username, full_name, personal_email, base_role, is_external_guide, national_id, expires_at) values
   ('aaaaaaaa-0000-0000-0000-000000000006', 'expired', 'Guia vencido', 'expired@example.com', 'operaciones', true, '1-1111-1111', now() - interval '1 day'),
-  ('aaaaaaaa-0000-0000-0000-000000000007', 'guide', 'Guia vigente', 'guide@example.com', 'operaciones', true, '2-2222-2222', now() + interval '1 day');
+  ('aaaaaaaa-0000-0000-0000-000000000007', 'guide', 'Guia vigente', 'guide@example.com', 'operaciones', true, '2-2222-2222', now() + interval '1 day'),
+  ('aaaaaaaa-0000-0000-0000-000000000022', 'saul', 'Guia en el limite', 'saul@example.com', 'operaciones', true, '3-3333-3333', now());
 
 insert into password_reset_pins (worker_id, pin_hash, expires_at)
 select id, extensions.crypt('482913', extensions.gen_salt('bf', 4)), now() + interval '10 minutes'
   from workers
- where username in ('celso', 'blocka', 'blockb', 'retired', 'dora', 'expired', 'guide', 'fede', 'gina', 'kira', 'luis', 'elena', 'olga', 'pablo');
+ where username in ('celso', 'blocka', 'blockb', 'retired', 'dora', 'expired', 'guide', 'fede', 'gina', 'kira', 'luis', 'elena', 'olga', 'pablo', 'saul', 'tina');
+
+insert into password_reset_pins (worker_id, pin_hash, expires_at, created_at)
+select id, extensions.crypt('482913', extensions.gen_salt('bf', 4)), now(), now() - interval '10 minutes'
+  from workers where username = 'rosa';
 
 update workers set status = 'blocked', blocked_reason = 'failed_attempts' where username = 'blocka';
 update workers set status = 'blocked', blocked_reason = 'administration' where username = 'blockb';
@@ -56,6 +64,13 @@ select id, extensions.crypt('482913', extensions.gen_salt('bf', 4)), now() + int
 
 update password_reset_pins set attempts = 5
  where worker_id = 'aaaaaaaa-0000-0000-0000-000000000018';
+
+insert into password_reset_pins (worker_id, pin_hash, expires_at, created_at)
+select id, extensions.crypt('333333', extensions.gen_salt('bf', 4)), now() + interval '5 minutes', now() - interval '5 minutes'
+  from workers where username = 'quique';
+insert into password_reset_pins (worker_id, pin_hash, expires_at, created_at, attempts)
+select id, extensions.crypt('482913', extensions.gen_salt('bf', 4)), now() + interval '10 minutes', now(), 5
+  from workers where username = 'quique';
 
 select is(public.consume_password_reset_pin('celso', '482913'), 'aaaaaaaa-0000-0000-0000-000000000001'::uuid, 'el PIN correcto devuelve el id de la cuenta');
 select isnt((select used_at from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000001'), null::timestamptz, 'el PIN correcto queda gastado');
@@ -97,6 +112,10 @@ select is((select failed_attempts from workers where username = 'gina'), 0::smal
 select is(public.consume_password_reset_pin('olga', '482913'), null::uuid, 'un PIN con los intentos agotados pero sin gastar no sirve');
 select is((select attempts from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000018'), 5::smallint, 'un PIN con los intentos agotados no cambia sus intentos');
 select is((select used_at from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000018'), null::timestamptz, 'un PIN con los intentos agotados no se toca');
+
+select is(public.consume_password_reset_pin('quique', '333333'), null::uuid, 'un PIN anterior no se activa cuando el mas nuevo tiene los intentos agotados');
+select is((select attempts from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000024' and created_at < now() - interval '1 minute'), 0::smallint, 'el PIN anterior no suma intentos');
+select is((select count(*) from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000024' and used_at is null), 2::bigint, 'ningun PIN se gasta ni se toca');
 
 select is(public.consume_password_reset_pin('ines', '482913'), null::uuid, 'un PIN vencido no sirve');
 select is((select attempts from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000011'), 0::smallint, 'un PIN vencido no suma intentos');
@@ -156,6 +175,19 @@ select is(public.consume_password_reset_pin('elena', '482913'), 'aaaaaaaa-0000-0
 
 select isnt_empty($$ select * from public.issue_password_reset_pin('nina', '654321', null) $$, 'nina recibe un PIN emitido');
 select is(public.consume_password_reset_pin('nina', '654321'), 'aaaaaaaa-0000-0000-0000-000000000016'::uuid, 'un PIN emitido por la funcion de emision se consume');
+
+select is(public.consume_password_reset_pin('rosa', '482913'), null::uuid, 'un PIN que vence en este instante no sirve');
+select is(public.consume_password_reset_pin('rosa', '111111'), null::uuid, 'un PIN incorrecto sobre uno que vence en este instante devuelve nulo');
+select is((select attempts from password_reset_pins where worker_id = 'aaaaaaaa-0000-0000-0000-000000000021'), 0::smallint, 'un PIN que vence en este instante no suma intentos');
+select is(public.consume_password_reset_pin('saul', '482913'), null::uuid, 'un guia externo que vence en este instante no consume su PIN');
+
+update workers set status = 'blocked', blocked_reason = 'administration' where username = 'tina';
+select is(public.consume_password_reset_pin('tina', '482913'), null::uuid, 'una cuenta bloqueada no consume su PIN aunque siga vigente');
+update workers set status = 'active', blocked_reason = null where username = 'tina';
+select is(public.consume_password_reset_pin('tina', '482913'), 'aaaaaaaa-0000-0000-0000-000000000023'::uuid, 'una cuenta desbloqueada consume el PIN que sigue vigente');
+
+select is(public.consume_password_reset_pin('', '482913'), null::uuid, 'un usuario vacio devuelve nulo');
+select is(public.consume_password_reset_pin('   ', '482913'), null::uuid, 'un usuario de solo espacios devuelve nulo');
 
 select ok(not has_function_privilege('anon', 'consume_password_reset_pin(text, text)', 'execute'), 'anon no consume PIN');
 select ok(not has_function_privilege('authenticated', 'consume_password_reset_pin(text, text)', 'execute'), 'authenticated no consume PIN');
