@@ -47,6 +47,27 @@ describe("NoticeUrlCleaner", () => {
     expect(window.history.state).toEqual(HISTORY_STATE);
   });
 
+  it("cleans the url only once while the path to keep is unchanged", () => {
+    const [[noticeUrl, cleanPath]] = CLEAN_PATH_CASES;
+    window.history.replaceState(
+      window.history.state,
+      document.title,
+      noticeUrl
+    );
+    const { rerender } = render(
+      <NoticeUrlCleaner cleanPath={cleanPath} />
+    );
+    window.history.replaceState(
+      window.history.state,
+      document.title,
+      noticeUrl
+    );
+
+    rerender(<NoticeUrlCleaner cleanPath={cleanPath} />);
+
+    expect(readCurrentUrl()).toBe(noticeUrl);
+  });
+
   it("renders nothing", () => {
     const [[, cleanPath]] = CLEAN_PATH_CASES;
 
