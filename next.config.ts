@@ -5,6 +5,7 @@ import {
 } from "./app/constants/security/SecurityHeaders.constants";
 
 const nextConfig: NextConfig = {
+  agentRules: false,
   headers: () =>
     Promise.resolve([
       {
