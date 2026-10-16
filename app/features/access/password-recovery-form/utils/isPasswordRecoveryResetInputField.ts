@@ -4,4 +4,4 @@ import { EMPTY_PASSWORD_RECOVERY_RESET_INPUT } from "../constants/PasswordRecove
 export const isPasswordRecoveryResetInputField = (
   name: string
 ): name is keyof PasswordRecoveryResetInput =>
-  name in EMPTY_PASSWORD_RECOVERY_RESET_INPUT;
+  Object.hasOwn(EMPTY_PASSWORD_RECOVERY_RESET_INPUT, name);

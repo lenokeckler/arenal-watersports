@@ -14,6 +14,11 @@ export const WEAK_PASSWORD = "abc";
 export const OTHER_PASSWORD = "Otra#Clave22";
 export const UNRELATED_FIELD_NAME = "unrelated";
 export const UNRELATED_FIELD_VALUE = "x";
+export const INHERITED_FIELD_NAMES = [
+  "constructor",
+  "toString",
+  "__proto__",
+] as const;
 
 export const VALID_RESET_VALUES: PasswordRecoveryResetInput =
   {

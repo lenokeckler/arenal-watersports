@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
+  PASSWORD_RECOVERY_ERROR_CODE,
   PASSWORD_RECOVERY_FIELD,
   STRING,
 } from "@/app/constants";
+import { createPasswordRecoveryError } from "@/app/utils/password-recovery/createPasswordRecoveryError";
 import {
   NEW_PASSWORD_RULES_ERROR,
   PASSWORD_NOT_SAVED_ERROR,
@@ -71,5 +73,21 @@ describe("usePasswordRecoveryResetValues after a server answer", () => {
     expect(result.current.values.newPassword).toBe(
       OTHER_PASSWORD
     );
+  });
+
+  it("clears a retyped PIN again when the next answer is a new PIN_INVALID", () => {
+    const { rerender, result } = renderValues();
+    fillAll(result);
+    rerender({ serverError: PIN_INVALID_ERROR });
+    rerender({ serverError: null });
+    type(result, PASSWORD_RECOVERY_FIELD.PIN, VALID_PIN);
+
+    rerender({
+      serverError: createPasswordRecoveryError(
+        PASSWORD_RECOVERY_ERROR_CODE.PIN_INVALID
+      ),
+    });
+
+    expect(result.current.values.pin).toBe(STRING.Empty);
   });
 });

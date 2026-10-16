@@ -6,6 +6,7 @@ import {
 import { changePasswordRecoveryResetValue } from "../utils/changePasswordRecoveryResetValue";
 import { keepPasswordRecoveryPinDigits } from "../utils/keepPasswordRecoveryPinDigits";
 import {
+  INHERITED_FIELD_NAMES,
   LETTERS_ONLY_PIN,
   PASTED_PIN,
   PASTED_PIN_DIGITS,
@@ -68,4 +69,17 @@ describe("changePasswordRecoveryResetValue", () => {
       )
     ).toBe(VALID_RESET_VALUES);
   });
+
+  it.each(INHERITED_FIELD_NAMES)(
+    "ignores the inherited name %s",
+    (name) => {
+      expect(
+        changePasswordRecoveryResetValue(
+          VALID_RESET_VALUES,
+          name,
+          UNRELATED_FIELD_VALUE
+        )
+      ).toBe(VALID_RESET_VALUES);
+    }
+  );
 });
