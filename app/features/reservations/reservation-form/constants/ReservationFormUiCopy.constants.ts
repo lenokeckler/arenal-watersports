@@ -1,5 +1,7 @@
 export const RESERVATION_FORM_UI_COPY = {
   TITLE: "Nueva reserva",
+  BACK_TO_CALENDAR: "Volver al calendario",
+  ACTIONS: "Acciones de reserva",
   DESCRIPTION:
     "Registre los datos de la actividad y el equipo requerido.",
   CUSTOMER_NAME: "Nombre de la reserva",
@@ -9,6 +11,7 @@ export const RESERVATION_FORM_UI_COPY = {
   TIME_ZONE: "Hora de Costa Rica · UTC−06:00",
   DURATION: "Duración en horas",
   CUSTOM_DURATION: "Otra duración en horas",
+  CUSTOM_DURATION_OPTION: "Otra duración",
   CATEGORY: "Equipo",
   CATEGORY_PLACEHOLDER: "Seleccione una categoría",
   QUANTITY: "Cantidad de equipos",
