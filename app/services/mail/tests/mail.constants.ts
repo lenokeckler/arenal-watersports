@@ -93,3 +93,11 @@ export const UNTRIMMED_INVALID_SENDERS =
   );
 export const SMTP_RESPONSE_TEXT =
   "535 5.7.8 Username and Password not accepted";
+
+export const URL_PATTERN =
+  /https?|www\.|:\/\/|[a-z0-9-]+\.[a-z]{2,}/i;
+export const LINK_SAMPLES = [
+  "https://arenal.example/reset",
+  "www.arenal.example",
+  "arenal.example/reset",
+];

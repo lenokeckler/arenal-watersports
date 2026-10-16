@@ -11,10 +11,11 @@ import {
   CHANGED_MAIL_INPUT,
   PIN_LENGTH_DIGITS_PATTERN,
 } from "./passwordChangedMail.constants";
+import {} from "./passwordResetPinMail.constants";
 import {
   LINK_SAMPLES,
   URL_PATTERN,
-} from "./passwordResetPinMail.constants";
+} from "./mail.constants";
 
 describe("buildPasswordChangedMail", () => {
   const message = buildPasswordChangedMail(

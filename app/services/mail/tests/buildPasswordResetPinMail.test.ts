@@ -10,14 +10,16 @@ import {
   DIGIT_PATTERN,
   LEADING_ZEROS_PIN,
   LIFETIME_PHRASE_PREFIX,
-  LINK_SAMPLES,
   OTHER_LIFETIME_MINUTES,
   PIN_MAIL_LINE_BREAK,
   SINGLE_MINUTE,
   PIN_LINE_PATTERN,
   PIN_MAIL_INPUT,
-  URL_PATTERN,
 } from "./passwordResetPinMail.constants";
+import {
+  LINK_SAMPLES,
+  URL_PATTERN,
+} from "./mail.constants";
 
 describe("buildPasswordResetPinMail", () => {
   const message = buildPasswordResetPinMail(PIN_MAIL_INPUT);
