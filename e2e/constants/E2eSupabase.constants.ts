@@ -27,6 +27,7 @@ export const E2E_SUPABASE_COLUMN = {
   DELETED_AT: "deleted_at",
   FAILED_ATTEMPTS: "failed_attempts",
   ID: "id",
+  MUST_CHANGE_PASSWORD: "must_change_password",
   PERSONAL_EMAIL: "personal_email",
   STATUS: "status",
   USERNAME: "username",
