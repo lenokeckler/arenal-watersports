@@ -1,5 +1,5 @@
 begin;
-select plan(42);
+select plan(47);
 
 insert into auth.users (id, email) values
   ('22222222-2222-2222-2222-222222222222', 'celso@arenal.local');
@@ -68,6 +68,11 @@ select ok(not has_function_privilege('anon', 'password_reset_request_hourly_limi
 select ok(not has_function_privilege('authenticated', 'password_reset_request_hourly_limit()', 'execute'), 'authenticated no ejecuta el limite por cuenta');
 select ok(not has_function_privilege('anon', 'password_reset_network_hourly_limit()', 'execute'), 'anon no ejecuta el limite por red');
 select ok(not has_function_privilege('authenticated', 'password_reset_network_hourly_limit()', 'execute'), 'authenticated no ejecuta el limite por red');
+select ok(not has_function_privilege('service_role', 'password_reset_pin_lifetime_minutes()', 'execute'), 'service_role no ejecuta la vigencia');
+select ok(not has_function_privilege('service_role', 'password_reset_pin_attempt_limit()', 'execute'), 'service_role no ejecuta el limite de intentos');
+select ok(not has_function_privilege('service_role', 'password_reset_request_cooldown_seconds()', 'execute'), 'service_role no ejecuta la espera');
+select ok(not has_function_privilege('service_role', 'password_reset_request_hourly_limit()', 'execute'), 'service_role no ejecuta el limite por cuenta');
+select ok(not has_function_privilege('service_role', 'password_reset_network_hourly_limit()', 'execute'), 'service_role no ejecuta el limite por red');
 
 select throws_ok(
   format($$ insert into password_reset_pins (worker_id, pin_hash, expires_at, requested_ip_hash)

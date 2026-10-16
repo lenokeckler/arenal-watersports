@@ -39,8 +39,8 @@ language sql immutable set search_path = '' as $$
   select 10::smallint;
 $$;
 
-revoke execute on function password_reset_pin_lifetime_minutes() from public, anon, authenticated;
-revoke execute on function password_reset_pin_attempt_limit() from public, anon, authenticated;
-revoke execute on function password_reset_request_cooldown_seconds() from public, anon, authenticated;
-revoke execute on function password_reset_request_hourly_limit() from public, anon, authenticated;
-revoke execute on function password_reset_network_hourly_limit() from public, anon, authenticated;
+revoke execute on function password_reset_pin_lifetime_minutes() from public, anon, authenticated, service_role;
+revoke execute on function password_reset_pin_attempt_limit() from public, anon, authenticated, service_role;
+revoke execute on function password_reset_request_cooldown_seconds() from public, anon, authenticated, service_role;
+revoke execute on function password_reset_request_hourly_limit() from public, anon, authenticated, service_role;
+revoke execute on function password_reset_network_hourly_limit() from public, anon, authenticated, service_role;
