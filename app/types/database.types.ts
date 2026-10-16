@@ -1107,26 +1107,35 @@ export type Database = {
       };
       password_reset_pins: {
         Row: {
+          attempts: number;
           created_at: string;
+          delivery_failed_at: string | null;
           expires_at: string;
           id: string;
           pin_hash: string;
+          requested_ip_hash: string | null;
           used_at: string | null;
           worker_id: string;
         };
         Insert: {
+          attempts?: number;
           created_at?: string;
+          delivery_failed_at?: string | null;
           expires_at: string;
           id?: string;
           pin_hash: string;
+          requested_ip_hash?: string | null;
           used_at?: string | null;
           worker_id: string;
         };
         Update: {
+          attempts?: number;
           created_at?: string;
+          delivery_failed_at?: string | null;
           expires_at?: string;
           id?: string;
           pin_hash?: string;
+          requested_ip_hash?: string | null;
           used_at?: string | null;
           worker_id?: string;
         };
@@ -2461,6 +2470,26 @@ export type Database = {
       next_reservation_code: {
         Args: Record<PropertyKey, never>;
         Returns: string;
+      };
+      password_reset_network_hourly_limit: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      password_reset_pin_attempt_limit: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      password_reset_pin_lifetime_minutes: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      password_reset_request_cooldown_seconds: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      password_reset_request_hourly_limit: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
       };
       purge_expired_history: {
         Args: Record<PropertyKey, never>;
