@@ -9,8 +9,7 @@ import type { ClientHeaders } from "./models/ClientHeaders.interface";
 const readFirstHop = (value: string | null): string =>
   (value ?? ADDRESS_FORMAT.NO_TEXT)
     .split(CLIENT_ADDRESS.SEPARATOR)[0]
-    .trim()
-    .toLowerCase();
+    .trim();
 
 export const readClientAddress = (
   headers: ClientHeaders,
