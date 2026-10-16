@@ -1,7 +1,9 @@
-import { PATHS } from "@/app/constants";
+import {
+  PATHS,
+  PROFILE_NOTICE_QUERY_PARAM,
+} from "@/app/constants";
 import { appendQueryParam } from "@/app/utils/pathname/appendQueryParam";
 
-const NOTICE_QUERY_PARAM = "notice";
 const NOTICE_VALUE = "done";
 
 export const RESET_PATH = "/";
@@ -16,7 +18,7 @@ export const CLEAN_PATH_CASES = [
     [
       appendQueryParam(
         cleanPath,
-        NOTICE_QUERY_PARAM,
+        PROFILE_NOTICE_QUERY_PARAM,
         NOTICE_VALUE
       ),
       cleanPath,

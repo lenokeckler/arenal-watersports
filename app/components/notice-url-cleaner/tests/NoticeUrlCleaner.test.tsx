@@ -1,14 +1,14 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import NoticeUrlCleaner from "../NoticeUrlCleaner";
+import { createNoticeUrlCleanerPage } from "./NoticeUrlCleaner.page";
 import {
   CLEAN_PATH_CASES,
   HISTORY_STATE,
   RESET_PATH,
 } from "./NoticeUrlCleaner.constants";
 
-const readCurrentUrl = (): string =>
-  `${window.location.pathname}${window.location.search}`;
+const page = createNoticeUrlCleanerPage();
 
 describe("NoticeUrlCleaner", () => {
   afterEach(() => {
@@ -30,7 +30,7 @@ describe("NoticeUrlCleaner", () => {
 
       render(<NoticeUrlCleaner cleanPath={cleanPath} />);
 
-      expect(readCurrentUrl()).toBe(cleanPath);
+      expect(page.getCurrentUrl()).toBe(cleanPath);
     }
   );
 
@@ -44,7 +44,7 @@ describe("NoticeUrlCleaner", () => {
 
     render(<NoticeUrlCleaner cleanPath={cleanPath} />);
 
-    expect(window.history.state).toEqual(HISTORY_STATE);
+    expect(page.getHistoryState()).toEqual(HISTORY_STATE);
   });
 
   it("cleans the url only once while the path to keep is unchanged", () => {
@@ -65,7 +65,7 @@ describe("NoticeUrlCleaner", () => {
 
     rerender(<NoticeUrlCleaner cleanPath={cleanPath} />);
 
-    expect(readCurrentUrl()).toBe(noticeUrl);
+    expect(page.getCurrentUrl()).toBe(noticeUrl);
   });
 
   it("renders nothing", () => {

@@ -37,6 +37,7 @@ export { POSITION } from "./strings/Position.types";
 export type { Position } from "./strings/Position.types";
 export { KEYBOARD } from "./strings/Keyboard.types";
 export { PATHS } from "./strings/Paths.constants";
+export type { AppPath } from "./strings/AppPath.types";
 export {
   SPINNER_SIZE,
   SPINNER_ARIA,

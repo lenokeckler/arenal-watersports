@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
+import type { AppPath } from "@/app/constants";
 
 export const useNoticeUrlCleanerViewModel = (
-  cleanPath: string
+  cleanPath: AppPath
 ): void => {
   useEffect(() => {
     window.history.replaceState(
