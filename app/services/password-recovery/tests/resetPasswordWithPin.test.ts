@@ -146,6 +146,20 @@ describe("resetPasswordWithPin", () => {
     );
   });
 
+  it("sets the password exactly as typed, without trimming it", async () => {
+    const paddedPassword = ` ${RESET_NEW_PASSWORD} `;
+
+    await reset({
+      confirmPassword: paddedPassword,
+      newPassword: paddedPassword,
+    });
+
+    expect(setWorkerPassword).toHaveBeenCalledWith(
+      RESET_WORKER_ID,
+      paddedPassword
+    );
+  });
+
   it("maps a password rules failure and never finishes", async () => {
     vi.mocked(setWorkerPassword).mockResolvedValue(
       RULES_PASSWORD_ERROR
