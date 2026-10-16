@@ -10,7 +10,7 @@ Allow a reservations worker to record a rental reservation with its customer nam
 - Unit 2: form screen, local form state, and interactive validation presentation.
 - Persist only the customer name from customer identity/contact information.
 - Persist the creator from the authenticated session.
-- Persist one active reservable `by_quantity` equipment category with a positive quantity.
+- Persist one active, reservable, interchangeable equipment category with a positive quantity, regardless of tracking mode.
 - Treat every initial reservation created by this form as `rental`, as authorized for this story.
 - Interpret civil date and time in `America/Costa_Rica` regardless of server timezone.
 
@@ -31,20 +31,20 @@ Allow a reservations worker to record a rental reservation with its customer nam
 - Convert duration hours to integer minutes without rounding.
 - Persist reservation and its category/quantity item in one invoker-security database transaction.
 - Derive `created_by` and `updated_by` from `auth.uid()` in the database function.
-- Allow only categories whose status is active, are reservable, and use `by_quantity` tracking.
+- Allow only categories whose status is active, are reservable, and have interchangeable units; tracking mode does not determine category eligibility.
 - Leave existing row-level policies as the permission authority; add no unrelated policies or service-role access.
 
 ## Edge cases & errors
 
 - Invalid dates, times, empty names, non-positive people/quantity/duration, and non-whole-minute durations are rejected before persistence.
-- Inactive, non-reservable, missing, or `by_unit` categories are rejected by the database function.
+- Inactive, non-reservable, missing, or non-interchangeable categories, including non-interchangeable `by_unit` categories such as lanchas, are rejected by the database function.
 - Missing authenticated identity is rejected.
 - A failure inserting either row rolls back the entire reservation.
 - Database errors retain operation context and are surfaced to the caller.
 
 ## Constraints
 
-- Category plus quantity is the minimum item record. Unit assignment and availability semantics belong to US-RES-07.
+- Category plus quantity is the minimum item record, including interchangeable `by_unit` categories. Concrete unit assignment and availability semantics belong to US-RES-07.
 - Criterion 5 cannot be fulfilled until calendar PR #101 is integrated.
 - No UI, route, ViewModel, styles, or Playwright artifacts are included in Unit 1.
 - Skills: code-standards, structure-standards, component-architecture, constants-standards, stack-rules, eslint-standards, prettier-standards, unit-testing-standards, pull-request-workflow.
