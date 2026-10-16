@@ -21,6 +21,7 @@ export const AUTOCOMPLETE = {
   CURRENT_PASSWORD: "current-password",
   EMAIL: "email",
   NEW_PASSWORD: "new-password",
+  ONE_TIME_CODE: "one-time-code",
   USERNAME: "username",
 } as const;
 
@@ -29,6 +30,7 @@ export type Autocomplete =
 
 export const INPUT_MODE = {
   EMAIL: "email",
+  NUMERIC: "numeric",
 } as const;
 
 export type InputMode =
