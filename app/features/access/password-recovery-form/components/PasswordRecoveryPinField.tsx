@@ -1,6 +1,9 @@
 import { FormField, Text } from "@/app/components";
 import { FORM_FIELD_VARIANT } from "@/app/components/form-field/constants/FormFieldVariant.constants";
-import { FORM_GROUP_CLASS } from "@/app/components/form-layout/styles/FormLayout.styles";
+import {
+  FORM_GROUP_CLASS,
+  FORM_HINT_CLASS,
+} from "@/app/components/form-layout/styles/FormLayout.styles";
 import {
   AUTOCAPITALIZE,
   AUTOCOMPLETE,
@@ -12,10 +15,7 @@ import {
 import { PASSWORD_RECOVERY_PIN_HINT_ID } from "../constants/PasswordRecoveryFieldIds.constants";
 import { PASSWORD_RECOVERY_RESET_COPY } from "../constants/PasswordRecoveryResetCopy.constants";
 import type { PasswordRecoveryFieldProps } from "../models/PasswordRecoveryFieldProps.interface";
-import {
-  PASSWORD_RECOVERY_HINT_CLASS,
-  PASSWORD_RECOVERY_PIN_INPUT_CLASS,
-} from "../styles/PasswordRecoveryForm.styles";
+import { PASSWORD_RECOVERY_PIN_INPUT_CLASS } from "../styles/PasswordRecoveryForm.styles";
 
 const PasswordRecoveryPinField = ({
   error,
@@ -47,7 +47,7 @@ const PasswordRecoveryPinField = ({
     />
     <Text
       id={PASSWORD_RECOVERY_PIN_HINT_ID}
-      className={PASSWORD_RECOVERY_HINT_CLASS}
+      className={FORM_HINT_CLASS}
     >
       {PASSWORD_RECOVERY_RESET_COPY.PIN_HINT}
     </Text>
