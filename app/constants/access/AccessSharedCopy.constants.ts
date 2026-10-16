@@ -6,8 +6,13 @@ export const ACCESS_SHARED_COPY = {
     "Su cuenta está bloqueada por administración. Consulte con administración.",
   ACCOUNT_BLOCKED_BY_ATTEMPTS:
     "Su cuenta está bloqueada por intentos fallidos. Pida a administración que la desbloquee.",
+  CONFIRMATION_MISMATCH: "Las contraseñas no coinciden.",
+  CONFIRMATION_REQUIRED: "Repita la contraseña nueva.",
   NETWORK:
     "No hay conexión. Revise su señal e intente de nuevo.",
+  NEW_PASSWORD_REQUIRED: "Escriba la contraseña nueva.",
+  NEW_PASSWORD_RULES:
+    "La contraseña nueva no cumple los requisitos.",
   PASSWORD_TOO_LONG: `La contraseña no puede tener más de ${PASSWORD_LENGTH.MAX} caracteres.`,
   SESSION_INACTIVE:
     "Su sesión se cerró por inactividad. Ingrese de nuevo.",
