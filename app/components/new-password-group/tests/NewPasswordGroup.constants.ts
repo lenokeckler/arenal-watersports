@@ -14,6 +14,7 @@ export const ARIA_DESCRIBEDBY_ATTRIBUTE =
   "aria-describedby";
 export const AUTOCOMPLETE_ATTRIBUTE = "autocomplete";
 export const ID_ATTRIBUTE = "id";
+export const DESCRIBED_BY_ID_COUNT = 2;
 export const RULE_COUNT = Object.keys(PASSWORD_RULE).length;
 
 export const PENDING_RESULTS: PasswordRuleResults = {
