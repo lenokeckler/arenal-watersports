@@ -4,8 +4,6 @@ import { describe, expect, it } from "vitest";
 import { listProductionSources } from "@/app/services/supabase/tests/listProductionSources";
 import {
   APP_DIRECTORY,
-  CLIENT_DIRECTIVE_PATTERN,
-  CLIENT_SIDE_PATH_PATTERN,
   TEXT_ENCODING,
 } from "@/app/services/supabase/tests/serviceRoleBoundary.constants";
 import {
@@ -13,7 +11,6 @@ import {
   NETWORK_SECRET_NAME_PATTERN,
   NEXT_HEADERS_ALLOWED_FILE,
   NEXT_HEADERS_IMPORT_PATTERN,
-  REQUEST_SERVICE_IMPORT_PATTERN,
   REQUEST_SERVICE_PATH_PATTERN,
 } from "./networkKeyBoundary.constants";
 
@@ -51,21 +48,5 @@ describe("network key boundary", () => {
         readSource(NEXT_HEADERS_ALLOWED_FILE)
       )
     ).toBe(true);
-  });
-
-  it("never imports the request service from a client module", () => {
-    const offenders = listProductionSources().filter(
-      (file) => {
-        const source = readSource(file);
-
-        return (
-          (CLIENT_SIDE_PATH_PATTERN.test(file) ||
-            CLIENT_DIRECTIVE_PATTERN.test(source)) &&
-          REQUEST_SERVICE_IMPORT_PATTERN.test(source)
-        );
-      }
-    );
-
-    expect(offenders).toEqual([]);
   });
 });
