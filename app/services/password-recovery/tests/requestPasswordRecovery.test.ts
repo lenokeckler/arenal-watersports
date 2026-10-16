@@ -13,6 +13,7 @@ import { issuePasswordResetPin } from "../issuePasswordResetPin";
 import { requestPasswordRecovery } from "../requestPasswordRecovery";
 import {
   DEFER_FAILURE_MESSAGE,
+  MARK_FAILURE_MESSAGE,
   INVALID_USERNAME,
   ISSUED_PIN,
   NETWORK_KEY_VALUE,
@@ -165,5 +166,18 @@ describe("requestPasswordRecovery", () => {
     expect(
       markPasswordResetPinUndelivered
     ).toHaveBeenCalledWith(ISSUED_PIN.pinId);
+  });
+
+  it("still answers ok when deferring throws and marking the pin fails", async () => {
+    defer.mockImplementation(() => {
+      throw new Error(DEFER_FAILURE_MESSAGE);
+    });
+    vi.mocked(
+      markPasswordResetPinUndelivered
+    ).mockRejectedValue(new Error(MARK_FAILURE_MESSAGE));
+
+    const result = await request(NORMALIZED_USERNAME);
+
+    expect(result).toEqual({ ok: true });
   });
 });
