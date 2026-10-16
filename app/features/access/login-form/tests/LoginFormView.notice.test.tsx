@@ -11,11 +11,14 @@ import { submitSignIn } from "../actions/submitSignIn";
 import { LOGIN_FORM_COPY } from "../constants/LoginFormCopy.constants";
 import { DEFAULT_SIGN_IN_CREDENTIALS } from "@/app/utils/sign-in/tests/signIn.constants";
 import {
+  ARIA_DISABLED_ATTRIBUTE,
   HREF_ATTRIBUTE,
   RECOVERED_NOTICE,
   RECOVERED_URL,
+  TAB_INDEX_ATTRIBUTE,
 } from "./LoginNotice.constants";
 import { NETWORK_ERROR } from "./LoginFormView.constants";
+import { deferSignInResult } from "./deferSignInResult";
 import { renderLoginFormView as renderView } from "./renderLoginFormView";
 
 vi.mock("../actions/submitSignIn", () => ({
@@ -64,6 +67,29 @@ describe("LoginFormView recovery entry", () => {
       link.compareDocumentPosition(page.getIdleSubmit()) &
         Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy();
+  });
+
+  it("keeps the recovery link enabled while the sign-in is pending", async () => {
+    const pendingResult = deferSignInResult();
+    vi.mocked(submitSignIn).mockReturnValue(
+      pendingResult.promise
+    );
+    const page = renderView();
+
+    await page.fillCredentials(DEFAULT_SIGN_IN_CREDENTIALS);
+    await page.submit();
+    page.getPendingSubmit();
+
+    expect(page.getForgotLink()).toHaveAttribute(
+      HREF_ATTRIBUTE,
+      PATHS.ACCESS.RECOVERY
+    );
+    expect(page.getForgotLink()).not.toHaveAttribute(
+      ARIA_DISABLED_ATTRIBUTE
+    );
+    expect(page.getForgotLink()).not.toHaveAttribute(
+      TAB_INDEX_ATTRIBUTE
+    );
   });
 
   it("shows the notice and cleans the url when a notice arrives", () => {

@@ -16,3 +16,5 @@ export const RECOVERED_NOTICE =
 export const LOGIN_FORM_TEST_ID = "login-form";
 export const LOGIN_NOTICE_ATTRIBUTE = "data-notice";
 export const HREF_ATTRIBUTE = "href";
+export const ARIA_DISABLED_ATTRIBUTE = "aria-disabled";
+export const TAB_INDEX_ATTRIBUTE = "tabindex";
