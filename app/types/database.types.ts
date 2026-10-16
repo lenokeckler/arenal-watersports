@@ -2462,6 +2462,10 @@ export type Database = {
         Args: { p_user_id: string };
         Returns: undefined;
       };
+      consume_password_reset_pin: {
+        Args: { p_pin: string; p_username: string };
+        Returns: string;
+      };
       custom_access_token_hook: {
         Args: { event: Json };
         Returns: Json;
