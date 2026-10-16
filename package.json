@@ -27,7 +27,8 @@
     "changelog:check": "node scripts/changelog.mjs --check",
     "stories:jira": "node scripts/stories-to-jira.mjs",
     "agents:sync": "node scripts/sync-agents.mjs",
-    "agents:check": "node scripts/sync-agents.mjs --check"
+    "agents:check": "node scripts/sync-agents.mjs --check",
+    "audit:deps": "npm audit --omit=dev --audit-level=high"
   },
   "dependencies": {
     "@next/third-parties": "^16.1.6",
