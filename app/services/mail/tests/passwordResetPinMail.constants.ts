@@ -4,6 +4,10 @@ export const PIN_MAIL_INPUT = {
   lifetimeMinutes: 10,
 };
 
+export const LEADING_ZEROS_PIN = "004815";
+
+export const PIN_LINE_PATTERN = /^\d{6}$/gm;
+
 export const PIN_MAIL_USERNAME = "maria.rojas";
 
 export const APPROVED_PIN_MAIL_SUBJECT =

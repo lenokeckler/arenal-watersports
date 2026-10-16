@@ -8,6 +8,8 @@ import {
   APPROVED_PIN_MAIL_SUBJECT,
   APPROVED_PIN_MAIL_TEXT,
   DIGIT_PATTERN,
+  LEADING_ZEROS_PIN,
+  PIN_LINE_PATTERN,
   PIN_MAIL_INPUT,
   PIN_MAIL_USERNAME,
   URL_PATTERN,
@@ -42,6 +44,23 @@ describe("buildPasswordResetPinMail", () => {
       message.text.split(PIN_MAIL_INPUT.pin)
     ).toHaveLength(2);
     expect(lines).toContain(PIN_MAIL_INPUT.pin);
+  });
+
+  it("keeps a PIN with leading zeros as text, digit for digit", () => {
+    const zeros = buildPasswordResetPinMail({
+      ...PIN_MAIL_INPUT,
+      pin: LEADING_ZEROS_PIN,
+    });
+
+    expect(zeros.text.split("\n")).toContain(
+      LEADING_ZEROS_PIN
+    );
+  });
+
+  it("exposes exactly one six-digit line, the PIN", () => {
+    const matches = message.text.match(PIN_LINE_PATTERN);
+
+    expect(matches).toEqual([PIN_MAIL_INPUT.pin]);
   });
 
   it("states the lifetime in minutes", () => {
