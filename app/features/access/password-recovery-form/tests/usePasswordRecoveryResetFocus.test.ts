@@ -1,5 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { NO_PASSWORD_RECOVERY_FORM_ERRORS } from "../constants/PasswordRecoveryRequestDefaults.constants";
 import { NO_HANDLED_PASSWORD_RECOVERY_FOCUS_TRIGGER } from "../constants/PasswordRecoveryRequestFocus.constants";
 import { usePasswordRecoveryResetFocus } from "../hooks/usePasswordRecoveryResetFocus";
 import { attachPasswordRecoveryResetInputs } from "./attachPasswordRecoveryResetInputs";
@@ -9,6 +10,7 @@ import {
   FAILED_SUBMIT_TRIGGER,
   FORM_ERRORS,
   NO_ERRORS_PROPS,
+  SERVER_USERNAME_ERROR_TRIGGER,
 } from "./passwordRecoveryRequestFocus.constants";
 import { FOCUS_ORDER_CASES } from "./passwordRecoveryResetFocusCases.constants";
 
@@ -74,5 +76,48 @@ describe("usePasswordRecoveryResetFocus", () => {
     rerender({ errors, trigger: FAILED_SUBMIT_TRIGGER });
 
     expect(inputs[field]).not.toHaveFocus();
+  });
+
+  it("moves the focus again on the next failed submit", () => {
+    const [, errors, field] = FOCUS_ORDER_CASES[0];
+    const { inputs, rerender } =
+      renderFocus(NO_ERRORS_PROPS);
+    rerender({ errors, trigger: FAILED_SUBMIT_TRIGGER });
+    inputs[field].blur();
+
+    rerender({
+      errors,
+      trigger: {
+        ...FAILED_SUBMIT_TRIGGER,
+        invalidSubmitCount:
+          FAILED_SUBMIT_TRIGGER.invalidSubmitCount + 1,
+      },
+    });
+
+    expect(inputs[field]).toHaveFocus();
+  });
+
+  it("focuses the field of a server error", () => {
+    const [, errors, field] = FOCUS_ORDER_CASES[0];
+    const { inputs, rerender } =
+      renderFocus(NO_ERRORS_PROPS);
+
+    rerender({
+      errors,
+      trigger: SERVER_USERNAME_ERROR_TRIGGER,
+    });
+
+    expect(inputs[field]).toHaveFocus();
+  });
+
+  it("focuses nothing when a submit fails without field errors", () => {
+    const { rerender } = renderFocus(NO_ERRORS_PROPS);
+
+    rerender({
+      errors: NO_PASSWORD_RECOVERY_FORM_ERRORS,
+      trigger: FAILED_SUBMIT_TRIGGER,
+    });
+
+    expect(document.body).toHaveFocus();
   });
 });
