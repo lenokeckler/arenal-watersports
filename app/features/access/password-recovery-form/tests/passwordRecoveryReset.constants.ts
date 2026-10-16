@@ -1,6 +1,7 @@
 import {
   PASSWORD_RECOVERY_ERROR_CODE,
   STRING,
+  SUPABASE_SIGN_OUT_SCOPE,
 } from "@/app/constants";
 import { createPasswordRecoveryError } from "@/app/utils/password-recovery/createPasswordRecoveryError";
 import type { PasswordRecoveryResetInput } from "@/app/utils/password-recovery/models/PasswordRecoveryResetInput.interface";
@@ -22,7 +23,9 @@ export const EMPTY_RESET_INPUT: PasswordRecoveryResetInput =
 
 export const LOGIN_RECOVERED_PATH =
   "/access/login?notice=password-recovered";
-export const LOCAL_SIGN_OUT_OPTIONS = { scope: "local" };
+export const LOCAL_SIGN_OUT_OPTIONS = {
+  scope: SUPABASE_SIGN_OUT_SCOPE.LOCAL,
+};
 export const SERVICE_FAILURE_MESSAGE =
   "service unavailable";
 export const SIGN_OUT_FAILURE_MESSAGE =
