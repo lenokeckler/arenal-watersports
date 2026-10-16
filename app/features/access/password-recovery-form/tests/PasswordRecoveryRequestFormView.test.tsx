@@ -11,6 +11,7 @@ import type { PasswordRecoveryServerAction } from "../models/PasswordRecoverySer
 import {
   ARIA_DISABLED_ATTRIBUTE,
   NO_ALERTS,
+  NO_VALIDATE_PROPERTY,
   SINGLE_ALERT,
   TRUE_VALUE,
 } from "./passwordRecoveryView.constants";
@@ -30,6 +31,15 @@ describe("PasswordRecoveryRequestFormView", () => {
       STRING.Empty
     );
     expect(page.queryAlerts()).toHaveLength(NO_ALERTS);
+  });
+
+  it("leaves validation to the form logic, not the browser", () => {
+    const page = renderPasswordRecoveryRequestFormView();
+
+    expect(page.getForm()).toHaveProperty(
+      NO_VALIDATE_PROPERTY,
+      true
+    );
   });
 
   it("orders heading, username, submit, no-email note and back link", () => {

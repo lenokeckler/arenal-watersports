@@ -14,6 +14,8 @@ import {
 import { UNKNOWN_ERROR } from "./passwordRecoveryReset.constants";
 import {
   NO_ALERTS,
+  NO_VALIDATE_PROPERTY,
+  PENDING_RULE_LABEL,
   PRESET_USERNAME,
   RULE_COUNT,
   SINGLE_ALERT,
@@ -37,10 +39,22 @@ describe("PasswordRecoveryResetFormView", () => {
     expect(page.queryAlerts()).toHaveLength(NO_ALERTS);
   });
 
-  it("shows every password rule before anything is typed", () => {
+  it("shows every password rule as pending before anything is typed", () => {
     const page = renderPasswordRecoveryResetFormView();
 
     expect(page.getRuleItems()).toHaveLength(RULE_COUNT);
+    page.getRuleItems().forEach((item) => {
+      expect(item).toHaveTextContent(PENDING_RULE_LABEL);
+    });
+  });
+
+  it("leaves validation to the form logic, not the browser", () => {
+    const page = renderPasswordRecoveryResetFormView();
+
+    expect(page.getForm()).toHaveProperty(
+      NO_VALIDATE_PROPERTY,
+      true
+    );
   });
 
   it("asks the browser for a new password in both password fields", () => {
