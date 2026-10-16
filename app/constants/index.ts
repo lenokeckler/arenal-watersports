@@ -167,3 +167,13 @@ export {
   REAUTHENTICATION_ERROR_CODE,
   type ReauthenticationErrorCode,
 } from "./access/Reauthentication.constants";
+export { PASSWORD_RESET_PIN } from "./access/PasswordResetPin.constants";
+export { PASSWORD_RECOVERY_USERNAME_QUERY_PARAM } from "./access/PasswordRecovery.constants";
+export {
+  PASSWORD_CHANGE_TO_RECOVERY_ERROR_CODE,
+  PASSWORD_RECOVERY_ERROR_CODE,
+  PASSWORD_RECOVERY_ERROR_FIELD,
+  PASSWORD_RECOVERY_FIELD,
+  type PasswordRecoveryErrorCode,
+  type PasswordRecoveryField,
+} from "./access/PasswordRecoveryError.constants";

@@ -2,8 +2,6 @@ import { PATHS } from "@/app/constants";
 
 export const PROTECTED_PATHNAME = "/board";
 
-const SAMPLE_PRE_LOGIN_PATHNAME = "/access/recovery";
-
 const UPPERCASE_FIRST_SIGN_IN_PATHNAME =
   "/ACCESS/first-sign-in";
 
@@ -27,7 +25,8 @@ export const PROTECTED_PATHS = [
 export const PRE_LOGIN_PATHS = [
   PATHS.ACCESS.ROOT,
   PATHS.ACCESS.LOGIN,
-  SAMPLE_PRE_LOGIN_PATHNAME,
+  PATHS.ACCESS.RECOVERY,
+  PATHS.ACCESS.RECOVERY_RESET,
 ] as const;
 
 export const SIGNED_OUT = {
@@ -53,7 +52,8 @@ export const PENDING_PASSWORD = {
 const GATED_PATHS = [
   ...PROTECTED_PATHS,
   PATHS.ACCESS.ROOT,
-  SAMPLE_PRE_LOGIN_PATHNAME,
+  PATHS.ACCESS.RECOVERY,
+  PATHS.ACCESS.RECOVERY_RESET,
 ] as const;
 
 export const GATE_MATRIX = [
