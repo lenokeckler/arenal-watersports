@@ -6,6 +6,7 @@ export const ACCESS_SHARED_COPY = {
     "Su cuenta está bloqueada por administración. Consulte con administración.",
   ACCOUNT_BLOCKED_BY_ATTEMPTS:
     "Su cuenta está bloqueada por intentos fallidos. Pida a administración que la desbloquee.",
+  BACK_TO_LOGIN: "Volver a ingresar",
   CONFIRMATION_MISMATCH: "Las contraseñas no coinciden.",
   CONFIRMATION_REQUIRED: "Repita la contraseña nueva.",
   NETWORK:
@@ -20,6 +21,8 @@ export const ACCESS_SHARED_COPY = {
     "Demasiados intentos. Espere un momento e intente de nuevo.",
   UNKNOWN:
     "No se pudo completar el ingreso. Intente de nuevo.",
+  USERNAME_LABEL: "Nombre de usuario",
   USERNAME_LENGTH: `El nombre de usuario debe tener entre ${USERNAME.LENGTH.MIN} y ${USERNAME.LENGTH.MAX} caracteres.`,
+  USERNAME_PLACEHOLDER: "Ingrese su nombre de usuario",
   USERNAME_REQUIRED: "Escriba su nombre de usuario.",
 } as const;

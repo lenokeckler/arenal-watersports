@@ -1,8 +1,11 @@
-import { PASSWORD_RESET_PIN } from "@/app/constants";
+import {
+  ACCESS_SHARED_COPY,
+  PASSWORD_RESET_PIN,
+} from "@/app/constants";
 import { PASSWORD_RECOVERY_REQUEST_COPY } from "./PasswordRecoveryRequestCopy.constants";
 
 export const PASSWORD_RECOVERY_RESET_COPY = {
-  BACK: "Volver a ingresar",
+  BACK: ACCESS_SHARED_COPY.BACK_TO_LOGIN,
   CONFIRMATION:
     "Si la cuenta puede recuperarse, enviamos un PIN al correo registrado. Vence a los pocos minutos.",
   CONFIRM_PASSWORD_LABEL: "Repetir contraseña nueva",
@@ -19,5 +22,5 @@ export const PASSWORD_RECOVERY_RESET_COPY = {
   REQUEST_ANOTHER_PIN: "Pedir otro PIN",
   SUBMIT: "Guardar contraseña",
   SUBMITTING: "Guardando…",
-  USERNAME_LABEL: "Nombre de usuario",
+  USERNAME_LABEL: ACCESS_SHARED_COPY.USERNAME_LABEL,
 } as const;
