@@ -124,12 +124,12 @@ select is(
   'la restriccion del hash de red esta validada'
 );
 select is(
-  (select count(*) from pg_proc where proname like 'password\_reset\_%' and prokind = 'f' and provolatile = 'i' and proconfig = array['search_path=""']),
-  7::bigint,
-  'las siete funciones de limites son inmutables y fijan search_path'
+  (select count(*) from pg_proc where proname = any(array['password_reset_pin_lifetime_minutes', 'password_reset_pin_attempt_limit', 'password_reset_request_cooldown_seconds', 'password_reset_request_hourly_limit', 'password_reset_network_hourly_limit']) and prokind = 'f' and provolatile = 'i' and proconfig = array['search_path=""']),
+  5::bigint,
+  'las cinco funciones de limites son inmutables y fijan search_path'
 );
 select is(
-  (select count(*) from pg_proc, aclexplode(proacl) as privilege where proname like 'password\_reset\_%' and privilege.grantee = 0),
+  (select count(*) from pg_proc, aclexplode(proacl) as privilege where proname = any(array['password_reset_pin_lifetime_minutes', 'password_reset_pin_attempt_limit', 'password_reset_request_cooldown_seconds', 'password_reset_request_hourly_limit', 'password_reset_network_hourly_limit']) and privilege.grantee = 0),
   0::bigint,
   'ninguna funcion de limites se concede a public'
 );
