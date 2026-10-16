@@ -18,14 +18,13 @@ import {
   PIN_WITH_LEADING_ZEROS_AND_SPACES,
   PIN_WITH_LINE_SEPARATOR,
   PIN_WITH_ZERO_WIDTH_SPACE,
+  REPEATED_CALLS,
   VALID_PIN,
 } from "./passwordRecovery.constants";
 
 const pinFormatError = createPasswordRecoveryError(
   PASSWORD_RECOVERY_ERROR_CODE.PIN_FORMAT
 );
-
-const REPEATED_CALLS = 4;
 
 describe("validatePasswordResetPin edge cases", () => {
   it.each([

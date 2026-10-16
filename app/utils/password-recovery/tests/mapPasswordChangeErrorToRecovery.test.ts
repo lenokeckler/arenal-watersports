@@ -6,17 +6,7 @@ import {
 import { createPasswordChangeError } from "@/app/utils/password-change/createPasswordChangeError";
 import { createPasswordRecoveryError } from "../createPasswordRecoveryError";
 import { mapPasswordChangeErrorToRecovery } from "../mapPasswordChangeErrorToRecovery";
-
-const SHARED_CODES = [
-  PASSWORD_RECOVERY_ERROR_CODE.CONFIRMATION_MISMATCH,
-  PASSWORD_RECOVERY_ERROR_CODE.CONFIRMATION_REQUIRED,
-  PASSWORD_RECOVERY_ERROR_CODE.NETWORK,
-  PASSWORD_RECOVERY_ERROR_CODE.NEW_PASSWORD_REQUIRED,
-  PASSWORD_RECOVERY_ERROR_CODE.NEW_PASSWORD_RULES,
-  PASSWORD_RECOVERY_ERROR_CODE.NEW_PASSWORD_TOO_LONG,
-  PASSWORD_RECOVERY_ERROR_CODE.TOO_MANY_REQUESTS,
-  PASSWORD_RECOVERY_ERROR_CODE.UNKNOWN,
-] as const;
+import { SHARED_CODES } from "./passwordRecovery.constants";
 
 describe("mapPasswordChangeErrorToRecovery", () => {
   it.each(SHARED_CODES)(
