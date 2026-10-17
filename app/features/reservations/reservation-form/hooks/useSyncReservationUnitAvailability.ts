@@ -50,7 +50,13 @@ const startAvailabilityLookup = (
 };
 
 export const useSyncReservationUnitAvailability = (
-  options: ReservationUnitAvailabilitySyncOptions
+  request: ReservationUnitAvailabilityInput,
+  setAvailableUnits: Dispatch<
+    SetStateAction<ReservationCategoryUnitOption[]>
+  >,
+  setIsLoading: Dispatch<SetStateAction<boolean>>,
+  setHasError: Dispatch<SetStateAction<boolean>>,
+  refreshKey: number
 ): void => {
   const {
     request,
@@ -96,6 +102,6 @@ export const useSyncReservationUnitAvailability = (
     setAvailableUnits,
     setHasError,
     setIsLoading,
-    retryIndex,
+    refreshKey,
   ]);
 };

@@ -7,7 +7,8 @@ import { useReservationUnitAvailability } from "./useReservationUnitAvailability
 export const useReservationEquipmentViewModel = (
   unitCategories: ReservationUnitCategoryOption[],
   values: ReservationFormInput,
-  durationHours: number
+  durationHours: number,
+  refreshKey: number
 ) => {
   const selectedCategory = unitCategories.find(
     (category) => category.id === values.categoryId
@@ -24,8 +25,10 @@ export const useReservationEquipmentViewModel = (
     ),
     time: values.time,
   };
-  const availability =
-    useReservationUnitAvailability(request);
+  const availability = useReservationUnitAvailability(
+    request,
+    refreshKey
+  );
 
   return {
     availableQuantity: availability.availableQuantity,
