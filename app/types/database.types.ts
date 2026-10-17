@@ -2452,6 +2452,10 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
       };
+      lock_reservable_category: {
+        Args: { p_category_id: string; p_unit_id?: string };
+        Returns: string;
+      };
       lock_reservable_unit: {
         Args: { p_unit_id: string };
         Returns: string;
@@ -2463,6 +2467,14 @@ export type Database = {
       purge_expired_history: {
         Args: Record<PropertyKey, never>;
         Returns: undefined;
+      };
+      reservable_equipment_categories: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          id: string;
+          name: string;
+          units_are_interchangeable: boolean;
+        }[];
       };
       unit_conflicts: {
         Args: {
