@@ -62,6 +62,9 @@ export const RESERVATION_FORM_STATUS_CLASS =
 export const RESERVATION_FORM_ERROR_CLASS =
   "rounded-xl border border-error/50 bg-error-container/30 px-4 py-3 text-error";
 
+export const RESERVATION_FORM_RETRY_BUTTON_CLASS =
+  "min-h-11 w-full md:w-auto";
+
 export const resolveReservationDurationButtonClassName = (
   isSelected: boolean
 ): string =>

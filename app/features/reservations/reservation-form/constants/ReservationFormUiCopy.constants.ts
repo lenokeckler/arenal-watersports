@@ -34,4 +34,11 @@ export const RESERVATION_FORM_UI_COPY = {
     "Verificando disponibilidad de la lancha…",
   UNIT: "Unidad de lancha",
   UNIT_PLACEHOLDER: "Seleccione una unidad disponible",
+  EQUIPMENT_ELIGIBILITY_ERROR:
+    "No fue posible actualizar el equipo disponible. Revise su conexión e intente de nuevo.",
+  EQUIPMENT_ELIGIBILITY_LOADING:
+    "Actualizando el equipo disponible…",
+  RETRY_EQUIPMENT_ELIGIBILITY: "Reintentar actualización",
+  EQUIPMENT_SELECTION_CHANGED:
+    "La disponibilidad cambió. Seleccione otra categoría o unidad para continuar.",
 } as const;

@@ -4,7 +4,8 @@ import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnit
 import { useSyncReservationUnitAvailability } from "./useSyncReservationUnitAvailability";
 
 export const useReservationUnitAvailability = (
-  request: ReservationUnitAvailabilityInput
+  request: ReservationUnitAvailabilityInput,
+  refreshKey: number
 ) => {
   const [availableUnits, setAvailableUnits] = useState<
     ReservationCategoryUnitOption[]
@@ -15,7 +16,8 @@ export const useReservationUnitAvailability = (
     request,
     setAvailableUnits,
     setIsLoading,
-    setHasError
+    setHasError,
+    refreshKey
   );
 
   return { availableUnits, hasError, isLoading };

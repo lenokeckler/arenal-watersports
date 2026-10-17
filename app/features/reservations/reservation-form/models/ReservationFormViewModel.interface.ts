@@ -1,9 +1,14 @@
 import type { ReservationFormField } from "./ReservationFormField.constants";
 import type { ReservationFormInput } from "./ReservationFormInput.interface";
 import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOption.interface";
+import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
 
 export interface ReservationFormViewModel {
   errors: Partial<Record<ReservationFormField, string>>;
+  categories: ReservationCategoryOption[];
+  hasEquipmentEligibilityError: boolean;
+  hasEquipmentSelectionChanged: boolean;
+  isEquipmentEligibilityLoading: boolean;
   formError: string;
   isPending: boolean;
   isSubmitted: boolean;
@@ -28,4 +33,5 @@ export interface ReservationFormViewModel {
   handleSubmit: (
     event: React.FormEvent<HTMLFormElement>
   ) => void;
+  handleRetryEquipmentEligibility: () => void;
 }

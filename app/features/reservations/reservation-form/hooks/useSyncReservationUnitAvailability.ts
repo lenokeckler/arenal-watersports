@@ -57,7 +57,8 @@ export const useSyncReservationUnitAvailability = (
     SetStateAction<ReservationCategoryUnitOption[]>
   >,
   setIsLoading: Dispatch<SetStateAction<boolean>>,
-  setHasError: Dispatch<SetStateAction<boolean>>
+  setHasError: Dispatch<SetStateAction<boolean>>,
+  refreshKey: number
 ): void => {
   const { categoryId, date, durationMinutes, time } =
     request;
@@ -92,5 +93,6 @@ export const useSyncReservationUnitAvailability = (
     setAvailableUnits,
     setHasError,
     setIsLoading,
+    refreshKey,
   ]);
 };

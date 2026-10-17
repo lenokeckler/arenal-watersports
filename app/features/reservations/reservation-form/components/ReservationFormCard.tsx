@@ -16,6 +16,8 @@ const ReservationFormCard = ({
   const isDisabled =
     viewModel.isPending ||
     categories.length === 0 ||
+    viewModel.isEquipmentEligibilityLoading ||
+    viewModel.hasEquipmentEligibilityError ||
     isAvailabilityUnavailable;
 
   return (

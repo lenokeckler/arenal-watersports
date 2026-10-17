@@ -23,7 +23,7 @@ const ReservationFormView = ({
       <div className={RESERVATION_FORM_PAGE_CLASS}>
         <ReservationFormHeader viewModel={viewModel} />
         <ReservationFormCard
-          categories={categories}
+          categories={viewModel.categories}
           viewModel={viewModel}
         />
       </div>
