@@ -19,5 +19,6 @@ export const ZERO_DURATION_HOURS = 0;
 export const EXPECTED_DURATION_MINUTES = 90;
 export const FRACTIONAL_COUNT = 1.5;
 export const INVALID_QUANTITY = 0;
+export const NEGATIVE_VALUE = -1;
 export const INVALID_FIELD_COUNT = 4;
 export const EXPECTED_TRIMMED_CUSTOMER_NAME = "María López";

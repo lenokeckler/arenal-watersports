@@ -1,7 +1,10 @@
 import { useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { STRING } from "@/app/constants";
-import { RESERVATION_CUSTOM_DURATION_INITIAL_HOURS } from "../constants/ReservationFormUi.constants";
+import {
+  RESERVATION_CUSTOM_DURATION_INITIAL_HOURS,
+  RESERVATION_FORM_MINIMUM_INPUT_VALUE,
+} from "../constants/ReservationFormUi.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import type { ReservationFormField } from "../models/ReservationFormField.constants";
 import { resolveReservationDurationHours } from "../utils/resolveReservationDurationHours";
@@ -27,6 +30,14 @@ const createReservationDurationHandlers = (
   const updateCustomDurationDraft = (
     value: string
   ): void => {
+    const numericValue = Number(value);
+    if (
+      value !== STRING.Empty &&
+      (!Number.isFinite(numericValue) ||
+        numericValue < RESERVATION_FORM_MINIMUM_INPUT_VALUE)
+    ) {
+      return;
+    }
     setCustomDurationDraft(value);
     clearFieldError(RESERVATION_FORM_FIELD.DURATION_HOURS);
   };

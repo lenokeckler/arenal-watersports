@@ -16,6 +16,8 @@ export const RESERVATION_DURATION_PRESETS = [
 
 export const RESERVATION_CUSTOM_DURATION_INITIAL_HOURS = 0;
 
+export const RESERVATION_FORM_MINIMUM_INPUT_VALUE = 0;
+
 export const RESERVATION_FORM_DEFAULT_VALUES = {
   categoryId: "",
   customerName: "",
