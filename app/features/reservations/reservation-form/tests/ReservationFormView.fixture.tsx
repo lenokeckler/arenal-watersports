@@ -22,6 +22,7 @@ export const renderReservationForm = () => {
         {
           id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
           name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
+          isInterchangeable: true,
         },
       ]}
       initialDate={RESERVATION_FORM_VIEW_TEST.DATE}
