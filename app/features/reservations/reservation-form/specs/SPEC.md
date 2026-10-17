@@ -30,7 +30,7 @@ Allow a reservations worker to record a rental reservation with its customer nam
 - Convert duration hours to integer minutes without rounding.
 - Persist the reservation and exactly one valid equipment commitment in one invoker-security database transaction.
 - Derive `created_by` and `updated_by` from `auth.uid()` in the database function.
-- For category commitments, allow only active, reservable categories whose units are interchangeable; tracking mode does not determine category eligibility.
+- Determine physical eligibility from tracking mode: unit-tracked categories require an available unit, and quantity-tracked categories require positive available stock. Determine commitment shape from interchangeability: interchangeable categories use a quantity commitment, while non-interchangeable categories use a concrete unit.
 - Show active, reservable interchangeable categories with a positive quantity field; do not ask Reservations to select an exact machine for these categories.
 - Show active, reservable non-interchangeable categories with a concrete-unit selector containing units recorded as available.
 - Require one available concrete unit for non-interchangeable categories and submit it through the existing validated server action and RPC.
@@ -97,4 +97,4 @@ The invoker-security category query returns only active, reservable categories w
 
 Authenticated direct inserts or equipment-identity changes on scheduled reservation items enforce the same physical eligibility, including the exact selected unit when present. Existing Operations permissions, extra-only items, unchanged commitments, dispatched items and historical records retain their existing behavior. Trusted database maintenance roles retain their existing administrative authority. Failed commitments roll back the reservation transaction.
 
-This data unit does not complete live inventory updates or form option filtering; those require the subsequent service and UI integration.
+The eligibility service and refresh action provide physically eligible categories for initial and subsequent reads. Realtime inventory updates and form option filtering remain in the subsequent UI unit.
