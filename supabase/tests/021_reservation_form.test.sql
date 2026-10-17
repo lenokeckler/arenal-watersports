@@ -27,10 +27,10 @@ set local role authenticated;
 set local request.jwt.claims to '{"sub":"e2400000-0000-4000-8000-000000000002","role":"authenticated"}';
 
 select lives_ok(
-  $$ select create_rental_reservation(
-    'RES04 Fixture María López', 3, '2028-02-29', '09:30', 90,
-    'e2400000-0000-4000-8000-000000000101', 2
-  ) $$,
+  $$ select create_rental_reservation(jsonb_build_object(
+    'customer_name', 'RES04 Fixture María López', 'people_count', 3, 'date', '2028-02-29', 'time', '09:30',
+    'duration_minutes', 90, 'category_id', 'e2400000-0000-4000-8000-000000000101', 'quantity', 2
+  )) $$,
   'el formulario registra una renta con categoria por cantidad'
 );
 
@@ -80,10 +80,10 @@ select is(
 );
 
 select lives_ok(
-  $$ select create_rental_reservation(
-    'RES04 Fixture Kayak', 2, '2028-02-29', '10:00', 60,
-    'e2400000-0000-4000-8000-000000000104', 1
-  ) $$,
+  $$ select create_rental_reservation(jsonb_build_object(
+    'customer_name', 'RES04 Fixture Kayak', 'people_count', 2, 'date', '2028-02-29', 'time', '10:00',
+    'duration_minutes', 60, 'category_id', 'e2400000-0000-4000-8000-000000000104', 'quantity', 1
+  )) $$,
   'se acepta una categoria por unidad con unidades intercambiables'
 );
 
@@ -98,37 +98,37 @@ select is(
 );
 
 select throws_ok(
-  $$ select create_rental_reservation(
-    'RES04 Fixture Hora limite', 1, '2028-02-29', '24:00', 60,
-    'e2400000-0000-4000-8000-000000000101', 1
-  ) $$,
+  $$ select create_rental_reservation(jsonb_build_object(
+    'customer_name', 'RES04 Fixture Hora limite', 'people_count', 1, 'date', '2028-02-29', 'time', '24:00',
+    'duration_minutes', 60, 'category_id', 'e2400000-0000-4000-8000-000000000101', 'quantity', 1
+  )) $$,
   'P0001', null,
   'no se acepta la hora limite de veinticuatro horas'
 );
 
 select throws_ok(
-  $$ select create_rental_reservation(
-    'RES04 Lancha fixture', 1, '2028-02-29', '09:30', 60,
-    'e2400000-0000-4000-8000-000000000102', 1
-  ) $$,
+  $$ select create_rental_reservation(jsonb_build_object(
+    'customer_name', 'RES04 Lancha fixture', 'people_count', 1, 'date', '2028-02-29', 'time', '09:30',
+    'duration_minutes', 60, 'category_id', 'e2400000-0000-4000-8000-000000000102', 'quantity', 1
+  )) $$,
   'P0001', null,
   'no se acepta una categoria por unidad'
 );
 
 select throws_ok(
-  $$ select create_rental_reservation(
-    'RES04 Fixture Tabla', 1, '2028-02-29', '09:30', 60,
-    'e2400000-0000-4000-8000-000000000103', 1
-  ) $$,
+  $$ select create_rental_reservation(jsonb_build_object(
+    'customer_name', 'RES04 Fixture Tabla', 'people_count', 1, 'date', '2028-02-29', 'time', '09:30',
+    'duration_minutes', 60, 'category_id', 'e2400000-0000-4000-8000-000000000103', 'quantity', 1
+  )) $$,
   'P0001', null,
   'no se acepta una categoria inactiva'
 );
 
 select throws_ok(
-  $$ select create_rental_reservation(
-    'RES04 Fixture No reservable', 1, '2028-02-29', '09:30', 60,
-    'e2400000-0000-4000-8000-000000000105', 1
-  ) $$,
+  $$ select create_rental_reservation(jsonb_build_object(
+    'customer_name', 'RES04 Fixture No reservable', 'people_count', 1, 'date', '2028-02-29', 'time', '09:30',
+    'duration_minutes', 60, 'category_id', 'e2400000-0000-4000-8000-000000000105', 'quantity', 1
+  )) $$,
   'P0001', null,
   'no se acepta una categoria que no es reservable'
 );
@@ -137,10 +137,10 @@ reset role;
 set local request.jwt.claims to '{}';
 
 select throws_ok(
-  $$ select create_rental_reservation(
-    'RES04 Fixture Sin sesion', 1, '2028-02-29', '09:30', 60,
-    'e2400000-0000-4000-8000-000000000101', 1
-  ) $$,
+  $$ select create_rental_reservation(jsonb_build_object(
+    'customer_name', 'RES04 Fixture Sin sesion', 'people_count', 1, 'date', '2028-02-29', 'time', '09:30',
+    'duration_minutes', 60, 'category_id', 'e2400000-0000-4000-8000-000000000101', 'quantity', 1
+  )) $$,
   'P0001', null,
   'no se registra una reserva sin identidad autenticada'
 );

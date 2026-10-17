@@ -4,6 +4,7 @@ import {
   INVALID_TIME,
   EXPECTED_DURATION_MINUTES,
   EXPECTED_TRIMMED_CUSTOMER_NAME,
+  CONCRETE_UNIT_ID,
   EARLY_VALID_DATE,
   FRACTIONAL_COUNT,
   INVALID_FIELD_COUNT,
@@ -15,6 +16,7 @@ import {
 } from "./validateReservationFormInput.constants";
 import { validateReservationFormInput } from "../utils/validateReservationFormInput";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
+import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 
 describe("validateReservationFormInput", () => {
   it("trims the customer name and converts hours to whole minutes", () => {
@@ -23,13 +25,30 @@ describe("validateReservationFormInput", () => {
     );
 
     expect(result.value).toEqual({
-      categoryId: VALID_RESERVATION_FORM_INPUT.categoryId,
       customerName: EXPECTED_TRIMMED_CUSTOMER_NAME,
       date: VALID_RESERVATION_FORM_INPUT.date,
       durationMinutes: EXPECTED_DURATION_MINUTES,
       peopleCount: VALID_RESERVATION_FORM_INPUT.peopleCount,
-      quantity: VALID_RESERVATION_FORM_INPUT.quantity,
       time: VALID_RESERVATION_FORM_INPUT.time,
+      equipmentCommitment: {
+        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
+        categoryId: VALID_RESERVATION_FORM_INPUT.categoryId,
+        quantity: VALID_RESERVATION_FORM_INPUT.quantity,
+      },
+    });
+    expect(result.errors).toEqual({});
+  });
+
+  it("validates a concrete unit without requiring a category quantity", () => {
+    const result = validateReservationFormInput({
+      ...VALID_RESERVATION_FORM_INPUT,
+      quantity: INVALID_QUANTITY,
+      unitId: CONCRETE_UNIT_ID,
+    });
+
+    expect(result.value?.equipmentCommitment).toEqual({
+      kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
+      unitId: CONCRETE_UNIT_ID,
     });
     expect(result.errors).toEqual({});
   });

@@ -2412,6 +2412,13 @@ export type Database = {
       };
     };
     Functions: {
+      assert_unit_available_for_window: {
+        Args: {
+          p_reservation_window: unknown;
+          p_unit_id: string;
+        };
+        Returns: undefined;
+      };
       category_availability: {
         Args: {
           p_category_id: string;
@@ -2426,15 +2433,7 @@ export type Database = {
         }[];
       };
       create_rental_reservation: {
-        Args: {
-          p_category_id: string;
-          p_customer_name: string;
-          p_date: string;
-          p_duration_minutes: number;
-          p_people_count: number;
-          p_quantity: number;
-          p_time: string;
-        };
+        Args: { p_payload: Json };
         Returns: string;
       };
       has_area: {
@@ -2452,6 +2451,10 @@ export type Database = {
       is_admin: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
+      };
+      lock_reservable_unit: {
+        Args: { p_unit_id: string };
+        Returns: string;
       };
       next_reservation_code: {
         Args: Record<PropertyKey, never>;
@@ -2474,6 +2477,29 @@ export type Database = {
           reservation_id: string;
           starts_at: string;
         }[];
+      };
+      validate_reservation_customer: {
+        Args: {
+          p_customer_name: string;
+          p_people_count: number;
+        };
+        Returns: string;
+      };
+      validate_reservation_equipment_commitment: {
+        Args: {
+          p_category_id: string;
+          p_quantity: number;
+          p_unit_id: string;
+        };
+        Returns: string;
+      };
+      validate_reservation_schedule: {
+        Args: {
+          p_date: string;
+          p_duration_minutes: number;
+          p_time: string;
+        };
+        Returns: unknown;
       };
       worker_display_names: {
         Args: { p_worker_ids: string[] };

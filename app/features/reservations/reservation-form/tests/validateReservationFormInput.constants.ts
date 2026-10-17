@@ -9,6 +9,7 @@ export const VALID_RESERVATION_FORM_INPUT: ReservationFormInput =
     peopleCount: 3,
     quantity: 2,
     time: "09:30",
+    unitId: "",
   };
 
 export const INVALID_DATE = "2027-02-29";
@@ -21,4 +22,6 @@ export const FRACTIONAL_COUNT = 1.5;
 export const INVALID_QUANTITY = 0;
 export const NEGATIVE_VALUE = -1;
 export const INVALID_FIELD_COUNT = 4;
+export const CONCRETE_UNIT_ID =
+  "e2500000-0000-4000-8000-000000000201";
 export const EXPECTED_TRIMMED_CUSTOMER_NAME = "María López";
