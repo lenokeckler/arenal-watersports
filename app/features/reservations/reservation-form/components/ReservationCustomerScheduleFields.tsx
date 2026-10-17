@@ -8,6 +8,7 @@ import type { ReservationFormValuesProps } from "../models/ReservationFormValues
 import {
   RESERVATION_FORM_FIELD_CLASS,
   RESERVATION_FORM_FIELD_WIDE_CLASS,
+  RESERVATION_FORM_INPUT_CLASS,
   RESERVATION_FORM_TIME_HINT_CLASS,
 } from "../styles/ReservationFormView.styles";
 import ReservationDurationSelector from "./ReservationDurationSelector";
@@ -21,6 +22,7 @@ const ReservationCustomerScheduleFields = ({
         id={RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}
         name={RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}
         label={RESERVATION_FORM_UI_COPY.CUSTOMER_NAME}
+        classNameField={RESERVATION_FORM_INPUT_CLASS}
         value={viewModel.values.customerName}
         onChange={(event) =>
           viewModel.handleCustomerNameChange(
@@ -37,6 +39,7 @@ const ReservationCustomerScheduleFields = ({
         id={RESERVATION_FORM_FIELD_ID.PEOPLE_COUNT}
         name={RESERVATION_FORM_FIELD_ID.PEOPLE_COUNT}
         label={RESERVATION_FORM_UI_COPY.PEOPLE_COUNT}
+        classNameField={RESERVATION_FORM_INPUT_CLASS}
         type={INPUT_TYPES.NUMBER}
         value={String(viewModel.values.peopleCount)}
         onChange={(event) =>
@@ -54,6 +57,7 @@ const ReservationCustomerScheduleFields = ({
         id={RESERVATION_FORM_FIELD_ID.DATE}
         name={RESERVATION_FORM_FIELD_ID.DATE}
         label={RESERVATION_FORM_UI_COPY.DATE}
+        classNameField={RESERVATION_FORM_INPUT_CLASS}
         type={INPUT_TYPES.DATE}
         value={viewModel.values.date}
         onChange={(event) =>
@@ -69,6 +73,7 @@ const ReservationCustomerScheduleFields = ({
         id={RESERVATION_FORM_FIELD_ID.TIME}
         name={RESERVATION_FORM_FIELD_ID.TIME}
         label={RESERVATION_FORM_UI_COPY.TIME}
+        classNameField={RESERVATION_FORM_INPUT_CLASS}
         type={INPUT_TYPES.TIME}
         value={viewModel.values.time}
         onChange={(event) =>
