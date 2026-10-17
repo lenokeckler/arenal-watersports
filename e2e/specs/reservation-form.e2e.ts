@@ -120,4 +120,29 @@ test.describe("Reservation form", () => {
       reservationFormPage.getSuccessMessage()
     ).toBeVisible();
   });
+
+  test("offers an available concrete unit for Lancha", async ({
+    page,
+  }) => {
+    const reservationFormPage =
+      createReservationFormPage(page);
+
+    await reservationFormPage.goTo();
+    await reservationFormPage.selectCategory(
+      E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
+    );
+
+    await expect(
+      reservationFormPage.getQuantityInput()
+    ).toBeHidden();
+    await expect(
+      reservationFormPage.getUnitSelect()
+    ).toBeVisible();
+    await reservationFormPage.selectUnit(
+      E2E_RESERVATION_FORM_COPY.UNIT_OPTION
+    );
+    await expect(
+      reservationFormPage.getUnitSelect()
+    ).toHaveValue(/.+/);
+  });
 });

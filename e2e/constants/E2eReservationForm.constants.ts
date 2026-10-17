@@ -17,11 +17,15 @@ export const E2E_RESERVATION_FORM_COPY = {
   VALID_PEOPLE_COUNT: "4",
   CATEGORY: "Equipo",
   CATEGORY_FIELD_NAME: "Equipo *",
+  UNIT: "Unidad de lancha",
+  UNIT_OPTION: "PONTOON",
   CATEGORY_OPTION: "Jet Ski",
+  CONCRETE_CATEGORY_OPTION: "Lancha",
   CUSTOMER_NAME_VALID: "US-RES-04 E2E reservation",
   SUBMIT: "Registrar reserva",
   SUCCESS: "La reserva quedó registrada correctamente.",
   VALIDATION_ERROR: "Ingrese el nombre de la reserva.",
+  SCREENSHOT_DATE: "2099-12-31",
 } as const;
 
 export const E2E_RESERVATION_FORM_MOBILE_VIEWPORT = {
@@ -34,6 +38,9 @@ export const E2E_RESERVATION_FORM_SCREENSHOT_BASENAME =
 
 export const E2E_RESERVATION_FORM_EQUIPMENT_SCREENSHOT_SUFFIX =
   "equipment-and-submit";
+
+export const E2E_RESERVATION_FORM_UNIT_SCREENSHOT_SUFFIX =
+  "lancha-unit-selected";
 
 export const E2E_RESERVATION_FORM_CUSTOM_DURATION_SCREENSHOT_SUFFIX =
   "custom-duration";
