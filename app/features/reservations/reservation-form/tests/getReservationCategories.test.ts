@@ -29,13 +29,27 @@ vi.mock(
 describe("getReservationCategories", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    queryChain.select.mockReturnValue(queryChain);
-    queryChain.eq.mockReturnValue(queryChain);
-    queryChain.or.mockReturnValue(queryChain);
-    queryChain.order.mockResolvedValue({
-      data: [],
+  });
+
+  it("maps physically eligible categories from the authorized rpc", async () => {
+    const rpc = vi.fn().mockResolvedValue({
+      data: [
+        {
+          id: RESERVATION_CATEGORY_TEST.INTERCHANGEABLE_ID,
+          name: "Jet Ski",
+          units_are_interchangeable: true,
+        },
+        {
+          id: RESERVATION_CATEGORY_TEST.CONCRETE_ID,
+          name: "Lancha",
+          units_are_interchangeable: false,
+        },
+      ],
       error: null,
     });
+    const supabaseClient = {
+      rpc,
+    };
     vi.mocked(
       getAuthorizedReservationFormClient
     ).mockResolvedValue({
@@ -43,11 +57,41 @@ describe("getReservationCategories", () => {
     } as never);
   });
 
-  it("includes quantity tracked and interchangeable categories", async () => {
-    await getReservationCategories();
+    await expect(
+      getReservationCategories()
+    ).resolves.toEqual([
+      {
+        id: RESERVATION_CATEGORY_TEST.INTERCHANGEABLE_ID,
+        isInterchangeable: true,
+        name: "Jet Ski",
+      },
+      {
+        id: RESERVATION_CATEGORY_TEST.CONCRETE_ID,
+        isInterchangeable: false,
+        name: "Lancha",
+      },
+    ]);
+    expect(rpc).toHaveBeenCalledWith(
+      "reservable_equipment_categories"
+    );
+  });
 
-    expect(queryChain.or).toHaveBeenCalledWith(
-      "tracking_mode.eq.by_quantity,units_are_interchangeable.eq.true"
+  it("preserves the operation context when the eligibility rpc fails", async () => {
+    const rpc = vi.fn().mockResolvedValue({
+      data: null,
+      error: {
+        code: "XX000",
+        message: "Eligibility query failed",
+      },
+    });
+    vi.mocked(
+      getAuthorizedReservationFormClient
+    ).mockResolvedValue({ rpc } as never);
+
+    await expect(
+      getReservationCategories()
+    ).rejects.toThrow(
+      "Supabase query failed: load reservation categories"
     );
   });
 });

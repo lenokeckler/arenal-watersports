@@ -10,15 +10,9 @@ export const getReservationCategories = async (): Promise<
 > => {
   const supabase =
     await getAuthorizedReservationFormClient();
-  const { data, error } = await supabase
-    .from("equipment_categories")
-    .select("id, name")
-    .eq("status", "active")
-    .eq("is_reservable", true)
-    .or(
-      "tracking_mode.eq.by_quantity,units_are_interchangeable.eq.true"
-    )
-    .order("name");
+  const { data, error } = await supabase.rpc(
+    "reservable_equipment_categories"
+  );
 
   throwIfSupabaseError(
     error,
