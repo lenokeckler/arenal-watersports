@@ -1,7 +1,7 @@
 begin;
 select plan(15);
 
-\ir fixtures/reservation_form.sql.inc
+\ir fixtures/reservation_form.sql.fixture
 
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"e2400000-0000-4000-8000-000000000002","role":"authenticated"}';
