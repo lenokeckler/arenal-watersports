@@ -22,6 +22,17 @@ export const useReservationSubmissionState = () => {
     setFormError(STRING.Empty);
     setIsSubmitted(false);
   };
+  const setFieldError = (
+    field: ReservationFormField,
+    message: string
+  ): void => {
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      [field]: message,
+    }));
+    setFormError(STRING.Empty);
+    setIsSubmitted(false);
+  };
   const applyResult = (
     result: ReservationFormActionResult
   ): void => {
@@ -42,5 +53,6 @@ export const useReservationSubmissionState = () => {
     formError,
     isSubmitted,
     setSubmissionError: setFormError,
+    setFieldError,
   };
 };

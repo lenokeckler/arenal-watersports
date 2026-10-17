@@ -22,6 +22,16 @@ export const RESERVATION_FORM_UI_COPY = {
     "No fue posible registrar la reserva. Revise los datos e inténtelo de nuevo.",
   NO_CATEGORIES:
     "No hay categorías de equipo disponibles para reservar.",
-  EQUIPMENT_NOTE:
-    "El equipo se asigna por categoría y cantidad. La asignación de unidades se realiza durante el despacho.",
+  EQUIPMENT_QUANTITY_NOTE:
+    "Los equipos intercambiables se reservan por cantidad; Operaciones asigna cada unidad al despachar.",
+  EQUIPMENT_UNIT_NOTE:
+    "La lancha se compromete por unidad concreta y permanece en tierra hasta que Operaciones la despache.",
+  NO_AVAILABLE_UNITS:
+    "No hay unidades disponibles para esta categoría.",
+  AVAILABILITY_ERROR:
+    "No fue posible verificar la disponibilidad. Inténtelo de nuevo.",
+  AVAILABILITY_LOADING:
+    "Verificando disponibilidad de la lancha…",
+  UNIT: "Unidad de lancha",
+  UNIT_PLACEHOLDER: "Seleccione una unidad disponible",
 } as const;

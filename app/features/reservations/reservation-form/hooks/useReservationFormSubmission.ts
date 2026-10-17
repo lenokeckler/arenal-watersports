@@ -36,6 +36,7 @@ export const useReservationFormSubmission = () => {
     formError: submission.formError,
     isPending,
     isSubmitted: submission.isSubmitted,
+    setFieldError: submission.setFieldError,
     submitReservation,
   };
 };

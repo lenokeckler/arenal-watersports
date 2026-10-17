@@ -7,4 +7,6 @@ export const ARIA_ROLE = {
   REGION: "region",
   HEADING: "heading",
   MAIN: "main",
+  OPTION: "option",
+  STATUS: "status",
 } as const;

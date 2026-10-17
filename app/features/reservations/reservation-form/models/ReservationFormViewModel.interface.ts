@@ -1,11 +1,16 @@
 import type { ReservationFormField } from "./ReservationFormField.constants";
 import type { ReservationFormInput } from "./ReservationFormInput.interface";
+import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOption.interface";
 
 export interface ReservationFormViewModel {
   errors: Partial<Record<ReservationFormField, string>>;
   formError: string;
   isPending: boolean;
   isSubmitted: boolean;
+  availableUnits: ReservationCategoryUnitOption[];
+  requiresConcreteUnit: boolean;
+  isAvailabilityLoading: boolean;
+  hasAvailabilityError: boolean;
   isCustomDuration: boolean;
   customDurationDraft: string;
   values: ReservationFormInput;
@@ -18,6 +23,7 @@ export interface ReservationFormViewModel {
   handleQuantityChange: (value: number) => void;
   handleCategoryChange: (value: string) => void;
   handleTimeChange: (value: string) => void;
+  handleUnitChange: (value: string) => void;
   handleBack: () => void;
   handleSubmit: (
     event: React.FormEvent<HTMLFormElement>

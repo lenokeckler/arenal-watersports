@@ -1,47 +1,46 @@
 "use client";
 
-import type { ReservationFormViewModel } from "../models/ReservationFormViewModel.interface";
+import { STRING } from "@/app/constants";
 import { useRouter } from "next/navigation";
-import { useReservationFormFields } from "./useReservationFormFields";
-import { useReservationFormSubmission } from "./useReservationFormSubmission";
-import { useReservationDuration } from "./useReservationDuration";
+import type { ReservationFormViewModel } from "../models/ReservationFormViewModel.interface";
+import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
+import { createReservationFormSubmitHandler } from "../utils/createReservationFormSubmitHandler";
+import { useReservationEquipmentViewModel } from "./useReservationEquipmentViewModel";
+import { useReservationFormState } from "./useReservationFormState";
 
 export const useReservationFormViewModel = (
   initialDate: string,
-  initialCategoryId: string
+  categories: ReservationCategoryOption[]
 ): ReservationFormViewModel => {
   const router = useRouter();
-  const submission = useReservationFormSubmission();
-  const fields = useReservationFormFields(
+  const state = useReservationFormState(
     initialDate,
-    initialCategoryId,
-    submission.clearFieldError
+    STRING.Empty
   );
-  const duration = useReservationDuration(
-    fields.handleDurationChange,
-    submission.clearFieldError
+  const resolvedDurationHours =
+    state.duration.resolveDurationHours(
+      state.fields.values.durationHours
+    );
+  const equipment = useReservationEquipmentViewModel(
+    categories,
+    state.fields.values,
+    resolvedDurationHours
   );
-  const handleSubmit: ReservationFormViewModel["handleSubmit"] =
-    (event) => {
-      event.preventDefault();
-      submission.submitReservation({
-        ...fields.values,
-        durationHours: duration.resolveDurationHours(
-          fields.values.durationHours
-        ),
-      });
-    };
+  const handleSubmit = createReservationFormSubmitHandler({
+    ...equipment,
+    resolvedDurationHours,
+    setFieldError: state.submission.setFieldError,
+    submitReservation: state.submission.submitReservation,
+    values: state.fields.values,
+  });
+
   return {
-    ...fields,
-    ...submission,
-    customDurationDraft: duration.customDurationDraft,
-    handleCustomDurationChange:
-      duration.updateCustomDurationDraft,
-    handleCustomDurationSelection:
-      duration.selectCustomDuration,
-    handleDurationChange: duration.selectPreset,
+    ...state.fields,
+    ...state.submission,
+    ...state.duration,
+    ...equipment,
+    ...state.durationHandlers,
     handleBack: router.back,
-    isCustomDuration: duration.isCustomDuration,
     handleSubmit,
   };
 };

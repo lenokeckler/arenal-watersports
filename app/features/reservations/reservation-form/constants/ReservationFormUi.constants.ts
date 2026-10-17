@@ -1,3 +1,5 @@
+import { STRING } from "@/app/constants";
+
 export const RESERVATION_TIME_ZONE = "America/Costa_Rica";
 
 export const RESERVATION_FORM_ACCESS = {
@@ -26,6 +28,7 @@ export const RESERVATION_FORM_DEFAULT_VALUES = {
   peopleCount: 1,
   quantity: 1,
   time: "09:00",
+  unitId: STRING.Empty,
 } as const;
 
 export const RESERVATION_FORM_FIELD_ID = {
@@ -37,4 +40,5 @@ export const RESERVATION_FORM_FIELD_ID = {
   PEOPLE_COUNT: "reservation-people-count",
   QUANTITY: "reservation-quantity",
   TIME: "reservation-time",
+  UNIT: "reservation-equipment-unit",
 } as const;
