@@ -13,6 +13,9 @@ export const createSessionBarPage = (page: Page) => {
   const getConfirmButton = (): Locator =>
     getLogoutButton(E2E_LOGOUT_COPY.CONFIRM);
 
+  const getPendingButton = (): Locator =>
+    getLogoutButton(E2E_LOGOUT_COPY.PENDING);
+
   const getAllLogoutButtons = (): Locator =>
     page.getByRole(ARIA_ROLE.BUTTON, {
       name: E2E_LOGOUT_COPY.BUTTON,
@@ -53,6 +56,7 @@ export const createSessionBarPage = (page: Page) => {
       ),
     getIdleButton,
     getConfirmButton,
+    getPendingButton,
     press,
     confirmSignOut,
     doubleTapConfirm,
