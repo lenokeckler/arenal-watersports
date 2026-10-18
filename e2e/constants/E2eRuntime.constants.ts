@@ -1,7 +1,7 @@
 export const E2E_SERVER = {
-  COMMAND: "npm run dev -- --port 3100",
+  COMMAND: "npm run dev -- --port 3000",
   HOST: "http://localhost",
-  PORT: 3100,
+  PORT: 3000,
   STARTUP_TIMEOUT_MS: 240_000,
 } as const;
 
