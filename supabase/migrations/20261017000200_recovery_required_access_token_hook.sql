@@ -1,14 +1,15 @@
 create or replace function public.custom_access_token_hook(event jsonb) returns jsonb
 language plpgsql stable set search_path = '' as $$
 declare
+  worker_id uuid;
   worker_status public.worker_status;
   worker_blocked_reason public.worker_blocked_reason;
   worker_deleted_at timestamptz;
   pending_password_change boolean;
   rejection text;
 begin
-  select w.status, w.blocked_reason, w.deleted_at, w.must_change_password
-    into worker_status, worker_blocked_reason, worker_deleted_at, pending_password_change
+  select w.id, w.status, w.blocked_reason, w.deleted_at, w.must_change_password
+    into worker_id, worker_status, worker_blocked_reason, worker_deleted_at, pending_password_change
     from public.workers w
    where w.id = (event ->> 'user_id')::uuid;
 
@@ -21,7 +22,7 @@ begin
     when worker_blocked_reason = 'failed_attempts' then 'account_blocked:failed_attempts'
     when worker_blocked_reason = 'administration' then 'account_blocked:administration'
     when coalesce(event ->> 'authentication_method', '') <> 'token_refresh'
-      and public.sign_in_requires_recovery((event ->> 'user_id')::uuid) then 'account_recovery_required'
+      and public.sign_in_requires_recovery(worker_id) then 'account_recovery_required'
   end;
 
   if rejection is null then
