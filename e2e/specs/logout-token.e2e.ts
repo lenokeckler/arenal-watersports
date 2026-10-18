@@ -23,8 +23,7 @@ test.describe("Sign out discards the token", () => {
       E2E_SIGNED_IN_SESSION_COUNT
     );
 
-    await sessionBar.press();
-    await sessionBar.confirmSignOut();
+    await sessionBar.signOut();
     await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
 
     await expectAuthCookiesGone(context);

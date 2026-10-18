@@ -4,23 +4,22 @@ import type {
   Cookie,
   Page,
 } from "@playwright/test";
+import { withSecondContext } from "./withSecondContext";
 
-export const openRouteWithCopiedCookies = async (
+export const openRouteWithCopiedCookies = (
   browser: Browser,
   contextOptions: BrowserContextOptions,
   cookies: Cookie[],
   route: string,
   inspect: (copiedPage: Page) => Promise<void>
-): Promise<void> => {
-  const copiedContext =
-    await browser.newContext(contextOptions);
-
-  try {
-    await copiedContext.addCookies(cookies);
-    const copiedPage = await copiedContext.newPage();
-    await copiedPage.goto(route);
-    await inspect(copiedPage);
-  } finally {
-    await copiedContext.close();
-  }
-};
+): Promise<void> =>
+  withSecondContext(
+    browser,
+    contextOptions,
+    async (copiedContext) => {
+      await copiedContext.addCookies(cookies);
+      const copiedPage = await copiedContext.newPage();
+      await copiedPage.goto(route);
+      await inspect(copiedPage);
+    }
+  );
