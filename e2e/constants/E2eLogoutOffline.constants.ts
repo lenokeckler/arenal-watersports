@@ -1,0 +1,4 @@
+export const E2E_LOGOUT_OFFLINE = {
+  BACKOFF_SKIP_MS: 60_000,
+  PAST_EXPIRY_MS: 60_000,
+} as const;
