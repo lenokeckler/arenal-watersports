@@ -1,0 +1,199 @@
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
+import { SUPABASE_SIGN_OUT_SCOPE } from "@/app/constants";
+import type { BrowserSupabaseClient } from "@/app/services/supabase/models/BrowserSupabaseClient.type";
+import { listAuthCookieNames } from "@/app/utils/supabase-cookie/listAuthCookieNames";
+import { signOutThisDevice } from "../signOutThisDevice";
+import { SIGN_OUT_FIXTURE } from "./signOutThisDevice.constants";
+
+const signOut = vi.fn();
+const getSession = vi.fn();
+const supabase = {
+  auth: { signOut, getSession },
+} as unknown as BrowserSupabaseClient;
+
+const writeAuthCookie = (): void => {
+  document.cookie = `${SIGN_OUT_FIXTURE.AUTH_COOKIE_NAME}=${SIGN_OUT_FIXTURE.AUTH_COOKIE_VALUE}; path=/`;
+  document.cookie = `${SIGN_OUT_FIXTURE.UNRELATED_COOKIE}; path=/`;
+};
+
+const clearAllCookies = (): void => {
+  document.cookie.split(";").forEach((pair) => {
+    const name = pair.split("=")[0].trim();
+    document.cookie = `${name}=; path=/; max-age=0`;
+  });
+};
+
+const buildSessionWithUnreadableUser = () => {
+  const session = { ...SIGN_OUT_FIXTURE.SESSION };
+  Object.defineProperty(session, "user", {
+    get: () => {
+      throw new Error(
+        SIGN_OUT_FIXTURE.UNREADABLE_USER_MESSAGE
+      );
+    },
+  });
+
+  return session;
+};
+
+describe("signOutThisDevice", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+    clearAllCookies();
+    signOut.mockResolvedValue({ error: null });
+    getSession.mockResolvedValue({
+      data: { session: null },
+      error: null,
+    });
+  });
+
+  afterEach(clearAllCookies);
+
+  it("signs out with the local scope only", async () => {
+    await signOutThisDevice(supabase);
+
+    expect(signOut).toHaveBeenCalledTimes(1);
+    expect(signOut).toHaveBeenCalledWith({
+      scope: SUPABASE_SIGN_OUT_SCOPE.LOCAL,
+    });
+    expect(signOut).not.toHaveBeenCalledWith({
+      scope: SUPABASE_SIGN_OUT_SCOPE.GLOBAL,
+    });
+  });
+
+  it("reports ok when no session is left", async () => {
+    await expect(
+      signOutThisDevice(supabase)
+    ).resolves.toEqual({
+      ok: true,
+    });
+  });
+
+  it("reports ok when the server failed but no session is left", async () => {
+    signOut.mockResolvedValue({
+      error: new Error(SIGN_OUT_FIXTURE.ERROR_MESSAGE),
+    });
+
+    await expect(
+      signOutThisDevice(supabase)
+    ).resolves.toEqual({
+      ok: true,
+    });
+  });
+
+  it("leaves the cookies alone when the library already removed the session", async () => {
+    writeAuthCookie();
+
+    await signOutThisDevice(supabase);
+
+    expect(listAuthCookieNames(document.cookie)).toEqual([
+      SIGN_OUT_FIXTURE.AUTH_COOKIE_NAME,
+    ]);
+  });
+
+  it("removes the auth cookies and checks again when the session cannot be read", async () => {
+    writeAuthCookie();
+    getSession
+      .mockResolvedValueOnce({
+        data: { session: null },
+        error: new Error(
+          SIGN_OUT_FIXTURE.NETWORK_FAILURE_MESSAGE
+        ),
+      })
+      .mockResolvedValueOnce({
+        data: { session: null },
+        error: null,
+      });
+
+    const result = await signOutThisDevice(supabase);
+
+    expect(getSession).toHaveBeenCalledTimes(2);
+    expect(listAuthCookieNames(document.cookie)).toEqual(
+      []
+    );
+    expect(document.cookie).toContain(
+      SIGN_OUT_FIXTURE.UNRELATED_COOKIE
+    );
+    expect(result).toEqual({ ok: true });
+  });
+
+  it("removes the auth cookies when a session is still held and reports ok once it is gone", async () => {
+    writeAuthCookie();
+    getSession
+      .mockResolvedValueOnce({
+        data: { session: SIGN_OUT_FIXTURE.SESSION },
+        error: null,
+      })
+      .mockResolvedValueOnce({
+        data: { session: null },
+        error: null,
+      });
+
+    const result = await signOutThisDevice(supabase);
+
+    expect(listAuthCookieNames(document.cookie)).toEqual(
+      []
+    );
+    expect(result).toEqual({ ok: true });
+  });
+
+  it("reports failure when the session is still there after the fallback", async () => {
+    getSession.mockResolvedValue({
+      data: { session: SIGN_OUT_FIXTURE.SESSION },
+      error: null,
+    });
+
+    await expect(
+      signOutThisDevice(supabase)
+    ).resolves.toEqual({
+      ok: false,
+    });
+  });
+
+  it("reports failure when the session still cannot be read after the fallback", async () => {
+    getSession.mockResolvedValue({
+      data: { session: null },
+      error: new Error(
+        SIGN_OUT_FIXTURE.NETWORK_FAILURE_MESSAGE
+      ),
+    });
+
+    await expect(
+      signOutThisDevice(supabase)
+    ).resolves.toEqual({
+      ok: false,
+    });
+  });
+
+  it("propagates an exception thrown by the client", async () => {
+    signOut.mockRejectedValue(
+      new Error(SIGN_OUT_FIXTURE.NETWORK_FAILURE_MESSAGE)
+    );
+
+    await expect(
+      signOutThisDevice(supabase)
+    ).rejects.toThrow(
+      SIGN_OUT_FIXTURE.NETWORK_FAILURE_MESSAGE
+    );
+  });
+
+  it("never reads the user of the session", async () => {
+    getSession.mockResolvedValue({
+      data: { session: buildSessionWithUnreadableUser() },
+      error: null,
+    });
+
+    await expect(
+      signOutThisDevice(supabase)
+    ).resolves.toEqual({
+      ok: false,
+    });
+  });
+});
