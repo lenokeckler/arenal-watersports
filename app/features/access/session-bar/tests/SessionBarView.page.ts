@@ -1,14 +1,15 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
-import { BANNER_ROLE } from "./SessionBarView.constants";
 
 export const createSessionBarViewPage = () => {
   const user = userEvent.setup();
 
-  const getBanners = () => screen.getAllByRole(BANNER_ROLE);
+  const getBanners = () =>
+    screen.getAllByRole(ARIA_ROLE.BANNER);
 
-  const getBanner = () => screen.getByRole(BANNER_ROLE);
+  const getBanner = () =>
+    screen.getByRole(ARIA_ROLE.BANNER);
 
   const getButtons = () =>
     within(getBanner()).getAllByRole(ARIA_ROLE.BUTTON);

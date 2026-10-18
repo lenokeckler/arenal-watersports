@@ -2,7 +2,6 @@ import { LOGOUT_COPY } from "../constants/LogoutCopy.constants";
 import { LOGOUT_PHASE } from "../constants/LogoutPhase.constants";
 import type { SessionBarViewProps } from "../models/SessionBarViewProps.type";
 
-export const BANNER_ROLE = "banner";
 export const ANNOUNCEMENT = LOGOUT_COPY.PENDING;
 export const LOGOUT_ROUTE_FILE_NAME = "route.ts";
 export const LOGOUT_PATH_SEGMENT =

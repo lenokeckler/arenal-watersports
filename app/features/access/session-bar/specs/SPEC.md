@@ -36,17 +36,17 @@ that asks for one confirming tap and tells the worker what is happening.
 - A press calls `onPress` once; ignoring presses while pending belongs to the view model.
 - The status region is always mounted with `role="status"` and `sr-only`; it holds the message it
   is given and is empty when the message is empty.
-
 - The bar is a `<header>` landmark, `sticky top-0` and in flow (never `fixed`), with no heading and
   no bottom padding added to the content.
 - A right-aligned row holds the status region and the button; `LogoutButton` is its last item.
 - `FormErrorBanner` shows `errorMessage` below the row, inside the sticky bar, only when there is
   one; it never navigates.
-- `(system)/layout.tsx` stays a server component and renders `<SystemScreen><SessionBar />
-{children}</SystemScreen>`: home and every `/profile/*` screen show the bar, nothing under
+- `(system)/layout.tsx` stays a server component and renders
+  `<SystemScreen><SessionBar />{children}</SystemScreen>`: home and every `/profile/*` screen show the bar, nothing under
   `app/access/` does. `system-screen` never imports `session-bar`.
 
 ## Acceptance
 
-- Covered by `tests/` once the tests of this rung are written; the browser flow is covered by the
-  end-to-end rungs of US-ACC-08.
+- Unit tests in `tests/` cover every button phase, the status region, the view model (two taps,
+  single sign-out, failure and retry) and the bar (one banner, the button last, the error only on
+  failure, no logout route handler). The browser flow is covered by the end-to-end specs of US-ACC-08.
