@@ -5,6 +5,9 @@ export const RESERVATION_EQUIPMENT_REALTIME = {
   SCHEMA: "public",
   TABLE: {
     CATEGORIES: "equipment_categories",
+    DISPATCHES: "reservation_dispatches",
+    ITEMS: "reservation_items",
+    RESERVATIONS: "reservations",
     STOCK: "equipment_stock",
     UNITS: "equipment_units",
   },
