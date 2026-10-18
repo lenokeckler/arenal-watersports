@@ -3,82 +3,117 @@ import {
   renderHook,
   waitFor,
 } from "@testing-library/react";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
-import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
-import type { ReservationEquipmentEligibilityRealtimeOptions } from "../models/ReservationEquipmentEligibilityRealtimeOptions.interface";
-import { getReservationCategoriesAction } from "../actions/getReservationCategoriesAction";
+  INITIAL_ELIGIBLE_CATEGORIES,
+  realtimeHarness,
+  resetRealtimeHarness,
+} from "./ReservationEquipmentEligibility.testHarness";
+import { REALTIME_SUBSCRIBE_STATES } from "@supabase/supabase-js";
 import { useReservationEquipmentEligibility } from "../hooks/useReservationEquipmentEligibility";
-import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 
-const realtimeHandlers = vi.hoisted(() => ({
-  current:
-    null as null | ReservationEquipmentEligibilityRealtimeOptions,
-}));
+describe("useReservationEquipmentEligibility inventory updates", () => {
+  beforeEach(resetRealtimeHarness);
 
-vi.mock(
-  "../actions/getReservationCategoriesAction",
-  () => ({
-    getReservationCategoriesAction: vi.fn(),
-  })
-);
+  it("refreshes categories on subscription and each inventory event", async () => {
+    const { result } = renderHook(() =>
+      useReservationEquipmentEligibility(
+        INITIAL_ELIGIBLE_CATEGORIES
+      )
+    );
 
-vi.mock(
-  "../hooks/useReservationEquipmentEligibilityRealtime",
-  () => ({
-    useReservationEquipmentEligibilityRealtime: vi.fn(
-      (
-        options: ReservationEquipmentEligibilityRealtimeOptions
-      ) => {
-        realtimeHandlers.current = options;
-      }
-    ),
-  })
-);
-
-describe("useReservationEquipmentEligibility", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-    realtimeHandlers.current = null;
+    await waitFor(() =>
+      expect(realtimeHarness.channelCount()).toBe(1)
+    );
+    expect(realtimeHarness.eventHandlers).toHaveLength(3);
+    act(() =>
+      realtimeHarness.statusHandlers[0](
+        REALTIME_SUBSCRIBE_STATES.SUBSCRIBED
+      )
+    );
+    await waitFor(() =>
+      expect(
+        realtimeHarness.getCategories
+      ).toHaveBeenCalledOnce()
+    );
+    act(() => realtimeHarness.eventHandlers[0]());
+    await waitFor(() =>
+      expect(
+        realtimeHarness.getCategories
+      ).toHaveBeenCalledTimes(2)
+    );
+    expect(result.current.categories).toEqual(
+      INITIAL_ELIGIBLE_CATEGORIES
+    );
   });
 
-  it("keeps the server snapshot usable across realtime disconnect and reconnect", async () => {
-    const categories: ReservationCategoryOption[] = [
-      {
-        id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
-        isInterchangeable: true,
-        name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
-      },
-    ];
-    const refreshedCategories = [
-      {
-        ...categories[0],
-        name: RESERVATION_FORM_VIEW_TEST.REFRESHED_CATEGORY_NAME,
-      },
-    ];
-    vi.mocked(
-      getReservationCategoriesAction
-    ).mockResolvedValue(refreshedCategories);
+  it("keeps the newest snapshot when refresh responses finish out of order", async () => {
     const { result } = renderHook(() =>
-      useReservationEquipmentEligibility(categories)
+      useReservationEquipmentEligibility(
+        INITIAL_ELIGIBLE_CATEGORIES
+      )
     );
-
-    act(() => realtimeHandlers.current?.onUnavailable());
-    expect(result.current.categories).toEqual(categories);
-    expect(result.current.hasError).toBe(true);
-
-    act(() => realtimeHandlers.current?.onSubscribed());
     await waitFor(() =>
-      expect(result.current.isLoading).toBe(false)
+      expect(realtimeHarness.channelCount()).toBe(1)
     );
+    act(() =>
+      realtimeHarness.statusHandlers[0](
+        REALTIME_SUBSCRIBE_STATES.SUBSCRIBED
+      )
+    );
+    await waitFor(() =>
+      expect(
+        realtimeHarness.getCategories
+      ).toHaveBeenCalledOnce()
+    );
+    let resolveOlder = (
+      _categories: typeof INITIAL_ELIGIBLE_CATEGORIES
+    ): void => undefined;
+    let resolveNewest = (
+      _categories: typeof INITIAL_ELIGIBLE_CATEGORIES
+    ): void => undefined;
+    realtimeHarness.getCategories
+      .mockImplementationOnce(
+        () =>
+          new Promise<typeof INITIAL_ELIGIBLE_CATEGORIES>(
+            (resolve) => {
+              resolveOlder = resolve;
+            }
+          )
+      )
+      .mockImplementationOnce(
+        () =>
+          new Promise<typeof INITIAL_ELIGIBLE_CATEGORIES>(
+            (resolve) => {
+              resolveNewest = resolve;
+            }
+          )
+      );
+
+    act(() => realtimeHarness.eventHandlers[0]());
+    act(() => realtimeHarness.eventHandlers[1]());
+    await waitFor(() =>
+      expect(
+        realtimeHarness.getCategories
+      ).toHaveBeenCalledTimes(3)
+    );
+    const newestCategories = [
+      {
+        ...INITIAL_ELIGIBLE_CATEGORIES[0],
+        name: "Jet Ski actualizado",
+      },
+    ];
+    await act(async () => {
+      resolveNewest(newestCategories);
+      await Promise.resolve();
+    });
+    await act(async () => {
+      resolveOlder([]);
+      await Promise.resolve();
+    });
 
     expect(result.current.categories).toEqual(
-      refreshedCategories
+      newestCategories
     );
     expect(result.current.hasError).toBe(false);
   });
