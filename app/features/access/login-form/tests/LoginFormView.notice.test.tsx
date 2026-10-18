@@ -15,6 +15,8 @@ import {
   HREF_ATTRIBUTE,
   RECOVERED_NOTICE,
   RECOVERED_URL,
+  SIGNED_OUT_NOTICE,
+  SIGNED_OUT_URL,
   TAB_INDEX_ATTRIBUTE,
 } from "./LoginNotice.constants";
 import { NETWORK_ERROR } from "./LoginFormView.constants";
@@ -113,6 +115,54 @@ describe("LoginFormView recovery entry", () => {
       NETWORK_ERROR
     );
     const page = renderView(RECOVERED_NOTICE);
+
+    await page.fillCredentials(DEFAULT_SIGN_IN_CREDENTIALS);
+    await page.submit();
+    await page.findBanner();
+
+    expect(page.queryNotice()).not.toBeInTheDocument();
+  });
+});
+
+describe("LoginFormView signed-out notice", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+    window.history.replaceState(
+      window.history.state,
+      document.title,
+      SIGNED_OUT_URL
+    );
+  });
+
+  afterEach(() => {
+    window.history.replaceState(
+      window.history.state,
+      document.title,
+      PATHS.ACCESS.LOGIN
+    );
+  });
+
+  it("shows the signed-out notice as a status and cleans the url", () => {
+    const page = renderView(SIGNED_OUT_NOTICE);
+
+    expect(page.queryNotice()).toHaveTextContent(
+      SIGNED_OUT_NOTICE
+    );
+    expect(readCurrentUrl()).toBe(PATHS.ACCESS.LOGIN);
+  });
+
+  it("leaves the username and password empty beside the notice", () => {
+    const page = renderView(SIGNED_OUT_NOTICE);
+
+    expect(page.getUsernameInput()).toHaveValue("");
+    expect(page.getPasswordInput()).toHaveValue("");
+  });
+
+  it("hides the signed-out notice when a form error shows", async () => {
+    vi.mocked(submitSignIn).mockResolvedValue(
+      NETWORK_ERROR
+    );
+    const page = renderView(SIGNED_OUT_NOTICE);
 
     await page.fillCredentials(DEFAULT_SIGN_IN_CREDENTIALS);
     await page.submit();
