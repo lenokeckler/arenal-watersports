@@ -65,13 +65,12 @@ test.describe("Administration recovery screenshots", () => {
     page,
     seededAdmin,
   }, testInfo) => {
+    const loginPage = createLoginPage(page);
     const requestPage =
       createPasswordRecoveryRequestPage(page);
 
     await submitRightPasswordAtLimit(page, seededAdmin.id);
-    await createLoginPage(page)
-      .getRecoveryOfferLink()
-      .click();
+    await loginPage.getRecoveryOfferLink().click();
     await expect(page).toHaveURL(PATHS.ACCESS.RECOVERY);
     await expect(requestPage.getHeading()).toBeVisible();
 
