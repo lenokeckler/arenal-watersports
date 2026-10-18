@@ -4,6 +4,7 @@ import type { PasswordChangeSharedFieldProps } from "../models/PasswordChangeSha
 
 export const createPasswordChangeSharedFieldProps = (
   {
+    copy,
     fieldErrors,
     fieldRefs,
     isPending,
@@ -16,5 +17,6 @@ export const createPasswordChangeSharedFieldProps = (
   inputRef: fieldRefs[field],
   isPending,
   onChange,
+  placeholder: copy.PASSWORD_PLACEHOLDER,
   value: values[field],
 });

@@ -8,7 +8,7 @@ import { PASSWORD_RULE_STATE } from "@/app/components/password-rules-checklist/c
 import { PASSWORD_RULES_COPY } from "@/app/components/password-rules-checklist/constants/PasswordRulesCopy.constants";
 import { FIRST_SIGN_IN_ERROR_COPY } from "@/app/features/access/password-change-form/constants/FirstSignInErrorCopy.constants";
 import { FIRST_SIGN_IN_FORM_COPY } from "@/app/features/access/password-change-form/constants/FirstSignInFormCopy.constants";
-import { PASSWORD_CHANGE_RULES_ID } from "@/app/features/access/password-change-form/constants/PasswordChangeRules.constants";
+import { NEW_PASSWORD_GROUP_RULES_ID } from "@/app/components/new-password-group/constants/NewPasswordGroup.constants";
 
 export const E2E_FIRST_SIGN_IN_COPY = {
   CONFIRM_PASSWORD_LABEL:
@@ -36,7 +36,7 @@ export const E2E_FIRST_SIGN_IN_COPY = {
 } as const;
 
 export const E2E_FIRST_SIGN_IN_RULES_LIST_ID =
-  PASSWORD_CHANGE_RULES_ID;
+  NEW_PASSWORD_GROUP_RULES_ID;
 
 export const E2E_PASSWORD_RULES: readonly PasswordRule[] = [
   PASSWORD_RULE.LENGTH,
@@ -57,13 +57,6 @@ export const E2E_FIRST_SIGN_IN_PASSWORDS = {
   TEMPORARY: "Temporal.2026!",
   WEAK: "abc",
   WRONG_TEMPORARY: "Equivocada.2026!",
-} as const;
-
-export const E2E_PENDING_WORKER = {
-  BASE_ROLE: "operaciones",
-  FULL_NAME: "Cuenta de prueba E2E",
-  USERNAME_PREFIX: "e2e_",
-  USERNAME_SUFFIX_LENGTH: 12,
 } as const;
 
 export const E2E_FIRST_SIGN_IN_SCREENSHOT_BASENAME = {

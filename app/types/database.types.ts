@@ -1107,7 +1107,9 @@ export type Database = {
       };
       password_reset_pins: {
         Row: {
+          attempts: number;
           created_at: string;
+          delivery_failed_at: string | null;
           expires_at: string;
           id: string;
           pin_hash: string;
@@ -1115,7 +1117,9 @@ export type Database = {
           worker_id: string;
         };
         Insert: {
+          attempts?: number;
           created_at?: string;
+          delivery_failed_at?: string | null;
           expires_at: string;
           id?: string;
           pin_hash: string;
@@ -1123,7 +1127,9 @@ export type Database = {
           worker_id: string;
         };
         Update: {
+          attempts?: number;
           created_at?: string;
+          delivery_failed_at?: string | null;
           expires_at?: string;
           id?: string;
           pin_hash?: string;
@@ -1146,6 +1152,24 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      password_reset_requests: {
+        Row: {
+          created_at: string;
+          id: string;
+          network_key: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          network_key: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          network_key?: string;
+        };
+        Relationships: [];
       };
       refunds: {
         Row: {
@@ -2438,9 +2462,17 @@ export type Database = {
         Args: { p_user_id: string };
         Returns: undefined;
       };
+      consume_password_reset_pin: {
+        Args: { p_pin: string; p_username: string };
+        Returns: string;
+      };
       custom_access_token_hook: {
         Args: { event: Json };
         Returns: Json;
+      };
+      finish_password_recovery: {
+        Args: { p_user_id: string };
+        Returns: undefined;
       };
       has_area: {
         Args: {
@@ -2458,11 +2490,67 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
       };
+      issue_password_reset_pin: {
+        Args: {
+          p_network_key: string;
+          p_pin: string;
+          p_username: string;
+        };
+        Returns: {
+          lifetime_minutes: number;
+          personal_email: string;
+          pin_id: string;
+        }[];
+      };
+      mark_password_reset_pin_undelivered: {
+        Args: { p_pin_id: string };
+        Returns: undefined;
+      };
       next_reservation_code: {
         Args: Record<PropertyKey, never>;
         Returns: string;
       };
+      password_reset_limit_window_minutes: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      password_reset_network_hourly_limit: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      password_reset_pin_attempt_limit: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      password_reset_pin_hash_cost: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      password_reset_pin_length: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      password_reset_pin_lifetime_minutes: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      password_reset_request_cooldown_seconds: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      password_reset_request_hourly_limit: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      password_reset_retention_hours: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
       purge_expired_history: {
+        Args: Record<PropertyKey, never>;
+        Returns: undefined;
+      };
+      purge_password_reset_records: {
         Args: Record<PropertyKey, never>;
         Returns: undefined;
       };

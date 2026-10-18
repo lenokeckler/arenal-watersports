@@ -1,4 +1,3 @@
-import { renderHook } from "@testing-library/react";
 import {
   beforeEach,
   describe,
@@ -7,10 +6,10 @@ import {
   vi,
 } from "vitest";
 import "./firstSignInAction.setup";
+import { renderPasswordChangeViewModel } from "./renderPasswordChangeViewModel";
 import { PASSWORD_CHANGE_FIELD } from "@/app/constants/access/PasswordChangeError.constants";
 import { submitFirstPasswordChange } from "../actions/submitFirstPasswordChange";
 import { FIRST_SIGN_IN_ERROR_COPY } from "../constants/FirstSignInErrorCopy.constants";
-import { usePasswordChangeFormViewModel } from "../hooks/usePasswordChangeFormViewModel";
 import { attachPasswordChangeInputs } from "./attachPasswordChangeInputs";
 import {
   CURRENT_PASSWORD_INVALID_ERROR,
@@ -31,9 +30,7 @@ describe("usePasswordChangeFormViewModel server errors", () => {
     vi.mocked(submitFirstPasswordChange).mockResolvedValue(
       CURRENT_PASSWORD_INVALID_ERROR
     );
-    const { result } = renderHook(
-      usePasswordChangeFormViewModel
-    );
+    const { result } = renderPasswordChangeViewModel();
     const inputs = attachPasswordChangeInputs(
       result.current.fieldRefs
     );
@@ -56,9 +53,7 @@ describe("usePasswordChangeFormViewModel server errors", () => {
     vi.mocked(submitFirstPasswordChange).mockResolvedValue(
       NETWORK_ERROR
     );
-    const { result } = renderHook(
-      usePasswordChangeFormViewModel
-    );
+    const { result } = renderPasswordChangeViewModel();
 
     await postDefaultForm(result.current.formAction);
 
@@ -71,9 +66,7 @@ describe("usePasswordChangeFormViewModel server errors", () => {
     vi.mocked(submitFirstPasswordChange).mockResolvedValue(
       CURRENT_PASSWORD_INVALID_ERROR
     );
-    const { result } = renderHook(
-      usePasswordChangeFormViewModel
-    );
+    const { result } = renderPasswordChangeViewModel();
     await postDefaultForm(result.current.formAction);
 
     typeInto(

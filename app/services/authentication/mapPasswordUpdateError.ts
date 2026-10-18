@@ -1,6 +1,7 @@
 import {
   isAuthApiError,
   isAuthRetryableFetchError,
+  isAuthWeakPasswordError,
   type AuthError,
 } from "@supabase/supabase-js";
 import {
@@ -16,6 +17,12 @@ export const mapPasswordUpdateError = (
   if (isAuthRetryableFetchError(error)) {
     return createPasswordChangeError(
       PASSWORD_CHANGE_ERROR_CODE.NETWORK
+    );
+  }
+
+  if (isAuthWeakPasswordError(error)) {
+    return createPasswordChangeError(
+      PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_RULES
     );
   }
 

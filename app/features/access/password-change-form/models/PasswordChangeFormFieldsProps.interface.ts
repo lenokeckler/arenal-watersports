@@ -1,12 +1,6 @@
-import type { PasswordChangeFormViewModel } from "./PasswordChangeFormViewModel.interface";
+import type { PasswordChangeFormCopy } from "./PasswordChangeFormCopy.interface";
+import type { PasswordChangeFormFieldsState } from "./PasswordChangeFormFieldsState.type";
 
-export type PasswordChangeFormFieldsProps = Pick<
-  PasswordChangeFormViewModel,
-  | "fieldErrors"
-  | "fieldRefs"
-  | "isPending"
-  | "onChange"
-  | "passwordRules"
-  | "showFailures"
-  | "values"
->;
+export interface PasswordChangeFormFieldsProps extends PasswordChangeFormFieldsState {
+  copy: PasswordChangeFormCopy;
+}

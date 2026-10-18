@@ -108,7 +108,7 @@ port = 54324
 # Exposes Inbucket's SMTP submission port so the app itself can send real
 # mail in development (US-ACC-006/007 recovery PIN) without external SMTP
 # credentials — the message still only ever lands in Inbucket, never a
-# real inbox. See `app/constants/email/Email.constants.ts`.
+# real inbox. See `app/constants/mail/MailEnvironment.constants.ts`.
 smtp_port = 54325
 # pop3_port = 54326
 # admin_email = "admin@email.com"

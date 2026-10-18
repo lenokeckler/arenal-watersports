@@ -19,11 +19,29 @@ export type INPUT_TYPES =
 
 export const AUTOCOMPLETE = {
   CURRENT_PASSWORD: "current-password",
+  EMAIL: "email",
   NEW_PASSWORD: "new-password",
+  ONE_TIME_CODE: "one-time-code",
+  USERNAME: "username",
 } as const;
 
 export type Autocomplete =
   (typeof AUTOCOMPLETE)[keyof typeof AUTOCOMPLETE];
+
+export const INPUT_MODE = {
+  EMAIL: "email",
+  NUMERIC: "numeric",
+} as const;
+
+export type InputMode =
+  (typeof INPUT_MODE)[keyof typeof INPUT_MODE];
+
+export const AUTOCAPITALIZE = {
+  NONE: "none",
+} as const;
+
+export type Autocapitalize =
+  (typeof AUTOCAPITALIZE)[keyof typeof AUTOCAPITALIZE];
 
 export const BUTTON_TYPES = {
   SUBMIT: "submit",

@@ -16,6 +16,7 @@ export const E2E_TIMEOUT_MS = {
   ACTION: 20_000,
   EXPECT: 20_000,
   NAVIGATION: 60_000,
+  POST_SUBMIT: 90_000,
   TEST: 120_000,
 } as const;
 
@@ -67,4 +68,20 @@ export const E2E_ARTIFACT_MODE = {
 
 export const HEADING_LEVEL = {
   PAGE: 1,
+  SCREEN: 2,
+} as const;
+
+export const E2E_LOAD_STATE = {
+  NETWORK_IDLE: "networkidle",
+} as const;
+
+export const E2E_CONTROLS_SELECTOR = (id: string): string =>
+  `[aria-controls="${id}"]`;
+
+export const E2E_COUNT = {
+  NONE: 0,
+} as const;
+
+export const E2E_PAGE_EVENT = {
+  REQUEST: "request",
 } as const;

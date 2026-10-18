@@ -15,9 +15,9 @@ import {
 import { submitFirstPasswordChange } from "../actions/submitFirstPasswordChange";
 import { FIRST_SIGN_IN_ERROR_COPY } from "../constants/FirstSignInErrorCopy.constants";
 import {
-  PASSWORD_CHANGE_NEW_PASSWORD_DESCRIBED_BY,
-  PASSWORD_CHANGE_RULES_ID,
-} from "../constants/PasswordChangeRules.constants";
+  NEW_PASSWORD_GROUP_DESCRIBED_BY,
+  NEW_PASSWORD_GROUP_RULES_ID,
+} from "@/app/components/new-password-group/constants/NewPasswordGroup.constants";
 import {
   ARIA_DESCRIBEDBY_ATTRIBUTE,
   ARIA_INVALID_ATTRIBUTE,
@@ -39,11 +39,11 @@ describe("PasswordChangeFormView", () => {
     expect(page.getItems()).toHaveLength(RULE_COUNT);
     expect(page.getList()).toHaveAttribute(
       "id",
-      PASSWORD_CHANGE_RULES_ID
+      NEW_PASSWORD_GROUP_RULES_ID
     );
     expect(page.getNewInput()).toHaveAttribute(
       ARIA_DESCRIBEDBY_ATTRIBUTE,
-      PASSWORD_CHANGE_NEW_PASSWORD_DESCRIBED_BY
+      NEW_PASSWORD_GROUP_DESCRIBED_BY
     );
   });
 

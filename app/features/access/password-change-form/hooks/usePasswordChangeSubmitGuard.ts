@@ -1,11 +1,10 @@
 import { useState } from "react";
+import { nextCount } from "@/app/utils/form-submit/nextCount";
 import type { NullableRef } from "@/app/types";
 import type { PasswordChangeInput } from "@/app/utils/password-change/models/PasswordChangeInput.interface";
 import { validatePasswordChange } from "@/app/utils/password-change/validatePasswordChange";
 import type { PasswordChangeSubmitGuard } from "../models/PasswordChangeSubmitGuard.interface";
 import type { PasswordChangeSubmitHandler } from "../models/PasswordChangeSubmitHandler.type";
-
-const nextCount = (count: number): number => count + 1;
 
 export const usePasswordChangeSubmitGuard = (
   values: PasswordChangeInput,

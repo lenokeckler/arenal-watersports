@@ -72,7 +72,7 @@ describe("readSignedInWorker", () => {
 
     expect(select).toHaveBeenCalledOnce();
     expect(selectedColumns).toBe(
-      SUPABASE_WORKER_COLUMN.FIRST_SIGN_IN
+      SUPABASE_WORKER_COLUMN.SIGNED_IN_WORKER
     );
   });
 

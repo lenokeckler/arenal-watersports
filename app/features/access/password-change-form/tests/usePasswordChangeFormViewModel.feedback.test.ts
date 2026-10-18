@@ -1,4 +1,3 @@
-import { renderHook } from "@testing-library/react";
 import {
   beforeEach,
   describe,
@@ -7,13 +6,13 @@ import {
   vi,
 } from "vitest";
 import "./firstSignInAction.setup";
+import { renderPasswordChangeViewModel } from "./renderPasswordChangeViewModel";
 import { PASSWORD_CHANGE_FIELD } from "@/app/constants/access/PasswordChangeError.constants";
 import { PASSWORD_RULE } from "@/app/constants";
 import {
   DEFAULT_PASSWORD_CHANGE_INPUT,
   WEAK_PASSWORD,
 } from "@/app/utils/password-change/tests/passwordChange.constants";
-import { usePasswordChangeFormViewModel } from "../hooks/usePasswordChangeFormViewModel";
 import { attachPasswordChangeInputs } from "./attachPasswordChangeInputs";
 import {
   fillForm,
@@ -28,9 +27,7 @@ describe("usePasswordChangeFormViewModel feedback", () => {
   });
 
   it("evaluates the password rules of the new password as it is typed", () => {
-    const { result } = renderHook(
-      usePasswordChangeFormViewModel
-    );
+    const { result } = renderPasswordChangeViewModel();
 
     typeInto(
       result,
@@ -47,9 +44,7 @@ describe("usePasswordChangeFormViewModel feedback", () => {
   });
 
   it("shows the failures after a failed submit and hides them when the new password changes", () => {
-    const { result } = renderHook(
-      usePasswordChangeFormViewModel
-    );
+    const { result } = renderPasswordChangeViewModel();
     expect(result.current.showFailures).toBe(false);
 
     submitForm(result);
@@ -64,9 +59,7 @@ describe("usePasswordChangeFormViewModel feedback", () => {
   });
 
   it("keeps the failures while another field is edited", () => {
-    const { result } = renderHook(
-      usePasswordChangeFormViewModel
-    );
+    const { result } = renderPasswordChangeViewModel();
     submitForm(result);
 
     typeInto(
@@ -79,9 +72,7 @@ describe("usePasswordChangeFormViewModel feedback", () => {
   });
 
   it("focuses the first field with an error after a failed submit", () => {
-    const { result } = renderHook(
-      usePasswordChangeFormViewModel
-    );
+    const { result } = renderPasswordChangeViewModel();
     const inputs = attachPasswordChangeInputs(
       result.current.fieldRefs
     );

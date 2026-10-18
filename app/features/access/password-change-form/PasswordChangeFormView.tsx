@@ -5,18 +5,24 @@ import FormSubmitButton from "@/app/components/form-submit-button/FormSubmitButt
 import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
 import { PASSWORD_CHANGE_FIELD } from "@/app/constants/access/PasswordChangeError.constants";
 import PasswordChangeFormFields from "./components/PasswordChangeFormFields";
-import FirstSignInFormHeading from "./components/FirstSignInFormHeading";
-import { FIRST_SIGN_IN_FORM_COPY } from "./constants/FirstSignInFormCopy.constants";
 import { usePasswordChangeFormViewModel } from "./hooks/usePasswordChangeFormViewModel";
-import { PASSWORD_CHANGE_FORM_CLASS } from "./styles/PasswordChangeForm.styles";
+import type { PasswordChangeFormViewProps } from "./models/PasswordChangeFormViewProps.interface";
+import { FORM_STACK_CLASS } from "@/app/components/form-layout/styles/FormLayout.styles";
 
-const PasswordChangeFormView = (): React.JSX.Element => {
+const PasswordChangeFormView = ({
+  action,
+  beforeFields,
+  copy,
+  errorCopy,
+  footer,
+  heading,
+}: PasswordChangeFormViewProps): React.JSX.Element => {
   const { formAction, onSubmit, ...fields } =
-    usePasswordChangeFormViewModel();
+    usePasswordChangeFormViewModel({ action, errorCopy });
 
   return (
     <>
-      <FirstSignInFormHeading />
+      {heading}
       <FormErrorBanner
         message={
           fields.fieldErrors[PASSWORD_CHANGE_FIELD.FORM]
@@ -26,15 +32,20 @@ const PasswordChangeFormView = (): React.JSX.Element => {
         noValidate
         action={formAction}
         onSubmit={onSubmit}
-        className={PASSWORD_CHANGE_FORM_CLASS}
+        className={FORM_STACK_CLASS}
       >
-        <PasswordChangeFormFields {...fields} />
+        {beforeFields}
+        <PasswordChangeFormFields
+          {...fields}
+          copy={copy}
+        />
         <FormSubmitButton
           icon={MATERIAL_ICON_NAME.LOCK_RESET}
           isPending={fields.isPending}
-          label={FIRST_SIGN_IN_FORM_COPY.SUBMIT}
-          pendingLabel={FIRST_SIGN_IN_FORM_COPY.SUBMITTING}
+          label={copy.SUBMIT}
+          pendingLabel={copy.SUBMITTING}
         />
+        {footer}
       </form>
     </>
   );

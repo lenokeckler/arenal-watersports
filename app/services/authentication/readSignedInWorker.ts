@@ -1,38 +1,26 @@
-import { isAuthSessionMissingError } from "@supabase/supabase-js";
 import {
-  SUPABASE_AUTH_OPERATION,
   SUPABASE_TABLE,
   SUPABASE_WORKER_COLUMN,
 } from "@/app/constants";
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
 import type { NullableRef } from "@/app/types";
-import { throwIfSupabaseAuthError } from "@/app/utils/supabase-error/SupabaseAuthError";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import type { SignedInWorker } from "./models/SignedInWorker.interface";
+import { readSignedInUserId } from "./readSignedInUserId";
 
 export const readSignedInWorker = async (
   supabase: ServerSupabaseClient
 ): Promise<NullableRef<SignedInWorker>> => {
-  const { data: userData, error: userError } =
-    await supabase.auth.getUser();
+  const userId = await readSignedInUserId(supabase);
 
-  if (isAuthSessionMissingError(userError)) {
-    return null;
-  }
-
-  throwIfSupabaseAuthError(
-    userError,
-    SUPABASE_AUTH_OPERATION.GET_USER
-  );
-
-  if (!userData.user) {
+  if (!userId) {
     return null;
   }
 
   const { data, error } = await supabase
     .from(SUPABASE_TABLE.WORKERS)
-    .select(SUPABASE_WORKER_COLUMN.FIRST_SIGN_IN)
-    .eq(SUPABASE_WORKER_COLUMN.ID, userData.user.id)
+    .select(SUPABASE_WORKER_COLUMN.SIGNED_IN_WORKER)
+    .eq(SUPABASE_WORKER_COLUMN.ID, userId)
     .maybeSingle();
 
   throwIfSupabaseError(error, SUPABASE_TABLE.WORKERS);
@@ -42,7 +30,8 @@ export const readSignedInWorker = async (
   }
 
   return {
-    id: userData.user.id,
+    baseRole: data.base_role,
+    id: userId,
     mustChangePassword: data.must_change_password,
     username: data.username,
   };

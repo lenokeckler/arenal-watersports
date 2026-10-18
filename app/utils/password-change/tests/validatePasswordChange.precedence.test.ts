@@ -51,12 +51,12 @@ const precedenceCases: [
     PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_TOO_LONG,
   ],
   [
-    "the maximum length before equality with the temporary password",
+    "the temporary password length before the new password length",
     {
       currentPassword: PASSWORD_ONE_ABOVE_MAX,
       newPassword: PASSWORD_ONE_ABOVE_MAX,
     },
-    PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_TOO_LONG,
+    PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_TOO_LONG,
   ],
   [
     "the rules before an empty confirmation",

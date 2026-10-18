@@ -3,9 +3,13 @@ import { STRING } from "@/app/constants";
 import { PASSWORD_CHANGE_FIELD } from "@/app/constants/access/PasswordChangeError.constants";
 import { DEFAULT_PASSWORD_CHANGE_INPUT } from "@/app/utils/password-change/tests/passwordChange.constants";
 import { EMPTY_PASSWORD_CHANGE_INPUT } from "../constants/PasswordChangeDefaults.constants";
+import { PROFILE_PASSWORD_USERNAME_FIELD } from "../constants/ProfilePasswordUsernameField.constants";
 import { readPasswordChangeInput } from "../utils/readPasswordChangeInput";
 import { createPasswordChangeFormData } from "./createPasswordChangeFormData";
-import { UPLOADED_FILE } from "./readPasswordChangeInput.constants";
+import {
+  HIDDEN_USERNAME_VALUE,
+  UPLOADED_FILE,
+} from "./readPasswordChangeInput.constants";
 
 describe("readPasswordChangeInput", () => {
   it("reads the three posted fields", () => {
@@ -36,5 +40,19 @@ describe("readPasswordChangeInput", () => {
     expect(
       readPasswordChangeInput(formData).newPassword
     ).toBe(STRING.Empty);
+  });
+
+  it("ignores the hidden username the password manager reads", () => {
+    const formData = createPasswordChangeFormData(
+      DEFAULT_PASSWORD_CHANGE_INPUT
+    );
+    formData.set(
+      PROFILE_PASSWORD_USERNAME_FIELD.NAME,
+      HIDDEN_USERNAME_VALUE
+    );
+
+    expect(readPasswordChangeInput(formData)).toEqual(
+      DEFAULT_PASSWORD_CHANGE_INPUT
+    );
   });
 });

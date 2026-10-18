@@ -9,6 +9,7 @@ import {
   PATHS,
   type SignInField,
 } from "@/app/constants";
+import { E2E_RECOVERED_LOGIN_PATH } from "../constants/E2ePasswordRecoveryPin.constants";
 import {
   E2E_LOGIN_COPY,
   E2E_LOGIN_FIELD_ID,
@@ -25,9 +26,18 @@ const createLoginLocators = (page: Page) => {
     main.locator(`#${getFieldErrorId(field)}`);
 
   return {
+    getForgotPasswordLink: (): Locator =>
+      main.getByRole(ARIA_ROLE.LINK, {
+        name: E2E_LOGIN_COPY.FORGOT_PASSWORD,
+        exact: true,
+      }),
     getHeading: (): Locator =>
       main.getByRole(ARIA_ROLE.HEADING, {
         level: HEADING_LEVEL.PAGE,
+      }),
+    getPasswordRecoveredNotice: (): Locator =>
+      main.getByRole(ARIA_ROLE.STATUS).filter({
+        hasText: E2E_LOGIN_COPY.PASSWORD_RECOVERED_NOTICE,
       }),
     getPasswordError: (): Locator =>
       getFieldError(E2E_LOGIN_FIELD_ID.PASSWORD),
@@ -67,6 +77,9 @@ export const createLoginPage = (page: Page) => {
     fillUsername: (username: string): Promise<void> =>
       locators.getUsernameInput().fill(username),
     getFieldErrorId,
+    goToPasswordRecovered: async (): Promise<void> => {
+      await page.goto(E2E_RECOVERED_LOGIN_PATH);
+    },
     goTo: async (): Promise<void> => {
       await page.goto(PATHS.ACCESS.LOGIN);
     },

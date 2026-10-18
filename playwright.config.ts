@@ -15,6 +15,7 @@ import {
   E2E_TIMEOUT_MS,
   E2E_WORKER_COUNT,
 } from "./e2e/constants/E2eRuntime.constants";
+import { E2E_RECOVERY_SERVER_ENV } from "./e2e/constants/E2ePasswordRecovery.constants";
 
 const isContinuousIntegration = Boolean(process.env.CI);
 const mobileChromium = {
@@ -79,6 +80,7 @@ export default defineConfig({
   ],
   webServer: {
     command: E2E_SERVER.COMMAND,
+    env: { ...E2E_RECOVERY_SERVER_ENV },
     reuseExistingServer: !isContinuousIntegration,
     timeout: E2E_SERVER.STARTUP_TIMEOUT_MS,
     url: E2E_BASE_URL,

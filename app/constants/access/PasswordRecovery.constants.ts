@@ -1,0 +1,4 @@
+export const PASSWORD_RECOVERY_USERNAME_QUERY_PARAM =
+  "username";
+
+export const PASSWORD_RECOVERY_FINISH_ATTEMPTS = 3;

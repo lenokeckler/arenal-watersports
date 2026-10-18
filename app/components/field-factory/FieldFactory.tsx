@@ -54,6 +54,9 @@ const FieldFactory = forwardRef<
       hasErrorText = false,
       describedBy,
       autoComplete,
+      inputMode,
+      autoCapitalize,
+      spellCheck,
     },
     ref
   ) => {
@@ -262,6 +265,9 @@ const FieldFactory = forwardRef<
               )}
               placeholder={placeholder}
               autoComplete={autoComplete}
+              inputMode={inputMode}
+              autoCapitalize={autoCapitalize}
+              spellCheck={spellCheck}
               {...ariaAttributes}
               ref={reference ?? ref}
             />
@@ -304,6 +310,9 @@ const FieldFactory = forwardRef<
             className={baseClassName}
             placeholder={placeholder}
             autoComplete={autoComplete}
+            inputMode={inputMode}
+            autoCapitalize={autoCapitalize}
+            spellCheck={spellCheck}
             {...ariaAttributes}
             ref={reference ?? ref}
           />

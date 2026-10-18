@@ -4,3 +4,10 @@ export type { SignInError } from "@/app/utils/sign-in/models/SignInError.interfa
 export type { SignInResult } from "./models/SignInResult.type";
 export { changeFirstPassword } from "./changeFirstPassword";
 export type { PasswordChangeResult } from "./models/PasswordChangeResult.type";
+export { changeOwnPassword } from "./changeOwnPassword";
+export { setWorkerPassword } from "./setWorkerPassword";
+export { readSignedInUsername } from "./readSignedInUsername";
+export { changeOwnPersonalEmail } from "./changeOwnPersonalEmail";
+export { readOwnPersonalEmail } from "./readOwnPersonalEmail";
+export type { OwnPersonalEmail } from "./models/OwnPersonalEmail.interface";
+export type { PersonalEmailChangeResult } from "./models/PersonalEmailChangeResult.type";

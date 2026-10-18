@@ -13,12 +13,10 @@ import { submitFirstPasswordChange } from "../actions/submitFirstPasswordChange"
 import { createPasswordChangeFormData } from "./createPasswordChangeFormData";
 import {
   CURRENT_PASSWORD_INVALID_ERROR,
+  SERVICE_FAILURE_MESSAGE,
   UNKNOWN_ERROR,
 } from "./passwordChangeErrors.constants";
-import {
-  REDIRECT_SIGNAL_MESSAGE,
-  SERVICE_FAILURE_MESSAGE,
-} from "./submitFirstPasswordChange.constants";
+import { REDIRECT_SIGNAL_MESSAGE } from "./submitFirstPasswordChange.constants";
 
 vi.mock("@/app/services/authentication", () => ({
   changeFirstPassword: vi.fn(),

@@ -9,6 +9,8 @@ import {
   SERVICE_ROLE_KEY_ALLOWED_FILES,
   SERVICE_ROLE_KEY_PATTERN,
   SERVICE_ROLE_REFERENCE_PATTERN,
+  SET_WORKER_PASSWORD_ALLOWED_PATH_PATTERN,
+  SET_WORKER_PASSWORD_PATTERN,
   SERVICES_BARREL_IMPORT_PATTERN,
   SERVICES_PATH_PATTERN,
   TEXT_ENCODING,
@@ -54,6 +56,18 @@ describe("service role boundary", () => {
           SERVICES_BARREL_IMPORT_PATTERN.test(source)
         );
       }
+    );
+
+    expect(offenders).toEqual([]);
+  });
+
+  it("references setWorkerPassword only from authentication and password recovery services", () => {
+    const offenders = listProductionSources().filter(
+      (file) =>
+        !SET_WORKER_PASSWORD_ALLOWED_PATH_PATTERN.test(
+          file
+        ) &&
+        SET_WORKER_PASSWORD_PATTERN.test(readSource(file))
     );
 
     expect(offenders).toEqual([]);

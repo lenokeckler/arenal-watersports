@@ -11,15 +11,52 @@ export const E2E_LOCAL_SUPABASE_HOSTS: readonly string[] = [
 
 export const E2E_SUPABASE_TABLE = {
   PASSWORD_RESET_PINS: "password_reset_pins",
+  PASSWORD_RESET_REQUESTS: "password_reset_requests",
   WORKER_AREAS: "worker_areas",
   WORKER_MARKS: "worker_marks",
   WORKERS: "workers",
 } as const;
 
+export const E2E_SUPABASE_COUNT = {
+  EXACT: "exact",
+} as const;
+
+export const E2E_SUPABASE_FILTER = {
+  IS: "is",
+} as const;
+
 export const E2E_SUPABASE_COLUMN = {
+  CREATED_AT: "created_at",
+  EXPIRES_AT: "expires_at",
+  DELETED_AT: "deleted_at",
+  FAILED_ATTEMPTS: "failed_attempts",
   ID: "id",
+  MUST_CHANGE_PASSWORD: "must_change_password",
+  PERSONAL_EMAIL: "personal_email",
+  STATUS: "status",
+  USED_AT: "used_at",
+  USERNAME: "username",
   WORKER_ID: "worker_id",
 } as const;
+
+export const E2E_WORKER_DEPENDENT_TABLES = [
+  {
+    column: E2E_SUPABASE_COLUMN.WORKER_ID,
+    table: E2E_SUPABASE_TABLE.WORKER_AREAS,
+  },
+  {
+    column: E2E_SUPABASE_COLUMN.WORKER_ID,
+    table: E2E_SUPABASE_TABLE.WORKER_MARKS,
+  },
+  {
+    column: E2E_SUPABASE_COLUMN.WORKER_ID,
+    table: E2E_SUPABASE_TABLE.PASSWORD_RESET_PINS,
+  },
+  {
+    column: E2E_SUPABASE_COLUMN.ID,
+    table: E2E_SUPABASE_TABLE.WORKERS,
+  },
+] as const;
 
 export const E2E_SUPABASE_CLIENT_OPTIONS = {
   auth: { autoRefreshToken: false, persistSession: false },
@@ -34,5 +71,32 @@ export const E2E_SUPABASE_ERROR = {
     operation: string,
     reason: string
   ): string => `E2E could not ${operation}: ${reason}`,
+  ROLLBACK_OPERATION:
+    "delete the auth user after the worker insert failed",
   REASON_SEPARATOR: "; ",
+} as const;
+
+export const E2E_AUTH_SESSIONS = {
+  DATABASE: "postgres",
+  DATABASE_CONTAINER: "supabase_db_arenal-watersports",
+  DATABASE_USER: "postgres",
+  QUERY:
+    "select count(*) from auth.sessions where user_id = :'uid'",
+  STOP_ON_ERROR_VARIABLE: "ON_ERROR_STOP=1",
+  USER_ID_VARIABLE: "uid",
+} as const;
+
+export const E2E_AUTH_SESSIONS_ERROR = {
+  COUNT_OPERATION: "count the auth sessions",
+  EXEC_FAILED: (
+    container: string,
+    reason: string
+  ): string =>
+    `docker exec on ${container} failed: ${reason}`,
+  NOT_AN_INTEGER: (output: string): string =>
+    `the session count was not an integer: ${output}`,
+} as const;
+
+export const E2E_AUTH_ERROR_CODE = {
+  SESSION_GONE: "refresh_token_not_found",
 } as const;
