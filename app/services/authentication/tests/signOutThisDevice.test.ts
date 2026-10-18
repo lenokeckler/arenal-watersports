@@ -6,7 +6,10 @@ import {
   it,
   vi,
 } from "vitest";
-import { SUPABASE_SIGN_OUT_SCOPE } from "@/app/constants";
+import {
+  SIGN_OUT_TIME_LIMIT_MS,
+  SUPABASE_SIGN_OUT_SCOPE,
+} from "@/app/constants";
 import type { BrowserSupabaseClient } from "@/app/services/supabase/models/BrowserSupabaseClient.type";
 import { listAuthCookieNames } from "@/app/utils/supabase-cookie/listAuthCookieNames";
 import { deriveLegacyAuthCookieName } from "@/app/utils/supabase-cookie/deriveLegacyAuthCookieName";
@@ -241,6 +244,112 @@ describe("signOutThisDevice", () => {
       signOutThisDevice(supabase)
     ).resolves.toEqual({
       ok: false,
+    });
+  });
+
+  describe("when the library hangs", () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it("falls back to removing the cookies when signOut never settles", async () => {
+      writeAuthCookie();
+      signOut.mockReturnValue(new Promise(() => undefined));
+      const result = signOutThisDevice(supabase);
+
+      await vi.advanceTimersByTimeAsync(
+        SIGN_OUT_TIME_LIMIT_MS
+      );
+
+      await expect(result).resolves.toEqual({ ok: true });
+    });
+
+    it("goes straight to the fallback when signOut timed out", async () => {
+      signOut.mockReturnValue(new Promise(() => undefined));
+      const result = signOutThisDevice(supabase);
+
+      await vi.advanceTimersByTimeAsync(
+        SIGN_OUT_TIME_LIMIT_MS
+      );
+
+      await expect(result).resolves.toEqual({ ok: true });
+      expect(getSession).toHaveBeenCalledTimes(1);
+    });
+
+    it("removes the auth cookies when getSession never settles", async () => {
+      writeAuthCookie();
+      getSession
+        .mockReturnValueOnce(new Promise(() => undefined))
+        .mockResolvedValueOnce({
+          data: { session: null },
+          error: null,
+        });
+      const result = signOutThisDevice(supabase);
+
+      await vi.advanceTimersByTimeAsync(
+        SIGN_OUT_TIME_LIMIT_MS
+      );
+
+      await expect(result).resolves.toEqual({ ok: true });
+      expect(
+        listAuthCookieNames(
+          document.cookie,
+          SIGN_OUT_FIXTURE.AUTH_COOKIE_NAME
+        )
+      ).toEqual([]);
+    });
+
+    it("reports failure when the final check also never settles", async () => {
+      getSession.mockReturnValue(
+        new Promise(() => undefined)
+      );
+      const result = signOutThisDevice(supabase);
+
+      await vi.advanceTimersByTimeAsync(
+        SIGN_OUT_TIME_LIMIT_MS * 3
+      );
+
+      await expect(result).resolves.toEqual({ ok: false });
+    });
+
+    it("never waits longer than two limits in total", async () => {
+      signOut.mockReturnValue(new Promise(() => undefined));
+      getSession.mockReturnValue(
+        new Promise(() => undefined)
+      );
+      const onSettled = vi.fn();
+      void signOutThisDevice(supabase).then(onSettled);
+
+      await vi.advanceTimersByTimeAsync(
+        SIGN_OUT_TIME_LIMIT_MS * 2
+      );
+
+      expect(onSettled).toHaveBeenCalledWith({ ok: false });
+    });
+
+    it("leaves no unhandled rejection when the hung signOut fails late", async () => {
+      let failLate: (reason: Error) => void = () =>
+        undefined;
+      signOut.mockReturnValue(
+        new Promise((_, reject) => {
+          failLate = reject;
+        })
+      );
+      const result = signOutThisDevice(supabase);
+
+      await vi.advanceTimersByTimeAsync(
+        SIGN_OUT_TIME_LIMIT_MS
+      );
+      failLate(
+        new Error(SIGN_OUT_FIXTURE.NETWORK_FAILURE_MESSAGE)
+      );
+      await vi.advanceTimersByTimeAsync(0);
+
+      await expect(result).resolves.toEqual({ ok: true });
     });
   });
 });
