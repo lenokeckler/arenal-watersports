@@ -28,14 +28,7 @@ export const useLogoutConfirmReset = (
     );
   };
 
-  useEffect(
-    () => () => {
-      if (timerRef.current !== null) {
-        clearTimeout(timerRef.current);
-      }
-    },
-    []
-  );
+  useEffect(() => disarm, []);
 
   return { arm, disarm };
 };
