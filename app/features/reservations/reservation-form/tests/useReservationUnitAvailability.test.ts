@@ -43,7 +43,7 @@ describe("useReservationUnitAvailability", () => {
       };
     const { rerender, result } = renderHook(
       ({ request }) =>
-        useReservationUnitAvailability(request),
+        useReservationUnitAvailability(request, 0),
       { initialProps: { request: initialRequest } }
     );
     await waitFor(() =>
