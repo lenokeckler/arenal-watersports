@@ -2,10 +2,10 @@ import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnit
 import type { ReservationCategoryUnitOption } from "../models/ReservationCategoryUnitOption.interface";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/app/types";
-import { RESERVATION_AVAILABILITY } from "../constants/ReservationAvailability.constants";
 import { RESERVATION_CATEGORY_STATUS } from "../constants/ReservationCategoryStatus.constants";
 import { RESERVATION_EQUIPMENT_UNIT_STATUS } from "../constants/ReservationEquipmentUnitStatus.constants";
 import { getAuthorizedReservationFormClient } from "./getAuthorizedReservationFormClient";
+import { getReservationInterval } from "../utils/getReservationInterval";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 const AVAILABILITY_CATEGORY_OPERATION =
@@ -14,24 +14,6 @@ const AVAILABILITY_UNIT_OPERATION =
   "load available reservation units";
 const AVAILABILITY_CONFLICT_OPERATION =
   "check reservation unit conflicts";
-
-const getReservationWindow = (
-  input: ReservationUnitAvailabilityInput
-) => {
-  const start = new Date(
-    `${input.date}T${input.time}:00${RESERVATION_AVAILABILITY.COSTA_RICA_OFFSET}`
-  );
-  const end = new Date(
-    start.getTime() +
-      input.durationMinutes *
-        RESERVATION_AVAILABILITY.MILLISECONDS_PER_MINUTE
-  );
-
-  return {
-    endsAt: end.toISOString(),
-    startsAt: start.toISOString(),
-  };
-};
 
 const getCategoryUnits = async (
   supabase: SupabaseClient<Database>,
@@ -77,7 +59,7 @@ export const getAvailableReservationUnits = async (
     supabase,
     input.categoryId
   );
-  const window = getReservationWindow(input);
+  const window = getReservationInterval(input);
   const checkedUnits = await Promise.all(
     units.map(async (unit) => {
       const { data, error } = await supabase.rpc(
