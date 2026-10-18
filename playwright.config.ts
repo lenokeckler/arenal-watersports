@@ -82,13 +82,34 @@ export default defineConfig({
     },
     {
       name: E2E_PROJECT.SCREENSHOTS_MOBILE,
+      testIgnore: E2E_TEST_MATCH.ADMIN_SCREENSHOTS,
       testMatch: E2E_TEST_MATCH.SCREENSHOTS,
       use: mobileChromium,
     },
     {
       name: E2E_PROJECT.SCREENSHOTS,
+      testIgnore: E2E_TEST_MATCH.ADMIN_SCREENSHOTS,
       testMatch: E2E_TEST_MATCH.SCREENSHOTS,
       use: desktopChromium,
+    },
+    {
+      name: E2E_PROJECT.ADMIN_SCREENSHOTS_MOBILE,
+      dependencies: [
+        E2E_PROJECT.SCREENSHOTS_MOBILE,
+        E2E_PROJECT.SCREENSHOTS,
+      ],
+      fullyParallel: false,
+      testMatch: E2E_TEST_MATCH.ADMIN_SCREENSHOTS,
+      use: mobileChromium,
+      workers: E2E_WORKER_COUNT.ADMIN_SCREENSHOTS,
+    },
+    {
+      name: E2E_PROJECT.ADMIN_SCREENSHOTS,
+      dependencies: [E2E_PROJECT.ADMIN_SCREENSHOTS_MOBILE],
+      fullyParallel: false,
+      testMatch: E2E_TEST_MATCH.ADMIN_SCREENSHOTS,
+      use: desktopChromium,
+      workers: E2E_WORKER_COUNT.ADMIN_SCREENSHOTS,
     },
   ],
   webServer: {
