@@ -1,4 +1,4 @@
-import { TIME_LIMIT_REACHED } from "@/app/constants";
+import { TIME_LIMIT } from "@/app/constants";
 import type { TimeLimited } from "./models/TimeLimited.type";
 
 export const withTimeLimit = <Value>(
@@ -7,7 +7,7 @@ export const withTimeLimit = <Value>(
 ): Promise<TimeLimited<Value>> =>
   new Promise<TimeLimited<Value>>((resolve, reject) => {
     const timer = setTimeout(
-      () => resolve(TIME_LIMIT_REACHED),
+      () => resolve(TIME_LIMIT.REACHED),
       limitMs
     );
 

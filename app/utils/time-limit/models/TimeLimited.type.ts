@@ -1,4 +1,4 @@
-import type { TIME_LIMIT_REACHED } from "@/app/constants";
+import type { TIME_LIMIT } from "@/app/constants";
 
 export type TimeLimited<Value> =
-  Value | typeof TIME_LIMIT_REACHED;
+  Value | typeof TIME_LIMIT.REACHED;

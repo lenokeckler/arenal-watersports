@@ -118,8 +118,8 @@ export {
 } from "./access/SignInHookRejection.constants";
 export { SUPABASE_RPC } from "./supabase/SupabaseRpc.constants";
 export { SESSION_LIVENESS } from "./supabase/SessionLiveness.constants";
-export { SIGN_OUT_TIME_LIMIT_MS } from "./supabase/SignOutTimeLimit.constants";
-export { TIME_LIMIT_REACHED } from "./request/TimeLimitReached.constants";
+export { SIGN_OUT } from "./supabase/SignOut.constants";
+export { TIME_LIMIT } from "./time-limit/TimeLimit.constants";
 export { SESSION_CLAIM } from "./supabase/SessionClaim.constants";
 export {
   PASSWORD_RULE,

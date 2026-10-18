@@ -6,7 +6,7 @@ import {
   it,
   vi,
 } from "vitest";
-import { TIME_LIMIT_REACHED } from "@/app/constants";
+import { TIME_LIMIT } from "@/app/constants";
 import { withTimeLimit } from "../withTimeLimit";
 import { TIME_LIMIT_FIXTURE } from "./withTimeLimit.constants";
 
@@ -58,7 +58,7 @@ describe("withTimeLimit", () => {
       TIME_LIMIT_FIXTURE.LIMIT_MS
     );
 
-    await expect(result).resolves.toBe(TIME_LIMIT_REACHED);
+    await expect(result).resolves.toBe(TIME_LIMIT.REACHED);
   });
 
   it("does not resolve before the limit", async () => {
@@ -91,6 +91,6 @@ describe("withTimeLimit", () => {
     failLate(new Error(TIME_LIMIT_FIXTURE.FAILURE));
     await vi.advanceTimersByTimeAsync(0);
 
-    await expect(result).resolves.toBe(TIME_LIMIT_REACHED);
+    await expect(result).resolves.toBe(TIME_LIMIT.REACHED);
   });
 });
