@@ -50,6 +50,7 @@ test.describe("Recovery lifts the administration gate", () => {
       seededAdmin.id
     );
     expect(state.status).toBe(E2E_ADMIN_EXPECTED_STATUS);
+    expect(state.blockedReason).toBeNull();
   });
 
   test("signs in with the new password once recovered", async ({
