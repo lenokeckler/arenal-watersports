@@ -16,13 +16,19 @@ const supabaseClient = {
   rpc,
 } as unknown as ServerSupabaseClient;
 
+const mockRpcAnswer = (answer: unknown): void => {
+  rpc.mockReturnValue({
+    abortSignal: vi.fn().mockResolvedValue(answer),
+  });
+};
+
 describe("readSessionLiveness", () => {
   beforeEach(() => {
     rpc.mockReset();
   });
 
   it("calls the caller-only liveness function", async () => {
-    rpc.mockResolvedValue({ data: true, error: null });
+    mockRpcAnswer({ data: true, error: null });
 
     await readSessionLiveness(supabaseClient);
 
@@ -33,7 +39,7 @@ describe("readSessionLiveness", () => {
   });
 
   it("reports live when the database says true", async () => {
-    rpc.mockResolvedValue({ data: true, error: null });
+    mockRpcAnswer({ data: true, error: null });
 
     expect(await readSessionLiveness(supabaseClient)).toBe(
       true
@@ -41,7 +47,7 @@ describe("readSessionLiveness", () => {
   });
 
   it("reports not live when the database says false", async () => {
-    rpc.mockResolvedValue({ data: false, error: null });
+    mockRpcAnswer({ data: false, error: null });
 
     expect(await readSessionLiveness(supabaseClient)).toBe(
       false
@@ -49,7 +55,7 @@ describe("readSessionLiveness", () => {
   });
 
   it("keeps the session when the call returns an error", async () => {
-    rpc.mockResolvedValue({
+    mockRpcAnswer({
       data: null,
       error: new Error(LIVENESS_FIXTURE.ERROR_MESSAGE),
     });
@@ -60,7 +66,7 @@ describe("readSessionLiveness", () => {
   });
 
   it("keeps the session even when the error carries a false answer", async () => {
-    rpc.mockResolvedValue({
+    mockRpcAnswer({
       data: false,
       error: new Error(LIVENESS_FIXTURE.ERROR_MESSAGE),
     });

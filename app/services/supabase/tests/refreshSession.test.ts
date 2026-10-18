@@ -33,11 +33,17 @@ const buildRequest = (): NextRequest =>
 
 let sessionCookies: Required<CookieMethodsServer>;
 
+const mockRpcAnswer = (answer: unknown): void => {
+  rpc.mockReturnValue({
+    abortSignal: vi.fn().mockResolvedValue(answer),
+  });
+};
+
 describe("refreshSupabaseSession", () => {
   beforeEach(() => {
     getClaims.mockReset();
     rpc.mockReset();
-    rpc.mockResolvedValue({ data: true, error: null });
+    mockRpcAnswer({ data: true, error: null });
     createServerClient.mockReset();
     createServerClient.mockImplementation(
       (_url, _key, { cookies }) => {
@@ -83,7 +89,7 @@ describe("refreshSupabaseSession", () => {
       data: { claims: SESSION_FIXTURE.CLAIMS },
       error: null,
     });
-    rpc.mockResolvedValue({ data: false, error: null });
+    mockRpcAnswer({ data: false, error: null });
 
     const result =
       await refreshSupabaseSession(buildRequest());
@@ -96,7 +102,7 @@ describe("refreshSupabaseSession", () => {
       data: { claims: SESSION_FIXTURE.CLAIMS },
       error: null,
     });
-    rpc.mockResolvedValue({
+    mockRpcAnswer({
       data: null,
       error: new Error(SESSION_FIXTURE.ERROR_MESSAGE),
     });
@@ -134,7 +140,7 @@ describe("refreshSupabaseSession", () => {
       data: { claims: SESSION_FIXTURE.PENDING_CLAIMS },
       error: null,
     });
-    rpc.mockResolvedValue({ data: false, error: null });
+    mockRpcAnswer({ data: false, error: null });
 
     const result =
       await refreshSupabaseSession(buildRequest());

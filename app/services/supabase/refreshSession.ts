@@ -46,6 +46,7 @@ export const refreshSupabaseSession = async (
   return {
     hasSession: isSessionLive,
     mustChangePassword:
+      isSessionLive &&
       claims?.[SESSION_CLAIM.MUST_CHANGE_PASSWORD] === true,
     response,
   };
