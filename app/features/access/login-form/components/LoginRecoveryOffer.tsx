@@ -1,5 +1,4 @@
-import { Link } from "@/app/components";
-import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
+import { Link, MaterialIcon } from "@/app/components";
 import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
 import { PATHS } from "@/app/constants";
 import { LOGIN_FORM_COPY } from "../constants/LoginFormCopy.constants";
