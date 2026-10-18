@@ -1,6 +1,5 @@
 import { Section } from "@/app/components";
 import { ACCESS_SHELL_BACKDROP_TEST_ID } from "./constants/AccessScreenShell.constants";
-import { ACCESS_SHELL_DEFAULTS } from "./constants/AccessScreenShellDefaults.constants";
 import type { AccessScreenShellProps } from "./models/AccessScreenShellProps.interface";
 import {
   ACCESS_SHELL_BACKDROP_CLASS,
@@ -14,7 +13,7 @@ import {
 const AccessScreenShell = ({
   titleId,
   children,
-  isEmbedded = ACCESS_SHELL_DEFAULTS.isEmbedded,
+  isEmbedded = false,
 }: AccessScreenShellProps): React.JSX.Element => (
   <div
     className={resolveAccessShellPageClassName(isEmbedded)}
