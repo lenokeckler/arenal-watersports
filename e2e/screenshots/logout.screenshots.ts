@@ -78,12 +78,15 @@ test.describe("Sign-out screenshots", () => {
       sessionBar.getPendingButton()
     ).toBeVisible();
 
-    await captureFullPage(
-      page,
-      E2E_LOGOUT_SCREENSHOT_BASENAME.PENDING_STEP,
-      testInfo.project.name
-    );
-    logoutHold.release();
+    try {
+      await captureFullPage(
+        page,
+        E2E_LOGOUT_SCREENSHOT_BASENAME.PENDING_STEP,
+        testInfo.project.name
+      );
+    } finally {
+      logoutHold.release();
+    }
     await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
   });
 
