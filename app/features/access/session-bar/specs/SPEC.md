@@ -28,7 +28,7 @@ that asks for one confirming tap and tells the worker what is happening.
 - Label by phase: `idle` and `failed` show "Cerrar sesión"; `confirming` shows "¿Confirmar cierre
   de sesión?"; `pending` shows "Cerrando sesión…".
 - Icon by phase: `logout` in `idle`, `confirming` and `failed`; a spinning `progress_activity` in
-  `pending` (static under reduced motion), through `resolveFormSubmitIconClassName`.
+  `pending` (static under reduced motion), through the feature's own `resolveLogoutIconClassName` (`shrink-0 text-lg`, plus the spin class only while pending), so the glyph survives a two-line label.
 - `confirming` is emphasised with the `primary` border and a `primary/10` fill: calm, never red.
 - `pending` sets `aria-disabled="true"` and never the `disabled` attribute, so focus is kept;
   every other phase leaves `aria-disabled` false.

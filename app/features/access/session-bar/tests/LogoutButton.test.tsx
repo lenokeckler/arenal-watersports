@@ -1,9 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 import { render } from "@testing-library/react";
-import { resolveFormSubmitIconClassName } from "@/app/components/form-submit-button/styles/FormSubmitButton.styles";
 import LogoutButton from "../components/LogoutButton";
 import { LOGOUT_PHASE } from "../constants/LogoutPhase.constants";
-import { resolveLogoutButtonClassName } from "../styles/LogoutButton.styles";
+import {
+  resolveLogoutButtonClassName,
+  resolveLogoutIconClassName,
+} from "../styles/LogoutButton.styles";
 import {
   ALL_PHASES,
   ARIA_DISABLED_ATTRIBUTE,
@@ -113,7 +115,7 @@ describe("LogoutButton", () => {
       expect(icon.classList.contains(SPIN_CLASS)).toBe(
         isPending
       );
-      resolveFormSubmitIconClassName(isPending)
+      resolveLogoutIconClassName(phase)
         .split(" ")
         .forEach((iconClass) =>
           expect(icon).toHaveClass(iconClass)
