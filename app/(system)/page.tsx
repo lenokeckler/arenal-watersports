@@ -1,6 +1,6 @@
 import Title from "@/app/components/title/Title";
 import { APP_NAME, TitleVariant } from "@/app/constants";
-import { HOME_PAGE_CLASS } from "./styles/HomePage.styles";
+import { HOME_PAGE_CLASS } from "@/app/styles/HomePage.styles";
 
 export default function Home() {
   return (
