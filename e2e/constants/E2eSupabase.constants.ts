@@ -26,6 +26,7 @@ export const E2E_SUPABASE_FILTER = {
 } as const;
 
 export const E2E_SUPABASE_COLUMN = {
+  BLOCKED_REASON: "blocked_reason",
   CREATED_AT: "created_at",
   EXPIRES_AT: "expires_at",
   DELETED_AT: "deleted_at",

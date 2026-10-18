@@ -31,9 +31,16 @@ const createLoginLocators = (page: Page) => {
         name: E2E_LOGIN_COPY.FORGOT_PASSWORD,
         exact: true,
       }),
+    getFormError: (): Locator =>
+      main.getByRole(ARIA_ROLE.ALERT),
     getHeading: (): Locator =>
       main.getByRole(ARIA_ROLE.HEADING, {
         level: HEADING_LEVEL.PAGE,
+      }),
+    getRecoveryOfferLink: (): Locator =>
+      main.getByRole(ARIA_ROLE.LINK, {
+        name: E2E_LOGIN_COPY.RECOVER_PASSWORD,
+        exact: true,
       }),
     getPasswordRecoveredNotice: (): Locator =>
       main.getByRole(ARIA_ROLE.STATUS).filter({
