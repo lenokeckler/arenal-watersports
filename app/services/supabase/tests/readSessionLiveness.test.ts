@@ -4,8 +4,12 @@ import {
   expect,
   it,
   vi,
+  type Mock,
 } from "vitest";
-import { SUPABASE_RPC } from "@/app/constants";
+import {
+  SESSION_LIVENESS,
+  SUPABASE_RPC,
+} from "@/app/constants";
 import { readSessionLiveness } from "../readSessionLiveness";
 import type { ServerSupabaseClient } from "../models/ServerSupabaseClient.type";
 import { LIVENESS_FIXTURE } from "./readSessionLiveness.constants";
@@ -16,10 +20,10 @@ const supabaseClient = {
   rpc,
 } as unknown as ServerSupabaseClient;
 
-const mockRpcAnswer = (answer: unknown): void => {
-  rpc.mockReturnValue({
-    abortSignal: vi.fn().mockResolvedValue(answer),
-  });
+const mockRpcAnswer = (answer: unknown): Mock => {
+  const abortSignal = vi.fn().mockResolvedValue(answer);
+  rpc.mockReturnValue({ abortSignal });
+  return abortSignal;
 };
 
 describe("readSessionLiveness", () => {
@@ -54,25 +58,66 @@ describe("readSessionLiveness", () => {
     );
   });
 
-  it("keeps the session when the call returns an error", async () => {
-    mockRpcAnswer({
-      data: null,
-      error: new Error(LIVENESS_FIXTURE.ERROR_MESSAGE),
+  it.each(LIVENESS_FIXTURE.CLIENT_ERROR_STATUSES)(
+    "reports not live when the call is refused with status %s",
+    async (status) => {
+      mockRpcAnswer({
+        data: null,
+        error: new Error(LIVENESS_FIXTURE.ERROR_MESSAGE),
+        status,
+      });
+
+      expect(
+        await readSessionLiveness(supabaseClient)
+      ).toBe(false);
+    }
+  );
+
+  it.each(LIVENESS_FIXTURE.SERVER_ERROR_STATUSES)(
+    "keeps the session when the server fails with status %s",
+    async (status) => {
+      mockRpcAnswer({
+        data: null,
+        error: new Error(LIVENESS_FIXTURE.ERROR_MESSAGE),
+        status,
+      });
+
+      expect(
+        await readSessionLiveness(supabaseClient)
+      ).toBe(true);
+    }
+  );
+
+  it.each(LIVENESS_FIXTURE.NO_RESPONSE_STATUSES)(
+    "keeps the session when there is no response and the status is %s",
+    async (status) => {
+      mockRpcAnswer({
+        data: null,
+        error: new Error(LIVENESS_FIXTURE.ERROR_MESSAGE),
+        status,
+      });
+
+      expect(
+        await readSessionLiveness(supabaseClient)
+      ).toBe(true);
+    }
+  );
+
+  it("bounds the call with a timeout signal", async () => {
+    const abortSignal = mockRpcAnswer({
+      data: true,
+      error: null,
     });
+    const timeoutSpy = vi.spyOn(AbortSignal, "timeout");
 
-    expect(await readSessionLiveness(supabaseClient)).toBe(
-      true
+    await readSessionLiveness(supabaseClient);
+
+    expect(timeoutSpy).toHaveBeenCalledWith(
+      SESSION_LIVENESS.TIMEOUT_MS
     );
-  });
-
-  it("keeps the session even when the error carries a false answer", async () => {
-    mockRpcAnswer({
-      data: false,
-      error: new Error(LIVENESS_FIXTURE.ERROR_MESSAGE),
-    });
-
-    expect(await readSessionLiveness(supabaseClient)).toBe(
-      true
+    expect(abortSignal).toHaveBeenCalledWith(
+      timeoutSpy.mock.results[0].value
     );
+    timeoutSpy.mockRestore();
   });
 });

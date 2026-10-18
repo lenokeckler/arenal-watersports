@@ -135,7 +135,7 @@ describe("refreshSupabaseSession", () => {
     expect(rpc).not.toHaveBeenCalled();
   });
 
-  it("reports no session for a dead session whose claims still ask for a password change", async () => {
+  it("reports neither a session nor a password change for a dead session whose claims still ask for one", async () => {
     getClaims.mockResolvedValue({
       data: { claims: SESSION_FIXTURE.PENDING_CLAIMS },
       error: null,
@@ -146,6 +146,7 @@ describe("refreshSupabaseSession", () => {
       await refreshSupabaseSession(buildRequest());
 
     expect(result.hasSession).toBe(false);
+    expect(result.mustChangePassword).toBe(false);
   });
 
   it.each([
