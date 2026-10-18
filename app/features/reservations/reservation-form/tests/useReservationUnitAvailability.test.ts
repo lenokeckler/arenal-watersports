@@ -46,7 +46,10 @@ describe("useReservationUnitAvailability", () => {
       };
     const { rerender, result } = renderHook(
       ({ request }) =>
-        useReservationUnitAvailability(request),
+        useReservationUnitAvailability(
+          request,
+          AVAILABLE_UNIT_TEST.REFRESH_KEY
+        ),
       { initialProps: { request: initialRequest } }
     );
     await waitFor(() =>
