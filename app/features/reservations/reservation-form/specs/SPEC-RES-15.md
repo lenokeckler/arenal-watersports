@@ -30,7 +30,7 @@ This change does not alter reservation persistence, dispatch/return windows, can
 ## Delivery units
 
 - Data unit: interval peak calculation through the existing SQL function, with SQL regression coverage. This implements the database portion of the acceptance criterion.
-- Query unit, pending: an authorized server query and reusable Costa Rica interval conversion, plus a client hook with incomplete, loading, success, and failure states.
+- Query unit: an authorized server query and reusable Costa Rica interval conversion, plus a client hook with incomplete, loading, success, and failure states. The existing equipment eligibility channel refreshes category availability when reservation, item, unit, stock, category, or dispatch records change.
 - Form unit, pending: integration into the existing reservation form and ignored local preview, preserving the Stitch visual language, responsive layout, entered values, realtime invalidation, and retry behavior. Playwright coverage and mobile/desktop captures belong to that UI unit.
 
-The acceptance criterion is complete only after the authorized query and existing form expose the selected interval's availability. A local fixture or preview alone does not complete it.
+The query unit preserves the RPC's negative `free` result and does not treat aggregate category availability as proof that a concrete unit is available. The data and query units are complete; the acceptance criterion remains pending until the form exposes the selected interval's availability. A local fixture or preview alone does not complete it.
