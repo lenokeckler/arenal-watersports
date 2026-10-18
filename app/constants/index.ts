@@ -139,6 +139,10 @@ export {
 } from "./access/BlockedReauthentication.constants";
 export { SUPABASE_TABLE } from "./supabase/SupabaseTable.constants";
 export { SUPABASE_SIGN_OUT_SCOPE } from "./supabase/SupabaseSignOutScope.constants";
+export {
+  SUPABASE_AUTH_COOKIE,
+  SUPABASE_COOKIE_OPTIONS,
+} from "./supabase/SupabaseAuthCookie.constants";
 export { SUPABASE_AUTH_OPERATION } from "./supabase/SupabaseAuthOperation.constants";
 export { SUPABASE_WORKER_COLUMN } from "./supabase/SupabaseWorkerColumn.constants";
 export { SUPABASE_WORK_AREA } from "./supabase/SupabaseWorkArea.constants";

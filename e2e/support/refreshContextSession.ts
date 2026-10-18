@@ -1,6 +1,7 @@
 import type { BrowserContext } from "@playwright/test";
 import { createServerClient } from "@supabase/ssr";
 import type { AuthError } from "@supabase/supabase-js";
+import { SUPABASE_COOKIE_OPTIONS } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import { readLocalSupabaseEnvironment } from "./readLocalSupabaseEnvironment";
 
@@ -10,6 +11,7 @@ export const refreshContextSession = async (
   const { anonKey, url } = readLocalSupabaseEnvironment();
   const cookies = await context.cookies();
   const supabase = createServerClient(url, anonKey, {
+    cookieOptions: SUPABASE_COOKIE_OPTIONS,
     cookies: {
       getAll: () =>
         cookies.map(({ name, value }) => ({ name, value })),
