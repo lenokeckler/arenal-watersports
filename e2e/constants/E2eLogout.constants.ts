@@ -3,6 +3,7 @@ import { LOGOUT_COPY } from "@/app/features/access/session-bar/constants/LogoutC
 export const E2E_LOGOUT_COPY = {
   BUTTON: LOGOUT_COPY.BUTTON,
   CONFIRM: LOGOUT_COPY.CONFIRM,
+  ERROR: LOGOUT_COPY.ERROR,
 } as const;
 
 const CONFIRM_WINDOW_MS = 5000;

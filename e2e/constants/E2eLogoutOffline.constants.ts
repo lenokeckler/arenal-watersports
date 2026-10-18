@@ -1,4 +1,6 @@
+import { SIGN_OUT } from "@/app/constants";
+
 export const E2E_LOGOUT_OFFLINE = {
-  BACKOFF_SKIP_MS: 60_000,
   PAST_EXPIRY_MS: 60_000,
+  FALLBACK_DUE_MS: SIGN_OUT.TIME_LIMIT_MS,
 } as const;
