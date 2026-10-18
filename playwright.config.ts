@@ -11,7 +11,6 @@ import {
   E2E_RETRY_COUNT,
   E2E_SERVER,
   E2E_TEST_DIR,
-  E2E_TEST_IGNORE,
   E2E_TEST_MATCH,
   E2E_TIMEOUT_MS,
   E2E_WORKER_COUNT,
@@ -60,13 +59,13 @@ export default defineConfig({
   projects: [
     {
       name: E2E_PROJECT.MOBILE,
-      testIgnore: E2E_TEST_IGNORE.ADMIN_RECOVERY,
+      testIgnore: E2E_TEST_MATCH.ADMIN_RECOVERY,
       testMatch: E2E_TEST_MATCH.DEFAULT,
       use: mobileChromium,
     },
     {
       name: E2E_PROJECT.DEFAULT,
-      testIgnore: E2E_TEST_IGNORE.ADMIN_RECOVERY,
+      testIgnore: E2E_TEST_MATCH.ADMIN_RECOVERY,
       testMatch: E2E_TEST_MATCH.DEFAULT,
       use: desktopChromium,
     },

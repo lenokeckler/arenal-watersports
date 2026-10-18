@@ -55,10 +55,6 @@ export const E2E_TEST_MATCH = {
   SCREENSHOTS: "**/screenshots/*.screenshots.ts",
 } as const;
 
-export const E2E_TEST_IGNORE = {
-  ADMIN_RECOVERY: "**/specs/*.admin.e2e.ts",
-} as const;
-
 export const E2E_TEST_DIR = "./e2e";
 
 export const E2E_REPORTER = {
