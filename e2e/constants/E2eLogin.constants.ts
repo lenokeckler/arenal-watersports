@@ -3,9 +3,13 @@ import { PASSWORD_TOGGLE_COPY } from "@/app/components/field-factory/constants/P
 import { LOGIN_FORM_COPY } from "@/app/features/access/login-form/constants/LoginFormCopy.constants";
 import { SIGN_IN_ERROR_COPY } from "@/app/features/access/login-form/constants/SignInErrorCopy.constants";
 import {
+  LOGIN_NOTICE,
+  LOGIN_NOTICE_QUERY_PARAM,
+  PATHS,
   SIGN_IN_ERROR_CODE,
   SIGN_IN_FIELD,
 } from "@/app/constants";
+import { appendQueryParam } from "@/app/utils/pathname/appendQueryParam";
 
 export const E2E_LOGIN_ACCOUNT = {
   PASSWORD: "Arenal.2026",
@@ -26,6 +30,7 @@ export const E2E_LOGIN_COPY = {
   PASSWORD_LABEL: LOGIN_FORM_COPY.PASSWORD_LABEL,
   PASSWORD_RECOVERED_NOTICE:
     LOGIN_FORM_COPY.PASSWORD_RECOVERED_NOTICE,
+  SIGNED_OUT_NOTICE: LOGIN_FORM_COPY.SIGNED_OUT_NOTICE,
   SUBMIT: LOGIN_FORM_COPY.SUBMIT,
   USERNAME_LABEL: LOGIN_FORM_COPY.USERNAME_LABEL,
   USERNAME_REQUIRED:
@@ -33,6 +38,12 @@ export const E2E_LOGIN_COPY = {
       SIGN_IN_ERROR_CODE.USERNAME_REQUIRED
     ],
 } as const;
+
+export const E2E_SIGNED_OUT_LOGIN_PATH = appendQueryParam(
+  PATHS.ACCESS.LOGIN,
+  LOGIN_NOTICE_QUERY_PARAM,
+  LOGIN_NOTICE.SIGNED_OUT
+);
 
 export const E2E_LOGIN_TOGGLE_LABEL = PASSWORD_TOGGLE_COPY;
 
