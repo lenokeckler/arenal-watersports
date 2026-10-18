@@ -10,9 +10,10 @@ import { refreshSupabaseSession } from "../refreshSession";
 import type { CookieMethodsServer } from "@supabase/ssr";
 import { SESSION_FIXTURE } from "./refreshSession.constants";
 
-const { getClaims, createServerClient } = vi.hoisted(
+const { getClaims, rpc, createServerClient } = vi.hoisted(
   () => ({
     getClaims: vi.fn(),
+    rpc: vi.fn(),
     createServerClient: vi.fn(),
   })
 );
@@ -34,11 +35,13 @@ let sessionCookies: Required<CookieMethodsServer>;
 describe("refreshSupabaseSession", () => {
   beforeEach(() => {
     getClaims.mockReset();
+    rpc.mockReset();
+    rpc.mockResolvedValue({ data: true, error: null });
     createServerClient.mockReset();
     createServerClient.mockImplementation(
       (_url, _key, { cookies }) => {
         sessionCookies = cookies;
-        return { auth: { getClaims } };
+        return { auth: { getClaims }, rpc };
       }
     );
     getClaims.mockResolvedValue({
