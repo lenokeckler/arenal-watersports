@@ -21,11 +21,18 @@ export const E2E_RESERVATION_FORM_COPY = {
   UNIT_OPTION: "PONTOON",
   CATEGORY_OPTION: "Jet Ski",
   CONCRETE_CATEGORY_OPTION: "Lancha",
+  REALTIME_UNIT_OPTION: "BENNINGTON",
+  REALTIME_DATE: "2099-12-31",
   CUSTOMER_NAME_VALID: "US-RES-04 E2E reservation",
   SUBMIT: "Registrar reserva",
   SUCCESS: "La reserva quedó registrada correctamente.",
   VALIDATION_ERROR: "Ingrese el nombre de la reserva.",
   SCREENSHOT_DATE: "2099-12-31",
+} as const;
+
+export const E2E_RESERVATION_EQUIPMENT_STATUS = {
+  AVAILABLE: "available",
+  DAMAGED: "damaged",
 } as const;
 
 export const E2E_RESERVATION_FORM_MOBILE_VIEWPORT = {
@@ -47,6 +54,9 @@ export const E2E_RESERVATION_FORM_CUSTOM_DURATION_SCREENSHOT_SUFFIX =
 
 export const E2E_RESERVATION_FORM_SUCCESS_SCREENSHOT_SUFFIX =
   "success";
+
+export const E2E_RESERVATION_FORM_ELIGIBILITY_SCREENSHOT_SUFFIX =
+  "eligibility-refreshed";
 
 export const E2E_RESERVATION_DURATION_PRESET = {
   LABEL: "1 h 30",

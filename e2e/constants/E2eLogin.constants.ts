@@ -8,6 +8,7 @@ import {
 } from "@/app/constants";
 
 export const E2E_LOGIN_ACCOUNT = {
+  EMAIL: "admin@arenal.local",
   PASSWORD: "Arenal.2026",
   USERNAME: "admin",
 } as const;

@@ -13,6 +13,8 @@ export const createReservationFormUnitPage = (
 
   return {
     getUnitSelect,
+    getUnitOption: (label: string): Locator =>
+      getUnitSelect().locator("option", { hasText: label }),
     getSelectedUnitOption: (): Locator =>
       getUnitSelect().locator("option:checked"),
     selectUnit: async (label: string): Promise<void> => {

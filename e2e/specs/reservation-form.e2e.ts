@@ -1,9 +1,12 @@
 import { expect, test } from "@playwright/test";
+import { E2E_PROJECT } from "../constants/E2eRuntime.constants";
 import {
   E2E_RESERVATION_DURATION_PRESET,
+  E2E_RESERVATION_EQUIPMENT_STATUS,
   E2E_RESERVATION_FORM_COPY,
 } from "../constants/E2eReservationForm.constants";
 import { createReservationFormPage } from "../pages/ReservationForm.page";
+import { createReservationEquipmentStatusFixture } from "../support/createReservationEquipmentStatusFixture";
 import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
 
 test.describe("Reservation form", () => {
@@ -144,5 +147,52 @@ test.describe("Reservation form", () => {
     await expect(
       reservationFormPage.getUnitSelect()
     ).toHaveValue(/.+/);
+  });
+
+  test("removes a damaged unit after an inventory update", async ({
+    page,
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.name !== E2E_PROJECT.DEFAULT,
+      "The inventory mutation runs once to avoid concurrent database writes."
+    );
+    const equipmentFixture =
+      createReservationEquipmentStatusFixture();
+
+    try {
+      const initialStatus =
+        await equipmentFixture.prepare();
+      expect(initialStatus).toBe(
+        E2E_RESERVATION_EQUIPMENT_STATUS.AVAILABLE
+      );
+      const reservationFormPage =
+        createReservationFormPage(page);
+      await reservationFormPage.goTo();
+      await reservationFormPage
+        .getDateInput()
+        .fill(E2E_RESERVATION_FORM_COPY.REALTIME_DATE);
+      await expect(
+        reservationFormPage.getCategorySelect()
+      ).toBeEnabled();
+      await reservationFormPage.selectCategory(
+        E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
+      );
+      await expect(
+        reservationFormPage.getUnitOption(
+          E2E_RESERVATION_FORM_COPY.REALTIME_UNIT_OPTION
+        )
+      ).toHaveCount(1);
+
+      expect(
+        await equipmentFixture.markUnitAsDamaged()
+      ).toBe(E2E_RESERVATION_EQUIPMENT_STATUS.DAMAGED);
+      await expect(
+        reservationFormPage.getUnitOption(
+          E2E_RESERVATION_FORM_COPY.REALTIME_UNIT_OPTION
+        )
+      ).toHaveCount(0);
+    } finally {
+      await equipmentFixture.restore();
+    }
   });
 });
