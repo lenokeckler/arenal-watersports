@@ -8,10 +8,10 @@ export type SignInField =
   (typeof SIGN_IN_FIELD)[keyof typeof SIGN_IN_FIELD];
 
 export const SIGN_IN_ERROR_CODE = {
-  ACCOUNT_RECOVERY_REQUIRED: "accountRecoveryRequired",
   ACCOUNT_BLOCKED_BY_ADMINISTRATION:
     "accountBlockedByAdministration",
   ACCOUNT_BLOCKED_BY_ATTEMPTS: "accountBlockedByAttempts",
+  ACCOUNT_RECOVERY_REQUIRED: "accountRecoveryRequired",
   INVALID_CREDENTIALS: "invalidCredentials",
   NETWORK: "network",
   PASSWORD_REQUIRED: "passwordRequired",
