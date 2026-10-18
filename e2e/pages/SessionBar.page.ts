@@ -22,6 +22,15 @@ export const createSessionBarPage = (page: Page) => {
     getIdleButton().click();
   const confirmSignOut = (): Promise<void> =>
     getConfirmButton().click();
+  const doubleTapConfirm = (): Promise<void> =>
+    getConfirmButton().evaluate<
+      void,
+      undefined,
+      HTMLElement
+    >((button) => {
+      button.click();
+      button.click();
+    });
 
   return {
     getAllLogoutButtons,
@@ -46,6 +55,7 @@ export const createSessionBarPage = (page: Page) => {
     getConfirmButton,
     press,
     confirmSignOut,
+    doubleTapConfirm,
     signOut: async (): Promise<void> => {
       await press();
       await confirmSignOut();
