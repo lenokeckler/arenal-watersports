@@ -1,5 +1,5 @@
 begin;
-select plan(29);
+select plan(32);
 
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local');
@@ -76,6 +76,7 @@ set local role service_role;
 select is(public.consume_password_reset_pin('admin', '482913'), '11111111-1111-1111-1111-111111111111'::uuid, 'el PIN correcto devuelve la cuenta de administracion');
 reset role;
 
+select is((select count(*) from password_reset_pins where worker_id = '11111111-1111-1111-1111-111111111111' and used_at is null), 0::bigint, 'consumir el PIN lo gasta');
 select is(
   public.custom_access_token_hook('{"user_id":"11111111-1111-1111-1111-111111111111","authentication_method":"password","claims":{}}'::jsonb)
     #>> '{error,message}',
@@ -84,8 +85,19 @@ select is(
 );
 select is((select failed_attempts from workers where username = 'admin'), public.sign_in_attempt_limit(), 'consumir el PIN no cambia el contador');
 
-insert into password_reset_pins (worker_id, pin_hash, expires_at)
-select id, 'hash', now() + interval '10 minutes' from workers where username = 'admin';
+update password_reset_pins
+   set created_at = created_at - make_interval(secs => public.password_reset_request_cooldown_seconds() + 1)
+ where worker_id = '11111111-1111-1111-1111-111111111111';
+
+set local role service_role;
+select is(
+  (select personal_email from public.issue_password_reset_pin('admin', '739104', null)),
+  'admin@correo.com',
+  'pasado el enfriamiento la administracion recibe un segundo PIN en su correo personal'
+);
+reset role;
+
+select is((select count(*) from password_reset_pins where worker_id = '11111111-1111-1111-1111-111111111111' and used_at is null), 1::bigint, 'el segundo PIN queda vivo antes de terminar la recuperacion');
 
 set local role service_role;
 select lives_ok($$ select public.finish_password_recovery('11111111-1111-1111-1111-111111111111') $$, 'la recuperacion de la administracion termina');
@@ -111,7 +123,7 @@ select is(public.consume_password_reset_pin('admin', '482913'), null::uuid, 'el 
 reset role;
 
 select is((select count(*) from workers where base_role = 'administracion' and status <> 'active'), 0::bigint, 'en ningun paso la administracion quedo bloqueada');
-select is((select count(*) from workers where blocked_reason is not null), 0::bigint, 'en ningun paso hubo motivo de bloqueo');
+select is((select blocked_reason::text from workers where id = '11111111-1111-1111-1111-111111111111'), null::text, 'en ningun paso hubo motivo de bloqueo');
 
 select * from finish();
 rollback;
