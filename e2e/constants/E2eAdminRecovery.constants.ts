@@ -11,9 +11,9 @@ export const E2E_ADMIN_RESTORE_ATTACHMENT = {
   NAME: "seeded-admin-restore-failure",
 } as const;
 
-export const E2E_ADMIN_ATTEMPT_LIMIT = 10;
+export const E2E_SIGN_IN_ATTEMPT_LIMIT = 10;
 
-export const E2E_ADMIN_ACCOUNT_STATUS: Database["public"]["Enums"]["worker_status"] =
+export const E2E_ADMIN_EXPECTED_STATUS: Database["public"]["Enums"]["worker_status"] =
   "active";
 
 export const E2E_UNKNOWN_USERNAME = "e2e_unknown_account";
