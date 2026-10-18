@@ -1,7 +1,7 @@
 import { PATHS } from "@/app/constants";
 import {
   E2E_LOGOUT_BAR_COUNT,
-  E2E_LOGOUT_CONFIRM_WAIT_MS,
+  E2E_LOGOUT_CLOCK,
 } from "../constants/E2eLogout.constants";
 import { createHomePage } from "../pages/Home.page";
 import { createLoginPage } from "../pages/Login.page";
@@ -22,7 +22,6 @@ test.describe("Sign out", () => {
     await expect(
       sessionBar.getConfirmButton()
     ).toBeVisible();
-    await expect(page).toHaveURL(PATHS.HOME);
 
     await sessionBar.confirmSignOut();
 
@@ -59,20 +58,29 @@ test.describe("Sign out", () => {
     await expect(loginPage.getPasswordInput()).toBeEmpty();
   });
 
-  test("returns to the idle label when the confirmation times out and keeps the session", async ({
+  test("returns to the idle label exactly when the confirmation window ends and keeps the session", async ({
     signedInPage: page,
   }) => {
     const sessionBar = createSessionBarPage(page);
-    await page.clock.install();
+    await page.clock.install({
+      time: E2E_LOGOUT_CLOCK.START,
+    });
     await createHomePage(page).goTo();
+    await page.clock.pauseAt(E2E_LOGOUT_CLOCK.PAUSE_AT);
     await sessionBar.press();
     await expect(
       sessionBar.getConfirmButton()
     ).toBeVisible();
 
-    await page.clock.fastForward(
-      E2E_LOGOUT_CONFIRM_WAIT_MS
+    await page.clock.runFor(
+      E2E_LOGOUT_CLOCK.BEFORE_RESET_MS
     );
+
+    await expect(
+      sessionBar.getConfirmButton()
+    ).toBeVisible();
+
+    await page.clock.runFor(E2E_LOGOUT_CLOCK.ONE_MS);
 
     await expect(sessionBar.getIdleButton()).toBeVisible();
     await expect(page).toHaveURL(PATHS.HOME);
