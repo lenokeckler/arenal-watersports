@@ -1,6 +1,8 @@
+const LOGOUT_PATH = "/auth/v1/logout";
+
 export const E2E_LOGOUT_ENDPOINT = {
-  ROUTE_PATTERN: "**/auth/v1/logout**",
-  URL_FRAGMENT: "/auth/v1/logout",
+  ROUTE_PATTERN: `**${LOGOUT_PATH}**`,
+  URL_FRAGMENT: LOGOUT_PATH,
 } as const;
 
 export const E2E_LOGOUT_REQUEST_COUNT = {
