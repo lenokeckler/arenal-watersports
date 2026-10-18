@@ -6,7 +6,7 @@ import {
 import { SUPABASE_AUTH_COOKIE } from "@/app/constants";
 import {
   E2E_AUTH_COOKIE_ENCODING,
-  E2E_REFRESH_TOKEN_ERROR,
+  E2E_COOKIE_SESSION_ERROR,
 } from "../constants/E2eLogoutToken.constants";
 import { failE2eOperation } from "./failE2eOperation";
 import type { StoredAuthSession } from "./models/StoredAuthSession.interface";
@@ -26,8 +26,8 @@ export const readStoredAuthSession = async (
     )
   ) {
     return failE2eOperation(
-      E2E_REFRESH_TOKEN_ERROR.READ_OPERATION,
-      E2E_REFRESH_TOKEN_ERROR.NOT_BASE64
+      E2E_COOKIE_SESSION_ERROR.READ_OPERATION,
+      E2E_COOKIE_SESSION_ERROR.NOT_BASE64
     );
   }
 

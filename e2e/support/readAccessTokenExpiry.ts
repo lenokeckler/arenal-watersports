@@ -21,12 +21,19 @@ export const readAccessTokenExpiry = async (
     );
   }
 
+  const payloadSegment = accessToken.split(
+    E2E_ACCESS_TOKEN.SEPARATOR
+  )[E2E_ACCESS_TOKEN.PAYLOAD_INDEX];
+
+  if (!payloadSegment) {
+    return failE2eOperation(
+      E2E_ACCESS_TOKEN_ERROR.READ_OPERATION,
+      E2E_ACCESS_TOKEN_ERROR.NO_PAYLOAD
+    );
+  }
+
   const payload: AccessTokenPayload = JSON.parse(
-    stringFromBase64URL(
-      accessToken.split(E2E_ACCESS_TOKEN.SEPARATOR)[
-        E2E_ACCESS_TOKEN.PAYLOAD_INDEX
-      ]
-    )
+    stringFromBase64URL(payloadSegment)
   );
 
   return typeof payload.exp === "number"

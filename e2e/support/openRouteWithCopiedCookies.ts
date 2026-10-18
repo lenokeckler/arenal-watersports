@@ -1,21 +1,26 @@
 import type {
   Browser,
+  BrowserContextOptions,
   Cookie,
   Page,
 } from "@playwright/test";
 
 export const openRouteWithCopiedCookies = async (
   browser: Browser,
-  baseURL: string | undefined,
+  contextOptions: BrowserContextOptions,
   cookies: Cookie[],
-  route: string
-): Promise<Page> => {
-  const copiedContext = await browser.newContext({
-    baseURL,
-  });
-  await copiedContext.addCookies(cookies);
-  const copiedPage = await copiedContext.newPage();
-  await copiedPage.goto(route);
+  route: string,
+  inspect: (copiedPage: Page) => Promise<void>
+): Promise<void> => {
+  const copiedContext =
+    await browser.newContext(contextOptions);
 
-  return copiedPage;
+  try {
+    await copiedContext.addCookies(cookies);
+    const copiedPage = await copiedContext.newPage();
+    await copiedPage.goto(route);
+    await inspect(copiedPage);
+  } finally {
+    await copiedContext.close();
+  }
 };
