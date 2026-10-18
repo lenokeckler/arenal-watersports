@@ -14,4 +14,10 @@ describe("deriveLegacyAuthCookieName", () => {
       deriveLegacyAuthCookieName(LEGACY_FIXTURE.LOCAL_URL)
     ).toBe(LEGACY_FIXTURE.LOCAL_NAME);
   });
+
+  it("uses the whole hostname when it has no dots", () => {
+    expect(
+      deriveLegacyAuthCookieName(LEGACY_FIXTURE.DOTLESS_URL)
+    ).toBe(LEGACY_FIXTURE.DOTLESS_NAME);
+  });
 });

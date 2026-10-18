@@ -112,6 +112,33 @@ describe("signOutThisDevice", () => {
     );
   });
 
+  it("expires the legacy chunks even when the library removed the session", async () => {
+    const legacyName = deriveLegacyAuthCookieName();
+    document.cookie = `${legacyName}${SIGN_OUT_FIXTURE.FIRST_CHUNK_SUFFIX}=${SIGN_OUT_FIXTURE.AUTH_COOKIE_VALUE}; path=/`;
+    document.cookie = `${legacyName}${SIGN_OUT_FIXTURE.SECOND_CHUNK_SUFFIX}=${SIGN_OUT_FIXTURE.AUTH_COOKIE_VALUE}; path=/`;
+
+    await signOutThisDevice(supabase);
+
+    expect(
+      listAuthCookieNames(document.cookie, legacyName)
+    ).toEqual([]);
+  });
+
+  it("never expires another project or a non-numeric legacy suffix", async () => {
+    const legacyName = deriveLegacyAuthCookieName();
+    document.cookie = `${SIGN_OUT_FIXTURE.OTHER_PROJECT_COOKIE}=keep; path=/`;
+    document.cookie = `${legacyName}${SIGN_OUT_FIXTURE.NON_NUMERIC_SUFFIX}=keep; path=/`;
+
+    await signOutThisDevice(supabase);
+
+    expect(document.cookie).toContain(
+      SIGN_OUT_FIXTURE.OTHER_PROJECT_COOKIE
+    );
+    expect(document.cookie).toContain(
+      `${legacyName}${SIGN_OUT_FIXTURE.NON_NUMERIC_SUFFIX}`
+    );
+  });
+
   it("removes the auth cookies and checks again when the session cannot be read", async () => {
     writeAuthCookie();
     getSession
