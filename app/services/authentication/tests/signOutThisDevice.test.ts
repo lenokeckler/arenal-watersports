@@ -9,6 +9,7 @@ import {
 import { SUPABASE_SIGN_OUT_SCOPE } from "@/app/constants";
 import type { BrowserSupabaseClient } from "@/app/services/supabase/models/BrowserSupabaseClient.type";
 import { listAuthCookieNames } from "@/app/utils/supabase-cookie/listAuthCookieNames";
+import { deriveLegacyAuthCookieName } from "@/app/utils/supabase-cookie/deriveLegacyAuthCookieName";
 import { signOutThisDevice } from "../signOutThisDevice";
 import { SIGN_OUT_FIXTURE } from "./signOutThisDevice.constants";
 
@@ -93,9 +94,22 @@ describe("signOutThisDevice", () => {
 
     await signOutThisDevice(supabase);
 
-    expect(listAuthCookieNames(document.cookie)).toEqual([
-      SIGN_OUT_FIXTURE.AUTH_COOKIE_NAME,
-    ]);
+    expect(
+      listAuthCookieNames(
+        document.cookie,
+        SIGN_OUT_FIXTURE.AUTH_COOKIE_NAME
+      )
+    ).toEqual([SIGN_OUT_FIXTURE.AUTH_COOKIE_NAME]);
+  });
+
+  it("always expires the legacy cookie, even when the library removed the session", async () => {
+    document.cookie = `${deriveLegacyAuthCookieName()}=${SIGN_OUT_FIXTURE.AUTH_COOKIE_VALUE}; path=/`;
+
+    await signOutThisDevice(supabase);
+
+    expect(document.cookie).not.toContain(
+      deriveLegacyAuthCookieName()
+    );
   });
 
   it("removes the auth cookies and checks again when the session cannot be read", async () => {
@@ -115,9 +129,12 @@ describe("signOutThisDevice", () => {
     const result = await signOutThisDevice(supabase);
 
     expect(getSession).toHaveBeenCalledTimes(2);
-    expect(listAuthCookieNames(document.cookie)).toEqual(
-      []
-    );
+    expect(
+      listAuthCookieNames(
+        document.cookie,
+        SIGN_OUT_FIXTURE.AUTH_COOKIE_NAME
+      )
+    ).toEqual([]);
     expect(document.cookie).toContain(
       SIGN_OUT_FIXTURE.UNRELATED_COOKIE
     );
@@ -138,9 +155,12 @@ describe("signOutThisDevice", () => {
 
     const result = await signOutThisDevice(supabase);
 
-    expect(listAuthCookieNames(document.cookie)).toEqual(
-      []
-    );
+    expect(
+      listAuthCookieNames(
+        document.cookie,
+        SIGN_OUT_FIXTURE.AUTH_COOKIE_NAME
+      )
+    ).toEqual([]);
     expect(result).toEqual({ ok: true });
   });
 

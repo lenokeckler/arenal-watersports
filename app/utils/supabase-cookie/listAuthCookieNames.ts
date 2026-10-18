@@ -3,14 +3,23 @@ import {
   SUPABASE_AUTH_COOKIE,
 } from "@/app/constants";
 
-const isAuthCookieName = (name: string): boolean =>
-  name === SUPABASE_AUTH_COOKIE.NAME ||
-  name.startsWith(
-    `${SUPABASE_AUTH_COOKIE.NAME}${SUPABASE_AUTH_COOKIE.CHUNK_SEPARATOR}`
+const isChunkOf = (
+  name: string,
+  baseName: string
+): boolean => {
+  const prefix = `${baseName}${SUPABASE_AUTH_COOKIE.CHUNK_SEPARATOR}`;
+
+  return (
+    name.startsWith(prefix) &&
+    SUPABASE_AUTH_COOKIE.CHUNK_INDEX_PATTERN.test(
+      name.slice(prefix.length)
+    )
   );
+};
 
 export const listAuthCookieNames = (
-  cookieHeader: string
+  cookieHeader: string,
+  baseName: string
 ): string[] =>
   cookieHeader
     .split(STRING.SEMICOLON)
@@ -19,4 +28,7 @@ export const listAuthCookieNames = (
         .split(SUPABASE_AUTH_COOKIE.VALUE_SEPARATOR)[0]
         .trim()
     )
-    .filter(isAuthCookieName);
+    .filter(
+      (name) =>
+        name === baseName || isChunkOf(name, baseName)
+    );
