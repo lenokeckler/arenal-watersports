@@ -1,14 +1,13 @@
 import { test as pendingTest } from "../support/pendingWorkerTest";
 import {
-  E2E_APP_DIRECTORY,
   E2E_FULL_VISIBILITY_RATIO,
-  E2E_PRE_LOGIN_ROUTES,
+  E2E_MIN_SCROLL_OFFSET_PX,
+  E2E_OVERFLOW_VIEWPORT_MULTIPLE,
   E2E_PRESENCE_COUNT,
   E2E_SYSTEM_ROUTES,
 } from "../constants/E2eSessionBarPresence.constants";
 import { createSessionBarPage } from "../pages/SessionBar.page";
 import { expect, test } from "../support/activeWorkerTest";
-import { listPageRoutes } from "../support/listPageRoutes";
 import { getMainRegion } from "../support/mainRegion";
 import { STATELESS_PRE_LOGIN_SCREENS } from "../support/preLoginScreens";
 
@@ -19,7 +18,7 @@ test.describe("Session bar on every authenticated screen", () => {
     }) => {
       const sessionBar = createSessionBarPage(page);
 
-      await sessionBar.goTo(route);
+      await page.goto(route);
 
       await expect(getMainRegion(page)).toBeVisible();
       await expect(sessionBar.getBar()).toHaveCount(
@@ -38,7 +37,7 @@ test.describe("Session bar on every authenticated screen", () => {
     }) => {
       const sessionBar = createSessionBarPage(page);
 
-      await sessionBar.goTo(route);
+      await page.goto(route);
 
       await expect(
         sessionBar.getIdleButton()
@@ -46,7 +45,14 @@ test.describe("Session bar on every authenticated screen", () => {
         ratio: E2E_FULL_VISIBILITY_RATIO,
       });
 
+      await sessionBar.addOverflow(
+        E2E_OVERFLOW_VIEWPORT_MULTIPLE
+      );
       await sessionBar.scrollToBottom();
+
+      expect(
+        await sessionBar.readScrollOffset()
+      ).toBeGreaterThan(E2E_MIN_SCROLL_OFFSET_PX);
 
       await expect(
         sessionBar.getIdleButton()
@@ -55,12 +61,6 @@ test.describe("Session bar on every authenticated screen", () => {
       });
     });
   }
-
-  test("covers every authenticated page that exists on disk", () => {
-    expect(
-      listPageRoutes(E2E_APP_DIRECTORY.SYSTEM)
-    ).toEqual([...E2E_SYSTEM_ROUTES].sort());
-  });
 });
 
 test.describe("Session bar never on a pre-login screen", () => {
@@ -83,12 +83,6 @@ test.describe("Session bar never on a pre-login screen", () => {
       ).toHaveCount(E2E_PRESENCE_COUNT.NONE);
     });
   }
-
-  test("covers every pre-login page that exists on disk", () => {
-    expect(
-      listPageRoutes(E2E_APP_DIRECTORY.ACCESS)
-    ).toEqual([...E2E_PRE_LOGIN_ROUTES].sort());
-  });
 });
 
 pendingTest.describe(

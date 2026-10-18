@@ -32,3 +32,10 @@ export const STATELESS_PRE_LOGIN_SCREENS: readonly PreLoginScreen[] =
         createPasswordRecoveryResetPage(page).getHeading(),
     },
   ];
+
+export const PRE_LOGIN_ROUTES: readonly string[] = [
+  ...STATELESS_PRE_LOGIN_SCREENS.map(
+    (screen) => screen.route
+  ),
+  PATHS.ACCESS.FIRST_SIGN_IN,
+];
