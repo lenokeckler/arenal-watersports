@@ -11,7 +11,13 @@ export const createReservationFormCategoryPage = (
       { exact: true }
     );
 
+  const getCategoryOption = (label: string): Locator =>
+    getCategorySelect().locator("option", {
+      hasText: label,
+    });
+
   return {
+    getCategoryOption,
     getCategorySelect,
     selectCategory: async (
       label: string
