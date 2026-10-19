@@ -6,6 +6,12 @@ const isPositiveInteger = (value: number): boolean =>
 export const hasValidCustomComboEquipmentSelections = (
   selections: CustomComboEquipmentSelection[]
 ): boolean => {
+  if (
+    Object.keys(selections).length !== selections.length
+  ) {
+    return false;
+  }
+
   const categoryIds = selections.map((selection) =>
     selection.categoryId.trim()
   );
