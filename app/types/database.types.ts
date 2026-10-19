@@ -2436,6 +2436,13 @@ export type Database = {
         Args: { p_payload: Json };
         Returns: string;
       };
+      custom_combo_price: {
+        Args: { p_duration_minutes: number; p_items: Json };
+        Returns: {
+          list_amount_crc: number;
+          list_amount_usd: number;
+        }[];
+      };
       has_area: {
         Args: {
           target: Database["public"]["Enums"]["work_area"];
@@ -2519,6 +2526,13 @@ export type Database = {
           p_unit_id: string;
         };
         Returns: string;
+      };
+      validate_reservation_guide_assignments: {
+        Args: {
+          p_payload: Json;
+          p_reservation_type: Database["public"]["Enums"]["reservation_type"];
+        };
+        Returns: string[];
       };
       validate_reservation_schedule: {
         Args: {
