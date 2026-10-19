@@ -17,7 +17,7 @@ Allow a reservations worker to record a reservation with its type, customer name
 ## Out of scope
 
 - Criterion 5 remains dependent on integrating open calendar PR #101. This work must not fabricate a local calendar or substitute visibility behavior.
-- US-RES-12 guide assignment, combo composition, and package pricing.
+- Combo composition and package pricing.
 - US-RES-15 availability and collision checking.
 - US-RES-16 collision warnings.
 - US-RES-17 live inventory updates and equipment-selection presentation remain owned by its follow-up UI unit.
@@ -144,12 +144,16 @@ Unit 1 implements the atomic persistence and data-integrity boundary for both co
 - Application assignment writes require `assigned_by` to match `auth.uid()`; `postgres`, `supabase_admin`, and `service_role` retain database maintenance authority.
 - The existing reservation row and equipment commitment remain valid when `guide_ids` is omitted or empty; the form unit supplies selections when a user assigns guides.
 - Guide directory access continues to rely on the existing Reservations authorization and row-level policies.
+- The form loads only workers marked as guides, lets Reservations select any number of guides for tours, and submits the selected identifiers with the reservation.
+- Changing the reservation type away from tour clears selected guides; leaving the selection empty remains valid.
+- If the initial guide directory query fails, the tour form shows a recoverable error and retries through the existing server action.
 - This data contract does not cap people by equipment quantity because the story defines no occupancy ratio per equipment unit.
 
 ### Ownership
 
 - Data unit: guide directory query, mutation payload, database validation and atomic persistence, and database tests.
 - Form unit: responsive guide selection and submission of zero or more selected guide identifiers.
+- Form unit: Stitch-aligned, mobile-first guide assignment in the existing route; there is no guide-count or group-size cap and no external-guide registration.
 
 ## US-RES-17 equipment eligibility data
 

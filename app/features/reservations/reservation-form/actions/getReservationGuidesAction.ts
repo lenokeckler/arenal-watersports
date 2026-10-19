@@ -1,8 +1,8 @@
 "use server";
 
-import type { ReservationGuideOption } from "../models/ReservationGuideOption.interface";
-import { getReservationGuides } from "../services/getReservationGuides";
+import type { ReservationGuideLoadResult } from "../models/ReservationGuideLoadResult.type";
+import { loadReservationGuideDirectory } from "../services/loadReservationGuideDirectory";
 
-export const getReservationGuidesAction = async (): Promise<
-  ReservationGuideOption[]
-> => await getReservationGuides();
+export const getReservationGuidesAction =
+  async (): Promise<ReservationGuideLoadResult> =>
+    await loadReservationGuideDirectory();

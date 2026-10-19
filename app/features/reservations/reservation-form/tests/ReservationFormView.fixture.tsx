@@ -4,6 +4,8 @@ import ReservationFormView from "../ReservationFormView";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 import { createReservationFormViewPage } from "./ReservationFormView.page";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
+import type { ReservationGuideLoadResult } from "../models/ReservationGuideLoadResult.type";
+import { EMPTY_RESERVATION_GUIDE_LOAD_RESULT } from "../constants/ReservationGuideLoad.constants";
 
 const { routerBack } = vi.hoisted(() => ({
   routerBack: vi.fn(),
@@ -30,7 +32,9 @@ vi.mock(
 
 export const reservationRouterBack = routerBack;
 
-const renderReservationFormContainer = () => {
+const renderReservationFormContainer = (
+  guideLoadResult: ReservationGuideLoadResult
+) => {
   routerBack.mockClear();
   const { container } = render(
     <ReservationFormView
@@ -48,13 +52,16 @@ const renderReservationFormContainer = () => {
           name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
         },
       ]}
+      guideLoadResult={guideLoadResult}
       initialDate={RESERVATION_FORM_VIEW_TEST.DATE}
     />
   );
   return container;
 };
 
-export const renderReservationForm = () =>
+export const renderReservationForm = (
+  guideLoadResult: ReservationGuideLoadResult = EMPTY_RESERVATION_GUIDE_LOAD_RESULT
+) =>
   createReservationFormViewPage(
-    renderReservationFormContainer()
+    renderReservationFormContainer(guideLoadResult)
   );

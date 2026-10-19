@@ -107,6 +107,14 @@ export const E2E_RESERVATION_GUIDE_ONLY_CATEGORY = {
   QUADRICYCLE: "Cuadraciclo",
 } as const;
 
+export const E2E_RESERVATION_GUIDES = {
+  FIRST_NAME: "Guia de prueba uno",
+  SECOND_NAME: "Guia de prueba dos",
+  UNMARKED_WORKER_NAME: "Administración",
+  SCREENSHOT_BASENAME: "us-res-12-guide-assignment",
+  MULTIPLE_GUIDES_SUFFIX: "multiple-guides",
+} as const;
+
 export const E2E_RESERVATION_TYPE_COPY = {
   LABEL: RESERVATION_TYPE_COPY.LABEL,
   OPTIONS: RESERVATION_TYPE_COPY.OPTIONS,

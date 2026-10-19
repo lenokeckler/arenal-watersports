@@ -60,6 +60,16 @@ export const RESERVATION_FORM_UI_COPY = {
   EQUIPMENT_ELIGIBILITY_LOADING:
     "Actualizando el equipo disponible…",
   RETRY_EQUIPMENT_ELIGIBILITY: "Reintentar actualización",
+  GUIDES: "Guías de la salida",
+  GUIDES_DESCRIPTION:
+    "Seleccione uno o varios trabajadores marcados como guía. La cantidad de personas no limita la asignación.",
+  GUIDES_SELECTED: "Guías seleccionados",
+  GUIDES_EMPTY:
+    "No hay trabajadores marcados como guía disponibles.",
+  GUIDES_LOADING: "Cargando guías…",
+  GUIDES_ERROR:
+    "No fue posible cargar los guías. Revise la conexión e inténtelo de nuevo.",
+  GUIDES_RETRY: "Reintentar carga de guías",
   EQUIPMENT_SELECTION_CHANGED:
     "La disponibilidad cambió. Seleccione otra categoría o unidad para continuar.",
 } as const;

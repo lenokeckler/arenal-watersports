@@ -11,6 +11,8 @@ export const createReservationFormTypePage = (
   ): Locator => main.getByLabel(label, { exact: false });
 
   return {
+    getGuideCheckbox: (name: string): Locator =>
+      main.getByLabel(name, { exact: true }),
     getReservationTypeDescription: (
       description: string
     ): Locator =>
@@ -20,6 +22,9 @@ export const createReservationFormTypePage = (
       label: string
     ): Promise<void> => {
       await main.getByText(label, { exact: true }).click();
+    },
+    selectGuide: async (name: string): Promise<void> => {
+      await main.getByLabel(name, { exact: true }).check();
     },
   };
 };
