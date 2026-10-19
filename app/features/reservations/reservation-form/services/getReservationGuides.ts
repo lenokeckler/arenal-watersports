@@ -12,7 +12,9 @@ export const getReservationGuides = async (): Promise<
     await getAuthorizedReservationFormClient();
   const { data, error } = await supabase
     .from("workers")
-    .select("id, full_name, worker_marks!inner(mark)")
+    .select(
+      "id, full_name, worker_marks!worker_marks_worker_id_fkey!inner(mark)"
+    )
     .eq("worker_marks.mark", "guia")
     .order("full_name");
 
