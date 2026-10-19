@@ -23,6 +23,7 @@ export const getReservationCategories = async (): Promise<
 
   return (data ?? []).map((category) => ({
     id: category.id,
+    isGuideOnly: category.guide_only,
     isInterchangeable: category.units_are_interchangeable,
     name: category.name,
   }));

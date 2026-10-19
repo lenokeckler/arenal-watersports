@@ -30,11 +30,13 @@ describe("getReservationCategories", () => {
       data: [
         {
           id: RESERVATION_CATEGORY_TEST.INTERCHANGEABLE_ID,
+          guide_only: false,
           name: "Jet Ski",
           units_are_interchangeable: true,
         },
         {
           id: RESERVATION_CATEGORY_TEST.CONCRETE_ID,
+          guide_only: true,
           name: "Lancha",
           units_are_interchangeable: false,
         },
@@ -59,11 +61,13 @@ describe("getReservationCategories", () => {
     ).resolves.toEqual([
       {
         id: RESERVATION_CATEGORY_TEST.INTERCHANGEABLE_ID,
+        isGuideOnly: false,
         isInterchangeable: true,
         name: "Jet Ski",
       },
       {
         id: RESERVATION_CATEGORY_TEST.CONCRETE_ID,
+        isGuideOnly: true,
         isInterchangeable: false,
         name: "Lancha",
       },

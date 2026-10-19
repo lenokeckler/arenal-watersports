@@ -2471,6 +2471,7 @@ export type Database = {
       reservable_equipment_categories: {
         Args: Record<PropertyKey, never>;
         Returns: {
+          guide_only: boolean;
           id: string;
           name: string;
           units_are_interchangeable: boolean;
