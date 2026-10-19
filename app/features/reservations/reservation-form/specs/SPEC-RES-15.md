@@ -27,10 +27,19 @@ US-RES-17 remains responsible for physical equipment eligibility. US-RES-07 rema
 
 This change does not alter reservation persistence, dispatch/return windows, cancellation rules, overdue-dispatch policies, unit status, or inventory CRUD. US-RES-16 owns collision warnings and the decision to continue despite a collision; this story adds no quantity ceiling or submission block.
 
+## Form behavior
+
+- The existing reservation form displays the selected equipment category and the interval in Costa Rica time alongside the category's `free` count.
+- The panel reports loading, query failure with retry, positive availability, zero availability, and negative availability without changing the returned count.
+- A negative `free` value remains visible as a negative number and is described as overcommitted capacity.
+- The category summary is informational. It does not replace concrete-unit availability, add a booking limit, or block reservation submission.
+- Changing the selected interval re-queries availability. Existing equipment Realtime refreshes invalidate the category query.
+- The panel is responsive and follows the reservation form's Stitch visual language on mobile and desktop.
+
 ## Delivery units
 
 - Data unit: interval peak calculation through the existing SQL function, with SQL regression coverage. This implements the database portion of the acceptance criterion.
 - Query unit: an authorized server query and reusable Costa Rica interval conversion, plus a client hook with incomplete, loading, success, and failure states. The existing equipment eligibility channel refreshes category availability when reservation, item, unit, stock, category, or dispatch records change.
-- Form unit, pending: integration into the existing reservation form and ignored local preview, preserving the Stitch visual language, responsive layout, entered values, realtime invalidation, and retry behavior. Playwright coverage and mobile/desktop captures belong to that UI unit.
+- Form unit: integration into the existing reservation form, preserving the Stitch visual language, responsive layout, entered values, realtime invalidation, and retry behavior. Playwright coverage and mobile/desktop captures belong to that UI unit. The ignored local preview is not changed by this PR.
 
-The query unit preserves the RPC's negative `free` result and does not treat aggregate category availability as proof that a concrete unit is available. The data and query units are complete; the acceptance criterion remains pending until the form exposes the selected interval's availability. A local fixture or preview alone does not complete it.
+The query unit preserves the RPC's negative `free` result and does not treat aggregate category availability as proof that a concrete unit is available. The data, query, and form units expose category availability for the selected interval. A local fixture or preview alone does not complete the acceptance criterion.

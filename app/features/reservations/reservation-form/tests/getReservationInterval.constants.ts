@@ -49,6 +49,14 @@ export const RESERVATION_CATEGORY_AVAILABILITY_INPUT = {
   time: "10:00",
 } satisfies ReservationUnitAvailabilityInput;
 
+export const RESERVATION_CATEGORY_AVAILABILITY_CROSS_DAY_INPUT =
+  {
+    categoryId: "category-1",
+    date: "2030-12-31",
+    durationMinutes: 60,
+    time: "23:00",
+  } satisfies ReservationUnitAvailabilityInput;
+
 export const RESERVATION_CATEGORY_AVAILABILITY_ROW = {
   committed: 3,
   free: -1,

@@ -1,7 +1,9 @@
+import type { NullableRef } from "@/app/types";
 import type { ReservationFormField } from "./ReservationFormField.constants";
 import type { ReservationFormInput } from "./ReservationFormInput.interface";
 import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOption.interface";
 import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
+import type { ReservationCategoryAvailabilityPanelState } from "./ReservationCategoryAvailabilityPanelState.type";
 
 export interface ReservationFormViewModel {
   errors: Partial<Record<ReservationFormField, string>>;
@@ -16,6 +18,10 @@ export interface ReservationFormViewModel {
   requiresConcreteUnit: boolean;
   isAvailabilityLoading: boolean;
   hasAvailabilityError: boolean;
+  categoryAvailability: NullableRef<number>;
+  categoryAvailabilityCategoryName: string;
+  categoryAvailabilityInterval: string;
+  categoryAvailabilityState: ReservationCategoryAvailabilityPanelState;
   isCustomDuration: boolean;
   customDurationDraft: string;
   values: ReservationFormInput;
@@ -34,4 +40,5 @@ export interface ReservationFormViewModel {
     event: React.FormEvent<HTMLFormElement>
   ) => void;
   handleRetryEquipmentEligibility: () => void;
+  handleRetryCategoryAvailability: () => void;
 }
