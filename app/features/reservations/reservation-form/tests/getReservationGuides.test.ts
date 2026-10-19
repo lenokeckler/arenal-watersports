@@ -13,6 +13,7 @@ import { getAuthorizedReservationFormClient } from "../services/getAuthorizedRes
 import { getReservationGuides } from "../services/getReservationGuides";
 import {
   GUIDE_QUERY_FIXTURE,
+  GUIDE_WORKER_RELATION,
   SERVER_ERROR_STATUS,
   SUCCESS_STATUS,
 } from "./getReservationGuides.constants";
@@ -61,6 +62,9 @@ describe("getReservationGuides", () => {
     const [requestUrl] = fetchMock.mock.calls[0];
     expect(String(requestUrl)).toContain(
       "worker_marks.mark=eq.guia"
+    );
+    expect(String(requestUrl)).toContain(
+      GUIDE_WORKER_RELATION
     );
     expect(String(requestUrl)).not.toContain("status=eq");
   });
