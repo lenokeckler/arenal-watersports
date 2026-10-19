@@ -45,6 +45,14 @@ export const RESERVATION_FORM_UI_COPY = {
   CATEGORY_AVAILABILITY_RETRY: "Reintentar consulta",
   CATEGORY_AVAILABILITY_UNAVAILABLE:
     "No hay equipos disponibles en este horario.",
+  CATEGORY_CONFLICT_WARNING_TITLE:
+    "Posible cruce de disponibilidad",
+  CATEGORY_CONFLICT_WARNING_DESCRIPTION:
+    "El horario coincide con otras reservas de esta categoría. Puede continuar si la operación se acomoda sobre la marcha.",
+  CATEGORY_CONFLICT_WARNING_LOADING:
+    "Consultando reservas de esta categoría…",
+  CATEGORY_CONFLICT_WARNING_ERROR:
+    "No fue posible verificar los cruces de horario. Puede continuar con el registro.",
   UNIT: "Unidad de lancha",
   UNIT_PLACEHOLDER: "Seleccione una unidad disponible",
   EQUIPMENT_ELIGIBILITY_ERROR:
