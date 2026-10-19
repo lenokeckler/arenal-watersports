@@ -15,9 +15,7 @@ export const useReservationFormValues = (
       categoryId: initialCategoryId,
     });
 
-  const updateValue = <
-    K extends keyof ReservationFormInput,
-  >(
+  const updateValue = <K extends ReservationFormField>(
     field: K,
     value: ReservationFormInput[K]
   ): void => {

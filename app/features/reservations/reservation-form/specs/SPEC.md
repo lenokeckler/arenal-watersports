@@ -87,6 +87,26 @@ The reservation form and mutation accept exactly one of these forms: an intercha
 
 Unit 1 implements the atomic persistence and data-integrity boundary for both commitment shapes. Unit 2 exposes both commitment shapes within the reservation form: interchangeable equipment uses category plus quantity, and the Lancha uses an available concrete unit.
 
+## US-RES-08 reservation type data contract
+
+### Acceptance criteria
+
+- Renta: el cliente se lleva el equipo por su cuenta.
+- Tour: la salida va acompañada por un guía.
+- Combo: junta varios equipos distintos en un solo paquete.
+- Hay equipo que solo puede salir en tour, como las lanchas y los cuadraciclos.
+
+### Data unit scope
+
+- The validated reservation input carries `rental`, `tour`, or `combo` and the RPC persists the selected value.
+- Existing callers without a type remain `rental` until the form unit adds type selection.
+- The category query exposes `guide_only`; the database rejects guide-only category and unit commitments unless the reservation type is `tour`, including direct scheduled-item inserts.
+- Criterion 1 data classification is supported; the form unit must expose the type choice and retain the existing rental flow.
+- Criterion 2 remains pending guide assignment in US-RES-12. This unit stores `tour` but does not assign a worker.
+- Criterion 3 remains pending combo composition and package pricing in US-RES-09 and US-RES-10.
+- Criterion 4 is enforced at the database boundary for category and unit commitments.
+- Tariff selection and payment behavior are not implemented in this unit.
+
 ## US-RES-17 equipment eligibility data
 
 ### Acceptance criterion

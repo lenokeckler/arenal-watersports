@@ -75,6 +75,7 @@ export const INITIAL_ELIGIBLE_CATEGORIES: ReservationCategoryOption[] =
   [
     {
       id: "category-1",
+      isGuideOnly: false,
       isInterchangeable: true,
       name: "Jet Ski",
     },

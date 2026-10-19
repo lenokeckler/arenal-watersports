@@ -25,6 +25,7 @@ export const createRentalReservation = async (
         date: input.date,
         duration_minutes: input.durationMinutes,
         people_count: input.peopleCount,
+        reservation_type: input.reservationType,
         time: input.time,
         ...equipmentCommitmentPayload,
       },

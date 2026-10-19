@@ -1,5 +1,6 @@
 export interface ReservationCategoryOption {
   id: string;
-  name: string;
+  isGuideOnly: boolean;
   isInterchangeable: boolean;
+  name: string;
 }

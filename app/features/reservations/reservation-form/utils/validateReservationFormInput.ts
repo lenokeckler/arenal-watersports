@@ -4,6 +4,7 @@ import type { ReservationFormField } from "../models/ReservationFormField.consta
 import type { ReservationFormInput } from "../models/ReservationFormInput.interface";
 import type { ReservationFormValidation } from "../models/ReservationFormValidation.interface";
 import type { ValidatedReservationFormInput } from "../models/ValidatedReservationFormInput.interface";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 import { RESERVATION_SCHEDULE } from "../constants/ReservationSchedule.constants";
 import {
@@ -24,6 +25,8 @@ const buildValidatedInput = (
     input.durationHours *
     RESERVATION_SCHEDULE.MINUTES_PER_HOUR,
   peopleCount: input.peopleCount,
+  reservationType:
+    input.reservationType ?? RESERVATION_TYPE.RENTAL,
   time: input.time,
   equipmentCommitment: input.unitId.trim()
     ? {

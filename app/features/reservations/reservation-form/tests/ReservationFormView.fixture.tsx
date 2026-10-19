@@ -37,11 +37,13 @@ export const renderReservationForm = () => {
       categories={[
         {
           id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
+          isGuideOnly: false,
           isInterchangeable: true,
           name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
         },
         {
           id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
+          isGuideOnly: true,
           isInterchangeable: false,
           name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
         },
