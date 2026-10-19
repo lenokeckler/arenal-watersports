@@ -7,6 +7,8 @@ export const RESERVATION_FORM_COPY = {
     "Ingrese el nombre de la reserva.",
   [RESERVATION_FORM_FIELD.DATE]:
     "Ingrese una fecha válida.",
+  [RESERVATION_FORM_FIELD.GUIDE_IDS]:
+    "Seleccione los guías para la salida.",
   [RESERVATION_FORM_FIELD.DURATION_HOURS]:
     "Ingrese una duración positiva en horas que equivalga a minutos completos.",
   [RESERVATION_FORM_FIELD.PEOPLE_COUNT]:

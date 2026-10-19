@@ -7,6 +7,7 @@ export const viewModelHarness = (() => {
     customerName: "Reserva del muelle",
     date: "2030-04-12",
     durationHours: 2,
+    guideIds: [],
     peopleCount: 4,
     quantity: 1,
     time: "09:30",
@@ -118,6 +119,7 @@ export const resetViewModelHarness = (): void => {
     "Reserva del muelle";
   viewModelHarness.values.date = "2030-04-12";
   viewModelHarness.values.durationHours = 2;
+  viewModelHarness.values.guideIds = [];
   viewModelHarness.values.peopleCount = 4;
   viewModelHarness.values.quantity = 1;
   viewModelHarness.values.time = "09:30";

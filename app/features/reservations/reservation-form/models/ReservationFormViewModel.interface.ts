@@ -38,6 +38,7 @@ export interface ReservationFormViewModel {
   handleReservationTypeChange: (
     value: ReservationType
   ) => void;
+  handleGuideToggle: (guideId: string) => void;
   handleCategoryChange: (value: string) => void;
   handleTimeChange: (value: string) => void;
   handleUnitChange: (value: string) => void;

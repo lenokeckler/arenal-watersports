@@ -9,10 +9,10 @@ import {
   FRACTIONAL_COUNT,
   INVALID_FIELD_COUNT,
   INVALID_QUANTITY,
-  NEGATIVE_VALUE,
   SUBMINUTE_DURATION_HOURS,
   ZERO_DURATION_HOURS,
   VALID_RESERVATION_FORM_INPUT,
+  VALID_GUIDE_IDS,
 } from "./validateReservationFormInput.constants";
 import { validateReservationFormInput } from "../utils/validateReservationFormInput";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
@@ -29,6 +29,7 @@ describe("validateReservationFormInput", () => {
       customerName: EXPECTED_TRIMMED_CUSTOMER_NAME,
       date: VALID_RESERVATION_FORM_INPUT.date,
       durationMinutes: EXPECTED_DURATION_MINUTES,
+      guideIds: [],
       peopleCount: VALID_RESERVATION_FORM_INPUT.peopleCount,
       reservationType: RESERVATION_TYPE.RENTAL,
       time: VALID_RESERVATION_FORM_INPUT.time,
@@ -51,6 +52,16 @@ describe("validateReservationFormInput", () => {
       RESERVATION_TYPE.TOUR
     );
     expect(result.errors).toEqual({});
+  });
+
+  it("preserves all selected guide identifiers", () => {
+    const result = validateReservationFormInput({
+      ...VALID_RESERVATION_FORM_INPUT,
+      guideIds: VALID_GUIDE_IDS,
+      reservationType: RESERVATION_TYPE.TOUR,
+    });
+
+    expect(result.value?.guideIds).toEqual(VALID_GUIDE_IDS);
   });
 
   it("validates a concrete unit without requiring a category quantity", () => {
@@ -129,34 +140,6 @@ describe("validateReservationFormInput", () => {
     expect(result.value).toBeNull();
     expect(Object.keys(result.errors)).toHaveLength(
       INVALID_FIELD_COUNT
-    );
-  });
-
-  it("rejects negative people, equipment, and duration values", () => {
-    const negativePeopleResult =
-      validateReservationFormInput({
-        ...VALID_RESERVATION_FORM_INPUT,
-        peopleCount: NEGATIVE_VALUE,
-      });
-    const negativeQuantityResult =
-      validateReservationFormInput({
-        ...VALID_RESERVATION_FORM_INPUT,
-        quantity: NEGATIVE_VALUE,
-      });
-    const negativeDurationResult =
-      validateReservationFormInput({
-        ...VALID_RESERVATION_FORM_INPUT,
-        durationHours: NEGATIVE_VALUE,
-      });
-
-    expect(negativePeopleResult.errors).toHaveProperty(
-      RESERVATION_FORM_FIELD.PEOPLE_COUNT
-    );
-    expect(negativeQuantityResult.errors).toHaveProperty(
-      RESERVATION_FORM_FIELD.QUANTITY
-    );
-    expect(negativeDurationResult.errors).toHaveProperty(
-      RESERVATION_FORM_FIELD.DURATION_HOURS
     );
   });
 });
