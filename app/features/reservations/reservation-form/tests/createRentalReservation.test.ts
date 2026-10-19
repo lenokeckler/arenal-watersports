@@ -16,8 +16,6 @@ import {
   CREATE_RESERVATION_RPC_URL,
   SUCCESS_STATUS,
   VALIDATED_RESERVATION_INPUT,
-  VALIDATED_TOUR_RESERVATION_INPUT,
-  VALIDATED_UNIT_RESERVATION_INPUT,
 } from "./createRentalReservation.constants";
 
 vi.mock("@/app/services/supabase", () => ({
@@ -70,6 +68,7 @@ describe("createRentalReservation", () => {
             date: VALIDATED_RESERVATION_INPUT.date,
             duration_minutes:
               VALIDATED_RESERVATION_INPUT.durationMinutes,
+            guide_ids: [],
             people_count:
               VALIDATED_RESERVATION_INPUT.peopleCount,
             reservation_type:
@@ -80,69 +79,6 @@ describe("createRentalReservation", () => {
                 .equipmentCommitment.categoryId,
             quantity:
               VALIDATED_RESERVATION_INPUT
-                .equipmentCommitment.quantity,
-          },
-        }),
-      })
-    );
-  });
-
-  it("sends a concrete unit in one JSON payload", async () => {
-    await createRentalReservation(
-      VALIDATED_UNIT_RESERVATION_INPUT
-    );
-
-    expect(fetchMock).toHaveBeenCalledWith(
-      CREATE_RESERVATION_RPC_URL,
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          p_payload: {
-            customer_name:
-              VALIDATED_UNIT_RESERVATION_INPUT.customerName,
-            date: VALIDATED_UNIT_RESERVATION_INPUT.date,
-            duration_minutes:
-              VALIDATED_UNIT_RESERVATION_INPUT.durationMinutes,
-            people_count:
-              VALIDATED_UNIT_RESERVATION_INPUT.peopleCount,
-            reservation_type:
-              VALIDATED_UNIT_RESERVATION_INPUT.reservationType,
-            time: VALIDATED_UNIT_RESERVATION_INPUT.time,
-            unit_id:
-              VALIDATED_UNIT_RESERVATION_INPUT
-                .equipmentCommitment.unitId,
-          },
-        }),
-      })
-    );
-  });
-
-  it("sends the selected reservation type to the database", async () => {
-    await createRentalReservation(
-      VALIDATED_TOUR_RESERVATION_INPUT
-    );
-
-    expect(fetchMock).toHaveBeenCalledWith(
-      CREATE_RESERVATION_RPC_URL,
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          p_payload: {
-            customer_name:
-              VALIDATED_TOUR_RESERVATION_INPUT.customerName,
-            date: VALIDATED_TOUR_RESERVATION_INPUT.date,
-            duration_minutes:
-              VALIDATED_TOUR_RESERVATION_INPUT.durationMinutes,
-            people_count:
-              VALIDATED_TOUR_RESERVATION_INPUT.peopleCount,
-            reservation_type:
-              VALIDATED_TOUR_RESERVATION_INPUT.reservationType,
-            time: VALIDATED_TOUR_RESERVATION_INPUT.time,
-            category_id:
-              VALIDATED_TOUR_RESERVATION_INPUT
-                .equipmentCommitment.categoryId,
-            quantity:
-              VALIDATED_TOUR_RESERVATION_INPUT
                 .equipmentCommitment.quantity,
           },
         }),

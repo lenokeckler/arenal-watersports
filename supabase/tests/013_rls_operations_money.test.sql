@@ -13,6 +13,8 @@ insert into workers (id, username, full_name, base_role) values
   ('22222222-2222-2222-2222-222222222222', 'ismael', 'Ismael', 'operaciones'),
   ('33333333-3333-3333-3333-333333333333', 'celso', 'Celso', 'reservas'),
   ('44444444-4444-4444-4444-444444444444', 'diego', 'Diego', 'operaciones');
+insert into worker_marks (worker_id, mark, granted_by)
+values ('22222222-2222-2222-2222-222222222222', 'guia', '11111111-1111-1111-1111-111111111111');
 
 delete from worker_areas
  where worker_id = '44444444-4444-4444-4444-444444444444' and area = 'operaciones';
@@ -35,7 +37,7 @@ values ('aaaaaaaa-0000-0000-0000-000000000001', 'rental', 120,
 
 insert into reservations
   (id, customer_name, people_count, type, starts_at, duration_minutes, created_by, updated_by)
-values ('dddddddd-0000-0000-0000-000000000001', 'Maria', 2, 'rental',
+values ('dddddddd-0000-0000-0000-000000000001', 'Maria', 2, 'tour',
         '2026-09-05 10:00:00+00', 60,
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 

@@ -17,7 +17,7 @@ Allow a reservations worker to record a reservation with its type, customer name
 ## Out of scope
 
 - Criterion 5 remains dependent on integrating open calendar PR #101. This work must not fabricate a local calendar or substitute visibility behavior.
-- US-RES-08 guide assignment, combo composition, and package pricing.
+- US-RES-12 guide assignment, combo composition, and package pricing.
 - US-RES-15 availability and collision checking.
 - US-RES-16 collision warnings.
 - US-RES-17 live inventory updates and equipment-selection presentation remain owned by its follow-up UI unit.
@@ -124,6 +124,32 @@ Unit 1 implements the atomic persistence and data-integrity boundary for both co
 - Criterion 2 is represented by the tour selection and its description; assigning a guide remains pending in US-RES-12.
 - Criterion 3 is represented by selecting and persisting `combo`; equipment composition and package pricing remain pending in US-RES-09 and US-RES-10.
 - Criterion 4 is enforced by the data unit and reinforced by filtering `guide_only` categories in the form.
+
+## US-RES-12 guide assignment data contract
+
+### Acceptance criteria — AWS-95
+
+- No hay máximo de personas por tour: se llena hasta que se agota el equipo.
+- Cuando el grupo es grande salen dos guías, por ejemplo un tour de ocho cuadraciclos.
+- Solo se listan los trabajadores marcados como guía.
+
+### Data behavior
+
+- The authorized guide directory returns workers marked as `guia` and no other workers.
+- A reservation may persist any number of distinct guide assignments; the data contract defines no automatic group-size threshold or maximum guide count.
+- Guide assignments are valid only for tours, and each selected worker must be marked as `guia`.
+- Direct guide assignment writes enforce the tour type and guide mark, and a reservation with assigned guides cannot change to a non-tour type.
+- Reservation, equipment item, and guide assignments are created in the same invoker-security RPC transaction.
+- `assigned_by` is the authenticated worker resolved by the existing reservation identity validation.
+- Application assignment writes require `assigned_by` to match `auth.uid()`; `postgres`, `supabase_admin`, and `service_role` retain database maintenance authority.
+- The existing reservation row and equipment commitment remain valid when `guide_ids` is omitted or empty; the form unit supplies selections when a user assigns guides.
+- Guide directory access continues to rely on the existing Reservations authorization and row-level policies.
+- This data contract does not cap people by equipment quantity because the story defines no occupancy ratio per equipment unit.
+
+### Ownership
+
+- Data unit: guide directory query, mutation payload, database validation and atomic persistence, and database tests.
+- Form unit: responsive guide selection and submission of zero or more selected guide identifiers.
 
 ## US-RES-17 equipment eligibility data
 
