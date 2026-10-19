@@ -6,3 +6,5 @@ export const GUIDE_QUERY_FIXTURE = {
 
 export const SUCCESS_STATUS = 200;
 export const SERVER_ERROR_STATUS = 500;
+export const GUIDE_WORKER_RELATION =
+  "worker_marks_worker_id_fkey";
