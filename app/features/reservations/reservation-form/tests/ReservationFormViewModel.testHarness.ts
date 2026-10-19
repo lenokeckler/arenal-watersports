@@ -96,6 +96,11 @@ vi.mock(
   () => ({
     useReservationEquipmentViewModel: () => ({
       ...viewModelHarness.equipment.current,
+      categoryConflictWarning: {
+        hasError: false,
+        isLoading: false,
+        items: [],
+      },
     }),
   })
 );
