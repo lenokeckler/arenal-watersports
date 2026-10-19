@@ -1,12 +1,16 @@
 import { RESERVATION_FORM_MINIMUM_INPUT_VALUE } from "../constants/ReservationFormUi.constants";
 import { STRING } from "@/app/constants";
 import type { ReservationFormField } from "../models/ReservationFormField.constants";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
+import type { ReservationType } from "../models/ReservationType.type";
+import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 import { useReservationFormValues } from "./useReservationFormValues";
 
 export const useReservationFormFields = (
   initialDate: string,
   initialCategoryId: string,
-  clearFieldError: (field: ReservationFormField) => void
+  clearFieldError: (field: ReservationFormField) => void,
+  categories: ReservationCategoryOption[]
 ) => {
   const { updateValue, values } = useReservationFormValues(
     initialDate,
@@ -48,6 +52,21 @@ export const useReservationFormFields = (
         value >= RESERVATION_FORM_MINIMUM_INPUT_VALUE
       ) {
         updateValue("quantity", value);
+      }
+    },
+    handleReservationTypeChange: (
+      value: ReservationType
+    ) => {
+      updateValue("reservationType", value);
+      const selectedCategory = categories.find(
+        (category) => category.id === values.categoryId
+      );
+      if (
+        value !== RESERVATION_TYPE.TOUR &&
+        selectedCategory?.isGuideOnly
+      ) {
+        updateValue("categoryId", STRING.Empty);
+        updateValue("unitId", STRING.Empty);
       }
     },
     handleTimeChange: (value: string) => {

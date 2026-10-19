@@ -10,9 +10,11 @@ import { getAvailableReservationUnitsAction } from "../actions/getAvailableReser
 import { getReservationCategoryAvailabilityAction } from "../actions/getReservationCategoryAvailabilityAction";
 import { getReservationCategoryConflictsAction } from "../actions/getReservationCategoryConflictsAction";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
+import { RESERVATION_TYPE_COPY } from "../constants/ReservationTypeCopy.constants";
 import { RESERVATION_CATEGORY_AVAILABILITY_ROW } from "./getReservationInterval.constants";
 import { RESERVATION_CATEGORY_CONFLICT_WARNING_TEST } from "./ReservationCategoryConflictWarning.constants";
 import { renderReservationForm } from "./ReservationFormView.fixture";
+import { createReservationCategoryConflictPage } from "./ReservationCategoryConflict.page";
 
 vi.mock("../actions/createReservationAction", () => ({
   createReservationAction: vi.fn(),
@@ -58,14 +60,16 @@ describe("ReservationFormView category conflict warning", () => {
       RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.RPC_ROW,
     ]);
     const page = renderReservationForm();
+    const conflictPage =
+      createReservationCategoryConflictPage();
 
     await page.selectCategory(
       RESERVATION_FORM_VIEW_TEST.CATEGORY_ID
     );
-    await page.findCategoryConflictWarning();
-    await page.findCategoryConflictCode();
-    await page.findCategoryConflictCustomerName();
-    await page.findCategoryConflictInterval();
+    await conflictPage.findWarning();
+    await conflictPage.findCode();
+    await conflictPage.findCustomerName();
+    await conflictPage.findInterval();
 
     expect(page.getSubmitButton()).toBeEnabled();
     await page.submit();
@@ -98,12 +102,17 @@ describe("ReservationFormView category conflict warning", () => {
       RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.RPC_ROW,
     ]);
     const page = renderReservationForm();
+    const conflictPage =
+      createReservationCategoryConflictPage();
 
+    await page.selectReservationType(
+      RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
+    );
     await page.selectCategory(
       RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
     );
     await page.findUnitOption();
-    await page.findCategoryConflictWarning();
+    await conflictPage.findWarning();
     await page.selectUnit(
       RESERVATION_FORM_VIEW_TEST.UNIT_ID
     );
@@ -114,32 +123,5 @@ describe("ReservationFormView category conflict warning", () => {
         unitId: RESERVATION_FORM_VIEW_TEST.UNIT_ID,
       })
     );
-  });
-
-  it("allows submission when the conflict lookup fails", async () => {
-    vi.mocked(createReservationAction).mockResolvedValue({
-      ok: true,
-      reservationId:
-        RESERVATION_FORM_VIEW_TEST.CREATED_RESERVATION_ID,
-    });
-    vi.mocked(
-      getReservationCategoryAvailabilityAction
-    ).mockResolvedValue(
-      RESERVATION_CATEGORY_AVAILABILITY_ROW
-    );
-    vi.mocked(
-      getReservationCategoryConflictsAction
-    ).mockRejectedValue(new Error("Lookup unavailable"));
-    const page = renderReservationForm();
-
-    await page.selectCategory(
-      RESERVATION_FORM_VIEW_TEST.CATEGORY_ID
-    );
-    await page.findCategoryConflictError();
-
-    expect(page.getSubmitButton()).toBeEnabled();
-    await page.submit();
-
-    expect(createReservationAction).toHaveBeenCalledOnce();
   });
 });

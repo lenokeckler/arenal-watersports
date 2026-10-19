@@ -1,6 +1,7 @@
 import type { NullableRef } from "@/app/types";
 import type { ReservationFormField } from "./ReservationFormField.constants";
 import type { ReservationFormInput } from "./ReservationFormInput.interface";
+import type { ReservationType } from "./ReservationType.type";
 import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOption.interface";
 import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
 import type { ReservationCategoryAvailabilityPanelState } from "./ReservationCategoryAvailabilityPanelState.type";
@@ -34,6 +35,9 @@ export interface ReservationFormViewModel {
   handleCustomDurationSelection: () => void;
   handlePeopleCountChange: (value: number) => void;
   handleQuantityChange: (value: number) => void;
+  handleReservationTypeChange: (
+    value: ReservationType
+  ) => void;
   handleCategoryChange: (value: string) => void;
   handleTimeChange: (value: string) => void;
   handleUnitChange: (value: string) => void;

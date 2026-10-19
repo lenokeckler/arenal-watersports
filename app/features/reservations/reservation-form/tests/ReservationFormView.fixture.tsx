@@ -30,7 +30,7 @@ vi.mock(
 
 export const reservationRouterBack = routerBack;
 
-export const renderReservationForm = () => {
+const renderReservationFormContainer = () => {
   routerBack.mockClear();
   const { container } = render(
     <ReservationFormView
@@ -51,5 +51,10 @@ export const renderReservationForm = () => {
       initialDate={RESERVATION_FORM_VIEW_TEST.DATE}
     />
   );
-  return createReservationFormViewPage(container);
+  return container;
 };
+
+export const renderReservationForm = () =>
+  createReservationFormViewPage(
+    renderReservationFormContainer()
+  );

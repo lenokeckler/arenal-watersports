@@ -21,7 +21,7 @@ export const RESERVATION_FORM_UI_COPY = {
   SUBMIT_ERROR:
     "No fue posible registrar la reserva. Revise los datos e inténtelo de nuevo.",
   NO_CATEGORIES:
-    "No hay categorías de equipo disponibles para reservar.",
+    "No hay categorías para este tipo de salida. Si requiere equipo de tour, seleccione Tour.",
   EQUIPMENT_QUANTITY_NOTE:
     "Los equipos intercambiables se reservan por cantidad; Operaciones asigna cada unidad al despachar.",
   EQUIPMENT_UNIT_NOTE:

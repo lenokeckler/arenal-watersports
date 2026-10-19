@@ -13,6 +13,8 @@ import { createReservationFormSubmitHandler } from "../utils/createReservationFo
 import { useReservationEquipmentViewModel } from "./useReservationEquipmentViewModel";
 import { useReservationFormState } from "./useReservationFormState";
 import { useReservationEquipmentEligibility } from "./useReservationEquipmentEligibility";
+import { filterReservationCategoriesByType } from "../utils/filterReservationCategoriesByType";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 
 export const useReservationFormViewModel = (
   initialDate: string,
@@ -25,7 +27,8 @@ export const useReservationFormViewModel = (
   const router = useRouter();
   const state = useReservationFormState(
     initialDate,
-    STRING.Empty
+    STRING.Empty,
+    categories
   );
   const { fields } = state;
   const eligibility =
@@ -93,7 +96,11 @@ export const useReservationFormViewModel = (
   });
 
   return {
-    categories: eligibility.categories,
+    categories: filterReservationCategoriesByType(
+      eligibility.categories,
+      fields.values.reservationType ??
+        RESERVATION_TYPE.RENTAL
+    ),
     ...state.fields,
     ...state.submission,
     ...state.duration,
@@ -104,6 +111,8 @@ export const useReservationFormViewModel = (
       setHasEquipmentSelectionChanged(false);
       fields.handleCategoryChange(value);
     },
+    handleReservationTypeChange:
+      fields.handleReservationTypeChange,
     handleUnitChange: (value) => {
       setHasEquipmentSelectionChanged(false);
       fields.handleUnitChange(value);
