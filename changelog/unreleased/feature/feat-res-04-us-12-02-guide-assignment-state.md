@@ -1,0 +1,1 @@
+- RES-04.12.02: Guide assignment state — preserve guide selections on tour reservations and validate the assignment state (US-RES-12 · AWS-95)
