@@ -32,6 +32,19 @@ export const RESERVATION_FORM_UI_COPY = {
     "No fue posible verificar la disponibilidad. Inténtelo de nuevo.",
   AVAILABILITY_LOADING:
     "Verificando disponibilidad de la lancha…",
+  CATEGORY_AVAILABILITY: "Disponibilidad en este horario",
+  CATEGORY_AVAILABILITY_AVAILABLE: "Disponibles",
+  CATEGORY_AVAILABILITY_CONTEXT:
+    "Resumen por categoría; no confirma la disponibilidad de una unidad concreta.",
+  CATEGORY_AVAILABILITY_ERROR:
+    "No fue posible consultar la disponibilidad para este horario.",
+  CATEGORY_AVAILABILITY_LOADING:
+    "Consultando equipos comprometidos en este horario…",
+  CATEGORY_AVAILABILITY_OVERCOMMITTED:
+    "La demanda supera la capacidad registrada para este horario.",
+  CATEGORY_AVAILABILITY_RETRY: "Reintentar consulta",
+  CATEGORY_AVAILABILITY_UNAVAILABLE:
+    "No hay equipos disponibles en este horario.",
   UNIT: "Unidad de lancha",
   UNIT_PLACEHOLDER: "Seleccione una unidad disponible",
   EQUIPMENT_ELIGIBILITY_ERROR:

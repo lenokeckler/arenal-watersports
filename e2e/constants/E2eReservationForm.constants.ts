@@ -1,3 +1,5 @@
+import { RESERVATION_FORM_UI_COPY } from "@/app/features/reservations/reservation-form/constants/ReservationFormUiCopy.constants";
+
 export const E2E_RESERVATION_FORM_COPY = {
   HEADING: "Nueva reserva",
   BACK_TO_CALENDAR: "Volver al calendario",
@@ -20,6 +22,8 @@ export const E2E_RESERVATION_FORM_COPY = {
   UNIT: "Unidad de lancha",
   UNIT_OPTION: "PONTOON",
   CATEGORY_OPTION: "Jet Ski",
+  CATEGORY_AVAILABILITY_OPTION: "Kayak doble",
+  CATEGORY_AVAILABILITY_TIME: "10:00",
   CONCRETE_CATEGORY_OPTION: "Lancha",
   REALTIME_UNIT_OPTION: "BENNINGTON",
   REALTIME_DATE: "2099-12-31",
@@ -57,6 +61,14 @@ export const E2E_RESERVATION_FORM_SUCCESS_SCREENSHOT_SUFFIX =
 
 export const E2E_RESERVATION_FORM_ELIGIBILITY_SCREENSHOT_SUFFIX =
   "eligibility-refreshed";
+
+export const E2E_RESERVATION_CATEGORY_AVAILABILITY_SCREENSHOT_BASENAME =
+  "us-res-15-01-interval-availability";
+
+export const E2E_RESERVATION_CATEGORY_AVAILABILITY_COUNT_PATTERN =
+  new RegExp(
+    `^-?\\d+ ${RESERVATION_FORM_UI_COPY.CATEGORY_AVAILABILITY_AVAILABLE}$`
+  );
 
 export const E2E_RESERVATION_DURATION_PRESET = {
   LABEL: "1 h 30",
