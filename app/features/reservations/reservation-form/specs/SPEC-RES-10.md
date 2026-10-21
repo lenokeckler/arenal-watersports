@@ -22,13 +22,13 @@
 - The form derives guide assignment eligibility from the selected categories, allows optional guide selection, and shows “Sin guía” when the selection contains no tour component.
 - Suggested CRC and USD totals are displayed independently. Optional agreed amounts can override each currency separately.
 - The mobile-first layout follows the existing theme tokens and the Stitch combo and reservation form references. Equipment, pricing, guide state, and submission controls remain usable at narrow widths.
-- Component tests, Playwright coverage, and screenshot evidence are assigned to .06.
+- One focused regression test for category filtering remains in .05; component tests are assigned to .06, while Playwright coverage and screenshot evidence are assigned to .07.
 
 ## UI-to-criterion mapping
 
-| Acceptance criterion                                            | UI and verification                                                                                           |
-| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Specific customer requests                                      | Multiple category selection with per-category quantities; component and browser coverage live in .06.         |
-| Each equipment item remains associated and affects availability | The form submits the existing .04 custom-combo draft; this UI only collects category and quantity selections. |
-| Individual tariffs are proposed and can be adjusted             | The server-provided dual-currency proposal is displayed and each agreed amount has its own optional input.    |
-| Predefined combo pricing remains administration-fixed           | Existing rental and tour controls remain in place; the new itemized controls render only for custom combo.    |
+| Acceptance criterion                                            | UI and verification                                                                                                                         |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Specific customer requests                                      | Multiple category selection with per-category quantities; filter regression in .05, component coverage in .06, and browser coverage in .07. |
+| Each equipment item remains associated and affects availability | The form submits the existing .04 custom-combo draft; this UI only collects category and quantity selections.                               |
+| Individual tariffs are proposed and can be adjusted             | The server-provided dual-currency proposal is displayed and each agreed amount has its own optional input.                                  |
+| Predefined combo pricing remains administration-fixed           | Existing rental and tour controls remain in place; the new itemized controls render only for custom combo.                                  |

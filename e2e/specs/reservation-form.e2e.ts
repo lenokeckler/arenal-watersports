@@ -5,6 +5,7 @@ import {
   E2E_RESERVATION_EQUIPMENT_STATUS,
   E2E_RESERVATION_FORM_COPY,
 } from "../constants/E2eReservationForm.constants";
+import { RESERVATION_TYPE_COPY } from "@/app/features/reservations/reservation-form/constants/ReservationTypeCopy.constants";
 import { createReservationFormPage } from "../pages/ReservationForm.page";
 import { createReservationEquipmentStatusFixture } from "../support/createReservationEquipmentStatusFixture";
 import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
@@ -131,6 +132,9 @@ test.describe("Reservation form", () => {
       createReservationFormPage(page);
 
     await reservationFormPage.goTo();
+    await reservationFormPage.selectReservationType(
+      RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
+    );
     await reservationFormPage.selectCategory(
       E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
     );
@@ -174,6 +178,9 @@ test.describe("Reservation form", () => {
       await expect(
         reservationFormPage.getCategorySelect()
       ).toBeEnabled();
+      await reservationFormPage.selectReservationType(
+        RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
+      );
       await reservationFormPage.selectCategory(
         E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
       );

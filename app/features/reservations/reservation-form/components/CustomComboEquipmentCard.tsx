@@ -1,4 +1,5 @@
 import Button from "@/app/components/button/Button";
+import { BUTTON } from "@/app/constants";
 import { CUSTOM_COMBO_FORM_COPY } from "../constants/CustomComboFormCopy.constants";
 import type { CustomComboEquipmentCardProps } from "../models/CustomComboEquipmentCardProps.interface";
 import {
@@ -31,6 +32,7 @@ const CustomComboEquipmentCard = ({
           className={CUSTOM_COMBO_ADD_BUTTON_CLASS}
           onClick={onAdd}
           type="button"
+          variant={BUTTON.BASE}
         >
           {CUSTOM_COMBO_FORM_COPY.ADD}
         </Button>
