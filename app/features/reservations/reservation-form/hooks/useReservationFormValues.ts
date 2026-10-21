@@ -2,6 +2,7 @@ import { useState } from "react";
 import { RESERVATION_FORM_DEFAULT_VALUES } from "../constants/ReservationFormUi.constants";
 import type { ReservationFormField } from "../models/ReservationFormField.constants";
 import type { ReservationFormInput } from "../models/ReservationFormInput.interface";
+import type { ReservationFormValueField } from "../models/ReservationFormValueField.type";
 
 export const useReservationFormValues = (
   initialDate: string,
@@ -15,7 +16,7 @@ export const useReservationFormValues = (
       categoryId: initialCategoryId,
     });
 
-  const updateValue = <K extends ReservationFormField>(
+  const updateValue = <K extends ReservationFormValueField>(
     field: K,
     value: ReservationFormInput[K]
   ): void => {

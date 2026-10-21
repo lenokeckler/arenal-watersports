@@ -48,6 +48,8 @@ export const useReservationFormSelectionFields = (
       : [...currentGuideIds, guideId];
     updateValue("guideIds", nextGuideIds);
   },
+  handleGuideIdsChange: (guideIds: string[]): void =>
+    updateValue("guideIds", guideIds),
   handleUnitChange: (value: string): void =>
     updateValue("unitId", value),
 });
