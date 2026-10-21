@@ -1,5 +1,6 @@
 import Button from "@/app/components/button/Button";
 import InlineText from "@/app/components/text/InlineText";
+import { BUTTON } from "@/app/constants";
 import type { CustomComboEquipmentQuantityControlProps } from "../models/CustomComboEquipmentQuantityControlProps.interface";
 import {
   CUSTOM_COMBO_QUANTITY_BUTTON_CLASS,
@@ -24,6 +25,7 @@ const CustomComboEquipmentQuantityControl = ({
       className={CUSTOM_COMBO_QUANTITY_BUTTON_CLASS}
       onClick={onDecrease}
       type="button"
+      variant={BUTTON.BASE}
     >
       {CUSTOM_COMBO_FORM_COPY.DECREMENT_SYMBOL}
     </Button>
@@ -35,6 +37,7 @@ const CustomComboEquipmentQuantityControl = ({
       className={CUSTOM_COMBO_QUANTITY_BUTTON_CLASS}
       onClick={onIncrease}
       type="button"
+      variant={BUTTON.BASE}
     >
       {CUSTOM_COMBO_FORM_COPY.INCREMENT_SYMBOL}
     </Button>
