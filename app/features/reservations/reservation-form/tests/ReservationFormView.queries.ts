@@ -34,6 +34,8 @@ const createReservationQueries = (
       form.getByLabelText(label, { exact: false }),
     getReservationTypeDescription: (description: string) =>
       form.getByText(description, { exact: true }),
+    getCategoryHeading: (name: string) =>
+      form.getByRole(ARIA_ROLE.HEADING, { name }),
     getCustomerNameInput: () =>
       form.getByLabelText(
         RESERVATION_FORM_UI_COPY.CUSTOMER_NAME,
