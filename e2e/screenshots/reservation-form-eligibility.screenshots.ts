@@ -5,6 +5,7 @@ import {
   E2E_RESERVATION_FORM_COPY,
   E2E_RESERVATION_FORM_ELIGIBILITY_SCREENSHOT_SUFFIX,
   E2E_RESERVATION_FORM_SCREENSHOT_BASENAME,
+  E2E_RESERVATION_TYPE_COPY,
 } from "../constants/E2eReservationForm.constants";
 import {
   E2E_NEXT_DEV_INDICATOR_SELECTOR,
@@ -31,6 +32,9 @@ test("captures equipment options after a unit is marked damaged", async ({
       createReservationFormPage(page);
 
     await reservationFormPage.goTo();
+    await reservationFormPage.selectReservationType(
+      E2E_RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
+    );
     await reservationFormPage
       .getDateInput()
       .fill(E2E_RESERVATION_FORM_COPY.REALTIME_DATE);
