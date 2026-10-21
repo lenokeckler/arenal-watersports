@@ -16,6 +16,10 @@ export interface CustomComboFormViewModel {
   handleItemChange: (
     selection: CustomComboEquipmentSelection
   ) => void;
+  handleItemQuantityChange: (
+    categoryId: string,
+    quantity: number
+  ) => void;
   handleItemRemoval: (categoryId: string) => void;
   handlePricingRetry: () => void;
 }
