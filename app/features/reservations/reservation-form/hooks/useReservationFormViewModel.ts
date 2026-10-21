@@ -8,6 +8,8 @@ import { filterReservationCategoriesByType } from "../utils/filterReservationCat
 import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import { useReservationFormViewModelDependencies } from "./useReservationFormViewModelDependencies";
 import { useReservationGuideLoadViewModel } from "./useReservationGuideLoadViewModel";
+import { useCustomComboForm } from "./useCustomComboForm";
+import { createReservationFormSubmitHandler } from "../utils/createReservationFormSubmitHandler";
 
 export const useReservationFormViewModel = (
   initialDate: string,
@@ -16,12 +18,31 @@ export const useReservationFormViewModel = (
 ): ReservationGuideAssignmentViewModel => {
   const guideLoad =
     useReservationGuideLoadViewModel(guideLoadResult);
-  const { handleSubmit, handlers, resources, router } =
+  const { handlers, resources, router } =
     useReservationFormViewModelDependencies(
       initialDate,
       categories
     );
   const { state, eligibility } = resources;
+  const customCombo = useCustomComboForm(
+    eligibility.categories,
+    resources.resolvedDurationHours,
+    state.fields.handleGuideIdsChange,
+    state.submission.clearFieldError
+  );
+  const handleSubmit = createReservationFormSubmitHandler({
+    ...resources.equipment,
+    customCombo: {
+      draft: customCombo.draft,
+      hasGuideOnlyItem: customCombo.hasGuideOnlyItem,
+    },
+    resolvedDurationHours: resources.resolvedDurationHours,
+    setFieldError: state.submission.setFieldError,
+    submitCustomComboReservation:
+      state.submission.submitCustomComboReservation,
+    submitReservation: state.submission.submitReservation,
+    values: state.fields.values,
+  });
   return {
     categories: filterReservationCategoriesByType(
       eligibility.categories,
@@ -32,6 +53,7 @@ export const useReservationFormViewModel = (
     ...state.submission,
     ...state.duration,
     ...resources.equipment,
+    customCombo,
     ...state.durationHandlers,
     ...handlers,
     handleBack: router.back,
