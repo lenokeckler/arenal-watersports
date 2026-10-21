@@ -5,6 +5,7 @@ import {
   E2E_BASE_URL,
   E2E_DESKTOP_VIEWPORT,
   E2E_DEVICE_NAME,
+  E2E_GLOBAL_SETUP,
   E2E_HTML_REPORT_OPEN_MODE,
   E2E_OUTPUT_DIR,
   E2E_PROJECT,
@@ -29,6 +30,7 @@ const desktopChromium = {
 };
 
 export default defineConfig({
+  globalSetup: E2E_GLOBAL_SETUP,
   testDir: E2E_TEST_DIR,
   timeout: E2E_TIMEOUT_MS.TEST,
   expect: { timeout: E2E_TIMEOUT_MS.EXPECT },
