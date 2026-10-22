@@ -13,11 +13,13 @@ const ReservationFormView = ({
   categories,
   guideLoadResult,
   initialDate,
+  predefinedCombos,
 }: ReservationFormViewProps): React.JSX.Element => {
   const viewModel = useReservationFormViewModel(
     initialDate,
     categories,
-    guideLoadResult
+    guideLoadResult,
+    predefinedCombos
   );
 
   return (

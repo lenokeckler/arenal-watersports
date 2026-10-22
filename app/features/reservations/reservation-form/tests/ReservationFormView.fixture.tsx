@@ -54,6 +54,7 @@ const renderReservationFormContainer = (
       ]}
       guideLoadResult={guideLoadResult}
       initialDate={RESERVATION_FORM_VIEW_TEST.DATE}
+      predefinedCombos={[]}
     />
   );
   return container;

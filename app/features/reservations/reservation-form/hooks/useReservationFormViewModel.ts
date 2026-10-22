@@ -10,11 +10,14 @@ import { useReservationFormViewModelDependencies } from "./useReservationFormVie
 import { useReservationGuideLoadViewModel } from "./useReservationGuideLoadViewModel";
 import { useCustomComboForm } from "./useCustomComboForm";
 import { createReservationFormSubmitHandler } from "../utils/createReservationFormSubmitHandler";
+import type { ReservationPredefinedCombo } from "../models/ReservationPredefinedCombo.interface";
+import { usePredefinedComboForm } from "./usePredefinedComboForm";
 
 export const useReservationFormViewModel = (
   initialDate: string,
   categories: ReservationCategoryOption[],
-  guideLoadResult: ReservationGuideLoadResult = EMPTY_RESERVATION_GUIDE_LOAD_RESULT
+  guideLoadResult: ReservationGuideLoadResult = EMPTY_RESERVATION_GUIDE_LOAD_RESULT,
+  predefinedCombos: ReservationPredefinedCombo[] = []
 ): ReservationGuideAssignmentViewModel => {
   const guideLoad =
     useReservationGuideLoadViewModel(guideLoadResult);
@@ -29,6 +32,14 @@ export const useReservationFormViewModel = (
     resources.resolvedDurationHours,
     state.fields.handleGuideIdsChange,
     state.submission.clearFieldError
+  );
+  const isComboReservation =
+    state.fields.values.reservationType ===
+    RESERVATION_TYPE.COMBO;
+  const predefinedCombo = usePredefinedComboForm(
+    predefinedCombos,
+    isComboReservation,
+    state.fields.handleGuideIdsChange
   );
   const handleSubmit = createReservationFormSubmitHandler({
     ...resources.equipment,
@@ -54,11 +65,16 @@ export const useReservationFormViewModel = (
     ...state.duration,
     ...resources.equipment,
     customCombo,
+    predefinedCombo,
     ...state.durationHandlers,
     ...handlers,
     handleBack: router.back,
-    handleReservationTypeChange:
-      state.fields.handleReservationTypeChange,
+    handleReservationTypeChange: (value) => {
+      if (value !== RESERVATION_TYPE.COMBO) {
+        predefinedCombo.reset();
+      }
+      state.fields.handleReservationTypeChange(value);
+    },
     handleGuideToggle: state.fields.handleGuideToggle,
     handleRetryEquipmentEligibility: eligibility.retry,
     handleSubmit,

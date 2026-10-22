@@ -25,6 +25,7 @@ describe("mapPredefinedComboRecords", () => {
           {
             categoryId: PREDEFINED_COMBO_TEST_IDS.CATEGORY,
             categoryName: "Jet Ski",
+            isGuideOnly: false,
             quantity: 2,
           },
         ],
@@ -39,6 +40,7 @@ describe("mapPredefinedComboRecords", () => {
           {
             categoryId: PREDEFINED_COMBO_TEST_IDS.CATEGORY,
             categoryName: "Jet Ski",
+            isGuideOnly: false,
             quantity: 1,
           },
         ],
@@ -85,12 +87,14 @@ describe("mapPredefinedComboRecords", () => {
         ...DEFAULT_PREDEFINED_COMBO_RECORDS.categories,
         {
           id: PREDEFINED_COMBO_TEST_IDS.INACTIVE_CATEGORY,
+          guide_only: false,
           is_reservable: true,
           name: "Inactive category",
           status: PREDEFINED_COMBO_STATUS.INACTIVE,
         },
         {
           id: PREDEFINED_COMBO_TEST_IDS.NON_RESERVABLE_CATEGORY,
+          guide_only: false,
           is_reservable: false,
           name: "Non reservable category",
           status: PREDEFINED_COMBO_STATUS.ACTIVE,
@@ -170,5 +174,20 @@ describe("mapPredefinedComboRecords", () => {
         DEFAULT_PREDEFINED_COMBO_RECORDS
       )
     );
+  });
+
+  it("preserves the guide-only category marker on combo items", () => {
+    const recordsWithGuideCategory = {
+      ...DEFAULT_PREDEFINED_COMBO_RECORDS,
+      categories:
+        DEFAULT_PREDEFINED_COMBO_RECORDS.categories.map(
+          (category) => ({ ...category, guide_only: true })
+        ),
+    };
+
+    expect(
+      mapPredefinedComboRecords(recordsWithGuideCategory)[0]
+        ?.items[0]?.isGuideOnly
+    ).toBe(true);
   });
 });

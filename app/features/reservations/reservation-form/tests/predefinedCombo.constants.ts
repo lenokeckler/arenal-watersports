@@ -31,6 +31,7 @@ export const DEFAULT_PREDEFINED_COMBO_RECORDS: PredefinedComboQueryRecords =
     categories: [
       {
         id: PREDEFINED_COMBO_TEST_IDS.CATEGORY,
+        guide_only: false,
         is_reservable: true,
         name: "Jet Ski",
         status: PREDEFINED_COMBO_STATUS.ACTIVE,
