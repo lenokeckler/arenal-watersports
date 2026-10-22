@@ -3,22 +3,16 @@ import { RESERVATION_FORM_CARD_CLASS } from "../styles/ReservationFormView.style
 import ReservationFormFeedback from "./ReservationFormFeedback";
 import ReservationFormFields from "./ReservationFormFields";
 import ReservationFormSubmitAction from "./ReservationFormSubmitAction";
+import { getIsReservationFormSubmitDisabled } from "../utils/getIsReservationFormSubmitDisabled";
 
 const ReservationFormCard = ({
   categories,
   viewModel,
 }: ReservationFormCardProps): React.JSX.Element => {
-  const isAvailabilityUnavailable =
-    viewModel.requiresConcreteUnit &&
-    (viewModel.availableUnits.length === 0 ||
-      viewModel.isAvailabilityLoading ||
-      viewModel.hasAvailabilityError);
-  const isDisabled =
-    viewModel.isPending ||
-    categories.length === 0 ||
-    viewModel.isEquipmentEligibilityLoading ||
-    viewModel.hasEquipmentEligibilityError ||
-    isAvailabilityUnavailable;
+  const isDisabled = getIsReservationFormSubmitDisabled({
+    categories,
+    viewModel,
+  });
 
   return (
     <div className={RESERVATION_FORM_CARD_CLASS}>
