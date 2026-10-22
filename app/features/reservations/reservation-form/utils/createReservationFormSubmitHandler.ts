@@ -5,6 +5,9 @@ import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constant
 import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import { hasValidCustomComboEquipmentSelections } from "./hasValidCustomComboEquipmentSelections";
 import { createCustomComboReservationInput } from "./createCustomComboReservationInput";
+import { PREDEFINED_COMBO_SELECTION_MODE } from "../constants/PredefinedComboSelectionMode.constants";
+import { PREDEFINED_COMBO_FORM_COPY } from "../constants/PredefinedComboFormCopy.constants";
+import { createPredefinedComboReservationInput } from "./createPredefinedComboReservationInput";
 
 const setMissingConcreteUnitError = (
   options: ReservationFormSubmitOptions
@@ -22,6 +25,48 @@ const setMissingConcreteUnitError = (
   return true;
 };
 
+const submitPredefinedCombo = (
+  options: ReservationFormSubmitOptions
+): void => {
+  const comboId = options.predefinedCombo.selectedComboId;
+  if (!comboId) {
+    options.setSubmissionError(
+      PREDEFINED_COMBO_FORM_COPY.NO_SELECTION
+    );
+    return;
+  }
+  options.submitPredefinedComboReservation(
+    createPredefinedComboReservationInput({
+      comboId,
+      durationHours: options.resolvedDurationHours,
+      values: options.values,
+    })
+  );
+};
+
+const submitCustomCombo = (
+  options: ReservationFormSubmitOptions
+): void => {
+  if (
+    !hasValidCustomComboEquipmentSelections(
+      options.customCombo.draft.items
+    )
+  ) {
+    options.setFieldError(
+      RESERVATION_FORM_FIELD.ITEMS,
+      RESERVATION_FORM_COPY[RESERVATION_FORM_FIELD.ITEMS]
+    );
+    return;
+  }
+  options.submitCustomComboReservation(
+    createCustomComboReservationInput({
+      ...options.customCombo,
+      durationHours: options.resolvedDurationHours,
+      values: options.values,
+    })
+  );
+};
+
 export const createReservationFormSubmitHandler =
   (
     options: ReservationFormSubmitOptions
@@ -33,25 +78,13 @@ export const createReservationFormSubmitHandler =
       RESERVATION_TYPE.COMBO
     ) {
       if (
-        !hasValidCustomComboEquipmentSelections(
-          options.customCombo.draft.items
-        )
+        options.predefinedCombo.mode ===
+        PREDEFINED_COMBO_SELECTION_MODE.PREDEFINED
       ) {
-        options.setFieldError(
-          RESERVATION_FORM_FIELD.ITEMS,
-          RESERVATION_FORM_COPY[
-            RESERVATION_FORM_FIELD.ITEMS
-          ]
-        );
+        submitPredefinedCombo(options);
         return;
       }
-      options.submitCustomComboReservation(
-        createCustomComboReservationInput({
-          ...options.customCombo,
-          durationHours: options.resolvedDurationHours,
-          values: options.values,
-        })
-      );
+      submitCustomCombo(options);
       return;
     }
     if (setMissingConcreteUnitError(options)) {
