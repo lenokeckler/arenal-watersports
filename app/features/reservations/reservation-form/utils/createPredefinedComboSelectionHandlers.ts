@@ -17,6 +17,7 @@ const createResetHandler =
     if (hasGuideOnlyItem(input.selectedCombo)) {
       input.onGuideIdsChange([]);
     }
+    input.clearSubmissionStatus?.();
     input.setMode(PREDEFINED_COMBO_SELECTION_MODE.CUSTOM);
     input.setSelectedComboId(null);
   };
@@ -36,6 +37,8 @@ const createModeChangeHandler =
       return;
     }
     if (input.isComboReservation) {
+      input.clearSubmissionStatus?.();
+      input.onGuideIdsChange([]);
       input.setMode(nextMode);
     }
   };
@@ -54,6 +57,7 @@ const createComboSelectionHandler =
     }
     const nextCombo =
       input.combos.find(({ id }) => id === comboId) ?? null;
+    input.clearSubmissionStatus?.();
     if (
       hasGuideOnlyItem(input.selectedCombo) &&
       !hasGuideOnlyItem(nextCombo)
