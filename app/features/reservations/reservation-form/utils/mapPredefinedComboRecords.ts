@@ -79,6 +79,7 @@ const mapComboItems = (
     mappedItems.push({
       categoryId: category.id,
       categoryName: category.name,
+      isGuideOnly: category.guide_only,
       quantity: item.quantity,
     });
   }

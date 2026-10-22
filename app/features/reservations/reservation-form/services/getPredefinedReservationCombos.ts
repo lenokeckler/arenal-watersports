@@ -36,7 +36,7 @@ const getActiveCategories = async (
 ): Promise<PredefinedComboCategoryRecord[]> => {
   const { data, error } = await supabase
     .from("equipment_categories")
-    .select("id, name, status, is_reservable")
+    .select("id, name, status, is_reservable, guide_only")
     .in("id", categoryIds)
     .eq("status", PREDEFINED_COMBO_STATUS.ACTIVE)
     .eq(

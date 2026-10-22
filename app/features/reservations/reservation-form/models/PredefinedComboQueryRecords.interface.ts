@@ -17,7 +17,7 @@ export type PredefinedComboItemRecord = Pick<
 
 export type PredefinedComboCategoryRecord = Pick<
   Database["public"]["Tables"]["equipment_categories"]["Row"],
-  "id" | "is_reservable" | "name" | "status"
+  "guide_only" | "id" | "is_reservable" | "name" | "status"
 >;
 
 export interface PredefinedComboQueryRecords {

@@ -50,6 +50,10 @@ describe("getPredefinedReservationCombos", () => {
   });
 
   it("loads active persisted combos and their category components", async () => {
+    const guideOnlyCategories =
+      DEFAULT_PREDEFINED_COMBO_RECORDS.categories.map(
+        (category) => ({ ...category, guide_only: true })
+      );
     fetchMock
       .mockResolvedValueOnce(
         new Response(
@@ -72,14 +76,9 @@ describe("getPredefinedReservationCombos", () => {
         )
       )
       .mockResolvedValueOnce(
-        new Response(
-          JSON.stringify(
-            DEFAULT_PREDEFINED_COMBO_RECORDS.categories
-          ),
-          {
-            status: PREDEFINED_COMBO_HTTP_STATUS.SUCCESS,
-          }
-        )
+        new Response(JSON.stringify(guideOnlyCategories), {
+          status: PREDEFINED_COMBO_HTTP_STATUS.SUCCESS,
+        })
       );
 
     const combos = await getPredefinedReservationCombos();
@@ -97,6 +96,10 @@ describe("getPredefinedReservationCombos", () => {
     expect(String(fetchMock.mock.calls[2][0])).toContain(
       `is_reservable=eq.${PREDEFINED_COMBO_RESERVABILITY.RESERVABLE}`
     );
+    expect(String(fetchMock.mock.calls[2][0])).toContain(
+      "guide_only"
+    );
+    expect(combos[0]?.items[0]?.isGuideOnly).toBe(true);
   });
 
   it("returns empty when there are no active combos", async () => {
