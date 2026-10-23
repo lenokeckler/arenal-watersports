@@ -26,6 +26,7 @@ export const createReservationFormViewModel = ({
     ...resources.equipment,
     customCombo,
     predefinedCombo,
+    extras: resources.extras,
     ...state.durationHandlers,
     ...handlers,
     handleBack: router.back,
