@@ -6,6 +6,8 @@ export const PATHS = {
   HOME: "/",
   RESERVATIONS: {
     CALENDAR: "/reservations/calendar",
+    DETAIL: (reservationId: string): string =>
+      `/reservations/${encodeURIComponent(reservationId)}`,
     NEW: "/reservations/new",
   },
 } as const;
