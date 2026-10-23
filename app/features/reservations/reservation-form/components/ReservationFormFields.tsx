@@ -6,6 +6,8 @@ import ReservationTypeField from "./ReservationTypeField";
 import ReservationGuideAssignmentField from "./ReservationGuideAssignmentField";
 import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import ReservationComboFields from "./ReservationComboFields";
+import ReservationExtrasField from "./ReservationExtrasField";
+import { shouldShowReservationExtras } from "../utils/shouldShowReservationExtras";
 
 const ReservationFormFields = ({
   categories,
@@ -36,6 +38,9 @@ const ReservationFormFields = ({
         viewModel={viewModel}
       />
     )}
+    {shouldShowReservationExtras(viewModel) ? (
+      <ReservationExtrasField viewModel={viewModel} />
+    ) : null}
   </div>
 );
 
