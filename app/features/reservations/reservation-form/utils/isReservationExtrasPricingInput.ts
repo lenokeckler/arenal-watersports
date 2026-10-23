@@ -6,6 +6,7 @@ import { TYPE_OF } from "@/app/constants";
 import type { ReservationExtrasPricingInput } from "../models/ReservationExtrasPricingInput.interface";
 import type { ReservationExtrasPricingType } from "../models/ReservationExtrasPricingType.type";
 import { isValidReservationDuration } from "./validateReservationSchedule";
+import { isUniqueReservationExtraIds } from "./isUniqueReservationExtraIds";
 
 const isRecord = (
   value: unknown
@@ -19,27 +20,6 @@ const isString = (value: unknown): value is string =>
 
 const isNumber = (value: unknown): value is number =>
   typeof value === TYPE_OF.NUMBER;
-
-const isUniqueExtraIds = (
-  extraIds: unknown
-): extraIds is string[] => {
-  if (!Array.isArray(extraIds)) {
-    return false;
-  }
-  if (
-    !extraIds.every(
-      (extraId) =>
-        isString(extraId) &&
-        RESERVATION_EXTRA.UUID_PATTERN.test(extraId)
-    )
-  ) {
-    return false;
-  }
-  const normalizedIds = extraIds.map((extraId) =>
-    extraId.toLowerCase()
-  );
-  return new Set(normalizedIds).size === extraIds.length;
-};
 
 const isValidDuration = (
   durationHours: unknown
@@ -65,7 +45,7 @@ export const isReservationExtrasPricingInput = (
   }
   return (
     isValidDuration(input.durationHours) &&
-    isUniqueExtraIds(input.extraIds) &&
+    isUniqueReservationExtraIds(input.extraIds) &&
     isReservationExtrasPricingType(input.reservationType) &&
     isString(input.unitId) &&
     RESERVATION_EXTRA.UUID_PATTERN.test(input.unitId)

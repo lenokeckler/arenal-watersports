@@ -11,6 +11,8 @@ export const RESERVATION_FORM_COPY = {
     "Seleccione los guías para la salida.",
   [RESERVATION_FORM_FIELD.DURATION_HOURS]:
     "Ingrese una duración positiva en horas que equivalga a minutos completos.",
+  [RESERVATION_FORM_FIELD.EXTRA_IDS]:
+    "Revise los extras seleccionados.",
   [RESERVATION_FORM_FIELD.PEOPLE_COUNT]:
     "Ingrese una cantidad entera de personas mayor que cero.",
   [RESERVATION_FORM_FIELD.QUANTITY]:

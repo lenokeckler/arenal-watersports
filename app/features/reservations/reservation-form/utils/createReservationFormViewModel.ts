@@ -31,6 +31,7 @@ export const createReservationFormViewModel = ({
     handleBack: router.back,
     handleReservationTypeChange,
     handleGuideToggle: state.fields.handleGuideToggle,
+    handleExtraToggle: state.fields.handleExtraToggle,
     handleRetryEquipmentEligibility: eligibility.retry,
     handleSubmit,
     hasEquipmentEligibilityError: eligibility.hasError,

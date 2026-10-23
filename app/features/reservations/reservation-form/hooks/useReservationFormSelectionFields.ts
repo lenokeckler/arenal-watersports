@@ -26,13 +26,20 @@ export const useReservationFormSelectionFields = (
   categories: ReservationCategoryOption[]
 ) => ({
   handleCategoryChange: (value: string): void => {
+    if (values.categoryId === value) {
+      return;
+    }
     updateValue("categoryId", value);
     updateValue("unitId", STRING.Empty);
+    updateValue("extraIds", []);
   },
   handleReservationTypeChange: (
     value: ReservationType
   ): void => {
     updateValue("reservationType", value);
+    if (value === RESERVATION_TYPE.COMBO) {
+      updateValue("extraIds", []);
+    }
     if (value === RESERVATION_TYPE.TOUR) {
       return;
     }
@@ -48,8 +55,22 @@ export const useReservationFormSelectionFields = (
       : [...currentGuideIds, guideId];
     updateValue("guideIds", nextGuideIds);
   },
+  handleExtraToggle: (extraId: string): void => {
+    const currentExtraIds = values.extraIds ?? [];
+    const nextExtraIds = currentExtraIds.includes(extraId)
+      ? currentExtraIds.filter(
+          (selectedId) => selectedId !== extraId
+        )
+      : [...currentExtraIds, extraId];
+    updateValue("extraIds", nextExtraIds);
+  },
   handleGuideIdsChange: (guideIds: string[]): void =>
     updateValue("guideIds", guideIds),
-  handleUnitChange: (value: string): void =>
-    updateValue("unitId", value),
+  handleUnitChange: (value: string): void => {
+    if (values.unitId === value) {
+      return;
+    }
+    updateValue("unitId", value);
+    updateValue("extraIds", []);
+  },
 });
