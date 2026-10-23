@@ -43,6 +43,18 @@ describe("getReservationExtras", () => {
         name: RESERVATION_EXTRA_TEST.ACTIVE_EXTRA_NAME,
         price_crc: RESERVATION_EXTRA_TEST.PRICE_CRC,
         price_usd: RESERVATION_EXTRA_TEST.PRICE_USD,
+        occupies_category_id:
+          RESERVATION_EXTRA_TEST.OCCUPIES_CATEGORY_ID,
+        occupies_quantity:
+          RESERVATION_EXTRA_TEST.OCCUPIES_QUANTITY,
+      },
+      {
+        id: RESERVATION_EXTRA_TEST.CHARGE_ONLY_EXTRA_ID,
+        name: RESERVATION_EXTRA_TEST.CHARGE_ONLY_EXTRA_NAME,
+        price_crc: RESERVATION_EXTRA_TEST.PRICE_CRC,
+        price_usd: RESERVATION_EXTRA_TEST.PRICE_USD,
+        occupies_category_id: null,
+        occupies_quantity: null,
       },
     ]);
     vi.mocked(
@@ -59,11 +71,23 @@ describe("getReservationExtras", () => {
         name: RESERVATION_EXTRA_TEST.ACTIVE_EXTRA_NAME,
         priceCrc: RESERVATION_EXTRA_TEST.PRICE_CRC,
         priceUsd: RESERVATION_EXTRA_TEST.PRICE_USD,
+        occupiesCategoryId:
+          RESERVATION_EXTRA_TEST.OCCUPIES_CATEGORY_ID,
+        occupiesQuantity:
+          RESERVATION_EXTRA_TEST.OCCUPIES_QUANTITY,
+      },
+      {
+        id: RESERVATION_EXTRA_TEST.CHARGE_ONLY_EXTRA_ID,
+        name: RESERVATION_EXTRA_TEST.CHARGE_ONLY_EXTRA_NAME,
+        priceCrc: RESERVATION_EXTRA_TEST.PRICE_CRC,
+        priceUsd: RESERVATION_EXTRA_TEST.PRICE_USD,
+        occupiesCategoryId: null,
+        occupiesQuantity: null,
       },
     ]);
     expect(supabase.from).toHaveBeenCalledWith("extras");
     expect(supabase.query.select).toHaveBeenCalledWith(
-      "id, name, price_crc, price_usd, extra_compatibility!inner(unit_id)"
+      "id, name, price_crc, price_usd, occupies_category_id, occupies_quantity, extra_compatibility!inner(unit_id)"
     );
     expect(supabase.query.eq).toHaveBeenNthCalledWith(
       1,
