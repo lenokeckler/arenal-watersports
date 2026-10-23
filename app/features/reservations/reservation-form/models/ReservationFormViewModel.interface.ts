@@ -8,6 +8,7 @@ import type { ReservationCategoryAvailabilityPanelState } from "./ReservationCat
 import type { ReservationCategoryConflictWarningViewModel } from "./ReservationCategoryConflictWarningViewModel.interface";
 import type { CustomComboFormViewModel } from "./CustomComboFormViewModel.interface";
 import type { PredefinedComboFormViewModel } from "./PredefinedComboFormViewModel.interface";
+import type { ReservationExtrasViewModel } from "./ReservationExtrasViewModel.interface";
 
 export interface ReservationFormViewModel {
   errors: Partial<Record<ReservationFormField, string>>;
@@ -32,6 +33,7 @@ export interface ReservationFormViewModel {
   values: ReservationFormInput;
   customCombo: CustomComboFormViewModel;
   predefinedCombo: PredefinedComboFormViewModel;
+  extras: ReservationExtrasViewModel;
   handleCustomerNameChange: (value: string) => void;
   handleDateChange: (value: string) => void;
   handleDurationChange: (value: number) => void;

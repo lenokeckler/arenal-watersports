@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { STRING } from "@/app/constants";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 import { useReservationEquipmentViewModel } from "./useReservationEquipmentViewModel";
 import { useReservationFormState } from "./useReservationFormState";
 import { useReservationEquipmentEligibility } from "./useReservationEquipmentEligibility";
 import { useReservationEquipmentSelectionSync } from "./useReservationEquipmentSelectionSync";
+import { useReservationExtrasViewModel } from "./useReservationExtrasViewModel";
 
 export const useReservationFormResources = (
   initialDate: string,
@@ -25,6 +26,16 @@ export const useReservationFormResources = (
     state.duration.resolveDurationHours(
       state.fields.values.durationHours
     );
+  const extraIds = useMemo(
+    () => state.fields.values.extraIds ?? [],
+    [state.fields.values.extraIds]
+  );
+  const extras = useReservationExtrasViewModel({
+    durationHours: resolvedDurationHours,
+    extraIds,
+    reservationType: state.fields.values.reservationType,
+    unitId: state.fields.values.unitId,
+  });
   const equipment = useReservationEquipmentViewModel(
     eligibility.categories,
     state.fields.values,
@@ -47,6 +58,7 @@ export const useReservationFormResources = (
   return {
     eligibility,
     equipment,
+    extras,
     hasEquipmentSelectionChanged,
     resolvedDurationHours,
     setHasEquipmentSelectionChanged,
