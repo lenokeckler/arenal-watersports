@@ -1,0 +1,87 @@
+import type { ReservationDetailMoneyEntry } from "../models/ReservationDetailMoneyEntry.interface";
+import type { ReservationDetailPricingSource } from "../models/ReservationDetailPricingSource.interface";
+import {
+  RESERVATION_DETAIL_CHARGE_KIND,
+  RESERVATION_DETAIL_CURRENCY,
+} from "../constants/ReservationDetail.constants";
+import type { ReservationDetailRecordedCharge } from "../models/ReservationDetailRecordedCharge.interface";
+
+export const RESERVATION_DETAIL_TEST = {
+  ACTUAL_ARRIVAL: "2026-10-21T12:00:00.000Z",
+  ACTUAL_DEPARTURE: "2026-10-21T09:00:00.000Z",
+  AUTHENTICATED_WORKER_ID: "authenticated-worker",
+  CATEGORY_NAME: "Lancha",
+  CHARGE_CRC: 10_000,
+  CHARGE_USD: 100,
+  CREATED_WORKER_ID: "00000000-0000-4000-8000-000000000002",
+  CUSTOMER_NAME: "Taylor Morgan",
+  DURATION_MINUTES: 120,
+  ERROR_CODE: "XX000",
+  ERROR_MESSAGE: "Reservation detail query failed",
+  EXPECTED_RETURN: "2026-10-21T11:00:00.000Z",
+  EXTRA_NAME: "Chaleco",
+  GUIDE_NAME: "Alex Rivera",
+  GUIDE_WORKER_ID: "00000000-0000-4000-8000-000000000003",
+  HALF_CHARGE_AMOUNT: 500,
+  LIST_AMOUNT_CRC: 20_000,
+  LIST_AMOUNT_USD: 200,
+  FULL_CHARGE_TARGET: 1_000,
+  PARENT_RESERVATION_ID:
+    "00000000-0000-4000-8000-000000000005",
+  PEOPLE_COUNT: 3,
+  QUANTITY: 2,
+  REFUND_CRC: 2_500,
+  REFUND_USD: 25,
+  RESERVATION_CODE: "R-000012",
+  RESERVATION_ID: "00000000-0000-4000-8000-000000000001",
+  RESERVATION_START: "2026-10-21T09:00:00.000Z",
+  RESERVATION_STATUS: "scheduled",
+  RESERVATION_TYPE: "rental",
+  TIMESTAMP: "2026-10-20T12:00:00.000Z",
+  UNIT_CODE: "LAN-01",
+  UPDATED_WORKER_ID: "00000000-0000-4000-8000-000000000004",
+  WORKER_NAME: "Sam Worker",
+  WORKER_NAMES_ERROR_MESSAGE: "Worker names query failed",
+  ZERO_AMOUNT: 0,
+} as const;
+
+export const RESERVATION_DETAIL_PRICING_FIXTURE = {
+  agreed_amount_crc: null,
+  agreed_amount_usd: null,
+  list_amount_crc: RESERVATION_DETAIL_TEST.LIST_AMOUNT_CRC,
+  list_amount_usd: RESERVATION_DETAIL_TEST.LIST_AMOUNT_USD,
+} satisfies ReservationDetailPricingSource;
+
+export const RESERVATION_DETAIL_MONEY_FIXTURE: {
+  charges: ReservationDetailRecordedCharge[];
+  refunds: ReservationDetailMoneyEntry[];
+} = {
+  charges: [
+    {
+      amount: RESERVATION_DETAIL_TEST.CHARGE_CRC,
+      currency: RESERVATION_DETAIL_CURRENCY.CRC,
+      kind: RESERVATION_DETAIL_CHARGE_KIND.TARIFF,
+    },
+    {
+      amount: RESERVATION_DETAIL_TEST.CHARGE_USD,
+      currency: RESERVATION_DETAIL_CURRENCY.USD,
+      kind: RESERVATION_DETAIL_CHARGE_KIND.TARIFF,
+    },
+  ],
+  refunds: [],
+};
+
+export const RESERVATION_DETAIL_WORKER_NAMES_FIXTURE = [
+  {
+    full_name: RESERVATION_DETAIL_TEST.WORKER_NAME,
+    worker_id: RESERVATION_DETAIL_TEST.CREATED_WORKER_ID,
+  },
+  {
+    full_name: RESERVATION_DETAIL_TEST.GUIDE_NAME,
+    worker_id: RESERVATION_DETAIL_TEST.GUIDE_WORKER_ID,
+  },
+  {
+    full_name: RESERVATION_DETAIL_TEST.WORKER_NAME,
+    worker_id: RESERVATION_DETAIL_TEST.UPDATED_WORKER_ID,
+  },
+];
