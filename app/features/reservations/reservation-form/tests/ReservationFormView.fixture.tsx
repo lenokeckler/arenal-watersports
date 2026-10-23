@@ -67,11 +67,14 @@ export const renderReservationForm = (
       name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
     },
   ]
-) =>
-  createReservationFormViewPage(
-    renderReservationFormContainer(
-      guideLoadResult,
-      predefinedCombos,
-      categories
-    )
+) => {
+  const container = renderReservationFormContainer(
+    guideLoadResult,
+    predefinedCombos,
+    categories
   );
+  return {
+    ...createReservationFormViewPage(container),
+    container,
+  };
+};

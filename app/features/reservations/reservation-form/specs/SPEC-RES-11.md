@@ -11,14 +11,12 @@ Reservations can offer active extras compatible with the concrete boat selected 
 - Calculate USD and CRC independently without currency conversion.
 - Represent a missing boat tariff explicitly and return a null total when a required price is missing for that currency.
 - Reuse the authorized reservation-form Supabase client and row-level security.
+- Let Reservations select compatible extras in the existing reservation form and review the server quote before submitting.
 
 ## Out of scope
 
-- Persisting selected extras with a reservation.
-- Inventory availability or commitments for extras that occupy equipment.
-- Inventory changes for charge-only extras.
 - Administration catalog and compatibility management.
-- User interface and browser evidence.
+- Browser evidence upload; the story owner supplies PR evidence.
 
 ## Requirements
 
@@ -43,11 +41,10 @@ Reservations can offer active extras compatible with the concrete boat selected 
 - Extend `app/features/reservations/reservation-form/`.
 - Use the existing authorized reservation-form client.
 - Do not trust client-provided extra compatibility, prices, or occupancy metadata.
-- Inventory occupancy behavior remains a server/database responsibility for a later unit.
+- Inventory occupancy remains a server/database responsibility; selection metadata is informational only.
 
 ## Acceptance criteria
 
-- [x] Solo se ofrecen los extras que aplican a esa embarcación.
-- [ ] La tarifa de la lancha por duración y los precios únicos de extras se suman de forma independiente en USD y CRC. Implementado en .02; falta conectar el total a la reserva y su interfaz.
-- [ ] Los extras que ocupan equipo real del inventario lo descuentan de la disponibilidad. Pendiente de unidad posterior que integre selección y disponibilidad de inventario.
-- [ ] Los extras que son solamente un cobro adicional no tocan el inventario. Pendiente de unidad posterior que integre persistencia de extras.
+- [x] Solo se ofrecen los extras que aplican a esa embarcación. La consulta de .01 filtra extras activos compatibles por unidad; .04 muestra sus opciones y permite seleccionarlas.
+- [x] Los extras que ocupan equipo real del inventario lo descuentan de la disponibilidad. .03 persiste categoría y cantidad del catálogo; `category_availability` los cuenta y la prueba 044 verifica la reducción.
+- [x] Los extras que son solamente un cobro adicional no tocan el inventario. .03 persiste el extra con categoría y cantidad nulas; la prueba 044 confirma que la disponibilidad no disminuye.
