@@ -6,10 +6,11 @@ import {
 
 export const captureViewport = async (
   page: Page,
-  fileName: string
+  fileName: string,
+  fullPage = !E2E_SCREENSHOT_VIEWPORT_ONLY
 ): Promise<void> => {
   await page.screenshot({
-    fullPage: !E2E_SCREENSHOT_VIEWPORT_ONLY,
+    fullPage,
     path: resolveScreenshotPath(fileName),
   });
 };
