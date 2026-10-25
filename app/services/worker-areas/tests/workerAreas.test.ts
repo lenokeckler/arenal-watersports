@@ -9,6 +9,7 @@ import {
   SUPABASE_RPC,
   SUPABASE_TABLE,
   SUPABASE_WORK_AREA,
+  WORKER_ACCOUNT_STATE,
   SUPABASE_WORKER_MARK,
   WORKER_AREA_CHANGE_RESULT,
   WORKER_AREA_INTENT,
@@ -18,6 +19,9 @@ import { changeWorkerArea } from "../changeWorkerArea";
 import { readWorkerAreasOverview } from "../readWorkerAreasOverview";
 
 const WORKER_ROW = {
+  blocked_reason: null,
+  deleted_at: null,
+  personal_email: null,
   base_role: SUPABASE_WORK_AREA.OPERATIONS,
   full_name: "Celso Rojas",
   id: "33333333-3333-3333-3333-333333333333",
@@ -81,8 +85,10 @@ describe("readWorkerAreasOverview", () => {
         SUPABASE_WORK_AREA.OPERATIONS,
         SUPABASE_WORK_AREA.RESERVATIONS,
       ],
+      accountState: WORKER_ACCOUNT_STATE.ACTIVE,
       baseRole: WORKER_ROW.base_role,
       fullName: WORKER_ROW.full_name,
+      hasPersonalEmail: false,
       id: WORKER_ROW.id,
       isExternalGuide: false,
       marks: [SUPABASE_WORKER_MARK.GUIDE],

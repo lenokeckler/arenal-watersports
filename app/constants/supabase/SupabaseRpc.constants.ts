@@ -1,4 +1,5 @@
 export const SUPABASE_RPC = {
+  BLOCK_WORKER: "block_worker",
   CHOOSE_WORK_AREA: "choose_work_area",
   COMPLETE_FIRST_PASSWORD_CHANGE:
     "complete_first_password_change",
@@ -16,6 +17,7 @@ export const SUPABASE_RPC = {
   RECORD_SUCCESSFUL_SIGN_IN: "record_successful_sign_in",
   REVOKE_WORKER_AREA: "revoke_worker_area",
   REVOKE_WORKER_MARK: "revoke_worker_mark",
+  UNLOCK_WORKER: "unlock_worker",
   TOUCH_CURRENT_SESSION_ACTIVITY:
     "touch_current_session_activity",
 } as const;

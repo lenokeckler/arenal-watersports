@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 import {
   PATHS,
   SUPABASE_WORK_AREA,
+  WORKER_ACCOUNT_STATE,
   WORKER_AREA_CHANGE_RESULT,
   WORKER_AREA_FIELD,
   WORKER_AREA_INTENT,
@@ -43,6 +44,8 @@ vi.mock("@/app/services/worker-registration", () => ({
 }));
 
 const OVERVIEW = {
+  accountState: WORKER_ACCOUNT_STATE.ACTIVE,
+  hasPersonalEmail: false,
   areas: [
     SUPABASE_WORK_AREA.OPERATIONS,
     SUPABASE_WORK_AREA.RESERVATIONS,

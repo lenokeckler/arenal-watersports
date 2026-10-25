@@ -2463,6 +2463,10 @@ export type Database = {
       };
     };
     Functions: {
+      block_worker: {
+        Args: { target_worker: string };
+        Returns: string;
+      };
       category_availability: {
         Args: {
           p_category_id: string;
@@ -2642,6 +2646,10 @@ export type Database = {
         };
         Returns: string;
       };
+      revoke_worker_sessions: {
+        Args: { target_worker: string };
+        Returns: undefined;
+      };
       session_idle_expired: {
         Args: { last_activity: string; moment: string };
         Returns: boolean;
@@ -2682,6 +2690,10 @@ export type Database = {
           reservation_id: string;
           starts_at: string;
         }[];
+      };
+      unlock_worker: {
+        Args: { target_worker: string };
+        Returns: string;
       };
       workday_contains: {
         Args: { moment: string };

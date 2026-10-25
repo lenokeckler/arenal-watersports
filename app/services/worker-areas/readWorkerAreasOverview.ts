@@ -6,6 +6,7 @@ import type { ServerSupabaseClient } from "@/app/services/supabase/models/Server
 import type { NullableRef } from "@/app/types";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import type { WorkerAreasOverview } from "./models/WorkerAreasOverview.interface";
+import { resolveWorkerAccountState } from "./resolveWorkerAccountState";
 
 export const readWorkerAreasOverview = async (
   supabase: ServerSupabaseClient,
@@ -44,9 +45,11 @@ export const readWorkerAreasOverview = async (
   );
 
   return {
+    accountState: resolveWorkerAccountState(worker),
     areas: (areas ?? []).map(({ area }) => area),
     baseRole: worker.base_role,
     fullName: worker.full_name,
+    hasPersonalEmail: worker.personal_email !== null,
     id: worker.id,
     isExternalGuide: worker.is_external_guide,
     marks: (marks ?? []).map(({ mark }) => mark),
