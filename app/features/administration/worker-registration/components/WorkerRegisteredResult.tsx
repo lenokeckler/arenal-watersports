@@ -2,9 +2,10 @@ import { Button } from "@/app/components";
 import BackLink from "@/app/components/back-link/BackLink";
 import { BUTTON } from "@/app/components/button/constants";
 import FormSuccessNotice from "@/app/components/form-success-notice/FormSuccessNotice";
+import TemporaryPasswordBox from "@/app/components/temporary-password-box/TemporaryPasswordBox";
 import { BUTTON_TYPES, PATHS } from "@/app/constants";
 import { WORKER_REGISTRATION_COPY } from "../constants/WorkerRegistrationCopy.constants";
-import TemporaryPasswordBox from "./TemporaryPasswordBox";
+
 import type { WorkerRegisteredResultProps } from "../models/WorkerRegisteredResultProps.interface";
 import {
   REGISTER_ANOTHER_BUTTON_CLASS,

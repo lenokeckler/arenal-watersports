@@ -1,5 +1,6 @@
 import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE, PATHS } from "@/app/constants";
+import { TEMPORARY_PASSWORD_BOX_COPY } from "@/app/components/temporary-password-box/constants/TemporaryPasswordBox.constants";
 import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
 import {
   E2E_TEMPORARY_PASSWORD_SIBLING,
@@ -51,10 +52,9 @@ export const createWorkerRegistrationPage = (
       }),
     getTemporaryPassword: (): Locator =>
       main
-        .getByText(
-          E2E_WORKER_REGISTRATION_COPY.TEMPORARY_PASSWORD_LABEL,
-          { exact: true }
-        )
+        .getByText(TEMPORARY_PASSWORD_BOX_COPY.LABEL, {
+          exact: true,
+        })
         .locator(E2E_TEMPORARY_PASSWORD_SIBLING),
     getUsernameInput: (): Locator =>
       main.getByLabel(

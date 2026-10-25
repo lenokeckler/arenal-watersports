@@ -1,6 +1,11 @@
 import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
 import type { MaterialIconName } from "@/app/components/icons/material-icon/models/MaterialIconName.type";
 
+export const TEMPORARY_PASSWORD_BOX_COPY = {
+  HINT: "Entréguela al trabajador. Solo se muestra esta vez: al entrar, el sistema le pide cambiarla.",
+  LABEL: "Contraseña temporal",
+} as const;
+
 export const TEMPORARY_PASSWORD_COPY_PHASE = {
   COPIED: "copied",
   FAILED: "failed",

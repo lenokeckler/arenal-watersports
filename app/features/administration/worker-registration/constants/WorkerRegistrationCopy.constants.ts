@@ -26,9 +26,6 @@ export const WORKER_REGISTRATION_COPY = {
     `Se registró a ${fullName} con el usuario ${username}.`,
   SUBMIT: "Registrar trabajador",
   SUBMITTING: "Registrando…",
-  TEMPORARY_PASSWORD_HINT:
-    "Entréguela al trabajador. Solo se muestra esta vez: en su primer ingreso, el sistema le pide cambiarla.",
-  TEMPORARY_PASSWORD_LABEL: "Contraseña temporal",
   USERNAME_HINT:
     "Entre 3 y 40 caracteres: letras sin tilde, números, punto, guion o guion bajo.",
   USERNAME_LABEL: "Nombre de usuario",

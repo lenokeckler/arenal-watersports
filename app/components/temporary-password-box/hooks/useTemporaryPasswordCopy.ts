@@ -2,7 +2,7 @@ import { useState } from "react";
 import {
   TEMPORARY_PASSWORD_COPY_PHASE,
   type TemporaryPasswordCopyPhase,
-} from "../constants/TemporaryPasswordCopy.constants";
+} from "../constants/TemporaryPasswordBox.constants";
 import type { TemporaryPasswordCopy } from "../models/TemporaryPasswordCopy.interface";
 
 export const useTemporaryPasswordCopy = (
