@@ -253,7 +253,9 @@ export {
 } from "./administration/WorkerMarks.constants";
 export {
   MULTI_AREA_MINIMUM,
+  WORK_MODE_REVALIDATE_SCOPE,
   WORK_MODE_FIELD,
   WORK_MODE_RESULT,
   type WorkModeResult,
 } from "./access/WorkMode.constants";
+export { WORK_MODE_SCREEN_TITLE_ID } from "./access/WorkModeScreen.constants";
