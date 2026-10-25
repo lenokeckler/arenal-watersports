@@ -9,6 +9,7 @@ import {
   SUPABASE_RPC,
   SUPABASE_TABLE,
   SUPABASE_WORK_AREA,
+  SUPABASE_WORKER_MARK,
   WORKER_AREA_CHANGE_RESULT,
   WORKER_AREA_INTENT,
 } from "@/app/constants";
@@ -27,10 +28,20 @@ const WORKER_ROW = {
 const maybeSingle = vi.fn();
 const areasEq = vi.fn();
 const rpc = vi.fn();
-const from = vi.fn((table: string) =>
-  table === SUPABASE_TABLE.WORKERS
-    ? { select: () => ({ eq: () => ({ maybeSingle }) }) }
-    : { select: () => ({ eq: areasEq }) }
+const marksEq = vi.fn();
+const READS_BY_TABLE: Record<string, unknown> = {
+  [SUPABASE_TABLE.WORKERS]: {
+    select: () => ({ eq: () => ({ maybeSingle }) }),
+  },
+  [SUPABASE_TABLE.WORKER_AREAS]: {
+    select: () => ({ eq: areasEq }),
+  },
+  [SUPABASE_TABLE.WORKER_MARKS]: {
+    select: () => ({ eq: marksEq }),
+  },
+};
+const from = vi.fn(
+  (table: string) => READS_BY_TABLE[table]
 );
 
 const supabase = {
@@ -43,7 +54,11 @@ describe("readWorkerAreasOverview", () => {
     vi.clearAllMocks();
   });
 
-  it("returns the worker with every enabled area", async () => {
+  it("returns the worker with every enabled area and mark", async () => {
+    marksEq.mockResolvedValue({
+      data: [{ mark: SUPABASE_WORKER_MARK.GUIDE }],
+      error: null,
+    });
     maybeSingle.mockResolvedValue({
       data: WORKER_ROW,
       error: null,
@@ -70,6 +85,7 @@ describe("readWorkerAreasOverview", () => {
       fullName: WORKER_ROW.full_name,
       id: WORKER_ROW.id,
       isExternalGuide: false,
+      marks: [SUPABASE_WORKER_MARK.GUIDE],
       username: WORKER_ROW.username,
     });
   });

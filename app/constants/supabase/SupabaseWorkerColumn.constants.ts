@@ -4,6 +4,7 @@ export const SUPABASE_WORKER_COLUMN = {
     "username, must_change_password, base_role",
   AREA: "area",
   ID: "id",
+  MARK: "mark",
   USERNAME: "username",
   WORKER_AREAS_OVERVIEW:
     "id, username, full_name, base_role, is_external_guide",

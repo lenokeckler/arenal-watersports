@@ -2511,9 +2511,20 @@ export type Database = {
         };
         Returns: string;
       };
+      grant_worker_mark: {
+        Args: {
+          target_mark: Database["public"]["Enums"]["worker_mark"];
+          target_worker: string;
+        };
+        Returns: string;
+      };
       grantable_worker_areas: {
         Args: Record<PropertyKey, never>;
         Returns: Database["public"]["Enums"]["work_area"][];
+      };
+      grantable_worker_marks: {
+        Args: Record<PropertyKey, never>;
+        Returns: Database["public"]["Enums"]["worker_mark"][];
       };
       has_area: {
         Args: {
@@ -2610,6 +2621,13 @@ export type Database = {
       revoke_worker_area: {
         Args: {
           target_area: Database["public"]["Enums"]["work_area"];
+          target_worker: string;
+        };
+        Returns: string;
+      };
+      revoke_worker_mark: {
+        Args: {
+          target_mark: Database["public"]["Enums"]["worker_mark"];
           target_worker: string;
         };
         Returns: string;
