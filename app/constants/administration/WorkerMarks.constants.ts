@@ -5,6 +5,7 @@ import {
 
 export const GRANTABLE_WORKER_MARKS = [
   SUPABASE_WORKER_MARK.GUIDE,
+  SUPABASE_WORKER_MARK.GENERAL_MANAGER,
 ] as const satisfies readonly WorkerMark[];
 
 export type GrantableWorkerMark =
