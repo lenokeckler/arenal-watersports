@@ -2612,6 +2612,10 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: number;
       };
+      prepare_worker_temporary_password: {
+        Args: { target_worker: string };
+        Returns: string;
+      };
       purge_ended_session_activity: {
         Args: Record<PropertyKey, never>;
         Returns: undefined;

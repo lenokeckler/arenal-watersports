@@ -11,3 +11,5 @@ export { changeOwnPersonalEmail } from "./changeOwnPersonalEmail";
 export { readOwnPersonalEmail } from "./readOwnPersonalEmail";
 export type { OwnPersonalEmail } from "./models/OwnPersonalEmail.interface";
 export type { PersonalEmailChangeResult } from "./models/PersonalEmailChangeResult.type";
+export { grantTemporaryPasswordAsSignedIn } from "./grantTemporaryPasswordAsSignedIn";
+export type { TemporaryPasswordGrant } from "./models/TemporaryPasswordGrant.type";

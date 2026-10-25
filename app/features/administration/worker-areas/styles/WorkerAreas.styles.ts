@@ -40,3 +40,6 @@ export const WORKER_AREA_REVOKE_BUTTON_CLASS = `${WORKER_AREA_BUTTON_BASE_CLASS}
 
 export const WORKER_AREAS_MESSAGE_CLASS =
   "text-body-base text-on-surface-variant";
+
+export const WORKER_TEMPORARY_PASSWORD_FORM_CLASS =
+  "flex flex-col gap-sm border-t border-outline/60 pt-sm";

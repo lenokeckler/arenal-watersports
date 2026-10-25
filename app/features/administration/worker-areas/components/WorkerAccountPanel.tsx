@@ -1,5 +1,8 @@
 import { Text } from "@/app/components";
-import { SUPABASE_WORK_AREA } from "@/app/constants";
+import {
+  SUPABASE_WORK_AREA,
+  WORKER_ACCOUNT_STATE,
+} from "@/app/constants";
 import { WORKER_ACCOUNT_ACTIONS_BY_STATE } from "../constants/WorkerAccountActions.constants";
 import {
   WORKER_ACCOUNT_COPY,
@@ -15,12 +18,16 @@ import {
   WORKER_AREAS_TITLE_CLASS,
 } from "../styles/WorkerAreas.styles";
 import WorkerAccountActionForm from "./WorkerAccountActionForm";
+import WorkerTemporaryPasswordForm from "./WorkerTemporaryPasswordForm";
 
 const WorkerAccountPanel = ({
   overview,
 }: WorkerAreasPanelProps): React.JSX.Element => {
   const isAdministrationAccount =
     overview.baseRole === SUPABASE_WORK_AREA.ADMINISTRATION;
+  const canGetTemporaryPassword =
+    !isAdministrationAccount &&
+    overview.accountState !== WORKER_ACCOUNT_STATE.RETIRED;
   const actions = isAdministrationAccount
     ? []
     : WORKER_ACCOUNT_ACTIONS_BY_STATE[
@@ -56,6 +63,18 @@ const WorkerAccountPanel = ({
           />
         ))}
       </div>
+      {canGetTemporaryPassword &&
+        overview.hasPersonalEmail && (
+          <Text className={WORKER_AREA_STATUS_CLASS}>
+            {WORKER_ACCOUNT_COPY.HAS_PERSONAL_EMAIL_NOTE}
+          </Text>
+        )}
+      {canGetTemporaryPassword &&
+        !overview.hasPersonalEmail && (
+          <WorkerTemporaryPasswordForm
+            workerId={overview.id}
+          />
+        )}
     </section>
   );
 };
