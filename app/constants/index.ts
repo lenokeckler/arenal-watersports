@@ -229,3 +229,4 @@ export {
 } from "./administration/WorkerRegistration.constants";
 export { TEMPORARY_PASSWORD } from "./administration/TemporaryPassword.constants";
 export { POSTGRES_ERROR_CODE } from "./supabase/PostgresErrorCode.constants";
+export { ADMINISTRATION_SCREEN_TITLE_ID } from "./administration/AdministrationScreen.constants";

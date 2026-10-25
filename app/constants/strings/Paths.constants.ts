@@ -7,6 +7,10 @@ export const PATHS = {
     RECOVERY_RESET: "/access/recovery/reset",
     ROOT: "/access",
   },
+  ADMINISTRATION: {
+    ROOT: "/administration",
+    WORKERS_NEW: "/administration/workers/new",
+  },
   PROFILE: {
     EMAIL: "/profile/email",
     PASSWORD: "/profile/password",

@@ -21,6 +21,7 @@ export const AUTOCOMPLETE = {
   CURRENT_PASSWORD: "current-password",
   EMAIL: "email",
   NEW_PASSWORD: "new-password",
+  OFF: "off",
   ONE_TIME_CODE: "one-time-code",
   USERNAME: "username",
 } as const;
@@ -38,6 +39,7 @@ export type InputMode =
 
 export const AUTOCAPITALIZE = {
   NONE: "none",
+  WORDS: "words",
 } as const;
 
 export type Autocapitalize =
