@@ -128,4 +128,23 @@ test.describe("Login screenshots", () => {
       )
     );
   });
+
+  test("captures the inactivity notice", async ({
+    page,
+  }, testInfo) => {
+    const loginPage = createLoginPage(page);
+
+    await loginPage.goToSessionIdle();
+    await expect(
+      loginPage.getSessionIdleNotice()
+    ).toBeVisible();
+
+    await captureViewport(
+      page,
+      resolveDeviceScreenshotFileName(
+        E2E_LOGIN_SCREENSHOT_BASENAME.SESSION_IDLE,
+        testInfo.project.name
+      )
+    );
+  });
 });
