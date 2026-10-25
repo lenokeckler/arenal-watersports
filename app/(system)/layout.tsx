@@ -1,6 +1,7 @@
 import SessionActivityTracker from "@/app/features/access/session-activity/SessionActivityTracker";
 import SessionBar from "@/app/features/access/session-bar/SessionBar";
 import SystemScreen from "@/app/features/access/system-screen/SystemScreen";
+import WorkModeSwitch from "@/app/features/access/work-mode/WorkModeSwitch";
 
 const SystemLayout = ({
   children,
@@ -8,6 +9,7 @@ const SystemLayout = ({
   <SystemScreen>
     <SessionActivityTracker />
     <SessionBar />
+    <WorkModeSwitch />
     {children}
   </SystemScreen>
 );

@@ -33,3 +33,9 @@ export const resolveWorkModeCardClassName = (
   isCurrent
     ? WORK_MODE_CURRENT_CARD_CLASS
     : WORK_MODE_CARD_CLASS;
+
+export const WORK_MODE_SWITCH_CLASS =
+  "flex items-center justify-end gap-sm px-sm text-body-base text-on-surface-variant";
+
+export const WORK_MODE_SWITCH_LINK_CLASS =
+  "inline-flex min-h-12 items-center rounded-lg px-sm text-button font-semibold text-primary underline decoration-1 underline-offset-4 hover:decoration-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
