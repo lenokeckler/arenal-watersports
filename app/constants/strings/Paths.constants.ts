@@ -9,6 +9,7 @@ export const PATHS = {
   },
   ADMINISTRATION: {
     ROOT: "/administration",
+    WORKER_AREAS: "/administration/workers/areas",
     WORKERS_NEW: "/administration/workers/new",
   },
   PROFILE: {
