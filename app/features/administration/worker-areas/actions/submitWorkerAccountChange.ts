@@ -10,7 +10,7 @@ import { changeWorkerAccountAsSignedIn } from "@/app/services/worker-areas";
 import { readTextField } from "@/app/utils/form-data/readTextField";
 import { buildWorkerAccountChangedPath } from "@/app/utils/worker-areas/buildWorkerAccountChangedPath";
 import { isWorkerAccountAction } from "@/app/utils/worker-areas/isWorkerAccountAction";
-import { WORKER_ACCOUNT_SUCCESSES } from "../constants/WorkerAccountSuccess.constants";
+import { WORKER_ACCOUNT_SUCCESS_BY_ACTION } from "../constants/WorkerAccountSuccess.constants";
 import type { WorkerAccountChangeServerAction } from "../models/WorkerAccountChangeServerAction.type";
 
 export const submitWorkerAccountChange: WorkerAccountChangeServerAction =
@@ -41,7 +41,9 @@ export const submitWorkerAccountChange: WorkerAccountChangeServerAction =
       workerId,
     });
 
-    if (WORKER_ACCOUNT_SUCCESSES.includes(result)) {
+    if (
+      result === WORKER_ACCOUNT_SUCCESS_BY_ACTION[action]
+    ) {
       redirect(
         buildWorkerAccountChangedPath(username, result)
       );

@@ -1,5 +1,6 @@
 export const WORKER_ACCOUNT_ACTION = {
   BLOCK: "block",
+  RETIRE: "retire",
   UNLOCK: "unlock",
 } as const;
 

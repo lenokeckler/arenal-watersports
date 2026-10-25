@@ -43,3 +43,12 @@ export const WORKER_AREAS_MESSAGE_CLASS =
 
 export const WORKER_TEMPORARY_PASSWORD_FORM_CLASS =
   "flex flex-col gap-sm border-t border-outline/60 pt-sm";
+
+export const WORKER_ACCOUNT_ACTIONS_CLASS =
+  "flex flex-wrap gap-sm";
+
+export const WORKER_ACCOUNT_ROW_CLASS =
+  "flex min-h-14 flex-wrap items-center gap-sm border-t border-outline/60 pt-sm";
+
+export const WORKER_ACCOUNT_NAME_CLASS =
+  "flex min-w-48 flex-1 flex-col";

@@ -10,9 +10,10 @@ import {
 } from "../constants/WorkerAccountCopy.constants";
 import type { WorkerAreasPanelProps } from "../models/WorkerAreasPanelProps.interface";
 import {
+  WORKER_ACCOUNT_ACTIONS_CLASS,
+  WORKER_ACCOUNT_NAME_CLASS,
+  WORKER_ACCOUNT_ROW_CLASS,
   WORKER_AREA_LABEL_CLASS,
-  WORKER_AREA_NAME_CLASS,
-  WORKER_AREA_ROW_CLASS,
   WORKER_AREA_STATUS_CLASS,
   WORKER_AREAS_PANEL_CLASS,
   WORKER_AREAS_TITLE_CLASS,
@@ -39,8 +40,8 @@ const WorkerAccountPanel = ({
       <Text className={WORKER_AREAS_TITLE_CLASS}>
         {WORKER_ACCOUNT_COPY.TITLE}
       </Text>
-      <div className={WORKER_AREA_ROW_CLASS}>
-        <div className={WORKER_AREA_NAME_CLASS}>
+      <div className={WORKER_ACCOUNT_ROW_CLASS}>
+        <div className={WORKER_ACCOUNT_NAME_CLASS}>
           <Text className={WORKER_AREA_LABEL_CLASS}>
             {
               WORKER_ACCOUNT_STATE_LABEL[
@@ -54,14 +55,18 @@ const WorkerAccountPanel = ({
             </Text>
           )}
         </div>
-        {actions.map((action) => (
-          <WorkerAccountActionForm
-            key={action}
-            action={action}
-            username={overview.username}
-            workerId={overview.id}
-          />
-        ))}
+        {actions.length > 0 && (
+          <div className={WORKER_ACCOUNT_ACTIONS_CLASS}>
+            {actions.map((action) => (
+              <WorkerAccountActionForm
+                key={action}
+                action={action}
+                username={overview.username}
+                workerId={overview.id}
+              />
+            ))}
+          </div>
+        )}
       </div>
       {canGetTemporaryPassword &&
         overview.hasPersonalEmail && (

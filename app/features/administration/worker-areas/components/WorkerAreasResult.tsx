@@ -1,5 +1,8 @@
 import { Text } from "@/app/components";
-import { ARIA_ROLE } from "@/app/constants";
+import {
+  ARIA_ROLE,
+  WORKER_ACCOUNT_STATE,
+} from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import { WORKER_AREAS_COPY } from "../constants/WorkerAreasCopy.constants";
 import type { WorkerAreasResultProps } from "../models/WorkerAreasResultProps.interface";
@@ -36,6 +39,12 @@ const WorkerAreasResult = ({
         {WORKER_AREAS_COPY.EXTERNAL_GUIDE}
       </Text>
     );
+  }
+
+  if (
+    overview.accountState === WORKER_ACCOUNT_STATE.RETIRED
+  ) {
+    return <WorkerAccountPanel overview={overview} />;
   }
 
   return (

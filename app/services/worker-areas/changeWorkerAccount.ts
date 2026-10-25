@@ -10,6 +10,8 @@ import type { WorkerAccountChange } from "./models/WorkerAccountChange.interface
 
 const WORKER_ACCOUNT_RPC = {
   [WORKER_ACCOUNT_ACTION.BLOCK]: SUPABASE_RPC.BLOCK_WORKER,
+  [WORKER_ACCOUNT_ACTION.RETIRE]:
+    SUPABASE_RPC.RETIRE_WORKER,
   [WORKER_ACCOUNT_ACTION.UNLOCK]:
     SUPABASE_RPC.UNLOCK_WORKER,
 } as const;
