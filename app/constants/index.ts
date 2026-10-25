@@ -239,3 +239,4 @@ export {
   type WorkerAreaChangeResult,
   type WorkerAreaIntent,
 } from "./administration/WorkerAreas.constants";
+export { WORK_AREA_LABEL } from "./administration/WorkAreaCopy.constants";
