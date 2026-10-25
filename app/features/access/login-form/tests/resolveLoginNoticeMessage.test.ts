@@ -4,6 +4,7 @@ import { resolveLoginNoticeMessage } from "../utils/resolveLoginNoticeMessage";
 import {
   ARRAY_LOGIN_NOTICE,
   RECOVERED_NOTICE,
+  SESSION_IDLE_NOTICE,
   SIGNED_OUT_NOTICE,
   UNKNOWN_LOGIN_NOTICE,
 } from "./LoginNotice.constants";
@@ -21,6 +22,12 @@ describe("resolveLoginNoticeMessage", () => {
     expect(
       resolveLoginNoticeMessage(LOGIN_NOTICE.SIGNED_OUT)
     ).toBe(SIGNED_OUT_NOTICE);
+  });
+
+  it("returns the inactivity message for the session-idle notice", () => {
+    expect(
+      resolveLoginNoticeMessage(LOGIN_NOTICE.SESSION_IDLE)
+    ).toBe(SESSION_IDLE_NOTICE);
   });
 
   it.each([
