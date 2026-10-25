@@ -1,8 +1,9 @@
-export const LIVENESS_FIXTURE = {
+export const SESSION_STATE_FIXTURE = {
   ERROR_MESSAGE: "network down",
   CLIENT_ERROR_STATUSES: [400, 401, 403, 404, 499],
   SERVER_ERROR_STATUSES: [500, 502, 503, 504],
   NO_RESPONSE_STATUSES: [0, undefined],
+  UNKNOWN_ANSWERS: [null, true, "revoked", 1],
   LAST_CLIENT_ERROR_STATUS: 499,
   FIRST_SERVER_ERROR_STATUS: 500,
 } as const;

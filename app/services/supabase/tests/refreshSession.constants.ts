@@ -19,6 +19,11 @@ export const SESSION_FIXTURE = {
     name: "sb-request",
     value: "from-request",
   },
+  CLEARED_COOKIE: {
+    name: "sb-access-token",
+    value: "",
+    options: { path: "/", maxAge: 0 },
+  },
   REFRESHED_COOKIE: {
     name: "sb-access-token",
     value: "refreshed",

@@ -1837,6 +1837,24 @@ export type Database = {
           },
         ];
       };
+      session_activity: {
+        Row: {
+          last_activity_at: string;
+          session_id: string;
+          user_id: string;
+        };
+        Insert: {
+          last_activity_at?: string;
+          session_id: string;
+          user_id: string;
+        };
+        Update: {
+          last_activity_at?: string;
+          session_id?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       tariffs: {
         Row: {
           amount_crc: number | null;
@@ -2466,9 +2484,17 @@ export type Database = {
         Args: { p_pin: string; p_username: string };
         Returns: string;
       };
+      current_session_id: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
+      };
       current_session_is_live: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
+      };
+      current_session_state: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
       };
       custom_access_token_hook: {
         Args: { event: Json };
@@ -2550,6 +2576,10 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: number;
       };
+      purge_ended_session_activity: {
+        Args: Record<PropertyKey, never>;
+        Returns: undefined;
+      };
       purge_expired_history: {
         Args: Record<PropertyKey, never>;
         Returns: undefined;
@@ -2566,13 +2596,32 @@ export type Database = {
         Args: { p_user_id: string };
         Returns: undefined;
       };
+      session_idle_expired: {
+        Args: { last_activity: string; moment: string };
+        Returns: boolean;
+      };
+      session_idle_limit: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
+      };
       session_is_live: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
       };
+      session_last_activity: {
+        Args: {
+          signed_in_at: string;
+          target_session: string;
+        };
+        Returns: string;
+      };
       sign_in_attempt_limit: {
         Args: Record<PropertyKey, never>;
         Returns: number;
+      };
+      touch_current_session_activity: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
       };
       unit_conflicts: {
         Args: {
@@ -2587,6 +2636,22 @@ export type Database = {
           reservation_id: string;
           starts_at: string;
         }[];
+      };
+      workday_contains: {
+        Args: { moment: string };
+        Returns: boolean;
+      };
+      workday_end: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
+      };
+      workday_start: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
+      };
+      workday_time_zone: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
       };
       worker_display_names: {
         Args: { p_worker_ids: string[] };
