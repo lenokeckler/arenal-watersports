@@ -87,7 +87,7 @@ describe("readWorkerAreasSearch for marks", () => {
 });
 
 describe("WorkerMarksPanel", () => {
-  it("shows the guide mark, what it does and Poner for every missing mark", () => {
+  it("shows the guide mark, what it does and Asignar for every missing mark", () => {
     render(<WorkerMarksPanel overview={OVERVIEW} />);
 
     expect(
