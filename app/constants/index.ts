@@ -228,3 +228,4 @@ export {
   type WorkerRegistrationField,
 } from "./administration/WorkerRegistration.constants";
 export { TEMPORARY_PASSWORD } from "./administration/TemporaryPassword.constants";
+export { POSTGRES_ERROR_CODE } from "./supabase/PostgresErrorCode.constants";
