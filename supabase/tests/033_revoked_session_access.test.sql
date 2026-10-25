@@ -34,6 +34,8 @@ select ok(
   'anon no ejecuta session_is_live directamente'
 );
 
+update auth.sessions set created_at = now() where created_at is null;
+
 set local role authenticated;
 
 set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated","session_id":"aaaaaaaa-0000-0000-0000-000000000001"}';

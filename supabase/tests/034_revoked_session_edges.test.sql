@@ -23,6 +23,8 @@ insert into auth.sessions (id, user_id, not_after) values
   ('bbbbbbbb-0000-0000-0000-000000000002', '33333333-3333-3333-3333-333333333333', now()),
   ('bbbbbbbb-0000-0000-0000-000000000003', '11111111-1111-1111-1111-111111111111', null);
 
+update auth.sessions set created_at = now() where created_at is null;
+
 set local role authenticated;
 
 set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated","session_id":"bbbbbbbb-0000-0000-0000-000000000001"}';
