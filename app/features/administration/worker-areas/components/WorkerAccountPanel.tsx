@@ -1,0 +1,63 @@
+import { Text } from "@/app/components";
+import { SUPABASE_WORK_AREA } from "@/app/constants";
+import { WORKER_ACCOUNT_ACTIONS_BY_STATE } from "../constants/WorkerAccountActions.constants";
+import {
+  WORKER_ACCOUNT_COPY,
+  WORKER_ACCOUNT_STATE_LABEL,
+} from "../constants/WorkerAccountCopy.constants";
+import type { WorkerAreasPanelProps } from "../models/WorkerAreasPanelProps.interface";
+import {
+  WORKER_AREA_LABEL_CLASS,
+  WORKER_AREA_NAME_CLASS,
+  WORKER_AREA_ROW_CLASS,
+  WORKER_AREA_STATUS_CLASS,
+  WORKER_AREAS_PANEL_CLASS,
+  WORKER_AREAS_TITLE_CLASS,
+} from "../styles/WorkerAreas.styles";
+import WorkerAccountActionForm from "./WorkerAccountActionForm";
+
+const WorkerAccountPanel = ({
+  overview,
+}: WorkerAreasPanelProps): React.JSX.Element => {
+  const isAdministrationAccount =
+    overview.baseRole === SUPABASE_WORK_AREA.ADMINISTRATION;
+  const actions = isAdministrationAccount
+    ? []
+    : WORKER_ACCOUNT_ACTIONS_BY_STATE[
+        overview.accountState
+      ];
+
+  return (
+    <section className={WORKER_AREAS_PANEL_CLASS}>
+      <Text className={WORKER_AREAS_TITLE_CLASS}>
+        {WORKER_ACCOUNT_COPY.TITLE}
+      </Text>
+      <div className={WORKER_AREA_ROW_CLASS}>
+        <div className={WORKER_AREA_NAME_CLASS}>
+          <Text className={WORKER_AREA_LABEL_CLASS}>
+            {
+              WORKER_ACCOUNT_STATE_LABEL[
+                overview.accountState
+              ]
+            }
+          </Text>
+          {isAdministrationAccount && (
+            <Text className={WORKER_AREA_STATUS_CLASS}>
+              {WORKER_ACCOUNT_COPY.ADMIN_ACCOUNT_NOTE}
+            </Text>
+          )}
+        </div>
+        {actions.map((action) => (
+          <WorkerAccountActionForm
+            key={action}
+            action={action}
+            username={overview.username}
+            workerId={overview.id}
+          />
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default WorkerAccountPanel;

@@ -110,6 +110,7 @@ describe("readWorkerAreasSearch", () => {
         [WORKER_AREA_FIELD.USERNAME]: " Celso ",
       })
     ).toEqual({
+      accountNotice: null,
       area: SUPABASE_WORK_AREA.RESERVATIONS,
       mark: null,
       markNotice: null,
@@ -127,6 +128,7 @@ describe("readWorkerAreasSearch", () => {
         [WORKER_AREA_FIELD.USERNAME]: [OVERVIEW.username],
       })
     ).toEqual({
+      accountNotice: null,
       area: null,
       mark: null,
       markNotice: null,

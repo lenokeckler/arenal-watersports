@@ -164,6 +164,7 @@ describe("WorkerMarkNotice", () => {
     render(
       <WorkerMarkNotice
         search={{
+          accountNotice: null,
           area: null,
           mark: GUIDE,
           markNotice: WORKER_AREA_INTENT.GRANT,
