@@ -5,6 +5,7 @@ import {
   it,
   vi,
 } from "vitest";
+import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { NotAuthorizedError } from "@/app/services/authorization/NotAuthorizedError";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
@@ -17,7 +18,7 @@ import {
   FAKE_UPDATE_CATEGORY_ID,
 } from "./UpdateCategoryBehaviorInput.constants";
 
-const CHECK_VIOLATION_CODE = "23514";
+const ID_COLUMN = "id";
 const TRACKING_MODE_COLUMN = "tracking_mode";
 
 const mockAssertIsAdminWorker = vi.fn();
@@ -96,7 +97,7 @@ describe("updateCategoryBehaviorAction", () => {
       })
     );
     expect(mockUpdateEq).toHaveBeenCalledWith(
-      "id",
+      ID_COLUMN,
       DEFAULT_UPDATE_CATEGORY_BEHAVIOR_INPUT.categoryId
     );
   });
@@ -132,7 +133,7 @@ describe("updateCategoryBehaviorAction", () => {
     mockMaybeSingle.mockResolvedValue({
       data: null,
       error: {
-        code: CHECK_VIOLATION_CODE,
+        code: POSTGRES_ERROR_CODE.CHECK_VIOLATION,
         message: "boom",
       },
     });

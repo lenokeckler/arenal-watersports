@@ -1,7 +1,9 @@
 import { USAGE_METRIC } from "../constants/UsageMetric.constants";
 import type { UpdateCategoryBehaviorInput } from "../models/UpdateCategoryBehaviorInput.interface";
 
-export const FAKE_UPDATE_CATEGORY_ID = "fake-category-id";
+import { FAKE_CATEGORY_ID } from "./EquipmentCategoryRow.constants";
+
+export const FAKE_UPDATE_CATEGORY_ID = FAKE_CATEGORY_ID;
 export const FAKE_UPDATE_ADMIN_WORKER_ID =
   "fake-admin-worker-id";
 export const FAKE_DEFAULT_DURATION_MINUTES = 60;

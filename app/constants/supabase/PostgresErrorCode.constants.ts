@@ -1,3 +1,4 @@
 export const POSTGRES_ERROR_CODE = {
+  CHECK_VIOLATION: "23514",
   FOREIGN_KEY_VIOLATION: "23503",
 } as const;

@@ -2,7 +2,7 @@ import { CATEGORY_STATUS } from "../constants/CategoryStatus.constants";
 import { CATEGORY_TRACKING_MODE } from "../constants/CategoryTrackingMode.constants";
 import type { EquipmentCategoryRow } from "../models/EquipmentCategoryRow.type";
 
-const FAKE_CATEGORY_ID = "fake-category-id";
+export const FAKE_CATEGORY_ID = "fake-category-id";
 const FAKE_WORKER_ID = "fake-worker-id";
 const FAKE_TIMESTAMP = "2026-01-01T00:00:00.000Z";
 

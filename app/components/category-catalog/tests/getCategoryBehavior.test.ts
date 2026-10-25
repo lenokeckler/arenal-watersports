@@ -8,11 +8,13 @@ import {
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { getCategoryBehavior } from "../services/getCategoryBehavior";
 import { mapCategoryRowToBehavior } from "../utils/mapCategoryRowToBehavior";
-import { DEFAULT_EQUIPMENT_CATEGORY_ROW } from "./EquipmentCategoryRow.constants";
+import {
+  DEFAULT_EQUIPMENT_CATEGORY_ROW,
+  FAKE_CATEGORY_ID,
+} from "./EquipmentCategoryRow.constants";
 
 const CATEGORIES_TABLE = "equipment_categories";
 const ID_COLUMN = "id";
-const FAKE_CATEGORY_ID = "fake-category-id";
 
 const mockAssertIsAdminWorker = vi.fn();
 const mockMaybeSingle = vi.fn();
