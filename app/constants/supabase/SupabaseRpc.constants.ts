@@ -1,8 +1,10 @@
 export const SUPABASE_RPC = {
+  CHOOSE_WORK_AREA: "choose_work_area",
   COMPLETE_FIRST_PASSWORD_CHANGE:
     "complete_first_password_change",
   CONSUME_PASSWORD_RESET_PIN: "consume_password_reset_pin",
   CURRENT_SESSION_STATE: "current_session_state",
+  CURRENT_WORK_AREA: "current_work_area",
   FINISH_PASSWORD_RECOVERY: "finish_password_recovery",
   GRANT_WORKER_AREA: "grant_worker_area",
   GRANT_WORKER_MARK: "grant_worker_mark",

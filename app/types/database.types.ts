@@ -2476,6 +2476,12 @@ export type Database = {
           usable: number;
         }[];
       };
+      choose_work_area: {
+        Args: {
+          target: Database["public"]["Enums"]["work_area"];
+        };
+        Returns: string;
+      };
       complete_first_password_change: {
         Args: { p_user_id: string };
         Returns: undefined;
@@ -2495,6 +2501,10 @@ export type Database = {
       current_session_state: {
         Args: Record<PropertyKey, never>;
         Returns: string;
+      };
+      current_work_area: {
+        Args: Record<PropertyKey, never>;
+        Returns: Database["public"]["Enums"]["work_area"];
       };
       custom_access_token_hook: {
         Args: { event: Json };
