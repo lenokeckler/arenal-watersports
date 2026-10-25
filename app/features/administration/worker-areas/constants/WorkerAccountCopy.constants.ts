@@ -10,6 +10,10 @@ import {
 export const WORKER_ACCOUNT_COPY = {
   ADMIN_ACCOUNT_NOTE:
     "La cuenta de administración no se bloquea ni se da de baja.",
+  REHIRE: "Recontratar",
+  REHIRE_DONE:
+    "Se recontrató la cuenta con su mismo usuario, áreas y marcas. Al entrar debe cambiar esta contraseña.",
+  REHIRE_PENDING: "Recontratando…",
   HAS_PERSONAL_EMAIL_NOTE:
     "Tiene correo personal: recupera su contraseña con el PIN.",
   TEMPORARY_PASSWORD: "Dar contraseña temporal",
@@ -75,6 +79,8 @@ export const WORKER_ACCOUNT_ERROR: Record<
     "Solo la cuenta de administración puede cambiar cuentas.",
   [WORKER_ACCOUNT_RESULT.NOT_FOUND]:
     "Esa cuenta ya no existe.",
+  [WORKER_ACCOUNT_RESULT.NOT_RETIRED]:
+    "Esa cuenta no está dada de baja.",
   [WORKER_ACCOUNT_RESULT.READY]: "",
   [WORKER_ACCOUNT_RESULT.RETIRED]:
     "La cuenta está dada de baja: solo se puede recontratar.",

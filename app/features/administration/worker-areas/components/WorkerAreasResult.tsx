@@ -41,17 +41,18 @@ const WorkerAreasResult = ({
     );
   }
 
-  if (
-    overview.accountState === WORKER_ACCOUNT_STATE.RETIRED
-  ) {
-    return <WorkerAccountPanel overview={overview} />;
-  }
+  const isRetired =
+    overview.accountState === WORKER_ACCOUNT_STATE.RETIRED;
 
   return (
     <>
       <WorkerAccountPanel overview={overview} />
-      <WorkerAreasPanel overview={overview} />
-      <WorkerMarksPanel overview={overview} />
+      {!isRetired && (
+        <WorkerAreasPanel overview={overview} />
+      )}
+      {!isRetired && (
+        <WorkerMarksPanel overview={overview} />
+      )}
     </>
   );
 };

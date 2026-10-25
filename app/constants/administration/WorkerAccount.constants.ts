@@ -14,6 +14,7 @@ export const WORKER_ACCOUNT_RESULT = {
   NOT_ALLOWED: "not_allowed",
   HAS_PERSONAL_EMAIL: "has_personal_email",
   NOT_FOUND: "not_found",
+  NOT_RETIRED: "not_retired",
   READY: "ready",
   RETIRED: "retired",
   UNLOCKED: "unlocked",

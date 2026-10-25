@@ -17,6 +17,7 @@ export const SUPABASE_RPC = {
     "mark_password_reset_pin_undelivered",
   RECORD_FAILED_SIGN_IN: "record_failed_sign_in",
   RECORD_SUCCESSFUL_SIGN_IN: "record_successful_sign_in",
+  REHIRE_WORKER: "rehire_worker",
   RETIRE_WORKER: "retire_worker",
   REVOKE_WORKER_AREA: "revoke_worker_area",
   REVOKE_WORKER_MARK: "revoke_worker_mark",
