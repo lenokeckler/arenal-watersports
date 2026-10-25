@@ -68,3 +68,46 @@ describe("mapUpdateCategoryBehaviorInputToRow", () => {
     );
   });
 });
+
+const BOOLEAN_FIELD_COLUMNS = [
+  ["isReservable", "is_reservable"],
+  ["hasMotor", "has_motor"],
+  ["consumesFuel", "consumes_fuel"],
+  ["canBeDamaged", "can_be_damaged"],
+  ["hasConditionPhotos", "has_condition_photos"],
+  ["guideOnly", "guide_only"],
+  ["unitsAreInterchangeable", "units_are_interchangeable"],
+] as const;
+
+const ALL_FLAGS_OFF_INPUT = {
+  ...DEFAULT_UPDATE_CATEGORY_BEHAVIOR_INPUT,
+  isReservable: false,
+  hasMotor: false,
+  consumesFuel: false,
+  canBeDamaged: false,
+  hasConditionPhotos: false,
+  guideOnly: false,
+  unitsAreInterchangeable: false,
+};
+
+describe("mapUpdateCategoryBehaviorInputToRow flag columns", () => {
+  it.each(BOOLEAN_FIELD_COLUMNS)(
+    "maps %s only to %s",
+    (field, column) => {
+      const input = {
+        ...ALL_FLAGS_OFF_INPUT,
+        [field]: true,
+      };
+
+      const row = mapUpdateCategoryBehaviorInputToRow(
+        input,
+        FAKE_UPDATE_ADMIN_WORKER_ID
+      );
+
+      const enabledColumns = BOOLEAN_FIELD_COLUMNS.map(
+        ([, flagColumn]) => flagColumn
+      ).filter((flagColumn) => row[flagColumn] === true);
+      expect(enabledColumns).toEqual([column]);
+    }
+  );
+});
