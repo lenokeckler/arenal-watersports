@@ -227,3 +227,4 @@ export {
   type WorkerRegistrationErrorCode,
   type WorkerRegistrationField,
 } from "./administration/WorkerRegistration.constants";
+export { TEMPORARY_PASSWORD } from "./administration/TemporaryPassword.constants";
