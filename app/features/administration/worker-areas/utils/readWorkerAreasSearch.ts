@@ -1,5 +1,7 @@
 import {
   GRANTABLE_WORKER_AREAS,
+  GRANTABLE_WORKER_MARKS,
+  WORKER_MARK_FIELD,
   STRING,
   WORKER_AREA_FIELD,
   WORKER_AREA_INTENT,
@@ -22,6 +24,14 @@ export const readWorkerAreasSearch = (
   area: resolveQueryChoice(
     query[WORKER_AREA_FIELD.AREA],
     GRANTABLE_WORKER_AREAS
+  ),
+  mark: resolveQueryChoice(
+    query[WORKER_MARK_FIELD.MARK],
+    GRANTABLE_WORKER_MARKS
+  ),
+  markNotice: resolveQueryChoice(
+    query[WORKER_MARK_FIELD.MARK_NOTICE],
+    Object.values(WORKER_AREA_INTENT)
   ),
   notice: resolveQueryChoice(
     query[WORKER_AREA_FIELD.NOTICE],

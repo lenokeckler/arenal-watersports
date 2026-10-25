@@ -1,5 +1,9 @@
 import {
+  SUPABASE_WORKER_MARK,
   WORKER_AREA_CHANGE_RESULT,
+  WORKER_MARK_CHANGE_RESULT,
+  type GrantableWorkerMark,
+  type WorkerMarkChangeResult,
   WORKER_AREA_INTENT,
   type WorkerAreaChangeResult,
   type WorkerAreaIntent,
@@ -12,14 +16,19 @@ export const WORKER_AREAS_COPY = {
   AREAS_TITLE: "Áreas de la cuenta",
   BACK: "Volver al inicio",
   EXTERNAL_GUIDE:
-    "Las cuentas de guía externo no reciben áreas adicionales.",
+    "Las cuentas de guía externo no reciben áreas ni marcas adicionales.",
   GRANT: "Habilitar",
+  MARK_GRANT: "Poner",
+  MARK_GRANTING: "Poniendo…",
+  MARK_NOT_SET: "Sin poner",
+  MARK_SET: "Puesta",
+  MARKS_TITLE: "Marcas de la cuenta",
   GRANTING: "Habilitando…",
-  HEADING: "Áreas de un trabajador",
+  HEADING: "Áreas y marcas de un trabajador",
   INSTRUCTION:
-    "Busque al trabajador por su nombre de usuario. Puede habilitarle un área completa más o quitársela; el acceso cambia de inmediato.",
+    "Busque al trabajador por su nombre de usuario. Puede habilitarle un área completa más o ponerle una marca, y quitarlas; el acceso cambia de inmediato.",
   METADATA_TITLE:
-    "Áreas de un trabajador — Arenal Water Sports",
+    "Áreas y marcas de un trabajador — Arenal Water Sports",
   NOT_FOUND:
     "No hay ningún trabajador con ese nombre de usuario.",
   REVOKE: "Quitar",
@@ -61,4 +70,61 @@ export const WORKER_AREA_CHANGE_ERROR: Record<
   [WORKER_AREA_CHANGE_RESULT.NOT_FOUND]:
     "Esa cuenta ya no existe.",
   [WORKER_AREA_CHANGE_RESULT.REVOKED]: "",
+};
+
+export const WORKER_AREA_CHANGE_LABELS = {
+  grant: WORKER_AREAS_COPY.GRANT,
+  granting: WORKER_AREAS_COPY.GRANTING,
+  revoke: WORKER_AREAS_COPY.REVOKE,
+  revoking: WORKER_AREAS_COPY.REVOKING,
+} as const;
+
+export const WORKER_MARK_CHANGE_LABELS = {
+  grant: WORKER_AREAS_COPY.MARK_GRANT,
+  granting: WORKER_AREAS_COPY.MARK_GRANTING,
+  revoke: WORKER_AREAS_COPY.REVOKE,
+  revoking: WORKER_AREAS_COPY.REVOKING,
+} as const;
+
+export const WORKER_MARK_LABEL: Record<
+  GrantableWorkerMark,
+  string
+> = {
+  [SUPABASE_WORKER_MARK.GUIDE]: "Guía",
+};
+
+export const WORKER_MARK_DESCRIPTION: Record<
+  GrantableWorkerMark,
+  string
+> = {
+  [SUPABASE_WORKER_MARK.GUIDE]:
+    "Aparece en la lista de guías al asignar un tour.",
+};
+
+export const WORKER_MARK_CHANGED_NOTICE: Record<
+  WorkerAreaIntent,
+  (markLabel: string) => string
+> = {
+  [WORKER_AREA_INTENT.GRANT]: (markLabel) =>
+    `Se puso la marca ${markLabel}. No cambia su rol ni sus áreas.`,
+  [WORKER_AREA_INTENT.REVOKE]: (markLabel) =>
+    `Se quitó la marca ${markLabel}.`,
+};
+
+export const WORKER_MARK_CHANGE_ERROR: Record<
+  WorkerMarkChangeResult,
+  string
+> = {
+  [WORKER_MARK_CHANGE_RESULT.EXTERNAL_GUIDE]:
+    "Las cuentas de guía externo no reciben marcas.",
+  [WORKER_MARK_CHANGE_RESULT.FAILED]:
+    "No se pudo cambiar la marca. Intente de nuevo.",
+  [WORKER_MARK_CHANGE_RESULT.GRANTED]: "",
+  [WORKER_MARK_CHANGE_RESULT.MARK_NOT_GRANTABLE]:
+    "Esa marca no se puede poner aquí.",
+  [WORKER_MARK_CHANGE_RESULT.NOT_ALLOWED]:
+    "Solo la cuenta de administración puede cambiar marcas.",
+  [WORKER_MARK_CHANGE_RESULT.NOT_FOUND]:
+    "Esa cuenta ya no existe.",
+  [WORKER_MARK_CHANGE_RESULT.REVOKED]: "",
 };
