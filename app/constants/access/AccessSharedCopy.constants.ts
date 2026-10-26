@@ -11,6 +11,8 @@ export const ACCESS_SHARED_COPY = {
   CONFIRMATION_REQUIRED: "Repita la contraseña nueva.",
   NETWORK:
     "No hay conexión. Revise su señal e intente de nuevo.",
+  NEW_PASSWORD_COMMON:
+    "Esa contraseña es muy común y fácil de adivinar. Escoja otra.",
   NEW_PASSWORD_REQUIRED: "Escriba la contraseña nueva.",
   NEW_PASSWORD_RULES:
     "La contraseña nueva no cumple los requisitos.",
