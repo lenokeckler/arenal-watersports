@@ -7,7 +7,7 @@ import {
 } from "./passwordRecoveryReset.constants";
 
 describe("readPasswordRecoveryResetInput", () => {
-  it("reads the four fields untouched, passwords untrimmed", () => {
+  it("reads the username and PIN untouched", () => {
     expect(
       readPasswordRecoveryResetInput(
         createPasswordRecoveryResetFormData(RESET_INPUT)

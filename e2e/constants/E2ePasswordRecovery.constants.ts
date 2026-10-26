@@ -7,6 +7,7 @@ import {
   PASSWORD_RECOVERY_ERROR_CODE,
   PASSWORD_RESET_PIN_MAIL_COPY,
 } from "@/app/constants";
+import { PASSWORD_RECOVERY_NEW_PASSWORD_COPY } from "@/app/features/access/password-recovery-form/constants/PasswordRecoveryNewPasswordCopy.constants";
 import { PASSWORD_RECOVERY_RESET_ERROR_COPY } from "@/app/features/access/password-recovery-form/constants/PasswordRecoveryResetErrorCopy.constants";
 import { PASSWORD_RECOVERY_REQUEST_COPY } from "@/app/features/access/password-recovery-form/constants/PasswordRecoveryRequestCopy.constants";
 import { PASSWORD_RECOVERY_RESET_COPY } from "@/app/features/access/password-recovery-form/constants/PasswordRecoveryResetCopy.constants";
@@ -87,9 +88,9 @@ export const E2E_RECOVERY_COPY = {
   BACK: PASSWORD_RECOVERY_REQUEST_COPY.BACK,
   CONFIRMATION: PASSWORD_RECOVERY_RESET_COPY.CONFIRMATION,
   CONFIRM_PASSWORD_LABEL:
-    PASSWORD_RECOVERY_RESET_COPY.CONFIRM_PASSWORD_LABEL,
+    PASSWORD_RECOVERY_NEW_PASSWORD_COPY.CONFIRM_PASSWORD_LABEL,
   NEW_PASSWORD_LABEL:
-    PASSWORD_RECOVERY_RESET_COPY.NEW_PASSWORD_LABEL,
+    PASSWORD_RECOVERY_NEW_PASSWORD_COPY.NEW_PASSWORD_LABEL,
   NEW_PASSWORD_RULES:
     PASSWORD_RECOVERY_RESET_ERROR_COPY[
       PASSWORD_RECOVERY_ERROR_CODE.NEW_PASSWORD_RULES
