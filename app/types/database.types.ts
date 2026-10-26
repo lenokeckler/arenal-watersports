@@ -2498,10 +2498,6 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: string;
       };
-      current_session_is_live: {
-        Args: Record<PropertyKey, never>;
-        Returns: boolean;
-      };
       current_session_state: {
         Args: Record<PropertyKey, never>;
         Returns: string;
