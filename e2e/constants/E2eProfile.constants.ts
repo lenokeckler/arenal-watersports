@@ -79,4 +79,5 @@ export const E2E_PROFILE_SCREENSHOT_BASENAME = {
   HUB_WITH_NOTICE: "02-profile-hub-password-changed",
   PASSWORD_FORM: "03-profile-password-form",
   PASSWORD_FORM_ERRORS: "04-profile-password-form-errors",
+  PASSWORD_FORM_COMMON: "05-profile-password-form-common",
 } as const;
