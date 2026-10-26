@@ -10,6 +10,7 @@ import {
   PASSWORD_RECOVERY_FINISH_ATTEMPTS,
 } from "@/app/constants";
 import { setWorkerPassword } from "@/app/services/authentication";
+import { COMMON_PASSWORD_THAT_MEETS_THE_RULES } from "@/app/services/password-policy/tests/commonPassword.constants";
 import { consumePasswordResetPin } from "../consumePasswordResetPin";
 import { deliverPasswordChangedNoticeQuietly } from "../deliverPasswordChangedNoticeQuietly";
 import { finishPasswordRecovery } from "../finishPasswordRecovery";
@@ -81,6 +82,14 @@ describe("resetPasswordWithPin", () => {
     [
       "a mismatched confirmation",
       { confirmPassword: RESET_MISMATCHED_PASSWORD },
+    ],
+    [
+      "a common password",
+      {
+        confirmPassword:
+          COMMON_PASSWORD_THAT_MEETS_THE_RULES,
+        newPassword: COMMON_PASSWORD_THAT_MEETS_THE_RULES,
+      },
     ],
     ["an empty username", { username: INVALID_USERNAME }],
     ["a malformed pin", { pin: RESET_SHORT_PIN }],
