@@ -3,7 +3,6 @@ export { forgetPasswordRecoveryGrant } from "./forgetPasswordRecoveryGrant";
 export { isPasswordResetGrantOpen } from "./isPasswordResetGrantOpen";
 export { readPasswordRecoveryGrant } from "./readPasswordRecoveryGrant";
 export { resetPasswordWithGrant } from "./resetPasswordWithGrant";
-export { resetPasswordWithPin } from "./resetPasswordWithPin";
 export { storePasswordRecoveryGrant } from "./storePasswordRecoveryGrant";
 export { verifyPasswordResetPin } from "./verifyPasswordResetPin";
 export type { DeferredTask } from "./models/DeferredTask.type";
