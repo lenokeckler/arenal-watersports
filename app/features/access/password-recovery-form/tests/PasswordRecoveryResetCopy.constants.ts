@@ -57,6 +57,8 @@ export const APPROVED_RESET_ERROR_COPY = {
     "El PIN no es correcto o ya venció. Pida uno nuevo si hace falta.",
   [PASSWORD_RECOVERY_ERROR_CODE.PIN_REQUIRED]:
     "Escriba el PIN.",
+  [PASSWORD_RECOVERY_ERROR_CODE.RESET_EXPIRED]:
+    "Pasó el tiempo para elegir la contraseña. Pida un PIN nuevo.",
   [PASSWORD_RECOVERY_ERROR_CODE.TOO_MANY_REQUESTS]:
     ACCESS_SHARED_COPY.TOO_MANY_REQUESTS,
   [PASSWORD_RECOVERY_ERROR_CODE.UNKNOWN]:
