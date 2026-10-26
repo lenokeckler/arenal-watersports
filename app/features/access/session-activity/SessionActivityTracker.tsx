@@ -1,9 +1,12 @@
 "use client";
 
 import { useSessionActivityTracker } from "./hooks/useSessionActivityTracker";
+import { useSessionIdleClock } from "./hooks/useSessionIdleClock";
 
 const SessionActivityTracker = (): null => {
-  useSessionActivityTracker();
+  const { sync } = useSessionIdleClock();
+
+  useSessionActivityTracker(sync);
 
   return null;
 };
