@@ -8,12 +8,12 @@ import {
 import { signOutThisDevice } from "@/app/services/authentication/signOutThisDevice";
 import { createBrowserSupabaseClient } from "@/app/services/supabase/client";
 import type { BrowserSupabaseClient } from "@/app/services/supabase/models/BrowserSupabaseClient.type";
-import { attemptSignOutThisDevice } from "../utils/attemptSignOutThisDevice";
+import { attemptSignOutThisDevice } from "../attemptSignOutThisDevice";
 import {
   SIGN_OUT_FAILURE,
   SIGN_OUT_OK,
   SIGN_OUT_REFUSED,
-} from "./useLogoutViewModel.constants";
+} from "./attemptSignOutThisDevice.constants";
 
 vi.mock(
   "@/app/services/authentication/signOutThisDevice",

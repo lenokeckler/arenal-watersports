@@ -4,8 +4,8 @@ import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { LOGOUT_PHASE } from "../constants/LogoutPhase.constants";
 import type { SetLogoutPhase } from "../models/SetLogoutPhase.type";
-import { attemptSignOutThisDevice } from "../utils/attemptSignOutThisDevice";
-import { buildLoginSignedOutPath } from "../utils/buildLoginSignedOutPath";
+import { attemptSignOutThisDevice } from "@/app/services/authentication/attemptSignOutThisDevice";
+import { buildLoginSignedOutPath } from "@/app/utils/pathname/buildLoginSignedOutPath";
 
 export const useLogoutSignOut = (
   setPhase: SetLogoutPhase
