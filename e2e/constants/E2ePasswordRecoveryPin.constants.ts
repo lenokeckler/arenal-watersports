@@ -6,6 +6,7 @@ import {
 import { appendQueryParam } from "@/app/utils/pathname/appendQueryParam";
 
 export const E2E_RECOVERY_PASSWORDS = {
+  COMMON: "Password1!",
   NEW: "Nueva.Prueba.2026!",
   WEAK: "abc",
 } as const;
@@ -28,6 +29,7 @@ export const E2E_RECOVERY_SCREENSHOT_BASENAME = {
   LOGIN_RECOVERED_NOTICE:
     "06-recovery-login-password-recovered",
   LOGIN_WITH_LINK: "05-recovery-login-forgot-link",
+  NEW_PASSWORD_SCREEN: "07-recovery-new-password-screen",
   PIN_SCREEN: "03-recovery-pin-screen",
   PIN_SCREEN_PIN_ERROR: "04-recovery-pin-screen-pin-error",
   REQUEST_EMPTY: "01-recovery-request-empty",

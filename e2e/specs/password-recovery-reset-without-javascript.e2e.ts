@@ -8,9 +8,11 @@ import {
   E2E_RECOVERY_SECRET_PARAMS,
 } from "../constants/E2ePasswordRecoveryReset.constants";
 import { E2E_RECOVERY_PASSWORDS } from "../constants/E2ePasswordRecoveryPin.constants";
+import { createPasswordRecoveryNewPasswordPage } from "../pages/PasswordRecoveryNewPassword.page";
 import { createPasswordRecoveryRequestPage } from "../pages/PasswordRecoveryRequest.page";
 import { createPasswordRecoveryResetPage } from "../pages/PasswordRecoveryReset.page";
 import { expectRecoveredLogin } from "../support/expectRecoveredLogin";
+import { expectRecoveryNewPasswordScreen } from "../support/expectRecoveryNewPasswordScreen";
 import { expectRecoveryResetScreen } from "../support/expectRecoveryResetScreen";
 import { readDeliveredRecoveryPin } from "../support/readDeliveredRecoveryPin";
 import { expect, test } from "../support/recoveryTest";
@@ -44,11 +46,13 @@ test.describe("Password recovery without JavaScript", () => {
     );
   });
 
-  test("posts the reset form and lands on the sign-in with the notice", async ({
+  test("posts the PIN form and the new password form and lands on the sign-in with the notice", async ({
     page,
     recoveryAccount,
   }) => {
     const resetPage = createPasswordRecoveryResetPage(page);
+    const newPasswordPage =
+      createPasswordRecoveryNewPasswordPage(page);
     const tracker = trackNavigationUrls(page);
     await requestRecoveryPin(
       page,
@@ -61,17 +65,26 @@ test.describe("Password recovery without JavaScript", () => {
     const pin = await readDeliveredRecoveryPin(
       readRecoveryAddress(recoveryAccount)
     );
-    await resetPage.fillForm({
-      confirmPassword: E2E_RECOVERY_PASSWORDS.NEW,
-      newPassword: E2E_RECOVERY_PASSWORDS.NEW,
-      pin,
-    });
-    const submission = waitForPostNavigation(page);
+    await resetPage.fillPin(pin);
+    const pinSubmission = waitForPostNavigation(page);
 
     await resetPage.submit();
 
-    const request = await submission;
-    expect(request.method()).toBe(API.METHODS.POST);
+    expect((await pinSubmission).method()).toBe(
+      API.METHODS.POST
+    );
+    await expectRecoveryNewPasswordScreen(page);
+    await newPasswordPage.fillForm({
+      confirmPassword: E2E_RECOVERY_PASSWORDS.NEW,
+      newPassword: E2E_RECOVERY_PASSWORDS.NEW,
+    });
+    const passwordSubmission = waitForPostNavigation(page);
+
+    await newPasswordPage.submit();
+
+    expect((await passwordSubmission).method()).toBe(
+      API.METHODS.POST
+    );
     await expectRecoveredLogin(page);
     for (const url of tracker.urls()) {
       const { search, searchParams } = new URL(url);
