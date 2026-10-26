@@ -20,12 +20,12 @@ export const CATEGORY_CATALOG_COPY = {
     "Esta categoría ya tiene unidades o existencias registradas y no se puede eliminar.",
   DELETE_SUCCESS_TOAST: "Categoría eliminada.",
   EMPTY_STATE_BODY:
-    "Cada categoría que agregues aparece aquí.",
+    "Cada categoría que agregue aparece aquí.",
   EMPTY_STATE_TITLE: "Todavía no hay categorías.",
   FETCH_ERROR_MESSAGE:
     "No se pudieron cargar las categorías.",
   GENERIC_MUTATION_ERROR:
-    "No se pudo completar la acción. Intenta de nuevo.",
+    "No se pudo completar la acción. Intente de nuevo.",
   GROUP_FIELD_LABEL: "Grupo",
   GROUP_FIELD_PLACEHOLDER: "Opcional — ej. Kayaks",
   GROUP_PREFIX_LABEL: "GRUPO",
@@ -55,7 +55,7 @@ export const CATEGORY_CATALOG_COPY = {
   TRACKING_MODE_BY_UNIT_LABEL: "Por unidad",
   TRACKING_MODE_BY_UNIT_LOWERCASE: "por unidad",
   TRACKING_MODE_FIELD_LABEL: "Modo de conteo",
-  TRACKING_MODE_FIELD_PLACEHOLDER: "Selecciona un modo",
+  TRACKING_MODE_FIELD_PLACEHOLDER: "Seleccione un modo",
   TRACKING_MODE_MICRO_LABEL_BY_QUANTITY: "POR CANTIDAD",
   TRACKING_MODE_MICRO_LABEL_BY_UNIT: "POR UNIDAD",
   TRACKING_MODE_REQUIRED_ERROR:
