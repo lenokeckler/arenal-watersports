@@ -6,6 +6,7 @@ import {
   E2E_LOGIN_COPY,
   E2E_LOGIN_FIELD_ID,
   E2E_LOGIN_TOGGLE_LABEL,
+  E2E_LOGIN_TOGGLE_MIN_SIZE_PX,
   E2E_LOGIN_WRONG_PASSWORD,
 } from "../constants/E2eLogin.constants";
 import { createLoginPage } from "../pages/Login.page";
@@ -76,6 +77,24 @@ test.describe("Login", () => {
     await expect(
       loginPage.getPasswordInput()
     ).toBeFocused();
+  });
+
+  test("gives the password toggle a tap area of at least 48 px", async ({
+    page,
+  }) => {
+    const loginPage = createLoginPage(page);
+    await loginPage.goTo();
+
+    const box = await loginPage
+      .getPasswordToggle(E2E_LOGIN_TOGGLE_LABEL.SHOW)
+      .boundingBox();
+
+    expect(box?.width).toBeGreaterThanOrEqual(
+      E2E_LOGIN_TOGGLE_MIN_SIZE_PX
+    );
+    expect(box?.height).toBeGreaterThanOrEqual(
+      E2E_LOGIN_TOGGLE_MIN_SIZE_PX
+    );
   });
 
   test("toggles the password input type and the toggle label", async ({

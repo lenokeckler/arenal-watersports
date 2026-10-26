@@ -69,3 +69,5 @@ export const E2E_LOGIN_SCREENSHOT_BASENAME = {
   SIGNED_IN: "05-login-signed-in",
   SESSION_IDLE: "06-login-session-idle",
 } as const;
+
+export const E2E_LOGIN_TOGGLE_MIN_SIZE_PX = 48;
