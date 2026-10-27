@@ -9,6 +9,8 @@ import type { CategoryListItem } from "../models/CategoryListItem.interface";
 import type { CategoryListViewModel } from "../models/CategoryListViewModel.interface";
 import type { CategoryListViewProps } from "../models/CategoryListViewProps.interface";
 import type { CategoryListViewState } from "../models/CategoryListViewState.type";
+import { isCategoryInactive } from "../utils/isCategoryInactive";
+import { resolveCategoryTrackingModeLabel } from "../utils/resolveCategoryTrackingModeLabel";
 
 const ignoreCardAction = (): void => undefined;
 
@@ -31,6 +33,9 @@ const buildCategoryCardViewModel = (
   category: CategoryListItem
 ): CategoryCardViewModel => ({
   category,
+  isInactive: isCategoryInactive(category),
+  trackingModeLabel:
+    resolveCategoryTrackingModeLabel(category),
   actionState: CATEGORY_CARD_ACTION_STATE.NONE,
   isActionLoading: false,
   onCancelClick: ignoreCardAction,

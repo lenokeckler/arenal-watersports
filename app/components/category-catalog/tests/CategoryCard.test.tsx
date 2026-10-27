@@ -52,10 +52,35 @@ describe("CategoryCard", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders the tracking mode label it receives", () => {
+    render(
+      <CategoryCard {...DEFAULT_CATEGORY_CARD_VIEW_MODEL} />
+    );
+    const categoryCardPage = createCategoryCardPage();
+
+    expect(
+      categoryCardPage.getTrackingModeLabel(
+        DEFAULT_CATEGORY_CARD_VIEW_MODEL.trackingModeLabel
+      )
+    ).toBeInTheDocument();
+  });
+
+  it("renders the group prefix label with the group name", () => {
+    render(
+      <CategoryCard {...DEFAULT_CATEGORY_CARD_VIEW_MODEL} />
+    );
+    const categoryCardPage = createCategoryCardPage();
+
+    expect(
+      categoryCardPage.getGroupPrefix()
+    ).toBeInTheDocument();
+  });
+
   it("shows the inactive pill and hides every action for an inactive category", () => {
     const viewModel = {
       ...DEFAULT_CATEGORY_CARD_VIEW_MODEL,
       actionState: CATEGORY_CARD_ACTION_STATE.NONE,
+      isInactive: true,
       category: {
         ...DEFAULT_CATEGORY_CARD_VIEW_MODEL.category,
         status: CATEGORY_STATUS.INACTIVE,
