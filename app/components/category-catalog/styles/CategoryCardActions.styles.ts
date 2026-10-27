@@ -1,8 +1,8 @@
 export const CATEGORY_CARD_ACTIONS_BUTTON_CLASS =
-  "min-h-11 w-full md:order-5 md:ml-auto md:w-auto";
+  "min-h-11 w-full md:order-6 md:ml-auto md:w-auto";
 
 export const CATEGORY_CARD_ACTIONS_CONFIRM_CLASS =
-  "flex w-full flex-col gap-3 md:order-5";
+  "flex w-full flex-col gap-3 md:order-6";
 
 export const CATEGORY_CARD_ACTIONS_CONFIRM_MESSAGE_CLASS =
   "text-body-base text-on-surface";

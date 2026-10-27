@@ -17,6 +17,11 @@ export const createCategoryCardPage = () => {
   const getGroupRow = (groupName: string) =>
     screen.queryByText(groupName);
 
+  const getBehaviorLink = () =>
+    screen.queryByRole(ARIA_ROLE.LINK, {
+      name: CATEGORY_CATALOG_COPY.BEHAVIOR_LINK,
+    });
+
   const getDeleteButton = () =>
     screen.queryByRole(ARIA_ROLE.BUTTON, {
       name: CATEGORY_CATALOG_COPY.DELETE_CATEGORY_BUTTON,
@@ -70,6 +75,7 @@ export const createCategoryCardPage = () => {
     getNameHeading,
     getInactivePill,
     getGroupRow,
+    getBehaviorLink,
     getDeleteButton,
     getMarkInactiveButton,
     getCancelButton,

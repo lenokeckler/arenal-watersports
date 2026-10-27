@@ -18,6 +18,7 @@ import {
   resolveCategoryCardContainerClassName,
 } from "../styles/CategoryCard.styles";
 import CategoryCardActions from "./CategoryCardActions";
+import CategoryCardBehaviorLink from "./CategoryCardBehaviorLink";
 
 const CATEGORY_TRACKING_MODE_MICRO_LABEL: Record<
   CategoryTrackingMode,
@@ -82,6 +83,7 @@ const CategoryCard = ({
           {category.groupName}
         </Text>
       )}
+      <CategoryCardBehaviorLink categoryId={category.id} />
       <CategoryCardActions
         actionState={cardActionProps.actionState}
         isActionLoading={cardActionProps.isActionLoading}

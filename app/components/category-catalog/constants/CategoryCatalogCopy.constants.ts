@@ -2,6 +2,7 @@ export const CATEGORY_CATALOG_COPY = {
   BEHAVIOR_CATEGORY_NOT_FOUND_ERROR:
     "No se encontró la categoría. Es posible que otra persona la haya eliminado.",
   BEHAVIOR_FORM_TITLE: "Comportamiento de la categoría",
+  BEHAVIOR_LINK: "Comportamiento",
   BEHAVIOR_SUBMIT_BUTTON: "Guardar comportamiento",
   BEHAVIOR_TRACKING_MODE_LINE_LABEL: "Modo de conteo:",
   BEHAVIOR_UPDATE_SUCCESS_TOAST:
