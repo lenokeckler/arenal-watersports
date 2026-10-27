@@ -1,3 +1,4 @@
+import { CATEGORY_LIST_DIAGNOSTICS } from "./constants/CategoryListDiagnostics.constants";
 import CategoryListView from "./CategoryListView";
 import type { CategoryListViewProps } from "./models/CategoryListViewProps.interface";
 import { listCategories } from "./services/listCategories";
@@ -9,7 +10,7 @@ const fetchCategoryListViewProps =
       return { categories, fetchFailed: false };
     } catch (error) {
       const fetchError = new Error(
-        "Failed to load the category list",
+        CATEGORY_LIST_DIAGNOSTICS.FETCH_FAILED,
         { cause: error }
       );
       return {
