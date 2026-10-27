@@ -1,32 +1,42 @@
-import { validateSignInCredentials } from "@/app/utils/sign-in/validateSignInCredentials";
 import type { LoginFormSubmitHandler } from "../models/LoginFormSubmitHandler.type";
 import type { LoginFormViewModel } from "../models/LoginFormViewModel.interface";
-import { resolveSignInFieldErrors } from "../utils/resolveSignInFieldErrors";
+import { resolveLoginFormErrors } from "../utils/resolveLoginFormErrors";
+import { useLoginFormFocus } from "./useLoginFormFocus";
 import { useLoginFormValues } from "./useLoginFormValues";
+import { useSignInFallback } from "./useSignInFallback";
 import { useSignInSubmission } from "./useSignInSubmission";
 
 export const useLoginFormViewModel =
   (): LoginFormViewModel => {
     const submission = useSignInSubmission();
-    const form = useLoginFormValues(
-      submission.clearServerError
-    );
-
-    const validationError = submission.hasSubmitted
-      ? validateSignInCredentials(form.values)
-      : null;
+    const fallback = useSignInFallback();
+    const form = useLoginFormValues(() => {
+      fallback.dismiss();
+      submission.clearServerError();
+    });
 
     const handleSubmit: LoginFormSubmitHandler = (
       event
     ) => {
       event.preventDefault();
+      fallback.dismiss();
       submission.submit(form.values);
     };
 
+    const errors = resolveLoginFormErrors({
+      fallbackError: fallback.error,
+      hasSubmitted: submission.hasSubmitted,
+      serverError: submission.serverError,
+      values: form.values,
+    });
+
     return {
-      fieldErrors: resolveSignInFieldErrors(
-        submission.serverError ?? validationError
+      ...errors,
+      fieldRefs: useLoginFormFocus(
+        errors.fieldErrors,
+        submission.submitAttempt
       ),
+      formAction: fallback.action,
       handlePasswordChange: form.handlePasswordChange,
       handleSubmit,
       handleUsernameChange: form.handleUsernameChange,
