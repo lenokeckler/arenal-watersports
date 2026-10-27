@@ -2,17 +2,8 @@ import { describe, expect, it } from "vitest";
 import { STRING } from "@/app/constants";
 import { mapCategoryBehaviorToFormValues } from "../utils/mapCategoryBehaviorToFormValues";
 import { DEFAULT_CATEGORY_BEHAVIOR } from "./CategoryBehavior.constants";
+import { CATEGORY_BEHAVIOR_FLAG_FIELDS } from "./CategoryBehaviorFlagFields.constants";
 import { VALID_CATEGORY_BEHAVIOR_FORM_VALUES } from "./CategoryBehaviorFormValues.constants";
-
-const BOOLEAN_FIELDS = [
-  "isReservable",
-  "hasMotor",
-  "consumesFuel",
-  "canBeDamaged",
-  "hasConditionPhotos",
-  "guideOnly",
-  "unitsAreInterchangeable",
-] as const;
 
 const ALL_FLAGS_OFF_BEHAVIOR = {
   ...DEFAULT_CATEGORY_BEHAVIOR,
@@ -96,7 +87,7 @@ describe("mapCategoryBehaviorToFormValues", () => {
     }
   );
 
-  it.each(BOOLEAN_FIELDS)(
+  it.each(CATEGORY_BEHAVIOR_FLAG_FIELDS)(
     "maps %s only to its own form field",
     (field) => {
       const behavior = {
@@ -107,9 +98,11 @@ describe("mapCategoryBehaviorToFormValues", () => {
       const formValues =
         mapCategoryBehaviorToFormValues(behavior);
 
-      const enabledFields = BOOLEAN_FIELDS.filter(
-        (booleanField) => formValues[booleanField] === true
-      );
+      const enabledFields =
+        CATEGORY_BEHAVIOR_FLAG_FIELDS.filter(
+          (booleanField) =>
+            formValues[booleanField] === true
+        );
       expect(enabledFields).toEqual([field]);
     }
   );
