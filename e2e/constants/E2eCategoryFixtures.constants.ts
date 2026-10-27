@@ -1,3 +1,13 @@
+import { CATEGORY_TRACKING_MODE } from "@/app/components/category-catalog/constants/CategoryTrackingMode.constants";
+import type { CategoryFixtureBehavior } from "../models/CategoryFixtureBehavior.interface";
+
+export const DEFAULT_CATEGORY_FIXTURE_BEHAVIOR: CategoryFixtureBehavior =
+  {
+    hasMotor: false,
+    trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
+    usageMetric: null,
+  };
+
 export const E2E_DELETABLE_CATEGORY_BASE_NAME =
   "E2E Fixture — Sin registros";
 
