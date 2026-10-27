@@ -7,5 +7,6 @@ export const PATHS = {
   ADMINISTRATION: {
     CATEGORIES: "/administracion/categorias",
     CATEGORIES_NEW: "/administracion/categorias/nueva",
+    CATEGORY_BEHAVIOR_SEGMENT: "comportamiento",
   },
 } as const;
