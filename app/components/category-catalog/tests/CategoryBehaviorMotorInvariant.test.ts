@@ -4,18 +4,14 @@ import { USAGE_METRIC } from "../constants/UsageMetric.constants";
 import type { CategoryBehaviorFormValues } from "../models/CategoryBehaviorFormValues.interface";
 import { applyHasMotorChange } from "../utils/applyHasMotorChange";
 import { applyUsageMetricChange } from "../utils/applyUsageMetricChange";
+import type { FormValuesAction } from "./models/FormValuesAction.type";
+import type { LabeledCase } from "./models/LabeledCase.type";
+import { UNKNOWN_USAGE_METRIC_TEXT } from "./CategoryBehaviorFormRules.constants";
 import { VALID_CATEGORY_BEHAVIOR_FORM_VALUES } from "./CategoryBehaviorFormValues.constants";
 
-type FormValuesAction = (
-  values: CategoryBehaviorFormValues
-) => CategoryBehaviorFormValues;
-
-const UNKNOWN_METRIC_TEXT = "furlongs";
-
-const STARTING_MOTOR_STATES: [
-  string,
-  Partial<CategoryBehaviorFormValues>,
-][] = [
+const STARTING_MOTOR_STATES: LabeledCase<
+  Partial<CategoryBehaviorFormValues>
+>[] = [
   [
     "no motor",
     { hasMotor: false, usageMetric: STRING.Empty },
@@ -36,7 +32,7 @@ const STARTING_MOTOR_STATES: [
   ],
 ];
 
-const MOTOR_ACTIONS: [string, FormValuesAction][] = [
+const MOTOR_ACTIONS: LabeledCase<FormValuesAction>[] = [
   [
     "turn the motor on",
     (values) => applyHasMotorChange(values, true),
@@ -69,7 +65,10 @@ const MOTOR_ACTIONS: [string, FormValuesAction][] = [
   [
     "type an unknown metric",
     (values) =>
-      applyUsageMetricChange(values, UNKNOWN_METRIC_TEXT),
+      applyUsageMetricChange(
+        values,
+        UNKNOWN_USAGE_METRIC_TEXT
+      ),
   ],
 ];
 

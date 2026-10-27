@@ -1,17 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { CATEGORY_TRACKING_MODE } from "../constants/CategoryTrackingMode.constants";
-import type { CategoryTrackingMode } from "../models/CategoryTrackingMode.type";
 import { applyHasConditionPhotosChange } from "../utils/applyHasConditionPhotosChange";
 import { canTrackConditionPhotos } from "../utils/canTrackConditionPhotos";
 import { VALID_CATEGORY_BEHAVIOR_FORM_VALUES } from "./CategoryBehaviorFormValues.constants";
+import type { LabeledCase } from "./models/LabeledCase.type";
+import type { PhotosScenario } from "./models/PhotosScenario.interface";
 
-interface PhotosScenario {
-  trackingMode: CategoryTrackingMode;
-  startingFlag: boolean;
-  requestedFlag: boolean;
-}
-
-const PHOTOS_SCENARIOS: [string, PhotosScenario][] = [
+const PHOTOS_SCENARIOS: LabeledCase<PhotosScenario>[] = [
   [
     "by unit, flag off, turn on",
     {

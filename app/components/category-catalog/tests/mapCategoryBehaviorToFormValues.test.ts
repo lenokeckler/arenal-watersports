@@ -2,22 +2,15 @@ import { describe, expect, it } from "vitest";
 import { STRING } from "@/app/constants";
 import { mapCategoryBehaviorToFormValues } from "../utils/mapCategoryBehaviorToFormValues";
 import { DEFAULT_CATEGORY_BEHAVIOR } from "./CategoryBehavior.constants";
-import { CATEGORY_BEHAVIOR_FLAG_FIELDS } from "./CategoryBehaviorFlagFields.constants";
+import {
+  ALL_FLAGS_OFF,
+  CATEGORY_BEHAVIOR_FLAG_FIELDS,
+} from "./CategoryBehaviorFlagFields.constants";
+import {
+  CUSTOM_DURATION_MINUTES,
+  CUSTOM_DURATION_TEXT,
+} from "./CategoryBehaviorFormRules.constants";
 import { VALID_CATEGORY_BEHAVIOR_FORM_VALUES } from "./CategoryBehaviorFormValues.constants";
-
-const ALL_FLAGS_OFF_BEHAVIOR = {
-  ...DEFAULT_CATEGORY_BEHAVIOR,
-  isReservable: false,
-  hasMotor: false,
-  consumesFuel: false,
-  canBeDamaged: false,
-  hasConditionPhotos: false,
-  guideOnly: false,
-  unitsAreInterchangeable: false,
-};
-
-const CUSTOM_DURATION_MINUTES = 45;
-const CUSTOM_DURATION_TEXT = "45";
 
 describe("mapCategoryBehaviorToFormValues", () => {
   it("maps the default behavior to the valid form values", () => {
@@ -91,7 +84,8 @@ describe("mapCategoryBehaviorToFormValues", () => {
     "maps %s only to its own form field",
     (field) => {
       const behavior = {
-        ...ALL_FLAGS_OFF_BEHAVIOR,
+        ...DEFAULT_CATEGORY_BEHAVIOR,
+        ...ALL_FLAGS_OFF,
         [field]: true,
       };
 

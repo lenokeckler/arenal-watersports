@@ -1,7 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { STRING } from "@/app/constants";
 import { mapCategoryBehaviorFormValuesToInput } from "../utils/mapCategoryBehaviorFormValuesToInput";
-import { CATEGORY_BEHAVIOR_FLAG_FIELDS } from "./CategoryBehaviorFlagFields.constants";
+import {
+  ALL_FLAGS_OFF,
+  CATEGORY_BEHAVIOR_FLAG_FIELDS,
+} from "./CategoryBehaviorFlagFields.constants";
+import {
+  BLANK_DURATION_TEXT,
+  CUSTOM_DURATION_MINUTES,
+  CUSTOM_DURATION_TEXT,
+  UNKNOWN_USAGE_METRIC_TEXT,
+} from "./CategoryBehaviorFormRules.constants";
 import { VALID_CATEGORY_BEHAVIOR_FORM_VALUES } from "./CategoryBehaviorFormValues.constants";
 import {
   DEFAULT_UPDATE_CATEGORY_BEHAVIOR_INPUT,
@@ -10,22 +19,8 @@ import {
 } from "./UpdateCategoryBehaviorInput.constants";
 
 const OTHER_CATEGORY_ID = "fake-other-category-id";
-const UNKNOWN_METRIC_TEXT = "furlongs";
-const BLANK_DURATION_TEXT = "   ";
 const INVALID_DURATION_TEXT = "abc";
-const PADDED_DURATION_TEXT = "  45  ";
-const PADDED_DURATION_MINUTES = 45;
-
-const ALL_FLAGS_OFF_FORM_VALUES = {
-  ...VALID_CATEGORY_BEHAVIOR_FORM_VALUES,
-  isReservable: false,
-  hasMotor: false,
-  consumesFuel: false,
-  canBeDamaged: false,
-  hasConditionPhotos: false,
-  guideOnly: false,
-  unitsAreInterchangeable: false,
-};
+const PADDED_DURATION_TEXT = `  ${CUSTOM_DURATION_TEXT}  `;
 
 describe("mapCategoryBehaviorFormValuesToInput", () => {
   it("maps the valid form values to the default input", () => {
@@ -48,7 +43,7 @@ describe("mapCategoryBehaviorFormValuesToInput", () => {
     expect(input.categoryId).toBe(OTHER_CATEGORY_ID);
   });
 
-  it.each([STRING.Empty, UNKNOWN_METRIC_TEXT])(
+  it.each([STRING.Empty, UNKNOWN_USAGE_METRIC_TEXT])(
     "maps the usage metric text %j to null",
     (usageMetric) => {
       const input = mapCategoryBehaviorFormValuesToInput(
@@ -88,7 +83,7 @@ describe("mapCategoryBehaviorFormValuesToInput", () => {
     );
 
     expect(input.defaultDurationMinutes).toBe(
-      PADDED_DURATION_MINUTES
+      CUSTOM_DURATION_MINUTES
     );
   });
 
@@ -124,7 +119,11 @@ describe("mapCategoryBehaviorFormValuesToInput", () => {
     (flagField) => {
       const input = mapCategoryBehaviorFormValuesToInput(
         FAKE_UPDATE_CATEGORY_ID,
-        { ...ALL_FLAGS_OFF_FORM_VALUES, [flagField]: true }
+        {
+          ...VALID_CATEGORY_BEHAVIOR_FORM_VALUES,
+          ...ALL_FLAGS_OFF,
+          [flagField]: true,
+        }
       );
 
       const enabledFields =

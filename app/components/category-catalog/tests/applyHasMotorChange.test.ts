@@ -2,9 +2,8 @@ import { describe, expect, it } from "vitest";
 import { STRING } from "@/app/constants";
 import { USAGE_METRIC } from "../constants/UsageMetric.constants";
 import { applyHasMotorChange } from "../utils/applyHasMotorChange";
+import { UNKNOWN_USAGE_METRIC_TEXT } from "./CategoryBehaviorFormRules.constants";
 import { VALID_CATEGORY_BEHAVIOR_FORM_VALUES } from "./CategoryBehaviorFormValues.constants";
-
-const UNKNOWN_METRIC_TEXT = "furlongs";
 
 describe("applyHasMotorChange", () => {
   it("clears the usage metric when the motor is turned off", () => {
@@ -51,7 +50,7 @@ describe("applyHasMotorChange", () => {
     const values = applyHasMotorChange(
       {
         ...VALID_CATEGORY_BEHAVIOR_FORM_VALUES,
-        usageMetric: UNKNOWN_METRIC_TEXT,
+        usageMetric: UNKNOWN_USAGE_METRIC_TEXT,
       },
       true
     );
