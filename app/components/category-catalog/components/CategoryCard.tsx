@@ -9,6 +9,7 @@ import { CATEGORY_TRACKING_MODE } from "../constants/CategoryTrackingMode.consta
 import type { CategoryCardViewModel } from "../models/CategoryCardViewModel.interface";
 import type { CategoryTrackingMode } from "../models/CategoryTrackingMode.type";
 import {
+  CATEGORY_CARD_BUTTONS_CLASS,
   CATEGORY_CARD_GROUP_PREFIX_CLASS,
   CATEGORY_CARD_GROUP_ROW_CLASS,
   CATEGORY_CARD_NAME_CLASS,
@@ -83,19 +84,23 @@ const CategoryCard = ({
           {category.groupName}
         </Text>
       )}
-      <CategoryCardBehaviorLink categoryId={category.id} />
-      <CategoryCardActions
-        actionState={cardActionProps.actionState}
-        isActionLoading={cardActionProps.isActionLoading}
-        onCancelClick={cardActionProps.onCancelClick}
-        onConfirmDeleteClick={
-          cardActionProps.onConfirmDeleteClick
-        }
-        onDeleteClick={cardActionProps.onDeleteClick}
-        onMarkInactiveClick={
-          cardActionProps.onMarkInactiveClick
-        }
-      />
+      <div className={CATEGORY_CARD_BUTTONS_CLASS}>
+        <CategoryCardBehaviorLink
+          categoryId={category.id}
+        />
+        <CategoryCardActions
+          actionState={cardActionProps.actionState}
+          isActionLoading={cardActionProps.isActionLoading}
+          onCancelClick={cardActionProps.onCancelClick}
+          onConfirmDeleteClick={
+            cardActionProps.onConfirmDeleteClick
+          }
+          onDeleteClick={cardActionProps.onDeleteClick}
+          onMarkInactiveClick={
+            cardActionProps.onMarkInactiveClick
+          }
+        />
+      </div>
     </div>
   );
 };
