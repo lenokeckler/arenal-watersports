@@ -5,3 +5,4 @@ export type {
   NullableUndefined,
 } from "./Nullable";
 export type { Database } from "./Database";
+export type { HttpHeader } from "./HttpHeader";
