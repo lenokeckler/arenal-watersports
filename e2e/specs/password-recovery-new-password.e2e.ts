@@ -70,11 +70,10 @@ test.describe("Password recovery new password screen", () => {
 
   test("offers another PIN from the PIN screen when it did not arrive", async ({
     page,
-    recoveryAccount,
   }) => {
     const resetPage = createPasswordRecoveryResetPage(page);
 
-    await resetPage.goTo(recoveryAccount.username);
+    await resetPage.goTo();
 
     await expect(
       resetPage.getNotReceivedTitle()

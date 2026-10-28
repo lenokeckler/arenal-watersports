@@ -7,7 +7,11 @@ import {
 } from "vitest";
 import { redirect } from "next/navigation";
 import { after } from "next/server";
-import { requestPasswordRecovery } from "@/app/services/password-recovery";
+import { PATHS } from "@/app/constants";
+import {
+  requestPasswordRecovery,
+  storePasswordRecoveryUsername,
+} from "@/app/services/password-recovery";
 import { readClientNetworkKey } from "@/app/services/request";
 import { REDIRECT_SIGNAL_MESSAGE } from "@/app/utils/server-action/tests/redirectSignal.constants";
 import { submitPasswordRecoveryRequest } from "../actions/submitPasswordRecoveryRequest";
@@ -16,13 +20,12 @@ import {
   INJECTED_USERNAME,
   NETWORK_KEY,
   RAW_USERNAME,
-  RESET_PATH_FOR_INJECTED,
-  RESET_PATH_FOR_NORMALIZED,
   RETURNED_ERRORS,
 } from "./passwordRecoveryRequest.constants";
 
 vi.mock("@/app/services/password-recovery", () => ({
   requestPasswordRecovery: vi.fn(),
+  storePasswordRecoveryUsername: vi.fn(),
 }));
 
 vi.mock("@/app/services/request", () => ({
@@ -70,7 +73,7 @@ describe("submitPasswordRecoveryRequest", () => {
     );
   });
 
-  it("redirects to the reset screen with the normalized username", async () => {
+  it("redirects to the reset screen without the username in the address", async () => {
     vi.mocked(requestPasswordRecovery).mockResolvedValue({
       ok: true,
     });
@@ -81,11 +84,25 @@ describe("submitPasswordRecoveryRequest", () => {
 
     expect(redirect).toHaveBeenCalledOnce();
     expect(redirect).toHaveBeenCalledWith(
-      RESET_PATH_FOR_NORMALIZED
+      PATHS.ACCESS.RECOVERY_RESET
     );
   });
 
-  it("encodes the username so it cannot add query parameters", async () => {
+  it("keeps the username for the PIN screen in the recovery cookie", async () => {
+    vi.mocked(requestPasswordRecovery).mockResolvedValue({
+      ok: true,
+    });
+
+    await expect(
+      submitUsername(RAW_USERNAME)
+    ).rejects.toThrow(REDIRECT_SIGNAL_MESSAGE);
+
+    expect(
+      storePasswordRecoveryUsername
+    ).toHaveBeenCalledWith(RAW_USERNAME);
+  });
+
+  it("keeps query-like characters of a username out of the address", async () => {
     vi.mocked(requestPasswordRecovery).mockResolvedValue({
       ok: true,
     });
@@ -95,7 +112,7 @@ describe("submitPasswordRecoveryRequest", () => {
     ).rejects.toThrow(REDIRECT_SIGNAL_MESSAGE);
 
     expect(redirect).toHaveBeenCalledWith(
-      RESET_PATH_FOR_INJECTED
+      PATHS.ACCESS.RECOVERY_RESET
     );
   });
 
@@ -112,6 +129,9 @@ describe("submitPasswordRecoveryRequest", () => {
       ).resolves.toBe(error);
 
       expect(redirect).not.toHaveBeenCalled();
+      expect(
+        storePasswordRecoveryUsername
+      ).not.toHaveBeenCalled();
     }
   );
 

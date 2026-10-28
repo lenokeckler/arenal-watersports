@@ -181,7 +181,7 @@ export {
 export { PASSWORD_RESET_PIN } from "./access/PasswordResetPin.constants";
 export {
   PASSWORD_RECOVERY_FINISH_ATTEMPTS,
-  PASSWORD_RECOVERY_USERNAME_QUERY_PARAM,
+  PASSWORD_RECOVERY_USERNAME_COOKIE,
 } from "./access/PasswordRecovery.constants";
 export {
   PASSWORD_RECOVERY_GRANT,

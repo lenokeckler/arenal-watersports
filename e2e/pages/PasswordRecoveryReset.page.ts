@@ -3,7 +3,6 @@ import { FIELD_ERROR_ID_SUFFIX } from "@/app/components/field-factory/constants/
 import {
   ARIA_ROLE,
   PASSWORD_RECOVERY_FIELD,
-  PASSWORD_RECOVERY_USERNAME_QUERY_PARAM,
   PATHS,
 } from "@/app/constants";
 import { E2E_RECOVERY_COPY } from "../constants/E2ePasswordRecovery.constants";
@@ -82,13 +81,8 @@ export const createPasswordRecoveryResetPage = (
     ],
     openNotReceivedHelp: (): Promise<void> =>
       getNotReceivedTitle().click(),
-    goTo: async (username: string): Promise<void> => {
-      const query = new URLSearchParams({
-        [PASSWORD_RECOVERY_USERNAME_QUERY_PARAM]: username,
-      });
-      await page.goto(
-        `${PATHS.ACCESS.RECOVERY_RESET}?${query}`
-      );
+    goTo: async (): Promise<void> => {
+      await page.goto(PATHS.ACCESS.RECOVERY_RESET);
     },
     submit: (): Promise<void> => getSubmitButton().click(),
   };

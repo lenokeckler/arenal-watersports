@@ -17,9 +17,6 @@ export const E2E_PRESENCE_COUNT = {
 
 export const E2E_FULL_VISIBILITY_RATIO = 1;
 
-export const E2E_RECOVERY_PREFILL_USERNAME =
-  "presence.check";
-
 export const E2E_OVERFLOW_VIEWPORT_MULTIPLE = 3;
 
 export const E2E_MIN_SCROLL_OFFSET_PX = 0;
