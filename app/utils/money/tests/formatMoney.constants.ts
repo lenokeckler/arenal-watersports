@@ -33,6 +33,18 @@ export const CRC_ONE_DECIMAL: Money = {
   amount: 25000.5,
   currency: CURRENCY_CODE.CRC,
 };
+export const USD_ZERO: Money = {
+  amount: 0,
+  currency: CURRENCY_CODE.USD,
+};
+export const CRC_ZERO: Money = {
+  amount: 0,
+  currency: CURRENCY_CODE.CRC,
+};
+export const CRC_FOUR_DIGITS: Money = {
+  amount: 2500,
+  currency: CURRENCY_CODE.CRC,
+};
 
 export const EXPECTED_USD_INTEGER = "US$\u00A050.00";
 export const EXPECTED_USD_WITH_CENTS = "US$\u00A01,250.50";
@@ -45,3 +57,6 @@ export const EXPECTED_CRC_WITH_CENTS =
   "₡\u00A025\u00A0000,75";
 export const EXPECTED_CRC_ONE_DECIMAL =
   "₡\u00A025\u00A0000,50";
+export const EXPECTED_USD_ZERO = "US$\u00A00.00";
+export const EXPECTED_CRC_ZERO = "₡\u00A00";
+export const EXPECTED_CRC_FOUR_DIGITS = "₡\u00A02\u00A0500";

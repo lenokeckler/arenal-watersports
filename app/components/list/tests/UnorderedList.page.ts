@@ -1,16 +1,23 @@
 import { screen } from "@testing-library/react";
-import {
-  LIST_ITEM_ROLE,
-  LIST_ROLE,
-} from "./UnorderedList.constants";
+import { ARIA_ROLE } from "@/app/constants";
 
 export const createUnorderedListPage = () => {
   const getList = (name?: string) =>
-    screen.getByRole(LIST_ROLE, { name });
+    screen.getByRole(ARIA_ROLE.LIST, { name });
+
   const getItems = () =>
-    screen.getAllByRole(LIST_ITEM_ROLE);
+    screen.getAllByRole(ARIA_ROLE.LISTITEM);
+
   const getItemByTestId = (testId: string) =>
     screen.getByTestId(testId);
 
-  return { getItemByTestId, getItems, getList };
+  const getListElement = () =>
+    document.querySelector("ul") as HTMLElement;
+
+  return {
+    getItemByTestId,
+    getItems,
+    getList,
+    getListElement,
+  };
 };

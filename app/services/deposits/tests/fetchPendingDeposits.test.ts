@@ -5,7 +5,10 @@ import {
   it,
   vi,
 } from "vitest";
-import { DEPOSIT_STATUS } from "@/app/constants";
+import {
+  DEPOSIT_QUERY,
+  DEPOSIT_STATUS,
+} from "@/app/constants";
 import { fetchPendingDeposits } from "../fetchPendingDeposits";
 import {
   USD_DEPOSIT_ITEM,
@@ -31,7 +34,7 @@ describe("fetchPendingDeposits", () => {
     await fetchPendingDeposits();
 
     expect(page.inFilter).toHaveBeenCalledWith(
-      expect.any(String),
+      DEPOSIT_QUERY.STATUS_COLUMN,
       [DEPOSIT_STATUS.HELD]
     );
   });

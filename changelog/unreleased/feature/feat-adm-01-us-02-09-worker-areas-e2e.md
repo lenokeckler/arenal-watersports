@@ -1,0 +1,1 @@
+ADM-01.02.09: Worker areas end to end — administration enables reservas on a worker of operaciones and removes it again, unknown usernames and non-administration access are refused; captures (US-ADM-02 · AWS-54)
