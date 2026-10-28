@@ -1,0 +1,1 @@
+ACC-01.04.02: Revoked sessions lose data access — row level security also requires the session of the token to still exist, so a password change or a sign-out cuts data access at once (US-ACC-04 · AWS-33)
