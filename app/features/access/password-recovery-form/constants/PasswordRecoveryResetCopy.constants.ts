@@ -7,7 +7,8 @@ export const PASSWORD_RECOVERY_RESET_COPY = {
   METADATA_TITLE:
     "Restablecer contraseña — Arenal Water Sports",
   NOT_RECEIVED_NOTE:
-    "¿No le llegó? Revise el correo no deseado o pida otro PIN.",
+    "Revise el correo no deseado. Si en unos minutos no llega, revise que el usuario esté bien escrito o pida ayuda a administración.",
+  NOT_RECEIVED_TITLE: "¿No le llegó el PIN?",
   PIN_HINT: `Son ${PASSWORD_RESET_PIN.LENGTH} dígitos.`,
   PIN_LABEL: "PIN",
   REQUEST_ANOTHER_PIN: "Pedir otro PIN",
