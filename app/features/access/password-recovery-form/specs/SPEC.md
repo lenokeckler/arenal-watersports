@@ -55,6 +55,13 @@ caused it.
 
 - The `unknown` error says "No se pudo enviar el PIN. Intente de nuevo."; the sign-in unknown
   text is never used on these screens.
+- On the reset form the `unknown` error says "No se pudo cambiar la contraseña. Intente de nuevo.",
+  `pinInvalid` is the single PIN error for a wrong, expired, used or exhausted PIN or an unknown
+  account ("El PIN no es correcto o ya venció. Pida uno nuevo si hace falta.") and
+  `passwordNotSaved` says "No se pudo guardar la contraseña. Pida un PIN nuevo e intente otra
+  vez." in the banner.
+- New password and confirmation strings are shared with the password-change forms through
+  `ACCESS_SHARED_COPY`, never duplicated.
 - Username strings are shared with the login through `ACCESS_SHARED_COPY`, never duplicated.
 - `redirect` runs outside any `try` so Next's redirect signal is never swallowed.
 - A server error disappears on the first edit or the next submit.

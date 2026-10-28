@@ -1,0 +1,1 @@
+ACC-01.06.27: Recovery reset copy and errors — the Spanish texts of the screen where the worker types the PIN and the new password, and the mapping of each error to its field or the form banner, addressed as usted (US-ACC-06 · AWS-35)
