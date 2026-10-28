@@ -6,11 +6,11 @@ import {
 import { createPasswordRecoveryError } from "../createPasswordRecoveryError";
 import { validatePasswordRecoveryRequest } from "../validatePasswordRecoveryRequest";
 import {
-  DEFAULT_PASSWORD_RECOVERY_RESET_INPUT,
+  DEFAULT_PASSWORD_RECOVERY_PIN_INPUT,
   SHORT_USERNAME,
 } from "./passwordRecovery.constants";
 
-const { username } = DEFAULT_PASSWORD_RECOVERY_RESET_INPUT;
+const { username } = DEFAULT_PASSWORD_RECOVERY_PIN_INPUT;
 
 describe("validatePasswordRecoveryRequest", () => {
   it("accepts a valid username", () => {

@@ -2,23 +2,32 @@
 
 ## Intent
 
-Let a worker who forgot the password ask for a single-use PIN at `/access/recovery`, then enter
-that PIN and a new password at `/access/recovery/reset`, seeing any failure next to the field that
-caused it.
+Let a worker who forgot the password ask for a single-use PIN at `/access/recovery`, enter that
+PIN at `/access/recovery/reset`, then choose the new password on its own screen at
+`/access/recovery/password`, seeing any failure next to the field that caused it.
 
 ## In scope
 
 - The request form: a username field, a submit button with a pending state, a banner for errors
   that belong to the whole form, and a static sentence for accounts without a registered email.
-- The reset form: username (prefilled from `?username=`, editable), PIN, new password with the
-  rules checklist visible from the first paint, confirmation, and a link back to the request form.
+- The PIN form (`PasswordRecoveryReset*`): username (prefilled from `?username=`, editable) and
+  the PIN shown as six boxes, plus a separate "¿No le llegó el PIN?" box with what to do (spam,
+  username, administration, the no-email sentence) and a link to ask for another PIN.
+- The new password form (`PasswordRecoveryNewPassword*`): new password with the rules checklist
+  visible from the first paint, confirmation, and a link to ask for another PIN. The page opens only
+  with a live reset pass (`requireOpenPasswordRecoveryGrant`); otherwise it sends the worker to
+  `/access/recovery`.
 - Form state, pre-submit validation and the Server Actions of both forms. The request action
   reads the network key, calls `requestPasswordRecovery` with `after` as the deferred task runner
-  and redirects to `PATHS.ACCESS.RECOVERY_RESET` with the normalized username; the reset action
-  calls `resetPasswordWithPin` and redirects to the login with a success notice.
+  and redirects to `PATHS.ACCESS.RECOVERY_RESET` with the normalized username; the PIN action calls
+  `verifyPasswordResetPin`, keeps the single-use reset pass in a server-only cookie and redirects
+  to `PATHS.ACCESS.RECOVERY_PASSWORD`; the new password action saves the password with
+  `resetPasswordWithGrant`, forgets the pass and redirects to the login with a success notice.
 - Spanish copy for each error code, addressed as usted.
 - Moving the focus to the field that caused an error after a submit.
-- Working before the page hydrates or with JavaScript off, through a native `POST`.
+- Working before the page hydrates or with JavaScript off, through a native `POST`: the PIN is a
+  plain text input until the page is interactive, and only then becomes the six boxes, with the
+  real input laid transparent over them so taps and paste still reach it.
 
 ## Out of scope
 

@@ -38,4 +38,5 @@ export const PRE_LOGIN_ROUTES: readonly string[] = [
     (screen) => screen.route
   ),
   PATHS.ACCESS.FIRST_SIGN_IN,
+  PATHS.ACCESS.RECOVERY_PASSWORD,
 ];

@@ -1,19 +1,21 @@
 import type { Page } from "@playwright/test";
-import { createPasswordRecoveryResetPage } from "../pages/PasswordRecoveryReset.page";
+import { createPasswordRecoveryNewPasswordPage } from "../pages/PasswordRecoveryNewPassword.page";
 import { expectRecoveredLogin } from "./expectRecoveredLogin";
+import { submitRecoveryPin } from "./submitRecoveryPin";
 
 export const resetPasswordWithPin = async (
   page: Page,
   pin: string,
   newPassword: string
 ): Promise<void> => {
-  const resetPage = createPasswordRecoveryResetPage(page);
+  const newPasswordPage =
+    createPasswordRecoveryNewPasswordPage(page);
 
-  await resetPage.fillForm({
+  await submitRecoveryPin(page, pin);
+  await newPasswordPage.fillForm({
     confirmPassword: newPassword,
     newPassword,
-    pin,
   });
-  await resetPage.submit();
+  await newPasswordPage.submit();
   await expectRecoveredLogin(page);
 };

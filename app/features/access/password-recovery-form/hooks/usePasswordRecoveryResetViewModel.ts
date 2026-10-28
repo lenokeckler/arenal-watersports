@@ -1,4 +1,3 @@
-import { evaluatePasswordRules } from "@/app/utils/password/evaluatePasswordRules";
 import type { PasswordRecoveryResetViewModel } from "../models/PasswordRecoveryResetViewModel.interface";
 import type { PasswordRecoveryServerAction } from "../models/PasswordRecoveryServerAction.type";
 import { resolvePasswordRecoveryResetErrors } from "../utils/resolvePasswordRecoveryResetErrors";
@@ -43,10 +42,6 @@ export const usePasswordRecoveryResetViewModel = (
     isPending: submission.isPending,
     onChange: form.onChange,
     onSubmit: guard.onSubmit,
-    passwordRules: evaluatePasswordRules(
-      form.values.newPassword
-    ),
-    showFailures: guard.showFailures,
     values: form.values,
   };
 };
