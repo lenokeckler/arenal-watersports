@@ -32,6 +32,16 @@ describe("isBlockedReauthenticationError", () => {
     ).toBe(false);
   });
 
+  it("does not treat the recovery required refusal as a block", () => {
+    expect(
+      isBlockedReauthenticationError(
+        createPasswordChangeError(
+          PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED
+        )
+      )
+    ).toBe(false);
+  });
+
   it.each(PROTOTYPE_KEY_ERRORS)(
     "does not treat the inherited key $code as a block",
     (error) => {
