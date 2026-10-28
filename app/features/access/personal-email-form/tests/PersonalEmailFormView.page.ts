@@ -42,6 +42,7 @@ export const createPersonalEmailFormViewPage = () => {
       await user.type(getEmailInput(), email);
       await user.type(getPasswordInput(), currentPassword);
     },
+    findAlert: () => screen.findByRole(ARIA_ROLE.ALERT),
     findText: (text: string) => screen.findByText(text),
     getBackLink: () =>
       screen.getByRole(ARIA_ROLE.LINK, {

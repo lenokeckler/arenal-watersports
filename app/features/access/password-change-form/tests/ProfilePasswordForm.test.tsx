@@ -8,12 +8,14 @@ import {
   vi,
 } from "vitest";
 import {
+  ACCESS_SHARED_COPY,
   PASSWORD_CHANGE_ERROR_CODE,
   PATHS,
   PROFILE_SCREEN_TITLE_ID,
 } from "@/app/constants";
 import { readSignedInUsername } from "@/app/services/authentication";
 import { DEFAULT_PASSWORD_CHANGE_INPUT } from "@/app/utils/password-change/tests/passwordChange.constants";
+import { createPasswordChangeError } from "@/app/utils/password-change/createPasswordChangeError";
 import { submitOwnPasswordChange } from "../actions/submitOwnPasswordChange";
 import { PROFILE_PASSWORD_ERROR_COPY } from "../constants/ProfilePasswordErrorCopy.constants";
 import ProfilePasswordForm from "../ProfilePasswordForm";
@@ -158,5 +160,22 @@ describe("ProfilePasswordForm", () => {
     await vi.waitFor(() =>
       expect(submitOwnPasswordChange).toHaveBeenCalledOnce()
     );
+  });
+
+  it("shows the recovery required refusal in the form alert and stays on the screen", async () => {
+    vi.mocked(submitOwnPasswordChange).mockResolvedValue(
+      createPasswordChangeError(
+        PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED
+      )
+    );
+    const page = await renderProfilePasswordForm();
+
+    await page.fill(DEFAULT_PASSWORD_CHANGE_INPUT);
+    await page.submit();
+
+    expect(await page.findAlert()).toHaveTextContent(
+      ACCESS_SHARED_COPY.ACCOUNT_RECOVERY_REQUIRED
+    );
+    expect(redirect).not.toHaveBeenCalled();
   });
 });
