@@ -12,7 +12,7 @@ export const readWorkerAccountState = async (
   const { data, error } = await createServiceRoleClient()
     .from(E2E_SUPABASE_TABLE.WORKERS)
     .select(
-      `${E2E_SUPABASE_COLUMN.FAILED_ATTEMPTS}, ${E2E_SUPABASE_COLUMN.STATUS}`
+      `${E2E_SUPABASE_COLUMN.FAILED_ATTEMPTS}, ${E2E_SUPABASE_COLUMN.MUST_CHANGE_PASSWORD}, ${E2E_SUPABASE_COLUMN.STATUS}`
     )
     .eq(E2E_SUPABASE_COLUMN.ID, workerId)
     .single();
@@ -26,6 +26,7 @@ export const readWorkerAccountState = async (
 
   return {
     failedAttempts: data.failed_attempts,
+    mustChangePassword: data.must_change_password,
     status: data.status,
   };
 };

@@ -1,8 +1,5 @@
-import {
-  PASSWORD_RESET_PIN,
-  PATHS,
-  STRING,
-} from "@/app/constants";
+import { readRecoveryAddress } from "../support/readRecoveryAddress";
+import { PASSWORD_RESET_PIN, PATHS } from "@/app/constants";
 import {
   E2E_MAILED_INELIGIBLE_SCENARIOS,
   E2E_RECOVERY_COPY,
@@ -30,7 +27,7 @@ test.describe("Password recovery gives the same answer", () => {
         recoveryAccount,
       }) => {
         const address =
-          recoveryAccount.address ?? STRING.Empty;
+          readRecoveryAddress(recoveryAccount);
 
         await requestRecoveryPin(
           page,
@@ -78,8 +75,7 @@ test.describe("Password recovery gives the same answer", () => {
       page,
       recoveryAccount,
     }) => {
-      const address =
-        recoveryAccount.address ?? STRING.Empty;
+      const address = readRecoveryAddress(recoveryAccount);
       const requestPage =
         createPasswordRecoveryRequestPage(page);
       await requestPage.goTo();
