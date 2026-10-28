@@ -104,6 +104,22 @@ test.describe("Reservation form", () => {
     ).toBeHidden();
   });
 
+  test("submits a valid custom duration with decimal precision", async ({
+    page,
+  }) => {
+    const reservationFormPage =
+      createReservationFormPage(page);
+
+    await reservationFormPage.goTo();
+    await reservationFormPage.submitCustomDurationReservation(
+      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_PRECISION_CASE
+    );
+
+    await expect(
+      reservationFormPage.getSuccessMessage()
+    ).toBeVisible();
+  });
+
   test("prevents a second submission after reservation creation", async ({
     page,
   }) => {

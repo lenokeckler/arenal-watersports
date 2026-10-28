@@ -12,6 +12,7 @@ export const E2E_RESERVATION_FORM_COPY = {
   CUSTOM_DURATION: "Otra duración en horas",
   CUSTOM_DURATION_OPTION: "Otra duración",
   CUSTOM_DURATION_HOURS: "2.5",
+  CUSTOM_DURATION_PRECISION_CASE: "4.1",
   NEGATIVE_INPUT: "-1",
   VALID_EQUIPMENT_QUANTITY: "3",
   VALID_PEOPLE_COUNT: "4",
@@ -19,6 +20,8 @@ export const E2E_RESERVATION_FORM_COPY = {
   CATEGORY_FIELD_NAME: "Equipo *",
   CATEGORY_OPTION: "Jet Ski",
   CUSTOMER_NAME_VALID: "US-RES-04 E2E reservation",
+  CUSTOM_DURATION_CUSTOMER_NAME:
+    "US-RES-04 E2E custom duration",
   SUBMIT: "Registrar reserva",
   SUCCESS: "La reserva quedó registrada correctamente.",
   VALIDATION_ERROR: "Ingrese el nombre de la reserva.",
