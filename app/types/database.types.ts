@@ -2504,6 +2504,17 @@ export type Database = {
         Args: { p_user_id: string };
         Returns: undefined;
       };
+      grant_worker_area: {
+        Args: {
+          target_area: Database["public"]["Enums"]["work_area"];
+          target_worker: string;
+        };
+        Returns: string;
+      };
+      grantable_worker_areas: {
+        Args: Record<PropertyKey, never>;
+        Returns: Database["public"]["Enums"]["work_area"][];
+      };
       has_area: {
         Args: {
           target: Database["public"]["Enums"]["work_area"];
@@ -2595,6 +2606,13 @@ export type Database = {
       record_successful_sign_in: {
         Args: { p_user_id: string };
         Returns: undefined;
+      };
+      revoke_worker_area: {
+        Args: {
+          target_area: Database["public"]["Enums"]["work_area"];
+          target_worker: string;
+        };
+        Returns: string;
       };
       session_idle_expired: {
         Args: { last_activity: string; moment: string };

@@ -225,6 +225,15 @@ export { TEMPORARY_PASSWORD } from "./administration/TemporaryPassword.constants
 export { POSTGRES_ERROR_CODE } from "./supabase/PostgresErrorCode.constants";
 export { ADMINISTRATION_SCREEN_TITLE_ID } from "./administration/AdministrationScreen.constants";
 export {
+  GRANTABLE_WORKER_AREAS,
+  WORKER_AREA_CHANGE_RESULT,
+  WORKER_AREA_FIELD,
+  WORKER_AREA_INTENT,
+  type GrantableWorkerArea,
+  type WorkerAreaChangeResult,
+  type WorkerAreaIntent,
+} from "./administration/WorkerAreas.constants";
+export {
   SERVER_ERROR_REPORT,
   type ServerErrorReportLevel,
 } from "./observability/ServerErrorReport.constants";
