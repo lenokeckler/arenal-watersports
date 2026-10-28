@@ -59,13 +59,26 @@ export default defineConfig({
   projects: [
     {
       name: E2E_PROJECT.MOBILE,
+      testIgnore: E2E_TEST_MATCH.ADMIN_RECOVERY,
       testMatch: E2E_TEST_MATCH.DEFAULT,
       use: mobileChromium,
     },
     {
       name: E2E_PROJECT.DEFAULT,
+      testIgnore: E2E_TEST_MATCH.ADMIN_RECOVERY,
       testMatch: E2E_TEST_MATCH.DEFAULT,
       use: desktopChromium,
+    },
+    {
+      name: E2E_PROJECT.ADMIN_RECOVERY,
+      dependencies: [
+        E2E_PROJECT.MOBILE,
+        E2E_PROJECT.DEFAULT,
+      ],
+      fullyParallel: false,
+      testMatch: E2E_TEST_MATCH.ADMIN_RECOVERY,
+      use: mobileChromium,
+      workers: E2E_WORKER_COUNT.ADMIN_RECOVERY,
     },
     {
       name: E2E_PROJECT.SCREENSHOTS_MOBILE,
