@@ -2498,6 +2498,10 @@ export type Database = {
           pin_id: string;
         }[];
       };
+      mark_password_reset_pin_undelivered: {
+        Args: { p_pin_id: string };
+        Returns: undefined;
+      };
       next_reservation_code: {
         Args: Record<PropertyKey, never>;
         Returns: string;
