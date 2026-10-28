@@ -1,0 +1,1 @@
+export const TEMPORARY_PASSWORD_SAMPLE_SIZE = 500;
