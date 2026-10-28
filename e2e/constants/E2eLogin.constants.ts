@@ -106,3 +106,5 @@ export const E2E_LOGIN_SCREENSHOT_BASENAME = {
   INACTIVITY_NOTICE: "09-login-inactivity-notice",
   SESSION_IDLE: "10-login-session-idle",
 } as const;
+
+export const E2E_LOGIN_TOGGLE_MIN_SIZE_PX = 48;

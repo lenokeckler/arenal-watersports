@@ -1,12 +1,25 @@
 import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import FormErrorBanner from "../FormErrorBanner";
-import { BANNER_MESSAGE } from "./FormErrorBanner.constants";
+import {
+  BANNER_MESSAGE,
+  BLANK_BANNER_MESSAGE,
+} from "./FormErrorBanner.constants";
 import { createFormErrorBannerPage } from "./FormErrorBanner.page";
 
 describe("FormErrorBanner", () => {
   it("renders nothing when there is no message", () => {
     render(<FormErrorBanner message={null} />);
+
+    expect(
+      createFormErrorBannerPage().queryBanner()
+    ).not.toBeInTheDocument();
+  });
+
+  it("renders nothing when the message is only blank space", () => {
+    render(
+      <FormErrorBanner message={BLANK_BANNER_MESSAGE} />
+    );
 
     expect(
       createFormErrorBannerPage().queryBanner()
