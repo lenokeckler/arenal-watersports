@@ -1,37 +1,20 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
-  E2E_SUPABASE_COLUMN,
   E2E_SUPABASE_ERROR,
-  E2E_SUPABASE_TABLE,
+  E2E_WORKER_DEPENDENT_TABLES,
 } from "../constants/E2eSupabase.constants";
 import { failE2eOperation } from "./failE2eOperation";
 
-const DEPENDENT_TABLES = [
-  {
-    column: E2E_SUPABASE_COLUMN.WORKER_ID,
-    table: E2E_SUPABASE_TABLE.WORKER_AREAS,
-  },
-  {
-    column: E2E_SUPABASE_COLUMN.WORKER_ID,
-    table: E2E_SUPABASE_TABLE.WORKER_MARKS,
-  },
-  {
-    column: E2E_SUPABASE_COLUMN.WORKER_ID,
-    table: E2E_SUPABASE_TABLE.PASSWORD_RESET_PINS,
-  },
-  {
-    column: E2E_SUPABASE_COLUMN.ID,
-    table: E2E_SUPABASE_TABLE.WORKERS,
-  },
-] as const;
-
-export const removePendingWorker = async (
+export const removeE2eWorker = async (
   supabase: SupabaseClient,
   workerId: string
 ): Promise<void> => {
   const failures: string[] = [];
 
-  for (const { column, table } of DEPENDENT_TABLES) {
+  for (const {
+    column,
+    table,
+  } of E2E_WORKER_DEPENDENT_TABLES) {
     const { error } = await supabase
       .from(table)
       .delete()
@@ -51,7 +34,7 @@ export const removePendingWorker = async (
 
   if (failures.length > 0) {
     failE2eOperation(
-      "remove the pending worker",
+      "remove the E2E worker",
       failures.join(E2E_SUPABASE_ERROR.REASON_SEPARATOR)
     );
   }

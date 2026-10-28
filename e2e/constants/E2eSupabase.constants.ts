@@ -17,9 +17,30 @@ export const E2E_SUPABASE_TABLE = {
 } as const;
 
 export const E2E_SUPABASE_COLUMN = {
+  FAILED_ATTEMPTS: "failed_attempts",
   ID: "id",
+  STATUS: "status",
   WORKER_ID: "worker_id",
 } as const;
+
+export const E2E_WORKER_DEPENDENT_TABLES = [
+  {
+    column: E2E_SUPABASE_COLUMN.WORKER_ID,
+    table: E2E_SUPABASE_TABLE.WORKER_AREAS,
+  },
+  {
+    column: E2E_SUPABASE_COLUMN.WORKER_ID,
+    table: E2E_SUPABASE_TABLE.WORKER_MARKS,
+  },
+  {
+    column: E2E_SUPABASE_COLUMN.WORKER_ID,
+    table: E2E_SUPABASE_TABLE.PASSWORD_RESET_PINS,
+  },
+  {
+    column: E2E_SUPABASE_COLUMN.ID,
+    table: E2E_SUPABASE_TABLE.WORKERS,
+  },
+] as const;
 
 export const E2E_SUPABASE_CLIENT_OPTIONS = {
   auth: { autoRefreshToken: false, persistSession: false },
@@ -34,5 +55,7 @@ export const E2E_SUPABASE_ERROR = {
     operation: string,
     reason: string
   ): string => `E2E could not ${operation}: ${reason}`,
+  ROLLBACK_OPERATION:
+    "delete the auth user after the worker insert failed",
   REASON_SEPARATOR: "; ",
 } as const;
