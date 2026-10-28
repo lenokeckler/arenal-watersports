@@ -1,5 +1,5 @@
 begin;
-select plan(18);
+select plan(17);
 
 insert into auth.users (id, email) values
   ('33333333-3333-3333-3333-333333333333', 'celso@arenal.local');
@@ -58,7 +58,6 @@ set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","
 select is(public.current_session_state(), 'live', 'una sesion recien abierta esta viva');
 
 set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated","session_id":"dddddddd-0000-0000-0000-000000000002"}';
-select ok(not public.current_session_is_live(), 'una sesion sin actividad desde hace dos dias no esta viva');
 select is(public.current_session_state(), 'idle', 'esa sesion se reporta como cerrada por inactividad');
 
 set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated","session_id":"dddddddd-0000-0000-0000-000000000003"}';

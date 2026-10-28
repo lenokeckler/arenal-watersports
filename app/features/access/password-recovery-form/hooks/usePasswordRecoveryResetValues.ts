@@ -2,7 +2,7 @@ import { useState } from "react";
 import { STRING } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import type { PasswordRecoveryError } from "@/app/utils/password-recovery/models/PasswordRecoveryError.interface";
-import type { PasswordRecoveryResetInput } from "@/app/utils/password-recovery/models/PasswordRecoveryResetInput.interface";
+import type { PasswordRecoveryPinInput } from "@/app/utils/password-recovery/models/PasswordRecoveryPinInput.interface";
 import { EMPTY_PASSWORD_RECOVERY_RESET_INPUT } from "../constants/PasswordRecoveryResetDefaults.constants";
 import { PIN_CLEARING_ERROR_CODES } from "../constants/PasswordRecoveryResetPinClearing.constants";
 import type { PasswordRecoveryFieldChangeHandler } from "../models/PasswordRecoveryFieldChangeHandler.type";
@@ -15,7 +15,7 @@ export const usePasswordRecoveryResetValues = (
   serverError: NullableRef<PasswordRecoveryError>
 ): PasswordRecoveryResetFormValues => {
   const [values, setValues] =
-    useState<PasswordRecoveryResetInput>({
+    useState<PasswordRecoveryPinInput>({
       ...EMPTY_PASSWORD_RECOVERY_RESET_INPUT,
       username: initialUsername,
     });

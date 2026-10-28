@@ -18,7 +18,7 @@ export const E2E_PASSWORD_CHANGED_MAIL = {
 } as const;
 
 export const E2E_RECOVERY_OUTCOME = {
-  RECOVERED: "recovered",
+  ACCEPTED: "accepted",
   REFUSED: "refused",
 } as const;
 

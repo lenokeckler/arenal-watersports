@@ -17,14 +17,6 @@ const attachInput = (
 export const attachPasswordRecoveryResetInputs = (
   fieldRefs: PasswordRecoveryResetFieldRefs
 ): PasswordRecoveryResetInputs => ({
-  [PASSWORD_RECOVERY_FIELD.CONFIRM_PASSWORD]: attachInput(
-    fieldRefs,
-    PASSWORD_RECOVERY_FIELD.CONFIRM_PASSWORD
-  ),
-  [PASSWORD_RECOVERY_FIELD.NEW_PASSWORD]: attachInput(
-    fieldRefs,
-    PASSWORD_RECOVERY_FIELD.NEW_PASSWORD
-  ),
   [PASSWORD_RECOVERY_FIELD.PIN]: attachInput(
     fieldRefs,
     PASSWORD_RECOVERY_FIELD.PIN

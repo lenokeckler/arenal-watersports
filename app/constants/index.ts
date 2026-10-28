@@ -184,6 +184,10 @@ export {
   PASSWORD_RECOVERY_USERNAME_QUERY_PARAM,
 } from "./access/PasswordRecovery.constants";
 export {
+  PASSWORD_RECOVERY_GRANT,
+  PASSWORD_RECOVERY_GRANT_COOKIE_OPTIONS,
+} from "./access/PasswordRecoveryGrant.constants";
+export {
   PASSWORD_RECOVERY_ERROR_CODE,
   PASSWORD_RECOVERY_ERROR_FIELD,
   PASSWORD_RECOVERY_FIELD,
