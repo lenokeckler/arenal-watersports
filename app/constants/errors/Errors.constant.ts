@@ -20,10 +20,6 @@ export const ERRORS = {
     EMAIL_REQUIRED: "Email is required",
     USER_FIELD_REQUIRED: "User field is required",
   },
-  INACTIVITY_TIMEOUT: {
-    CONTEXT_NOT_FOUND:
-      "useInactivityTimeout must be used within an InactivityTimeoutProvider",
-  },
   FILE_UPLOAD: {
     NO_FILE: "No file provided",
     NO_SERVICE_NAME: "No service name provided",
