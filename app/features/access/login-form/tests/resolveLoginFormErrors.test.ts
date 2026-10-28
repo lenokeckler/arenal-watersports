@@ -12,6 +12,7 @@ describe("resolveLoginFormErrors", () => {
       resolveLoginFormErrors({
         fallbackError: null,
         hasSubmitted: false,
+        notice: null,
         serverError: null,
         values: EMPTY_SIGN_IN_CREDENTIALS,
       }).usernameError
@@ -23,6 +24,7 @@ describe("resolveLoginFormErrors", () => {
       resolveLoginFormErrors({
         fallbackError: null,
         hasSubmitted: true,
+        notice: null,
         serverError: null,
         values: EMPTY_SIGN_IN_CREDENTIALS,
       }).usernameError
@@ -38,6 +40,7 @@ describe("resolveLoginFormErrors", () => {
       resolveLoginFormErrors({
         fallbackError: INVALID_CREDENTIALS_ERROR,
         hasSubmitted: false,
+        notice: null,
         serverError: null,
         values: EMPTY_SIGN_IN_CREDENTIALS,
       }).passwordError
@@ -53,6 +56,7 @@ describe("resolveLoginFormErrors", () => {
       resolveLoginFormErrors({
         fallbackError: null,
         hasSubmitted: true,
+        notice: null,
         serverError: INVALID_CREDENTIALS_ERROR,
         values: DEFAULT_SIGN_IN_CREDENTIALS,
       }).passwordError
