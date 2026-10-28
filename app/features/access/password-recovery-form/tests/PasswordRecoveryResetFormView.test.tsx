@@ -1,13 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { waitFor } from "@testing-library/react";
-import {
-  AUTOCOMPLETE,
-  PATHS,
-  STRING,
-} from "@/app/constants";
+import { PATHS, STRING } from "@/app/constants";
 import { isNodeBefore } from "@/app/utils/dom/tests/isNodeBefore";
 import {
-  AUTOCOMPLETE_ATTRIBUTE,
   FIELD_ERROR_MESSAGE,
   HREF_ATTRIBUTE,
 } from "./passwordRecoveryScreen.constants";
@@ -15,37 +10,20 @@ import { UNKNOWN_ERROR } from "./passwordRecoveryReset.constants";
 import {
   NO_ALERTS,
   NO_VALIDATE_PROPERTY,
-  PENDING_RULE_LABEL,
   PRESET_USERNAME,
-  RULE_COUNT,
   SINGLE_ALERT,
 } from "./passwordRecoveryView.constants";
 import { renderPasswordRecoveryResetFormView } from "./renderPasswordRecoveryResetFormView";
 
 describe("PasswordRecoveryResetFormView", () => {
-  it("prefills the username and leaves the secrets empty", () => {
+  it("prefills the username and leaves the PIN empty", () => {
     const page = renderPasswordRecoveryResetFormView();
 
     expect(page.getUsernameInput()).toHaveValue(
       PRESET_USERNAME
     );
     expect(page.getPinInput()).toHaveValue(STRING.Empty);
-    expect(page.getNewPasswordInput()).toHaveValue(
-      STRING.Empty
-    );
-    expect(page.getConfirmInput()).toHaveValue(
-      STRING.Empty
-    );
     expect(page.queryAlerts()).toHaveLength(NO_ALERTS);
-  });
-
-  it("shows every password rule as pending before anything is typed", () => {
-    const page = renderPasswordRecoveryResetFormView();
-
-    expect(page.getRuleItems()).toHaveLength(RULE_COUNT);
-    page.getRuleItems().forEach((item) => {
-      expect(item).toHaveTextContent(PENDING_RULE_LABEL);
-    });
   });
 
   it("leaves validation to the form logic, not the browser", () => {
@@ -57,19 +35,6 @@ describe("PasswordRecoveryResetFormView", () => {
     );
   });
 
-  it("asks the browser for a new password in both password fields", () => {
-    const page = renderPasswordRecoveryResetFormView();
-
-    expect(page.getNewPasswordInput()).toHaveAttribute(
-      AUTOCOMPLETE_ATTRIBUTE,
-      AUTOCOMPLETE.NEW_PASSWORD
-    );
-    expect(page.getConfirmInput()).toHaveAttribute(
-      AUTOCOMPLETE_ATTRIBUTE,
-      AUTOCOMPLETE.NEW_PASSWORD
-    );
-  });
-
   it("orders heading, notice, fields and submit", () => {
     const page = renderPasswordRecoveryResetFormView();
     const ordered = [
@@ -77,8 +42,6 @@ describe("PasswordRecoveryResetFormView", () => {
       page.getNotice(),
       page.getUsernameInput(),
       page.getPinInput(),
-      page.getNewPasswordInput(),
-      page.getConfirmInput(),
       page.getSubmit(),
     ];
 
@@ -140,9 +103,9 @@ describe("PasswordRecoveryResetFormView", () => {
       expect(page.queryAlerts()).toHaveLength(SINGLE_ALERT)
     );
     const [alert] = page.queryAlerts();
-    expect(
-      isNodeBefore(page.getConfirmInput(), alert)
-    ).toBe(true);
+    expect(isNodeBefore(page.getPinInput(), alert)).toBe(
+      true
+    );
     expect(isNodeBefore(alert, page.getSubmit())).toBe(
       true
     );
