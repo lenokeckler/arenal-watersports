@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { PERSONAL_EMAIL_FIELD } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
+import { isNewFocusRequest } from "@/app/utils/form-focus/isNewFocusRequest";
 import {
   NO_HANDLED_PERSONAL_EMAIL_FOCUS_TRIGGER,
   PERSONAL_EMAIL_FOCUS_ORDER,
@@ -9,15 +10,6 @@ import type { PersonalEmailFieldRefs } from "../models/PersonalEmailFieldRefs.ty
 import type { PersonalEmailFocusField } from "../models/PersonalEmailFocusField.type";
 import type { PersonalEmailFocusTrigger } from "../models/PersonalEmailFocusTrigger.interface";
 import type { PersonalEmailFormErrors } from "../models/PersonalEmailFormErrors.type";
-
-const isNewFocusRequest = (
-  handled: PersonalEmailFocusTrigger,
-  current: PersonalEmailFocusTrigger
-): boolean =>
-  current.invalidSubmitCount !==
-    handled.invalidSubmitCount ||
-  (current.serverError !== null &&
-    current.serverError !== handled.serverError);
 
 export const usePersonalEmailFocus = (
   fieldErrors: PersonalEmailFormErrors,

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { nextCount } from "@/app/utils/form-submit/nextCount";
 import type { PersonalEmailIntent } from "@/app/constants";
 import { validatePersonalEmailChange } from "@/app/utils/personal-email/validatePersonalEmailChange";
 import { DEFAULT_PERSONAL_EMAIL_INTENT } from "../constants/PersonalEmailFormDefaults.constants";
@@ -6,8 +7,6 @@ import type { PersonalEmailFieldValues } from "../models/PersonalEmailFieldValue
 import type { PersonalEmailSubmitGuard } from "../models/PersonalEmailSubmitGuard.interface";
 import type { PersonalEmailSubmitHandler } from "../models/PersonalEmailSubmitHandler.type";
 import { resolveSubmittedPersonalEmailIntent } from "../utils/resolveSubmittedPersonalEmailIntent";
-
-const nextCount = (count: number): number => count + 1;
 
 export const usePersonalEmailSubmitGuard = (
   values: PersonalEmailFieldValues,
