@@ -14,6 +14,9 @@ insert into worker_areas (worker_id, area, granted_by) values
   ('33333333-3333-3333-3333-333333333333', 'reservas',
    '11111111-1111-1111-1111-111111111111');
 
+update workers set last_work_area = 'reservas'
+where id = '33333333-3333-3333-3333-333333333333';
+
 insert into worker_marks (worker_id, mark, granted_by) values
   ('33333333-3333-3333-3333-333333333333', 'guia',
    '11111111-1111-1111-1111-111111111111');

@@ -39,6 +39,11 @@ select is(public.grant_worker_area('99999999-9999-9999-9999-999999999999', 'rese
 select is(public.grant_worker_area('11111111-1111-1111-1111-111111111111', 'operaciones'), 'granted', 'la cuenta de administracion tambien puede sumar un area');
 
 reset role;
+update public.workers set last_work_area = 'administracion' where id = '11111111-1111-1111-1111-111111111111';
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}';
+
+reset role;
 select is(
   (select granted_by from public.worker_areas where worker_id = '33333333-3333-3333-3333-333333333333' and area = 'reservas'),
   '11111111-1111-1111-1111-111111111111'::uuid,
@@ -51,8 +56,11 @@ select is(
 );
 
 set local role authenticated;
+reset role;
+update public.workers set last_work_area = 'reservas' where id = '33333333-3333-3333-3333-333333333333';
+set local role authenticated;
 set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated"}';
-select ok(public.has_area('reservas'), 'con el area habilitada la persona alcanza reservas');
+select ok(public.has_area('reservas'), 'con el area habilitada y elegida la persona alcanza reservas');
 select is(public.grant_worker_area('33333333-3333-3333-3333-333333333333', 'reservas'), 'not_allowed', 'nadie mas que administracion habilita areas');
 select is(public.revoke_worker_area('33333333-3333-3333-3333-333333333333', 'reservas'), 'not_allowed', 'nadie mas que administracion quita areas');
 
