@@ -11,6 +11,27 @@ vi.mock("../actions/createReservationAction", () => ({
 }));
 
 describe("ReservationFormView submission", () => {
+  it("disables submission after a successful reservation", async () => {
+    vi.mocked(createReservationAction).mockResolvedValue({
+      ok: true,
+      reservationId:
+        RESERVATION_FORM_VIEW_TEST.CREATED_RESERVATION_ID,
+    });
+    const page = renderReservationForm();
+
+    await page.submit();
+    expect(
+      await page.findSuccessMessage()
+    ).toBeInTheDocument();
+
+    expect(page.getSubmitButton()).toBeDisabled();
+    await page.submit();
+
+    expect(createReservationAction).toHaveBeenCalledTimes(
+      1
+    );
+  });
+
   it("submits the custom duration as a number", async () => {
     vi.mocked(createReservationAction).mockResolvedValue({
       ok: true,
