@@ -14,6 +14,7 @@ import {
   PENDING_PASSWORD,
   SIGNED_IN,
   SIGNED_OUT,
+  SIGNED_OUT_WITH_PENDING_CLAIM,
 } from "./resolveProxyRedirect.constants";
 
 const { refreshSupabaseSession } = vi.hoisted(() => ({
@@ -137,4 +138,27 @@ describe("handleProxyRequest", () => {
       result.headers.get(PROXY_FIXTURE.LOCATION_HEADER)
     ).toBe(`${PROXY_FIXTURE.ORIGIN}${PATHS.ACCESS.LOGIN}`);
   });
+
+  it.each([
+    PROXY_FIXTURE.PROTECTED_PATHNAME,
+    PATHS.ACCESS.FIRST_SIGN_IN,
+  ])(
+    "sends a dead session that still claims a pending password change at %s to the login and keeps the refreshed cookies",
+    async (pathname) => {
+      givenRefresh(SIGNED_OUT_WITH_PENDING_CLAIM);
+
+      const result = await handleProxyRequest(
+        buildRequest(pathname)
+      );
+
+      expect(
+        result.headers.get(PROXY_FIXTURE.LOCATION_HEADER)
+      ).toBe(
+        `${PROXY_FIXTURE.ORIGIN}${PATHS.ACCESS.LOGIN}`
+      );
+      expect(
+        result.cookies.get(PROXY_FIXTURE.COOKIE.name)?.value
+      ).toBe(PROXY_FIXTURE.COOKIE.value);
+    }
+  );
 });

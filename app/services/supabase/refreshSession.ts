@@ -5,6 +5,7 @@ import {
 } from "next/server";
 import { SESSION_CLAIM, SUPABASE } from "@/app/constants";
 import type { Database } from "@/app/types";
+import { readSessionLiveness } from "./readSessionLiveness";
 import type { SessionRefresh } from "./models/SessionRefresh.interface";
 
 export const refreshSupabaseSession = async (
@@ -38,9 +39,14 @@ export const refreshSupabaseSession = async (
 
   const claims = error ? null : data?.claims;
 
+  const isSessionLive = claims
+    ? await readSessionLiveness(supabaseClient)
+    : false;
+
   return {
-    hasSession: Boolean(claims),
+    hasSession: isSessionLive,
     mustChangePassword:
+      isSessionLive &&
       claims?.[SESSION_CLAIM.MUST_CHANGE_PASSWORD] === true,
     response,
   };

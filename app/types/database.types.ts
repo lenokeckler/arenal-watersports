@@ -2466,6 +2466,10 @@ export type Database = {
         Args: { p_pin: string; p_username: string };
         Returns: string;
       };
+      current_session_is_live: {
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
       custom_access_token_hook: {
         Args: { event: Json };
         Returns: Json;
@@ -2561,6 +2565,10 @@ export type Database = {
       record_successful_sign_in: {
         Args: { p_user_id: string };
         Returns: undefined;
+      };
+      session_is_live: {
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
       };
       sign_in_attempt_limit: {
         Args: Record<PropertyKey, never>;
