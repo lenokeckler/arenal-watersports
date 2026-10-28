@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  ACCESS_SHARED_COPY,
   SIGN_IN_ERROR_CODE,
   SIGN_IN_ERROR_FIELD,
   SIGN_IN_FIELD,
@@ -37,6 +38,24 @@ describe("sign-in error copy", () => {
         SIGN_IN_ERROR_CODE.INVALID_CREDENTIALS
       ]
     ).toBe(GENERIC_CREDENTIALS_COPY);
+  });
+
+  it("takes the recovery required text from the shared copy", () => {
+    expect(
+      SIGN_IN_ERROR_COPY[
+        SIGN_IN_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED
+      ]
+    ).toBe(ACCESS_SHARED_COPY.ACCOUNT_RECOVERY_REQUIRED);
+  });
+
+  it("does not reveal the recovery text for a wrong password", () => {
+    expect(
+      SIGN_IN_ERROR_COPY[
+        SIGN_IN_ERROR_CODE.INVALID_CREDENTIALS
+      ]
+    ).not.toBe(
+      ACCESS_SHARED_COPY.ACCOUNT_RECOVERY_REQUIRED
+    );
   });
 
   it("gives each message its own text", () => {
