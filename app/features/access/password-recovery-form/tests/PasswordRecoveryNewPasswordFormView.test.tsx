@@ -9,6 +9,7 @@ import PasswordRecoveryNewPasswordFormView from "../PasswordRecoveryNewPasswordF
 import {
   MISMATCHED_CONFIRMATION,
   NEW_PASSWORD_VALUE,
+  PASSWORD_NOT_SAVED_ERROR,
   RESET_EXPIRED_ERROR,
 } from "./passwordRecoveryNewPassword.constants";
 
@@ -63,14 +64,17 @@ describe("PasswordRecoveryNewPasswordFormView", () => {
     ).toBeInTheDocument();
   });
 
-  it("offers another PIN", () => {
+  it("shows no PIN confirmation and no another-PIN link before an error", () => {
     renderView();
 
     expect(
-      screen.getByRole(ARIA_ROLE.LINK, {
+      screen.queryByText(/El PIN es correcto/)
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole(ARIA_ROLE.LINK, {
         name: PASSWORD_RECOVERY_NEW_PASSWORD_COPY.REQUEST_ANOTHER_PIN,
       })
-    ).toHaveAttribute("href", PATHS.ACCESS.RECOVERY);
+    ).not.toBeInTheDocument();
   });
 
   it("blocks a mismatched confirmation in the browser", async () => {
@@ -110,5 +114,30 @@ describe("PasswordRecoveryNewPasswordFormView", () => {
     ).toHaveTextContent(
       PASSWORD_RECOVERY_RESET_ERROR_COPY.resetExpired
     );
+    expect(
+      screen.getByRole(ARIA_ROLE.LINK, {
+        name: PASSWORD_RECOVERY_NEW_PASSWORD_COPY.REQUEST_ANOTHER_PIN,
+      })
+    ).toHaveAttribute("href", PATHS.ACCESS.RECOVERY);
+  });
+
+  it("keeps the another-PIN link away from other errors", async () => {
+    const { user } = renderView(
+      vi.fn().mockResolvedValue(PASSWORD_NOT_SAVED_ERROR)
+    );
+
+    await user.type(getNewPassword(), NEW_PASSWORD_VALUE);
+    await user.type(
+      getConfirmPassword(),
+      NEW_PASSWORD_VALUE
+    );
+    await user.click(getSubmit());
+
+    await screen.findByRole(ARIA_ROLE.ALERT);
+    expect(
+      screen.queryByRole(ARIA_ROLE.LINK, {
+        name: PASSWORD_RECOVERY_NEW_PASSWORD_COPY.REQUEST_ANOTHER_PIN,
+      })
+    ).not.toBeInTheDocument();
   });
 });

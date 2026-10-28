@@ -10,6 +10,7 @@ export interface PasswordRecoveryNewPasswordViewModel extends PasswordRecoveryNe
   fieldRefs: PasswordRecoveryNewPasswordFieldRefs;
   formAction: PasswordRecoveryFormAction;
   isPending: boolean;
+  isResetExpired: boolean;
   onSubmit: PasswordRecoverySubmitHandler;
   passwordRules: PasswordRuleResults;
   showFailures: boolean;

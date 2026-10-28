@@ -1,3 +1,4 @@
+import { PASSWORD_RECOVERY_ERROR_CODE } from "@/app/constants";
 import { evaluatePasswordRules } from "@/app/utils/password/evaluatePasswordRules";
 import type { PasswordRecoveryNewPasswordViewModel } from "../models/PasswordRecoveryNewPasswordViewModel.interface";
 import type { PasswordRecoveryServerAction } from "../models/PasswordRecoveryServerAction.type";
@@ -39,6 +40,9 @@ export const usePasswordRecoveryNewPasswordViewModel = (
     fieldRefs,
     formAction: submission.action,
     isPending: submission.isPending,
+    isResetExpired:
+      submission.error?.code ===
+      PASSWORD_RECOVERY_ERROR_CODE.RESET_EXPIRED,
     onChange: form.onChange,
     onSubmit: guard.onSubmit,
     passwordRules: evaluatePasswordRules(
