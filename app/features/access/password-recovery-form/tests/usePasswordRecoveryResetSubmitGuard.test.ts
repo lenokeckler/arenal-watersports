@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { STRING } from "@/app/constants";
-import type { PasswordRecoveryResetInput } from "@/app/utils/password-recovery/models/PasswordRecoveryResetInput.interface";
+import type { PasswordRecoveryPinInput } from "@/app/utils/password-recovery/models/PasswordRecoveryPinInput.interface";
 import { usePasswordRecoveryResetSubmitGuard } from "../hooks/usePasswordRecoveryResetSubmitGuard";
 import { createSubmitEvent } from "./createPasswordRecoveryEvents";
 import {
@@ -10,14 +10,12 @@ import {
 } from "./passwordRecoveryRequest.constants";
 import type { PasswordRecoveryResetGuardProps } from "./PasswordRecoveryResetGuardProps.interface";
 import {
-  OTHER_PASSWORD,
   SHORT_PIN,
   VALID_RESET_VALUES,
-  WEAK_PASSWORD_VALUES,
 } from "./passwordRecoveryResetState.constants";
 
 const renderGuard = (
-  values: PasswordRecoveryResetInput,
+  values: PasswordRecoveryPinInput,
   isPending = false,
   dismiss = vi.fn()
 ) =>
@@ -47,7 +45,6 @@ describe("usePasswordRecoveryResetSubmitGuard", () => {
 
     expect(event.preventDefault).not.toHaveBeenCalled();
     expect(result.current.hasSubmitted).toBe(false);
-    expect(result.current.showFailures).toBe(false);
   });
 
   it.each([
@@ -59,7 +56,6 @@ describe("usePasswordRecoveryResetSubmitGuard", () => {
       "a short PIN",
       { ...VALID_RESET_VALUES, pin: SHORT_PIN },
     ],
-    ["a weak password", WEAK_PASSWORD_VALUES],
   ])(
     "blocks %s, dismisses the server error and counts it",
     (_label, values) => {
@@ -80,24 +76,6 @@ describe("usePasswordRecoveryResetSubmitGuard", () => {
       expect(result.current.hasSubmitted).toBe(true);
     }
   );
-
-  it("shows the rule failures after a blocked submit until the password changes", () => {
-    const { rerender, result } = renderGuard(
-      WEAK_PASSWORD_VALUES
-    );
-    submit(result);
-
-    expect(result.current.showFailures).toBe(true);
-
-    rerender({
-      current: {
-        ...WEAK_PASSWORD_VALUES,
-        newPassword: OTHER_PASSWORD,
-      },
-    });
-
-    expect(result.current.showFailures).toBe(false);
-  });
 
   it("prevents a second submit while pending without counting it", () => {
     const { result } = renderGuard(

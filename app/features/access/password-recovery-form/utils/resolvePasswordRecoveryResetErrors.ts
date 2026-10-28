@@ -1,6 +1,6 @@
 import type { NullableRef } from "@/app/types";
 import type { PasswordRecoveryError } from "@/app/utils/password-recovery/models/PasswordRecoveryError.interface";
-import { validatePasswordRecoveryReset } from "@/app/utils/password-recovery/validatePasswordRecoveryReset";
+import { validatePasswordRecoveryPin } from "@/app/utils/password-recovery/validatePasswordRecoveryPin";
 import { NO_PASSWORD_RECOVERY_FORM_ERRORS } from "../constants/PasswordRecoveryRequestDefaults.constants";
 import { PASSWORD_RECOVERY_RESET_ERROR_COPY } from "../constants/PasswordRecoveryResetErrorCopy.constants";
 import type { PasswordRecoveryFormErrors } from "../models/PasswordRecoveryFormErrors.type";
@@ -27,7 +27,7 @@ export const resolvePasswordRecoveryResetErrors = ({
     placeError(
       NO_PASSWORD_RECOVERY_FORM_ERRORS,
       hasSubmitted
-        ? validatePasswordRecoveryReset(values)
+        ? validatePasswordRecoveryPin(values)
         : null
     ),
     serverError
