@@ -3,6 +3,7 @@ import {
   STRING,
 } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
+import { isPasswordTooLong } from "@/app/utils/password/isPasswordTooLong";
 import { createPasswordChangeError } from "./createPasswordChangeError";
 import type { PasswordChangeInput } from "./models/PasswordChangeInput.interface";
 import type { PasswordChangeError } from "./models/PasswordChangeError.interface";
@@ -16,6 +17,12 @@ export const validatePasswordChange = ({
   if (currentPassword === STRING.Empty) {
     return createPasswordChangeError(
       PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_REQUIRED
+    );
+  }
+
+  if (isPasswordTooLong(currentPassword)) {
+    return createPasswordChangeError(
+      PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_TOO_LONG
     );
   }
 

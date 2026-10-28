@@ -8,6 +8,7 @@ import { createPasswordChangeError } from "../createPasswordChangeError";
 import type { PasswordChangeInput } from "../models/PasswordChangeInput.interface";
 import { validatePasswordChange } from "../validatePasswordChange";
 import {
+  ACCENTED_PASSWORD_AT_MAX,
   DEFAULT_PASSWORD_CHANGE_INPUT,
   MISMATCHED_CONFIRMATION,
   NEW_PASSWORD_IN_OTHER_CASE,
@@ -15,6 +16,7 @@ import {
   PASSWORD_ONE_ABOVE_MAX,
   TEMPORARY_PASSWORD_IN_OTHER_CASE,
   WEAK_PASSWORD,
+  WEAK_PASSWORD_ABOVE_MAX,
   WHITESPACE_ONLY_PASSWORD,
 } from "./passwordChange.constants";
 import { validateWithOverrides } from "./validateWithOverrides";
@@ -28,6 +30,16 @@ const failureCases: [
     "an empty temporary password",
     { currentPassword: STRING.Empty },
     PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_REQUIRED,
+  ],
+  [
+    "a temporary password above the maximum length",
+    { currentPassword: WEAK_PASSWORD_ABOVE_MAX },
+    PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_TOO_LONG,
+  ],
+  [
+    "a temporary password above the maximum bytes",
+    { currentPassword: ACCENTED_PASSWORD_AT_MAX },
+    PASSWORD_CHANGE_ERROR_CODE.CURRENT_PASSWORD_TOO_LONG,
   ],
   [
     "an empty new password",
