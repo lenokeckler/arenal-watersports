@@ -12,6 +12,7 @@ export const WORK_MODE_COPY = {
     "Su cuenta tiene más de un área. Elija una; puede cambiarla cuando quiera desde la barra de arriba, sin cerrar sesión.",
   METADATA_TITLE: "Modo de trabajo — Arenal Water Sports",
   SWITCH: "Cambiar",
+  SWITCH_NAVIGATION: "Modo de trabajo",
   SWITCH_LABEL: (areaLabel: string): string =>
     `Modo: ${areaLabel}`,
 } as const;
