@@ -4,5 +4,8 @@ export interface FormSubmitButtonProps {
   icon: MaterialIconName;
   isPending: boolean;
   label: string;
+  name?: string;
   pendingLabel: string;
+  showsProgress?: boolean;
+  value?: string;
 }

@@ -6,3 +6,6 @@ export const SCREEN_HEADER_LOGO_CLASS =
 
 export const SCREEN_HEADER_TITLE_CLASS =
   "text-headline-lg-mobile tracking-tight text-primary md:text-headline-lg";
+
+export const SCREEN_INSTRUCTION_CLASS =
+  "text-body-base text-on-surface-variant text-center";

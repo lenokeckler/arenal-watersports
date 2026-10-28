@@ -7,7 +7,7 @@ import {
 } from "../constants/PasswordChangeRules.constants";
 import type { PasswordChangeNewPasswordGroupProps } from "../models/PasswordChangeNewPasswordGroupProps.interface";
 import { PASSWORD_CHANGE_NEW_GROUP_CLASS } from "../styles/PasswordChangeForm.styles";
-import PasswordChangeFormField from "./PasswordChangeFormField";
+import PasswordField from "@/app/components/password-field/PasswordField";
 
 const PasswordChangeNewPasswordGroup = ({
   passwordRules,
@@ -15,13 +15,13 @@ const PasswordChangeNewPasswordGroup = ({
   ...fieldProps
 }: PasswordChangeNewPasswordGroupProps): React.JSX.Element => (
   <div className={PASSWORD_CHANGE_NEW_GROUP_CLASS}>
-    <PasswordChangeFormField
+    <PasswordField
       {...fieldProps}
       autoComplete={AUTOCOMPLETE.NEW_PASSWORD}
       describedBy={
         PASSWORD_CHANGE_NEW_PASSWORD_DESCRIBED_BY
       }
-      field={PASSWORD_CHANGE_FIELD.NEW_PASSWORD}
+      name={PASSWORD_CHANGE_FIELD.NEW_PASSWORD}
     />
     <PasswordRulesChecklist
       id={PASSWORD_CHANGE_RULES_ID}

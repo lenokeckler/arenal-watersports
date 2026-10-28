@@ -39,6 +39,9 @@ const FormField = ({
   variant = FORM_FIELD_VARIANT.DEFAULT,
   describedBy,
   autoComplete,
+  inputMode,
+  autoCapitalize,
+  spellCheck,
 }: FormFieldProps) => {
   const { computedClassName, handleChange, handleKeyDown } =
     useFormFieldViewModel({
@@ -112,6 +115,9 @@ const FormField = ({
         hasErrorText={Boolean(error) && showErrorText}
         describedBy={describedBy}
         autoComplete={autoComplete}
+        inputMode={inputMode}
+        autoCapitalize={autoCapitalize}
+        spellCheck={spellCheck}
       />
       {error && showErrorText && (
         <Text

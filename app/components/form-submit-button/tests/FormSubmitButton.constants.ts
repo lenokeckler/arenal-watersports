@@ -1,3 +1,9 @@
 export const IDLE_LABEL = "Guardar";
 export const PENDING_LABEL = "Guardando";
 export const SUBMIT_TYPE = "submit";
+export const INTENT_NAME = "intent";
+export const INTENT_VALUE = "save";
+export const NAME_ATTRIBUTE = "name";
+export const VALUE_ATTRIBUTE = "value";
+export const ARIA_DISABLED_ATTRIBUTE = "aria-disabled";
+export const ARIA_DISABLED_TRUE = "true";

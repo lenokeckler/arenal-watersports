@@ -4,7 +4,7 @@ import type { PasswordChangeFocusField } from "../models/PasswordChangeFocusFiel
 import type { PasswordChangeFormFieldsProps } from "../models/PasswordChangeFormFieldsProps.interface";
 import { createPasswordChangeSharedFieldProps } from "../utils/createPasswordChangeSharedFieldProps";
 import PasswordChangeNewPasswordGroup from "./PasswordChangeNewPasswordGroup";
-import PasswordChangeFormField from "./PasswordChangeFormField";
+import PasswordField from "@/app/components/password-field/PasswordField";
 
 const PasswordChangeFormFields = (
   props: PasswordChangeFormFieldsProps
@@ -14,12 +14,12 @@ const PasswordChangeFormFields = (
 
   return (
     <>
-      <PasswordChangeFormField
+      <PasswordField
         {...sharedProps(
           PASSWORD_CHANGE_FIELD.CURRENT_PASSWORD
         )}
         autoComplete={AUTOCOMPLETE.CURRENT_PASSWORD}
-        field={PASSWORD_CHANGE_FIELD.CURRENT_PASSWORD}
+        name={PASSWORD_CHANGE_FIELD.CURRENT_PASSWORD}
         label={props.copy.CURRENT_PASSWORD_LABEL}
       />
       <PasswordChangeNewPasswordGroup
@@ -28,12 +28,12 @@ const PasswordChangeFormFields = (
         passwordRules={props.passwordRules}
         showFailures={props.showFailures}
       />
-      <PasswordChangeFormField
+      <PasswordField
         {...sharedProps(
           PASSWORD_CHANGE_FIELD.CONFIRM_PASSWORD
         )}
         autoComplete={AUTOCOMPLETE.NEW_PASSWORD}
-        field={PASSWORD_CHANGE_FIELD.CONFIRM_PASSWORD}
+        name={PASSWORD_CHANGE_FIELD.CONFIRM_PASSWORD}
         label={props.copy.CONFIRM_PASSWORD_LABEL}
       />
     </>

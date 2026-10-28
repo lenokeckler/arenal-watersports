@@ -4,11 +4,9 @@ import {
   IMAGE_ALTS,
   PROFILE_SCREEN_TITLE_ID,
 } from "@/app/constants";
+import { SCREEN_INSTRUCTION_CLASS } from "@/app/components/screen-header/styles/ScreenHeader.styles";
 import { PROFILE_PASSWORD_FORM_COPY } from "../constants/ProfilePasswordFormCopy.constants";
-import {
-  PASSWORD_CHANGE_HEADING_BLOCK_CLASS,
-  PASSWORD_CHANGE_INSTRUCTION_CLASS,
-} from "../styles/PasswordChangeForm.styles";
+import { PASSWORD_CHANGE_HEADING_BLOCK_CLASS } from "../styles/PasswordChangeForm.styles";
 
 const ProfilePasswordFormHeading =
   (): React.JSX.Element => (
@@ -18,7 +16,7 @@ const ProfilePasswordFormHeading =
         titleId={PROFILE_SCREEN_TITLE_ID}
         logoAlt={IMAGE_ALTS.COMPANY_LOGO}
       />
-      <Text className={PASSWORD_CHANGE_INSTRUCTION_CLASS}>
+      <Text className={SCREEN_INSTRUCTION_CLASS}>
         {PROFILE_PASSWORD_FORM_COPY.INSTRUCTION}
       </Text>
     </div>
