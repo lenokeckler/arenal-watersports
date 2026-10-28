@@ -287,6 +287,7 @@ export {
   CURRENCY_SYMBOL_SEPARATOR,
 } from "./money/CurrencySymbol.constants";
 export {
+  COSTA_RICA_DAY,
   COSTA_RICA_TIME_ZONE,
   COSTA_RICA_UTC_OFFSET,
 } from "./calendar/CostaRicaTime.constants";
