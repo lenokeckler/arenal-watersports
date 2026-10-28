@@ -32,7 +32,7 @@ export const mapReservationCalendarEntry = (
         return equipment === null ? [] : [equipment];
       }
     ),
-    guides: source.reservation_guides.map(
+    guides: source.reservation_guides?.map(
       mapReservationCalendarGuide
     ),
     id: source.id,

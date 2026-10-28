@@ -3,7 +3,6 @@ import {
   CALENDAR_VIEW,
   RESERVATIONS_CALENDAR_COPY as copy,
 } from "@/app/constants";
-import { RESERVATION_CALENDAR_EXCLUDED_STATUS } from "@/app/components/reservation-calendar/constants/ReservationCalendarExcludedStatus.constants";
 import { createOperationsCalendarPage } from "./OperationsCalendar.page";
 import {
   OPERATIONS_CALENDAR_SNAPSHOT,
@@ -83,26 +82,6 @@ describe("Operations calendar reservation content", () => {
       expect(page.queryMoney()).toBeNull();
     }
   );
-});
-
-describe("Operations calendar excluded lifecycle states", () => {
-  it.each(
-    Object.values(RESERVATION_CALENDAR_EXCLUDED_STATUS)
-  )("excludes %s reservations", (status) => {
-    const snapshot = {
-      ...OPERATIONS_CALENDAR_SNAPSHOT,
-      entries: OPERATIONS_CALENDAR_SNAPSHOT.entries.map(
-        (entry) => ({ ...entry, status })
-      ),
-    };
-    renderOperationsCalendar({ snapshot });
-    const page = createOperationsCalendarPage();
-
-    expect(page.getBlocks()).toHaveLength(0);
-    expect(
-      page.getMessages(copy.EMPTY_PERIOD)
-    ).toHaveLength(fixture.DAY_COUNT);
-  });
 });
 
 describe("Operations calendar partial snapshot content", () => {

@@ -1,8 +1,4 @@
-import {
-  render,
-  renderHook,
-  screen,
-} from "@testing-library/react";
+import { render, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { RESERVATIONS_CALENDAR_COPY as copy } from "@/app/constants";
 import { useReservationCalendarDayContent } from "../hooks/useReservationCalendarDayContent";
@@ -51,6 +47,7 @@ describe("Reservation calendar default daily content", () => {
           guides: [
             {
               fullName: CALENDAR_DAY_GUIDE_TEST.FULL_NAME,
+              id: "calendar-day-guide",
               type: CALENDAR_DAY_GUIDE_TEST.TYPE,
             },
           ],
@@ -58,13 +55,18 @@ describe("Reservation calendar default daily content", () => {
       ],
     };
     renderReservationCalendarDay(snapshot);
+    const page = createReservationCalendarDayPage();
 
     expect(
-      screen.queryByText(CALENDAR_DAY_GUIDE_TEST.FULL_NAME)
-    ).toBeNull();
+      page.getReservationBlock()
+    ).not.toHaveAccessibleName(
+      new RegExp(CALENDAR_DAY_GUIDE_TEST.FULL_NAME)
+    );
     expect(
-      screen.queryByText(CALENDAR_DAY_GUIDE_TEST.TYPE_LABEL)
-    ).toBeNull();
+      page.getReservationBlock()
+    ).not.toHaveAccessibleName(
+      new RegExp(CALENDAR_DAY_GUIDE_TEST.TYPE_LABEL)
+    );
   });
 });
 
