@@ -2636,6 +2636,10 @@ export type Database = {
         Args: { p_user_id: string };
         Returns: undefined;
       };
+      retire_worker: {
+        Args: { target_worker: string };
+        Returns: string;
+      };
       revoke_worker_area: {
         Args: {
           target_area: Database["public"]["Enums"]["work_area"];

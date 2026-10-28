@@ -39,6 +39,10 @@ export const WORKER_ACCOUNT_ACTION_LABEL: Record<
     label: "Bloquear",
     pendingLabel: "Bloqueando…",
   },
+  [WORKER_ACCOUNT_ACTION.RETIRE]: {
+    label: "Dar de baja",
+    pendingLabel: "Dando de baja…",
+  },
   [WORKER_ACCOUNT_ACTION.UNLOCK]: {
     label: "Desbloquear",
     pendingLabel: "Desbloqueando…",
@@ -50,6 +54,8 @@ export const WORKER_ACCOUNT_NOTICE: Partial<
 > = {
   [WORKER_ACCOUNT_RESULT.BLOCKED]:
     "Se bloqueó la cuenta y se cerraron sus sesiones abiertas.",
+  [WORKER_ACCOUNT_RESULT.RETIRED]:
+    "Se dio de baja la cuenta: sus sesiones se cerraron y sus PIN pendientes se anularon. Su historial se conserva.",
   [WORKER_ACCOUNT_RESULT.UNLOCKED]:
     "Se desbloqueó la cuenta. La persona ya puede entrar.",
 };
