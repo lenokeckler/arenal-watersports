@@ -24,7 +24,7 @@ export const fetchChargesInRange = async ({
 
   const rows: ChargeRow[] = data ?? [];
 
-  if (count !== null && rows.length < count) {
+  if (count === null || rows.length < count) {
     throw new ChargesTruncatedError();
   }
 

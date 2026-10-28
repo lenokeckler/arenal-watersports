@@ -1,1 +1,6 @@
-export const PAYMENT_METHOD_TEXT_LOCALE = "es";
+export const PAYMENT_METHOD_TEXT = {
+  INNER_WHITESPACE: /\s+/g,
+  LOCALE: "es",
+  NORMALIZATION_FORM: "NFC",
+  SINGLE_SPACE: " ",
+} as const;

@@ -1,4 +1,4 @@
-import { PAYMENT_METHOD_TEXT_LOCALE } from "@/app/constants";
+import { PAYMENT_METHOD_TEXT } from "@/app/constants";
 import type { PaymentMethodIncome } from "./models/PaymentMethodIncome.interface";
 
 export const comparePaymentMethodIncome = (
@@ -8,5 +8,5 @@ export const comparePaymentMethodIncome = (
   second.amount - first.amount ||
   first.name.localeCompare(
     second.name,
-    PAYMENT_METHOD_TEXT_LOCALE
+    PAYMENT_METHOD_TEXT.LOCALE
   );

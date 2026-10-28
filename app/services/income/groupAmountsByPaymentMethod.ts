@@ -1,18 +1,19 @@
-import { PAYMENT_METHOD_TEXT_LOCALE } from "@/app/constants";
+import { PAYMENT_METHOD_TEXT } from "@/app/constants";
 import { fromMinorUnits } from "@/app/utils/money/fromMinorUnits";
 import { toMinorUnits } from "@/app/utils/money/toMinorUnits";
 import { comparePaymentMethodIncome } from "./comparePaymentMethodIncome";
 import type { ChargeMovement } from "./models/ChargeMovement.interface";
 import type { PaymentMethodIncome } from "./models/PaymentMethodIncome.interface";
 import type { PaymentMethodTally } from "./models/PaymentMethodTally.interface";
+import { normalizePaymentMethodName } from "./normalizePaymentMethodName";
 
 const tallyCharge = (
   tallies: Map<string, PaymentMethodTally>,
   { amount, paymentMethod }: ChargeMovement
 ): Map<string, PaymentMethodTally> => {
-  const name = paymentMethod.trim();
+  const name = normalizePaymentMethodName(paymentMethod);
   const key = name.toLocaleLowerCase(
-    PAYMENT_METHOD_TEXT_LOCALE
+    PAYMENT_METHOD_TEXT.LOCALE
   );
   const tally = tallies.get(key) ?? {
     key,
