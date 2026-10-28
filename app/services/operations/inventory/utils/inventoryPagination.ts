@@ -5,10 +5,30 @@ import type {
   InventoryUnitDatabaseRow,
 } from "../models/InventoryReadModels.interface";
 
+export const normalizeInventoryPageIndex = (
+  pageIndex: number
+): number => {
+  if (!Number.isFinite(pageIndex)) {
+    return PAGINATION.DEFAULT_PAGE;
+  }
+
+  const normalizedPageIndex = Math.max(
+    PAGINATION.DEFAULT_PAGE,
+    Math.floor(pageIndex)
+  );
+
+  return Number.isSafeInteger(normalizedPageIndex)
+    ? normalizedPageIndex
+    : PAGINATION.DEFAULT_PAGE;
+};
+
 export const resolveInventoryPageRange = (
   pageIndex: number
 ) => {
-  const from = pageIndex * PAGINATION.DEFAULT_PAGE_SIZE;
+  const resolvedPageIndex =
+    normalizeInventoryPageIndex(pageIndex);
+  const from =
+    resolvedPageIndex * PAGINATION.DEFAULT_PAGE_SIZE;
 
   return {
     from,
