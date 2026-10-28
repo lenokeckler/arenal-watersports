@@ -24,6 +24,7 @@ export const E2E_RECOVERY_SERVER_ENV = {
 
 export const E2E_MAILPIT = {
   BASE_URL: "http://127.0.0.1:54324",
+  DELETE_METHOD: "DELETE",
   MESSAGE_PATH: "/api/v1/message",
   RECIPIENT_QUERY: "to:",
   SEARCH_PATH: "/api/v1/search",
