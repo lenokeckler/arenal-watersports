@@ -6,6 +6,7 @@ import { PASSWORD_RULES_COPY } from "./constants/PasswordRulesCopy.constants";
 import { usePasswordRulesChecklistViewModel } from "./hooks/usePasswordRulesChecklistViewModel";
 import type { PasswordRulesChecklistProps } from "./models/PasswordRulesChecklistProps.interface";
 import {
+  PASSWORD_RULES_HINT_CLASS,
   PASSWORD_RULES_PANEL_CLASS,
   PASSWORD_RULES_TITLE_CLASS,
 } from "./styles/PasswordRulesChecklist.styles";
@@ -38,6 +39,9 @@ const PasswordRulesChecklist = ({
           variant={UNORDERED_LIST.VARIANTS.CHECKLIST}
           items={items}
         />
+        <Text className={PASSWORD_RULES_HINT_CLASS}>
+          {PASSWORD_RULES_COPY.COMMON_PASSWORD_HINT}
+        </Text>
       </div>
       <Text
         role={ARIA_ROLE.STATUS}

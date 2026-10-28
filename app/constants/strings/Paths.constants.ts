@@ -5,6 +5,7 @@ export const PATHS = {
     FIRST_SIGN_IN: "/access/first-sign-in",
     LOGIN: "/access/login",
     RECOVERY: "/access/recovery",
+    RECOVERY_PASSWORD: "/access/recovery/password",
     RECOVERY_RESET: "/access/recovery/reset",
     ROOT: "/access",
   },

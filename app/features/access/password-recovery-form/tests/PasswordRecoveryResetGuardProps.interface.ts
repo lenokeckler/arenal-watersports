@@ -1,5 +1,5 @@
-import type { PasswordRecoveryResetInput } from "@/app/utils/password-recovery/models/PasswordRecoveryResetInput.interface";
+import type { PasswordRecoveryPinInput } from "@/app/utils/password-recovery/models/PasswordRecoveryPinInput.interface";
 
 export interface PasswordRecoveryResetGuardProps {
-  current: PasswordRecoveryResetInput;
+  current: PasswordRecoveryPinInput;
 }

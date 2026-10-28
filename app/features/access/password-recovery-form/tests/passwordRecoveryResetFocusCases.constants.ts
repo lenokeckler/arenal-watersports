@@ -21,34 +21,16 @@ export const FOCUS_ORDER_CASES: readonly [
   PasswordRecoveryResetFocusField,
 ][] = [
   [
-    "username before everything",
+    "username before the PIN",
     errorsOn(
-      PASSWORD_RECOVERY_FIELD.CONFIRM_PASSWORD,
       PASSWORD_RECOVERY_FIELD.PIN,
       PASSWORD_RECOVERY_FIELD.USERNAME
     ),
     PASSWORD_RECOVERY_FIELD.USERNAME,
   ],
   [
-    "PIN before the passwords",
-    errorsOn(
-      PASSWORD_RECOVERY_FIELD.CONFIRM_PASSWORD,
-      PASSWORD_RECOVERY_FIELD.NEW_PASSWORD,
-      PASSWORD_RECOVERY_FIELD.PIN
-    ),
+    "the PIN alone",
+    errorsOn(PASSWORD_RECOVERY_FIELD.PIN),
     PASSWORD_RECOVERY_FIELD.PIN,
-  ],
-  [
-    "new password before the confirmation",
-    errorsOn(
-      PASSWORD_RECOVERY_FIELD.CONFIRM_PASSWORD,
-      PASSWORD_RECOVERY_FIELD.NEW_PASSWORD
-    ),
-    PASSWORD_RECOVERY_FIELD.NEW_PASSWORD,
-  ],
-  [
-    "the confirmation alone",
-    errorsOn(PASSWORD_RECOVERY_FIELD.CONFIRM_PASSWORD),
-    PASSWORD_RECOVERY_FIELD.CONFIRM_PASSWORD,
   ],
 ];

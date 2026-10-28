@@ -1,35 +1,23 @@
 import {
   PASSWORD_RECOVERY_ERROR_CODE,
   STRING,
-  SUPABASE_SIGN_OUT_SCOPE,
 } from "@/app/constants";
 import { createPasswordRecoveryError } from "@/app/utils/password-recovery/createPasswordRecoveryError";
-import type { PasswordRecoveryResetInput } from "@/app/utils/password-recovery/models/PasswordRecoveryResetInput.interface";
+import type { PasswordRecoveryPinInput } from "@/app/utils/password-recovery/models/PasswordRecoveryPinInput.interface";
 
-export const RESET_INPUT: PasswordRecoveryResetInput = {
-  confirmPassword: "  Nueva#Clave1 ",
-  newPassword: "  Nueva#Clave1 ",
+export const RESET_INPUT: PasswordRecoveryPinInput = {
   pin: " 123456 ",
   username: "  Ana.Perez\t",
 };
 
-export const EMPTY_RESET_INPUT: PasswordRecoveryResetInput =
-  {
-    confirmPassword: STRING.Empty,
-    newPassword: STRING.Empty,
-    pin: STRING.Empty,
-    username: STRING.Empty,
-  };
+export const EMPTY_RESET_INPUT: PasswordRecoveryPinInput = {
+  pin: STRING.Empty,
+  username: STRING.Empty,
+};
 
+export const RESET_GRANT = "grant-from-the-pin-check";
 export const LOGIN_RECOVERED_PATH =
   "/access/login?notice=password-recovered";
-export const LOCAL_SIGN_OUT_OPTIONS = {
-  scope: SUPABASE_SIGN_OUT_SCOPE.LOCAL,
-};
-export const SERVICE_FAILURE_MESSAGE =
-  "service unavailable";
-export const SIGN_OUT_FAILURE_MESSAGE =
-  "session already gone";
 
 export const PIN_INVALID_ERROR =
   createPasswordRecoveryError(

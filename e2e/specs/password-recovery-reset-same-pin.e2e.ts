@@ -16,10 +16,11 @@ import { readRecoveryOutcome } from "../support/readRecoveryOutcome";
 import { readWorkerIdByUsername } from "../support/readWorkerIdByUsername";
 import { expect, test } from "../support/recoveryTest";
 import { requestAndReadRecoveryPin } from "../support/requestAndReadRecoveryPin";
+import { saveRecoveryPassword } from "../support/saveRecoveryPassword";
 import { signInWithCredentials } from "../support/signInWithCredentials";
 
 test.describe("Password recovery with one PIN used twice at once", () => {
-  test("ends with one recovered sign-in, one generic PIN error and exactly one working password", async ({
+  test("lets one browser reach the new password, shows the other one the generic PIN error and leaves exactly one working password", async ({
     context,
     page,
     recoveryAccount,
@@ -44,11 +45,7 @@ test.describe("Password recovery with one PIN used twice at once", () => {
     for (const racer of racers) {
       await createPasswordRecoveryResetPage(
         racer.page
-      ).fillForm({
-        confirmPassword: racer.password,
-        newPassword: racer.password,
-        pin,
-      });
+      ).fillPin(pin);
     }
 
     await Promise.all(
@@ -63,12 +60,12 @@ test.describe("Password recovery with one PIN used twice at once", () => {
     expect(
       outcomes.filter(
         (outcome) =>
-          outcome === E2E_RECOVERY_OUTCOME.RECOVERED
+          outcome === E2E_RECOVERY_OUTCOME.ACCEPTED
       )
     ).toHaveLength(E2E_RECOVERY_MAIL_COUNT.ONE);
     const winner =
       racers[
-        outcomes.indexOf(E2E_RECOVERY_OUTCOME.RECOVERED)
+        outcomes.indexOf(E2E_RECOVERY_OUTCOME.ACCEPTED)
       ];
     const loser =
       racers[
@@ -79,6 +76,10 @@ test.describe("Password recovery with one PIN used twice at once", () => {
         loser.page
       ).getPinError()
     ).toHaveText(E2E_RECOVERY_COPY.PIN_INVALID);
+    await saveRecoveryPassword(
+      winner.page,
+      winner.password
+    );
     const loginPage = createLoginPage(loser.page);
     await loginPage.goTo();
     await loginPage.fillUsername(recoveryAccount.username);

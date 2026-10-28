@@ -17,7 +17,6 @@ import {
 } from "./passwordRecoveryReset.constants";
 import {
   PREFILLED_USERNAME,
-  VALID_PASSWORD,
   VALID_PIN,
   VALID_RESET_VALUES,
 } from "./passwordRecoveryResetState.constants";
@@ -42,7 +41,7 @@ describe("usePasswordRecoveryResetViewModel after a server answer", () => {
     vi.resetAllMocks();
   });
 
-  it("clears the PIN, keeps the passwords and flags the PIN after a PIN_INVALID answer", async () => {
+  it("clears the PIN, keeps the username and flags the PIN after a PIN_INVALID answer", async () => {
     serverAction.mockResolvedValue(PIN_INVALID_ERROR);
     const { result } = renderViewModel();
     const inputs = attachPasswordRecoveryResetInputs(
@@ -53,11 +52,8 @@ describe("usePasswordRecoveryResetViewModel after a server answer", () => {
     await postForm(result, VALID_RESET_VALUES);
 
     expect(result.current.values.pin).toBe(STRING.Empty);
-    expect(result.current.values.newPassword).toBe(
-      VALID_PASSWORD
-    );
-    expect(result.current.values.confirmPassword).toBe(
-      VALID_PASSWORD
+    expect(result.current.values.username).toBe(
+      PREFILLED_USERNAME
     );
     expect(
       result.current.fieldErrors[
@@ -69,7 +65,7 @@ describe("usePasswordRecoveryResetViewModel after a server answer", () => {
     ).toHaveFocus();
   });
 
-  it("shows PASSWORD_NOT_SAVED in the banner, clears the PIN and drops the error on typing", async () => {
+  it("shows PASSWORD_NOT_SAVED in the banner, keeps the PIN and drops the error on typing", async () => {
     serverAction.mockResolvedValue(
       PASSWORD_NOT_SAVED_ERROR
     );
@@ -85,7 +81,7 @@ describe("usePasswordRecoveryResetViewModel after a server answer", () => {
     ).toBe(
       PASSWORD_RECOVERY_RESET_ERROR_COPY.passwordNotSaved
     );
-    expect(result.current.values.pin).toBe(STRING.Empty);
+    expect(result.current.values.pin).toBe(VALID_PIN);
 
     typeField(
       result,

@@ -8,6 +8,8 @@ export const SUPABASE_RPC = {
     "current_session_seconds_left",
   CURRENT_SESSION_STATE: "current_session_state",
   CURRENT_WORK_AREA: "current_work_area",
+  EXCHANGE_PASSWORD_RESET_PIN:
+    "exchange_password_reset_pin",
   FINISH_PASSWORD_RECOVERY: "finish_password_recovery",
   GRANT_WORKER_AREA: "grant_worker_area",
   GRANT_WORKER_MARK: "grant_worker_mark",
@@ -15,10 +17,14 @@ export const SUPABASE_RPC = {
   ISSUE_PASSWORD_RESET_PIN: "issue_password_reset_pin",
   PREPARE_WORKER_TEMPORARY_PASSWORD:
     "prepare_worker_temporary_password",
+  PASSWORD_RESET_GRANT_IS_OPEN:
+    "password_reset_grant_is_open",
   MARK_PASSWORD_RESET_PIN_UNDELIVERED:
     "mark_password_reset_pin_undelivered",
   RECORD_FAILED_SIGN_IN: "record_failed_sign_in",
   RECORD_SUCCESSFUL_SIGN_IN: "record_successful_sign_in",
+  REDEEM_PASSWORD_RESET_GRANT:
+    "redeem_password_reset_grant",
   REHIRE_WORKER: "rehire_worker",
   RETIRE_WORKER: "retire_worker",
   REVOKE_WORKER_AREA: "revoke_worker_area",

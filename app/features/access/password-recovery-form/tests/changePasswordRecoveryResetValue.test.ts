@@ -10,7 +10,7 @@ import {
   LETTERS_ONLY_PIN,
   PASTED_PIN,
   PASTED_PIN_DIGITS,
-  SPACED_PASSWORD,
+  SPACED_USERNAME,
   UNRELATED_FIELD_NAME,
   UNRELATED_FIELD_VALUE,
   VALID_PIN,
@@ -50,14 +50,14 @@ describe("changePasswordRecoveryResetValue", () => {
     ).toBe(PASTED_PIN_DIGITS);
   });
 
-  it("leaves a password exactly as typed", () => {
+  it("leaves the username exactly as typed", () => {
     expect(
       changePasswordRecoveryResetValue(
         VALID_RESET_VALUES,
-        PASSWORD_RECOVERY_FIELD.NEW_PASSWORD,
-        SPACED_PASSWORD
-      ).newPassword
-    ).toBe(SPACED_PASSWORD);
+        PASSWORD_RECOVERY_FIELD.USERNAME,
+        SPACED_USERNAME
+      ).username
+    ).toBe(SPACED_USERNAME);
   });
 
   it("ignores a field that is not part of the form", () => {
