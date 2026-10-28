@@ -22,6 +22,20 @@ describe("mapReauthenticationError", () => {
     );
   });
 
+  it("keeps the recovery required refusal on the form", () => {
+    expect(
+      mapReauthenticationError(
+        createPasswordChangeError(
+          PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED
+        )
+      )
+    ).toEqual(
+      createPersonalEmailError(
+        PERSONAL_EMAIL_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED
+      )
+    );
+  });
+
   it("turns a code it does not know into unknown", () => {
     expect(
       mapReauthenticationError(
