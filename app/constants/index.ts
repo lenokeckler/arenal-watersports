@@ -86,7 +86,10 @@ export {
 } from "./theme/Theme.constants";
 export { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
 export { PASSWORD_LENGTH } from "./access/PasswordLength.constants";
-export { USERNAME } from "./access/Username.constants";
+export {
+  USERNAME,
+  type UsernameErrorCode,
+} from "./access/Username.constants";
 export {
   SIGN_IN_ERROR_CODE,
   SIGN_IN_ERROR_FIELD,
