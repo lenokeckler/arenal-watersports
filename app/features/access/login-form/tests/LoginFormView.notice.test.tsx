@@ -93,7 +93,9 @@ describe("LoginFormView recovery entry", () => {
   });
 
   it("shows the notice and cleans the url when a notice arrives", () => {
-    const page = renderView(RECOVERED_NOTICE);
+    const page = renderView({
+      noticeMessage: RECOVERED_NOTICE,
+    });
 
     expect(page.queryNotice()).toHaveTextContent(
       RECOVERED_NOTICE
@@ -112,7 +114,9 @@ describe("LoginFormView recovery entry", () => {
     vi.mocked(submitSignIn).mockResolvedValue(
       NETWORK_ERROR
     );
-    const page = renderView(RECOVERED_NOTICE);
+    const page = renderView({
+      noticeMessage: RECOVERED_NOTICE,
+    });
 
     await page.fillCredentials(DEFAULT_SIGN_IN_CREDENTIALS);
     await page.submit();
