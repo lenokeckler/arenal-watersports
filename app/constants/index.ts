@@ -93,3 +93,4 @@ export {
   SERVER_ERROR_REPORT,
   type ServerErrorReportLevel,
 } from "./observability/ServerErrorReport.constants";
+export { SERVER_OPERATION } from "./observability/ServerOperation.constants";
