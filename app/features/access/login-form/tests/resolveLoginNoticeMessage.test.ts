@@ -4,6 +4,7 @@ import { resolveLoginNoticeMessage } from "../utils/resolveLoginNoticeMessage";
 import {
   ARRAY_LOGIN_NOTICE,
   RECOVERED_NOTICE,
+  SIGNED_OUT_NOTICE,
   UNKNOWN_LOGIN_NOTICE,
 } from "./LoginNotice.constants";
 
@@ -14,6 +15,12 @@ describe("resolveLoginNoticeMessage", () => {
         LOGIN_NOTICE.PASSWORD_RECOVERED
       )
     ).toBe(RECOVERED_NOTICE);
+  });
+
+  it("returns the signed-out message for the signed-out notice", () => {
+    expect(
+      resolveLoginNoticeMessage(LOGIN_NOTICE.SIGNED_OUT)
+    ).toBe(SIGNED_OUT_NOTICE);
   });
 
   it.each([

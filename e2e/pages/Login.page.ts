@@ -14,6 +14,7 @@ import { E2E_RECOVERED_LOGIN_PATH } from "../constants/E2ePasswordRecoveryPin.co
 import {
   E2E_LOGIN_COPY,
   E2E_LOGIN_FIELD_ID,
+  E2E_SIGNED_OUT_LOGIN_PATH,
 } from "../constants/E2eLogin.constants";
 import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
 import { getMainRegion } from "../support/mainRegion";
@@ -60,6 +61,10 @@ const createLoginLocators = (page: Page) => {
         name: label,
         exact: true,
       }),
+    getSignedOutNotice: (): Locator =>
+      main.getByRole(ARIA_ROLE.STATUS).filter({
+        hasText: E2E_LOGIN_COPY.SIGNED_OUT_NOTICE,
+      }),
     getSubmitButton: (): Locator =>
       main.getByRole(ARIA_ROLE.BUTTON, {
         name: E2E_LOGIN_COPY.SUBMIT,
@@ -99,6 +104,9 @@ export const createLoginPage = (page: Page) => {
     getFieldErrorId,
     goToPasswordRecovered: async (): Promise<void> => {
       await page.goto(E2E_RECOVERED_LOGIN_PATH);
+    },
+    goToSignedOut: async (): Promise<void> => {
+      await page.goto(E2E_SIGNED_OUT_LOGIN_PATH);
     },
     goTo: async (noticeReason?: string): Promise<void> => {
       await page.goto(buildLoginUrl(noticeReason));

@@ -8,6 +8,7 @@ export const LOGIN_FORM_COPY = {
     "Su contraseña se cambió. Ingrese con la nueva.",
   PASSWORD_PLACEHOLDER: "••••••••",
   RECOVER_PASSWORD: "Recuperar mi contraseña",
+  SIGNED_OUT_NOTICE: "Cerró su sesión en este dispositivo.",
   SUBMIT: "Entrar al sistema",
   SUBMITTING: "Entrando…",
   USERNAME_LABEL: ACCESS_SHARED_COPY.USERNAME_LABEL,
