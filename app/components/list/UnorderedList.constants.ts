@@ -8,6 +8,7 @@ export const UNORDERED_LIST = {
     PLAIN: "plain",
     PLANS: "plans",
     SIDE_MENU: "side-menu",
+    CHECKLIST: "checklist",
   },
 } as const;
 export type UnorderedListVariant =

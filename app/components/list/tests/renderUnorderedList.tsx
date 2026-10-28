@@ -6,9 +6,7 @@ import { createUnorderedListPage } from "./UnorderedList.page";
 export const renderUnorderedList = (
   props: UnorderedListProps = {}
 ) => {
-  const { container } = render(
-    <UnorderedList {...props} />
-  );
+  render(<UnorderedList {...props} />);
 
-  return createUnorderedListPage(container);
+  return createUnorderedListPage();
 };

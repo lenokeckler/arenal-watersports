@@ -6,6 +6,9 @@ import { useUnorderedListViewModel } from "./hooks/useUnorderedListViewModel";
 import { resolveUnorderedListWrapperClassName } from "./styles/UnorderedList.styles";
 
 const UnorderedList = ({
+  id,
+  role,
+  "aria-labelledby": ariaLabelledBy,
   validationMessages,
   items = [],
   variant,
@@ -34,9 +37,11 @@ const UnorderedList = ({
       style={style}
     >
       <ul
-        className={variantStyles.listClass}
-        role={listRole}
+        id={id}
+        role={role ?? listRole}
         aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
+        className={variantStyles.listClass}
       >
         {finalItems.map((item, index) => {
           const text =
