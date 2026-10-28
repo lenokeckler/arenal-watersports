@@ -9,9 +9,12 @@ import {
   TEXT_ENCODING,
 } from "@/app/services/supabase/tests/serviceRoleBoundary.constants";
 import {
+  EXACT_VERSION_PATTERN,
   MAIL_BARREL_IMPORT_PATTERN,
   MAIL_ENVIRONMENT_ALLOWED_PATH_PATTERN,
   MAIL_ENVIRONMENT_NAME_PATTERN,
+  NODEMAILER_PACKAGE,
+  PACKAGE_JSON_FILE,
 } from "./mailBoundary.constants";
 
 const readSource = (file: string): string =>
@@ -45,5 +48,18 @@ describe("mail boundary", () => {
     );
 
     expect(offenders).toEqual([]);
+  });
+
+  it("pins nodemailer to an exact version", () => {
+    const manifest = JSON.parse(
+      readFileSync(
+        path.join(process.cwd(), PACKAGE_JSON_FILE),
+        TEXT_ENCODING
+      )
+    ) as { dependencies: Record<string, string> };
+
+    expect(
+      manifest.dependencies[NODEMAILER_PACKAGE]
+    ).toMatch(EXACT_VERSION_PATTERN);
   });
 });

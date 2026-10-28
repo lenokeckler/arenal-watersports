@@ -1,4 +1,6 @@
 export const MAIL_TRANSPORT = {
+  CONNECTION_TIMEOUT_MILLISECONDS: 5000,
+  GREETING_TIMEOUT_MILLISECONDS: 5000,
   IMPLICIT_TLS_PORT: 465,
   LINE_BREAK_PATTERN: /[\r\n]/,
   LOOPBACK_HOSTS: ["127.0.0.1", "localhost", "::1"],
@@ -7,4 +9,6 @@ export const MAIL_TRANSPORT = {
   PLAIN_ADDRESS_PATTERN:
     /^[^\s\u0085@<>()[\]\\,;:"]+@[^\s\u0085@<>()[\]\\,;:"]+$/,
   PORT_PATTERN: /^\d+$/,
+  SENDER_NAME: "Arenal Water Sports",
+  SOCKET_TIMEOUT_MILLISECONDS: 10000,
 } as const;

@@ -34,6 +34,9 @@ export const INVALID_PORTS = [
   "1e3",
 ];
 
+export const RECIPIENT = "worker@example.test";
+export const SUBJECT = "Su PIN";
+export const BODY = "123456";
 export const LINE_BREAK_VALUES = [
   "a@example.test\r\nBcc: x@example.test",
   "a@example.test\nBcc: x@example.test",
@@ -81,9 +84,12 @@ export const INVALID_RECIPIENTS = [
   "plainaddress",
   "",
 ];
+export const UNICODE_LINE_SEPARATORS = ["\u2028", "\u0085"];
 export const PADDED_PASSWORD = "  padded password  ";
 export const WHITESPACE_ONLY_PASSWORD = "   ";
 export const UNTRIMMED_INVALID_SENDERS =
   INVALID_RECIPIENTS.filter(
     (value) => value !== "" && value.trim() === value
   );
+export const SMTP_RESPONSE_TEXT =
+  "535 5.7.8 Username and Password not accepted";
