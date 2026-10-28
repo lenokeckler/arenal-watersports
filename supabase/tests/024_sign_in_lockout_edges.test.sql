@@ -85,9 +85,9 @@ select is(
 );
 
 select is(
-  public.custom_access_token_hook('{}'::jsonb),
-  '{}'::jsonb,
-  'un evento sin user_id se devuelve sin cambios'
+  public.custom_access_token_hook('{}'::jsonb) #>> '{error,message}',
+  'account_unavailable',
+  'un evento sin user_id se rechaza como no disponible'
 );
 
 select throws_ok(
