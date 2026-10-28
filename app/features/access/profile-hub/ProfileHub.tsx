@@ -1,13 +1,14 @@
 import FormSuccessNotice from "@/app/components/form-success-notice/FormSuccessNotice";
+import NoticeUrlCleaner from "@/app/components/notice-url-cleaner/NoticeUrlCleaner";
 import ScreenHeader from "@/app/components/screen-header/ScreenHeader";
 import {
   IMAGE_ALTS,
+  PATHS,
   PROFILE_SCREEN_TITLE_ID,
 } from "@/app/constants";
 import { PROFILE_COPY } from "./constants/ProfileCopy.constants";
 import type { ProfileHubProps } from "./models/ProfileHubProps.interface";
 import ProfileEntryList from "./ProfileEntryList";
-import ProfileNoticeUrlCleaner from "./ProfileNoticeUrlCleaner";
 import { buildProfileEntries } from "./utils/buildProfileEntries";
 import { resolvePersonalEmailState } from "./utils/resolvePersonalEmailState";
 import { resolveProfileNoticeMessage } from "./utils/resolveProfileNoticeMessage";
@@ -29,7 +30,9 @@ const ProfileHub = async ({
       />
       <FormSuccessNotice message={noticeMessage} />
       <ProfileEntryList entries={entries} />
-      {noticeMessage ? <ProfileNoticeUrlCleaner /> : null}
+      {noticeMessage ? (
+        <NoticeUrlCleaner cleanPath={PATHS.PROFILE.ROOT} />
+      ) : null}
     </>
   );
 };

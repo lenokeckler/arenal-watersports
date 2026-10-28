@@ -5,16 +5,13 @@ import {
   it,
   vi,
 } from "vitest";
-import { render } from "@testing-library/react";
 import { PATHS } from "@/app/constants";
-import ProfileNoticeUrlCleaner from "../ProfileNoticeUrlCleaner";
 import { UNKNOWN_NOTICE } from "./ProfileHub.constants";
 import { renderProfileHub } from "./renderProfileHub";
 import {
-  NOTICE_URL,
   NOTICE_URL_CASES,
   UNKNOWN_NOTICE_URL,
-} from "./ProfileNoticeUrlCleaner.constants";
+} from "./ProfileHubUrlCleaning.constants";
 
 vi.mock("@/app/services/authentication", () => ({
   readOwnPersonalEmail: vi.fn(),
@@ -23,33 +20,13 @@ vi.mock("@/app/services/authentication", () => ({
 const readCurrentUrl = (): string =>
   `${window.location.pathname}${window.location.search}`;
 
-describe("ProfileNoticeUrlCleaner", () => {
+describe("ProfileHub url cleaning", () => {
   afterEach(() => {
     window.history.replaceState(
       window.history.state,
       document.title,
       PATHS.PROFILE.ROOT
     );
-  });
-
-  it("replaces the notice url with the profile root", () => {
-    window.history.replaceState(
-      window.history.state,
-      document.title,
-      NOTICE_URL
-    );
-
-    render(<ProfileNoticeUrlCleaner />);
-
-    expect(readCurrentUrl()).toBe(PATHS.PROFILE.ROOT);
-  });
-
-  it("renders nothing", () => {
-    const { container } = render(
-      <ProfileNoticeUrlCleaner />
-    );
-
-    expect(container).toBeEmptyDOMElement();
   });
 
   it.each(NOTICE_URL_CASES)(
