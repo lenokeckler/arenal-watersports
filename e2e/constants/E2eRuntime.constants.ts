@@ -26,6 +26,8 @@ export const E2E_RETRY_COUNT = {
 } as const;
 
 export const E2E_WORKER_COUNT = {
+  ADMIN_RECOVERY: 1,
+  ADMIN_SCREENSHOTS: 1,
   CI: 1,
 } as const;
 
@@ -41,6 +43,10 @@ export const E2E_DEVICE_NAME = {
 } as const;
 
 export const E2E_PROJECT = {
+  ADMIN_RECOVERY: "chromium-mobile-admin-recovery",
+  ADMIN_SCREENSHOTS: "chromium-desktop-admin-screenshots",
+  ADMIN_SCREENSHOTS_MOBILE:
+    "chromium-mobile-admin-screenshots",
   DEFAULT: "chromium-desktop",
   MOBILE: "chromium-mobile",
   SCREENSHOTS: "chromium-desktop-screenshots",
@@ -48,6 +54,9 @@ export const E2E_PROJECT = {
 } as const;
 
 export const E2E_TEST_MATCH = {
+  ADMIN_RECOVERY: "**/specs/*.admin.e2e.ts",
+  ADMIN_SCREENSHOTS:
+    "**/screenshots/*.admin.screenshots.ts",
   DEFAULT: "**/specs/*.e2e.ts",
   SCREENSHOTS: "**/screenshots/*.screenshots.ts",
 } as const;
