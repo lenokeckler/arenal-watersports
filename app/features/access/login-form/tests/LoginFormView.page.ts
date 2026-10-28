@@ -20,6 +20,7 @@ const createLoginFormViewQueries = () => ({
     screen.getByRole(ARIA_ROLE.BUTTON, { name: label }),
   getUsernameInput: () =>
     screen.getByLabelText(LOGIN_FORM_COPY.USERNAME_LABEL),
+  queryBanner: () => screen.queryByRole(ARIA_ROLE.ALERT),
 });
 
 export const createLoginFormViewPage = () => {
