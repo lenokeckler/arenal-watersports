@@ -10,6 +10,7 @@ import { appendQueryParam } from "@/app/utils/pathname/appendQueryParam";
 export const RAW_USERNAME = "  Ana.Perez\t";
 export const NORMALIZED_USERNAME = "ana.perez";
 export const INJECTED_USERNAME = "ana&username=admin#x";
+export const SHORT_USERNAME = "ab";
 export const NETWORK_KEY = "a".repeat(64);
 export const SERVICE_FAILURE_MESSAGE =
   "service unavailable";
@@ -39,6 +40,9 @@ export const TOO_MANY_REQUESTS_ERROR =
   createPasswordRecoveryError(
     PASSWORD_RECOVERY_ERROR_CODE.TOO_MANY_REQUESTS
   );
+export const NETWORK_ERROR = createPasswordRecoveryError(
+  PASSWORD_RECOVERY_ERROR_CODE.NETWORK
+);
 
 export const RETURNED_ERRORS = [
   USERNAME_REQUIRED_ERROR,
