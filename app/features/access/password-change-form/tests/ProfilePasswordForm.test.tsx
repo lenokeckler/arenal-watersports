@@ -17,7 +17,7 @@ import { DEFAULT_PASSWORD_CHANGE_INPUT } from "@/app/utils/password-change/tests
 import { submitOwnPasswordChange } from "../actions/submitOwnPasswordChange";
 import { PROFILE_PASSWORD_ERROR_COPY } from "../constants/ProfilePasswordErrorCopy.constants";
 import ProfilePasswordForm from "../ProfilePasswordForm";
-import { isNodeBefore } from "./isNodeBefore";
+import { isNodeBefore } from "@/app/utils/dom/tests/isNodeBefore";
 import {
   ARIA_HIDDEN_ATTRIBUTE,
   ARIA_HIDDEN_VALUE,
