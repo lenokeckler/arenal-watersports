@@ -1,0 +1,1 @@
+export { isCommonPassword } from "./isCommonPassword";
