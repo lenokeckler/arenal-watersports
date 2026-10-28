@@ -7,14 +7,19 @@ import { resolveSignInFieldErrors } from "./resolveSignInFieldErrors";
 export const resolveLoginFormErrors = ({
   fallbackError,
   hasSubmitted,
+  notice,
   serverError,
   values,
 }: LoginFormErrorSources): LoginFormErrors => {
   const validationError = hasSubmitted
     ? validateSignInCredentials(values)
     : null;
+  const visibleNotice = hasSubmitted ? null : notice;
   const fieldErrors = resolveSignInFieldErrors(
-    serverError ?? validationError ?? fallbackError
+    serverError ??
+      validationError ??
+      fallbackError ??
+      visibleNotice
   );
 
   return {
