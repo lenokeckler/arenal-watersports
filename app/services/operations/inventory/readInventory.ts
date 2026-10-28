@@ -1,7 +1,7 @@
 import {
+  UUID_PATTERN,
   INVENTORY_DATA_SOURCE,
   INVENTORY_TRACKING_MODE,
-  INVENTORY_UNIT_STATUS,
 } from "@/app/constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { INVENTORY_QUERY } from "./constants/InventoryQuery.constants";
@@ -9,48 +9,15 @@ import type {
   InventoryCategoryDatabaseDetails,
   InventoryDataPage,
   InventorySummaryDatabaseRow,
-  InventorySupabaseClient,
-  InventoryUnitDatabaseRow,
 } from "./models/InventoryReadModels.interface";
 import { requireInventoryAccess } from "./requireInventoryAccess";
+import { readInventoryUnitPage } from "./readInventoryUnits";
+import { resolveInventoryQueryPage } from "./utils/resolveInventoryQueryPage";
 import {
   createEmptyInventoryUnitPage,
-  createInventoryDataPage,
+  normalizeInventoryPageIndex,
   resolveInventoryPageRange,
 } from "./utils/inventoryPagination";
-
-const readUnitPage = async (
-  supabase: InventorySupabaseClient,
-  categoryId: string,
-  pageIndex: number
-): Promise<InventoryDataPage<InventoryUnitDatabaseRow>> => {
-  const { from, to } = resolveInventoryPageRange(pageIndex);
-  const { data, error, count } = await supabase
-    .from(INVENTORY_DATA_SOURCE.UNIT_CURRENT_STATE_VIEW)
-    .select(INVENTORY_DATA_SOURCE.UNIT_DETAILS_SELECT, {
-      count: "exact",
-    })
-    .eq(
-      INVENTORY_DATA_SOURCE.CATEGORY_ID_COLUMN,
-      categoryId
-    )
-    .neq(
-      INVENTORY_DATA_SOURCE.RECORDED_STATUS_COLUMN,
-      INVENTORY_UNIT_STATUS.DECOMMISSIONED
-    )
-    .order(INVENTORY_DATA_SOURCE.UNIT_CODE_COLUMN, {
-      ascending: true,
-    })
-    .range(from, to);
-
-  throwIfSupabaseError(error, INVENTORY_QUERY.UNITS);
-
-  return createInventoryDataPage(
-    data ?? [],
-    count,
-    pageIndex
-  );
-};
 
 export const getInventorySummaryPage = async (
   pageIndex: number
@@ -58,26 +25,29 @@ export const getInventorySummaryPage = async (
   InventoryDataPage<InventorySummaryDatabaseRow>
 > => {
   const supabase = await requireInventoryAccess();
-  const { from, to } = resolveInventoryPageRange(pageIndex);
-  const { data, error, count } = await supabase
-    .from(INVENTORY_DATA_SOURCE.CATEGORY_SUMMARY_VIEW)
-    .select(INVENTORY_DATA_SOURCE.ALL_COLUMNS_SELECT, {
-      count: "exact",
-    })
-    .order(INVENTORY_DATA_SOURCE.CATEGORY_NAME_COLUMN, {
-      ascending: true,
-    })
-    .range(from, to);
+  const normalizedPageIndex =
+    normalizeInventoryPageIndex(pageIndex);
+  const readPage = (requestedPageIndex: number) => {
+    const { from, to } = resolveInventoryPageRange(
+      requestedPageIndex
+    );
 
-  throwIfSupabaseError(
-    error,
-    INVENTORY_QUERY.CATEGORY_SUMMARIES
-  );
+    return supabase
+      .from(INVENTORY_DATA_SOURCE.CATEGORY_SUMMARY_VIEW)
+      .select(INVENTORY_DATA_SOURCE.ALL_COLUMNS_SELECT, {
+        count: "exact",
+      })
+      .order(INVENTORY_DATA_SOURCE.CATEGORY_NAME_COLUMN, {
+        ascending: true,
+      })
+      .range(from, to);
+  };
 
-  return createInventoryDataPage(
-    data ?? [],
-    count,
-    pageIndex
+  return resolveInventoryQueryPage(
+    await readPage(normalizedPageIndex),
+    normalizedPageIndex,
+    INVENTORY_QUERY.CATEGORY_SUMMARIES,
+    readPage
   );
 };
 
@@ -86,6 +56,18 @@ export const getInventoryCategoryDetails = async (
   pageIndex: number
 ): Promise<InventoryCategoryDatabaseDetails> => {
   const supabase = await requireInventoryAccess();
+  const normalizedPageIndex =
+    normalizeInventoryPageIndex(pageIndex);
+
+  if (!UUID_PATTERN.test(categoryId)) {
+    return {
+      summary: null,
+      units: createEmptyInventoryUnitPage(
+        normalizedPageIndex
+      ),
+    };
+  }
+
   const { data, error } = await supabase
     .from(INVENTORY_DATA_SOURCE.CATEGORY_SUMMARY_VIEW)
     .select(INVENTORY_DATA_SOURCE.ALL_COLUMNS_SELECT)
@@ -103,7 +85,9 @@ export const getInventoryCategoryDetails = async (
   if (!data) {
     return {
       summary: null,
-      units: createEmptyInventoryUnitPage(pageIndex),
+      units: createEmptyInventoryUnitPage(
+        normalizedPageIndex
+      ),
     };
   }
 
@@ -112,14 +96,16 @@ export const getInventoryCategoryDetails = async (
   ) {
     return {
       summary: data,
-      units: createEmptyInventoryUnitPage(pageIndex),
+      units: createEmptyInventoryUnitPage(
+        normalizedPageIndex
+      ),
     };
   }
 
-  const units = await readUnitPage(
+  const units = await readInventoryUnitPage(
     supabase,
     categoryId,
-    pageIndex
+    normalizedPageIndex
   );
 
   return { summary: data, units };

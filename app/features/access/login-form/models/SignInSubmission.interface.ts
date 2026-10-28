@@ -8,4 +8,5 @@ export interface SignInSubmission {
   isPending: boolean;
   serverError: NullableRef<SignInError>;
   submit: (credentials: SignInCredentials) => void;
+  submitAttempt: number;
 }

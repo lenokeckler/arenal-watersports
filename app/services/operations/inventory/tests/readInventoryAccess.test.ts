@@ -11,6 +11,7 @@ import {
   PATHS,
   WORK_AREA,
 } from "@/app/constants";
+import { AuthSessionMissingError } from "@supabase/supabase-js";
 import { createServerSupabaseClient } from "@/app/services/supabase";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { getInventorySummaryPage } from "../readInventory";
@@ -82,6 +83,23 @@ describe("inventory read authorization", () => {
     getUser.mockResolvedValue({
       data: { user: null },
       error: null,
+    });
+
+    await expect(
+      getInventorySummaryPage(PAGINATION.DEFAULT_PAGE)
+    ).rejects.toThrow(redirectSignal);
+
+    expect(supabaseMocks.redirect).toHaveBeenCalledWith(
+      PATHS.ACCESS.LOGIN
+    );
+    expect(rpc).not.toHaveBeenCalled();
+    expect(from).not.toHaveBeenCalled();
+  });
+
+  it("redirects a missing Supabase session to login", async () => {
+    getUser.mockResolvedValue({
+      data: { user: null },
+      error: new AuthSessionMissingError(),
     });
 
     await expect(

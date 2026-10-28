@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { isAuthSessionMissingError } from "@supabase/supabase-js";
 import {
   INVENTORY_ACCESS_FUNCTION,
   PATHS,
@@ -16,7 +17,11 @@ export const requireInventoryAccess =
       await supabase.auth.getUser();
 
     if (authenticationError) {
-      throw authenticationError;
+      if (!isAuthSessionMissingError(authenticationError)) {
+        throw authenticationError;
+      }
+
+      redirect(PATHS.ACCESS.LOGIN);
     }
 
     if (!data.user) {

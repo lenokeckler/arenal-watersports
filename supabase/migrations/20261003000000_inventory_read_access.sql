@@ -54,5 +54,3 @@ left join lateral (
 left join equipment_stock stock
   on stock.category_id = c.id and c.tracking_mode = 'by_quantity'
 where c.status = 'active';
-
-alter publication supabase_realtime add table equipment_categories;
