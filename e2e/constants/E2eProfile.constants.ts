@@ -5,10 +5,13 @@ import {
   PATHS,
   PROFILE_NOTICE,
   PROFILE_NOTICE_QUERY_PARAM,
+  SIGN_IN_NOTICE_QUERY_PARAM,
+  SIGN_IN_NOTICE_REASON,
 } from "@/app/constants";
 import { PROFILE_PASSWORD_ERROR_COPY } from "@/app/features/access/password-change-form/constants/ProfilePasswordErrorCopy.constants";
 import { PROFILE_PASSWORD_FORM_COPY } from "@/app/features/access/password-change-form/constants/ProfilePasswordFormCopy.constants";
 import { PROFILE_COPY } from "@/app/features/access/profile-hub/constants/ProfileCopy.constants";
+import type { Database } from "@/app/types";
 import { appendQueryParam } from "@/app/utils/pathname/appendQueryParam";
 
 export const E2E_PROFILE_COPY = {
@@ -54,6 +57,16 @@ export const E2E_PROFILE_NOTICE_PATH = appendQueryParam(
   PROFILE_NOTICE_QUERY_PARAM,
   PROFILE_NOTICE.PASSWORD_CHANGED
 );
+
+export const E2E_BLOCKED_BY_ATTEMPTS_LOGIN_PATH =
+  appendQueryParam(
+    PATHS.ACCESS.LOGIN,
+    SIGN_IN_NOTICE_QUERY_PARAM,
+    SIGN_IN_NOTICE_REASON.BLOCKED_BY_ATTEMPTS
+  );
+
+export const E2E_BLOCKED_ACCOUNT_STATUS: Database["public"]["Enums"]["worker_status"] =
+  "blocked";
 
 export const E2E_PROFILE_SCREENSHOT_BASENAME = {
   HUB: "01-profile-hub",

@@ -16,6 +16,7 @@ export const E2E_TIMEOUT_MS = {
   ACTION: 20_000,
   EXPECT: 20_000,
   NAVIGATION: 60_000,
+  POST_SUBMIT: 90_000,
   TEST: 120_000,
 } as const;
 

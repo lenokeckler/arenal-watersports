@@ -59,3 +59,28 @@ export const E2E_SUPABASE_ERROR = {
     "delete the auth user after the worker insert failed",
   REASON_SEPARATOR: "; ",
 } as const;
+
+export const E2E_AUTH_SESSIONS = {
+  DATABASE: "postgres",
+  DATABASE_CONTAINER: "supabase_db_arenal-watersports",
+  DATABASE_USER: "postgres",
+  QUERY:
+    "select count(*) from auth.sessions where user_id = :'uid'",
+  STOP_ON_ERROR_VARIABLE: "ON_ERROR_STOP=1",
+  USER_ID_VARIABLE: "uid",
+} as const;
+
+export const E2E_AUTH_SESSIONS_ERROR = {
+  COUNT_OPERATION: "count the auth sessions",
+  EXEC_FAILED: (
+    container: string,
+    reason: string
+  ): string =>
+    `docker exec on ${container} failed: ${reason}`,
+  NOT_AN_INTEGER: (output: string): string =>
+    `the session count was not an integer: ${output}`,
+} as const;
+
+export const E2E_AUTH_ERROR_CODE = {
+  SESSION_GONE: "refresh_token_not_found",
+} as const;
