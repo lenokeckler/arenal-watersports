@@ -3,7 +3,6 @@ import {
   type SignInErrorCode,
 } from "@/app/constants/access/SignInError.constants";
 import { ACCESS_SHARED_COPY } from "@/app/constants/access/AccessSharedCopy.constants";
-import { USERNAME } from "@/app/constants/access/Username.constants";
 
 export const SIGN_IN_ERROR_COPY: Record<
   SignInErrorCode,
@@ -25,7 +24,8 @@ export const SIGN_IN_ERROR_COPY: Record<
   [SIGN_IN_ERROR_CODE.TOO_MANY_REQUESTS]:
     ACCESS_SHARED_COPY.TOO_MANY_REQUESTS,
   [SIGN_IN_ERROR_CODE.UNKNOWN]: ACCESS_SHARED_COPY.UNKNOWN,
-  [SIGN_IN_ERROR_CODE.USERNAME_LENGTH]: `El nombre de usuario debe tener entre ${USERNAME.LENGTH.MIN} y ${USERNAME.LENGTH.MAX} caracteres.`,
+  [SIGN_IN_ERROR_CODE.USERNAME_LENGTH]:
+    ACCESS_SHARED_COPY.USERNAME_LENGTH,
   [SIGN_IN_ERROR_CODE.USERNAME_REQUIRED]:
-    "Escriba su nombre de usuario.",
+    ACCESS_SHARED_COPY.USERNAME_REQUIRED,
 };
