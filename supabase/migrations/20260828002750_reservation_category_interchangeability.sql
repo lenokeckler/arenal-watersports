@@ -49,7 +49,7 @@ begin
     where id = p_category_id
       and status = 'active'
       and is_reservable
-      and units_are_interchangeable
+      and (tracking_mode = 'by_quantity' or units_are_interchangeable)
   ) then
     raise exception 'Equipment category is not available for reservation';
   end if;
