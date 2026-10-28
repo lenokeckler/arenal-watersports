@@ -3,7 +3,7 @@ import type { PasswordChangeFormFieldProps } from "./PasswordChangeFormFieldProp
 
 export interface PasswordChangeNewPasswordGroupProps extends Omit<
   PasswordChangeFormFieldProps,
-  "autoComplete" | "describedBy" | "field" | "label"
+  "autoComplete" | "describedBy" | "field"
 > {
   passwordRules: PasswordRuleResults;
   showFailures: boolean;

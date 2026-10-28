@@ -1,17 +1,15 @@
-import { renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import "./firstSignInAction.setup";
+import { renderPasswordChangeViewModel } from "./renderPasswordChangeViewModel";
 import { PASSWORD_CHANGE_FIELD } from "@/app/constants/access/PasswordChangeError.constants";
-import { usePasswordChangeFormViewModel } from "../hooks/usePasswordChangeFormViewModel";
 import { createPasswordChangeSharedFieldProps } from "../utils/createPasswordChangeSharedFieldProps";
+import { FIRST_SIGN_IN_FORM_COPY } from "../constants/FirstSignInFormCopy.constants";
 import { typeInto } from "./passwordChangeFormActions";
 import { EDITED_VALUE } from "./passwordChangeHooks.constants";
 
 describe("createPasswordChangeSharedFieldProps", () => {
   it("picks the error, ref and value of the requested field", () => {
-    const { result } = renderHook(
-      usePasswordChangeFormViewModel
-    );
+    const { result } = renderPasswordChangeViewModel();
     typeInto(
       result,
       PASSWORD_CHANGE_FIELD.NEW_PASSWORD,
@@ -19,7 +17,7 @@ describe("createPasswordChangeSharedFieldProps", () => {
     );
 
     const props = createPasswordChangeSharedFieldProps(
-      result.current,
+      { ...result.current, copy: FIRST_SIGN_IN_FORM_COPY },
       PASSWORD_CHANGE_FIELD.NEW_PASSWORD
     );
 
@@ -37,16 +35,27 @@ describe("createPasswordChangeSharedFieldProps", () => {
   });
 
   it("shares the pending flag and change handler across fields", () => {
-    const { result } = renderHook(
-      usePasswordChangeFormViewModel
-    );
+    const { result } = renderPasswordChangeViewModel();
 
     const props = createPasswordChangeSharedFieldProps(
-      result.current,
+      { ...result.current, copy: FIRST_SIGN_IN_FORM_COPY },
       PASSWORD_CHANGE_FIELD.CONFIRM_PASSWORD
     );
 
     expect(props.isPending).toBe(result.current.isPending);
     expect(props.onChange).toBe(result.current.onChange);
+  });
+
+  it("takes the placeholder from the copy it receives", () => {
+    const { result } = renderPasswordChangeViewModel();
+
+    const props = createPasswordChangeSharedFieldProps(
+      { ...result.current, copy: FIRST_SIGN_IN_FORM_COPY },
+      PASSWORD_CHANGE_FIELD.CURRENT_PASSWORD
+    );
+
+    expect(props.placeholder).toBe(
+      FIRST_SIGN_IN_FORM_COPY.PASSWORD_PLACEHOLDER
+    );
   });
 });

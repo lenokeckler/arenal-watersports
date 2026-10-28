@@ -10,11 +10,11 @@ import "./firstSignInAction.setup";
 import { PASSWORD_CHANGE_FIELD } from "@/app/constants/access/PasswordChangeError.constants";
 import { DEFAULT_PASSWORD_CHANGE_INPUT } from "@/app/utils/password-change/tests/passwordChange.constants";
 import { submitFirstPasswordChange } from "../actions/submitFirstPasswordChange";
-import { useFirstSignInAction } from "../hooks/useFirstSignInAction";
+import { usePasswordChangeAction } from "../hooks/usePasswordChangeAction";
 import { CURRENT_PASSWORD_INVALID_ERROR } from "./passwordChangeErrors.constants";
 import { postDefaultForm } from "./passwordChangeFormActions";
 
-describe("useFirstSignInAction", () => {
+describe("usePasswordChangeAction", () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(submitFirstPasswordChange).mockResolvedValue(
@@ -23,7 +23,9 @@ describe("useFirstSignInAction", () => {
   });
 
   it("starts with no error and nothing pending", () => {
-    const { result } = renderHook(useFirstSignInAction);
+    const { result } = renderHook(() =>
+      usePasswordChangeAction(submitFirstPasswordChange)
+    );
 
     expect(result.current.error).toBeNull();
     expect(result.current.isPending).toBe(false);
@@ -39,7 +41,9 @@ describe("useFirstSignInAction", () => {
         );
       }
     );
-    const { result } = renderHook(useFirstSignInAction);
+    const { result } = renderHook(() =>
+      usePasswordChangeAction(submitFirstPasswordChange)
+    );
 
     await postDefaultForm(result.current.action);
 
@@ -57,7 +61,9 @@ describe("useFirstSignInAction", () => {
   });
 
   it("hides the error once it is dismissed", async () => {
-    const { result } = renderHook(useFirstSignInAction);
+    const { result } = renderHook(() =>
+      usePasswordChangeAction(submitFirstPasswordChange)
+    );
     await postDefaultForm(result.current.action);
 
     act(() => result.current.dismiss());
