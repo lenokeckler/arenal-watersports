@@ -14,6 +14,10 @@ export const SHARED_COPY_AS_SHIPPED = [
     "Su cuenta está bloqueada por intentos fallidos. Pida a administración que la desbloquee.",
   ],
   [
+    SIGN_IN_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED,
+    "Superó los diez intentos permitidos. Recupere su contraseña con un PIN que enviaremos a su correo registrado.",
+  ],
+  [
     SIGN_IN_ERROR_CODE.NETWORK,
     "No hay conexión. Revise su señal e intente de nuevo.",
   ],
