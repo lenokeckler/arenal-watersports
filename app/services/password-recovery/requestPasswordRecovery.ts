@@ -1,5 +1,5 @@
 import { PASSWORD_RECOVERY_ERROR_CODE } from "@/app/constants";
-import { createPasswordRecoveryError } from "@/app/utils/password-recovery/createPasswordRecoveryError";
+import { failPasswordRecovery } from "@/app/utils/password-recovery/failPasswordRecovery";
 import { validatePasswordRecoveryRequest } from "@/app/utils/password-recovery/validatePasswordRecoveryRequest";
 import { attemptPasswordResetPinIssue } from "./attemptPasswordResetPinIssue";
 import { generatePasswordResetPin } from "./generatePasswordResetPin";
@@ -27,12 +27,9 @@ export const requestPasswordRecovery = async (
   });
 
   if (outcome.failed) {
-    return {
-      error: createPasswordRecoveryError(
-        PASSWORD_RECOVERY_ERROR_CODE.UNKNOWN
-      ),
-      ok: false,
-    };
+    return failPasswordRecovery(
+      PASSWORD_RECOVERY_ERROR_CODE.UNKNOWN
+    );
   }
 
   if (outcome.issued) {
