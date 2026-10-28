@@ -8,7 +8,10 @@ import {
 } from "vitest";
 import { refreshSupabaseSession } from "../refreshSession";
 import type { CookieMethodsServer } from "@supabase/ssr";
-import { SUPABASE_RPC } from "@/app/constants";
+import {
+  SUPABASE_AUTH_COOKIE,
+  SUPABASE_RPC,
+} from "@/app/constants";
 import { SESSION_FIXTURE } from "./refreshSession.constants";
 
 const { getClaims, rpc, createServerClient } = vi.hoisted(
@@ -55,6 +58,15 @@ describe("refreshSupabaseSession", () => {
       data: null,
       error: null,
     });
+  });
+
+  it("names the auth cookie with the project constant", async () => {
+    await refreshSupabaseSession(buildRequest());
+
+    const options = createServerClient.mock.calls[0][2];
+    expect(options.cookieOptions.name).toBe(
+      SUPABASE_AUTH_COOKIE.NAME
+    );
   });
 
   it("reports a session when the token claims verify", async () => {

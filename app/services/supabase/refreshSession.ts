@@ -3,7 +3,11 @@ import {
   NextResponse,
   type NextRequest,
 } from "next/server";
-import { SESSION_CLAIM, SUPABASE } from "@/app/constants";
+import {
+  SESSION_CLAIM,
+  SUPABASE,
+  SUPABASE_COOKIE_OPTIONS,
+} from "@/app/constants";
 import type { Database } from "@/app/types";
 import { readSessionLiveness } from "./readSessionLiveness";
 import type { SessionRefresh } from "./models/SessionRefresh.interface";
@@ -17,6 +21,7 @@ export const refreshSupabaseSession = async (
     SUPABASE.URL,
     SUPABASE.ANON_KEY,
     {
+      cookieOptions: SUPABASE_COOKIE_OPTIONS,
       cookies: {
         getAll: () => request.cookies.getAll(),
         setAll: (cookiesToSet) => {
