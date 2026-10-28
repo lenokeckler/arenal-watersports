@@ -90,6 +90,7 @@ export const E2E_CONTROLS_SELECTOR = (id: string): string =>
 
 export const E2E_COUNT = {
   NONE: 0,
+  ONE: 1,
 } as const;
 
 export const E2E_PAGE_EVENT = {
