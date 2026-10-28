@@ -172,9 +172,11 @@ export {
 } from "./access/PasswordRecoveryError.constants";
 
 export {
+  MAIL_COMMON_COPY,
   MAIL_ENVIRONMENT,
   MAIL_ERROR_CODE,
   MAIL_TRANSPORT,
+  PASSWORD_CHANGED_MAIL_COPY,
   PASSWORD_RESET_PIN_MAIL_COPY,
   type MailErrorCode,
 } from "./mail";

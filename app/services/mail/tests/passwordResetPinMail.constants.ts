@@ -26,13 +26,6 @@ export const APPROVED_PIN_MAIL_TEXT = [
   "Este mensaje es automático. No lo responda.",
 ].join("\n");
 
-export const URL_PATTERN =
-  /https?|www\.|:\/\/|[a-z0-9-]+\.[a-z]{2,}/i;
-export const LINK_SAMPLES = [
-  "https://arenal.example/reset",
-  "www.arenal.example",
-  "arenal.example/reset",
-];
 export const PIN_MAIL_LINE_BREAK = "\n";
 export const OTHER_LIFETIME_MINUTES = 7;
 export const SINGLE_MINUTE = 1;
