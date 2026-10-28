@@ -8,6 +8,7 @@ import { mapSignInAuthError } from "../mapSignInAuthError";
 import {
   BLOCKED_BY_ADMINISTRATION_ERROR,
   BLOCKED_BY_ATTEMPTS_ERROR,
+  RECOVERY_REQUIRED_ERROR,
   TOKEN_WITH_WRONG_CODE_ERROR,
   TOKEN_WITH_WRONG_STATUS_ERROR,
   UNAVAILABLE_ERROR,
@@ -73,6 +74,11 @@ describe("mapSignInAuthError", () => {
       SIGN_IN_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION,
     ],
     [
+      "recovery required",
+      RECOVERY_REQUIRED_ERROR,
+      SIGN_IN_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED,
+    ],
+    [
       "unavailable",
       UNAVAILABLE_ERROR,
       SIGN_IN_ERROR_CODE.INVALID_CREDENTIALS,
@@ -86,6 +92,23 @@ describe("mapSignInAuthError", () => {
       });
     }
   );
+
+  it("maps a recovery required rejection to the form", () => {
+    expect(
+      mapSignInAuthError(RECOVERY_REQUIRED_ERROR)
+    ).toEqual({
+      code: SIGN_IN_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED,
+      field: SIGN_IN_FIELD.FORM,
+    });
+  });
+
+  it("keeps a wrong password on the generic password error", () => {
+    expect(
+      mapSignInAuthError(INVALID_CREDENTIALS_ERROR).code
+    ).not.toBe(
+      SIGN_IN_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED
+    );
+  });
 
   it.each([
     ["an unknown token", UNKNOWN_TOKEN_ERROR],
