@@ -16,6 +16,9 @@ export const SERVICE_FAILURE_MESSAGE =
   "service unavailable";
 export const NETWORK_KEY_FAILURE_MESSAGE =
   "network key secret missing";
+export const FIRST_INVALID_SUBMIT = 1;
+export const NO_INVALID_SUBMITS = 0;
+export const FIELD_ERROR_TEXT = "field error";
 
 export const RESET_PATH_FOR_NORMALIZED = appendQueryParam(
   PATHS.ACCESS.RECOVERY_RESET,
