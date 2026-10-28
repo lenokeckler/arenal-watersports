@@ -2574,6 +2574,10 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: number;
       };
+      sign_in_requires_recovery: {
+        Args: { p_user_id: string };
+        Returns: boolean;
+      };
       unit_conflicts: {
         Args: {
           p_ends_at: string;
