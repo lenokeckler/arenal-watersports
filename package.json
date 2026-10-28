@@ -16,7 +16,7 @@
     "test:e2e": "playwright test --project=chromium-mobile --project=chromium-desktop --project=chromium-mobile-admin-recovery",
     "test:e2e:ui": "playwright test --project=chromium-mobile --project=chromium-desktop --project=chromium-mobile-admin-recovery --ui",
     "test:e2e:headed": "playwright test --project=chromium-mobile --project=chromium-desktop --project=chromium-mobile-admin-recovery --headed",
-    "test:e2e:screenshots": "playwright test --project=chromium-mobile-screenshots --project=chromium-desktop-screenshots",
+    "test:e2e:screenshots": "playwright test --project=chromium-mobile-screenshots --project=chromium-desktop-screenshots --project=chromium-mobile-admin-screenshots --project=chromium-desktop-admin-screenshots",
     "db:start": "supabase start",
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
