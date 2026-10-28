@@ -7,29 +7,18 @@ import {
   vi,
 } from "vitest";
 import { SUPABASE_SIGN_OUT_SCOPE } from "@/app/constants";
-import type { BrowserSupabaseClient } from "@/app/services/supabase/models/BrowserSupabaseClient.type";
 import { listAuthCookieNames } from "@/app/utils/supabase-cookie/listAuthCookieNames";
 import { deriveLegacyAuthCookieName } from "@/app/utils/supabase-cookie/deriveLegacyAuthCookieName";
 import { signOutThisDevice } from "../signOutThisDevice";
 import { SIGN_OUT_FIXTURE } from "./signOutThisDevice.constants";
-
-const signOut = vi.fn();
-const getSession = vi.fn();
-const supabase = {
-  auth: { signOut, getSession },
-} as unknown as BrowserSupabaseClient;
-
-const writeAuthCookie = (): void => {
-  document.cookie = `${SIGN_OUT_FIXTURE.AUTH_COOKIE_NAME}=${SIGN_OUT_FIXTURE.AUTH_COOKIE_VALUE}; path=/`;
-  document.cookie = `${SIGN_OUT_FIXTURE.UNRELATED_COOKIE}; path=/`;
-};
-
-const clearAllCookies = (): void => {
-  document.cookie.split(";").forEach((pair) => {
-    const name = pair.split("=")[0].trim();
-    document.cookie = `${name}=; path=/; max-age=0`;
-  });
-};
+import {
+  arrangeLibraryAtRest,
+  clearAllCookies,
+  getSession,
+  signOut,
+  supabase,
+  writeAuthCookie,
+} from "./signOutThisDevice.setup";
 
 const buildSessionWithUnreadableUser = () => {
   const session = { ...SIGN_OUT_FIXTURE.SESSION };
@@ -45,17 +34,12 @@ const buildSessionWithUnreadableUser = () => {
 };
 
 describe("signOutThisDevice", () => {
-  beforeEach(() => {
-    vi.resetAllMocks();
-    clearAllCookies();
-    signOut.mockResolvedValue({ error: null });
-    getSession.mockResolvedValue({
-      data: { session: null },
-      error: null,
-    });
-  });
+  beforeEach(arrangeLibraryAtRest);
 
-  afterEach(clearAllCookies);
+  afterEach(() => {
+    vi.restoreAllMocks();
+    clearAllCookies();
+  });
 
   it("signs out with the local scope only", async () => {
     await signOutThisDevice(supabase);
@@ -155,7 +139,7 @@ describe("signOutThisDevice", () => {
 
     const result = await signOutThisDevice(supabase);
 
-    expect(getSession).toHaveBeenCalledTimes(2);
+    expect(getSession).toHaveBeenCalledTimes(1);
     expect(
       listAuthCookieNames(
         document.cookie,
@@ -191,11 +175,15 @@ describe("signOutThisDevice", () => {
     expect(result).toEqual({ ok: true });
   });
 
-  it("reports failure when the session is still there after the fallback", async () => {
+  it("reports failure when an auth cookie survives the fallback", async () => {
+    writeAuthCookie();
     getSession.mockResolvedValue({
       data: { session: SIGN_OUT_FIXTURE.SESSION },
       error: null,
     });
+    vi.spyOn(document, "cookie", "set").mockImplementation(
+      () => undefined
+    );
 
     await expect(
       signOutThisDevice(supabase)
@@ -204,19 +192,19 @@ describe("signOutThisDevice", () => {
     });
   });
 
-  it("reports failure when the session still cannot be read after the fallback", async () => {
+  it("decides from the cookies, not from a second read of the session", async () => {
+    writeAuthCookie();
     getSession.mockResolvedValue({
-      data: { session: null },
-      error: new Error(
-        SIGN_OUT_FIXTURE.NETWORK_FAILURE_MESSAGE
-      ),
+      data: { session: SIGN_OUT_FIXTURE.SESSION },
+      error: null,
     });
 
     await expect(
       signOutThisDevice(supabase)
     ).resolves.toEqual({
-      ok: false,
+      ok: true,
     });
+    expect(getSession).toHaveBeenCalledTimes(1);
   });
 
   it("propagates an exception thrown by the client", async () => {
@@ -240,7 +228,7 @@ describe("signOutThisDevice", () => {
     await expect(
       signOutThisDevice(supabase)
     ).resolves.toEqual({
-      ok: false,
+      ok: true,
     });
   });
 });
