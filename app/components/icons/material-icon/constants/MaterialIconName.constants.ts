@@ -14,6 +14,7 @@ export const MATERIAL_ICON_NAME = {
   PERSON_ADD: "person_add",
   PROGRESS_ACTIVITY: "progress_activity",
   RADIO_BUTTON_UNCHECKED: "radio_button_unchecked",
+  SEARCH: "search",
   VISIBILITY: "visibility",
   VISIBILITY_OFF: "visibility_off",
 } as const;

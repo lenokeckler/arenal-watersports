@@ -3,6 +3,7 @@ export const INPUT_TYPES = {
   DATE: "date",
   EMAIL: "email",
   FILE: "file",
+  HIDDEN: "hidden",
   NUMBER: "number",
   PASSWORD: "password",
   SEARCH: "search",
