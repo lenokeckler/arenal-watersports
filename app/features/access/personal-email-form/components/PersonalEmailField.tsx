@@ -1,5 +1,8 @@
 import { Text } from "@/app/components";
-import { FORM_GROUP_CLASS } from "@/app/components/form-layout/styles/FormLayout.styles";
+import {
+  FORM_GROUP_CLASS,
+  FORM_HINT_CLASS,
+} from "@/app/components/form-layout/styles/FormLayout.styles";
 import FormField from "@/app/components/form-field/FormField";
 import { FORM_FIELD_VARIANT } from "@/app/components/form-field/constants/FormFieldVariant.constants";
 import {
@@ -13,7 +16,6 @@ import {
 import { PERSONAL_EMAIL_HINT_ID } from "../constants/PersonalEmailFieldIds.constants";
 import { PERSONAL_EMAIL_FORM_COPY } from "../constants/PersonalEmailFormCopy.constants";
 import type { PersonalEmailFieldProps } from "../models/PersonalEmailFieldProps.interface";
-import { PERSONAL_EMAIL_HINT_CLASS } from "../styles/PersonalEmailForm.styles";
 
 const PersonalEmailField = ({
   error,
@@ -47,7 +49,7 @@ const PersonalEmailField = ({
     />
     <Text
       id={PERSONAL_EMAIL_HINT_ID}
-      className={PERSONAL_EMAIL_HINT_CLASS}
+      className={FORM_HINT_CLASS}
     >
       {PERSONAL_EMAIL_FORM_COPY.EMAIL_HINT}
     </Text>

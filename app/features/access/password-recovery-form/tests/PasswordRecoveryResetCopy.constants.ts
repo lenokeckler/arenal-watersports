@@ -11,7 +11,6 @@ export const ALL_RESET_COPY = [
 ];
 
 export const APPROVED_RESET_COPY = {
-  BACK: "Volver a ingresar",
   CONFIRMATION:
     "Si la cuenta puede recuperarse, enviamos un PIN al correo registrado. Vence a los pocos minutos.",
   CONFIRM_PASSWORD_LABEL: "Repetir contraseña nueva",
@@ -19,8 +18,6 @@ export const APPROVED_RESET_COPY = {
   METADATA_TITLE:
     "Restablecer contraseña — Arenal Water Sports",
   NEW_PASSWORD_LABEL: "Contraseña nueva",
-  NO_EMAIL_NOTE:
-    "Si su cuenta no tiene correo registrado, pídale a administración una contraseña temporal.",
   NOT_RECEIVED_NOTE:
     "¿No le llegó? Revise el correo no deseado o pida otro PIN.",
   PIN_HINT: "Son 6 dígitos.",
@@ -28,7 +25,6 @@ export const APPROVED_RESET_COPY = {
   REQUEST_ANOTHER_PIN: "Pedir otro PIN",
   SUBMIT: "Guardar contraseña",
   SUBMITTING: "Guardando…",
-  USERNAME_LABEL: "Nombre de usuario",
 };
 
 export const APPROVED_RESET_UNKNOWN_COPY =

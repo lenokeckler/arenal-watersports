@@ -9,3 +9,6 @@ export const SCREEN_HEADER_TITLE_CLASS =
 
 export const SCREEN_INSTRUCTION_CLASS =
   "text-body-base text-on-surface-variant text-center";
+
+export const SCREEN_SECTION_HEADING_CLASS =
+  "text-title-md text-on-surface text-center";
