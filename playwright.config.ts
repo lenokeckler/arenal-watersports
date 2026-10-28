@@ -1,8 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
-import { loadEnvConfig } from "@next/env";
 import {
   E2E_ARTIFACT_MODE,
-  E2E_AUTH_STORAGE_PATH,
   E2E_BASE_URL,
   E2E_DESKTOP_VIEWPORT,
   E2E_DEVICE_NAME,
@@ -17,8 +15,6 @@ import {
   E2E_TIMEOUT_MS,
   E2E_WORKER_COUNT,
 } from "./e2e/constants/E2eRuntime.constants";
-
-loadEnvConfig(process.cwd());
 
 const isContinuousIntegration = Boolean(process.env.CI);
 const mobileChromium = {
@@ -40,7 +36,7 @@ export default defineConfig({
     : E2E_RETRY_COUNT.LOCAL,
   workers: isContinuousIntegration
     ? E2E_WORKER_COUNT.CI
-    : E2E_WORKER_COUNT.LOCAL,
+    : undefined,
   outputDir: E2E_OUTPUT_DIR.ARTIFACTS,
   reporter: [
     [E2E_REPORTER.LIST],
@@ -61,44 +57,24 @@ export default defineConfig({
   },
   projects: [
     {
-      name: E2E_PROJECT.AUTH_SETUP,
-      testMatch: E2E_TEST_MATCH.AUTH_SETUP,
-    },
-    {
-      dependencies: [E2E_PROJECT.AUTH_SETUP],
       name: E2E_PROJECT.MOBILE,
       testMatch: E2E_TEST_MATCH.DEFAULT,
-      use: {
-        ...mobileChromium,
-        storageState: E2E_AUTH_STORAGE_PATH,
-      },
+      use: mobileChromium,
     },
     {
-      dependencies: [E2E_PROJECT.AUTH_SETUP],
       name: E2E_PROJECT.DEFAULT,
       testMatch: E2E_TEST_MATCH.DEFAULT,
-      use: {
-        ...desktopChromium,
-        storageState: E2E_AUTH_STORAGE_PATH,
-      },
+      use: desktopChromium,
     },
     {
-      dependencies: [E2E_PROJECT.AUTH_SETUP],
       name: E2E_PROJECT.SCREENSHOTS_MOBILE,
       testMatch: E2E_TEST_MATCH.SCREENSHOTS,
-      use: {
-        ...mobileChromium,
-        storageState: E2E_AUTH_STORAGE_PATH,
-      },
+      use: mobileChromium,
     },
     {
-      dependencies: [E2E_PROJECT.AUTH_SETUP],
       name: E2E_PROJECT.SCREENSHOTS,
       testMatch: E2E_TEST_MATCH.SCREENSHOTS,
-      use: {
-        ...desktopChromium,
-        storageState: E2E_AUTH_STORAGE_PATH,
-      },
+      use: desktopChromium,
     },
   ],
   webServer: {

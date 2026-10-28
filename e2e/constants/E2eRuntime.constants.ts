@@ -26,7 +26,6 @@ export const E2E_RETRY_COUNT = {
 
 export const E2E_WORKER_COUNT = {
   CI: 1,
-  LOCAL: 1,
 } as const;
 
 export const E2E_OUTPUT_DIR = {
@@ -41,7 +40,6 @@ export const E2E_DEVICE_NAME = {
 } as const;
 
 export const E2E_PROJECT = {
-  AUTH_SETUP: "auth-setup",
   DEFAULT: "chromium-desktop",
   MOBILE: "chromium-mobile",
   SCREENSHOTS: "chromium-desktop-screenshots",
@@ -49,20 +47,11 @@ export const E2E_PROJECT = {
 } as const;
 
 export const E2E_TEST_MATCH = {
-  AUTH_SETUP: "**/setup/*.setup.ts",
   DEFAULT: "**/specs/*.e2e.ts",
   SCREENSHOTS: "**/screenshots/*.screenshots.ts",
 } as const;
 
 export const E2E_TEST_DIR = "./e2e";
-
-export const E2E_AUTH_STORAGE_PATH =
-  "playwright-artifacts/admin-storage-state.json";
-
-export const E2E_SIGNED_OUT_STORAGE_STATE = {
-  cookies: [],
-  origins: [],
-};
 
 export const E2E_REPORTER = {
   HTML: "html",
