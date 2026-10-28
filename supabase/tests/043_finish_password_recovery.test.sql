@@ -63,6 +63,8 @@ insert into auth.refresh_tokens (session_id, user_id, token) values
 select is((select count(*) from auth.sessions where user_id = 'aaaaaaaa-0000-0000-0000-000000000001'), 2::bigint, 'ana empieza con dos sesiones');
 select is((select count(*) from auth.refresh_tokens where user_id = 'aaaaaaaa-0000-0000-0000-000000000001'), 2::bigint, 'ana empieza con dos tokens de refresco');
 
+update auth.sessions set created_at = now() where created_at is null;
+
 set local role anon;
 select throws_ok($$ select public.finish_password_recovery('aaaaaaaa-0000-0000-0000-000000000001') $$, '42501', null, 'anon no puede terminar la recuperacion');
 reset role;
