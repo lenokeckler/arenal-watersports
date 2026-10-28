@@ -26,7 +26,7 @@ describe("LoginFormView submission", () => {
     vi.mocked(submitSignIn).mockResolvedValue(
       INVALID_CREDENTIALS_ERROR
     );
-    render(<LoginFormView />);
+    render(<LoginFormView notice={null} />);
     const page = createLoginFormViewPage();
 
     await page.fillCredentials(DEFAULT_SIGN_IN_CREDENTIALS);
