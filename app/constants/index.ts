@@ -136,6 +136,22 @@ export {
   type ProfileNotice,
 } from "./access/ProfileNotice.constants";
 export { PROFILE_SCREEN_TITLE_ID } from "./access/ProfileScreen.constants";
+export { PERSONAL_EMAIL } from "./access/PersonalEmail.constants";
+export {
+  PERSONAL_EMAIL_INTENT,
+  type PersonalEmailIntent,
+} from "./access/PersonalEmailIntent.constants";
+export {
+  PERSONAL_EMAIL_ERROR_CODE,
+  PERSONAL_EMAIL_ERROR_FIELD,
+  PERSONAL_EMAIL_FIELD,
+  type PersonalEmailErrorCode,
+  type PersonalEmailField,
+} from "./access/PersonalEmailError.constants";
+export {
+  REAUTHENTICATION_ERROR_CODE,
+  type ReauthenticationErrorCode,
+} from "./access/Reauthentication.constants";
 export {
   SERVER_ERROR_REPORT,
   type ServerErrorReportLevel,
