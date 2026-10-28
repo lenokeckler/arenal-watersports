@@ -1,22 +1,19 @@
 import { PASSWORD_RECOVERY_ERROR_CODE } from "@/app/constants";
 import {
-  resetPasswordWithPin,
-  type DeferredTask,
-  type PasswordRecoveryResetResult,
+  verifyPasswordResetPin,
+  type PasswordRecoveryPinResult,
 } from "@/app/services/password-recovery";
 import { failPasswordRecovery } from "@/app/utils/password-recovery/failPasswordRecovery";
-import type { PasswordRecoveryResetInput } from "@/app/utils/password-recovery/models/PasswordRecoveryResetInput.interface";
+import type { PasswordRecoveryPinInput } from "@/app/utils/password-recovery/models/PasswordRecoveryPinInput.interface";
 import { runWithFallback } from "@/app/utils/server-action/runWithFallback";
 
 export const runPasswordRecoveryReset = (
-  input: PasswordRecoveryResetInput,
-  defer: DeferredTask
-): Promise<PasswordRecoveryResetResult> =>
+  input: PasswordRecoveryPinInput
+): Promise<PasswordRecoveryPinResult> =>
   runWithFallback(
-    (guardedInput) =>
-      resetPasswordWithPin(guardedInput, defer),
+    verifyPasswordResetPin,
     input,
-    (): PasswordRecoveryResetResult =>
+    (): PasswordRecoveryPinResult =>
       failPasswordRecovery(
         PASSWORD_RECOVERY_ERROR_CODE.UNKNOWN
       )

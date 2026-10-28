@@ -1,13 +1,13 @@
 import { PASSWORD_RECOVERY_FIELD } from "@/app/constants";
-import type { PasswordRecoveryResetInput } from "@/app/utils/password-recovery/models/PasswordRecoveryResetInput.interface";
+import type { PasswordRecoveryPinInput } from "@/app/utils/password-recovery/models/PasswordRecoveryPinInput.interface";
 import { isPasswordRecoveryResetInputField } from "./isPasswordRecoveryResetInputField";
 import { keepPasswordRecoveryPinDigits } from "./keepPasswordRecoveryPinDigits";
 
 export const changePasswordRecoveryResetValue = (
-  values: PasswordRecoveryResetInput,
+  values: PasswordRecoveryPinInput,
   name: string,
   value: string
-): PasswordRecoveryResetInput =>
+): PasswordRecoveryPinInput =>
   isPasswordRecoveryResetInputField(name)
     ? {
         ...values,

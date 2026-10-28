@@ -11,7 +11,7 @@ import {
 import type { PasswordRecoveryServerAction } from "../models/PasswordRecoveryServerAction.type";
 import { renderPasswordRecoveryResetFormView } from "./renderPasswordRecoveryResetFormView";
 
-describe("PasswordRecoveryResetFormView while saving", () => {
+describe("PasswordRecoveryResetFormView while checking", () => {
   it("locks every field and the submit button", async () => {
     const page = renderPasswordRecoveryResetFormView({
       action: vi.fn<PasswordRecoveryServerAction>(
@@ -31,13 +31,12 @@ describe("PasswordRecoveryResetFormView while saving", () => {
       ARIA_DISABLED_ATTRIBUTE,
       TRUE_VALUE
     );
-    [
-      page.getUsernameInput(),
-      page.getPinInput(),
-      page.getNewPasswordInput(),
-      page.getConfirmInput(),
-    ].forEach((input) =>
-      expect(input).toHaveProperty(READONLY_PROPERTY, true)
+    [page.getUsernameInput(), page.getPinInput()].forEach(
+      (input) =>
+        expect(input).toHaveProperty(
+          READONLY_PROPERTY,
+          true
+        )
     );
     expect(
       screen.getAllByText(PROGRESS_ICON_NAME)

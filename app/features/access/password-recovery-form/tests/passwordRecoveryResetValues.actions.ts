@@ -7,8 +7,8 @@ import type { PasswordRecoveryResetValuesResult } from "./PasswordRecoveryResetV
 import type { PasswordRecoveryResetValuesProps } from "./PasswordRecoveryResetValuesProps.interface";
 import {
   NO_SERVER_ERROR_PROPS,
+  OTHER_USERNAME,
   PREFILLED_USERNAME,
-  VALID_PASSWORD,
   VALID_PIN,
 } from "./passwordRecoveryResetState.constants";
 
@@ -40,12 +40,7 @@ export const fillAll = (
   type(result, PASSWORD_RECOVERY_FIELD.PIN, VALID_PIN);
   type(
     result,
-    PASSWORD_RECOVERY_FIELD.NEW_PASSWORD,
-    VALID_PASSWORD
-  );
-  type(
-    result,
-    PASSWORD_RECOVERY_FIELD.CONFIRM_PASSWORD,
-    VALID_PASSWORD
+    PASSWORD_RECOVERY_FIELD.USERNAME,
+    OTHER_USERNAME
   );
 };

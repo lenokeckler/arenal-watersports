@@ -1,15 +1,15 @@
 import { expect, test } from "../support/recoveryTest";
 import { E2E_RECOVERY_COPY } from "../constants/E2ePasswordRecovery.constants";
-import {
-  E2E_RECOVERY_PASSWORDS,
-  E2E_RECOVERY_SCREENSHOT_BASENAME,
-} from "../constants/E2ePasswordRecoveryPin.constants";
+import { E2E_RECOVERY_SCREENSHOT_BASENAME } from "../constants/E2ePasswordRecoveryPin.constants";
 import { createLoginPage } from "../pages/Login.page";
+import { createPasswordRecoveryNewPasswordPage } from "../pages/PasswordRecoveryNewPassword.page";
 import { createPasswordRecoveryRequestPage } from "../pages/PasswordRecoveryRequest.page";
 import { createPasswordRecoveryResetPage } from "../pages/PasswordRecoveryReset.page";
 import { buildWrongPin } from "../support/buildWrongPin";
 import { captureFullPage } from "../support/captureFullPage";
 import { requestAndReadRecoveryPin } from "../support/requestAndReadRecoveryPin";
+import { submitRecoveryPin } from "../support/submitRecoveryPin";
+import { waitForNetworkIdle } from "../support/waitForNetworkIdle";
 
 test.describe("Password recovery screenshots", () => {
   test("captures the request screen empty", async ({
@@ -47,14 +47,15 @@ test.describe("Password recovery screenshots", () => {
     );
   });
 
-  test("captures the PIN screen right after the request with the rules visible", async ({
+  test("captures the PIN screen right after the request with the empty boxes", async ({
     page,
     recoveryAccount,
   }, testInfo) => {
     const resetPage = createPasswordRecoveryResetPage(page);
 
     await requestAndReadRecoveryPin(page, recoveryAccount);
-    await expect(resetPage.getRulesTitle()).toBeVisible();
+    await expect(resetPage.getPinInput()).toBeVisible();
+    await waitForNetworkIdle(page);
 
     await captureFullPage(
       page,
@@ -63,7 +64,7 @@ test.describe("Password recovery screenshots", () => {
     );
   });
 
-  test("captures the PIN screen with the generic PIN error and the passwords revealed", async ({
+  test("captures the PIN screen with the generic PIN error", async ({
     page,
     recoveryAccount,
   }, testInfo) => {
@@ -72,12 +73,7 @@ test.describe("Password recovery screenshots", () => {
       page,
       recoveryAccount
     );
-    await resetPage.fillForm({
-      confirmPassword: E2E_RECOVERY_PASSWORDS.NEW,
-      newPassword: E2E_RECOVERY_PASSWORDS.NEW,
-      pin: buildWrongPin(pin),
-    });
-    await resetPage.revealPasswords();
+    await resetPage.fillPin(buildWrongPin(pin));
 
     await resetPage.submit();
     await expect(resetPage.getPinError()).toHaveText(
@@ -87,6 +83,30 @@ test.describe("Password recovery screenshots", () => {
     await captureFullPage(
       page,
       E2E_RECOVERY_SCREENSHOT_BASENAME.PIN_SCREEN_PIN_ERROR,
+      testInfo.project.name
+    );
+  });
+
+  test("captures the new password screen before typing with the rules visible", async ({
+    page,
+    recoveryAccount,
+  }, testInfo) => {
+    const newPasswordPage =
+      createPasswordRecoveryNewPasswordPage(page);
+    const pin = await requestAndReadRecoveryPin(
+      page,
+      recoveryAccount
+    );
+
+    await submitRecoveryPin(page, pin);
+    await expect(
+      newPasswordPage.getRulesTitle()
+    ).toBeVisible();
+    await waitForNetworkIdle(page);
+
+    await captureFullPage(
+      page,
+      E2E_RECOVERY_SCREENSHOT_BASENAME.NEW_PASSWORD_SCREEN,
       testInfo.project.name
     );
   });

@@ -95,4 +95,34 @@ test.describe("Profile screenshots", () => {
       testInfo.project.name
     );
   });
+
+  test("captures the password form refusing a common password", async ({
+    activeWorker,
+    signedInPage: page,
+  }, testInfo) => {
+    const passwordPage = createProfilePasswordPage(page);
+
+    await passwordPage.goTo();
+    await passwordPage.fillForm({
+      confirmPassword: E2E_PROFILE_INVALID_PASSWORDS.COMMON,
+      currentPassword: activeWorker.password,
+      newPassword: E2E_PROFILE_INVALID_PASSWORDS.COMMON,
+    });
+    await passwordPage.revealPassword(
+      PASSWORD_CHANGE_FIELD.NEW_PASSWORD
+    );
+    await passwordPage.revealPassword(
+      PASSWORD_CHANGE_FIELD.CONFIRM_PASSWORD
+    );
+    await passwordPage.submit();
+    await expect(
+      passwordPage.getNewPasswordError()
+    ).toHaveText(E2E_PROFILE_COPY.NEW_PASSWORD_COMMON);
+
+    await captureFullPage(
+      page,
+      E2E_PROFILE_SCREENSHOT_BASENAME.PASSWORD_FORM_COMMON,
+      testInfo.project.name
+    );
+  });
 });

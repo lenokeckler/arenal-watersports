@@ -1,7 +1,7 @@
 import { startTransition } from "react";
 import { act, renderHook } from "@testing-library/react";
 import { PASSWORD_RECOVERY_FIELD } from "@/app/constants";
-import type { PasswordRecoveryResetInput } from "@/app/utils/password-recovery/models/PasswordRecoveryResetInput.interface";
+import type { PasswordRecoveryPinInput } from "@/app/utils/password-recovery/models/PasswordRecoveryPinInput.interface";
 import { usePasswordRecoveryResetViewModel } from "../hooks/usePasswordRecoveryResetViewModel";
 import type { PasswordRecoveryResetViewModel } from "../models/PasswordRecoveryResetViewModel.interface";
 import type { PasswordRecoveryServerAction } from "../models/PasswordRecoveryServerAction.type";
@@ -37,18 +37,13 @@ export const typeField = (
 
 export const typeAllFields = (
   result: PasswordRecoveryResetViewModelResult,
-  input: PasswordRecoveryResetInput
+  input: PasswordRecoveryPinInput
 ): void => {
   typeField(result, PASSWORD_RECOVERY_FIELD.PIN, input.pin);
   typeField(
     result,
-    PASSWORD_RECOVERY_FIELD.NEW_PASSWORD,
-    input.newPassword
-  );
-  typeField(
-    result,
-    PASSWORD_RECOVERY_FIELD.CONFIRM_PASSWORD,
-    input.confirmPassword
+    PASSWORD_RECOVERY_FIELD.USERNAME,
+    input.username
   );
 };
 
@@ -64,7 +59,7 @@ export const submitForm = (
 
 export const postForm = async (
   result: PasswordRecoveryResetViewModelResult,
-  input: PasswordRecoveryResetInput
+  input: PasswordRecoveryPinInput
 ): Promise<void> => {
   await act(() => {
     startTransition(() => {

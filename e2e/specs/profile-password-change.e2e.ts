@@ -13,7 +13,6 @@ import { createProfilePasswordPage } from "../pages/ProfilePassword.page";
 import { expect, test } from "../support/activeWorkerTest";
 import { countAuthSessions } from "../support/countAuthSessions";
 import { refreshContextSession } from "../support/refreshContextSession";
-import { signInAsActiveWorker } from "../support/signInAsActiveWorker";
 
 test.describe("Profile password change", () => {
   test("lands on the profile with the notice once and a clean address", async ({
@@ -47,46 +46,38 @@ test.describe("Profile password change", () => {
 
   test("replaces the password and closes the sessions of other devices", async ({
     activeWorker,
-    browser,
     context,
+    secondDevice,
     signedInPage: page,
   }) => {
-    const otherContext = await browser.newContext();
-    try {
-      await signInAsActiveWorker(
-        await otherContext.newPage(),
-        activeWorker
-      );
-      expect(await countAuthSessions(activeWorker.id)).toBe(
-        E2E_OPEN_SESSIONS.BEFORE_CHANGE
-      );
-      expect(
-        await refreshContextSession(otherContext)
-      ).toBeNull();
-      const passwordPage = createProfilePasswordPage(page);
-      await passwordPage.goTo();
-      await passwordPage.fillForm({
-        confirmPassword: E2E_PROFILE_NEW_PASSWORD,
-        currentPassword: activeWorker.password,
-        newPassword: E2E_PROFILE_NEW_PASSWORD,
-      });
+    expect(await countAuthSessions(activeWorker.id)).toBe(
+      E2E_OPEN_SESSIONS.BEFORE_CHANGE
+    );
+    expect(
+      await refreshContextSession(secondDevice.context)
+    ).toBeNull();
+    const passwordPage = createProfilePasswordPage(page);
+    await passwordPage.goTo();
+    await passwordPage.fillForm({
+      confirmPassword: E2E_PROFILE_NEW_PASSWORD,
+      currentPassword: activeWorker.password,
+      newPassword: E2E_PROFILE_NEW_PASSWORD,
+    });
 
-      await passwordPage.submit();
-      await expect(page).toHaveURL(PATHS.PROFILE.ROOT, {
-        timeout: E2E_TIMEOUT_MS.POST_SUBMIT,
-      });
+    await passwordPage.submit();
+    await expect(page).toHaveURL(PATHS.PROFILE.ROOT, {
+      timeout: E2E_TIMEOUT_MS.POST_SUBMIT,
+    });
 
-      expect(await countAuthSessions(activeWorker.id)).toBe(
-        E2E_OPEN_SESSIONS.AFTER_CHANGE
-      );
-      const refreshError =
-        await refreshContextSession(otherContext);
-      expect(refreshError?.code).toBe(
-        E2E_AUTH_ERROR_CODE.SESSION_GONE
-      );
-    } finally {
-      await otherContext.close();
-    }
+    expect(await countAuthSessions(activeWorker.id)).toBe(
+      E2E_OPEN_SESSIONS.AFTER_CHANGE
+    );
+    const refreshError = await refreshContextSession(
+      secondDevice.context
+    );
+    expect(refreshError?.code).toBe(
+      E2E_AUTH_ERROR_CODE.SESSION_GONE
+    );
 
     await context.clearCookies();
     const loginPage = createLoginPage(page);

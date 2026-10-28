@@ -4,18 +4,23 @@ import {
   PASSWORD_RESET_PIN,
   STRING,
 } from "@/app/constants";
-import type { PasswordRecoveryResetInput } from "../models/PasswordRecoveryResetInput.interface";
+import type { PasswordRecoveryNewPasswordInput } from "../models/PasswordRecoveryNewPasswordInput.interface";
+import type { PasswordRecoveryPinInput } from "../models/PasswordRecoveryPinInput.interface";
 
-export const DEFAULT_PASSWORD_RECOVERY_RESET_INPUT: PasswordRecoveryResetInput =
+export const DEFAULT_PASSWORD_RECOVERY_PIN_INPUT: PasswordRecoveryPinInput =
   {
-    confirmPassword: "Nueva-clave-1!",
-    newPassword: "Nueva-clave-1!",
     pin: "482913",
     username: "admin",
   };
 
+export const DEFAULT_PASSWORD_RECOVERY_NEW_PASSWORD_INPUT: PasswordRecoveryNewPasswordInput =
+  {
+    confirmPassword: "Nueva-clave-1!",
+    newPassword: "Nueva-clave-1!",
+  };
+
 export const VALID_PIN =
-  DEFAULT_PASSWORD_RECOVERY_RESET_INPUT.pin;
+  DEFAULT_PASSWORD_RECOVERY_PIN_INPUT.pin;
 export const VALID_PIN_WITH_SPACES = "482 913";
 export const VALID_PIN_WITH_MIXED_WHITESPACE =
   " 48\t29\n13 ";

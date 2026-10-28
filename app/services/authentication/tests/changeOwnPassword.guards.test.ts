@@ -10,6 +10,7 @@ import {
   PASSWORD_CHANGE_ERROR_CODE,
   type PasswordChangeErrorCode,
 } from "@/app/constants";
+import { COMMON_PASSWORD_THAT_MEETS_THE_RULES } from "@/app/services/password-policy/tests/commonPassword.constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
 import { createPasswordChangeError } from "@/app/utils/password-change/createPasswordChangeError";
 import { DEFAULT_PASSWORD_CHANGE_INPUT as INPUT } from "@/app/utils/password-change/tests/passwordChange.constants";
@@ -23,6 +24,23 @@ import { RPC_FAILURE } from "./recordSignIn.constants";
 
 describe("changeOwnPassword guards", () => {
   beforeEach(arrangeSuccessfulOwnPasswordChange);
+
+  it("refuses a common password before verifying the current one", async () => {
+    const result = await changeOwnPassword({
+      ...INPUT,
+      confirmPassword: COMMON_PASSWORD_THAT_MEETS_THE_RULES,
+      newPassword: COMMON_PASSWORD_THAT_MEETS_THE_RULES,
+    });
+
+    expect(result).toMatchObject({
+      ok: false,
+      error: {
+        code: PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_COMMON,
+      },
+    });
+    expect(verifyCurrentPassword).not.toHaveBeenCalled();
+    expect(updateOwnPassword).not.toHaveBeenCalled();
+  });
 
   it("rejects a new password equal to the current one before any network call", async () => {
     const result = await changeOwnPassword({
