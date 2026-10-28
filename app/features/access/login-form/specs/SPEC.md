@@ -15,11 +15,13 @@ next to the field that caused it.
 - Mapping one `SignInError` to the message shown under its field.
 - Signing in before the page hydrates or with JavaScript off, through a native `POST`.
 - Moving the focus to the field that caused an error after a submit.
+- A distinct message in the banner for an account blocked by failed attempts, an account blocked
+  by administration, and a session closed by inactivity.
 
 ## Out of scope
 
-- Attempt counting and blocking (ACC-02), first-login password change (ACC-03), logout, forgot
-  password.
+- The database side of the lockout (`ACC-01.02.01`), first-login password change (ACC-03),
+  logout and the redirect that carries `?reason=inactive` (ACC-10), forgot password.
 - The password rules checklist: it is shown only where a new password is chosen (US-ACC-03,
   US-ACC-04, US-ACC-06), moved there by #8.
 - The session proxy (`ACC-01.01.05`).
@@ -34,6 +36,24 @@ next to the field that caused it.
   and the server validates, signs in and redirects, or renders the error under its field.
 - Once hydrated, the submit handler prevents the native post and calls `submitSignIn` itself, so a
   submit reaches the server exactly once.
+
+## Account and session messages
+
+- A wrong password and an unknown username show the same `invalidCredentials` text under the
+  password, so the message never reveals which usernames exist.
+- `accountBlockedByAttempts` and `accountBlockedByAdministration` appear in the banner only after a
+  correct password: the access-token hook refuses the token, and `mapSignInAuthError` accepts that
+  rejection only with status 403, code `unknown` and a message that is exactly one token of
+  `SIGN_IN_HOOK_REJECTION`. A retired worker (`account_unavailable`) shows `invalidCredentials`.
+  The upstream message is never forwarded.
+- `/access/login?reason=inactive` shows `sessionInactive` in the banner. The page passes the
+  raw param to `LoginForm`, which resolves it with `resolveSignInNotice` against
+  `SIGN_IN_NOTICE_REASON`; arrays, empty values, other case and any other text show nothing, and URL text is never rendered.
+- The notice disappears at the first submit, and a server, validation or posted-form error always
+  wins over it.
+- The server records a failed attempt only when Supabase answers `invalid_credentials`, with the
+  same call for any username, and the end of the streak on a success. A recorder failure returns
+  `unknown`, and when the success recorder fails the session just opened is closed.
 
 ## Focus after a submit
 
@@ -78,3 +98,17 @@ US-ACC-01, as written in `docs/proyecto/historias-de-usuario.md` after #8:
 - [x] Los errores se muestran en mensajes rojos junto al campo que los provoca. — each error is
       mapped to its field and rendered under it in red, linked with `aria-describedby`.
 - [x] Autenticación resuelta con Supabase. — `submitSignIn` calls `signInWithUsername`.
+
+US-ACC-02:
+
+- [x] Usuario no registrado. — shows `invalidCredentials`, the same text as a wrong password;
+      `signInWithUsername.recording.test.ts`. The end to end check arrives with ACC-01.02.05.
+- [x] Contraseña incorrecta. — `invalidCredentials` under the password; `e2e/specs/login.e2e.ts`.
+- [x] Cuenta bloqueada por intentos fallidos. — `accountBlockedByAttempts` in the banner;
+      `mapSignInAuthError.test.ts`. The end to end check arrives with ACC-01.02.05.
+- [x] Cuenta bloqueada por administración. — `accountBlockedByAdministration` in the banner;
+      `mapSignInAuthError.test.ts`. The end to end check arrives with ACC-01.02.05.
+- [x] Sesión cerrada por inactividad. — `sessionInactive` from `?reason=inactive`;
+      `LoginForm.test.tsx` and `LoginFormView.notice.test.tsx`.
+- [x] El mensaje nunca revela cuáles nombres de usuario existen en el sistema. — one text for an
+      unknown user and a wrong password; the blocked messages need the correct password.
