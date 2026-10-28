@@ -1,4 +1,3 @@
-import type { PasswordRuleResults } from "@/app/utils/password/models/PasswordRuleResults.type";
 import type { PasswordRecoveryFormAction } from "./PasswordRecoveryFormAction.type";
 import type { PasswordRecoveryFormErrors } from "./PasswordRecoveryFormErrors.type";
 import type { PasswordRecoveryResetFieldRefs } from "./PasswordRecoveryResetFieldRefs.type";
@@ -11,6 +10,4 @@ export interface PasswordRecoveryResetViewModel extends PasswordRecoveryResetFor
   formAction: PasswordRecoveryFormAction;
   isPending: boolean;
   onSubmit: PasswordRecoverySubmitHandler;
-  passwordRules: PasswordRuleResults;
-  showFailures: boolean;
 }

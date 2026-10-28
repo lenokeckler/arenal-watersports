@@ -6,7 +6,6 @@ import { PASSWORD_RECOVERY_RESET_COPY } from "../constants/PasswordRecoveryReset
 import {
   FORM_SELECTOR,
   LABEL_SEPARATOR,
-  VALID_NEW_PASSWORD,
 } from "./passwordRecoveryView.constants";
 import { TYPED_PIN } from "./passwordRecoveryScreen.constants";
 
@@ -17,14 +16,6 @@ export const createPasswordRecoveryResetFormViewPage =
       screen.getByLabelText<HTMLInputElement>(label);
     const getPinInput = () =>
       inputLabelled(PASSWORD_RECOVERY_RESET_COPY.PIN_LABEL);
-    const getNewPasswordInput = () =>
-      inputLabelled(
-        PASSWORD_RECOVERY_RESET_COPY.NEW_PASSWORD_LABEL
-      );
-    const getConfirmInput = () =>
-      inputLabelled(
-        PASSWORD_RECOVERY_RESET_COPY.CONFIRM_PASSWORD_LABEL
-      );
     const getSubmit = () =>
       screen.getByRole(ARIA_ROLE.BUTTON, {
         name: new RegExp(
@@ -39,14 +30,6 @@ export const createPasswordRecoveryResetFormViewPage =
       clickSubmit: () => user.click(getSubmit()),
       fillValid: async () => {
         await user.type(getPinInput(), TYPED_PIN);
-        await user.type(
-          getNewPasswordInput(),
-          VALID_NEW_PASSWORD
-        );
-        await user.type(
-          getConfirmInput(),
-          VALID_NEW_PASSWORD
-        );
       },
       getAnotherPinLink: () =>
         screen.getByRole(ARIA_ROLE.LINK, {
@@ -56,7 +39,6 @@ export const createPasswordRecoveryResetFormViewPage =
         screen.getByRole(ARIA_ROLE.LINK, {
           name: PASSWORD_RECOVERY_REQUEST_COPY.BACK,
         }),
-      getConfirmInput,
       getForm: () =>
         document.querySelector(
           FORM_SELECTOR
@@ -65,7 +47,6 @@ export const createPasswordRecoveryResetFormViewPage =
         screen.getByRole(ARIA_ROLE.HEADING, {
           name: PASSWORD_RECOVERY_RESET_COPY.HEADING,
         }),
-      getNewPasswordInput,
       getNoEmailNote: () =>
         screen.getByText(
           PASSWORD_RECOVERY_REQUEST_COPY.NO_EMAIL_NOTE
@@ -75,8 +56,6 @@ export const createPasswordRecoveryResetFormViewPage =
           PASSWORD_RECOVERY_RESET_COPY.CONFIRMATION
         ),
       getPinInput,
-      getRuleItems: () =>
-        screen.getAllByRole(ARIA_ROLE.LISTITEM),
       getSubmit,
       getUsernameInput: () =>
         inputLabelled(
