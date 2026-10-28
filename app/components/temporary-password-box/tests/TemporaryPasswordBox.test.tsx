@@ -7,13 +7,13 @@ import {
   it,
   vi,
 } from "vitest";
-import TemporaryPasswordBox from "../components/TemporaryPasswordBox";
+import TemporaryPasswordBox from "../TemporaryPasswordBox";
 import {
   TEMPORARY_PASSWORD_COPY_ANNOUNCEMENT,
   TEMPORARY_PASSWORD_COPY_LABEL,
   TEMPORARY_PASSWORD_COPY_PHASE,
-} from "../constants/TemporaryPasswordCopy.constants";
-import { ACTION_FIXTURE } from "./WorkerRegistrationAction.constants";
+} from "../constants/TemporaryPasswordBox.constants";
+import { TEMPORARY_PASSWORD_FIXTURE } from "./TemporaryPasswordBox.constants";
 
 const stubClipboard = (writeText: () => Promise<void>) => {
   Object.defineProperty(navigator, "clipboard", {
@@ -28,7 +28,7 @@ const renderBox = () => {
   const user = userEvent.setup();
   render(
     <TemporaryPasswordBox
-      temporaryPassword={ACTION_FIXTURE.TEMPORARY_PASSWORD}
+      temporaryPassword={TEMPORARY_PASSWORD_FIXTURE}
     />
   );
 
@@ -51,7 +51,7 @@ describe("TemporaryPasswordBox", () => {
     renderBox();
 
     expect(
-      screen.getByText(ACTION_FIXTURE.TEMPORARY_PASSWORD)
+      screen.getByText(TEMPORARY_PASSWORD_FIXTURE)
     ).toBeInTheDocument();
     expect(
       getCopyButton(TEMPORARY_PASSWORD_COPY_PHASE.IDLE)
@@ -69,7 +69,7 @@ describe("TemporaryPasswordBox", () => {
     );
 
     expect(writeText).toHaveBeenCalledWith(
-      ACTION_FIXTURE.TEMPORARY_PASSWORD
+      TEMPORARY_PASSWORD_FIXTURE
     );
     expect(
       getCopyButton(TEMPORARY_PASSWORD_COPY_PHASE.COPIED)
