@@ -4,8 +4,8 @@ import {
   MaterialIcon,
 } from "@/app/components";
 import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
-import { PATHS } from "@/app/constants";
-import { PROFILE_COPY } from "./constants/ProfileCopy.constants";
+import type { ProfileEntryProps } from "./models/ProfileEntryProps.interface";
+import ProfileEntryStatus from "./ProfileEntryStatus";
 import {
   PROFILE_ENTRY_CHEVRON_CLASS,
   PROFILE_ENTRY_CLASS,
@@ -13,17 +13,20 @@ import {
   PROFILE_ENTRY_LABEL_CLASS,
 } from "./styles/ProfileEntry.styles";
 
-const ProfileEntryLink = (): React.JSX.Element => (
+const ProfileEntryLink = ({
+  entry,
+}: ProfileEntryProps): React.JSX.Element => (
   <Link
-    href={PATHS.PROFILE.PASSWORD}
+    href={entry.href}
     className={PROFILE_ENTRY_CLASS}
   >
     <MaterialIcon
-      name={MATERIAL_ICON_NAME.LOCK_RESET}
+      name={entry.icon}
       className={PROFILE_ENTRY_ICON_CLASS}
     />
     <InlineText className={PROFILE_ENTRY_LABEL_CLASS}>
-      {PROFILE_COPY.PASSWORD_ENTRY}
+      {entry.label}
+      <ProfileEntryStatus status={entry.status} />
     </InlineText>
     <MaterialIcon
       name={MATERIAL_ICON_NAME.CHEVRON_RIGHT}

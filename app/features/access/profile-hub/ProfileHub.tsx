@@ -6,14 +6,19 @@ import {
 } from "@/app/constants";
 import { PROFILE_COPY } from "./constants/ProfileCopy.constants";
 import type { ProfileHubProps } from "./models/ProfileHubProps.interface";
-import ProfileEntryLink from "./ProfileEntryLink";
+import ProfileEntryList from "./ProfileEntryList";
 import ProfileNoticeUrlCleaner from "./ProfileNoticeUrlCleaner";
+import { buildProfileEntries } from "./utils/buildProfileEntries";
+import { resolvePersonalEmailState } from "./utils/resolvePersonalEmailState";
 import { resolveProfileNoticeMessage } from "./utils/resolveProfileNoticeMessage";
 
-const ProfileHub = ({
+const ProfileHub = async ({
   notice,
-}: ProfileHubProps): React.JSX.Element => {
+}: ProfileHubProps): Promise<React.JSX.Element> => {
   const noticeMessage = resolveProfileNoticeMessage(notice);
+  const entries = buildProfileEntries({
+    personalEmailState: await resolvePersonalEmailState(),
+  });
 
   return (
     <>
@@ -23,7 +28,7 @@ const ProfileHub = ({
         logoAlt={IMAGE_ALTS.COMPANY_LOGO}
       />
       <FormSuccessNotice message={noticeMessage} />
-      <ProfileEntryLink />
+      <ProfileEntryList entries={entries} />
       {noticeMessage ? <ProfileNoticeUrlCleaner /> : null}
     </>
   );
