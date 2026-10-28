@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { PROFILE_PASSWORD_ERROR_COPY } from "../constants/ProfilePasswordErrorCopy.constants";
 import { PROFILE_PASSWORD_FORM_COPY } from "../constants/ProfilePasswordFormCopy.constants";
-import { VOSEO_WORDS_PATTERN } from "./ProfilePasswordCopy.constants";
+import { VOSEO_WORDS_PATTERN } from "@/app/utils/copy/tests/ustedCopyPatterns";
 
 describe("profile password copy voseo guard", () => {
   it.each([

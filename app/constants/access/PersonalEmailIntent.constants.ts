@@ -1,3 +1,5 @@
+export const PERSONAL_EMAIL_INTENT_FIELD = "intent";
+
 export const PERSONAL_EMAIL_INTENT = {
   REMOVE: "remove",
   SAVE: "save",
