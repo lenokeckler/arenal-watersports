@@ -19,6 +19,8 @@ import {
   WORKER_AREAS_TITLE_CLASS,
 } from "../styles/WorkerAreas.styles";
 import WorkerAccountActionForm from "./WorkerAccountActionForm";
+import { submitWorkerRehire } from "../actions/submitWorkerRehire";
+import { submitWorkerTemporaryPassword } from "../actions/submitWorkerTemporaryPassword";
 import WorkerTemporaryPasswordForm from "./WorkerTemporaryPasswordForm";
 
 const WorkerAccountPanel = ({
@@ -74,12 +76,33 @@ const WorkerAccountPanel = ({
             {WORKER_ACCOUNT_COPY.HAS_PERSONAL_EMAIL_NOTE}
           </Text>
         )}
-      {canGetTemporaryPassword &&
-        !overview.hasPersonalEmail && (
-          <WorkerTemporaryPasswordForm
-            workerId={overview.id}
-          />
-        )}
+      <WorkerTemporaryPasswordForm
+        action={submitWorkerTemporaryPassword}
+        doneMessage={
+          WORKER_ACCOUNT_COPY.TEMPORARY_PASSWORD_DONE
+        }
+        isAvailable={
+          canGetTemporaryPassword &&
+          !overview.hasPersonalEmail
+        }
+        label={WORKER_ACCOUNT_COPY.TEMPORARY_PASSWORD}
+        pendingLabel={
+          WORKER_ACCOUNT_COPY.TEMPORARY_PASSWORD_PENDING
+        }
+        workerId={overview.id}
+      />
+      <WorkerTemporaryPasswordForm
+        action={submitWorkerRehire}
+        doneMessage={WORKER_ACCOUNT_COPY.REHIRE_DONE}
+        isAvailable={
+          !isAdministrationAccount &&
+          overview.accountState ===
+            WORKER_ACCOUNT_STATE.RETIRED
+        }
+        label={WORKER_ACCOUNT_COPY.REHIRE}
+        pendingLabel={WORKER_ACCOUNT_COPY.REHIRE_PENDING}
+        workerId={overview.id}
+      />
     </section>
   );
 };

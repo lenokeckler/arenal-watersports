@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import type { NullableRef } from "@/app/types";
 import { Button, Text } from "@/app/components";
 import { BUTTON } from "@/app/components/button/constants";
 import FormSuccessNotice from "@/app/components/form-success-notice/FormSuccessNotice";
@@ -11,11 +12,7 @@ import {
   INPUT_TYPES,
   WORKER_AREA_FIELD,
 } from "@/app/constants";
-import { submitWorkerTemporaryPassword } from "../actions/submitWorkerTemporaryPassword";
-import {
-  WORKER_ACCOUNT_COPY,
-  WORKER_ACCOUNT_ERROR,
-} from "../constants/WorkerAccountCopy.constants";
+import { WORKER_ACCOUNT_ERROR } from "../constants/WorkerAccountCopy.constants";
 import type { WorkerTemporaryPasswordFormProps } from "../models/WorkerTemporaryPasswordFormProps.interface";
 import type { WorkerTemporaryPasswordState } from "../models/WorkerTemporaryPasswordState.type";
 import {
@@ -25,26 +22,31 @@ import {
 } from "../styles/WorkerAreas.styles";
 
 const WorkerTemporaryPasswordForm = ({
+  action,
+  doneMessage,
+  isAvailable,
+  label,
+  pendingLabel,
   workerId,
-}: WorkerTemporaryPasswordFormProps): React.JSX.Element => {
+}: WorkerTemporaryPasswordFormProps): NullableRef<React.JSX.Element> => {
   const [grant, formAction, isPending] = useActionState<
     WorkerTemporaryPasswordState,
     FormData
-  >(submitWorkerTemporaryPassword, null);
+  >(action, null);
 
   if (grant?.ok) {
     return (
       <div className={WORKER_TEMPORARY_PASSWORD_FORM_CLASS}>
-        <FormSuccessNotice
-          message={
-            WORKER_ACCOUNT_COPY.TEMPORARY_PASSWORD_DONE
-          }
-        />
+        <FormSuccessNotice message={doneMessage} />
         <TemporaryPasswordBox
           temporaryPassword={grant.temporaryPassword}
         />
       </div>
     );
+  }
+
+  if (!isAvailable) {
+    return null;
   }
 
   return (
@@ -63,9 +65,7 @@ const WorkerTemporaryPasswordForm = ({
         aria-disabled={isPending}
         className={WORKER_AREA_GRANT_BUTTON_CLASS}
       >
-        {isPending
-          ? WORKER_ACCOUNT_COPY.TEMPORARY_PASSWORD_PENDING
-          : WORKER_ACCOUNT_COPY.TEMPORARY_PASSWORD}
+        {isPending ? pendingLabel : label}
       </Button>
       {grant && (
         <Text

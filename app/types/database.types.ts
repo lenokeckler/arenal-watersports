@@ -2636,6 +2636,10 @@ export type Database = {
         Args: { p_user_id: string };
         Returns: undefined;
       };
+      rehire_worker: {
+        Args: { target_worker: string };
+        Returns: string;
+      };
       retire_worker: {
         Args: { target_worker: string };
         Returns: string;
