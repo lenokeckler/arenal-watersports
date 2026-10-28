@@ -1105,6 +1105,48 @@ export type Database = {
           },
         ];
       };
+      password_reset_grants: {
+        Row: {
+          created_at: string;
+          expires_at: string;
+          id: string;
+          token_hash: string;
+          used_at: string | null;
+          worker_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          expires_at: string;
+          id?: string;
+          token_hash: string;
+          used_at?: string | null;
+          worker_id: string;
+        };
+        Update: {
+          created_at?: string;
+          expires_at?: string;
+          id?: string;
+          token_hash?: string;
+          used_at?: string | null;
+          worker_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "password_reset_grants_worker_id_fkey";
+            columns: ["worker_id"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "password_reset_grants_worker_id_fkey";
+            columns: ["worker_id"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       password_reset_pins: {
         Row: {
           attempts: number;
@@ -2510,6 +2552,10 @@ export type Database = {
         Args: { event: Json };
         Returns: Json;
       };
+      exchange_password_reset_pin: {
+        Args: { p_pin: string; p_username: string };
+        Returns: string;
+      };
       finish_password_recovery: {
         Args: { p_user_id: string };
         Returns: undefined;
@@ -2572,6 +2618,18 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: string;
       };
+      password_reset_grant_is_open: {
+        Args: { p_token: string };
+        Returns: boolean;
+      };
+      password_reset_grant_lifetime_minutes: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      password_reset_grant_token_hash: {
+        Args: { p_token: string };
+        Returns: string;
+      };
       password_reset_limit_window_minutes: {
         Args: Record<PropertyKey, never>;
         Returns: number;
@@ -2631,6 +2689,10 @@ export type Database = {
       record_successful_sign_in: {
         Args: { p_user_id: string };
         Returns: undefined;
+      };
+      redeem_password_reset_grant: {
+        Args: { p_token: string };
+        Returns: string;
       };
       rehire_worker: {
         Args: { target_worker: string };

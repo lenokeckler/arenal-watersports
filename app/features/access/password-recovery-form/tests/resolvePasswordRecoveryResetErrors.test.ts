@@ -3,23 +3,19 @@ import {
   ACCESS_SHARED_COPY,
   PASSWORD_RECOVERY_FIELD,
 } from "@/app/constants";
-import type { PasswordRecoveryResetInput } from "@/app/utils/password-recovery/models/PasswordRecoveryResetInput.interface";
+import type { PasswordRecoveryPinInput } from "@/app/utils/password-recovery/models/PasswordRecoveryPinInput.interface";
 import { NO_PASSWORD_RECOVERY_FORM_ERRORS } from "../constants/PasswordRecoveryRequestDefaults.constants";
 import { EMPTY_PASSWORD_RECOVERY_RESET_INPUT } from "../constants/PasswordRecoveryResetDefaults.constants";
 import type { PasswordRecoveryFormErrors } from "../models/PasswordRecoveryFormErrors.type";
 import { resolvePasswordRecoveryResetErrors } from "../utils/resolvePasswordRecoveryResetErrors";
 import { RESET_INPUT } from "./passwordRecoveryReset.constants";
 import {
-  MISMATCH_INPUT,
-  NO_CONFIRMATION_INPUT,
-  NO_NEW_PASSWORD_INPUT,
   NO_PIN_INPUT,
   SHORT_PIN_INPUT,
-  WEAK_PASSWORD_INPUT,
 } from "./passwordRecoveryResetErrors.constants";
 
 const resolveAfterSubmit = (
-  values: PasswordRecoveryResetInput
+  values: PasswordRecoveryPinInput
 ): PasswordRecoveryFormErrors =>
   resolvePasswordRecoveryResetErrors({
     hasSubmitted: true,
@@ -59,26 +55,6 @@ describe("resolvePasswordRecoveryResetErrors", () => {
       SHORT_PIN_INPUT,
       PASSWORD_RECOVERY_FIELD.PIN,
       "El PIN tiene 6 dígitos.",
-    ],
-    [
-      NO_NEW_PASSWORD_INPUT,
-      PASSWORD_RECOVERY_FIELD.NEW_PASSWORD,
-      "Escriba la contraseña nueva.",
-    ],
-    [
-      WEAK_PASSWORD_INPUT,
-      PASSWORD_RECOVERY_FIELD.NEW_PASSWORD,
-      "La contraseña nueva no cumple los requisitos.",
-    ],
-    [
-      NO_CONFIRMATION_INPUT,
-      PASSWORD_RECOVERY_FIELD.CONFIRM_PASSWORD,
-      "Repita la contraseña nueva.",
-    ],
-    [
-      MISMATCH_INPUT,
-      PASSWORD_RECOVERY_FIELD.CONFIRM_PASSWORD,
-      "Las contraseñas no coinciden.",
     ],
   ])(
     "places the error of %o under %s",

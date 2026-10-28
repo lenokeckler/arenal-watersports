@@ -3,7 +3,6 @@
 import { FORM_STACK_CLASS } from "@/app/components/form-layout/styles/FormLayout.styles";
 import { PASSWORD_RECOVERY_FIELD } from "@/app/constants";
 import PasswordRecoveryBackLink from "./components/PasswordRecoveryBackLink";
-import PasswordRecoveryNoEmailNote from "./components/PasswordRecoveryNoEmailNote";
 import PasswordRecoveryPinNote from "./components/PasswordRecoveryPinNote";
 import PasswordRecoveryResetFields from "./components/PasswordRecoveryResetFields";
 import PasswordRecoveryResetHeading from "./components/PasswordRecoveryResetHeading";
@@ -41,7 +40,6 @@ const PasswordRecoveryResetFormView = ({
         />
       </form>
       <PasswordRecoveryPinNote />
-      <PasswordRecoveryNoEmailNote />
       <PasswordRecoveryBackLink />
     </>
   );

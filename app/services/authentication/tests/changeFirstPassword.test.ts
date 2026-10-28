@@ -6,6 +6,9 @@ import {
   vi,
 } from "vitest";
 import "./changeFirstPassword.setup";
+import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants";
+import { COMMON_PASSWORD_THAT_MEETS_THE_RULES } from "@/app/services/password-policy/tests/commonPassword.constants";
+import { createServerSupabaseClient } from "@/app/services/supabase";
 import { DEFAULT_PASSWORD_CHANGE_INPUT as INPUT } from "@/app/utils/password-change/tests/passwordChange.constants";
 import { changeFirstPassword } from "../changeFirstPassword";
 import { checkWorkerPassword } from "../checkWorkerPassword";
@@ -22,8 +25,29 @@ import {
 } from "./firstSignIn.constants";
 import { SUPABASE_CLIENT } from "./supabaseClient.constants";
 
+const COMMON_PASSWORD_INPUT = {
+  ...INPUT,
+  confirmPassword: COMMON_PASSWORD_THAT_MEETS_THE_RULES,
+  newPassword: COMMON_PASSWORD_THAT_MEETS_THE_RULES,
+};
+
 describe("changeFirstPassword", () => {
   beforeEach(arrangeSuccessfulPasswordChange);
+
+  it("refuses a common password before any network call", async () => {
+    await expect(
+      changeFirstPassword(COMMON_PASSWORD_INPUT)
+    ).resolves.toMatchObject({
+      ok: false,
+      error: {
+        code: PASSWORD_CHANGE_ERROR_CODE.NEW_PASSWORD_COMMON,
+      },
+    });
+    expect(
+      createServerSupabaseClient
+    ).not.toHaveBeenCalled();
+    expect(updateSignedInPassword).not.toHaveBeenCalled();
+  });
 
   it("changes the password and refreshes the session in order", async () => {
     const readArgumentsOf = captureArguments(

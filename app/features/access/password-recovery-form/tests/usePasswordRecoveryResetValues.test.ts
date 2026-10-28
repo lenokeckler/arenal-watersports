@@ -8,7 +8,6 @@ import {
   PASTED_PIN,
   PASTED_PIN_DIGITS,
   PREFILLED_USERNAME,
-  SPACED_PASSWORD,
   VALID_PIN,
 } from "./passwordRecoveryResetState.constants";
 import {
@@ -21,8 +20,6 @@ describe("usePasswordRecoveryResetValues", () => {
     const { result } = renderValues();
 
     expect(result.current.values).toEqual({
-      confirmPassword: STRING.Empty,
-      newPassword: STRING.Empty,
       pin: STRING.Empty,
       username: PREFILLED_USERNAME,
     });
@@ -42,21 +39,13 @@ describe("usePasswordRecoveryResetValues", () => {
     );
   });
 
-  it("keeps only the digits of the PIN and passwords as typed", () => {
+  it("keeps only the digits of the PIN", () => {
     const { result } = renderValues();
 
     type(result, PASSWORD_RECOVERY_FIELD.PIN, PASTED_PIN);
-    type(
-      result,
-      PASSWORD_RECOVERY_FIELD.NEW_PASSWORD,
-      SPACED_PASSWORD
-    );
 
     expect(result.current.values.pin).toBe(
       PASTED_PIN_DIGITS
-    );
-    expect(result.current.values.newPassword).toBe(
-      SPACED_PASSWORD
     );
   });
 

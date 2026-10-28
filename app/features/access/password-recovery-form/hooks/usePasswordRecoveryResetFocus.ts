@@ -20,18 +20,10 @@ export const usePasswordRecoveryResetFocus = (
     useRef<NullableRef<HTMLInputElement>>(null);
   const pinRef =
     useRef<NullableRef<HTMLInputElement>>(null);
-  const newPasswordRef =
-    useRef<NullableRef<HTMLInputElement>>(null);
-  const confirmPasswordRef =
-    useRef<NullableRef<HTMLInputElement>>(null);
   const fieldRefs = useMemo(
     () => ({
       [PASSWORD_RECOVERY_FIELD.USERNAME]: usernameRef,
       [PASSWORD_RECOVERY_FIELD.PIN]: pinRef,
-      [PASSWORD_RECOVERY_FIELD.NEW_PASSWORD]:
-        newPasswordRef,
-      [PASSWORD_RECOVERY_FIELD.CONFIRM_PASSWORD]:
-        confirmPasswordRef,
     }),
     []
   );
