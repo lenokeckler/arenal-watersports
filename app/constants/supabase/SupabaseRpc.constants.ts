@@ -4,6 +4,8 @@ export const SUPABASE_RPC = {
   COMPLETE_FIRST_PASSWORD_CHANGE:
     "complete_first_password_change",
   CONSUME_PASSWORD_RESET_PIN: "consume_password_reset_pin",
+  CURRENT_SESSION_SECONDS_LEFT:
+    "current_session_seconds_left",
   CURRENT_SESSION_STATE: "current_session_state",
   CURRENT_WORK_AREA: "current_work_area",
   EXCHANGE_PASSWORD_RESET_PIN:

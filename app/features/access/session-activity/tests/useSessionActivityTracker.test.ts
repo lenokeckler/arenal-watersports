@@ -31,6 +31,10 @@ vi.mock("../utils/reportSessionActivity", () => ({
 }));
 
 const replace = vi.fn();
+const onLiveReport = vi.fn<() => Promise<void>>();
+
+const renderTracker = () =>
+  renderHook(() => useSessionActivityTracker(onLiveReport));
 
 const actOn = async (eventName: string): Promise<void> => {
   act(() => {
@@ -52,6 +56,7 @@ describe("useSessionActivityTracker", () => {
       replace,
     } as unknown as ReturnType<typeof useRouter>);
     answerWith(SESSION_STATE.LIVE);
+    onLiveReport.mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -61,7 +66,7 @@ describe("useSessionActivityTracker", () => {
   it.each(SESSION_ACTIVITY_EVENTS)(
     "reports the action on %s",
     async (eventName) => {
-      renderHook(useSessionActivityTracker);
+      renderTracker();
 
       await actOn(eventName);
 
@@ -72,7 +77,7 @@ describe("useSessionActivityTracker", () => {
   );
 
   it("ignores events that are not actions of the worker", async () => {
-    renderHook(useSessionActivityTracker);
+    renderTracker();
 
     await actOn(TRACKER_FIXTURE.OTHER_EVENT);
 
@@ -80,7 +85,7 @@ describe("useSessionActivityTracker", () => {
   });
 
   it("reports at most once inside the interval", async () => {
-    renderHook(useSessionActivityTracker);
+    renderTracker();
 
     await actOn(SESSION_ACTIVITY_EVENTS[0]);
     vi.setSystemTime(
@@ -93,7 +98,7 @@ describe("useSessionActivityTracker", () => {
   });
 
   it("reports again once the interval has passed", async () => {
-    renderHook(useSessionActivityTracker);
+    renderTracker();
 
     await actOn(SESSION_ACTIVITY_EVENTS[0]);
     vi.setSystemTime(
@@ -106,11 +111,28 @@ describe("useSessionActivityTracker", () => {
   });
 
   it("stays on the screen while the session is live", async () => {
-    renderHook(useSessionActivityTracker);
+    renderTracker();
 
     await actOn(SESSION_ACTIVITY_EVENTS[0]);
 
     expect(replace).not.toHaveBeenCalled();
+  });
+
+  it("asks the idle clock again after a live report", async () => {
+    renderTracker();
+
+    await actOn(SESSION_ACTIVITY_EVENTS[0]);
+
+    expect(onLiveReport).toHaveBeenCalledOnce();
+  });
+
+  it("does not ask the idle clock once the session closed", async () => {
+    answerWith(SESSION_STATE.IDLE);
+    renderTracker();
+
+    await actOn(SESSION_ACTIVITY_EVENTS[0]);
+
+    expect(onLiveReport).not.toHaveBeenCalled();
   });
 
   it.each([
@@ -120,7 +142,7 @@ describe("useSessionActivityTracker", () => {
     "replaces the screen when the session is %s",
     async (state, expectedPath) => {
       answerWith(state);
-      renderHook(useSessionActivityTracker);
+      renderTracker();
 
       await actOn(SESSION_ACTIVITY_EVENTS[0]);
 
@@ -129,9 +151,7 @@ describe("useSessionActivityTracker", () => {
   );
 
   it("stops listening once unmounted", async () => {
-    const { unmount } = renderHook(
-      useSessionActivityTracker
-    );
+    const { unmount } = renderTracker();
 
     unmount();
     await actOn(SESSION_ACTIVITY_EVENTS[0]);

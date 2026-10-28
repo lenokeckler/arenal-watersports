@@ -9,7 +9,9 @@ import {
 import { SESSION_END_PATH } from "../constants/SessionEndPath.constants";
 import { reportSessionActivity } from "../utils/reportSessionActivity";
 
-export const useSessionActivityTracker = (): void => {
+export const useSessionActivityTracker = (
+  onLiveReport: () => Promise<void>
+): void => {
   const router = useRouter();
   const lastReportAtRef = useRef(Number.NEGATIVE_INFINITY);
 
@@ -30,7 +32,11 @@ export const useSessionActivityTracker = (): void => {
 
       if (sessionEndPath !== null) {
         router.replace(sessionEndPath);
+
+        return;
       }
+
+      await onLiveReport();
     };
 
     const handleActivity = (): void => {
@@ -51,5 +57,5 @@ export const useSessionActivityTracker = (): void => {
         );
       });
     };
-  }, [router]);
+  }, [onLiveReport, router]);
 };
