@@ -5,11 +5,28 @@ import { SIGN_IN_ERROR_COPY } from "@/app/features/access/login-form/constants/S
 import {
   SIGN_IN_ERROR_CODE,
   SIGN_IN_FIELD,
+  SIGN_IN_NOTICE_REASON,
 } from "@/app/constants";
 
 export const E2E_LOGIN_ACCOUNT = {
   PASSWORD: "Arenal.2026",
   USERNAME: "admin",
+} as const;
+
+export const E2E_LOGIN_SEEDED_PASSWORD =
+  E2E_LOGIN_ACCOUNT.PASSWORD;
+
+export const E2E_LOGIN_BLOCKED_ACCOUNT = {
+  BY_ADMINISTRATION: "bloqueo_admin",
+  BY_ATTEMPTS: "bloqueo_intentos",
+} as const;
+
+export const E2E_LOGIN_UNKNOWN_USERNAME = "no_existe_2026";
+
+export const E2E_LOGIN_NOTICE_REASON = {
+  INACTIVE: SIGN_IN_NOTICE_REASON.INACTIVE,
+  SCRIPT: "<script>window.__noticeInjected=true</script>",
+  UNKNOWN: "unrecognised",
 } as const;
 
 export const E2E_LOGIN_WRONG_PASSWORD = "Wrong.2026";
@@ -18,6 +35,16 @@ export const E2E_LOGIN_SAMPLE_PASSWORD = "Sample.2026";
 
 export const E2E_LOGIN_COPY = {
   HEADING: ACCESS_SCREEN_COPY.TITLE,
+  BLOCKED_BY_ADMINISTRATION:
+    SIGN_IN_ERROR_COPY[
+      SIGN_IN_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION
+    ],
+  BLOCKED_BY_ATTEMPTS:
+    SIGN_IN_ERROR_COPY[
+      SIGN_IN_ERROR_CODE.ACCOUNT_BLOCKED_BY_ATTEMPTS
+    ],
+  INACTIVITY_NOTICE:
+    SIGN_IN_ERROR_COPY[SIGN_IN_ERROR_CODE.SESSION_INACTIVE],
   INVALID_CREDENTIALS:
     SIGN_IN_ERROR_COPY[
       SIGN_IN_ERROR_CODE.INVALID_CREDENTIALS
@@ -46,4 +73,9 @@ export const E2E_LOGIN_SCREENSHOT_BASENAME = {
   WRONG_CREDENTIALS: "03-login-wrong-credentials",
   PASSWORD_VISIBLE: "04-login-password-visible",
   SIGNED_IN: "05-login-signed-in",
+  BLOCKED_BY_ATTEMPTS: "06-login-blocked-by-attempts",
+  BLOCKED_BY_ADMINISTRATION:
+    "07-login-blocked-by-administration",
+  GENERIC_CREDENTIALS: "08-login-generic-credentials",
+  INACTIVITY_NOTICE: "09-login-inactivity-notice",
 } as const;
