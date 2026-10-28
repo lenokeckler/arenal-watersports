@@ -5,6 +5,7 @@ import type { NullableRef } from "@/app/types";
 export interface LoginFormErrorSources {
   fallbackError: NullableRef<SignInError>;
   hasSubmitted: boolean;
+  notice: NullableRef<SignInError>;
   serverError: NullableRef<SignInError>;
   values: SignInCredentials;
 }
