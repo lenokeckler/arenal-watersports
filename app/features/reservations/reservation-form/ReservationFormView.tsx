@@ -36,7 +36,9 @@ const ReservationFormView = ({
     STRING.Empty
   );
   const isSubmitDisabled =
-    viewModel.isPending || categories.length === 0;
+    viewModel.isPending ||
+    viewModel.isSubmitted ||
+    categories.length === 0;
   const submitLabel = viewModel.isPending
     ? RESERVATION_FORM_UI_COPY.SUBMITTING
     : RESERVATION_FORM_UI_COPY.SUBMIT;

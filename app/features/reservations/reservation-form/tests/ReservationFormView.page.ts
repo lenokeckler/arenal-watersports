@@ -35,6 +35,9 @@ const findDurationValidationError = () =>
 const findSubmissionError = () =>
   screen.findByText(RESERVATION_FORM_UI_COPY.SUBMIT_ERROR);
 
+const findSuccessMessage = () =>
+  screen.findByText(RESERVATION_FORM_UI_COPY.SUCCESS);
+
 const selectDuration = async (
   user: ReturnType<typeof userEvent.setup>,
   label: string
@@ -73,6 +76,7 @@ export const createReservationFormViewPage = (
     getBackButton,
     findDurationValidationError,
     findSubmissionError,
+    findSuccessMessage,
     getSubmitButton,
     clickBack: async (): Promise<void> => {
       await user.click(getBackButton());
