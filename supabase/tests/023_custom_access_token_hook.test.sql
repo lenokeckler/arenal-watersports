@@ -1,5 +1,5 @@
 begin;
-select plan(15);
+select plan(16);
 
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local'),
@@ -67,9 +67,17 @@ select is(
 );
 
 select is(
-  public.custom_access_token_hook('{"user_id":"77777777-7777-7777-7777-777777777777"}'::jsonb),
-  '{"user_id":"77777777-7777-7777-7777-777777777777"}'::jsonb,
-  'un usuario sin perfil de trabajador recibe el evento sin cambios'
+  public.custom_access_token_hook('{"user_id":"77777777-7777-7777-7777-777777777777"}'::jsonb)
+    #>> '{error,message}',
+  'account_unavailable',
+  'un usuario sin perfil de trabajador se rechaza como no disponible'
+);
+
+select is(
+  public.custom_access_token_hook('{"user_id":"88888888-8888-8888-8888-888888888888"}'::jsonb)
+    #>> '{error,http_code}',
+  '403',
+  'un usuario que no existe se rechaza con el codigo http 403'
 );
 
 select is(

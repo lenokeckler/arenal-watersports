@@ -4,6 +4,8 @@ import { DEFAULT_SIGN_IN_CREDENTIALS } from "@/app/utils/sign-in/tests/signIn.co
 import { EMPTY_SIGN_IN_CREDENTIALS } from "../constants/LoginFormDefaults.constants";
 import { SIGN_IN_ERROR_COPY } from "../constants/SignInErrorCopy.constants";
 import { resolveLoginFormErrors } from "../utils/resolveLoginFormErrors";
+import { createSignInError } from "@/app/utils/sign-in/createSignInError";
+import { RECOVERY_REQUIRED_ERROR } from "./LoginFormView.constants";
 import { INVALID_CREDENTIALS_ERROR } from "./submitSignIn.constants";
 
 describe("resolveLoginFormErrors", () => {
@@ -12,6 +14,7 @@ describe("resolveLoginFormErrors", () => {
       resolveLoginFormErrors({
         fallbackError: null,
         hasSubmitted: false,
+        notice: null,
         serverError: null,
         values: EMPTY_SIGN_IN_CREDENTIALS,
       }).usernameError
@@ -23,6 +26,7 @@ describe("resolveLoginFormErrors", () => {
       resolveLoginFormErrors({
         fallbackError: null,
         hasSubmitted: true,
+        notice: null,
         serverError: null,
         values: EMPTY_SIGN_IN_CREDENTIALS,
       }).usernameError
@@ -38,6 +42,7 @@ describe("resolveLoginFormErrors", () => {
       resolveLoginFormErrors({
         fallbackError: INVALID_CREDENTIALS_ERROR,
         hasSubmitted: false,
+        notice: null,
         serverError: null,
         values: EMPTY_SIGN_IN_CREDENTIALS,
       }).passwordError
@@ -53,6 +58,7 @@ describe("resolveLoginFormErrors", () => {
       resolveLoginFormErrors({
         fallbackError: null,
         hasSubmitted: true,
+        notice: null,
         serverError: INVALID_CREDENTIALS_ERROR,
         values: DEFAULT_SIGN_IN_CREDENTIALS,
       }).passwordError
@@ -61,5 +67,95 @@ describe("resolveLoginFormErrors", () => {
         SIGN_IN_ERROR_CODE.INVALID_CREDENTIALS
       ]
     );
+  });
+
+  it("offers the recovery for a recovery required server error", () => {
+    expect(
+      resolveLoginFormErrors({
+        fallbackError: null,
+        hasSubmitted: true,
+        notice: null,
+        serverError: RECOVERY_REQUIRED_ERROR,
+        values: DEFAULT_SIGN_IN_CREDENTIALS,
+      }).isRecoveryOffered
+    ).toBe(true);
+  });
+
+  it("offers the recovery for a recovery required posted form", () => {
+    expect(
+      resolveLoginFormErrors({
+        fallbackError: RECOVERY_REQUIRED_ERROR,
+        hasSubmitted: false,
+        notice: null,
+        serverError: null,
+        values: EMPTY_SIGN_IN_CREDENTIALS,
+      }).isRecoveryOffered
+    ).toBe(true);
+  });
+
+  it("does not offer the recovery without an error", () => {
+    expect(
+      resolveLoginFormErrors({
+        fallbackError: null,
+        hasSubmitted: false,
+        notice: null,
+        serverError: null,
+        values: EMPTY_SIGN_IN_CREDENTIALS,
+      }).isRecoveryOffered
+    ).toBe(false);
+  });
+
+  it.each(
+    Object.values(SIGN_IN_ERROR_CODE).filter(
+      (code) =>
+        code !==
+        SIGN_IN_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED
+    )
+  )(
+    "does not offer the recovery for the %s server error",
+    (code) => {
+      expect(
+        resolveLoginFormErrors({
+          fallbackError: null,
+          hasSubmitted: false,
+          notice: null,
+          serverError: createSignInError(code),
+          values: DEFAULT_SIGN_IN_CREDENTIALS,
+        }).isRecoveryOffered
+      ).toBe(false);
+    }
+  );
+
+  it.each(
+    Object.values(SIGN_IN_ERROR_CODE).filter(
+      (code) =>
+        code !==
+        SIGN_IN_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED
+    )
+  )(
+    "does not offer the recovery for the %s posted form error",
+    (code) => {
+      expect(
+        resolveLoginFormErrors({
+          fallbackError: createSignInError(code),
+          hasSubmitted: false,
+          notice: null,
+          serverError: null,
+          values: DEFAULT_SIGN_IN_CREDENTIALS,
+        }).isRecoveryOffered
+      ).toBe(false);
+    }
+  );
+
+  it("does not offer the recovery when a validation error takes the slot", () => {
+    expect(
+      resolveLoginFormErrors({
+        fallbackError: RECOVERY_REQUIRED_ERROR,
+        hasSubmitted: true,
+        notice: null,
+        serverError: null,
+        values: EMPTY_SIGN_IN_CREDENTIALS,
+      }).isRecoveryOffered
+    ).toBe(false);
   });
 });
