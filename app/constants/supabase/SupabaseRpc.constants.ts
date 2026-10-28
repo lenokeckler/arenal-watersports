@@ -11,6 +11,8 @@ export const SUPABASE_RPC = {
   GRANT_WORKER_MARK: "grant_worker_mark",
   IS_ADMIN: "is_admin",
   ISSUE_PASSWORD_RESET_PIN: "issue_password_reset_pin",
+  PREPARE_WORKER_TEMPORARY_PASSWORD:
+    "prepare_worker_temporary_password",
   MARK_PASSWORD_RESET_PIN_UNDELIVERED:
     "mark_password_reset_pin_undelivered",
   RECORD_FAILED_SIGN_IN: "record_failed_sign_in",

@@ -10,6 +10,12 @@ import {
 export const WORKER_ACCOUNT_COPY = {
   ADMIN_ACCOUNT_NOTE:
     "La cuenta de administración no se bloquea ni se da de baja.",
+  HAS_PERSONAL_EMAIL_NOTE:
+    "Tiene correo personal: recupera su contraseña con el PIN.",
+  TEMPORARY_PASSWORD: "Dar contraseña temporal",
+  TEMPORARY_PASSWORD_DONE:
+    "Se creó una contraseña temporal y se cerraron sus sesiones abiertas.",
+  TEMPORARY_PASSWORD_PENDING: "Creando…",
   TITLE: "Estado de la cuenta",
 } as const;
 
@@ -57,10 +63,13 @@ export const WORKER_ACCOUNT_ERROR: Record<
   [WORKER_ACCOUNT_RESULT.BLOCKED]: "",
   [WORKER_ACCOUNT_RESULT.FAILED]:
     "No se pudo cambiar la cuenta. Intente de nuevo.",
+  [WORKER_ACCOUNT_RESULT.HAS_PERSONAL_EMAIL]:
+    "Tiene correo personal: recupera su contraseña con el PIN.",
   [WORKER_ACCOUNT_RESULT.NOT_ALLOWED]:
     "Solo la cuenta de administración puede cambiar cuentas.",
   [WORKER_ACCOUNT_RESULT.NOT_FOUND]:
     "Esa cuenta ya no existe.",
+  [WORKER_ACCOUNT_RESULT.READY]: "",
   [WORKER_ACCOUNT_RESULT.RETIRED]:
     "La cuenta está dada de baja: solo se puede recontratar.",
   [WORKER_ACCOUNT_RESULT.UNLOCKED]: "",
