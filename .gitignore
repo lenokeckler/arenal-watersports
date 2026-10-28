@@ -64,9 +64,3 @@ docs/proyecto/PROGRESO.md
 
 docs/referencia/stitch/
 .mcp.json
-
-# Personal, ignored execution route for local calendar previews.
-/app/access/local-preview/
-/playwright-screenshots/local-calendar-preview/
-/debug.log
-/image.png
