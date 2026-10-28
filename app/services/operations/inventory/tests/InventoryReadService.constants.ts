@@ -1,3 +1,4 @@
+import { PostgrestError } from "@supabase/supabase-js";
 import {
   INVENTORY_TRACKING_MODE,
   INVENTORY_UNIT_STATUS,
@@ -7,6 +8,7 @@ import type {
   InventorySummaryDatabaseRow,
   InventoryUnitDatabaseRow,
 } from "../models/InventoryReadModels.interface";
+import { INVENTORY_RANGE_ERROR } from "../constants/InventoryRangeError.constants";
 
 export const INVENTORY_SERVICE_USER = {
   id: "11111111-0000-0000-0000-000000000001",
@@ -16,6 +18,28 @@ export const INVENTORY_SERVICE_UNIT_CATEGORY_ID =
   "aaaaaaaa-0000-0000-0000-000000000001";
 export const INVENTORY_SERVICE_QUANTITY_CATEGORY_ID =
   "aaaaaaaa-0000-0000-0000-000000000002";
+export const INVENTORY_SERVICE_INVALID_CATEGORY_ID =
+  "not-a-uuid";
+export const INVENTORY_SERVICE_INVALID_PAGE_INDICES = [
+  -1,
+  1.5,
+  Number.NaN,
+  Number.POSITIVE_INFINITY,
+  Number.MAX_VALUE,
+] as const;
+export const INVENTORY_SERVICE_NORMALIZED_PAGE_INDICES = [
+  PAGINATION.DEFAULT_PAGE,
+  PAGINATION.ONE_PAGE,
+  PAGINATION.DEFAULT_PAGE,
+  PAGINATION.DEFAULT_PAGE,
+  PAGINATION.DEFAULT_PAGE,
+] as const;
+export const INVENTORY_SERVICE_OUT_OF_RANGE_PAGE_INDEX = 999;
+export const INVENTORY_SERVICE_OUT_OF_RANGE_OPERATION =
+  "read inventory test range";
+export const INVENTORY_SERVICE_OUT_OF_RANGE_STATUS = 416;
+export const INVENTORY_SERVICE_OUT_OF_RANGE_STATUS_TEXT =
+  "Range Not Satisfiable";
 
 export const INVENTORY_SERVICE_UNIT_SUMMARY_ROW: InventorySummaryDatabaseRow =
   {
@@ -58,6 +82,20 @@ export const INVENTORY_SERVICE_SUMMARY_RESULT = {
   error: null,
   count: PAGINATION.DEFAULT_PAGE_SIZE + PAGINATION.ONE_PAGE,
 };
+
+export const INVENTORY_SERVICE_OUT_OF_RANGE_RESULT = {
+  count: null,
+  data: null,
+  error: new PostgrestError({
+    code: INVENTORY_RANGE_ERROR.OUT_OF_RANGE,
+    details: "",
+    hint: "",
+    message: "Requested range not satisfiable",
+  }),
+  status: INVENTORY_SERVICE_OUT_OF_RANGE_STATUS,
+  statusText: INVENTORY_SERVICE_OUT_OF_RANGE_STATUS_TEXT,
+  success: false,
+} as const;
 
 export const INVENTORY_SERVICE_REDIRECT_SIGNAL =
   "Inventory test redirect signal.";
