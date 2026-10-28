@@ -42,6 +42,7 @@ describe("submitSignIn", () => {
   it("redirects home after a successful sign-in", async () => {
     vi.mocked(signInWithUsername).mockResolvedValue({
       ok: true,
+      mustChangePassword: false,
     });
 
     await expect(
@@ -52,6 +53,21 @@ describe("submitSignIn", () => {
       DEFAULT_SIGN_IN_CREDENTIALS
     );
     expect(redirect).toHaveBeenCalledWith(PATHS.HOME);
+  });
+
+  it("redirects a pending account to the first sign-in", async () => {
+    vi.mocked(signInWithUsername).mockResolvedValue({
+      ok: true,
+      mustChangePassword: true,
+    });
+
+    await expect(
+      submitSignIn(DEFAULT_SIGN_IN_CREDENTIALS)
+    ).rejects.toThrow(REDIRECT_SIGNAL_MESSAGE);
+
+    expect(redirect).toHaveBeenCalledWith(
+      PATHS.ACCESS.FIRST_SIGN_IN
+    );
   });
 
   it("returns the service error without redirecting", async () => {

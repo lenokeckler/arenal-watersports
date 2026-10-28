@@ -1,0 +1,1 @@
+ADM-01.03.05: Worker mark change action — the mark forms post to a server action that checks the mark and intent, applies the change and returns to the worker with a notice, or answers with the refusal (US-ADM-03 · AWS-55)

@@ -45,7 +45,11 @@ export const submitSignIn = async (
   const result = await runSignIn(credentials);
 
   if (result.ok) {
-    redirect(PATHS.HOME);
+    redirect(
+      result.mustChangePassword
+        ? PATHS.ACCESS.FIRST_SIGN_IN
+        : PATHS.HOME
+    );
   }
 
   return result.error;

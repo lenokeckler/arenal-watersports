@@ -53,6 +53,7 @@ describe("submitSignIn reporting", () => {
   it("does not report the redirect signal after a successful sign-in", async () => {
     vi.mocked(signInWithUsername).mockResolvedValue({
       ok: true,
+      mustChangePassword: false,
     });
 
     await expect(

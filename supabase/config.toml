@@ -108,7 +108,7 @@ port = 54324
 # Exposes Inbucket's SMTP submission port so the app itself can send real
 # mail in development (US-ACC-006/007 recovery PIN) without external SMTP
 # credentials — the message still only ever lands in Inbucket, never a
-# real inbox. See `app/constants/email/Email.constants.ts`.
+# real inbox. See `app/constants/mail/MailEnvironment.constants.ts`.
 smtp_port = 54325
 # pop3_port = 54326
 # admin_email = "admin@email.com"
@@ -181,10 +181,10 @@ enable_anonymous_sign_ins = false
 # Allow/disallow testing manual linking of accounts
 enable_manual_linking = false
 # Passwords shorter than this value will be rejected as weak. Minimum 6, recommended 8 or more.
-minimum_password_length = 6
+minimum_password_length = 8
 # Passwords that do not meet the following requirements will be rejected as weak. Supported values
 # are: `letters_digits`, `lower_upper_letters_digits`, `lower_upper_letters_digits_symbols`
-password_requirements = ""
+password_requirements = "lower_upper_letters_digits_symbols"
 
 # Configure passkey sign-ins.
 # [auth.passkey]
