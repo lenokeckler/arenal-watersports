@@ -10,11 +10,8 @@ import {
   WORKER_AREA_FIELD,
   WORKER_AREA_INTENT,
 } from "@/app/constants";
-import {
-  WORKER_AREA_CHANGE_ERROR,
-  WORKER_AREAS_COPY,
-} from "../constants/WorkerAreasCopy.constants";
-import type { WorkerAreaChangeFormProps } from "../models/WorkerAreaChangeFormProps.interface";
+import type { NullableRef } from "@/app/types";
+import type { WorkerAccessChangeFormProps } from "../models/WorkerAccessChangeFormProps.interface";
 import {
   WORKER_AREA_CHANGE_ERROR_CLASS,
   WORKER_AREA_CHANGE_FORM_CLASS,
@@ -22,32 +19,35 @@ import {
   WORKER_AREA_REVOKE_BUTTON_CLASS,
 } from "../styles/WorkerAreas.styles";
 
-const BUTTON_COPY = {
-  [WORKER_AREA_INTENT.GRANT]: {
-    className: WORKER_AREA_GRANT_BUTTON_CLASS,
-    label: WORKER_AREAS_COPY.GRANT,
-    pendingLabel: WORKER_AREAS_COPY.GRANTING,
-  },
-  [WORKER_AREA_INTENT.REVOKE]: {
-    className: WORKER_AREA_REVOKE_BUTTON_CLASS,
-    label: WORKER_AREAS_COPY.REVOKE,
-    pendingLabel: WORKER_AREAS_COPY.REVOKING,
-  },
+const BUTTON_CLASS = {
+  [WORKER_AREA_INTENT.GRANT]:
+    WORKER_AREA_GRANT_BUTTON_CLASS,
+  [WORKER_AREA_INTENT.REVOKE]:
+    WORKER_AREA_REVOKE_BUTTON_CLASS,
 } as const;
 
-const WorkerAreaChangeForm = ({
+const WorkerAccessChangeForm = <Result extends string>({
   action,
-  area,
+  errorCopy,
   intent,
+  labels,
+  targetName,
+  targetValue,
   username,
   workerId,
-}: WorkerAreaChangeFormProps): React.JSX.Element => {
-  const [refusal, formAction, isPending] = useActionState(
-    action,
-    null
-  );
-  const { className, label, pendingLabel } =
-    BUTTON_COPY[intent];
+}: WorkerAccessChangeFormProps<Result>): React.JSX.Element => {
+  const [refusal, formAction, isPending] = useActionState<
+    NullableRef<Result>,
+    FormData
+  >(action, null);
+  const label = {
+    [WORKER_AREA_INTENT.GRANT]: isPending
+      ? labels.granting
+      : labels.grant,
+    [WORKER_AREA_INTENT.REVOKE]: isPending
+      ? labels.revoking
+      : labels.revoke,
+  }[intent];
 
   return (
     <form
@@ -56,8 +56,8 @@ const WorkerAreaChangeForm = ({
     >
       <input
         type={INPUT_TYPES.HIDDEN}
-        name={WORKER_AREA_FIELD.AREA}
-        value={area}
+        name={targetName}
+        value={targetValue}
       />
       <input
         type={INPUT_TYPES.HIDDEN}
@@ -78,20 +78,20 @@ const WorkerAreaChangeForm = ({
         type={BUTTON_TYPES.SUBMIT}
         variant={BUTTON.BASE}
         aria-disabled={isPending}
-        className={className}
+        className={BUTTON_CLASS[intent]}
       >
-        {isPending ? pendingLabel : label}
+        {label}
       </Button>
       {refusal && (
         <Text
           role={ARIA_ROLE.ALERT}
           className={WORKER_AREA_CHANGE_ERROR_CLASS}
         >
-          {WORKER_AREA_CHANGE_ERROR[refusal]}
+          {errorCopy[refusal]}
         </Text>
       )}
     </form>
   );
 };
 
-export default WorkerAreaChangeForm;
+export default WorkerAccessChangeForm;

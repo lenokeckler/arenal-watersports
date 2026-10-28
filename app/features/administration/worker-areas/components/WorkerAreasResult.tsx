@@ -5,6 +5,7 @@ import { WORKER_AREAS_COPY } from "../constants/WorkerAreasCopy.constants";
 import type { WorkerAreasResultProps } from "../models/WorkerAreasResultProps.interface";
 import { WORKER_AREAS_MESSAGE_CLASS } from "../styles/WorkerAreas.styles";
 import WorkerAreasPanel from "./WorkerAreasPanel";
+import WorkerMarksPanel from "./WorkerMarksPanel";
 
 const WorkerAreasResult = ({
   overview,
@@ -36,7 +37,12 @@ const WorkerAreasResult = ({
     );
   }
 
-  return <WorkerAreasPanel overview={overview} />;
+  return (
+    <>
+      <WorkerAreasPanel overview={overview} />
+      <WorkerMarksPanel overview={overview} />
+    </>
+  );
 };
 
 export default WorkerAreasResult;

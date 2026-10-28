@@ -1,10 +1,15 @@
 import { Text } from "@/app/components";
 import {
   GRANTABLE_WORKER_AREAS,
+  WORKER_AREA_FIELD,
   WORK_AREA_LABEL,
 } from "@/app/constants";
 import { submitWorkerAreaChange } from "../actions/submitWorkerAreaChange";
-import { WORKER_AREAS_COPY } from "../constants/WorkerAreasCopy.constants";
+import {
+  WORKER_AREA_CHANGE_ERROR,
+  WORKER_AREA_CHANGE_LABELS,
+  WORKER_AREAS_COPY,
+} from "../constants/WorkerAreasCopy.constants";
 import type { WorkerAreasPanelProps } from "../models/WorkerAreasPanelProps.interface";
 import {
   WORKER_AREA_LABEL_CLASS,
@@ -16,7 +21,7 @@ import {
   WORKER_AREAS_TITLE_CLASS,
 } from "../styles/WorkerAreas.styles";
 import { resolveWorkerAreaStatus } from "../utils/resolveWorkerAreaStatus";
-import WorkerAreaChangeForm from "./WorkerAreaChangeForm";
+import WorkerAccessChangeForm from "./WorkerAccessChangeForm";
 
 const WorkerAreasPanel = ({
   overview,
@@ -51,10 +56,13 @@ const WorkerAreasPanel = ({
             </Text>
           </div>
           {status.intent && (
-            <WorkerAreaChangeForm
+            <WorkerAccessChangeForm
               action={submitWorkerAreaChange}
-              area={area}
+              errorCopy={WORKER_AREA_CHANGE_ERROR}
               intent={status.intent}
+              labels={WORKER_AREA_CHANGE_LABELS}
+              targetName={WORKER_AREA_FIELD.AREA}
+              targetValue={area}
               username={overview.username}
               workerId={overview.id}
             />

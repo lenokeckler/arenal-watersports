@@ -17,9 +17,10 @@ import {
 } from "@/app/constants";
 import { readWorkerAreasOverviewAsSignedIn } from "@/app/services/worker-areas";
 import { isAdministratorSignedIn } from "@/app/services/worker-registration";
-import WorkerAreaChangeForm from "../components/WorkerAreaChangeForm";
+import WorkerAccessChangeForm from "../components/WorkerAccessChangeForm";
 import {
   WORKER_AREA_CHANGE_ERROR,
+  WORKER_AREA_CHANGE_LABELS,
   WORKER_AREAS_COPY,
 } from "../constants/WorkerAreasCopy.constants";
 import { readWorkerAreasSearch } from "../utils/readWorkerAreasSearch";
@@ -107,6 +108,8 @@ describe("readWorkerAreasSearch", () => {
       })
     ).toEqual({
       area: SUPABASE_WORK_AREA.RESERVATIONS,
+      mark: null,
+      markNotice: null,
       notice: WORKER_AREA_INTENT.GRANT,
       username: OVERVIEW.username,
     });
@@ -120,11 +123,17 @@ describe("readWorkerAreasSearch", () => {
         [WORKER_AREA_FIELD.NOTICE]: "<script>",
         [WORKER_AREA_FIELD.USERNAME]: [OVERVIEW.username],
       })
-    ).toEqual({ area: null, notice: null, username: "" });
+    ).toEqual({
+      area: null,
+      mark: null,
+      markNotice: null,
+      notice: null,
+      username: "",
+    });
   });
 });
 
-describe("WorkerAreaChangeForm", () => {
+describe("WorkerAccessChangeForm", () => {
   it("posts the area, the intent and the worker, and shows a refusal", async () => {
     const action = vi
       .fn()
@@ -133,10 +142,13 @@ describe("WorkerAreaChangeForm", () => {
       );
     const user = userEvent.setup();
     render(
-      <WorkerAreaChangeForm
+      <WorkerAccessChangeForm
         action={action}
-        area={SUPABASE_WORK_AREA.RESERVATIONS}
+        errorCopy={WORKER_AREA_CHANGE_ERROR}
         intent={WORKER_AREA_INTENT.REVOKE}
+        labels={WORKER_AREA_CHANGE_LABELS}
+        targetName={WORKER_AREA_FIELD.AREA}
+        targetValue={SUPABASE_WORK_AREA.RESERVATIONS}
         username={OVERVIEW.username}
         workerId={OVERVIEW.id}
       />

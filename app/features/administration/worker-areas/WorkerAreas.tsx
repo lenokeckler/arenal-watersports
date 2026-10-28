@@ -6,6 +6,7 @@ import { isAdministratorSignedIn } from "@/app/services/worker-registration";
 import WorkerAreaNotice from "./components/WorkerAreaNotice";
 import WorkerAreasHeading from "./components/WorkerAreasHeading";
 import WorkerAreasResult from "./components/WorkerAreasResult";
+import WorkerMarkNotice from "./components/WorkerMarkNotice";
 import WorkerLookupForm from "./components/WorkerLookupForm";
 import { WORKER_AREAS_COPY } from "./constants/WorkerAreasCopy.constants";
 import type { WorkerAreasProps } from "./models/WorkerAreasProps.interface";
@@ -30,6 +31,7 @@ const WorkerAreas = async ({
     <div className={WORKER_AREAS_STACK_CLASS}>
       <WorkerAreasHeading />
       <WorkerAreaNotice search={search} />
+      <WorkerMarkNotice search={search} />
       <WorkerLookupForm
         key={search.username}
         username={search.username}
