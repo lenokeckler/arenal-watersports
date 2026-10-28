@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import {
+  GRANTABLE_WORKER_MARKS,
   SUPABASE_WORK_AREA,
   SUPABASE_WORKER_MARK,
   WORKER_AREA_FIELD,
@@ -83,7 +84,7 @@ describe("readWorkerAreasSearch for marks", () => {
 });
 
 describe("WorkerMarksPanel", () => {
-  it("shows the guide mark, what it does and Poner when missing", () => {
+  it("shows the guide mark, what it does and Poner for every missing mark", () => {
     render(<WorkerMarksPanel overview={OVERVIEW} />);
 
     expect(
@@ -93,10 +94,10 @@ describe("WorkerMarksPanel", () => {
       screen.getByText(WORKER_MARK_DESCRIPTION[GUIDE])
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", {
+      screen.getAllByRole("button", {
         name: WORKER_AREAS_COPY.MARK_GRANT,
       })
-    ).toBeInTheDocument();
+    ).toHaveLength(GRANTABLE_WORKER_MARKS.length);
   });
 
   it("offers Quitar when the mark is set", () => {
@@ -112,6 +113,44 @@ describe("WorkerMarksPanel", () => {
     expect(
       screen.getByRole("button", {
         name: WORKER_AREAS_COPY.REVOKE,
+      })
+    ).toBeInTheDocument();
+  });
+});
+
+describe("WorkerMarksPanel with both marks", () => {
+  it("offers the general manager mark next to the guide one and says what it enables", () => {
+    render(
+      <WorkerMarksPanel
+        overview={{
+          ...OVERVIEW,
+          marks: [SUPABASE_WORKER_MARK.GENERAL_MANAGER],
+        }}
+      />
+    );
+
+    expect(
+      screen.getByText(
+        WORKER_MARK_LABEL[
+          SUPABASE_WORKER_MARK.GENERAL_MANAGER
+        ]
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        WORKER_MARK_DESCRIPTION[
+          SUPABASE_WORKER_MARK.GENERAL_MANAGER
+        ]
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: WORKER_AREAS_COPY.REVOKE,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: WORKER_AREAS_COPY.MARK_GRANT,
       })
     ).toBeInTheDocument();
   });
