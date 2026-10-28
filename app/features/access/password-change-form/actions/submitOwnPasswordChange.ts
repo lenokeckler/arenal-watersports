@@ -5,11 +5,10 @@ import {
   PATHS,
   PROFILE_NOTICE,
   PROFILE_NOTICE_QUERY_PARAM,
-  SIGN_IN_NOTICE_QUERY_PARAM,
 } from "@/app/constants";
 import { changeOwnPassword } from "@/app/services/authentication";
 import { appendQueryParam } from "@/app/utils/pathname/appendQueryParam";
-import { resolveBlockedSignInNoticeReason } from "@/app/utils/reauthentication/resolveBlockedSignInNoticeReason";
+import { redirectWhenSignInBlocked } from "@/app/utils/server-action/redirectWhenSignInBlocked";
 import type { PasswordChangeServerAction } from "../models/PasswordChangeServerAction.type";
 import { readPasswordChangeInput } from "../utils/readPasswordChangeInput";
 import { runPasswordChange } from "../utils/runPasswordChange";
@@ -31,19 +30,7 @@ export const submitOwnPasswordChange: PasswordChangeServerAction =
       );
     }
 
-    const blockedReason = resolveBlockedSignInNoticeReason(
-      result.error
-    );
-
-    if (blockedReason) {
-      redirect(
-        appendQueryParam(
-          PATHS.ACCESS.LOGIN,
-          SIGN_IN_NOTICE_QUERY_PARAM,
-          blockedReason
-        )
-      );
-    }
+    redirectWhenSignInBlocked(result.error);
 
     return result.error;
   };

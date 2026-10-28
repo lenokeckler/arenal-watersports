@@ -7,10 +7,6 @@ import {
   SAVE_INPUT,
 } from "./personalEmailForm.constants";
 
-export const NETWORK_ERROR = createPersonalEmailError(
-  PERSONAL_EMAIL_ERROR_CODE.NETWORK
-);
-
 export const WRONG_PASSWORD_ERROR =
   createPersonalEmailError(
     PERSONAL_EMAIL_ERROR_CODE.CURRENT_PASSWORD_INVALID
@@ -25,15 +21,6 @@ export const INVALID_ADDRESS_AND_PASSWORD_INPUT = {
   ...INVALID_ADDRESS_INPUT,
   currentPassword: "",
 };
-
-export const TOO_MANY_REQUESTS_ERROR =
-  createPersonalEmailError(
-    PERSONAL_EMAIL_ERROR_CODE.TOO_MANY_REQUESTS
-  );
-
-export const UNKNOWN_ERROR = createPersonalEmailError(
-  PERSONAL_EMAIL_ERROR_CODE.UNKNOWN
-);
 
 export const INVALID_INTENT_INPUT = {
   ...SAVE_INPUT,

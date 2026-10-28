@@ -1,13 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import ProfilePage from "@/app/(system)/profile/page";
-import {
-  PROFILE_NOTICE,
-  PROFILE_NOTICE_QUERY_PARAM,
-} from "@/app/constants";
-import { PROFILE_COPY } from "../constants/ProfileCopy.constants";
+import { PROFILE_NOTICE_QUERY_PARAM } from "@/app/constants";
 import { createProfileHubPage } from "./ProfileHub.page";
-import { UNKNOWN_NOTICE } from "./ProfileHub.constants";
+import {
+  NOTICE_CASES,
+  UNKNOWN_NOTICE,
+} from "./ProfileHub.constants";
 
 const renderPage = async (
   searchParams: Record<
@@ -23,18 +22,18 @@ const renderPage = async (
   );
 
 describe("ProfilePage", () => {
-  it("shows the password changed notice from the notice query param", async () => {
-    await renderPage({
-      [PROFILE_NOTICE_QUERY_PARAM]:
-        PROFILE_NOTICE.PASSWORD_CHANGED,
-    });
+  it.each(NOTICE_CASES)(
+    "shows the message of the %s notice from the notice query param",
+    async (notice, message) => {
+      await renderPage({
+        [PROFILE_NOTICE_QUERY_PARAM]: notice,
+      });
 
-    expect(
-      createProfileHubPage().queryNotice()
-    ).toHaveTextContent(
-      PROFILE_COPY.PASSWORD_CHANGED_NOTICE
-    );
-  });
+      expect(
+        createProfileHubPage().queryNotice()
+      ).toHaveTextContent(message);
+    }
+  );
 
   it("shows no notice when the query is empty", async () => {
     await renderPage({});
