@@ -13,12 +13,8 @@ begin
     from public.workers w
    where w.id = (event ->> 'user_id')::uuid;
 
-  if not found then
-    return event;
-  end if;
-
   rejection := case
-    when worker_deleted_at is not null then 'account_unavailable'
+    when not found or worker_deleted_at is not null then 'account_unavailable'
     when worker_blocked_reason = 'failed_attempts' then 'account_blocked:failed_attempts'
     when worker_blocked_reason = 'administration' then 'account_blocked:administration'
     when coalesce(event ->> 'authentication_method', '') <> 'token_refresh'

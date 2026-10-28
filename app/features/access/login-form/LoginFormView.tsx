@@ -12,6 +12,7 @@ import type { LoginFormViewProps } from "./models/LoginFormViewProps.interface";
 import { LOGIN_FORM_CLASS } from "./styles/LoginForm.styles";
 
 const LoginFormView = ({
+  notice,
   noticeMessage,
 }: LoginFormViewProps): React.JSX.Element => {
   const {
@@ -26,7 +27,7 @@ const LoginFormView = ({
     passwordError,
     usernameError,
     values,
-  } = useLoginFormViewModel();
+  } = useLoginFormViewModel({ notice });
   const formError = fieldErrors[SIGN_IN_FIELD.FORM];
 
   return (

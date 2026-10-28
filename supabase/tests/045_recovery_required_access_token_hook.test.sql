@@ -1,11 +1,12 @@
 begin;
-select plan(18);
+select plan(19);
 
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local'),
   ('22222222-2222-2222-2222-222222222222', 'rosa@arenal.local'),
   ('33333333-3333-3333-3333-333333333333', 'bloqueada@arenal.local'),
-  ('44444444-4444-4444-4444-444444444444', 'retirado@arenal.local');
+  ('44444444-4444-4444-4444-444444444444', 'retirado@arenal.local'),
+  ('55555555-5555-5555-5555-555555555555', 'sin_perfil@arenal.local');
 
 insert into workers (id, username, full_name, personal_email, base_role) values
   ('11111111-1111-1111-1111-111111111111', 'admin', 'Administración', 'admin@correo.com', 'administracion');
@@ -123,6 +124,13 @@ select is(
 );
 update workers set deleted_at = null where username = 'admin';
 alter table workers enable trigger workers_guard_admin;
+
+select is(
+  public.custom_access_token_hook('{"user_id":"55555555-5555-5555-5555-555555555555","authentication_method":"password","claims":{}}'::jsonb)
+    #>> '{error,message}',
+  'account_unavailable',
+  'un usuario sin perfil de trabajador se rechaza como no disponible'
+);
 
 select ok(
   not has_function_privilege('anon', 'public.custom_access_token_hook(jsonb)', 'execute')
