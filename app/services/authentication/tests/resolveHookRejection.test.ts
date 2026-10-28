@@ -4,6 +4,7 @@ import { resolveHookRejection } from "../resolveHookRejection";
 import {
   BLOCKED_BY_ADMINISTRATION_ERROR,
   BLOCKED_BY_ATTEMPTS_ERROR,
+  RECOVERY_REQUIRED_ERROR,
   TOKEN_WITH_WRONG_CODE_ERROR,
   TOKEN_WITH_WRONG_STATUS_ERROR,
   UNAVAILABLE_ERROR,
@@ -26,6 +27,11 @@ describe("resolveHookRejection", () => {
       "blocked by administration",
       BLOCKED_BY_ADMINISTRATION_ERROR,
       SIGN_IN_HOOK_REJECTION.BLOCKED_BY_ADMINISTRATION,
+    ],
+    [
+      "recovery required",
+      RECOVERY_REQUIRED_ERROR,
+      SIGN_IN_HOOK_REJECTION.RECOVERY_REQUIRED,
     ],
     [
       "unavailable",
