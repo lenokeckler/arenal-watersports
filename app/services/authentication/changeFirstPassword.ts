@@ -1,4 +1,5 @@
 import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants";
+import { validatePasswordNotCommon } from "@/app/services/password-policy";
 import { createServerSupabaseClient } from "@/app/services/supabase";
 import { createPasswordChangeError } from "@/app/utils/password-change/createPasswordChangeError";
 import type { PasswordChangeInput } from "@/app/utils/password-change/models/PasswordChangeInput.interface";
@@ -11,7 +12,9 @@ import { refreshFirstSignInSession } from "./refreshFirstSignInSession";
 export const changeFirstPassword = async (
   input: PasswordChangeInput
 ): Promise<PasswordChangeResult> => {
-  const validationError = validatePasswordChange(input);
+  const validationError =
+    validatePasswordChange(input) ??
+    validatePasswordNotCommon(input.newPassword);
 
   if (validationError) {
     return { ok: false, error: validationError };

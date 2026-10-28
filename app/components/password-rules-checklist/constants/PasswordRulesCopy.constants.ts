@@ -9,6 +9,8 @@ import {
 } from "./PasswordRuleState.constants";
 
 export const PASSWORD_RULES_COPY = {
+  COMMON_PASSWORD_HINT:
+    "No use contraseñas comunes como Password1!",
   RULE: {
     [PASSWORD_RULE.LENGTH]: `Entre ${PASSWORD_LENGTH.MIN} y ${PASSWORD_LENGTH.MAX} caracteres`,
     [PASSWORD_RULE.UPPERCASE]:

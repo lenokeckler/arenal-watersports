@@ -13,7 +13,7 @@ import {
 const FormErrorBanner = ({
   message,
 }: FormErrorBannerProps): NullableRef<React.JSX.Element> =>
-  message ? (
+  message?.trim() ? (
     <div
       role={ARIA_ROLE.ALERT}
       className={FORM_ERROR_BANNER_CLASS}

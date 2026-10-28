@@ -11,6 +11,7 @@ import { expect, test } from "../support/recoveryTest";
 import { setWorkerFailedAttempts } from "../support/setWorkerFailedAttempts";
 import { setWorkerMustChangePassword } from "../support/setWorkerMustChangePassword";
 import { signInWithCredentials } from "../support/signInWithCredentials";
+import { withSecondContext } from "../support/withSecondContext";
 
 test.describe("Password recovery reset sessions and counters", () => {
   test("clears the failed attempts and the first sign-in flag", async ({
@@ -34,37 +35,39 @@ test.describe("Password recovery reset sessions and counters", () => {
   });
 
   test("closes every session of the worker and makes the other browser unable to renew its session", async ({
+    baseURL,
     browser,
     page,
     recoveryAccount,
-  }) => {
+  }, testInfo) => {
     const workerId = await readWorkerIdByUsername(
       recoveryAccount.username
     );
-    const otherContext = await browser.newContext();
-    try {
-      const otherPage = await otherContext.newPage();
-      await signInWithCredentials(
-        otherPage,
-        recoveryAccount.username,
-        E2E_ACTIVE_WORKER.PASSWORD
-      );
-      expect(
-        await countAuthSessions(workerId)
-      ).toBeGreaterThan(E2E_COUNT.NONE);
+    await withSecondContext(
+      browser,
+      { ...testInfo.project.use, baseURL },
+      async (otherContext) => {
+        const otherPage = await otherContext.newPage();
+        await signInWithCredentials(
+          otherPage,
+          recoveryAccount.username,
+          E2E_ACTIVE_WORKER.PASSWORD
+        );
+        expect(
+          await countAuthSessions(workerId)
+        ).toBeGreaterThan(E2E_COUNT.NONE);
 
-      await recoverPassword(page, recoveryAccount);
+        await recoverPassword(page, recoveryAccount);
 
-      expect(await countAuthSessions(workerId)).toBe(
-        E2E_COUNT.NONE
-      );
-      const refreshError =
-        await refreshContextSession(otherContext);
-      expect(refreshError?.code).toBe(
-        E2E_AUTH_ERROR_CODE.SESSION_GONE
-      );
-    } finally {
-      await otherContext.close();
-    }
+        expect(await countAuthSessions(workerId)).toBe(
+          E2E_COUNT.NONE
+        );
+        const refreshError =
+          await refreshContextSession(otherContext);
+        expect(refreshError?.code).toBe(
+          E2E_AUTH_ERROR_CODE.SESSION_GONE
+        );
+      }
+    );
   });
 });

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { screen } from "@testing-library/react";
 import { PASSWORD_RULE } from "@/app/constants";
 import { PASSWORD_RULE_STATE } from "../constants/PasswordRuleState.constants";
 import { PASSWORD_RULES_COPY } from "../constants/PasswordRulesCopy.constants";
@@ -14,6 +15,16 @@ import {
 import { renderChecklist } from "./renderPasswordRulesChecklist";
 
 describe("PasswordRulesChecklist states", () => {
+  it("reminds the worker not to use a common password", () => {
+    renderChecklist();
+
+    expect(
+      screen.getByText(
+        PASSWORD_RULES_COPY.COMMON_PASSWORD_HINT
+      )
+    ).toBeInTheDocument();
+  });
+
   it("shows the five rules pending before typing", () => {
     const { page } = renderChecklist();
 

@@ -6,31 +6,24 @@ import {
   vi,
 } from "vitest";
 import { redirect } from "next/navigation";
-import { after } from "next/server";
-import { resetPasswordWithPin } from "@/app/services/password-recovery";
+import { PATHS } from "@/app/constants";
+import {
+  storePasswordRecoveryGrant,
+  verifyPasswordResetPin,
+} from "@/app/services/password-recovery";
 import { REDIRECT_SIGNAL_MESSAGE } from "@/app/utils/server-action/tests/redirectSignal.constants";
 import {
-  LOCAL_SIGN_OUT_OPTIONS,
-  LOGIN_RECOVERED_PATH,
+  RESET_GRANT,
   RESET_INPUT,
-  SIGN_OUT_FAILURE_MESSAGE,
 } from "./passwordRecoveryReset.constants";
 import {
   arrangeResetMocks,
-  signOut,
   submitReset,
 } from "./passwordRecoveryResetSetup";
 
 vi.mock("@/app/services/password-recovery", () => ({
-  resetPasswordWithPin: vi.fn(),
-}));
-
-vi.mock("@/app/services/supabase", () => ({
-  createServerSupabaseClient: vi.fn(),
-}));
-
-vi.mock("next/server", () => ({
-  after: vi.fn(),
+  storePasswordRecoveryGrant: vi.fn(),
+  verifyPasswordResetPin: vi.fn(),
 }));
 
 vi.mock("next/navigation", () => ({
@@ -38,96 +31,45 @@ vi.mock("next/navigation", () => ({
 }));
 
 describe("submitPasswordRecoveryReset", () => {
-  beforeEach(arrangeResetMocks);
-
-  it("resets with the four posted fields untouched", async () => {
-    vi.mocked(resetPasswordWithPin).mockResolvedValue({
+  beforeEach(() => {
+    arrangeResetMocks();
+    vi.mocked(verifyPasswordResetPin).mockResolvedValue({
+      grant: RESET_GRANT,
       ok: true,
     });
+  });
 
+  it("verifies the posted username and PIN untouched", async () => {
     await expect(submitReset()).rejects.toThrow(
       REDIRECT_SIGNAL_MESSAGE
     );
 
-    expect(resetPasswordWithPin).toHaveBeenCalledOnce();
-    expect(resetPasswordWithPin).toHaveBeenCalledWith(
-      RESET_INPUT,
-      expect.any(Function)
+    expect(verifyPasswordResetPin).toHaveBeenCalledOnce();
+    expect(verifyPasswordResetPin).toHaveBeenCalledWith(
+      RESET_INPUT
     );
   });
 
-  it("signs this browser out locally, then redirects to the login with the notice", async () => {
-    vi.mocked(resetPasswordWithPin).mockResolvedValue({
-      ok: true,
-    });
-
+  it("stores the grant, then redirects to the new password step", async () => {
     await expect(submitReset()).rejects.toThrow(
       REDIRECT_SIGNAL_MESSAGE
     );
 
-    expect(signOut).toHaveBeenCalledOnce();
-    expect(signOut).toHaveBeenCalledWith(
-      LOCAL_SIGN_OUT_OPTIONS
+    expect(
+      storePasswordRecoveryGrant
+    ).toHaveBeenCalledOnce();
+    expect(storePasswordRecoveryGrant).toHaveBeenCalledWith(
+      RESET_GRANT
     );
     expect(redirect).toHaveBeenCalledOnce();
     expect(redirect).toHaveBeenCalledWith(
-      LOGIN_RECOVERED_PATH
+      PATHS.ACCESS.RECOVERY_PASSWORD
     );
     expect(
-      signOut.mock.invocationCallOrder[0]
+      vi.mocked(storePasswordRecoveryGrant).mock
+        .invocationCallOrder[0]
     ).toBeLessThan(
       vi.mocked(redirect).mock.invocationCallOrder[0]
-    );
-  });
-
-  it("hands the service a task runner that defers to after", async () => {
-    const task = vi.fn();
-    vi.mocked(resetPasswordWithPin).mockImplementation(
-      (_input, defer) => {
-        defer(task);
-        return Promise.resolve({ ok: true });
-      }
-    );
-
-    await expect(submitReset()).rejects.toThrow(
-      REDIRECT_SIGNAL_MESSAGE
-    );
-
-    expect(after).toHaveBeenCalledOnce();
-    expect(after).toHaveBeenCalledWith(task);
-  });
-
-  it("still redirects when the local sign-out answers an error", async () => {
-    vi.mocked(resetPasswordWithPin).mockResolvedValue({
-      ok: true,
-    });
-    signOut.mockResolvedValue({
-      error: new Error(SIGN_OUT_FAILURE_MESSAGE),
-    });
-
-    await expect(submitReset()).rejects.toThrow(
-      REDIRECT_SIGNAL_MESSAGE
-    );
-
-    expect(redirect).toHaveBeenCalledWith(
-      LOGIN_RECOVERED_PATH
-    );
-  });
-
-  it("still redirects when the local sign-out throws", async () => {
-    vi.mocked(resetPasswordWithPin).mockResolvedValue({
-      ok: true,
-    });
-    signOut.mockRejectedValue(
-      new Error(SIGN_OUT_FAILURE_MESSAGE)
-    );
-
-    await expect(submitReset()).rejects.toThrow(
-      REDIRECT_SIGNAL_MESSAGE
-    );
-
-    expect(redirect).toHaveBeenCalledWith(
-      LOGIN_RECOVERED_PATH
     );
   });
 });

@@ -71,4 +71,29 @@ test.describe("Profile password errors", () => {
       E2E_ACTIVE_WORKER_ATTEMPTS.NONE
     );
   });
+
+  test("rejects a common password without counting an attempt", async ({
+    activeWorker,
+    signedInPage: page,
+  }) => {
+    const passwordPage = createProfilePasswordPage(page);
+    await passwordPage.goTo();
+    await passwordPage.fillForm({
+      confirmPassword: E2E_PROFILE_INVALID_PASSWORDS.COMMON,
+      currentPassword: activeWorker.password,
+      newPassword: E2E_PROFILE_INVALID_PASSWORDS.COMMON,
+    });
+
+    await passwordPage.submit();
+
+    await expect(
+      passwordPage.getNewPasswordError()
+    ).toHaveText(E2E_PROFILE_COPY.NEW_PASSWORD_COMMON);
+    const { failedAttempts } = await readWorkerAccountState(
+      activeWorker.id
+    );
+    expect(failedAttempts).toBe(
+      E2E_ACTIVE_WORKER_ATTEMPTS.NONE
+    );
+  });
 });
