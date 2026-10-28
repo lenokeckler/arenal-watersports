@@ -211,6 +211,17 @@ export {
   type NetworkKeyErrorCode,
 } from "./request";
 export {
+  ASSIGNABLE_BASE_ROLES,
+  WORKER_FULL_NAME_LENGTH,
+  WORKER_FULL_NAME_SPACES_PATTERN,
+  WORKER_REGISTRATION_ERROR_CODE,
+  WORKER_REGISTRATION_FIELD,
+  WORKER_USERNAME_PATTERN,
+  type AssignableBaseRole,
+  type WorkerRegistrationErrorCode,
+  type WorkerRegistrationField,
+} from "./administration/WorkerRegistration.constants";
+export {
   SERVER_ERROR_REPORT,
   type ServerErrorReportLevel,
 } from "./observability/ServerErrorReport.constants";
