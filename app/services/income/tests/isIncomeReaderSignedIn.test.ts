@@ -12,6 +12,7 @@ import {
   FAILED,
   GRANTED,
   REFUSED,
+  UNANSWERED,
 } from "./Access.constants";
 import { AreaRpcPage } from "./AreaRpc.page";
 
@@ -40,6 +41,17 @@ describe("isIncomeReaderSignedIn", () => {
   it("lets an Administración worker read income", async () => {
     AreaRpcPage.respondingWith({
       [SUPABASE_WORK_AREA.RESERVATIONS]: REFUSED,
+      [SUPABASE_WORK_AREA.ADMINISTRATION]: GRANTED,
+    });
+
+    await expect(isIncomeReaderSignedIn()).resolves.toBe(
+      true
+    );
+  });
+
+  it("asks for Administración when the Reservas check gives no answer", async () => {
+    AreaRpcPage.respondingWith({
+      [SUPABASE_WORK_AREA.RESERVATIONS]: UNANSWERED,
       [SUPABASE_WORK_AREA.ADMINISTRATION]: GRANTED,
     });
 

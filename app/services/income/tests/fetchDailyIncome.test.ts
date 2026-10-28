@@ -5,6 +5,7 @@ import {
   it,
   vi,
 } from "vitest";
+import { ChargesTruncatedError } from "../ChargesTruncatedError";
 import { fetchChargesInRange } from "../fetchChargesInRange";
 import { fetchDailyIncome } from "../fetchDailyIncome";
 import {
@@ -42,11 +43,11 @@ describe("fetchDailyIncome", () => {
 
   it("propagates a failed read instead of reporting no income", async () => {
     vi.mocked(fetchChargesInRange).mockRejectedValue(
-      new Error()
+      new ChargesTruncatedError()
     );
 
     await expect(
       fetchDailyIncome(NOW_IN_COSTA_RICA_EVENING)
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(ChargesTruncatedError);
   });
 });
