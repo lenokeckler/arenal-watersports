@@ -1,6 +1,5 @@
 export const STORE_SLICES = {
   LANGUAGE: "language",
-  SESSION: "session",
   TOAST: "toast",
 } as const;
 
