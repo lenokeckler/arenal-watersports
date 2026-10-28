@@ -12,7 +12,6 @@ export {
 } from "@/app/components/icons/constants";
 export { STRING } from "./strings/String.types";
 export { FIELD_IDS } from "./fields/FieldIds.constants";
-export type { SessionConfigType } from "@/app/components/session/constants/Session.constants";
 export {
   BUTTON,
   SIZE,
@@ -21,11 +20,6 @@ export { INDEX } from "./index/Index.constants";
 export { TO_LOCALE_OPTIONS } from "./calendar/ToLocaleOptions.constants";
 export { HTTP_STATUS } from "./numbers/HttpStatus.constant";
 export { BROWSER_EVENTS } from "./events/Event.constants";
-export { SESSION_TIMEOUT_WARNING_MODAL } from "@/app/components/session/constants/SessionTimeoutWarning.constants";
-export {
-  SESSION_CONFIG,
-  SESSION_CONFIG_TYPES,
-} from "@/app/components/session/constants/Session.constants";
 export { FORM_FIELD } from "@/app/components/form-field/constants/FormField.constants";
 export { TitleVariant } from "@/app/components/title/constants";
 export { INPUT } from "@/app/components/input/constants";
@@ -229,3 +223,8 @@ export {
 } from "./administration/WorkerRegistration.constants";
 export { TEMPORARY_PASSWORD } from "./administration/TemporaryPassword.constants";
 export { POSTGRES_ERROR_CODE } from "./supabase/PostgresErrorCode.constants";
+export {
+  SERVER_ERROR_REPORT,
+  type ServerErrorReportLevel,
+} from "./observability/ServerErrorReport.constants";
+export { SERVER_OPERATION } from "./observability/ServerOperation.constants";
