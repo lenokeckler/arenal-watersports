@@ -29,6 +29,7 @@ export const UNKNOWN_FIELD_NAME = "workerId";
 export const PASSWORD_FIELD_NAME =
   PERSONAL_EMAIL_FIELD.CURRENT_PASSWORD;
 export const EMAIL_FIELD_NAME = PERSONAL_EMAIL_FIELD.EMAIL;
+export const FIELD_ERROR_TEXT = "field error";
 
 export const EMPTY_VALUES = {
   currentPassword: STRING.Empty,
