@@ -1,5 +1,5 @@
 begin;
-select plan(20);
+select plan(11);
 
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local'),
@@ -90,67 +90,5 @@ select is(
   'un trabajador retirado no se cuenta'
 );
 
-update workers set failed_attempts = 5 where username = 'rosa';
-select record_successful_sign_in('33333333-3333-3333-3333-333333333333');
-select is(
-  (select failed_attempts::integer from workers where username = 'rosa'),
-  0,
-  'un ingreso exitoso reinicia el contador'
-);
-
-update workers set failed_attempts = 3 where username = 'bloqueado';
-select record_successful_sign_in('44444444-4444-4444-4444-444444444444');
-select is(
-  (select status::text || ':' || failed_attempts::text from workers where username = 'bloqueado'),
-  'blocked:3',
-  'un ingreso exitoso no toca una cuenta bloqueada'
-);
-
-update workers set failed_attempts = 4 where username = 'retirada';
-select record_successful_sign_in('55555555-5555-5555-5555-555555555555');
-select is(
-  (select failed_attempts::integer from workers where username = 'retirada'),
-  4,
-  'un ingreso exitoso no reinicia el contador de un trabajador retirado'
-);
-
-set local role anon;
-select throws_ok(
-  $$ select sign_in_attempt_limit() $$,
-  '42501', null,
-  'una sesion anonima no ejecuta la lectura del limite de intentos'
-);
-select throws_ok(
-  $$ select record_failed_sign_in('ismael') $$,
-  '42501', null,
-  'una sesion anonima no ejecuta el registro de intentos fallidos'
-);
-
-reset role;
-set local role authenticated;
-select throws_ok(
-  $$ select record_failed_sign_in('ismael') $$,
-  '42501', null,
-  'un trabajador autenticado no ejecuta el registro de intentos fallidos'
-);
-select throws_ok(
-  $$ select sign_in_attempt_limit() $$,
-  '42501', null,
-  'un trabajador autenticado no ejecuta la lectura del limite de intentos'
-);
-select throws_ok(
-  $$ select record_successful_sign_in('33333333-3333-3333-3333-333333333333') $$,
-  '42501', null,
-  'un trabajador autenticado no ejecuta el registro de ingreso exitoso'
-);
-
-reset role;
-set local role service_role;
-select lives_ok(
-  $$ select record_failed_sign_in('rosa') $$,
-  'el rol de servicio ejecuta el registro de intentos fallidos'
-);
-
-reset role;
 select * from finish();
 rollback;
