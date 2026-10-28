@@ -5,3 +5,5 @@ export const UPLOADED_FILE = new File(
   [UPLOADED_FILE_CONTENT],
   UPLOADED_FILE_NAME
 );
+
+export const HIDDEN_USERNAME_VALUE = "someone-else";

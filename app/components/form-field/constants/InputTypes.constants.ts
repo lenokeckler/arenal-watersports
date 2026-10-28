@@ -20,6 +20,7 @@ export type INPUT_TYPES =
 export const AUTOCOMPLETE = {
   CURRENT_PASSWORD: "current-password",
   NEW_PASSWORD: "new-password",
+  USERNAME: "username",
 } as const;
 
 export type Autocomplete =
