@@ -281,6 +281,7 @@ export {
   type DepositStatus,
 } from "./money/DepositStatus.constants";
 export { MONEY_FORMAT } from "./money/MoneyFormat.constants";
+export { NON_FINITE_AMOUNT_ERROR_MESSAGE } from "./money/NonFiniteAmountError.constants";
 export {
   CURRENCY_SYMBOL,
   CURRENCY_SYMBOL_SEPARATOR,

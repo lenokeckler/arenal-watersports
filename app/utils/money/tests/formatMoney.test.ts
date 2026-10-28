@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { formatMoney } from "../formatMoney";
+import { NonFiniteAmountError } from "../NonFiniteAmountError";
 import {
   CRC_FOUR_DIGITS,
   CRC_INTEGER,
   CRC_MILLIONS,
   CRC_ONE_DECIMAL,
+  CRC_POSITIVE_INFINITY,
   CRC_THOUSANDS,
   CRC_WITH_CENTS,
   CRC_ZERO,
@@ -20,6 +22,8 @@ import {
   EXPECTED_USD_WITH_CENTS,
   EXPECTED_USD_ZERO,
   USD_INTEGER,
+  USD_NAN,
+  USD_NEGATIVE_INFINITY,
   USD_THOUSANDS,
   USD_WITH_CENTS,
   USD_ZERO,
@@ -87,4 +91,17 @@ describe("formatMoney", () => {
   it("prints a zero colon amount without decimals", () => {
     expect(formatMoney(CRC_ZERO)).toBe(EXPECTED_CRC_ZERO);
   });
+
+  it.each([
+    ["NaN", USD_NAN],
+    ["positive infinity", CRC_POSITIVE_INFINITY],
+    ["negative infinity", USD_NEGATIVE_INFINITY],
+  ])(
+    "throws a NonFiniteAmountError on a %s amount",
+    (_label, money) => {
+      expect(() => formatMoney(money)).toThrow(
+        NonFiniteAmountError
+      );
+    }
+  );
 });
