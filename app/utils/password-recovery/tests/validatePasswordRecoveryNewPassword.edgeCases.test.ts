@@ -5,28 +5,26 @@ import {
   type PasswordRecoveryErrorCode,
 } from "@/app/constants";
 import { createPasswordRecoveryError } from "../createPasswordRecoveryError";
-import type { PasswordRecoveryResetInput } from "../models/PasswordRecoveryResetInput.interface";
-import { validatePasswordRecoveryReset } from "../validatePasswordRecoveryReset";
+import type { PasswordRecoveryNewPasswordInput } from "../models/PasswordRecoveryNewPasswordInput.interface";
+import { validatePasswordRecoveryNewPassword } from "../validatePasswordRecoveryNewPassword";
 import {
-  DEFAULT_PASSWORD_RECOVERY_RESET_INPUT,
+  DEFAULT_PASSWORD_RECOVERY_NEW_PASSWORD_INPUT,
   MISMATCHED_CONFIRMATION,
   OVERLONG_NEW_PASSWORD,
-  PIN_WITH_LETTER,
-  UNNORMALIZED_USERNAME,
   WEAK_NEW_PASSWORD,
 } from "./passwordRecovery.constants";
 
 const withOverrides = (
-  overrides: Partial<PasswordRecoveryResetInput>
+  overrides: Partial<PasswordRecoveryNewPasswordInput>
 ) =>
-  validatePasswordRecoveryReset({
-    ...DEFAULT_PASSWORD_RECOVERY_RESET_INPUT,
+  validatePasswordRecoveryNewPassword({
+    ...DEFAULT_PASSWORD_RECOVERY_NEW_PASSWORD_INPUT,
     ...overrides,
   });
 
-const resetCases: [
+const passwordCases: [
   string,
-  Partial<PasswordRecoveryResetInput>,
+  Partial<PasswordRecoveryNewPasswordInput>,
   PasswordRecoveryErrorCode,
 ][] = [
   [
@@ -59,14 +57,8 @@ const resetCases: [
   ],
 ];
 
-describe("validatePasswordRecoveryReset edge cases", () => {
-  it("accepts a padded uppercase username like sign-in does", () => {
-    expect(
-      withOverrides({ username: UNNORMALIZED_USERNAME })
-    ).toBeNull();
-  });
-
-  it.each(resetCases)(
+describe("validatePasswordRecoveryNewPassword edge cases", () => {
+  it.each(passwordCases)(
     "reports %s with its own recovery code",
     (_label, overrides, expectedCode) => {
       expect(withOverrides(overrides)).toEqual(
@@ -97,19 +89,6 @@ describe("validatePasswordRecoveryReset edge cases", () => {
     ).toEqual(
       createPasswordRecoveryError(
         PASSWORD_RECOVERY_ERROR_CODE.NEW_PASSWORD_RULES
-      )
-    );
-  });
-
-  it("reports the PIN before a missing new password", () => {
-    expect(
-      withOverrides({
-        newPassword: STRING.Empty,
-        pin: PIN_WITH_LETTER,
-      })
-    ).toEqual(
-      createPasswordRecoveryError(
-        PASSWORD_RECOVERY_ERROR_CODE.PIN_FORMAT
       )
     );
   });
