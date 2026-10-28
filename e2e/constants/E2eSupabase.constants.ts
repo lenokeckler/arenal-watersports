@@ -9,6 +9,18 @@ export const E2E_LOCAL_SUPABASE_HOSTS: readonly string[] = [
   "localhost",
 ];
 
+export const E2E_SUPABASE_TABLE = {
+  PASSWORD_RESET_PINS: "password_reset_pins",
+  WORKER_AREAS: "worker_areas",
+  WORKER_MARKS: "worker_marks",
+  WORKERS: "workers",
+} as const;
+
+export const E2E_SUPABASE_COLUMN = {
+  ID: "id",
+  WORKER_ID: "worker_id",
+} as const;
+
 export const E2E_SUPABASE_CLIENT_OPTIONS = {
   auth: { autoRefreshToken: false, persistSession: false },
 } as const;
@@ -18,4 +30,9 @@ export const E2E_SUPABASE_ERROR = {
     `E2E needs ${name} in the environment or .env.local.`,
   NOT_LOCAL: (host: string): string =>
     `E2E only runs against the local Supabase, not ${host}.`,
+  OPERATION_FAILED: (
+    operation: string,
+    reason: string
+  ): string => `E2E could not ${operation}: ${reason}`,
+  REASON_SEPARATOR: "; ",
 } as const;
