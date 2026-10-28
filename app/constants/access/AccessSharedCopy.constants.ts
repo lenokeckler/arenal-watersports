@@ -6,6 +6,8 @@ export const ACCESS_SHARED_COPY = {
     "Su cuenta está bloqueada por administración. Consulte con administración.",
   ACCOUNT_BLOCKED_BY_ATTEMPTS:
     "Su cuenta está bloqueada por intentos fallidos. Pida a administración que la desbloquee.",
+  ACCOUNT_RECOVERY_REQUIRED:
+    "Superó los diez intentos permitidos. Recupere su contraseña con un PIN que enviaremos a su correo registrado.",
   BACK_TO_LOGIN: "Volver a ingresar",
   CONFIRMATION_MISMATCH: "Las contraseñas no coinciden.",
   CONFIRMATION_REQUIRED: "Repita la contraseña nueva.",
