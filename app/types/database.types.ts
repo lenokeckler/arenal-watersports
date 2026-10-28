@@ -2677,6 +2677,10 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: number;
       };
+      sign_in_requires_recovery: {
+        Args: { p_user_id: string };
+        Returns: boolean;
+      };
       touch_current_session_activity: {
         Args: Record<PropertyKey, never>;
         Returns: string;
