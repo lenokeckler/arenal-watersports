@@ -30,6 +30,8 @@ values ('66666666-6666-6666-6666-666666666666', 'administracion', '11111111-1111
        ('77777777-7777-7777-7777-777777777777', 'administracion', '11111111-1111-1111-1111-111111111111');
 update workers set status = 'blocked', blocked_reason = 'administration'
  where id = '77777777-7777-7777-7777-777777777777';
+update workers set last_work_area = 'administracion'
+ where id = '66666666-6666-6666-6666-666666666666';
 
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}';

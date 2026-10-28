@@ -19,6 +19,8 @@ insert into worker_marks (worker_id, mark, granted_by) values
   ('44444444-4444-4444-4444-444444444444', 'registro_guias_externos', '11111111-1111-1111-1111-111111111111');
 update workers set deleted_at = now()
  where id in ('22222222-2222-2222-2222-222222222222', '44444444-4444-4444-4444-444444444444');
+update workers set last_work_area = 'operaciones'
+ where id = '33333333-3333-3333-3333-333333333333';
 
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}';
