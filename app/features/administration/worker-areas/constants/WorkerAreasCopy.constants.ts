@@ -18,15 +18,15 @@ export const WORKER_AREAS_COPY = {
   EXTERNAL_GUIDE:
     "Las cuentas de guía externo no reciben áreas ni marcas adicionales.",
   GRANT: "Habilitar",
-  MARK_GRANT: "Poner",
-  MARK_GRANTING: "Poniendo…",
-  MARK_NOT_SET: "Sin poner",
-  MARK_SET: "Puesta",
+  MARK_GRANT: "Asignar",
+  MARK_GRANTING: "Asignando…",
+  MARK_NOT_SET: "Sin asignar",
+  MARK_SET: "Asignada",
   MARKS_TITLE: "Marcas de la cuenta",
   GRANTING: "Habilitando…",
   HEADING: "Cuenta de un trabajador",
   INSTRUCTION:
-    "Busque al trabajador por su nombre de usuario. Puede bloquear o desbloquear la cuenta, habilitarle un área completa más o ponerle una marca; el acceso cambia de inmediato.",
+    "Busque al trabajador por su nombre de usuario. Puede bloquear o desbloquear la cuenta, habilitarle un área completa más o asignarle una marca; el acceso cambia de inmediato.",
   METADATA_TITLE:
     "Cuenta de un trabajador — Arenal Water Sports",
   NOT_FOUND:
@@ -110,7 +110,7 @@ export const WORKER_MARK_CHANGED_NOTICE: Record<
   (markLabel: string) => string
 > = {
   [WORKER_AREA_INTENT.GRANT]: (markLabel) =>
-    `Se puso la marca ${markLabel}. No cambia su rol ni sus áreas.`,
+    `Se asignó la marca ${markLabel}. No cambia su rol ni sus áreas.`,
   [WORKER_AREA_INTENT.REVOKE]: (markLabel) =>
     `Se quitó la marca ${markLabel}.`,
 };
@@ -125,7 +125,7 @@ export const WORKER_MARK_CHANGE_ERROR: Record<
     "No se pudo cambiar la marca. Intente de nuevo.",
   [WORKER_MARK_CHANGE_RESULT.GRANTED]: "",
   [WORKER_MARK_CHANGE_RESULT.MARK_NOT_GRANTABLE]:
-    "Esa marca no se puede poner aquí.",
+    "Esa marca no se puede asignar aquí.",
   [WORKER_MARK_CHANGE_RESULT.NOT_ALLOWED]:
     "Solo la cuenta de administración puede cambiar marcas.",
   [WORKER_MARK_CHANGE_RESULT.NOT_FOUND]:
