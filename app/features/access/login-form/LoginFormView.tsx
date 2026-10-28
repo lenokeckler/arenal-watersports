@@ -1,16 +1,19 @@
 "use client";
 
 import FormErrorBanner from "@/app/components/form-error-banner/FormErrorBanner";
-import { SIGN_IN_FIELD } from "@/app/constants/access/SignInError.constants";
+import FormSuccessNotice from "@/app/components/form-success-notice/FormSuccessNotice";
+import NoticeUrlCleaner from "@/app/components/notice-url-cleaner/NoticeUrlCleaner";
+import { PATHS, SIGN_IN_FIELD } from "@/app/constants";
 import LoginFormFields from "./components/LoginFormFields";
 import LoginFormSubmit from "./components/LoginFormSubmit";
 import { useLoginFormViewModel } from "./hooks/useLoginFormViewModel";
-import type { LoginFormOptions } from "./models/LoginFormOptions.interface";
+import type { LoginFormViewProps } from "./models/LoginFormViewProps.interface";
 import { LOGIN_FORM_CLASS } from "./styles/LoginForm.styles";
 
 const LoginFormView = ({
   notice,
-}: LoginFormOptions): React.JSX.Element => {
+  noticeMessage,
+}: LoginFormViewProps): React.JSX.Element => {
   const {
     fieldErrors,
     fieldRefs,
@@ -23,11 +26,13 @@ const LoginFormView = ({
     usernameError,
     values,
   } = useLoginFormViewModel({ notice });
+  const formError = fieldErrors[SIGN_IN_FIELD.FORM];
 
   return (
     <>
-      <FormErrorBanner
-        message={fieldErrors[SIGN_IN_FIELD.FORM]}
+      <FormErrorBanner message={formError} />
+      <FormSuccessNotice
+        message={formError ? null : noticeMessage}
       />
       <form
         noValidate
@@ -45,6 +50,9 @@ const LoginFormView = ({
         />
         <LoginFormSubmit isPending={isPending} />
       </form>
+      {noticeMessage ? (
+        <NoticeUrlCleaner cleanPath={PATHS.ACCESS.LOGIN} />
+      ) : null}
     </>
   );
 };

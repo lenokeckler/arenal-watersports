@@ -13,7 +13,12 @@ const INACTIVITY_COPY =
 
 describe("LoginForm", () => {
   it("resolves a known reason into the banner notice", async () => {
-    render(<LoginForm reason={KNOWN_REASON} />);
+    render(
+      <LoginForm
+        notice={undefined}
+        reason={KNOWN_REASON}
+      />
+    );
 
     expect(
       await screen.findByText(INACTIVITY_COPY)
@@ -23,7 +28,12 @@ describe("LoginForm", () => {
   it.each([UNKNOWN_REASON, undefined, [KNOWN_REASON]])(
     "shows no notice for the reason %j",
     (reason) => {
-      render(<LoginForm reason={reason} />);
+      render(
+        <LoginForm
+          notice={undefined}
+          reason={reason}
+        />
+      );
 
       expect(
         screen.queryByText(INACTIVITY_COPY)

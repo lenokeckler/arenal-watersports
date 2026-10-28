@@ -1,4 +1,3 @@
-import { render } from "@testing-library/react";
 import {
   beforeEach,
   describe,
@@ -10,9 +9,7 @@ import { DEFAULT_SIGN_IN_CREDENTIALS } from "@/app/utils/sign-in/tests/signIn.co
 import { createSignInError } from "@/app/utils/sign-in/createSignInError";
 import { submitSignIn } from "../actions/submitSignIn";
 import { SIGN_IN_ERROR_COPY } from "../constants/SignInErrorCopy.constants";
-import LoginFormView from "../LoginFormView";
 import { ACCOUNT_BLOCK_CODES } from "./accountMessages.constants";
-import { createLoginFormViewPage } from "./LoginFormView.page";
 import { renderLoginFormView } from "./renderLoginFormView";
 import { INACTIVITY_NOTICE } from "./resolveLoginFormErrors.constants";
 import { INVALID_CREDENTIALS_ERROR } from "./submitSignIn.constants";
@@ -50,8 +47,9 @@ describe("LoginFormView account messages", () => {
     vi.mocked(submitSignIn).mockResolvedValue(
       createSignInError(code)
     );
-    render(<LoginFormView notice={INACTIVITY_NOTICE} />);
-    const page = createLoginFormViewPage();
+    const page = renderLoginFormView({
+      notice: INACTIVITY_NOTICE,
+    });
     await page.fillCredentials(DEFAULT_SIGN_IN_CREDENTIALS);
 
     await page.submit();
