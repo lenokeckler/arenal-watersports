@@ -1,14 +1,9 @@
-import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
-import { createPasswordChangeError } from "@/app/utils/password-change/createPasswordChangeError";
 import type { PasswordChangeInput } from "@/app/utils/password-change/models/PasswordChangeInput.interface";
 import { validatePasswordChange } from "@/app/utils/password-change/validatePasswordChange";
-import { isBlockedPasswordChangeError } from "@/app/utils/password-change/isBlockedPasswordChangeError";
 import type { PasswordChangeResult } from "./models/PasswordChangeResult.type";
-import { readSignedInWorker } from "./readSignedInWorker";
-import { signOutEverywhere } from "./signOutEverywhere";
+import { reauthenticateSettledWorker } from "./reauthenticateSettledWorker";
 import { updateOwnPassword } from "./updateOwnPassword";
-import { verifyCurrentPassword } from "./verifyCurrentPassword";
 
 export const changeOwnPassword = async (
   input: PasswordChangeInput
@@ -20,29 +15,14 @@ export const changeOwnPassword = async (
   }
 
   const supabase = await createServerSupabaseClient();
-  const worker = await readSignedInWorker(supabase);
+  const reauthentication =
+    await reauthenticateSettledWorker(
+      supabase,
+      input.currentPassword
+    );
 
-  if (!worker || worker.mustChangePassword) {
-    return {
-      ok: false,
-      error: createPasswordChangeError(
-        PASSWORD_CHANGE_ERROR_CODE.SESSION_INACTIVE
-      ),
-    };
-  }
-
-  const verificationError = await verifyCurrentPassword(
-    supabase,
-    worker,
-    input.currentPassword
-  );
-
-  if (verificationError) {
-    if (isBlockedPasswordChangeError(verificationError)) {
-      await signOutEverywhere(supabase);
-    }
-
-    return { ok: false, error: verificationError };
+  if (!reauthentication.ok) {
+    return reauthentication;
   }
 
   const updateError = await updateOwnPassword(
