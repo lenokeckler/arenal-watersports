@@ -1,0 +1,1 @@
+ACC-01.03.11: First sign-in screen — the first sign-in screen at /access/first-sign-in asks for the temporary password and the new one twice, shows the password rules before typing and each error next to its field (US-ACC-03 · AWS-32)
