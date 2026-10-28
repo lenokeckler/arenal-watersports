@@ -4,8 +4,7 @@ import { checkWorkerPassword } from "../checkWorkerPassword";
 import { readSignedInWorker } from "../readSignedInWorker";
 import { updateSignedInPassword } from "../updateSignedInPassword";
 import { FIRST_SIGN_IN_WORKER } from "./firstSignIn.constants";
-
-export const SUPABASE_CLIENT = {};
+import { SUPABASE_CLIENT } from "./supabaseClient.constants";
 
 export const arrangeSuccessfulPasswordChange = (): void => {
   vi.resetAllMocks();
