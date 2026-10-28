@@ -8,6 +8,7 @@ describe("login notice copy", () => {
       "password recovered",
       LOGIN_FORM_COPY.PASSWORD_RECOVERED_NOTICE,
     ],
+    ["session idle", LOGIN_FORM_COPY.SESSION_IDLE_NOTICE],
     ["signed out", LOGIN_FORM_COPY.SIGNED_OUT_NOTICE],
   ])(
     "has non-empty usted copy for the %s notice",
