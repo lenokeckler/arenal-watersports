@@ -2598,6 +2598,10 @@ export type Database = {
         };
         Returns: boolean;
       };
+      is_active_worker: {
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
       is_admin: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
