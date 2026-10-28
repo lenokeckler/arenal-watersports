@@ -1,0 +1,1 @@
+ACC-01.07.10: Recovery lifts the admin gate end to end — a browser test proves the PIN recovery is the way out after ten failures: it resets the counter to zero and the administration account signs in again (US-ACC-07 · AWS-36)
