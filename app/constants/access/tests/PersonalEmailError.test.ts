@@ -16,6 +16,14 @@ describe("personal email error codes", () => {
     }
   );
 
+  it("places the recovery required refusal on the form", () => {
+    expect(
+      PERSONAL_EMAIL_ERROR_FIELD[
+        PERSONAL_EMAIL_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED
+      ]
+    ).toBe(PERSONAL_EMAIL_FIELD.FORM);
+  });
+
   it.each(Object.values(REAUTHENTICATION_ERROR_CODE))(
     "includes the re-authentication code %s",
     (code) => {
