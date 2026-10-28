@@ -9,11 +9,13 @@ import { createLoginPage } from "../pages/Login.page";
 import { createPasswordRecoveryRequestPage } from "../pages/PasswordRecoveryRequest.page";
 import { createPasswordRecoveryResetPage } from "../pages/PasswordRecoveryReset.page";
 import { expectRecoveredLogin } from "../support/expectRecoveredLogin";
+import { expectRecoveryNewPasswordScreen } from "../support/expectRecoveryNewPasswordScreen";
 import { expectRecoveryResetScreen } from "../support/expectRecoveryResetScreen";
 import { readDeliveredRecoveryPin } from "../support/readDeliveredRecoveryPin";
 import { readMailText } from "../support/readMailText";
 import { recoverPassword } from "../support/recoverPassword";
 import { expect, test } from "../support/recoveryTest";
+import { saveRecoveryPassword } from "../support/saveRecoveryPassword";
 import { signInWithCredentials } from "../support/signInWithCredentials";
 import { waitForMailWithSubject } from "../support/waitForMailWithSubject";
 
@@ -39,13 +41,14 @@ test.describe("Password recovery reset", () => {
       recoveryAccount.username
     );
     const pin = await readDeliveredRecoveryPin(address);
-    await resetPage.fillForm({
-      confirmPassword: E2E_RECOVERY_PASSWORDS.NEW,
-      newPassword: E2E_RECOVERY_PASSWORDS.NEW,
-      pin,
-    });
-
+    await resetPage.fillPin(pin);
     await resetPage.submit();
+    await expectRecoveryNewPasswordScreen(page);
+
+    await saveRecoveryPassword(
+      page,
+      E2E_RECOVERY_PASSWORDS.NEW
+    );
 
     await expectRecoveredLogin(page);
     await expect(page).toHaveURL(PATHS.ACCESS.LOGIN, {

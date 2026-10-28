@@ -38,8 +38,6 @@ export const renderResetFields = (
       }
       return input;
     },
-    getItems: () =>
-      screen.queryAllByRole(ARIA_ROLE.LISTITEM),
   };
 };
 

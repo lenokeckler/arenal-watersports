@@ -156,7 +156,7 @@ La empresa no le da correo institucional a nadie, así que cada trabajador regis
 **Criterios de aceptación:**
 
 - La empresa no da correo propio, así que cada trabajador registra el suyo.
-- Es el correo al que llega el enlace de recuperación.
+- Es el correo al que llega el PIN de recuperación.
 
 ---
 

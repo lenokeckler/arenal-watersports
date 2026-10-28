@@ -13,19 +13,17 @@ export const ALL_RESET_COPY = [
 export const APPROVED_RESET_COPY = {
   CONFIRMATION:
     "Si la cuenta puede recuperarse, enviamos un PIN al correo registrado. Vence a los pocos minutos.",
-  CONFIRM_PASSWORD_LABEL: "Repetir contraseña nueva",
-  HEADING: "Restablezca su contraseña",
+  HEADING: "Escriba el PIN",
   METADATA_TITLE:
     "Restablecer contraseña — Arenal Water Sports",
-  NEW_PASSWORD_LABEL: "Contraseña nueva",
   NOT_RECEIVED_NOTE:
-    "¿No le llegó? Revise el correo no deseado o pida otro PIN.",
-  PASSWORD_PLACEHOLDER: "••••••••",
+    "Revise el correo no deseado. Si en unos minutos no llega, revise que el usuario esté bien escrito o pida ayuda a administración.",
+  NOT_RECEIVED_TITLE: "¿No le llegó el PIN?",
   PIN_HINT: "Son 6 dígitos.",
   PIN_LABEL: "PIN",
   REQUEST_ANOTHER_PIN: "Pedir otro PIN",
-  SUBMIT: "Guardar contraseña",
-  SUBMITTING: "Guardando…",
+  SUBMIT: "Continuar",
+  SUBMITTING: "Comprobando…",
 };
 
 export const APPROVED_RESET_UNKNOWN_COPY =
@@ -41,6 +39,8 @@ export const APPROVED_RESET_ERROR_COPY = {
     "Repita la contraseña nueva.",
   [PASSWORD_RECOVERY_ERROR_CODE.NETWORK]:
     ACCESS_SHARED_COPY.NETWORK,
+  [PASSWORD_RECOVERY_ERROR_CODE.NEW_PASSWORD_COMMON]:
+    "Esa contraseña es muy común y fácil de adivinar. Escoja otra.",
   [PASSWORD_RECOVERY_ERROR_CODE.NEW_PASSWORD_REQUIRED]:
     "Escriba la contraseña nueva.",
   [PASSWORD_RECOVERY_ERROR_CODE.NEW_PASSWORD_RULES]:
@@ -55,6 +55,8 @@ export const APPROVED_RESET_ERROR_COPY = {
     "El PIN no es correcto o ya venció. Pida uno nuevo si hace falta.",
   [PASSWORD_RECOVERY_ERROR_CODE.PIN_REQUIRED]:
     "Escriba el PIN.",
+  [PASSWORD_RECOVERY_ERROR_CODE.RESET_EXPIRED]:
+    "Pasó el tiempo para elegir la contraseña. Pida un PIN nuevo.",
   [PASSWORD_RECOVERY_ERROR_CODE.TOO_MANY_REQUESTS]:
     ACCESS_SHARED_COPY.TOO_MANY_REQUESTS,
   [PASSWORD_RECOVERY_ERROR_CODE.UNKNOWN]:
