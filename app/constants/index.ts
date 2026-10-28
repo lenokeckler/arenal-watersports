@@ -90,6 +90,18 @@ export {
 } from "./access/SignInError.constants";
 export { SUPABASE_AUTH_ERROR_CODE } from "./supabase/SupabaseAuthErrorCode.constants";
 export {
+  SIGN_IN_NOTICE_ERROR_CODE,
+  SIGN_IN_NOTICE_QUERY_PARAM,
+  SIGN_IN_NOTICE_REASON,
+  type SignInNoticeReason,
+} from "./access/SignInNotice.constants";
+export {
+  SIGN_IN_HOOK_REJECTION,
+  SIGN_IN_HOOK_REJECTION_ERROR_CODE,
+  type SignInHookRejection,
+} from "./access/SignInHookRejection.constants";
+export { SUPABASE_RPC } from "./supabase/SupabaseRpc.constants";
+export {
   SERVER_ERROR_REPORT,
   type ServerErrorReportLevel,
 } from "./observability/ServerErrorReport.constants";
