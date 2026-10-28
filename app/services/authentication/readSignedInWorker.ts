@@ -19,7 +19,7 @@ export const readSignedInWorker = async (
 
   const { data, error } = await supabase
     .from(SUPABASE_TABLE.WORKERS)
-    .select(SUPABASE_WORKER_COLUMN.FIRST_SIGN_IN)
+    .select(SUPABASE_WORKER_COLUMN.SIGNED_IN_WORKER)
     .eq(SUPABASE_WORKER_COLUMN.ID, userId)
     .maybeSingle();
 
@@ -30,6 +30,7 @@ export const readSignedInWorker = async (
   }
 
   return {
+    baseRole: data.base_role,
     id: userId,
     mustChangePassword: data.must_change_password,
     username: data.username,
