@@ -68,6 +68,7 @@ export const E2E_ARTIFACT_MODE = {
 
 export const HEADING_LEVEL = {
   PAGE: 1,
+  SCREEN: 2,
 } as const;
 
 export const E2E_LOAD_STATE = {

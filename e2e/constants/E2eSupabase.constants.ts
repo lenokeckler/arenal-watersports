@@ -11,12 +11,18 @@ export const E2E_LOCAL_SUPABASE_HOSTS: readonly string[] = [
 
 export const E2E_SUPABASE_TABLE = {
   PASSWORD_RESET_PINS: "password_reset_pins",
+  PASSWORD_RESET_REQUESTS: "password_reset_requests",
   WORKER_AREAS: "worker_areas",
   WORKER_MARKS: "worker_marks",
   WORKERS: "workers",
 } as const;
 
+export const E2E_SUPABASE_FILTER = {
+  IS: "is",
+} as const;
+
 export const E2E_SUPABASE_COLUMN = {
+  DELETED_AT: "deleted_at",
   FAILED_ATTEMPTS: "failed_attempts",
   ID: "id",
   PERSONAL_EMAIL: "personal_email",
