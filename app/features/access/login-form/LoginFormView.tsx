@@ -5,9 +5,12 @@ import { SIGN_IN_FIELD } from "@/app/constants/access/SignInError.constants";
 import LoginFormFields from "./components/LoginFormFields";
 import LoginFormSubmit from "./components/LoginFormSubmit";
 import { useLoginFormViewModel } from "./hooks/useLoginFormViewModel";
+import type { LoginFormOptions } from "./models/LoginFormOptions.interface";
 import { LOGIN_FORM_CLASS } from "./styles/LoginForm.styles";
 
-const LoginFormView = (): React.JSX.Element => {
+const LoginFormView = ({
+  notice,
+}: LoginFormOptions): React.JSX.Element => {
   const {
     fieldErrors,
     fieldRefs,
@@ -19,7 +22,7 @@ const LoginFormView = (): React.JSX.Element => {
     passwordError,
     usernameError,
     values,
-  } = useLoginFormViewModel();
+  } = useLoginFormViewModel({ notice });
 
   return (
     <>
