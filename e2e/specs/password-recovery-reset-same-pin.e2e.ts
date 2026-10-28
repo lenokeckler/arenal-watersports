@@ -41,7 +41,7 @@ test.describe("Password recovery with one PIN used twice at once", () => {
     ];
     await createPasswordRecoveryResetPage(
       racers[1].page
-    ).goTo(recoveryAccount.username);
+    ).goTo();
     for (const racer of racers) {
       await createPasswordRecoveryResetPage(
         racer.page

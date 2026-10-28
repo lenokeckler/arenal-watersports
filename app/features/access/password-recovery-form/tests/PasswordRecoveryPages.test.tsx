@@ -6,10 +6,8 @@ import PasswordRecoveryPage, {
 import PasswordRecoveryResetPage, {
   metadata as resetMetadata,
 } from "@/app/access/recovery/reset/page";
-import {
-  PASSWORD_RECOVERY_USERNAME_QUERY_PARAM,
-  STRING,
-} from "@/app/constants";
+import { STRING } from "@/app/constants";
+import { readPasswordRecoveryUsername } from "@/app/services/password-recovery";
 import { PASSWORD_RECOVERY_REQUEST_METADATA } from "../constants/PasswordRecoveryRequestMetadata.constants";
 import { PASSWORD_RECOVERY_RESET_METADATA } from "../constants/PasswordRecoveryResetMetadata.constants";
 import type { PasswordRecoveryResetFormProps } from "../models/PasswordRecoveryResetFormProps.interface";
@@ -24,6 +22,10 @@ import {
   PREFILL_ATTRIBUTE,
   SCRIPT_SELECTOR,
 } from "./passwordRecoveryView.constants";
+
+vi.mock("@/app/services/password-recovery", () => ({
+  readPasswordRecoveryUsername: vi.fn(),
+}));
 
 vi.mock("../PasswordRecoveryRequestForm", () => ({
   default: () => <div data-testid={ENTRY_TEST_ID} />,
@@ -42,15 +44,13 @@ vi.mock("../PasswordRecoveryResetForm", () => ({
 
 const renderResetPage = async (
   username: string | undefined
-) =>
-  render(
-    await PasswordRecoveryResetPage({
-      params: Promise.resolve({}),
-      searchParams: Promise.resolve({
-        [PASSWORD_RECOVERY_USERNAME_QUERY_PARAM]: username,
-      }),
-    })
+) => {
+  vi.mocked(readPasswordRecoveryUsername).mockResolvedValue(
+    username
   );
+
+  return render(await PasswordRecoveryResetPage());
+};
 
 describe("recovery pages", () => {
   it("titles each page with its metadata", () => {

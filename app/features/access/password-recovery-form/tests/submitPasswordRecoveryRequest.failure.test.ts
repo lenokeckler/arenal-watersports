@@ -23,6 +23,7 @@ import {
 
 vi.mock("@/app/services/password-recovery", () => ({
   requestPasswordRecovery: vi.fn(),
+  storePasswordRecoveryUsername: vi.fn(),
 }));
 
 vi.mock("@/app/services/request", () => ({

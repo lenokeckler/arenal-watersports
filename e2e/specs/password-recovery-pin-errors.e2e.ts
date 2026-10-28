@@ -86,7 +86,7 @@ test.describe("Password recovery PIN errors", () => {
       E2E_RECOVERY_PASSWORDS.NEW
     );
 
-    await resetPage.goTo(recoveryAccount.username);
+    await resetPage.goTo();
     await resetPage.fillPin(pin);
     await resetPage.submit();
 

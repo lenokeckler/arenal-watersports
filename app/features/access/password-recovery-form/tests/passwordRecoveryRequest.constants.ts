@@ -1,14 +1,10 @@
 import {
   PASSWORD_RECOVERY_ERROR_CODE,
-  PASSWORD_RECOVERY_USERNAME_QUERY_PARAM,
-  PATHS,
   STRING,
 } from "@/app/constants";
 import { createPasswordRecoveryError } from "@/app/utils/password-recovery/createPasswordRecoveryError";
-import { appendQueryParam } from "@/app/utils/pathname/appendQueryParam";
 
 export const RAW_USERNAME = "  Ana.Perez\t";
-export const NORMALIZED_USERNAME = "ana.perez";
 export const INJECTED_USERNAME = "ana&username=admin#x";
 export const SHORT_USERNAME = "ab";
 export const NETWORK_KEY = "a".repeat(64);
@@ -19,14 +15,6 @@ export const NETWORK_KEY_FAILURE_MESSAGE =
 export const FIRST_INVALID_SUBMIT = 1;
 export const NO_INVALID_SUBMITS = 0;
 export const FIELD_ERROR_TEXT = "field error";
-
-export const RESET_PATH_FOR_NORMALIZED = appendQueryParam(
-  PATHS.ACCESS.RECOVERY_RESET,
-  PASSWORD_RECOVERY_USERNAME_QUERY_PARAM,
-  NORMALIZED_USERNAME
-);
-export const RESET_PATH_FOR_INJECTED =
-  "/access/recovery/reset?username=ana%26username%3Dadmin%23x";
 
 export const UNKNOWN_ERROR = createPasswordRecoveryError(
   PASSWORD_RECOVERY_ERROR_CODE.UNKNOWN

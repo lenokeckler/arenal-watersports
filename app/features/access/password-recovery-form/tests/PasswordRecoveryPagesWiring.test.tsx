@@ -2,12 +2,16 @@ import { render, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import PasswordRecoveryPage from "@/app/access/recovery/page";
 import PasswordRecoveryResetPage from "@/app/access/recovery/reset/page";
-import { PASSWORD_RECOVERY_USERNAME_QUERY_PARAM } from "@/app/constants";
+import { readPasswordRecoveryUsername } from "@/app/services/password-recovery";
 import { submitPasswordRecoveryRequest } from "../actions/submitPasswordRecoveryRequest";
 import { submitPasswordRecoveryReset } from "../actions/submitPasswordRecoveryReset";
 import { ACCEPTED_USERNAME } from "./passwordRecoveryPrefill.constants";
 import { createPasswordRecoveryRequestFormViewPage } from "./PasswordRecoveryRequestFormView.page";
 import { createPasswordRecoveryResetFormViewPage } from "./PasswordRecoveryResetFormView.page";
+
+vi.mock("@/app/services/password-recovery", () => ({
+  readPasswordRecoveryUsername: vi.fn(),
+}));
 
 vi.mock("../actions/submitPasswordRecoveryRequest", () => ({
   submitPasswordRecoveryRequest: vi.fn(),
@@ -40,15 +44,10 @@ describe("recovery pages wired to their forms", () => {
     vi.mocked(
       submitPasswordRecoveryReset
     ).mockResolvedValue(null);
-    render(
-      await PasswordRecoveryResetPage({
-        params: Promise.resolve({}),
-        searchParams: Promise.resolve({
-          [PASSWORD_RECOVERY_USERNAME_QUERY_PARAM]:
-            ACCEPTED_USERNAME,
-        }),
-      })
-    );
+    vi.mocked(
+      readPasswordRecoveryUsername
+    ).mockResolvedValue(ACCEPTED_USERNAME);
+    render(await PasswordRecoveryResetPage());
     const page = createPasswordRecoveryResetFormViewPage();
 
     expect(page.getUsernameInput()).toHaveValue(
