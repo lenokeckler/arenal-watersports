@@ -81,6 +81,7 @@ export const HEADING_LEVEL = {
 } as const;
 
 export const E2E_LOAD_STATE = {
+  LOAD: "load",
   NETWORK_IDLE: "networkidle",
 } as const;
 
