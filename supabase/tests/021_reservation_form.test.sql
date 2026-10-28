@@ -1,5 +1,5 @@
 begin;
-select plan(16);
+select plan(17);
 
 insert into auth.users (id, email) values
   ('e2400000-0000-4000-8000-000000000001', 'res04-admin-fixture@arenal.local'),
@@ -34,6 +34,15 @@ select lives_ok(
     'e2400000-0000-4000-8000-000000000106', 1
   ) $$,
   'se acepta una categoria por cantidad sin unidades intercambiables'
+);
+
+select throws_ok(
+  $$ select create_rental_reservation(
+    'RES04 Fixture Lancha no intercambiable', 2, '2028-02-29', '11:30', 60,
+    'e2400000-0000-4000-8000-000000000102', 1
+  ) $$,
+  'P0001', null,
+  'no se acepta una categoria por unidad no intercambiable'
 );
 
 select lives_ok(
