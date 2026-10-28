@@ -22,11 +22,14 @@ export const E2E_SUPABASE_FILTER = {
 } as const;
 
 export const E2E_SUPABASE_COLUMN = {
+  CREATED_AT: "created_at",
+  EXPIRES_AT: "expires_at",
   DELETED_AT: "deleted_at",
   FAILED_ATTEMPTS: "failed_attempts",
   ID: "id",
   PERSONAL_EMAIL: "personal_email",
   STATUS: "status",
+  USERNAME: "username",
   WORKER_ID: "worker_id",
 } as const;
 

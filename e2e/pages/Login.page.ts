@@ -10,6 +10,7 @@ import {
   SIGN_IN_NOTICE_QUERY_PARAM,
   type SignInField,
 } from "@/app/constants";
+import { E2E_RECOVERED_LOGIN_PATH } from "../constants/E2ePasswordRecoveryPin.constants";
 import {
   E2E_LOGIN_COPY,
   E2E_LOGIN_FIELD_ID,
@@ -89,6 +90,9 @@ export const createLoginPage = (page: Page) => {
     fillUsername: (username: string): Promise<void> =>
       locators.getUsernameInput().fill(username),
     getFieldErrorId,
+    goToPasswordRecovered: async (): Promise<void> => {
+      await page.goto(E2E_RECOVERED_LOGIN_PATH);
+    },
     goTo: async (noticeReason?: string): Promise<void> => {
       await page.goto(buildLoginUrl(noticeReason));
     },
