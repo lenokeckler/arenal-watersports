@@ -170,6 +170,13 @@ export {
   type PasswordRecoveryErrorCode,
   type PasswordRecoveryField,
 } from "./access/PasswordRecoveryError.constants";
+
+export {
+  MAIL_ENVIRONMENT,
+  MAIL_ERROR_CODE,
+  MAIL_TRANSPORT,
+  type MailErrorCode,
+} from "./mail";
 export {
   SERVER_ERROR_REPORT,
   type ServerErrorReportLevel,
