@@ -3,7 +3,7 @@ import { PASSWORD_CHANGE_FIELD } from "@/app/constants/access/PasswordChangeErro
 import type { PasswordChangeFocusField } from "../models/PasswordChangeFocusField.type";
 import type { PasswordChangeFormFieldsProps } from "../models/PasswordChangeFormFieldsProps.interface";
 import { createPasswordChangeSharedFieldProps } from "../utils/createPasswordChangeSharedFieldProps";
-import PasswordChangeNewPasswordGroup from "./PasswordChangeNewPasswordGroup";
+import NewPasswordGroup from "@/app/components/new-password-group/NewPasswordGroup";
 import PasswordField from "@/app/components/password-field/PasswordField";
 
 const PasswordChangeFormFields = (
@@ -22,7 +22,7 @@ const PasswordChangeFormFields = (
         name={PASSWORD_CHANGE_FIELD.CURRENT_PASSWORD}
         label={props.copy.CURRENT_PASSWORD_LABEL}
       />
-      <PasswordChangeNewPasswordGroup
+      <NewPasswordGroup
         {...sharedProps(PASSWORD_CHANGE_FIELD.NEW_PASSWORD)}
         label={props.copy.NEW_PASSWORD_LABEL}
         passwordRules={props.passwordRules}
