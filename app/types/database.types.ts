@@ -2470,6 +2470,10 @@ export type Database = {
         Args: { event: Json };
         Returns: Json;
       };
+      finish_password_recovery: {
+        Args: { p_user_id: string };
+        Returns: undefined;
+      };
       has_area: {
         Args: {
           target: Database["public"]["Enums"]["work_area"];
