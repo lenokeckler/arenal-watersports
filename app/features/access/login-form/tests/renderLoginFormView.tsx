@@ -1,11 +1,17 @@
 import { render } from "@testing-library/react";
-import type { NullableRef } from "@/app/types";
 import LoginFormView from "../LoginFormView";
+import type { LoginFormViewProps } from "../models/LoginFormViewProps.interface";
 import { createLoginFormViewPage } from "./LoginFormView.page";
 
-export const renderLoginFormView = (
-  noticeMessage: NullableRef<string> = null
-) => {
-  render(<LoginFormView noticeMessage={noticeMessage} />);
+export const renderLoginFormView = ({
+  notice = null,
+  noticeMessage = null,
+}: Partial<LoginFormViewProps> = {}) => {
+  render(
+    <LoginFormView
+      notice={notice}
+      noticeMessage={noticeMessage}
+    />
+  );
   return createLoginFormViewPage();
 };
