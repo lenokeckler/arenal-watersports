@@ -1,20 +1,20 @@
 import { PASSWORD_RECOVERY_ERROR_CODE } from "@/app/constants";
 import { failPasswordRecovery } from "@/app/utils/password-recovery/failPasswordRecovery";
 import type { PasswordRecoveryResetInput } from "@/app/utils/password-recovery/models/PasswordRecoveryResetInput.interface";
-import { validatePasswordRecoveryReset } from "@/app/utils/password-recovery/validatePasswordRecoveryReset";
 import { attemptPasswordRecoveryFinish } from "./attemptPasswordRecoveryFinish";
 import { attemptPasswordResetPinConsume } from "./attemptPasswordResetPinConsume";
 import { attemptWorkerPasswordSet } from "./attemptWorkerPasswordSet";
 import type { DeferredTask } from "./models/DeferredTask.type";
 import type { PasswordRecoveryResetResult } from "./models/PasswordRecoveryResetResult.type";
 import { schedulePasswordChangedNoticeQuietly } from "./schedulePasswordChangedNoticeQuietly";
+import { validatePasswordRecoveryResetOnServer } from "./validatePasswordRecoveryResetOnServer";
 
 export const resetPasswordWithPin = async (
   input: PasswordRecoveryResetInput,
   defer: DeferredTask
 ): Promise<PasswordRecoveryResetResult> => {
   const validationError =
-    validatePasswordRecoveryReset(input);
+    validatePasswordRecoveryResetOnServer(input);
 
   if (validationError) {
     return { error: validationError, ok: false };

@@ -9,6 +9,9 @@ export const PASSWORD_RULES_PANEL_CLASS =
 export const PASSWORD_RULES_TITLE_CLASS =
   "font-mono text-label-mono uppercase text-on-surface-variant mb-xs";
 
+export const PASSWORD_RULES_HINT_CLASS =
+  "mt-xs text-sm text-on-surface-variant";
+
 export const PASSWORD_RULES_ITEM_ICON_CLASS =
   "shrink-0 text-xl mt-px";
 

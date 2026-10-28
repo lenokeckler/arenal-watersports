@@ -41,6 +41,8 @@ export const APPROVED_RESET_ERROR_COPY = {
     "Repita la contraseña nueva.",
   [PASSWORD_RECOVERY_ERROR_CODE.NETWORK]:
     ACCESS_SHARED_COPY.NETWORK,
+  [PASSWORD_RECOVERY_ERROR_CODE.NEW_PASSWORD_COMMON]:
+    "Esa contraseña es muy común y fácil de adivinar. Escoja otra.",
   [PASSWORD_RECOVERY_ERROR_CODE.NEW_PASSWORD_REQUIRED]:
     "Escriba la contraseña nueva.",
   [PASSWORD_RECOVERY_ERROR_CODE.NEW_PASSWORD_RULES]:

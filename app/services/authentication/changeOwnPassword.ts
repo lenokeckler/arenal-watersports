@@ -1,3 +1,4 @@
+import { validatePasswordNotCommon } from "@/app/services/password-policy";
 import { createServerSupabaseClient } from "@/app/services/supabase";
 import type { PasswordChangeInput } from "@/app/utils/password-change/models/PasswordChangeInput.interface";
 import { validatePasswordChange } from "@/app/utils/password-change/validatePasswordChange";
@@ -8,7 +9,9 @@ import { updateOwnPassword } from "./updateOwnPassword";
 export const changeOwnPassword = async (
   input: PasswordChangeInput
 ): Promise<PasswordChangeResult> => {
-  const validationError = validatePasswordChange(input);
+  const validationError =
+    validatePasswordChange(input) ??
+    validatePasswordNotCommon(input.newPassword);
 
   if (validationError) {
     return { ok: false, error: validationError };
