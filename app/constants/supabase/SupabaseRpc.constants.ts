@@ -9,4 +9,6 @@ export const SUPABASE_RPC = {
     "mark_password_reset_pin_undelivered",
   RECORD_FAILED_SIGN_IN: "record_failed_sign_in",
   RECORD_SUCCESSFUL_SIGN_IN: "record_successful_sign_in",
+  TOUCH_CURRENT_SESSION_ACTIVITY:
+    "touch_current_session_activity",
 } as const;
