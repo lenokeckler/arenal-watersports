@@ -37,14 +37,14 @@ set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","
 
 select throws_ok(
   $$ update workers set failed_attempts = 0 where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Solo administracion cambia el bloqueo de una cuenta',
+  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
   'un trabajador no reescribe el contador de intentos de su propia cuenta'
 );
 
 select throws_ok(
   $$ update workers set status = 'blocked', blocked_reason = 'administration'
       where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Solo administracion cambia el bloqueo de una cuenta',
+  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
   'un trabajador no cambia el estado de su propia cuenta'
 );
 
@@ -57,7 +57,7 @@ select throws_ok(
                           status, blocked_reason)
      values ('55555555-5555-5555-5555-555555555555', 'guia_bloqueado', 'Guia Bloqueado', 'operaciones',
              true, '111110001', now() + interval '30 days', 'blocked', 'administration') $$,
-  '42501', 'Solo administracion cambia el bloqueo de una cuenta',
+  '42501', 'Un guia externo nuevo nace activo, sin bloqueo y con cambio de contrasena pendiente',
   'reservas no registra un guia externo ya bloqueado'
 );
 
@@ -66,7 +66,7 @@ select throws_ok(
                           failed_attempts)
      values ('55555555-5555-5555-5555-555555555555', 'guia_contador', 'Guia Contador', 'operaciones',
              true, '111110001', now() + interval '30 days', 3) $$,
-  '42501', 'Solo administracion cambia el bloqueo de una cuenta',
+  '42501', 'Un guia externo nuevo nace activo, sin bloqueo y con cambio de contrasena pendiente',
   'reservas no registra un guia externo con intentos fallidos'
 );
 
