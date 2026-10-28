@@ -1,34 +1,14 @@
-import { Image, Title } from "@/app/components";
-import { TitleVariant } from "@/app/components/title/constants";
-import {
-  IMAGE_SIZES,
-  IMAGES_PATHS,
-} from "@/app/components/image/constants";
+import { IMAGE_ALTS } from "@/app/constants";
+import ScreenHeader from "@/app/components/screen-header/ScreenHeader";
 import { ACCESS_SCREEN_TITLE_ID } from "./constants/AccessScreen.constants";
 import { ACCESS_SCREEN_COPY } from "./constants/AccessScreenCopy.constants";
-import {
-  ACCESS_HEADER_CLASS,
-  ACCESS_HEADER_LOGO_CLASS,
-  ACCESS_HEADER_TITLE_CLASS,
-} from "./styles/AccessScreenHeader.styles";
 
 const AccessScreenHeader = (): React.JSX.Element => (
-  <header className={ACCESS_HEADER_CLASS}>
-    <Image
-      src={IMAGES_PATHS.ARENAL_LOGO}
-      alt={ACCESS_SCREEN_COPY.LOGO_ALT}
-      width={IMAGE_SIZES.LOGO}
-      height={IMAGE_SIZES.LOGO}
-      aria-hidden={false}
-      className={ACCESS_HEADER_LOGO_CLASS}
-    />
-    <Title
-      id={ACCESS_SCREEN_TITLE_ID}
-      variant={TitleVariant.PRIMARY}
-      text={ACCESS_SCREEN_COPY.TITLE}
-      className={ACCESS_HEADER_TITLE_CLASS}
-    />
-  </header>
+  <ScreenHeader
+    title={ACCESS_SCREEN_COPY.TITLE}
+    titleId={ACCESS_SCREEN_TITLE_ID}
+    logoAlt={IMAGE_ALTS.COMPANY_LOGO}
+  />
 );
 
 export default AccessScreenHeader;
