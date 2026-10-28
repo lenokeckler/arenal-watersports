@@ -16,6 +16,7 @@ import { ALREADY_CHANGED_WORKER as WORKER } from "./firstSignIn.constants";
 import {
   BLOCKED_BY_ADMINISTRATION_ERROR,
   BLOCKED_BY_ATTEMPTS_ERROR,
+  RECOVERY_REQUIRED_ERROR,
   UNAVAILABLE_ERROR,
 } from "./hookRejectionErrors.constants";
 import {
@@ -54,6 +55,11 @@ describe("verifyCurrentPassword failures", () => {
       "a block by administration",
       BLOCKED_BY_ADMINISTRATION_ERROR,
       PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION,
+    ],
+    [
+      "a recovery required refusal",
+      RECOVERY_REQUIRED_ERROR,
+      PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED,
     ],
     [
       "an unavailable account",
