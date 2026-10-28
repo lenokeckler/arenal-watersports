@@ -13,3 +13,5 @@ export const WORK_MODE_FIELD = {
 } as const;
 
 export const MULTI_AREA_MINIMUM = 2;
+
+export const WORK_MODE_REVALIDATE_SCOPE = "layout";

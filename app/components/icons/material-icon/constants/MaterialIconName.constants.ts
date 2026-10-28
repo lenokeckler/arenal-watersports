@@ -1,4 +1,5 @@
 export const MATERIAL_ICON_NAME = {
+  ADMIN_PANEL_SETTINGS: "admin_panel_settings",
   ARROW_BACK: "arrow_back",
   CANCEL: "cancel",
   CHECK: "check",
@@ -7,6 +8,7 @@ export const MATERIAL_ICON_NAME = {
   CONTENT_COPY: "content_copy",
   DELETE: "delete",
   ERROR: "error",
+  EVENT: "event",
   LOCK_RESET: "lock_reset",
   LOGIN: "login",
   LOGOUT: "logout",
@@ -14,6 +16,7 @@ export const MATERIAL_ICON_NAME = {
   PERSON_ADD: "person_add",
   PROGRESS_ACTIVITY: "progress_activity",
   RADIO_BUTTON_UNCHECKED: "radio_button_unchecked",
+  SAILING: "sailing",
   SEARCH: "search",
   VISIBILITY: "visibility",
   VISIBILITY_OFF: "visibility_off",
