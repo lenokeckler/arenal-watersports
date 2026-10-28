@@ -18,6 +18,11 @@ export const createSessionBarPage = (page: Page) => {
       name: E2E_LOGOUT_COPY.BUTTON,
     });
 
+  const press = (): Promise<void> =>
+    getIdleButton().click();
+  const confirmSignOut = (): Promise<void> =>
+    getConfirmButton().click();
+
   return {
     getAllLogoutButtons,
     getBar,
@@ -39,8 +44,11 @@ export const createSessionBarPage = (page: Page) => {
       ),
     getIdleButton,
     getConfirmButton,
-    press: (): Promise<void> => getIdleButton().click(),
-    confirmSignOut: (): Promise<void> =>
-      getConfirmButton().click(),
+    press,
+    confirmSignOut,
+    signOut: async (): Promise<void> => {
+      await press();
+      await confirmSignOut();
+    },
   };
 };

@@ -43,8 +43,7 @@ for (const { routes, title } of copiedCookieScenarios) {
           ).getTime()
         ).toBeGreaterThan(Date.now());
 
-        await sessionBar.press();
-        await sessionBar.confirmSignOut();
+        await sessionBar.signOut();
         await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
 
         await openRouteWithCopiedCookies(
@@ -72,8 +71,7 @@ test.describe("Back after sign-out", () => {
   }) => {
     const sessionBar = createSessionBarPage(page);
     await createProfilePage(page).goTo();
-    await sessionBar.press();
-    await sessionBar.confirmSignOut();
+    await sessionBar.signOut();
     await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
 
     await page.goBack({ waitUntil: E2E_LOAD_STATE.LOAD });
