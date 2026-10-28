@@ -2538,7 +2538,15 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: number;
       };
+      password_reset_retention_hours: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
       purge_expired_history: {
+        Args: Record<PropertyKey, never>;
+        Returns: undefined;
+      };
+      purge_password_reset_records: {
         Args: Record<PropertyKey, never>;
         Returns: undefined;
       };
