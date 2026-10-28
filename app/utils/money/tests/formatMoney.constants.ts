@@ -45,6 +45,18 @@ export const CRC_FOUR_DIGITS: Money = {
   amount: 2500,
   currency: CURRENCY_CODE.CRC,
 };
+export const USD_NAN: Money = {
+  amount: Number.NaN,
+  currency: CURRENCY_CODE.USD,
+};
+export const CRC_POSITIVE_INFINITY: Money = {
+  amount: Number.POSITIVE_INFINITY,
+  currency: CURRENCY_CODE.CRC,
+};
+export const USD_NEGATIVE_INFINITY: Money = {
+  amount: Number.NEGATIVE_INFINITY,
+  currency: CURRENCY_CODE.USD,
+};
 
 export const EXPECTED_USD_INTEGER = "US$\u00A050.00";
 export const EXPECTED_USD_WITH_CENTS = "US$\u00A01,250.50";
