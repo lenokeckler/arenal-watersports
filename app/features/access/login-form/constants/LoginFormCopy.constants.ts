@@ -7,6 +7,7 @@ export const LOGIN_FORM_COPY = {
   PASSWORD_RECOVERED_NOTICE:
     "Su contraseña se cambió. Ingrese con la nueva.",
   PASSWORD_PLACEHOLDER: "••••••••",
+  RECOVER_PASSWORD: "Recuperar mi contraseña",
   SESSION_IDLE_NOTICE:
     "Su sesión se cerró por inactividad. Ingrese de nuevo.",
   SIGNED_OUT_NOTICE: "Cerró su sesión en este dispositivo.",

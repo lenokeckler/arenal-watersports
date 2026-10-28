@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import { LOGIN_NOTICE_QUERY_PARAM } from "@/app/constants";
+import {
+  LOGIN_NOTICE_QUERY_PARAM,
+  SIGN_IN_NOTICE_QUERY_PARAM,
+} from "@/app/constants";
 import LoginForm from "@/app/features/access/login-form/LoginForm";
 import { LOGIN_FORM_METADATA } from "@/app/features/access/login-form/constants/LoginFormMetadata.constants";
 
@@ -11,7 +14,10 @@ const LoginPage = async ({
   const query = await searchParams;
 
   return (
-    <LoginForm notice={query[LOGIN_NOTICE_QUERY_PARAM]} />
+    <LoginForm
+      notice={query[LOGIN_NOTICE_QUERY_PARAM]}
+      reason={query[SIGN_IN_NOTICE_QUERY_PARAM]}
+    />
   );
 };
 
