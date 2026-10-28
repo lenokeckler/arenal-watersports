@@ -7,4 +7,5 @@ export const ARIA_ROLE = {
   MAIN: "main",
   LIST: "list",
   LISTITEM: "listitem",
+  STATUS: "status",
 } as const;

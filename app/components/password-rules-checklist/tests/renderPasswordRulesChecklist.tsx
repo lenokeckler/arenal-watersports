@@ -1,4 +1,5 @@
-import { render } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
+import { vi } from "vitest";
 import PasswordRulesChecklist from "../PasswordRulesChecklist";
 import type { PasswordRulesChecklistProps } from "../models/PasswordRulesChecklistProps.interface";
 import { createPasswordRulesChecklistPage } from "./PasswordRulesChecklist.page";
@@ -29,3 +30,8 @@ export const renderChecklist = (
     unmount: view.unmount,
   };
 };
+
+export const advance = (milliseconds: number) =>
+  act(() => {
+    vi.advanceTimersByTime(milliseconds);
+  });

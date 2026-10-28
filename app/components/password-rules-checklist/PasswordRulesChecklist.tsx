@@ -9,34 +9,45 @@ import {
   PASSWORD_RULES_PANEL_CLASS,
   PASSWORD_RULES_TITLE_CLASS,
 } from "./styles/PasswordRulesChecklist.styles";
+import { SCREEN_READER_ONLY_CLASS } from "@/app/styles/ScreenReader.styles";
 
 const PasswordRulesChecklist = ({
   id,
   results,
   showFailures,
 }: PasswordRulesChecklistProps): React.JSX.Element => {
-  const { items, titleId } =
+  const { items, summary, titleId } =
     usePasswordRulesChecklistViewModel(
       id,
       results,
       showFailures
     );
   return (
-    <div className={PASSWORD_RULES_PANEL_CLASS}>
+    <>
+      <div className={PASSWORD_RULES_PANEL_CLASS}>
+        <Text
+          id={titleId}
+          className={PASSWORD_RULES_TITLE_CLASS}
+        >
+          {PASSWORD_RULES_COPY.TITLE}
+        </Text>
+        <UnorderedList
+          id={id}
+          role={ARIA_ROLE.LIST}
+          aria-labelledby={titleId}
+          variant={UNORDERED_LIST.VARIANTS.CHECKLIST}
+          items={items}
+        />
+      </div>
       <Text
-        id={titleId}
-        className={PASSWORD_RULES_TITLE_CLASS}
+        role={ARIA_ROLE.STATUS}
+        aria-live="polite"
+        aria-atomic="true"
+        className={SCREEN_READER_ONLY_CLASS}
       >
-        {PASSWORD_RULES_COPY.TITLE}
+        {summary}
       </Text>
-      <UnorderedList
-        id={id}
-        role={ARIA_ROLE.LIST}
-        aria-labelledby={titleId}
-        variant={UNORDERED_LIST.VARIANTS.CHECKLIST}
-        items={items}
-      />
-    </div>
+    </>
   );
 };
 

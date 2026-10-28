@@ -45,6 +45,22 @@ export const createPasswordRulesChecklistPage = () => {
     );
   };
 
+  const getStatus = () =>
+    screen.getByRole(ARIA_ROLE.STATUS);
+
+  const observeStatus = () => {
+    const observer = new MutationObserver(() => undefined);
+    observer.observe(getStatus(), {
+      characterData: true,
+      childList: true,
+      subtree: true,
+    });
+    return {
+      disconnect: () => observer.disconnect(),
+      takeChangeCount: () => observer.takeRecords().length,
+    };
+  };
+
   const getList = () => screen.getByRole(ARIA_ROLE.LIST);
 
   const getTitle = (id: string) =>
@@ -59,6 +75,8 @@ export const createPasswordRulesChecklistPage = () => {
     getList,
     getListById,
     getState,
+    getStatus,
     getTitle,
+    observeStatus,
   };
 };
