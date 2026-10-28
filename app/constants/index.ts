@@ -246,6 +246,12 @@ export {
   type WorkerMarkChangeResult,
 } from "./administration/WorkerMarks.constants";
 export {
+  MULTI_AREA_MINIMUM,
+  WORK_MODE_FIELD,
+  WORK_MODE_RESULT,
+  type WorkModeResult,
+} from "./access/WorkMode.constants";
+export {
   SERVER_ERROR_REPORT,
   type ServerErrorReportLevel,
 } from "./observability/ServerErrorReport.constants";
