@@ -18,3 +18,6 @@ export const NETWORK_ERROR = createPasswordChangeError(
 export const UNKNOWN_ERROR = createPasswordChangeError(
   PASSWORD_CHANGE_ERROR_CODE.UNKNOWN
 );
+
+export const SERVICE_FAILURE_MESSAGE =
+  "service unavailable";

@@ -111,13 +111,17 @@ export {
 export { PASSWORD_SYMBOLS } from "./access/PasswordSymbols.constants";
 export { PASSWORD_CHARACTER_RANGE } from "./access/PasswordCharacterRange.constants";
 export {
-  BLOCKED_PASSWORD_CHANGE_ERROR_CODES,
   PASSWORD_CHANGE_ERROR_CODE,
   PASSWORD_CHANGE_ERROR_FIELD,
   PASSWORD_CHANGE_FIELD,
+  type BlockedPasswordChangeErrorCode,
   type PasswordChangeErrorCode,
   type PasswordChangeField,
 } from "./access/PasswordChangeError.constants";
+export {
+  BLOCKED_PASSWORD_CHANGE_ERROR_CODES,
+  BLOCKED_PASSWORD_CHANGE_NOTICE_REASON,
+} from "./access/BlockedPasswordChange.constants";
 export { SUPABASE_TABLE } from "./supabase/SupabaseTable.constants";
 export { SUPABASE_SIGN_OUT_SCOPE } from "./supabase/SupabaseSignOutScope.constants";
 export { SUPABASE_AUTH_OPERATION } from "./supabase/SupabaseAuthOperation.constants";
@@ -126,6 +130,12 @@ export { SUPABASE_WORKER_BLOCKED_REASON } from "./supabase/SupabaseWorkerBlocked
 export { PASSWORD_UPDATE_ERROR_CODE } from "./access/PasswordUpdateErrorCode.constants";
 export { SESSION_REFRESH_ERROR_MESSAGE } from "./access/SessionRefreshErrorMessage.constants";
 export { ACCESS_SHARED_COPY } from "./access/AccessSharedCopy.constants";
+export {
+  PROFILE_NOTICE,
+  PROFILE_NOTICE_QUERY_PARAM,
+  type ProfileNotice,
+} from "./access/ProfileNotice.constants";
+export { PROFILE_SCREEN_TITLE_ID } from "./access/ProfileScreen.constants";
 export {
   SERVER_ERROR_REPORT,
   type ServerErrorReportLevel,

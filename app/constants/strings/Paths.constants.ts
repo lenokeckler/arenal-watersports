@@ -5,4 +5,11 @@ export const PATHS = {
     LOGIN: "/access/login",
     ROOT: "/access",
   },
+  PROFILE: {
+    PASSWORD: "/profile/password",
+    ROOT: "/profile",
+  },
+  WELL_KNOWN: {
+    CHANGE_PASSWORD: "/.well-known/change-password",
+  },
 } as const;
