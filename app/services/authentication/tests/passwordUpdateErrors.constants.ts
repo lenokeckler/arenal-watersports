@@ -1,0 +1,25 @@
+import { AuthApiError } from "@supabase/supabase-js";
+import {
+  HTTP_STATUS,
+  SUPABASE_AUTH_ERROR_CODE,
+} from "@/app/constants";
+
+const REJECTED_MESSAGE = "rejected by the auth server";
+
+export const SAME_PASSWORD_ERROR = new AuthApiError(
+  REJECTED_MESSAGE,
+  HTTP_STATUS.UNPROCESSABLE_ENTITY,
+  SUPABASE_AUTH_ERROR_CODE.SAME_PASSWORD
+);
+
+export const WEAK_PASSWORD_ERROR = new AuthApiError(
+  REJECTED_MESSAGE,
+  HTTP_STATUS.UNPROCESSABLE_ENTITY,
+  SUPABASE_AUTH_ERROR_CODE.WEAK_PASSWORD
+);
+
+export const VALIDATION_FAILED_ERROR = new AuthApiError(
+  REJECTED_MESSAGE,
+  HTTP_STATUS.BAD_REQUEST,
+  SUPABASE_AUTH_ERROR_CODE.VALIDATION_FAILED
+);
