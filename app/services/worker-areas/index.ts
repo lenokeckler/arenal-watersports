@@ -1,3 +1,5 @@
+export { changeWorkerAccount } from "./changeWorkerAccount";
+export { changeWorkerAccountAsSignedIn } from "./changeWorkerAccountAsSignedIn";
 export { changeWorkerArea } from "./changeWorkerArea";
 export { changeWorkerAreaAsSignedIn } from "./changeWorkerAreaAsSignedIn";
 export { changeWorkerMark } from "./changeWorkerMark";

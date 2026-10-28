@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import {
+  WORKER_ACCOUNT_STATE,
   GRANTABLE_WORKER_MARKS,
   SUPABASE_WORK_AREA,
   SUPABASE_WORKER_MARK,
@@ -24,6 +25,8 @@ vi.mock("@/app/services/worker-areas", () => ({
 }));
 
 const OVERVIEW = {
+  accountState: WORKER_ACCOUNT_STATE.ACTIVE,
+  hasPersonalEmail: false,
   areas: [SUPABASE_WORK_AREA.OPERATIONS],
   baseRole: SUPABASE_WORK_AREA.OPERATIONS,
   fullName: "Celso Rojas",
