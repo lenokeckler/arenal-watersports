@@ -1,9 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants";
+import {
+  PASSWORD_CHANGE_ERROR_CODE,
+  PASSWORD_CHANGE_FIELD,
+} from "@/app/constants";
 import { mapCurrentPasswordError } from "../mapCurrentPasswordError";
 import {
   BLOCKED_BY_ADMINISTRATION_ERROR,
   BLOCKED_BY_ATTEMPTS_ERROR,
+  RECOVERY_REQUIRED_ERROR,
   UNAVAILABLE_ERROR,
 } from "./hookRejectionErrors.constants";
 import {
@@ -38,6 +42,11 @@ describe("mapCurrentPasswordError", () => {
       "a block by administration",
       BLOCKED_BY_ADMINISTRATION_ERROR,
       PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION,
+    ],
+    [
+      "a recovery required refusal",
+      RECOVERY_REQUIRED_ERROR,
+      PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED,
     ],
     [
       "a network error",
@@ -76,5 +85,14 @@ describe("mapCurrentPasswordError", () => {
     ],
   ])("maps %s", (_name, error, code) => {
     expect(mapCurrentPasswordError(error).code).toBe(code);
+  });
+
+  it("places a recovery required refusal on the form", () => {
+    expect(
+      mapCurrentPasswordError(RECOVERY_REQUIRED_ERROR)
+    ).toEqual({
+      code: PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED,
+      field: PASSWORD_CHANGE_FIELD.FORM,
+    });
   });
 });
