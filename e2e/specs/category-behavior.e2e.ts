@@ -124,6 +124,52 @@ test.describe("Category behavior", () => {
     }
   });
 
+  test("interchangeable units is locked on for quantity categories and editable for unit categories", async ({
+    page,
+  }, testInfo) => {
+    const quantityCategoryName =
+      resolveCategoryBehaviorFixtureName(
+        testInfo.project.name,
+        "interchangeable-quantity"
+      );
+    const unitCategoryName =
+      resolveCategoryBehaviorFixtureName(
+        testInfo.project.name,
+        "interchangeable-unit"
+      );
+    await seedCategoryWithBehavior(quantityCategoryName, {
+      trackingMode: CATEGORY_TRACKING_MODE.BY_QUANTITY,
+    });
+    await seedCategoryWithBehavior(unitCategoryName);
+    const categoryBehaviorFormPage =
+      createCategoryBehaviorFormPage(page);
+
+    try {
+      await logInAsAdmin(page);
+      await categoryBehaviorFormPage.goTo(
+        await findCategoryId(quantityCategoryName)
+      );
+
+      await expect(
+        categoryBehaviorFormPage.getUnitsAreInterchangeableCheckbox()
+      ).toBeChecked();
+      await expect(
+        categoryBehaviorFormPage.getUnitsAreInterchangeableCheckbox()
+      ).toBeDisabled();
+
+      await categoryBehaviorFormPage.goTo(
+        await findCategoryId(unitCategoryName)
+      );
+
+      await expect(
+        categoryBehaviorFormPage.getUnitsAreInterchangeableCheckbox()
+      ).toBeEnabled();
+    } finally {
+      await removeDeletableCategory(quantityCategoryName);
+      await removeDeletableCategory(unitCategoryName);
+    }
+  });
+
   test("a reservable category without a duration shows the error and does not save", async ({
     page,
   }, testInfo) => {
