@@ -46,6 +46,7 @@ export { POSITION } from "./strings/Position.types";
 export type { Position } from "./strings/Position.types";
 export { KEYBOARD } from "./strings/Keyboard.types";
 export { PATHS } from "./strings/Paths.constants";
+export { UUID_PATTERN } from "./strings/UUIDPattern.constants";
 export {
   WORK_AREA,
   type WorkArea,

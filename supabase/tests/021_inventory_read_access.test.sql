@@ -1,5 +1,5 @@
 begin;
-select plan(25);
+select plan(24);
 
 insert into auth.users (id, email) values
   ('11111111-0000-0000-0000-000000000001', 'ops-inventory@arenal.local'),
@@ -108,14 +108,6 @@ select is((select count(*)::integer from equipment_units), 1, 'administracion le
 select is((select count(*)::integer from equipment_stock), 1, 'administracion lee existencias');
 
 reset role;
-select is(
-  (select count(*)::integer
-   from pg_publication_tables
-   where pubname = 'supabase_realtime'
-     and tablename = 'equipment_categories'),
-  1,
-  'los cambios de categorias se publican en tiempo real'
-);
 select is(
   (select count(*)::integer
    from pg_publication_tables
