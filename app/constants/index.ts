@@ -108,6 +108,13 @@ export {
 export { PASSWORD_SYMBOLS } from "./access/PasswordSymbols.constants";
 export { PASSWORD_CHARACTER_RANGE } from "./access/PasswordCharacterRange.constants";
 export {
+  PASSWORD_CHANGE_ERROR_CODE,
+  PASSWORD_CHANGE_ERROR_FIELD,
+  PASSWORD_CHANGE_FIELD,
+  type PasswordChangeErrorCode,
+  type PasswordChangeField,
+} from "./access/PasswordChangeError.constants";
+export {
   SERVER_ERROR_REPORT,
   type ServerErrorReportLevel,
 } from "./observability/ServerErrorReport.constants";
