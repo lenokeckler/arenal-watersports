@@ -95,7 +95,9 @@ describe("LoginFormView recovery entry", () => {
   });
 
   it("shows the notice and cleans the url when a notice arrives", () => {
-    const page = renderView(RECOVERED_NOTICE);
+    const page = renderView({
+      noticeMessage: RECOVERED_NOTICE,
+    });
 
     expect(page.queryNotice()).toHaveTextContent(
       RECOVERED_NOTICE
@@ -114,7 +116,9 @@ describe("LoginFormView recovery entry", () => {
     vi.mocked(submitSignIn).mockResolvedValue(
       NETWORK_ERROR
     );
-    const page = renderView(RECOVERED_NOTICE);
+    const page = renderView({
+      noticeMessage: RECOVERED_NOTICE,
+    });
 
     await page.fillCredentials(DEFAULT_SIGN_IN_CREDENTIALS);
     await page.submit();
@@ -143,7 +147,9 @@ describe("LoginFormView signed-out notice", () => {
   });
 
   it("shows the signed-out notice as a status and cleans the url", () => {
-    const page = renderView(SIGNED_OUT_NOTICE);
+    const page = renderView({
+      noticeMessage: SIGNED_OUT_NOTICE,
+    });
 
     expect(page.queryNotice()).toHaveTextContent(
       SIGNED_OUT_NOTICE
@@ -152,7 +158,9 @@ describe("LoginFormView signed-out notice", () => {
   });
 
   it("leaves the username and password empty beside the notice", () => {
-    const page = renderView(SIGNED_OUT_NOTICE);
+    const page = renderView({
+      noticeMessage: SIGNED_OUT_NOTICE,
+    });
 
     expect(page.getUsernameInput()).toHaveValue("");
     expect(page.getPasswordInput()).toHaveValue("");
@@ -162,7 +170,9 @@ describe("LoginFormView signed-out notice", () => {
     vi.mocked(submitSignIn).mockResolvedValue(
       NETWORK_ERROR
     );
-    const page = renderView(SIGNED_OUT_NOTICE);
+    const page = renderView({
+      noticeMessage: SIGNED_OUT_NOTICE,
+    });
 
     await page.fillCredentials(DEFAULT_SIGN_IN_CREDENTIALS);
     await page.submit();
