@@ -24,6 +24,16 @@ export const expectRecoveryResetScreen = async (
     await expect(element).toBeVisible();
   }
 
+  for (const help of resetPage.getFoldedHelp()) {
+    await expect(help).toBeHidden();
+  }
+
+  await resetPage.openNotReceivedHelp();
+
+  for (const help of resetPage.getFoldedHelp()) {
+    await expect(help).toBeVisible();
+  }
+
   await expect(resetPage.getUsernameInput()).toHaveValue(
     username
   );

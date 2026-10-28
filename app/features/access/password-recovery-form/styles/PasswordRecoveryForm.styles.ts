@@ -66,8 +66,20 @@ export const resolvePasswordRecoveryPinBoxClassName = ({
     isNext && PASSWORD_RECOVERY_PIN_BOX_NEXT_CLASS
   );
 
-export const PASSWORD_RECOVERY_NOT_RECEIVED_CARD_CLASS =
-  "flex flex-col gap-xs rounded-xl border border-outline-variant bg-surface-container-low/60 p-md";
+export const PASSWORD_RECOVERY_NOT_RECEIVED_CLASS =
+  "flex flex-col items-start gap-xs";
 
-export const PASSWORD_RECOVERY_NOT_RECEIVED_TITLE_CLASS =
-  "text-title-md font-semibold text-on-surface";
+export const PASSWORD_RECOVERY_NOT_RECEIVED_SUMMARY_CLASS =
+  "flex min-h-12 cursor-pointer list-none items-center gap-xs rounded-lg text-body-base font-semibold text-on-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden";
+
+export const PASSWORD_RECOVERY_NOT_RECEIVED_ICON_CLASS =
+  "text-primary transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none";
+
+export const PASSWORD_RECOVERY_NOT_RECEIVED_DETAILS_CLASS =
+  "group w-full";
+
+export const PASSWORD_RECOVERY_NOT_RECEIVED_HELP_CLASS =
+  "flex flex-col gap-xs pb-xs";
+
+export const PASSWORD_RECOVERY_SENT_NOTICE_CLASS =
+  "text-body-base text-on-surface-variant";
