@@ -186,6 +186,9 @@ export {
   CLIENT_ADDRESS,
   CLIENT_RUNTIME,
   IP_VERSION,
+  NETWORK_KEY,
+  NETWORK_KEY_ERROR_CODE,
+  type NetworkKeyErrorCode,
 } from "./request";
 export {
   SERVER_ERROR_REPORT,

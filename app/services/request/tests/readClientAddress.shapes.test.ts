@@ -1,8 +1,12 @@
 import { describe, expect, it } from "vitest";
+import { deriveClientNetworkKey } from "../deriveClientNetworkKey";
 import { createHeaders } from "./createHeaders";
 import { createStubHeaders } from "./createStubHeaders";
 import { readTrustedAddress } from "./readTrustedAddress";
-import { VERCEL_HEADER } from "./request.constants";
+import {
+  NETWORK_KEY_PATTERN,
+  VERCEL_HEADER,
+} from "./request.constants";
 import {
   BRACKETED_IPV6,
   BRACKETED_IPV6_PREFIX,
@@ -16,6 +20,7 @@ import {
   MAPPED_IPV4_RESULT,
   MIXED_CASE_IPV6,
   MIXED_CASE_IPV6_PREFIX,
+  SECRET_AT_MINIMUM,
   UNICODE_ADDRESS_UPPER,
   ZONED_MAPPED_IPV6,
   WIDE_UNICODE_ADDRESS,
@@ -84,6 +89,9 @@ describe("readClientAddress address shapes", () => {
       );
 
       expect(address).toBeNull();
+      expect(
+        deriveClientNetworkKey(address, SECRET_AT_MINIMUM)
+      ).toMatch(NETWORK_KEY_PATTERN);
     }
   );
 

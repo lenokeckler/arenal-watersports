@@ -13,6 +13,14 @@ export const EMPTY_VALUE = "";
 export const BLANK_VALUE = "   ";
 export const EMPTY_FIRST_HOP = `, ${OTHER_IPV4_ADDRESS}`;
 
+export const VALID_SECRET = "a".repeat(32);
+export const OTHER_SECRET = "b".repeat(32);
+export const SHORT_SECRET = "c".repeat(31);
+export const PADDED_SHORT_SECRET = `  ${"d".repeat(31)}  `;
+export const BLANK_SECRET = "   ";
+
+export const NETWORK_KEY_PATTERN = /^[0-9a-f]{64}$/;
+
 export const IPV4_WITH_PORT = `${IPV4_ADDRESS}:5678`;
 export const BRACKETED_IPV6_NO_PORT = "[2001:db8::1]";
 export const BRACKETED_IPV6_WITH_PORT_VALUE =
