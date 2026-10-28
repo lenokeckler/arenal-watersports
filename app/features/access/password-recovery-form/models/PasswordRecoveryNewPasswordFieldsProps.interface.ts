@@ -2,5 +2,5 @@ import type { PasswordRecoveryNewPasswordViewModel } from "./PasswordRecoveryNew
 
 export type PasswordRecoveryNewPasswordFieldsProps = Omit<
   PasswordRecoveryNewPasswordViewModel,
-  "formAction" | "onSubmit"
+  "formAction" | "isResetExpired" | "onSubmit"
 >;

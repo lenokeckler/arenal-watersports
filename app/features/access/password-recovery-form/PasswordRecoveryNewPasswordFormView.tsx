@@ -2,7 +2,6 @@
 
 import { FORM_STACK_CLASS } from "@/app/components/form-layout/styles/FormLayout.styles";
 import { PASSWORD_RECOVERY_FIELD } from "@/app/constants";
-import PasswordRecoveryAnotherPinLink from "./components/PasswordRecoveryAnotherPinLink";
 import PasswordRecoveryBackLink from "./components/PasswordRecoveryBackLink";
 import PasswordRecoveryNewPasswordFields from "./components/PasswordRecoveryNewPasswordFields";
 import PasswordRecoveryNewPasswordHeading from "./components/PasswordRecoveryNewPasswordHeading";
@@ -13,8 +12,12 @@ import type { PasswordRecoveryNewPasswordFormViewProps } from "./models/Password
 const PasswordRecoveryNewPasswordFormView = ({
   action,
 }: PasswordRecoveryNewPasswordFormViewProps): React.JSX.Element => {
-  const { formAction, onSubmit, ...fields } =
-    usePasswordRecoveryNewPasswordViewModel(action);
+  const {
+    formAction,
+    isResetExpired,
+    onSubmit,
+    ...fields
+  } = usePasswordRecoveryNewPasswordViewModel(action);
 
   return (
     <>
@@ -31,9 +34,9 @@ const PasswordRecoveryNewPasswordFormView = ({
             fields.fieldErrors[PASSWORD_RECOVERY_FIELD.FORM]
           }
           isPending={fields.isPending}
+          showsAnotherPinLink={isResetExpired}
         />
       </form>
-      <PasswordRecoveryAnotherPinLink />
       <PasswordRecoveryBackLink />
     </>
   );

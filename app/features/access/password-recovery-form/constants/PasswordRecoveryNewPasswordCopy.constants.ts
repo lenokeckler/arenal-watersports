@@ -3,8 +3,6 @@ import { ACCESS_SHARED_COPY } from "@/app/constants";
 export const PASSWORD_RECOVERY_NEW_PASSWORD_COPY = {
   CONFIRM_PASSWORD_LABEL: "Repetir contraseña nueva",
   HEADING: "Elija su contraseña nueva",
-  INTRO:
-    "El PIN es correcto. Tiene unos minutos para guardar la contraseña nueva.",
   METADATA_TITLE: "Contraseña nueva — Arenal Water Sports",
   NEW_PASSWORD_LABEL: "Contraseña nueva",
   PASSWORD_PLACEHOLDER:

@@ -82,7 +82,6 @@ export const createPasswordRecoveryNewPasswordPage = (
       getRulesTitle(),
       getConfirmPasswordInput(),
       getSubmitButton(),
-      getAnotherPinLink(),
       getBackLink(),
     ],
     goTo: async (): Promise<void> => {
