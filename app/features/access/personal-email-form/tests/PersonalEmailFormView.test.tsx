@@ -1,6 +1,7 @@
 import { waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import {
+  ACCESS_SHARED_COPY,
   AUTOCOMPLETE,
   PATHS,
   PERSONAL_EMAIL_INTENT,
@@ -22,7 +23,10 @@ import {
   SINGLE_ALERT,
 } from "./personalEmailFormView.constants";
 import { SAVE_INPUT } from "./personalEmailForm.constants";
-import { NETWORK_ERROR } from "./personalEmailErrors.constants";
+import {
+  NETWORK_ERROR,
+  RECOVERY_REQUIRED_ERROR,
+} from "./personalEmailErrors.constants";
 import { renderPersonalEmailFormView } from "./renderPersonalEmailFormView";
 
 describe("PersonalEmailFormView", () => {
@@ -107,6 +111,21 @@ describe("PersonalEmailFormView", () => {
 
     await waitFor(() =>
       expect(page.queryAlerts()).toHaveLength(SINGLE_ALERT)
+    );
+  });
+
+  it("shows the recovery required refusal in the form alert", async () => {
+    const page = renderPersonalEmailFormView({
+      action: vi
+        .fn()
+        .mockResolvedValue(RECOVERY_REQUIRED_ERROR),
+    });
+    await page.fill(SAVE_INPUT);
+
+    await page.clickSave();
+
+    expect(await page.findAlert()).toHaveTextContent(
+      ACCESS_SHARED_COPY.ACCOUNT_RECOVERY_REQUIRED
     );
   });
 });

@@ -1,4 +1,3 @@
-import { expect, test } from "@playwright/test";
 import { INPUT_TYPES, PATHS } from "@/app/constants";
 import {
   E2E_LOGIN_ACCOUNT,
@@ -9,6 +8,7 @@ import {
   E2E_LOGIN_WRONG_PASSWORD,
 } from "../constants/E2eLogin.constants";
 import { createLoginPage } from "../pages/Login.page";
+import { expect, test } from "../support/activeWorkerTest";
 
 test.describe("Login", () => {
   test("shows the title, both labelled fields and the submit button", async ({
@@ -53,13 +53,12 @@ test.describe("Login", () => {
   });
 
   test("shows the credentials error under the password and focuses it on a wrong password", async ({
+    activeWorker,
     page,
   }) => {
     const loginPage = createLoginPage(page);
     await loginPage.goTo();
-    await loginPage.fillUsername(
-      E2E_LOGIN_ACCOUNT.USERNAME
-    );
+    await loginPage.fillUsername(activeWorker.username);
     await loginPage.fillPassword(E2E_LOGIN_WRONG_PASSWORD);
 
     await loginPage.submit();
