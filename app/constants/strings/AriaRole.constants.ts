@@ -5,4 +5,6 @@ export const ARIA_ROLE = {
   ALERT: "alert",
   HEADING: "heading",
   MAIN: "main",
+  LIST: "list",
+  LISTITEM: "listitem",
 } as const;
