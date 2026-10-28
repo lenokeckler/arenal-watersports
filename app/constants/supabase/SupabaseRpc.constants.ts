@@ -4,6 +4,7 @@ export const SUPABASE_RPC = {
   CONSUME_PASSWORD_RESET_PIN: "consume_password_reset_pin",
   CURRENT_SESSION_STATE: "current_session_state",
   FINISH_PASSWORD_RECOVERY: "finish_password_recovery",
+  IS_ADMIN: "is_admin",
   ISSUE_PASSWORD_RESET_PIN: "issue_password_reset_pin",
   MARK_PASSWORD_RESET_PIN_UNDELIVERED:
     "mark_password_reset_pin_undelivered",
