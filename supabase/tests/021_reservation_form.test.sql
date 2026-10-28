@@ -1,5 +1,5 @@
 begin;
-select plan(15);
+select plan(16);
 
 insert into auth.users (id, email) values
   ('e2400000-0000-4000-8000-000000000001', 'res04-admin-fixture@arenal.local'),
@@ -21,10 +21,20 @@ values
   ('e2400000-0000-4000-8000-000000000104', 'RES04 Kayak fixture', 'active', 'by_unit', true, true, 60,
    'e2400000-0000-4000-8000-000000000001', 'e2400000-0000-4000-8000-000000000001'),
   ('e2400000-0000-4000-8000-000000000105', 'RES04 No reservable fixture', 'active', 'by_quantity', false, true, 60,
+   'e2400000-0000-4000-8000-000000000001', 'e2400000-0000-4000-8000-000000000001'),
+  ('e2400000-0000-4000-8000-000000000106', 'RES04 Cantidad no intercambiable fixture', 'active', 'by_quantity', true, false, 60,
    'e2400000-0000-4000-8000-000000000001', 'e2400000-0000-4000-8000-000000000001');
 
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"e2400000-0000-4000-8000-000000000002","role":"authenticated"}';
+
+select lives_ok(
+  $$ select create_rental_reservation(
+    'RES04 Fixture cantidad no intercambiable', 2, '2028-02-29', '11:00', 60,
+    'e2400000-0000-4000-8000-000000000106', 1
+  ) $$,
+  'se acepta una categoria por cantidad sin unidades intercambiables'
+);
 
 select lives_ok(
   $$ select create_rental_reservation(
