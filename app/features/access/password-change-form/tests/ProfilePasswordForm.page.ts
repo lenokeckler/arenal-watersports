@@ -39,6 +39,7 @@ export const createProfilePasswordFormPage = () => {
         input.confirmPassword
       );
     },
+    findAlert: () => screen.findByRole(ARIA_ROLE.ALERT),
     findText: (text: string) => screen.findByText(text),
     getArrowIcon: () =>
       screen.getByText(ARROW_BACK_ICON_NAME),
