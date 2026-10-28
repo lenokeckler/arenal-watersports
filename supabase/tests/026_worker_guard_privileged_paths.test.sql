@@ -63,7 +63,7 @@ select throws_ok(
                           must_change_password)
      values ('55555555-5555-5555-5555-555555555555', 'guia_nuevo', 'Guia Nuevo', 'operaciones',
              true, '111110002', now() + interval '30 days', false) $$,
-  '42501', 'Un guia externo nuevo nace activo, sin bloqueo y con cambio de contrasena pendiente',
+  '42501', 'Solo el servidor marca la contrasena como cambiada',
   'reservas no registra un guia externo sin cambio de contrasena pendiente'
 );
 select throws_ok(

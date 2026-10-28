@@ -26,7 +26,7 @@ select lives_ok(
 
 select throws_ok(
   $$ update workers set must_change_password = false where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Solo el servidor marca la contrasena como cambiada',
   'un trabajador no cambia su obligacion de cambiar la contrasena'
 );
 
