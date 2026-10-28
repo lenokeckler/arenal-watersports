@@ -94,6 +94,18 @@ describe("fetchChargesInRange", () => {
     ).rejects.toBeInstanceOf(ChargesTruncatedError);
   });
 
+  it("throws a ChargesTruncatedError when the response carries no row count", async () => {
+    ChargesQueryPage.respondingWith({
+      data: BOTH_ROWS,
+      error: null,
+      count: null,
+    });
+
+    await expect(
+      fetchChargesInRange(DAY_RANGE)
+    ).rejects.toBeInstanceOf(ChargesTruncatedError);
+  });
+
   it("throws a SupabaseQueryError when the query fails", async () => {
     ChargesQueryPage.respondingWith({
       data: BOTH_ROWS,
