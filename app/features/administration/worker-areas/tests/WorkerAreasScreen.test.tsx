@@ -50,6 +50,7 @@ const OVERVIEW = {
   fullName: "Celso Rojas",
   id: "33333333-3333-3333-3333-333333333333",
   isExternalGuide: false,
+  marks: [],
   username: "celso",
 };
 

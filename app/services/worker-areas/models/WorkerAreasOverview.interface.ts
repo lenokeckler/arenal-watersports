@@ -1,3 +1,4 @@
+import type { WorkerMark } from "@/app/constants";
 import type { WorkArea } from "@/app/types";
 
 export interface WorkerAreasOverview {
@@ -6,5 +7,6 @@ export interface WorkerAreasOverview {
   fullName: string;
   id: string;
   isExternalGuide: boolean;
+  marks: readonly WorkerMark[];
   username: string;
 }

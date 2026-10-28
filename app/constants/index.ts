@@ -235,6 +235,17 @@ export {
 } from "./administration/WorkerAreas.constants";
 export { WORK_AREA_LABEL } from "./administration/WorkAreaCopy.constants";
 export {
+  SUPABASE_WORKER_MARK,
+  type WorkerMark,
+} from "./supabase/SupabaseWorkerMark.constants";
+export {
+  GRANTABLE_WORKER_MARKS,
+  WORKER_MARK_CHANGE_RESULT,
+  WORKER_MARK_FIELD,
+  type GrantableWorkerMark,
+  type WorkerMarkChangeResult,
+} from "./administration/WorkerMarks.constants";
+export {
   SERVER_ERROR_REPORT,
   type ServerErrorReportLevel,
 } from "./observability/ServerErrorReport.constants";
