@@ -39,7 +39,16 @@ export const useSessionActivityTracker = (
       await onLiveReport();
     };
 
-    const handleActivity = (): void => {
+    const handleActivity = (event: Event): void => {
+      if (
+        event.target instanceof Element &&
+        event.target.closest(
+          SESSION_ACTIVITY.IGNORE_SELECTOR
+        )
+      ) {
+        return;
+      }
+
       void reportWhenDue();
     };
 

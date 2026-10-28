@@ -17,6 +17,7 @@ import { buildLoginSessionIdlePath } from "@/app/utils/pathname/buildLoginSessio
 import {
   SESSION_ACTIVITY,
   SESSION_ACTIVITY_EVENTS,
+  SESSION_ACTIVITY_IGNORE_PROPS,
 } from "../constants/SessionActivity.constants";
 import { useSessionActivityTracker } from "../hooks/useSessionActivityTracker";
 import { reportSessionActivity } from "../utils/reportSessionActivity";
@@ -149,6 +150,29 @@ describe("useSessionActivityTracker", () => {
       expect(replace).toHaveBeenCalledWith(expectedPath);
     }
   );
+
+  it("ignores taps inside the idle warning", async () => {
+    const warning = document.createElement("div");
+    Object.entries(SESSION_ACTIVITY_IGNORE_PROPS).forEach(
+      ([name, value]) => warning.setAttribute(name, value)
+    );
+    const button = document.createElement("button");
+    warning.append(button);
+    document.body.append(warning);
+    renderTracker();
+
+    act(() => {
+      button.dispatchEvent(
+        new Event(SESSION_ACTIVITY_EVENTS[0], {
+          bubbles: true,
+        })
+      );
+    });
+    await act(() => Promise.resolve());
+    warning.remove();
+
+    expect(reportSessionActivity).not.toHaveBeenCalled();
+  });
 
   it("stops listening once unmounted", async () => {
     const { unmount } = renderTracker();

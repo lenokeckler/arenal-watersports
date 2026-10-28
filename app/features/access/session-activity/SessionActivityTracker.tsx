@@ -1,14 +1,16 @@
 "use client";
 
-import { useSessionActivityTracker } from "./hooks/useSessionActivityTracker";
-import { useSessionIdleClock } from "./hooks/useSessionIdleClock";
+import type { NullableRef } from "@/app/types";
+import SessionIdleWarning from "./components/SessionIdleWarning";
+import { useSessionActivityViewModel } from "./hooks/useSessionActivityViewModel";
 
-const SessionActivityTracker = (): null => {
-  const { sync } = useSessionIdleClock();
+const SessionActivityTracker =
+  (): NullableRef<React.JSX.Element> => {
+    const { warning } = useSessionActivityViewModel();
 
-  useSessionActivityTracker(sync);
-
-  return null;
-};
+    return warning === null ? null : (
+      <SessionIdleWarning {...warning} />
+    );
+  };
 
 export default SessionActivityTracker;

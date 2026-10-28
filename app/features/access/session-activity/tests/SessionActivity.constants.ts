@@ -17,3 +17,18 @@ export const CLOCK_FIXTURE = {
   TEXT_ANSWER: "1800",
   ONE_TICK_LATER: 89,
 } as const;
+
+export const COUNTDOWN_CASES: [number, string][] = [
+  [120, "2:00"],
+  [119, "1:59"],
+  [61, "1:01"],
+  [9, "0:09"],
+  [0, "0:00"],
+];
+
+export const WARNING_FIXTURE = {
+  ARIA_DISABLED_ATTRIBUTE: "aria-disabled",
+  ARIA_DISABLED_TRUE: "true",
+  SECONDS_LEFT: 119,
+  SHOWN_COUNTDOWN: "1:59",
+} as const;
