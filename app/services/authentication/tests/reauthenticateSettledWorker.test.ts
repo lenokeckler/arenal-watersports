@@ -108,6 +108,23 @@ describe("reauthenticateSettledWorker", () => {
     expect(signOutEverywhere).not.toHaveBeenCalled();
   });
 
+  it("returns a recovery required refusal without signing out", async () => {
+    const error = createPasswordChangeError(
+      PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED
+    );
+    vi.mocked(verifyCurrentPassword).mockResolvedValue(
+      error
+    );
+
+    await expect(
+      reauthenticateSettledWorker(
+        SUPABASE_CLIENT as never,
+        INPUT.currentPassword
+      )
+    ).resolves.toEqual({ ok: false, error });
+    expect(signOutEverywhere).not.toHaveBeenCalled();
+  });
+
   it.each([
     PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ATTEMPTS,
     PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_BLOCKED_BY_ADMINISTRATION,
