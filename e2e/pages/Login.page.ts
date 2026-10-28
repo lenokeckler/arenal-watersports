@@ -7,6 +7,7 @@ import { FIELD_ERROR_ID_SUFFIX } from "@/app/components/field-factory/constants/
 import {
   ARIA_ROLE,
   PATHS,
+  SIGN_IN_NOTICE_QUERY_PARAM,
   type SignInField,
 } from "@/app/constants";
 import {
@@ -25,6 +26,8 @@ const createLoginLocators = (page: Page) => {
     main.locator(`#${getFieldErrorId(field)}`);
 
   return {
+    getBanner: (): Locator =>
+      main.getByRole(ARIA_ROLE.ALERT),
     getHeading: (): Locator =>
       main.getByRole(ARIA_ROLE.HEADING, {
         level: HEADING_LEVEL.PAGE,
@@ -53,6 +56,16 @@ const createLoginLocators = (page: Page) => {
   };
 };
 
+const buildLoginUrl = (noticeReason?: string): string => {
+  if (noticeReason === undefined) {
+    return PATHS.ACCESS.LOGIN;
+  }
+  const query = new URLSearchParams({
+    [SIGN_IN_NOTICE_QUERY_PARAM]: noticeReason,
+  });
+  return `${PATHS.ACCESS.LOGIN}?${query.toString()}`;
+};
+
 const isLoginNavigation = (request: Request): boolean =>
   request.isNavigationRequest() &&
   new URL(request.url()).pathname === PATHS.ACCESS.LOGIN;
@@ -67,8 +80,8 @@ export const createLoginPage = (page: Page) => {
     fillUsername: (username: string): Promise<void> =>
       locators.getUsernameInput().fill(username),
     getFieldErrorId,
-    goTo: async (): Promise<void> => {
-      await page.goto(PATHS.ACCESS.LOGIN);
+    goTo: async (noticeReason?: string): Promise<void> => {
+      await page.goto(buildLoginUrl(noticeReason));
     },
     submit: (): Promise<void> =>
       locators.getSubmitButton().click(),
