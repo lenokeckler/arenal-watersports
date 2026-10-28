@@ -1,8 +1,10 @@
 export const ARIA_ROLE = {
-  PRESENTATION: "presentation",
-  DIALOG: "dialog",
-  BUTTON: "button",
   ALERT: "alert",
+  BUTTON: "button",
+  DIALOG: "dialog",
   HEADING: "heading",
+  LINK: "link",
+  LIST_ITEM: "listitem",
   MAIN: "main",
+  PRESENTATION: "presentation",
 } as const;
