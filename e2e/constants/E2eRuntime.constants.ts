@@ -70,5 +70,17 @@ export const HEADING_LEVEL = {
   PAGE: 1,
 } as const;
 
+export const E2E_LOAD_STATE = {
+  NETWORK_IDLE: "networkidle",
+} as const;
+
 export const E2E_CONTROLS_SELECTOR = (id: string): string =>
   `[aria-controls="${id}"]`;
+
+export const E2E_COUNT = {
+  NONE: 0,
+} as const;
+
+export const E2E_PAGE_EVENT = {
+  REQUEST: "request",
+} as const;

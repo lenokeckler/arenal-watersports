@@ -8,6 +8,7 @@ export const insertE2eWorker = async (
   supabase: SupabaseClient,
   {
     mustChangePassword,
+    personalEmail,
     username,
     workerId,
   }: E2eWorkerRecord
@@ -19,6 +20,7 @@ export const insertE2eWorker = async (
       full_name: E2E_WORKER.FULL_NAME,
       id: workerId,
       must_change_password: mustChangePassword,
+      personal_email: personalEmail,
       username,
     });
   if (insertError) {
