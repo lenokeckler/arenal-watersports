@@ -7,7 +7,12 @@ import {
 } from "vitest";
 import { SIGN_IN_ERROR_CODE } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
+import { recordFailedSignIn } from "../recordFailedSignIn";
 import { signInWithUsername } from "../signInWithUsername";
+import {
+  mockSignInClient,
+  signInWithPassword,
+} from "./mockSignInClient";
 import { INVALID_CREDENTIALS_ERROR } from "./mapSignInAuthError.constants";
 import {
   BLANK_USERNAME,
@@ -16,23 +21,25 @@ import {
   UNNORMALIZED_USERNAME,
 } from "@/app/utils/sign-in/tests/signIn.constants";
 
-vi.mock("@/app/services/supabase", () => ({
-  createServerSupabaseClient: vi.fn(),
-}));
+vi.mock(
+  "@/app/services/supabase",
+  () => import("./mocks/supabaseServices.mock")
+);
 
-const signInWithPassword = vi.fn();
+vi.mock(
+  "../recordFailedSignIn",
+  () => import("./mocks/recordFailedSignIn.mock")
+);
+
+vi.mock(
+  "../recordSuccessfulSignIn",
+  () => import("./mocks/recordSuccessfulSignIn.mock")
+);
 
 describe("signInWithUsername", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    signInWithPassword.mockResolvedValue({ error: null });
-    vi.mocked(createServerSupabaseClient).mockResolvedValue(
-      {
-        auth: { signInWithPassword },
-      } as unknown as Awaited<
-        ReturnType<typeof createServerSupabaseClient>
-      >
-    );
+    mockSignInClient();
   });
 
   it("sends the normalized auth email and the untouched password", async () => {
@@ -74,7 +81,7 @@ describe("signInWithUsername", () => {
     });
   });
 
-  it("fails on invalid input without creating a client", async () => {
+  it("never reaches Supabase on invalid input", async () => {
     const result = await signInWithUsername({
       ...DEFAULT_SIGN_IN_CREDENTIALS,
       username: BLANK_USERNAME,
@@ -89,5 +96,6 @@ describe("signInWithUsername", () => {
     expect(
       createServerSupabaseClient
     ).not.toHaveBeenCalled();
+    expect(recordFailedSignIn).not.toHaveBeenCalled();
   });
 });
