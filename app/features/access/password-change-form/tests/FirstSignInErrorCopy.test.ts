@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { ACCESS_SHARED_COPY } from "@/app/constants";
 import { PASSWORD_CHANGE_ERROR_CODE } from "@/app/constants/access/PasswordChangeError.constants";
 import { FIRST_SIGN_IN_ERROR_COPY } from "../constants/FirstSignInErrorCopy.constants";
 import {
@@ -16,6 +17,14 @@ describe("first sign-in error copy", () => {
       );
     }
   );
+
+  it("words the recovery required refusal with the shared message", () => {
+    expect(
+      FIRST_SIGN_IN_ERROR_COPY[
+        PASSWORD_CHANGE_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED
+      ]
+    ).toBe(ACCESS_SHARED_COPY.ACCOUNT_RECOVERY_REQUIRED);
+  });
 
   it("pins the new password and confirmation texts", () => {
     expect(FIRST_SIGN_IN_ERROR_COPY).toMatchObject(
