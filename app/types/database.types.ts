@@ -2540,6 +2540,10 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: string;
       };
+      current_session_seconds_left: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
       current_session_state: {
         Args: Record<PropertyKey, never>;
         Returns: string;
@@ -2719,6 +2723,10 @@ export type Database = {
       revoke_worker_sessions: {
         Args: { target_worker: string };
         Returns: undefined;
+      };
+      session_idle_deadline: {
+        Args: { last_activity: string };
+        Returns: string;
       };
       session_idle_expired: {
         Args: { last_activity: string; moment: string };
