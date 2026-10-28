@@ -71,7 +71,7 @@ test("shows totals and condition counts for quantity inventory", async ({
     E2E_INVENTORY_FIXTURE.DAMAGED_QUANTITY.toString()
   );
   await expect(metrics.getInRepair()).toContainText(
-    E2E_INVENTORY_FIXTURE.DAMAGED_QUANTITY.toString()
+    E2E_INVENTORY_FIXTURE.IN_REPAIR_QUANTITY.toString()
   );
   await expect(metrics.getTotal()).toContainText(
     E2E_INVENTORY_FIXTURE.TOTAL_QUANTITY.toString()

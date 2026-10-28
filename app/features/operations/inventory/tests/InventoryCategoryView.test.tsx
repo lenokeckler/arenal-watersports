@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 import { PATHS } from "@/app/constants";
 import InventoryCategoryView from "../InventoryCategoryView";
 import { mapInventoryCategoryDetails } from "../utils/mapInventoryCategoryDetails";
@@ -16,88 +16,112 @@ vi.mock("../InventoryRealtimeRefresh", () => ({
   default: () => null,
 }));
 
-describe("InventoryCategoryView", () => {
-  it("shows each unit code and status in a unit-tracked category", () => {
-    const categoryDetails = mapInventoryCategoryDetails(
-      UNIT_INVENTORY_CATEGORY_DETAILS
+const renderUnitCategory = () => {
+  const categoryDetails = mapInventoryCategoryDetails(
+    UNIT_INVENTORY_CATEGORY_DETAILS
+  );
+
+  if (!categoryDetails) {
+    throw new Error(EXPECTED_UNIT_CATEGORY_DETAILS_ERROR);
+  }
+
+  render(
+    <InventoryCategoryView
+      categoryDetails={categoryDetails}
+    />
+  );
+
+  return {
+    categoryDetails,
+    inventoryCategoryPage: createInventoryCategoryPage(),
+  };
+};
+
+const renderQuantityCategory = () => {
+  const categoryDetails = mapInventoryCategoryDetails(
+    QUANTITY_INVENTORY_CATEGORY_DETAILS
+  );
+
+  if (!categoryDetails) {
+    throw new Error(
+      EXPECTED_QUANTITY_CATEGORY_DETAILS_ERROR
     );
+  }
 
-    if (!categoryDetails) {
-      throw new Error(EXPECTED_UNIT_CATEGORY_DETAILS_ERROR);
-    }
+  render(
+    <InventoryCategoryView
+      categoryDetails={categoryDetails}
+    />
+  );
 
-    render(
-      <InventoryCategoryView
-        categoryDetails={categoryDetails}
-      />
-    );
-    const inventoryCategoryPage =
-      createInventoryCategoryPage();
+  return {
+    categoryDetails,
+    inventoryCategoryPage: createInventoryCategoryPage(),
+  };
+};
 
+const expectUnitCodesAndStatuses = () => {
+  const inventoryCategoryPage =
+    createInventoryCategoryPage();
+
+  EXPECTED_MAPPED_INVENTORY_UNITS.forEach((unit) => {
     expect(
-      inventoryCategoryPage.getCategoryHeading(
-        categoryDetails.category.name
-      )
+      inventoryCategoryPage.getUnitCode(unit.code)
     ).toBeVisible();
     expect(
-      inventoryCategoryPage.getBackLink()
-    ).toHaveAttribute("href", PATHS.OPERATIONS.INVENTORY);
-    EXPECTED_MAPPED_INVENTORY_UNITS.forEach((unit) => {
-      expect(
-        inventoryCategoryPage.getUnitCode(unit.code)
-      ).toBeVisible();
-      expect(
-        inventoryCategoryPage.getUnitStatus(
-          unit.code,
-          unit.status
-        )
-      ).toBeVisible();
-    });
-  });
-
-  it("shows quantity counts without rendering a unit list", () => {
-    const categoryDetails = mapInventoryCategoryDetails(
-      QUANTITY_INVENTORY_CATEGORY_DETAILS
-    );
-
-    if (!categoryDetails) {
-      throw new Error(
-        EXPECTED_QUANTITY_CATEGORY_DETAILS_ERROR
-      );
-    }
-
-    render(
-      <InventoryCategoryView
-        categoryDetails={categoryDetails}
-      />
-    );
-    const inventoryCategoryPage =
-      createInventoryCategoryPage();
-
-    expect(
-      inventoryCategoryPage.getCategoryHeading(
-        categoryDetails.category.name
-      )
-    ).toBeVisible();
-    expect(
-      inventoryCategoryPage.getCountValue(
-        categoryDetails.category.available
-      )
-    ).toBeVisible();
-    expect(
-      inventoryCategoryPage.getCountValue(
-        categoryDetails.category.damaged
-      )
-    ).toBeVisible();
-    expect(
-      inventoryCategoryPage.getCountValue(
-        categoryDetails.category.inRepair
-      )
-    ).toBeVisible();
-    expect(
-      inventoryCategoryPage.getCountValue(
-        categoryDetails.category.total
+      inventoryCategoryPage.getUnitStatus(
+        unit.code,
+        unit.status
       )
     ).toBeVisible();
   });
+};
+
+it("shows each unit code and status in a unit-tracked category", () => {
+  const { categoryDetails, inventoryCategoryPage } =
+    renderUnitCategory();
+
+  expect(
+    inventoryCategoryPage.getCategoryHeading(
+      categoryDetails.category.name
+    )
+  ).toBeVisible();
+  expect(
+    inventoryCategoryPage.getBackLink()
+  ).toHaveAttribute("href", PATHS.OPERATIONS.INVENTORY);
+  expectUnitCodesAndStatuses();
+});
+
+it("shows quantity counts without a unit list", () => {
+  const { categoryDetails, inventoryCategoryPage } =
+    renderQuantityCategory();
+
+  expect(
+    inventoryCategoryPage.getCategoryHeading(
+      categoryDetails.category.name
+    )
+  ).toBeVisible();
+  expect(
+    inventoryCategoryPage.getCountValue(
+      categoryDetails.category.available
+    )
+  ).toBeVisible();
+  expect(
+    inventoryCategoryPage.getCountValue(
+      categoryDetails.category.damaged
+    )
+  ).toBeVisible();
+  expect(
+    inventoryCategoryPage.getCountValue(
+      categoryDetails.category.inRepair
+    )
+  ).toBeVisible();
+  expect(
+    inventoryCategoryPage.getCountValue(
+      categoryDetails.category.total
+    )
+  ).toBeVisible();
+  expect(
+    inventoryCategoryPage.queryUnitListItem()
+  ).not.toBeInTheDocument();
 });
