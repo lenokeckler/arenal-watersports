@@ -47,9 +47,9 @@ select is(
 select is(
   public.custom_access_token_hook(
     '{"user_id":"77777777-7777-7777-7777-777777777777","claims":{"role":"authenticated"}}'::jsonb
-  ),
-  '{"user_id":"77777777-7777-7777-7777-777777777777","claims":{"role":"authenticated"}}'::jsonb,
-  'un usuario sin perfil de trabajador no recibe el reclamo'
+  ) #>> '{error,message}',
+  'account_unavailable',
+  'un usuario sin perfil de trabajador se rechaza como no disponible'
 );
 
 select is(
