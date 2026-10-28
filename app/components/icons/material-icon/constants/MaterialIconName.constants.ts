@@ -7,6 +7,7 @@ export const MATERIAL_ICON_NAME = {
   ERROR: "error",
   LOCK_RESET: "lock_reset",
   LOGIN: "login",
+  LOGOUT: "logout",
   MAIL: "mail",
   PROGRESS_ACTIVITY: "progress_activity",
   RADIO_BUTTON_UNCHECKED: "radio_button_unchecked",
