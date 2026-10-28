@@ -65,8 +65,10 @@ export {
 export { MODAL } from "./strings/Modal.constants";
 export { LENGTH } from "./strings/Length.constants";
 export {
+  AUTOCOMPLETE,
   INPUT_TYPES,
   BUTTON_TYPES,
+  type Autocomplete,
 } from "@/app/components/form-field/constants/InputTypes.constants";
 export { OMITTED_PROPS } from "./props/OmittedProps.constants";
 export { MILISECONDS } from "./miliseconds/Miliseconds.constants";

@@ -1,7 +1,7 @@
 "use client";
 
+import FormErrorBanner from "@/app/components/form-error-banner/FormErrorBanner";
 import { SIGN_IN_FIELD } from "@/app/constants/access/SignInError.constants";
-import LoginFormBanner from "./components/LoginFormBanner";
 import LoginFormFields from "./components/LoginFormFields";
 import LoginFormSubmit from "./components/LoginFormSubmit";
 import { useLoginFormViewModel } from "./hooks/useLoginFormViewModel";
@@ -26,7 +26,7 @@ const LoginFormView = ({
 
   return (
     <>
-      <LoginFormBanner
+      <FormErrorBanner
         message={fieldErrors[SIGN_IN_FIELD.FORM]}
       />
       <form

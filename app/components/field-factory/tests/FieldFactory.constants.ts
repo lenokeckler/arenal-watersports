@@ -7,7 +7,11 @@ export const ARIA_DESCRIBEDBY_ATTRIBUTE =
   "aria-describedby";
 export const ARIA_INVALID_VALUE = "true";
 export const EXPECTED_DESCRIBEDBY = "username-error";
+export const EXTRA_DESCRIBEDBY_ID = "rules";
+export const ERROR_AND_EXTRA_DESCRIBEDBY = `${EXPECTED_DESCRIBEDBY} ${EXTRA_DESCRIBEDBY_ID}`;
+export const AUTOCOMPLETE_ATTRIBUTE = "autocomplete";
 export const TEXTBOX_ROLE = "textbox";
+export const COMBOBOX_ROLE = "combobox";
 export const BUTTON_ROLE = "button";
 export const TYPE_ATTRIBUTE = "type";
 export const INPUT_SELECTOR = "input";
