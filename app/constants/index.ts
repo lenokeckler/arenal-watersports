@@ -175,6 +175,7 @@ export {
   MAIL_ENVIRONMENT,
   MAIL_ERROR_CODE,
   MAIL_TRANSPORT,
+  PASSWORD_RESET_PIN_MAIL_COPY,
   type MailErrorCode,
 } from "./mail";
 export {
