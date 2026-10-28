@@ -73,11 +73,15 @@ export const createPasswordRecoveryResetPage = (
       getPinInput(),
       getSubmitButton(),
       getNotReceivedTitle(),
-      getNotReceivedNote(),
-      getNoEmailNote(),
       getAnotherPinLink(),
       getBackLink(),
     ],
+    getFoldedHelp: (): Locator[] => [
+      getNotReceivedNote(),
+      getNoEmailNote(),
+    ],
+    openNotReceivedHelp: (): Promise<void> =>
+      getNotReceivedTitle().click(),
     goTo: async (username: string): Promise<void> => {
       const query = new URLSearchParams({
         [PASSWORD_RECOVERY_USERNAME_QUERY_PARAM]: username,

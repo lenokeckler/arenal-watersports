@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { ARIA_ROLE, PATHS } from "@/app/constants";
 import PasswordRecoveryBackLink from "../components/PasswordRecoveryBackLink";
@@ -20,24 +21,38 @@ describe("PasswordRecoveryBackLink", () => {
 });
 
 describe("PasswordRecoveryPinNote", () => {
-  it("explains what to do when the PIN does not arrive", () => {
+  it("keeps the help folded until the question is tapped", async () => {
+    const user = userEvent.setup();
     render(<PasswordRecoveryPinNote />);
-
-    expect(
+    const help = [
       screen.getByText(
         PASSWORD_RECOVERY_RESET_COPY.NOT_RECEIVED_NOTE
+      ),
+      screen.getByText(
+        PASSWORD_RECOVERY_REQUEST_COPY.NO_EMAIL_NOTE
+      ),
+    ];
+
+    help.forEach((note) => expect(note).not.toBeVisible());
+
+    await user.click(
+      screen.getByText(
+        PASSWORD_RECOVERY_RESET_COPY.NOT_RECEIVED_TITLE
       )
-    ).toBeVisible();
+    );
+
+    help.forEach((note) => expect(note).toBeVisible());
   });
 
-  it("links back to the request step to ask for another PIN", () => {
+  it("keeps the link to ask for another PIN in sight", () => {
     render(<PasswordRecoveryPinNote />);
 
-    expect(
-      screen.getByRole(ARIA_ROLE.LINK, {
-        name: PASSWORD_RECOVERY_RESET_COPY.REQUEST_ANOTHER_PIN,
-      })
-    ).toHaveAttribute(
+    const link = screen.getByRole(ARIA_ROLE.LINK, {
+      name: PASSWORD_RECOVERY_RESET_COPY.REQUEST_ANOTHER_PIN,
+    });
+
+    expect(link).toBeVisible();
+    expect(link).toHaveAttribute(
       HREF_ATTRIBUTE,
       PATHS.ACCESS.RECOVERY
     );
