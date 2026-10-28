@@ -110,3 +110,57 @@ export const EXPECTED_EMPTY_SUMMARY: CurrencyIncome[] = [
     byPaymentMethod: [],
   },
 ];
+
+export const ACCENT_DISTINCT_METHODS = [
+  usd(10, "Débito"),
+  usd(10, "Debito"),
+];
+export const EXPECTED_ACCENT_DISTINCT_KEYS = [
+  "debito",
+  "débito",
+];
+
+export const UPPER_AND_MIXED_CASE_ACCENTED_METHODS = [
+  usd(10, "SINPE MÓVIL"),
+  usd(5, "Sinpe Móvil"),
+];
+export const EXPECTED_ACCENTED_CASE_MERGE: PaymentMethodIncome[] =
+  [{ key: "sinpe móvil", name: "SINPE MÓVIL", amount: 15 }];
+
+export const NORMALIZATION_FORMS_OF_ONE_METHOD = [
+  usd(10, "Débito".normalize("NFC")),
+  usd(5, "Débito".normalize("NFD")),
+];
+export const EXPECTED_NORMALIZED_MERGE_COUNT = 1;
+
+export const INNER_SPACES_OF_ONE_METHOD = [
+  usd(10, "Sinpe Móvil"),
+  usd(5, "Sinpe  \t Móvil"),
+];
+export const EXPECTED_INNER_SPACES_MERGE: PaymentMethodIncome[] =
+  [{ key: "sinpe móvil", name: "Sinpe Móvil", amount: 15 }];
+
+export const MAXIMUM_COLONES_CHARGE_PLUS_ONE_CENT = [
+  crc(999_999_999_999.99, "Efectivo"),
+  crc(0.01, "Efectivo"),
+];
+export const EXPECTED_MAXIMUM_COLONES_TOTAL = 1_000_000_000_000;
+
+export const THOUSAND_ONE_CENT_CHARGES = Array.from(
+  { length: 1000 },
+  () => usd(0.01, "Efectivo")
+);
+export const EXPECTED_THOUSAND_CENTS_TOTAL = 10;
+
+export const TIED_ACCENTED_NAMES = [
+  usd(10, "Zelle"),
+  usd(10, "Ñandú"),
+  usd(10, "Oro"),
+  usd(10, "Nube"),
+];
+export const EXPECTED_TIED_ACCENTED_ORDER = [
+  "Nube",
+  "Ñandú",
+  "Oro",
+  "Zelle",
+];
