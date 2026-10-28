@@ -77,9 +77,10 @@ describe("PendingDeposits", () => {
 
   it("labels each reservation code with the reservation label", async () => {
     const page = await renderScreen();
+    const [firstRow] = page.getRows();
 
     expect(
-      within(page.getRows()[0]).getByText(
+      within(firstRow).getByText(
         PENDING_DEPOSITS_COPY.RESERVATION_CODE_LABEL,
         { exact: false }
       )

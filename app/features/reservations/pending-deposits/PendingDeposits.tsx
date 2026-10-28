@@ -8,19 +8,14 @@ const PendingDeposits =
   async (): Promise<React.JSX.Element> => {
     const deposits = await fetchPendingDeposits();
 
-    if (deposits.length === 0) {
-      return (
-        <main className={PENDING_DEPOSITS_PAGE_CLASS}>
-          <PendingDepositsHeader />
-          <PendingDepositsEmpty />
-        </main>
-      );
-    }
-
     return (
       <main className={PENDING_DEPOSITS_PAGE_CLASS}>
         <PendingDepositsHeader />
-        <PendingDepositsList deposits={deposits} />
+        {deposits.length === 0 ? (
+          <PendingDepositsEmpty />
+        ) : (
+          <PendingDepositsList deposits={deposits} />
+        )}
       </main>
     );
   };

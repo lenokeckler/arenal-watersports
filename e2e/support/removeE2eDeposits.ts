@@ -1,10 +1,10 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { SUPABASE_TABLE } from "@/app/constants";
+import { E2E_DEPOSIT_ERROR } from "../constants/E2ePendingDeposits.constants";
 import {
-  E2E_DEPOSIT_COLUMN,
-  E2E_DEPOSIT_ERROR,
-  E2E_DEPOSIT_TABLE,
-} from "../constants/E2ePendingDeposits.constants";
-import { E2E_SUPABASE_ERROR } from "../constants/E2eSupabase.constants";
+  E2E_SUPABASE_COLUMN,
+  E2E_SUPABASE_ERROR,
+} from "../constants/E2eSupabase.constants";
 import { failE2eOperation } from "./failE2eOperation";
 import type { E2eSeededDeposit } from "./models/E2eSeededDeposit.interface";
 
@@ -19,13 +19,13 @@ export const removeE2eDeposits = async (
     ({ reservationId }) => reservationId
   );
   const { error: depositError } = await supabase
-    .from(E2E_DEPOSIT_TABLE.DEPOSITS)
+    .from(SUPABASE_TABLE.DEPOSITS)
     .delete()
-    .in(E2E_DEPOSIT_COLUMN.ID, depositIds);
+    .in(E2E_SUPABASE_COLUMN.ID, depositIds);
   const { error: reservationError } = await supabase
-    .from(E2E_DEPOSIT_TABLE.RESERVATIONS)
+    .from(SUPABASE_TABLE.RESERVATIONS)
     .delete()
-    .in(E2E_DEPOSIT_COLUMN.ID, reservationIds);
+    .in(E2E_SUPABASE_COLUMN.ID, reservationIds);
   const failures = [depositError, reservationError]
     .filter((error) => error !== null)
     .map(({ message }) => message);

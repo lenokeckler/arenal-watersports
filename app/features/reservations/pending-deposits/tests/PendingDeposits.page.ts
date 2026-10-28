@@ -22,6 +22,9 @@ export const createPendingDepositsPage = () => {
 
   const getAlert = () => screen.getByRole(ARIA_ROLE.ALERT);
 
+  const queryText = (text: string) =>
+    screen.queryByText(text);
+
   const getStatus = () =>
     screen.getByRole(ARIA_ROLE.STATUS);
 
@@ -50,5 +53,6 @@ export const createPendingDepositsPage = () => {
     getStatus,
     getText,
     queryList,
+    queryText,
   };
 };

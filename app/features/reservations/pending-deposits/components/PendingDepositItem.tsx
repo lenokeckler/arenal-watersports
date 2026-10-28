@@ -10,10 +10,9 @@ import {
   DEPOSIT_ITEM_AMOUNT_CLASS,
   DEPOSIT_ITEM_CODE_CLASS,
   DEPOSIT_ITEM_CONTAINER_CLASS,
-  DEPOSIT_ITEM_CURRENCY_CLASS,
   DEPOSIT_ITEM_CUSTOMER_CLASS,
   DEPOSIT_ITEM_DETAILS_CLASS,
-  DEPOSIT_ITEM_LABEL_CLASS,
+  DEPOSIT_ITEM_META_CLASS,
   DEPOSIT_ITEM_MONEY_CLASS,
 } from "../styles/PendingDepositItem.styles";
 
@@ -26,7 +25,7 @@ const PendingDepositItem = ({
         {deposit.reservation.customerName}
       </Text>
       <Text>
-        <InlineText className={DEPOSIT_ITEM_LABEL_CLASS}>
+        <InlineText className={DEPOSIT_ITEM_META_CLASS}>
           {PENDING_DEPOSITS_COPY.RESERVATION_CODE_LABEL}
           {STRING.SPACE}
         </InlineText>
@@ -42,7 +41,7 @@ const PendingDepositItem = ({
           currency: deposit.currency,
         })}
       </Text>
-      <Text className={DEPOSIT_ITEM_CURRENCY_CLASS}>
+      <Text className={DEPOSIT_ITEM_META_CLASS}>
         {CURRENCY_NAME[deposit.currency]}
       </Text>
     </div>

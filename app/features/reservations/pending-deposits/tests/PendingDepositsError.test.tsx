@@ -31,4 +31,13 @@ describe("PendingDepositsError", () => {
     ).toHaveLength(1);
     expect(page.queryList()).not.toBeInTheDocument();
   });
+
+  it("never shows the empty state copy", () => {
+    render(<PendingDepositsError />);
+    const page = createPendingDepositsPage();
+
+    expect(
+      page.queryText(PENDING_DEPOSITS_COPY.EMPTY_TITLE)
+    ).not.toBeInTheDocument();
+  });
 });

@@ -2,25 +2,7 @@ import {
   CURRENCY_CODE,
   DEPOSIT_STATUS,
 } from "@/app/constants";
-import {
-  CURRENCY_NAME,
-  PENDING_DEPOSITS_COPY,
-} from "@/app/features/reservations/pending-deposits/constants/PendingDepositsCopy.constants";
 import type { E2eDepositSeed } from "../support/models/E2eDepositSeed.interface";
-
-export const E2E_PENDING_DEPOSITS_COPY =
-  PENDING_DEPOSITS_COPY;
-
-export const E2E_CURRENCY_NAME = CURRENCY_NAME;
-
-export const E2E_DEPOSIT_TABLE = {
-  DEPOSITS: "deposits",
-  RESERVATIONS: "reservations",
-} as const;
-
-export const E2E_DEPOSIT_COLUMN = {
-  ID: "id",
-} as const;
 
 export const E2E_DEPOSIT_CUSTOMER = {
   NAME_PREFIX: "Cliente E2E ",
