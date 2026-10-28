@@ -9,18 +9,20 @@ import {
 import { refreshSupabaseSession } from "../refreshSession";
 import type { CookieMethodsServer } from "@supabase/ssr";
 import {
+  SESSION_STATE,
   SUPABASE_AUTH_COOKIE,
   SUPABASE_RPC,
+  SUPABASE_SIGN_OUT_SCOPE,
 } from "@/app/constants";
 import { SESSION_FIXTURE } from "./refreshSession.constants";
 
-const { getClaims, rpc, createServerClient } = vi.hoisted(
-  () => ({
+const { getClaims, signOut, rpc, createServerClient } =
+  vi.hoisted(() => ({
     getClaims: vi.fn(),
+    signOut: vi.fn(),
     rpc: vi.fn(),
     createServerClient: vi.fn(),
-  })
-);
+  }));
 
 vi.mock("@supabase/ssr", () => ({ createServerClient }));
 
@@ -46,12 +48,17 @@ describe("refreshSupabaseSession", () => {
   beforeEach(() => {
     getClaims.mockReset();
     rpc.mockReset();
-    mockRpcAnswer({ data: true, error: null });
+    signOut.mockReset();
+    signOut.mockResolvedValue({ error: null });
+    mockRpcAnswer({
+      data: SESSION_STATE.LIVE,
+      error: null,
+    });
     createServerClient.mockReset();
     createServerClient.mockImplementation(
       (_url, _key, { cookies }) => {
         sessionCookies = cookies;
-        return { auth: { getClaims }, rpc };
+        return { auth: { getClaims, signOut }, rpc };
       }
     );
     getClaims.mockResolvedValue({
@@ -92,7 +99,7 @@ describe("refreshSupabaseSession", () => {
 
     expect(rpc).toHaveBeenCalledTimes(1);
     expect(rpc).toHaveBeenCalledWith(
-      SUPABASE_RPC.CURRENT_SESSION_IS_LIVE
+      SUPABASE_RPC.CURRENT_SESSION_STATE
     );
   });
 
@@ -101,13 +108,79 @@ describe("refreshSupabaseSession", () => {
       data: { claims: SESSION_FIXTURE.CLAIMS },
       error: null,
     });
-    mockRpcAnswer({ data: false, error: null });
+    mockRpcAnswer({
+      data: SESSION_STATE.ENDED,
+      error: null,
+    });
 
     const result =
       await refreshSupabaseSession(buildRequest());
 
     expect(result.hasSession).toBe(false);
   });
+
+  it("reports an idle session and signs it out on this device", async () => {
+    getClaims.mockResolvedValue({
+      data: { claims: SESSION_FIXTURE.CLAIMS },
+      error: null,
+    });
+    mockRpcAnswer({
+      data: SESSION_STATE.IDLE,
+      error: null,
+    });
+
+    const result =
+      await refreshSupabaseSession(buildRequest());
+
+    expect(result.hasSession).toBe(false);
+    expect(result.isSessionIdle).toBe(true);
+    expect(signOut).toHaveBeenCalledWith({
+      scope: SUPABASE_SIGN_OUT_SCOPE.LOCAL,
+    });
+  });
+
+  it("returns the response with the cookies the idle sign-out cleared", async () => {
+    getClaims.mockResolvedValue({
+      data: { claims: SESSION_FIXTURE.CLAIMS },
+      error: null,
+    });
+    mockRpcAnswer({
+      data: SESSION_STATE.IDLE,
+      error: null,
+    });
+    signOut.mockImplementation(async () => {
+      await sessionCookies.setAll([
+        SESSION_FIXTURE.CLEARED_COOKIE,
+      ]);
+      return { error: null };
+    });
+
+    const { response } =
+      await refreshSupabaseSession(buildRequest());
+
+    expect(
+      response.cookies.get(
+        SESSION_FIXTURE.CLEARED_COOKIE.name
+      )?.value
+    ).toBe(SESSION_FIXTURE.CLEARED_COOKIE.value);
+  });
+
+  it.each([SESSION_STATE.LIVE, SESSION_STATE.ENDED])(
+    "never signs out a %s session in the proxy",
+    async (state) => {
+      getClaims.mockResolvedValue({
+        data: { claims: SESSION_FIXTURE.CLAIMS },
+        error: null,
+      });
+      mockRpcAnswer({ data: state, error: null });
+
+      const result =
+        await refreshSupabaseSession(buildRequest());
+
+      expect(result.isSessionIdle).toBe(false);
+      expect(signOut).not.toHaveBeenCalled();
+    }
+  );
 
   it("keeps the session of the claims when the liveness check fails", async () => {
     getClaims.mockResolvedValue({
@@ -152,7 +225,10 @@ describe("refreshSupabaseSession", () => {
       data: { claims: SESSION_FIXTURE.PENDING_CLAIMS },
       error: null,
     });
-    mockRpcAnswer({ data: false, error: null });
+    mockRpcAnswer({
+      data: SESSION_STATE.ENDED,
+      error: null,
+    });
 
     const result =
       await refreshSupabaseSession(buildRequest());

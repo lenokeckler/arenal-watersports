@@ -1,4 +1,5 @@
 import { PATHS } from "@/app/constants";
+import { buildLoginSessionIdlePath } from "@/app/utils/pathname/buildLoginSessionIdlePath";
 
 export const PROTECTED_PATHNAME = "/board";
 
@@ -45,21 +46,31 @@ export const PRE_LOGIN_PATHS = [
 
 export const SIGNED_OUT = {
   hasSession: false,
+  isSessionIdle: false,
   mustChangePassword: false,
 } as const;
 
 export const SIGNED_IN = {
   hasSession: true,
+  isSessionIdle: false,
   mustChangePassword: false,
 } as const;
 
 export const SIGNED_OUT_WITH_PENDING_CLAIM = {
   hasSession: false,
+  isSessionIdle: false,
   mustChangePassword: true,
+} as const;
+
+export const SIGNED_OUT_FOR_IDLE = {
+  hasSession: false,
+  isSessionIdle: true,
+  mustChangePassword: false,
 } as const;
 
 export const PENDING_PASSWORD = {
   hasSession: true,
+  isSessionIdle: false,
   mustChangePassword: true,
 } as const;
 
@@ -124,6 +135,23 @@ export const GATE_MATRIX = [
       PATHS.ACCESS.FIRST_SIGN_IN,
     ] as const,
   ]),
+  ...PROTECTED_PATHS.map(
+    (pathname) =>
+      [
+        SIGNED_OUT_FOR_IDLE,
+        pathname,
+        buildLoginSessionIdlePath(),
+      ] as const
+  ),
+  ...PRE_LOGIN_PATHS.map(
+    (pathname) =>
+      [SIGNED_OUT_FOR_IDLE, pathname, null] as const
+  ),
+  [
+    SIGNED_OUT_FOR_IDLE,
+    PATHS.ACCESS.FIRST_SIGN_IN,
+    buildLoginSessionIdlePath(),
+  ],
   [
     SIGNED_OUT_WITH_PENDING_CLAIM,
     PATHS.HOME,

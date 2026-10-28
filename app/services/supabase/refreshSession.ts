@@ -5,11 +5,13 @@ import {
 } from "next/server";
 import {
   SESSION_CLAIM,
+  SESSION_STATE,
   SUPABASE,
   SUPABASE_COOKIE_OPTIONS,
+  SUPABASE_SIGN_OUT_SCOPE,
 } from "@/app/constants";
 import type { Database } from "@/app/types";
-import { readSessionLiveness } from "./readSessionLiveness";
+import { readSessionState } from "./readSessionState";
 import type { SessionRefresh } from "./models/SessionRefresh.interface";
 
 export const refreshSupabaseSession = async (
@@ -44,12 +46,21 @@ export const refreshSupabaseSession = async (
 
   const claims = error ? null : data?.claims;
 
-  const isSessionLive = claims
-    ? await readSessionLiveness(supabaseClient)
-    : false;
+  const sessionState = claims
+    ? await readSessionState(supabaseClient)
+    : SESSION_STATE.ENDED;
+  const isSessionLive = sessionState === SESSION_STATE.LIVE;
+  const isSessionIdle = sessionState === SESSION_STATE.IDLE;
+
+  if (isSessionIdle) {
+    await supabaseClient.auth.signOut({
+      scope: SUPABASE_SIGN_OUT_SCOPE.LOCAL,
+    });
+  }
 
   return {
     hasSession: isSessionLive,
+    isSessionIdle,
     mustChangePassword:
       isSessionLive &&
       claims?.[SESSION_CLAIM.MUST_CHANGE_PASSWORD] === true,
