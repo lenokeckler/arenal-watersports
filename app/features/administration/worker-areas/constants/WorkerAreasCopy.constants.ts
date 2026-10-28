@@ -24,11 +24,11 @@ export const WORKER_AREAS_COPY = {
   MARK_SET: "Puesta",
   MARKS_TITLE: "Marcas de la cuenta",
   GRANTING: "Habilitando…",
-  HEADING: "Áreas y marcas de un trabajador",
+  HEADING: "Cuenta de un trabajador",
   INSTRUCTION:
-    "Busque al trabajador por su nombre de usuario. Puede habilitarle un área completa más o ponerle una marca, y quitarlas; el acceso cambia de inmediato.",
+    "Busque al trabajador por su nombre de usuario. Puede bloquear o desbloquear la cuenta, habilitarle un área completa más o ponerle una marca; el acceso cambia de inmediato.",
   METADATA_TITLE:
-    "Áreas y marcas de un trabajador — Arenal Water Sports",
+    "Cuenta de un trabajador — Arenal Water Sports",
   NOT_FOUND:
     "No hay ningún trabajador con ese nombre de usuario.",
   REVOKE: "Quitar",

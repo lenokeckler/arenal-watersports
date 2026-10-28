@@ -3,6 +3,7 @@ import BackLink from "@/app/components/back-link/BackLink";
 import { PATHS } from "@/app/constants";
 import { readWorkerAreasOverviewAsSignedIn } from "@/app/services/worker-areas";
 import { isAdministratorSignedIn } from "@/app/services/worker-registration";
+import WorkerAccountNotice from "./components/WorkerAccountNotice";
 import WorkerAreaNotice from "./components/WorkerAreaNotice";
 import WorkerAreasHeading from "./components/WorkerAreasHeading";
 import WorkerAreasResult from "./components/WorkerAreasResult";
@@ -30,6 +31,7 @@ const WorkerAreas = async ({
   return (
     <div className={WORKER_AREAS_STACK_CLASS}>
       <WorkerAreasHeading />
+      <WorkerAccountNotice search={search} />
       <WorkerAreaNotice search={search} />
       <WorkerMarkNotice search={search} />
       <WorkerLookupForm

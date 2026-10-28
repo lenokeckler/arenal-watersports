@@ -4,6 +4,7 @@ import type { NullableRef } from "@/app/types";
 import { WORKER_AREAS_COPY } from "../constants/WorkerAreasCopy.constants";
 import type { WorkerAreasResultProps } from "../models/WorkerAreasResultProps.interface";
 import { WORKER_AREAS_MESSAGE_CLASS } from "../styles/WorkerAreas.styles";
+import WorkerAccountPanel from "./WorkerAccountPanel";
 import WorkerAreasPanel from "./WorkerAreasPanel";
 import WorkerMarksPanel from "./WorkerMarksPanel";
 
@@ -39,6 +40,7 @@ const WorkerAreasResult = ({
 
   return (
     <>
+      <WorkerAccountPanel overview={overview} />
       <WorkerAreasPanel overview={overview} />
       <WorkerMarksPanel overview={overview} />
     </>

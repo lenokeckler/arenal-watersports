@@ -1,5 +1,6 @@
 import {
   GRANTABLE_WORKER_AREAS,
+  WORKER_ACCOUNT_FIELD,
   GRANTABLE_WORKER_MARKS,
   WORKER_MARK_FIELD,
   STRING,
@@ -8,6 +9,7 @@ import {
 } from "@/app/constants";
 import { resolveQueryChoice } from "@/app/utils/query-param/resolveQueryChoice";
 import { normalizeUsername } from "@/app/utils/username/normalizeUsername";
+import { WORKER_ACCOUNT_SUCCESSES } from "../constants/WorkerAccountSuccess.constants";
 import type { WorkerAreasQuery } from "../models/WorkerAreasQuery.type";
 import type { WorkerAreasSearch } from "../models/WorkerAreasSearch.interface";
 
@@ -21,6 +23,10 @@ const readUsername = (
 export const readWorkerAreasSearch = (
   query: WorkerAreasQuery
 ): WorkerAreasSearch => ({
+  accountNotice: resolveQueryChoice(
+    query[WORKER_ACCOUNT_FIELD.ACCOUNT_NOTICE],
+    WORKER_ACCOUNT_SUCCESSES
+  ),
   area: resolveQueryChoice(
     query[WORKER_AREA_FIELD.AREA],
     GRANTABLE_WORKER_AREAS
