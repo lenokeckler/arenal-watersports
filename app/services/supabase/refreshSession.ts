@@ -3,7 +3,7 @@ import {
   NextResponse,
   type NextRequest,
 } from "next/server";
-import { SUPABASE } from "@/app/constants";
+import { SESSION_CLAIM, SUPABASE } from "@/app/constants";
 import type { Database } from "@/app/types";
 import type { SessionRefresh } from "./models/SessionRefresh.interface";
 
@@ -36,8 +36,12 @@ export const refreshSupabaseSession = async (
   const { data, error } =
     await supabaseClient.auth.getClaims();
 
+  const claims = error ? null : data?.claims;
+
   return {
-    hasSession: !error && Boolean(data?.claims),
+    hasSession: Boolean(claims),
+    mustChangePassword:
+      claims?.[SESSION_CLAIM.MUST_CHANGE_PASSWORD] === true,
     response,
   };
 };

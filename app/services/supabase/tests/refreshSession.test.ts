@@ -57,7 +57,32 @@ describe("refreshSupabaseSession", () => {
       await refreshSupabaseSession(buildRequest());
 
     expect(result.hasSession).toBe(true);
+    expect(result.mustChangePassword).toBe(false);
   });
+
+  it.each([
+    ["true", SESSION_FIXTURE.PENDING_CLAIMS, true],
+    ["false", SESSION_FIXTURE.SETTLED_CLAIMS, false],
+    ["absent", SESSION_FIXTURE.CLAIMS, false],
+    [
+      "non-boolean",
+      SESSION_FIXTURE.NON_BOOLEAN_CLAIMS,
+      false,
+    ],
+  ])(
+    "reads the password change claim when it is %s",
+    async (_label, claims, expected) => {
+      getClaims.mockResolvedValue({
+        data: { claims },
+        error: null,
+      });
+
+      const result =
+        await refreshSupabaseSession(buildRequest());
+
+      expect(result.mustChangePassword).toBe(expected);
+    }
+  );
 
   it("reports no session when there are no claims", async () => {
     getClaims.mockResolvedValue({
@@ -69,6 +94,7 @@ describe("refreshSupabaseSession", () => {
       await refreshSupabaseSession(buildRequest());
 
     expect(result.hasSession).toBe(false);
+    expect(result.mustChangePassword).toBe(false);
   });
 
   it("fails closed when verification returns an error", async () => {
@@ -81,6 +107,18 @@ describe("refreshSupabaseSession", () => {
       await refreshSupabaseSession(buildRequest());
 
     expect(result.hasSession).toBe(false);
+  });
+
+  it("does not report a pending password change when verification returns an error", async () => {
+    getClaims.mockResolvedValue({
+      data: { claims: SESSION_FIXTURE.PENDING_CLAIMS },
+      error: new Error(SESSION_FIXTURE.ERROR_MESSAGE),
+    });
+
+    const result =
+      await refreshSupabaseSession(buildRequest());
+
+    expect(result.mustChangePassword).toBe(false);
   });
 
   it("reads the cookies of the incoming request", async () => {
