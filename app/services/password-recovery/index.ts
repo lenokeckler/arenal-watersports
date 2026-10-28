@@ -1,7 +1,14 @@
 export { requestPasswordRecovery } from "./requestPasswordRecovery";
+export { forgetPasswordRecoveryGrant } from "./forgetPasswordRecoveryGrant";
+export { isPasswordResetGrantOpen } from "./isPasswordResetGrantOpen";
+export { readPasswordRecoveryGrant } from "./readPasswordRecoveryGrant";
+export { resetPasswordWithGrant } from "./resetPasswordWithGrant";
 export { resetPasswordWithPin } from "./resetPasswordWithPin";
+export { storePasswordRecoveryGrant } from "./storePasswordRecoveryGrant";
+export { verifyPasswordResetPin } from "./verifyPasswordResetPin";
 export type { DeferredTask } from "./models/DeferredTask.type";
 export type { IssuedPasswordResetPin } from "./models/IssuedPasswordResetPin.interface";
 export type { NetworkPasswordRecoveryRequestInput } from "./models/NetworkPasswordRecoveryRequestInput.interface";
+export type { PasswordRecoveryPinResult } from "./models/PasswordRecoveryPinResult.type";
 export type { PasswordRecoveryRequestResult } from "./models/PasswordRecoveryRequestResult.type";
 export type { PasswordRecoveryResetResult } from "./models/PasswordRecoveryResetResult.type";
