@@ -115,6 +115,7 @@ export const createCategoryBehaviorFormPage = () => {
     getTrackingModeLine,
     getAllControls,
     getHasMotorCheckbox,
+    getUnitsAreInterchangeableCheckbox,
     getUsageMetricSelect,
     getHasConditionPhotosCheckbox,
     getDurationInput,
