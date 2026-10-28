@@ -89,3 +89,7 @@ export {
   type SignInField,
 } from "./access/SignInError.constants";
 export { SUPABASE_AUTH_ERROR_CODE } from "./supabase/SupabaseAuthErrorCode.constants";
+export {
+  SERVER_ERROR_REPORT,
+  type ServerErrorReportLevel,
+} from "./observability/ServerErrorReport.constants";
