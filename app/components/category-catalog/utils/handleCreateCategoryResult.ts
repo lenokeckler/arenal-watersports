@@ -9,6 +9,7 @@ interface HandleCreateCategoryResultOptions {
   showToast: ReturnType<typeof useToast>["showToast"];
   onSuccess: () => void;
   onGroupNameError: (groupNameError: string) => void;
+  onNameError: (nameError: string) => void;
 }
 
 export const handleCreateCategoryResult = (
@@ -17,6 +18,7 @@ export const handleCreateCategoryResult = (
     showToast,
     onSuccess,
     onGroupNameError,
+    onNameError,
   }: HandleCreateCategoryResultOptions
 ): void => {
   if (result.status === CATEGORY_MUTATION_STATUS.SUCCESS) {
@@ -25,6 +27,11 @@ export const handleCreateCategoryResult = (
       CATEGORY_CATALOG_COPY.CREATE_SUCCESS_TOAST
     );
     onSuccess();
+    return;
+  }
+
+  if (result.nameError) {
+    onNameError(result.nameError);
     return;
   }
 

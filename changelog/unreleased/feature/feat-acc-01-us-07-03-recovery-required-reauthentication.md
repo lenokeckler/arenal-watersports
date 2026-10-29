@@ -1,0 +1,1 @@
+ACC-01.07.03: Recovery required re-authentication message — the current-password check in Mi perfil shows the recovery-required refusal as a form message without signing the worker out (US-ACC-07 · AWS-36)

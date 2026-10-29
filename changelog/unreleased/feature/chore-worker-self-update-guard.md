@@ -1,0 +1,1 @@
+chore - Worker self-update guard — a worker can only change their own personal email and last work area, and a non-administration account creates external guides only with a forced password change and its own signature
