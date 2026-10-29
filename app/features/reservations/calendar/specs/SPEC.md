@@ -107,6 +107,11 @@ Reservations workers answer customers using visible reservation times, committed
 - UI presentation follows the existing Stitch references and the shared design tokens.
 - The block-description checkpoint prepares full customer and equipment labels, a separately labelled scheduled interval and actual category-group departure/expected-return/closure descriptions. All labels retain full Costa Rica dates and times, including multi-day reservations and unknown returns.
 - The static block renders the descriptor through shared text and list primitives, with its complete Spanish accessible name and no interactive controls. Component tests use a Page Object and preserve repeated departure-group descriptions. Calendar placement, protected integration and real application screenshots remain pending.
+- The coverage checkpoint validates supplied half-open civil ranges, safe reported totals and unique parent ids. Pure day classification uses booked intervals or actual departure groups in Costa Rica; actual closure is exclusive, open groups ignore expected return, and same-time departure/closure remains a recorded point within the day.
+- This checkpoint provides no grouped content, outlets or calendar placement. The snapshot is a supplied presentation contract, with no query sibling, protected read, route or realtime dependency introduced.
+- The grouping checkpoint creates one reusable reservation block per occupied Costa Rica civil day from the intersection of selected period and snapshot coverage, preserving scheduled and actual dispatch intervals separately.
+- Snapshot completeness distinguishes omitted snapshots, partial time coverage and incomplete result pages; only complete coverage with complete results and no groups proves the selected period empty.
+- Day, week, month and year content grouping remains a pure preparation contract. Principal-view placement and the binding acceptance criterion remain pending protected calendar integration.
 
 ## Acceptance criteria
 
