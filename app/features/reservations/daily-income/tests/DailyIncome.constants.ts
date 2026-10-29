@@ -26,3 +26,22 @@ export const HEADING_LEVEL_THREE = 3;
 
 export const BAR_FILL_SELECTOR = "rect";
 export const BAR_WIDTH_ATTRIBUTE = "width";
+
+export const COLON_INCOME: CurrencyIncome = {
+  currency: CURRENCY_CODE.CRC,
+  total: 25000,
+  byPaymentMethod: [
+    { key: "efectivo", name: "Efectivo", amount: 25000 },
+  ],
+};
+
+export const ID_ATTRIBUTE = "id";
+
+export const NUMBERED_AND_BLANK_METHODS: CurrencyIncome = {
+  currency: CURRENCY_CODE.USD,
+  total: 30,
+  byPaymentMethod: [
+    { key: "1", name: "1", amount: 20 },
+    { key: "", name: "", amount: 10 },
+  ],
+};

@@ -23,6 +23,7 @@ export const DAILY_INCOME_DATE_FORMAT = {
 
 export const DAILY_INCOME_ID = {
   BREAKDOWN_SUFFIX: "-breakdown",
+  METHOD_PREFIX: "method-",
   PREFIX: "daily-income-",
   TITLE_SUFFIX: "-title",
 } as const;

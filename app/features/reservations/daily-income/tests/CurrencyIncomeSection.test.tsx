@@ -1,4 +1,10 @@
-import { describe, expect, it } from "vitest";
+import {
+  afterEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import { render, within } from "@testing-library/react";
 import {
   ARIA_ROLE,
@@ -12,13 +18,16 @@ import {
   DAILY_INCOME_NO_MOVEMENT_COPY,
 } from "../constants/DailyIncomeCopy.constants";
 import {
+  COLON_INCOME,
   DOLLAR_BLANK_METHOD_TEXT,
   DOLLAR_CARD_TEXT,
   DOLLAR_INCOME,
   DOLLAR_TOTAL_TEXT,
   EXPECTED_DOLLAR_BAR_WIDTHS,
   HEADING_LEVEL_THREE,
+  ID_ATTRIBUTE,
   NO_DOLLAR_INCOME,
+  NUMBERED_AND_BLANK_METHODS,
   ZERO_DOLLAR_TEXT,
 } from "./DailyIncome.constants";
 import { createDailyIncomePage } from "./DailyIncome.page";
@@ -28,6 +37,10 @@ const DOLLAR_LIST_NAME =
   DAILY_INCOME_METHOD_LIST_COPY[CURRENCY_CODE.USD];
 
 describe("CurrencyIncomeSection", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("names the currency region and shows its code and own total", () => {
     render(
       <CurrencyIncomeSection income={DOLLAR_INCOME} />
@@ -119,5 +132,33 @@ describe("CurrencyIncomeSection", () => {
     ).toBeInTheDocument();
     expect(page.queryText(ZERO_DOLLAR_TEXT)).toBeNull();
     expect(page.queryList()).toBeNull();
+  });
+
+  it("keeps element ids unique when both currency cards are on screen", () => {
+    const { container } = render(
+      <>
+        <CurrencyIncomeSection income={DOLLAR_INCOME} />
+        <CurrencyIncomeSection income={COLON_INCOME} />
+      </>
+    );
+    const ids = Array.from(
+      container.querySelectorAll(`[${ID_ATTRIBUTE}]`)
+    ).map((element) => element.getAttribute(ID_ATTRIBUTE));
+
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("gives a blank method row its own key next to a method named like its position", () => {
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+
+    render(
+      <CurrencyIncomeSection
+        income={NUMBERED_AND_BLANK_METHODS}
+      />
+    );
+
+    expect(consoleError).not.toHaveBeenCalled();
   });
 });

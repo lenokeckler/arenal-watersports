@@ -1,5 +1,6 @@
 import { UnorderedList } from "@/app/components";
 import { UNORDERED_LIST } from "@/app/constants";
+import { DAILY_INCOME_ID } from "../constants/DailyIncome.constants";
 import { DAILY_INCOME_METHOD_LIST_COPY } from "../constants/DailyIncomeCopy.constants";
 import type { CurrencyIncomeProps } from "../models/CurrencyIncomeProps.interface";
 import { computeBarPercent } from "../utils/computeBarPercent";
@@ -19,7 +20,7 @@ const DailyIncomeChart = ({
         DAILY_INCOME_METHOD_LIST_COPY[income.currency]
       }
       items={income.byPaymentMethod.map((method) => ({
-        id: method.key,
+        id: `${DAILY_INCOME_ID.METHOD_PREFIX}${method.key}`,
         text: (
           <DailyIncomeBarRow
             method={method}
