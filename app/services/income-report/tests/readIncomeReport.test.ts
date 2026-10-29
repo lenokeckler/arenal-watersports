@@ -15,6 +15,7 @@ import {
   CRC_REFUND,
   DAY_RANGE,
   EXPECTED_SUMMARIES,
+  NON_ERROR_VALUES,
   POSTGREST_ERROR,
   QUERY_OPERATION,
   UNEXPECTED_MESSAGE,
@@ -109,5 +110,61 @@ describe("readIncomeReport", () => {
     await expect(readIncomeReport(DAY_RANGE)).rejects.toBe(
       unexpected
     );
+  });
+
+  it("rethrows a thrown value that is not an Error", async () => {
+    IncomeReadsPage.returning(
+      [],
+      []
+    ).charges.mockRejectedValue(NON_ERROR_VALUES[0]);
+
+    await expect(readIncomeReport(DAY_RANGE)).rejects.toBe(
+      NON_ERROR_VALUES[0]
+    );
+  });
+
+  it("rethrows the unexpected error when it rejects before a typed failure", async () => {
+    const unexpected = new Error(UNEXPECTED_MESSAGE);
+    const page = IncomeReadsPage.returning([], []);
+    page.charges.mockRejectedValue(unexpected);
+    page.refunds.mockRejectedValue(
+      new RefundsTruncatedError()
+    );
+
+    await expect(readIncomeReport(DAY_RANGE)).rejects.toBe(
+      unexpected
+    );
+  });
+
+  it("returns a failed result when both reads fail with typed failures", async () => {
+    const page = IncomeReadsPage.returning([], []);
+    page.charges.mockRejectedValue(
+      new ChargesTruncatedError()
+    );
+    page.refunds.mockRejectedValue(
+      new RefundsTruncatedError()
+    );
+
+    await expect(
+      readIncomeReport(DAY_RANGE)
+    ).resolves.toEqual({
+      status: INCOME_REPORT_STATUS.FAILED,
+    });
+  });
+
+  it("hides an unexpected refunds error behind a typed charges failure", async () => {
+    const page = IncomeReadsPage.returning([], []);
+    page.charges.mockRejectedValue(
+      new ChargesTruncatedError()
+    );
+    page.refunds.mockRejectedValue(
+      new Error(UNEXPECTED_MESSAGE)
+    );
+
+    await expect(
+      readIncomeReport(DAY_RANGE)
+    ).resolves.toEqual({
+      status: INCOME_REPORT_STATUS.FAILED,
+    });
   });
 });
