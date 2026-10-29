@@ -3,6 +3,13 @@ export const ARIA_ROLE = {
   DIALOG: "dialog",
   BUTTON: "button",
   ALERT: "alert",
+  ALERT_DIALOG: "alertdialog",
+  BANNER: "banner",
   HEADING: "heading",
   MAIN: "main",
+  LIST: "list",
+  LISTITEM: "listitem",
+  STATUS: "status",
+  LINK: "link",
+  TEXTBOX: "textbox",
 } as const;
