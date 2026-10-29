@@ -1,4 +1,5 @@
 import type { Nullable } from "@/app/types";
+import type { FormFieldVariant } from "./FormFieldVariant.type";
 
 export interface FormFieldViewModel {
   value: string;
@@ -16,4 +17,5 @@ export interface FormFieldViewModel {
   disabled?: boolean;
   selectSizeClassName?: string;
   preventEnterSubmit?: boolean;
+  variant?: FormFieldVariant;
 }

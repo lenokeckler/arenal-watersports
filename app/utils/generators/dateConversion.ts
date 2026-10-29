@@ -1,6 +1,6 @@
 import { STRING, TIME, FORMAT_DATE } from "@/app/constants";
 
-const OFFSET_CR_MS =
+export const OFFSET_CR_MS =
   TIME.CR.HOURS_OFFSET *
   TIME.UNITS.MINUTES_IN_HOUR *
   TIME.UNITS.SECONDS_IN_MINUTE *

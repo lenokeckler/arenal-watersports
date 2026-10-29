@@ -1,8 +1,13 @@
 import { expect, test } from "@playwright/test";
 import { createHomePage } from "../pages/Home.page";
 import { E2E_HOME_COPY } from "../constants/E2eHome.constants";
+import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
 
 test.describe("Home", () => {
+  test.beforeEach(async ({ page }) => {
+    await signInAsSeededWorker(page);
+  });
+
   test("shows the page heading inside the main landmark", async ({
     page,
   }) => {

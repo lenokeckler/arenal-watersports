@@ -28,6 +28,4 @@ export const ICON_PATHS = {
     "/icons/arrow-interface-multimedia-svgrepo-com.svg",
   CLINIC: "/icons/clinic.svg",
   CHECK_MARK: "/icons/check-mark.svg",
-  EYE_VISIBLE: "/icons/eye.svg",
-  EYE_HIDDEN: "/icons/eye-off.svg",
 };
