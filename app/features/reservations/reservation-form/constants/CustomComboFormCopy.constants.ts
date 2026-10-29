@@ -19,6 +19,8 @@ export const CUSTOM_COMBO_FORM_COPY = {
   USD_AMOUNT: "Monto acordado en dólares",
   AGREED_AMOUNT_HINT:
     "Puede ajustar cada moneda de forma independiente.",
+  INVALID_AGREED_AMOUNT:
+    "Ingrese un monto igual o mayor que cero.",
   NO_GUIDE: "Sin guía",
   QUANTITY: "Cantidad",
   TOUR_BADGE: "Tour",
