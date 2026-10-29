@@ -61,6 +61,7 @@ export { DISPLAY_NAME } from "./strings/DisplayName.constants";
 export { APP_NAME } from "./strings/AppName.constants";
 export { ARIA_LABEL } from "./strings/AriaLabel.constants";
 export { ARIA_ROLE } from "./strings/AriaRole.constants";
+export { LOADING_COPY } from "./strings/LoadingCopy.constants";
 export type { UnorderedListVariant } from "@/app/components/list/UnorderedList.constants";
 export { UNORDERED_LIST } from "@/app/components/list/UnorderedList.constants";
 export type { SectionId } from "./strings/SectionId.Types";
