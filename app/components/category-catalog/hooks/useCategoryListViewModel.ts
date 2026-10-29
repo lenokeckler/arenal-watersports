@@ -10,7 +10,9 @@ import type { CategoryListItem } from "../models/CategoryListItem.interface";
 import type { CategoryListViewModel } from "../models/CategoryListViewModel.interface";
 import type { CategoryListViewProps } from "../models/CategoryListViewProps.interface";
 import type { CategoryListViewState } from "../models/CategoryListViewState.type";
+import { isCategoryInactive } from "../utils/isCategoryInactive";
 import { resolveCategoryCardActionState } from "../utils/resolveCategoryCardActionState";
+import { resolveCategoryTrackingModeLabel } from "../utils/resolveCategoryTrackingModeLabel";
 
 const resolveCategoryListViewState = (
   fetchFailed: boolean,
@@ -32,6 +34,9 @@ const buildCategoryCardViewModel = (
   cardActions: CategoryCardActionsViewModel
 ): CategoryCardViewModel => ({
   category,
+  isInactive: isCategoryInactive(category),
+  trackingModeLabel:
+    resolveCategoryTrackingModeLabel(category),
   actionState: resolveCategoryCardActionState(
     category,
     category.id === cardActions.confirmingCategoryId
