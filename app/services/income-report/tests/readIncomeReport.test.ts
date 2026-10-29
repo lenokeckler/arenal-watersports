@@ -182,6 +182,35 @@ describe("readIncomeReport", () => {
     );
   });
 
+  it("reports once with the first reason when both reads fail with typed failures", async () => {
+    const chargesFailure = new ChargesTruncatedError();
+    const page = IncomeReadsPage.returning([], []);
+    page.charges.mockRejectedValue(chargesFailure);
+    page.refunds.mockRejectedValue(
+      new RefundsTruncatedError()
+    );
+
+    await readIncomeReport(DAY_RANGE);
+
+    expect(reportServerError).toHaveBeenCalledTimes(1);
+    expect(reportServerError).toHaveBeenCalledWith(
+      SERVER_OPERATION.READ_INCOME_REPORT,
+      chargesFailure
+    );
+  });
+
+  it("does not report when an unexpected error is rethrown", async () => {
+    IncomeReadsPage.refundsFailingWith(
+      new Error(UNEXPECTED_MESSAGE)
+    );
+
+    await readIncomeReport(DAY_RANGE).catch(
+      () => undefined
+    );
+
+    expect(reportServerError).not.toHaveBeenCalled();
+  });
+
   it("reports nothing when both reads succeed", async () => {
     IncomeReadsPage.returning([], []);
 
