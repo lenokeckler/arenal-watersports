@@ -21,8 +21,11 @@ export const DAILY_INCOME_DATE_FORMAT = {
   OPTIONS: Intl.DateTimeFormatOptions;
 };
 
-export const DAILY_INCOME_SECTION_TITLE_ID_PREFIX =
-  "daily-income-";
+export const DAILY_INCOME_ID = {
+  BREAKDOWN_SUFFIX: "-breakdown",
+  PREFIX: "daily-income-",
+  TITLE_SUFFIX: "-title",
+} as const;
 
 export const DAILY_INCOME_SKELETON = {
   CARD_COUNT: 2,
