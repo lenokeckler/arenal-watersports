@@ -2457,6 +2457,21 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: string;
       };
+      pending_dispatch_reservations: {
+        Args: {
+          p_ends_at: string;
+          p_limit?: number;
+          p_offset?: number;
+          p_starts_at: string;
+        };
+        Returns: {
+          code: string;
+          customer_name: string;
+          id: string;
+          starts_at: string;
+          status: Database["public"]["Enums"]["reservation_status"];
+        }[];
+      };
       purge_expired_history: {
         Args: Record<PropertyKey, never>;
         Returns: undefined;
