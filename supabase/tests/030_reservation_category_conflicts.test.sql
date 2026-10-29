@@ -1,4 +1,4 @@
-﻿begin;
+begin;
 select plan(10);
 \ir fixtures/reservation_interval.sql.fixture
 

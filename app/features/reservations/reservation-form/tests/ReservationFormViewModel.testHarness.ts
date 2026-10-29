@@ -100,6 +100,7 @@ vi.mock(
         hasError: false,
         isLoading: false,
         items: [],
+        retry: vi.fn(),
       },
     }),
   })

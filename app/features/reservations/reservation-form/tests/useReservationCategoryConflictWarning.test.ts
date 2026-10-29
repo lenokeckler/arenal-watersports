@@ -48,7 +48,8 @@ describe("useReservationCategoryConflictWarning", () => {
     ).mockResolvedValue([RESERVATION_CONFLICT_ROW]);
     const { result } = renderHook(() =>
       useReservationCategoryConflictWarning(
-        RESERVATION_CONFLICT_INPUT
+        RESERVATION_CONFLICT_INPUT,
+        RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.INITIAL_REFRESH_KEY
       )
     );
 
@@ -73,7 +74,8 @@ describe("useReservationCategoryConflictWarning", () => {
     ).mockRejectedValue(new Error("Lookup unavailable"));
     const { result } = renderHook(() =>
       useReservationCategoryConflictWarning(
-        RESERVATION_CONFLICT_INPUT
+        RESERVATION_CONFLICT_INPUT,
+        RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.INITIAL_REFRESH_KEY
       )
     );
 
@@ -90,7 +92,8 @@ describe("useReservationCategoryConflictWarning", () => {
     ).mockResolvedValue([]);
     const { result } = renderHook(() =>
       useReservationCategoryConflictWarning(
-        RESERVATION_CONFLICT_INPUT
+        RESERVATION_CONFLICT_INPUT,
+        RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.INITIAL_REFRESH_KEY
       )
     );
 
@@ -102,6 +105,7 @@ describe("useReservationCategoryConflictWarning", () => {
       hasError: false,
       isLoading: false,
       items: [],
+      retry: expect.any(Function),
     });
   });
 
@@ -111,7 +115,10 @@ describe("useReservationCategoryConflictWarning", () => {
       .mockResolvedValueOnce([]);
     const { rerender, result } = renderHook(
       ({ request }) =>
-        useReservationCategoryConflictWarning(request),
+        useReservationCategoryConflictWarning(
+          request,
+          RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.INITIAL_REFRESH_KEY
+        ),
       {
         initialProps: {
           request: RESERVATION_CONFLICT_INPUT,
@@ -143,7 +150,10 @@ describe("useReservationCategoryConflictWarning", () => {
       .mockResolvedValueOnce([]);
     const { rerender, result } = renderHook(
       ({ request }) =>
-        useReservationCategoryConflictWarning(request),
+        useReservationCategoryConflictWarning(
+          request,
+          RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.INITIAL_REFRESH_KEY
+        ),
       {
         initialProps: {
           request: RESERVATION_CONFLICT_INPUT,
@@ -184,7 +194,10 @@ describe("useReservationCategoryConflictWarning", () => {
       .mockReturnValueOnce(latestCategoryALookup.promise);
     const { rerender, result } = renderHook(
       ({ request }) =>
-        useReservationCategoryConflictWarning(request),
+        useReservationCategoryConflictWarning(
+          request,
+          RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.INITIAL_REFRESH_KEY
+        ),
       {
         initialProps: {
           request: RESERVATION_CONFLICT_INPUT,
@@ -227,10 +240,13 @@ describe("useReservationCategoryConflictWarning", () => {
   });
   it("does not query or report a warning for an invalid interval", () => {
     const { result } = renderHook(() =>
-      useReservationCategoryConflictWarning({
-        ...RESERVATION_CONFLICT_INPUT,
-        date: "",
-      })
+      useReservationCategoryConflictWarning(
+        {
+          ...RESERVATION_CONFLICT_INPUT,
+          date: "",
+        },
+        RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.INITIAL_REFRESH_KEY
+      )
     );
 
     expect(
@@ -240,6 +256,7 @@ describe("useReservationCategoryConflictWarning", () => {
       hasError: false,
       isLoading: false,
       items: [],
+      retry: expect.any(Function),
     });
   });
 });

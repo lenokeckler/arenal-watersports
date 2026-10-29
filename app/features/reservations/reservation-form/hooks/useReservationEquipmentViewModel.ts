@@ -43,10 +43,13 @@ export const useReservationEquipmentViewModel = (
       },
     });
   const categoryConflictWarning =
-    useReservationCategoryConflictWarning({
-      ...unitRequest,
-      categoryId: values.categoryId,
-    });
+    useReservationCategoryConflictWarning(
+      {
+        ...unitRequest,
+        categoryId: values.categoryId,
+      },
+      refreshKey
+    );
 
   return {
     ...categoryAvailability,
