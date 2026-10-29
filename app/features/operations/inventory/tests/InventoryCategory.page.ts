@@ -42,5 +42,5 @@ export const createInventoryCategoryPage = () => ({
     screen.getByText(unitCode, { exact: true }),
   getUnitStatus,
   queryUnitListItem: () =>
-    screen.queryByRole(ARIA_ROLE.LIST_ITEM),
+    screen.queryByRole(ARIA_ROLE.LISTITEM),
 });

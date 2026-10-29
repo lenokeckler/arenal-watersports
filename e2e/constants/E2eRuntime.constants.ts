@@ -16,6 +16,7 @@ export const E2E_TIMEOUT_MS = {
   ACTION: 20_000,
   EXPECT: 20_000,
   NAVIGATION: 60_000,
+  POST_SUBMIT: 90_000,
   TEST: 120_000,
 } as const;
 
@@ -25,6 +26,8 @@ export const E2E_RETRY_COUNT = {
 } as const;
 
 export const E2E_WORKER_COUNT = {
+  ADMIN_RECOVERY: 1,
+  ADMIN_SCREENSHOTS: 1,
   CI: 1,
   LOCAL: 1,
 } as const;
@@ -41,14 +44,24 @@ export const E2E_DEVICE_NAME = {
 } as const;
 
 export const E2E_PROJECT = {
+  ADMIN_RECOVERY: "chromium-mobile-admin-recovery",
+  ADMIN_SCREENSHOTS: "chromium-desktop-admin-screenshots",
+  ADMIN_SCREENSHOTS_MOBILE:
+    "chromium-mobile-admin-screenshots",
   AUTH_SETUP: "auth-setup",
   DEFAULT: "chromium-desktop",
+  DESKTOP_AUTH_SETUP: "desktop-auth-setup",
   MOBILE: "chromium-mobile",
   SCREENSHOTS: "chromium-desktop-screenshots",
+  SCREENSHOTS_DESKTOP_AUTH_SETUP:
+    "screenshots-desktop-auth-setup",
   SCREENSHOTS_MOBILE: "chromium-mobile-screenshots",
 } as const;
 
 export const E2E_TEST_MATCH = {
+  ADMIN_RECOVERY: "**/specs/*.admin.e2e.ts",
+  ADMIN_SCREENSHOTS:
+    "**/screenshots/*.admin.screenshots.ts",
   AUTH_SETUP: "**/setup/*.setup.ts",
   DEFAULT: "**/specs/*.e2e.ts",
   SCREENSHOTS: "**/screenshots/*.screenshots.ts",
@@ -78,4 +91,22 @@ export const E2E_ARTIFACT_MODE = {
 
 export const HEADING_LEVEL = {
   PAGE: 1,
+  SCREEN: 2,
+} as const;
+
+export const E2E_LOAD_STATE = {
+  LOAD: "load",
+  NETWORK_IDLE: "networkidle",
+} as const;
+
+export const E2E_CONTROLS_SELECTOR = (id: string): string =>
+  `[aria-controls="${id}"]`;
+
+export const E2E_COUNT = {
+  NONE: 0,
+  ONE: 1,
+} as const;
+
+export const E2E_PAGE_EVENT = {
+  REQUEST: "request",
 } as const;
