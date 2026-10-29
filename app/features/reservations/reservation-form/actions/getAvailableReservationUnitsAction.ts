@@ -6,7 +6,7 @@ import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnit
 import { getAvailableReservationUnits } from "../services/getAvailableReservationUnits";
 import { isReservationUnitAvailabilityInput } from "../utils/isReservationUnitAvailabilityInput";
 
-export const getAvailableReservationUnitsAction = (
+export const getAvailableReservationUnitsAction = async (
   input: unknown
 ): Promise<ReservationEquipmentAvailability> => {
   if (!isReservationUnitAvailabilityInput(input)) {
@@ -16,5 +16,7 @@ export const getAvailableReservationUnitsAction = (
   }
   const validInput: ReservationUnitAvailabilityInput =
     input;
-  return getAvailableReservationUnits(validInput);
+  const availability =
+    await getAvailableReservationUnits(validInput);
+  return availability;
 };
