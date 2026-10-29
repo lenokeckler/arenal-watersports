@@ -9,9 +9,11 @@ export const useReservationFormScheduleFields = (
   handleDateChange: (value: string): void => {
     updateValue("date", value);
     updateValue("unitId", STRING.Empty);
+    updateValue("extraIds", []);
   },
   handleTimeChange: (value: string): void => {
     updateValue("time", value);
     updateValue("unitId", STRING.Empty);
+    updateValue("extraIds", []);
   },
 });

@@ -14,6 +14,7 @@ export const useReservationFormNumericFields = (
     }
     updateValue("durationHours", value);
     updateValue("unitId", STRING.Empty);
+    updateValue("extraIds", []);
   },
   handlePeopleCountChange: (value: number): void => {
     if (
