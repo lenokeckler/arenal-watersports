@@ -1,4 +1,3 @@
-import { render } from "@testing-library/react";
 import {
   beforeEach,
   describe,
@@ -6,192 +5,44 @@ import {
   it,
   vi,
 } from "vitest";
-import { PATHS, STATUS } from "@/app/constants";
+import { redirect } from "next/navigation";
+import { PATHS } from "@/app/constants";
+import { isAdministratorSignedIn } from "@/app/services/worker-registration";
 import CategoryCreateForm from "../CategoryCreateForm";
-import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
-import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
-import { createCategoryCreateFormPage } from "./CategoryCreateForm.page";
-import { VALID_CATEGORY_CREATE_FORM_VALUES } from "./CategoryCreateFormValues.constants";
-
-const mockPush = vi.fn();
-const mockShowToast = vi.fn();
-const mockCreateCategoryAction = vi.fn();
+import CategoryCreateFormView from "../CategoryCreateFormView";
 
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({
-    push: mockPush,
+  redirect: vi.fn(() => {
+    throw new Error("NEXT_REDIRECT");
   }),
 }));
 
-vi.mock("@/app/components/toast/utils/useToast", () => ({
-  useToast: () => ({ showToast: mockShowToast }),
-}));
-
-vi.mock("../services/createCategoryAction", () => ({
-  createCategoryAction: (
-    input: typeof VALID_CATEGORY_CREATE_FORM_VALUES
-  ) => mockCreateCategoryAction(input),
+vi.mock("@/app/services/worker-registration", () => ({
+  isAdministratorSignedIn: vi.fn(),
 }));
 
 describe("CategoryCreateForm", () => {
   beforeEach(() => {
-    mockPush.mockClear();
-    mockShowToast.mockClear();
-    mockCreateCategoryAction.mockReset();
+    vi.clearAllMocks();
   });
 
-  it("renders the heading and the three fields with their labels", () => {
-    render(<CategoryCreateForm />);
-    const categoryCreateFormPage =
-      createCategoryCreateFormPage();
+  it("sends anyone who is not administration to the home", async () => {
+    vi.mocked(isAdministratorSignedIn).mockResolvedValue(
+      false
+    );
 
-    expect(
-      categoryCreateFormPage.getHeading()
-    ).toBeInTheDocument();
-    expect(
-      categoryCreateFormPage.getNameInput()
-    ).toBeInTheDocument();
-    expect(
-      categoryCreateFormPage.getTrackingModeInput()
-    ).toBeInTheDocument();
-    expect(
-      categoryCreateFormPage.getGroupNameInput()
-    ).toBeInTheDocument();
+    await expect(CategoryCreateForm()).rejects.toThrow();
+    expect(redirect).toHaveBeenCalledWith(PATHS.HOME);
   });
 
-  it("shows the required-field errors and never calls the server when submitted empty", async () => {
-    render(<CategoryCreateForm />);
-    const categoryCreateFormPage =
-      createCategoryCreateFormPage();
-
-    await categoryCreateFormPage.submit();
-
-    expect(
-      categoryCreateFormPage.getNameError()
-    ).toBeInTheDocument();
-    expect(
-      categoryCreateFormPage.getTrackingModeError()
-    ).toBeInTheDocument();
-    expect(mockCreateCategoryAction).not.toHaveBeenCalled();
-    expect(mockShowToast).not.toHaveBeenCalled();
-    expect(mockPush).not.toHaveBeenCalled();
-  });
-
-  it("marks the invalid fields with aria-invalid and points aria-describedby at their error text", async () => {
-    render(<CategoryCreateForm />);
-    const categoryCreateFormPage =
-      createCategoryCreateFormPage();
-
-    await categoryCreateFormPage.submit();
-
-    const nameInput = categoryCreateFormPage.getNameInput();
-    const trackingModeInput =
-      categoryCreateFormPage.getTrackingModeInput();
-
-    expect(nameInput).toHaveAttribute(
-      "aria-invalid",
-      "true"
-    );
-    expect(trackingModeInput).toHaveAttribute(
-      "aria-invalid",
-      "true"
-    );
-    expect(
-      document.getElementById(
-        nameInput.getAttribute("aria-describedby") ?? ""
-      )
-    ).toHaveTextContent(
-      CATEGORY_CATALOG_COPY.NAME_FIELD_REQUIRED_ERROR
-    );
-    expect(
-      document.getElementById(
-        trackingModeInput.getAttribute(
-          "aria-describedby"
-        ) ?? ""
-      )
-    ).toHaveTextContent(
-      CATEGORY_CATALOG_COPY.TRACKING_MODE_REQUIRED_ERROR
-    );
-  });
-
-  it("creates the category and navigates back when submitted with valid values", async () => {
-    mockCreateCategoryAction.mockResolvedValue({
-      status: CATEGORY_MUTATION_STATUS.SUCCESS,
-      categoryId: "some-id",
-    });
-    render(<CategoryCreateForm />);
-    const categoryCreateFormPage =
-      createCategoryCreateFormPage();
-
-    await categoryCreateFormPage.fillName(
-      VALID_CATEGORY_CREATE_FORM_VALUES.name
-    );
-    await categoryCreateFormPage.selectTrackingMode(
-      VALID_CATEGORY_CREATE_FORM_VALUES.trackingMode
-    );
-    await categoryCreateFormPage.fillGroupName(
-      VALID_CATEGORY_CREATE_FORM_VALUES.groupName
-    );
-    await categoryCreateFormPage.submit();
-
-    expect(mockCreateCategoryAction).toHaveBeenCalledWith(
-      VALID_CATEGORY_CREATE_FORM_VALUES
-    );
-    expect(mockShowToast).toHaveBeenCalledWith(
-      STATUS.SUCCESS,
-      CATEGORY_CATALOG_COPY.CREATE_SUCCESS_TOAST
-    );
-    expect(mockPush).toHaveBeenCalledWith(
-      PATHS.ADMINISTRATION.CATEGORIES
-    );
-  });
-
-  it("disables Guardar after the first click so a fast second click cannot submit twice", async () => {
-    let resolveCreateCategoryAction: (
-      result: Awaited<
-        ReturnType<typeof mockCreateCategoryAction>
-      >
-    ) => void = () => undefined;
-    mockCreateCategoryAction.mockReturnValue(
-      new Promise((resolve) => {
-        resolveCreateCategoryAction = resolve;
-      })
-    );
-    render(<CategoryCreateForm />);
-    const categoryCreateFormPage =
-      createCategoryCreateFormPage();
-
-    await categoryCreateFormPage.fillName(
-      VALID_CATEGORY_CREATE_FORM_VALUES.name
-    );
-    await categoryCreateFormPage.selectTrackingMode(
-      VALID_CATEGORY_CREATE_FORM_VALUES.trackingMode
-    );
-    await categoryCreateFormPage.submit();
-    expect(
-      categoryCreateFormPage.isSubmitButtonLoading()
-    ).toBe(true);
-    await categoryCreateFormPage.clickLoadingSubmitButton();
-
-    expect(mockCreateCategoryAction).toHaveBeenCalledTimes(
-      1
+  it("renders the create form view for administration", async () => {
+    vi.mocked(isAdministratorSignedIn).mockResolvedValue(
+      true
     );
 
-    resolveCreateCategoryAction({
-      status: CATEGORY_MUTATION_STATUS.SUCCESS,
-      categoryId: "some-id",
-    });
-  });
+    const element = await CategoryCreateForm();
 
-  it("navigates back to the category list when Cancelar is clicked", async () => {
-    render(<CategoryCreateForm />);
-    const categoryCreateFormPage =
-      createCategoryCreateFormPage();
-
-    await categoryCreateFormPage.cancel();
-
-    expect(mockPush).toHaveBeenCalledWith(
-      PATHS.ADMINISTRATION.CATEGORIES
-    );
+    expect(redirect).not.toHaveBeenCalled();
+    expect(element.type).toBe(CategoryCreateFormView);
   });
 });

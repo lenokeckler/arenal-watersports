@@ -7,6 +7,7 @@ import {
 } from "vitest";
 import { NotAuthorizedError } from "@/app/services/authorization/NotAuthorizedError";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import { CATEGORY_TRACKING_MODE } from "../constants/CategoryTrackingMode.constants";
 import { CategoryGroupConflictError } from "../services/assertCategoryGroupTrackingModeAvailable";
@@ -70,6 +71,28 @@ describe("createCategoryAction", () => {
 
     mockInsert.mockReturnValue({ select: mockSelect });
     mockSelect.mockReturnValue({ single: mockSingle });
+  });
+
+  it("returns the required-name error without looking up the group or inserting when the trimmed name is empty", async () => {
+    mockAssertIsAdminWorker.mockResolvedValue(
+      FAKE_ADMIN_WORKER_ID
+    );
+
+    const result = await createCategoryAction({
+      name: "   ",
+      trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
+      groupName: FAKE_GROUP_NAME,
+    });
+
+    expect(result).toEqual({
+      status: CATEGORY_MUTATION_STATUS.ERROR,
+      nameError:
+        CATEGORY_CATALOG_COPY.NAME_FIELD_REQUIRED_ERROR,
+    });
+    expect(
+      mockAssertCategoryGroupTrackingModeAvailable
+    ).not.toHaveBeenCalled();
+    expect(mockInsert).not.toHaveBeenCalled();
   });
 
   it("creates a category without a group and returns its id", async () => {

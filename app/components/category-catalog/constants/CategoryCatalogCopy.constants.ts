@@ -1,6 +1,8 @@
 export const CATEGORY_CATALOG_COPY = {
   CANCEL_BUTTON: "Cancelar",
   CREATE_CTA: "+ Agregar categoría",
+  CREATE_FORM_PURPOSE:
+    "Indique cómo se llama y cómo se cuenta en el inventario.",
   CREATE_FORM_TITLE: "Nueva categoría",
   CREATE_SUCCESS_TOAST: "Categoría creada.",
   DELETE_BUTTON: "Eliminar",
