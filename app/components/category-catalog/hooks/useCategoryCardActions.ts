@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import {
+  unstable_rethrow,
+  useRouter,
+} from "next/navigation";
 import { STATUS } from "@/app/constants";
 import type { Nullable } from "@/app/types";
 import { useToast } from "@/app/components/toast/utils/useToast";
@@ -31,7 +34,8 @@ export const useCategoryCardActions =
             CATEGORY_CATALOG_COPY.MARK_INACTIVE_SUCCESS_TOAST
           );
           router.refresh();
-        } catch {
+        } catch (error) {
+          unstable_rethrow(error);
           showToast(
             STATUS.ERROR,
             CATEGORY_CATALOG_COPY.GENERIC_MUTATION_ERROR
@@ -80,7 +84,8 @@ export const useCategoryCardActions =
             CATEGORY_CATALOG_COPY.DELETE_SUCCESS_TOAST
           );
           router.refresh();
-        } catch {
+        } catch (error) {
+          unstable_rethrow(error);
           showToast(
             STATUS.ERROR,
             CATEGORY_CATALOG_COPY.GENERIC_MUTATION_ERROR
