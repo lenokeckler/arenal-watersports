@@ -3,4 +3,3 @@ export interface ReservationAvailabilityClientOptions {
   categoryIsInterchangeable?: boolean;
   hasCategoryAvailabilityRow?: boolean;
 }
-

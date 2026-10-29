@@ -89,8 +89,7 @@ describe("useReservationUnitAvailability", () => {
     const request: ReservationUnitAvailabilityInput = {
       categoryId: AVAILABLE_UNIT_TEST.CATEGORY_ID,
       date: AVAILABLE_UNIT_TEST.DATE,
-      durationMinutes:
-        AVAILABLE_UNIT_TEST.DURATION_MINUTES,
+      durationMinutes: AVAILABLE_UNIT_TEST.DURATION_MINUTES,
       time: AVAILABLE_UNIT_TEST.TIME,
     };
     const { result } = renderHook(() =>
