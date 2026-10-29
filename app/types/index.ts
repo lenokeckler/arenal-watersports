@@ -7,3 +7,4 @@ export type {
 export type { Database } from "./Database";
 export type { WorkArea } from "./WorkArea";
 export type { HttpHeader } from "./HttpHeader";
+export type { MoneyFormatConfig } from "./MoneyFormatConfig.interface";
