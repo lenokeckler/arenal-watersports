@@ -4,8 +4,12 @@ import { CATEGORY_LIST_METADATA } from "@/app/components/category-catalog/consta
 
 export const metadata: Metadata = CATEGORY_LIST_METADATA;
 
-const CategoriesPage = (): React.JSX.Element => (
-  <CategoryList />
-);
+const CategoriesPage = async ({
+  searchParams,
+}: PageProps<"/administration/categories">): Promise<React.JSX.Element> => {
+  const { page } = await searchParams;
+
+  return <CategoryList pageParam={page} />;
+};
 
 export default CategoriesPage;
