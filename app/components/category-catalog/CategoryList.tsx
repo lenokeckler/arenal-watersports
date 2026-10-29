@@ -1,3 +1,7 @@
+import { redirect } from "next/navigation";
+import { PATHS } from "@/app/constants";
+import { isAdministratorSignedIn } from "@/app/services/worker-registration";
+import { CATEGORY_LIST_DIAGNOSTICS } from "./constants/CategoryListDiagnostics.constants";
 import CategoryListView from "./CategoryListView";
 import type { CategoryListViewProps } from "./models/CategoryListViewProps.interface";
 import { listCategories } from "./services/listCategories";
@@ -9,7 +13,7 @@ const fetchCategoryListViewProps =
       return { categories, fetchFailed: false };
     } catch (error) {
       const fetchError = new Error(
-        "Failed to load the category list",
+        CATEGORY_LIST_DIAGNOSTICS.FETCH_FAILED,
         { cause: error }
       );
       return {
@@ -22,6 +26,10 @@ const fetchCategoryListViewProps =
 
 const CategoryList =
   async (): Promise<React.JSX.Element> => {
+    if (!(await isAdministratorSignedIn())) {
+      redirect(PATHS.HOME);
+    }
+
     const categoryListViewProps =
       await fetchCategoryListViewProps();
 

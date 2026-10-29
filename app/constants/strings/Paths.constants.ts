@@ -1,12 +1,28 @@
 export const PATHS = {
   HOME: "/",
+  MODE: "/mode",
   ACCESS: {
+    FIRST_SIGN_IN: "/access/first-sign-in",
     LOGIN: "/access/login",
+    RECOVERY: "/access/recovery",
+    RECOVERY_PASSWORD: "/access/recovery/password",
+    RECOVERY_RESET: "/access/recovery/reset",
     ROOT: "/access",
   },
   ADMINISTRATION: {
-    CATEGORIES: "/administracion/categorias",
-    CATEGORIES_NEW: "/administracion/categorias/nueva",
-    CATEGORY_BEHAVIOR_SEGMENT: "comportamiento",
+    CATEGORIES: "/administration/categories",
+    CATEGORIES_NEW: "/administration/categories/new",
+    CATEGORY_BEHAVIOR_SEGMENT: "behavior",
+    ROOT: "/administration",
+    WORKER_AREAS: "/administration/workers/areas",
+    WORKERS_NEW: "/administration/workers/new",
+  },
+  PROFILE: {
+    EMAIL: "/profile/email",
+    PASSWORD: "/profile/password",
+    ROOT: "/profile",
+  },
+  WELL_KNOWN: {
+    CHANGE_PASSWORD: "/.well-known/change-password",
   },
 } as const;
