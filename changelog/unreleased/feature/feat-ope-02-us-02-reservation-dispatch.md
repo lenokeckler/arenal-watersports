@@ -1,0 +1,1 @@
+OPE-02.01: Reservation dispatch — category-based dispatch of committed equipment with server-validated unit selection (US-OPE-02 · AWS-118)
