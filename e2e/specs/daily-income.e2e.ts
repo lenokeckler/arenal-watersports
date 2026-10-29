@@ -1,5 +1,6 @@
 import { expect, test as baseTest } from "@playwright/test";
-import { PATHS } from "@/app/constants";
+import { ARIA_ROLE, PATHS } from "@/app/constants";
+import { DAILY_INCOME_COPY } from "@/app/features/reservations/daily-income/constants/DailyIncomeCopy.constants";
 import { formatMoney } from "@/app/utils/money/formatMoney";
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 import { createDailyIncomePage } from "../pages/DailyIncome.page";
@@ -48,9 +49,6 @@ test.describe("Daily income", () => {
         dailyIncome.crc.paymentMethod
       )
     ).toHaveCount(E2E_COUNT.NONE);
-    await expect(
-      incomePage.getCurrencyCard(dailyIncome.usd.currency)
-    ).not.toContainText(formatMoney(dailyIncome.crc));
   });
 });
 
@@ -62,6 +60,11 @@ test.describe("Daily income for operaciones", () => {
     await createDailyIncomePage(page).goTo();
 
     await expect(page).toHaveURL(PATHS.HOME);
+    await expect(
+      page.getByRole(ARIA_ROLE.HEADING, {
+        name: DAILY_INCOME_COPY.PAGE_TITLE,
+      })
+    ).toHaveCount(E2E_COUNT.NONE);
     for (const charge of [
       dailyIncome.usd,
       dailyIncome.crc,

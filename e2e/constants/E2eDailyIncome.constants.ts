@@ -1,4 +1,5 @@
 import { CURRENCY_CODE } from "@/app/constants";
+import type { Database } from "@/app/types";
 import type { E2eChargeSeed } from "../support/models/E2eChargeSeed.interface";
 
 export const E2E_INCOME_METHOD = {
@@ -6,7 +7,8 @@ export const E2E_INCOME_METHOD = {
   SUFFIX_LENGTH: 8,
 } as const;
 
-export const E2E_CHARGE_KIND = "tariff";
+export const E2E_CHARGE_KIND: Database["public"]["Enums"]["charge_kind"] =
+  "tariff";
 
 export const E2E_CHARGE_SEEDS = {
   CRC: { amount: 25000, currency: CURRENCY_CODE.CRC },
