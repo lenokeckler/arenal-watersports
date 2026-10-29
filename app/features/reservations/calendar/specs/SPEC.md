@@ -103,6 +103,8 @@ Reservations workers answer customers using visible reservation times, committed
 - The calendar is the principal Reservations working view; the common board remains the entry screen for all workers.
 - Actual route integration, authenticated E2E checks and mobile/desktop screenshots wait for that security dependency. Captures must use the real authorized route and local persisted reservations.
 - UI presentation follows the existing Stitch references and the shared design tokens.
+- The block-description checkpoint prepares full customer and equipment labels, a separately labelled scheduled interval and actual category-group departure/expected-return/closure descriptions. All labels retain full Costa Rica dates and times, including multi-day reservations and unknown returns.
+- The static block renders the descriptor through shared text and list primitives, with its complete Spanish accessible name and no interactive controls. Component tests use a Page Object and preserve repeated departure-group descriptions. Calendar placement, protected integration and real application screenshots remain pending.
 
 ## Acceptance criteria
 
