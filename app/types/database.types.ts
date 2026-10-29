@@ -1105,53 +1105,9 @@ export type Database = {
           },
         ];
       };
-      password_reset_grants: {
-        Row: {
-          created_at: string;
-          expires_at: string;
-          id: string;
-          token_hash: string;
-          used_at: string | null;
-          worker_id: string;
-        };
-        Insert: {
-          created_at?: string;
-          expires_at: string;
-          id?: string;
-          token_hash: string;
-          used_at?: string | null;
-          worker_id: string;
-        };
-        Update: {
-          created_at?: string;
-          expires_at?: string;
-          id?: string;
-          token_hash?: string;
-          used_at?: string | null;
-          worker_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "password_reset_grants_worker_id_fkey";
-            columns: ["worker_id"];
-            isOneToOne: false;
-            referencedRelation: "reservations_by_worker";
-            referencedColumns: ["worker_id"];
-          },
-          {
-            foreignKeyName: "password_reset_grants_worker_id_fkey";
-            columns: ["worker_id"];
-            isOneToOne: false;
-            referencedRelation: "workers";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
       password_reset_pins: {
         Row: {
-          attempts: number;
           created_at: string;
-          delivery_failed_at: string | null;
           expires_at: string;
           id: string;
           pin_hash: string;
@@ -1159,9 +1115,7 @@ export type Database = {
           worker_id: string;
         };
         Insert: {
-          attempts?: number;
           created_at?: string;
-          delivery_failed_at?: string | null;
           expires_at: string;
           id?: string;
           pin_hash: string;
@@ -1169,9 +1123,7 @@ export type Database = {
           worker_id: string;
         };
         Update: {
-          attempts?: number;
           created_at?: string;
-          delivery_failed_at?: string | null;
           expires_at?: string;
           id?: string;
           pin_hash?: string;
@@ -1194,24 +1146,6 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
-      };
-      password_reset_requests: {
-        Row: {
-          created_at: string;
-          id: string;
-          network_key: string;
-        };
-        Insert: {
-          created_at?: string;
-          id?: string;
-          network_key: string;
-        };
-        Update: {
-          created_at?: string;
-          id?: string;
-          network_key?: string;
-        };
-        Relationships: [];
       };
       refunds: {
         Row: {
@@ -1879,24 +1813,6 @@ export type Database = {
           },
         ];
       };
-      session_activity: {
-        Row: {
-          last_activity_at: string;
-          session_id: string;
-          user_id: string;
-        };
-        Insert: {
-          last_activity_at?: string;
-          session_id: string;
-          user_id: string;
-        };
-        Update: {
-          last_activity_at?: string;
-          session_id?: string;
-          user_id?: string;
-        };
-        Relationships: [];
-      };
       tariffs: {
         Row: {
           amount_crc: number | null;
@@ -2163,9 +2079,6 @@ export type Database = {
       workers: {
         Row: {
           base_role: Database["public"]["Enums"]["work_area"];
-          blocked_reason:
-            | Database["public"]["Enums"]["worker_blocked_reason"]
-            | null;
           created_at: string;
           created_by: string | null;
           deleted_at: string | null;
@@ -2186,9 +2099,6 @@ export type Database = {
         };
         Insert: {
           base_role: Database["public"]["Enums"]["work_area"];
-          blocked_reason?:
-            | Database["public"]["Enums"]["worker_blocked_reason"]
-            | null;
           created_at?: string;
           created_by?: string | null;
           deleted_at?: string | null;
@@ -2209,9 +2119,6 @@ export type Database = {
         };
         Update: {
           base_role?: Database["public"]["Enums"]["work_area"];
-          blocked_reason?:
-            | Database["public"]["Enums"]["worker_blocked_reason"]
-            | null;
           created_at?: string;
           created_by?: string | null;
           deleted_at?: string | null;
@@ -2505,10 +2412,6 @@ export type Database = {
       };
     };
     Functions: {
-      block_worker: {
-        Args: { target_worker: string };
-        Returns: string;
-      };
       category_availability: {
         Args: {
           p_category_id: string;
@@ -2522,69 +2425,17 @@ export type Database = {
           usable: number;
         }[];
       };
-      choose_work_area: {
+      create_rental_reservation: {
         Args: {
-          target: Database["public"]["Enums"]["work_area"];
+          p_category_id: string;
+          p_customer_name: string;
+          p_date: string;
+          p_duration_minutes: number;
+          p_people_count: number;
+          p_quantity: number;
+          p_time: string;
         };
         Returns: string;
-      };
-      complete_first_password_change: {
-        Args: { p_user_id: string };
-        Returns: undefined;
-      };
-      consume_password_reset_pin: {
-        Args: { p_pin: string; p_username: string };
-        Returns: string;
-      };
-      current_session_id: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
-      };
-      current_session_seconds_left: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      current_session_state: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
-      };
-      current_work_area: {
-        Args: Record<PropertyKey, never>;
-        Returns: Database["public"]["Enums"]["work_area"];
-      };
-      custom_access_token_hook: {
-        Args: { event: Json };
-        Returns: Json;
-      };
-      exchange_password_reset_pin: {
-        Args: { p_pin: string; p_username: string };
-        Returns: string;
-      };
-      finish_password_recovery: {
-        Args: { p_user_id: string };
-        Returns: undefined;
-      };
-      grant_worker_area: {
-        Args: {
-          target_area: Database["public"]["Enums"]["work_area"];
-          target_worker: string;
-        };
-        Returns: string;
-      };
-      grant_worker_mark: {
-        Args: {
-          target_mark: Database["public"]["Enums"]["worker_mark"];
-          target_worker: string;
-        };
-        Returns: string;
-      };
-      grantable_worker_areas: {
-        Args: Record<PropertyKey, never>;
-        Returns: Database["public"]["Enums"]["work_area"][];
-      };
-      grantable_worker_marks: {
-        Args: Record<PropertyKey, never>;
-        Returns: Database["public"]["Enums"]["worker_mark"][];
       };
       has_area: {
         Args: {
@@ -2598,170 +2449,17 @@ export type Database = {
         };
         Returns: boolean;
       };
-      is_active_worker: {
-        Args: Record<PropertyKey, never>;
-        Returns: boolean;
-      };
       is_admin: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
-      };
-      issue_password_reset_pin: {
-        Args: {
-          p_network_key: string;
-          p_pin: string;
-          p_username: string;
-        };
-        Returns: {
-          lifetime_minutes: number;
-          personal_email: string;
-          pin_id: string;
-        }[];
-      };
-      mark_password_reset_pin_undelivered: {
-        Args: { p_pin_id: string };
-        Returns: undefined;
       };
       next_reservation_code: {
         Args: Record<PropertyKey, never>;
         Returns: string;
       };
-      password_reset_grant_is_open: {
-        Args: { p_token: string };
-        Returns: boolean;
-      };
-      password_reset_grant_lifetime_minutes: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_grant_token_hash: {
-        Args: { p_token: string };
-        Returns: string;
-      };
-      password_reset_limit_window_minutes: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_network_hourly_limit: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_pin_attempt_limit: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_pin_hash_cost: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_pin_length: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_pin_lifetime_minutes: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_request_cooldown_seconds: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_request_hourly_limit: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_retention_hours: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      prepare_worker_temporary_password: {
-        Args: { target_worker: string };
-        Returns: string;
-      };
-      purge_ended_session_activity: {
-        Args: Record<PropertyKey, never>;
-        Returns: undefined;
-      };
       purge_expired_history: {
         Args: Record<PropertyKey, never>;
         Returns: undefined;
-      };
-      purge_password_reset_records: {
-        Args: Record<PropertyKey, never>;
-        Returns: undefined;
-      };
-      record_failed_sign_in: {
-        Args: { p_username: string };
-        Returns: undefined;
-      };
-      record_successful_sign_in: {
-        Args: { p_user_id: string };
-        Returns: undefined;
-      };
-      redeem_password_reset_grant: {
-        Args: { p_token: string };
-        Returns: string;
-      };
-      rehire_worker: {
-        Args: { target_worker: string };
-        Returns: string;
-      };
-      retire_worker: {
-        Args: { target_worker: string };
-        Returns: string;
-      };
-      revoke_worker_area: {
-        Args: {
-          target_area: Database["public"]["Enums"]["work_area"];
-          target_worker: string;
-        };
-        Returns: string;
-      };
-      revoke_worker_mark: {
-        Args: {
-          target_mark: Database["public"]["Enums"]["worker_mark"];
-          target_worker: string;
-        };
-        Returns: string;
-      };
-      revoke_worker_sessions: {
-        Args: { target_worker: string };
-        Returns: undefined;
-      };
-      session_idle_deadline: {
-        Args: { last_activity: string };
-        Returns: string;
-      };
-      session_idle_expired: {
-        Args: { last_activity: string; moment: string };
-        Returns: boolean;
-      };
-      session_idle_limit: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
-      };
-      session_is_live: {
-        Args: Record<PropertyKey, never>;
-        Returns: boolean;
-      };
-      session_last_activity: {
-        Args: {
-          signed_in_at: string;
-          target_session: string;
-        };
-        Returns: string;
-      };
-      sign_in_attempt_limit: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      sign_in_requires_recovery: {
-        Args: { p_user_id: string };
-        Returns: boolean;
-      };
-      touch_current_session_activity: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
       };
       unit_conflicts: {
         Args: {
@@ -2776,26 +2474,6 @@ export type Database = {
           reservation_id: string;
           starts_at: string;
         }[];
-      };
-      unlock_worker: {
-        Args: { target_worker: string };
-        Returns: string;
-      };
-      workday_contains: {
-        Args: { moment: string };
-        Returns: boolean;
-      };
-      workday_end: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
-      };
-      workday_start: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
-      };
-      workday_time_zone: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
       };
       worker_display_names: {
         Args: { p_worker_ids: string[] };
@@ -2835,8 +2513,6 @@ export type Database = {
       usage_metric: "engine_hours" | "kilometers";
       work_area:
         "administracion" | "reservas" | "operaciones";
-      worker_blocked_reason:
-        "failed_attempts" | "administration";
       worker_mark:
         | "guia"
         | "encargado_general"
@@ -3025,10 +2701,6 @@ export const Constants = {
         "administracion",
         "reservas",
         "operaciones",
-      ],
-      worker_blocked_reason: [
-        "failed_attempts",
-        "administration",
       ],
       worker_mark: [
         "guia",

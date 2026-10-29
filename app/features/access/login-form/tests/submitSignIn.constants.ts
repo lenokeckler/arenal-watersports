@@ -20,5 +20,3 @@ export const UNKNOWN_ERROR = createSignInError(
 export const SERVICE_FAILURE_MESSAGE =
   "service unavailable";
 export const REDIRECT_SIGNAL_MESSAGE = "NEXT_REDIRECT";
-export const REPORTER_FAILURE_MESSAGE =
-  "reporter unavailable";

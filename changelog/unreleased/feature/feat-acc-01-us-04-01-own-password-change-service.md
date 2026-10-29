@@ -1,1 +1,0 @@
-ACC-01.04.01: Current password check — the current password is verified with one counted failed attempt per wrong guess, plus the update, global sign-out and block lookup it needs (US-ACC-04 · AWS-33)

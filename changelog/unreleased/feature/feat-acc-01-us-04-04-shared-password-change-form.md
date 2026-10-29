@@ -1,1 +1,0 @@
-ACC-01.04.04: Shared password change form — the password change form takes its copy, its server action and its heading from the screen that renders it, so first sign-in and the profile share one form (US-ACC-04 · AWS-33)

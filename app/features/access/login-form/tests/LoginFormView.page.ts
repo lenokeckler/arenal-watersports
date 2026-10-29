@@ -9,26 +9,12 @@ const createLoginFormViewQueries = () => ({
   ...createLoginFormControlsPage(),
   findBanner: () => screen.findByRole(ARIA_ROLE.ALERT),
   findText: (text: string) => screen.findByText(text),
-  getForgotLink: () =>
-    screen.getByRole(ARIA_ROLE.LINK, {
-      name: LOGIN_FORM_COPY.FORGOT_PASSWORD,
-    }),
   getPasswordInput: () =>
     screen.getByLabelText(LOGIN_FORM_COPY.PASSWORD_LABEL),
-  queryRecoveryOffer: () =>
-    screen.queryByRole(ARIA_ROLE.LINK, {
-      name: LOGIN_FORM_COPY.RECOVER_PASSWORD,
-    }),
-  findRecoveryOffer: () =>
-    screen.findByRole(ARIA_ROLE.LINK, {
-      name: LOGIN_FORM_COPY.RECOVER_PASSWORD,
-    }),
-  queryNotice: () => screen.queryByRole(ARIA_ROLE.STATUS),
   getToggle: (label: string) =>
     screen.getByRole(ARIA_ROLE.BUTTON, { name: label }),
   getUsernameInput: () =>
     screen.getByLabelText(LOGIN_FORM_COPY.USERNAME_LABEL),
-  queryBanner: () => screen.queryByRole(ARIA_ROLE.ALERT),
 });
 
 export const createLoginFormViewPage = () => {

@@ -1,1 +1,0 @@
-ADM-01.06.02: Account lock tests — pgTAP proves only administration blocks or unlocks, the administration account is never blocked, blocking closes the sessions and unlocking resets the attempts (US-ADM-06 · AWS-58)

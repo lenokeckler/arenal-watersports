@@ -23,14 +23,6 @@ export const FIELD_ERROR_CASES: FieldErrorCase[] = [
   },
   {
     error: {
-      code: SIGN_IN_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED,
-      field: SIGN_IN_FIELD.FORM,
-    },
-    field: SIGN_IN_FIELD.FORM,
-    label: "recovery required",
-  },
-  {
-    error: {
       code: SIGN_IN_ERROR_CODE.NETWORK,
       field: SIGN_IN_FIELD.FORM,
     },

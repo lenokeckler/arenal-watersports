@@ -1,1 +1,0 @@
-ACC-01.06.17: Worker password write — the server can set a worker's password through the Supabase admin API, mapping its errors to the password-change codes; used by recovery and later by the administration temporary password (US-ACC-06 · AWS-35)

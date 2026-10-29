@@ -70,7 +70,7 @@ set local role authenticated;
 set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}';
 
 with u as (
-     update workers set personal_email = 'ismael.ops@correo.com' where id = '22222222-2222-2222-2222-222222222222'
+     update workers set full_name = 'Ismael Ops' where id = '22222222-2222-2222-2222-222222222222'
      returning 1
 )
 select is((select count(*)::int from u), 1, 'ismael actualiza su propia fila de workers');

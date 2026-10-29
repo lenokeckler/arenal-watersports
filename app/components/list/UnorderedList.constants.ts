@@ -4,7 +4,6 @@ export const UNORDERED_LIST = {
     DEFAULT: "default",
     PLANS: "plans",
     SIDE_MENU: "side-menu",
-    CHECKLIST: "checklist",
   },
 } as const;
 export type UnorderedListVariant =

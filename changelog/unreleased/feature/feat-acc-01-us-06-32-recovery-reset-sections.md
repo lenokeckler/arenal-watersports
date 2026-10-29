@@ -1,1 +1,0 @@
-ACC-01.06.32: Recovery reset sections — the fields block (username, PIN, new password with its live rules, repetition) and the submit block (banner right above the button) of the PIN screen (US-ACC-06 · AWS-35)

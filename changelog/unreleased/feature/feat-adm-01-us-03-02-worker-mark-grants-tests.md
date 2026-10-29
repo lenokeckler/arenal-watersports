@@ -1,1 +1,0 @@
-ADM-01.03.02: Worker mark grants tests — pgTAP proves only administration puts or removes the guide mark, that it adds no role, and that only marked guides appear in the guide list when assigning a tour (US-ADM-03 · AWS-55)

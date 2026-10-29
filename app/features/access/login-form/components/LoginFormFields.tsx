@@ -3,8 +3,6 @@ import { FORM_FIELD_VARIANT } from "@/app/components/form-field/constants/FormFi
 import { INPUT_TYPES, STRING } from "@/app/constants";
 import { SIGN_IN_FIELD } from "@/app/constants/access/SignInError.constants";
 import { LOGIN_FORM_COPY } from "../constants/LoginFormCopy.constants";
-import { LOGIN_PASSWORD_GROUP_CLASS } from "../styles/LoginForm.styles";
-import LoginForgotPasswordLink from "./LoginForgotPasswordLink";
 import type { LoginFormFieldsProps } from "../models/LoginFormFieldsProps.interface";
 
 const LoginFormFields = ({
@@ -30,23 +28,20 @@ const LoginFormFields = ({
       reference={fieldRefs[SIGN_IN_FIELD.USERNAME]}
       showErrorText
     />
-    <div className={LOGIN_PASSWORD_GROUP_CLASS}>
-      <FormField
-        id={SIGN_IN_FIELD.PASSWORD}
-        name={SIGN_IN_FIELD.PASSWORD}
-        label={LOGIN_FORM_COPY.PASSWORD_LABEL}
-        placeholder={LOGIN_FORM_COPY.PASSWORD_PLACEHOLDER}
-        type={INPUT_TYPES.PASSWORD}
-        variant={FORM_FIELD_VARIANT.GLASS}
-        labelSuffix={STRING.Empty}
-        value={values.password}
-        onChange={onPasswordChange}
-        error={passwordError}
-        reference={fieldRefs[SIGN_IN_FIELD.PASSWORD]}
-        showErrorText
-      />
-      <LoginForgotPasswordLink />
-    </div>
+    <FormField
+      id={SIGN_IN_FIELD.PASSWORD}
+      name={SIGN_IN_FIELD.PASSWORD}
+      label={LOGIN_FORM_COPY.PASSWORD_LABEL}
+      placeholder={LOGIN_FORM_COPY.PASSWORD_PLACEHOLDER}
+      type={INPUT_TYPES.PASSWORD}
+      variant={FORM_FIELD_VARIANT.GLASS}
+      labelSuffix={STRING.Empty}
+      value={values.password}
+      onChange={onPasswordChange}
+      error={passwordError}
+      reference={fieldRefs[SIGN_IN_FIELD.PASSWORD]}
+      showErrorText
+    />
   </>
 );
 

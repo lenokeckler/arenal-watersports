@@ -1,1 +1,0 @@
-ACC-01.06.03: Password reset PIN check — the database checks a recovery PIN in one locked step, spends it on success, counts a wrong try and spends it after five, and refuses blocked or retired accounts with the same answer as a wrong PIN (US-ACC-06 · AWS-35)

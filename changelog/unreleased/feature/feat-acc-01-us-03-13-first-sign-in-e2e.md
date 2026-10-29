@@ -1,1 +1,0 @@
-ACC-01.03.13: First sign-in E2E — end to end tests and mobile and desktop captures of the first sign-in: a pending account is held on the screen, sees the rules before typing and reaches home after a valid change (US-ACC-03 · AWS-32)

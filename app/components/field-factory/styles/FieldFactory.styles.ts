@@ -30,9 +30,9 @@ export const FIELD_FACTORY_PASSWORD_WRAPPER_CLASS =
   "relative w-full";
 
 export const FIELD_FACTORY_PASSWORD_TOGGLE_CLASS =
-  "absolute right-1 top-1/2 size-12 -translate-y-1/2 flex items-center justify-center focus:ring-2 focus:ring-primary focus:outline-none cursor-pointer";
+  "absolute right-1 top-1/2 size-11 -translate-y-1/2 flex items-center justify-center focus:ring-2 focus:ring-primary focus:outline-none cursor-pointer";
 
-export const FIELD_FACTORY_PASSWORD_INPUT_CLASS = "pr-14";
+export const FIELD_FACTORY_PASSWORD_INPUT_CLASS = "pr-12";
 
 export const resolveFieldFactoryPasswordInputClassName = (
   baseClassName: string

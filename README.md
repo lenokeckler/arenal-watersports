@@ -45,8 +45,8 @@ Fill `.env.local` with the values `npx supabase status -o env` printed:
 npm run dev                  # http://localhost:3000
 ```
 
-The local database is built from `supabase/migrations/` and filled from `supabase/seed.sql` and
-the files in `supabase/seeds/` that `supabase/config.toml` lists. It already has one Administración account for the login screen: username `admin`, password
+The local database is built from `supabase/migrations/` and filled from `supabase/seed.sql`. It
+already has one Administración account for the login screen: username `admin`, password
 `Arenal.2026`. That password only exists in the local database.
 
 ### Check that everything works
