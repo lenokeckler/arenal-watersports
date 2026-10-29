@@ -1,6 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
+import { loadEnvConfig } from "@next/env";
 import {
   E2E_ARTIFACT_MODE,
+  E2E_AUTH_STORAGE_PATH,
   E2E_BASE_URL,
   E2E_DESKTOP_VIEWPORT,
   E2E_DEVICE_NAME,
@@ -16,6 +18,8 @@ import {
   E2E_WORKER_COUNT,
 } from "./e2e/constants/E2eRuntime.constants";
 import { E2E_RECOVERY_SERVER_ENV } from "./e2e/constants/E2ePasswordRecovery.constants";
+
+loadEnvConfig(process.cwd());
 
 const isContinuousIntegration = Boolean(process.env.CI);
 const mobileChromium = {
@@ -37,7 +41,7 @@ export default defineConfig({
     : E2E_RETRY_COUNT.LOCAL,
   workers: isContinuousIntegration
     ? E2E_WORKER_COUNT.CI
-    : undefined,
+    : E2E_WORKER_COUNT.LOCAL,
   outputDir: E2E_OUTPUT_DIR.ARTIFACTS,
   reporter: [
     [E2E_REPORTER.LIST],
@@ -58,16 +62,33 @@ export default defineConfig({
   },
   projects: [
     {
+      name: E2E_PROJECT.AUTH_SETUP,
+      testMatch: E2E_TEST_MATCH.AUTH_SETUP,
+    },
+    {
+      dependencies: [E2E_PROJECT.AUTH_SETUP],
       name: E2E_PROJECT.MOBILE,
       testIgnore: E2E_TEST_MATCH.ADMIN_RECOVERY,
       testMatch: E2E_TEST_MATCH.DEFAULT,
-      use: mobileChromium,
+      use: {
+        ...mobileChromium,
+        storageState: E2E_AUTH_STORAGE_PATH,
+      },
     },
     {
+      dependencies: [E2E_PROJECT.MOBILE],
+      name: E2E_PROJECT.DESKTOP_AUTH_SETUP,
+      testMatch: E2E_TEST_MATCH.AUTH_SETUP,
+    },
+    {
+      dependencies: [E2E_PROJECT.DESKTOP_AUTH_SETUP],
       name: E2E_PROJECT.DEFAULT,
       testIgnore: E2E_TEST_MATCH.ADMIN_RECOVERY,
       testMatch: E2E_TEST_MATCH.DEFAULT,
-      use: desktopChromium,
+      use: {
+        ...desktopChromium,
+        storageState: E2E_AUTH_STORAGE_PATH,
+      },
     },
     {
       name: E2E_PROJECT.ADMIN_RECOVERY,
@@ -81,16 +102,31 @@ export default defineConfig({
       workers: E2E_WORKER_COUNT.ADMIN_RECOVERY,
     },
     {
+      dependencies: [E2E_PROJECT.AUTH_SETUP],
       name: E2E_PROJECT.SCREENSHOTS_MOBILE,
       testIgnore: E2E_TEST_MATCH.ADMIN_SCREENSHOTS,
       testMatch: E2E_TEST_MATCH.SCREENSHOTS,
-      use: mobileChromium,
+      use: {
+        ...mobileChromium,
+        storageState: E2E_AUTH_STORAGE_PATH,
+      },
     },
     {
+      dependencies: [E2E_PROJECT.SCREENSHOTS_MOBILE],
+      name: E2E_PROJECT.SCREENSHOTS_DESKTOP_AUTH_SETUP,
+      testMatch: E2E_TEST_MATCH.AUTH_SETUP,
+    },
+    {
+      dependencies: [
+        E2E_PROJECT.SCREENSHOTS_DESKTOP_AUTH_SETUP,
+      ],
       name: E2E_PROJECT.SCREENSHOTS,
       testIgnore: E2E_TEST_MATCH.ADMIN_SCREENSHOTS,
       testMatch: E2E_TEST_MATCH.SCREENSHOTS,
-      use: desktopChromium,
+      use: {
+        ...desktopChromium,
+        storageState: E2E_AUTH_STORAGE_PATH,
+      },
     },
     {
       name: E2E_PROJECT.ADMIN_SCREENSHOTS_MOBILE,

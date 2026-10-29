@@ -1,5 +1,6 @@
 import { PATHS } from "@/app/constants";
 import { E2E_FIRST_SIGN_IN_PASSWORDS } from "../constants/E2eFirstSignIn.constants";
+import { E2E_SIGNED_OUT_STORAGE_STATE } from "../constants/E2eRuntime.constants";
 import { createFirstSignInPage } from "../pages/FirstSignIn.page";
 import { createLoginPage } from "../pages/Login.page";
 import { expect, test } from "../support/pendingWorkerTest";
@@ -35,13 +36,19 @@ test.describe("First sign-in password change", () => {
     await expect(page).toHaveURL(PATHS.HOME);
   });
 
-  test("sends a signed-out visitor to the login", async ({
-    page,
-  }) => {
-    const firstSignInPage = createFirstSignInPage(page);
+  test.describe("signed-out visitor", () => {
+    test.use({
+      storageState: E2E_SIGNED_OUT_STORAGE_STATE,
+    });
 
-    await firstSignInPage.goTo();
+    test("sends a signed-out visitor to the login", async ({
+      page,
+    }) => {
+      const firstSignInPage = createFirstSignInPage(page);
 
-    await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+      await firstSignInPage.goTo();
+
+      await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+    });
   });
 });

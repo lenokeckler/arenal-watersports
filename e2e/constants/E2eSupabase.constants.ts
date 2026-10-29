@@ -77,12 +77,19 @@ export const E2E_SUPABASE_ERROR = {
   REASON_SEPARATOR: "; ",
 } as const;
 
+const E2E_AUTH_SESSIONS_DATABASE_CONTAINER_ENV =
+  "E2E_AUTH_SESSIONS_DATABASE_CONTAINER";
+const E2E_AUTH_SESSIONS_DATABASE_CONTAINER_DEFAULT =
+  "supabase_db_arenal-watersports";
+
 export const E2E_AUTH_SESSIONS = {
-  DATABASE: "postgres",
-  DATABASE_CONTAINER: "supabase_db_arenal-watersports",
-  DATABASE_USER: "postgres",
   COUNT_QUERY:
     "select count(*) from auth.sessions where user_id = :'uid'",
+  DATABASE: "postgres",
+  DATABASE_CONTAINER:
+    process.env[E2E_AUTH_SESSIONS_DATABASE_CONTAINER_ENV] ??
+    E2E_AUTH_SESSIONS_DATABASE_CONTAINER_DEFAULT,
+  DATABASE_USER: "postgres",
   DELETE_QUERY:
     "delete from auth.sessions where user_id = :'uid'",
   STOP_ON_ERROR_VARIABLE: "ON_ERROR_STOP=1",
