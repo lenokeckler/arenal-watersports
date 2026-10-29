@@ -1,6 +1,8 @@
 import { CALENDAR_PRESENTATION } from "@/app/constants";
 
 export const RESERVATION_CALENDAR_ERROR = {
+  INVALID_CUSTOMER_NAME:
+    "Invalid calendar reservation customer name",
   INVALID_DISPATCH: "Invalid calendar departure group",
   INVALID_EQUIPMENT:
     "Invalid calendar equipment commitment",

@@ -156,7 +156,7 @@ La empresa no le da correo institucional a nadie, así que cada trabajador regis
 **Criterios de aceptación:**
 
 - La empresa no da correo propio, así que cada trabajador registra el suyo.
-- Es el correo al que llega el enlace de recuperación.
+- Es el correo al que llega el PIN de recuperación.
 
 ---
 
@@ -282,16 +282,18 @@ con la finalidad de que un teléfono olvidado en el muelle no quede abierto toda
 
 **Descripción:**
 
-De siete de la noche a siete de la mañana aplican treinta minutos de inactividad. El contador corre desde la última acción en pantalla y cada acción lo reinicia, de modo que quien esté trabajando de noche no se ve afectado. No hay aviso previo: la sesión se cierra y el motivo aparece en el login. La franja horaria se evalúa en el servidor, porque si se leyera del reloj del dispositivo bastaría con cambiarle la hora al teléfono para nunca salir.
+De siete de la noche a siete de la mañana aplican treinta minutos seguidos de inactividad. El contador corre desde la última acción en pantalla y cada acción lo reinicia, de modo que quien esté trabajando de noche no se ve afectado. De día el contador no corre: quien quedó quieto desde la tarde empieza a contar a las siete de la noche. Dos minutos antes del cierre aparece un aviso con la cuenta regresiva y dos botones, Seguir trabajando y Cerrar sesión; si nadie responde, la sesión se cierra y el motivo aparece en el login. La franja horaria y el tiempo que queda se calculan en el servidor, porque si se leyeran del reloj del dispositivo bastaría con cambiarle la hora al teléfono para nunca salir.
 
 **Criterios de aceptación:**
 
-- De 7:00 p. m. a 7:00 a. m. aplican treinta minutos sin actividad.
+- De 7:00 p. m. a 7:00 a. m. aplican treinta minutos seguidos sin actividad.
 - El contador corre desde la última acción en pantalla y cada acción lo reinicia.
-- No hay aviso previo: la sesión se cierra y el mensaje de inactividad aparece en el login.
-- Al llegar las 7:00 p. m. el sistema evalúa cuánto lleva la persona sin actividad, y si ya pasó de treinta minutos cierra la sesión de una.
+- A los veintiocho minutos aparece un aviso con la cuenta regresiva y dos botones: Seguir trabajando, que reinicia el contador, y Cerrar sesión.
+- Si nadie responde, a los treinta minutos la sesión se cierra y el mensaje de inactividad aparece en el login.
+- De día el contador no corre: quien lleva rato sin actividad al llegar las 7:00 p. m. empieza a contar desde esa hora, con el aviso a las 7:28 p. m. y el cierre a las 7:30 p. m.
+- Si antes de las 7:00 a. m. no se completan treinta minutos sin actividad, la sesión sigue abierta durante el día y la cuenta vuelve a empezar a las 7:00 p. m.
 - Quien esté trabajando de noche sigue dentro mientras siga usando la aplicación.
-- La franja horaria se evalúa en el servidor y no con el reloj del dispositivo.
+- La franja horaria y el tiempo que queda se calculan en el servidor y no con el reloj del dispositivo.
 
 ---
 

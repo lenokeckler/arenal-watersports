@@ -1,0 +1,1 @@
+ADM-01.08.01: Retire an account — administration gives an account of baja: it is blocked, not erased, its sessions end and any pending recovery PIN is voided; everything that identifies it stays (US-ADM-08 · AWS-60)

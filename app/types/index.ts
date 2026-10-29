@@ -5,6 +5,7 @@ export type {
   NullableUndefined,
 } from "./Nullable";
 export type { Database } from "./Database";
+export type { WorkArea } from "./WorkArea";
 export type { HttpHeader } from "./HttpHeader";
 export type { CalendarDate } from "./CalendarDate.interface";
 export type { CalendarView } from "./CalendarView.type";
