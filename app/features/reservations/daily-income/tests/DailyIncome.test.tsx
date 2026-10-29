@@ -72,13 +72,25 @@ describe("DailyIncome", () => {
     expect(fetchDailyIncome).not.toHaveBeenCalled();
   });
 
+  it("lets a failed presence check reach the error boundary without redirecting or reading income", async () => {
+    vi.mocked(isIncomeReaderSignedIn).mockRejectedValue(
+      new Error(READ_FAILURE_MESSAGE)
+    );
+
+    await expect(DailyIncome()).rejects.toThrow(
+      READ_FAILURE_MESSAGE
+    );
+    expect(redirect).not.toHaveBeenCalled();
+    expect(fetchDailyIncome).not.toHaveBeenCalled();
+  });
+
   it("lets a failed read reach the error boundary instead of showing an empty day", async () => {
     vi.mocked(fetchDailyIncome).mockRejectedValue(
       new Error(READ_FAILURE_MESSAGE)
     );
 
-    await expect(DailyIncome()).rejects.toBeInstanceOf(
-      Error
+    await expect(DailyIncome()).rejects.toThrow(
+      READ_FAILURE_MESSAGE
     );
   });
 });
