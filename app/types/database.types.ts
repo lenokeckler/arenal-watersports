@@ -40,6 +40,7 @@ export type Database = {
           combo_id: string;
           quantity: number;
         };
+        ComputedFields: never;
         Insert: {
           category_id: string;
           combo_id: string;
@@ -101,6 +102,7 @@ export type Database = {
           updated_at: string;
           updated_by: string;
         };
+        ComputedFields: never;
         Insert: {
           audience: Database["public"]["Enums"]["combo_audience"];
           created_at?: string;
@@ -167,6 +169,7 @@ export type Database = {
           reservation_id: string | null;
           unit_id: string;
         };
+        ComputedFields: never;
         Insert: {
           cause: Database["public"]["Enums"]["damage_cause"];
           created_at?: string;
@@ -253,6 +256,7 @@ export type Database = {
           retention_reason: string | null;
           status: Database["public"]["Enums"]["deposit_status"];
         };
+        ComputedFields: never;
         Insert: {
           amount: number;
           created_at?: string;
@@ -344,6 +348,7 @@ export type Database = {
             | Database["public"]["Enums"]["usage_metric"]
             | null;
         };
+        ComputedFields: never;
         Insert: {
           alert_expiry_days?: number | null;
           alert_min_quantity?: number | null;
@@ -437,6 +442,7 @@ export type Database = {
           updated_at: string;
           updated_by: string;
         };
+        ComputedFields: never;
         Insert: {
           category_id: string;
           expiry_date?: string | null;
@@ -514,6 +520,7 @@ export type Database = {
           to_damaged: number;
           to_in_repair: number;
         };
+        ComputedFields: never;
         Insert: {
           category_id: string;
           created_at?: string;
@@ -603,6 +610,7 @@ export type Database = {
           updated_by: string;
           usage_total: number;
         };
+        ComputedFields: never;
         Insert: {
           category_id: string;
           code: string;
@@ -701,6 +709,7 @@ export type Database = {
           extra_id: string;
           unit_id: string;
         };
+        ComputedFields: never;
         Insert: {
           extra_id: string;
           unit_id: string;
@@ -761,6 +770,7 @@ export type Database = {
           updated_at: string;
           updated_by: string;
         };
+        ComputedFields: never;
         Insert: {
           created_at?: string;
           created_by: string;
@@ -862,6 +872,7 @@ export type Database = {
           system_quantity_in_repair: number | null;
           unit_id: string | null;
         };
+        ComputedFields: never;
         Insert: {
           category_id: string;
           confirmed_status?:
@@ -966,6 +977,7 @@ export type Database = {
           id: string;
           notes: string | null;
         };
+        ComputedFields: never;
         Insert: {
           counted_at?: string;
           created_at?: string;
@@ -1014,6 +1026,7 @@ export type Database = {
           updated_by: string | null;
           work_type: string;
         };
+        ComputedFields: never;
         Insert: {
           cost_amount?: number | null;
           cost_currency?:
@@ -1114,6 +1127,7 @@ export type Database = {
           used_at: string | null;
           worker_id: string;
         };
+        ComputedFields: never;
         Insert: {
           created_at?: string;
           expires_at: string;
@@ -1158,6 +1172,7 @@ export type Database = {
           used_at: string | null;
           worker_id: string;
         };
+        ComputedFields: never;
         Insert: {
           attempts?: number;
           created_at?: string;
@@ -1201,6 +1216,7 @@ export type Database = {
           id: string;
           network_key: string;
         };
+        ComputedFields: never;
         Insert: {
           created_at?: string;
           id?: string;
@@ -1223,6 +1239,7 @@ export type Database = {
           reason: string;
           reservation_id: string;
         };
+        ComputedFields: never;
         Insert: {
           amount: number;
           created_at?: string;
@@ -1276,6 +1293,7 @@ export type Database = {
           payment_method: string;
           reservation_id: string;
         };
+        ComputedFields: never;
         Insert: {
           amount: number;
           created_at?: string;
@@ -1335,6 +1353,7 @@ export type Database = {
           updated_at: string;
           updated_by: string;
         };
+        ComputedFields: never;
         Insert: {
           category_id: string;
           closed_at?: string | null;
@@ -1436,6 +1455,7 @@ export type Database = {
           reservation_id: string;
           worker_id: string;
         };
+        ComputedFields: never;
         Insert: {
           assigned_at?: string;
           assigned_by: string;
@@ -1504,6 +1524,7 @@ export type Database = {
           usage_in: number | null;
           usage_out: number | null;
         };
+        ComputedFields: never;
         Insert: {
           category_id?: string | null;
           created_at?: string;
@@ -1656,6 +1677,7 @@ export type Database = {
           reason: string;
           reservation_id: string;
         };
+        ComputedFields: never;
         Insert: {
           created_at?: string;
           created_by: string;
@@ -1710,6 +1732,7 @@ export type Database = {
           updated_at: string;
           updated_by: string | null;
         };
+        ComputedFields: never;
         Insert: {
           agreed_amount_crc?: number | null;
           agreed_amount_usd?: number | null;
@@ -1792,6 +1815,7 @@ export type Database = {
           updated_at: string;
           updated_by: string;
         };
+        ComputedFields: never;
         Insert: {
           cancellation_reason?: string | null;
           closed_at?: string | null;
@@ -1885,6 +1909,7 @@ export type Database = {
           session_id: string;
           user_id: string;
         };
+        ComputedFields: never;
         Insert: {
           last_activity_at?: string;
           session_id: string;
@@ -1909,6 +1934,7 @@ export type Database = {
           updated_at: string;
           updated_by: string;
         };
+        ComputedFields: never;
         Insert: {
           amount_crc?: number | null;
           amount_usd?: number | null;
@@ -1999,6 +2025,7 @@ export type Database = {
           uploaded_at: string;
           uploaded_by: string;
         };
+        ComputedFields: never;
         Insert: {
           angle: Database["public"]["Enums"]["photo_angle"];
           id?: string;
@@ -2067,6 +2094,7 @@ export type Database = {
           granted_by: string;
           worker_id: string;
         };
+        ComputedFields: never;
         Insert: {
           area: Database["public"]["Enums"]["work_area"];
           granted_at?: string;
@@ -2117,6 +2145,7 @@ export type Database = {
           mark: Database["public"]["Enums"]["worker_mark"];
           worker_id: string;
         };
+        ComputedFields: never;
         Insert: {
           granted_at?: string;
           granted_by: string;
@@ -2184,6 +2213,7 @@ export type Database = {
           updated_by: string | null;
           username: string;
         };
+        ComputedFields: never;
         Insert: {
           base_role: Database["public"]["Enums"]["work_area"];
           blocked_reason?:
@@ -2268,6 +2298,7 @@ export type Database = {
           day: string | null;
           reservations_count: number | null;
         };
+        ComputedFields: never;
         Relationships: [];
       };
       daily_revenue_report: {
@@ -2281,6 +2312,7 @@ export type Database = {
           refunds_amount: number | null;
           retained_amount: number | null;
         };
+        ComputedFields: never;
         Relationships: [];
       };
       financial_movements: {
@@ -2293,57 +2325,60 @@ export type Database = {
           refunds_amount: number | null;
           retained_amount: number | null;
         };
+        ComputedFields: never;
         Relationships: [];
       };
       inventory_category_summary: {
         Row: {
-          category_id: string | null;
-          category_name: string | null;
-          is_reservable: boolean | null;
+          category_id: string;
+          category_name: string;
+          is_reservable: boolean;
           quantity_available: number | null;
           quantity_damaged: number | null;
           quantity_in_maintenance: number | null;
           quantity_in_repair: number | null;
           quantity_total: number | null;
-          tracking_mode:
-            | Database["public"]["Enums"]["tracking_mode"]
-            | null;
+          tracking_mode: Database["public"]["Enums"]["tracking_mode"];
         };
+        ComputedFields: never;
         Relationships: [];
       };
       inventory_expiry_alerts: {
         Row: {
           alert_expiry_days: number | null;
-          category_id: string | null;
-          category_name: string | null;
+          category_id: string;
+          category_name: string;
           days_to_expiry: number | null;
           expiry_date: string | null;
           is_expired: boolean | null;
         };
+        ComputedFields: never;
         Relationships: [];
       };
       inventory_quantity_alerts: {
         Row: {
           alert_min_quantity: number | null;
-          category_id: string | null;
-          category_name: string | null;
+          category_id: string;
+          category_name: string;
           missing_quantity: number | null;
-          quantity_available: number | null;
+          quantity_available: number;
         };
+        ComputedFields: never;
         Relationships: [];
       };
       maintenance_cost_by_unit: {
         Row: {
-          category_id: string | null;
+          category_id: string;
           currency:
             | Database["public"]["Enums"]["currency_code"]
             | null;
           last_performed_at: string | null;
           records_count: number | null;
           total_cost: number | null;
-          unit_code: string | null;
-          unit_id: string | null;
+          unit_code: string;
+          unit_id: string;
         };
+        ComputedFields: never;
         Relationships: [
           {
             foreignKeyName: "equipment_units_category_id_fkey";
@@ -2380,6 +2415,7 @@ export type Database = {
           month: string | null;
           reservations_count: number | null;
         };
+        ComputedFields: never;
         Relationships: [];
       };
       monthly_revenue_report: {
@@ -2393,6 +2429,7 @@ export type Database = {
           refunds_amount: number | null;
           retained_amount: number | null;
         };
+        ComputedFields: never;
         Relationships: [];
       };
       reservations_by_worker: {
@@ -2400,23 +2437,23 @@ export type Database = {
           first_reservation_at: string | null;
           last_reservation_at: string | null;
           reservations_count: number | null;
-          worker_id: string | null;
-          worker_name: string | null;
+          worker_id: string;
+          worker_name: string;
         };
+        ComputedFields: never;
         Relationships: [];
       };
       unit_current_state: {
         Row: {
-          category_id: string | null;
-          code: string | null;
+          category_id: string;
+          code: string;
           effective_status: string | null;
-          id: string | null;
-          recorded_status:
-            | Database["public"]["Enums"]["unit_status"]
-            | null;
+          id: string;
+          recorded_status: Database["public"]["Enums"]["unit_status"];
           reservation_id: string | null;
           returns_at: string | null;
         };
+        ComputedFields: never;
         Relationships: [
           {
             foreignKeyName: "equipment_units_category_id_fkey";
@@ -2457,21 +2494,20 @@ export type Database = {
       };
       unit_service_status: {
         Row: {
-          category_id: string | null;
-          category_name: string | null;
-          code: string | null;
+          category_id: string;
+          category_name: string;
+          code: string;
           is_oil_change_due: boolean | null;
           next_oil_change_at: number | null;
           remaining_usage: number | null;
-          status:
-            | Database["public"]["Enums"]["unit_status"]
-            | null;
-          unit_id: string | null;
+          status: Database["public"]["Enums"]["unit_status"];
+          unit_id: string;
           usage_metric:
             | Database["public"]["Enums"]["usage_metric"]
             | null;
-          usage_total: number | null;
+          usage_total: number;
         };
+        ComputedFields: never;
         Relationships: [
           {
             foreignKeyName: "equipment_units_category_id_fkey";
@@ -2505,6 +2541,30 @@ export type Database = {
       };
     };
     Functions: {
+      assert_reservable_equipment_category: {
+        Args: { p_category_id: string };
+        Returns: undefined;
+      };
+      assert_reservation_amounts: {
+        Args: {
+          p_duration_minutes: number;
+          p_quantity: number;
+        };
+        Returns: undefined;
+      };
+      assert_reservation_identity: {
+        Args: {
+          p_customer_name: string;
+          p_date: string;
+          p_people_count: number;
+          p_time: string;
+        };
+        Returns: undefined;
+      };
+      authenticated_reservation_worker: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
+      };
       block_worker: {
         Args: { target_worker: string };
         Returns: string;
@@ -2534,6 +2594,18 @@ export type Database = {
       };
       consume_password_reset_pin: {
         Args: { p_pin: string; p_username: string };
+        Returns: string;
+      };
+      create_rental_reservation: {
+        Args: {
+          p_category_id: string;
+          p_customer_name: string;
+          p_date: string;
+          p_duration_minutes: number;
+          p_people_count: number;
+          p_quantity: number;
+          p_time: string;
+        };
         Returns: string;
       };
       current_session_id: {
