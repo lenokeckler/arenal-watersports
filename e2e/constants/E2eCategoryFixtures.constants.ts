@@ -31,3 +31,7 @@ export const resolveCreatedCategoryName = (
   scenario: string
 ): string =>
   `${E2E_CREATED_CATEGORY_BASE_NAME} (${projectName} · ${scenario})`;
+
+export const E2E_CATEGORY_TARIFF_AMOUNT_USD = 5;
+
+export const E2E_CATEGORY_TARIFF_TYPE = "rental";

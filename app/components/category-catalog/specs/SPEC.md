@@ -60,6 +60,16 @@ and a clear error state they can retry from.
 - The page file `app/(system)/administration/categories/page.tsx` renders `CategoryList`, reached through
   `PATHS.ADMINISTRATION.CATEGORIES`. The entry component redirects a worker who is not an administrator
   to `PATHS.HOME` before it reads any category, the same server check the other administration screens use.
+- The list is paginated on the server (RNF-027): `listCategories(page)` reads one page of
+  `CATEGORY_LIST_PAGINATION.PAGE_SIZE` rows with `.range()` after an exact head count (so a page past the last
+  one reads no rows), and looks up records only for the ids of that page. The page comes from the `page` query parameter, which falls back to the first
+  page when it is not a positive integer; a page past the last one redirects to the last page, which is
+  also where a delete of the last card of a page lands after the refresh. `CategoryListPagination` renders
+  the previous and next links and "Página X de Y" only when there is more than one page.
+- Cross-device updates (RNF-025) are a staged dependency, not part of this screen: the project has no
+  shared synchronization path yet (no realtime subscription in `app/`, and `equipment_categories` is not
+  in the `supabase_realtime` publication). Until that path lands, the list reflects another device's
+  change on the next navigation or refresh, and after this worker's own create, inactivate or delete.
 - The create screen is `app/(system)/administration/categories/new/page.tsx`, reached through
   `PATHS.ADMINISTRATION.CATEGORIES_NEW`. `CategoryCreateForm` applies the same administrator redirect and
   renders `CategoryCreateFormView`; `createCategoryAction` validates the trimmed name again on the server.
