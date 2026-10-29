@@ -13,7 +13,7 @@ export const CATEGORY_CATALOG_COPY = {
     "Esta categoría ya tiene unidades o existencias registradas y no se puede eliminar.",
   DELETE_SUCCESS_TOAST: "Categoría eliminada.",
   EMPTY_STATE_BODY:
-    "Cada categoría que agregues aparece aquí.",
+    "Cada categoría que agregue aparece aquí.",
   EMPTY_STATE_TITLE: "Todavía no hay categorías.",
   FETCH_ERROR_MESSAGE:
     "No se pudieron cargar las categorías.",
@@ -35,6 +35,11 @@ export const CATEGORY_CATALOG_COPY = {
   NAME_FIELD_PLACEHOLDER: "Ej. Kayak doble",
   NAME_FIELD_REQUIRED_ERROR:
     "Escriba el nombre de la categoría.",
+  PAGINATION_NAV_LABEL: "Paginación de categorías",
+  PAGINATION_NEXT: "Siguiente",
+  PAGINATION_OF: "de",
+  PAGINATION_PAGE: "Página",
+  PAGINATION_PREVIOUS: "Anterior",
   RETRY_BUTTON: "Reintentar",
   STATUS_PILL_INACTIVE: "INACTIVA",
   SUBMIT_BUTTON: "Guardar categoría",
