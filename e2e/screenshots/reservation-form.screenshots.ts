@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 import {
+  E2E_RESERVATION_FORM_COPY,
+  E2E_RESERVATION_FORM_CUSTOM_DURATION_SCREENSHOT_SUFFIX,
   E2E_RESERVATION_FORM_EQUIPMENT_SCREENSHOT_SUFFIX,
   E2E_RESERVATION_FORM_SCREENSHOT_BASENAME,
   E2E_RESERVATION_FORM_SUCCESS_SCREENSHOT_SUFFIX,
@@ -31,6 +33,19 @@ test("captures the reservation form", async ({
     page,
     resolveDeviceScreenshotFileName(
       E2E_RESERVATION_FORM_SCREENSHOT_BASENAME,
+      testInfo.project.name
+    )
+  );
+  await reservationFormPage.selectDuration(
+    E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_OPTION
+  );
+  await reservationFormPage.typeCustomDuration(
+    E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_HOURS
+  );
+  await captureViewport(
+    page,
+    resolveDeviceScreenshotFileName(
+      `${E2E_RESERVATION_FORM_SCREENSHOT_BASENAME}-${E2E_RESERVATION_FORM_CUSTOM_DURATION_SCREENSHOT_SUFFIX}`,
       testInfo.project.name
     )
   );

@@ -8,6 +8,7 @@ import {
   FRACTIONAL_COUNT,
   INVALID_FIELD_COUNT,
   INVALID_QUANTITY,
+  NEGATIVE_VALUE,
   SUBMINUTE_DURATION_HOURS,
   ZERO_DURATION_HOURS,
   VALID_RESERVATION_FORM_INPUT,
@@ -95,6 +96,34 @@ describe("validateReservationFormInput", () => {
     expect(result.value).toBeNull();
     expect(Object.keys(result.errors)).toHaveLength(
       INVALID_FIELD_COUNT
+    );
+  });
+
+  it("rejects negative people, equipment, and duration values", () => {
+    const negativePeopleResult =
+      validateReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        peopleCount: NEGATIVE_VALUE,
+      });
+    const negativeQuantityResult =
+      validateReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        quantity: NEGATIVE_VALUE,
+      });
+    const negativeDurationResult =
+      validateReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        durationHours: NEGATIVE_VALUE,
+      });
+
+    expect(negativePeopleResult.errors).toHaveProperty(
+      RESERVATION_FORM_FIELD.PEOPLE_COUNT
+    );
+    expect(negativeQuantityResult.errors).toHaveProperty(
+      RESERVATION_FORM_FIELD.QUANTITY
+    );
+    expect(negativeDurationResult.errors).toHaveProperty(
+      RESERVATION_FORM_FIELD.DURATION_HOURS
     );
   });
 });

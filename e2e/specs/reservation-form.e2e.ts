@@ -60,14 +60,67 @@ test.describe("Reservation form", () => {
     ).toHaveAttribute("aria-pressed", "true");
     await expect(
       reservationFormPage.getDurationInput()
-    ).toHaveValue(E2E_RESERVATION_DURATION_PRESET.HOURS);
+    ).toBeHidden();
     await reservationFormPage.submit();
     await expect(
       reservationFormPage.getValidationError()
     ).toBeVisible();
   });
 
-  test("creates a reservation using a seeded interchangeable category", async ({
+  test("shows the custom duration field only when selected", async ({
+    page,
+  }) => {
+    const reservationFormPage =
+      createReservationFormPage(page);
+
+    await reservationFormPage.goTo();
+    await expect(
+      reservationFormPage.getDurationInput()
+    ).toBeHidden();
+
+    await reservationFormPage.selectDuration(
+      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_OPTION
+    );
+    await expect(
+      reservationFormPage.getDurationInput()
+    ).toBeVisible();
+    await expect(
+      reservationFormPage.getDurationInput()
+    ).toHaveValue("");
+    await reservationFormPage.typeCustomDuration(
+      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_HOURS
+    );
+    await expect(
+      reservationFormPage.getDurationInput()
+    ).toHaveValue(
+      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_HOURS
+    );
+
+    await reservationFormPage.selectDuration(
+      E2E_RESERVATION_DURATION_PRESET.LABEL
+    );
+    await expect(
+      reservationFormPage.getDurationInput()
+    ).toBeHidden();
+  });
+
+  test("submits a valid custom duration with decimal precision", async ({
+    page,
+  }) => {
+    const reservationFormPage =
+      createReservationFormPage(page);
+
+    await reservationFormPage.goTo();
+    await reservationFormPage.submitCustomDurationReservation(
+      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_PRECISION_CASE
+    );
+
+    await expect(
+      reservationFormPage.getSuccessMessage()
+    ).toBeVisible();
+  });
+
+  test("prevents a second submission after reservation creation", async ({
     page,
   }) => {
     const reservationFormPage =
@@ -82,5 +135,12 @@ test.describe("Reservation form", () => {
     await expect(
       reservationFormPage.getSuccessMessage()
     ).toBeVisible();
+    await expect(
+      reservationFormPage.getSubmitButton()
+    ).toBeDisabled();
+    await reservationFormPage.attemptSubmit();
+    await expect(
+      reservationFormPage.getSuccessMessage()
+    ).toHaveCount(1);
   });
 });
