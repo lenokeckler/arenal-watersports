@@ -7,6 +7,8 @@ export const CATEGORY_CATALOG_COPY = {
   CAN_BE_DAMAGED_FIELD_LABEL: "Puede dañarse",
   CONSUMES_FUEL_FIELD_LABEL: "Consume combustible",
   CREATE_CTA: "+ Agregar categoría",
+  CREATE_FORM_PURPOSE:
+    "Indique cómo se llama y cómo se cuenta en el inventario.",
   CREATE_FORM_TITLE: "Nueva categoría",
   CREATE_SUCCESS_TOAST: "Categoría creada.",
   DEFAULT_DURATION_MINUTES_FIELD_LABEL:
