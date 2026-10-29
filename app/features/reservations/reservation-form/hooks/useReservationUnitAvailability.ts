@@ -1,22 +1,24 @@
 import { useState } from "react";
-import type { ReservationCategoryUnitOption } from "../models/ReservationCategoryUnitOption.interface";
+import { EMPTY_RESERVATION_CATEGORY_AVAILABILITY } from "../constants/ReservationCategoryAvailability.constants";
+import type { ReservationCategoryAvailability } from "../models/ReservationCategoryAvailability.interface";
 import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
 import { useSyncReservationUnitAvailability } from "./useSyncReservationUnitAvailability";
 
 export const useReservationUnitAvailability = (
   request: ReservationUnitAvailabilityInput
 ) => {
-  const [availableUnits, setAvailableUnits] = useState<
-    ReservationCategoryUnitOption[]
-  >([]);
+  const [availability, setAvailability] =
+    useState<ReservationCategoryAvailability>(
+      EMPTY_RESERVATION_CATEGORY_AVAILABILITY
+    );
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   useSyncReservationUnitAvailability(
     request,
-    setAvailableUnits,
+    setAvailability,
     setIsLoading,
     setHasError
   );
 
-  return { availableUnits, hasError, isLoading };
+  return { ...availability, hasError, isLoading };
 };

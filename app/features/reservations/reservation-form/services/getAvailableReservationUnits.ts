@@ -1,103 +1,103 @@
-import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
-import type { ReservationCategoryUnitOption } from "../models/ReservationCategoryUnitOption.interface";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/app/types";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+import { EMPTY_RESERVATION_CATEGORY_AVAILABILITY } from "../constants/ReservationCategoryAvailability.constants";
 import { RESERVATION_AVAILABILITY } from "../constants/ReservationAvailability.constants";
 import { RESERVATION_CATEGORY_STATUS } from "../constants/ReservationCategoryStatus.constants";
-import { RESERVATION_EQUIPMENT_UNIT_STATUS } from "../constants/ReservationEquipmentUnitStatus.constants";
+import type { ReservationCategoryAvailability } from "../models/ReservationCategoryAvailability.interface";
+import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
+import { getAvailableConcreteReservationUnits } from "./getAvailableConcreteReservationUnits";
 import { getAuthorizedReservationFormClient } from "./getAuthorizedReservationFormClient";
-import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+import { getReservationWindow } from "../utils/getReservationWindow";
 
-const AVAILABILITY_CATEGORY_OPERATION =
-  "check reservation unit category";
-const AVAILABILITY_UNIT_OPERATION =
-  "load available reservation units";
-const AVAILABILITY_CONFLICT_OPERATION =
-  "check reservation unit conflicts";
-
-const getReservationWindow = (
-  input: ReservationUnitAvailabilityInput
-) => {
-  const start = new Date(
-    `${input.date}T${input.time}:00${RESERVATION_AVAILABILITY.COSTA_RICA_OFFSET}`
-  );
-  const end = new Date(
-    start.getTime() +
-      input.durationMinutes *
-        RESERVATION_AVAILABILITY.MILLISECONDS_PER_MINUTE
-  );
-
-  return {
-    endsAt: end.toISOString(),
-    startsAt: start.toISOString(),
-  };
-};
-
-const getCategoryUnits = async (
+const loadCategory = async (
   supabase: SupabaseClient<Database>,
   categoryId: string
-): Promise<ReservationCategoryUnitOption[]> => {
-  const { data: category, error: categoryError } =
-    await supabase
-      .from("equipment_categories")
-      .select("id")
-      .eq("id", categoryId)
-      .eq("status", RESERVATION_CATEGORY_STATUS.ACTIVE)
-      .eq("is_reservable", true)
-      .eq("units_are_interchangeable", false)
-      .maybeSingle();
-  throwIfSupabaseError(
-    categoryError,
-    AVAILABILITY_CATEGORY_OPERATION
-  );
-  if (!category) {
-    return [];
-  }
-
+) => {
   const { data, error } = await supabase
-    .from("equipment_units")
-    .select("id, code")
-    .eq("category_id", categoryId)
-    .eq(
-      "status",
-      RESERVATION_EQUIPMENT_UNIT_STATUS.AVAILABLE
-    )
-    .order("code");
-  throwIfSupabaseError(error, AVAILABILITY_UNIT_OPERATION);
-
-  return data ?? [];
+    .from("equipment_categories")
+    .select("id, units_are_interchangeable")
+    .eq("id", categoryId)
+    .eq("status", RESERVATION_CATEGORY_STATUS.ACTIVE)
+    .eq("is_reservable", true)
+    .maybeSingle();
+  throwIfSupabaseError(
+    error,
+    RESERVATION_AVAILABILITY.OPERATION.CATEGORY
+  );
+  return data;
 };
+
+const loadAvailableQuantity = async (
+  supabase: SupabaseClient<Database>,
+  categoryId: string,
+  startsAt: string,
+  endsAt: string
+): Promise<number> => {
+  const { data, error } = await supabase.rpc(
+    RESERVATION_AVAILABILITY.RPC.CATEGORY,
+    {
+      p_category_id: categoryId,
+      p_ends_at: endsAt,
+      p_starts_at: startsAt,
+    }
+  );
+  throwIfSupabaseError(
+    error,
+    RESERVATION_AVAILABILITY.OPERATION.CATEGORY
+  );
+  return Math.max(0, data?.[0]?.free ?? 0);
+};
+
+const getAvailableQuantity = (
+  isInterchangeable: boolean,
+  freeCategoryQuantity: number,
+  availableUnitCount: number
+): number =>
+  isInterchangeable
+    ? freeCategoryQuantity
+    : availableUnitCount;
 
 export const getAvailableReservationUnits = async (
   input: ReservationUnitAvailabilityInput
-): Promise<ReservationCategoryUnitOption[]> => {
+): Promise<ReservationCategoryAvailability> => {
   const supabase =
     await getAuthorizedReservationFormClient();
-  const units = await getCategoryUnits(
+  const category = await loadCategory(
     supabase,
     input.categoryId
   );
-  const window = getReservationWindow(input);
-  const checkedUnits = await Promise.all(
-    units.map(async (unit) => {
-      const { data, error } = await supabase.rpc(
-        "unit_conflicts",
-        {
-          p_ends_at: window.endsAt,
-          p_starts_at: window.startsAt,
-          p_unit_id: unit.id,
-        }
-      );
-      throwIfSupabaseError(
-        error,
-        AVAILABILITY_CONFLICT_OPERATION
-      );
-      return data?.length === 0 ? unit : null;
-    })
+  if (!category) {
+    return EMPTY_RESERVATION_CATEGORY_AVAILABILITY;
+  }
+
+  const { startsAt, endsAt } = getReservationWindow(input);
+  const [freeQuantity, availableUnits] = await Promise.all([
+    loadAvailableQuantity(
+      supabase,
+      input.categoryId,
+      startsAt,
+      endsAt
+    ),
+    category.units_are_interchangeable
+      ? Promise.resolve([])
+      : getAvailableConcreteReservationUnits(
+          supabase,
+          input.categoryId,
+          startsAt,
+          endsAt
+        ),
+  ]);
+  const availableQuantity = getAvailableQuantity(
+    category.units_are_interchangeable,
+    freeQuantity,
+    availableUnits.length
   );
 
-  return checkedUnits.filter(
-    (unit): unit is ReservationCategoryUnitOption =>
-      unit !== null
-  );
+  return {
+    availableQuantity,
+    availableUnits,
+    hasRequestedQuantity:
+      availableQuantity >= input.quantity,
+  };
 };

@@ -1,18 +1,21 @@
 "use server";
 
 import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
-import type { ReservationCategoryUnitOption } from "../models/ReservationCategoryUnitOption.interface";
+import { EMPTY_RESERVATION_CATEGORY_AVAILABILITY } from "../constants/ReservationCategoryAvailability.constants";
+import type { ReservationCategoryAvailability } from "../models/ReservationCategoryAvailability.interface";
 import { getAvailableReservationUnits } from "../services/getAvailableReservationUnits";
 import { isReservationUnitAvailabilityInput } from "../utils/isReservationUnitAvailabilityInput";
 
-export const getAvailableReservationUnitsAction = async (
+export const getAvailableReservationUnitsAction = (
   input: unknown
-): Promise<ReservationCategoryUnitOption[]> => {
+): Promise<ReservationCategoryAvailability> => {
   if (!isReservationUnitAvailabilityInput(input)) {
-    return Promise.resolve([]);
+    return Promise.resolve(
+      EMPTY_RESERVATION_CATEGORY_AVAILABILITY
+    );
   }
 
-  return await getAvailableReservationUnits(
-    input satisfies ReservationUnitAvailabilityInput
-  );
+  const validInput: ReservationUnitAvailabilityInput =
+    input;
+  return getAvailableReservationUnits(validInput);
 };
