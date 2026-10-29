@@ -1,16 +1,12 @@
 export const RESERVATION_AVAILABILITY = {
-  LOOKUP_DEBOUNCE_MS: 250,
   MILLISECONDS_PER_MINUTE: 60_000,
   ERROR: {
     TIME_ZONE_RESOLUTION_FAILED:
       "Unable to resolve reservation timezone",
   },
   OPERATION: {
-    CATEGORY: "load reservation category availability",
+    CATEGORY: "check reservation unit category",
     UNITS: "load available reservation units",
-  },
-  RPC: {
-    CATEGORY: "category_availability",
   },
   RESERVATION_STATUSES: ["dispatched", "scheduled"],
   TIME_ZONE_FORMAT_LOCALE: "en-US",

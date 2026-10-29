@@ -25,13 +25,4 @@ describe("isReservationUnitAvailabilityInput", () => {
       })
     ).toBe(false);
   });
-
-  it("rejects a non-positive requested quantity", () => {
-    expect(
-      isReservationUnitAvailabilityInput({
-        ...RESERVATION_AVAILABILITY_INPUT_FIXTURE,
-        quantity: 0,
-      })
-    ).toBe(false);
-  });
 });

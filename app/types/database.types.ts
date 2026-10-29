@@ -2432,24 +2432,9 @@ export type Database = {
           usable: number;
         }[];
       };
-      create_custom_combo_reservation: {
-        Args: { p_payload: Json };
-        Returns: string;
-      };
-      create_predefined_combo_reservation: {
-        Args: { p_payload: Json };
-        Returns: string;
-      };
       create_rental_reservation: {
         Args: { p_payload: Json };
         Returns: string;
-      };
-      custom_combo_price: {
-        Args: { p_duration_minutes: number; p_items: Json };
-        Returns: {
-          list_amount_crc: number;
-          list_amount_usd: number;
-        }[];
       };
       has_area: {
         Args: {
@@ -2467,10 +2452,6 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
       };
-      lock_reservable_category: {
-        Args: { p_category_id: string; p_unit_id?: string };
-        Returns: string;
-      };
       lock_reservable_unit: {
         Args: { p_unit_id: string };
         Returns: string;
@@ -2482,46 +2463,6 @@ export type Database = {
       purge_expired_history: {
         Args: Record<PropertyKey, never>;
         Returns: undefined;
-      };
-      require_reservations_access: {
-        Args: Record<PropertyKey, never>;
-        Returns: undefined;
-      };
-      reservable_equipment_categories: {
-        Args: Record<PropertyKey, never>;
-        Returns: {
-          guide_only: boolean;
-          id: string;
-          name: string;
-          units_are_interchangeable: boolean;
-        }[];
-      };
-      reservation_category_conflicts: {
-        Args: {
-          p_category_id: string;
-          p_ends_at: string;
-          p_starts_at: string;
-        };
-        Returns: {
-          code: string;
-          customer_name: string;
-          ends_at: string;
-          reservation_id: string;
-          starts_at: string;
-        }[];
-      };
-      reservation_extras_price_quote: {
-        Args: {
-          p_duration_minutes: number;
-          p_extra_ids: string[];
-          p_reservation_type: Database["public"]["Enums"]["reservation_type"];
-          p_unit_id: string;
-        };
-        Returns: {
-          has_boat_tariff: boolean;
-          list_amount_crc: number;
-          list_amount_usd: number;
-        }[];
       };
       unit_conflicts: {
         Args: {
@@ -2548,17 +2489,9 @@ export type Database = {
         Args: {
           p_category_id: string;
           p_quantity: number;
-          p_reservation_window: unknown;
           p_unit_id: string;
         };
         Returns: string;
-      };
-      validate_reservation_guide_assignments: {
-        Args: {
-          p_payload: Json;
-          p_reservation_type: Database["public"]["Enums"]["reservation_type"];
-        };
-        Returns: string[];
       };
       validate_reservation_schedule: {
         Args: {

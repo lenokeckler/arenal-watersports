@@ -1,6 +1,8 @@
-import { act, renderHook } from "@testing-library/react";
 import {
-  afterEach,
+  renderHook,
+  waitFor,
+} from "@testing-library/react";
+import {
   beforeEach,
   describe,
   expect,
@@ -8,13 +10,9 @@ import {
   vi,
 } from "vitest";
 import { getAvailableReservationUnitsAction } from "../actions/getAvailableReservationUnitsAction";
-import { RESERVATION_AVAILABILITY } from "../constants/ReservationAvailability.constants";
 import { useReservationUnitAvailability } from "../hooks/useReservationUnitAvailability";
 import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
-import {
-  AVAILABLE_UNIT_TEST,
-  RESERVATION_AVAILABILITY_INPUT_FIXTURE,
-} from "./getAvailableReservationUnits.constants";
+import { AVAILABLE_UNIT_TEST } from "./getAvailableReservationUnits.constants";
 
 vi.mock(
   "../actions/getAvailableReservationUnitsAction",
@@ -25,67 +23,54 @@ vi.mock(
 
 describe("useReservationUnitAvailability", () => {
   beforeEach(() => vi.clearAllMocks());
-  afterEach(() => vi.useRealTimers());
 
-  it("debounces rapid reservation interval changes", async () => {
-    vi.useFakeTimers();
+  it("refreshes available units when the reservation interval changes", async () => {
     vi.mocked(
       getAvailableReservationUnitsAction
-    ).mockResolvedValue({
-      availableQuantity: 1,
-      availableUnits: [
-        {
-          code: AVAILABLE_UNIT_TEST.UNIT_CODE,
-          id: AVAILABLE_UNIT_TEST.UNIT_ID,
-        },
-      ],
-      hasRequestedQuantity: true,
-    });
+    ).mockResolvedValue([
+      {
+        code: AVAILABLE_UNIT_TEST.UNIT_CODE,
+        id: AVAILABLE_UNIT_TEST.UNIT_ID,
+      },
+    ]);
     const initialRequest: ReservationUnitAvailabilityInput =
       {
-        ...RESERVATION_AVAILABILITY_INPUT_FIXTURE,
+        categoryId: AVAILABLE_UNIT_TEST.CATEGORY_ID,
+        date: AVAILABLE_UNIT_TEST.DATE,
+        durationMinutes:
+          AVAILABLE_UNIT_TEST.DURATION_MINUTES,
+        time: AVAILABLE_UNIT_TEST.TIME,
       };
     const { rerender, result } = renderHook(
       ({ request }) =>
         useReservationUnitAvailability(request),
       { initialProps: { request: initialRequest } }
     );
-    const intermediateRequest = {
-      ...initialRequest,
-      date: AVAILABLE_UNIT_TEST.INTERMEDIATE_DATE,
-      durationMinutes:
-        AVAILABLE_UNIT_TEST.INTERMEDIATE_DURATION_MINUTES,
-      time: AVAILABLE_UNIT_TEST.INTERMEDIATE_TIME,
-    };
+    await waitFor(() =>
+      expect(result.current.availableUnits).toHaveLength(1)
+    );
+
     const nextRequest = {
-      ...intermediateRequest,
-      date: AVAILABLE_UNIT_TEST.NEXT_DATE,
-      quantity: AVAILABLE_UNIT_TEST.SECOND_QUANTITY,
+      ...initialRequest,
+      date: "2030-01-02",
+      durationMinutes: 90,
+      time: "10:30",
     };
-    rerender({ request: intermediateRequest });
     rerender({ request: nextRequest });
 
-    expect(
-      getAvailableReservationUnitsAction
-    ).not.toHaveBeenCalled();
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(
-        RESERVATION_AVAILABILITY.LOOKUP_DEBOUNCE_MS
-      );
-    });
-
-    expect(
-      getAvailableReservationUnitsAction
-    ).toHaveBeenCalledOnce();
-    expect(
-      getAvailableReservationUnitsAction
-    ).toHaveBeenCalledWith(nextRequest);
+    await waitFor(() =>
+      expect(
+        getAvailableReservationUnitsAction
+      ).toHaveBeenLastCalledWith(nextRequest)
+    );
+    await waitFor(() =>
+      expect(result.current.availableUnits).toHaveLength(1)
+    );
     expect(result.current.availableUnits).toEqual([
       {
         code: AVAILABLE_UNIT_TEST.UNIT_CODE,
         id: AVAILABLE_UNIT_TEST.UNIT_ID,
       },
     ]);
-    expect(result.current.hasRequestedQuantity).toBe(true);
   });
 });

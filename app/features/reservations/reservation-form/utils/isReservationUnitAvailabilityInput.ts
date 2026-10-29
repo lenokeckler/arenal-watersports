@@ -32,10 +32,6 @@ export const isReservationUnitAvailabilityInput = (
     Number.isInteger(input.durationMinutes) &&
     isValidReservationDuration(
       input.durationMinutes / TIME.UNITS.MINUTES_IN_HOUR
-    ) &&
-    "quantity" in input &&
-    typeof input.quantity === "number" &&
-    Number.isInteger(input.quantity) &&
-    input.quantity > 0
+    )
   );
 };

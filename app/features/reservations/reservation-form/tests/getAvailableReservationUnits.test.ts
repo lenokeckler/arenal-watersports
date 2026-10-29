@@ -13,7 +13,7 @@ import {
   AVAILABLE_UNIT_TEST,
   CLOSED_DISPATCH_RESERVATION_UNIT_COMMITMENT_FIXTURE,
   OVERDUE_RESERVATION_UNIT_COMMITMENT_FIXTURE,
-  RESERVATION_UNIT_COMMITMENT_FIXTURE,
+  RESERVATION_AVAILABILITY_INPUT_FIXTURE,
 } from "./getAvailableReservationUnits.constants";
 import { createReservationAvailabilityClient } from "./createReservationAvailabilityClient";
 
@@ -24,123 +24,77 @@ vi.mock(
   })
 );
 
-const loadAvailability = (quantity = 1) =>
-  getAvailableReservationUnits({
-    categoryId: AVAILABLE_UNIT_TEST.CATEGORY_ID,
-    date: AVAILABLE_UNIT_TEST.DATE,
-    durationMinutes: AVAILABLE_UNIT_TEST.DURATION_MINUTES,
-    quantity,
-    time: AVAILABLE_UNIT_TEST.TIME,
-  });
-
 const mockAvailabilityClient = (
-  quantity: number,
   units: ReservationCategoryUnitOption[],
-  interchangeable: boolean,
   commitments: ReservationUnitCommitment[] = []
 ) => {
-  const client = createReservationAvailabilityClient(
-    quantity,
+  const fixture = createReservationAvailabilityClient(
     units,
-    commitments,
-    interchangeable
+    commitments
   );
   vi.mocked(
     getAuthorizedReservationFormClient
-  ).mockResolvedValue(client.client);
-  return client;
+  ).mockResolvedValue(fixture.client);
+  return fixture;
 };
+
+const loadAvailability = () =>
+  getAvailableReservationUnits(
+    RESERVATION_AVAILABILITY_INPUT_FIXTURE
+  );
+
+const makeUnit = (
+  code: string,
+  id: string
+): ReservationCategoryUnitOption => ({ code, id });
 
 describe("getAvailableReservationUnits", () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it("excludes overlapping reservations using a batch read", async () => {
-    const unit = {
-      code: AVAILABLE_UNIT_TEST.UNIT_CODE,
-      id: AVAILABLE_UNIT_TEST.UNIT_ID,
-    };
-    const client = mockAvailabilityClient(
-      0,
-      [unit],
-      false,
-      [RESERVATION_UNIT_COMMITMENT_FIXTURE]
-    );
-
-    await expect(loadAvailability()).resolves.toEqual({
-      availableQuantity: 0,
-      availableUnits: [],
-      hasRequestedQuantity: false,
-    });
-    expect(client.requestPaths).toHaveLength(4);
-  });
-
-  it("returns available concrete units from the batch read", async () => {
+  it("loads all unit commitments in one batch", async () => {
     const units = [
-      {
-        code: AVAILABLE_UNIT_TEST.UNIT_CODE,
-        id: AVAILABLE_UNIT_TEST.UNIT_ID,
-      },
-      {
-        code: AVAILABLE_UNIT_TEST.SECOND_UNIT_CODE,
-        id: AVAILABLE_UNIT_TEST.SECOND_UNIT_ID,
-      },
+      makeUnit(
+        AVAILABLE_UNIT_TEST.UNIT_CODE,
+        AVAILABLE_UNIT_TEST.UNIT_ID
+      ),
+      makeUnit(
+        AVAILABLE_UNIT_TEST.SECOND_UNIT_CODE,
+        AVAILABLE_UNIT_TEST.SECOND_UNIT_ID
+      ),
     ];
-    const client = mockAvailabilityClient(2, units, false);
+    const fixture = mockAvailabilityClient(units);
 
-    await expect(loadAvailability()).resolves.toEqual({
-      availableQuantity: 2,
-      availableUnits: units,
-      hasRequestedQuantity: true,
-    });
-    expect(client.requestPaths).toHaveLength(4);
-  });
-
-  it("returns category stock and requested quantity availability", async () => {
-    const client = mockAvailabilityClient(2, [], true);
-
-    await expect(loadAvailability(3)).resolves.toEqual({
-      availableQuantity: 2,
-      availableUnits: [],
-      hasRequestedQuantity: false,
-    });
-    expect(client.requestPaths).toHaveLength(2);
-  });
-
-  it("keeps overdue open dispatches unavailable", async () => {
-    const unit = {
-      code: AVAILABLE_UNIT_TEST.UNIT_CODE,
-      id: AVAILABLE_UNIT_TEST.UNIT_ID,
-    };
-    mockAvailabilityClient(0, [unit], false, [
-      OVERDUE_RESERVATION_UNIT_COMMITMENT_FIXTURE,
-    ]);
-
-    await expect(loadAvailability()).resolves.toMatchObject(
-      {
-        availableQuantity: 0,
-        availableUnits: [],
-        hasRequestedQuantity: false,
-      }
+    await expect(loadAvailability()).resolves.toEqual(
+      units
     );
+    expect(fixture.requestPaths).toHaveLength(3);
   });
 
-  it("releases a concrete unit after a dispatch is closed", async () => {
-    const unit = {
-      code: AVAILABLE_UNIT_TEST.UNIT_CODE,
-      id: AVAILABLE_UNIT_TEST.UNIT_ID,
-    };
-    const client = mockAvailabilityClient(
-      0,
+  it("keeps an overdue open dispatch occupied", async () => {
+    const unit = makeUnit(
+      AVAILABLE_UNIT_TEST.UNIT_CODE,
+      AVAILABLE_UNIT_TEST.UNIT_ID
+    );
+    mockAvailabilityClient(
       [unit],
-      false,
+      [OVERDUE_RESERVATION_UNIT_COMMITMENT_FIXTURE]
+    );
+
+    await expect(loadAvailability()).resolves.toEqual([]);
+  });
+
+  it("releases a unit after its dispatch closes", async () => {
+    const unit = makeUnit(
+      AVAILABLE_UNIT_TEST.UNIT_CODE,
+      AVAILABLE_UNIT_TEST.UNIT_ID
+    );
+    mockAvailabilityClient(
+      [unit],
       [CLOSED_DISPATCH_RESERVATION_UNIT_COMMITMENT_FIXTURE]
     );
 
-    await expect(loadAvailability()).resolves.toEqual({
-      availableQuantity: 1,
-      availableUnits: [unit],
-      hasRequestedQuantity: true,
-    });
-    expect(client.requestPaths).toHaveLength(4);
+    await expect(loadAvailability()).resolves.toEqual([
+      unit,
+    ]);
   });
 });

@@ -15,12 +15,13 @@ export const useReservationEquipmentViewModel = (
   const requiresConcreteUnit =
     selectedCategory?.isInterchangeable === false;
   const request = {
-    categoryId: values.categoryId || STRING.Empty,
+    categoryId: requiresConcreteUnit
+      ? values.categoryId
+      : STRING.Empty,
     date: values.date,
     durationMinutes: Math.round(
       durationHours * RESERVATION_SCHEDULE.MINUTES_PER_HOUR
     ),
-    quantity: values.quantity,
     time: values.time,
   };
   const availability =
@@ -30,8 +31,6 @@ export const useReservationEquipmentViewModel = (
     availableUnits: requiresConcreteUnit
       ? availability.availableUnits
       : [],
-    availableQuantity: availability.availableQuantity,
-    hasRequestedQuantity: availability.hasRequestedQuantity,
     hasAvailabilityError: availability.hasError,
     isAvailabilityLoading: availability.isLoading,
     requiresConcreteUnit,

@@ -10,7 +10,6 @@ describe("getReservationWindow", () => {
         date: AVAILABLE_UNIT_TEST.DATE,
         durationMinutes:
           AVAILABLE_UNIT_TEST.DURATION_MINUTES,
-        quantity: AVAILABLE_UNIT_TEST.QUANTITY,
         time: AVAILABLE_UNIT_TEST.TIME,
       })
     ).toEqual({
