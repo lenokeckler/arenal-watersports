@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { RESERVATION_CALENDAR_ERROR } from "../constants/ReservationCalendarProjection.constants";
+import { RESERVATION_CALENDAR_ERROR } from "@/app/components/reservation-calendar/constants/ReservationCalendarProjection.constants";
 import type { ReservationCalendarDispatchSource } from "../models/ReservationCalendarDispatchSource.interface";
 import { mapReservationCalendarDispatch } from "../utils/mapReservationCalendarDispatch";
 import {

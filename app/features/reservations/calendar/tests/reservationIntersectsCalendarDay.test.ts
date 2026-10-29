@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { RESERVATION_CALENDAR_EXCLUDED_STATUS as excluded } from "../constants/ReservationCalendarExcludedStatus.constants";
-import { reservationIntersectsCalendarDay } from "../utils/reservationIntersectsCalendarDay";
+import { RESERVATION_CALENDAR_EXCLUDED_STATUS as excluded } from "@/app/components/reservation-calendar/constants/ReservationCalendarExcludedStatus.constants";
+import { reservationIntersectsCalendarDay } from "@/app/components/reservation-calendar/utils/reservationIntersectsCalendarDay";
 import {
   ACTUAL_DAY_CASES,
   COVERAGE_DAY,

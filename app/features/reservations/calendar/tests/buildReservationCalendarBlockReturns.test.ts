@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { buildReservationCalendarBlock } from "../utils/buildReservationCalendarBlock";
-import { formatReservationCalendarDateTime } from "../utils/formatReservationCalendarDateTime";
+import { buildReservationCalendarBlock } from "@/app/components/reservation-calendar/utils/buildReservationCalendarBlock";
+import { formatReservationCalendarDateTime } from "@/app/components/reservation-calendar/utils/formatReservationCalendarDateTime";
 import {
   CALENDAR_BLOCK_CLOSED_DISPATCH as dispatch,
   CALENDAR_BLOCK_ENTRY as entry,

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { RESERVATION_CALENDAR_ERROR } from "../constants/ReservationCalendarProjection.constants";
-import { formatReservationCalendarTime } from "../utils/formatReservationCalendarTime";
-import { parseReservationCalendarInstant } from "../utils/parseReservationCalendarInstant";
+import { RESERVATION_CALENDAR_ERROR } from "@/app/components/reservation-calendar/constants/ReservationCalendarProjection.constants";
+import { formatReservationCalendarTime } from "@/app/components/reservation-calendar/utils/formatReservationCalendarTime";
+import { parseReservationCalendarInstant } from "@/app/components/reservation-calendar/utils/parseReservationCalendarInstant";
 import {
   CALENDAR_TIME_CASES,
   INVALID_CALENDAR_INSTANTS,

@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import { Section, Title } from "@/app/components";
 import { TitleVariant } from "@/app/constants";
 import type { ReservationCalendarGroupListProps } from "../models/ReservationCalendarGroupListProps.interface";
-import { ReservationCalendarBlock } from "./ReservationCalendarBlock";
+import { ReservationCalendarBlock } from "@/app/components/reservation-calendar/components/ReservationCalendarBlock";
 import {
   RESERVATION_CALENDAR_GROUPS_CLASS,
   RESERVATION_CALENDAR_GROUP_CLASS,

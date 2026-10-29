@@ -1,7 +1,7 @@
-import { RESERVATION_CALENDAR_ERROR } from "../constants/ReservationCalendarProjection.constants";
-import type { ReservationCalendarDispatch } from "../models/ReservationCalendarDispatch.interface";
+import { RESERVATION_CALENDAR_ERROR } from "@/app/components/reservation-calendar/constants/ReservationCalendarProjection.constants";
+import type { ReservationCalendarDispatch } from "@/app/components/reservation-calendar/models/ReservationCalendarDispatch.interface";
 import type { ReservationCalendarDispatchSource } from "../models/ReservationCalendarDispatchSource.interface";
-import { parseReservationCalendarInstant } from "./parseReservationCalendarInstant";
+import { parseReservationCalendarInstant } from "@/app/components/reservation-calendar/utils/parseReservationCalendarInstant";
 
 export const mapReservationCalendarDispatch = (
   source: ReservationCalendarDispatchSource
