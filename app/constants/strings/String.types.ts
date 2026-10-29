@@ -35,6 +35,7 @@ export const STRING = {
   THREE_DOTS: "…",
   COMMA_SPACE: ", ",
   SLASH: "/",
+  QUESTION_MARK: "?",
   SMOOTH: "smooth",
   HIDDEN: "hidden",
   AUTO: "auto",
@@ -43,6 +44,7 @@ export const STRING = {
   NEW_LINE: "\n",
   DOLLAR: "$",
   AT: "@",
+  AMPERSAND: "&",
 } as const;
 
 export type String = (typeof STRING)[keyof typeof STRING];
