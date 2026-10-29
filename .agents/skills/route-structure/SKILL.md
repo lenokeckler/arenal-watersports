@@ -1,6 +1,6 @@
 ---
 name: route-structure
-description: Where a screen's route lives — app/(roles)/<area>/<resource> route groups per work area, pre-login screens outside them, access checked by proxy.ts, server functions and Row Level Security (never by a layout), Spanish URL segments, the page as a thin shell, and PATHS as the only source of URLs. Use before creating or moving any page.tsx, layout.tsx or route handler.
+description: Where a screen's route lives — app/(system)/<area>/<resource> for every signed-in screen, pre-login screens under app/access/, English URL segments, route folders holding only page.tsx and layout.tsx typed with Next's PageProps and LayoutProps, access checked by proxy.ts, server functions and Row Level Security (never by a layout), the page as a thin shell over a feature, and PATHS as the only source of URLs. Use before creating or moving any page.tsx, layout.tsx or route handler.
 ---
 
 # Route structure
@@ -9,57 +9,91 @@ Every screen of the app is reached through a route under `app/`. Where that rout
 matter of taste: it follows the area of work that owns the story, so any teammate finds a screen
 by knowing who uses it.
 
-## 1. Routes are grouped by work area, inside `app/(roles)/`
+## 1. Two route roots: `app/access/` and `app/(system)/`
 
-`(roles)` is a Next.js route group: the parentheses keep the folder out of the URL. Inside it, one
-folder per work area, named with the area's Spanish URL segment:
+`app/` has exactly two folders that create URLs, and every screen goes inside one of them — never
+beside them:
+
+| Route root      | Holds                                                   |
+| --------------- | ------------------------------------------------------- |
+| `app/access/`   | Screens reached before signing in: there is no area yet |
+| `app/(system)/` | Every screen reached after signing in                   |
+
+`(system)` is a Next.js route group: the parentheses keep the folder out of the URL. Inside it,
+screens every worker uses sit at the top, and each work area has its own folder:
 
 ```
 app/
-  acceso/                         pre-login, no area yet
-    ingreso/page.tsx              /acceso/ingreso
-    recuperacion/page.tsx         /acceso/recuperacion
-  (roles)/
-    layout.tsx                    shared shell, bottom bar
-    tablero/page.tsx              /tablero            every worker
-    perfil/page.tsx               /perfil             every worker
-    administracion/
-      layout.tsx                  the area's navigation
-      trabajadores/page.tsx       /administracion/trabajadores
-    reservas/
-      layout.tsx                  the area's navigation
-      cobros/page.tsx             /reservas/cobros
-    operaciones/
-      layout.tsx                  the area's navigation
-      despacho/page.tsx           /operaciones/despacho
+├── access/
+│   ├── layout.tsx
+│   ├── login/
+│   │   └── page.tsx                    /access/login
+│   └── recovery/
+│       └── page.tsx                    /access/recovery
+│
+└── (system)/
+    ├── layout.tsx                      shared shell, bottom bar
+    ├── board/
+    │   └── page.tsx                    /board
+    ├── profile/
+    │   └── page.tsx                    /profile
+    ├── administration/
+    │   ├── layout.tsx                  the area's navigation
+    │   └── workers/
+    │       ├── page.tsx                /administration/workers
+    │       └── new/
+    │           └── page.tsx            /administration/workers/new
+    ├── reservations/
+    │   ├── layout.tsx                  the area's navigation
+    │   └── charges/
+    │       └── page.tsx                /reservations/charges
+    └── operations/
+        ├── layout.tsx                  the area's navigation
+        └── dispatch/
+            └── page.tsx                /operations/dispatch
 ```
 
-| Story module (Jira label, `docs/proyecto/historias-de-usuario.md`) | Route folder                            |
-| ------------------------------------------------------------------ | --------------------------------------- |
-| `ACC` Acceso y Sesión, before login                                | `app/acceso/<resource>`                 |
-| `ACC` after login, `TAB` Tablero y Navegación                      | `app/(roles)/<resource>` (every worker) |
-| `ADM` Administración                                               | `app/(roles)/administracion/<resource>` |
-| `RES` Reservas                                                     | `app/(roles)/reservas/<resource>`       |
-| `OPE` Operaciones                                                  | `app/(roles)/operaciones/<resource>`    |
+| Story module (Jira label, `docs/proyecto/historias-de-usuario.md`) | Route folder                             | Feature folder (`component-architecture`) |
+| ------------------------------------------------------------------ | ---------------------------------------- | ----------------------------------------- |
+| `ACC` Acceso y Sesión, before login                                | `app/access/<resource>`                  | `app/features/access/<feature>`           |
+| `ACC` after login                                                  | `app/(system)/<resource>` (every worker) | `app/features/access/<feature>`           |
+| `TAB` Tablero y Navegación                                         | `app/(system)/<resource>` (every worker) | `app/features/board/<feature>`            |
+| `ADM` Administración                                               | `app/(system)/administration/<resource>` | `app/features/administration/<feature>`   |
+| `RES` Reservas                                                     | `app/(system)/reservations/<resource>`   | `app/features/reservations/<feature>`     |
+| `OPE` Operaciones                                                  | `app/(system)/operations/<resource>`     | `app/features/operations/<feature>`       |
 
 The owner is read from the story, never guessed: its module and its _"Como…"_ line. A screen a
 worker opens from an email link before logging in (set a password, recover it) has no area yet,
-so it lives under `app/acceso/`, not inside `(roles)`.
+so it lives under `app/access/`, not inside `(system)`.
 
 ```
-✅ app/(roles)/reservas/cobros/page.tsx          /reservas/cobros
-✅ app/acceso/ingreso/page.tsx                   /acceso/ingreso
-❌ app/cobros/page.tsx                           no area: nobody knows who owns it
-❌ app/(roles)/reservations/charges/page.tsx     English segments: URLs are Spanish (AGENTS.md)
-❌ app/(roles)/reservas/(cobros)/page.tsx        a group for one screen adds nothing
+✅ app/(system)/reservations/charges/page.tsx     /reservations/charges
+✅ app/access/login/page.tsx                      /access/login
+❌ app/charges/page.tsx                           a third route root: app/ fills with screens
+❌ app/(system)/reservas/cobros/page.tsx          Spanish segments: every segment is English (AGENTS.md)
+❌ app/(system)/reservations/(charges)/page.tsx   a group for one screen adds nothing
 ```
 
-One language for every segment. A second folder for the same area in another language
-(`reservas/` and `reservations/`) is never created; if one appears, it is moved in its own PR.
+Every segment is English, kebab-case. A second folder for the same area in another language
+(`reservations/` and `reservas/`) is never created; if one appears, it is moved in its own PR.
+
+### Route folders hold only `page.tsx` and `layout.tsx`
+
+A route folder holds `page.tsx`, `layout.tsx`, and the Next.js route files when a screen needs
+them (`loading.tsx`, `error.tsx`, `not-found.tsx`, `route.ts`). Components, hooks, styles,
+constants, models, specs and tests live in the screen's feature folder (§3), so the route tree
+reads as an index of screens. The props of a page or a layout are typed with Next's route types
+(§3), so a route folder never needs a `models/` of its own.
+
+```
+❌ app/(system)/reservations/charges/ChargeSummary.tsx       belongs to the feature
+❌ app/(system)/reservations/charges/_components/            belongs to the feature
+❌ app/(system)/reservations/charges/hooks/useCharges.ts     belongs to the feature
+```
 
 ## 2. The folder organises; access is checked in three layers
 
-A route group changes no behaviour and blocks nobody: a screen under `(roles)/reservas/` opens for
+A route group changes no behaviour and blocks nobody: a screen under `(system)/reservations/` opens for
 anyone who types its URL unless something checks. A `layout.tsx` is **not** that check: Next.js
 does not run a layout again when the user moves between pages that share it, and a page, a Server
 Action or a route handler can be reached without passing through the layout at all. Access is
@@ -88,13 +122,13 @@ pgTAP test for the policies.
 search params, and renders one feature view.
 
 ```tsx
-// ✅ app/(roles)/reservas/cobros/[reservationId]/page.tsx
+// ✅ app/(system)/reservations/charges/[reservationId]/page.tsx
 export const metadata: Metadata =
   RESERVATION_CHARGES_METADATA;
 
 const ReservationChargesPage = async ({
   params,
-}: ReservationChargesPageProps) => {
+}: PageProps<"/reservations/charges/[reservationId]">) => {
   const { reservationId } = await params;
   return (
     <ReservationCharges reservationId={reservationId} />
@@ -113,7 +147,32 @@ const Page = () => {
 };
 ```
 
-The screen itself lives in `app/components/<feature>/` (`component-architecture`): a server entry
+### Pages and layouts are typed with Next's route types
+
+`PageProps<"/route">` and `LayoutProps<"/route">` are global types Next.js generates from the
+folders under `app/`. They know each route's params, and TypeScript fails when the route string
+does not exist, so a moved folder cannot leave a stale type behind. A page or a layout never
+declares its own props interface.
+
+```tsx
+// ✅ app/access/layout.tsx
+const AccessLayout = ({
+  children,
+}: LayoutProps<"/access">): React.JSX.Element => (
+  <main>{children}</main>
+);
+
+// ❌ a hand-written props type for a route file
+interface AccessLayoutProps {
+  children: ReactNode;
+}
+```
+
+The types are written to `.next/types/` by `next typegen`, which `npm run typecheck` runs first,
+so they exist on a fresh clone and in CI. A test that renders a layout passes its `params`
+through a test constant typed `LayoutProps<"/route">["params"]`.
+
+The screen itself lives in `app/features/<module>/<feature>/` (`component-architecture`): a server entry
 component that reads the first data through `services/`, a client view with no hooks of its own
 that calls one `use*ViewModel` for the interactive part, and its `models/`, `constants/`,
 `styles/`, `utils/` and `tests/`.
@@ -126,8 +185,8 @@ same shape as the folders:
 ```ts
 export const PATHS = {
   HOME: "/",
-  ACCESS: { LOGIN: "/acceso/ingreso" },
-  RESERVATIONS: { CHARGES: "/reservas/cobros" },
+  ACCESS: { LOGIN: "/access/login" },
+  RESERVATIONS: { CHARGES: "/reservations/charges" },
 } as const;
 ```
 
@@ -141,7 +200,7 @@ Decide with data, not memory: run the checks and read their output.
 
 ```bash
 git grep -n -A 12 "^#### US-RES-28" -- docs/proyecto/historias-de-usuario.md
-git ls-tree -d --name-only -r HEAD app/ | grep -E "^app/(acceso|\(roles\))"
+git ls-tree -d --name-only -r HEAD app/ | grep -E "^app/(access|\(system\))"
 git grep -nE "\"/[a-z]" -- app e2e ':!app/constants/strings/Paths.constants.ts'
 ```
 
@@ -151,8 +210,10 @@ one joins them, the third finds URL literals that should be `PATHS`.
 ## Checklist
 
 - [ ] The route folder matches the story's module and "Como…" line (§1)
-- [ ] Spanish segments, one language per area
-- [ ] Pre-login screens under `app/acceso/`, everything else inside `(roles)`
+- [ ] English kebab-case segments, one folder per area
+- [ ] Pre-login screens under `app/access/`, everything else inside `(system)`; no third route root
+- [ ] The route folder holds only `page.tsx`, `layout.tsx` and Next.js route files; the screen lives in `app/features/` (§1, §3)
 - [ ] Access checked by `proxy.ts`, by the server functions in `app/services/` and by Row Level Security — never by a layout; allowed and refused accounts tested (§2)
 - [ ] `page.tsx` only exports metadata, reads params and renders one view
+- [ ] Pages and layouts typed with `PageProps<"/route">` / `LayoutProps<"/route">`, never a props interface of their own (§3)
 - [ ] The URL is a `PATHS` entry; no literal URL in code or tests

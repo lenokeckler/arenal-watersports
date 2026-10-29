@@ -1276,7 +1276,7 @@ export type Database = {
           created_by: string;
           dispatched_at: string;
           duration_minutes: number;
-          ends_at?: string | null;
+          ends_at?: never;
           extra_time_minutes?: number;
           id?: string;
           reservation_id: string;
@@ -1290,7 +1290,7 @@ export type Database = {
           created_by?: string;
           dispatched_at?: string;
           duration_minutes?: number;
-          ends_at?: string | null;
+          ends_at?: never;
           extra_time_minutes?: number;
           id?: string;
           reservation_id?: string;
@@ -1736,7 +1736,7 @@ export type Database = {
           customer_name: string;
           dispatched_at?: string | null;
           duration_minutes: number;
-          ends_at?: string | null;
+          ends_at?: never;
           extra_time_minutes?: number;
           id?: string;
           parent_reservation_id?: string | null;
@@ -1757,7 +1757,7 @@ export type Database = {
           customer_name?: string;
           dispatched_at?: string | null;
           duration_minutes?: number;
-          ends_at?: string | null;
+          ends_at?: never;
           extra_time_minutes?: number;
           id?: string;
           parent_reservation_id?: string | null;
@@ -2425,6 +2425,18 @@ export type Database = {
           usable: number;
         }[];
       };
+      create_rental_reservation: {
+        Args: {
+          p_category_id: string;
+          p_customer_name: string;
+          p_date: string;
+          p_duration_minutes: number;
+          p_people_count: number;
+          p_quantity: number;
+          p_time: string;
+        };
+        Returns: string;
+      };
       has_area: {
         Args: {
           target: Database["public"]["Enums"]["work_area"];
@@ -2437,13 +2449,16 @@ export type Database = {
         };
         Returns: boolean;
       };
-      is_admin: { Args: never; Returns: boolean };
+      is_admin: {
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
       next_reservation_code: {
-        Args: never;
+        Args: Record<PropertyKey, never>;
         Returns: string;
       };
       purge_expired_history: {
-        Args: never;
+        Args: Record<PropertyKey, never>;
         Returns: undefined;
       };
       unit_conflicts: {
