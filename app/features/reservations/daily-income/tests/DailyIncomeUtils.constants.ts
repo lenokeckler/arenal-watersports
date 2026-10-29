@@ -27,3 +27,8 @@ export const EXPECTED_INCOME_DATE_TEXT =
 export const NEW_YEAR_DATE = "2027-01-01";
 export const EXPECTED_NEW_YEAR_DATE_TEXT =
   "viernes, 1 de enero de 2027";
+
+export const NEAR_FULL_AMOUNT = 398;
+export const EXPECTED_NEAR_FULL_PERCENT = 100;
+export const ABOVE_LARGEST_AMOUNT = 500;
+export const NOT_A_NUMBER_AMOUNT = Number.NaN;

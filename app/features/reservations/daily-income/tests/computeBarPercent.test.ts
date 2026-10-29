@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { computeBarPercent } from "../utils/computeBarPercent";
 import {
+  ABOVE_LARGEST_AMOUNT,
+  EXPECTED_NEAR_FULL_PERCENT,
+  NEAR_FULL_AMOUNT,
+  NOT_A_NUMBER_AMOUNT,
   EXPECTED_FULL_PERCENT,
   EXPECTED_HALF_PERCENT,
   EXPECTED_MIN_PERCENT,
@@ -40,6 +44,27 @@ describe("computeBarPercent", () => {
   it("falls back to the minimum width when there is no largest amount", () => {
     expect(
       computeBarPercent(TINY_AMOUNT, NO_LARGEST_AMOUNT)
+    ).toBe(EXPECTED_MIN_PERCENT);
+  });
+
+  it("rounds an amount just under the largest up to the full width", () => {
+    expect(
+      computeBarPercent(NEAR_FULL_AMOUNT, LARGEST_AMOUNT)
+    ).toBe(EXPECTED_NEAR_FULL_PERCENT);
+  });
+
+  it("never draws a bar wider than the full width", () => {
+    expect(
+      computeBarPercent(
+        ABOVE_LARGEST_AMOUNT,
+        LARGEST_AMOUNT
+      )
+    ).toBeLessThanOrEqual(EXPECTED_FULL_PERCENT);
+  });
+
+  it("falls back to the minimum width when the amount is not a number", () => {
+    expect(
+      computeBarPercent(NOT_A_NUMBER_AMOUNT, LARGEST_AMOUNT)
     ).toBe(EXPECTED_MIN_PERCENT);
   });
 });
