@@ -5,15 +5,17 @@ import { captureViewport } from "../support/captureViewport";
 import { E2E_OUTPUT_DIR } from "../constants/E2eRuntime.constants";
 import { resolveDeviceScreenshotFileName } from "../constants/E2eScreenshot.constants";
 import { E2E_DISPATCH_BOARD_COPY } from "../constants/E2eDispatchBoard.constants";
+import { createLoginPage } from "../pages/Login.page";
 
 test.describe("Dispatch board access screenshots", () => {
-  test("captures access denied state", async ({
+  test("captures the sign-in screen after redirect", async ({
     page,
   }, testInfo) => {
     const dispatchBoardPage = createDispatchBoardPage(page);
+    const loginPage = createLoginPage(page);
 
     await dispatchBoardPage.goTo();
-    await dispatchBoardPage.getHeading().waitFor();
+    await loginPage.getHeading().waitFor();
     await mkdir(E2E_OUTPUT_DIR.SCREENSHOTS, {
       recursive: true,
     });

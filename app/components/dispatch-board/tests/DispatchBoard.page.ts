@@ -22,6 +22,9 @@ export const createDispatchBoardPage = () => {
   const getEmptyMessage = () =>
     screen.getByText(DISPATCH_BOARD_COPY.EMPTY);
 
+  const getForbiddenMessage = () =>
+    screen.getByRole(ARIA_ROLE.ALERT);
+
   const getNextPageLink = () =>
     screen.getByRole(ARIA_ROLE.LINK, {
       name: DISPATCH_BOARD_COPY.NEXT_PAGE,
@@ -38,6 +41,7 @@ export const createDispatchBoardPage = () => {
 
   return {
     getEmptyMessage,
+    getForbiddenMessage,
     getHeading,
     getNextPageLink,
     getNextPageHref,

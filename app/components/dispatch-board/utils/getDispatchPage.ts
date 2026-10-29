@@ -3,9 +3,10 @@ import {
   DISPATCH_BOARD_PAGINATION,
   DISPATCH_BOARD_PAGE_PATTERN,
 } from "../constants/DispatchBoard.constants";
+import type { NullableUndefined } from "@/app/types";
 
 export const getDispatchPage = (
-  page: string | string[] | undefined
+  page: NullableUndefined<string | string[]>
 ): number => {
   const parsedPage =
     typeof page === "string" &&

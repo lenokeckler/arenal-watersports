@@ -20,7 +20,7 @@ export const DISPATCH_BOARD_COPY = {
   EMPTY:
     "No hay reservas pendientes de despachar para hoy.",
   ERROR: "No se pudieron cargar las reservas pendientes.",
-  FORBIDDEN: "No tienes acceso a las operaciones.",
+  FORBIDDEN: "No tiene acceso a las operaciones.",
   HEADING: "Reservas pendientes de despachar",
   NEXT_PAGE: "Siguiente",
   PAGE_LABEL: "Paginación de reservas",
@@ -31,9 +31,8 @@ export const DISPATCH_BOARD_COPY = {
 export const DISPATCH_BOARD_HEADING_ID =
   "reservas-pendientes-de-despachar";
 
-export const DISPATCH_BOARD_DATE_FORMAT = {
-  HOUR: "2-digit",
-  MINUTE: "2-digit",
+export const DISPATCH_BOARD_TIME_FORMAT = {
+  SEPARATOR: ":",
 } as const;
 
 export const DISPATCH_BOARD_PAGE_PATTERN = /^\d+$/;

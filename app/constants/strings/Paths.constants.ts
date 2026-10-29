@@ -8,6 +8,6 @@ export const PATHS = {
   },
   HOME: "/",
   OPERATIONS: {
-    PENDING_DISPATCHES: "/operaciones/despacho",
+    PENDING_DISPATCHES: "/operations/dispatch",
   },
 } as const;

@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 import { DISPATCH_BOARD_COPY } from "../constants/DispatchBoard.constants";
 import { DispatchBoardView } from "../DispatchBoardView";
 import { createDispatchBoardPage } from "./DispatchBoard.page";
@@ -8,6 +9,7 @@ describe("DispatchBoardView", () => {
   it("shows pending reservations and the next page when available", () => {
     render(
       <DispatchBoardView
+        errorMessage={null}
         hasNextPage
         page={1}
         reservations={[PENDING_RESERVATION_FIXTURE]}
@@ -36,6 +38,7 @@ describe("DispatchBoardView", () => {
   it("shows an empty state when there are no pending reservations", () => {
     render(
       <DispatchBoardView
+        errorMessage={null}
         hasNextPage={false}
         page={1}
         reservations={[]}
@@ -46,5 +49,21 @@ describe("DispatchBoardView", () => {
     expect(
       dispatchBoardPage.getEmptyMessage()
     ).toHaveTextContent(DISPATCH_BOARD_COPY.EMPTY);
+  });
+
+  it("shows the forbidden message when access is denied", () => {
+    render(
+      <DispatchBoardView
+        errorMessage={DISPATCH_BOARD_COPY.FORBIDDEN}
+        hasNextPage={false}
+        page={1}
+        reservations={[]}
+      />
+    );
+    const dispatchBoardPage = createDispatchBoardPage();
+
+    expect(
+      dispatchBoardPage.getForbiddenMessage()
+    ).toHaveTextContent(DISPATCH_BOARD_COPY.FORBIDDEN);
   });
 });
