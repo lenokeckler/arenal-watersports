@@ -8,6 +8,7 @@ import {
   BUTTON_DISABLED_CLASS,
   BUTTON_ENABLED_CLASS,
   BUTTON_SIZE_CLASS,
+  BUTTON_TOUCH_TARGET_CLASS,
   BUTTON_VARIANT_CLASS,
   resolveButtonColorClassName,
   resolveButtonRadiusClassName,
@@ -47,7 +48,11 @@ export const getButtonClassName = ({
     ? BUTTON_DISABLED_CLASS
     : BUTTON_ENABLED_CLASS;
   if (variant === BUTTON.BASE) {
-    return joinClassNames(className, stateClass);
+    return joinClassNames(
+      BUTTON_TOUCH_TARGET_CLASS,
+      className,
+      stateClass
+    );
   } else if (variant === BUTTON.CANCEL) {
     return joinClassNames(
       BUTTON_BASE_CLASS,

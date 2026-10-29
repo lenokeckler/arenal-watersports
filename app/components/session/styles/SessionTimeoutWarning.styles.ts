@@ -26,7 +26,7 @@ export const SESSION_TIMEOUT_WARNING_ACTIONS_CLASS =
   "flex gap-3";
 
 export const SESSION_TIMEOUT_WARNING_BUTTON_CLASS =
-  "flex-1 px-4 py-2 text-sm sm:text-base rounded";
+  "flex-1 min-h-11 px-4 py-2 text-sm sm:text-base rounded";
 
 export const SESSION_TIMEOUT_WARNING_LOGOUT_BUTTON_CLASS = `${SESSION_TIMEOUT_WARNING_BUTTON_CLASS} bg-error text-on-error border border-error hover:!bg-error-container hover:!text-on-error-container`;
 
