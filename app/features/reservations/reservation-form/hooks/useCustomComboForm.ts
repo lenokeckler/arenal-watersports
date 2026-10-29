@@ -1,12 +1,15 @@
 import { useCallback, useMemo, useState } from "react";
+import { INDEX } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import type { CustomComboEquipmentSelection } from "../models/CustomComboEquipmentSelection.interface";
 import type { CustomComboPricingInput } from "../models/CustomComboPricingInput.interface";
 import type { CustomComboReservationDraft } from "../models/CustomComboReservationDraft.interface";
+import type { CustomComboFormViewModel } from "../models/CustomComboFormViewModel.interface";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 import type { ReservationFormField } from "../models/ReservationFormField.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { hasValidCustomComboEquipmentSelections } from "../utils/hasValidCustomComboEquipmentSelections";
+import { resolveCustomComboAgreedAmount } from "../utils/resolveCustomComboAgreedAmount";
 import { useCustomComboPricing } from "./useCustomComboPricing";
 
 const EMPTY_DRAFT: CustomComboReservationDraft = {
@@ -20,7 +23,7 @@ export const useCustomComboForm = (
   durationHours: number,
   onGuideIdsChange: (guideIds: string[]) => void,
   clearFieldError: (field: ReservationFormField) => void
-) => {
+): CustomComboFormViewModel => {
   const [draft, setDraft] = useState(EMPTY_DRAFT);
   const pricingInput = useMemo<CustomComboPricingInput>(
     () => ({ durationHours, items: draft.items }),
@@ -101,16 +104,28 @@ export const useCustomComboForm = (
     (value: NullableRef<number>): void => {
       setDraft((currentDraft) => ({
         ...currentDraft,
-        agreedAmountCrc: value,
+        agreedAmountCrc:
+          resolveCustomComboAgreedAmount(value),
       }));
     },
     []
+  );
+  const handleItemQuantityChange = useCallback(
+    (categoryId: string, quantity: number): void => {
+      if (quantity <= INDEX.ZERO) {
+        handleItemRemoval(categoryId);
+        return;
+      }
+      handleItemChange({ categoryId, quantity });
+    },
+    [handleItemChange, handleItemRemoval]
   );
   const handleAgreedAmountUsdChange = useCallback(
     (value: NullableRef<number>): void => {
       setDraft((currentDraft) => ({
         ...currentDraft,
-        agreedAmountUsd: value,
+        agreedAmountUsd:
+          resolveCustomComboAgreedAmount(value),
       }));
     },
     []
@@ -123,6 +138,7 @@ export const useCustomComboForm = (
     handleAgreedAmountCrcChange,
     handleAgreedAmountUsdChange,
     handleItemChange,
+    handleItemQuantityChange,
     handleItemRemoval,
     handlePricingRetry: pricing.retry,
   };

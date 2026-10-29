@@ -3,9 +3,12 @@ import { filterReservationCategoriesByType } from "../utils/filterReservationCat
 import {
   EXPECTED_RENTAL_CATEGORY_IDS,
   EXPECTED_TOUR_CATEGORY_IDS,
+  EXPECTED_COMBO_CATEGORY_IDS,
   RESERVATION_CATEGORY_OPTIONS,
   RESERVATION_TYPES,
   TOUR_RESERVATION_TYPE,
+  COMBO_RESERVATION_TYPE,
+  RENTAL_RESERVATION_TYPE,
 } from "./filterReservationCategoriesByType.constants";
 
 describe("filterReservationCategoriesByType", () => {
@@ -16,10 +19,13 @@ describe("filterReservationCategoriesByType", () => {
         RESERVATION_CATEGORY_OPTIONS,
         reservationType
       );
-      const expectedIds =
-        reservationType === TOUR_RESERVATION_TYPE
-          ? EXPECTED_TOUR_CATEGORY_IDS
-          : EXPECTED_RENTAL_CATEGORY_IDS;
+      const expectedIds = {
+        [TOUR_RESERVATION_TYPE]: EXPECTED_TOUR_CATEGORY_IDS,
+        [COMBO_RESERVATION_TYPE]:
+          EXPECTED_COMBO_CATEGORY_IDS,
+        [RENTAL_RESERVATION_TYPE]:
+          EXPECTED_RENTAL_CATEGORY_IDS,
+      }[reservationType];
 
       expect(
         categories.map((category) => category.id)

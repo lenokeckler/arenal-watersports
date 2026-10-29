@@ -64,8 +64,14 @@ test.describe("Reservation form type reset", () => {
     );
 
     await expect(
+      reservationFormPage.getCustomComboSelectionRegion()
+    ).toBeVisible();
+    await expect(
       reservationFormPage.getCategorySelect()
-    ).toHaveValue(STRING.Empty);
+    ).toHaveCount(0);
+    await expect(
+      reservationFormPage.getUnitSelect()
+    ).toHaveCount(0);
     await reservationFormPage.selectReservationType(
       E2E_RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
     );
