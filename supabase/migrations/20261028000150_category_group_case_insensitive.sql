@@ -7,6 +7,8 @@ begin
     return new;
   end if;
 
+  perform pg_advisory_xact_lock(hashtext(lower(new.group_name)));
+
   select c.tracking_mode into otro
   from equipment_categories c
   where lower(c.group_name) = lower(new.group_name)
