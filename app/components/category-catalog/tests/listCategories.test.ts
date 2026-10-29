@@ -10,6 +10,7 @@ import { listCategories } from "../services/listCategories";
 import { DEFAULT_EQUIPMENT_CATEGORY_ROW } from "./EquipmentCategoryRow.constants";
 
 const mockFetchCategories = vi.fn();
+const mockFetchCategoryCount = vi.fn();
 const mockFetchCategoryIdsWithRecords = vi.fn();
 
 vi.mock("@/app/services/supabase", () => ({
@@ -21,6 +22,11 @@ vi.mock("../services/fetchCategories", () => ({
     mockFetchCategories(...args),
 }));
 
+vi.mock("../services/fetchCategoryCount", () => ({
+  fetchCategoryCount: (...args: unknown[]): unknown =>
+    mockFetchCategoryCount(...args),
+}));
+
 vi.mock("../services/fetchCategoryIdsWithRecords", () => ({
   fetchCategoryIdsWithRecords: (
     ...args: unknown[]
@@ -30,14 +36,15 @@ vi.mock("../services/fetchCategoryIdsWithRecords", () => ({
 describe("listCategories", () => {
   beforeEach(() => {
     mockFetchCategories.mockReset();
+    mockFetchCategoryCount.mockReset();
     mockFetchCategoryIdsWithRecords.mockReset();
   });
 
   it("asks for the row range of the requested page", async () => {
-    mockFetchCategories.mockResolvedValue({
-      rows: [],
-      totalCount: 0,
-    });
+    mockFetchCategoryCount.mockResolvedValue(
+      CATEGORY_LIST_PAGINATION.PAGE_SIZE * 2
+    );
+    mockFetchCategories.mockResolvedValue([]);
     mockFetchCategoryIdsWithRecords.mockResolvedValue(
       new Set()
     );
@@ -54,10 +61,12 @@ describe("listCategories", () => {
   });
 
   it("looks up records only for the categories of the page and flags them", async () => {
-    mockFetchCategories.mockResolvedValue({
-      rows: [DEFAULT_EQUIPMENT_CATEGORY_ROW],
-      totalCount: CATEGORY_LIST_PAGINATION.PAGE_SIZE + 1,
-    });
+    mockFetchCategoryCount.mockResolvedValue(
+      CATEGORY_LIST_PAGINATION.PAGE_SIZE + 1
+    );
+    mockFetchCategories.mockResolvedValue([
+      DEFAULT_EQUIPMENT_CATEGORY_ROW,
+    ]);
     mockFetchCategoryIdsWithRecords.mockResolvedValue(
       new Set([DEFAULT_EQUIPMENT_CATEGORY_ROW.id])
     );
@@ -71,5 +80,19 @@ describe("listCategories", () => {
     ]);
     expect(result.categories[0].hasRecords).toBe(true);
     expect(result.pageCount).toBe(2);
+  });
+
+  it("returns no categories and reads no rows when the page is past the last one", async () => {
+    mockFetchCategoryCount.mockResolvedValue(
+      CATEGORY_LIST_PAGINATION.PAGE_SIZE
+    );
+
+    const result = await listCategories(9);
+
+    expect(result).toEqual({
+      categories: [],
+      pageCount: 1,
+    });
+    expect(mockFetchCategories).not.toHaveBeenCalled();
   });
 });
