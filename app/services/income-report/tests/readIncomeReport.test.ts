@@ -5,8 +5,10 @@ import {
   it,
   vi,
 } from "vitest";
+import { SERVER_OPERATION } from "@/app/constants";
 import { ChargesTruncatedError } from "@/app/services/income/ChargesTruncatedError";
 import { RefundsTruncatedError } from "@/app/services/income/RefundsTruncatedError";
+import { reportServerError } from "@/app/services/observability";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { INCOME_REPORT_STATUS } from "../constants/IncomeReportStatus.constants";
 import { readIncomeReport } from "../readIncomeReport";
@@ -35,6 +37,9 @@ vi.mock(
     fetchRefundsInRange: vi.fn(),
   })
 );
+vi.mock("@/app/services/observability", () => ({
+  reportServerError: vi.fn(),
+}));
 
 describe("readIncomeReport", () => {
   beforeEach(() => {
@@ -152,19 +157,36 @@ describe("readIncomeReport", () => {
     });
   });
 
-  it("hides an unexpected refunds error behind a typed charges failure", async () => {
+  it("rethrows the unexpected error when it rejects after a typed failure", async () => {
+    const unexpected = new Error(UNEXPECTED_MESSAGE);
     const page = IncomeReadsPage.returning([], []);
     page.charges.mockRejectedValue(
       new ChargesTruncatedError()
     );
-    page.refunds.mockRejectedValue(
-      new Error(UNEXPECTED_MESSAGE)
-    );
+    page.refunds.mockRejectedValue(unexpected);
 
-    await expect(
-      readIncomeReport(DAY_RANGE)
-    ).resolves.toEqual({
-      status: INCOME_REPORT_STATUS.FAILED,
-    });
+    await expect(readIncomeReport(DAY_RANGE)).rejects.toBe(
+      unexpected
+    );
+  });
+
+  it("reports the typed failure with the read operation", async () => {
+    const failure = new ChargesTruncatedError();
+    IncomeReadsPage.chargesFailingWith(failure);
+
+    await readIncomeReport(DAY_RANGE);
+
+    expect(reportServerError).toHaveBeenCalledWith(
+      SERVER_OPERATION.READ_INCOME_REPORT,
+      failure
+    );
+  });
+
+  it("reports nothing when both reads succeed", async () => {
+    IncomeReadsPage.returning([], []);
+
+    await readIncomeReport(DAY_RANGE);
+
+    expect(reportServerError).not.toHaveBeenCalled();
   });
 });
