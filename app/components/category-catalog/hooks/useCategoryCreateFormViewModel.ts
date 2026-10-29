@@ -114,6 +114,8 @@ export const useCategoryCreateFormViewModel =
             router.push(PATHS.ADMINISTRATION.CATEGORIES),
           onGroupNameError: (groupNameError) =>
             setErrors({ groupName: groupNameError }),
+          onNameError: (nameError) =>
+            setErrors({ name: nameError }),
         });
       } catch {
         showGenericMutationErrorToast(showToast);

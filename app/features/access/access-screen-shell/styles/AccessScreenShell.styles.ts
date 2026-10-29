@@ -15,3 +15,23 @@ export const ACCESS_SHELL_CONTENT_CLASS =
 
 export const ACCESS_SHELL_CARD_CLASS =
   "flex w-full max-w-form flex-col gap-md rounded-xl border border-outline-variant bg-surface-container/70 p-md shadow-xl backdrop-blur-md md:gap-lg md:p-lg md:shadow-2xl";
+
+export const ACCESS_SHELL_EMBEDDED_PAGE_CLASS =
+  "relative flex flex-1 flex-col overflow-x-hidden bg-background";
+
+export const ACCESS_SHELL_EMBEDDED_CONTENT_CLASS =
+  "relative z-10 flex flex-1 items-center justify-center p-margin-mobile md:p-margin-desktop";
+
+export const resolveAccessShellPageClassName = (
+  isEmbedded: boolean
+): string =>
+  isEmbedded
+    ? ACCESS_SHELL_EMBEDDED_PAGE_CLASS
+    : ACCESS_SHELL_PAGE_CLASS;
+
+export const resolveAccessShellContentClassName = (
+  isEmbedded: boolean
+): string =>
+  isEmbedded
+    ? ACCESS_SHELL_EMBEDDED_CONTENT_CLASS
+    : ACCESS_SHELL_CONTENT_CLASS;

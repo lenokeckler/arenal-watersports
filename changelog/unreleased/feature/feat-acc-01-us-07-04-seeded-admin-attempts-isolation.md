@@ -1,0 +1,1 @@
+ACC-01.07.04: Keep the seeded admin out of wrong-password specs — the browser tests that type a wrong password use a throwaway worker, so they never wear the shared administration counter (US-ACC-07 · AWS-36)
