@@ -4,6 +4,7 @@ import { CATEGORY_CATALOG_COPY } from "@/app/components/category-catalog/constan
 import { createCategoryListPage } from "../pages/CategoryList.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 import {
+  addTariffToCategory,
   removeCategoryWithRecords,
   removeDeletableCategory,
   seedCategoryWithRecords,
@@ -217,6 +218,39 @@ test.describe("Category list", () => {
       ).toHaveCount(0);
     } finally {
       await removeDeletableCategory(categoryName);
+    }
+  });
+
+  test("keeps the category and shows the has-records message when a record appears before the deletion is confirmed", async ({
+    page,
+  }, testInfo) => {
+    const categoryName = resolveDeletableCategoryName(
+      testInfo.project.name,
+      "rejected"
+    );
+    await seedDeletableCategory(categoryName);
+    const categoryListPage = createCategoryListPage(page);
+
+    try {
+      await categoryListPage.goTo();
+      await categoryListPage.clickCategoryDeleteButton(
+        categoryName
+      );
+      await addTariffToCategory(categoryName);
+      await categoryListPage.clickCategoryConfirmDeleteButton(
+        categoryName
+      );
+
+      await expect(
+        categoryListPage.getToastMessage(
+          CATEGORY_CATALOG_COPY.DELETE_HAS_RECORDS_ERROR
+        )
+      ).toBeVisible();
+      await expect(
+        categoryListPage.getCategoryCard(categoryName)
+      ).toHaveCount(1);
+    } finally {
+      await removeCategoryWithRecords(categoryName);
     }
   });
 });
