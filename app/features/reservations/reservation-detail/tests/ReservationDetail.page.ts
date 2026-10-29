@@ -1,6 +1,7 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { ARIA_ROLE } from "@/app/constants";
 import { RESERVATION_DETAIL_COPY } from "../constants/ReservationDetailCopy.constants";
+import { RESERVATION_DETAIL_SECTIONS_COPY } from "../constants/ReservationDetailSectionsCopy.constants";
 import type { ReservationDetailPage } from "./models/ReservationDetailPage.interface";
 
 export const createReservationDetailPage =
@@ -14,6 +15,12 @@ export const createReservationDetailPage =
     },
     getHeading: (name: string): HTMLElement =>
       screen.getByRole(ARIA_ROLE.HEADING, { name }),
+    getDispatchGroups: (): HTMLElement[] =>
+      within(
+        screen.getByRole(ARIA_ROLE.REGION, {
+          name: RESERVATION_DETAIL_SECTIONS_COPY.DISPATCHES,
+        })
+      ).getAllByRole("listitem"),
     getText: (text: string): HTMLElement =>
       screen.getByText(text),
     getTexts: (text: string): HTMLElement[] =>

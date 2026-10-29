@@ -6,6 +6,7 @@ import {
 } from "./styles/ReservationDetail.styles";
 import ReservationDetailHeader from "./components/ReservationDetailHeader";
 import ReservationDetailOverview from "./components/ReservationDetailOverview";
+import ReservationDetailSections from "./components/ReservationDetailSections";
 
 const ReservationDetailView = ({
   detail,
@@ -15,6 +16,7 @@ const ReservationDetailView = ({
     <div className={RESERVATION_DETAIL_CONTENT_CLASS}>
       <ReservationDetailHeader detail={detail} />
       <ReservationDetailOverview detail={detail} />
+      <ReservationDetailSections detail={detail} />
     </div>
   </main>
 );
