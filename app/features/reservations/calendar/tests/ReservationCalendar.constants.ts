@@ -1,3 +1,4 @@
+import { STRING } from "@/app/constants";
 import type { ReservationCalendarCategorySource } from "../models/ReservationCalendarCategorySource.type";
 import type { ReservationCalendarDispatchSource } from "../models/ReservationCalendarDispatchSource.interface";
 import type { ReservationCalendarItemSource } from "../models/ReservationCalendarItemSource.interface";
@@ -72,6 +73,7 @@ export const CALENDAR_TIME_CASES = [
   ["2027-01-01T06:00:00Z", "00:00"],
   ["2026-10-14T12:15:00-04:00", "10:15"],
   ["2026-10-14T18:15:00+02:00", "10:15"],
+  ["2025-01-01T00:30:00+02:00", "16:30"],
 ] as const;
 
 export const INVALID_CALENDAR_INSTANTS = [
@@ -79,4 +81,12 @@ export const INVALID_CALENDAR_INSTANTS = [
   "2026-10-14",
   "2026-10-14T16:00:00",
   "2026-10-14T25:00:00Z",
+  "2025-02-30T10:00:00Z",
+  "2025-04-31T10:00:00Z",
+  "2025-01-01T24:00:00Z",
+] as const;
+
+export const INVALID_CALENDAR_CUSTOMER_NAMES = [
+  STRING.Empty,
+  STRING.SPACE,
 ] as const;

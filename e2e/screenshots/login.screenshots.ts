@@ -1,8 +1,8 @@
-import { expect, test } from "@playwright/test";
 import { PATHS } from "@/app/constants";
 import { captureViewport } from "../support/captureViewport";
 import { createHomePage } from "../pages/Home.page";
 import { createLoginPage } from "../pages/Login.page";
+import { expect, test } from "../support/activeWorkerTest";
 import { resolveDeviceScreenshotFileName } from "../constants/E2eScreenshot.constants";
 import {
   E2E_LOGIN_ACCOUNT,
@@ -52,13 +52,12 @@ test.describe("Login screenshots", () => {
   });
 
   test("captures the wrong credentials error under the password", async ({
+    activeWorker,
     page,
   }, testInfo) => {
     const loginPage = createLoginPage(page);
     await loginPage.goTo();
-    await loginPage.fillUsername(
-      E2E_LOGIN_ACCOUNT.USERNAME
-    );
+    await loginPage.fillUsername(activeWorker.username);
     await loginPage.fillPassword(E2E_LOGIN_WRONG_PASSWORD);
 
     await loginPage.submit();
@@ -124,6 +123,25 @@ test.describe("Login screenshots", () => {
       page,
       resolveDeviceScreenshotFileName(
         E2E_LOGIN_SCREENSHOT_BASENAME.SIGNED_IN,
+        testInfo.project.name
+      )
+    );
+  });
+
+  test("captures the inactivity notice", async ({
+    page,
+  }, testInfo) => {
+    const loginPage = createLoginPage(page);
+
+    await loginPage.goToSessionIdle();
+    await expect(
+      loginPage.getSessionIdleNotice()
+    ).toBeVisible();
+
+    await captureViewport(
+      page,
+      resolveDeviceScreenshotFileName(
+        E2E_LOGIN_SCREENSHOT_BASENAME.SESSION_IDLE,
         testInfo.project.name
       )
     );
