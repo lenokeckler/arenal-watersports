@@ -27,7 +27,7 @@ export const createInventoryQueries = (page: Page) => {
       status: ActiveInventoryUnitStatus
     ) =>
       main
-        .getByRole(ARIA_ROLE.LIST_ITEM)
+        .getByRole(ARIA_ROLE.LISTITEM)
         .filter({ hasText: code })
         .getByText(INVENTORY_UNIT_STATUS_COPY[status], {
           exact: true,
