@@ -7,6 +7,7 @@ export const RESERVATION_CALENDAR_ERROR = {
   INVALID_EQUIPMENT:
     "Invalid calendar equipment commitment",
   INVALID_INSTANT: "Invalid calendar reservation instant",
+  INVALID_GUIDE: "Invalid calendar assigned guide",
   INVALID_SCHEDULE: "Invalid calendar scheduled interval",
 } as const;
 

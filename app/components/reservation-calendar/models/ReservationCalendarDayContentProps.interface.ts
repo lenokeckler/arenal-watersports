@@ -3,4 +3,5 @@ import type { ReservationCalendarBlock } from "./ReservationCalendarBlock.interf
 export interface ReservationCalendarDayContentProps {
   blocks: ReservationCalendarBlock[];
   messages: string[];
+  showGuides: boolean;
 }

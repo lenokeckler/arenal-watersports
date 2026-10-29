@@ -5,6 +5,7 @@ import { buildCalendarPeriod } from "@/app/components/calendar/utils";
 import type { CalendarDayContent } from "@/app/components/calendar/models/CalendarDayContent.type";
 import type { NullableUndefined } from "@/app/types";
 import type { ReservationCalendarSnapshot } from "../models/ReservationCalendarSnapshot.interface";
+import type { ReservationCalendarDayContentOptions } from "../models/ReservationCalendarDayContentOptions.interface";
 import { ReservationCalendarBlock } from "../components/ReservationCalendarBlock";
 import { buildReservationCalendarContent } from "../utils/buildReservationCalendarContent";
 import { getReservationCalendarMessages } from "../utils/getReservationCalendarMessages";
@@ -12,7 +13,7 @@ import { ReservationCalendarDayContent } from "../components/ReservationCalendar
 
 export const useReservationCalendarDayContent = (
   snapshot: NullableUndefined<ReservationCalendarSnapshot>,
-  showCoverageMessages = false
+  options: ReservationCalendarDayContentOptions = {}
 ): CalendarDayContent =>
   useCallback(
     (date: CalendarDate) => {
@@ -25,13 +26,14 @@ export const useReservationCalendarDayContent = (
         period
       );
       const group = content.groups[0];
-      if (showCoverageMessages) {
+      if (options.showCoverageMessages === true) {
         return createElement(
           ReservationCalendarDayContent,
           {
             blocks: group?.blocks ?? [],
             messages:
               getReservationCalendarMessages(content),
+            showGuides: options.showGuides === true,
           }
         );
       }
@@ -41,9 +43,14 @@ export const useReservationCalendarDayContent = (
       return group.blocks.map((block) =>
         createElement(ReservationCalendarBlock, {
           block,
+          showGuides: options.showGuides === true,
           key: block.id,
         })
       );
     },
-    [snapshot, showCoverageMessages]
+    [
+      snapshot,
+      options.showCoverageMessages,
+      options.showGuides,
+    ]
   );
