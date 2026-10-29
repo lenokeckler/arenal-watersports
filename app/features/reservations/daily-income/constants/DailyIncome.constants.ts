@@ -1,6 +1,7 @@
 export const DAILY_INCOME_BAR = {
   MAX_PERCENT: 100,
   MIN_PERCENT: 3,
+  PRESERVE_ASPECT_RATIO: "none",
   VIEWBOX: "0 0 100 1",
   VIEWBOX_HEIGHT: 1,
 } as const;
@@ -32,5 +33,3 @@ export const DAILY_INCOME_SKELETON = {
   CARD_COUNT: 2,
   ROW_COUNT: 3,
 } as const;
-
-export const SVG_PRESERVE_ASPECT_RATIO_NONE = "none";

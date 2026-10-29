@@ -1,7 +1,4 @@
-import {
-  DAILY_INCOME_BAR,
-  SVG_PRESERVE_ASPECT_RATIO_NONE,
-} from "../constants/DailyIncome.constants";
+import { DAILY_INCOME_BAR } from "../constants/DailyIncome.constants";
 import type { DailyIncomeBarProps } from "../models/DailyIncomeBarProps.interface";
 import {
   METHOD_BAR_FILL_CLASS,
@@ -13,7 +10,9 @@ const DailyIncomeBar = ({
 }: DailyIncomeBarProps): React.JSX.Element => (
   <svg
     viewBox={DAILY_INCOME_BAR.VIEWBOX}
-    preserveAspectRatio={SVG_PRESERVE_ASPECT_RATIO_NONE}
+    preserveAspectRatio={
+      DAILY_INCOME_BAR.PRESERVE_ASPECT_RATIO
+    }
     className={METHOD_BAR_TRACK_CLASS}
     aria-hidden
     focusable={false}
