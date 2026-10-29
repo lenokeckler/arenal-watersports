@@ -99,6 +99,8 @@ Reservations workers answer customers using visible reservation times, committed
 ## Dependency and verification status
 
 - This first PR defines generated-schema projection contracts, validated equipment and departure-group mapping, scheduled interval validation and explicit Costa Rica timestamp formatting. Database reads and visible blocks remain pending.
+- The stacked query PR prepares one SDK-typed parent query with exact count, deterministic pagination, booked-or-actual overlap and a separate complete dispatch payload. Zoned query windows reject impossible civil timestamps, unsupported precision and unsafe ranges before filter interpolation.
+- Injected-fetch tests verify request construction and projection compatibility. Local PostgREST membership, deduplication, boundary behavior and actual counts remain unverified because the local Docker engine is unavailable; no live read is exposed.
 - US-ACC-11 and US-TAB-07 must provide verified Reservations access and active-mode enforcement before adding the protected route, working navigation or live reads.
 - The calendar is the principal Reservations working view; the common board remains the entry screen for all workers.
 - Actual route integration, authenticated E2E checks and mobile/desktop screenshots wait for that security dependency. Captures must use the real authorized route and local persisted reservations.
@@ -109,7 +111,6 @@ Reservations workers answer customers using visible reservation times, committed
 - This checkpoint provides no grouped content, outlets or calendar placement. The snapshot is a supplied presentation contract, with no query sibling, protected read, route or realtime dependency introduced.
 - The grouping checkpoint creates one reusable reservation block per occupied Costa Rica civil day from the intersection of selected period and snapshot coverage, preserving scheduled and actual dispatch intervals separately.
 - Snapshot completeness distinguishes omitted snapshots, partial time coverage and incomplete result pages; only complete coverage with complete results and no groups proves the selected period empty.
-- Day, week, month and year content grouping remains a pure preparation contract. Principal-view placement and the binding acceptance criterion remain pending protected calendar integration.
 - The supplied snapshot adapter places reservation blocks in day and week date containers and renders one grouped agenda beneath month and year grids. Snapshot absence, incomplete time coverage, incomplete result pages and complete empty periods have separate Spanish messages.
 - The adapter performs no database read, permission check or navigation. Protected route integration, authenticated E2E coverage and real application screenshots remain pending US-ACC-11 and US-TAB-07.
 
