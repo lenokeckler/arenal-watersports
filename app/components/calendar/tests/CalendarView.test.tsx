@@ -1,0 +1,125 @@
+import { describe, expect, it, vi } from "vitest";
+import {
+  CALENDAR_ALLOWED_VIEWS,
+  CALENDAR_PREFERENCE,
+  CALENDAR_PREFERENCE_COPY,
+  CALENDAR_VIEW,
+} from "@/app/constants";
+import { CALENDAR_FIXTURE as fixture } from "./Calendar.constants";
+import { createCalendarViewPage } from "./CalendarView.page";
+import { CALENDAR_TEST } from "./CalendarPresentation.constants";
+import {
+  renderCalendar,
+  setupCalendarViewTests,
+} from "./calendarViewTestSetup";
+
+setupCalendarViewTests();
+describe("CalendarView", () => {
+  it.each(Object.values(CALENDAR_VIEW))(
+    "selects and persists the %s view",
+    async (view) => {
+      renderCalendar();
+      const calendar = createCalendarViewPage();
+      await calendar.selectView(view);
+
+      expect(calendar.getView(view)).toHaveAttribute(
+        CALENDAR_TEST.PRESSED,
+        CALENDAR_TEST.TRUE
+      );
+      expect(
+        window.localStorage.getItem(
+          CALENDAR_PREFERENCE.STORAGE_KEY
+        )
+      ).toBe(view);
+    }
+  );
+
+  it("restores the saved year view when mounted again", async () => {
+    const first = renderCalendar();
+    await createCalendarViewPage().selectView(
+      CALENDAR_VIEW.YEAR
+    );
+    first.unmount();
+
+    renderCalendar();
+
+    expect(
+      createCalendarViewPage().getView(CALENDAR_VIEW.YEAR)
+    ).toHaveAttribute(
+      CALENDAR_TEST.PRESSED,
+      CALENDAR_TEST.TRUE
+    );
+  });
+
+  it("restricts operations without overwriting a saved month until selection", async () => {
+    window.localStorage.setItem(
+      CALENDAR_PREFERENCE.STORAGE_KEY,
+      CALENDAR_VIEW.MONTH
+    );
+    renderCalendar(CALENDAR_ALLOWED_VIEWS.OPERATIONS);
+    const calendar = createCalendarViewPage();
+
+    expect(
+      calendar.getView(CALENDAR_VIEW.MONTH)
+    ).toBeNull();
+    expect(
+      calendar.getView(CALENDAR_VIEW.DAY)
+    ).toHaveAttribute(
+      CALENDAR_TEST.PRESSED,
+      CALENDAR_TEST.TRUE
+    );
+    expect(
+      window.localStorage.getItem(
+        CALENDAR_PREFERENCE.STORAGE_KEY
+      )
+    ).toBe(CALENDAR_VIEW.MONTH);
+
+    await calendar.selectView(CALENDAR_VIEW.WEEK);
+
+    expect(
+      window.localStorage.getItem(
+        CALENDAR_PREFERENCE.STORAGE_KEY
+      )
+    ).toBe(CALENDAR_VIEW.WEEK);
+  });
+
+  it("shows no calendar when no views are allowed", () => {
+    renderCalendar([]);
+    expect(
+      createCalendarViewPage().getCalendar()
+    ).toBeNull();
+  });
+
+  it("shows a Spanish storage error and keeps interactions usable", async () => {
+    vi.spyOn(
+      Storage.prototype,
+      "getItem"
+    ).mockImplementation(() => {
+      throw new Error(CALENDAR_PREFERENCE_COPY.ERROR);
+    });
+    vi.spyOn(
+      Storage.prototype,
+      "setItem"
+    ).mockImplementation(() => {
+      throw new Error(CALENDAR_PREFERENCE_COPY.ERROR);
+    });
+    const { rerenderCalendar } = renderCalendar();
+    const calendar = createCalendarViewPage();
+
+    await calendar.selectView(CALENDAR_VIEW.MONTH);
+    rerenderCalendar({
+      today: fixture.marchStart,
+      allowedViews: CALENDAR_ALLOWED_VIEWS.RESERVATIONS,
+    });
+
+    expect(calendar.getError()).toHaveTextContent(
+      CALENDAR_PREFERENCE_COPY.ERROR
+    );
+    expect(
+      calendar.getView(CALENDAR_VIEW.MONTH)
+    ).toHaveAttribute(
+      CALENDAR_TEST.PRESSED,
+      CALENDAR_TEST.TRUE
+    );
+  });
+});
