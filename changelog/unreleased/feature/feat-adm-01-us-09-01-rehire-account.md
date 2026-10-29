@@ -1,0 +1,1 @@
+ADM-01.09.01: Rehire an account — the exact inverse of retiring: the same account comes back active with its username, areas, marks and history, and must change a new temporary password on entering (US-ADM-09 · AWS-61)

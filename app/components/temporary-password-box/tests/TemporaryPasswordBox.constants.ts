@@ -1,0 +1,1 @@
+export const TEMPORARY_PASSWORD_FIXTURE = "Kq7#vR2mP9!xZt";
