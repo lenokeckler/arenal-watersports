@@ -4,7 +4,6 @@ import {
   OPERATIONS_AREA,
 } from "@/app/components/dispatch-board/constants/DispatchBoard.constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
-import type { PendingDispatchDatabase } from "./models/PendingDispatchDatabase.type";
 import type { PendingDispatchSupabaseClient } from "./models/PendingDispatchSupabaseClient.type";
 
 export class OperationsAccessError extends Error {
@@ -16,8 +15,7 @@ export class OperationsAccessError extends Error {
 
 export const getOperationsSupabaseClient =
   async (): Promise<PendingDispatchSupabaseClient> => {
-    const supabase =
-      await createServerSupabaseClient<PendingDispatchDatabase>();
+    const supabase = await createServerSupabaseClient();
     const { data: userData, error: userError } =
       await supabase.auth.getUser();
 

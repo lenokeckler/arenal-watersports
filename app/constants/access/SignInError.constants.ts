@@ -1,0 +1,42 @@
+export const SIGN_IN_FIELD = {
+  FORM: "form",
+  PASSWORD: "password",
+  USERNAME: "username",
+} as const;
+
+export type SignInField =
+  (typeof SIGN_IN_FIELD)[keyof typeof SIGN_IN_FIELD];
+
+export const SIGN_IN_ERROR_CODE = {
+  INVALID_CREDENTIALS: "invalidCredentials",
+  NETWORK: "network",
+  PASSWORD_REQUIRED: "passwordRequired",
+  PASSWORD_TOO_LONG: "passwordTooLong",
+  TOO_MANY_REQUESTS: "tooManyRequests",
+  UNKNOWN: "unknown",
+  USERNAME_LENGTH: "usernameLength",
+  USERNAME_REQUIRED: "usernameRequired",
+} as const;
+
+export type SignInErrorCode =
+  (typeof SIGN_IN_ERROR_CODE)[keyof typeof SIGN_IN_ERROR_CODE];
+
+export const SIGN_IN_ERROR_FIELD: Record<
+  SignInErrorCode,
+  SignInField
+> = {
+  [SIGN_IN_ERROR_CODE.INVALID_CREDENTIALS]:
+    SIGN_IN_FIELD.PASSWORD,
+  [SIGN_IN_ERROR_CODE.NETWORK]: SIGN_IN_FIELD.FORM,
+  [SIGN_IN_ERROR_CODE.PASSWORD_REQUIRED]:
+    SIGN_IN_FIELD.PASSWORD,
+  [SIGN_IN_ERROR_CODE.PASSWORD_TOO_LONG]:
+    SIGN_IN_FIELD.PASSWORD,
+  [SIGN_IN_ERROR_CODE.TOO_MANY_REQUESTS]:
+    SIGN_IN_FIELD.FORM,
+  [SIGN_IN_ERROR_CODE.UNKNOWN]: SIGN_IN_FIELD.FORM,
+  [SIGN_IN_ERROR_CODE.USERNAME_LENGTH]:
+    SIGN_IN_FIELD.USERNAME,
+  [SIGN_IN_ERROR_CODE.USERNAME_REQUIRED]:
+    SIGN_IN_FIELD.USERNAME,
+};
