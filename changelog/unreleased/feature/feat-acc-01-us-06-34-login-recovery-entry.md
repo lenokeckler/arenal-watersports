@@ -1,0 +1,1 @@
+ACC-01.06.34: Login recovery entry — the sign-in screen gets the "¿Olvidó su contraseña?" link to the recovery and shows "Su contraseña se cambió. Ingrese con la nueva." once after a recovery (US-ACC-06 · AWS-35)
