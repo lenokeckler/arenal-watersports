@@ -1,5 +1,5 @@
 begin;
-select plan(19);
+select plan(21);
 
 insert into auth.users (id, email) values
   ('e3900000-0000-4000-8000-000000000001', 'res11-persistence@arenal.local'),
@@ -20,6 +20,8 @@ values
   ('e3900000-0000-4000-8000-000000000103', 'RES11 physical units', 'active', 'by_unit', false, false, null,
    'e3900000-0000-4000-8000-000000000001', 'e3900000-0000-4000-8000-000000000001'),
   ('e3900000-0000-4000-8000-000000000104', 'RES11 unpriced boat', 'active', 'by_unit', true, false, 60,
+   'e3900000-0000-4000-8000-000000000001', 'e3900000-0000-4000-8000-000000000001'),
+  ('e3900000-0000-4000-8000-000000000105', 'RES11 constrained inventory', 'active', 'by_quantity', false, false, null,
    'e3900000-0000-4000-8000-000000000001', 'e3900000-0000-4000-8000-000000000001');
 insert into equipment_units (id, category_id, code, created_by, updated_by) values
   ('e3900000-0000-4000-8000-000000000201', 'e3900000-0000-4000-8000-000000000101', 'RES11-BOAT-01',
@@ -29,7 +31,9 @@ insert into equipment_units (id, category_id, code, created_by, updated_by) valu
   ('e3900000-0000-4000-8000-000000000203', 'e3900000-0000-4000-8000-000000000104', 'RES11-BOAT-02',
    'e3900000-0000-4000-8000-000000000001', 'e3900000-0000-4000-8000-000000000001');
 insert into equipment_stock (category_id, quantity_available, updated_by)
-values ('e3900000-0000-4000-8000-000000000102', 8, 'e3900000-0000-4000-8000-000000000001');
+values
+  ('e3900000-0000-4000-8000-000000000102', 8, 'e3900000-0000-4000-8000-000000000001'),
+  ('e3900000-0000-4000-8000-000000000105', 1, 'e3900000-0000-4000-8000-000000000001');
 insert into tariffs (category_id, type, amount_usd, amount_crc, created_by, updated_by)
 values ('e3900000-0000-4000-8000-000000000101', 'rental', 20, 10000,
   'e3900000-0000-4000-8000-000000000001', 'e3900000-0000-4000-8000-000000000001'),
@@ -51,6 +55,9 @@ values
    'e3900000-0000-4000-8000-000000000001', 'e3900000-0000-4000-8000-000000000001'),
   ('e3900000-0000-4000-8000-000000000306', 'RES11 physical units extra', 1, 500,
    'e3900000-0000-4000-8000-000000000103', 1,
+   'e3900000-0000-4000-8000-000000000001', 'e3900000-0000-4000-8000-000000000001'),
+  ('e3900000-0000-4000-8000-000000000307', 'RES11 over capacity extra', 3, 1500,
+   'e3900000-0000-4000-8000-000000000105', 2,
    'e3900000-0000-4000-8000-000000000001', 'e3900000-0000-4000-8000-000000000001');
 update extras set status = 'inactive' where id = 'e3900000-0000-4000-8000-000000000304';
 insert into extra_compatibility (extra_id, unit_id) values
@@ -59,7 +66,8 @@ insert into extra_compatibility (extra_id, unit_id) values
   ('e3900000-0000-4000-8000-000000000302', 'e3900000-0000-4000-8000-000000000201'),
   ('e3900000-0000-4000-8000-000000000304', 'e3900000-0000-4000-8000-000000000201'),
   ('e3900000-0000-4000-8000-000000000305', 'e3900000-0000-4000-8000-000000000201'),
-  ('e3900000-0000-4000-8000-000000000306', 'e3900000-0000-4000-8000-000000000201');
+  ('e3900000-0000-4000-8000-000000000306', 'e3900000-0000-4000-8000-000000000201'),
+  ('e3900000-0000-4000-8000-000000000307', 'e3900000-0000-4000-8000-000000000201');
 
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"e3900000-0000-4000-8000-000000000001","role":"authenticated"}';
@@ -125,6 +133,15 @@ select lives_ok($$ select create_rental_reservation(jsonb_build_object(
 select is((select free from category_availability('e3900000-0000-4000-8000-000000000103',
   '2040-11-06 15:00:00+00', '2040-11-06 16:00:00+00', null)), 0,
   'unit-tracked physical extras reduce availability by their catalog quantity');
+select throws_ok($$ select create_rental_reservation(jsonb_build_object(
+  'customer_name', 'RES11 extra over capacity', 'people_count', 1, 'date', '2040-11-09',
+  'time', '09:00', 'duration_minutes', 60, 'unit_id', 'e3900000-0000-4000-8000-000000000201',
+  'extra_ids', array['e3900000-0000-4000-8000-000000000307'])) $$,
+  'P0001', 'Reservation extra exceeds available inventory capacity',
+  'an inventory extra cannot reserve two units when only one is available');
+select is((select free from category_availability('e3900000-0000-4000-8000-000000000105',
+  '2040-11-09 15:00:00+00', '2040-11-09 16:00:00+00', null)), 1,
+  'a rejected over-capacity extra leaves inventory available');
 select lives_ok($$ select create_rental_reservation(jsonb_build_object(
   'customer_name', 'RES11 Missing currency reservation', 'people_count', 1, 'date', '2040-11-07',
   'time', '09:00', 'duration_minutes', 60, 'unit_id', 'e3900000-0000-4000-8000-000000000201',
