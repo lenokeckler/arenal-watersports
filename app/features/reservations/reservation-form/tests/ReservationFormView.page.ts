@@ -6,6 +6,7 @@ import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constant
 import { RESERVATION_FORM_FIELD_ID } from "../constants/ReservationFormUi.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { RESERVATION_CATEGORY_CONFLICT_WARNING_TEST } from "./ReservationCategoryConflictWarning.constants";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 
 const getDurationOption = (label: string) =>
@@ -108,6 +109,30 @@ export const createReservationFormViewPage = (
     findDurationValidationError,
     findSubmissionError,
     getSubmitButton,
+    findCategoryConflictWarning: () =>
+      screen.findByRole(ARIA_ROLE.ALERT, {
+        name: RESERVATION_FORM_UI_COPY.CATEGORY_CONFLICT_WARNING_TITLE,
+      }),
+    findCategoryConflictError: () =>
+      screen.findByText(
+        RESERVATION_FORM_UI_COPY.CATEGORY_CONFLICT_WARNING_ERROR
+      ),
+    queryCategoryConflictWarning: () =>
+      screen.queryByRole(ARIA_ROLE.ALERT, {
+        name: RESERVATION_FORM_UI_COPY.CATEGORY_CONFLICT_WARNING_TITLE,
+      }),
+    findCategoryConflictCode: () =>
+      screen.findByText(
+        RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.CODE
+      ),
+    findCategoryConflictCustomerName: () =>
+      screen.findByText(
+        RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.CUSTOMER_NAME
+      ),
+    findCategoryConflictInterval: () =>
+      screen.findByText(
+        RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.INTERVAL
+      ),
     getCategorySelect,
     getQuantityInput,
     getUnitSelect,

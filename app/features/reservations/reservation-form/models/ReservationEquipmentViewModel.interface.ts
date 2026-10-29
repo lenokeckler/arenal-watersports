@@ -1,6 +1,7 @@
 import type { NullableRef } from "@/app/types";
 import type { ReservationCategoryAvailabilityPanelState } from "./ReservationCategoryAvailabilityPanelState.type";
 import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOption.interface";
+import type { ReservationCategoryConflictWarningViewModel } from "./ReservationCategoryConflictWarningViewModel.interface";
 
 export interface ReservationEquipmentViewModel {
   availableUnits: ReservationCategoryUnitOption[];
@@ -8,6 +9,7 @@ export interface ReservationEquipmentViewModel {
   categoryAvailabilityCategoryName: string;
   categoryAvailabilityInterval: string;
   categoryAvailabilityState: ReservationCategoryAvailabilityPanelState;
+  categoryConflictWarning: ReservationCategoryConflictWarningViewModel;
   handleRetryCategoryAvailability: () => void;
   hasAvailabilityError: boolean;
   isAvailabilityLoading: boolean;

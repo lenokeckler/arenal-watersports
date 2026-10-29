@@ -6,6 +6,7 @@ import ReservationCategoryField from "./ReservationCategoryField";
 import ReservationQuantityField from "./ReservationQuantityField";
 import ReservationUnitField from "./ReservationUnitField";
 import ReservationCategoryAvailabilityPanel from "./ReservationCategoryAvailabilityPanel";
+import ReservationCategoryConflictWarning from "./ReservationCategoryConflictWarning";
 
 const ReservationEquipmentFields = ({
   categories,
@@ -34,6 +35,9 @@ const ReservationEquipmentFields = ({
       intervalLabel={viewModel.categoryAvailabilityInterval}
       onRetry={viewModel.handleRetryCategoryAvailability}
       state={viewModel.categoryAvailabilityState}
+    />
+    <ReservationCategoryConflictWarning
+      viewModel={viewModel.categoryConflictWarning}
     />
   </>
 );
