@@ -8,6 +8,7 @@ import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.co
 import type { CreateCategoryInput } from "../models/CreateCategoryInput.interface";
 import type { CreateCategoryResult } from "../models/CreateCategoryResult.interface";
 import { resolveGroupConflictErrorMessage } from "../utils/resolveGroupConflictErrorMessage";
+import { validateCategoryCreateFormValues } from "../utils/validateCategoryCreateFormValues";
 import {
   assertCategoryGroupTrackingModeAvailable,
   CategoryGroupConflictError,
@@ -18,6 +19,19 @@ export const createCategoryAction = async (
 ): Promise<CreateCategoryResult> => {
   const supabase = await createServerSupabaseClient();
   const adminWorkerId = await assertIsAdminWorker(supabase);
+
+  const formErrors = validateCategoryCreateFormValues({
+    name: input.name,
+    trackingMode: input.trackingMode,
+    groupName: input.groupName,
+  });
+
+  if (formErrors.name) {
+    return {
+      status: CATEGORY_MUTATION_STATUS.ERROR,
+      nameError: formErrors.name,
+    };
+  }
 
   const trimmedName = input.name.trim();
   const trimmedGroupName = input.groupName.trim();
