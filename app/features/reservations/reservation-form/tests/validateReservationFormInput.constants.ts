@@ -6,6 +6,7 @@ export const VALID_RESERVATION_FORM_INPUT: ReservationFormInput =
     customerName: "  María López  ",
     date: "2028-02-29",
     durationHours: 1.5,
+    extraIds: [],
     peopleCount: 3,
     quantity: 2,
     time: "09:30",
@@ -21,6 +22,10 @@ export const EXPECTED_DURATION_MINUTES = 90;
 export const VALID_GUIDE_IDS = [
   "e2500000-0000-4000-8000-000000000301",
   "e2500000-0000-4000-8000-000000000302",
+];
+export const VALID_EXTRA_IDS = [
+  "f3200000-0000-4000-8000-000000000001",
+  "f3200000-0000-4000-8000-000000000002",
 ];
 export const FRACTIONAL_COUNT = 1.5;
 export const INVALID_QUANTITY = 0;
