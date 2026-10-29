@@ -1,6 +1,7 @@
-import type { CalendarView } from "./index";
+import type { CalendarView } from "@/app/types";
 
 export interface CalendarToolbarProps {
+  heading: string;
   title: string;
   selectedView: CalendarView;
   allowedViews: readonly CalendarView[];

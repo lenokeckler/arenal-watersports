@@ -2,7 +2,6 @@
 
 import type { ReactElement } from "react";
 import type { NullableRef } from "@/app/types";
-
 import { Section, Text } from "@/app/components";
 import {
   CALENDAR_PRESENTATION,

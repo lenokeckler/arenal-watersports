@@ -5,7 +5,7 @@ import {
 import type {
   CalendarView,
   CalendarWorkArea,
-} from "../models";
+} from "@/app/types";
 
 export const getAllowedCalendarViews = (
   verifiedWorkArea: CalendarWorkArea

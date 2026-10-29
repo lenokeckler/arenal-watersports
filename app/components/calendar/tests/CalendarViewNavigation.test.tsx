@@ -53,6 +53,7 @@ describe("CalendarView navigation", () => {
     const nextTitle = calendar.getTitle()?.textContent;
 
     rerenderCalendar({
+      heading: CALENDAR_TEST.HEADING,
       today: { ...fixture.leapEnd },
       allowedViews: [
         ...CALENDAR_ALLOWED_VIEWS.RESERVATIONS,
@@ -62,6 +63,7 @@ describe("CalendarView navigation", () => {
       nextTitle
     );
     rerenderCalendar({
+      heading: CALENDAR_TEST.HEADING,
       today: fixture.leapEnd,
       allowedViews: CALENDAR_ALLOWED_VIEWS.OPERATIONS,
     });

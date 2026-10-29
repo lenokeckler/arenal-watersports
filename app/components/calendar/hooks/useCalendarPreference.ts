@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import type { CalendarView } from "../models";
+import type { CalendarView } from "@/app/types";
 import { CALENDAR_VIEW, STRING } from "@/app/constants";
 import { calendarActions } from "@/app/store";
 import { useAppDispatch } from "@/app/store/hooks";

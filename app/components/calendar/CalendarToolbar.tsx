@@ -50,7 +50,7 @@ export const CalendarToolbar = (
     <div className={CALENDAR_TOOLBAR_CLASS}>
       <Title
         variant={TitleVariant.PRIMARY}
-        text={CALENDAR_TEXT.TITLE}
+        text={props.heading}
         id={CALENDAR_PRESENTATION.TITLE_ID}
         className={CALENDAR_TITLE_CLASS}
       />

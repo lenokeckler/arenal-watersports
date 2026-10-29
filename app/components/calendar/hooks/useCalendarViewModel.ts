@@ -39,6 +39,7 @@ export const useCalendarViewModel = (
     selectedView,
     preferenceError: state.preferenceError,
     toolbar: {
+      heading: props.heading,
       title: getCalendarPeriodTitle(period),
       selectedView,
       allowedViews: props.allowedViews,

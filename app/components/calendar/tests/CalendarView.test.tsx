@@ -34,6 +34,22 @@ describe("CalendarView", () => {
     }
   );
 
+  it("renders exactly the view choices supplied by its caller", () => {
+    renderCalendar(CALENDAR_ALLOWED_VIEWS.OPERATIONS);
+    const calendar = createCalendarViewPage();
+
+    expect(
+      calendar.getView(CALENDAR_VIEW.DAY)
+    ).toBeVisible();
+    expect(
+      calendar.getView(CALENDAR_VIEW.WEEK)
+    ).toBeVisible();
+    expect(
+      calendar.getView(CALENDAR_VIEW.MONTH)
+    ).toBeNull();
+    expect(calendar.getView(CALENDAR_VIEW.YEAR)).toBeNull();
+  });
+
   it("restores the saved year view when mounted again", async () => {
     const first = renderCalendar();
     await createCalendarViewPage().selectView(
@@ -51,7 +67,7 @@ describe("CalendarView", () => {
     );
   });
 
-  it("restricts operations without overwriting a saved month until selection", async () => {
+  it("falls back when the saved choice is unavailable without overwriting it", async () => {
     window.localStorage.setItem(
       CALENDAR_PREFERENCE.STORAGE_KEY,
       CALENDAR_VIEW.MONTH
@@ -83,11 +99,10 @@ describe("CalendarView", () => {
     ).toBe(CALENDAR_VIEW.WEEK);
   });
 
-  it("shows no calendar when no views are allowed", () => {
-    renderCalendar([]);
-    expect(
-      createCalendarViewPage().getCalendar()
-    ).toBeNull();
+  it("does not render without allowed view choices", () => {
+    const { container } = renderCalendar([]);
+
+    expect(container).toBeEmptyDOMElement();
   });
 
   it("shows a Spanish storage error and keeps interactions usable", async () => {
@@ -108,6 +123,7 @@ describe("CalendarView", () => {
 
     await calendar.selectView(CALENDAR_VIEW.MONTH);
     rerenderCalendar({
+      heading: CALENDAR_TEST.HEADING,
       today: fixture.marchStart,
       allowedViews: CALENDAR_ALLOWED_VIEWS.RESERVATIONS,
     });

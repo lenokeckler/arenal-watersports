@@ -1,5 +1,5 @@
 import type { NullableRef } from "@/app/types";
-import type { CalendarView } from "./index";
+import type { CalendarView } from "@/app/types";
 import type { CalendarCell } from "./CalendarCell.interface";
 import type { CalendarMonthProps } from "./CalendarMonthProps.interface";
 import type { CalendarToolbarProps } from "./CalendarToolbarProps.interface";

@@ -1,5 +1,5 @@
 import type { NullableRef } from "@/app/types";
-import type { CalendarView } from "../models";
+import type { CalendarView } from "@/app/types";
 import {
   getCalendarPreferenceError,
   writeCalendarPreference,

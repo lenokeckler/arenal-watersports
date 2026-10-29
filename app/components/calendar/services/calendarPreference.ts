@@ -3,7 +3,7 @@ import {
   CALENDAR_PREFERENCE_COPY,
   CALENDAR_VIEW,
 } from "@/app/constants";
-import type { CalendarView } from "../models";
+import type { CalendarView } from "@/app/types";
 import type { NullableRef } from "@/app/types";
 
 export const readCalendarPreference = (

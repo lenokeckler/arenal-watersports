@@ -1,9 +1,6 @@
 import { useMemo } from "react";
 import { formatMessages } from "../utils/formatMessages";
-import {
-  LIST_ROLE_BY_VARIANT,
-  UNORDERED_LIST,
-} from "../UnorderedList.constants";
+import { UNORDERED_LIST } from "../UnorderedList.constants";
 import {
   UnorderedListProps,
   UnorderedListItem,
@@ -45,7 +42,6 @@ export const useUnorderedListViewModel = ({
       finalItems && finalItems.length > 0;
     const variantStyles =
       resolveUnorderedListVariantStyles(finalVariant);
-    const listRole = LIST_ROLE_BY_VARIANT[finalVariant];
     const styleClasses =
       resolveUnorderedListStyleClassName(style);
 
@@ -53,7 +49,6 @@ export const useUnorderedListViewModel = ({
       finalVariant,
       finalItems,
       variantStyles,
-      listRole,
       styleClasses,
       shouldRender,
     };

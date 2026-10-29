@@ -9,6 +9,7 @@ import { store, calendarActions } from "@/app/store";
 import { CalendarView } from "../CalendarView";
 import type { CalendarViewProps } from "../models/CalendarViewProps.interface";
 import { CALENDAR_FIXTURE } from "./Calendar.constants";
+import { CALENDAR_TEST } from "./CalendarPresentation.constants";
 
 export const renderCalendar = (
   initialAllowedViews: CalendarViewProps["allowedViews"] = CALENDAR_ALLOWED_VIEWS.RESERVATIONS
@@ -16,18 +17,21 @@ export const renderCalendar = (
   const result = render(
     <Provider store={store}>
       <CalendarView
+        heading={CALENDAR_TEST.HEADING}
         today={CALENDAR_FIXTURE.leapEnd}
         allowedViews={initialAllowedViews}
       />
     </Provider>
   );
   const rerenderCalendar = ({
+    heading,
     today,
     allowedViews,
   }: CalendarViewProps) =>
     result.rerender(
       <Provider store={store}>
         <CalendarView
+          heading={heading}
           today={today}
           allowedViews={allowedViews}
         />

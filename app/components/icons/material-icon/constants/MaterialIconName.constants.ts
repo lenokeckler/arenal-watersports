@@ -10,7 +10,6 @@ export const MATERIAL_ICON_NAME = {
   ERROR: "error",
   EVENT: "event",
   EXPAND_MORE: "expand_more",
-  LOCK_OPEN: "lock_open",
   LOCK_RESET: "lock_reset",
   LOGIN: "login",
   LOGOUT: "logout",

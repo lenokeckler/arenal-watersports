@@ -1,4 +1,5 @@
 export const CALENDAR_TEST = {
+  HEADING: "Calendario de prueba",
   PRESSED: "aria-pressed",
   TRUE: "true",
   TODAY_SELECTOR: "[aria-current=date]",

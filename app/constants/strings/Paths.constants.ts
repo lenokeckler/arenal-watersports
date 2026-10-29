@@ -19,10 +19,10 @@ export const PATHS = {
     PASSWORD: "/profile/password",
     ROOT: "/profile",
   },
-  RESERVATIONS: {
-    DEPOSITS: "/reservations/deposits",
-  },
   WELL_KNOWN: {
     CHANGE_PASSWORD: "/.well-known/change-password",
+  },
+  RESERVATIONS: {
+    CALENDAR: "/reservations/calendar",
   },
 } as const;

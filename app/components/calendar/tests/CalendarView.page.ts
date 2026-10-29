@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE, CALENDAR_TEXT } from "@/app/constants";
-import type { CalendarView } from "../models";
+import type { CalendarView } from "@/app/types";
 import { CALENDAR_TEST } from "./CalendarPresentation.constants";
 
 export const createCalendarViewPage = () => {
@@ -24,27 +24,22 @@ export const createCalendarViewPage = () => {
       })
     );
   };
+  const getHeading = () =>
+    screen.getByRole(ARIA_ROLE.HEADING, { level: 1 });
   const getTitle = () =>
-    screen
-      .getAllByRole(ARIA_ROLE.HEADING)
-      .find(
-        (heading) =>
-          heading.textContent !== CALENDAR_TEXT.TITLE
-      );
+    screen.getByRole(ARIA_ROLE.HEADING, { level: 2 });
   const getError = () => screen.getByRole(ARIA_ROLE.ALERT);
-  const getCalendar = () =>
-    screen.queryByRole(ARIA_ROLE.REGION);
   const getToday = () =>
-    getCalendar()?.querySelector(
-      CALENDAR_TEST.TODAY_SELECTOR
-    );
+    screen
+      .queryByRole(ARIA_ROLE.REGION)
+      ?.querySelector(CALENDAR_TEST.TODAY_SELECTOR);
   return {
     getView,
     selectView,
     navigate,
+    getHeading,
     getTitle,
     getError,
-    getCalendar,
     getToday,
   };
 };
