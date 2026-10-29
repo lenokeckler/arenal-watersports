@@ -1,1 +1,0 @@
-ACC-01.05.03: Shared re-authentication — the current password check, the blocked notice and the server action fallback leave the password change so the personal email can reuse them (US-ACC-05 · AWS-34)

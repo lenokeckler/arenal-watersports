@@ -42,10 +42,6 @@ one is proposed.
    split it now, in the plan.
 7. **Ask, do not assume.** If the project's conventions are ambiguous and the
    choice materially changes the design, ask before committing to one.
-8. **Name shared pieces by concept.** Before naming a piece, list every
-   requirement that will use it — in this repository, the sibling stories of
-   the backlog. Used by more than one, it is named after the concept they
-   share; only what a single requirement does carries that requirement's name.
 
 ## Workflow
 
@@ -75,9 +71,6 @@ path/to/module.ext    — single-sentence purpose
                         exposes: …
                         depends on: … (direction)
                         est. size: … lines
-
-## Shared names
-piece    — requirements that use it — name that follows
 
 ## Contracts
 Interfaces / signatures between the new pieces. Types, not bodies.
@@ -114,7 +107,6 @@ You must NOT:
 - [ ] The plan reuses existing structure wherever it exists
 - [ ] Contracts are specific enough to implement without guessing
 - [ ] Rejected alternatives are named, with the reason
-- [ ] Every shared piece lists the requirements that use it, and its name is their concept
 
 ## Language
 

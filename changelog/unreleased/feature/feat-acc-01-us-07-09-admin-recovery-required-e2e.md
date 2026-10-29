@@ -1,1 +1,0 @@
-ACC-01.07.09: Admin past ten attempts end to end — a browser test proves that after ten failures the administration account is refused with the right password and offered the recovery, while wrong passwords stay generic (US-ACC-07 · AWS-36)

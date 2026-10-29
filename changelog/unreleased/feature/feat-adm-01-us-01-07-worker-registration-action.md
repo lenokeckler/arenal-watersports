@@ -1,1 +1,0 @@
-ADM-01.01.07: Worker registration action — the form posts to a server action that checks the fields, registers the worker and answers with field errors, a refusal or the temporary password (US-ADM-01 · AWS-53)

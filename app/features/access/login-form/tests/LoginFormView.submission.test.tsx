@@ -1,3 +1,4 @@
+import { render } from "@testing-library/react";
 import {
   beforeEach,
   describe,
@@ -8,7 +9,8 @@ import {
 import { DEFAULT_SIGN_IN_CREDENTIALS } from "@/app/utils/sign-in/tests/signIn.constants";
 import { submitSignIn } from "../actions/submitSignIn";
 import { SIGN_IN_ERROR_COPY } from "../constants/SignInErrorCopy.constants";
-import { renderLoginFormView } from "./renderLoginFormView";
+import LoginFormView from "../LoginFormView";
+import { createLoginFormViewPage } from "./LoginFormView.page";
 import { INVALID_CREDENTIALS_ERROR } from "./submitSignIn.constants";
 
 vi.mock("../actions/submitSignIn", () => ({
@@ -24,7 +26,8 @@ describe("LoginFormView submission", () => {
     vi.mocked(submitSignIn).mockResolvedValue(
       INVALID_CREDENTIALS_ERROR
     );
-    const page = renderLoginFormView();
+    render(<LoginFormView />);
+    const page = createLoginFormViewPage();
 
     await page.fillCredentials(DEFAULT_SIGN_IN_CREDENTIALS);
     await page.submit();

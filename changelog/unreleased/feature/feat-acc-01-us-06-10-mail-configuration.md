@@ -1,1 +1,0 @@
-ACC-01.06.10: Mail configuration — the server reads its SMTP settings only from environment variables, refuses to start a mail without them, requires TLS and credentials outside the local machine and accepts exactly one plain sender address (US-ACC-06 · AWS-35)

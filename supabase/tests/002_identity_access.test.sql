@@ -29,7 +29,7 @@ values ('22222222-2222-2222-2222-222222222222', 'operativo', 'Operativo', 'opera
 insert into workers (id, username, full_name, base_role)
 values ('33333333-3333-3333-3333-333333333333', 'bloqueado', 'Bloqueado', 'operaciones');
 
-update workers set status = 'blocked', blocked_reason = 'administration' where id = '33333333-3333-3333-3333-333333333333';
+update workers set status = 'blocked' where id = '33333333-3333-3333-3333-333333333333';
 
 insert into workers (id, username, full_name, base_role, is_external_guide, national_id, expires_at)
 values ('44444444-4444-4444-4444-444444444444', 'vencido', 'Vencido', 'operaciones', true,
@@ -66,8 +66,6 @@ set local request.jwt.claims to '{"sub":"44444444-4444-4444-4444-444444444444","
 select ok(not has_area('operaciones'), 'un guia externo vencido pierde el area el instante que pasa su fecha');
 
 reset role;
-set local role authenticated;
-set local request.jwt.claims to '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}';
 
 select throws_ok(
   $$ update workers set deleted_at = now()
@@ -88,6 +86,5 @@ select lives_ok(
   'a un ex trabajador se le puede recontratar sobre su misma cuenta'
 );
 
-reset role;
 select * from finish();
 rollback;

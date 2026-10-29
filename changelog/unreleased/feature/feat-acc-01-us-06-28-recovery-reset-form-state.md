@@ -1,1 +1,0 @@
-ACC-01.06.28: Recovery reset form values — the values of the form where the worker types the username, the PIN and the new password twice, with every field checked before it is sent and the PIN cleared after a refused PIN (US-ACC-06 · AWS-35)

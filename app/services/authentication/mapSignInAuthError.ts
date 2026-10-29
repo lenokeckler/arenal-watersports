@@ -6,13 +6,10 @@ import {
 import {
   HTTP_STATUS,
   SIGN_IN_ERROR_CODE,
-  SIGN_IN_HOOK_REJECTION_ERROR_CODE,
   SUPABASE_AUTH_ERROR_CODE,
 } from "@/app/constants";
 import { createSignInError } from "@/app/utils/sign-in/createSignInError";
 import type { SignInError } from "@/app/utils/sign-in/models/SignInError.interface";
-import { isInvalidCredentialsAuthError } from "./isInvalidCredentialsAuthError";
-import { resolveHookRejection } from "./resolveHookRejection";
 
 export const mapSignInAuthError = (
   error: AuthError
@@ -25,17 +22,12 @@ export const mapSignInAuthError = (
     return createSignInError(SIGN_IN_ERROR_CODE.UNKNOWN);
   }
 
-  if (isInvalidCredentialsAuthError(error)) {
+  if (
+    error.code ===
+    SUPABASE_AUTH_ERROR_CODE.INVALID_CREDENTIALS
+  ) {
     return createSignInError(
       SIGN_IN_ERROR_CODE.INVALID_CREDENTIALS
-    );
-  }
-
-  const rejection = resolveHookRejection(error);
-
-  if (rejection) {
-    return createSignInError(
-      SIGN_IN_HOOK_REJECTION_ERROR_CODE[rejection]
     );
   }
 

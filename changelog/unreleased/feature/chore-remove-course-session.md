@@ -1,1 +1,0 @@
-chore - Remove the course session — the unused inactivity timer from the course base (15 or 30 minutes all day, with a warning counted on the phone) is removed, since US-ACC-09 and US-ACC-10 own session expiry

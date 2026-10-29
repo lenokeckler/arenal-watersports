@@ -1,1 +1,0 @@
-ADM-01.01.05: Worker registration service — only administration registers a worker; the server creates the account with the temporary password, writes the worker under Row Level Security and undoes the account if that fails (US-ADM-01 · AWS-53)

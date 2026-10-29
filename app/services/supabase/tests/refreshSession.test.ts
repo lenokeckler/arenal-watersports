@@ -8,21 +8,14 @@ import {
 } from "vitest";
 import { refreshSupabaseSession } from "../refreshSession";
 import type { CookieMethodsServer } from "@supabase/ssr";
-import {
-  SESSION_STATE,
-  SUPABASE_AUTH_COOKIE,
-  SUPABASE_RPC,
-  SUPABASE_SIGN_OUT_SCOPE,
-} from "@/app/constants";
 import { SESSION_FIXTURE } from "./refreshSession.constants";
 
-const { getClaims, signOut, rpc, createServerClient } =
-  vi.hoisted(() => ({
+const { getClaims, createServerClient } = vi.hoisted(
+  () => ({
     getClaims: vi.fn(),
-    signOut: vi.fn(),
-    rpc: vi.fn(),
     createServerClient: vi.fn(),
-  }));
+  })
+);
 
 vi.mock("@supabase/ssr", () => ({ createServerClient }));
 
@@ -38,42 +31,20 @@ const buildRequest = (): NextRequest =>
 
 let sessionCookies: Required<CookieMethodsServer>;
 
-const mockRpcAnswer = (answer: unknown): void => {
-  rpc.mockReturnValue({
-    abortSignal: vi.fn().mockResolvedValue(answer),
-  });
-};
-
 describe("refreshSupabaseSession", () => {
   beforeEach(() => {
     getClaims.mockReset();
-    rpc.mockReset();
-    signOut.mockReset();
-    signOut.mockResolvedValue({ error: null });
-    mockRpcAnswer({
-      data: SESSION_STATE.LIVE,
-      error: null,
-    });
     createServerClient.mockReset();
     createServerClient.mockImplementation(
       (_url, _key, { cookies }) => {
         sessionCookies = cookies;
-        return { auth: { getClaims, signOut }, rpc };
+        return { auth: { getClaims } };
       }
     );
     getClaims.mockResolvedValue({
       data: null,
       error: null,
     });
-  });
-
-  it("names the auth cookie with the project constant", async () => {
-    await refreshSupabaseSession(buildRequest());
-
-    const options = createServerClient.mock.calls[0][2];
-    expect(options.cookieOptions.name).toBe(
-      SUPABASE_AUTH_COOKIE.NAME
-    );
   });
 
   it("reports a session when the token claims verify", async () => {
@@ -86,180 +57,7 @@ describe("refreshSupabaseSession", () => {
       await refreshSupabaseSession(buildRequest());
 
     expect(result.hasSession).toBe(true);
-    expect(result.mustChangePassword).toBe(false);
   });
-
-  it("asks the database whether the session of the claims is live", async () => {
-    getClaims.mockResolvedValue({
-      data: { claims: SESSION_FIXTURE.CLAIMS },
-      error: null,
-    });
-
-    await refreshSupabaseSession(buildRequest());
-
-    expect(rpc).toHaveBeenCalledTimes(1);
-    expect(rpc).toHaveBeenCalledWith(
-      SUPABASE_RPC.CURRENT_SESSION_STATE
-    );
-  });
-
-  it("reports no session when the database says the session is gone", async () => {
-    getClaims.mockResolvedValue({
-      data: { claims: SESSION_FIXTURE.CLAIMS },
-      error: null,
-    });
-    mockRpcAnswer({
-      data: SESSION_STATE.ENDED,
-      error: null,
-    });
-
-    const result =
-      await refreshSupabaseSession(buildRequest());
-
-    expect(result.hasSession).toBe(false);
-  });
-
-  it("reports an idle session and signs it out on this device", async () => {
-    getClaims.mockResolvedValue({
-      data: { claims: SESSION_FIXTURE.CLAIMS },
-      error: null,
-    });
-    mockRpcAnswer({
-      data: SESSION_STATE.IDLE,
-      error: null,
-    });
-
-    const result =
-      await refreshSupabaseSession(buildRequest());
-
-    expect(result.hasSession).toBe(false);
-    expect(result.isSessionIdle).toBe(true);
-    expect(signOut).toHaveBeenCalledWith({
-      scope: SUPABASE_SIGN_OUT_SCOPE.LOCAL,
-    });
-  });
-
-  it("returns the response with the cookies the idle sign-out cleared", async () => {
-    getClaims.mockResolvedValue({
-      data: { claims: SESSION_FIXTURE.CLAIMS },
-      error: null,
-    });
-    mockRpcAnswer({
-      data: SESSION_STATE.IDLE,
-      error: null,
-    });
-    signOut.mockImplementation(async () => {
-      await sessionCookies.setAll([
-        SESSION_FIXTURE.CLEARED_COOKIE,
-      ]);
-      return { error: null };
-    });
-
-    const { response } =
-      await refreshSupabaseSession(buildRequest());
-
-    expect(
-      response.cookies.get(
-        SESSION_FIXTURE.CLEARED_COOKIE.name
-      )?.value
-    ).toBe(SESSION_FIXTURE.CLEARED_COOKIE.value);
-  });
-
-  it.each([SESSION_STATE.LIVE, SESSION_STATE.ENDED])(
-    "never signs out a %s session in the proxy",
-    async (state) => {
-      getClaims.mockResolvedValue({
-        data: { claims: SESSION_FIXTURE.CLAIMS },
-        error: null,
-      });
-      mockRpcAnswer({ data: state, error: null });
-
-      const result =
-        await refreshSupabaseSession(buildRequest());
-
-      expect(result.isSessionIdle).toBe(false);
-      expect(signOut).not.toHaveBeenCalled();
-    }
-  );
-
-  it("keeps the session of the claims when the liveness check fails", async () => {
-    getClaims.mockResolvedValue({
-      data: { claims: SESSION_FIXTURE.CLAIMS },
-      error: null,
-    });
-    mockRpcAnswer({
-      data: null,
-      error: new Error(SESSION_FIXTURE.ERROR_MESSAGE),
-    });
-
-    const result =
-      await refreshSupabaseSession(buildRequest());
-
-    expect(result.hasSession).toBe(true);
-  });
-
-  it("never asks the database when there are no claims", async () => {
-    getClaims.mockResolvedValue({
-      data: null,
-      error: null,
-    });
-
-    await refreshSupabaseSession(buildRequest());
-
-    expect(rpc).not.toHaveBeenCalled();
-  });
-
-  it("never asks the database when verification returns an error", async () => {
-    getClaims.mockResolvedValue({
-      data: { claims: SESSION_FIXTURE.CLAIMS },
-      error: new Error(SESSION_FIXTURE.ERROR_MESSAGE),
-    });
-
-    await refreshSupabaseSession(buildRequest());
-
-    expect(rpc).not.toHaveBeenCalled();
-  });
-
-  it("reports neither a session nor a password change for a dead session whose claims still ask for one", async () => {
-    getClaims.mockResolvedValue({
-      data: { claims: SESSION_FIXTURE.PENDING_CLAIMS },
-      error: null,
-    });
-    mockRpcAnswer({
-      data: SESSION_STATE.ENDED,
-      error: null,
-    });
-
-    const result =
-      await refreshSupabaseSession(buildRequest());
-
-    expect(result.hasSession).toBe(false);
-    expect(result.mustChangePassword).toBe(false);
-  });
-
-  it.each([
-    ["true", SESSION_FIXTURE.PENDING_CLAIMS, true],
-    ["false", SESSION_FIXTURE.SETTLED_CLAIMS, false],
-    ["absent", SESSION_FIXTURE.CLAIMS, false],
-    [
-      "non-boolean",
-      SESSION_FIXTURE.NON_BOOLEAN_CLAIMS,
-      false,
-    ],
-  ])(
-    "reads the password change claim when it is %s",
-    async (_label, claims, expected) => {
-      getClaims.mockResolvedValue({
-        data: { claims },
-        error: null,
-      });
-
-      const result =
-        await refreshSupabaseSession(buildRequest());
-
-      expect(result.mustChangePassword).toBe(expected);
-    }
-  );
 
   it("reports no session when there are no claims", async () => {
     getClaims.mockResolvedValue({
@@ -271,7 +69,6 @@ describe("refreshSupabaseSession", () => {
       await refreshSupabaseSession(buildRequest());
 
     expect(result.hasSession).toBe(false);
-    expect(result.mustChangePassword).toBe(false);
   });
 
   it("fails closed when verification returns an error", async () => {
@@ -284,18 +81,6 @@ describe("refreshSupabaseSession", () => {
       await refreshSupabaseSession(buildRequest());
 
     expect(result.hasSession).toBe(false);
-  });
-
-  it("does not report a pending password change when verification returns an error", async () => {
-    getClaims.mockResolvedValue({
-      data: { claims: SESSION_FIXTURE.PENDING_CLAIMS },
-      error: new Error(SESSION_FIXTURE.ERROR_MESSAGE),
-    });
-
-    const result =
-      await refreshSupabaseSession(buildRequest());
-
-    expect(result.mustChangePassword).toBe(false);
   });
 
   it("reads the cookies of the incoming request", async () => {
