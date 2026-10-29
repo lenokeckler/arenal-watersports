@@ -32,11 +32,7 @@ const ReservationUnitField = ({
         placeholder={
           RESERVATION_FORM_UI_COPY.UNIT_PLACEHOLDER
         }
-        disabled={
-          viewModel.isAvailabilityLoading ||
-          viewModel.hasAvailabilityError ||
-          options.length === 0
-        }
+        disabled={options.length === 0}
         onChange={(event) =>
           viewModel.handleUnitChange(event.target.value)
         }

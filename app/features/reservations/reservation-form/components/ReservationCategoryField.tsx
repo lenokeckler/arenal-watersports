@@ -32,11 +32,7 @@ const ReservationCategoryField = ({
         placeholder={
           RESERVATION_FORM_UI_COPY.CATEGORY_PLACEHOLDER
         }
-        disabled={
-          categories.length === 0 ||
-          viewModel.isEquipmentEligibilityLoading ||
-          viewModel.hasEquipmentEligibilityError
-        }
+        disabled={categories.length === 0}
         onChange={(event) =>
           viewModel.handleCategoryChange(event.target.value)
         }

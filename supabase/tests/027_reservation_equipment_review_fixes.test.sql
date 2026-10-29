@@ -28,7 +28,8 @@ insert into reservation_items
   (id, reservation_id, category_id, quantity, created_by, updated_by)
 values ('e3000000-0000-4000-8000-000000000301', 'e3000000-0000-4000-8000-000000000201',
         'e3000000-0000-4000-8000-000000000101', 2,
-        'e3000000-0000-4000-8000-000000000001', 'e3000000-0000-4000-8000-000000000001');
+        'e3000000-0000-4000-8000-000000000001',
+        'e3000000-0000-4000-8000-000000000001');
 
 set local request.jwt.claims to '{"sub":"e3000000-0000-4000-8000-000000000001","role":"authenticated"}';
 set local role authenticated;

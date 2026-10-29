@@ -1,7 +1,9 @@
-import { RESERVATION_FORM_MINIMUM_INPUT_VALUE } from "../constants/ReservationFormUi.constants";
+import { useCallback } from "react";
 import { STRING } from "@/app/constants";
 import type { ReservationFormField } from "../models/ReservationFormField.constants";
 import { useReservationFormValues } from "./useReservationFormValues";
+import { createReservationFormScheduleHandlers } from "../utils/createReservationFormScheduleHandlers";
+import { createReservationFormCustomerHandlers } from "../utils/createReservationFormCustomerHandlers";
 
 export const useReservationFormFields = (
   initialDate: string,
@@ -13,49 +15,27 @@ export const useReservationFormFields = (
     initialCategoryId,
     clearFieldError
   );
-
-  return {
-    handleCategoryChange: (value: string) => {
+  const handleCategoryChange = useCallback(
+    (value: string): void => {
       updateValue("categoryId", value);
       updateValue("unitId", STRING.Empty);
     },
-    handleCustomerNameChange: (value: string) =>
-      updateValue("customerName", value),
-    handleDateChange: (value: string) => {
-      updateValue("date", value);
-      updateValue("unitId", STRING.Empty);
-    },
-    handleDurationChange: (value: number) => {
-      if (
-        Number.isFinite(value) &&
-        value >= RESERVATION_FORM_MINIMUM_INPUT_VALUE
-      ) {
-        updateValue("durationHours", value);
-        updateValue("unitId", STRING.Empty);
-      }
-    },
-    handlePeopleCountChange: (value: number) => {
-      if (
-        Number.isFinite(value) &&
-        value >= RESERVATION_FORM_MINIMUM_INPUT_VALUE
-      ) {
-        updateValue("peopleCount", value);
-      }
-    },
-    handleQuantityChange: (value: number) => {
-      if (
-        Number.isFinite(value) &&
-        value >= RESERVATION_FORM_MINIMUM_INPUT_VALUE
-      ) {
-        updateValue("quantity", value);
-      }
-    },
-    handleTimeChange: (value: string) => {
-      updateValue("time", value);
-      updateValue("unitId", STRING.Empty);
-    },
-    handleUnitChange: (value: string) =>
-      updateValue("unitId", value),
+    [updateValue]
+  );
+  const handleUnitChange = useCallback(
+    (value: string): void => updateValue("unitId", value),
+    [updateValue]
+  );
+  const scheduleHandlers =
+    createReservationFormScheduleHandlers(updateValue);
+  const customerHandlers =
+    createReservationFormCustomerHandlers(updateValue);
+
+  return {
+    ...customerHandlers,
+    handleCategoryChange,
+    handleUnitChange,
+    ...scheduleHandlers,
     values,
   };
 };

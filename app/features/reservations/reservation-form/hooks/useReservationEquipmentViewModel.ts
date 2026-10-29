@@ -16,7 +16,7 @@ export const useReservationEquipmentViewModel = (
   const requiresConcreteUnit =
     selectedCategory !== undefined;
   const request = {
-    categoryId: requiresConcreteUnit
+    categoryId: selectedCategory
       ? values.categoryId
       : STRING.Empty,
     date: values.date,
@@ -36,6 +36,8 @@ export const useReservationEquipmentViewModel = (
       ? availability.availableUnits
       : [],
     hasAvailabilityError: availability.hasError,
+    isAvailabilityResolved:
+      availability.isResolvedForCurrentRequest,
     isAvailabilityLoading: availability.isLoading,
     requiresConcreteUnit,
     retryUnitAvailability: availability.retry,
