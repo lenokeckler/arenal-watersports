@@ -291,6 +291,7 @@ export {
   COSTA_RICA_TIME_ZONE,
   COSTA_RICA_UTC_OFFSET,
 } from "./calendar/CostaRicaTime.constants";
+export { CURRENCY_NAME_COPY } from "./money/CurrencyCopy.constants";
 export { CURRENCY_ORDER } from "./money/CurrencyOrder.constants";
 export { MINOR_UNITS_PER_UNIT } from "./money/MoneyMinorUnit.constants";
 export { PAYMENT_METHOD_TEXT } from "./money/PaymentMethodText.constants";
