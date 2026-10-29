@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
 import CategoryCard from "../components/CategoryCard";
 import { DEFAULT_CATEGORY_CARD_VIEW_MODEL } from "./CategoryCardViewModel.constants";
@@ -57,5 +57,83 @@ describe("CategoryCard actions", () => {
     expect(
       categoryCardPage.getMarkInactiveButton()
     ).not.toBeInTheDocument();
+  });
+
+  it("renders the confirm message and both confirm buttons when the action state is CONFIRM_DELETE", () => {
+    render(
+      <CategoryCard
+        {...DEFAULT_CATEGORY_CARD_VIEW_MODEL}
+        actionState={
+          CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
+        }
+      />
+    );
+    const categoryCardPage = createCategoryCardPage();
+
+    expect(
+      categoryCardPage.getConfirmDeleteMessage()
+    ).toBeInTheDocument();
+    expect(
+      categoryCardPage.getCancelButton()
+    ).toBeInTheDocument();
+    expect(
+      categoryCardPage.getConfirmDeleteButton()
+    ).toBeInTheDocument();
+    expect(
+      categoryCardPage.getMarkInactiveButton()
+    ).not.toBeInTheDocument();
+  });
+
+  it("calls onCancelClick when the confirm row's Cancelar button is clicked", async () => {
+    const onCancelClick = vi.fn();
+    render(
+      <CategoryCard
+        {...DEFAULT_CATEGORY_CARD_VIEW_MODEL}
+        actionState={
+          CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
+        }
+        onCancelClick={onCancelClick}
+      />
+    );
+    const categoryCardPage = createCategoryCardPage();
+
+    await categoryCardPage.clickCancelButton();
+
+    expect(onCancelClick).toHaveBeenCalledOnce();
+  });
+
+  it("calls onConfirmDeleteClick when the confirm row's Eliminar button is clicked", async () => {
+    const onConfirmDeleteClick = vi.fn();
+    render(
+      <CategoryCard
+        {...DEFAULT_CATEGORY_CARD_VIEW_MODEL}
+        actionState={
+          CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
+        }
+        onConfirmDeleteClick={onConfirmDeleteClick}
+      />
+    );
+    const categoryCardPage = createCategoryCardPage();
+
+    await categoryCardPage.clickConfirmDeleteButton();
+
+    expect(onConfirmDeleteClick).toHaveBeenCalledOnce();
+  });
+
+  it("disables the confirm row's Cancelar button while the deletion is in flight, so cancelling cannot desync from a delete that still completes", () => {
+    render(
+      <CategoryCard
+        {...DEFAULT_CATEGORY_CARD_VIEW_MODEL}
+        actionState={
+          CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
+        }
+        isActionLoading
+      />
+    );
+    const categoryCardPage = createCategoryCardPage();
+
+    expect(categoryCardPage.isCancelButtonDisabled()).toBe(
+      true
+    );
   });
 });
