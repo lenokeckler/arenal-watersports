@@ -5,6 +5,7 @@ import type { NullableRef } from "@/app/types";
 import { Section, Text } from "@/app/components";
 import {
   CALENDAR_PRESENTATION,
+  CALENDAR_TEXT,
   ARIA_ROLE,
   CALENDAR_VIEW,
 } from "@/app/constants";
@@ -13,16 +14,17 @@ import { useCalendarViewModel } from "./hooks/useCalendarViewModel";
 import { CalendarToolbar } from "./CalendarToolbar";
 import { CalendarDays } from "./CalendarDays";
 import { CalendarMonth } from "./CalendarMonth";
-import type { CalendarViewModel } from "./models/CalendarViewModel.interface";
+import type { CalendarPeriodsProps } from "./models/CalendarPeriodsProps.interface";
 import {
   CALENDAR_ROOT_CLASS,
   CALENDAR_ERROR_CLASS,
   CALENDAR_YEAR_CLASS,
 } from "./styles/Calendar.styles";
 
-const CalendarPeriods = (
-  calendar: CalendarViewModel
-): ReactElement => {
+const CalendarPeriods = ({
+  calendar,
+  dayContent,
+}: CalendarPeriodsProps): ReactElement => {
   if (calendar.selectedView === CALENDAR_VIEW.YEAR) {
     return (
       <div className={CALENDAR_YEAR_CLASS}>
@@ -48,6 +50,7 @@ const CalendarPeriods = (
     <CalendarDays
       className={calendar.daysClassName}
       cells={calendar.days}
+      dayContent={dayContent}
     />
   );
 };
@@ -73,7 +76,16 @@ export const CalendarView = (
           {calendar.preferenceError}
         </Text>
       )}
-      <CalendarPeriods {...calendar} />
+      <Section
+        role={ARIA_ROLE.GROUP}
+        aria-label={CALENDAR_TEXT.PERIOD_CONTENT}
+      >
+        <CalendarPeriods
+          calendar={calendar}
+          dayContent={props.dayContent}
+        />
+      </Section>
+      {props.periodContent?.(calendar.period)}
     </Section>
   );
 };

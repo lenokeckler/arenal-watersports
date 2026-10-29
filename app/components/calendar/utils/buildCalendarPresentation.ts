@@ -13,6 +13,7 @@ export const buildCalendarPresentation = (
   period: CalendarPeriod,
   today: CalendarDate
 ): CalendarPresentation => ({
+  period,
   days: buildCalendarCells(
     period.days,
     today,

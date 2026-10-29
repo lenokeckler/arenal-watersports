@@ -111,7 +111,8 @@ Reservations workers answer customers using visible reservation times, committed
 - This checkpoint provides no grouped content, outlets or calendar placement. The snapshot is a supplied presentation contract, with no query sibling, protected read, route or realtime dependency introduced.
 - The grouping checkpoint creates one reusable reservation block per occupied Costa Rica civil day from the intersection of selected period and snapshot coverage, preserving scheduled and actual dispatch intervals separately.
 - Snapshot completeness distinguishes omitted snapshots, partial time coverage and incomplete result pages; only complete coverage with complete results and no groups proves the selected period empty.
-- Day, week, month and year content grouping remains a pure preparation contract. Principal-view placement and the binding acceptance criterion remain pending protected calendar integration.
+- The supplied snapshot adapter places reservation blocks in day and week date containers and renders one grouped agenda beneath month and year grids. Snapshot absence, incomplete time coverage, incomplete result pages and complete empty periods have separate Spanish messages.
+- The adapter performs no database read, permission check or navigation. Protected route integration, authenticated E2E coverage and real application screenshots remain pending US-ACC-11 and US-TAB-07.
 
 ## Acceptance criteria
 

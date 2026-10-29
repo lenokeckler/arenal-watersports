@@ -6,6 +6,7 @@ import { CALENDAR_DAY_CLASS } from "./styles/Calendar.styles";
 export const CalendarDays = ({
   cells,
   className,
+  dayContent,
 }: CalendarDaysProps): ReactElement => (
   <div className={className}>
     {cells.map((cell) => (
@@ -19,6 +20,7 @@ export const CalendarDays = ({
         >
           {cell.fullLabel}
         </Text>
+        {dayContent?.(cell.date)}
       </div>
     ))}
   </div>

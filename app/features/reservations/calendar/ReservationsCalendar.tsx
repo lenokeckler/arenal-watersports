@@ -1,15 +1,13 @@
 import type { ReactElement } from "react";
-import {
-  CALENDAR_ALLOWED_VIEWS,
-  RESERVATIONS_CALENDAR_COPY,
-} from "@/app/constants";
-import { CalendarView } from "@/app/components/calendar/CalendarView";
+import type { ReservationsCalendarProps } from "./models/ReservationsCalendarProps.interface";
 import { getCalendarToday } from "@/app/components/calendar/utils";
+import { ReservationsCalendarView } from "./ReservationsCalendarView";
 
-export const ReservationsCalendar = (): ReactElement => (
-  <CalendarView
-    heading={RESERVATIONS_CALENDAR_COPY.TITLE}
+export const ReservationsCalendar = ({
+  snapshot,
+}: ReservationsCalendarProps): ReactElement => (
+  <ReservationsCalendarView
+    snapshot={snapshot}
     today={getCalendarToday(new Date())}
-    allowedViews={CALENDAR_ALLOWED_VIEWS.RESERVATIONS}
   />
 );
