@@ -1,5 +1,4 @@
 import { useState } from "react";
-import type { Dispatch, SetStateAction } from "react";
 import { STRING } from "@/app/constants";
 import {
   RESERVATION_CUSTOM_DURATION_INITIAL_HOURS,
@@ -7,15 +6,16 @@ import {
 } from "../constants/ReservationFormUi.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import type { ReservationFormField } from "../models/ReservationFormField.constants";
+import type { ReservationDurationHandlersOptions } from "../models/ReservationDurationHandlersOptions.interface";
 import { resolveReservationDurationHours } from "../utils/resolveReservationDurationHours";
 
-const createReservationDurationHandlers = (
-  setCustomDurationDraft: Dispatch<SetStateAction<string>>,
-  setIsCustomDuration: Dispatch<SetStateAction<boolean>>,
-  updateDurationValue: (hours: number) => void,
-  clearFieldError: (field: ReservationFormField) => void,
-  clearUnitSelection: () => void
-) => {
+const createReservationDurationHandlers = ({
+  clearFieldError,
+  clearUnitSelection,
+  setCustomDurationDraft,
+  setIsCustomDuration,
+  updateDurationValue,
+}: ReservationDurationHandlersOptions) => {
   const selectPreset = (hours: number): void => {
     setIsCustomDuration(false);
     setCustomDurationDraft(STRING.Empty);
@@ -59,13 +59,13 @@ export const useReservationDuration = (
     useState(false);
   const [customDurationDraft, setCustomDurationDraft] =
     useState<string>(STRING.Empty);
-  const handlers = createReservationDurationHandlers(
+  const handlers = createReservationDurationHandlers({
+    clearFieldError,
+    clearUnitSelection,
     setCustomDurationDraft,
     setIsCustomDuration,
     updateDurationValue,
-    clearFieldError,
-    clearUnitSelection
-  );
+  });
   const resolveDurationHours = (
     selectedDurationHours: number
   ): number =>

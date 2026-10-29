@@ -23,7 +23,6 @@ export const renderReservationForm = () => {
           id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
           isInterchangeable: true,
           name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
-          isInterchangeable: true,
         },
         {
           id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
