@@ -71,6 +71,7 @@ const mapComboItems = (
       !category ||
       category.status !== PREDEFINED_COMBO_STATUS.ACTIVE ||
       !category.is_reservable ||
+      !category.units_are_interchangeable ||
       !Number.isInteger(item.quantity) ||
       item.quantity <= 0
     ) {

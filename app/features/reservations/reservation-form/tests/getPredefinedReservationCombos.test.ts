@@ -12,6 +12,7 @@ import type { Database } from "@/app/types";
 import { getAuthorizedReservationFormClient } from "../services/getAuthorizedReservationFormClient";
 import { getPredefinedReservationCombos } from "../services/getPredefinedReservationCombos";
 import {
+  PREDEFINED_COMBO_INTERCHANGEABILITY,
   PREDEFINED_COMBO_RESERVABILITY,
   PREDEFINED_COMBO_STATUS,
 } from "../constants/PredefinedCombo.constants";
@@ -96,6 +97,9 @@ describe("getPredefinedReservationCombos", () => {
     );
     expect(String(fetchMock.mock.calls[2][0])).toContain(
       `is_reservable=eq.${PREDEFINED_COMBO_RESERVABILITY.RESERVABLE}`
+    );
+    expect(String(fetchMock.mock.calls[2][0])).toContain(
+      `units_are_interchangeable=eq.${PREDEFINED_COMBO_INTERCHANGEABILITY.INTERCHANGEABLE}`
     );
   });
 
