@@ -28,6 +28,9 @@ export const useReservationEquipmentViewModel = (
     useReservationUnitAvailability(request);
 
   return {
+    availableQuantity: selectedCategory?.isInterchangeable
+      ? availability.availableQuantity
+      : null,
     availableUnits: requiresConcreteUnit
       ? availability.availableUnits
       : [],

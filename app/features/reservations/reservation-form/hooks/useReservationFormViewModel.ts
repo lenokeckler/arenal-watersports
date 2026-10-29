@@ -33,6 +33,15 @@ export const useReservationFormViewModel = (
     submitReservation: state.submission.submitReservation,
     values: state.fields.values,
   });
+  const isAvailabilityUnavailable =
+    equipment.requiresConcreteUnit &&
+    (equipment.availableUnits.length === 0 ||
+      equipment.isAvailabilityLoading ||
+      equipment.hasAvailabilityError);
+  const isSubmitDisabled =
+    state.submission.isPending ||
+    categories.length === 0 ||
+    isAvailabilityUnavailable;
 
   return {
     ...state.fields,
@@ -40,6 +49,7 @@ export const useReservationFormViewModel = (
     ...state.duration,
     ...equipment,
     ...state.durationHandlers,
+    isSubmitDisabled,
     handleBack: router.back,
     handleSubmit,
   };

@@ -25,6 +25,15 @@ const ReservationEquipmentFields = ({
         ? RESERVATION_FORM_UI_COPY.EQUIPMENT_UNIT_NOTE
         : RESERVATION_FORM_UI_COPY.EQUIPMENT_QUANTITY_NOTE}
     </Text>
+    {!viewModel.requiresConcreteUnit &&
+      viewModel.availableQuantity !== null && (
+        <Text
+          className={RESERVATION_FORM_EQUIPMENT_NOTE_CLASS}
+        >
+          {RESERVATION_FORM_UI_COPY.AVAILABLE_QUANTITY}{" "}
+          {viewModel.availableQuantity}
+        </Text>
+      )}
   </>
 );
 
