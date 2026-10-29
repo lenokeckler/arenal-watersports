@@ -6,15 +6,18 @@ import {
   ACCESS_SHELL_BLOB_PRIMARY_CLASS,
   ACCESS_SHELL_BLOB_TERTIARY_CLASS,
   ACCESS_SHELL_CARD_CLASS,
-  ACCESS_SHELL_CONTENT_CLASS,
-  ACCESS_SHELL_PAGE_CLASS,
+  resolveAccessShellContentClassName,
+  resolveAccessShellPageClassName,
 } from "./styles/AccessScreenShell.styles";
 
 const AccessScreenShell = ({
   titleId,
   children,
+  isEmbedded = false,
 }: AccessScreenShellProps): React.JSX.Element => (
-  <div className={ACCESS_SHELL_PAGE_CLASS}>
+  <div
+    className={resolveAccessShellPageClassName(isEmbedded)}
+  >
     <div
       aria-hidden="true"
       data-testid={ACCESS_SHELL_BACKDROP_TEST_ID}
@@ -23,7 +26,11 @@ const AccessScreenShell = ({
       <div className={ACCESS_SHELL_BLOB_PRIMARY_CLASS} />
       <div className={ACCESS_SHELL_BLOB_TERTIARY_CLASS} />
     </div>
-    <div className={ACCESS_SHELL_CONTENT_CLASS}>
+    <div
+      className={resolveAccessShellContentClassName(
+        isEmbedded
+      )}
+    >
       <Section
         ariaLabel={titleId}
         className={ACCESS_SHELL_CARD_CLASS}

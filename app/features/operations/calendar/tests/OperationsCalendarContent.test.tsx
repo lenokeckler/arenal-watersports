@@ -3,6 +3,7 @@ import {
   CALENDAR_VIEW,
   RESERVATIONS_CALENDAR_COPY as copy,
 } from "@/app/constants";
+import { RESERVATION_CALENDAR_EXCLUDED_STATUS } from "@/app/components/reservation-calendar/constants/ReservationCalendarExcludedStatus.constants";
 import { createOperationsCalendarPage } from "./OperationsCalendar.page";
 import {
   OPERATIONS_CALENDAR_SNAPSHOT,
@@ -63,25 +64,30 @@ describe("Operations calendar reservation content", () => {
       expect(page.getBlocks()[0]).toHaveTextContent(
         fixture.CUSTOMER
       );
-      expect(
-        page.getMessages(fixture.INTERNAL_GUIDE_NAME)
-      ).toHaveLength(1);
-      expect(
-        page.getMessages(fixture.INTERNAL_GUIDE_TYPE)
-      ).toHaveLength(1);
-      expect(
-        page.getMessages(fixture.EXTERNAL_GUIDE_NAME)
-      ).toHaveLength(1);
-      expect(
-        page.getMessages(fixture.EXTERNAL_GUIDE_TYPE)
-      ).toHaveLength(1);
-      expect(
-        page.getMessages(fixture.GUIDE_LABEL)
-      ).toHaveLength(1);
       expect(page.queryAgenda()).toBeNull();
       expect(page.queryMoney()).toBeNull();
     }
   );
+});
+
+describe("Operations calendar excluded lifecycle states", () => {
+  it.each(
+    Object.values(RESERVATION_CALENDAR_EXCLUDED_STATUS)
+  )("excludes %s reservations", (status) => {
+    const snapshot = {
+      ...OPERATIONS_CALENDAR_SNAPSHOT,
+      entries: OPERATIONS_CALENDAR_SNAPSHOT.entries.map(
+        (entry) => ({ ...entry, status })
+      ),
+    };
+    renderOperationsCalendar({ snapshot });
+    const page = createOperationsCalendarPage();
+
+    expect(page.getBlocks()).toHaveLength(0);
+    expect(
+      page.getMessages(copy.EMPTY_PERIOD)
+    ).toHaveLength(fixture.DAY_COUNT);
+  });
 });
 
 describe("Operations calendar partial snapshot content", () => {

@@ -1,9 +1,7 @@
-import type {
-  Database,
-  NullableUndefined,
-} from "@/app/types";
+import type { Database } from "@/app/types";
 import type { ReservationCalendarDispatch } from "./ReservationCalendarDispatch.interface";
 import type { ReservationCalendarEquipment } from "./ReservationCalendarEquipment.interface";
+import type { NullableUndefined } from "@/app/types";
 import type { ReservationCalendarGuide } from "./ReservationCalendarGuide.type";
 
 export interface ReservationCalendarEntry {
