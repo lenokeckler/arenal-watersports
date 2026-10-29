@@ -21,6 +21,7 @@ export const PATHS = {
   },
   RESERVATIONS: {
     DEPOSITS: "/reservations/deposits",
+    INCOME: "/reservations/income",
   },
   WELL_KNOWN: {
     CHANGE_PASSWORD: "/.well-known/change-password",
