@@ -2,7 +2,11 @@ import { createServiceRoleSupabaseClient } from "@/app/services/supabase";
 import { CATEGORY_TRACKING_MODE } from "@/app/components/category-catalog/constants/CategoryTrackingMode.constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { E2E_ADMIN_ACCOUNT } from "../constants/E2eAccounts.constants";
-import { DEFAULT_CATEGORY_FIXTURE_BEHAVIOR } from "../constants/E2eCategoryFixtures.constants";
+import {
+  DEFAULT_CATEGORY_FIXTURE_BEHAVIOR,
+  E2E_CATEGORY_TARIFF_AMOUNT_USD,
+  E2E_CATEGORY_TARIFF_TYPE,
+} from "../constants/E2eCategoryFixtures.constants";
 import type { CategoryFixtureBehavior } from "../models/CategoryFixtureBehavior.interface";
 
 export const seedCategoryWithBehavior = async (
@@ -75,6 +79,15 @@ export const removeCategoryWithRecords = async (
   if (!existingCategory) {
     return;
   }
+
+  const { error: tariffDeleteError } = await supabase
+    .from("tariffs")
+    .delete()
+    .eq("category_id", existingCategory.id);
+  throwIfSupabaseError(
+    tariffDeleteError,
+    "removeCategoryWithRecords.deleteTariffs"
+  );
 
   const { error: stockDeleteError } = await supabase
     .from("equipment_stock")
@@ -153,4 +166,41 @@ export const findCategoryId = async (
   }
 
   return category.id;
+};
+
+export const addTariffToCategory = async (
+  categoryName: string
+): Promise<void> => {
+  const supabase = createServiceRoleSupabaseClient();
+
+  const { data: existingCategory, error: selectError } =
+    await supabase
+      .from("equipment_categories")
+      .select("id")
+      .eq("name", categoryName)
+      .maybeSingle();
+  throwIfSupabaseError(
+    selectError,
+    "addTariffToCategory.select"
+  );
+
+  if (!existingCategory) {
+    throw new Error(
+      `addTariffToCategory: no category named ${categoryName}`
+    );
+  }
+
+  const { error: tariffError } = await supabase
+    .from("tariffs")
+    .insert({
+      amount_usd: E2E_CATEGORY_TARIFF_AMOUNT_USD,
+      category_id: existingCategory.id,
+      created_by: E2E_ADMIN_ACCOUNT.workerId,
+      type: E2E_CATEGORY_TARIFF_TYPE,
+      updated_by: E2E_ADMIN_ACCOUNT.workerId,
+    });
+  throwIfSupabaseError(
+    tariffError,
+    "addTariffToCategory.insert"
+  );
 };

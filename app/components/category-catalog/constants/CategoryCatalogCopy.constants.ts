@@ -57,6 +57,11 @@ export const CATEGORY_CATALOG_COPY = {
   NAME_FIELD_PLACEHOLDER: "Ej. Kayak doble",
   NAME_FIELD_REQUIRED_ERROR:
     "Escriba el nombre de la categoría.",
+  PAGINATION_NAV_LABEL: "Paginación de categorías",
+  PAGINATION_NEXT: "Siguiente",
+  PAGINATION_OF: "de",
+  PAGINATION_PAGE: "Página",
+  PAGINATION_PREVIOUS: "Anterior",
   RETRY_BUTTON: "Reintentar",
   STATUS_PILL_INACTIVE: "INACTIVA",
   SUBMIT_BUTTON: "Guardar categoría",
