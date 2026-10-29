@@ -1,0 +1,1 @@
+ACC-01.06.13: Password changed mail — the plain-text notice in Spanish that tells the worker their password was changed with a recovery PIN and to warn administration if it was not them (US-ACC-06 · AWS-35)
