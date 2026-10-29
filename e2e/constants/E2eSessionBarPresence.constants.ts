@@ -1,4 +1,5 @@
 import { PATHS } from "@/app/constants";
+import { E2E_INVENTORY_CATEGORY_ROUTE } from "./E2eSystemRoute.constants";
 
 export const E2E_SYSTEM_ROUTES = [
   PATHS.HOME,
@@ -8,6 +9,8 @@ export const E2E_SYSTEM_ROUTES = [
   PATHS.ADMINISTRATION.WORKERS_NEW,
   PATHS.ADMINISTRATION.WORKER_AREAS,
   PATHS.MODE,
+  PATHS.OPERATIONS.INVENTORY,
+  E2E_INVENTORY_CATEGORY_ROUTE,
 ] as const;
 
 export const E2E_PRESENCE_COUNT = {

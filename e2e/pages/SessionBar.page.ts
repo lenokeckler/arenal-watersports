@@ -36,6 +36,9 @@ export const createSessionBarPage = (page: Page) => {
     });
 
   return {
+    goTo: async (route: string): Promise<void> => {
+      await page.goto(route);
+    },
     getAllLogoutButtons,
     getBar,
     addOverflow: (
