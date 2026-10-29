@@ -1,5 +1,7 @@
 export const E2E_RESERVATION_FORM_COPY = {
   HEADING: "Nueva reserva",
+  BACK_TO_CALENDAR: "Volver al calendario",
+  ACTIONS: "Acciones de reserva",
   CUSTOMER_NAME: "Nombre de la reserva",
   PEOPLE_COUNT: "Cantidad de personas",
   QUANTITY: "Cantidad de equipos",
@@ -8,13 +10,26 @@ export const E2E_RESERVATION_FORM_COPY = {
   TIME_ZONE: "Hora de Costa Rica · UTC−06:00",
   DURATION: "Duración en horas",
   CUSTOM_DURATION: "Otra duración en horas",
+  CUSTOM_DURATION_OPTION: "Otra duración",
+  CUSTOM_DURATION_HOURS: "2.5",
+  CUSTOM_DURATION_PRECISION_CASE: "4.1",
+  NEGATIVE_INPUT: "-1",
+  VALID_EQUIPMENT_QUANTITY: "3",
+  VALID_PEOPLE_COUNT: "4",
   CATEGORY: "Equipo",
   CATEGORY_FIELD_NAME: "Equipo *",
   CATEGORY_OPTION: "Jet Ski",
   CUSTOMER_NAME_VALID: "US-RES-04 E2E reservation",
+  CUSTOM_DURATION_CUSTOMER_NAME:
+    "US-RES-04 E2E custom duration",
   SUBMIT: "Registrar reserva",
   SUCCESS: "La reserva quedó registrada correctamente.",
   VALIDATION_ERROR: "Ingrese el nombre de la reserva.",
+} as const;
+
+export const E2E_RESERVATION_FORM_MOBILE_VIEWPORT = {
+  HEIGHT: 844,
+  WIDTH: 390,
 } as const;
 
 export const E2E_RESERVATION_FORM_SCREENSHOT_BASENAME =
@@ -22,6 +37,9 @@ export const E2E_RESERVATION_FORM_SCREENSHOT_BASENAME =
 
 export const E2E_RESERVATION_FORM_EQUIPMENT_SCREENSHOT_SUFFIX =
   "equipment-and-submit";
+
+export const E2E_RESERVATION_FORM_CUSTOM_DURATION_SCREENSHOT_SUFFIX =
+  "custom-duration";
 
 export const E2E_RESERVATION_FORM_SUCCESS_SCREENSHOT_SUFFIX =
   "success";

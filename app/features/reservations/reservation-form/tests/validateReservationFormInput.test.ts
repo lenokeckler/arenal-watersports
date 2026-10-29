@@ -8,7 +8,9 @@ import {
   FRACTIONAL_COUNT,
   INVALID_FIELD_COUNT,
   INVALID_QUANTITY,
+  NEGATIVE_VALUE,
   SUBMINUTE_DURATION_HOURS,
+  ZERO_DURATION_HOURS,
   VALID_RESERVATION_FORM_INPUT,
 } from "./validateReservationFormInput.constants";
 import { validateReservationFormInput } from "../utils/validateReservationFormInput";
@@ -70,6 +72,18 @@ describe("validateReservationFormInput", () => {
     );
   });
 
+  it("rejects an empty custom duration resolved to zero", () => {
+    const result = validateReservationFormInput({
+      ...VALID_RESERVATION_FORM_INPUT,
+      durationHours: ZERO_DURATION_HOURS,
+    });
+
+    expect(result.value).toBeNull();
+    expect(result.errors).toHaveProperty(
+      RESERVATION_FORM_FIELD.DURATION_HOURS
+    );
+  });
+
   it("rejects non-positive or fractional counts and missing fields", () => {
     const result = validateReservationFormInput({
       ...VALID_RESERVATION_FORM_INPUT,
@@ -82,6 +96,34 @@ describe("validateReservationFormInput", () => {
     expect(result.value).toBeNull();
     expect(Object.keys(result.errors)).toHaveLength(
       INVALID_FIELD_COUNT
+    );
+  });
+
+  it("rejects negative people, equipment, and duration values", () => {
+    const negativePeopleResult =
+      validateReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        peopleCount: NEGATIVE_VALUE,
+      });
+    const negativeQuantityResult =
+      validateReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        quantity: NEGATIVE_VALUE,
+      });
+    const negativeDurationResult =
+      validateReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        durationHours: NEGATIVE_VALUE,
+      });
+
+    expect(negativePeopleResult.errors).toHaveProperty(
+      RESERVATION_FORM_FIELD.PEOPLE_COUNT
+    );
+    expect(negativeQuantityResult.errors).toHaveProperty(
+      RESERVATION_FORM_FIELD.QUANTITY
+    );
+    expect(negativeDurationResult.errors).toHaveProperty(
+      RESERVATION_FORM_FIELD.DURATION_HOURS
     );
   });
 });
