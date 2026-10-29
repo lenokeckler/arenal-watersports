@@ -1,6 +1,11 @@
-import { act, renderHook } from "@testing-library/react";
+import {
+  act,
+  renderHook,
+  waitFor,
+} from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { useCustomComboForm } from "../hooks/useCustomComboForm";
+import { CUSTOM_COMBO_PRICING_STATUS } from "../constants/CustomComboPricingStatus.constants";
 import { CUSTOM_COMBO_FORM_TEST } from "./useCustomComboForm.constants";
 
 vi.mock("../actions/getCustomComboPricingAction", () => ({
@@ -11,7 +16,7 @@ vi.mock("../actions/getCustomComboPricingAction", () => ({
 }));
 
 describe("useCustomComboForm", () => {
-  it("keeps unique valid items and agreed prices across repricing", () => {
+  it("keeps unique valid items and agreed prices across repricing", async () => {
     const { result, rerender } = renderHook(
       ({ duration }) =>
         useCustomComboForm(
@@ -54,6 +59,11 @@ describe("useCustomComboForm", () => {
       duration:
         CUSTOM_COMBO_FORM_TEST.UPDATED_DURATION_HOURS,
     });
+    await waitFor(() =>
+      expect(result.current.pricing.status).toBe(
+        CUSTOM_COMBO_PRICING_STATUS.READY
+      )
+    );
     expect(result.current.draft.items).toEqual([
       {
         categoryId:
@@ -101,8 +111,9 @@ describe("useCustomComboForm", () => {
     expect(result.current.hasGuideOnlyItem).toBe(true);
     expect(changeGuides).not.toHaveBeenCalled();
     act(() =>
-      result.current.handleItemRemoval(
-        CUSTOM_COMBO_FORM_TEST.GUIDE_CATEGORY_ID
+      result.current.handleItemQuantityChange(
+        CUSTOM_COMBO_FORM_TEST.GUIDE_CATEGORY_ID,
+        CUSTOM_COMBO_FORM_TEST.INVALID_QUANTITY
       )
     );
     expect(result.current.hasGuideOnlyItem).toBe(false);
