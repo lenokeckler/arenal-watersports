@@ -10,8 +10,8 @@ export const useOperationsCalendarViewModel = ({
   allowedViews: getAllowedCalendarViews(
     CALENDAR_WORK_AREA.OPERATIONS
   ),
-  dayContent: useReservationCalendarDayContent(
-    snapshot,
-    true
-  ),
+  dayContent: useReservationCalendarDayContent(snapshot, {
+    showCoverageMessages: true,
+    showGuides: true,
+  }),
 });

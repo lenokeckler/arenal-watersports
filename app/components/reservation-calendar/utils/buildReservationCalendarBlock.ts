@@ -93,6 +93,7 @@ export const buildReservationCalendarBlock = (
     actualLabels,
     customerName: entry.customerName,
     equipmentLabel,
+    guides: entry.guides,
     id: entry.id,
     scheduledLabel,
   };

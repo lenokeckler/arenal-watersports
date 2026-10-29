@@ -2,4 +2,5 @@ import type { ReservationCalendarBlock } from "./ReservationCalendarBlock.interf
 
 export interface ReservationCalendarBlockProps {
   block: ReservationCalendarBlock;
+  showGuides?: boolean;
 }

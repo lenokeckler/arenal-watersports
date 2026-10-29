@@ -9,10 +9,9 @@ export const renderReservationCalendarDay = (
   showCoverageMessages?: boolean
 ): void => {
   const { result } = renderHook(() =>
-    useReservationCalendarDayContent(
-      snapshot,
-      showCoverageMessages
-    )
+    useReservationCalendarDayContent(snapshot, {
+      showCoverageMessages,
+    })
   );
   render(result.current(CALENDAR_DAY_DATE));
 };

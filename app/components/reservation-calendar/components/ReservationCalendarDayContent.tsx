@@ -6,6 +6,7 @@ import { ReservationCalendarBlock } from "./ReservationCalendarBlock";
 export const ReservationCalendarDayContent = ({
   blocks,
   messages,
+  showGuides = false,
 }: ReservationCalendarDayContentProps): ReactElement => (
   <Fragment>
     {messages.map((message) => (
@@ -15,6 +16,7 @@ export const ReservationCalendarDayContent = ({
       <ReservationCalendarBlock
         key={block.id}
         block={block}
+        showGuides={showGuides}
       />
     ))}
   </Fragment>

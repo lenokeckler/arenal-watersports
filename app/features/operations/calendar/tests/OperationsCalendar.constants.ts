@@ -1,5 +1,7 @@
 import type { OperationsCalendarViewProps } from "../models/OperationsCalendarViewProps.interface";
 import type { ReservationCalendarSnapshot } from "@/app/components/reservation-calendar/models/ReservationCalendarSnapshot.interface";
+import { RESERVATION_CALENDAR_GUIDE_TYPE } from "@/app/constants";
+import { RESERVATION_CALENDAR_GUIDE_COPY } from "@/app/components/reservation-calendar/constants/ReservationCalendarGuideCopy.constants";
 
 export const OPERATIONS_CALENDAR_DEFAULTS: OperationsCalendarViewProps =
   {
@@ -10,6 +12,13 @@ export const OPERATIONS_CALENDAR_DEFAULTS: OperationsCalendarViewProps =
 export const OPERATIONS_CALENDAR_TEST = {
   CUSTOMER: "Operations calendar customer",
   DAY_COUNT: 1,
+  EXTERNAL_GUIDE_TYPE:
+    RESERVATION_CALENDAR_GUIDE_COPY.EXTERNAL,
+  INTERNAL_GUIDE_TYPE:
+    RESERVATION_CALENDAR_GUIDE_COPY.ACCOUNT,
+  GUIDE_LABEL: RESERVATION_CALENDAR_GUIDE_COPY.LABEL,
+  INTERNAL_GUIDE_NAME: "Carlos Andrés Vargas Solís",
+  EXTERNAL_GUIDE_NAME: "María José Fernández Rodríguez",
   MONEY_PATTERN: /₡|\$|Total|Pago|Depósito/,
   PRESSED: "aria-pressed",
   TRUE: "true",
@@ -25,6 +34,20 @@ export const OPERATIONS_CALENDAR_SNAPSHOT: ReservationCalendarSnapshot =
         dispatches: [],
         endsAt: "2026-10-15T18:00:00Z",
         equipment: [],
+        guides: [
+          {
+            fullName:
+              OPERATIONS_CALENDAR_TEST.INTERNAL_GUIDE_NAME,
+            id: "operations-internal-guide",
+            type: RESERVATION_CALENDAR_GUIDE_TYPE.INTERNAL,
+          },
+          {
+            fullName:
+              OPERATIONS_CALENDAR_TEST.EXTERNAL_GUIDE_NAME,
+            id: "operations-external-guide",
+            type: RESERVATION_CALENDAR_GUIDE_TYPE.EXTERNAL,
+          },
+        ],
         id: "operations-calendar-reservation",
         startsAt: "2026-10-15T16:00:00Z",
         status: "scheduled",

@@ -4,6 +4,7 @@ export { CALENDAR_PREFERENCE_COPY } from "./calendar/CalendarPreferenceCopy.cons
 export { CALENDAR_TEXT } from "./calendar/CalendarPresentationCopy.constants";
 export { RESERVATIONS_CALENDAR_COPY } from "./calendar/ReservationsCalendarCopy.constants";
 export { OPERATIONS_CALENDAR_COPY } from "./calendar/OperationsCalendarCopy.constants";
+export { RESERVATION_CALENDAR_GUIDE_TYPE } from "./calendar/ReservationCalendarGuide.constants";
 export { CALENDAR_PRESENTATION } from "./calendar/CalendarPresentation.constants";
 export {
   CALENDAR_ALLOWED_VIEWS,
