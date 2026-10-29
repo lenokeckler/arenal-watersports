@@ -82,3 +82,8 @@ export const HEADING_LEVEL_ONE = 1;
 export const HEADING_LEVEL_TWO = 2;
 export const ARIA_BUSY_ATTRIBUTE = "aria-busy";
 export const ARIA_BUSY_TRUE = "true";
+
+export const DAY_WITHOUT_CURRENCIES: DailyIncome = {
+  date: INCOME_DATE,
+  currencies: [],
+};
