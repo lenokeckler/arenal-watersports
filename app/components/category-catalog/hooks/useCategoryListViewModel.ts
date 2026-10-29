@@ -8,7 +8,7 @@ import type { CategoryCardActionsViewModel } from "../models/CategoryCardActions
 import type { CategoryCardViewModel } from "../models/CategoryCardViewModel.interface";
 import type { CategoryListItem } from "../models/CategoryListItem.interface";
 import type { CategoryListViewModel } from "../models/CategoryListViewModel.interface";
-import type { CategoryListViewProps } from "../models/CategoryListViewProps.interface";
+import type { CategoryListViewModelProps } from "../models/CategoryListViewModelProps.interface";
 import type { CategoryListViewState } from "../models/CategoryListViewState.type";
 import { isCategoryInactive } from "../utils/isCategoryInactive";
 import { resolveCategoryCardActionState } from "../utils/resolveCategoryCardActionState";
@@ -56,7 +56,7 @@ const buildCategoryCardViewModel = (
 export const useCategoryListViewModel = ({
   categories,
   fetchFailed,
-}: CategoryListViewProps): CategoryListViewModel => {
+}: CategoryListViewModelProps): CategoryListViewModel => {
   const router = useRouter();
   const cardActions = useCategoryCardActions();
 

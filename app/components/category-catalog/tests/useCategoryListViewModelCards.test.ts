@@ -21,6 +21,7 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({
     refresh: mockRefresh,
   }),
+  unstable_rethrow: vi.fn(),
 }));
 
 vi.mock("@/app/components/toast/utils/useToast", () => ({
