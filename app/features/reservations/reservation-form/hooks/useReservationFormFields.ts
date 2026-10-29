@@ -1,4 +1,5 @@
 import { STRING } from "@/app/constants";
+import { useState } from "react";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 import type { ReservationFormFieldsViewModel } from "../models/ReservationFormFieldsViewModel.interface";
 import type { ReservationFormField } from "../models/ReservationFormField.constants";
@@ -9,9 +10,11 @@ import { createReservationFormNumericFieldHandlers } from "../utils/createReserv
 import { useReservationFormValues } from "./useReservationFormValues";
 
 const createBasicFieldHandlers = (
-  updateValue: UpdateReservationFormValue
+  updateValue: UpdateReservationFormValue,
+  clearSelectionResetNotice: () => void
 ) => ({
   handleCategoryChange: (value: string) => {
+    clearSelectionResetNotice();
     updateValue(RESERVATION_FORM_FIELD.CATEGORY_ID, value);
     updateValue(
       RESERVATION_FORM_FIELD.UNIT_ID,
@@ -37,8 +40,10 @@ const createBasicFieldHandlers = (
       STRING.Empty
     );
   },
-  handleUnitChange: (value: string) =>
-    updateValue(RESERVATION_FORM_FIELD.UNIT_ID, value),
+  handleUnitChange: (value: string) => {
+    clearSelectionResetNotice();
+    updateValue(RESERVATION_FORM_FIELD.UNIT_ID, value);
+  },
 });
 
 export const useReservationFormFields = (
@@ -52,18 +57,26 @@ export const useReservationFormFields = (
     initialCategoryId,
     clearFieldError
   );
+  const [
+    hasReservationTypeSelectionReset,
+    setHasReservationTypeSelectionReset,
+  ] = useState(false);
   const handleReservationTypeChange =
     createReservationTypeChangeHandler(
       categories,
       values,
-      updateValue
+      updateValue,
+      setHasReservationTypeSelectionReset
     );
   const numericFieldHandlers =
     createReservationFormNumericFieldHandlers(updateValue);
   return {
-    ...createBasicFieldHandlers(updateValue),
+    ...createBasicFieldHandlers(updateValue, () =>
+      setHasReservationTypeSelectionReset(false)
+    ),
     ...numericFieldHandlers,
     handleReservationTypeChange,
+    hasReservationTypeSelectionReset,
     values,
   };
 };

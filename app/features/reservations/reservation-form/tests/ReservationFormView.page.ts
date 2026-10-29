@@ -63,6 +63,8 @@ const createFormQueries = (container: HTMLElement) => {
       form.getByLabelText(label, { exact: false }),
     getReservationTypeDescription: (description: string) =>
       form.getByText(description, { exact: true }),
+    getStatusMessage: () =>
+      form.getByRole(ARIA_ROLE.STATUS),
     queryCategoryOption: (
       categoryId: string
     ): NullableRef<HTMLOptionElement> =>

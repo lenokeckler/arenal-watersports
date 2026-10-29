@@ -10,7 +10,8 @@ export const createReservationTypeChangeHandler =
   (
     categories: ReservationCategoryOption[],
     values: ReservationFormInput,
-    updateValue: UpdateReservationFormValue
+    updateValue: UpdateReservationFormValue,
+    onSelectionReset: (wasReset: boolean) => void
   ) =>
   (value: ReservationType) => {
     updateValue(
@@ -32,5 +33,8 @@ export const createReservationTypeChangeHandler =
         RESERVATION_FORM_FIELD.UNIT_ID,
         STRING.Empty
       );
+      onSelectionReset(true);
+      return;
     }
+    onSelectionReset(false);
   };
