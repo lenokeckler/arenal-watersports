@@ -1,11 +1,14 @@
 import { createRef } from "react";
 import { describe, expect, it } from "vitest";
-import { INPUT_TYPES } from "@/app/constants";
+import { AUTOCOMPLETE, INPUT_TYPES } from "@/app/constants";
 import {
   ARIA_DESCRIBEDBY_ATTRIBUTE,
   ARIA_INVALID_ATTRIBUTE,
   ARIA_INVALID_VALUE,
+  AUTOCOMPLETE_ATTRIBUTE,
+  ERROR_AND_EXTRA_DESCRIBEDBY,
   EXPECTED_DESCRIBEDBY,
+  EXTRA_DESCRIBEDBY_ID,
 } from "./FieldFactory.constants";
 import { renderFieldFactory } from "./renderFieldFactory";
 
@@ -34,6 +37,41 @@ describe("FieldFactory aria attributes", () => {
     );
     expect(page.getTextbox()).not.toHaveAttribute(
       ARIA_DESCRIBEDBY_ATTRIBUTE
+    );
+  });
+});
+
+describe("FieldFactory description and autocomplete", () => {
+  it("lists the error id before the extra described-by id", () => {
+    const page = renderFieldFactory({
+      describedBy: EXTRA_DESCRIBEDBY_ID,
+      hasError: true,
+      hasErrorText: true,
+    });
+
+    expect(page.getTextbox()).toHaveAttribute(
+      ARIA_DESCRIBEDBY_ATTRIBUTE,
+      ERROR_AND_EXTRA_DESCRIBEDBY
+    );
+  });
+
+  it("passes the autocomplete hint to the password input", () => {
+    const page = renderFieldFactory({
+      autoComplete: AUTOCOMPLETE.NEW_PASSWORD,
+      type: INPUT_TYPES.PASSWORD,
+    });
+
+    expect(page.getInput()).toHaveAttribute(
+      AUTOCOMPLETE_ATTRIBUTE,
+      AUTOCOMPLETE.NEW_PASSWORD
+    );
+  });
+
+  it("omits the autocomplete attribute by default", () => {
+    const page = renderFieldFactory();
+
+    expect(page.getTextbox()).not.toHaveAttribute(
+      AUTOCOMPLETE_ATTRIBUTE
     );
   });
 });
