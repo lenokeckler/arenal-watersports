@@ -5,6 +5,7 @@ import { getButtonClassName } from "./utils/getButtonClassName";
 export const Button = ({
   children,
   isLoading = false,
+  loadingText,
   disabled = false,
   className: additionalClassName,
   ...rest
@@ -22,7 +23,7 @@ export const Button = ({
       disabled={disabled || isLoading}
       {...rest}
     >
-      {isLoading ? "Loading..." : children}
+      {isLoading ? (loadingText ?? children) : children}
     </button>
   );
 };
