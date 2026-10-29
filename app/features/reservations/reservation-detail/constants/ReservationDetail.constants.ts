@@ -4,6 +4,9 @@ export const RESERVATION_DETAIL_ACCESS = {
   AREA_RPC: "has_area",
 } as const;
 
+export const RESERVATION_DETAIL_UUID_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 export const RESERVATION_DETAIL_CHARGE_STATUS = {
   PAID: "paid",
   PARENT: "parent",
