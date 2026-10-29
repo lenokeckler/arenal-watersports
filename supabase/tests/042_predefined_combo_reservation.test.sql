@@ -1,5 +1,5 @@
 begin;
-select plan(11);
+select plan(15);
 
 insert into auth.users (id, email) values
   ('e4200000-0000-4000-8000-000000000001', 'res09-predefined-booking@arenal.local'),
@@ -18,6 +18,8 @@ values
   ('e4200000-0000-4000-8000-000000000102', 'RES09 predefined guide', 'by_quantity', true, true,
    true, 60, 'e4200000-0000-4000-8000-000000000001', 'e4200000-0000-4000-8000-000000000001'),
   ('e4200000-0000-4000-8000-000000000103', 'RES09 predefined inactive', 'by_quantity', false, true,
+   false, 60, 'e4200000-0000-4000-8000-000000000001', 'e4200000-0000-4000-8000-000000000001'),
+  ('e4200000-0000-4000-8000-000000000104', 'RES09 predefined Lancha', 'by_unit', true, false,
    false, 60, 'e4200000-0000-4000-8000-000000000001', 'e4200000-0000-4000-8000-000000000001');
 insert into equipment_stock (category_id, quantity_available, updated_by)
 values
@@ -32,6 +34,8 @@ values
   ('e4200000-0000-4000-8000-000000000203', 'RES09 predefined invalid item', 'national', 10000,
    'e4200000-0000-4000-8000-000000000001', 'e4200000-0000-4000-8000-000000000001'),
   ('e4200000-0000-4000-8000-000000000204', 'RES09 predefined no guide', 'national', 10000,
+   'e4200000-0000-4000-8000-000000000001', 'e4200000-0000-4000-8000-000000000001'),
+  ('e4200000-0000-4000-8000-000000000205', 'RES09 predefined Lancha combo', 'national', 20000,
    'e4200000-0000-4000-8000-000000000001', 'e4200000-0000-4000-8000-000000000001');
 update combos set status = 'inactive'
 where id = 'e4200000-0000-4000-8000-000000000202';
@@ -40,7 +44,8 @@ values
   ('e4200000-0000-4000-8000-000000000201', 'e4200000-0000-4000-8000-000000000101', 2),
   ('e4200000-0000-4000-8000-000000000201', 'e4200000-0000-4000-8000-000000000102', 1),
   ('e4200000-0000-4000-8000-000000000203', 'e4200000-0000-4000-8000-000000000103', 1),
-  ('e4200000-0000-4000-8000-000000000204', 'e4200000-0000-4000-8000-000000000101', 1);
+  ('e4200000-0000-4000-8000-000000000204', 'e4200000-0000-4000-8000-000000000101', 1),
+  ('e4200000-0000-4000-8000-000000000205', 'e4200000-0000-4000-8000-000000000104', 1);
 
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"e4200000-0000-4000-8000-000000000001","role":"authenticated"}';
@@ -83,6 +88,16 @@ select throws_ok($$ select create_predefined_combo_reservation(jsonb_build_objec
   'date', '2035-10-08', 'time', '09:00', 'duration_minutes', 60)) $$,
   'P0001', 'Equipment category is not available for reservation',
   'non-reservable combo components are rejected');
+select throws_ok($$ select create_predefined_combo_reservation(jsonb_build_object(
+  'combo_id', 'e4200000-0000-4000-8000-000000000205',
+  'customer_name', 'RES09 non-interchangeable component', 'people_count', 1,
+  'date', '2035-10-08', 'time', '09:00', 'duration_minutes', 60)) $$,
+  'P0001', 'Equipment category is not available for reservation',
+  'a combo containing a non-interchangeable Lancha component cannot be booked');
+select throws_ok($$ select private.resolve_predefined_combo_price(
+  'national', null, null) $$,
+  'P0001', 'Predefined combo package price is invalid',
+  'a predefined combo without its audience price is rejected');
 select throws_ok($$ select create_predefined_combo_reservation(jsonb_build_object(
   'combo_id', 'e4200000-0000-4000-8000-000000000204',
   'customer_name', 'RES09 guide not eligible', 'people_count', 1,
@@ -135,6 +150,20 @@ reset role;
 select is((select count(*)::integer from reservations
   where customer_name = 'RES09 atomic failure'), 0,
   'the late failure rolls back the reservation, components and guides');
+reset role;
+delete from combo_items
+where combo_id = 'e4200000-0000-4000-8000-000000000201'
+  and category_id = 'e4200000-0000-4000-8000-000000000102';
+set local role authenticated;
+select lives_ok($$ update reservations set type = 'combo'
+  where customer_name = 'RES09 fixed package' $$,
+  'guide eligibility remains valid after the combo catalog changes');
+select is((select count(*)::integer from reservation_items as item
+  join reservations as reservation on reservation.id = item.reservation_id
+  where reservation.customer_name = 'RES09 fixed package'
+    and item.category_id = 'e4200000-0000-4000-8000-000000000102'), 1,
+  'the saved reservation retains its original guide-only equipment snapshot');
+reset role;
 drop trigger reject_res09_pricing_insert on reservation_pricing;
 drop function reject_res09_pricing_insert();
 select * from finish();
