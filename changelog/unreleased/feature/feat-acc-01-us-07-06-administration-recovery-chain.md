@@ -1,0 +1,1 @@
+ACC-01.07.06: Prove administration recovery in the database — a database test walks the administration account from ten failures through the PIN to the reset counter and the lifted gate (US-ACC-07 · AWS-36)
