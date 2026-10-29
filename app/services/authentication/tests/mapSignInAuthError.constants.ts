@@ -1,18 +1,14 @@
 import {
   AuthApiError,
   AuthRetryableFetchError,
-  AuthUnknownError,
-  CustomAuthError,
 } from "@supabase/supabase-js";
 import {
   HTTP_STATUS,
-  SIGN_IN_HOOK_REJECTION,
   SUPABASE_AUTH_ERROR_CODE,
 } from "@/app/constants";
 
 const AUTH_ERROR_MESSAGE = "auth error";
 const NO_RESPONSE_STATUS = 0;
-const NON_API_ERROR_NAME = "AuthSessionMissingError";
 
 export const INVALID_CREDENTIALS_ERROR = new AuthApiError(
   AUTH_ERROR_MESSAGE,
@@ -42,24 +38,3 @@ export const SERVER_ERROR = new AuthApiError(
   HTTP_STATUS.INTERNAL_SERVER_ERROR,
   undefined
 );
-
-export const NON_API_ERROR = new AuthUnknownError(
-  AUTH_ERROR_MESSAGE,
-  new Error(AUTH_ERROR_MESSAGE)
-);
-
-export const NON_API_ERROR_WITH_INVALID_CREDENTIALS_CODE =
-  new CustomAuthError(
-    AUTH_ERROR_MESSAGE,
-    NON_API_ERROR_NAME,
-    HTTP_STATUS.BAD_REQUEST,
-    SUPABASE_AUTH_ERROR_CODE.INVALID_CREDENTIALS
-  );
-
-export const NON_API_ERROR_WITH_HOOK_REJECTION =
-  new CustomAuthError(
-    SIGN_IN_HOOK_REJECTION.BLOCKED_BY_ATTEMPTS,
-    NON_API_ERROR_NAME,
-    HTTP_STATUS.FORBIDDEN,
-    SUPABASE_AUTH_ERROR_CODE.HOOK_REJECTION
-  );

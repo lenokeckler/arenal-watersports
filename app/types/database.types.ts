@@ -40,7 +40,6 @@ export type Database = {
           combo_id: string;
           quantity: number;
         };
-        ComputedFields: never;
         Insert: {
           category_id: string;
           combo_id: string;
@@ -102,7 +101,6 @@ export type Database = {
           updated_at: string;
           updated_by: string;
         };
-        ComputedFields: never;
         Insert: {
           audience: Database["public"]["Enums"]["combo_audience"];
           created_at?: string;
@@ -169,7 +167,6 @@ export type Database = {
           reservation_id: string | null;
           unit_id: string;
         };
-        ComputedFields: never;
         Insert: {
           cause: Database["public"]["Enums"]["damage_cause"];
           created_at?: string;
@@ -256,7 +253,6 @@ export type Database = {
           retention_reason: string | null;
           status: Database["public"]["Enums"]["deposit_status"];
         };
-        ComputedFields: never;
         Insert: {
           amount: number;
           created_at?: string;
@@ -348,7 +344,6 @@ export type Database = {
             | Database["public"]["Enums"]["usage_metric"]
             | null;
         };
-        ComputedFields: never;
         Insert: {
           alert_expiry_days?: number | null;
           alert_min_quantity?: number | null;
@@ -442,7 +437,6 @@ export type Database = {
           updated_at: string;
           updated_by: string;
         };
-        ComputedFields: never;
         Insert: {
           category_id: string;
           expiry_date?: string | null;
@@ -520,7 +514,6 @@ export type Database = {
           to_damaged: number;
           to_in_repair: number;
         };
-        ComputedFields: never;
         Insert: {
           category_id: string;
           created_at?: string;
@@ -610,7 +603,6 @@ export type Database = {
           updated_by: string;
           usage_total: number;
         };
-        ComputedFields: never;
         Insert: {
           category_id: string;
           code: string;
@@ -709,7 +701,6 @@ export type Database = {
           extra_id: string;
           unit_id: string;
         };
-        ComputedFields: never;
         Insert: {
           extra_id: string;
           unit_id: string;
@@ -770,7 +761,6 @@ export type Database = {
           updated_at: string;
           updated_by: string;
         };
-        ComputedFields: never;
         Insert: {
           created_at?: string;
           created_by: string;
@@ -872,7 +862,6 @@ export type Database = {
           system_quantity_in_repair: number | null;
           unit_id: string | null;
         };
-        ComputedFields: never;
         Insert: {
           category_id: string;
           confirmed_status?:
@@ -977,7 +966,6 @@ export type Database = {
           id: string;
           notes: string | null;
         };
-        ComputedFields: never;
         Insert: {
           counted_at?: string;
           created_at?: string;
@@ -1026,7 +1014,6 @@ export type Database = {
           updated_by: string | null;
           work_type: string;
         };
-        ComputedFields: never;
         Insert: {
           cost_amount?: number | null;
           cost_currency?:
@@ -1118,65 +1105,17 @@ export type Database = {
           },
         ];
       };
-      password_reset_grants: {
-        Row: {
-          created_at: string;
-          expires_at: string;
-          id: string;
-          token_hash: string;
-          used_at: string | null;
-          worker_id: string;
-        };
-        ComputedFields: never;
-        Insert: {
-          created_at?: string;
-          expires_at: string;
-          id?: string;
-          token_hash: string;
-          used_at?: string | null;
-          worker_id: string;
-        };
-        Update: {
-          created_at?: string;
-          expires_at?: string;
-          id?: string;
-          token_hash?: string;
-          used_at?: string | null;
-          worker_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "password_reset_grants_worker_id_fkey";
-            columns: ["worker_id"];
-            isOneToOne: false;
-            referencedRelation: "reservations_by_worker";
-            referencedColumns: ["worker_id"];
-          },
-          {
-            foreignKeyName: "password_reset_grants_worker_id_fkey";
-            columns: ["worker_id"];
-            isOneToOne: false;
-            referencedRelation: "workers";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
       password_reset_pins: {
         Row: {
-          attempts: number;
           created_at: string;
-          delivery_failed_at: string | null;
           expires_at: string;
           id: string;
           pin_hash: string;
           used_at: string | null;
           worker_id: string;
         };
-        ComputedFields: never;
         Insert: {
-          attempts?: number;
           created_at?: string;
-          delivery_failed_at?: string | null;
           expires_at: string;
           id?: string;
           pin_hash: string;
@@ -1184,9 +1123,7 @@ export type Database = {
           worker_id: string;
         };
         Update: {
-          attempts?: number;
           created_at?: string;
-          delivery_failed_at?: string | null;
           expires_at?: string;
           id?: string;
           pin_hash?: string;
@@ -1210,25 +1147,6 @@ export type Database = {
           },
         ];
       };
-      password_reset_requests: {
-        Row: {
-          created_at: string;
-          id: string;
-          network_key: string;
-        };
-        ComputedFields: never;
-        Insert: {
-          created_at?: string;
-          id?: string;
-          network_key: string;
-        };
-        Update: {
-          created_at?: string;
-          id?: string;
-          network_key?: string;
-        };
-        Relationships: [];
-      };
       refunds: {
         Row: {
           amount: number;
@@ -1239,7 +1157,6 @@ export type Database = {
           reason: string;
           reservation_id: string;
         };
-        ComputedFields: never;
         Insert: {
           amount: number;
           created_at?: string;
@@ -1293,7 +1210,6 @@ export type Database = {
           payment_method: string;
           reservation_id: string;
         };
-        ComputedFields: never;
         Insert: {
           amount: number;
           created_at?: string;
@@ -1353,7 +1269,6 @@ export type Database = {
           updated_at: string;
           updated_by: string;
         };
-        ComputedFields: never;
         Insert: {
           category_id: string;
           closed_at?: string | null;
@@ -1455,7 +1370,6 @@ export type Database = {
           reservation_id: string;
           worker_id: string;
         };
-        ComputedFields: never;
         Insert: {
           assigned_at?: string;
           assigned_by: string;
@@ -1524,7 +1438,6 @@ export type Database = {
           usage_in: number | null;
           usage_out: number | null;
         };
-        ComputedFields: never;
         Insert: {
           category_id?: string | null;
           created_at?: string;
@@ -1677,7 +1590,6 @@ export type Database = {
           reason: string;
           reservation_id: string;
         };
-        ComputedFields: never;
         Insert: {
           created_at?: string;
           created_by: string;
@@ -1732,7 +1644,6 @@ export type Database = {
           updated_at: string;
           updated_by: string | null;
         };
-        ComputedFields: never;
         Insert: {
           agreed_amount_crc?: number | null;
           agreed_amount_usd?: number | null;
@@ -1815,7 +1726,6 @@ export type Database = {
           updated_at: string;
           updated_by: string;
         };
-        ComputedFields: never;
         Insert: {
           cancellation_reason?: string | null;
           closed_at?: string | null;
@@ -1903,25 +1813,6 @@ export type Database = {
           },
         ];
       };
-      session_activity: {
-        Row: {
-          last_activity_at: string;
-          session_id: string;
-          user_id: string;
-        };
-        ComputedFields: never;
-        Insert: {
-          last_activity_at?: string;
-          session_id: string;
-          user_id: string;
-        };
-        Update: {
-          last_activity_at?: string;
-          session_id?: string;
-          user_id?: string;
-        };
-        Relationships: [];
-      };
       tariffs: {
         Row: {
           amount_crc: number | null;
@@ -1934,7 +1825,6 @@ export type Database = {
           updated_at: string;
           updated_by: string;
         };
-        ComputedFields: never;
         Insert: {
           amount_crc?: number | null;
           amount_usd?: number | null;
@@ -2025,7 +1915,6 @@ export type Database = {
           uploaded_at: string;
           uploaded_by: string;
         };
-        ComputedFields: never;
         Insert: {
           angle: Database["public"]["Enums"]["photo_angle"];
           id?: string;
@@ -2094,7 +1983,6 @@ export type Database = {
           granted_by: string;
           worker_id: string;
         };
-        ComputedFields: never;
         Insert: {
           area: Database["public"]["Enums"]["work_area"];
           granted_at?: string;
@@ -2145,7 +2033,6 @@ export type Database = {
           mark: Database["public"]["Enums"]["worker_mark"];
           worker_id: string;
         };
-        ComputedFields: never;
         Insert: {
           granted_at?: string;
           granted_by: string;
@@ -2192,9 +2079,6 @@ export type Database = {
       workers: {
         Row: {
           base_role: Database["public"]["Enums"]["work_area"];
-          blocked_reason:
-            | Database["public"]["Enums"]["worker_blocked_reason"]
-            | null;
           created_at: string;
           created_by: string | null;
           deleted_at: string | null;
@@ -2213,12 +2097,8 @@ export type Database = {
           updated_by: string | null;
           username: string;
         };
-        ComputedFields: never;
         Insert: {
           base_role: Database["public"]["Enums"]["work_area"];
-          blocked_reason?:
-            | Database["public"]["Enums"]["worker_blocked_reason"]
-            | null;
           created_at?: string;
           created_by?: string | null;
           deleted_at?: string | null;
@@ -2239,9 +2119,6 @@ export type Database = {
         };
         Update: {
           base_role?: Database["public"]["Enums"]["work_area"];
-          blocked_reason?:
-            | Database["public"]["Enums"]["worker_blocked_reason"]
-            | null;
           created_at?: string;
           created_by?: string | null;
           deleted_at?: string | null;
@@ -2298,7 +2175,6 @@ export type Database = {
           day: string | null;
           reservations_count: number | null;
         };
-        ComputedFields: never;
         Relationships: [];
       };
       daily_revenue_report: {
@@ -2312,7 +2188,6 @@ export type Database = {
           refunds_amount: number | null;
           retained_amount: number | null;
         };
-        ComputedFields: never;
         Relationships: [];
       };
       financial_movements: {
@@ -2325,60 +2200,57 @@ export type Database = {
           refunds_amount: number | null;
           retained_amount: number | null;
         };
-        ComputedFields: never;
         Relationships: [];
       };
       inventory_category_summary: {
         Row: {
-          category_id: string;
-          category_name: string;
-          is_reservable: boolean;
+          category_id: string | null;
+          category_name: string | null;
+          is_reservable: boolean | null;
           quantity_available: number | null;
           quantity_damaged: number | null;
           quantity_in_maintenance: number | null;
           quantity_in_repair: number | null;
           quantity_total: number | null;
-          tracking_mode: Database["public"]["Enums"]["tracking_mode"];
+          tracking_mode:
+            | Database["public"]["Enums"]["tracking_mode"]
+            | null;
         };
-        ComputedFields: never;
         Relationships: [];
       };
       inventory_expiry_alerts: {
         Row: {
           alert_expiry_days: number | null;
-          category_id: string;
-          category_name: string;
+          category_id: string | null;
+          category_name: string | null;
           days_to_expiry: number | null;
           expiry_date: string | null;
           is_expired: boolean | null;
         };
-        ComputedFields: never;
         Relationships: [];
       };
       inventory_quantity_alerts: {
         Row: {
           alert_min_quantity: number | null;
-          category_id: string;
-          category_name: string;
+          category_id: string | null;
+          category_name: string | null;
           missing_quantity: number | null;
-          quantity_available: number;
+          quantity_available: number | null;
         };
-        ComputedFields: never;
         Relationships: [];
       };
       maintenance_cost_by_unit: {
         Row: {
-          category_id: string;
+          category_id: string | null;
           currency:
             | Database["public"]["Enums"]["currency_code"]
             | null;
           last_performed_at: string | null;
           records_count: number | null;
           total_cost: number | null;
-          unit_code: string;
-          unit_id: string;
+          unit_code: string | null;
+          unit_id: string | null;
         };
-        ComputedFields: never;
         Relationships: [
           {
             foreignKeyName: "equipment_units_category_id_fkey";
@@ -2415,7 +2287,6 @@ export type Database = {
           month: string | null;
           reservations_count: number | null;
         };
-        ComputedFields: never;
         Relationships: [];
       };
       monthly_revenue_report: {
@@ -2429,7 +2300,6 @@ export type Database = {
           refunds_amount: number | null;
           retained_amount: number | null;
         };
-        ComputedFields: never;
         Relationships: [];
       };
       reservations_by_worker: {
@@ -2437,23 +2307,23 @@ export type Database = {
           first_reservation_at: string | null;
           last_reservation_at: string | null;
           reservations_count: number | null;
-          worker_id: string;
-          worker_name: string;
+          worker_id: string | null;
+          worker_name: string | null;
         };
-        ComputedFields: never;
         Relationships: [];
       };
       unit_current_state: {
         Row: {
-          category_id: string;
-          code: string;
+          category_id: string | null;
+          code: string | null;
           effective_status: string | null;
-          id: string;
-          recorded_status: Database["public"]["Enums"]["unit_status"];
+          id: string | null;
+          recorded_status:
+            | Database["public"]["Enums"]["unit_status"]
+            | null;
           reservation_id: string | null;
           returns_at: string | null;
         };
-        ComputedFields: never;
         Relationships: [
           {
             foreignKeyName: "equipment_units_category_id_fkey";
@@ -2494,20 +2364,21 @@ export type Database = {
       };
       unit_service_status: {
         Row: {
-          category_id: string;
-          category_name: string;
-          code: string;
+          category_id: string | null;
+          category_name: string | null;
+          code: string | null;
           is_oil_change_due: boolean | null;
           next_oil_change_at: number | null;
           remaining_usage: number | null;
-          status: Database["public"]["Enums"]["unit_status"];
-          unit_id: string;
+          status:
+            | Database["public"]["Enums"]["unit_status"]
+            | null;
+          unit_id: string | null;
           usage_metric:
             | Database["public"]["Enums"]["usage_metric"]
             | null;
-          usage_total: number;
+          usage_total: number | null;
         };
-        ComputedFields: never;
         Relationships: [
           {
             foreignKeyName: "equipment_units_category_id_fkey";
@@ -2541,34 +2412,6 @@ export type Database = {
       };
     };
     Functions: {
-      assert_reservable_equipment_category: {
-        Args: { p_category_id: string };
-        Returns: undefined;
-      };
-      assert_reservation_amounts: {
-        Args: {
-          p_duration_minutes: number;
-          p_quantity: number;
-        };
-        Returns: undefined;
-      };
-      assert_reservation_identity: {
-        Args: {
-          p_customer_name: string;
-          p_date: string;
-          p_people_count: number;
-          p_time: string;
-        };
-        Returns: undefined;
-      };
-      authenticated_reservation_worker: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
-      };
-      block_worker: {
-        Args: { target_worker: string };
-        Returns: string;
-      };
       category_availability: {
         Args: {
           p_category_id: string;
@@ -2582,20 +2425,6 @@ export type Database = {
           usable: number;
         }[];
       };
-      choose_work_area: {
-        Args: {
-          target: Database["public"]["Enums"]["work_area"];
-        };
-        Returns: string;
-      };
-      complete_first_password_change: {
-        Args: { p_user_id: string };
-        Returns: undefined;
-      };
-      consume_password_reset_pin: {
-        Args: { p_pin: string; p_username: string };
-        Returns: string;
-      };
       create_rental_reservation: {
         Args: {
           p_category_id: string;
@@ -2607,56 +2436,6 @@ export type Database = {
           p_time: string;
         };
         Returns: string;
-      };
-      current_session_id: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
-      };
-      current_session_seconds_left: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      current_session_state: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
-      };
-      current_work_area: {
-        Args: Record<PropertyKey, never>;
-        Returns: Database["public"]["Enums"]["work_area"];
-      };
-      custom_access_token_hook: {
-        Args: { event: Json };
-        Returns: Json;
-      };
-      exchange_password_reset_pin: {
-        Args: { p_pin: string; p_username: string };
-        Returns: string;
-      };
-      finish_password_recovery: {
-        Args: { p_user_id: string };
-        Returns: undefined;
-      };
-      grant_worker_area: {
-        Args: {
-          target_area: Database["public"]["Enums"]["work_area"];
-          target_worker: string;
-        };
-        Returns: string;
-      };
-      grant_worker_mark: {
-        Args: {
-          target_mark: Database["public"]["Enums"]["worker_mark"];
-          target_worker: string;
-        };
-        Returns: string;
-      };
-      grantable_worker_areas: {
-        Args: Record<PropertyKey, never>;
-        Returns: Database["public"]["Enums"]["work_area"][];
-      };
-      grantable_worker_marks: {
-        Args: Record<PropertyKey, never>;
-        Returns: Database["public"]["Enums"]["worker_mark"][];
       };
       has_area: {
         Args: {
@@ -2670,170 +2449,17 @@ export type Database = {
         };
         Returns: boolean;
       };
-      is_active_worker: {
-        Args: Record<PropertyKey, never>;
-        Returns: boolean;
-      };
       is_admin: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
-      };
-      issue_password_reset_pin: {
-        Args: {
-          p_network_key: string;
-          p_pin: string;
-          p_username: string;
-        };
-        Returns: {
-          lifetime_minutes: number;
-          personal_email: string;
-          pin_id: string;
-        }[];
-      };
-      mark_password_reset_pin_undelivered: {
-        Args: { p_pin_id: string };
-        Returns: undefined;
       };
       next_reservation_code: {
         Args: Record<PropertyKey, never>;
         Returns: string;
       };
-      password_reset_grant_is_open: {
-        Args: { p_token: string };
-        Returns: boolean;
-      };
-      password_reset_grant_lifetime_minutes: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_grant_token_hash: {
-        Args: { p_token: string };
-        Returns: string;
-      };
-      password_reset_limit_window_minutes: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_network_hourly_limit: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_pin_attempt_limit: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_pin_hash_cost: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_pin_length: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_pin_lifetime_minutes: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_request_cooldown_seconds: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_request_hourly_limit: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      password_reset_retention_hours: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      prepare_worker_temporary_password: {
-        Args: { target_worker: string };
-        Returns: string;
-      };
-      purge_ended_session_activity: {
-        Args: Record<PropertyKey, never>;
-        Returns: undefined;
-      };
       purge_expired_history: {
         Args: Record<PropertyKey, never>;
         Returns: undefined;
-      };
-      purge_password_reset_records: {
-        Args: Record<PropertyKey, never>;
-        Returns: undefined;
-      };
-      record_failed_sign_in: {
-        Args: { p_username: string };
-        Returns: undefined;
-      };
-      record_successful_sign_in: {
-        Args: { p_user_id: string };
-        Returns: undefined;
-      };
-      redeem_password_reset_grant: {
-        Args: { p_token: string };
-        Returns: string;
-      };
-      rehire_worker: {
-        Args: { target_worker: string };
-        Returns: string;
-      };
-      retire_worker: {
-        Args: { target_worker: string };
-        Returns: string;
-      };
-      revoke_worker_area: {
-        Args: {
-          target_area: Database["public"]["Enums"]["work_area"];
-          target_worker: string;
-        };
-        Returns: string;
-      };
-      revoke_worker_mark: {
-        Args: {
-          target_mark: Database["public"]["Enums"]["worker_mark"];
-          target_worker: string;
-        };
-        Returns: string;
-      };
-      revoke_worker_sessions: {
-        Args: { target_worker: string };
-        Returns: undefined;
-      };
-      session_idle_deadline: {
-        Args: { last_activity: string };
-        Returns: string;
-      };
-      session_idle_expired: {
-        Args: { last_activity: string; moment: string };
-        Returns: boolean;
-      };
-      session_idle_limit: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
-      };
-      session_is_live: {
-        Args: Record<PropertyKey, never>;
-        Returns: boolean;
-      };
-      session_last_activity: {
-        Args: {
-          signed_in_at: string;
-          target_session: string;
-        };
-        Returns: string;
-      };
-      sign_in_attempt_limit: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
-      sign_in_requires_recovery: {
-        Args: { p_user_id: string };
-        Returns: boolean;
-      };
-      touch_current_session_activity: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
       };
       unit_conflicts: {
         Args: {
@@ -2848,26 +2474,6 @@ export type Database = {
           reservation_id: string;
           starts_at: string;
         }[];
-      };
-      unlock_worker: {
-        Args: { target_worker: string };
-        Returns: string;
-      };
-      workday_contains: {
-        Args: { moment: string };
-        Returns: boolean;
-      };
-      workday_end: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
-      };
-      workday_start: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
-      };
-      workday_time_zone: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
       };
       worker_display_names: {
         Args: { p_worker_ids: string[] };
@@ -2907,8 +2513,6 @@ export type Database = {
       usage_metric: "engine_hours" | "kilometers";
       work_area:
         "administracion" | "reservas" | "operaciones";
-      worker_blocked_reason:
-        "failed_attempts" | "administration";
       worker_mark:
         | "guia"
         | "encargado_general"
@@ -3097,10 +2701,6 @@ export const Constants = {
         "administracion",
         "reservas",
         "operaciones",
-      ],
-      worker_blocked_reason: [
-        "failed_attempts",
-        "administration",
       ],
       worker_mark: [
         "guia",

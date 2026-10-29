@@ -166,14 +166,6 @@ const eslintConfig = [
     },
   },
   {
-    files: [
-      "app/services/observability/reportServerError.ts",
-    ],
-    rules: {
-      "no-console": ["error", { allow: ["error"] }],
-    },
-  },
-  {
     files: [".github/scripts/**/*.mjs", "scripts/**/*.mjs"],
     languageOptions: {
       globals: {

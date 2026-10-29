@@ -10,7 +10,6 @@ export const TIME = {
     HOURS_OFFSET: 6,
   },
   UNITS: {
-    HOURS_IN_DAY: 24,
     MINUTES_IN_HOUR: 60,
     SECONDS_IN_MINUTE: 60,
     MILLISECONDS_IN_SECOND: 1000,

@@ -1,1 +1,0 @@
-ACC-02.10.09: Inactivity sign-out end to end — Playwright proves an idle session is closed on the server with the login notice, from a navigation and from a tap, and that an action keeps the session going; login capture with the notice (US-ACC-10 · AWS-39)

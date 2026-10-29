@@ -15,9 +15,7 @@ export const getReservationCategories = async (): Promise<
     .select("id, name")
     .eq("status", "active")
     .eq("is_reservable", true)
-    .or(
-      "tracking_mode.eq.by_quantity,units_are_interchangeable.eq.true"
-    )
+    .eq("units_are_interchangeable", true)
     .order("name");
 
   throwIfSupabaseError(

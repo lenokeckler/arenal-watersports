@@ -1,5 +1,5 @@
 begin;
-select plan(10);
+select plan(15);
 
 insert into auth.users (id, email) values
   ('e2400000-0000-4000-8000-000000000001', 'res04-admin-fixture@arenal.local'),
@@ -21,92 +21,129 @@ values
   ('e2400000-0000-4000-8000-000000000104', 'RES04 Kayak fixture', 'active', 'by_unit', true, true, 60,
    'e2400000-0000-4000-8000-000000000001', 'e2400000-0000-4000-8000-000000000001'),
   ('e2400000-0000-4000-8000-000000000105', 'RES04 No reservable fixture', 'active', 'by_quantity', false, true, 60,
-   'e2400000-0000-4000-8000-000000000001', 'e2400000-0000-4000-8000-000000000001'),
-  ('e2400000-0000-4000-8000-000000000106', 'RES04 Cantidad no intercambiable fixture', 'active', 'by_quantity', true, false, 60,
    'e2400000-0000-4000-8000-000000000001', 'e2400000-0000-4000-8000-000000000001');
 
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"e2400000-0000-4000-8000-000000000002","role":"authenticated"}';
 
+select lives_ok(
+  $$ select create_rental_reservation(
+    'RES04 Fixture María López', 3, '2028-02-29', '09:30', 90,
+    'e2400000-0000-4000-8000-000000000101', 2
+  ) $$,
+  'el formulario registra una renta con categoria por cantidad'
+);
+
+select is(
+  (select count(*)::integer from reservations where customer_name = 'RES04 Fixture María López'),
+  1,
+  'se crea una reserva'
+);
+
+select is(
+  (select type from reservations where customer_name = 'RES04 Fixture María López'),
+  'rental'::reservation_type,
+  'la reserva queda como renta'
+);
+
+select is(
+  (select status from reservations where customer_name = 'RES04 Fixture María López'),
+  'scheduled'::reservation_status,
+  'la reserva queda programada'
+);
+
+select is(
+  (select starts_at from reservations where customer_name = 'RES04 Fixture María López'),
+  '2028-02-29 15:30:00+00'::timestamptz,
+  'la fecha y hora civil se convierten desde la zona de Costa Rica'
+);
+
+select is(
+  (select created_by from reservations where customer_name = 'RES04 Fixture María López'),
+  'e2400000-0000-4000-8000-000000000002'::uuid,
+  'la persona creadora viene de la sesion autenticada'
+);
+
+select is(
+  (select updated_by from reservations where customer_name = 'RES04 Fixture María López'),
+  'e2400000-0000-4000-8000-000000000002'::uuid,
+  'la persona actualizadora inicial viene de la sesion autenticada'
+);
+
+select is(
+  (select count(*)::integer from reservation_items ri
+   join reservations r on r.id = ri.reservation_id
+   where r.customer_name = 'RES04 Fixture María López' and ri.category_id = 'e2400000-0000-4000-8000-000000000101'
+     and ri.quantity = 2),
+  1,
+  'se guarda un item de categoria y cantidad'
+);
+
+select lives_ok(
+  $$ select create_rental_reservation(
+    'RES04 Fixture Kayak', 2, '2028-02-29', '10:00', 60,
+    'e2400000-0000-4000-8000-000000000104', 1
+  ) $$,
+  'se acepta una categoria por unidad con unidades intercambiables'
+);
+
+select is(
+  (select count(*)::integer from reservation_items ri
+   join reservations r on r.id = ri.reservation_id
+   where r.customer_name = 'RES04 Fixture Kayak'
+     and ri.category_id = 'e2400000-0000-4000-8000-000000000104'
+     and ri.quantity = 1 and ri.unit_id is null),
+  1,
+  'el kayak intercambiable se registra por categoria y cantidad sin asignar unidad'
+);
+
 select throws_ok(
   $$ select create_rental_reservation(
-    '   ', 1, '2028-02-29', '09:30', 60,
+    'RES04 Fixture Hora limite', 1, '2028-02-29', '24:00', 60,
     'e2400000-0000-4000-8000-000000000101', 1
   ) $$,
   'P0001', null,
-  'no se acepta un nombre de cliente en blanco'
+  'no se acepta la hora limite de veinticuatro horas'
 );
+
 select throws_ok(
   $$ select create_rental_reservation(
-    null, 1, '2028-02-29', '09:30', 60,
+    'RES04 Lancha fixture', 1, '2028-02-29', '09:30', 60,
+    'e2400000-0000-4000-8000-000000000102', 1
+  ) $$,
+  'P0001', null,
+  'no se acepta una categoria por unidad'
+);
+
+select throws_ok(
+  $$ select create_rental_reservation(
+    'RES04 Fixture Tabla', 1, '2028-02-29', '09:30', 60,
+    'e2400000-0000-4000-8000-000000000103', 1
+  ) $$,
+  'P0001', null,
+  'no se acepta una categoria inactiva'
+);
+
+select throws_ok(
+  $$ select create_rental_reservation(
+    'RES04 Fixture No reservable', 1, '2028-02-29', '09:30', 60,
+    'e2400000-0000-4000-8000-000000000105', 1
+  ) $$,
+  'P0001', null,
+  'no se acepta una categoria que no es reservable'
+);
+
+reset role;
+set local request.jwt.claims to '{}';
+
+select throws_ok(
+  $$ select create_rental_reservation(
+    'RES04 Fixture Sin sesion', 1, '2028-02-29', '09:30', 60,
     'e2400000-0000-4000-8000-000000000101', 1
   ) $$,
   'P0001', null,
-  'no se acepta un nombre de cliente nulo'
+  'no se registra una reserva sin identidad autenticada'
 );
-select throws_ok(
-  $$ select create_rental_reservation(
-    'RES04 Fixture Personas nulas', null, '2028-02-29', '09:30', 60,
-    'e2400000-0000-4000-8000-000000000101', 1
-  ) $$,
-  'P0001', null,
-  'no se acepta una cantidad de personas nula'
-);
-select throws_ok(
-  $$ select create_rental_reservation(
-    'RES04 Fixture Personas cero', 0, '2028-02-29', '09:30', 60,
-    'e2400000-0000-4000-8000-000000000101', 1
-  ) $$,
-  'P0001', null,
-  'no se acepta una cantidad de personas no positiva'
-);
-select throws_ok(
-  $$ select create_rental_reservation(
-    'RES04 Fixture Fecha nula', 1, null, '09:30', 60,
-    'e2400000-0000-4000-8000-000000000101', 1
-  ) $$,
-  'P0001', null,
-  'no se acepta una fecha nula'
-);
-select throws_ok(
-  $$ select create_rental_reservation(
-    'RES04 Fixture Hora nula', 1, '2028-02-29', null, 60,
-    'e2400000-0000-4000-8000-000000000101', 1
-  ) $$,
-  'P0001', null,
-  'no se acepta una hora nula'
-);
-select throws_ok(
-  $$ select create_rental_reservation(
-    'RES04 Fixture Duracion nula', 1, '2028-02-29', '09:30', null,
-    'e2400000-0000-4000-8000-000000000101', 1
-  ) $$,
-  'P0001', null,
-  'no se acepta una duracion nula'
-);
-select throws_ok(
-  $$ select create_rental_reservation(
-    'RES04 Fixture Duracion cero', 1, '2028-02-29', '09:30', 0,
-    'e2400000-0000-4000-8000-000000000101', 1
-  ) $$,
-  'P0001', null,
-  'no se acepta una duracion no positiva'
-);
-select throws_ok(
-  $$ select create_rental_reservation(
-    'RES04 Fixture Cantidad nula', 1, '2028-02-29', '09:30', 60,
-    'e2400000-0000-4000-8000-000000000101', null
-  ) $$,
-  'P0001', null,
-  'no se acepta una cantidad de equipo nula'
-);
-select throws_ok(
-  $$ select create_rental_reservation(
-    'RES04 Fixture Cantidad cero', 1, '2028-02-29', '09:30', 60,
-    'e2400000-0000-4000-8000-000000000101', 0
-  ) $$,
-  'P0001', null,
-  'no se acepta una cantidad de equipo no positiva'
-);
+
 select * from finish();
 rollback;

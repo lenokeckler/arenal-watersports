@@ -7,12 +7,7 @@ import {
 } from "vitest";
 import { SIGN_IN_ERROR_CODE } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
-import { recordFailedSignIn } from "../recordFailedSignIn";
 import { signInWithUsername } from "../signInWithUsername";
-import {
-  mockSignInClient,
-  signInWithPassword,
-} from "./mockSignInClient";
 import { INVALID_CREDENTIALS_ERROR } from "./mapSignInAuthError.constants";
 import {
   BLANK_USERNAME,
@@ -21,25 +16,23 @@ import {
   UNNORMALIZED_USERNAME,
 } from "@/app/utils/sign-in/tests/signIn.constants";
 
-vi.mock(
-  "@/app/services/supabase",
-  () => import("./mocks/supabaseServices.mock")
-);
+vi.mock("@/app/services/supabase", () => ({
+  createServerSupabaseClient: vi.fn(),
+}));
 
-vi.mock(
-  "../recordFailedSignIn",
-  () => import("./mocks/recordFailedSignIn.mock")
-);
-
-vi.mock(
-  "../recordSuccessfulSignIn",
-  () => import("./mocks/recordSuccessfulSignIn.mock")
-);
+const signInWithPassword = vi.fn();
 
 describe("signInWithUsername", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockSignInClient();
+    signInWithPassword.mockResolvedValue({ error: null });
+    vi.mocked(createServerSupabaseClient).mockResolvedValue(
+      {
+        auth: { signInWithPassword },
+      } as unknown as Awaited<
+        ReturnType<typeof createServerSupabaseClient>
+      >
+    );
   });
 
   it("sends the normalized auth email and the untouched password", async () => {
@@ -61,10 +54,7 @@ describe("signInWithUsername", () => {
       DEFAULT_SIGN_IN_CREDENTIALS
     );
 
-    expect(result).toEqual({
-      ok: true,
-      mustChangePassword: false,
-    });
+    expect(result).toEqual({ ok: true });
   });
 
   it("returns the mapped error when Supabase rejects the credentials", async () => {
@@ -84,7 +74,7 @@ describe("signInWithUsername", () => {
     });
   });
 
-  it("never reaches Supabase on invalid input", async () => {
+  it("fails on invalid input without creating a client", async () => {
     const result = await signInWithUsername({
       ...DEFAULT_SIGN_IN_CREDENTIALS,
       username: BLANK_USERNAME,
@@ -99,6 +89,5 @@ describe("signInWithUsername", () => {
     expect(
       createServerSupabaseClient
     ).not.toHaveBeenCalled();
-    expect(recordFailedSignIn).not.toHaveBeenCalled();
   });
 });

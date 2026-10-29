@@ -21,7 +21,6 @@ import {
   ARIA_INVALID_VALUE,
   NETWORK_ERROR,
   PASSWORD_ERROR_ID,
-  RECOVERY_REQUIRED_ERROR,
   TYPE_ATTRIBUTE,
   USERNAME_ERROR_ID,
 } from "./LoginFormView.constants";
@@ -100,26 +99,6 @@ describe("LoginFormView", () => {
 
     expect(await page.findBanner()).toHaveTextContent(
       SIGN_IN_ERROR_COPY[SIGN_IN_ERROR_CODE.NETWORK]
-    );
-  });
-
-  it("announces the recovery required refusal in the banner, not under the password", async () => {
-    vi.mocked(submitSignIn).mockResolvedValue(
-      RECOVERY_REQUIRED_ERROR
-    );
-    const page = renderView();
-
-    await page.fillCredentials(DEFAULT_SIGN_IN_CREDENTIALS);
-    await page.submit();
-
-    expect(await page.findBanner()).toHaveTextContent(
-      SIGN_IN_ERROR_COPY[
-        SIGN_IN_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED
-      ]
-    );
-    expect(page.getPasswordInput()).not.toHaveAttribute(
-      ARIA_INVALID_ATTRIBUTE,
-      ARIA_INVALID_VALUE
     );
   });
 

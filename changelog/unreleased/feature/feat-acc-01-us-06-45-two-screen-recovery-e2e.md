@@ -1,1 +1,0 @@
-ACC-01.06.45: Two-screen recovery E2E — Playwright drives the PIN screen and the new password screen, the reset pass rules and the no-JavaScript path, with mobile and desktop captures (US-ACC-06 · AWS-35)

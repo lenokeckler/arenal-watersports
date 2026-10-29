@@ -1,6 +1,6 @@
 ---
 name: structure-standards
-description: The structural rules every reviewer on this team enforces — no comments, types declared once in models/, the Nullable family, one defaults object, no nested ternaries, reuse before writing, enum-like constants for closed sets, base components for text and structure, goTo in page objects, no magic numbers in tests, answering every review comment, and naming a shared piece after its concept; use when writing or reviewing any TS/TSX, including tests and E2E.
+description: The structural rules every reviewer on this team enforces — no comments, types declared once in models/, the Nullable family, one defaults object, no nested ternaries, reuse before writing, enum-like constants for closed sets, base components for text and structure, goTo in page objects, no magic numbers in tests, and answering every review comment; use when writing or reviewing any TS/TSX, including tests and E2E.
 ---
 
 # Structure standards
@@ -471,34 +471,6 @@ one thing, and its name says what: with no comments allowed, file names are the 
 Why: a reviewer reads one small file with one purpose quickly; a change touches one file instead
 of rewriting a large one, which keeps stacked PRs from colliding; each test aims at one unit.
 
-## 16. Name a shared piece after its concept, not after the first story that uses it
-
-Before naming a type, a constant, a util, a service or a feature folder, list the stories that
-will use it. The backlog already says which ones do: when two or more stories need the piece, its
-name is the concept they share. Only what a single story does carries that story's name.
-
-```bash
-npm run story -- --list
-git grep -n -i "contraseña nueva" -- docs/proyecto/historias-de-usuario.md
-```
-
-The first lists every story; the second finds the siblings of a concept by the words their
-criteria use. Run the second with the concept of the piece being named.
-
-```
-✅ utils/password-change/validatePasswordChange.ts     US-ACC-03, US-ACC-04 and US-ACC-06 choose a new password
-✅ services/authentication/changeFirstPassword.ts      only US-ACC-03 flips the first sign-in flag
-❌ utils/first-sign-in/validateFirstPasswordChange.ts  US-ACC-04 reuses it under a name that is not its own
-```
-
-The plan of a change (`code-architect`) lists each new shared piece with the stories that use it
-and the name that follows, so the name is settled before the first file exists.
-
-Why: a piece named after its first story is renamed when the second story arrives, and that
-rename touches every file that imports it. Renaming the pieces of this repository's first
-password story, measured as pull requests of their own, came to more than two thousand changed
-lines.
-
 ## Pre-flight, before a PR leaves draft
 
 Run over the files of the PR, not the whole repository. Every hit is either fixed or named in
@@ -554,4 +526,3 @@ grep -nE "^\s*(//|/\*|\*|--|#)|\{/\*|TODO" <files> | grep -vE "\.md:|#!|\"use (c
 - [ ] Every review thread fixed everywhere and answered
 - [ ] No comments or docstrings, SQL and tests included
 - [ ] One responsibility per file; view without hooks; one type per file in `models/`
-- [ ] Every shared piece is named after its concept, with its sibling stories listed first

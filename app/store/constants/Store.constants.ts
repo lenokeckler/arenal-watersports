@@ -1,6 +1,6 @@
 export const STORE_SLICES = {
-  CALENDAR: "calendar",
   LANGUAGE: "language",
+  SESSION: "session",
   TOAST: "toast",
 } as const;
 

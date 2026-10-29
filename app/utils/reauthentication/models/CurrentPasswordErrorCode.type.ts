@@ -1,5 +1,0 @@
-import type { REAUTHENTICATION_ERROR_CODE } from "@/app/constants";
-
-export type CurrentPasswordErrorCode =
-  | typeof REAUTHENTICATION_ERROR_CODE.CURRENT_PASSWORD_REQUIRED
-  | typeof REAUTHENTICATION_ERROR_CODE.CURRENT_PASSWORD_TOO_LONG;

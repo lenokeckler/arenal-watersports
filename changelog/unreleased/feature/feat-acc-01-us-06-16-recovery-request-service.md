@@ -1,1 +1,0 @@
-ACC-01.06.16: Recovery request service — asking for a PIN validates the username, issues the PIN under the database limits and mails it after the answer, which is the same for every account (US-ACC-06 · AWS-35)

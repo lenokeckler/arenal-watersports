@@ -1,1 +1,0 @@
-ACC-01.03.09: First sign-in view model — the first sign-in form keeps its three passwords, ticks the rules while the new one is typed, focuses the first field with an error and checks the form before sending it (US-ACC-03 · AWS-32)

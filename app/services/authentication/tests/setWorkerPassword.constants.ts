@@ -1,4 +1,0 @@
-export const WORKER_USER_ID =
-  "00000000-0000-0000-0000-000000000042";
-
-export const NEW_WORKER_PASSWORD = "Brisa-Del-Lago-2026";
