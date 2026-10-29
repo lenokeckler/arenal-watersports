@@ -28,6 +28,8 @@ values
 insert into extras (id, name, created_by, updated_by)
 values ('e2800000-0000-4000-8000-000000000501', 'RES17 Equipment-free extra',
         'e2800000-0000-4000-8000-000000000001', 'e2800000-0000-4000-8000-000000000001');
+insert into extra_compatibility (extra_id, unit_id)
+values ('e2800000-0000-4000-8000-000000000501', 'e2800000-0000-4000-8000-000000000201');
 
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"e2800000-0000-4000-8000-000000000001","role":"authenticated"}';
@@ -78,11 +80,6 @@ select lives_ok(
     ('e2800000-0000-4000-8000-000000000303', 'e2800000-0000-4000-8000-000000000202') $$,
   'closed records preserve unavailable equipment in their history'
 );
-select lives_ok(
-  $$ insert into reservation_items (reservation_id, extra_id) values
-    ('e2800000-0000-4000-8000-000000000301', 'e2800000-0000-4000-8000-000000000501') $$,
-  'extra-only items do not require unrelated physical inventory'
-);
 select throws_ok(
   $$ update reservation_items set reservation_id = 'e2800000-0000-4000-8000-000000000301'
     where reservation_id = 'e2800000-0000-4000-8000-000000000302' $$,
@@ -104,6 +101,14 @@ select lives_ok(
   $$ insert into reservation_items (reservation_id, unit_id) values
     ('e2800000-0000-4000-8000-000000000301', 'e2800000-0000-4000-8000-000000000201') $$,
   'Operations keeps its existing right to assign an available interchangeable unit'
+);
+reset role;
+set local request.jwt.claims to '{"sub":"e2800000-0000-4000-8000-000000000001","role":"authenticated"}';
+set local role authenticated;
+select lives_ok(
+  $$ insert into reservation_items (reservation_id, extra_id) values
+    ('e2800000-0000-4000-8000-000000000301', 'e2800000-0000-4000-8000-000000000501') $$,
+  'extra rows use the committed boat without an equipment commitment of their own'
 );
 select is((select quantity from reservation_items where id = 'e2800000-0000-4000-8000-000000000401'), 2,
   'rejected changes preserve the original commitment');
