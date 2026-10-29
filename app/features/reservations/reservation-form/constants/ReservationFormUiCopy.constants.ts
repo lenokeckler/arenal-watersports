@@ -24,7 +24,8 @@ export const RESERVATION_FORM_UI_COPY = {
     "No hay categorías de equipo disponibles para reservar.",
   EQUIPMENT_QUANTITY_NOTE:
     "Los equipos intercambiables se reservan por cantidad; Operaciones asigna cada unidad al despachar.",
-  AVAILABLE_QUANTITY: "Unidades disponibles para este horario:",
+  AVAILABLE_QUANTITY:
+    "Unidades disponibles para este horario:",
   EQUIPMENT_UNIT_NOTE:
     "La lancha se compromete por unidad concreta y permanece en tierra hasta que Operaciones la despache.",
   NO_AVAILABLE_UNITS:
