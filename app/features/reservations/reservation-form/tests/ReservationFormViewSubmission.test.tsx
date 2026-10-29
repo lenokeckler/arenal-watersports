@@ -96,12 +96,15 @@ describe("ReservationFormView submission", () => {
   it("requires and submits a concrete unit for Lancha", async () => {
     vi.mocked(
       getAvailableReservationUnitsAction
-    ).mockResolvedValue([
-      {
-        code: RESERVATION_FORM_VIEW_TEST.UNIT_CODE,
-        id: RESERVATION_FORM_VIEW_TEST.UNIT_ID,
-      },
-    ]);
+    ).mockResolvedValue({
+      availableQuantity: null,
+      availableUnits: [
+        {
+          code: RESERVATION_FORM_VIEW_TEST.UNIT_CODE,
+          id: RESERVATION_FORM_VIEW_TEST.UNIT_ID,
+        },
+      ],
+    });
     vi.mocked(createReservationAction).mockClear();
     vi.mocked(createReservationAction).mockResolvedValue({
       ok: true,
