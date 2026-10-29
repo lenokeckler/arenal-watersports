@@ -1,3 +1,6 @@
+import { redirect } from "next/navigation";
+import { PATHS } from "@/app/constants";
+import { isAdministratorSignedIn } from "@/app/services/worker-registration";
 import { CATEGORY_LIST_DIAGNOSTICS } from "./constants/CategoryListDiagnostics.constants";
 import CategoryListView from "./CategoryListView";
 import type { CategoryListViewProps } from "./models/CategoryListViewProps.interface";
@@ -23,6 +26,10 @@ const fetchCategoryListViewProps =
 
 const CategoryList =
   async (): Promise<React.JSX.Element> => {
+    if (!(await isAdministratorSignedIn())) {
+      redirect(PATHS.HOME);
+    }
+
     const categoryListViewProps =
       await fetchCategoryListViewProps();
 

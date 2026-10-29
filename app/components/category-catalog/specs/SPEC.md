@@ -57,9 +57,9 @@ and a clear error state they can retry from.
 - View state and retry live in `hooks/useCategoryListViewModel.ts`, with the states in
   `constants/CategoryListViewState.constants.ts`; the card action state is `NONE` and the card
   handlers are no-ops until #18.
-- The page file `app/(roles)/administracion/categorias/page.tsx` renders `CategoryList`. The Spanish
-  route segment is inherited from #3 and is declared debt; it is reached through
-  `PATHS.ADMINISTRATION.CATEGORIES`.
+- The page file `app/(system)/administration/categories/page.tsx` renders `CategoryList`, reached through
+  `PATHS.ADMINISTRATION.CATEGORIES`. The entry component redirects a worker who is not an administrator
+  to `PATHS.HOME` before it reads any category, the same server check the other administration screens use.
 - Skills that apply: `component-architecture`, `component-standards`, `constants-standards`,
   `styles-standards`, `structure-standards`, `unit-testing-standards`.
 
