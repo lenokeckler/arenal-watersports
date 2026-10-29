@@ -24,6 +24,7 @@ export const createRentalReservation = async (
         customer_name: input.customerName,
         date: input.date,
         duration_minutes: input.durationMinutes,
+        extra_ids: input.extraIds,
         guide_ids: input.guideIds ?? [],
         people_count: input.peopleCount,
         reservation_type: input.reservationType,

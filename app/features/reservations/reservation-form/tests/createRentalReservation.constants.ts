@@ -7,6 +7,7 @@ export const VALIDATED_RESERVATION_INPUT = {
   customerName: "RES04 Fixture Reservation",
   date: "2028-02-29",
   durationMinutes: 90,
+  extraIds: [],
   peopleCount: 3,
   reservationType: RESERVATION_TYPE.RENTAL,
   time: "09:30",
@@ -23,6 +24,11 @@ export const VALIDATED_UNIT_RESERVATION_INPUT = {
     kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
     unitId: "e2400000-0000-4000-8000-000000000102",
   },
+} satisfies ValidatedReservationFormInput;
+
+export const VALIDATED_RESERVATION_WITH_EXTRAS_INPUT = {
+  ...VALIDATED_UNIT_RESERVATION_INPUT,
+  extraIds: ["e2400000-0000-4000-8000-000000000401"],
 } satisfies ValidatedReservationFormInput;
 
 export const VALIDATED_TOUR_RESERVATION_INPUT = {

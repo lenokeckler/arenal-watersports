@@ -29,6 +29,7 @@ describe("validateReservationFormInput", () => {
       customerName: EXPECTED_TRIMMED_CUSTOMER_NAME,
       date: VALID_RESERVATION_FORM_INPUT.date,
       durationMinutes: EXPECTED_DURATION_MINUTES,
+      extraIds: [],
       guideIds: [],
       peopleCount: VALID_RESERVATION_FORM_INPUT.peopleCount,
       reservationType: RESERVATION_TYPE.RENTAL,

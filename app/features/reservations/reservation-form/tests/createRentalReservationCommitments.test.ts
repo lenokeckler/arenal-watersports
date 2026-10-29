@@ -68,6 +68,8 @@ describe("createRentalReservation commitments", () => {
             date: VALIDATED_UNIT_RESERVATION_INPUT.date,
             duration_minutes:
               VALIDATED_UNIT_RESERVATION_INPUT.durationMinutes,
+            extra_ids:
+              VALIDATED_UNIT_RESERVATION_INPUT.extraIds,
             guide_ids: [],
             people_count:
               VALIDATED_UNIT_RESERVATION_INPUT.peopleCount,
@@ -99,6 +101,8 @@ describe("createRentalReservation commitments", () => {
             date: VALIDATED_TOUR_RESERVATION_INPUT.date,
             duration_minutes:
               VALIDATED_TOUR_RESERVATION_INPUT.durationMinutes,
+            extra_ids:
+              VALIDATED_TOUR_RESERVATION_INPUT.extraIds,
             guide_ids:
               VALIDATED_TOUR_RESERVATION_INPUT.guideIds,
             people_count:
