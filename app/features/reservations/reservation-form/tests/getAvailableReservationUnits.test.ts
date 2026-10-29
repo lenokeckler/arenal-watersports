@@ -6,7 +6,9 @@ import {
   vi,
 } from "vitest";
 import type { ReservationCategoryUnitOption } from "../models/ReservationCategoryUnitOption.interface";
+import type { ReservationEquipmentAvailability } from "../models/ReservationEquipmentAvailability.interface";
 import type { ReservationUnitCommitment } from "../models/ReservationUnitCommitment.interface";
+import { RESERVATION_AVAILABILITY } from "../constants/ReservationAvailability.constants";
 import { getAuthorizedReservationFormClient } from "../services/getAuthorizedReservationFormClient";
 import { getAvailableReservationUnits } from "../services/getAvailableReservationUnits";
 import {
@@ -16,6 +18,7 @@ import {
   RESERVATION_AVAILABILITY_INPUT_FIXTURE,
 } from "./getAvailableReservationUnits.constants";
 import { createReservationAvailabilityClient } from "./createReservationAvailabilityClient";
+import type { ReservationAvailabilityClientOptions } from "./models/ReservationAvailabilityClientOptions.interface";
 
 vi.mock(
   "../services/getAuthorizedReservationFormClient",
@@ -26,11 +29,13 @@ vi.mock(
 
 const mockAvailabilityClient = (
   units: ReservationCategoryUnitOption[],
-  commitments: ReservationUnitCommitment[] = []
+  commitments: ReservationUnitCommitment[] = [],
+  options: ReservationAvailabilityClientOptions = {}
 ) => {
   const fixture = createReservationAvailabilityClient(
     units,
-    commitments
+    commitments,
+    options
   );
   vi.mocked(
     getAuthorizedReservationFormClient
@@ -47,6 +52,13 @@ const makeUnit = (
   code: string,
   id: string
 ): ReservationCategoryUnitOption => ({ code, id });
+
+const unitAvailability = (
+  availableUnits: ReservationCategoryUnitOption[]
+): ReservationEquipmentAvailability => ({
+  availableQuantity: null,
+  availableUnits,
+});
 
 describe("getAvailableReservationUnits", () => {
   beforeEach(() => vi.clearAllMocks());
@@ -65,7 +77,7 @@ describe("getAvailableReservationUnits", () => {
     const fixture = mockAvailabilityClient(units);
 
     await expect(loadAvailability()).resolves.toEqual(
-      units
+      unitAvailability(units)
     );
     expect(fixture.requestPaths).toHaveLength(3);
   });
@@ -80,7 +92,9 @@ describe("getAvailableReservationUnits", () => {
       [OVERDUE_RESERVATION_UNIT_COMMITMENT_FIXTURE]
     );
 
-    await expect(loadAvailability()).resolves.toEqual([]);
+    await expect(loadAvailability()).resolves.toEqual(
+      unitAvailability([])
+    );
   });
 
   it("releases a unit after its dispatch closes", async () => {
@@ -93,8 +107,39 @@ describe("getAvailableReservationUnits", () => {
       [CLOSED_DISPATCH_RESERVATION_UNIT_COMMITMENT_FIXTURE]
     );
 
-    await expect(loadAvailability()).resolves.toEqual([
-      unit,
-    ]);
+    await expect(loadAvailability()).resolves.toEqual(
+      unitAvailability([unit])
+    );
+  });
+
+  it("returns zero free quantity for an interchangeable category", async () => {
+    const fixture = mockAvailabilityClient([], [], {
+      availableQuantity: AVAILABLE_UNIT_TEST.FREE_QUANTITY,
+      categoryIsInterchangeable: true,
+    });
+
+    await expect(loadAvailability()).resolves.toEqual({
+      availableQuantity: AVAILABLE_UNIT_TEST.FREE_QUANTITY,
+      availableUnits: [],
+    });
+    expect(
+      fixture.requestPaths.some((path) =>
+        path.endsWith(
+          AVAILABLE_UNIT_TEST.CATEGORY_AVAILABILITY_RPC_PATH
+        )
+      )
+    ).toBe(true);
+  });
+
+  it("fails when interval quantity is missing", async () => {
+    mockAvailabilityClient([], [], {
+      categoryIsInterchangeable: true,
+      hasCategoryAvailabilityRow: false,
+    });
+
+    await expect(loadAvailability()).rejects.toThrow(
+      RESERVATION_AVAILABILITY.ERROR
+        .CATEGORY_AVAILABILITY_MISSING
+    );
   });
 });

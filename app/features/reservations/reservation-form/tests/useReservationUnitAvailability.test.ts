@@ -27,12 +27,15 @@ describe("useReservationUnitAvailability", () => {
   it("refreshes available units when the reservation interval changes", async () => {
     vi.mocked(
       getAvailableReservationUnitsAction
-    ).mockResolvedValue([
-      {
-        code: AVAILABLE_UNIT_TEST.UNIT_CODE,
-        id: AVAILABLE_UNIT_TEST.UNIT_ID,
-      },
-    ]);
+    ).mockResolvedValue({
+      availableQuantity: null,
+      availableUnits: [
+        {
+          code: AVAILABLE_UNIT_TEST.UNIT_CODE,
+          id: AVAILABLE_UNIT_TEST.UNIT_ID,
+        },
+      ],
+    });
     const initialRequest: ReservationUnitAvailabilityInput =
       {
         categoryId: AVAILABLE_UNIT_TEST.CATEGORY_ID,
@@ -72,5 +75,33 @@ describe("useReservationUnitAvailability", () => {
         id: AVAILABLE_UNIT_TEST.UNIT_ID,
       },
     ]);
+    expect(result.current.availableQuantity).toBeNull();
+  });
+
+  it("propagates available quantity for interchangeable categories", async () => {
+    vi.mocked(
+      getAvailableReservationUnitsAction
+    ).mockResolvedValue({
+      availableQuantity:
+        AVAILABLE_UNIT_TEST.INTERCHANGEABLE_FREE_QUANTITY,
+      availableUnits: [],
+    });
+    const request: ReservationUnitAvailabilityInput = {
+      categoryId: AVAILABLE_UNIT_TEST.CATEGORY_ID,
+      date: AVAILABLE_UNIT_TEST.DATE,
+      durationMinutes:
+        AVAILABLE_UNIT_TEST.DURATION_MINUTES,
+      time: AVAILABLE_UNIT_TEST.TIME,
+    };
+    const { result } = renderHook(() =>
+      useReservationUnitAvailability(request)
+    );
+
+    await waitFor(() =>
+      expect(result.current.availableQuantity).toBe(
+        AVAILABLE_UNIT_TEST.INTERCHANGEABLE_FREE_QUANTITY
+      )
+    );
+    expect(result.current.availableUnits).toEqual([]);
   });
 });
