@@ -1,3 +1,5 @@
+"use client";
+
 import { UnorderedListProps } from "./UnorderedListProps.interface";
 import { STRING } from "@/app/constants";
 import { useUnorderedListViewModel } from "./hooks/useUnorderedListViewModel";
@@ -10,16 +12,21 @@ const UnorderedList = ({
   validationMessages,
   items = [],
   variant,
+  ariaLabel,
   className = STRING.Empty,
   style = {},
 }: UnorderedListProps) => {
-  const { finalItems, variantStyles, styleClasses } =
-    useUnorderedListViewModel({
-      validationMessages,
-      items,
-      variant,
-      style,
-    });
+  const {
+    finalItems,
+    listRole,
+    variantStyles,
+    styleClasses,
+  } = useUnorderedListViewModel({
+    validationMessages,
+    items,
+    variant,
+    style,
+  });
   return (
     <div
       className={resolveUnorderedListWrapperClassName(
@@ -31,7 +38,8 @@ const UnorderedList = ({
     >
       <ul
         id={id}
-        role={role}
+        role={role ?? listRole}
+        aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
         className={variantStyles.listClass}
       >
