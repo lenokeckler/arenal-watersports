@@ -7,7 +7,7 @@ import { showGenericMutationErrorToast } from "./showGenericMutationErrorToast";
 
 interface HandleCreateCategoryResultOptions {
   showToast: ReturnType<typeof useToast>["showToast"];
-  onSuccess: () => void;
+  onSuccess: (categoryId: string) => void;
   onGroupNameError: (groupNameError: string) => void;
   onNameError: (nameError: string) => void;
 }
@@ -21,12 +21,15 @@ export const handleCreateCategoryResult = (
     onNameError,
   }: HandleCreateCategoryResultOptions
 ): void => {
-  if (result.status === CATEGORY_MUTATION_STATUS.SUCCESS) {
+  if (
+    result.status === CATEGORY_MUTATION_STATUS.SUCCESS &&
+    result.categoryId
+  ) {
     showToast(
       STATUS.SUCCESS,
       CATEGORY_CATALOG_COPY.CREATE_SUCCESS_TOAST
     );
-    onSuccess();
+    onSuccess(result.categoryId);
     return;
   }
 

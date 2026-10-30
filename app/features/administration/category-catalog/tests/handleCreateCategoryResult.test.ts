@@ -6,6 +6,7 @@ import { handleCreateCategoryResult } from "../utils/handleCreateCategoryResult"
 
 const FAKE_NAME_ERROR = "fake-name-error";
 const FAKE_GROUP_NAME_ERROR = "fake-group-name-error";
+const FAKE_CREATED_CATEGORY_ID = "fake-created-category-id";
 
 const buildOptions = () => ({
   showToast: vi.fn(),
@@ -15,11 +16,14 @@ const buildOptions = () => ({
 });
 
 describe("handleCreateCategoryResult", () => {
-  it("shows the success toast and calls onSuccess when the category was created", () => {
+  it("shows the success toast and hands the new category id to onSuccess when the category was created", () => {
     const options = buildOptions();
 
     handleCreateCategoryResult(
-      { status: CATEGORY_MUTATION_STATUS.SUCCESS },
+      {
+        status: CATEGORY_MUTATION_STATUS.SUCCESS,
+        categoryId: FAKE_CREATED_CATEGORY_ID,
+      },
       options
     );
 
@@ -27,7 +31,9 @@ describe("handleCreateCategoryResult", () => {
       STATUS.SUCCESS,
       CATEGORY_CATALOG_COPY.CREATE_SUCCESS_TOAST
     );
-    expect(options.onSuccess).toHaveBeenCalledOnce();
+    expect(options.onSuccess).toHaveBeenCalledWith(
+      FAKE_CREATED_CATEGORY_ID
+    );
   });
 
   it("routes a name error to the name field without a toast", () => {
