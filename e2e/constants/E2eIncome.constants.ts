@@ -38,7 +38,7 @@ export const E2E_INCOME_SEEDS = {
     currency: CURRENCY_CODE.CRC,
   },
   CRC_REFUND: {
-    amount: 40_000,
+    amount: 1_000_000,
     currency: CURRENCY_CODE.CRC,
   },
   USD_CHARGE: { amount: 85.5, currency: CURRENCY_CODE.USD },
@@ -50,14 +50,13 @@ export const E2E_INCOME_ERROR = {
   INSERT_RESERVATION: "insert the E2E income reservation",
   READ_MOVEMENTS: "read today's income movements",
   REMOVE: "remove the E2E income movements",
+  SEED: "seed the E2E income movements",
 } as const;
+
+export const E2E_INCOME_FIGURE_SELECTOR =
+  "xpath=following-sibling::dd[1]";
 
 export const E2E_INCOME_MONEY_SELECT = "amount, currency";
-
-export const E2E_INCOME_SYMBOL = {
-  CRC: "₡",
-  USD: "US$",
-} as const;
 
 export const E2E_INCOME_SCREENSHOT_BASENAME = {
   REPORT: "01-daily-income-report",

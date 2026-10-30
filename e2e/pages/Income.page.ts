@@ -6,6 +6,7 @@ import {
   type CurrencyCode,
 } from "@/app/constants";
 import { INCOME_COPY } from "@/app/features/administration/income/constants/IncomeCopy.constants";
+import { E2E_INCOME_FIGURE_SELECTOR } from "../constants/E2eIncome.constants";
 import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
 import { getMainRegion } from "../support/mainRegion";
 
@@ -27,7 +28,7 @@ export const createIncomePage = (page: Page) => {
     ): Locator =>
       getCurrencyCard(currency)
         .getByText(label, { exact: true })
-        .locator("xpath=following-sibling::dd[1]"),
+        .locator(E2E_INCOME_FIGURE_SELECTOR),
     getHeading: (): Locator =>
       main.getByRole(ARIA_ROLE.HEADING, {
         level: HEADING_LEVEL.PAGE,

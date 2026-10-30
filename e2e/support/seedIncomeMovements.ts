@@ -64,7 +64,14 @@ export const seedIncomeMovements = async (
       )
     );
   } catch (error) {
-    await removeIncomeMovements(supabase, movements);
+    await removeIncomeMovements(supabase, movements).catch(
+      (cleanupError: unknown) => {
+        throw new AggregateError(
+          [error, cleanupError],
+          E2E_INCOME_ERROR.SEED
+        );
+      }
+    );
     throw error;
   }
 

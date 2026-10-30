@@ -9,19 +9,25 @@ import { seedIncomeMovements } from "./seedIncomeMovements";
 export const test = base.extend<{
   incomeMovements: E2eIncomeMovements;
 }>({
-  incomeMovements: async ({ context }, provide) => {
-    const supabase = createServiceRoleClient();
-    const movements = await seedIncomeMovements(
-      supabase,
-      await readWorkerIdByUsername(
-        E2E_LOGIN_ACCOUNT.USERNAME
-      )
-    );
+  incomeMovements: [
+    async ({ context }, provide) => {
+      const supabase = createServiceRoleClient();
+      const movements = await seedIncomeMovements(
+        supabase,
+        await readWorkerIdByUsername(
+          E2E_LOGIN_ACCOUNT.USERNAME
+        )
+      );
 
-    await provide(movements);
-    await context.clearCookies();
-    await removeIncomeMovements(supabase, movements);
-  },
+      try {
+        await provide(movements);
+      } finally {
+        await removeIncomeMovements(supabase, movements);
+        await context.clearCookies();
+      }
+    },
+    { auto: true },
+  ],
 });
 
 export { expect } from "./activeWorkerTest";

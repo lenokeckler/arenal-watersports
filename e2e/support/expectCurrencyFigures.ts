@@ -33,7 +33,9 @@ export const expectCurrencyFigures = async (
       INCOME_COPY.REFUNDED_LABEL
     )
   ).toHaveText(
-    `${INCOME_SIGN_GLYPH}${formatMoney(display.refunded)}`
+    display.refunded.amount > 0
+      ? `${INCOME_SIGN_GLYPH}${formatMoney(display.refunded)}`
+      : formatMoney(display.refunded)
   );
   await expect(
     incomePage.getFigure(
