@@ -6,6 +6,7 @@ import {
   vi,
 } from "vitest";
 import { PATHS } from "@/app/constants";
+import type { NullableRef } from "@/app/types";
 import type { CategoryMutationResult } from "../models/CategoryMutationResult.interface";
 import type { UpdateCategoryAlertsInput } from "../models/UpdateCategoryAlertsInput.interface";
 import { ALERT_TYPE_BY_STORED_VALUES } from "./CategoryAlertCases.constants";
@@ -36,7 +37,7 @@ vi.mock("../services/updateCategoryAlertsAction", () => ({
 }));
 
 const expectPresence = (
-  field: HTMLElement | null,
+  field: NullableRef<HTMLElement>,
   isExpected: boolean
 ) => {
   if (isExpected) {
