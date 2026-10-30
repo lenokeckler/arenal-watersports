@@ -60,7 +60,7 @@ export const CATEGORY_DEPOSIT_BOUNDARY_CASES: CategoryDepositBoundaryCase[] =
     {
       description: "a malformed text that is also too long",
       currency: CURRENCY_CODE.USD,
-      amountText: `${"9".repeat(USD_INTEGER_DIGITS + 1)},5`,
+      amountText: `${"9".repeat(USD_INTEGER_DIGITS + 1)}.5.5`,
       expectedIssue: MONEY_AMOUNT_ISSUE.FORMAT,
     },
     {
