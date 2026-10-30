@@ -4,6 +4,8 @@ export const UNIT_CATALOG_COPY = {
   CODE_DUPLICATE_ERROR:
     "Ya existe una unidad con ese código.",
   CREATE_SUCCESS_TOAST: "Unidad creada.",
+  DECOMMISSION_GENERIC_ERROR:
+    "No se pudo dar de baja la unidad. Intente de nuevo.",
   DECOMMISSION_OCCUPIED_ERROR:
     "La unidad está ocupada en este momento. Espere a que regrese para darla de baja.",
   DECOMMISSION_SUCCESS_TOAST: "Unidad dada de baja.",

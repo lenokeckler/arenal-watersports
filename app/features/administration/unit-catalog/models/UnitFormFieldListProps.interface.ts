@@ -7,5 +7,5 @@ export interface UnitFormFieldListProps extends UnitFieldHandlers {
   values: UnitFormValues;
   errors: UnitFormErrors;
   category: UnitCategory;
-  isSubmitting: boolean;
+  isDisabled: boolean;
 }
