@@ -31,6 +31,7 @@ export const RESERVATION_FORM_DEFAULT_VALUES = {
 
 export const RESERVATION_FORM_FIELD_ID = {
   CATEGORY: "reservation-category",
+  CATEGORY_ERROR: "reservation-category-error",
   CUSTOMER_NAME: "reservation-customer-name",
   DATE: "reservation-date",
   DURATION: "reservation-duration",
@@ -38,4 +39,14 @@ export const RESERVATION_FORM_FIELD_ID = {
   PEOPLE_COUNT: "reservation-people-count",
   QUANTITY: "reservation-quantity",
   TIME: "reservation-time",
+  UNIT: "reservation-unit",
+} as const;
+
+export const RESERVATION_FORM_INPUT_TYPE = {
+  RADIO: "radio",
+} as const;
+
+export const RESERVATION_FORM_CATEGORY_IMAGE_SIZE = {
+  HEIGHT: 128,
+  WIDTH: 192,
 } as const;

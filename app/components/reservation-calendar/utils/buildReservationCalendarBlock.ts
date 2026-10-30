@@ -93,6 +93,7 @@ export const buildReservationCalendarBlock = (
     actualLabels,
     customerName: entry.customerName,
     equipmentLabel,
+    equipmentCategoryName: entry.equipment[0]?.categoryName,
     guides: entry.guides,
     id: entry.id,
     scheduledLabel,

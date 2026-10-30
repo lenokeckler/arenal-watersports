@@ -11,6 +11,8 @@ export const PATHS = {
   },
   ADMINISTRATION: {
     ROOT: "/administration",
+    RESERVATIONS_BY_WORKER:
+      "/administration/reports/reservations-by-worker",
     WORKER_AREAS: "/administration/workers/areas",
     WORKERS_NEW: "/administration/workers/new",
   },
@@ -18,6 +20,9 @@ export const PATHS = {
     EMAIL: "/profile/email",
     PASSWORD: "/profile/password",
     ROOT: "/profile",
+  },
+  OPERATIONS: {
+    CALENDAR: "/operations/calendar",
   },
   WELL_KNOWN: {
     CHANGE_PASSWORD: "/.well-known/change-password",
