@@ -52,6 +52,7 @@ export const IDLE_COLON_DISPLAY: CurrencyIncomeDisplay = {
 
 export const HEADING_LEVEL_TWO = 2;
 export const TERM_SELECTOR = "dt";
+export const TIME_SELECTOR = "time";
 export const DEFINITION_SELECTOR = "dd";
 export const HIDDEN_SIGN_SELECTOR = "[aria-hidden='true']";
 export const ERROR_TEXT_CLASS = "text-error";
