@@ -54,6 +54,7 @@ describe("useReservationFormViewModel selection invalidation", () => {
     viewModelHarness.equipment.current = {
       availableUnits: [],
       hasAvailabilityError: false,
+      isAvailabilityResolved: true,
       isAvailabilityLoading: false,
       requiresConcreteUnit: true,
     };
@@ -76,6 +77,7 @@ describe("useReservationFormViewModel selection invalidation", () => {
     viewModelHarness.equipment.current = {
       availableUnits: [],
       hasAvailabilityError: false,
+      isAvailabilityResolved: true,
       isAvailabilityLoading: false,
       requiresConcreteUnit: true,
     };
@@ -86,6 +88,7 @@ describe("useReservationFormViewModel selection invalidation", () => {
     viewModelHarness.equipment.current = {
       availableUnits: [{ code: "LANCHA-2", id: "unit-2" }],
       hasAvailabilityError: false,
+      isAvailabilityResolved: true,
       isAvailabilityLoading: false,
       requiresConcreteUnit: true,
     };
@@ -106,6 +109,7 @@ describe("useReservationFormViewModel selection invalidation", () => {
     viewModelHarness.equipment.current = {
       availableUnits: [],
       hasAvailabilityError: false,
+      isAvailabilityResolved: true,
       isAvailabilityLoading: false,
       requiresConcreteUnit: true,
     };
