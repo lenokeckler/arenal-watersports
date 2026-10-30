@@ -70,6 +70,7 @@ describe("createRentalReservation", () => {
             date: VALIDATED_RESERVATION_INPUT.date,
             duration_minutes:
               VALIDATED_RESERVATION_INPUT.durationMinutes,
+            guide_ids: [],
             people_count:
               VALIDATED_RESERVATION_INPUT.peopleCount,
             reservation_type:
@@ -103,6 +104,7 @@ describe("createRentalReservation", () => {
             date: VALIDATED_UNIT_RESERVATION_INPUT.date,
             duration_minutes:
               VALIDATED_UNIT_RESERVATION_INPUT.durationMinutes,
+            guide_ids: [],
             people_count:
               VALIDATED_UNIT_RESERVATION_INPUT.peopleCount,
             reservation_type:
@@ -117,7 +119,7 @@ describe("createRentalReservation", () => {
     );
   });
 
-  it("sends the selected reservation type to the database", async () => {
+  it("sends selected guide ids with the tour", async () => {
     await createRentalReservation(
       VALIDATED_TOUR_RESERVATION_INPUT
     );
@@ -133,6 +135,8 @@ describe("createRentalReservation", () => {
             date: VALIDATED_TOUR_RESERVATION_INPUT.date,
             duration_minutes:
               VALIDATED_TOUR_RESERVATION_INPUT.durationMinutes,
+            guide_ids:
+              VALIDATED_TOUR_RESERVATION_INPUT.guideIds,
             people_count:
               VALIDATED_TOUR_RESERVATION_INPUT.peopleCount,
             reservation_type:
