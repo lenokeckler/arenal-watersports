@@ -29,6 +29,10 @@ export const CATEGORY_CATALOG_COPY = {
   DELETE_HAS_RECORDS_ERROR:
     "Esta categoría ya tiene unidades o existencias registradas y no se puede eliminar.",
   DELETE_SUCCESS_TOAST: "Categoría eliminada.",
+  DEPOSIT_CATEGORY_NOT_FOUND_ERROR:
+    "No se encontró la categoría. Es posible que otra persona la haya eliminado.",
+  DEPOSIT_UPDATE_SUCCESS_TOAST:
+    "Depósito de la categoría actualizado.",
   EMPTY_STATE_BODY:
     "Cada categoría que agregue aparece aquí.",
   EMPTY_STATE_TITLE: "Todavía no hay categorías.",
