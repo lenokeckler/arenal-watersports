@@ -7,6 +7,7 @@ import type { UpdateReservationFormValue } from "../models/UpdateReservationForm
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { createReservationTypeChangeHandler } from "../utils/createReservationTypeChangeHandler";
 import { createReservationFormNumericFieldHandlers } from "../utils/createReservationFormNumericFieldHandlers";
+import { useReservationFormSelectionFields } from "./useReservationFormSelectionFields";
 import { useReservationFormValues } from "./useReservationFormValues";
 
 const createBasicFieldHandlers = (
@@ -75,6 +76,10 @@ export const useReservationFormFields = (
       setHasReservationTypeSelectionReset(false)
     ),
     ...numericFieldHandlers,
+    ...useReservationFormSelectionFields(
+      updateValue,
+      values
+    ),
     handleReservationTypeChange,
     hasReservationTypeSelectionReset,
     values,

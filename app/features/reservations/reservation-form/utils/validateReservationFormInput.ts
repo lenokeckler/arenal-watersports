@@ -24,6 +24,7 @@ const buildValidatedInput = (
   durationMinutes:
     input.durationHours *
     RESERVATION_SCHEDULE.MINUTES_PER_HOUR,
+  guideIds: input.guideIds ?? [],
   peopleCount: input.peopleCount,
   reservationType:
     input.reservationType ?? RESERVATION_TYPE.RENTAL,
