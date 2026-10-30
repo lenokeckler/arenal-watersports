@@ -145,6 +145,13 @@ export const createReservationFormViewPage = (
       queryCustomDurationInput(container),
     selectDuration: (label: string) =>
       selectDuration(user, label),
+    selectReservationType: async (
+      label: string
+    ): Promise<void> => {
+      await user.click(
+        screen.getByLabelText(label, { exact: false })
+      );
+    },
     submit: () => submit(user),
     selectCategory: (categoryId: string) =>
       user.selectOptions(getCategorySelect(), categoryId),

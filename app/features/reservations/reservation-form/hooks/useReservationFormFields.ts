@@ -1,61 +1,82 @@
-import { RESERVATION_FORM_MINIMUM_INPUT_VALUE } from "../constants/ReservationFormUi.constants";
 import { STRING } from "@/app/constants";
+import { useState } from "react";
+import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
+import type { ReservationFormFieldsViewModel } from "../models/ReservationFormFieldsViewModel.interface";
 import type { ReservationFormField } from "../models/ReservationFormField.constants";
+import type { UpdateReservationFormValue } from "../models/UpdateReservationFormValue.type";
+import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
+import { createReservationTypeChangeHandler } from "../utils/createReservationTypeChangeHandler";
+import { createReservationFormNumericFieldHandlers } from "../utils/createReservationFormNumericFieldHandlers";
 import { useReservationFormValues } from "./useReservationFormValues";
+
+const createBasicFieldHandlers = (
+  updateValue: UpdateReservationFormValue,
+  clearSelectionResetNotice: () => void
+) => ({
+  handleCategoryChange: (value: string) => {
+    clearSelectionResetNotice();
+    updateValue(RESERVATION_FORM_FIELD.CATEGORY_ID, value);
+    updateValue(
+      RESERVATION_FORM_FIELD.UNIT_ID,
+      STRING.Empty
+    );
+  },
+  handleCustomerNameChange: (value: string) =>
+    updateValue(
+      RESERVATION_FORM_FIELD.CUSTOMER_NAME,
+      value
+    ),
+  handleDateChange: (value: string) => {
+    updateValue(RESERVATION_FORM_FIELD.DATE, value);
+    updateValue(
+      RESERVATION_FORM_FIELD.UNIT_ID,
+      STRING.Empty
+    );
+  },
+  handleTimeChange: (value: string) => {
+    updateValue(RESERVATION_FORM_FIELD.TIME, value);
+    updateValue(
+      RESERVATION_FORM_FIELD.UNIT_ID,
+      STRING.Empty
+    );
+  },
+  handleUnitChange: (value: string) => {
+    clearSelectionResetNotice();
+    updateValue(RESERVATION_FORM_FIELD.UNIT_ID, value);
+  },
+});
 
 export const useReservationFormFields = (
   initialDate: string,
   initialCategoryId: string,
-  clearFieldError: (field: ReservationFormField) => void
-) => {
+  clearFieldError: (field: ReservationFormField) => void,
+  categories: ReservationCategoryOption[]
+): ReservationFormFieldsViewModel => {
   const { updateValue, values } = useReservationFormValues(
     initialDate,
     initialCategoryId,
     clearFieldError
   );
-
+  const [
+    hasReservationTypeSelectionReset,
+    setHasReservationTypeSelectionReset,
+  ] = useState(false);
+  const handleReservationTypeChange =
+    createReservationTypeChangeHandler(
+      categories,
+      values,
+      updateValue,
+      setHasReservationTypeSelectionReset
+    );
+  const numericFieldHandlers =
+    createReservationFormNumericFieldHandlers(updateValue);
   return {
-    handleCategoryChange: (value: string) => {
-      updateValue("categoryId", value);
-      updateValue("unitId", STRING.Empty);
-    },
-    handleCustomerNameChange: (value: string) =>
-      updateValue("customerName", value),
-    handleDateChange: (value: string) => {
-      updateValue("date", value);
-      updateValue("unitId", STRING.Empty);
-    },
-    handleDurationChange: (value: number) => {
-      if (
-        Number.isFinite(value) &&
-        value >= RESERVATION_FORM_MINIMUM_INPUT_VALUE
-      ) {
-        updateValue("durationHours", value);
-        updateValue("unitId", STRING.Empty);
-      }
-    },
-    handlePeopleCountChange: (value: number) => {
-      if (
-        Number.isFinite(value) &&
-        value >= RESERVATION_FORM_MINIMUM_INPUT_VALUE
-      ) {
-        updateValue("peopleCount", value);
-      }
-    },
-    handleQuantityChange: (value: number) => {
-      if (
-        Number.isFinite(value) &&
-        value >= RESERVATION_FORM_MINIMUM_INPUT_VALUE
-      ) {
-        updateValue("quantity", value);
-      }
-    },
-    handleTimeChange: (value: string) => {
-      updateValue("time", value);
-      updateValue("unitId", STRING.Empty);
-    },
-    handleUnitChange: (value: string) =>
-      updateValue("unitId", value),
+    ...createBasicFieldHandlers(updateValue, () =>
+      setHasReservationTypeSelectionReset(false)
+    ),
+    ...numericFieldHandlers,
+    handleReservationTypeChange,
+    hasReservationTypeSelectionReset,
     values,
   };
 };

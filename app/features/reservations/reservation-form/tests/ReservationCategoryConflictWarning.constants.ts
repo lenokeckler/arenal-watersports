@@ -7,6 +7,7 @@ export const RESERVATION_CATEGORY_CONFLICT_WARNING_TEST = {
   NEXT_DATE: "2028-03-01",
   INTERVAL:
     "martes, 29 de febrero de 2028 · 09:00 a. m.–10:00 a. m.",
+  LOOKUP_FAILURE_MESSAGE: "Lookup unavailable",
   RPC_ROW: {
     code: "RES-2028-001",
     customer_name: "Ana Solís",
@@ -18,6 +19,7 @@ export const RESERVATION_CATEGORY_CONFLICT_WARNING_TEST = {
   CODE: string;
   CUSTOMER_NAME: string;
   INTERVAL: string;
+  LOOKUP_FAILURE_MESSAGE: string;
   NEXT_CATEGORY_ID: string;
   NEXT_DATE: string;
   RPC_ROW: ReservationCategoryConflict;

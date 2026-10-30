@@ -2,7 +2,7 @@
 
 ## Intent
 
-Allow a reservations worker to record a rental reservation with its customer name, group size, Costa Rica date and time, duration, and one valid equipment commitment.
+Allow a reservations worker to record a reservation with its type, customer name, group size, Costa Rica date and time, duration, and one valid equipment commitment.
 
 ## In scope
 
@@ -11,17 +11,17 @@ Allow a reservations worker to record a rental reservation with its customer nam
 - Persist only the customer name from customer identity/contact information.
 - Persist the creator from the authenticated session.
 - Persist one of two equipment commitments: an active, reservable, interchangeable category with positive quantity, or one concrete unit from an active, reservable, non-interchangeable category.
-- Treat every initial reservation created by this form as `rental`, as authorized for this story.
+- Default new forms to `rental` and persist the selected `rental`, `tour`, or `combo` type.
 - Interpret civil date and time in `America/Costa_Rica` regardless of server timezone.
 
 ## Out of scope
 
 - Criterion 5 remains dependent on integrating open calendar PR #101. This work must not fabricate a local calendar or substitute visibility behavior.
-- US-RES-08 reservation editing.
+- US-RES-08 guide assignment, combo composition, and package pricing.
 - US-RES-15 availability and collision checking.
 - US-RES-16 collision warnings.
 - US-RES-17 live inventory updates and equipment-selection presentation remain owned by its follow-up UI unit.
-- Tour, combo, customer email, or other contact fields.
+- Guide assignment, combo composition, package pricing, customer email, or other contact fields.
 
 ## Requirements
 
@@ -99,13 +99,33 @@ Unit 1 implements the atomic persistence and data-integrity boundary for both co
 ### Data unit scope
 
 - The validated reservation input carries `rental`, `tour`, or `combo` and the RPC persists the selected value.
-- Existing callers without a type remain `rental` until the form unit adds type selection.
+- Existing callers without a type remain `rental`; the form unit exposes type selection.
 - The category query exposes `guide_only`; the database rejects guide-only category and unit commitments unless the reservation type is `tour`, including direct scheduled-item inserts.
 - Criterion 1 data classification is supported; the form unit must expose the type choice and retain the existing rental flow.
 - Criterion 2 remains pending guide assignment in US-RES-12. This unit stores `tour` but does not assign a worker.
 - Criterion 3 remains pending combo composition and package pricing in US-RES-09 and US-RES-10.
 - Criterion 4 is enforced at the database boundary for category and unit commitments.
 - Tariff selection and payment behavior are not implemented in this unit.
+
+## US-RES-08 reservation type form
+
+### UI behavior
+
+- Present accessible, responsive choices for `rental`, `tour`, and `combo` before the customer and equipment fields.
+- Explain each choice using its story description and keep rental as the initial selection.
+- Show categories marked `guide_only` only when `tour` is selected.
+- Clear a selected guide-only category and its concrete unit when switching from `tour` to `rental` or `combo`.
+- Explain when changing reservation type clears a previously selected guide-only category and concrete unit.
+- Describe the empty category state without instructing the worker to select a reservation type that is already selected.
+- Submit the selected reservation type through the existing reservation action.
+- Do not implement combo composition, package pricing, or assignment of a specific guide.
+
+### Acceptance criteria mapping
+
+- Criterion 1 is represented by the rental selection and its description.
+- Criterion 2 is represented by the tour selection and its description; assigning a guide remains pending in US-RES-12.
+- Criterion 3 is represented by selecting and persisting `combo`; equipment composition and package pricing remain pending in US-RES-09 and US-RES-10.
+- Criterion 4 is enforced by the data unit and reinforced by filtering `guide_only` categories in the form.
 
 ## US-RES-17 equipment eligibility data
 

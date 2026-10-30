@@ -4,6 +4,7 @@ import { getAvailableReservationUnitsAction } from "../actions/getAvailableReser
 import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { RESERVATION_TYPE_COPY } from "../constants/ReservationTypeCopy.constants";
 import { renderReservationForm } from "./ReservationFormView.fixture";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 
@@ -110,6 +111,9 @@ describe("ReservationFormView submission", () => {
     });
     const page = renderReservationForm();
 
+    await page.selectReservationType(
+      RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
+    );
     await page.selectCategory(
       RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
     );

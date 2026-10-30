@@ -1,4 +1,5 @@
 import { STRING } from "@/app/constants";
+import { RESERVATION_TYPE } from "./ReservationType.constants";
 
 export const RESERVATION_TIME_ZONE = "America/Costa_Rica";
 
@@ -27,6 +28,7 @@ export const RESERVATION_FORM_DEFAULT_VALUES = {
   durationHours: 1,
   peopleCount: 1,
   quantity: 1,
+  reservationType: RESERVATION_TYPE.RENTAL,
   time: "09:00",
   unitId: STRING.Empty,
 } as const;
