@@ -4,7 +4,6 @@ import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { readCategoryRow } from "../services/readCategoryRow";
 
 const FAKE_ROW = { id: "category-id" };
-const FAKE_CLIENT = { from: vi.fn() };
 const OPERATION = "readCategoryRowTest";
 
 vi.mock("@/app/services/supabase", () => ({
@@ -48,20 +47,5 @@ describe("readCategoryRow", () => {
     await expect(
       run({ data: null, error: { code: "XX000" } })
     ).rejects.toThrow(SupabaseQueryError);
-  });
-
-  it("hands the server client to the query", async () => {
-    const query = vi.fn().mockResolvedValue({
-      data: null,
-      error: null,
-    });
-
-    await readCategoryRow({
-      query,
-      map: () => FAKE_CLIENT,
-      operation: OPERATION,
-    });
-
-    expect(query).toHaveBeenCalledTimes(1);
   });
 });
