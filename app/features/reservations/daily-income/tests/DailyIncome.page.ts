@@ -38,8 +38,29 @@ export const createDailyIncomePage = () => {
   const queryText = (text: string) =>
     screen.queryByText(text);
 
+  const getHeadings = (level: number) =>
+    screen.getAllByRole(ARIA_ROLE.HEADING, { level });
+
+  const queryRegions = () =>
+    screen.queryAllByRole(ARIA_ROLE.REGION);
+
+  const getAlert = () => screen.getByRole(ARIA_ROLE.ALERT);
+
+  const getStatus = () =>
+    screen.getByRole(ARIA_ROLE.STATUS);
+
+  const getMain = () => screen.getByRole(ARIA_ROLE.MAIN);
+
+  const getText = (text: string) => screen.getByText(text);
+
   return {
+    getAlert,
     getBarWidths,
+    getHeadings,
+    getMain,
+    getStatus,
+    getText,
+    queryRegions,
     getLeafByExactText,
     getList,
     getRegion,
