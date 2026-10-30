@@ -2,11 +2,14 @@ import type { Page } from "@playwright/test";
 import { ARIA_ROLE } from "@/app/constants";
 import { E2E_RESERVATION_FORM_COPY } from "../constants/E2eReservationForm.constants";
 import { getMainRegion } from "../support/mainRegion";
+import { createReservationFormCategoryPage } from "./ReservationFormCategory.page";
 
 export const createReservationFormSubmissionPage = (
   page: Page
 ) => {
   const main = getMainRegion(page);
+  const categoryPage =
+    createReservationFormCategoryPage(page);
 
   return {
     submitCustomDurationReservation: async (
@@ -20,12 +23,9 @@ export const createReservationFormSubmissionPage = (
         .fill(
           E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_CUSTOMER_NAME
         );
-      await main
-        .getByText(
-          E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION,
-          { exact: true }
-        )
-        .click();
+      await categoryPage.selectCategory(
+        E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
+      );
       await main
         .getByRole(ARIA_ROLE.BUTTON, {
           name: E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_OPTION,
@@ -54,12 +54,9 @@ export const createReservationFormSubmissionPage = (
         .fill(
           E2E_RESERVATION_FORM_COPY.CUSTOMER_NAME_VALID
         );
-      await main
-        .getByText(
-          E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION,
-          { exact: true }
-        )
-        .click();
+      await categoryPage.selectCategory(
+        E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
+      );
       await main
         .getByRole(ARIA_ROLE.BUTTON, {
           name: E2E_RESERVATION_FORM_COPY.SUBMIT,

@@ -45,7 +45,7 @@ test.describe("Reservation form screenshots", () => {
         E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
       )
       .waitFor();
-    await reservationFormPage.selectCategoryOption(
+    await reservationFormPage.selectCategory(
       E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
     );
     await page
