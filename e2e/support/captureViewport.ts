@@ -9,7 +9,7 @@ export const captureViewport = async (
   fileName: string
 ): Promise<void> => {
   await page.screenshot({
-    fullPage: E2E_SCREENSHOT_VIEWPORT_ONLY,
+    fullPage: !E2E_SCREENSHOT_VIEWPORT_ONLY,
     path: resolveScreenshotPath(fileName),
   });
 };
