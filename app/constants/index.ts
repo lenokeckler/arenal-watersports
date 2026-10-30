@@ -168,6 +168,10 @@ export {
   BLOCKED_REAUTHENTICATION_NOTICE_REASON,
 } from "./access/BlockedReauthentication.constants";
 export { SUPABASE_TABLE } from "./supabase/SupabaseTable.constants";
+export {
+  RESERVATIONS_BY_WORKER_OPERATION,
+  RESERVATIONS_BY_WORKER_QUERY,
+} from "./supabase/ReservationsByWorkerQuery.constants";
 export { SUPABASE_SIGN_OUT_SCOPE } from "./supabase/SupabaseSignOutScope.constants";
 export {
   SUPABASE_AUTH_COOKIE,
