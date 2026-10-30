@@ -80,7 +80,6 @@ export const E2E_SUPABASE_ERROR = {
 
 export const E2E_AUTH_SESSIONS = {
   DATABASE: "postgres",
-  DATABASE_CONTAINER: "supabase_db_arenal-watersports",
   DATABASE_USER: "postgres",
   COUNT_QUERY:
     "select count(*) from auth.sessions where user_id = :'uid'",
@@ -88,6 +87,45 @@ export const E2E_AUTH_SESSIONS = {
     "delete from auth.sessions where user_id = :'uid'",
   STOP_ON_ERROR_VARIABLE: "ON_ERROR_STOP=1",
   USER_ID_VARIABLE: "uid",
+} as const;
+
+export const E2E_DOCKER = {
+  CONTAINER_NAME_PREFIX: "/supabase_db_",
+  EXECUTABLE: "docker",
+  FORMAT_FLAG: "--format",
+  INSPECT_COMMAND: "inspect",
+  INSPECTED_METADATA_LINES_PER_CONTAINER: 3,
+  INSPECT_FORMAT:
+    "{{json .Name}}{{println}}{{json .Config.Labels}}{{println}}{{json .NetworkSettings.Ports}}",
+  KONG_API_PORT: "8000",
+  KONG_CONTAINER_NAME_PREFIX: "/supabase_kong_",
+  PORT_PROTOCOL: "tcp",
+  PROJECT_LABEL: "com.supabase.cli.project",
+  PS_COMMAND: "ps",
+  QUIET_FLAG: "-q",
+  WORKDIR_LABEL: "com.supabase.cli.workdir",
+} as const;
+
+export const E2E_DATABASE_RESOLVER = {
+  ACTION: "resolve the local database container",
+  AMBIGUOUS_GATEWAY_FOR_URL: (port: string): string =>
+    `More than one local Supabase API gateway publishes port ${port}.`,
+  DOCKER_COMMAND_FAILED: (reason: string): string =>
+    `Docker could not inspect the local Supabase containers: ${reason}`,
+  EMPTY_CONTAINER_LIST:
+    "Docker returned no running containers.",
+  INVALID_DOCKER_OUTPUT:
+    "Docker returned invalid container metadata.",
+  MISSING_DATABASE_CONTAINER: (project: string): string =>
+    `No database container was found for the local Supabase project ${project}.`,
+  MISSING_PROJECT_METADATA:
+    "The local Supabase container does not include the required project labels.",
+  MISSING_URL_PORT:
+    "The local Supabase URL must include its API port.",
+  NO_GATEWAY_FOR_URL: (port: string): string =>
+    `No local Supabase API gateway publishes port ${port}.`,
+  NON_LOCAL_URL: (host: string): string =>
+    `E2E only runs against the local Supabase, not ${host}.`,
 } as const;
 
 export const E2E_AUTH_SESSIONS_ERROR = {

@@ -2,11 +2,12 @@ import {
   E2E_RESERVATION,
   E2E_RESERVATION_SCREENSHOT,
 } from "../constants/E2eReservationsByWorker.constants";
+import { resolveDeviceScreenshotFileName } from "../constants/E2eScreenshot.constants";
 import { createReservationsByWorkerPage } from "../pages/ReservationsByWorker.page";
 import { test } from "../support/activeWorkerTest";
 import { createReservationsByWorkerReservation } from "../support/createReservationsByWorkerReservation";
 import { readSeededAdmin } from "../support/readSeededAdmin";
-import { captureFullPage } from "../support/captureFullPage";
+import { captureViewport } from "../support/captureViewport";
 import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
 
 test.describe("Reservations by worker screenshots", () => {
@@ -25,10 +26,12 @@ test.describe("Reservations by worker screenshots", () => {
     try {
       await signInAsSeededWorker(page);
       await createReservationsByWorkerPage(page).goTo();
-      await captureFullPage(
+      await captureViewport(
         page,
-        E2E_RESERVATION_SCREENSHOT.REPORT,
-        testInfo.project.name
+        resolveDeviceScreenshotFileName(
+          E2E_RESERVATION_SCREENSHOT.REPORT,
+          testInfo.project.name
+        )
       );
     } finally {
       await reservation.remove();
