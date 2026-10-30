@@ -111,7 +111,7 @@ Let the administration worker set, change and clear the guarantee deposit of a c
 
 - Each field is judged on its own, after trimming its text.
 - A blank field means no deposit for that currency: no error, and it is parsed as `null`.
-- The text holds only digits with an optional single `.` followed by digits. A sign, a comma, a thousands separator, a symbol, an exponent, a leading dot or a trailing dot is a format issue.
+- The text holds only digits with an optional single decimal separator, `.` or `,` (a Spanish-locale decimal keypad types a comma), followed by digits. `200,50` is read as 200.50. A sign, a second separator, a symbol, an exponent, a leading separator or a trailing separator is a format issue; `100,000` is read as 100.000 and fails on precision, so a thousands separator is never taken for an amount.
 - Leading zeros are not counted as integer digits.
 - At most 10 integer digits in USD and 12 in CRC, and at most 2 decimals in both. Anything more is a precision issue.
 - The value must be greater than zero: `0`, `000` and `0.00` are not-positive issues.
