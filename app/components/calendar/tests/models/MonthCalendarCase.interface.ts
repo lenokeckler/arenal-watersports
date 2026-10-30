@@ -1,4 +1,4 @@
-import type { CalendarDate } from "../../models";
+import type { CalendarDate } from "@/app/types";
 
 export interface MonthCalendarCase {
   start: CalendarDate;
