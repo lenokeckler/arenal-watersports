@@ -96,8 +96,8 @@ Let the administration worker set, change and clear the guarantee deposit of a c
 
 ## In scope
 
-- Part 14.01 (this branch): the rules only. `findMoneyAmountIssue` and `parseMoneyAmount` in `app/utils/money`, `CATEGORY_DEPOSIT_LIMITS`, `CATEGORY_DEPOSIT_ERROR_COPY`, the form and input models, `validateCategoryDepositFormValues`, `mapCategoryDepositFormValuesToInput` and `mapCategoryDepositToFormValues`.
-- Part 14.02: the data access and the administrator-only update action.
+- Part 14.01 (this branch): the rules only. `findMoneyAmountIssue` and `parseMoneyAmount` in `app/utils/money`, `CATEGORY_DEPOSIT_LIMITS`, `CATEGORY_DEPOSIT_ERROR_COPY`, the form and input models, and `validateCategoryDepositFormValues`.
+- Part 14.02: the form-to-input and deposit-to-form mappers, the data access and the administrator-only update action.
 - Part 14.03: the form state and submit hooks.
 - Part 14.04: the screen, its route and the card link.
 
@@ -139,7 +139,7 @@ Let the administration worker set, change and clear the guarantee deposit of a c
 
 US-ADM-14, as written in `docs/proyecto/historias-de-usuario.md`:
 
-- [ ] Se registra el monto en dólares y en colones. Por ejemplo doscientos dólares o cien mil colones para los jet skis. — the amount rules and the form-to-input mapping are closed by 14.01 (`validateCategoryDepositFormValues`, `mapCategoryDepositFormValuesToInput`); saving and the screen are 14.02 to 14.04.
-- [ ] El monto se puede modificar cuando la empresa lo decida. — `mapCategoryDepositToFormValues` prefills the stored amount (14.01); the update action and the screen are 14.02 and 14.04.
-- [ ] Hay categorías sin depósito. Administración decide a cuáles ponerles, por ejemplo agregárselo también a los cuadraciclos. — a blank field is valid and parses as `null` (14.01); persisting `null` is 14.02.
+- [ ] Se registra el monto en dólares y en colones. Por ejemplo doscientos dólares o cien mil colones para los jet skis. — the amount rules are closed by 14.01 (`validateCategoryDepositFormValues`); the mapping to the update input and saving are 14.02, and the screen is 14.04.
+- [ ] El monto se puede modificar cuando la empresa lo decida. — `mapCategoryDepositToFormValues` prefills the stored amount and the update action saves it (14.02); the screen is 14.04.
+- [ ] Hay categorías sin depósito. Administración decide a cuáles ponerles, por ejemplo agregárselo también a los cuadraciclos. — a blank field is valid and parses as `null` (14.01); mapping it to the update input and persisting `null` is 14.02.
 - [ ] El monto que se le pide al cliente sale de la categoría del equipo que va a salir. — satisfied by the `deposit_usd` and `deposit_crc` columns of `equipment_categories`; the read at dispatch is left to US-RES-29.
