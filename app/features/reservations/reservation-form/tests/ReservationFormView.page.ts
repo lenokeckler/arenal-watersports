@@ -8,6 +8,8 @@ import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
 import { RESERVATION_CATEGORY_CONFLICT_WARNING_TEST } from "./ReservationCategoryConflictWarning.constants";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
+import { createReservationFormCustomerPage } from "./ReservationFormCustomer.page";
+import { createReservationTypeFieldPage } from "./ReservationTypeField.page";
 
 const getDurationOption = (label: string) =>
   screen.getByRole(ARIA_ROLE.BUTTON, { name: label });
@@ -102,8 +104,14 @@ export const createReservationFormViewPage = (
   container: HTMLElement
 ) => {
   const user = userEvent.setup();
+  const reservationTypePage =
+    createReservationTypeFieldPage();
+  const reservationCustomerPage =
+    createReservationFormCustomerPage();
 
   return {
+    ...reservationTypePage,
+    ...reservationCustomerPage,
     getDurationOption,
     getBackButton,
     findDurationValidationError,
@@ -145,13 +153,6 @@ export const createReservationFormViewPage = (
       queryCustomDurationInput(container),
     selectDuration: (label: string) =>
       selectDuration(user, label),
-    selectReservationType: async (
-      label: string
-    ): Promise<void> => {
-      await user.click(
-        screen.getByLabelText(label, { exact: false })
-      );
-    },
     submit: () => submit(user),
     selectCategory: (categoryId: string) =>
       user.selectOptions(getCategorySelect(), categoryId),
