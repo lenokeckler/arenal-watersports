@@ -1,4 +1,5 @@
 export const MATERIAL_ICON_NAME = {
+  ADD: "add",
   ADMIN_PANEL_SETTINGS: "admin_panel_settings",
   ARROW_BACK: "arrow_back",
   CANCEL: "cancel",

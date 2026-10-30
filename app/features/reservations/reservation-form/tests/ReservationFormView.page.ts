@@ -18,6 +18,13 @@ const queryCustomDurationInput = (
     `#${RESERVATION_FORM_FIELD_ID.DURATION}`
   );
 
+const queryQuantityInput = (
+  container: HTMLElement
+): NullableRef<HTMLInputElement> =>
+  container.querySelector<HTMLInputElement>(
+    `#${RESERVATION_FORM_FIELD_ID.QUANTITY}`
+  );
+
 const getSubmitButton = () =>
   screen.getByRole(ARIA_ROLE.BUTTON, {
     name: RESERVATION_FORM_UI_COPY.SUBMIT,
@@ -75,6 +82,25 @@ export const createReservationFormViewPage = (
   const user = userEvent.setup();
 
   return {
+    getCategoryChoice: (categoryName: string) =>
+      screen.getByLabelText(categoryName),
+    getEquipmentImage: (imageAlt: string) =>
+      screen.getByAltText(imageAlt),
+    selectCategoryChoice: async (
+      categoryName: string
+    ): Promise<void> => {
+      await user.click(screen.getByLabelText(categoryName));
+    },
+    getCategoryGroup: () =>
+      screen.getByRole(ARIA_ROLE.GROUP, {
+        name: RESERVATION_FORM_UI_COPY.CATEGORY,
+      }),
+    findCategoryError: () =>
+      screen.findByText(
+        RESERVATION_FORM_COPY[
+          RESERVATION_FORM_FIELD.CATEGORY_ID
+        ]
+      ),
     getDurationOption,
     getBackButton,
     findDurationValidationError,
@@ -86,8 +112,21 @@ export const createReservationFormViewPage = (
     },
     queryCustomDurationInput: () =>
       queryCustomDurationInput(container),
+    queryQuantityInput: () => queryQuantityInput(container),
     selectDuration: (label: string) =>
       selectDuration(user, label),
+    setQuantity: async (
+      quantity: string
+    ): Promise<void> => {
+      const quantityInput = queryQuantityInput(container);
+      if (!quantityInput) {
+        throw new Error(
+          "The equipment quantity field is missing."
+        );
+      }
+      await user.clear(quantityInput);
+      await user.type(quantityInput, quantity);
+    },
     submit: () => submit(user),
     typeCustomDuration: (value: string) =>
       typeCustomDuration(user, container, value),

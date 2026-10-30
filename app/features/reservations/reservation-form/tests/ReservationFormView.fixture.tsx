@@ -23,6 +23,10 @@ export const renderReservationForm = () => {
           id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
           name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
         },
+        {
+          id: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_ID,
+          name: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME,
+        },
       ]}
       initialDate={RESERVATION_FORM_VIEW_TEST.DATE}
     />

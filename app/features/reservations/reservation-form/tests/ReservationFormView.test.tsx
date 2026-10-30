@@ -6,6 +6,25 @@ import {
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 
 describe("ReservationFormView duration selection", () => {
+  it("selects an equipment category with its image", async () => {
+    const page = renderReservationForm();
+
+    await page.selectCategoryChoice(
+      RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME
+    );
+
+    expect(
+      page.getCategoryChoice(
+        RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME
+      )
+    ).toBeChecked();
+    expect(
+      page.getEquipmentImage(
+        RESERVATION_FORM_VIEW_TEST.CATEGORY_IMAGE_ALT
+      )
+    ).toBeInTheDocument();
+  });
+
   it("calls browser back from the calendar action", async () => {
     const page = renderReservationForm();
 
