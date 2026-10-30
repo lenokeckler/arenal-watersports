@@ -19,6 +19,7 @@ import {
   FAKE_UNIT_ADMIN_WORKER_ID,
 } from "./Unit.constants";
 
+const NEGATIVE_USAGE = -1;
 const mockWrite = vi.fn();
 const mockChain = {
   eq: vi.fn(),
@@ -110,6 +111,35 @@ describe("unit actions validate the code on the server", () => {
           code: UNIT_PADDED_CODE.trim(),
         })
       );
+    }
+  );
+  it.each([
+    {
+      name: "createUnitAction",
+      run: () =>
+        createUnitAction(
+          buildCreateUnitInput({
+            usageTotal: NEGATIVE_USAGE,
+          })
+        ),
+    },
+    {
+      name: "updateUnitAction",
+      run: () =>
+        updateUnitAction(
+          buildUpdateUnitInput({
+            nextOilChangeAt: NEGATIVE_USAGE,
+          })
+        ),
+    },
+  ])(
+    "$name refuses a negative reading without writing",
+    async ({ run }) => {
+      await expect(run()).resolves.toEqual({
+        status: UNIT_MUTATION_STATUS.ERROR,
+        message: UNIT_FORM_ERROR_COPY.DECIMAL_INVALID,
+      });
+      expect(mockWrite).not.toHaveBeenCalled();
     }
   );
 });
