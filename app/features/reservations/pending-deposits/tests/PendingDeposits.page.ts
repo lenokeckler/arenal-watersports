@@ -42,8 +42,18 @@ export const createPendingDepositsPage = () => {
         element.textContent === text
     );
 
+  const getInRow = (row: HTMLElement, text: string) =>
+    within(row).getByText(text);
+
+  const getInRowContaining = (
+    row: HTMLElement,
+    text: string
+  ) => within(row).getByText(text, { exact: false });
+
   return {
     getAlert,
+    getInRow,
+    getInRowContaining,
     getAllRows,
     getHeadings,
     getLeafByExactText,

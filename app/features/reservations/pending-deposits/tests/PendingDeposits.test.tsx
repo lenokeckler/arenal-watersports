@@ -5,7 +5,7 @@ import {
   it,
   vi,
 } from "vitest";
-import { render, within } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { fetchPendingDeposits } from "@/app/services/deposits";
 import PendingDeposits from "../PendingDeposits";
 import {
@@ -45,23 +45,26 @@ describe("PendingDeposits", () => {
 
     expect(page.getRows()).toHaveLength(2);
     expect(
-      within(usdRow).getByText(
+      page.getInRow(
+        usdRow,
         USD_DEPOSIT.reservation.customerName
       )
     ).toBeInTheDocument();
     expect(
-      within(usdRow).getByText(USD_DEPOSIT.reservation.code)
+      page.getInRow(usdRow, USD_DEPOSIT.reservation.code)
     ).toBeInTheDocument();
     expect(
       page.getLeafByExactText(usdRow, USD_AMOUNT_TEXT)
     ).toBeInTheDocument();
     expect(
-      within(usdRow).getByText(
+      page.getInRow(
+        usdRow,
         CURRENCY_NAME[USD_DEPOSIT.currency]
       )
     ).toBeInTheDocument();
     expect(
-      within(crcRow).getByText(
+      page.getInRow(
+        crcRow,
         CRC_DEPOSIT.reservation.customerName
       )
     ).toBeInTheDocument();
@@ -69,7 +72,8 @@ describe("PendingDeposits", () => {
       page.getLeafByExactText(crcRow, CRC_AMOUNT_TEXT)
     ).toBeInTheDocument();
     expect(
-      within(crcRow).getByText(
+      page.getInRow(
+        crcRow,
         CURRENCY_NAME[CRC_DEPOSIT.currency]
       )
     ).toBeInTheDocument();
@@ -80,9 +84,9 @@ describe("PendingDeposits", () => {
     const [firstRow] = page.getRows();
 
     expect(
-      within(firstRow).getByText(
-        PENDING_DEPOSITS_COPY.RESERVATION_CODE_LABEL,
-        { exact: false }
+      page.getInRowContaining(
+        firstRow,
+        PENDING_DEPOSITS_COPY.RESERVATION_CODE_LABEL
       )
     ).toBeInTheDocument();
   });
