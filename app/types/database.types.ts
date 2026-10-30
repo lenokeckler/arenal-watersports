@@ -2505,6 +2505,30 @@ export type Database = {
       };
     };
     Functions: {
+      assert_reservable_equipment_category: {
+        Args: { p_category_id: string };
+        Returns: undefined;
+      };
+      assert_reservation_amounts: {
+        Args: {
+          p_duration_minutes: number;
+          p_quantity: number;
+        };
+        Returns: undefined;
+      };
+      assert_reservation_identity: {
+        Args: {
+          p_customer_name: string;
+          p_date: string;
+          p_people_count: number;
+          p_time: string;
+        };
+        Returns: undefined;
+      };
+      authenticated_reservation_worker: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
+      };
       block_worker: {
         Args: { target_worker: string };
         Returns: string;
@@ -2534,6 +2558,18 @@ export type Database = {
       };
       consume_password_reset_pin: {
         Args: { p_pin: string; p_username: string };
+        Returns: string;
+      };
+      create_rental_reservation: {
+        Args: {
+          p_category_id: string;
+          p_customer_name: string;
+          p_date: string;
+          p_duration_minutes: number;
+          p_people_count: number;
+          p_quantity: number;
+          p_time: string;
+        };
         Returns: string;
       };
       current_session_id: {

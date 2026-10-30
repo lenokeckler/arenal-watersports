@@ -6,12 +6,15 @@ import type { FormFieldVariant } from "../models/FormFieldVariant.type";
 import { createFormFieldPage } from "./FormField.page";
 import {
   ARIA_DESCRIBEDBY_ATTRIBUTE,
+  AUTOFILL_TEXT_CLASS,
+  DEFAULT_AUTOFILL_BACKGROUND_CLASS,
   DEFAULT_INPUT_CLASSES,
   ERROR_MESSAGE,
   EXPECTED_ERROR_ID,
   FIELD_ID,
   FIELD_LABEL,
   FIELD_NAME,
+  GLASS_AUTOFILL_BACKGROUND_CLASS,
   GLASS_ERROR_TEXT_CLASS,
   GLASS_INPUT_CLASSES,
   GLASS_INPUT_ERROR_CLASS,
@@ -43,6 +46,26 @@ describe("FormField variants", () => {
 
     expect(page.getInput()).toHaveClass(
       ...GLASS_INPUT_CLASSES
+    );
+  });
+
+  it("keeps the theme colours on a glass input the browser autofills", () => {
+    renderField(FORM_FIELD_VARIANT.GLASS);
+    const page = createFormFieldPage(ERROR_MESSAGE);
+
+    expect(page.getInput()).toHaveClass(
+      GLASS_AUTOFILL_BACKGROUND_CLASS,
+      AUTOFILL_TEXT_CLASS
+    );
+  });
+
+  it("keeps the theme colours on a default input the browser autofills", () => {
+    renderField();
+    const page = createFormFieldPage(ERROR_MESSAGE);
+
+    expect(page.getInput()).toHaveClass(
+      DEFAULT_AUTOFILL_BACKGROUND_CLASS,
+      AUTOFILL_TEXT_CLASS
     );
   });
 
