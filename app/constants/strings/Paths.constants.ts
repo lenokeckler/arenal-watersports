@@ -25,4 +25,9 @@ export const PATHS = {
   WELL_KNOWN: {
     CHANGE_PASSWORD: "/.well-known/change-password",
   },
+  RESERVATIONS: {
+    CALENDAR: "/reservations/calendar",
+    DEPOSITS: "/reservations/deposits",
+    NEW: "/reservations/new",
+  },
 } as const;
