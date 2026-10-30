@@ -48,6 +48,20 @@ export const useReservationFormSelectionFields = (
       : [...currentGuideIds, guideId];
     updateValue("guideIds", nextGuideIds);
   },
+  reconcileGuideSelection: (
+    availableGuideIds: string[]
+  ): void => {
+    const selectedGuideIds = values.guideIds ?? [];
+    const availableGuideIdSet = new Set(availableGuideIds);
+    const reconciledGuideIds = selectedGuideIds.filter(
+      (guideId) => availableGuideIdSet.has(guideId)
+    );
+    if (
+      reconciledGuideIds.length !== selectedGuideIds.length
+    ) {
+      updateValue("guideIds", reconciledGuideIds);
+    }
+  },
   handleUnitChange: (value: string): void =>
     updateValue("unitId", value),
 });

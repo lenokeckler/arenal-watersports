@@ -32,6 +32,8 @@ export const useReservationFormViewModel = (
     handleReservationTypeChange:
       state.fields.handleReservationTypeChange,
     handleGuideToggle: state.fields.handleGuideToggle,
+    reconcileGuideSelection:
+      state.fields.reconcileGuideSelection,
     handleRetryEquipmentEligibility: eligibility.retry,
     handleSubmit,
     hasEquipmentEligibilityError: eligibility.hasError,
