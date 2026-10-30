@@ -1,5 +1,6 @@
 import { UNIT_FORM_FIELD_ID } from "@/app/features/administration/unit-catalog/constants/UnitFormFieldId.constants";
 import { UNIT_FORM_MODE } from "@/app/features/administration/unit-catalog/constants/UnitFormMode.constants";
+import { createCategoryListPage } from "../pages/CategoryList.page";
 import { captureFullPage } from "../support/captureFullPage";
 import { test } from "../support/categoryUnitsTest";
 import { readUnit } from "../support/unitFixtures";
@@ -36,6 +37,18 @@ test.describe("Category units screenshots", () => {
         testInfo.project.name
       );
     };
+
+    await createCategoryListPage(page).goTo();
+    await listPage
+      .getUnitsLink(
+        createCategoryListPage(page).getCategoryCard(
+          categoryName
+        )
+      )
+      .waitFor();
+    await capture(
+      E2E_CATEGORY_UNITS_SCREENSHOT_STATE.CARD_LINK
+    );
 
     await listPage.goTo(categoryId);
     await listPage.getHeading(categoryName).waitFor();
