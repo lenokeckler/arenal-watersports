@@ -12,6 +12,7 @@ export const INPUT_TYPES = {
   SUBMIT: "submit",
   TEL: "tel",
   TEXT: "text",
+  TIME: "time",
   TEXTAREA: "textarea",
 } as const;
 
