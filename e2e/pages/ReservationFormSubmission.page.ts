@@ -21,13 +21,11 @@ export const createReservationFormSubmissionPage = (
           E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_CUSTOMER_NAME
         );
       await main
-        .getByLabel(
-          E2E_RESERVATION_FORM_COPY.CATEGORY_FIELD_NAME,
+        .getByText(
+          E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION,
           { exact: true }
         )
-        .selectOption({
-          label: E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION,
-        });
+        .click();
       await main
         .getByRole(ARIA_ROLE.BUTTON, {
           name: E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_OPTION,
@@ -57,13 +55,11 @@ export const createReservationFormSubmissionPage = (
           E2E_RESERVATION_FORM_COPY.CUSTOMER_NAME_VALID
         );
       await main
-        .getByLabel(
-          E2E_RESERVATION_FORM_COPY.CATEGORY_FIELD_NAME,
+        .getByText(
+          E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION,
           { exact: true }
         )
-        .selectOption({
-          label: E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION,
-        });
+        .click();
       await main
         .getByRole(ARIA_ROLE.BUTTON, {
           name: E2E_RESERVATION_FORM_COPY.SUBMIT,
