@@ -16,6 +16,7 @@ import {
   EDIT_UNIT_FORM_VIEW_PROPS,
   EXPECTED_CATEGORY_UNITS_PATH,
   TYPED_CODE,
+  TYPED_USAGE,
 } from "./UnitForm.constants";
 import { renderUnitForm } from "./renderUnitForm";
 
@@ -45,6 +46,10 @@ vi.mock("../services/updateUnitAction", () => ({
 }));
 
 const codeEntry = { label: L.CODE_LABEL, text: TYPED_CODE };
+const usageEntry = {
+  label: L.USAGE_HOURS_LABEL,
+  text: `${TYPED_USAGE}`,
+};
 const longCode = "A".repeat(
   UNIT_FORM_LIMITS.CODE_MAX_LENGTH + 1
 );
@@ -103,7 +108,7 @@ describe("UnitFormView errors", () => {
       });
       const page = renderUnitForm(props);
 
-      await page.fill([codeEntry]);
+      await page.fill([codeEntry, usageEntry]);
       await page.submit();
 
       await waitFor(() =>
@@ -122,7 +127,7 @@ describe("UnitFormView errors", () => {
     );
     const page = renderUnitForm();
 
-    await page.fill([codeEntry]);
+    await page.fill([codeEntry, usageEntry]);
     await page.submit();
 
     expect(
