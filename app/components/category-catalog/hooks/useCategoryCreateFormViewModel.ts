@@ -1,7 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import {
+  unstable_rethrow,
+  useRouter,
+} from "next/navigation";
 import { PATHS } from "@/app/constants";
 import { useToast } from "@/app/components/toast/utils/useToast";
 import { EMPTY_CATEGORY_CREATE_FORM_VALUES } from "../constants/EmptyCategoryCreateFormValues.constants";
@@ -117,7 +120,8 @@ export const useCategoryCreateFormViewModel =
           onNameError: (nameError) =>
             setErrors({ name: nameError }),
         });
-      } catch {
+      } catch (error) {
+        unstable_rethrow(error);
         showGenericMutationErrorToast(showToast);
       } finally {
         isSubmittingRef.current = false;
