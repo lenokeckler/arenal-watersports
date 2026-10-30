@@ -3,7 +3,7 @@ import { vi } from "vitest";
 import { useCategoryDepositFormSubmit } from "../hooks/useCategoryDepositFormSubmit";
 import type { CategoryDepositFormErrors } from "../models/CategoryDepositFormErrors.interface";
 import type { CategoryDepositFormValues } from "../models/CategoryDepositFormValues.interface";
-import { buildCategoryFormSubmitEvent } from "./buildCategoryFormSubmitEvent";
+import { buildFormSubmitEvent } from "@/app/utils/form-submit/tests/buildFormSubmitEvent";
 import {
   buildCategoryDepositFormValues,
   CATEGORY_DEPOSIT_ID,
@@ -32,7 +32,7 @@ export const submitCategoryDepositForm = async (
 
   await act(async () => {
     await result.current.onSubmit(
-      buildCategoryFormSubmitEvent(preventDefault)
+      buildFormSubmitEvent(preventDefault)
     );
   });
 

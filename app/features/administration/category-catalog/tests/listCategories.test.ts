@@ -5,7 +5,7 @@ import {
   it,
   vi,
 } from "vitest";
-import { CATEGORY_LIST_PAGINATION } from "../constants/CategoryListPagination.constants";
+import { LIST_PAGINATION } from "@/app/utils/list-pagination/constants/ListPagination.constants";
 import { listCategories } from "../services/listCategories";
 import { DEFAULT_EQUIPMENT_CATEGORY_ROW } from "./EquipmentCategoryRow.constants";
 
@@ -42,7 +42,7 @@ describe("listCategories", () => {
 
   it("asks for the row range of the requested page", async () => {
     mockFetchCategoryCount.mockResolvedValue(
-      CATEGORY_LIST_PAGINATION.PAGE_SIZE * 2
+      LIST_PAGINATION.PAGE_SIZE * 2
     );
     mockFetchCategories.mockResolvedValue([]);
     mockFetchCategoryIdsWithRecords.mockResolvedValue(
@@ -54,15 +54,15 @@ describe("listCategories", () => {
     expect(mockFetchCategories).toHaveBeenCalledWith(
       expect.anything(),
       {
-        from: CATEGORY_LIST_PAGINATION.PAGE_SIZE,
-        to: CATEGORY_LIST_PAGINATION.PAGE_SIZE * 2 - 1,
+        from: LIST_PAGINATION.PAGE_SIZE,
+        to: LIST_PAGINATION.PAGE_SIZE * 2 - 1,
       }
     );
   });
 
   it("looks up records only for the categories of the page and flags them", async () => {
     mockFetchCategoryCount.mockResolvedValue(
-      CATEGORY_LIST_PAGINATION.PAGE_SIZE + 1
+      LIST_PAGINATION.PAGE_SIZE + 1
     );
     mockFetchCategories.mockResolvedValue([
       DEFAULT_EQUIPMENT_CATEGORY_ROW,
@@ -84,7 +84,7 @@ describe("listCategories", () => {
 
   it("returns no categories and reads no rows when the page is past the last one", async () => {
     mockFetchCategoryCount.mockResolvedValue(
-      CATEGORY_LIST_PAGINATION.PAGE_SIZE
+      LIST_PAGINATION.PAGE_SIZE
     );
 
     const result = await listCategories(9);

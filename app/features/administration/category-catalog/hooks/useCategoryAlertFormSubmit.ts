@@ -4,10 +4,10 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/app/components/toast/utils/useToast";
 import type { CategoryAlertFormSubmitOptions } from "../models/CategoryAlertFormSubmitOptions.interface";
 import type { CategoryAlertFormSubmitViewModel } from "../models/CategoryAlertFormSubmitViewModel.interface";
-import type { CategoryFormSubmitEvent } from "../models/CategoryFormSubmitEvent.type";
+import type { FormSubmitEvent } from "@/app/utils/form-submit/models/FormSubmitEvent.type";
 import { reportCategoryAlertErrors } from "../utils/reportCategoryAlertErrors";
 import { submitCategoryAlerts } from "../utils/submitCategoryAlerts";
-import { useSubmissionLock } from "./useSubmissionLock";
+import { useSubmissionLock } from "@/app/utils/form-submit/hooks/useSubmissionLock";
 
 export const useCategoryAlertFormSubmit = ({
   categoryId,
@@ -19,7 +19,7 @@ export const useCategoryAlertFormSubmit = ({
   const { isSubmitting, runLocked } = useSubmissionLock();
 
   const onSubmit = async (
-    event: CategoryFormSubmitEvent
+    event: FormSubmitEvent
   ): Promise<void> => {
     event.preventDefault();
 

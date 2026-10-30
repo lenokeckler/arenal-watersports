@@ -9,7 +9,7 @@ import {
 import { STATUS } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import type { UpdateCategoryDepositInput } from "../models/UpdateCategoryDepositInput.interface";
-import { buildCategoryFormSubmitEvent } from "./buildCategoryFormSubmitEvent";
+import { buildFormSubmitEvent } from "@/app/utils/form-submit/tests/buildFormSubmitEvent";
 import {
   renderCategoryDepositSubmit,
   submitCategoryDepositForm,
@@ -100,15 +100,13 @@ describe("useCategoryDepositFormSubmit lock", () => {
 
     act(() => {
       firstSubmit = result.current.onSubmit(
-        buildCategoryFormSubmitEvent()
+        buildFormSubmitEvent()
       );
     });
     expect(result.current.isSubmitting).toBe(true);
 
     await act(async () => {
-      await result.current.onSubmit(
-        buildCategoryFormSubmitEvent()
-      );
+      await result.current.onSubmit(buildFormSubmitEvent());
       resolveAction(SUCCESS_RESULT);
       await firstSubmit;
     });

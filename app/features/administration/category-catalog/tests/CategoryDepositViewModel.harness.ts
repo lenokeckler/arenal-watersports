@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { useCategoryDepositFormViewModel } from "../hooks/useCategoryDepositFormViewModel";
-import { buildCategoryFormSubmitEvent } from "./buildCategoryFormSubmitEvent";
+import { buildFormSubmitEvent } from "@/app/utils/form-submit/tests/buildFormSubmitEvent";
 import { DEFAULT_CATEGORY_DEPOSIT } from "./CategoryDepositFormValues.constants";
 
 export const renderCategoryDepositViewModel = () =>
@@ -16,8 +16,6 @@ export const submitCategoryDepositViewModel = async (
   >["result"]
 ): Promise<void> => {
   await act(async () => {
-    await result.current.onSubmit(
-      buildCategoryFormSubmitEvent()
-    );
+    await result.current.onSubmit(buildFormSubmitEvent());
   });
 };
