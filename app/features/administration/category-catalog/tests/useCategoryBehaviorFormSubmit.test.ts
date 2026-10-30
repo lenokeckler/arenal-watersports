@@ -1,9 +1,4 @@
 import {
-  act,
-  renderHook,
-  type RenderHookResult,
-} from "@testing-library/react";
-import {
   beforeEach,
   describe,
   expect,
@@ -13,15 +8,13 @@ import {
 import { STATUS, STRING } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
-import { useCategoryBehaviorFormSubmit } from "../hooks/useCategoryBehaviorFormSubmit";
-import type { CategoryBehaviorFormSubmitViewModel } from "../models/CategoryBehaviorFormSubmitViewModel.interface";
-import type { CategoryBehaviorFormValues } from "../models/CategoryBehaviorFormValues.interface";
 import type { UpdateCategoryBehaviorInput } from "../models/UpdateCategoryBehaviorInput.interface";
 import { VALID_CATEGORY_BEHAVIOR_FORM_VALUES } from "./CategoryBehaviorFormValues.constants";
+import { DEFAULT_UPDATE_CATEGORY_BEHAVIOR_INPUT } from "./UpdateCategoryBehaviorInput.constants";
 import {
-  DEFAULT_UPDATE_CATEGORY_BEHAVIOR_INPUT,
-  FAKE_UPDATE_CATEGORY_ID,
-} from "./UpdateCategoryBehaviorInput.constants";
+  renderSubmit as renderSubmitWith,
+  submitForm,
+} from "./useCategoryBehaviorFormSubmit.harness";
 
 const mockRefresh = vi.fn();
 const mockShowToast = vi.fn();
@@ -46,36 +39,8 @@ vi.mock("../services/updateCategoryBehaviorAction", () => ({
 }));
 
 const renderSubmit = (
-  values: CategoryBehaviorFormValues = VALID_CATEGORY_BEHAVIOR_FORM_VALUES
-) =>
-  renderHook(() =>
-    useCategoryBehaviorFormSubmit({
-      categoryId: FAKE_UPDATE_CATEGORY_ID,
-      values,
-      onValidationErrors: mockOnValidationErrors,
-    })
-  );
-
-const buildFormEvent = () => ({
-  preventDefault: vi.fn(),
-});
-
-const submitForm = async (
-  result: RenderHookResult<
-    CategoryBehaviorFormSubmitViewModel,
-    unknown
-  >["result"]
-): Promise<ReturnType<typeof buildFormEvent>> => {
-  const formEvent = buildFormEvent();
-
-  await act(async () => {
-    await result.current.onSubmit(
-      formEvent as unknown as React.FormEvent
-    );
-  });
-
-  return formEvent;
-};
+  values?: Parameters<typeof renderSubmitWith>[1]
+) => renderSubmitWith(mockOnValidationErrors, values);
 
 describe("useCategoryBehaviorFormSubmit", () => {
   beforeEach(() => {
@@ -141,70 +106,5 @@ describe("useCategoryBehaviorFormSubmit", () => {
       CATEGORY_CATALOG_COPY.BEHAVIOR_CATEGORY_NOT_FOUND_ERROR
     );
     expect(mockRefresh).not.toHaveBeenCalled();
-  });
-
-  it("shows the generic error and releases the form when the action throws", async () => {
-    mockUpdateCategoryBehaviorAction.mockRejectedValue(
-      new Error()
-    );
-    const { result } = renderSubmit();
-
-    await submitForm(result);
-
-    expect(mockShowToast).toHaveBeenCalledWith(
-      STATUS.ERROR,
-      CATEGORY_CATALOG_COPY.GENERIC_MUTATION_ERROR
-    );
-    expect(mockRefresh).not.toHaveBeenCalled();
-    expect(result.current.isSubmitting).toBe(false);
-  });
-
-  it("rethrows a Next control-flow error without a toast and releases the form", async () => {
-    const controlFlowError = new Error("NEXT_REDIRECT");
-    mockUpdateCategoryBehaviorAction.mockRejectedValue(
-      controlFlowError
-    );
-    mockUnstableRethrow.mockImplementation((error) => {
-      throw error;
-    });
-    const { result } = renderSubmit();
-
-    await expect(submitForm(result)).rejects.toBe(
-      controlFlowError
-    );
-
-    expect(mockUnstableRethrow).toHaveBeenCalledWith(
-      controlFlowError
-    );
-    expect(mockShowToast).not.toHaveBeenCalled();
-    expect(result.current.isSubmitting).toBe(false);
-  });
-
-  it("calls the server once when submitted again while pending", async () => {
-    let resolveAction: (value: unknown) => void = () =>
-      undefined;
-    mockUpdateCategoryBehaviorAction.mockReturnValue(
-      new Promise((resolve) => {
-        resolveAction = resolve;
-      })
-    );
-    const { result } = renderSubmit();
-
-    await act(async () => {
-      const firstSubmit = result.current.onSubmit(
-        buildFormEvent() as unknown as React.FormEvent
-      );
-      await result.current.onSubmit(
-        buildFormEvent() as unknown as React.FormEvent
-      );
-      resolveAction({
-        status: CATEGORY_MUTATION_STATUS.SUCCESS,
-      });
-      await firstSubmit;
-    });
-
-    expect(
-      mockUpdateCategoryBehaviorAction
-    ).toHaveBeenCalledTimes(1);
   });
 });
