@@ -14,8 +14,10 @@ export const useReservationUnitAvailability = (
     useState<NullableRef<number>>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [retryIndex, setRetryIndex] = useState(0);
   useSyncReservationUnitAvailability({
     request,
+    retryIndex,
     setAvailableQuantity,
     setAvailableUnits,
     setHasError,
@@ -27,5 +29,7 @@ export const useReservationUnitAvailability = (
     availableUnits,
     hasError,
     isLoading,
+    retry: () =>
+      setRetryIndex((currentIndex) => currentIndex + 1),
   };
 };
