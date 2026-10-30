@@ -2,14 +2,15 @@ import { createServiceRoleSupabaseClient } from "@/app/services/supabase";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { E2E_DEPOSIT_NONE } from "../constants/E2eCategoryDeposit.constants";
 import type { CategoryDepositAmounts } from "../models/CategoryDepositAmounts.interface";
-import { seedCategoryWithBehavior } from "./categoryFixtures";
+import {
+  removeDeletableCategory,
+  seedCategoryWithBehavior,
+} from "./categoryFixtures";
 
-export const seedCategoryWithDeposit = async (
+const updateCategoryDeposit = async (
   categoryName: string,
-  amounts: CategoryDepositAmounts = E2E_DEPOSIT_NONE
+  amounts: CategoryDepositAmounts
 ): Promise<void> => {
-  await seedCategoryWithBehavior(categoryName);
-
   const supabase = createServiceRoleSupabaseClient();
   const { error } = await supabase
     .from("equipment_categories")
@@ -19,6 +20,27 @@ export const seedCategoryWithDeposit = async (
     })
     .eq("name", categoryName);
   throwIfSupabaseError(error, "seedCategoryWithDeposit");
+};
+
+export const seedCategoryWithDeposit = async (
+  categoryName: string,
+  amounts: CategoryDepositAmounts = E2E_DEPOSIT_NONE
+): Promise<void> => {
+  await seedCategoryWithBehavior(categoryName);
+
+  try {
+    await updateCategoryDeposit(categoryName, amounts);
+  } catch (seedError) {
+    try {
+      await removeDeletableCategory(categoryName);
+    } catch (cleanupError) {
+      throw new AggregateError(
+        [seedError, cleanupError],
+        "seedCategoryWithDeposit failed and its cleanup failed"
+      );
+    }
+    throw seedError;
+  }
 };
 
 export const readCategoryDeposit = async (
