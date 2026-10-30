@@ -1,0 +1,24 @@
+diff --git a/app/features/administration/category-catalog/tests/CategoryCard.page.ts b/app/features/administration/category-catalog/tests/CategoryCard.page.ts
+index c18e9e45..29ab9d9b 100644
+--- a/app/features/administration/category-catalog/tests/CategoryCard.page.ts
++++ b/app/features/administration/category-catalog/tests/CategoryCard.page.ts
+@@ -28,6 +28,11 @@ export const createCategoryCardPage = () => {
+       name: CATEGORY_CATALOG_COPY.DEPOSIT_LINK,
+     });
+ 
++  const getUnitsLink = () =>
++    screen.queryByRole(ARIA_ROLE.LINK, {
++      name: CATEGORY_CATALOG_COPY.UNITS_LINK,
++    });
++
+   const getAlertsLink = () =>
+     screen.queryByRole(ARIA_ROLE.LINK, {
+       name: CATEGORY_CATALOG_COPY.ALERT_LINK,
+@@ -95,6 +100,7 @@ export const createCategoryCardPage = () => {
+     getBehaviorLink,
+     getDepositLink,
+     getAlertsLink,
++    getUnitsLink,
+     getTrackingModeLabel,
+     getGroupPrefix,
+     getDeleteButton,
