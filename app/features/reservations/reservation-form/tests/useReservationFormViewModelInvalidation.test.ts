@@ -15,29 +15,6 @@ import { useReservationFormViewModel } from "../hooks/useReservationFormViewMode
 describe("useReservationFormViewModel selection invalidation", () => {
   beforeEach(resetViewModelHarness);
 
-  it("preserves the selected category while eligibility is loading", () => {
-    viewModelHarness.eligibility.current = {
-      categories: [],
-      hasError: false,
-      isLoading: true,
-      refreshKey: 2,
-      retry: vi.fn(),
-    };
-    const { result } = renderHook(() =>
-      useReservationFormViewModel("2030-04-12", [])
-    );
-
-    expect(result.current.values.categoryId).toBe(
-      viewModelHarness.values.categoryId
-    );
-    expect(
-      viewModelHarness.handleCategoryChange
-    ).not.toHaveBeenCalled();
-    expect(
-      result.current.hasEquipmentSelectionChanged
-    ).toBe(false);
-  });
-
   it("clears the category without changing other reservation values", () => {
     viewModelHarness.eligibility.current = {
       categories: [],

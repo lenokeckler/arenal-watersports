@@ -1,150 +1,163 @@
-import { within } from "@testing-library/react";
-import userEvent, {
-  type UserEvent,
-} from "@testing-library/user-event";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE, STRING } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
 import { RESERVATION_FORM_FIELD_ID } from "../constants/ReservationFormUi.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { RESERVATION_CATEGORY_CONFLICT_WARNING_TEST } from "./ReservationCategoryConflictWarning.constants";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 
-const createFormQueries = (container: HTMLElement) => {
-  const form = within(container);
-  const getCategorySelect = () =>
-    form.getByLabelText(
-      `${RESERVATION_FORM_UI_COPY.CATEGORY} ${STRING.ASTERISK}`,
-      { exact: true }
-    );
+const getDurationOption = (label: string) =>
+  screen.getByRole(ARIA_ROLE.BUTTON, { name: label });
 
-  return {
-    getDurationOption: (label: string) =>
-      form.getByRole(ARIA_ROLE.BUTTON, { name: label }),
-    getBackButton: () =>
-      form.getByRole(ARIA_ROLE.BUTTON, {
-        name: RESERVATION_FORM_VIEW_TEST.BACK_TO_CALENDAR,
-      }),
-    findDurationValidationError: () =>
-      form.getByText(
-        RESERVATION_FORM_COPY[
-          RESERVATION_FORM_FIELD.DURATION_HOURS
-        ]
-      ),
-    findSubmissionError: () =>
-      form.getByText(RESERVATION_FORM_UI_COPY.SUBMIT_ERROR),
-    getSubmitButton: () =>
-      form.getByRole(ARIA_ROLE.BUTTON, {
-        name: RESERVATION_FORM_UI_COPY.SUBMIT,
-      }),
-    getCategorySelect,
-    getQuantityInput: () =>
-      form.queryByLabelText(
-        RESERVATION_FORM_UI_COPY.QUANTITY,
-        {
-          exact: false,
-        }
-      ),
-    getUnitSelect: () =>
-      form.getByLabelText(RESERVATION_FORM_UI_COPY.UNIT, {
-        exact: false,
-      }),
-    findUnitOption: () =>
-      form.findByRole(ARIA_ROLE.OPTION, {
-        name: RESERVATION_FORM_VIEW_TEST.UNIT_CODE,
-      }),
-    findUnitValidationError: () =>
-      form.getByText(
-        RESERVATION_FORM_COPY[
-          RESERVATION_FORM_FIELD.UNIT_ID
-        ]
-      ),
-    getReservationTypeRadio: (label: string) =>
-      form.getByLabelText(label, { exact: false }),
-    getReservationTypeDescription: (description: string) =>
-      form.getByText(description, { exact: true }),
-    getStatusMessage: () =>
-      form.getByRole(ARIA_ROLE.STATUS),
-    queryCategoryOption: (
-      categoryId: string
-    ): NullableRef<HTMLOptionElement> =>
-      getCategorySelect().querySelector<HTMLOptionElement>(
-        `option[value="${categoryId}"]`
-      ),
-    getCustomerNameInput: () =>
-      form.getByLabelText(
-        RESERVATION_FORM_UI_COPY.CUSTOMER_NAME,
-        {
-          exact: false,
-        }
-      ),
-    queryCustomDurationInput:
-      (): NullableRef<HTMLInputElement> =>
-        container.querySelector<HTMLInputElement>(
-          `#${RESERVATION_FORM_FIELD_ID.DURATION}`
-        ),
-  };
+const queryCustomDurationInput = (
+  container: HTMLElement
+): NullableRef<HTMLInputElement> =>
+  container.querySelector<HTMLInputElement>(
+    `#${RESERVATION_FORM_FIELD_ID.DURATION}`
+  );
+
+const getSubmitButton = () =>
+  screen.getByRole(ARIA_ROLE.BUTTON, {
+    name: RESERVATION_FORM_UI_COPY.SUBMIT,
+  });
+
+const getCategorySelect = () =>
+  screen.getByLabelText(
+    `${RESERVATION_FORM_UI_COPY.CATEGORY} ${STRING.ASTERISK}`,
+    {
+      exact: true,
+    }
+  );
+
+const getQuantityInput = () =>
+  screen.queryByLabelText(
+    RESERVATION_FORM_UI_COPY.QUANTITY,
+    {
+      exact: false,
+    }
+  );
+
+const getUnitSelect = () =>
+  screen.getByLabelText(RESERVATION_FORM_UI_COPY.UNIT, {
+    exact: false,
+  });
+
+const findUnitOption = () =>
+  screen.findByRole(ARIA_ROLE.OPTION, {
+    name: RESERVATION_FORM_VIEW_TEST.UNIT_CODE,
+  });
+
+const findUnitValidationError = () =>
+  screen.findByText(
+    RESERVATION_FORM_COPY[RESERVATION_FORM_FIELD.UNIT_ID]
+  );
+
+const getBackButton = () =>
+  screen.getByRole(ARIA_ROLE.BUTTON, {
+    name: RESERVATION_FORM_VIEW_TEST.BACK_TO_CALENDAR,
+  });
+
+const findDurationValidationError = () =>
+  screen.findByText(
+    RESERVATION_FORM_COPY[
+      RESERVATION_FORM_FIELD.DURATION_HOURS
+    ]
+  );
+
+const findSubmissionError = () =>
+  screen.findByText(RESERVATION_FORM_UI_COPY.SUBMIT_ERROR);
+
+const selectDuration = async (
+  user: ReturnType<typeof userEvent.setup>,
+  label: string
+): Promise<void> => {
+  await user.click(getDurationOption(label));
 };
 
-const createEquipmentActions = (
-  user: UserEvent,
-  queries: ReturnType<typeof createFormQueries>
-) => ({
-  selectCategory: async (categoryId: string) => {
-    await user.selectOptions(
-      queries.getCategorySelect(),
-      categoryId
+const typeCustomDuration = async (
+  user: ReturnType<typeof userEvent.setup>,
+  container: HTMLElement,
+  value: string
+): Promise<void> => {
+  const customDurationInput =
+    queryCustomDurationInput(container);
+  if (!customDurationInput) {
+    throw new Error(
+      "Custom duration input is not visible."
     );
-  },
-  selectUnit: async (unitId: string) => {
-    await user.selectOptions(
-      queries.getUnitSelect(),
-      unitId
-    );
-  },
-});
+  }
+  await user.type(customDurationInput, value);
+};
 
-const createReservationActions = (
-  user: UserEvent,
-  queries: ReturnType<typeof createFormQueries>
-) => ({
-  clickBack: async () => {
-    await user.click(queries.getBackButton());
-  },
-  selectDuration: async (label: string) => {
-    await user.click(queries.getDurationOption(label));
-  },
-  submit: async () => {
-    await user.click(queries.getSubmitButton());
-  },
-  fillCustomerName: async (value: string) => {
-    await user.type(queries.getCustomerNameInput(), value);
-  },
-  typeCustomDuration: async (value: string) => {
-    const input = queries.queryCustomDurationInput();
-    if (!input) {
-      throw new Error(
-        "Custom duration input is not visible."
-      );
-    }
-    await user.type(input, value);
-  },
-  selectReservationType: async (label: string) => {
-    await user.click(
-      queries.getReservationTypeRadio(label)
-    );
-  },
-});
+const submit = async (
+  user: ReturnType<typeof userEvent.setup>
+): Promise<void> => {
+  await user.click(getSubmitButton());
+};
 
 export const createReservationFormViewPage = (
   container: HTMLElement
 ) => {
   const user = userEvent.setup();
-  const queries = createFormQueries(container);
 
   return {
-    ...queries,
-    ...createEquipmentActions(user, queries),
-    ...createReservationActions(user, queries),
+    getDurationOption,
+    getBackButton,
+    findDurationValidationError,
+    findSubmissionError,
+    getSubmitButton,
+    findCategoryConflictWarning: () =>
+      screen.findByRole(ARIA_ROLE.ALERT, {
+        name: RESERVATION_FORM_UI_COPY.CATEGORY_CONFLICT_WARNING_TITLE,
+      }),
+    findCategoryConflictError: () =>
+      screen.findByText(
+        RESERVATION_FORM_UI_COPY.CATEGORY_CONFLICT_WARNING_ERROR
+      ),
+    queryCategoryConflictWarning: () =>
+      screen.queryByRole(ARIA_ROLE.ALERT, {
+        name: RESERVATION_FORM_UI_COPY.CATEGORY_CONFLICT_WARNING_TITLE,
+      }),
+    findCategoryConflictCode: () =>
+      screen.findByText(
+        RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.CODE
+      ),
+    findCategoryConflictCustomerName: () =>
+      screen.findByText(
+        RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.CUSTOMER_NAME
+      ),
+    findCategoryConflictInterval: () =>
+      screen.findByText(
+        RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.INTERVAL
+      ),
+    getCategorySelect,
+    getQuantityInput,
+    getUnitSelect,
+    findUnitOption,
+    findUnitValidationError,
+    clickBack: async (): Promise<void> => {
+      await user.click(getBackButton());
+    },
+    queryCustomDurationInput: () =>
+      queryCustomDurationInput(container),
+    selectDuration: (label: string) =>
+      selectDuration(user, label),
+    selectReservationType: async (
+      label: string
+    ): Promise<void> => {
+      await user.click(
+        screen.getByLabelText(label, { exact: false })
+      );
+    },
+    submit: () => submit(user),
+    selectCategory: (categoryId: string) =>
+      user.selectOptions(getCategorySelect(), categoryId),
+    selectUnit: (unitId: string) =>
+      user.selectOptions(getUnitSelect(), unitId),
+    typeCustomDuration: (value: string) =>
+      typeCustomDuration(user, container, value),
   };
 };

@@ -5,7 +5,6 @@ export const RESERVATION_FORM_VIEW_TEST = {
   UNIT_CATEGORY_NAME: "Lancha",
   UNIT_CODE: "PONTOON",
   UNIT_ID: "bbbbbbbb-0000-0000-0000-000000000002",
-  CUSTOMER_NAME: "María López",
   DATE: "2028-02-29",
   CUSTOM_DURATION_OPTION: "Otra duración",
   BACK_TO_CALENDAR: "Volver al calendario",
@@ -16,12 +15,6 @@ export const RESERVATION_FORM_VIEW_TEST = {
   VALID_PEOPLE_COUNT: "4",
   CREATED_RESERVATION_ID:
     "bbbbbbbb-0000-0000-0000-000000000001",
-  RENTAL_TYPE_DESCRIPTION:
-    "El cliente se lleva el equipo por su cuenta.",
-  TOUR_TYPE_DESCRIPTION:
-    "La salida va acompañada por un guía.",
-  COMBO_TYPE_DESCRIPTION:
-    "Paquete con varios equipos distintos.",
   INVALID_CUSTOM_DURATION_HOURS: 0,
   PRESET_DURATION_LABEL: "1 h 30",
   SECOND_PRESET_DURATION_LABEL: "1 h",
