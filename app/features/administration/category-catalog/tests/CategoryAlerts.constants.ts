@@ -59,3 +59,7 @@ export const buildUpdateCategoryAlertsInput = (
   ...DEFAULT_UPDATE_CATEGORY_ALERTS_INPUT,
   ...overrides,
 });
+
+export const INPUT_WITHOUT_ALERTS = {
+  categoryId: CATEGORY_ALERT_ID,
+} as UpdateCategoryAlertsInput;

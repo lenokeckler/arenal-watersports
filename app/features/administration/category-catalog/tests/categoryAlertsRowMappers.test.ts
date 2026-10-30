@@ -4,8 +4,10 @@ import { mapUpdateCategoryAlertsInputToRow } from "../utils/mapUpdateCategoryAle
 import {
   ALERT_ROW_COLUMNS,
   buildUpdateCategoryAlertsInput,
-  CATEGORY_ALERT_ID,
+  INPUT_WITHOUT_ALERTS,
   DEFAULT_CATEGORY_ALERTS,
+  DEFAULT_EXPIRY_DAYS,
+  DEFAULT_MIN_QUANTITY,
   FAKE_ALERT_ADMIN_WORKER_ID,
 } from "./CategoryAlerts.constants";
 import {
@@ -46,9 +48,22 @@ describe("mapUpdateCategoryAlertsInputToRow", () => {
     expect(row.updated_by).toBe(FAKE_ALERT_ADMIN_WORKER_ID);
   });
 
+  it("puts each alert value in its own column", () => {
+    const row = mapUpdateCategoryAlertsInputToRow(
+      buildUpdateCategoryAlertsInput(),
+      FAKE_ALERT_ADMIN_WORKER_ID
+    );
+
+    expect(row).toEqual({
+      alert_min_quantity: DEFAULT_MIN_QUANTITY,
+      alert_expiry_days: DEFAULT_EXPIRY_DAYS,
+      updated_by: FAKE_ALERT_ADMIN_WORKER_ID,
+    });
+  });
+
   it("sends explicit nulls for missing values", () => {
     const row = mapUpdateCategoryAlertsInputToRow(
-      { categoryId: CATEGORY_ALERT_ID } as never,
+      INPUT_WITHOUT_ALERTS,
       FAKE_ALERT_ADMIN_WORKER_ID
     );
 
