@@ -7,6 +7,7 @@ import { createCategoryCreateFormPage } from "../pages/CategoryCreateForm.page";
 import { createCategoryListPage } from "../pages/CategoryList.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 import { removeDeletableCategory } from "../support/categoryFixtures";
+import { E2E_CATEGORY_ALERTS_URL_PATTERN } from "../constants/E2eCategoryCreate.constants";
 import {
   E2E_CATEGORY_GROUP_LABEL,
   resolveCreatedCategoryName,
@@ -59,7 +60,7 @@ test.describe("Category create", () => {
     );
   });
 
-  test("creates a category with no group and shows it in the list", async ({
+  test("creates a category with no group, opens its alerts screen and shows it in the list", async ({
     page,
   }, testInfo) => {
     const categoryName = resolveCreatedCategoryName(
@@ -84,8 +85,9 @@ test.describe("Category create", () => {
         )
       ).toBeVisible();
       await expect(page).toHaveURL(
-        PATHS.ADMINISTRATION.CATEGORIES
+        E2E_CATEGORY_ALERTS_URL_PATTERN
       );
+      await categoryListPage.goTo();
       await expect(
         categoryListPage.getCategoryCard(categoryName)
       ).toBeVisible();
@@ -122,7 +124,7 @@ test.describe("Category create", () => {
         )
       ).toBeVisible();
       await expect(page).toHaveURL(
-        PATHS.ADMINISTRATION.CATEGORIES
+        E2E_CATEGORY_ALERTS_URL_PATTERN
       );
     } finally {
       await removeDeletableCategory(categoryName);
