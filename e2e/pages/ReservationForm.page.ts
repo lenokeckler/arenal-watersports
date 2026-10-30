@@ -23,6 +23,10 @@ export const createReservationFormPage = (page: Page) => {
       }),
     getCategoryOption: (categoryName: string): Locator =>
       main.getByLabel(categoryName, { exact: true }),
+    getCategorySelect: (): Locator =>
+      main.getByLabel(E2E_RESERVATION_FORM_COPY.CATEGORY, {
+        exact: false,
+      }),
     getCategoryCard: (categoryName: string): Locator =>
       main.getByText(categoryName, { exact: true }),
     selectCategoryOption: (
