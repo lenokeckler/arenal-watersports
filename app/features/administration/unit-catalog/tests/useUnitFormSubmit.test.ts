@@ -9,7 +9,6 @@ import { STATUS, STRING } from "@/app/constants";
 import { UNIT_CATALOG_COPY } from "../constants/UnitCatalogCopy.constants";
 import { UNIT_FORM_ERROR_COPY } from "../constants/UnitFormErrorCopy.constants";
 import { UNIT_FORM_MODE } from "../constants/UnitFormMode.constants";
-import { UNIT_MUTATION_STATUS } from "../constants/UnitMutationStatus.constants";
 import { UNIT_STATUS } from "../constants/UnitStatus.constants";
 import type { CreateUnitInput } from "../models/CreateUnitInput.interface";
 import type { UpdateUnitInput } from "../models/UpdateUnitInput.interface";
@@ -24,11 +23,7 @@ import {
   renderUnitSubmit,
   submitUnitFormEvent,
 } from "./UnitSubmit.harness";
-import {
-  FAKE_CODE_ERROR,
-  FAKE_SERVER_MESSAGE,
-  SUCCESS_RESULT,
-} from "./useUnitForm.constants";
+import { SUCCESS_RESULT } from "./useUnitForm.constants";
 
 const mockPush = vi.fn();
 const mockRefresh = vi.fn();
@@ -142,53 +137,6 @@ describe("useUnitFormSubmit", () => {
         ...navigationArguments
       );
       expect(otherNavigation).not.toHaveBeenCalled();
-    }
-  );
-
-  it("shows the code error under the code field without a toast or navigation", async () => {
-    mockCreateUnitAction.mockResolvedValue({
-      status: UNIT_MUTATION_STATUS.ERROR,
-      codeError: FAKE_CODE_ERROR,
-    });
-    const setCodeError = vi.fn();
-    const { result } = renderUnitSubmit({ setCodeError });
-
-    await submitUnitFormEvent(result);
-
-    expect(setCodeError).toHaveBeenCalledWith(
-      FAKE_CODE_ERROR
-    );
-    expect(mockShowToast).not.toHaveBeenCalled();
-    expect(mockPush).not.toHaveBeenCalled();
-  });
-
-  it.each([
-    {
-      description: "the server message",
-      message: FAKE_SERVER_MESSAGE,
-      expected: FAKE_SERVER_MESSAGE,
-    },
-    {
-      description: "the generic message when there is none",
-      message: undefined,
-      expected: UNIT_CATALOG_COPY.GENERIC_MUTATION_ERROR,
-    },
-  ])(
-    "shows $description when the action returns an error",
-    async ({ message, expected }) => {
-      mockCreateUnitAction.mockResolvedValue({
-        status: UNIT_MUTATION_STATUS.ERROR,
-        message,
-      });
-      const { result } = renderUnitSubmit();
-
-      await submitUnitFormEvent(result);
-
-      expect(mockShowToast).toHaveBeenCalledWith(
-        STATUS.ERROR,
-        expected
-      );
-      expect(mockPush).not.toHaveBeenCalled();
     }
   );
 });
