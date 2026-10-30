@@ -11,6 +11,7 @@ import {
 } from "../constants/IncomeCopy.constants";
 import {
   BALANCED_DOLLAR_DISPLAY,
+  CHARGE_ONLY_DOLLAR_DISPLAY,
   DOLLAR_COLLECTED_TEXT,
   DOLLAR_DISPLAY,
   DOLLAR_NET_TEXT,
@@ -98,6 +99,20 @@ describe("IncomeCurrencySection", () => {
     expect(
       page.queryText(INCOME_COPY.NET_NEGATIVE_NOTE)
     ).toBeNull();
+  });
+
+  it("shows a refund of zero without a minus sign", () => {
+    render(
+      <IncomeCurrencySection
+        display={CHARGE_ONLY_DOLLAR_DISPLAY}
+      />
+    );
+    const page = createIncomePage();
+
+    expect(
+      page.getFigureText(INCOME_COPY.REFUNDED_LABEL)
+    ).toBe(ZERO_DOLLAR_TEXT);
+    expect(page.getHiddenSigns()).toHaveLength(0);
   });
 
   it("says a currency had no movement instead of showing zero figures", () => {

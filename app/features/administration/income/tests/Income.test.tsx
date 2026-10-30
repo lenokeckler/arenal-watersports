@@ -170,4 +170,14 @@ describe("Income", () => {
     expect(redirect).not.toHaveBeenCalled();
     expect(readIncomeReport).not.toHaveBeenCalled();
   });
+
+  it("lets an unexpected read error reach the error boundary instead of showing an empty day", async () => {
+    vi.mocked(readIncomeReport).mockRejectedValue(
+      new Error(READ_FAILURE_MESSAGE)
+    );
+
+    await expect(Income()).rejects.toThrow(
+      READ_FAILURE_MESSAGE
+    );
+  });
 });

@@ -1,3 +1,4 @@
+import { InlineText } from "@/app/components";
 import { SCREEN_READER_ONLY_CLASS } from "@/app/styles/ScreenReader.styles";
 import { formatMoney } from "@/app/utils/money/formatMoney";
 import { INCOME_SIGN_GLYPH } from "../constants/Income.constants";
@@ -12,17 +13,17 @@ const IncomeSignedAmount = ({
 }: IncomeSignedAmountProps): React.JSX.Element => (
   <>
     {hasSignGlyph && (
-      <span
+      <InlineText
         aria-hidden
         className={INCOME_SIGN_CLASS}
       >
         {INCOME_SIGN_GLYPH}
-      </span>
+      </InlineText>
     )}
     {isSpokenNegative && (
-      <span className={SCREEN_READER_ONLY_CLASS}>
+      <InlineText className={SCREEN_READER_ONLY_CLASS}>
         {INCOME_COPY.NEGATIVE_SCREEN_READER_PREFIX}
-      </span>
+      </InlineText>
     )}
     {formatMoney(money)}
   </>
