@@ -12,6 +12,7 @@ import {
 import type { DecommissionUnitInput } from "../models/DecommissionUnitInput.interface";
 import type { UnitMutationResult } from "../models/UnitMutationResult.interface";
 import { mapDecommissionUnitInputToRow } from "../utils/mapDecommissionUnitInputToRow";
+import { mapUnitWriteErrorToResult } from "../utils/mapUnitWriteErrorToResult";
 import { validateUnitDecommissionReason } from "../utils/validateUnitDecommissionReason";
 
 const buildErrorResult = (
@@ -71,6 +72,10 @@ export const decommissionUnitAction = async (
     .neq("status", UNIT_STATUS.DECOMMISSIONED)
     .select("id")
     .maybeSingle();
+  const failure = mapUnitWriteErrorToResult(error);
+  if (failure) {
+    return failure;
+  }
   throwIfSupabaseError(error, "decommissionUnitAction");
   if (!updatedUnitRow) {
     return buildErrorResult(

@@ -77,9 +77,9 @@ describe("mapUnitFormValuesToInput", () => {
 
 describe("mapUnitRowToUnit", () => {
   it("renames every column to the read model", () => {
-    expect(mapUnitRowToUnit(DEFAULT_UNIT_ROW)).toEqual(
-      DEFAULT_UNIT
-    );
+    expect(
+      mapUnitRowToUnit(DEFAULT_UNIT_ROW, false)
+    ).toEqual(DEFAULT_UNIT);
   });
 });
 
@@ -95,7 +95,8 @@ describe("mapUnitRowToFormValues", () => {
       buildUnitRow({
         fuel_level: null,
         next_oil_change_at: null,
-      })
+      }),
+      false
     );
 
     expect(mapUnitRowToFormValues(unit)).toMatchObject({
