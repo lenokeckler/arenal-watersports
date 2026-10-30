@@ -1,3 +1,5 @@
+import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
+
 export const RESERVATION_TYPE_FIELDSET_CLASS =
   "min-w-0 space-y-2 md:col-span-2";
 
@@ -30,4 +32,8 @@ export const RESERVATION_TYPE_OPTION_DESCRIPTION_CLASS =
 export const resolveReservationTypeOptionClassName = (
   isSelected: boolean
 ): string =>
-  `${RESERVATION_TYPE_OPTION_CLASS} ${isSelected ? RESERVATION_TYPE_OPTION_SELECTED_CLASS : RESERVATION_TYPE_OPTION_IDLE_CLASS}`;
+  joinClassNames(
+    RESERVATION_TYPE_OPTION_CLASS,
+    isSelected && RESERVATION_TYPE_OPTION_SELECTED_CLASS,
+    !isSelected && RESERVATION_TYPE_OPTION_IDLE_CLASS
+  );

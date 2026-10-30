@@ -4,8 +4,8 @@ import { getAvailableReservationUnitsAction } from "../actions/getAvailableReser
 import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
-import { renderReservationForm } from "./ReservationFormView.fixture";
 import { RESERVATION_TYPE_COPY } from "../constants/ReservationTypeCopy.constants";
+import { renderReservationForm } from "./ReservationFormView.fixture";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 
 vi.mock("../actions/createReservationAction", () => ({
@@ -27,6 +27,7 @@ describe("ReservationFormView submission", () => {
         RESERVATION_FORM_VIEW_TEST.CREATED_RESERVATION_ID,
     });
     const page = renderReservationForm();
+
     await page.selectDuration(
       RESERVATION_FORM_VIEW_TEST.CUSTOM_DURATION_OPTION
     );
