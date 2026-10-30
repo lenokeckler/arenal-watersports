@@ -10,7 +10,7 @@ const UnitFormFields = ({
   values,
   errors,
   category,
-  isSubmitting,
+  isDisabled,
   onCodeChange,
   onStatusChange,
   onFuelMaxChange,
@@ -23,12 +23,12 @@ const UnitFormFields = ({
       placeholder={UNIT_FORM_COPY.CODE_PLACEHOLDER}
       value={values.code}
       error={errors.code}
-      disabled={isSubmitting}
+      disabled={isDisabled}
       onChange={onCodeChange}
     />
     <UnitFormStatusField
       value={values.status}
-      disabled={isSubmitting}
+      disabled={isDisabled}
       onChange={onStatusChange}
     />
     <UnitFormTextField
@@ -37,7 +37,7 @@ const UnitFormFields = ({
       inputMode={INPUT_MODE.NUMERIC}
       value={values.fuelMax}
       error={errors.fuelMax}
-      disabled={isSubmitting}
+      disabled={isDisabled}
       onChange={onFuelMaxChange}
     />
     {category.hasMotor && (
@@ -46,7 +46,7 @@ const UnitFormFields = ({
         values={values}
         errors={errors}
         usageMetric={category.usageMetric}
-        disabled={isSubmitting}
+        disabled={isDisabled}
       />
     )}
   </>
