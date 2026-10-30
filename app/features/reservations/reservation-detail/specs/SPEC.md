@@ -25,7 +25,7 @@ Let Reservations open one read-only view of an outing and see its reservation, c
 - Incluye el equipo comprometido, los extras, los guías asignados y el estado del cobro.
 - Indica quién creó la reserva y quién la modificó de último.
 - Lista cada grupo despachado con su hora real de salida, su hora de regreso y, si ya volvió, su hora de llegada.
-- Require an authenticated Reservations-area or administrator account using the existing server authorization pattern and Supabase RLS.
+- Require an authenticated account with the Reservations area using the existing server authorization pattern and Supabase RLS.
 - Keep currency amounts separate; never convert currencies or include deposits in charge status.
 - Calculate base-tariff status from `tariff` charges only; show `extra_time` charges and reservation-level refunds separately because refunds are not linked to a charge kind.
 - Treat `reservation_dispatches.dispatched_at` as actual departure, `ends_at` as expected return, and `closed_at` as actual arrival.
@@ -42,6 +42,8 @@ Let Reservations open one read-only view of an outing and see its reservation, c
 - Do not use deposits or convert between currencies.
 
 ## Acceptance criteria
+
+PR #222 delivers the reservation detail read model only. These story criteria remain open until the stacked screen and E2E parts are complete.
 
 - [ ] Se muestra toda la información asociada a la salida.
 - [ ] Incluye el equipo comprometido, los extras, los guías asignados y el estado del cobro.

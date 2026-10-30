@@ -76,13 +76,13 @@ describe("getAuthorizedReservationDetailClient", () => {
     expect(redirect).not.toHaveBeenCalled();
   });
 
-  it("allows an administrator without the Reservations area", async () => {
+  it("redirects an administrator without the Reservations area", async () => {
     createSupabaseClientFixture(false, true, true);
 
     await expect(
       getAuthorizedReservationDetailClient()
-    ).resolves.toBeDefined();
-    expect(redirect).not.toHaveBeenCalled();
+    ).rejects.toThrow(PATHS.HOME);
+    expect(redirect).toHaveBeenCalledWith(PATHS.HOME);
   });
 
   it("redirects an unauthenticated visitor to login", async () => {
