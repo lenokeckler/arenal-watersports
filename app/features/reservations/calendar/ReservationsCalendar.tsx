@@ -5,9 +5,10 @@ import { ReservationsCalendarView } from "./ReservationsCalendarView";
 
 export const ReservationsCalendar = ({
   snapshot,
+  today,
 }: ReservationsCalendarProps): ReactElement => (
   <ReservationsCalendarView
     snapshot={snapshot}
-    today={getCalendarToday(new Date())}
+    today={today ?? getCalendarToday(new Date())}
   />
 );
