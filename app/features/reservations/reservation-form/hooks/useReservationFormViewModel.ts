@@ -1,9 +1,13 @@
 "use client";
 
+import { useEffect, useEffectEvent } from "react";
 import type { ReservationGuideAssignmentViewModel } from "../models/ReservationGuideAssignmentViewModel.interface";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 import type { ReservationGuideLoadResult } from "../models/ReservationGuideLoadResult.type";
-import { EMPTY_RESERVATION_GUIDE_LOAD_RESULT } from "../constants/ReservationGuideLoad.constants";
+import {
+  EMPTY_RESERVATION_GUIDE_LOAD_RESULT,
+  RESERVATION_GUIDE_LOAD_RESULT_KIND,
+} from "../constants/ReservationGuideLoad.constants";
 import { filterReservationCategoriesByType } from "../utils/filterReservationCategoriesByType";
 import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import { useReservationFormViewModelDependencies } from "./useReservationFormViewModelDependencies";
@@ -22,6 +26,22 @@ export const useReservationFormViewModel = (
       categories
     );
   const { state, eligibility } = resources;
+  const reconcileLoadedGuideSelection = useEffectEvent(
+    (guideIds: string[]) =>
+      state.fields.reconcileGuideSelection(guideIds)
+  );
+  useEffect(() => {
+    if (
+      guideLoad.isLoading ||
+      guideLoad.result.kind !==
+        RESERVATION_GUIDE_LOAD_RESULT_KIND.SUCCESS
+    ) {
+      return;
+    }
+    reconcileLoadedGuideSelection(
+      guideLoad.result.guides.map((guide) => guide.id)
+    );
+  }, [guideLoad.isLoading, guideLoad.result]);
   return {
     categories: filterReservationCategoriesByType(
       eligibility.categories,
@@ -38,6 +58,8 @@ export const useReservationFormViewModel = (
     handleReservationTypeChange:
       state.fields.handleReservationTypeChange,
     handleGuideToggle: state.fields.handleGuideToggle,
+    reconcileGuideSelection:
+      state.fields.reconcileGuideSelection,
     handleRetryEquipmentEligibility: eligibility.retry,
     handleSubmit,
     hasEquipmentEligibilityError: eligibility.hasError,

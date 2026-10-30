@@ -1,3 +1,4 @@
+import { unstable_rethrow } from "next/navigation";
 import { RESERVATION_GUIDE_LOAD_RESULT_KIND } from "../constants/ReservationGuideLoad.constants";
 import type { ReservationGuideLoadResult } from "../models/ReservationGuideLoadResult.type";
 import { getReservationGuides } from "./getReservationGuides";
@@ -12,6 +13,7 @@ export const loadReservationGuideDirectory =
         kind: RESERVATION_GUIDE_LOAD_RESULT_KIND.SUCCESS,
       };
     } catch (error) {
+      unstable_rethrow(error);
       const code =
         resolveReservationGuideLoadErrorCode(error);
       recordReservationGuideLoadFailure(error, code);

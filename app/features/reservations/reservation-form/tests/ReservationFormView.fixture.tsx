@@ -32,36 +32,57 @@ vi.mock(
 
 export const reservationRouterBack = routerBack;
 
+const createReservationFormView = (
+  guideLoadResult: ReservationGuideLoadResult
+) => (
+  <ReservationFormView
+    categories={[
+      {
+        id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
+        isGuideOnly: false,
+        isInterchangeable: true,
+        name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
+      },
+      {
+        id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
+        isGuideOnly: true,
+        isInterchangeable: false,
+        name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
+      },
+    ]}
+    guideLoadResult={guideLoadResult}
+    initialDate={RESERVATION_FORM_VIEW_TEST.DATE}
+  />
+);
+
 const renderReservationFormContainer = (
   guideLoadResult: ReservationGuideLoadResult
 ) => {
   routerBack.mockClear();
-  const { container } = render(
-    <ReservationFormView
-      categories={[
-        {
-          id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
-          isGuideOnly: false,
-          isInterchangeable: true,
-          name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
-        },
-        {
-          id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
-          isGuideOnly: true,
-          isInterchangeable: false,
-          name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
-        },
-      ]}
-      guideLoadResult={guideLoadResult}
-      initialDate={RESERVATION_FORM_VIEW_TEST.DATE}
-    />
+  const { container, rerender } = render(
+    createReservationFormView(guideLoadResult)
   );
-  return container;
+  return {
+    container,
+    rerenderGuideLoadResult: (
+      nextGuideLoadResult: ReservationGuideLoadResult
+    ): void =>
+      rerender(
+        createReservationFormView(nextGuideLoadResult)
+      ),
+  };
 };
 
 export const renderReservationForm = (
   guideLoadResult: ReservationGuideLoadResult = EMPTY_RESERVATION_GUIDE_LOAD_RESULT
-) =>
-  createReservationFormViewPage(
-    renderReservationFormContainer(guideLoadResult)
-  );
+) => {
+  const renderedForm =
+    renderReservationFormContainer(guideLoadResult);
+  return {
+    ...createReservationFormViewPage(
+      renderedForm.container
+    ),
+    rerenderGuideLoadResult:
+      renderedForm.rerenderGuideLoadResult,
+  };
+};

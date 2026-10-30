@@ -3,18 +3,16 @@ import { getReservationGuidesAction } from "../actions/getReservationGuidesActio
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
 import { RESERVATION_TYPE_COPY } from "../constants/ReservationTypeCopy.constants";
 import { RESERVATION_GUIDE_LOAD_RESULT_KIND } from "../constants/ReservationGuideLoad.constants";
-import { renderReservationGuideForm } from "./ReservationGuideAssignment.fixture";
+import {
+  createFailedGuideLoadResult,
+  renderReservationGuideForm,
+} from "./ReservationGuideAssignment.fixture";
 import { RESERVATION_GUIDE_ASSIGNMENT_TEST } from "./ReservationGuideAssignment.constants";
 import { RESERVATION_GUIDE_SELECTION_TEST } from "./ReservationGuideSelection.constants";
 
 vi.mock("../actions/getReservationGuidesAction", () => ({
   getReservationGuidesAction: vi.fn(),
 }));
-
-const createFailedResult = () => ({
-  code: RESERVATION_GUIDE_ASSIGNMENT_TEST.LOAD_ERROR_CODE,
-  kind: RESERVATION_GUIDE_LOAD_RESULT_KIND.FAILURE,
-});
 
 describe("Reservation guide directory", () => {
   it("shows the empty directory state", async () => {
@@ -25,6 +23,7 @@ describe("Reservation guide directory", () => {
     await page.selectReservationType(
       RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
     );
+
     expect(page.queryGuideSelector()).toBeInTheDocument();
     expect(
       page.queryGuideSelector()?.textContent
@@ -44,11 +43,12 @@ describe("Reservation guide directory", () => {
       }
     );
     const page = renderReservationGuideForm(
-      createFailedResult()
+      createFailedGuideLoadResult()
     );
     await page.selectReservationType(
       RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
     );
+
     expect(
       page.queryGuideSelector()?.textContent
     ).toContain(RESERVATION_FORM_UI_COPY.GUIDES_ERROR);
@@ -62,15 +62,16 @@ describe("Reservation guide directory", () => {
 
   it("keeps safe copy when retry returns a failure", async () => {
     vi.mocked(getReservationGuidesAction).mockResolvedValue(
-      createFailedResult()
+      createFailedGuideLoadResult()
     );
     const page = renderReservationGuideForm(
-      createFailedResult()
+      createFailedGuideLoadResult()
     );
     await page.selectReservationType(
       RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
     );
     await page.clickGuideRetry();
+
     expect(
       page.queryGuideSelector()?.textContent
     ).toContain(RESERVATION_FORM_UI_COPY.GUIDES_ERROR);
@@ -89,6 +90,7 @@ describe("Reservation guide directory", () => {
     async (reservationType) => {
       const page = renderReservationGuideForm();
       await page.selectReservationType(reservationType);
+
       expect(
         page.queryGuideSelector()
       ).not.toBeInTheDocument();

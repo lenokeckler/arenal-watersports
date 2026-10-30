@@ -1,5 +1,7 @@
 import Button from "@/app/components/button/Button";
 import Text from "@/app/components/text/Text";
+import { ARIA_ROLE } from "@/app/constants";
+import type { Nullable } from "@/app/types";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
 import { RESERVATION_GUIDE_LOAD_RESULT_KIND } from "../constants/ReservationGuideLoad.constants";
 import type { ReservationGuideAssignmentFeedbackProps } from "../models/ReservationGuideAssignmentFeedbackProps.interface";
@@ -12,10 +14,10 @@ const ReservationGuideAssignmentFeedback = ({
   isLoading,
   result,
   retry,
-}: ReservationGuideAssignmentFeedbackProps): React.JSX.Element | null => {
+}: ReservationGuideAssignmentFeedbackProps): Nullable<React.JSX.Element> => {
   if (isLoading) {
     return (
-      <Text role="status">
+      <Text role={ARIA_ROLE.STATUS}>
         {RESERVATION_FORM_UI_COPY.GUIDES_LOADING}
       </Text>
     );
@@ -27,7 +29,7 @@ const ReservationGuideAssignmentFeedback = ({
     return (
       <div
         className={RESERVATION_GUIDE_ASSIGNMENT_ERROR_CLASS}
-        role="alert"
+        role={ARIA_ROLE.ALERT}
       >
         <Text>{RESERVATION_FORM_UI_COPY.GUIDES_ERROR}</Text>
         <Button

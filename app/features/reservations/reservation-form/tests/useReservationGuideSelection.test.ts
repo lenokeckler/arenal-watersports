@@ -61,4 +61,40 @@ describe("reservation guide selection state", () => {
     });
     expect(result.current.values.guideIds).toEqual([]);
   });
+
+  it("removes selected guides missing from a refreshed list", () => {
+    const { result } = renderHook(() =>
+      useReservationFormFields(
+        RESERVATION_FORM_VIEW_TEST.DATE,
+        STRING.Empty,
+        vi.fn(),
+        []
+      )
+    );
+
+    act(() => {
+      result.current.handleReservationTypeChange(
+        RESERVATION_TYPE.TOUR
+      );
+    });
+    act(() => {
+      result.current.handleGuideToggle(
+        RESERVATION_GUIDE_SELECTION_TEST.FIRST_ID
+      );
+    });
+    act(() => {
+      result.current.handleGuideToggle(
+        RESERVATION_GUIDE_SELECTION_TEST.SECOND_ID
+      );
+    });
+    act(() => {
+      result.current.reconcileGuideSelection([
+        RESERVATION_GUIDE_SELECTION_TEST.FIRST_ID,
+      ]);
+    });
+
+    expect(result.current.values.guideIds).toEqual([
+      RESERVATION_GUIDE_SELECTION_TEST.FIRST_ID,
+    ]);
+  });
 });

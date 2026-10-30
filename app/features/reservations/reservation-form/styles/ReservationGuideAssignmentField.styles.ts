@@ -17,7 +17,4 @@ export const RESERVATION_GUIDE_ASSIGNMENT_GRID_CLASS =
   "grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3";
 
 export const RESERVATION_GUIDE_ASSIGNMENT_OPTION_CLASS =
-  "flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border border-outline-variant/70 bg-surface-container-high px-4 py-3 text-on-surface transition-colors hover:border-primary focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary";
-
-export const RESERVATION_GUIDE_ASSIGNMENT_CHECKBOX_CLASS =
-  "size-5 accent-primary scroll-mb-40 md:scroll-mb-0";
+  "flex min-h-11 cursor-pointer items-center gap-3 rounded-xl border border-outline-variant/70 bg-surface-container-high px-4 text-on-surface transition-colors hover:border-primary focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary [&_input]:size-5 [&_input]:accent-primary [&_input]:scroll-mb-40 md:[&_input]:scroll-mb-0 [&_label]:flex [&_label]:min-h-11 [&_label]:flex-1 [&_label]:items-center";

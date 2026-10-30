@@ -20,6 +20,7 @@ export const viewModelHarness = (() => {
   const handleUnitChange = vi.fn((value: string) => {
     values.unitId = value;
   });
+  const reconcileGuideSelection = vi.fn();
   const eligibility: {
     current: {
       categories: ReservationCategoryOption[];
@@ -51,6 +52,7 @@ export const viewModelHarness = (() => {
     equipment,
     handleCategoryChange,
     handleUnitChange,
+    reconcileGuideSelection,
     values,
   };
 })();
@@ -69,6 +71,8 @@ vi.mock("../hooks/useReservationFormState", () => ({
     fields: {
       handleCategoryChange:
         viewModelHarness.handleCategoryChange,
+      reconcileGuideSelection:
+        viewModelHarness.reconcileGuideSelection,
       handleUnitChange: viewModelHarness.handleUnitChange,
       values: viewModelHarness.values,
     },
@@ -126,6 +130,7 @@ export const resetViewModelHarness = (): void => {
   viewModelHarness.values.unitId = "unit-1";
   viewModelHarness.handleCategoryChange.mockClear();
   viewModelHarness.handleUnitChange.mockClear();
+  viewModelHarness.reconcileGuideSelection.mockClear();
   viewModelHarness.eligibility.current = {
     categories: [
       {
