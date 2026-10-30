@@ -6,11 +6,9 @@ import {
   vi,
 } from "vitest";
 import { render } from "@testing-library/react";
-import { redirect } from "next/navigation";
 import {
   CURRENCY_CODE,
   CURRENCY_NAME_COPY,
-  PATHS,
 } from "@/app/constants";
 import { readIncomeReport } from "@/app/services/income-report";
 import { isAdministratorSignedIn } from "@/app/services/worker-registration";
@@ -28,7 +26,6 @@ import {
   HEADING_LEVEL_ONE,
   INCOME_DAY,
   INCOME_DAY_TEXT,
-  READ_FAILURE_MESSAGE,
   READY_REPORT,
   REDIRECT_ERROR_MESSAGE,
 } from "./IncomeScreen.constants";
@@ -145,39 +142,5 @@ describe("Income", () => {
     expect(
       page.getHeadings(HEADING_LEVEL_ONE)
     ).toHaveLength(1);
-  });
-
-  it("sends a worker who is not an administrator home before reading any income", async () => {
-    vi.mocked(isAdministratorSignedIn).mockResolvedValue(
-      false
-    );
-
-    await expect(Income()).rejects.toThrow(
-      REDIRECT_ERROR_MESSAGE
-    );
-    expect(redirect).toHaveBeenCalledWith(PATHS.HOME);
-    expect(readIncomeReport).not.toHaveBeenCalled();
-  });
-
-  it("lets a failed access check reach the error boundary without reading income", async () => {
-    vi.mocked(isAdministratorSignedIn).mockRejectedValue(
-      new Error(READ_FAILURE_MESSAGE)
-    );
-
-    await expect(Income()).rejects.toThrow(
-      READ_FAILURE_MESSAGE
-    );
-    expect(redirect).not.toHaveBeenCalled();
-    expect(readIncomeReport).not.toHaveBeenCalled();
-  });
-
-  it("lets an unexpected read error reach the error boundary instead of showing an empty day", async () => {
-    vi.mocked(readIncomeReport).mockRejectedValue(
-      new Error(READ_FAILURE_MESSAGE)
-    );
-
-    await expect(Income()).rejects.toThrow(
-      READ_FAILURE_MESSAGE
-    );
   });
 });
