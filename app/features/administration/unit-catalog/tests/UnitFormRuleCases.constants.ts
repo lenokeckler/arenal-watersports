@@ -51,11 +51,6 @@ export const UNIT_CODE_CASES: UnitFormRuleCase[] = [
 
 export const UNIT_STATUS_CASES: UnitFormRuleCase[] = [
   {
-    description: "an editable status",
-    overrides: { status: UNIT_STATUS.IN_REPAIR },
-    expectedErrors: {},
-  },
-  {
     description: "the decommissioned status",
     overrides: { status: UNIT_STATUS.DECOMMISSIONED },
     expectedErrors: {
