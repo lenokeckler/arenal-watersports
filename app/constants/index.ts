@@ -1,6 +1,11 @@
 export { PAGINATION } from "./strings/Pagination.constant";
 export { CALENDAR_PREFERENCE } from "./calendar/CalendarPreference.constants";
 export { CALENDAR_PREFERENCE_COPY } from "./calendar/CalendarPreferenceCopy.constants";
+export { CALENDAR_TEXT } from "./calendar/CalendarPresentationCopy.constants";
+export { RESERVATIONS_CALENDAR_COPY } from "./calendar/ReservationsCalendarCopy.constants";
+export { OPERATIONS_CALENDAR_COPY } from "./calendar/OperationsCalendarCopy.constants";
+export { RESERVATION_CALENDAR_GUIDE_TYPE } from "./calendar/ReservationCalendarGuide.constants";
+export { CALENDAR_PRESENTATION } from "./calendar/CalendarPresentation.constants";
 export {
   CALENDAR_ALLOWED_VIEWS,
   CALENDAR_NAVIGATION,
@@ -11,6 +16,15 @@ export {
   CALENDAR_DATE,
   CALENDAR_DATE_ERROR,
 } from "./calendar/CalendarDate.constants";
+export {
+  INVENTORY_ACCESS_FUNCTION,
+  INVENTORY_DATA_SOURCE,
+  INVENTORY_TRACKING_MODE,
+  INVENTORY_UNIT_STATUS,
+  type ActiveInventoryUnitStatus,
+  type InventoryTrackingMode,
+  type InventoryUnitStatus,
+} from "./inventory/Inventory.constants";
 export {
   IMAGE_SIZES,
   IMAGES_PATHS,
@@ -29,7 +43,6 @@ export {
   SIZE,
 } from "@/app/components/button/constants";
 export { INDEX } from "./index/Index.constants";
-export { TO_LOCALE_OPTIONS } from "./calendar/ToLocaleOptions.constants";
 export { HTTP_STATUS } from "./numbers/HttpStatus.constant";
 export { BROWSER_EVENTS } from "./events/Event.constants";
 export { FORM_FIELD } from "@/app/components/form-field/constants/FormField.constants";
@@ -43,6 +56,11 @@ export { POSITION } from "./strings/Position.types";
 export type { Position } from "./strings/Position.types";
 export { KEYBOARD } from "./strings/Keyboard.types";
 export { PATHS } from "./strings/Paths.constants";
+export { UUID_PATTERN } from "./strings/UUIDPattern.constants";
+export {
+  WORK_AREA,
+  type WorkArea,
+} from "./strings/WorkArea.constants";
 export type { AppPath } from "./strings/AppPath.types";
 export {
   SPINNER_SIZE,
@@ -283,6 +301,12 @@ export {
   type ServerErrorReportLevel,
 } from "./observability/ServerErrorReport.constants";
 export { SERVER_OPERATION } from "./observability/ServerOperation.constants";
+export {
+  RESERVATION_CALENDAR_ACTIVE_STATUS,
+  RESERVATION_CALENDAR_QUERY,
+  RESERVATION_CALENDAR_WINDOW_FORMAT,
+} from "./supabase/ReservationCalendarQuery.constants";
+export { RESERVATION_CALENDAR_QUERY_ERROR } from "./supabase/ReservationCalendarQueryError.constants";
 export { DEPOSIT_QUERY } from "./supabase/DepositQuery.constants";
 export {
   CURRENCY_CODE,
