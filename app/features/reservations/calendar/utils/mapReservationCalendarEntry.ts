@@ -9,6 +9,12 @@ import { parseReservationCalendarInstant } from "@/app/components/reservation-ca
 export const mapReservationCalendarEntry = (
   source: ReservationCalendarSource
 ): ReservationCalendarEntry => {
+  if (source.customer_name.trim().length === 0) {
+    throw new Error(
+      RESERVATION_CALENDAR_ERROR.INVALID_CUSTOMER_NAME,
+      { cause: source.id }
+    );
+  }
   if (
     source.ends_at === null ||
     parseReservationCalendarInstant(source.ends_at) <=
@@ -32,7 +38,7 @@ export const mapReservationCalendarEntry = (
         return equipment === null ? [] : [equipment];
       }
     ),
-    guides: source.reservation_guides.map(
+    guides: source.reservation_guides?.map(
       mapReservationCalendarGuide
     ),
     id: source.id,

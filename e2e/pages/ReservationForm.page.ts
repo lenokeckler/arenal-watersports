@@ -128,5 +128,14 @@ export const createReservationFormPage = (page: Page) => {
           exact: true,
         })
         .click(),
+    attemptSubmit: (): Promise<void> =>
+      main
+        .getByRole(ARIA_ROLE.BUTTON, {
+          name: E2E_RESERVATION_FORM_COPY.SUBMIT,
+          exact: true,
+        })
+        .evaluate((button: HTMLButtonElement) =>
+          button.click()
+        ),
   };
 };

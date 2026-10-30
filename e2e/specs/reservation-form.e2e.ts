@@ -104,7 +104,23 @@ test.describe("Reservation form", () => {
     ).toBeHidden();
   });
 
-  test("creates a reservation using a seeded interchangeable category", async ({
+  test("submits a valid custom duration with decimal precision", async ({
+    page,
+  }) => {
+    const reservationFormPage =
+      createReservationFormPage(page);
+
+    await reservationFormPage.goTo();
+    await reservationFormPage.submitCustomDurationReservation(
+      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_PRECISION_CASE
+    );
+
+    await expect(
+      reservationFormPage.getSuccessMessage()
+    ).toBeVisible();
+  });
+
+  test("prevents a second submission after reservation creation", async ({
     page,
   }) => {
     const reservationFormPage =
@@ -119,5 +135,12 @@ test.describe("Reservation form", () => {
     await expect(
       reservationFormPage.getSuccessMessage()
     ).toBeVisible();
+    await expect(
+      reservationFormPage.getSubmitButton()
+    ).toBeDisabled();
+    await reservationFormPage.attemptSubmit();
+    await expect(
+      reservationFormPage.getSuccessMessage()
+    ).toHaveCount(1);
   });
 });

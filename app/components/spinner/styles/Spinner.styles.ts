@@ -20,8 +20,6 @@ export const SPINNER_SIZE_CLASS: Record<
 export const SPINNER_WHEEL_CLASS =
   "animate-spin rounded-full border-4 border-t-transparent border-primary";
 
-export const SPINNER_SCREEN_READER_CLASS = "sr-only";
-
 export const resolveSpinnerContainerClassName = (
   fullScreen: boolean,
   centeredInForm: boolean
