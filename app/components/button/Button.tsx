@@ -1,5 +1,5 @@
-import { memo } from "react";
-import { LOADING_COPY } from "@/app/constants";
+﻿import { memo } from "react";
+import { LOADING_COPY } from "@/app/constants/strings/LoadingCopy.constants";
 import { ButtonProps } from "./models/ButtonProps.interface";
 import { getButtonClassName } from "./utils/getButtonClassName";
 

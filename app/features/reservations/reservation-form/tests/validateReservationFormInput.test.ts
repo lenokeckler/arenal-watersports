@@ -4,17 +4,21 @@ import {
   INVALID_TIME,
   EXPECTED_DURATION_MINUTES,
   EXPECTED_TRIMMED_CUSTOMER_NAME,
+  CONCRETE_UNIT_ID,
   EARLY_VALID_DATE,
   FRACTIONAL_COUNT,
   INVALID_FIELD_COUNT,
   INVALID_QUANTITY,
+  INVALID_RESERVATION_DURATION_HOURS,
   NEGATIVE_VALUE,
   SUBMINUTE_DURATION_HOURS,
+  VALID_CUSTOM_DURATION_MINUTE_CASES,
   ZERO_DURATION_HOURS,
   VALID_RESERVATION_FORM_INPUT,
 } from "./validateReservationFormInput.constants";
 import { validateReservationFormInput } from "../utils/validateReservationFormInput";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
+import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 
 describe("validateReservationFormInput", () => {
   it("trims the customer name and converts hours to whole minutes", () => {
@@ -23,13 +27,30 @@ describe("validateReservationFormInput", () => {
     );
 
     expect(result.value).toEqual({
-      categoryId: VALID_RESERVATION_FORM_INPUT.categoryId,
       customerName: EXPECTED_TRIMMED_CUSTOMER_NAME,
       date: VALID_RESERVATION_FORM_INPUT.date,
       durationMinutes: EXPECTED_DURATION_MINUTES,
       peopleCount: VALID_RESERVATION_FORM_INPUT.peopleCount,
-      quantity: VALID_RESERVATION_FORM_INPUT.quantity,
       time: VALID_RESERVATION_FORM_INPUT.time,
+      equipmentCommitment: {
+        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
+        categoryId: VALID_RESERVATION_FORM_INPUT.categoryId,
+        quantity: VALID_RESERVATION_FORM_INPUT.quantity,
+      },
+    });
+    expect(result.errors).toEqual({});
+  });
+
+  it("validates a concrete unit without requiring a category quantity", () => {
+    const result = validateReservationFormInput({
+      ...VALID_RESERVATION_FORM_INPUT,
+      quantity: INVALID_QUANTITY,
+      unitId: CONCRETE_UNIT_ID,
+    });
+
+    expect(result.value?.equipmentCommitment).toEqual({
+      kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
+      unitId: CONCRETE_UNIT_ID,
     });
     expect(result.errors).toEqual({});
   });
@@ -83,6 +104,36 @@ describe("validateReservationFormInput", () => {
       RESERVATION_FORM_FIELD.DURATION_HOURS
     );
   });
+
+  it.each(INVALID_RESERVATION_DURATION_HOURS)(
+    "rejects invalid duration %s with a duration error",
+    (durationHours) => {
+      const result = validateReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        durationHours,
+      });
+
+      expect(result.value).toBeNull();
+      expect(result.errors).toHaveProperty(
+        RESERVATION_FORM_FIELD.DURATION_HOURS
+      );
+    }
+  );
+
+  it.each(VALID_CUSTOM_DURATION_MINUTE_CASES)(
+    "accepts %s custom hours as %s minutes",
+    (durationHours, durationMinutes) => {
+      const result = validateReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        durationHours,
+      });
+
+      expect(result.value?.durationMinutes).toBe(
+        durationMinutes
+      );
+      expect(result.errors).toEqual({});
+    }
+  );
 
   it("rejects non-positive or fractional counts and missing fields", () => {
     const result = validateReservationFormInput({

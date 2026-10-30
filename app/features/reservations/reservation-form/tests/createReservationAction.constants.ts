@@ -11,6 +11,7 @@ export const VALID_RESERVATION_FORM_INPUT: ReservationFormInput =
     peopleCount: 3,
     quantity: 2,
     time: "09:30",
+    unitId: "",
   };
 
 export const CREATED_RESERVATION_ID =

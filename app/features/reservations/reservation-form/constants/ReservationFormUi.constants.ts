@@ -26,6 +26,7 @@ export const RESERVATION_FORM_DEFAULT_VALUES = {
   peopleCount: 1,
   quantity: 1,
   time: "09:00",
+  unitId: "",
 } as const;
 
 export const RESERVATION_FORM_FIELD_ID = {
