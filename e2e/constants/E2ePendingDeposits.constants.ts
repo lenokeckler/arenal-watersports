@@ -42,6 +42,9 @@ export const E2E_DEPOSIT_ERROR = {
   OPERATION_INSERT_RESERVATION:
     "insert the E2E reservation",
   OPERATION_REMOVE: "remove the E2E deposits",
+  OPERATION_REMOVE_RESERVATION:
+    "remove the E2E reservation",
+  OPERATION_SEED: "seed the E2E deposit",
 } as const;
 
 export const E2E_PENDING_DEPOSITS_SCREENSHOT_BASENAME = {
