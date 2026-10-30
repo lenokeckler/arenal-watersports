@@ -10,11 +10,22 @@ const UnitFormMotorFields = ({
   errors,
   usageMetric,
   disabled,
+  onFuelMaxChange,
   onFuelLevelChange,
   onUsageTotalChange,
   onNextOilChangeAtChange,
 }: UnitFormMotorFieldsProps): React.JSX.Element => (
   <>
+    <UnitFormTextField
+      id={UNIT_FORM_FIELD_ID.FUEL_MAX}
+      isRequired
+      label={UNIT_FORM_COPY.FUEL_MAX_LABEL}
+      inputMode={INPUT_MODE.NUMERIC}
+      value={values.fuelMax}
+      error={errors.fuelMax}
+      disabled={disabled}
+      onChange={onFuelMaxChange}
+    />
     <UnitFormTextField
       id={UNIT_FORM_FIELD_ID.FUEL_LEVEL}
       label={UNIT_FORM_COPY.FUEL_LEVEL_LABEL}
