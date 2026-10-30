@@ -26,12 +26,16 @@ test.describe("Category units screenshots", () => {
       E2E_MOTORIZED_CATEGORY,
       E2E_UNIT_SCREENSHOT_STATUSES
     );
-    const capture = (state: string): Promise<void> =>
-      captureFullPage(
+    const capture = async (
+      state: string
+    ): Promise<void> => {
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await captureFullPage(
         page,
         resolveCategoryUnitsScreenshotBasename(state),
         testInfo.project.name
       );
+    };
 
     await listPage.goTo(categoryId);
     await listPage.getHeading(categoryName).waitFor();
