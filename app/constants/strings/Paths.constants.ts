@@ -10,6 +10,7 @@ export const PATHS = {
     ROOT: "/access",
   },
   ADMINISTRATION: {
+    INCOME: "/administration/income",
     ROOT: "/administration",
     WORKER_AREAS: "/administration/workers/areas",
     WORKERS_NEW: "/administration/workers/new",
