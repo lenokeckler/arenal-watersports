@@ -125,7 +125,9 @@ describe("useReservationCalendarSnapshot", () => {
       fixture.DAY_SNAPSHOT
     );
 
-    act(() => result.current.onRetry());
+    await act(async () => {
+      await result.current.onRetry();
+    });
     await waitFor(() =>
       expect(result.current.snapshot).toEqual(
         fixture.WEEK_SNAPSHOT

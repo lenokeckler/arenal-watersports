@@ -8,7 +8,7 @@ import {
 } from "@/app/constants";
 import { Button, Text } from "@/app/components";
 import type { OperationsCalendarRouteErrorProps } from "./models/OperationsCalendarRouteErrorProps.interface";
-import { OPERATIONS_CALENDAR_INTEGRATION_COPY } from "./constants/OperationsCalendarIntegration.constants";
+import { OPERATIONS_CALENDAR_INTEGRATION_COPY } from "./constants/OperationsCalendarIntegrationCopy.constants";
 
 const OperationsCalendarRouteError = ({
   reset,

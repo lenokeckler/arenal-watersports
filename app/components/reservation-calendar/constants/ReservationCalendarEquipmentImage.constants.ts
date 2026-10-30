@@ -1,29 +1,34 @@
+import { STRING } from "@/app/constants";
 import type { ReservationEquipmentImageOption } from "../models/ReservationEquipmentImageOption.interface";
 
 export const RESERVATION_EQUIPMENT_IMAGE_DIMENSION = 128;
+export const RESERVATION_EQUIPMENT_NAME_NORMALIZATION = {
+  FORM: "NFD",
+  DIACRITICS: /[\u0300-\u036f]/g,
+} as const;
+
+const jetSki: ReservationEquipmentImageOption = {
+  alt: STRING.Empty,
+  source: "/images/equipment/jet-ski.webp",
+};
+const kayak: ReservationEquipmentImageOption = {
+  alt: STRING.Empty,
+  source: "/images/equipment/kayak-doble.webp",
+};
+const paddleboard: ReservationEquipmentImageOption = {
+  alt: STRING.Empty,
+  source: "/images/equipment/paddleboard.webp",
+};
 
 export const RESERVATION_EQUIPMENT_IMAGE: Record<
   string,
   ReservationEquipmentImageOption
 > = {
-  "jet ski": {
-    alt: "Moto acuática para una reserva en el lago",
-    source: "/images/equipment/jet-ski.webp",
-  },
-  kayak: {
-    alt: "Kayak doble para una reserva en el lago",
-    source: "/images/equipment/kayak-doble.webp",
-  },
-  paddleboard: {
-    alt: "Tabla de paddleboard para una reserva en el lago",
-    source: "/images/equipment/paddleboard.webp",
-  },
-  "paddle board": {
-    alt: "Tabla de paddleboard para una reserva en el lago",
-    source: "/images/equipment/paddleboard.webp",
-  },
-  sup: {
-    alt: "Tabla de paddleboard para una reserva en el lago",
-    source: "/images/equipment/paddleboard.webp",
-  },
+  "jet ski": jetSki,
+  kayak,
+  "kayak doble": kayak,
+  paddleboard,
+  "paddle board": paddleboard,
+  sup: paddleboard,
+  "sup board": paddleboard,
 };

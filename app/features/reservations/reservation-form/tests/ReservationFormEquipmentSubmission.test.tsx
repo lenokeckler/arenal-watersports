@@ -37,7 +37,7 @@ describe("reservation equipment submission", () => {
     );
   });
 
-  it("associates a category validation error with its radio group", async () => {
+  it("associates a category validation error with its category group", async () => {
     vi.mocked(createReservationAction).mockResolvedValue({
       ok: false,
       errors: {
@@ -53,9 +53,8 @@ describe("reservation equipment submission", () => {
 
     const error = await page.findCategoryError();
     const categoryGroup = page.getCategoryGroup();
-    expect(categoryGroup).toHaveAttribute(
-      "aria-invalid",
-      "true"
+    expect(categoryGroup).not.toHaveAttribute(
+      "aria-invalid"
     );
     expect(categoryGroup).toHaveAttribute(
       "aria-describedby",

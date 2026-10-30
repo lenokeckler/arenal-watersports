@@ -1,14 +1,10 @@
 import { RESERVATION_CALENDAR_GUIDE_TYPE } from "@/app/constants";
 import { RESERVATION_CALENDAR_ERROR } from "@/app/components/reservation-calendar/constants/ReservationCalendarProjection.constants";
 import type { ReservationCalendarGuide } from "@/app/components/reservation-calendar/models/ReservationCalendarGuide.type";
-import type { ReservationCalendarQueryRow } from "../models/ReservationCalendarQueryRow.type";
-
-type GuideRow = NonNullable<
-  ReservationCalendarQueryRow["reservation_guides"]
->[number];
+import type { ReservationCalendarGuideAssignmentSource } from "../models/ReservationCalendarGuideAssignmentSource.interface";
 
 export const mapReservationCalendarQueryGuide = (
-  source: GuideRow
+  source: ReservationCalendarGuideAssignmentSource
 ): ReservationCalendarGuide => {
   const worker = source.workers;
   if (worker === null) {

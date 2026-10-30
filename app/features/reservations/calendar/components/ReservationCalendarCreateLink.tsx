@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { Link } from "@/app/components";
+import { InlineText, Link } from "@/app/components";
 import {
   PATHS,
   RESERVATIONS_CALENDAR_COPY,
@@ -26,10 +26,10 @@ export const ReservationCalendarCreateLink =
           name={RESERVATION_CALENDAR_CREATE_ICON.NAME}
         />
       </div>
-      <span
+      <InlineText
         className={RESERVATION_CALENDAR_CREATE_LABEL_CLASS}
       >
         {RESERVATIONS_CALENDAR_COPY.CREATE_RESERVATION}
-      </span>
+      </InlineText>
     </Link>
   );

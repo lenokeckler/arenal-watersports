@@ -1,3 +1,4 @@
+import { createReservationEquipmentPage } from "./ReservationFormEquipment.page";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
@@ -27,6 +28,11 @@ const queryQuantityInput = (
 
 const getSubmitButton = () =>
   screen.getByRole(ARIA_ROLE.BUTTON, {
+    name: RESERVATION_FORM_UI_COPY.SUBMIT,
+  });
+
+const querySubmitButton = (): NullableRef<HTMLElement> =>
+  screen.queryByRole(ARIA_ROLE.BUTTON, {
     name: RESERVATION_FORM_UI_COPY.SUBMIT,
   });
 
@@ -76,37 +82,36 @@ const submit = async (
   await user.click(getSubmitButton());
 };
 
+const createQuantityPage = (
+  user: ReturnType<typeof userEvent.setup>,
+  container: HTMLElement
+) => ({
+  setQuantity: async (quantity: string): Promise<void> => {
+    const quantityInput = queryQuantityInput(container);
+    if (!quantityInput) {
+      throw new Error(
+        "The equipment quantity field is missing."
+      );
+    }
+    await user.clear(quantityInput);
+    await user.type(quantityInput, quantity);
+  },
+});
+
 export const createReservationFormViewPage = (
   container: HTMLElement
 ) => {
   const user = userEvent.setup();
 
   return {
-    getCategoryChoice: (categoryName: string) =>
-      screen.getByLabelText(categoryName),
-    getEquipmentImage: (imageAlt: string) =>
-      screen.getByAltText(imageAlt),
-    selectCategoryChoice: async (
-      categoryName: string
-    ): Promise<void> => {
-      await user.click(screen.getByLabelText(categoryName));
-    },
-    getCategoryGroup: () =>
-      screen.getByRole(ARIA_ROLE.GROUP, {
-        name: RESERVATION_FORM_UI_COPY.CATEGORY,
-      }),
-    findCategoryError: () =>
-      screen.findByText(
-        RESERVATION_FORM_COPY[
-          RESERVATION_FORM_FIELD.CATEGORY_ID
-        ]
-      ),
+    ...createReservationEquipmentPage(user),
     getDurationOption,
     getBackButton,
     findDurationValidationError,
     findSubmissionError,
     findSuccessMessage,
     getSubmitButton,
+    querySubmitButton,
     clickBack: async (): Promise<void> => {
       await user.click(getBackButton());
     },
@@ -115,18 +120,7 @@ export const createReservationFormViewPage = (
     queryQuantityInput: () => queryQuantityInput(container),
     selectDuration: (label: string) =>
       selectDuration(user, label),
-    setQuantity: async (
-      quantity: string
-    ): Promise<void> => {
-      const quantityInput = queryQuantityInput(container);
-      if (!quantityInput) {
-        throw new Error(
-          "The equipment quantity field is missing."
-        );
-      }
-      await user.clear(quantityInput);
-      await user.type(quantityInput, quantity);
-    },
+    ...createQuantityPage(user, container),
     submit: () => submit(user),
     typeCustomDuration: (value: string) =>
       typeCustomDuration(user, container, value),

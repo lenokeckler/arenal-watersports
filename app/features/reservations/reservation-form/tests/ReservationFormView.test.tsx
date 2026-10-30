@@ -1,3 +1,4 @@
+import { STRING } from "@/app/constants";
 import { describe, expect, it } from "vitest";
 import {
   renderReservationForm,
@@ -6,6 +7,11 @@ import {
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 
 describe("ReservationFormView duration selection", () => {
+  it("shows the empty category state", () => {
+    const page = renderReservationForm(false);
+    expect(page.getEmptyCategories()).toBeInTheDocument();
+  });
+
   it("selects an equipment category with its image", async () => {
     const page = renderReservationForm();
 
@@ -17,11 +23,9 @@ describe("ReservationFormView duration selection", () => {
       page.getCategoryChoice(
         RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME
       )
-    ).toBeChecked();
+    ).toHaveProperty("selected", true);
     expect(
-      page.getEquipmentImage(
-        RESERVATION_FORM_VIEW_TEST.CATEGORY_IMAGE_ALT
-      )
+      page.getEquipmentImage(STRING.Empty)
     ).toBeInTheDocument();
   });
 

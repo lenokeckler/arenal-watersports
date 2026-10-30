@@ -13,7 +13,9 @@ export const OperationsCalendarConnected = ({
 }: OperationsCalendarConnectedProps): ReactElement => {
   const calendar =
     useOperationsCalendarSnapshot(initialSnapshot);
-  useOperationsCalendarRealtime(calendar.onRetry);
+  const hasConnectionError = useOperationsCalendarRealtime(
+    calendar.onRetry
+  );
   return (
     <>
       <OperationsCalendarView
@@ -22,7 +24,9 @@ export const OperationsCalendarConnected = ({
         onPeriodChange={calendar.onPeriodChange}
       />
       <OperationsCalendarRefreshStatus
-        hasRefreshError={calendar.hasRefreshError}
+        hasRefreshError={
+          calendar.hasRefreshError || hasConnectionError
+        }
         onRetry={calendar.onRetry}
       />
     </>

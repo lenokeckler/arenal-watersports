@@ -9,6 +9,12 @@ export const useReservationCalendarSnapshot = (
 ): ReservationCalendarSnapshotState => {
   const snapshotState =
     useReservationCalendarSnapshotRefresh(initialSnapshot);
-  useReservationsCalendarRealtime(snapshotState.onRetry);
-  return snapshotState;
+  const hasConnectionError =
+    useReservationsCalendarRealtime(snapshotState.onRetry);
+  return {
+    ...snapshotState,
+    hasRefreshError:
+      snapshotState.hasRefreshError ||
+      Boolean(hasConnectionError),
+  };
 };

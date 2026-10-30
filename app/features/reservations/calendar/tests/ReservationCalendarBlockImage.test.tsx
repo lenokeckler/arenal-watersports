@@ -1,3 +1,4 @@
+import { STRING } from "@/app/constants";
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render } from "@testing-library/react";
 import { ReservationCalendarBlock } from "@/app/components/reservation-calendar/components/ReservationCalendarBlock";
@@ -32,9 +33,19 @@ describe("reservation equipment imagery", (): void => {
       ],
     });
 
+    const page = renderBlock(block);
+    const images = page.getEquipmentImages();
+    expect(images).toHaveLength(1);
+    expect(images[0]).toHaveAttribute("alt", STRING.Empty);
+    expect(block.equipmentCategoryName).toBe(
+      RESERVATION_BLOCK_TEST.KNOWN_EQUIPMENT_CATEGORY
+    );
+    expect(block.equipmentLabel).not.toBe(
+      block.equipmentCategoryName
+    );
     expect(
-      renderBlock(block).getEquipmentImages()
-    ).toHaveLength(1);
+      page.getText(block.equipmentLabel)
+    ).toBeInTheDocument();
   });
 
   it("omits an image for an unknown equipment category", (): void => {

@@ -1,13 +1,10 @@
 import type { NullableRef } from "@/app/types";
 import { RESERVATION_CALENDAR_ERROR } from "@/app/components/reservation-calendar/constants/ReservationCalendarProjection.constants";
 import type { ReservationCalendarEquipment } from "@/app/components/reservation-calendar/models/ReservationCalendarEquipment.interface";
-import type { ReservationCalendarQueryRow } from "../models/ReservationCalendarQueryRow.type";
-
-type ItemRow =
-  ReservationCalendarQueryRow["reservation_items"][number];
+import type { ReservationCalendarItemSource } from "../models/ReservationCalendarItemSource.interface";
 
 const isConcreteUnitCommitment = (
-  source: ItemRow
+  source: ReservationCalendarItemSource
 ): boolean =>
   source.unit_id !== null &&
   source.category_id === null &&
@@ -17,7 +14,9 @@ const isConcreteUnitCommitment = (
   Boolean(source.unit?.category?.id.trim()) &&
   Boolean(source.unit?.category?.name.trim());
 
-const isCategoryCommitment = (source: ItemRow): boolean =>
+const isCategoryCommitment = (
+  source: ReservationCalendarItemSource
+): boolean =>
   source.unit_id === null &&
   source.unit === null &&
   source.category_id !== null &&
@@ -27,7 +26,9 @@ const isCategoryCommitment = (source: ItemRow): boolean =>
   Number.isInteger(source.quantity) &&
   source.quantity > 0;
 
-const isMonetaryExtra = (source: ItemRow): boolean =>
+const isMonetaryExtra = (
+  source: ReservationCalendarItemSource
+): boolean =>
   source.unit_id === null &&
   source.unit === null &&
   source.category_id === null &&
@@ -36,7 +37,7 @@ const isMonetaryExtra = (source: ItemRow): boolean =>
   source.extra_id !== null;
 
 export const mapReservationCalendarQueryEquipment = (
-  source: ItemRow
+  source: ReservationCalendarItemSource
 ): NullableRef<ReservationCalendarEquipment> => {
   if (
     isConcreteUnitCommitment(source) &&

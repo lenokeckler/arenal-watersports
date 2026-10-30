@@ -1,13 +1,10 @@
 import { RESERVATION_CALENDAR_ERROR } from "@/app/components/reservation-calendar/constants/ReservationCalendarProjection.constants";
 import type { ReservationCalendarDispatch } from "@/app/components/reservation-calendar/models/ReservationCalendarDispatch.interface";
 import { parseReservationCalendarInstant } from "@/app/components/reservation-calendar/utils/parseReservationCalendarInstant";
-import type { ReservationCalendarQueryRow } from "../models/ReservationCalendarQueryRow.type";
-
-type DispatchRow =
-  ReservationCalendarQueryRow["reservation_dispatches"][number];
+import type { ReservationCalendarDispatchSource } from "../models/ReservationCalendarDispatchSource.interface";
 
 export const mapReservationCalendarQueryDispatch = (
-  source: DispatchRow
+  source: ReservationCalendarDispatchSource
 ): ReservationCalendarDispatch => {
   const startsAt = parseReservationCalendarInstant(
     source.dispatched_at

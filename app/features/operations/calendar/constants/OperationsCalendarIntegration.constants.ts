@@ -1,16 +1,6 @@
-export const OPERATIONS_CALENDAR_INTEGRATION_COPY = {
-  LOAD_ERROR:
-    "No se pudo cargar el calendario de operaciones. Intente de nuevo.",
-  RETRY: "Volver a intentar",
-} as const;
+import { CALENDAR_REALTIME } from "@/app/components/reservation-calendar/constants/CalendarRealtime.constants";
 
 export const OPERATIONS_CALENDAR_REALTIME = {
+  ...CALENDAR_REALTIME,
   CHANNEL: "operations-calendar",
-  EVENT: "*",
-  SCHEMA: "public",
-  TABLES: {
-    DISPATCHES: "reservation_dispatches",
-    ITEMS: "reservation_items",
-    RESERVATIONS: "reservations",
-  },
 } as const;

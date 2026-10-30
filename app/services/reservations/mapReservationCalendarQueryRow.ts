@@ -1,13 +1,13 @@
 import { RESERVATION_CALENDAR_ERROR } from "@/app/components/reservation-calendar/constants/ReservationCalendarProjection.constants";
 import type { ReservationCalendarEntry } from "@/app/components/reservation-calendar/models/ReservationCalendarEntry.interface";
 import { parseReservationCalendarInstant } from "@/app/components/reservation-calendar/utils/parseReservationCalendarInstant";
-import type { ReservationCalendarQueryRow } from "./models/ReservationCalendarQueryRow.type";
+import type { ReservationCalendarSource } from "./models/ReservationCalendarSource.interface";
 import { mapReservationCalendarQueryDispatch } from "./utils/mapReservationCalendarQueryDispatch";
 import { mapReservationCalendarQueryEquipment } from "./utils/mapReservationCalendarQueryEquipment";
 import { mapReservationCalendarQueryGuide } from "./utils/mapReservationCalendarQueryGuide";
 
 export const mapReservationCalendarQueryRow = (
-  source: ReservationCalendarQueryRow
+  source: ReservationCalendarSource
 ): ReservationCalendarEntry => {
   if (source.customer_name.trim().length === 0) {
     throw new Error(
