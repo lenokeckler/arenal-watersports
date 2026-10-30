@@ -83,7 +83,9 @@ describe("ReservationTypeField", () => {
         )
       ).not.toBeInTheDocument();
       expect(
-        await page.findStatusMessage()
+        await page.findStatusMessage(
+          RESERVATION_FORM_UI_COPY.RESERVATION_TYPE_SELECTION_CLEARED
+        )
       ).toHaveTextContent(
         RESERVATION_FORM_UI_COPY.RESERVATION_TYPE_SELECTION_CLEARED
       );
@@ -115,7 +117,9 @@ describe("ReservationTypeField", () => {
       RESERVATION_TYPE_COPY.OPTIONS.RENTAL.label
     );
     expect(
-      await page.findStatusMessage()
+      await page.findStatusMessage(
+        RESERVATION_FORM_UI_COPY.RESERVATION_TYPE_SELECTION_CLEARED
+      )
     ).toHaveTextContent(
       RESERVATION_FORM_UI_COPY.RESERVATION_TYPE_SELECTION_CLEARED
     );

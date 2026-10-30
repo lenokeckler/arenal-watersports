@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ARIA_ROLE, STRING } from "@/app/constants";
+import { STRING } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
 
@@ -18,8 +18,8 @@ export const createReservationTypeFieldPage = () => {
     getReservationTypeRadio,
     getReservationTypeDescription: (description: string) =>
       screen.getByText(description, { exact: true }),
-    findStatusMessage: () =>
-      screen.findByRole(ARIA_ROLE.STATUS),
+    findStatusMessage: (message: string) =>
+      screen.findByText(message, { exact: true }),
     queryCategoryOption: (
       categoryId: string
     ): NullableRef<HTMLOptionElement> =>

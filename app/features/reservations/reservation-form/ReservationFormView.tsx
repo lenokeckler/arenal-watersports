@@ -11,11 +11,13 @@ import ReservationFormHeader from "./components/ReservationFormHeader";
 
 const ReservationFormView = ({
   categories,
+  guideLoadResult,
   initialDate,
 }: ReservationFormViewProps): React.JSX.Element => {
   const viewModel = useReservationFormViewModel(
     initialDate,
-    categories
+    categories,
+    guideLoadResult
   );
 
   return (
