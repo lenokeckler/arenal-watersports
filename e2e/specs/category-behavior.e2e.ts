@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
+import { createCategoryBehaviorLinkPage } from "../pages/CategoryBehaviorLink.page";
 import { createCategoryBehaviorFormPage } from "../pages/CategoryBehaviorForm.page";
 import { createCategoryListPage } from "../pages/CategoryList.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
@@ -26,8 +27,8 @@ test.describe("Category behavior rules", () => {
     try {
       await logInAsAdmin(page);
       await categoryListPage.goTo();
-      await categoryListPage.clickCategoryBehaviorLink(
-        categoryName
+      await createCategoryBehaviorLinkPage().clickBehaviorLink(
+        categoryListPage.getCategoryCard(categoryName)
       );
 
       await expect(
