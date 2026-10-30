@@ -89,6 +89,12 @@ export const RESERVATION_FORM_STATUS_CLASS =
 export const RESERVATION_FORM_ERROR_CLASS =
   "rounded-xl border border-error/50 bg-error-container/30 px-4 py-3 text-error";
 
+export const RESERVATION_FORM_UNIT_EMPTY_NOTE_CLASS =
+  "mt-2 text-sm text-on-surface-variant";
+
+export const RESERVATION_FORM_RETRY_CLASS =
+  "mt-2 min-h-11 text-primary underline";
+
 export const resolveReservationDurationButtonClassName = (
   isSelected: boolean
 ): string =>

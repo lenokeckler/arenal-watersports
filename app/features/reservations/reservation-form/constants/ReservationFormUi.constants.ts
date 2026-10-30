@@ -39,6 +39,7 @@ export const RESERVATION_FORM_FIELD_ID = {
   PEOPLE_COUNT: "reservation-people-count",
   QUANTITY: "reservation-quantity",
   TIME: "reservation-time",
+  UNIT: "reservation-unit",
 } as const;
 
 export const RESERVATION_FORM_INPUT_TYPE = {
