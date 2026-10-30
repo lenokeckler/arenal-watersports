@@ -1,5 +1,8 @@
 import { CURRENCY_CODE } from "@/app/constants";
-import type { CurrencyIncome } from "@/app/services/income";
+import type {
+  CurrencyIncome,
+  DailyIncome,
+} from "@/app/services/income";
 
 export const DOLLAR_INCOME: CurrencyIncome = {
   currency: CURRENCY_CODE.USD,
@@ -31,7 +34,8 @@ export const COLON_INCOME: CurrencyIncome = {
   currency: CURRENCY_CODE.CRC,
   total: 25000,
   byPaymentMethod: [
-    { key: "efectivo", name: "Efectivo", amount: 25000 },
+    { key: "efectivo", name: "Efectivo", amount: 15000 },
+    { key: "sinpe", name: "SINPE", amount: 10000 },
   ],
 };
 
@@ -44,4 +48,42 @@ export const NUMBERED_AND_BLANK_METHODS: CurrencyIncome = {
     { key: "1", name: "1", amount: 20 },
     { key: "", name: "", amount: 10 },
   ],
+};
+
+export const NO_COLON_INCOME: CurrencyIncome = {
+  currency: CURRENCY_CODE.CRC,
+  total: 0,
+  byPaymentMethod: [],
+};
+
+export const COLON_TOTAL_TEXT = "₡ 25 000";
+
+export const INCOME_DATE = "2026-10-28";
+export const INCOME_DATE_TEXT =
+  "miércoles, 28 de octubre de 2026";
+export const DATE_TIME_ATTRIBUTE = "datetime";
+
+export const DAY_WITH_BOTH_CURRENCIES: DailyIncome = {
+  date: INCOME_DATE,
+  currencies: [DOLLAR_INCOME, COLON_INCOME],
+};
+
+export const DAY_WITH_ONLY_COLONES: DailyIncome = {
+  date: INCOME_DATE,
+  currencies: [NO_DOLLAR_INCOME, COLON_INCOME],
+};
+
+export const DAY_WITHOUT_INCOME: DailyIncome = {
+  date: INCOME_DATE,
+  currencies: [NO_DOLLAR_INCOME, NO_COLON_INCOME],
+};
+
+export const HEADING_LEVEL_ONE = 1;
+export const HEADING_LEVEL_TWO = 2;
+export const ARIA_BUSY_ATTRIBUTE = "aria-busy";
+export const ARIA_BUSY_TRUE = "true";
+
+export const DAY_WITHOUT_CURRENCIES: DailyIncome = {
+  date: INCOME_DATE,
+  currencies: [],
 };
