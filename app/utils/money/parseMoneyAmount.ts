@@ -1,5 +1,6 @@
 import { STRING } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
+import { normalizeMoneyAmountText } from "./normalizeMoneyAmountText";
 
 export const parseMoneyAmount = (
   amountText: string
@@ -7,5 +8,5 @@ export const parseMoneyAmount = (
   const trimmedText = amountText.trim();
   return trimmedText === STRING.Empty
     ? null
-    : Number(trimmedText);
+    : Number(normalizeMoneyAmountText(trimmedText));
 };

@@ -52,7 +52,7 @@ export const buildCategoryDeposit = (
   ...overrides,
 });
 
-export const INVALID_FORMAT_TEXT = "1,5";
+export const INVALID_FORMAT_TEXT = "1.2.3";
 export const INVALID_NOT_POSITIVE_TEXT = "0";
 export const ELEVEN_INTEGER_DIGITS_TEXT = "12345678901";
 export const THIRTEEN_INTEGER_DIGITS_TEXT = "1234567890123";

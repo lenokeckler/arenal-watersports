@@ -7,7 +7,7 @@ import {
 import { CATEGORY_DEPOSIT_LIMITS } from "./CategoryDepositLimits.constants";
 
 const FORMAT_ERROR =
-  "Escriba solo números, con punto para los decimales y sin separador de miles.";
+  "Escriba solo números, con punto o coma para los decimales y sin separador de miles.";
 const NOT_POSITIVE_ERROR =
   "Ingrese un monto mayor que cero o deje el campo vacío.";
 
