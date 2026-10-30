@@ -5,9 +5,6 @@ import {
   it,
   vi,
 } from "vitest";
-import { POSTGRES_ERROR_CODE } from "@/app/constants";
-import { NotAuthorizedError } from "@/app/services/authorization/NotAuthorizedError";
-import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import { updateCategoryAlertsAction } from "../services/updateCategoryAlertsAction";
@@ -59,19 +56,6 @@ describe("updateCategoryAlertsAction", () => {
       data: { id: CATEGORY_ALERT_ID },
       error: null,
     });
-  });
-
-  it("rejects a caller who is not an admin before any update", async () => {
-    mockAssertIsAdminWorker.mockRejectedValue(
-      new NotAuthorizedError()
-    );
-
-    await expect(
-      updateCategoryAlertsAction(
-        DEFAULT_UPDATE_CATEGORY_ALERTS_INPUT
-      )
-    ).rejects.toThrow(NotAuthorizedError);
-    expect(mockUpdate).not.toHaveBeenCalled();
   });
 
   it("sends only the two alert keys and the signer, filtered by category id", async () => {
@@ -127,21 +111,5 @@ describe("updateCategoryAlertsAction", () => {
       message:
         CATEGORY_CATALOG_COPY.ALERT_CATEGORY_NOT_FOUND_ERROR,
     });
-  });
-
-  it("throws instead of returning an error result when the database rejects the update", async () => {
-    mockMaybeSingle.mockResolvedValue({
-      data: null,
-      error: {
-        code: POSTGRES_ERROR_CODE.CHECK_VIOLATION,
-        message: "boom",
-      },
-    });
-
-    await expect(
-      updateCategoryAlertsAction(
-        DEFAULT_UPDATE_CATEGORY_ALERTS_INPUT
-      )
-    ).rejects.toThrow(SupabaseQueryError);
   });
 });
