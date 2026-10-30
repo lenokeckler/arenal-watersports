@@ -1,8 +1,8 @@
-import { TIME } from "@/app/constants";
 import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
+import { RESERVATION_SCHEDULE } from "../constants/ReservationSchedule.constants";
 import {
+  getReservationDurationMinutes,
   isValidReservationDate,
-  isValidReservationDuration,
   isValidReservationTime,
 } from "./validateReservationSchedule";
 
@@ -30,8 +30,9 @@ export const isReservationUnitAvailabilityInput = (
     "durationMinutes" in input &&
     typeof input.durationMinutes === "number" &&
     Number.isInteger(input.durationMinutes) &&
-    isValidReservationDuration(
-      input.durationMinutes / TIME.UNITS.MINUTES_IN_HOUR
-    )
+    getReservationDurationMinutes(
+      input.durationMinutes /
+        RESERVATION_SCHEDULE.MINUTES_PER_HOUR
+    ) !== null
   );
 };

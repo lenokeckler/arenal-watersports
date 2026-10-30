@@ -15,6 +15,16 @@ export const RESERVATION_FORM_UI_COPY = {
   CATEGORY: "Equipo",
   CATEGORY_PLACEHOLDER: "Seleccione una categoría",
   QUANTITY: "Cantidad de equipos",
+  UNIT: "Unidad",
+  UNIT_PLACEHOLDER: "Seleccione una unidad disponible",
+  AVAILABILITY_LOADING: "Consultando disponibilidad…",
+  AVAILABILITY_ERROR:
+    "No fue posible consultar las unidades disponibles.",
+  NO_AVAILABLE_UNITS:
+    "No hay unidades disponibles para este horario.",
+  UNIT_UNAVAILABLE:
+    "La unidad seleccionada dejó de estar disponible. Elija otra unidad.",
+  RETRY_AVAILABILITY: "Volver a consultar",
   SUBMIT: "Registrar reserva",
   SUBMITTING: "Guardando reserva…",
   SUCCESS: "La reserva quedó registrada correctamente.",
@@ -22,18 +32,6 @@ export const RESERVATION_FORM_UI_COPY = {
     "No fue posible registrar la reserva. Revise los datos e inténtelo de nuevo.",
   NO_CATEGORIES:
     "No hay categorías de equipo disponibles para reservar.",
-  EQUIPMENT_QUANTITY_NOTE:
-    "Los equipos intercambiables se reservan por cantidad; Operaciones asigna cada unidad al despachar.",
-  AVAILABLE_QUANTITY:
-    "Unidades disponibles para este horario:",
-  EQUIPMENT_UNIT_NOTE:
-    "La lancha se compromete por unidad concreta y permanece en tierra hasta que Operaciones la despache.",
-  NO_AVAILABLE_UNITS:
-    "No hay unidades disponibles para esta categoría.",
-  AVAILABILITY_ERROR:
-    "No fue posible verificar la disponibilidad. Inténtelo de nuevo.",
-  AVAILABILITY_LOADING:
-    "Verificando disponibilidad de la lancha…",
-  UNIT: "Unidad de lancha",
-  UNIT_PLACEHOLDER: "Seleccione una unidad disponible",
+  EQUIPMENT_NOTE:
+    "El equipo se asigna por categoría y cantidad. La asignación de unidades se realiza durante el despacho.",
 } as const;

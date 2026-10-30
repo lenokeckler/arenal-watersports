@@ -21,13 +21,14 @@ export const createReservationFormPage = (page: Page) => {
       main.getByLabel(E2E_RESERVATION_FORM_COPY.ACTIONS, {
         exact: true,
       }),
-    getCategorySelect: (): Locator =>
-      main.getByLabel(
-        E2E_RESERVATION_FORM_COPY.CATEGORY_FIELD_NAME,
-        {
-          exact: true,
-        }
-      ),
+    getCategoryOption: (categoryName: string): Locator =>
+      main.getByLabel(categoryName, { exact: true }),
+    getCategoryCard: (categoryName: string): Locator =>
+      main.getByText(categoryName, { exact: true }),
+    selectCategoryOption: (
+      categoryName: string
+    ): Promise<void> =>
+      main.getByText(categoryName, { exact: true }).click(),
     getSuccessMessage: (): Locator =>
       main.getByText(E2E_RESERVATION_FORM_COPY.SUCCESS, {
         exact: true,
@@ -128,5 +129,14 @@ export const createReservationFormPage = (page: Page) => {
           exact: true,
         })
         .click(),
+    attemptSubmit: (): Promise<void> =>
+      main
+        .getByRole(ARIA_ROLE.BUTTON, {
+          name: E2E_RESERVATION_FORM_COPY.SUBMIT,
+          exact: true,
+        })
+        .evaluate((button: HTMLButtonElement) =>
+          button.click()
+        ),
   };
 };

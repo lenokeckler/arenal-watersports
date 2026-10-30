@@ -1,56 +1,85 @@
 "use client";
 
-import { STRING } from "@/app/constants";
-import { useRouter } from "next/navigation";
 import type { ReservationFormViewModel } from "../models/ReservationFormViewModel.interface";
-import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
-import { createReservationFormSubmitHandler } from "../utils/createReservationFormSubmitHandler";
+import { useRouter } from "next/navigation";
+import { useReservationFormFields } from "./useReservationFormFields";
+import { useReservationFormSubmission } from "./useReservationFormSubmission";
+import { useReservationDuration } from "./useReservationDuration";
 import { useReservationEquipmentViewModel } from "./useReservationEquipmentViewModel";
-import { useReservationFormState } from "./useReservationFormState";
+import { STRING } from "@/app/constants";
+import type { ReservationFormViewModelOptions } from "../models/ReservationFormViewModelOptions.interface";
 
 export const useReservationFormViewModel = (
-  initialDate: string,
-  categories: ReservationCategoryOption[]
+  options: ReservationFormViewModelOptions
 ): ReservationFormViewModel => {
-  const router = useRouter();
-  const state = useReservationFormState(
-    initialDate,
-    STRING.Empty
-  );
-  const resolvedDurationHours =
-    state.duration.resolveDurationHours(
-      state.fields.values.durationHours
-    );
-  const equipment = useReservationEquipmentViewModel(
+  const {
     categories,
-    state.fields.values,
-    resolvedDurationHours
+    initialCategoryId,
+    initialDate,
+    unitCategories,
+  } = options;
+  const router = useRouter();
+  const submission = useReservationFormSubmission();
+  const fields = useReservationFormFields(
+    initialDate,
+    initialCategoryId,
+    submission.clearFieldError
   );
-  const handleSubmit = createReservationFormSubmitHandler({
-    ...equipment,
-    resolvedDurationHours,
-    setFieldError: state.submission.setFieldError,
-    submitReservation: state.submission.submitReservation,
-    values: state.fields.values,
-  });
-  const isAvailabilityUnavailable =
-    equipment.requiresConcreteUnit &&
-    (equipment.availableUnits.length === 0 ||
-      equipment.isAvailabilityLoading ||
-      equipment.hasAvailabilityError);
+  const duration = useReservationDuration(
+    fields.handleDurationChange,
+    submission.clearFieldError
+  );
+  const equipment = useReservationEquipmentViewModel(
+    unitCategories,
+    fields.values,
+    duration.resolveDurationHours(
+      fields.values.durationHours
+    )
+  );
   const isSubmitDisabled =
-    state.submission.isPending ||
+    submission.isPending ||
+    submission.isSubmitted ||
     categories.length === 0 ||
-    isAvailabilityUnavailable;
-
+    (equipment.requiresConcreteUnit &&
+      (equipment.isAvailabilityLoading ||
+        equipment.hasAvailabilityError ||
+        fields.values.unitId === STRING.Empty));
+  const handleSubmit: ReservationFormViewModel["handleSubmit"] =
+    (event) => {
+      event.preventDefault();
+      submission.submitReservation(
+        {
+          ...fields.values,
+          durationHours: duration.resolveDurationHours(
+            fields.values.durationHours
+          ),
+        },
+        () => {
+          fields.handleUnitChange(STRING.Empty);
+          equipment.retryUnitAvailability();
+        }
+      );
+    };
   return {
-    ...state.fields,
-    ...state.submission,
-    ...state.duration,
+    ...fields,
+    ...submission,
     ...equipment,
-    ...state.durationHandlers,
     isSubmitDisabled,
+    customDurationDraft: duration.customDurationDraft,
+    handleCustomDurationSelection: () => {
+      duration.selectCustomDuration();
+      fields.handleUnitChange(STRING.Empty);
+    },
+    handleCustomDurationChange: (value: string) => {
+      duration.updateCustomDurationDraft(value);
+      fields.handleUnitChange(STRING.Empty);
+    },
+    handleDurationChange: (value: number) => {
+      duration.selectPreset(value);
+      fields.handleUnitChange(STRING.Empty);
+    },
     handleBack: router.back,
+    isCustomDuration: duration.isCustomDuration,
     handleSubmit,
   };
 };
