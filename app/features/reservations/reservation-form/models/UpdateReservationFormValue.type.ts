@@ -1,7 +1,7 @@
-import type { ReservationFormField } from "./ReservationFormField.constants";
 import type { ReservationFormInput } from "./ReservationFormInput.interface";
+import type { ReservationFormField } from "./ReservationFormField.constants";
 
-export type ReservationFormValueUpdater = <
+export type UpdateReservationFormValue = <
   Field extends ReservationFormField,
 >(
   field: Field,

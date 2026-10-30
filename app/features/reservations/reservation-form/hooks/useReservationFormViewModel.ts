@@ -8,8 +8,6 @@ import {
   EMPTY_RESERVATION_GUIDE_LOAD_RESULT,
   RESERVATION_GUIDE_LOAD_RESULT_KIND,
 } from "../constants/ReservationGuideLoad.constants";
-import { filterReservationCategoriesByType } from "../utils/filterReservationCategoriesByType";
-import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import { useReservationFormViewModelDependencies } from "./useReservationFormViewModelDependencies";
 import { useReservationGuideLoadViewModel } from "./useReservationGuideLoadViewModel";
 
@@ -20,12 +18,12 @@ export const useReservationFormViewModel = (
 ): ReservationGuideAssignmentViewModel => {
   const guideLoad =
     useReservationGuideLoadViewModel(guideLoadResult);
-  const { handleSubmit, handlers, resources, router } =
+  const { handleSubmit, resources, router } =
     useReservationFormViewModelDependencies(
       initialDate,
       categories
     );
-  const { state, eligibility } = resources;
+  const { state } = resources;
   const reconcileLoadedGuideSelection = useEffectEvent(
     (guideIds: string[]) =>
       state.fields.reconcileGuideSelection(guideIds)
@@ -43,29 +41,13 @@ export const useReservationFormViewModel = (
     );
   }, [guideLoad.isLoading, guideLoad.result]);
   return {
-    categories: filterReservationCategoriesByType(
-      eligibility.categories,
-      state.fields.values.reservationType ??
-        RESERVATION_TYPE.RENTAL
-    ),
     ...state.fields,
     ...state.submission,
     ...state.duration,
-    ...resources.equipment,
     ...state.durationHandlers,
-    ...handlers,
+    ...resources.equipment,
     handleBack: router.back,
-    handleReservationTypeChange:
-      state.fields.handleReservationTypeChange,
-    handleGuideToggle: state.fields.handleGuideToggle,
-    reconcileGuideSelection:
-      state.fields.reconcileGuideSelection,
-    handleRetryEquipmentEligibility: eligibility.retry,
     handleSubmit,
-    hasEquipmentEligibilityError: eligibility.hasError,
-    hasEquipmentSelectionChanged:
-      resources.hasEquipmentSelectionChanged,
-    isEquipmentEligibilityLoading: eligibility.isLoading,
     guideLoadResult: guideLoad.result,
     isGuideLoading: guideLoad.isLoading,
     handleRetryGuideLoading: guideLoad.retry,
