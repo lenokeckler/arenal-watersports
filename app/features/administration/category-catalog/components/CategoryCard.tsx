@@ -6,6 +6,7 @@ import {
 } from "../styles/CategoryCard.styles";
 import CategoryCardActions from "./CategoryCardActions";
 import CategoryCardBehaviorLink from "./CategoryCardBehaviorLink";
+import CategoryCardDepositLink from "./CategoryCardDepositLink";
 import CategoryCardGroupRow from "./CategoryCardGroupRow";
 import CategoryCardNameRow from "./CategoryCardNameRow";
 import CategoryCardTrackingMode from "./CategoryCardTrackingMode";
@@ -40,6 +41,7 @@ const CategoryCard = ({
     )}
     <div className={CATEGORY_CARD_BUTTONS_CLASS}>
       <CategoryCardBehaviorLink categoryId={category.id} />
+      <CategoryCardDepositLink categoryId={category.id} />
       <CategoryCardActions
         actionState={actionState}
         isActionLoading={isActionLoading}
