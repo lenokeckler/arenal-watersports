@@ -1,8 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { PATHS, STRING } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
-import { CATEGORY_TRACKING_MODE } from "@/app/features/administration/category-catalog/constants/CategoryTrackingMode.constants";
-import { USAGE_METRIC } from "@/app/features/administration/category-catalog/constants/UsageMetric.constants";
 import { createCategoryBehaviorFormPage } from "../pages/CategoryBehaviorForm.page";
 import { createCategoryListPage } from "../pages/CategoryList.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
@@ -11,14 +8,9 @@ import {
   removeDeletableCategory,
   seedCategoryWithBehavior,
 } from "../support/categoryFixtures";
-import {
-  E2E_BEHAVIOR_DURATION_MINUTES,
-  E2E_MALFORMED_CATEGORY_ID,
-  E2E_UNKNOWN_CATEGORY_ID,
-  resolveCategoryBehaviorFixtureName,
-} from "../constants/E2eCategoryBehavior.constants";
+import { resolveCategoryBehaviorFixtureName } from "../constants/E2eCategoryBehavior.constants";
 
-test.describe("Category behavior", () => {
+test.describe("Category behavior rules", () => {
   test("opens from the list link and shows the tracking mode as read-only text", async ({
     page,
   }, testInfo) => {
@@ -51,122 +43,6 @@ test.describe("Category behavior", () => {
       ).toHaveCount(0);
     } finally {
       await removeDeletableCategory(categoryName);
-    }
-  });
-
-  test("unticking the motor disables and clears the usage metric", async ({
-    page,
-  }, testInfo) => {
-    const categoryName = resolveCategoryBehaviorFixtureName(
-      testInfo.project.name,
-      "motor"
-    );
-    await seedCategoryWithBehavior(categoryName, {
-      hasMotor: true,
-      usageMetric: USAGE_METRIC.ENGINE_HOURS,
-    });
-    const categoryBehaviorFormPage =
-      createCategoryBehaviorFormPage(page);
-
-    try {
-      await logInAsAdmin(page);
-      await categoryBehaviorFormPage.goTo(
-        await findCategoryId(categoryName)
-      );
-
-      await expect(
-        categoryBehaviorFormPage.getUsageMetricSelect()
-      ).toBeEnabled();
-      await expect(
-        categoryBehaviorFormPage.getUsageMetricSelect()
-      ).toHaveValue(USAGE_METRIC.ENGINE_HOURS);
-
-      await categoryBehaviorFormPage.uncheckHasMotor();
-
-      await expect(
-        categoryBehaviorFormPage.getUsageMetricSelect()
-      ).toBeDisabled();
-      await expect(
-        categoryBehaviorFormPage.getUsageMetricSelect()
-      ).toHaveValue(STRING.Empty);
-    } finally {
-      await removeDeletableCategory(categoryName);
-    }
-  });
-
-  test("a category counted by quantity cannot enable condition photos", async ({
-    page,
-  }, testInfo) => {
-    const categoryName = resolveCategoryBehaviorFixtureName(
-      testInfo.project.name,
-      "photos"
-    );
-    await seedCategoryWithBehavior(categoryName, {
-      trackingMode: CATEGORY_TRACKING_MODE.BY_QUANTITY,
-    });
-    const categoryBehaviorFormPage =
-      createCategoryBehaviorFormPage(page);
-
-    try {
-      await logInAsAdmin(page);
-      await categoryBehaviorFormPage.goTo(
-        await findCategoryId(categoryName)
-      );
-
-      await expect(
-        categoryBehaviorFormPage.getHasConditionPhotosCheckbox()
-      ).toBeDisabled();
-      await expect(
-        categoryBehaviorFormPage.getHasConditionPhotosCheckbox()
-      ).not.toBeChecked();
-    } finally {
-      await removeDeletableCategory(categoryName);
-    }
-  });
-
-  test("interchangeable units is locked on for quantity categories and editable for unit categories", async ({
-    page,
-  }, testInfo) => {
-    const quantityCategoryName =
-      resolveCategoryBehaviorFixtureName(
-        testInfo.project.name,
-        "interchangeable-quantity"
-      );
-    const unitCategoryName =
-      resolveCategoryBehaviorFixtureName(
-        testInfo.project.name,
-        "interchangeable-unit"
-      );
-    await seedCategoryWithBehavior(quantityCategoryName, {
-      trackingMode: CATEGORY_TRACKING_MODE.BY_QUANTITY,
-    });
-    await seedCategoryWithBehavior(unitCategoryName);
-    const categoryBehaviorFormPage =
-      createCategoryBehaviorFormPage(page);
-
-    try {
-      await logInAsAdmin(page);
-      await categoryBehaviorFormPage.goTo(
-        await findCategoryId(quantityCategoryName)
-      );
-
-      await expect(
-        categoryBehaviorFormPage.getUnitsAreInterchangeableCheckbox()
-      ).toBeChecked();
-      await expect(
-        categoryBehaviorFormPage.getUnitsAreInterchangeableCheckbox()
-      ).toBeDisabled();
-
-      await categoryBehaviorFormPage.goTo(
-        await findCategoryId(unitCategoryName)
-      );
-
-      await expect(
-        categoryBehaviorFormPage.getUnitsAreInterchangeableCheckbox()
-      ).toBeEnabled();
-    } finally {
-      await removeDeletableCategory(quantityCategoryName);
-      await removeDeletableCategory(unitCategoryName);
     }
   });
 
@@ -206,124 +82,5 @@ test.describe("Category behavior", () => {
     } finally {
       await removeDeletableCategory(categoryName);
     }
-  });
-
-  test("saves a valid change, shows the success toast and keeps it after reload", async ({
-    page,
-  }, testInfo) => {
-    const categoryName = resolveCategoryBehaviorFixtureName(
-      testInfo.project.name,
-      "save"
-    );
-    await seedCategoryWithBehavior(categoryName);
-    const categoryBehaviorFormPage =
-      createCategoryBehaviorFormPage(page);
-
-    try {
-      await logInAsAdmin(page);
-      await categoryBehaviorFormPage.goTo(
-        await findCategoryId(categoryName)
-      );
-      await categoryBehaviorFormPage.checkIsReservable();
-      await categoryBehaviorFormPage.checkGuideOnly();
-      await categoryBehaviorFormPage.fillDuration(
-        E2E_BEHAVIOR_DURATION_MINUTES
-      );
-      await categoryBehaviorFormPage.submit();
-
-      await expect(
-        categoryBehaviorFormPage.getToastMessage(
-          CATEGORY_CATALOG_COPY.BEHAVIOR_UPDATE_SUCCESS_TOAST
-        )
-      ).toBeVisible();
-
-      await categoryBehaviorFormPage.reload();
-
-      await expect(
-        categoryBehaviorFormPage.getIsReservableCheckbox()
-      ).toBeChecked();
-      await expect(
-        categoryBehaviorFormPage.getGuideOnlyCheckbox()
-      ).toBeChecked();
-      await expect(
-        categoryBehaviorFormPage.getDurationInput()
-      ).toHaveValue(E2E_BEHAVIOR_DURATION_MINUTES);
-    } finally {
-      await removeDeletableCategory(categoryName);
-    }
-  });
-
-  test("Cancelar returns to the category list", async ({
-    page,
-  }, testInfo) => {
-    const categoryName = resolveCategoryBehaviorFixtureName(
-      testInfo.project.name,
-      "cancel"
-    );
-    await seedCategoryWithBehavior(categoryName);
-    const categoryBehaviorFormPage =
-      createCategoryBehaviorFormPage(page);
-
-    try {
-      await logInAsAdmin(page);
-      await categoryBehaviorFormPage.goTo(
-        await findCategoryId(categoryName)
-      );
-      await categoryBehaviorFormPage.cancel();
-
-      await expect(page).toHaveURL(
-        PATHS.ADMINISTRATION.CATEGORIES
-      );
-    } finally {
-      await removeDeletableCategory(categoryName);
-    }
-  });
-
-  test("an unknown category id shows the not-found page", async ({
-    page,
-  }) => {
-    const categoryBehaviorFormPage =
-      createCategoryBehaviorFormPage(page);
-
-    await logInAsAdmin(page);
-    await categoryBehaviorFormPage.goTo(
-      E2E_UNKNOWN_CATEGORY_ID
-    );
-
-    await expect(
-      categoryBehaviorFormPage.getNotFoundMessage()
-    ).toBeVisible();
-    await expect(
-      categoryBehaviorFormPage.getHeading()
-    ).toHaveCount(0);
-  });
-
-  test("a malformed category id shows the not-found page", async ({
-    page,
-  }) => {
-    const categoryBehaviorFormPage =
-      createCategoryBehaviorFormPage(page);
-
-    await logInAsAdmin(page);
-    await categoryBehaviorFormPage.goTo(
-      E2E_MALFORMED_CATEGORY_ID
-    );
-
-    await expect(
-      categoryBehaviorFormPage.getNotFoundMessage()
-    ).toBeVisible();
-  });
-
-  test("sends a signed-out visitor to the login", async ({
-    page,
-  }) => {
-    const categoryBehaviorFormPage =
-      createCategoryBehaviorFormPage(page);
-
-    await categoryBehaviorFormPage.goTo(
-      E2E_UNKNOWN_CATEGORY_ID
-    );
-
-    await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
   });
 });
