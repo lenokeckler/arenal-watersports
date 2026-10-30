@@ -11,7 +11,6 @@ export const ARIA_ROLE = {
   MAIN: "main",
   LIST: "list",
   LISTITEM: "listitem",
-  REGION: "region",
   STATUS: "status",
   LINK: "link",
   TEXTBOX: "textbox",
