@@ -1,5 +1,5 @@
 import { createServiceRoleSupabaseClient } from "@/app/services/supabase";
-import { CATEGORY_TRACKING_MODE } from "@/app/components/category-catalog/constants/CategoryTrackingMode.constants";
+import { CATEGORY_TRACKING_MODE } from "@/app/features/administration/category-catalog/constants/CategoryTrackingMode.constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { E2E_ADMIN_ACCOUNT } from "../constants/E2eAccounts.constants";
 import {

@@ -1,7 +1,7 @@
 import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE } from "@/app/constants";
-import { CATEGORY_CATALOG_COPY } from "@/app/components/category-catalog/constants/CategoryCatalogCopy.constants";
-import { resolveCategoryBehaviorPath } from "@/app/components/category-catalog/utils/resolveCategoryBehaviorPath";
+import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
+import { resolveCategoryBehaviorPath } from "@/app/features/administration/category-catalog/utils/resolveCategoryBehaviorPath";
 import { E2E_NEXT_NOT_FOUND_MESSAGE } from "../constants/E2eCategoryBehavior.constants";
 import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
 

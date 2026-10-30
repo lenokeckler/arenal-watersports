@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import CategoryBehavior from "@/app/components/category-catalog/CategoryBehavior";
-import { CATEGORY_BEHAVIOR_FORM_METADATA } from "@/app/components/category-catalog/constants/CategoryCatalogMetadata.constants";
+import CategoryBehavior from "@/app/features/administration/category-catalog/CategoryBehavior";
+import { CATEGORY_BEHAVIOR_FORM_METADATA } from "@/app/features/administration/category-catalog/constants/CategoryCatalogMetadata.constants";
 
 export const metadata: Metadata =
   CATEGORY_BEHAVIOR_FORM_METADATA;

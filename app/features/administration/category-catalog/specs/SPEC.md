@@ -50,7 +50,7 @@ and a clear error state they can retry from.
 
 ## Constraints
 
-- Server entry `app/components/category-catalog/CategoryList.tsx`; the data access is in
+- Server entry `app/features/administration/category-catalog/CategoryList.tsx`; the data access is in
   `services/listCategories.ts`, which passes every Supabase error through `throwIfSupabaseError`.
   The failure is wrapped with `CATEGORY_LIST_DIAGNOSTICS.FETCH_FAILED` and the original error as its
   `cause`.
