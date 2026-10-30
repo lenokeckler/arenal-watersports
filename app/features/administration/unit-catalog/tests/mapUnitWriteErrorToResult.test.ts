@@ -33,6 +33,13 @@ describe("mapUnitWriteErrorToResult", () => {
           UNIT_CATALOG_COPY.CATEGORY_NOT_BY_UNIT_ERROR,
       },
     },
+    {
+      code: POSTGRES_ERROR_CODE.RAISE_EXCEPTION,
+      message: UNIT_DATABASE_MESSAGE.UNIT_OCCUPIED,
+      expected: {
+        message: UNIT_CATALOG_COPY.UNIT_OCCUPIED_ERROR,
+      },
+    },
   ])(
     "maps the $code error to a friendly result",
     ({ code, message, expected }) => {

@@ -10,6 +10,7 @@ const UnitFormFields = ({
   errors,
   category,
   isDisabled,
+  isStatusLocked,
   onCodeChange,
   onStatusChange,
   ...motorHandlers
@@ -27,7 +28,7 @@ const UnitFormFields = ({
     />
     <UnitFormStatusField
       value={values.status}
-      disabled={isDisabled}
+      disabled={isDisabled || isStatusLocked}
       onChange={onStatusChange}
     />
     {category.hasMotor && (
