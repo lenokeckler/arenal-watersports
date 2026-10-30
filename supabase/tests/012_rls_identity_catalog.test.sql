@@ -41,8 +41,8 @@ set local request.jwt.claims to '{"sub":"11111111-1111-1111-1111-111111111111","
 
 select throws_ok(
   $$ delete from equipment_categories where id = 'aaaaaaaa-0000-0000-0000-000000000001' $$,
-  '42501', null,
-  'ni administracion puede borrar de una tabla operativa'
+  '23503', null,
+  'administracion puede borrar categorias pero la llave foranea protege a una con unidades'
 );
 
 reset role;
