@@ -21,11 +21,14 @@ import { VALID_CATEGORY_CREATE_FORM_VALUES } from "./CategoryCreateFormValues.co
 const mockPush = vi.fn();
 const mockShowToast = vi.fn();
 const mockCreateCategoryAction = vi.fn();
+const mockUnstableRethrow = vi.fn();
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
     push: mockPush,
   }),
+  unstable_rethrow: (error: unknown) =>
+    mockUnstableRethrow(error),
 }));
 
 vi.mock("@/app/components/toast/utils/useToast", () => ({
@@ -58,6 +61,7 @@ describe("useCategoryCreateFormViewModel", () => {
     mockPush.mockClear();
     mockShowToast.mockClear();
     mockCreateCategoryAction.mockReset();
+    mockUnstableRethrow.mockReset();
   });
 
   it("starts with empty values, no errors, and not submitting", () => {
@@ -226,6 +230,43 @@ describe("useCategoryCreateFormViewModel", () => {
     );
     expect(result.current.isSubmitting).toBe(false);
     expect(mockPush).not.toHaveBeenCalled();
+  });
+
+  it("rethrows a Next control-flow error without a toast and releases the submit lock", async () => {
+    const controlFlowError = new Error("NEXT_REDIRECT");
+    mockCreateCategoryAction.mockRejectedValue(
+      controlFlowError
+    );
+    mockUnstableRethrow.mockImplementation((error) => {
+      throw error;
+    });
+    const { result } = renderHook(() =>
+      useCategoryCreateFormViewModel()
+    );
+
+    act(() => {
+      result.current.onNameChange({
+        target: {
+          value: VALID_CATEGORY_CREATE_FORM_VALUES.name,
+        },
+      } as CategoryFormFieldChangeEvent);
+      result.current.onTrackingModeChange({
+        target: {
+          value:
+            VALID_CATEGORY_CREATE_FORM_VALUES.trackingMode,
+        },
+      } as CategoryFormFieldChangeEvent);
+    });
+
+    await expect(submitForm(result)).rejects.toBe(
+      controlFlowError
+    );
+
+    expect(mockUnstableRethrow).toHaveBeenCalledWith(
+      controlFlowError
+    );
+    expect(mockShowToast).not.toHaveBeenCalled();
+    expect(result.current.isSubmitting).toBe(false);
   });
 
   it("ignores a second submit while the first is still pending", async () => {
