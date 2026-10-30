@@ -54,6 +54,7 @@ export const useSyncReservationUnitAvailability = (
 ): void => {
   const {
     request,
+    retryIndex,
     setAvailableQuantity,
     setAvailableUnits,
     setHasError,
@@ -70,6 +71,7 @@ export const useSyncReservationUnitAvailability = (
     };
     const currentOptions = {
       request: currentRequest,
+      retryIndex,
       setAvailableQuantity,
       setAvailableUnits,
       setHasError,
@@ -94,5 +96,6 @@ export const useSyncReservationUnitAvailability = (
     setAvailableUnits,
     setHasError,
     setIsLoading,
+    retryIndex,
   ]);
 };

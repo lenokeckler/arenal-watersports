@@ -9,6 +9,12 @@ const getCategorySelect = () =>
   screen.getByLabelText(RESERVATION_FORM_UI_COPY.CATEGORY, {
     selector: INPUT_TYPES.SELECT,
   });
+
+const getUnitSelect = () =>
+  screen.getByLabelText(RESERVATION_FORM_UI_COPY.UNIT, {
+    selector: INPUT_TYPES.SELECT,
+    exact: false,
+  });
 export const createReservationEquipmentPage = (
   user: ReturnType<typeof userEvent.setup>
 ) => ({
@@ -28,6 +34,22 @@ export const createReservationEquipmentPage = (
       categoryName
     );
   },
+  selectUnit: async (unitId: string): Promise<void> => {
+    await user.selectOptions(getUnitSelect(), unitId);
+  },
+  findUnitSelect: () =>
+    screen.findByLabelText(RESERVATION_FORM_UI_COPY.UNIT, {
+      selector: INPUT_TYPES.SELECT,
+      exact: false,
+    }),
+  findAvailableUnit: (unitCode: string) =>
+    screen.findByText(unitCode),
+  getUnitSelect,
+  getCategorySelect,
+  findUnitUnavailableError: () =>
+    screen.findByText(
+      RESERVATION_FORM_UI_COPY.UNIT_UNAVAILABLE
+    ),
   getCategoryGroup: () =>
     screen.getByRole(ARIA_ROLE.GROUP, {
       name: RESERVATION_FORM_UI_COPY.CATEGORY,
