@@ -20,6 +20,16 @@ export const createCategoryDepositFormPage = (
     await page.goto(resolveCategoryDepositPath(categoryId));
   };
 
+  const clickDepositLink = async (
+    categoryCard: Locator
+  ): Promise<void> => {
+    await categoryCard
+      .getByRole(ARIA_ROLE.LINK, {
+        name: CATEGORY_CATALOG_COPY.DEPOSIT_LINK,
+      })
+      .click();
+  };
+
   const reload = async (): Promise<void> => {
     await page.reload();
   };
@@ -85,6 +95,7 @@ export const createCategoryDepositFormPage = (
 
   return {
     goTo,
+    clickDepositLink,
     reload,
     getHeading,
     getAmountInput,

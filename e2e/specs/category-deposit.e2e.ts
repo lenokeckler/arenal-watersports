@@ -37,8 +37,8 @@ test.describe("Category deposit", () => {
     try {
       await logInAsAdmin(page);
       await categoryListPage.goTo();
-      await categoryListPage.clickCategoryDepositLink(
-        categoryName
+      await depositFormPage.clickDepositLink(
+        categoryListPage.getCategoryCard(categoryName)
       );
 
       await expect(
