@@ -117,6 +117,7 @@ export const checkPullRequestFiles = (changes, headRef) => {
   const fragments = changes.filter(
     (change) =>
       change.status === ADDED_STATUS &&
+      !change.restored &&
       FRAGMENT_PATH_PATTERN.test(change.path)
   );
   if (fragments.length !== 1) {
@@ -175,6 +176,18 @@ const release = () => {
   );
 };
 
+const existedInHistory = (base, path) =>
+  execFileSync(
+    "git",
+    ["log", "-1", "--format=%H", base, "--", path],
+    { cwd: REPO_ROOT, encoding: "utf8" }
+  ).trim() !== "";
+
+const isRestoredFragment = (base, change) =>
+  change.status === ADDED_STATUS &&
+  FRAGMENT_PATH_PATTERN.test(change.path) &&
+  existedInHistory(base, change.path);
+
 const readChanges = (base) =>
   execFileSync(
     "git",
@@ -191,7 +204,11 @@ const readChanges = (base) =>
     .map((line) => {
       const [status, path] = line.split("\t");
       return { path, status };
-    });
+    })
+    .map((change) => ({
+      ...change,
+      restored: isRestoredFragment(base, change),
+    }));
 
 const currentBranch = () =>
   process.env.GITHUB_HEAD_REF ||
