@@ -5,6 +5,7 @@ import { findUnitCodeError } from "./findUnitCodeError";
 import { findUnitDecimalError } from "./findUnitDecimalError";
 import { findUnitFuelErrors } from "./findUnitFuelErrors";
 import { findUnitStatusError } from "./findUnitStatusError";
+import { findUnitUsageError } from "./findUnitUsageError";
 
 export const validateUnitFormValues = (
   values: UnitFormValues,
@@ -16,7 +17,7 @@ export const validateUnitFormValues = (
   };
   if (rules.hasMotor) {
     Object.assign(errors, findUnitFuelErrors(values), {
-      usageTotal: findUnitDecimalError(values.usageTotal),
+      usageTotal: findUnitUsageError(values.usageTotal),
       nextOilChangeAt: findUnitDecimalError(
         values.nextOilChangeAt
       ),
