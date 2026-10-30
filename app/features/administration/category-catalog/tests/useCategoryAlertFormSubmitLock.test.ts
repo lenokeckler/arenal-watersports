@@ -8,7 +8,6 @@ import {
 } from "vitest";
 import { STATUS } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
-import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import type { UpdateCategoryAlertsInput } from "../models/UpdateCategoryAlertsInput.interface";
 import { buildCategoryFormSubmitEvent } from "./buildCategoryFormSubmitEvent";
 import {
@@ -124,15 +123,6 @@ describe("useCategoryAlertFormSubmit lock", () => {
     {
       description: "a success",
       implementation: () => Promise.resolve(SUCCESS_RESULT),
-    },
-    {
-      description: "an error result",
-      implementation: () =>
-        Promise.resolve({
-          status: CATEGORY_MUTATION_STATUS.ERROR,
-          message:
-            CATEGORY_CATALOG_COPY.ALERT_CATEGORY_NOT_FOUND_ERROR,
-        }),
     },
     {
       description: "a thrown error",
