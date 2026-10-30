@@ -1,7 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import {
+  unstable_rethrow,
+  useRouter,
+} from "next/navigation";
 import { STATUS } from "@/app/constants";
 import { useToast } from "@/app/components/toast/utils/useToast";
 import type { CategoryBehaviorFormSubmitOptions } from "../models/CategoryBehaviorFormSubmitOptions.interface";
@@ -56,7 +59,8 @@ export const useCategoryBehaviorFormSubmit = ({
       if (feedback.status === STATUS.SUCCESS) {
         router.refresh();
       }
-    } catch {
+    } catch (error) {
+      unstable_rethrow(error);
       showGenericMutationErrorToast(showToast);
     } finally {
       isSubmittingRef.current = false;
