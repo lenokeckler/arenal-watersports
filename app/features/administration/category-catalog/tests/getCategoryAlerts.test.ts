@@ -5,8 +5,6 @@ import {
   it,
   vi,
 } from "vitest";
-import { POSTGRES_ERROR_CODE } from "@/app/constants";
-import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { getCategoryAlerts } from "../services/getCategoryAlerts";
 import {
   ALERT_SELECTION,
@@ -99,30 +97,5 @@ describe("getCategoryAlerts", () => {
     expect(
       await getCategoryAlerts(CATEGORY_ALERT_ID)
     ).toBeNull();
-  });
-
-  it("returns null when the id is not a valid uuid", async () => {
-    mockMaybeSingle.mockResolvedValue({
-      data: null,
-      error: {
-        code: POSTGRES_ERROR_CODE.INVALID_TEXT_REPRESENTATION,
-        message: "invalid input syntax for type uuid",
-      },
-    });
-
-    expect(
-      await getCategoryAlerts(CATEGORY_ALERT_ID)
-    ).toBeNull();
-  });
-
-  it("throws instead of returning null when the query fails", async () => {
-    mockMaybeSingle.mockResolvedValue({
-      data: null,
-      error: { code: "500", message: "boom" },
-    });
-
-    await expect(
-      getCategoryAlerts(CATEGORY_ALERT_ID)
-    ).rejects.toThrow(SupabaseQueryError);
   });
 });

@@ -1,29 +1,18 @@
-import { POSTGRES_ERROR_CODE } from "@/app/constants";
-import { createServerSupabaseClient } from "@/app/services/supabase";
 import type { NullableRef } from "@/app/types";
-import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import type { CategoryBehavior } from "../models/CategoryBehavior.interface";
 import { mapCategoryRowToBehavior } from "../utils/mapCategoryRowToBehavior";
+import { readCategoryRow } from "./readCategoryRow";
 
-export const getCategoryBehavior = async (
+export const getCategoryBehavior = (
   categoryId: string
-): Promise<NullableRef<CategoryBehavior>> => {
-  const supabase = await createServerSupabaseClient();
-
-  const { data: categoryRow, error } = await supabase
-    .from("equipment_categories")
-    .select("*")
-    .eq("id", categoryId)
-    .maybeSingle();
-  if (
-    error?.code ===
-    POSTGRES_ERROR_CODE.INVALID_TEXT_REPRESENTATION
-  ) {
-    return null;
-  }
-  throwIfSupabaseError(error, "getCategoryBehavior");
-
-  return categoryRow
-    ? mapCategoryRowToBehavior(categoryRow)
-    : null;
-};
+): Promise<NullableRef<CategoryBehavior>> =>
+  readCategoryRow({
+    query: (supabase) =>
+      supabase
+        .from("equipment_categories")
+        .select("*")
+        .eq("id", categoryId)
+        .maybeSingle(),
+    map: mapCategoryRowToBehavior,
+    operation: "getCategoryBehavior",
+  });
