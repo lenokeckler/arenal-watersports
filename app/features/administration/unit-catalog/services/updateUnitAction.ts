@@ -10,6 +10,7 @@ import type { UnitMutationResult } from "../models/UnitMutationResult.interface"
 import type { UpdateUnitInput } from "../models/UpdateUnitInput.interface";
 import { mapUnitWriteErrorToResult } from "../utils/mapUnitWriteErrorToResult";
 import { findUnitCodeError } from "../utils/findUnitCodeError";
+import { findUnitInputError } from "../utils/findUnitInputError";
 import { mapUpdateUnitInputToRow } from "../utils/mapUpdateUnitInputToRow";
 
 export const updateUnitAction = async (
@@ -22,6 +23,13 @@ export const updateUnitAction = async (
     return {
       status: UNIT_MUTATION_STATUS.ERROR,
       codeError,
+    };
+  }
+  const inputError = findUnitInputError(input);
+  if (inputError) {
+    return {
+      status: UNIT_MUTATION_STATUS.ERROR,
+      message: inputError,
     };
   }
 
