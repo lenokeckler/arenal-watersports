@@ -11,6 +11,7 @@ export const CALENDAR_NAVIGATION = {
 } as const;
 
 export const CALENDAR_WORK_AREA = {
+  ADMINISTRATION: "administracion",
   OPERATIONS: "operaciones",
   RESERVATIONS: "reservas",
 } as const;
