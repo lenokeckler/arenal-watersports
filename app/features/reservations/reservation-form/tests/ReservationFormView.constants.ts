@@ -1,6 +1,11 @@
 export const RESERVATION_FORM_VIEW_TEST = {
   CATEGORY_ID: "aaaaaaaa-0000-0000-0000-000000000001",
+  ALTERNATE_CATEGORY_ID:
+    "aaaaaaaa-0000-0000-0000-000000000002",
+  ALTERNATE_CATEGORY_NAME: "Kayak Doble",
   CATEGORY_NAME: "Jet Ski",
+  CATEGORY_IMAGE_ALT:
+    "Moto acuática para una reserva en el lago",
   DATE: "2028-02-29",
   CUSTOM_DURATION_OPTION: "Otra duración",
   BACK_TO_CALENDAR: "Volver al calendario",

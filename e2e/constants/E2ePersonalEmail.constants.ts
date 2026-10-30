@@ -1,0 +1,82 @@
+import {
+  PERSONAL_EMAIL,
+  PERSONAL_EMAIL_ERROR_CODE,
+  STRING,
+} from "@/app/constants";
+import {
+  PERSONAL_EMAIL_ERROR_COPY,
+  PERSONAL_EMAIL_REQUIRED_COPY,
+} from "@/app/features/access/personal-email-form/constants/PersonalEmailErrorCopy.constants";
+import { PERSONAL_EMAIL_FORM_COPY } from "@/app/features/access/personal-email-form/constants/PersonalEmailFormCopy.constants";
+import { E2E_PROFILE_COPY } from "./E2eProfile.constants";
+import { PROFILE_COPY } from "@/app/features/access/profile-hub/constants/ProfileCopy.constants";
+
+export const E2E_PERSONAL_EMAIL_COPY = {
+  BACK: PERSONAL_EMAIL_FORM_COPY.BACK,
+  CURRENT_PASSWORD_LABEL:
+    PERSONAL_EMAIL_FORM_COPY.CURRENT_PASSWORD_LABEL,
+  EMAIL_LABEL: PERSONAL_EMAIL_FORM_COPY.EMAIL_LABEL,
+  HEADING: PERSONAL_EMAIL_FORM_COPY.HEADING,
+  REMOVE: PERSONAL_EMAIL_FORM_COPY.REMOVE,
+  REMOVED_NOTICE: PROFILE_COPY.EMAIL_REMOVED_NOTICE,
+  SAVE: PERSONAL_EMAIL_FORM_COPY.SUBMIT,
+  SAVED_NOTICE: PROFILE_COPY.EMAIL_SAVED_NOTICE,
+} as const;
+
+export const E2E_PERSONAL_EMAIL_ERROR_COPY = {
+  ADMINISTRATION_REQUIRED:
+    PERSONAL_EMAIL_ERROR_COPY[
+      PERSONAL_EMAIL_ERROR_CODE
+        .ADMINISTRATION_EMAIL_REQUIRED
+    ],
+  CURRENT_PASSWORD_INVALID:
+    PERSONAL_EMAIL_ERROR_COPY[
+      PERSONAL_EMAIL_ERROR_CODE.CURRENT_PASSWORD_INVALID
+    ],
+  CURRENT_PASSWORD_REQUIRED:
+    PERSONAL_EMAIL_ERROR_COPY[
+      PERSONAL_EMAIL_ERROR_CODE.CURRENT_PASSWORD_REQUIRED
+    ],
+  EMAIL_INVALID:
+    PERSONAL_EMAIL_ERROR_COPY[
+      PERSONAL_EMAIL_ERROR_CODE.EMAIL_INVALID
+    ],
+  EMAIL_REQUIRED_REGISTERED:
+    PERSONAL_EMAIL_REQUIRED_COPY.REGISTERED,
+  EMAIL_REQUIRED_UNREGISTERED:
+    PERSONAL_EMAIL_REQUIRED_COPY.UNREGISTERED,
+  EMAIL_TOO_LONG:
+    PERSONAL_EMAIL_ERROR_COPY[
+      PERSONAL_EMAIL_ERROR_CODE.EMAIL_TOO_LONG
+    ],
+} as const;
+
+export const E2E_PERSONAL_EMAIL_ADDRESS = {
+  EXISTING: "luis.perez@correo.com",
+  INVALID: "ana.mora",
+  STORED: "ana.mora@correo.com",
+  TOO_LONG: `${"a".repeat(PERSONAL_EMAIL.MAX_LENGTH)}@correo.com`,
+  TYPED: "  Ana.Mora@Correo.COM ",
+} as const;
+
+export const E2E_PERSONAL_EMAIL_ENTRY_NAME = {
+  NOT_REGISTERED: `${E2E_PROFILE_COPY.PERSONAL_EMAIL_ENTRY}${STRING.SPACE}${PROFILE_COPY.STATUS_NOT_REGISTERED}`,
+  REGISTERED: `${E2E_PROFILE_COPY.PERSONAL_EMAIL_ENTRY}${STRING.SPACE}${PROFILE_COPY.STATUS_REGISTERED}`,
+} as const;
+
+export const E2E_PERSONAL_EMAIL_PASSWORD = {
+  WRONG: "Equivocada.2026!",
+} as const;
+
+export const E2E_PERSONAL_EMAIL_SCREENSHOT_BASENAME = {
+  FORM_EMPTY: "03-personal-email-form-empty",
+  FORM_ERRORS: "05-personal-email-form-errors",
+  FORM_REGISTERED: "04-personal-email-form-registered",
+  FORM_WRONG_PASSWORD_TYPED:
+    "06-personal-email-form-wrong-password-typed",
+  FORM_WRONG_PASSWORD:
+    "07-personal-email-form-wrong-password",
+  HUB_NOT_REGISTERED: "01-profile-hub-email-not-registered",
+  HUB_REGISTERED: "02-profile-hub-email-registered",
+  HUB_SAVED: "08-profile-hub-email-saved",
+} as const;

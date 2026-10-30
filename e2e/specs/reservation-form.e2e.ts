@@ -1,14 +1,29 @@
-import { expect, test } from "@playwright/test";
+import { PATHS } from "@/app/constants";
+import { expect, test } from "../support/activeWorkerTest";
 import {
   E2E_RESERVATION_DURATION_PRESET,
   E2E_RESERVATION_FORM_COPY,
 } from "../constants/E2eReservationForm.constants";
 import { createReservationFormPage } from "../pages/ReservationForm.page";
-import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
+import { createWorkModePage } from "../pages/WorkMode.page";
+import { E2E_RESERVATIONS_AREA_LABEL } from "../constants/E2eWorkMode.constants";
+import { addReservationsArea } from "../support/addReservationsArea";
+import { submitActiveWorkerSignIn } from "../support/submitActiveWorkerSignIn";
+import { removeReservationsForWorker } from "../support/removeReservationsForWorker";
 
 test.describe("Reservation form", () => {
-  test.beforeEach(async ({ page }) => {
-    await signInAsSeededWorker(page);
+  test.afterEach(async ({ activeWorker }) => {
+    await removeReservationsForWorker(activeWorker);
+  });
+
+  test.beforeEach(async ({ activeWorker, page }) => {
+    await addReservationsArea(activeWorker.id);
+    await submitActiveWorkerSignIn(page, activeWorker);
+    await expect(page).toHaveURL(PATHS.MODE);
+    await createWorkModePage(page)
+      .getCard(E2E_RESERVATIONS_AREA_LABEL)
+      .click();
+    await expect(page).toHaveURL(PATHS.HOME);
   });
 
   test("shows reservation fields in Costa Rica time", async ({
@@ -38,8 +53,18 @@ test.describe("Reservation form", () => {
       reservationFormPage.getTimeZoneHint()
     ).toBeVisible();
     await expect(
-      reservationFormPage.getCategorySelect()
-    ).toBeEnabled();
+      reservationFormPage.getCategoryCard(
+        E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
+      )
+    ).toBeVisible();
+    await reservationFormPage.selectCategoryOption(
+      E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
+    );
+    await expect(
+      reservationFormPage.getCategoryOption(
+        E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
+      )
+    ).toBeChecked();
   });
 
   test("selects a duration preset and reports required customer name", async ({
@@ -67,44 +92,23 @@ test.describe("Reservation form", () => {
     ).toBeVisible();
   });
 
-  test("shows the custom duration field only when selected", async ({
+  test("submits a valid custom duration with decimal precision", async ({
     page,
   }) => {
     const reservationFormPage =
       createReservationFormPage(page);
 
     await reservationFormPage.goTo();
-    await expect(
-      reservationFormPage.getDurationInput()
-    ).toBeHidden();
-
-    await reservationFormPage.selectDuration(
-      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_OPTION
+    await reservationFormPage.submitCustomDurationReservation(
+      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_PRECISION_CASE
     );
+
     await expect(
-      reservationFormPage.getDurationInput()
+      reservationFormPage.getSuccessMessage()
     ).toBeVisible();
-    await expect(
-      reservationFormPage.getDurationInput()
-    ).toHaveValue("");
-    await reservationFormPage.typeCustomDuration(
-      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_HOURS
-    );
-    await expect(
-      reservationFormPage.getDurationInput()
-    ).toHaveValue(
-      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_HOURS
-    );
-
-    await reservationFormPage.selectDuration(
-      E2E_RESERVATION_DURATION_PRESET.LABEL
-    );
-    await expect(
-      reservationFormPage.getDurationInput()
-    ).toBeHidden();
   });
 
-  test("creates a reservation using a seeded interchangeable category", async ({
+  test("prevents a second submission after reservation creation", async ({
     page,
   }) => {
     const reservationFormPage =
@@ -112,12 +116,21 @@ test.describe("Reservation form", () => {
 
     await reservationFormPage.goTo();
     await expect(
-      reservationFormPage.getCategorySelect()
-    ).toHaveValue("");
+      reservationFormPage.getCategoryOption(
+        E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
+      )
+    ).not.toBeChecked();
     await reservationFormPage.submitReservation();
 
     await expect(
       reservationFormPage.getSuccessMessage()
     ).toBeVisible();
+    await expect(
+      reservationFormPage.getSubmitButton()
+    ).toBeDisabled();
+    await reservationFormPage.attemptSubmit();
+    await expect(
+      reservationFormPage.getSuccessMessage()
+    ).toHaveCount(1);
   });
 });
