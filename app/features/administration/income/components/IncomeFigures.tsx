@@ -15,7 +15,7 @@ const IncomeFigures = ({
     <IncomeFigureRow
       label={INCOME_COPY.REFUNDED_LABEL}
       money={display.refunded}
-      hasSignGlyph
+      hasSignGlyph={display.refunded.amount > 0}
     />
     <IncomeNetRow
       net={display.net}
