@@ -19,6 +19,18 @@ const paddleboard: ReservationEquipmentImageOption = {
   alt: STRING.Empty,
   source: "/images/equipment/paddleboard.webp",
 };
+const kayakIndividual: ReservationEquipmentImageOption = {
+  alt: STRING.Empty,
+  source: "/images/equipment/kayak-individual.webp",
+};
+const lancha: ReservationEquipmentImageOption = {
+  alt: STRING.Empty,
+  source: "/images/equipment/lancha.webp",
+};
+const cuadraciclo: ReservationEquipmentImageOption = {
+  alt: STRING.Empty,
+  source: "/images/equipment/cuadraciclo.webp",
+};
 
 export const RESERVATION_EQUIPMENT_IMAGE: Record<
   string,
@@ -27,6 +39,10 @@ export const RESERVATION_EQUIPMENT_IMAGE: Record<
   "jet ski": jetSki,
   kayak,
   "kayak doble": kayak,
+  "kayak individual": kayakIndividual,
+  lancha,
+  cuadraciclo,
+  cuadraciclos: cuadraciclo,
   paddleboard,
   "paddle board": paddleboard,
   sup: paddleboard,
