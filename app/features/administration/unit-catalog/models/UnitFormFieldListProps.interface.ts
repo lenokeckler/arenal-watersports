@@ -8,4 +8,5 @@ export interface UnitFormFieldListProps extends UnitFieldHandlers {
   errors: UnitFormErrors;
   category: UnitCategory;
   isDisabled: boolean;
+  isStatusLocked: boolean;
 }
