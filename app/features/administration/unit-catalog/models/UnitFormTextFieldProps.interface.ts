@@ -9,5 +9,6 @@ export interface UnitFormTextFieldProps {
   placeholder?: string;
   inputMode?: InputMode;
   disabled: boolean;
+  isRequired?: boolean;
   onChange: UnitFormFieldChangeHandler;
 }
