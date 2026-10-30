@@ -1,4 +1,5 @@
 export const UNIT_LIST_COPY = {
+  ADD_LINK: "Agregar unidad",
   BACK_TO_CATEGORIES_LINK: "Volver a categorías",
   EDIT_LINK: "Editar",
   EMPTY_STATE_BODY: "Cada unidad que agregue aparece aquí.",
