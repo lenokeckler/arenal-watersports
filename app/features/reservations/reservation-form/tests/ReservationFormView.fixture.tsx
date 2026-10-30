@@ -30,26 +30,37 @@ vi.mock(
 
 export const reservationRouterBack = routerBack;
 
-export const renderReservationForm = () => {
+const RESERVATION_FORM_VIEW_CATEGORIES = [
+  {
+    id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
+    isGuideOnly: false,
+    isInterchangeable: true,
+    name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
+  },
+  {
+    id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
+    isGuideOnly: true,
+    isInterchangeable: false,
+    name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
+  },
+] satisfies ReservationCategoryOption[];
+
+const renderReservationFormContainer = (
+  categories: ReservationCategoryOption[]
+) => {
   routerBack.mockClear();
   const { container } = render(
     <ReservationFormView
-      categories={[
-        {
-          id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
-          isGuideOnly: false,
-          isInterchangeable: true,
-          name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
-        },
-        {
-          id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
-          isGuideOnly: true,
-          isInterchangeable: false,
-          name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
-        },
-      ]}
+      categories={categories}
       initialDate={RESERVATION_FORM_VIEW_TEST.DATE}
     />
   );
-  return createReservationFormViewPage(container);
+  return container;
 };
+
+export const renderReservationForm = (
+  categories: ReservationCategoryOption[] = RESERVATION_FORM_VIEW_CATEGORIES
+) =>
+  createReservationFormViewPage(
+    renderReservationFormContainer(categories)
+  );
