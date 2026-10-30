@@ -41,6 +41,16 @@ export const BALANCED_DOLLAR_DISPLAY: CurrencyIncomeDisplay =
 
 export const ZERO_DOLLAR_TEXT = "US$ 0.00";
 
+export const CHARGE_ONLY_DOLLAR_DISPLAY: CurrencyIncomeDisplay =
+  {
+    currency: CURRENCY_CODE.USD,
+    hasMovement: true,
+    collected: { amount: 30, currency: CURRENCY_CODE.USD },
+    refunded: { amount: 0, currency: CURRENCY_CODE.USD },
+    net: { amount: 30, currency: CURRENCY_CODE.USD },
+    isNetNegative: false,
+  };
+
 export const IDLE_COLON_DISPLAY: CurrencyIncomeDisplay = {
   currency: CURRENCY_CODE.CRC,
   hasMovement: false,
