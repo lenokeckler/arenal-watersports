@@ -321,6 +321,7 @@ export {
   type MoneyAmountIssue,
 } from "./money/MoneyAmountIssue.constants";
 export {
+  MONEY_AMOUNT_COMMA_SEPARATOR,
   MONEY_AMOUNT_DECIMAL_SEPARATOR,
   MONEY_AMOUNT_LEADING_ZEROS_PATTERN,
   MONEY_AMOUNT_PATTERN,

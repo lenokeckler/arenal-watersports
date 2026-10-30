@@ -8,6 +8,7 @@ import {
 } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import type { MoneyAmountLimits } from "./models/MoneyAmountLimits.interface";
+import { normalizeMoneyAmountText } from "./normalizeMoneyAmountText";
 
 export const findMoneyAmountIssue = (
   amountText: string,
@@ -16,8 +17,10 @@ export const findMoneyAmountIssue = (
   if (!MONEY_AMOUNT_PATTERN.test(amountText)) {
     return MONEY_AMOUNT_ISSUE.FORMAT;
   }
+  const normalizedText =
+    normalizeMoneyAmountText(amountText);
   const [integerDigits, decimalDigits = STRING.Empty] =
-    amountText.split(MONEY_AMOUNT_DECIMAL_SEPARATOR);
+    normalizedText.split(MONEY_AMOUNT_DECIMAL_SEPARATOR);
   const significantIntegerDigits = integerDigits.replace(
     MONEY_AMOUNT_LEADING_ZEROS_PATTERN,
     STRING.Empty
@@ -29,7 +32,7 @@ export const findMoneyAmountIssue = (
   ) {
     return MONEY_AMOUNT_ISSUE.PRECISION;
   }
-  if (Number(amountText) <= 0) {
+  if (Number(normalizedText) <= 0) {
     return MONEY_AMOUNT_ISSUE.NOT_POSITIVE;
   }
   return null;

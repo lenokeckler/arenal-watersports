@@ -46,10 +46,22 @@ export const MONEY_AMOUNT_ISSUE_CASES: MoneyAmountIssueCase[] =
     },
     {
       amountText: "1,5",
-      expectedIssue: MONEY_AMOUNT_ISSUE.FORMAT,
+      expectedIssue: null,
+    },
+    {
+      amountText: "200,50",
+      expectedIssue: null,
     },
     {
       amountText: "100,000",
+      expectedIssue: MONEY_AMOUNT_ISSUE.PRECISION,
+    },
+    {
+      amountText: "1,2,3",
+      expectedIssue: MONEY_AMOUNT_ISSUE.FORMAT,
+    },
+    {
+      amountText: "1.5,5",
       expectedIssue: MONEY_AMOUNT_ISSUE.FORMAT,
     },
     {
@@ -118,5 +130,6 @@ export const MONEY_AMOUNT_PARSE_CASES: MoneyAmountParseCase[] =
     { amountText: "200", expectedAmount: 200 },
     { amountText: " 100000 ", expectedAmount: 100000 },
     { amountText: "200.50", expectedAmount: 200.5 },
+    { amountText: "200,50", expectedAmount: 200.5 },
     { amountText: "0.01", expectedAmount: 0.01 },
   ];
