@@ -19,6 +19,7 @@ const UnitFormFields = ({
   <>
     <UnitFormTextField
       id={UNIT_FORM_FIELD_ID.CODE}
+      isRequired
       label={UNIT_FORM_COPY.CODE_LABEL}
       placeholder={UNIT_FORM_COPY.CODE_PLACEHOLDER}
       value={values.code}
@@ -33,6 +34,7 @@ const UnitFormFields = ({
     />
     <UnitFormTextField
       id={UNIT_FORM_FIELD_ID.FUEL_MAX}
+      isRequired
       label={UNIT_FORM_COPY.FUEL_MAX_LABEL}
       inputMode={INPUT_MODE.NUMERIC}
       value={values.fuelMax}
