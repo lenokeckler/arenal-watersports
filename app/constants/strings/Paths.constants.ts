@@ -21,6 +21,9 @@ export const PATHS = {
     PASSWORD: "/profile/password",
     ROOT: "/profile",
   },
+  OPERATIONS: {
+    CALENDAR: "/operations/calendar",
+  },
   WELL_KNOWN: {
     CHANGE_PASSWORD: "/.well-known/change-password",
   },

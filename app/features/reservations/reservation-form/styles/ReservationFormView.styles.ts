@@ -1,3 +1,5 @@
+import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
+
 export const RESERVATION_FORM_PAGE_CLASS =
   "mx-auto flex w-full max-w-4xl flex-col gap-5 px-gutter py-6 pb-28 md:gap-6 md:py-10 md:pb-10";
 
@@ -25,6 +27,34 @@ export const RESERVATION_FORM_GRID_CLASS =
   "grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5";
 
 export const RESERVATION_FORM_FIELD_CLASS = "min-w-0";
+
+export const RESERVATION_FORM_CATEGORY_GRID_CLASS =
+  "grid grid-cols-3 gap-3";
+
+export const RESERVATION_FORM_CATEGORY_LEGEND_CLASS =
+  "mb-3 text-sm font-medium text-on-surface-variant";
+
+export const RESERVATION_FORM_CATEGORY_OPTION_CLASS =
+  "group flex min-h-32 cursor-pointer flex-col gap-2 rounded-2xl border border-outline-variant bg-surface-container-high p-2 text-left text-sm font-medium text-on-surface transition-colors hover:border-primary focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary has-[:checked]:border-primary has-[:checked]:bg-primary/10 sm:min-h-40 sm:p-3";
+
+export const RESERVATION_FORM_CATEGORY_OPTION_SELECTED_CLASS =
+  "shadow-lg shadow-primary/10";
+
+export const RESERVATION_FORM_CATEGORY_INPUT_CLASS =
+  "sr-only";
+
+export const RESERVATION_FORM_CATEGORY_IMAGE_CLASS =
+  "h-20 w-full rounded-xl object-cover sm:h-28";
+
+export const resolveReservationCategoryOptionClassName = (
+  isSelected: boolean
+): string =>
+  joinClassNames(
+    RESERVATION_FORM_CATEGORY_OPTION_CLASS,
+    isSelected
+      ? RESERVATION_FORM_CATEGORY_OPTION_SELECTED_CLASS
+      : ""
+  );
 
 export const RESERVATION_FORM_FIELD_WIDE_CLASS =
   "min-w-0 md:col-span-2";
