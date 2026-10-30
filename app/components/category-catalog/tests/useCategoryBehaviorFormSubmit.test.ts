@@ -27,9 +27,12 @@ const mockRefresh = vi.fn();
 const mockShowToast = vi.fn();
 const mockOnValidationErrors = vi.fn();
 const mockUpdateCategoryBehaviorAction = vi.fn();
+const mockUnstableRethrow = vi.fn();
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ refresh: mockRefresh }),
+  unstable_rethrow: (error: unknown) =>
+    mockUnstableRethrow(error),
 }));
 
 vi.mock("@/app/components/toast/utils/useToast", () => ({
@@ -77,6 +80,7 @@ const submitForm = async (
 describe("useCategoryBehaviorFormSubmit", () => {
   beforeEach(() => {
     mockRefresh.mockClear();
+    mockUnstableRethrow.mockReset();
     mockShowToast.mockClear();
     mockOnValidationErrors.mockClear();
     mockUpdateCategoryBehaviorAction.mockReset();
@@ -152,6 +156,27 @@ describe("useCategoryBehaviorFormSubmit", () => {
       CATEGORY_CATALOG_COPY.GENERIC_MUTATION_ERROR
     );
     expect(mockRefresh).not.toHaveBeenCalled();
+    expect(result.current.isSubmitting).toBe(false);
+  });
+
+  it("rethrows a Next control-flow error without a toast and releases the form", async () => {
+    const controlFlowError = new Error("NEXT_REDIRECT");
+    mockUpdateCategoryBehaviorAction.mockRejectedValue(
+      controlFlowError
+    );
+    mockUnstableRethrow.mockImplementation((error) => {
+      throw error;
+    });
+    const { result } = renderSubmit();
+
+    await expect(submitForm(result)).rejects.toBe(
+      controlFlowError
+    );
+
+    expect(mockUnstableRethrow).toHaveBeenCalledWith(
+      controlFlowError
+    );
+    expect(mockShowToast).not.toHaveBeenCalled();
     expect(result.current.isSubmitting).toBe(false);
   });
 
