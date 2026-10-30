@@ -1,3 +1,7 @@
+update equipment_categories set deposit_usd = null where deposit_usd = 'NaN';
+
+update equipment_categories set deposit_crc = null where deposit_crc = 'NaN';
+
 alter table equipment_categories
   drop constraint categories_deposit_positive,
   add constraint categories_deposit_positive
