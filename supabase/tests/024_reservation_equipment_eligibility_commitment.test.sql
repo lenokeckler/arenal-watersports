@@ -69,7 +69,8 @@ select throws_ok(
   $$ select create_rental_reservation(jsonb_build_object('customer_name', 'RES17 Operations', 'people_count', 1,
     'date', '2035-05-02', 'time', '09:00', 'duration_minutes', 60,
     'category_id', 'e2700000-0000-4000-8000-000000000101', 'quantity', 1)) $$,
-  '42501', null, 'physical eligibility does not grant Operations reservation creation'
+  'P0001', 'Reservations access is required',
+  'physical eligibility does not grant Operations reservation creation'
 );
 reset role;
 update workers set status = 'blocked' where id = 'e2700000-0000-4000-8000-000000000001';
