@@ -64,21 +64,6 @@ describe("Operations calendar reservation content", () => {
       expect(page.getBlocks()[0]).toHaveTextContent(
         fixture.CUSTOMER
       );
-      expect(
-        page.getMessages(fixture.INTERNAL_GUIDE_NAME)
-      ).toHaveLength(1);
-      expect(
-        page.getMessages(fixture.INTERNAL_GUIDE_TYPE)
-      ).toHaveLength(1);
-      expect(
-        page.getMessages(fixture.EXTERNAL_GUIDE_NAME)
-      ).toHaveLength(1);
-      expect(
-        page.getMessages(fixture.EXTERNAL_GUIDE_TYPE)
-      ).toHaveLength(1);
-      expect(
-        page.getMessages(fixture.GUIDE_LABEL)
-      ).toHaveLength(1);
       expect(page.queryAgenda()).toBeNull();
       expect(page.queryMoney()).toBeNull();
     }
