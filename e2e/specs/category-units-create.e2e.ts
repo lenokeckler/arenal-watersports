@@ -56,7 +56,7 @@ test.describe("Category units create", () => {
     });
   });
 
-  test("a category without a motor hides the fuel, usage and oil fields", async ({
+  test("a category without a motor hides the gauge bars, fuel, usage and oil fields", async ({
     formPage,
     seedUnitCategory,
   }) => {
@@ -66,7 +66,9 @@ test.describe("Category units create", () => {
     await formPage.goTo(categoryId);
 
     await expect(formPage.getCodeInput()).toBeVisible();
-    await expect(formPage.getFuelMaxInput()).toBeVisible();
+    await expect(formPage.getFuelMaxInput()).toHaveCount(
+      E2E_COUNT.NONE
+    );
     await expect(formPage.getFuelLevelInput()).toHaveCount(
       E2E_COUNT.NONE
     );
