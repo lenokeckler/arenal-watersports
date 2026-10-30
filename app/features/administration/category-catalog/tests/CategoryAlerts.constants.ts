@@ -1,7 +1,6 @@
 import { CATEGORY_ALERT_TYPE } from "../constants/CategoryAlertType.constants";
 import type { CategoryAlertFormValues } from "../models/CategoryAlertFormValues.interface";
 import type { CategoryAlerts } from "../models/CategoryAlerts.interface";
-import type { CategoryAlertsRow } from "../models/CategoryAlertsRow.type";
 import type { UpdateCategoryAlertsInput } from "../models/UpdateCategoryAlertsInput.interface";
 
 export const CATEGORY_ALERT_ID = "category-alert-id";
@@ -26,13 +25,6 @@ export const DEFAULT_CATEGORY_ALERTS: CategoryAlerts = {
   alertExpiryDays: DEFAULT_EXPIRY_DAYS,
 };
 
-export const DEFAULT_CATEGORY_ALERTS_ROW: CategoryAlertsRow =
-  {
-    id: CATEGORY_ALERT_ID,
-    alert_min_quantity: DEFAULT_MIN_QUANTITY,
-    alert_expiry_days: DEFAULT_EXPIRY_DAYS,
-  };
-
 export const DEFAULT_CATEGORY_ALERT_FORM_VALUES: CategoryAlertFormValues =
   {
     alertType: CATEGORY_ALERT_TYPE.BOTH,
@@ -51,13 +43,6 @@ export const buildCategoryAlerts = (
   overrides: Partial<CategoryAlerts> = {}
 ): CategoryAlerts => ({
   ...DEFAULT_CATEGORY_ALERTS,
-  ...overrides,
-});
-
-export const buildCategoryAlertsRow = (
-  overrides: Partial<CategoryAlertsRow> = {}
-): CategoryAlertsRow => ({
-  ...DEFAULT_CATEGORY_ALERTS_ROW,
   ...overrides,
 });
 

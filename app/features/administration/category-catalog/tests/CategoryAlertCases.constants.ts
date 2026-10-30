@@ -3,6 +3,7 @@ import {
   type CategoryAlertIssue,
 } from "../constants/CategoryAlertIssue.constants";
 import { CATEGORY_ALERT_TYPE } from "../constants/CategoryAlertType.constants";
+import type { NullableRef } from "@/app/types";
 import type { CategoryAlertFormErrors } from "../models/CategoryAlertFormErrors.interface";
 
 const STORED_QUANTITY = 5;
@@ -38,7 +39,7 @@ export const ALERT_FIELDS: Array<
 export const ALERT_TEXT_CASES: Array<{
   description: string;
   text: string;
-  expectedIssue: CategoryAlertIssue | null;
+  expectedIssue: NullableRef<CategoryAlertIssue>;
 }> = [
   { description: "one", text: "1", expectedIssue: null },
   {
