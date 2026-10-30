@@ -35,6 +35,13 @@ export const INCOME_NET_AMOUNT_CLASS =
 export const INCOME_NET_NEGATIVE_AMOUNT_CLASS =
   joinClassNames(INCOME_NET_AMOUNT_CLASS, "text-error");
 
+export const resolveIncomeNetAmountClassName = (
+  isNegative: boolean
+): string =>
+  isNegative
+    ? INCOME_NET_NEGATIVE_AMOUNT_CLASS
+    : INCOME_NET_AMOUNT_CLASS;
+
 export const INCOME_NET_HELP_CLASS =
   "text-label-mono text-on-surface-variant";
 
