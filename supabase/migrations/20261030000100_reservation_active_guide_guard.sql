@@ -9,6 +9,7 @@ as $$
       join worker_marks as mark on mark.worker_id = worker.id
       where worker.id = target_worker_id
         and worker.status = 'active'
+        and worker.deleted_at is null
         and (worker.expires_at is null or worker.expires_at > now())
         and mark.mark = 'guia'
     );

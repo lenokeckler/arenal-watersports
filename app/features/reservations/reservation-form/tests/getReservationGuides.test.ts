@@ -70,6 +70,9 @@ describe("getReservationGuides", () => {
         RESERVATION_GUIDE_QUERY.ACTIVE_STATUS_COLUMN
       )
     ).toBe(`eq.${WORKER_STATUS.ACTIVE}`);
+    expect(
+      query.get(RESERVATION_GUIDE_QUERY.DELETED_AT_COLUMN)
+    ).toBe("is.null");
     const expirationFilter = query.get(
       RESERVATION_GUIDE_QUERY.EXPIRATION_FILTER_COLUMN
     );

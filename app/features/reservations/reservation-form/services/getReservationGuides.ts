@@ -26,6 +26,7 @@ export const getReservationGuides = async (): Promise<
       RESERVATION_GUIDE_QUERY.ACTIVE_STATUS_COLUMN,
       WORKER_STATUS.ACTIVE
     )
+    .is(RESERVATION_GUIDE_QUERY.DELETED_AT_COLUMN, null)
     .or(
       `${RESERVATION_GUIDE_QUERY.EXPIRATION_COLUMN}.is.null,${RESERVATION_GUIDE_QUERY.EXPIRATION_COLUMN}.gt.${currentTime}`
     )
