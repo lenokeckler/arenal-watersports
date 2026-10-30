@@ -39,6 +39,14 @@ export const createCategoryListPage = (page: Page) => {
       { name: CATEGORY_CATALOG_COPY.BEHAVIOR_LINK }
     );
 
+  const getCategoryDepositLink = (
+    categoryName: string
+  ): Locator =>
+    getCategoryCard(categoryName).getByRole(
+      ARIA_ROLE.LINK,
+      { name: CATEGORY_CATALOG_COPY.DEPOSIT_LINK }
+    );
+
   const getCategoryDeleteButton = (
     categoryName: string
   ): Locator =>
@@ -107,6 +115,12 @@ export const createCategoryListPage = (page: Page) => {
     await getCategoryBehaviorLink(categoryName).click();
   };
 
+  const clickCategoryDepositLink = async (
+    categoryName: string
+  ): Promise<void> => {
+    await getCategoryDepositLink(categoryName).click();
+  };
+
   const clickCategoryDeleteButton = async (
     categoryName: string
   ): Promise<void> => {
@@ -141,6 +155,7 @@ export const createCategoryListPage = (page: Page) => {
     getCategoryCard,
     getCategoryGroupMeta,
     getCategoryBehaviorLink,
+    getCategoryDepositLink,
     getCategoryDeleteButton,
     getCategoryMarkInactiveButton,
     getCategoryInactivePill,
@@ -151,6 +166,7 @@ export const createCategoryListPage = (page: Page) => {
     getToastMessage,
     clickCreateLink,
     clickCategoryBehaviorLink,
+    clickCategoryDepositLink,
     clickCategoryDeleteButton,
     clickCategoryMarkInactiveButton,
     clickCategoryCancelButton,
