@@ -164,10 +164,11 @@ Let the administration worker choose, per category, whether the inventory alert 
 
 ## In scope
 
-- Part 15.01 (this branch): the rules and the data access. `CATEGORY_ALERT_TYPE`, `CATEGORY_ALERT_LIMITS`, `CATEGORY_ALERT_ERROR_COPY`, the models, `deriveCategoryAlertType`, `validateCategoryAlertFormValues`, the mappers, `getCategoryAlerts` and the administrator-only `updateCategoryAlertsAction`.
-- Part 15.02: the form state and submit hooks.
-- Part 15.03: the screen at `/administration/categories/[categoryId]/alerts`, the card link and the redirect to it after a category is created.
-- Part 15.04: the E2E.
+- Part 15.01 (this branch): the rules only. `CATEGORY_ALERT_TYPE`, `CATEGORY_ALERT_LIMITS`, `CATEGORY_ALERT_ERROR_COPY`, the form models, `deriveCategoryAlertType`, `validateCategoryAlertFormValues` and the form-to-input and stored-to-form mappers.
+- Part 15.02: the row mappers, the data access, the administrator-only update action and its pgTAP.
+- Part 15.03: the form state and submit hooks.
+- Part 15.04: the screen at `/administration/categories/[categoryId]/alerts`, the card link and the redirect to it after a category is created.
+- Part 15.05: the E2E.
 
 ## Requirements
 
@@ -181,8 +182,8 @@ Let the administration worker choose, per category, whether the inventory alert 
 
 US-ADM-15, as written in `docs/proyecto/historias-de-usuario.md`:
 
-- [ ] El aviso puede ser por cantidad, por fecha de vencimiento, por ambas cosas o por ninguna. — derived type and per-type validation and mapping (15.01); the type selector is 15.03.
-- [ ] Por cantidad se define la cantidad mínima a partir de la cual salta el aviso. Es el caso de los chalecos. — `alert_min_quantity` rules and saving (15.01); the field is 15.03.
-- [ ] Por vencimiento se define con cuánta anticipación avisar. Es el caso de los extintores y del contenido de los botiquines. — `alert_expiry_days` rules and saving (15.01); the field is 15.03.
-- [ ] Cada vez que se agrega una categoría nueva, administración decide qué aviso le corresponde o si no lleva ninguno. — the redirect after creating a category is 15.03; E2E is 15.04.
+- [ ] El aviso puede ser por cantidad, por fecha de vencimiento, por ambas cosas o por ninguna. — derived type and per-type validation and mapping (15.01); saving is 15.02; the type selector is 15.04.
+- [ ] Por cantidad se define la cantidad mínima a partir de la cual salta el aviso. Es el caso de los chalecos. — `alert_min_quantity` rules (15.01) and saving (15.02); the field is 15.04.
+- [ ] Por vencimiento se define con cuánta anticipación avisar. Es el caso de los extintores y del contenido de los botiquines. — `alert_expiry_days` rules (15.01) and saving (15.02); the field is 15.04.
+- [ ] Cada vez que se agrega una categoría nueva, administración decide qué aviso le corresponde o si no lleva ninguno. — the redirect after creating a category is 15.04; E2E is 15.05.
 - [ ] Los botiquines solo salen en los tours y no en las rentas, así que no se pierden: su contenido se gasta cuando se usa y además se vence. — satisfied by a category carrying both thresholds (15.01); no further code.
