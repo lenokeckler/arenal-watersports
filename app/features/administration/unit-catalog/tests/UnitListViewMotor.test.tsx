@@ -21,6 +21,8 @@ const FUEL_TEXT = `${UNIT_LIST_COPY.FUEL_LABEL} ${DEFAULT_UNIT_LIST_ITEM.fuelLev
 const USAGE_TEXT = `${UNIT_LIST_COPY.USAGE_LABEL} ${DEFAULT_UNIT_LIST_ITEM.usageTotal} ${HOURS_LABEL}`;
 const OIL_CHANGE_TEXT = `${UNIT_LIST_COPY.NEXT_OIL_CHANGE_LABEL} ${DEFAULT_UNIT_LIST_ITEM.nextOilChangeAt} ${HOURS_LABEL}`;
 const NO_READING_TEXT = `${UNIT_LIST_COPY.FUEL_LABEL} ${UNIT_LIST_COPY.FUEL_NO_READING}`;
+const EMPTY_TANK_LEVEL = 0;
+const EMPTY_TANK_TEXT = `${UNIT_LIST_COPY.FUEL_LABEL} ${EMPTY_TANK_LEVEL} ${UNIT_LIST_COPY.FUEL_LEVEL_OF} ${DEFAULT_UNIT_LIST_ITEM.fuelMax}`;
 const MOTOR_TEXTS = [
   FUEL_TEXT,
   USAGE_TEXT,
@@ -47,6 +49,22 @@ describe("UnitListView motor details", () => {
     expect(
       createUnitListPage().getText(NO_READING_TEXT)
     ).toBeInTheDocument();
+  });
+
+  it("shows an empty tank as a reading, not as missing", () => {
+    renderUnitListView({
+      units: [
+        buildUnitListItem({ fuelLevel: EMPTY_TANK_LEVEL }),
+      ],
+    });
+    const unitListPage = createUnitListPage();
+
+    expect(
+      unitListPage.getText(EMPTY_TANK_TEXT)
+    ).toBeInTheDocument();
+    expect(
+      unitListPage.getText(NO_READING_TEXT)
+    ).toBeNull();
   });
 
   it("hides fuel, usage and oil change when the category has no motor", () => {
