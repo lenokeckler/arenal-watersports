@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { E2E_DEPOSIT_ERROR } from "../constants/E2ePendingDeposits.constants";
 import { buildE2eCustomerName } from "./buildE2eCustomerName";
 import { insertE2eDeposit } from "./insertE2eDeposit";
 import { insertE2eReservation } from "./insertE2eReservation";
@@ -23,7 +24,15 @@ export const seedE2eDeposit = async (
     reservation.id,
     seed
   ).catch(async (error: unknown) => {
-    await removeE2eReservation(supabase, reservation.id);
+    await removeE2eReservation(
+      supabase,
+      reservation.id
+    ).catch((cleanupError: unknown) => {
+      throw new AggregateError(
+        [error, cleanupError],
+        E2E_DEPOSIT_ERROR.OPERATION_SEED
+      );
+    });
     throw error;
   });
 
