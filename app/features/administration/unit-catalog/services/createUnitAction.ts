@@ -6,6 +6,7 @@ import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { UNIT_MUTATION_STATUS } from "../constants/UnitMutationStatus.constants";
 import type { CreateUnitInput } from "../models/CreateUnitInput.interface";
 import type { UnitMutationResult } from "../models/UnitMutationResult.interface";
+import { findUnitCodeError } from "../utils/findUnitCodeError";
 import { mapCreateUnitInputToRow } from "../utils/mapCreateUnitInputToRow";
 import { mapUnitWriteErrorToResult } from "../utils/mapUnitWriteErrorToResult";
 
@@ -14,10 +15,22 @@ export const createUnitAction = async (
 ): Promise<UnitMutationResult> => {
   const supabase = await createServerSupabaseClient();
   const adminWorkerId = await assertIsAdminWorker(supabase);
+  const codeError = findUnitCodeError(input.code);
+  if (codeError) {
+    return {
+      status: UNIT_MUTATION_STATUS.ERROR,
+      codeError,
+    };
+  }
 
   const { data: insertedUnitRow, error } = await supabase
     .from("equipment_units")
-    .insert(mapCreateUnitInputToRow(input, adminWorkerId))
+    .insert(
+      mapCreateUnitInputToRow(
+        { ...input, code: input.code.trim() },
+        adminWorkerId
+      )
+    )
     .select("id")
     .single();
   const failure = mapUnitWriteErrorToResult(error);

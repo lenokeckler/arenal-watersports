@@ -9,6 +9,7 @@ import { UNIT_STATUS } from "../constants/UnitStatus.constants";
 import type { UnitMutationResult } from "../models/UnitMutationResult.interface";
 import type { UpdateUnitInput } from "../models/UpdateUnitInput.interface";
 import { mapUnitWriteErrorToResult } from "../utils/mapUnitWriteErrorToResult";
+import { findUnitCodeError } from "../utils/findUnitCodeError";
 import { mapUpdateUnitInputToRow } from "../utils/mapUpdateUnitInputToRow";
 
 export const updateUnitAction = async (
@@ -16,10 +17,22 @@ export const updateUnitAction = async (
 ): Promise<UnitMutationResult> => {
   const supabase = await createServerSupabaseClient();
   const adminWorkerId = await assertIsAdminWorker(supabase);
+  const codeError = findUnitCodeError(input.code);
+  if (codeError) {
+    return {
+      status: UNIT_MUTATION_STATUS.ERROR,
+      codeError,
+    };
+  }
 
   const { data: updatedUnitRow, error } = await supabase
     .from("equipment_units")
-    .update(mapUpdateUnitInputToRow(input, adminWorkerId))
+    .update(
+      mapUpdateUnitInputToRow(
+        { ...input, code: input.code.trim() },
+        adminWorkerId
+      )
+    )
     .eq("id", input.unitId)
     .neq("status", UNIT_STATUS.DECOMMISSIONED)
     .select("id")

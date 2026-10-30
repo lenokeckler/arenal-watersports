@@ -9,6 +9,7 @@ import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { NotAuthorizedError } from "@/app/services/authorization/NotAuthorizedError";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { UNIT_CATALOG_COPY } from "../constants/UnitCatalogCopy.constants";
+import { UNIT_DATABASE_MESSAGE } from "../constants/UnitDatabaseMessage.constants";
 import { UNIT_MUTATION_STATUS } from "../constants/UnitMutationStatus.constants";
 import { createUnitAction } from "../services/createUnitAction";
 import {
@@ -109,6 +110,7 @@ describe("createUnitAction", () => {
     },
     {
       code: POSTGRES_ERROR_CODE.RAISE_EXCEPTION,
+      message: UNIT_DATABASE_MESSAGE.CATEGORY_NOT_BY_UNIT,
       expected: {
         message:
           UNIT_CATALOG_COPY.CATEGORY_NOT_BY_UNIT_ERROR,
@@ -116,10 +118,10 @@ describe("createUnitAction", () => {
     },
   ])(
     "returns a friendly result for the $code database error",
-    async ({ code, expected }) => {
+    async ({ code, message = "boom", expected }) => {
       mockSingle.mockResolvedValue({
         data: null,
-        error: { code, message: "boom" },
+        error: { code, message },
       });
 
       expect(
