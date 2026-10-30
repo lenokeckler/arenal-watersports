@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import type { ServerSupabaseClient } from "@/app/services/supabase/AppSupabaseClient.type";
+import type { NullableRef } from "@/app/types";
 import { fetchCategoryIdsWithRecords } from "../services/fetchCategoryIdsWithRecords";
 
 const UNITS_TABLE = "equipment_units";
@@ -14,7 +15,7 @@ interface RecordsByTable {
 
 const buildSupabase = (
   recordsByTable: RecordsByTable,
-  error: typeof READ_ERROR | null = null
+  error: NullableRef<typeof READ_ERROR> = null
 ) => {
   const limit = vi.fn();
   const from = vi.fn((table: keyof RecordsByTable) => ({
