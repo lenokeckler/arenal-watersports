@@ -1045,6 +1045,11 @@ De un jet ski no da lo mismo cuál sale: cada uno tiene su gasolina, sus horas y
 - Cada unidad declara cuántas rayas tiene su medidor de gasolina, porque no toda la flota trae el mismo tablero: los cuadraciclos marcan seis y los jet skis y las lanchas cuatro. La lectura del día se guarda sobre ese máximo.
 - Una unidad sin lectura de gasolina todavía no es lo mismo que una unidad en cero.
 - Crear, consultar y modificar. Para sacarla del inventario se da de baja, no se elimina.
+- El código se recorta de espacios y distingue mayúsculas de minúsculas.
+- Una unidad dada de baja no se reactiva.
+- El máximo de rayas del medidor se puede cambiar aunque la unidad ya tenga lecturas.
+- La gasolina, las horas o el kilometraje y el cambio de aceite solo aplican a categorías con motor.
+- Solo administración gestiona las unidades.
 
 ---
 
@@ -3128,3 +3133,4 @@ Estas salieron de construir el sistema y de probarlo en un teléfono, no de las 
 - **Los combos se venden con precio nacional y precio extranjero.** Es la práctica de la empresa y no se resolvía con un solo precio de paquete.
 - **Administración agrupa categorías para el tablero.** Los kayaks sencillos y los dobles son dos categorías y se muestran como una sola tarjeta, sin fusionarse por dentro, porque en el muelle se pregunta cuántos kayaks hay.
 - **Operaciones consulta precios sin ver dinero de reservas.** Son dos cosas distintas: el catálogo de tarifas es información del negocio que se pregunta a diario en el muelle; los cobros, devoluciones y depósitos de una reserva no.
+- **Las unidades las gestiona solo administración, y una baja no se revierte.** Decisión de Kendall (responsable de la historia US-ADM-16): el código distingue mayúsculas, las rayas del medidor se pueden corregir aunque haya lecturas, los campos de motor solo existen en categorías con motor y una unidad dada de baja no se reactiva, porque su historial de mantenimiento y de reservas debe seguir cuadrando.
