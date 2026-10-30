@@ -154,4 +154,51 @@ test.describe("Reservation form", () => {
       reservationFormPage.getUnitSelect()
     ).toHaveValue(/.+/);
   });
+
+  test("removes a committed Lancha from availability for the same window", async ({
+    page,
+  }) => {
+    const reservationFormPage =
+      createReservationFormPage(page);
+
+    await reservationFormPage.goTo();
+    await reservationFormPage
+      .getDateInput()
+      .fill(E2E_RESERVATION_FORM_COPY.SCREENSHOT_DATE);
+    await reservationFormPage
+      .getCustomerNameInput()
+      .fill(E2E_RESERVATION_FORM_COPY.CUSTOMER_NAME_VALID);
+    await reservationFormPage.selectCategory(
+      E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
+    );
+    await reservationFormPage.waitForUnitOption(
+      E2E_RESERVATION_FORM_COPY.UNIT_OPTION
+    );
+    await reservationFormPage.selectUnit(
+      E2E_RESERVATION_FORM_COPY.UNIT_OPTION
+    );
+    await reservationFormPage.submit();
+
+    await expect(
+      reservationFormPage.getSuccessMessage()
+    ).toBeVisible();
+    await reservationFormPage.goTo();
+    await reservationFormPage
+      .getDateInput()
+      .fill(E2E_RESERVATION_FORM_COPY.SCREENSHOT_DATE);
+    await reservationFormPage.selectCategory(
+      E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
+    );
+    await expect(
+      reservationFormPage.getAvailabilityLoadingMessage()
+    ).toBeVisible();
+    await expect(
+      reservationFormPage.getAvailabilityLoadingMessage()
+    ).toBeHidden();
+    await expect(
+      reservationFormPage.getUnitOption(
+        E2E_RESERVATION_FORM_COPY.UNIT_OPTION
+      )
+    ).toHaveCount(0);
+  });
 });
