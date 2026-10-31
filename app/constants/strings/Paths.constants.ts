@@ -10,6 +10,8 @@ export const PATHS = {
     ROOT: "/access",
   },
   ADMINISTRATION: {
+    CATEGORIES: "/administration/categories",
+    CATEGORIES_NEW: "/administration/categories/new",
     ROOT: "/administration",
     RESERVATIONS_BY_WORKER:
       "/administration/reports/reservations-by-worker",
