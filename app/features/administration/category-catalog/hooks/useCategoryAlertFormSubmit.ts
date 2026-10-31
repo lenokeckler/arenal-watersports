@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { PATHS } from "@/app/constants";
 import { useToast } from "@/app/components/toast/utils/useToast";
 import type { CategoryAlertFormSubmitOptions } from "../models/CategoryAlertFormSubmitOptions.interface";
 import type { CategoryAlertFormSubmitViewModel } from "../models/CategoryAlertFormSubmitViewModel.interface";
@@ -34,7 +35,8 @@ export const useCategoryAlertFormSubmit = ({
         categoryId,
         values,
         showToast,
-        onSaved: () => router.refresh(),
+        onSaved: () =>
+          router.push(PATHS.ADMINISTRATION.CATEGORIES),
       })
     );
   };
