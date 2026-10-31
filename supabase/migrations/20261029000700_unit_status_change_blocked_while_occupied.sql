@@ -1,6 +1,8 @@
 create or replace function guard_unit_status_change_while_occupied()
 returns trigger
 language plpgsql
+security definer
+set search_path = public
 as $$
 begin
   if new.status is distinct from old.status
@@ -26,6 +28,8 @@ create trigger equipment_units_guard_status_change_while_occupied
 create or replace function guard_dispatch_assignment_unit_available()
 returns trigger
 language plpgsql
+security definer
+set search_path = public
 as $$
 begin
   if new.unit_id is not null
