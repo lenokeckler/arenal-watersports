@@ -21,6 +21,8 @@ export const isReservationFormInput = (
     "quantity" in input &&
     typeof input.quantity === "number" &&
     "time" in input &&
-    typeof input.time === "string"
+    typeof input.time === "string" &&
+    "unitId" in input &&
+    typeof input.unitId === "string"
   );
 };

@@ -14,4 +14,6 @@ export const RESERVATION_FORM_COPY = {
   [RESERVATION_FORM_FIELD.QUANTITY]:
     "Ingrese una cantidad entera de equipos mayor que cero.",
   [RESERVATION_FORM_FIELD.TIME]: "Ingrese una hora válida.",
+  [RESERVATION_FORM_FIELD.UNIT_ID]:
+    "Seleccione una unidad disponible.",
 } as const;
