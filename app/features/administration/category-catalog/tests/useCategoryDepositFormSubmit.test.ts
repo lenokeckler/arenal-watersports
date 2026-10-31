@@ -124,8 +124,7 @@ describe("useCategoryDepositFormSubmit", () => {
         STATUS.SUCCESS,
         CATEGORY_CATALOG_COPY.DEPOSIT_UPDATE_SUCCESS_TOAST
       );
-      expect(mockPush).toHaveBeenCalledTimes(1);
-      expect(mockPush).toHaveBeenCalledWith(
+      expect(mockPush).toHaveBeenCalledExactlyOnceWith(
         PATHS.ADMINISTRATION.CATEGORIES
       );
       expect(result.current.isSubmitting).toBe(false);
