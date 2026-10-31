@@ -41,7 +41,6 @@ const UnitFormView = ({
             {...fields}
             category={category}
             isDisabled={isSubmitting || isReadOnly}
-            isStatusLocked={unit?.isOccupied ?? false}
           />
           <UnitFormActions
             mode={mode}
