@@ -11,6 +11,8 @@ export const OPERATIONS_CALENDAR_DEFAULTS: OperationsCalendarViewProps =
 
 export const OPERATIONS_CALENDAR_TEST = {
   CUSTOMER: "Operations calendar customer",
+  EQUIPMENT_CATEGORY_ID: "operations-kayak-category",
+  EQUIPMENT_CATEGORY_NAME: "Kayak doble",
   DAY_COUNT: 1,
   EXTERNAL_GUIDE_TYPE:
     RESERVATION_CALENDAR_GUIDE_COPY.EXTERNAL,
@@ -33,7 +35,16 @@ export const OPERATIONS_CALENDAR_SNAPSHOT: ReservationCalendarSnapshot =
         customerName: OPERATIONS_CALENDAR_TEST.CUSTOMER,
         dispatches: [],
         endsAt: "2026-10-15T18:00:00Z",
-        equipment: [],
+        equipment: [
+          {
+            categoryId:
+              OPERATIONS_CALENDAR_TEST.EQUIPMENT_CATEGORY_ID,
+            categoryName:
+              OPERATIONS_CALENDAR_TEST.EQUIPMENT_CATEGORY_NAME,
+            quantity: 1,
+            unitCode: null,
+          },
+        ],
         guides: [
           {
             fullName:

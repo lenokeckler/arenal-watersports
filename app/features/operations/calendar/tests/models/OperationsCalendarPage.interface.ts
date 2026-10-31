@@ -5,7 +5,9 @@ import type {
 
 export interface OperationsCalendarPage {
   getBlocks: () => HTMLElement[];
+  hasEquipmentImage: (customerName: string) => boolean;
   getHeading: () => HTMLElement;
+  getWeekDayGridClassName: () => string;
   getMessages: (message: string) => HTMLElement[];
   getView: (view: CalendarView) => NullableRef<HTMLElement>;
   navigate: (label: string) => Promise<void>;
