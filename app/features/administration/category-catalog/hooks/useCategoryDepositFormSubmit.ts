@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { PATHS } from "@/app/constants";
 import { useToast } from "@/app/components/toast/utils/useToast";
 import type { CategoryDepositFormSubmitOptions } from "../models/CategoryDepositFormSubmitOptions.interface";
 import type { CategoryDepositFormSubmitViewModel } from "../models/CategoryDepositFormSubmitViewModel.interface";
@@ -37,7 +38,8 @@ export const useCategoryDepositFormSubmit = ({
         categoryId,
         values,
         showToast,
-        onSaved: () => router.refresh(),
+        onSaved: () =>
+          router.push(PATHS.ADMINISTRATION.CATEGORIES),
       })
     );
   };
