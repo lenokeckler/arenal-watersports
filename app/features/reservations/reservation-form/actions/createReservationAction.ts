@@ -6,6 +6,33 @@ import { validateReservationFormInput } from "../utils/validateReservationFormIn
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
 import type { ReservationFormActionResult } from "../models/ReservationFormActionResult.type";
 import { isReservationFormInput } from "../utils/isReservationFormInput";
+import { RESERVATION_SERVICE_OPERATION } from "../constants/ReservationServiceOperation.constants";
+import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
+
+const handleReservationCreationError = (
+  error: unknown
+): ReservationFormActionResult => {
+  if (
+    error instanceof Error &&
+    (error.message.includes(
+      RESERVATION_SERVICE_OPERATION.UNIT_UNAVAILABLE
+    ) ||
+      error.message.includes(
+        RESERVATION_SERVICE_OPERATION.UNIT_CONFLICT
+      ))
+  ) {
+    return {
+      ok: false,
+      errors: {
+        [RESERVATION_FORM_FIELD.UNIT_ID]:
+          RESERVATION_FORM_UI_COPY.UNIT_UNAVAILABLE,
+      },
+      unitUnavailable: true,
+    };
+  }
+
+  throw error;
+};
 
 export const createReservationAction = async (
   input: unknown
@@ -26,8 +53,12 @@ export const createReservationAction = async (
     return { ok: false, errors: validation.errors };
   }
 
-  const reservationId = await createRentalReservation(
-    validation.value
-  );
-  return { ok: true, reservationId };
+  try {
+    const reservationId = await createRentalReservation(
+      validation.value
+    );
+    return { ok: true, reservationId };
+  } catch (error) {
+    return handleReservationCreationError(error);
+  }
 };

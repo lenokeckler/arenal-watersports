@@ -1,5 +1,28 @@
+import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
+
 export const RESERVATION_CALENDAR_BLOCK_CLASS =
   "space-y-1 rounded-lg border border-outline-variant border-l-4 border-l-primary bg-surface-container-high/70 p-3 text-left shadow-lg backdrop-blur-xl";
+
+export const RESERVATION_CALENDAR_BLOCK_CONTENT_CLASS =
+  "flex items-center gap-3";
+
+export const RESERVATION_CALENDAR_BLOCK_DETAILS_CLASS =
+  "min-w-0 flex-1";
+
+export const RESERVATION_CALENDAR_BLOCK_DETAILS_MOBILE_FAB_SAFE_AREA_CLASS =
+  "pr-20 sm:pr-3";
+
+export const resolveReservationCalendarBlockDetailsClass = (
+  reserveMobileFabSpace: boolean
+): string =>
+  joinClassNames(
+    RESERVATION_CALENDAR_BLOCK_DETAILS_CLASS,
+    reserveMobileFabSpace &&
+      RESERVATION_CALENDAR_BLOCK_DETAILS_MOBILE_FAB_SAFE_AREA_CLASS
+  );
+
+export const RESERVATION_EQUIPMENT_IMAGE_CLASS =
+  "h-16 w-16 shrink-0 rounded-xl object-cover shadow-md";
 
 export const RESERVATION_CALENDAR_BLOCK_TIME_CLASS =
   "break-words font-mono text-sm font-medium leading-5 text-primary tabular-nums";
