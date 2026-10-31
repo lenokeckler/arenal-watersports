@@ -24,6 +24,7 @@ import {
 const CalendarPeriods = ({
   calendar,
   dayContent,
+  selection,
 }: CalendarPeriodsProps): ReactElement => {
   if (calendar.selectedView === CALENDAR_VIEW.YEAR) {
     return (
@@ -32,6 +33,8 @@ const CalendarPeriods = ({
           <CalendarMonth
             key={month.title}
             {...month}
+            daySelection={selection?.day}
+            monthSelection={selection?.month}
           />
         ))}
       </div>
@@ -42,7 +45,9 @@ const CalendarPeriods = ({
       <CalendarMonth
         showTitle={false}
         title={calendar.toolbar.title}
+        date={calendar.period.start}
         cells={calendar.days}
+        daySelection={selection?.day}
       />
     );
   }
@@ -83,6 +88,7 @@ export const CalendarView = (
         <CalendarPeriods
           calendar={calendar}
           dayContent={props.dayContent}
+          selection={props.selection}
         />
       </Section>
       {props.periodContent?.(calendar.period)}
