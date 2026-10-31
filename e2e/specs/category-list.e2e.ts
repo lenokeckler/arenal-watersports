@@ -4,12 +4,14 @@ import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-ca
 import { createCategoryListPage } from "../pages/CategoryList.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 import {
-  addTariffToCategory,
-  removeCategoryWithRecords,
   removeDeletableCategory,
-  seedCategoryWithRecords,
   seedDeletableCategory,
 } from "../support/categoryFixtures";
+import {
+  addTariffToCategory,
+  removeCategoryWithRecords,
+  seedCategoryWithRecords,
+} from "../support/categoryRecordsFixtures";
 import {
   E2E_CATEGORY_GROUP_LABEL,
   E2E_CATEGORY_WITHOUT_GROUP_NAME,
