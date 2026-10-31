@@ -8,3 +8,9 @@ export {
   fetchDepositsByStatus,
   fetchPendingDeposits,
 } from "@/app/services/deposits";
+export {
+  fetchChargesInRange,
+  fetchDailyIncome,
+  isIncomeReaderSignedIn,
+  summarizeIncomeByCurrency,
+} from "@/app/services/income";
