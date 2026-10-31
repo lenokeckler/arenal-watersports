@@ -1,11 +1,10 @@
 import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
-import { DEPOSIT_SUMMARY_CLASS } from "./DepositSummary.styles";
+
+export const DEPOSIT_SKELETON_PULSE_CLASS =
+  "animate-pulse motion-reduce:animate-none";
 
 export const DEPOSIT_SKELETON_SUMMARY_CLASS =
-  joinClassNames(
-    DEPOSIT_SUMMARY_CLASS,
-    "animate-pulse motion-reduce:animate-none"
-  );
+  "flex items-center justify-between gap-sm";
 
 export const DEPOSIT_SKELETON_DETAILS_CLASS =
   "flex w-full flex-col gap-xs";
