@@ -8,7 +8,7 @@ export const PENDING_DEPOSITS_COPY = {
     "Todo el dinero de clientes que teníamos en mano ya fue resuelto.",
   EMPTY_TITLE: "No hay depósitos pendientes",
   ERROR_BODY:
-    "Revise su conexión e intente de nuevo. Mientras no cargue la lista, no asuma que no hay depósitos pendientes.",
+    "Revise su conexión y vuelva a cargar la página. Mientras no cargue la lista, no asuma que no hay depósitos pendientes.",
   ERROR_TITLE: "No se pudieron cargar los depósitos",
   LIST_ARIA_LABEL: "Lista de depósitos pendientes",
   LOADING_ANNOUNCEMENT: "Cargando depósitos pendientes.",

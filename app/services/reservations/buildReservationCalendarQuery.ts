@@ -1,6 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
-  PAGINATION,
   RESERVATION_CALENDAR_ACTIVE_STATUS,
   RESERVATION_CALENDAR_QUERY as query,
 } from "@/app/constants";
@@ -18,7 +17,7 @@ export const buildReservationCalendarQuery = (
   const filters =
     buildReservationCalendarFilters(validatedWindow);
   const firstRecordIndex =
-    validatedWindow.page * PAGINATION.DEFAULT_PAGE_SIZE;
+    validatedWindow.page * query.PAGE_SIZE;
   return client
     .from(query.TABLE)
     .select(query.PROJECTION, { count: query.COUNT })
@@ -38,6 +37,6 @@ export const buildReservationCalendarQuery = (
     .order(query.COLUMNS.ID)
     .range(
       firstRecordIndex,
-      firstRecordIndex + PAGINATION.DEFAULT_PAGE_SIZE - 1
+      firstRecordIndex + query.PAGE_SIZE - 1
     );
 };
