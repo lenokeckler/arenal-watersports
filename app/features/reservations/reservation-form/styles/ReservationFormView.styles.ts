@@ -1,3 +1,5 @@
+import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
+
 export const RESERVATION_FORM_PAGE_CLASS =
   "mx-auto flex w-full max-w-4xl flex-col gap-5 px-gutter py-6 pb-28 md:gap-6 md:py-10 md:pb-10";
 
@@ -25,6 +27,37 @@ export const RESERVATION_FORM_GRID_CLASS =
   "grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5";
 
 export const RESERVATION_FORM_FIELD_CLASS = "min-w-0";
+
+export const RESERVATION_FORM_CATEGORY_GRID_CLASS =
+  "grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4";
+
+export const RESERVATION_FORM_CATEGORY_LEGEND_CLASS =
+  "mb-3 text-sm font-medium text-on-surface-variant";
+
+export const RESERVATION_FORM_CATEGORY_OPTION_CLASS =
+  "group relative flex min-h-32 min-w-0 w-full cursor-pointer flex-col gap-2 overflow-hidden rounded-2xl border border-outline-variant bg-surface-container-high p-2 text-left text-sm font-medium text-on-surface transition-all hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:p-3";
+
+export const RESERVATION_FORM_CATEGORY_OPTION_SELECTED_CLASS =
+  "border-primary bg-primary/10 shadow-lg shadow-primary/10";
+
+export const RESERVATION_FORM_CATEGORY_IMAGE_CLASS =
+  "aspect-[4/3] h-auto w-full rounded-xl object-cover";
+
+export const RESERVATION_FORM_CATEGORY_NAME_CLASS =
+  "w-full px-1 font-semibold leading-snug text-on-surface group-aria-pressed:text-primary";
+
+export const RESERVATION_FORM_CATEGORY_SELECTED_ICON_CLASS =
+  "absolute right-3 top-3 z-10 rounded-full bg-primary p-1 text-on-primary shadow-md";
+
+export const resolveReservationCategoryOptionClassName = (
+  isSelected: boolean
+): string =>
+  joinClassNames(
+    RESERVATION_FORM_CATEGORY_OPTION_CLASS,
+    isSelected
+      ? RESERVATION_FORM_CATEGORY_OPTION_SELECTED_CLASS
+      : ""
+  );
 
 export const RESERVATION_FORM_FIELD_WIDE_CLASS =
   "min-w-0 md:col-span-2";
@@ -58,6 +91,12 @@ export const RESERVATION_FORM_STATUS_CLASS =
 
 export const RESERVATION_FORM_ERROR_CLASS =
   "rounded-xl border border-error/50 bg-error-container/30 px-4 py-3 text-error";
+
+export const RESERVATION_FORM_UNIT_EMPTY_NOTE_CLASS =
+  "mt-2 text-sm text-on-surface-variant";
+
+export const RESERVATION_FORM_RETRY_CLASS =
+  "mt-2 min-h-11 text-primary underline";
 
 export const resolveReservationDurationButtonClassName = (
   isSelected: boolean
