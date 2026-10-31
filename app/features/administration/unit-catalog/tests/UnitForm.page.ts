@@ -70,6 +70,19 @@ export const createUnitFormPage = (mode: UnitFormMode) => {
             .replace(STRING.ASTERISK, STRING.Empty)
             .trim()
         ),
+    getRequiredFieldLabels: () =>
+      screen
+        .getAllByText(/./, { selector: "label" })
+        .filter((label) =>
+          safeString(label.textContent).includes(
+            STRING.ASTERISK
+          )
+        )
+        .map((label) =>
+          safeString(label.textContent)
+            .replace(STRING.ASTERISK, STRING.Empty)
+            .trim()
+        ),
     getDecommissionCancel,
     fill: async (entries: UnitFormFieldEntry[]) => {
       for (const entry of entries) {
