@@ -30,15 +30,15 @@ import ReservationFormFields from "./components/ReservationFormFields";
 const ReservationFormView = ({
   categories,
   initialDate,
+  unitCategories,
 }: ReservationFormViewProps): React.JSX.Element => {
-  const viewModel = useReservationFormViewModel(
+  const allCategories = [...categories, ...unitCategories];
+  const viewModel = useReservationFormViewModel({
+    categories: allCategories,
+    initialCategoryId: STRING.Empty,
     initialDate,
-    STRING.Empty
-  );
-  const isSubmitDisabled =
-    viewModel.isPending ||
-    viewModel.isSubmitted ||
-    categories.length === 0;
+    unitCategories,
+  });
   const submitLabel = viewModel.isPending
     ? RESERVATION_FORM_UI_COPY.SUBMITTING
     : RESERVATION_FORM_UI_COPY.SUBMIT;
@@ -74,10 +74,10 @@ const ReservationFormView = ({
             onSubmit={viewModel.handleSubmit}
           >
             <ReservationFormFields
-              categories={categories}
+              categories={allCategories}
               viewModel={viewModel}
             />
-            {categories.length === 0 && (
+            {allCategories.length === 0 && (
               <Text
                 role="status"
                 className={RESERVATION_FORM_ERROR_CLASS}
@@ -110,7 +110,7 @@ const ReservationFormView = ({
                 type="submit"
                 variant={BUTTON.PRIMARY}
                 className={RESERVATION_FORM_SUBMIT_CLASS}
-                disabled={isSubmitDisabled}
+                disabled={viewModel.isSubmitDisabled}
               >
                 {submitLabel}
               </Button>
