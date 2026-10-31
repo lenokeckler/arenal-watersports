@@ -95,10 +95,10 @@ describe("parent count and pagination", (): void => {
     ).toBe(expected.ORDER);
     expect(
       url.searchParams.get(expected.PARAMETERS.OFFSET)
-    ).toBe(PAGINATION.DEFAULT_PAGE_SIZE.toString());
+    ).toBe(RESERVATION_CALENDAR_QUERY.PAGE_SIZE.toString());
     expect(
       url.searchParams.get(expected.PARAMETERS.LIMIT)
-    ).toBe(PAGINATION.DEFAULT_PAGE_SIZE.toString());
+    ).toBe(RESERVATION_CALENDAR_QUERY.PAGE_SIZE.toString());
     expect(
       new Headers(
         harness.fetchRequest.mock.calls[0]?.[1]?.headers
