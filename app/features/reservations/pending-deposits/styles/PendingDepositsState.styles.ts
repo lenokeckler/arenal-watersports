@@ -28,9 +28,6 @@ export const DEPOSIT_LIST_ERROR_TITLE_CLASS =
 export const DEPOSIT_LIST_ERROR_BODY_CLASS =
   "text-body-base text-on-error-container";
 
-export const DEPOSIT_SKELETON_LIST_CLASS =
-  "flex list-none flex-col gap-sm";
-
 export const DEPOSIT_SKELETON_ITEM_CLASS = joinClassNames(
   DEPOSIT_ITEM_CONTAINER_CLASS,
   "animate-pulse motion-reduce:animate-none"

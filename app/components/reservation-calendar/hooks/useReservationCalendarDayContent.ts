@@ -33,6 +33,8 @@ export const useReservationCalendarDayContent = (
             blocks: group?.blocks ?? [],
             messages:
               getReservationCalendarMessages(content),
+            reserveMobileFabSpace:
+              options.reserveMobileFabSpace === true,
             showGuides: options.showGuides === true,
           }
         );
@@ -43,6 +45,8 @@ export const useReservationCalendarDayContent = (
       return group.blocks.map((block) =>
         createElement(ReservationCalendarBlock, {
           block,
+          reserveMobileFabSpace:
+            options.reserveMobileFabSpace === true,
           showGuides: options.showGuides === true,
           key: block.id,
         })
@@ -50,6 +54,7 @@ export const useReservationCalendarDayContent = (
     },
     [
       snapshot,
+      options.reserveMobileFabSpace,
       options.showCoverageMessages,
       options.showGuides,
     ]
