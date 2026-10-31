@@ -5,7 +5,6 @@ import type { CategoryBehaviorFieldHandlersOptions } from "../models/CategoryBeh
 import type { CategoryFormFieldChangeEvent } from "../models/CategoryFormFieldChangeEvent.type";
 import { applyHasConditionPhotosChange } from "../utils/applyHasConditionPhotosChange";
 import { applyHasMotorChange } from "../utils/applyHasMotorChange";
-import { applyUnitsAreInterchangeableChange } from "../utils/applyUnitsAreInterchangeableChange";
 import { applyUsageMetricChange } from "../utils/applyUsageMetricChange";
 import { readCategoryFormFieldChecked } from "../utils/readCategoryFormFieldChecked";
 
@@ -97,13 +96,10 @@ export const useCategoryBehaviorFieldHandlers = ({
   ): void => {
     const unitsAreInterchangeable =
       readCategoryFormFieldChecked(event);
-    setValues((currentValues) =>
-      applyUnitsAreInterchangeableChange(
-        currentValues,
-        unitsAreInterchangeable,
-        trackingMode
-      )
-    );
+    setValues((currentValues) => ({
+      ...currentValues,
+      unitsAreInterchangeable,
+    }));
   };
 
   const onUsageMetricChange = (
