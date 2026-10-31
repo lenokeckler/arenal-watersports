@@ -11,7 +11,11 @@ import CategoryCreateFormView from "../CategoryCreateFormView";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import { createCategoryCreateFormPage } from "./CategoryCreateForm.page";
-import { VALID_CATEGORY_CREATE_FORM_VALUES } from "./CategoryCreateFormValues.constants";
+import { resolveCategoryAlertsPath } from "../utils/resolveCategoryAlertsPath";
+import {
+  FAKE_CREATED_CATEGORY_ID,
+  VALID_CATEGORY_CREATE_FORM_VALUES,
+} from "./CategoryCreateFormValues.constants";
 
 const mockPush = vi.fn();
 const mockShowToast = vi.fn();
@@ -40,10 +44,10 @@ describe("CategoryCreateFormView fields", () => {
     mockCreateCategoryAction.mockReset();
   });
 
-  it("creates the category and navigates back when submitted with valid values", async () => {
+  it("creates the category and opens its alerts screen when submitted with valid values", async () => {
     mockCreateCategoryAction.mockResolvedValue({
       status: CATEGORY_MUTATION_STATUS.SUCCESS,
-      categoryId: "some-id",
+      categoryId: FAKE_CREATED_CATEGORY_ID,
     });
     render(<CategoryCreateFormView />);
     const categoryCreateFormPage =
@@ -68,7 +72,7 @@ describe("CategoryCreateFormView fields", () => {
       CATEGORY_CATALOG_COPY.CREATE_SUCCESS_TOAST
     );
     expect(mockPush).toHaveBeenCalledWith(
-      PATHS.ADMINISTRATION.CATEGORIES
+      resolveCategoryAlertsPath(FAKE_CREATED_CATEGORY_ID)
     );
   });
 
@@ -105,7 +109,7 @@ describe("CategoryCreateFormView fields", () => {
 
     resolveCreateCategoryAction({
       status: CATEGORY_MUTATION_STATUS.SUCCESS,
-      categoryId: "some-id",
+      categoryId: FAKE_CREATED_CATEGORY_ID,
     });
   });
 

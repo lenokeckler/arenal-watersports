@@ -1,4 +1,8 @@
-import { act, renderHook } from "@testing-library/react";
+import {
+  act,
+  renderHook,
+  type RenderHookResult,
+} from "@testing-library/react";
 import {
   beforeEach,
   describe,
@@ -6,7 +10,6 @@ import {
   it,
   vi,
 } from "vitest";
-import { PATHS } from "@/app/constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import { useCategoryCreateFormViewModel } from "../hooks/useCategoryCreateFormViewModel";
 import type { CategoryFormFieldChangeEvent } from "../models/CategoryFormFieldChangeEvent.type";
@@ -35,12 +38,62 @@ vi.mock("../services/createCategoryAction", () => ({
   ) => mockCreateCategoryAction(input),
 }));
 
+const submitForm = async (
+  result: RenderHookResult<
+    ReturnType<typeof useCategoryCreateFormViewModel>,
+    unknown
+  >["result"]
+): Promise<void> => {
+  const formEvent = {
+    preventDefault: vi.fn(),
+  } as unknown as React.FormEvent;
+
+  await act(async () => {
+    await result.current.onSubmit(formEvent);
+  });
+};
+
 describe("useCategoryCreateFormViewModel lock", () => {
   beforeEach(() => {
-    mockPush.mockClear();
-    mockShowToast.mockClear();
+    vi.clearAllMocks();
     mockCreateCategoryAction.mockReset();
-    mockUnstableRethrow.mockReset();
+  });
+
+  it("rethrows a Next control-flow error without a toast and releases the submit lock", async () => {
+    const controlFlowError = new Error("NEXT_REDIRECT");
+    mockCreateCategoryAction.mockRejectedValue(
+      controlFlowError
+    );
+    mockUnstableRethrow.mockImplementation((error) => {
+      throw error;
+    });
+    const { result } = renderHook(() =>
+      useCategoryCreateFormViewModel()
+    );
+
+    act(() => {
+      result.current.onNameChange({
+        target: {
+          value: VALID_CATEGORY_CREATE_FORM_VALUES.name,
+        },
+      } as CategoryFormFieldChangeEvent);
+      result.current.onTrackingModeChange({
+        target: {
+          value:
+            VALID_CATEGORY_CREATE_FORM_VALUES.trackingMode,
+        },
+      } as CategoryFormFieldChangeEvent);
+    });
+
+    await expect(submitForm(result)).rejects.toBe(
+      controlFlowError
+    );
+
+    expect(mockUnstableRethrow).toHaveBeenCalledWith(
+      controlFlowError
+    );
+    expect(mockShowToast).not.toHaveBeenCalled();
+    expect(result.current.isSubmitting).toBe(false);
   });
 
   it("ignores a second submit while the first is still pending", async () => {
@@ -92,17 +145,5 @@ describe("useCategoryCreateFormViewModel lock", () => {
       });
       await Promise.resolve();
     });
-  });
-
-  it("navigates back to the category list when onBack is called", () => {
-    const { result } = renderHook(() =>
-      useCategoryCreateFormViewModel()
-    );
-
-    result.current.onBack();
-
-    expect(mockPush).toHaveBeenCalledWith(
-      PATHS.ADMINISTRATION.CATEGORIES
-    );
   });
 });

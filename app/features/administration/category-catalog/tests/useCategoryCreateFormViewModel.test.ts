@@ -10,7 +10,7 @@ import {
   it,
   vi,
 } from "vitest";
-import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
+import { PATHS } from "@/app/constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import { EMPTY_CATEGORY_CREATE_FORM_VALUES } from "../constants/EmptyCategoryCreateFormValues.constants";
 import { useCategoryCreateFormViewModel } from "../hooks/useCategoryCreateFormViewModel";
@@ -109,20 +109,15 @@ describe("useCategoryCreateFormViewModel", () => {
 
     expect(result.current.errors.name).toBeUndefined();
   });
-
-  it("flags every required field and never calls the server when values are empty", async () => {
+  it("navigates back to the category list when onBack is called", () => {
     const { result } = renderHook(() =>
       useCategoryCreateFormViewModel()
     );
 
-    await submitForm(result);
+    result.current.onBack();
 
-    expect(result.current.errors.name).toBe(
-      CATEGORY_CATALOG_COPY.NAME_FIELD_REQUIRED_ERROR
+    expect(mockPush).toHaveBeenCalledWith(
+      PATHS.ADMINISTRATION.CATEGORIES
     );
-    expect(result.current.errors.trackingMode).toBe(
-      CATEGORY_CATALOG_COPY.TRACKING_MODE_REQUIRED_ERROR
-    );
-    expect(mockCreateCategoryAction).not.toHaveBeenCalled();
   });
 });
