@@ -9,6 +9,7 @@ export interface UnitFormViewModel extends UnitFieldHandlers {
   errors: UnitFormErrors;
   isSubmitting: boolean;
   isReadOnly: boolean;
+  isStatusLocked: boolean;
   decommissionedNotice: NullableRef<string>;
   onBack: () => void;
   onSubmit: (event: FormSubmitEvent) => Promise<void>;
