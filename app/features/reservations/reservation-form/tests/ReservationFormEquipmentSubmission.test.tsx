@@ -44,11 +44,13 @@ describe("reservation equipment submission", () => {
     const page = renderReservationForm(true, true);
 
     await page.selectCategoryChoice(
-      RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
+      RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME
     );
-    expect(page.getCategorySelect()).toHaveValue(
-      RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
-    );
+    expect(
+      page.getCategoryChoice(
+        RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME
+      )
+    ).toHaveAttribute("aria-pressed", "true");
     expect(page.getSubmitButton()).toBeDisabled();
     expect(page.getUnitSelect()).toBeInTheDocument();
     const unitSelect = await page.findUnitSelect();

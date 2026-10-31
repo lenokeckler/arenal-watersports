@@ -1,4 +1,4 @@
-import { PATHS, STRING } from "@/app/constants";
+import { PATHS } from "@/app/constants";
 import { expect, test } from "../support/activeWorkerTest";
 import {
   E2E_RESERVATION_DURATION_PRESET,
@@ -62,7 +62,9 @@ test.describe("Reservation form", () => {
     );
     await expect(
       reservationFormPage.getSelectedCategoryOption()
-    ).toHaveText(E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION);
+    ).toHaveAccessibleName(
+      E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
+    );
   });
 
   test("selects a duration preset and reports required customer name", async ({
@@ -114,8 +116,8 @@ test.describe("Reservation form", () => {
 
     await reservationFormPage.goTo();
     await expect(
-      reservationFormPage.getCategorySelect()
-    ).toHaveValue(STRING.Empty);
+      reservationFormPage.getSelectedCategoryOption()
+    ).toHaveCount(0);
     await reservationFormPage.submitReservation();
 
     await expect(
