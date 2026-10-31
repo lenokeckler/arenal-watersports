@@ -1,7 +1,6 @@
 import { safeString } from "@/app/utils/safe-value/SafeValue";
 import type { CategoryBehavior } from "../models/CategoryBehavior.interface";
 import type { CategoryBehaviorFormValues } from "../models/CategoryBehaviorFormValues.interface";
-import { canEditUnitsAreInterchangeable } from "./canEditUnitsAreInterchangeable";
 
 export const mapCategoryBehaviorToFormValues = (
   behavior: CategoryBehavior
@@ -16,8 +15,5 @@ export const mapCategoryBehaviorToFormValues = (
   defaultDurationMinutes: safeString(
     behavior.defaultDurationMinutes?.toString()
   ),
-  unitsAreInterchangeable:
-    !canEditUnitsAreInterchangeable(
-      behavior.trackingMode
-    ) || behavior.unitsAreInterchangeable,
+  unitsAreInterchangeable: behavior.unitsAreInterchangeable,
 });
