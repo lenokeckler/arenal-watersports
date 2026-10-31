@@ -15,7 +15,11 @@ export const E2E_OPERATIONS_AREA_LABEL =
 export const E2E_WORK_MODE_SQL = {
   ADD_RESERVATIONS:
     "insert into public.worker_areas (worker_id, area, granted_by) select :'uid', 'reservas', id from public.workers where base_role = 'administracion'",
+  ADD_OPERATIONS:
+    "insert into public.worker_areas (worker_id, area, granted_by) select :'uid', 'operaciones', id from public.workers where base_role = 'administracion' on conflict (worker_id, area) do nothing",
   ADD_OPERATION: "give the worker the reservations area",
+  ADD_OPERATIONS_OPERATION:
+    "give the worker the operations area",
   READ_MODE:
     "select coalesce(last_work_area::text, '') from public.workers where id = :'uid'",
   READ_OPERATION: "read the last work mode of the worker",
