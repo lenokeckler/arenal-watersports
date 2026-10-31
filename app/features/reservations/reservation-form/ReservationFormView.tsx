@@ -32,7 +32,14 @@ const ReservationFormView = ({
   initialDate,
   unitCategories,
 }: ReservationFormViewProps): React.JSX.Element => {
-  const allCategories = [...categories, ...unitCategories];
+  const allCategories = Array.from(
+    new Map(
+      [...categories, ...unitCategories].map((category) => [
+        category.id,
+        category,
+      ])
+    ).values()
+  );
   const viewModel = useReservationFormViewModel({
     categories: allCategories,
     initialCategoryId: STRING.Empty,
