@@ -1,13 +1,13 @@
 import type { Nullable } from "@/app/types";
 
 export const TOAST_CONTAINER_CLASS =
-  "fixed z-50 pointer-events-auto flex w-full max-w-[20rem] flex-col space-y-2 px-4";
+  "fixed z-50 pointer-events-auto flex flex-col space-y-2";
 
 export const TOAST_CONTAINER_MOBILE_CLASS =
-  "top-30 left-1/2 transform -translate-x-1/2";
+  "top-30 left-1/2 transform -translate-x-1/2 items-center";
 
 export const TOAST_CONTAINER_DESKTOP_CLASS =
-  "top-24 left-1/2 transform -translate-x-1/2";
+  "top-5 right-5";
 
 export const resolveToastContainerClassName = (
   isMobile: Nullable<boolean>

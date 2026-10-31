@@ -1,1 +1,0 @@
-chore - Fix toast width and position — the shared toast's max-width collided with this project's `--spacing-xs` token and collapsed to 4px; it now sizes correctly and shows centered below the header on both mobile and desktop instead of pinned to the desktop corner
