@@ -1,5 +1,5 @@
 begin;
-select plan(3);
+select plan(4);
 
 insert into auth.users (id, email)
 values ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local');
@@ -56,6 +56,19 @@ where reservation_id = 'dddddddd-0000-0000-0000-000000000001';
 select lives_ok(
   $$update equipment_units set status = 'decommissioned', decommissioned_at = now(), decommission_reason = 'Motor dañado' where code = 'JET-01'$$,
   'al cerrar el despacho la unidad se puede dar de baja'
+);
+
+insert into reservation_items (reservation_id, unit_id, created_by, updated_by)
+values ('dddddddd-0000-0000-0000-000000000001', 'bbbbbbbb-0000-0000-0000-000000000002',
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+
+select throws_ok(
+  $$update reservation_items set dispatch_id = 'cccccccc-0000-0000-0000-000000000001'
+    where reservation_id = 'dddddddd-0000-0000-0000-000000000001'
+      and unit_id = 'bbbbbbbb-0000-0000-0000-000000000002'$$,
+  'P0001',
+  'La unidad no esta disponible para despacharse',
+  'una unidad que no esta disponible no se puede asignar a un despacho'
 );
 
 select * from finish();

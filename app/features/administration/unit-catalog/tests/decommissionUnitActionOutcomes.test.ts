@@ -5,13 +5,12 @@ import {
   it,
   vi,
 } from "vitest";
+import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { UNIT_CATALOG_COPY } from "../constants/UnitCatalogCopy.constants";
+import { UNIT_DATABASE_MESSAGE } from "../constants/UnitDatabaseMessage.constants";
 import { UNIT_MUTATION_STATUS } from "../constants/UnitMutationStatus.constants";
-import {
-  UNIT_EFFECTIVE_STATUS,
-  UNIT_STATUS,
-} from "../constants/UnitStatus.constants";
+import { UNIT_STATUS } from "../constants/UnitStatus.constants";
 import { decommissionUnitAction } from "../services/decommissionUnitAction";
 import {
   DEFAULT_DECOMMISSION_UNIT_INPUT,
@@ -19,7 +18,6 @@ import {
   FAKE_UNIT_ID,
 } from "./Unit.constants";
 
-const STATE_VIEW = "unit_current_state";
 const UNITS_TABLE = "equipment_units";
 const DECOMMISSION_COLUMNS = [
   "decommission_reason",
@@ -29,7 +27,6 @@ const DECOMMISSION_COLUMNS = [
 ];
 
 const mockAssertIsAdminWorker = vi.fn();
-const mockStateMaybeSingle = vi.fn();
 const mockUpdateMaybeSingle = vi.fn();
 const mockUpdate = vi.fn((_row: object) => ({
   eq: () => ({
@@ -40,15 +37,9 @@ const mockUpdate = vi.fn((_row: object) => ({
     }),
   }),
 }));
-const mockFrom = vi.fn((table: string) =>
-  table === STATE_VIEW
-    ? {
-        select: () => ({
-          eq: () => ({ maybeSingle: mockStateMaybeSingle }),
-        }),
-      }
-    : { update: mockUpdate }
-);
+const mockFrom = vi.fn((_table: string) => ({
+  update: mockUpdate,
+}));
 
 vi.mock(
   "@/app/services/authorization/assertIsAdminWorker",
@@ -64,13 +55,6 @@ vi.mock("@/app/services/supabase", () => ({
   }),
 }));
 
-const mockState = (effectiveStatus: string): void => {
-  mockStateMaybeSingle.mockResolvedValue({
-    data: { effective_status: effectiveStatus },
-    error: null,
-  });
-};
-
 describe("decommissionUnitAction outcomes", () => {
   beforeEach(() => {
     mockAssertIsAdminWorker.mockReset();
@@ -79,7 +63,6 @@ describe("decommissionUnitAction outcomes", () => {
     mockAssertIsAdminWorker.mockResolvedValue(
       FAKE_UNIT_ADMIN_WORKER_ID
     );
-    mockState(UNIT_EFFECTIVE_STATUS.AVAILABLE);
     mockUpdateMaybeSingle.mockResolvedValue({
       data: { id: FAKE_UNIT_ID },
       error: null,
@@ -119,6 +102,25 @@ describe("decommissionUnitAction outcomes", () => {
     ).toMatchObject({
       status: UNIT_MUTATION_STATUS.ERROR,
       message: UNIT_CATALOG_COPY.UNIT_NOT_EDITABLE_ERROR,
+    });
+  });
+
+  it("returns the occupied error when the database refuses the status change", async () => {
+    mockUpdateMaybeSingle.mockResolvedValue({
+      data: null,
+      error: {
+        code: POSTGRES_ERROR_CODE.RAISE_EXCEPTION,
+        message: UNIT_DATABASE_MESSAGE.UNIT_OCCUPIED,
+      },
+    });
+
+    expect(
+      await decommissionUnitAction(
+        DEFAULT_DECOMMISSION_UNIT_INPUT
+      )
+    ).toEqual({
+      status: UNIT_MUTATION_STATUS.ERROR,
+      message: UNIT_CATALOG_COPY.UNIT_OCCUPIED_ERROR,
     });
   });
 
