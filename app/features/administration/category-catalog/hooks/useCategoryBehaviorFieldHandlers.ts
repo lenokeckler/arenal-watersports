@@ -3,37 +3,22 @@
 import type { CategoryBehaviorFieldHandlers } from "../models/CategoryBehaviorFieldHandlers.interface";
 import type { CategoryBehaviorFieldHandlersOptions } from "../models/CategoryBehaviorFieldHandlersOptions.interface";
 import type { CategoryFormFieldChangeEvent } from "../models/CategoryFormFieldChangeEvent.type";
-import { applyHasConditionPhotosChange } from "../utils/applyHasConditionPhotosChange";
-import { applyHasMotorChange } from "../utils/applyHasMotorChange";
-import { applyUsageMetricChange } from "../utils/applyUsageMetricChange";
 import { readCategoryFormFieldChecked } from "../utils/readCategoryFormFieldChecked";
+import { useCategoryBehaviorDependentHandlers } from "./useCategoryBehaviorDependentHandlers";
+import { useCategoryBehaviorFlagHandlers } from "./useCategoryBehaviorFlagHandlers";
 
 export const useCategoryBehaviorFieldHandlers = ({
   trackingMode,
   setValues,
   clearDurationError,
 }: CategoryBehaviorFieldHandlersOptions): CategoryBehaviorFieldHandlers => {
-  const onCanBeDamagedChange = (
-    event: CategoryFormFieldChangeEvent
-  ): void => {
-    const canBeDamaged =
-      readCategoryFormFieldChecked(event);
-    setValues((currentValues) => ({
-      ...currentValues,
-      canBeDamaged,
-    }));
-  };
-
-  const onConsumesFuelChange = (
-    event: CategoryFormFieldChangeEvent
-  ): void => {
-    const consumesFuel =
-      readCategoryFormFieldChecked(event);
-    setValues((currentValues) => ({
-      ...currentValues,
-      consumesFuel,
-    }));
-  };
+  const flagHandlers =
+    useCategoryBehaviorFlagHandlers(setValues);
+  const dependentHandlers =
+    useCategoryBehaviorDependentHandlers({
+      trackingMode,
+      setValues,
+    });
 
   const onDefaultDurationMinutesChange = (
     event: CategoryFormFieldChangeEvent
@@ -44,39 +29,6 @@ export const useCategoryBehaviorFieldHandlers = ({
       defaultDurationMinutes,
     }));
     clearDurationError();
-  };
-
-  const onGuideOnlyChange = (
-    event: CategoryFormFieldChangeEvent
-  ): void => {
-    const guideOnly = readCategoryFormFieldChecked(event);
-    setValues((currentValues) => ({
-      ...currentValues,
-      guideOnly,
-    }));
-  };
-
-  const onHasConditionPhotosChange = (
-    event: CategoryFormFieldChangeEvent
-  ): void => {
-    const hasConditionPhotos =
-      readCategoryFormFieldChecked(event);
-    setValues((currentValues) =>
-      applyHasConditionPhotosChange(
-        currentValues,
-        hasConditionPhotos,
-        trackingMode
-      )
-    );
-  };
-
-  const onHasMotorChange = (
-    event: CategoryFormFieldChangeEvent
-  ): void => {
-    const hasMotor = readCategoryFormFieldChecked(event);
-    setValues((currentValues) =>
-      applyHasMotorChange(currentValues, hasMotor)
-    );
   };
 
   const onIsReservableChange = (
@@ -91,35 +43,10 @@ export const useCategoryBehaviorFieldHandlers = ({
     clearDurationError();
   };
 
-  const onUnitsAreInterchangeableChange = (
-    event: CategoryFormFieldChangeEvent
-  ): void => {
-    const unitsAreInterchangeable =
-      readCategoryFormFieldChecked(event);
-    setValues((currentValues) => ({
-      ...currentValues,
-      unitsAreInterchangeable,
-    }));
-  };
-
-  const onUsageMetricChange = (
-    event: CategoryFormFieldChangeEvent
-  ): void => {
-    const rawUsageMetric = event.target.value;
-    setValues((currentValues) =>
-      applyUsageMetricChange(currentValues, rawUsageMetric)
-    );
-  };
-
   return {
-    onCanBeDamagedChange,
-    onConsumesFuelChange,
+    ...flagHandlers,
+    ...dependentHandlers,
     onDefaultDurationMinutesChange,
-    onGuideOnlyChange,
-    onHasConditionPhotosChange,
-    onHasMotorChange,
     onIsReservableChange,
-    onUnitsAreInterchangeableChange,
-    onUsageMetricChange,
   };
 };
