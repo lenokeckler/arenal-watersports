@@ -27,12 +27,15 @@ describe("useReservationUnitAvailability", () => {
   it("refreshes available units when the reservation interval changes", async () => {
     vi.mocked(
       getAvailableReservationUnitsAction
-    ).mockResolvedValue([
-      {
-        code: AVAILABLE_UNIT_TEST.UNIT_CODE,
-        id: AVAILABLE_UNIT_TEST.UNIT_ID,
-      },
-    ]);
+    ).mockResolvedValue({
+      availableQuantity: null,
+      availableUnits: [
+        {
+          code: AVAILABLE_UNIT_TEST.UNIT_CODE,
+          id: AVAILABLE_UNIT_TEST.UNIT_ID,
+        },
+      ],
+    });
     const initialRequest: ReservationUnitAvailabilityInput =
       {
         categoryId: AVAILABLE_UNIT_TEST.CATEGORY_ID,
