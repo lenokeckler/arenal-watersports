@@ -25,8 +25,9 @@ export interface ReservationFormViewModel {
   handlePeopleCountChange: (value: number) => void;
   handleQuantityChange: (value: number) => void;
   handleCategoryChange: (value: string) => void;
-  handleTimeChange: (value: string) => void;
   handleUnitChange: (value: string) => void;
+  retryUnitAvailability: () => void;
+  handleTimeChange: (value: string) => void;
   handleBack: () => void;
   handleSubmit: (
     event: React.FormEvent<HTMLFormElement>

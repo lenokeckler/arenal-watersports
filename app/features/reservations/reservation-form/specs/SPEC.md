@@ -20,7 +20,7 @@ Allow a reservations worker to record a rental reservation with its customer nam
 - US-RES-08 reservation editing.
 - US-RES-15 availability and collision checking.
 - US-RES-16 collision warnings.
-- US-RES-17 live inventory updates and equipment-selection presentation remain owned by its follow-up UI unit.
+- US-RES-17 equipment maintenance, damage, or retirement filtering.
 - Tour, combo, customer email, or other contact fields.
 
 ## Requirements
@@ -86,15 +86,3 @@ The reservation form and mutation accept exactly one of these forms: an intercha
 - “Comprometer el equipo no es despacharlo: la unidad sigue en tierra hasta que operaciones la saque.”
 
 Unit 1 implements the atomic persistence and data-integrity boundary for both commitment shapes. Unit 2 exposes both commitment shapes within the reservation form: interchangeable equipment uses category plus quantity, and the Lancha uses an available concrete unit.
-
-## US-RES-17 equipment eligibility data
-
-### Acceptance criterion
-
-- No se ofrece equipo que esté en mantenimiento o dado de baja.
-
-The invoker-security category query returns only active, reservable categories with usable physical equipment: an available unit for unit-tracked categories or positive available stock for quantity-tracked categories. The mutation revalidates and locks this physical eligibility before persistence. Category commitments remain quantities and may exceed usable inventory; interval availability and collision warnings belong to US-RES-15 and US-RES-16.
-
-Authenticated direct inserts or equipment-identity changes on scheduled reservation items enforce the same physical eligibility, including the exact selected unit when present. Existing Operations permissions, extra-only items, unchanged commitments, dispatched items and historical records retain their existing behavior. Trusted database maintenance roles retain their existing administrative authority. Failed commitments roll back the reservation transaction.
-
-This data unit does not complete live inventory updates or form option filtering; those require the subsequent service and UI integration.

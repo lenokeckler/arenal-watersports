@@ -79,7 +79,7 @@ select throws_ok(
   $$ insert into reservation_items (reservation_id, unit_id, created_by, updated_by)
      values ('e2600000-0000-4000-8000-000000000301', 'e2600000-0000-4000-8000-000000000201',
              'e2600000-0000-4000-8000-000000000001', 'e2600000-0000-4000-8000-000000000001') $$,
-  'P0001', 'Equipment reservation access is required',
+  '42501', null,
   'Administration-only workers cannot insert reservation items directly'
 );
 

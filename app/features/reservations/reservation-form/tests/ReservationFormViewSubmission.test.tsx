@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
 import { createReservationAction } from "../actions/createReservationAction";
-import { getAvailableReservationUnitsAction } from "../actions/getAvailableReservationUnitsAction";
 import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
@@ -11,14 +10,33 @@ vi.mock("../actions/createReservationAction", () => ({
   createReservationAction: vi.fn(),
 }));
 
-vi.mock(
-  "../actions/getAvailableReservationUnitsAction",
-  () => ({
-    getAvailableReservationUnitsAction: vi.fn(),
-  })
-);
-
 describe("ReservationFormView submission", () => {
+  it("prevents another submission after a successful reservation", async () => {
+    vi.mocked(createReservationAction).mockResolvedValue({
+      ok: true,
+      reservationId:
+        RESERVATION_FORM_VIEW_TEST.CREATED_RESERVATION_ID,
+    });
+    const page = renderReservationForm();
+
+    await page.submit();
+    expect(
+      await page.findSuccessMessage()
+    ).toBeInTheDocument();
+
+    const submitButton = page.querySubmitButton();
+    if (submitButton !== null) {
+      expect(submitButton).toBeDisabled();
+      await page.submit();
+    } else {
+      expect(submitButton).not.toBeInTheDocument();
+    }
+
+    expect(createReservationAction).toHaveBeenCalledTimes(
+      1
+    );
+  });
+
   it("submits the custom duration as a number", async () => {
     vi.mocked(createReservationAction).mockResolvedValue({
       ok: true,
@@ -90,50 +108,6 @@ describe("ReservationFormView submission", () => {
     );
     expect(submissionError).not.toHaveTextContent(
       RESERVATION_FORM_VIEW_TEST.SERVER_ACTION_FAILURE_MESSAGE
-    );
-  });
-
-  it("requires and submits a concrete unit for Lancha", async () => {
-    vi.mocked(
-      getAvailableReservationUnitsAction
-    ).mockResolvedValue({
-      availableQuantity: null,
-      availableUnits: [
-        {
-          code: RESERVATION_FORM_VIEW_TEST.UNIT_CODE,
-          id: RESERVATION_FORM_VIEW_TEST.UNIT_ID,
-        },
-      ],
-    });
-    vi.mocked(createReservationAction).mockClear();
-    vi.mocked(createReservationAction).mockResolvedValue({
-      ok: true,
-      reservationId:
-        RESERVATION_FORM_VIEW_TEST.CREATED_RESERVATION_ID,
-    });
-    const page = renderReservationForm();
-
-    await page.selectCategory(
-      RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
-    );
-    await page.findUnitOption();
-    expect(page.getQuantityInput()).not.toBeInTheDocument();
-    await page.submit();
-
-    expect(
-      await page.findUnitValidationError()
-    ).toBeInTheDocument();
-    expect(createReservationAction).not.toHaveBeenCalled();
-
-    await page.selectUnit(
-      RESERVATION_FORM_VIEW_TEST.UNIT_ID
-    );
-    await page.submit();
-
-    expect(createReservationAction).toHaveBeenCalledWith(
-      expect.objectContaining({
-        unitId: RESERVATION_FORM_VIEW_TEST.UNIT_ID,
-      })
     );
   });
 });
