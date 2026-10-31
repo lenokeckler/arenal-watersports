@@ -19,6 +19,7 @@ export const useReservationCalendarPeriodContent = (
         content,
         messages: getReservationCalendarMessages(content),
         period,
+        reserveMobileFabSpace: true,
       });
     },
     [snapshot]

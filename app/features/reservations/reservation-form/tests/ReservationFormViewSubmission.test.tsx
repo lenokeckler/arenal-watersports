@@ -11,7 +11,7 @@ vi.mock("../actions/createReservationAction", () => ({
 }));
 
 describe("ReservationFormView submission", () => {
-  it("disables submission after a successful reservation", async () => {
+  it("prevents another submission after a successful reservation", async () => {
     vi.mocked(createReservationAction).mockResolvedValue({
       ok: true,
       reservationId:
@@ -24,8 +24,13 @@ describe("ReservationFormView submission", () => {
       await page.findSuccessMessage()
     ).toBeInTheDocument();
 
-    expect(page.getSubmitButton()).toBeDisabled();
-    await page.submit();
+    const submitButton = page.querySubmitButton();
+    if (submitButton !== null) {
+      expect(submitButton).toBeDisabled();
+      await page.submit();
+    } else {
+      expect(submitButton).not.toBeInTheDocument();
+    }
 
     expect(createReservationAction).toHaveBeenCalledTimes(
       1

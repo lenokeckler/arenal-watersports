@@ -17,6 +17,10 @@ export const createReservationsCalendarPage = () => {
     screen.getByRole(ARIA_ROLE.HEADING, {
       name: RESERVATIONS_CALENDAR_COPY.TITLE,
     });
+  const getCreateReservationLink = () =>
+    screen.getByRole(ARIA_ROLE.LINK, {
+      name: RESERVATIONS_CALENDAR_COPY.CREATE_RESERVATION,
+    });
   const getPeriodGrid = () =>
     screen.getByRole(ARIA_ROLE.GROUP, {
       name: CALENDAR_TEXT.PERIOD_CONTENT,
@@ -49,6 +53,7 @@ export const createReservationsCalendarPage = () => {
 
   return {
     getHeading,
+    getCreateReservationLink,
     getMessage,
     getPeriodAgenda,
     isPeriodAgendaAfterGrid,
