@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { E2E_RESERVATION_FORM_MOBILE_VIEWPORT } from "../constants/E2eReservationForm.constants";
+import { E2E_RESERVATION_FORM_COPY } from "../constants/E2eReservationForm.constants";
 import { createReservationFormPage } from "../pages/ReservationForm.page";
 import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
 
@@ -19,6 +20,12 @@ test.describe("Reservation form responsive layout", () => {
       createReservationFormPage(page);
 
     await reservationFormPage.goTo();
+    await reservationFormPage.selectCategory(
+      E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
+    );
+    await expect(
+      reservationFormPage.getUnitSelect()
+    ).toBeVisible();
 
     const hasHorizontalOverflow = await page.evaluate(
       () =>

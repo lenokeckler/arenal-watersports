@@ -1,4 +1,5 @@
-import { memo } from "react";
+﻿import { memo } from "react";
+import { LOADING_COPY } from "@/app/constants/strings/LoadingCopy.constants";
 import { ButtonProps } from "./models/ButtonProps.interface";
 import { getButtonClassName } from "./utils/getButtonClassName";
 
@@ -23,7 +24,9 @@ export const Button = ({
       disabled={disabled || isLoading}
       {...rest}
     >
-      {isLoading ? (loadingText ?? children) : children}
+      {isLoading
+        ? (loadingText ?? LOADING_COPY.TEXT)
+        : children}
     </button>
   );
 };
