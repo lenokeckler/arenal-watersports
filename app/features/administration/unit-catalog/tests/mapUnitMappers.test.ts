@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { UNIT_FORM_ERROR_COPY } from "../constants/UnitFormErrorCopy.constants";
 import { UNIT_MOTORLESS_DEFAULTS } from "../constants/UnitMotorlessDefaults.constants";
 import { UNIT_STATUS } from "../constants/UnitStatus.constants";
 import { mapUnitFormValuesToInput } from "../utils/mapUnitFormValuesToInput";
@@ -50,10 +51,10 @@ describe("mapUnitFormValuesToInput", () => {
     }
   );
 
-  it("maps empty usage to zero and an empty oil change to null", () => {
+  it("maps an empty oil change to null and keeps a zero usage", () => {
     const input = mapUnitFormValuesToInput(
       buildUnitFormValues({
-        usageTotal: "",
+        usageTotal: "0",
         nextOilChangeAt: "",
       }),
       MOTOR_RULES
@@ -63,6 +64,15 @@ describe("mapUnitFormValuesToInput", () => {
       usageTotal: 0,
       nextOilChangeAt: null,
     });
+  });
+
+  it("refuses an empty usage instead of resetting it to zero", () => {
+    expect(() =>
+      mapUnitFormValuesToInput(
+        buildUnitFormValues({ usageTotal: "" }),
+        MOTOR_RULES
+      )
+    ).toThrow(UNIT_FORM_ERROR_COPY.USAGE_REQUIRED);
   });
 
   it("stores the defaults when the category has no motor", () => {
