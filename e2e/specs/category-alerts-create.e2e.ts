@@ -1,3 +1,4 @@
+import { PATHS } from "@/app/constants";
 import { expect, test } from "@playwright/test";
 import { CATEGORY_ALERT_TYPE } from "@/app/features/administration/category-catalog/constants/CategoryAlertType.constants";
 import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
@@ -57,6 +58,9 @@ test.describe("Category alerts after creating a category", () => {
           CATEGORY_CATALOG_COPY.ALERT_UPDATE_SUCCESS_TOAST
         )
       ).toBeVisible();
+      await expect(page).toHaveURL(
+        PATHS.ADMINISTRATION.CATEGORIES
+      );
       expect(
         await readCategoryAlerts(categoryName)
       ).toEqual(E2E_ALERT_QUANTITY);
