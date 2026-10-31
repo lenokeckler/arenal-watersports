@@ -12,15 +12,21 @@ import { createDepositsReportPage } from "./DepositsReport.page";
 
 describe("DepositsLoading", () => {
   it("announces the loading state through a status region", () => {
-    const { container } = render(<DepositsLoading />);
+    render(<DepositsLoading />);
     const page = createDepositsReportPage();
+    const busyRegion = page.getBusyRegion(
+      DEPOSITS_REPORT_COPY.PENDING_LIST_ARIA_LABEL
+    );
 
     expect(page.getStatus()).toHaveTextContent(
       DEPOSITS_REPORT_COPY.LOADING_ANNOUNCEMENT
     );
-    expect(container.firstElementChild).toHaveAttribute(
+    expect(busyRegion).toHaveAttribute(
       ARIA_BUSY_ATTRIBUTE,
       ARIA_BUSY_VALUE
+    );
+    expect(busyRegion).not.toContainElement(
+      page.getStatus()
     );
   });
 
