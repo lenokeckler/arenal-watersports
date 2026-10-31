@@ -3,7 +3,7 @@ import { ARIA_ROLE, UNORDERED_LIST } from "@/app/constants";
 import { PENDING_DEPOSITS_SKELETON_ROW_COUNT } from "../constants/PendingDeposits.constants";
 import { PENDING_DEPOSITS_COPY } from "../constants/PendingDepositsCopy.constants";
 import { PENDING_DEPOSITS_PAGE_CLASS } from "../styles/PendingDeposits.styles";
-import { DEPOSIT_SCREEN_READER_CLASS } from "../styles/PendingDepositsState.styles";
+import { DEPOSIT_SCREEN_READER_CLASS } from "../styles/PendingDepositsLoading.styles";
 import PendingDepositSkeletonRow from "./PendingDepositSkeletonRow";
 import PendingDepositsHeader from "./PendingDepositsHeader";
 

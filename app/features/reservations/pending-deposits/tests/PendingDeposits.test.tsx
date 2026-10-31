@@ -8,10 +8,11 @@ import {
 import { render } from "@testing-library/react";
 import { fetchPendingDeposits } from "@/app/services/deposits";
 import PendingDeposits from "../PendingDeposits";
+import { PENDING_DEPOSITS_COPY } from "../constants/PendingDepositsCopy.constants";
 import {
-  CURRENCY_NAME,
-  PENDING_DEPOSITS_COPY,
-} from "../constants/PendingDepositsCopy.constants";
+  CURRENCY_NAME_COPY,
+  DEPOSIT_COPY,
+} from "@/app/constants";
 import {
   CRC_AMOUNT_TEXT,
   CRC_DEPOSIT,
@@ -59,7 +60,7 @@ describe("PendingDeposits", () => {
     expect(
       page.getInRow(
         usdRow,
-        CURRENCY_NAME[USD_DEPOSIT.currency]
+        CURRENCY_NAME_COPY[USD_DEPOSIT.currency]
       )
     ).toBeInTheDocument();
     expect(
@@ -74,7 +75,7 @@ describe("PendingDeposits", () => {
     expect(
       page.getInRow(
         crcRow,
-        CURRENCY_NAME[CRC_DEPOSIT.currency]
+        CURRENCY_NAME_COPY[CRC_DEPOSIT.currency]
       )
     ).toBeInTheDocument();
   });
@@ -86,7 +87,7 @@ describe("PendingDeposits", () => {
     expect(
       page.getInRowContaining(
         firstRow,
-        PENDING_DEPOSITS_COPY.RESERVATION_CODE_LABEL
+        DEPOSIT_COPY.RESERVATION_CODE_LABEL
       )
     ).toBeInTheDocument();
   });

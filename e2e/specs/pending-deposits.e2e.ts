@@ -1,9 +1,9 @@
 import { expect, test as baseTest } from "@playwright/test";
-import { PATHS } from "@/app/constants";
 import {
-  CURRENCY_NAME,
-  PENDING_DEPOSITS_COPY,
-} from "@/app/features/reservations/pending-deposits/constants/PendingDepositsCopy.constants";
+  CURRENCY_NAME_COPY,
+  DEPOSIT_COPY,
+  PATHS,
+} from "@/app/constants";
 import { formatMoney } from "@/app/utils/money/formatMoney";
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 import { createPendingDepositsPage } from "../pages/PendingDeposits.page";
@@ -14,9 +14,9 @@ const readExpectedTexts = (
   deposit: E2eSeededDeposit
 ): string[] => [
   deposit.customerName,
-  `${PENDING_DEPOSITS_COPY.RESERVATION_CODE_LABEL} ${deposit.reservationCode}`,
+  `${DEPOSIT_COPY.RESERVATION_CODE_LABEL} ${deposit.reservationCode}`,
   formatMoney(deposit),
-  CURRENCY_NAME[deposit.currency],
+  CURRENCY_NAME_COPY[deposit.currency],
 ];
 
 test.describe("Pending deposits", () => {

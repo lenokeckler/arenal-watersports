@@ -328,6 +328,7 @@ export {
   DEPOSIT_STATUS,
   type DepositStatus,
 } from "./money/DepositStatus.constants";
+export { DEPOSIT_COPY } from "./money/DepositCopy.constants";
 export { MONEY_FORMAT } from "./money/MoneyFormat.constants";
 export { NON_FINITE_AMOUNT_ERROR_MESSAGE } from "./money/NonFiniteAmountError.constants";
 export {
