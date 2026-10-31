@@ -927,6 +927,7 @@ Aquí entra todo lo que la empresa tiene: jet skis, lanchas, cuadraciclos, kayak
 - El equipo reservable no es un registro aparte: es la parte del inventario marcada como reservable.
 - La lista no queda cerrada de antemano, porque cada temporada aparece algo nuevo que hace falta contar. Si mañana compran drybags, se crea la categoría y se define su comportamiento sin tocar nada más.
 - Una categoría que nunca tuvo unidades ni artículos se elimina. Una que ya tuvo se marca inactiva, para no romper el historial.
+- Una categoría inactiva se puede reactivar: vuelve a la lista de categorías activas con todo su historial.
 - Una categoría puede llevar un grupo, opcional. Las que comparten grupo se muestran como una sola tarjeta en el tablero y como un solo bloque al reservar, pero se cuentan y se cobran por separado. Es el caso de los kayaks sencillos y los dobles, y el de los paddleboards cuando hay más de un tipo.
 - No se agrupa una categoría que se lleva por unidad con una que se lleva por cantidad: la tarjeta no podría sumar sus propios números.
 - Sin grupo, la categoría se muestra sola, que es el caso de la mayoría.
@@ -3133,4 +3134,5 @@ Estas salieron de construir el sistema y de probarlo en un teléfono, no de las 
 - **Los combos se venden con precio nacional y precio extranjero.** Es la práctica de la empresa y no se resolvía con un solo precio de paquete.
 - **Administración agrupa categorías para el tablero.** Los kayaks sencillos y los dobles son dos categorías y se muestran como una sola tarjeta, sin fusionarse por dentro, porque en el muelle se pregunta cuántos kayaks hay.
 - **Operaciones consulta precios sin ver dinero de reservas.** Son dos cosas distintas: el catálogo de tarifas es información del negocio que se pregunta a diario en el muelle; los cobros, devoluciones y depósitos de una reserva no.
+- **Una categoría inactiva se puede reactivar.** Decisión de Kendall (responsable de la historia US-ADM-12): marcar inactiva una categoría con historial no debe ser permanente, porque en una operación de temporada el equipo sale de servicio y vuelve. La reactivación solo cambia el estado; el historial, las unidades y la configuración se conservan.
 - **Las unidades las gestiona solo administración, y una baja no se revierte.** Decisión de Kendall (responsable de la historia US-ADM-16): el código distingue mayúsculas, las rayas del medidor se pueden corregir aunque haya lecturas, los campos de motor solo existen en categorías con motor y una unidad dada de baja no se reactiva, porque su historial de mantenimiento y de reservas debe seguir cuadrando.
