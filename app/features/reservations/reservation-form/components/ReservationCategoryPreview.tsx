@@ -1,17 +1,47 @@
-import { Image, Text } from "@/app/components";
-import { STRING } from "@/app/constants";
-import type { ReservationEquipmentImageProps } from "@/app/components/reservation-calendar/models/ReservationEquipmentImageProps.interface";
+import {
+  Button,
+  Image,
+  MaterialIcon,
+  Text,
+} from "@/app/components";
+import { BUTTON, STRING } from "@/app/constants";
+import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
 import { resolveReservationEquipmentImage } from "@/app/components/reservation-calendar/utils/resolveReservationEquipmentImage";
 import { RESERVATION_FORM_CATEGORY_IMAGE_SIZE } from "../constants/ReservationFormUi.constants";
-import { RESERVATION_FORM_CATEGORY_IMAGE_CLASS } from "../styles/ReservationFormView.styles";
+import type { ReservationCategoryPreviewProps } from "../models/ReservationCategoryPreviewProps.interface";
+import {
+  RESERVATION_FORM_CATEGORY_IMAGE_CLASS,
+  RESERVATION_FORM_CATEGORY_NAME_CLASS,
+  RESERVATION_FORM_CATEGORY_SELECTED_ICON_CLASS,
+  resolveReservationCategoryOptionClassName,
+} from "../styles/ReservationFormView.styles";
 
 export const ReservationCategoryPreview = ({
-  categoryName,
-}: ReservationEquipmentImageProps): React.JSX.Element => {
-  const image =
-    resolveReservationEquipmentImage(categoryName);
+  category,
+  isSelected,
+  onSelect,
+}: ReservationCategoryPreviewProps): React.JSX.Element => {
+  const image = resolveReservationEquipmentImage(
+    category.name
+  );
   return (
-    <div>
+    <Button
+      type="button"
+      variant={BUTTON.BASE}
+      aria-pressed={isSelected}
+      className={resolveReservationCategoryOptionClassName(
+        isSelected
+      )}
+      onClick={() => onSelect(category.id)}
+    >
+      {isSelected ? (
+        <MaterialIcon
+          name={MATERIAL_ICON_NAME.CHECK_CIRCLE}
+          className={
+            RESERVATION_FORM_CATEGORY_SELECTED_ICON_CLASS
+          }
+        />
+      ) : null}
       {image === null ? null : (
         <Image
           alt={STRING.Empty}
@@ -24,7 +54,11 @@ export const ReservationCategoryPreview = ({
           priority={false}
         />
       )}
-      <Text>{categoryName}</Text>
-    </div>
+      <Text
+        className={RESERVATION_FORM_CATEGORY_NAME_CLASS}
+      >
+        {category.name}
+      </Text>
+    </Button>
   );
 };
