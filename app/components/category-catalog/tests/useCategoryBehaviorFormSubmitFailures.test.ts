@@ -16,14 +16,14 @@ import {
   submitForm,
 } from "./useCategoryBehaviorFormSubmit.harness";
 
-const mockRefresh = vi.fn();
+const mockPush = vi.fn();
 const mockShowToast = vi.fn();
 const mockOnValidationErrors = vi.fn();
 const mockUpdateCategoryBehaviorAction = vi.fn();
 const mockUnstableRethrow = vi.fn();
 
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({ refresh: mockRefresh }),
+  useRouter: () => ({ push: mockPush }),
   unstable_rethrow: (error: unknown) =>
     mockUnstableRethrow(error),
 }));
@@ -44,7 +44,7 @@ const renderSubmit = (
 
 describe("useCategoryBehaviorFormSubmit failures", () => {
   beforeEach(() => {
-    mockRefresh.mockClear();
+    mockPush.mockClear();
     mockUnstableRethrow.mockReset();
     mockShowToast.mockClear();
     mockOnValidationErrors.mockClear();
@@ -63,7 +63,7 @@ describe("useCategoryBehaviorFormSubmit failures", () => {
       STATUS.ERROR,
       CATEGORY_CATALOG_COPY.GENERIC_MUTATION_ERROR
     );
-    expect(mockRefresh).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
     expect(result.current.isSubmitting).toBe(false);
   });
 
