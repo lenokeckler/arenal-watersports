@@ -1,4 +1,6 @@
 export const SUPABASE_TABLE = {
+  DEPOSITS: "deposits",
+  RESERVATIONS: "reservations",
   WORKER_AREAS: "worker_areas",
   WORKER_MARKS: "worker_marks",
   WORKERS: "workers",

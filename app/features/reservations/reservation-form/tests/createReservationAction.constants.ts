@@ -11,10 +11,14 @@ export const VALID_RESERVATION_FORM_INPUT: ReservationFormInput =
     peopleCount: 3,
     quantity: 2,
     time: "09:30",
+    unitId: "",
   };
 
 export const CREATED_RESERVATION_ID =
   "e2400000-0000-4000-8000-000000000201";
+
+export const RESERVATION_UNIT_ID =
+  "e2400000-0000-4000-8000-000000000301";
 
 export const RESERVATION_OPERATION_ERROR =
   new SupabaseQueryError(
