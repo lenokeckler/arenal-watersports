@@ -10,7 +10,7 @@ begin
   if auth.uid() is null then
     raise exception 'Authenticated worker is required';
   end if;
-  if not (has_area('reservas') or has_area('operaciones')) then
+  if not has_area('reservas') then
     raise exception 'Equipment reservation access is required';
   end if;
   select category.tracking_mode into category_tracking_mode
@@ -48,9 +48,9 @@ begin
     return new;
   end if;
   if tg_op = 'UPDATE' then
-    if row(new.reservation_id, new.unit_id, new.category_id, new.quantity)
+    if row(new.reservation_id, new.unit_id, new.category_id)
       is not distinct from
-      row(old.reservation_id, old.unit_id, old.category_id, old.quantity) then
+      row(old.reservation_id, old.unit_id, old.category_id) then
       return new;
     end if;
     if new.unit_id is null and new.category_id is not null
@@ -61,7 +61,7 @@ begin
       if auth.uid() is null then
         raise exception 'Authenticated worker is required';
       end if;
-      if not (has_area('reservas') or has_area('operaciones')) then
+      if not has_area('reservas') then
         raise exception 'Equipment reservation access is required';
       end if;
       return new;

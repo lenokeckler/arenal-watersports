@@ -33,7 +33,7 @@ begin
   if auth.uid() is null then
     raise exception 'Authenticated worker is required';
   end if;
-  if not (has_area('reservas') or has_area('operaciones') or is_admin()) then
+  if not has_area('reservas') then
     raise exception 'Equipment reservation access is required';
   end if;
   select category.tracking_mode into category_tracking_mode

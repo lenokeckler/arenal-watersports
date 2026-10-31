@@ -37,9 +37,9 @@ begin
     return new;
   end if;
   if tg_op = 'UPDATE' then
-    if row(new.reservation_id, new.unit_id, new.category_id, new.quantity)
+    if row(new.reservation_id, new.unit_id, new.category_id)
       is not distinct from
-      row(old.reservation_id, old.unit_id, old.category_id, old.quantity) then
+      row(old.reservation_id, old.unit_id, old.category_id) then
       return new;
     end if;
   end if;
