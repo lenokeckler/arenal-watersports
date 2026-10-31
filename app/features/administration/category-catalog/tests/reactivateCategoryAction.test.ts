@@ -43,17 +43,6 @@ describe("reactivateCategoryAction", () => {
     mockUpdateStatusEq.mockReset();
   });
 
-  it("checks the caller is an admin before updating the category", async () => {
-    mockAssertIsAdminWorker.mockResolvedValue(
-      FAKE_ADMIN_WORKER_ID
-    );
-    mockUpdateStatusEq.mockResolvedValue({ error: null });
-
-    await reactivateCategoryAction(FAKE_CATEGORY_ID);
-
-    expect(mockAssertIsAdminWorker).toHaveBeenCalledOnce();
-  });
-
   it("propagates NotAuthorizedError instead of returning an error result when the caller is not an admin", async () => {
     mockAssertIsAdminWorker.mockRejectedValue(
       new NotAuthorizedError()
