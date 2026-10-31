@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from "react";
 import { CALENDAR_VIEW } from "@/app/constants";
 import { useAppSelector } from "@/app/store/hooks";
 import type { CalendarViewProps } from "../models/CalendarViewProps.interface";
@@ -27,7 +28,25 @@ export const useCalendarViewModel = (
   const state = { ...storedState, selectedView };
   const actions = useCalendarActions(props, state);
   const anchor = state.anchor ?? props.today;
-  const period = buildCalendarPeriod(anchor, selectedView);
+  const anchorDay = anchor.day;
+  const anchorMonth = anchor.month;
+  const anchorYear = anchor.year;
+  const onPeriodChange = props.onPeriodChange;
+  const period = useMemo(
+    () =>
+      buildCalendarPeriod(
+        {
+          day: anchorDay,
+          month: anchorMonth,
+          year: anchorYear,
+        },
+        selectedView
+      ),
+    [anchorDay, anchorMonth, anchorYear, selectedView]
+  );
+  useEffect(() => {
+    onPeriodChange?.(period);
+  }, [onPeriodChange, period]);
   const hasAccess =
     props.allowedViews.includes(selectedView);
   return {
