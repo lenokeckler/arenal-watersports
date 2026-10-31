@@ -6,7 +6,7 @@ import {
   it,
   vi,
 } from "vitest";
-import { STATUS } from "@/app/constants";
+import { PATHS, STATUS } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import type { UpdateCategoryDepositInput } from "../models/UpdateCategoryDepositInput.interface";
 import { buildCategoryFormSubmitEvent } from "./buildCategoryFormSubmitEvent";
@@ -21,13 +21,13 @@ import {
   SUCCESS_RESULT,
 } from "./useCategoryDepositForm.constants";
 
-const mockRefresh = vi.fn();
+const mockPush = vi.fn();
 const mockShowToast = vi.fn();
 const mockUpdateCategoryDepositAction = vi.fn();
 const mockUnstableRethrow = vi.fn();
 
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({ refresh: mockRefresh }),
+  useRouter: () => ({ push: mockPush }),
   unstable_rethrow: (error: unknown) =>
     mockUnstableRethrow(error),
 }));
@@ -61,7 +61,7 @@ describe("useCategoryDepositFormSubmit lock", () => {
       STATUS.ERROR,
       CATEGORY_CATALOG_COPY.GENERIC_MUTATION_ERROR
     );
-    expect(mockRefresh).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
     expect(result.current.isSubmitting).toBe(false);
   });
 
