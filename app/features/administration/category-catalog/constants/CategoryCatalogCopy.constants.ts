@@ -3,11 +3,13 @@ export const CATEGORY_CATALOG_COPY = {
     "No se encontró la categoría. Es posible que otra persona la haya eliminado.",
   ALERT_EXPIRY_DAYS_FIELD_LABEL:
     "Días de anticipación al vencimiento",
+  ALERT_EXPIRY_DAYS_PLACEHOLDER: "Ejemplo: 30",
   ALERT_FORM_HINT:
     "Elija cómo avisa esta categoría. Solo se piden los datos del tipo de aviso elegido.",
   ALERT_FORM_TITLE: "Avisos del inventario",
   ALERT_LINK: "Avisos",
   ALERT_MIN_QUANTITY_FIELD_LABEL: "Cantidad mínima",
+  ALERT_MIN_QUANTITY_PLACEHOLDER: "Ejemplo: 5",
   ALERT_SUBMIT_BUTTON: "Guardar avisos",
   ALERT_TYPE_BOTH_LABEL: "Por cantidad y vencimiento",
   ALERT_TYPE_EXPIRY_LABEL: "Por vencimiento",

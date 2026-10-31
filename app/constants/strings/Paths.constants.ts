@@ -12,6 +12,7 @@ export const PATHS = {
   ADMINISTRATION: {
     CATEGORIES: "/administration/categories",
     CATEGORIES_NEW: "/administration/categories/new",
+    CATEGORY_ALERTS_SEGMENT: "alerts",
     CATEGORY_BEHAVIOR_SEGMENT: "behavior",
     CATEGORY_DEPOSIT_SEGMENT: "deposit",
     ROOT: "/administration",
