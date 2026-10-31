@@ -2,4 +2,5 @@ import type { ReservationCalendarGroupsProps } from "./ReservationCalendarGroups
 
 export interface ReservationCalendarGroupListProps {
   groups: ReservationCalendarGroupsProps["content"]["groups"];
+  reserveMobileFabSpace: boolean;
 }

@@ -11,9 +11,13 @@ import type { Database } from "@/app/types";
 import { createReservationAction } from "../actions/createReservationAction";
 import { createRentalReservation } from "../services/createRentalReservation";
 import { getAuthorizedReservationFormClient } from "../services/getAuthorizedReservationFormClient";
+import { RESERVATION_SERVICE_OPERATION } from "../constants/ReservationServiceOperation.constants";
+import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import {
   CREATED_RESERVATION_ID,
   RESERVATION_OPERATION_ERROR,
+  RESERVATION_UNIT_ID,
   VALID_RESERVATION_FORM_INPUT,
 } from "./createReservationAction.constants";
 
@@ -62,5 +66,25 @@ describe("createReservationAction", () => {
     await expect(
       createReservationAction(VALID_RESERVATION_FORM_INPUT)
     ).rejects.toBe(RESERVATION_OPERATION_ERROR);
+  });
+
+  it("returns a unit field error when availability changes before save", async () => {
+    vi.mocked(createRentalReservation).mockRejectedValue(
+      new Error(RESERVATION_SERVICE_OPERATION.UNIT_CONFLICT)
+    );
+
+    await expect(
+      createReservationAction({
+        ...VALID_RESERVATION_FORM_INPUT,
+        unitId: RESERVATION_UNIT_ID,
+      })
+    ).resolves.toEqual({
+      ok: false,
+      errors: {
+        [RESERVATION_FORM_FIELD.UNIT_ID]:
+          RESERVATION_FORM_UI_COPY.UNIT_UNAVAILABLE,
+      },
+      unitUnavailable: true,
+    });
   });
 });
