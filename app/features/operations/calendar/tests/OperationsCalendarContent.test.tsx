@@ -4,6 +4,7 @@ import {
   RESERVATIONS_CALENDAR_COPY as copy,
 } from "@/app/constants";
 import { RESERVATION_CALENDAR_EXCLUDED_STATUS } from "@/app/components/reservation-calendar/constants/ReservationCalendarExcludedStatus.constants";
+import { CALENDAR_WEEK_DAYS_CLASS } from "@/app/components/calendar/styles/Calendar.styles";
 import { createOperationsCalendarPage } from "./OperationsCalendar.page";
 import {
   OPERATIONS_CALENDAR_SNAPSHOT,
@@ -48,9 +49,25 @@ describe("Operations calendar snapshot coverage", () => {
 });
 
 describe("Operations calendar reservation content", () => {
-  it.each([CALENDAR_VIEW.DAY, CALENDAR_VIEW.WEEK])(
-    "renders injected reservations without agenda or money in %s",
-    async (view) => {
+  it("renders horizontal day columns in the Operations week view", async () => {
+    renderOperationsCalendar({
+      snapshot: OPERATIONS_CALENDAR_SNAPSHOT,
+    });
+    const page = createOperationsCalendarPage();
+
+    await page.selectView(CALENDAR_VIEW.WEEK);
+
+    expect(page.getWeekDayGridClassName()).toContain(
+      CALENDAR_WEEK_DAYS_CLASS
+    );
+  });
+
+  it.each([
+    [CALENDAR_VIEW.DAY, true],
+    [CALENDAR_VIEW.WEEK, false],
+  ])(
+    "renders reservation image state correctly in %s view",
+    async (view, showsEquipmentImage) => {
       renderOperationsCalendar({
         snapshot: OPERATIONS_CALENDAR_SNAPSHOT,
       });
@@ -63,6 +80,9 @@ describe("Operations calendar reservation content", () => {
       );
       expect(page.getBlocks()[0]).toHaveTextContent(
         fixture.CUSTOMER
+      );
+      expect(page.hasEquipmentImage(fixture.CUSTOMER)).toBe(
+        showsEquipmentImage
       );
       expect(page.queryAgenda()).toBeNull();
       expect(page.queryMoney()).toBeNull();
