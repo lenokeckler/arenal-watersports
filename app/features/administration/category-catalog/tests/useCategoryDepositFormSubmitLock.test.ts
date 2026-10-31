@@ -6,7 +6,7 @@ import {
   it,
   vi,
 } from "vitest";
-import { PATHS, STATUS } from "@/app/constants";
+import { STATUS } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import type { UpdateCategoryDepositInput } from "../models/UpdateCategoryDepositInput.interface";
 import { buildCategoryFormSubmitEvent } from "./buildCategoryFormSubmitEvent";
