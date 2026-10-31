@@ -21,10 +21,7 @@ const RETAINED_SKELETON_ITEMS = Array.from(
 );
 
 const DepositsLoading = (): React.JSX.Element => (
-  <div
-    className={DEPOSITS_REPORT_STACK_CLASS}
-    aria-busy
-  >
+  <div className={DEPOSITS_REPORT_STACK_CLASS}>
     <DepositsHeading />
     <Text
       role={ARIA_ROLE.STATUS}
@@ -32,32 +29,37 @@ const DepositsLoading = (): React.JSX.Element => (
     >
       {DEPOSITS_REPORT_COPY.LOADING_ANNOUNCEMENT}
     </Text>
-    <DepositsSection
-      headingId={DEPOSITS_REPORT_DOM_ID.PENDING_HEADING}
-      heading={DEPOSITS_REPORT_COPY.PENDING_HEADING}
-      help={DEPOSITS_REPORT_COPY.PENDING_HELP}
+    <div
+      className={DEPOSITS_REPORT_STACK_CLASS}
+      aria-busy
     >
-      <UnorderedList
-        variant={UNORDERED_LIST.VARIANTS.PLAIN}
-        ariaLabel={
-          DEPOSITS_REPORT_COPY.PENDING_LIST_ARIA_LABEL
-        }
-        items={PENDING_SKELETON_ITEMS}
-      />
-    </DepositsSection>
-    <DepositsSection
-      headingId={DEPOSITS_REPORT_DOM_ID.RETAINED_HEADING}
-      heading={DEPOSITS_REPORT_COPY.RETAINED_HEADING}
-      help={DEPOSITS_REPORT_COPY.RETAINED_HELP}
-    >
-      <UnorderedList
-        variant={UNORDERED_LIST.VARIANTS.PLAIN}
-        ariaLabel={
-          DEPOSITS_REPORT_COPY.RETAINED_LIST_ARIA_LABEL
-        }
-        items={RETAINED_SKELETON_ITEMS}
-      />
-    </DepositsSection>
+      <DepositsSection
+        headingId={DEPOSITS_REPORT_DOM_ID.PENDING_HEADING}
+        heading={DEPOSITS_REPORT_COPY.PENDING_HEADING}
+        help={DEPOSITS_REPORT_COPY.PENDING_HELP}
+      >
+        <UnorderedList
+          variant={UNORDERED_LIST.VARIANTS.PLAIN}
+          ariaLabel={
+            DEPOSITS_REPORT_COPY.PENDING_LIST_ARIA_LABEL
+          }
+          items={PENDING_SKELETON_ITEMS}
+        />
+      </DepositsSection>
+      <DepositsSection
+        headingId={DEPOSITS_REPORT_DOM_ID.RETAINED_HEADING}
+        heading={DEPOSITS_REPORT_COPY.RETAINED_HEADING}
+        help={DEPOSITS_REPORT_COPY.RETAINED_HELP}
+      >
+        <UnorderedList
+          variant={UNORDERED_LIST.VARIANTS.PLAIN}
+          ariaLabel={
+            DEPOSITS_REPORT_COPY.RETAINED_LIST_ARIA_LABEL
+          }
+          items={RETAINED_SKELETON_ITEMS}
+        />
+      </DepositsSection>
+    </div>
   </div>
 );
 
