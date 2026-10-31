@@ -54,6 +54,7 @@ begin
       return new;
     end if;
     if new.unit_id is null and new.category_id is not null
+      and new.category_id = old.category_id
       and new.quantity < old.quantity and exists (
         select 1 from reservations
         where id = new.reservation_id and status = 'scheduled'
@@ -63,6 +64,15 @@ begin
       end if;
       if not has_area('reservas') then
         raise exception 'Equipment reservation access is required';
+      end if;
+      if not exists (
+        select 1 from equipment_categories
+        where id = new.category_id
+          and status = 'active'
+          and is_reservable
+          and units_are_interchangeable
+      ) then
+        raise exception 'Equipment category is not available for reservation';
       end if;
       return new;
     end if;
@@ -74,6 +84,9 @@ begin
     select 1 from reservations
     where id = new.reservation_id and status = 'scheduled'
   ) then
+    return new;
+  end if;
+  if has_area('operaciones') and not has_area('reservas') then
     return new;
   end if;
   if new.unit_id is not null then
