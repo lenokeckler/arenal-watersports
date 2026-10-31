@@ -1,6 +1,10 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ARIA_ROLE, CALENDAR_TEXT } from "@/app/constants";
+import {
+  ARIA_ROLE,
+  CALENDAR_TEXT,
+  STRING,
+} from "@/app/constants";
 import type {
   CalendarDate,
   CalendarView,
@@ -9,7 +13,7 @@ import { formatCalendarDate } from "@/app/components/calendar/utils/formatCalend
 
 const getDaySelection = (date: CalendarDate): HTMLElement =>
   screen.getByRole(ARIA_ROLE.BUTTON, {
-    name: formatCalendarDate(date),
+    name: new RegExp(`^${formatCalendarDate(date)}`),
   });
 
 const getMonthSelection = (
@@ -45,7 +49,7 @@ export const createReservationsCalendarDateSelectionPage =
       date: CalendarDate
     ): string =>
       getMonthSelection(date).parentElement?.parentElement
-        ?.className ?? "";
+        ?.className ?? STRING.Empty;
     return {
       getDaySelection,
       getMonthSelection,

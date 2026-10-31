@@ -12,6 +12,7 @@ export const useReservationCalendarHeatMap = (
     () =>
       snapshot === undefined
         ? {
+            getDayReservationCount: () => undefined,
             getDayHeatLevel: () => CALENDAR_HEAT_LEVEL.NONE,
           }
         : buildReservationCalendarHeatMap(snapshot),

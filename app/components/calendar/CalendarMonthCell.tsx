@@ -1,10 +1,14 @@
 import type { ReactElement } from "react";
-import { Button, Text } from "@/app/components";
+import { Button, InlineText, Text } from "@/app/components";
 import { BUTTON, BUTTON_TYPES } from "@/app/constants";
+import type { NullableUndefined } from "@/app/types";
 import { CALENDAR_HEAT_LEVEL } from "./constants/CalendarHeatLevel.constants";
 import type { CalendarDateSelection } from "./models/CalendarDateSelection.interface";
 import type { CalendarMonthCellProps } from "./models/CalendarMonthCellProps.interface";
-import { resolveCalendarCellSelectionClass } from "./styles/Calendar.styles";
+import {
+  resolveCalendarCellSelectionClass,
+  resolveCalendarHeatCountClass,
+} from "./styles/Calendar.styles";
 import { isSameCalendarDate } from "./utils/isSameCalendarDate";
 
 const getCellDaySelection = ({
@@ -12,8 +16,7 @@ const getCellDaySelection = ({
   date,
   daySelection,
   monthSelection,
-}: CalendarMonthCellProps):
-  CalendarDateSelection | undefined => {
+}: CalendarMonthCellProps): NullableUndefined<CalendarDateSelection> => {
   const isInDisplayedMonth =
     cell.date.year === date.year &&
     cell.date.month === date.month;
@@ -35,6 +38,17 @@ export const CalendarMonthCell = (
   const heatLevel =
     daySelection?.getHeatLevel(cell.date) ??
     CALENDAR_HEAT_LEVEL.NONE;
+  const reservationCount = daySelection?.getCount(
+    cell.date
+  );
+  const accessibleLabel =
+    reservationCount === undefined ||
+    daySelection === undefined
+      ? cell.fullLabel
+      : daySelection.getAccessibleLabel(
+          cell.fullLabel,
+          reservationCount
+        );
   const className = daySelection
     ? resolveCalendarCellSelectionClass(
         cell.className,
@@ -46,7 +60,7 @@ export const CalendarMonthCell = (
     return (
       <Text
         className={className}
-        aria-label={cell.fullLabel}
+        aria-label={accessibleLabel}
         aria-current={cell.current ?? undefined}
       >
         {cell.label}
@@ -58,12 +72,23 @@ export const CalendarMonthCell = (
       type={BUTTON_TYPES.BUTTON}
       variant={BUTTON.BASE}
       className={className}
-      aria-label={cell.fullLabel}
+      aria-label={accessibleLabel}
       aria-current={cell.current ?? undefined}
       aria-pressed={selected}
       onClick={() => daySelection.onSelect(cell.date)}
     >
       {cell.label}
+      {reservationCount !== undefined &&
+        reservationCount > 0 && (
+          <InlineText
+            aria-hidden="true"
+            className={resolveCalendarHeatCountClass(
+              heatLevel
+            )}
+          >
+            {reservationCount}
+          </InlineText>
+        )}
     </Button>
   );
 };

@@ -1,11 +1,13 @@
 import { CALENDAR_HEAT_LEVEL } from "@/app/components/calendar/constants/CalendarHeatLevel.constants";
 import type { CalendarHeatLevel } from "@/app/components/calendar/constants/CalendarHeatLevel.constants";
 import type { CalendarDate } from "@/app/types";
+import type { NullableUndefined } from "@/app/types";
 import {
   addCalendarDays,
   toCalendarUtcDate,
 } from "@/app/components/calendar/utils/calendarDateArithmetic";
 import type { ReservationCalendarSnapshot } from "@/app/components/reservation-calendar/models/ReservationCalendarSnapshot.interface";
+import type { ReservationCalendarHeatMap } from "../models/ReservationCalendarHeatMap.interface";
 import { reservationIntersectsCalendarDay } from "@/app/components/reservation-calendar/utils/reservationIntersectsCalendarDay";
 import { getReservationCalendarHeatLevel } from "./getReservationCalendarHeatLevel";
 import { validateReservationCalendarSnapshot } from "@/app/components/reservation-calendar/utils/validateReservationCalendarSnapshot";
@@ -32,36 +34,42 @@ const coversDate = (
     addCalendarDays(date, 1)
   ) >= 0;
 
-const getDailyHeatLevel = (
+const getDailyReservationCount = (
   snapshot: ReservationCalendarSnapshot,
   date: CalendarDate
-): CalendarHeatLevel => {
+): NullableUndefined<number> => {
   if (
     !hasCompleteResults(snapshot) ||
     !coversDate(snapshot, date)
   ) {
-    return CALENDAR_HEAT_LEVEL.NONE;
+    return undefined;
   }
-  const reservationIds = new Set(
+  return new Set(
     snapshot.entries
       .filter((entry) =>
         reservationIntersectsCalendarDay(entry, date)
       )
       .map((entry) => entry.id)
-  );
-  return getReservationCalendarHeatLevel(
-    reservationIds.size
-  );
+  ).size;
 };
 
 export const buildReservationCalendarHeatMap = (
   snapshot: ReservationCalendarSnapshot
-) => {
+): ReservationCalendarHeatMap => {
   validateReservationCalendarSnapshot(snapshot);
+  const getDayReservationCount = (
+    date: CalendarDate
+  ): NullableUndefined<number> =>
+    getDailyReservationCount(snapshot, date);
   return {
+    getDayReservationCount,
     getDayHeatLevel: (
       date: CalendarDate
-    ): CalendarHeatLevel =>
-      getDailyHeatLevel(snapshot, date),
+    ): CalendarHeatLevel => {
+      const reservationCount = getDayReservationCount(date);
+      return reservationCount === undefined
+        ? CALENDAR_HEAT_LEVEL.NONE
+        : getReservationCalendarHeatLevel(reservationCount);
+    },
   };
 };

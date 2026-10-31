@@ -27,6 +27,9 @@ export const RESERVATIONS_CALENDAR_COPY = {
     "No se pudo actualizar el calendario. Se muestran los datos anteriores.",
   REFRESHING: "Actualizando las reservas…",
   RETRY: "Volver a intentar",
+  RESERVATION_COUNT_LABEL: (count: number): string =>
+    count === 1 ? `${count} reserva` : `${count} reservas`,
+  RESERVATION_COUNT_SEPARATOR: ", ",
   INCOMPLETE_RESULTS:
     "Faltan resultados de reservas por cargar.",
   QUANTITY_SEPARATOR: " × ",

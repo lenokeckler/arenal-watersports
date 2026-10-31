@@ -15,6 +15,14 @@ describe("buildReservationCalendarHeatMap", () => {
     expect(
       heatMap.getDayHeatLevel(fixture.MULTIDAY_LAST_DATE)
     ).toBe(CALENDAR_HEAT_LEVEL.GREEN);
+    expect(
+      heatMap.getDayReservationCount(fixture.OCTOBER_DATE)
+    ).toBe(1);
+    expect(
+      heatMap.getDayReservationCount(
+        fixture.MULTIDAY_LAST_DATE
+      )
+    ).toBe(1);
   });
 
   it("does not imply heat levels for incomplete results", () => {
@@ -25,6 +33,21 @@ describe("buildReservationCalendarHeatMap", () => {
     expect(
       heatMap.getDayHeatLevel(fixture.OCTOBER_DATE)
     ).toBe(CALENDAR_HEAT_LEVEL.NONE);
+    expect(
+      heatMap.getDayReservationCount(fixture.OCTOBER_DATE)
+    ).toBeUndefined();
+  });
+
+  it("reports zero reservations for a covered empty day", () => {
+    const heatMap = buildReservationCalendarHeatMap(
+      fixture.SNAPSHOT
+    );
+
+    expect(
+      heatMap.getDayReservationCount(
+        fixture.EMPTY_OCTOBER_DATE
+      )
+    ).toBe(0);
   });
 
   it("does not imply heat outside complete but partial coverage", () => {
@@ -38,5 +61,10 @@ describe("buildReservationCalendarHeatMap", () => {
     expect(
       heatMap.getDayHeatLevel(fixture.OUTSIDE_COVERAGE_DATE)
     ).toBe(CALENDAR_HEAT_LEVEL.NONE);
+    expect(
+      heatMap.getDayReservationCount(
+        fixture.OUTSIDE_COVERAGE_DATE
+      )
+    ).toBeUndefined();
   });
 });

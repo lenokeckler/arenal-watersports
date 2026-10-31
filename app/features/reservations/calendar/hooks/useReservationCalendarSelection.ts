@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import type { CalendarDate } from "@/app/types";
 import type { NullableUndefined } from "@/app/types";
+import { RESERVATIONS_CALENDAR_COPY } from "@/app/constants";
 import type { ReservationCalendarSnapshot } from "@/app/components/reservation-calendar/models/ReservationCalendarSnapshot.interface";
 import type { ReservationsCalendarSelection } from "../models/ReservationsCalendarSelection.interface";
 import { useReservationsCalendarSelectionState } from "./useReservationsCalendarSelectionState";
@@ -15,11 +16,18 @@ export const useReservationCalendarSelection = (
   const heatMap = useReservationCalendarHeatMap(snapshot);
   const day = useMemo(
     () => ({
+      getCount: heatMap.getDayReservationCount,
+      getAccessibleLabel: (
+        dateLabel: string,
+        count: number
+      ) =>
+        `${dateLabel}${RESERVATIONS_CALENDAR_COPY.RESERVATION_COUNT_SEPARATOR}${RESERVATIONS_CALENDAR_COPY.RESERVATION_COUNT_LABEL(count)}`,
       getHeatLevel: heatMap.getDayHeatLevel,
       onSelect: state.selectDay,
       selectedDate: state.selectedDay,
     }),
     [
+      heatMap.getDayReservationCount,
       heatMap.getDayHeatLevel,
       state.selectDay,
       state.selectedDay,

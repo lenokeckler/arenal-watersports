@@ -41,14 +41,22 @@ export const CALENDAR_CELL_SELECT_CLASS =
 export const CALENDAR_CELL_SELECTED_CLASS =
   "outline outline-2 outline-primary/50";
 export const CALENDAR_HEAT_GREEN_CLASS =
-  "ring-1 ring-inset ring-green-500/20 shadow-sm shadow-green-500/10";
+  "bg-primary-container/15 ring-2 ring-inset ring-primary/55 shadow-md shadow-primary/20";
 export const CALENDAR_HEAT_ORANGE_CLASS =
-  "ring-1 ring-inset ring-orange-500/20 shadow-sm shadow-orange-500/10";
+  "bg-secondary-container/15 ring-2 ring-inset ring-secondary/65 shadow-md shadow-secondary/20";
 export const CALENDAR_HEAT_RED_CLASS =
-  "ring-1 ring-inset ring-red-500/20 shadow-sm shadow-red-500/10";
+  "bg-error-container/15 ring-2 ring-inset ring-error/65 shadow-md shadow-error/20";
+export const CALENDAR_HEAT_COUNT_BASE_CLASS =
+  "rounded-full px-1.5 text-xs font-bold leading-none";
+export const CALENDAR_HEAT_COUNT_GREEN_CLASS =
+  "bg-primary-container/40 text-primary";
+export const CALENDAR_HEAT_COUNT_ORANGE_CLASS =
+  "bg-secondary-container/50 text-secondary";
+export const CALENDAR_HEAT_COUNT_RED_CLASS =
+  "bg-error-container/50 text-error";
 export const CALENDAR_GRID_CLASS = "grid grid-cols-7 gap-1";
 export const CALENDAR_CELL_CLASS =
-  "flex min-h-12 min-w-0 items-center justify-center rounded-lg text-sm tabular-nums";
+  "flex min-h-12 min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg text-sm tabular-nums";
 export const CALENDAR_TODAY_CLASS =
   "bg-primary-container/20 font-semibold text-primary outline outline-1 outline-primary/40";
 export const CALENDAR_MUTED_CLASS =
@@ -78,6 +86,26 @@ const CALENDAR_HEAT_CLASS: Record<
   [CALENDAR_HEAT_LEVEL.ORANGE]: CALENDAR_HEAT_ORANGE_CLASS,
   [CALENDAR_HEAT_LEVEL.RED]: CALENDAR_HEAT_RED_CLASS,
 };
+
+const CALENDAR_HEAT_COUNT_BY_LEVEL: Record<
+  CalendarHeatLevel,
+  string
+> = {
+  [CALENDAR_HEAT_LEVEL.NONE]: "",
+  [CALENDAR_HEAT_LEVEL.GREEN]:
+    CALENDAR_HEAT_COUNT_GREEN_CLASS,
+  [CALENDAR_HEAT_LEVEL.ORANGE]:
+    CALENDAR_HEAT_COUNT_ORANGE_CLASS,
+  [CALENDAR_HEAT_LEVEL.RED]: CALENDAR_HEAT_COUNT_RED_CLASS,
+};
+
+export const resolveCalendarHeatCountClass = (
+  heatLevel: CalendarHeatLevel
+): string =>
+  joinClassNames(
+    CALENDAR_HEAT_COUNT_BASE_CLASS,
+    CALENDAR_HEAT_COUNT_BY_LEVEL[heatLevel]
+  );
 
 export const resolveCalendarCellSelectionClass = (
   baseClass: string,

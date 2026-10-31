@@ -57,67 +57,6 @@ const PADDED_NOVEMBER_ENTRY = {
   startsAt: "2026-11-01T16:00:00Z",
 };
 
-const BUSY_DAY_ENTRIES = [
-  {
-    ...OCTOBER_ENTRY,
-    customerName: "Busy day reservation one",
-    endsAt: "2026-10-14T12:00:00Z",
-    id: "reservation-busy-day-one",
-    startsAt: "2026-10-14T11:00:00Z",
-  },
-  {
-    ...OCTOBER_ENTRY,
-    customerName: "Busy day reservation two",
-    endsAt: "2026-10-14T14:00:00Z",
-    id: "reservation-busy-day-two",
-    startsAt: "2026-10-14T13:00:00Z",
-  },
-  {
-    ...OCTOBER_ENTRY,
-    customerName: "Busy day reservation three",
-    endsAt: "2026-10-14T19:00:00Z",
-    id: "reservation-busy-day-three",
-    startsAt: "2026-10-14T18:00:00Z",
-  },
-  {
-    ...OCTOBER_ENTRY,
-    customerName: "Busy day reservation four",
-    endsAt: "2026-10-14T21:00:00Z",
-    id: "reservation-busy-day-four",
-    startsAt: "2026-10-14T20:00:00Z",
-  },
-  {
-    ...OCTOBER_ENTRY,
-    customerName: "Busy day reservation five",
-    endsAt: "2026-10-14T23:00:00Z",
-    id: "reservation-busy-day-five",
-    startsAt: "2026-10-14T22:00:00Z",
-  },
-];
-
-const BUSY_DAY_SNAPSHOT: ReservationCalendarSnapshot = {
-  endDateExclusive: { day: 1, month: 12, year: 2026 },
-  entries: [
-    OCTOBER_ENTRY,
-    ...BUSY_DAY_ENTRIES,
-    OCTOBER_SECOND_ENTRY,
-    OCTOBER_THIRD_ENTRY,
-    NOVEMBER_ENTRY,
-    PADDED_NOVEMBER_ENTRY,
-  ],
-  startDate: { day: 1, month: 1, year: 2026 },
-  totalCount: 10,
-};
-
-const BUSY_DAY_EXPECTED_COUNTS = {
-  DAY: 6,
-  MONTH: 8,
-  SELECTED_DAY_AND_MONTH: 14,
-  SELECTED_MONTH_AND_YEAR: 18,
-  WEEK: 8,
-  YEAR: 10,
-} as const;
-
 export const RESERVATIONS_CALENDAR_SELECTION = {
   OCTOBER_CUSTOMER_NAME,
   PRESSED: "aria-pressed",
@@ -155,8 +94,6 @@ export const RESERVATIONS_CALENDAR_SELECTION = {
     startDate: { day: 1, month: 1, year: 2026 },
     totalCount: 5,
   } satisfies ReservationCalendarSnapshot,
-  BUSY_DAY_SNAPSHOT,
-  BUSY_DAY_EXPECTED_COUNTS,
   MULTIDAY_SNAPSHOT: {
     endDateExclusive: { day: 1, month: 12, year: 2026 },
     entries: [

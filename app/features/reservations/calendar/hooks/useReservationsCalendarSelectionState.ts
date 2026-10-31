@@ -15,7 +15,7 @@ import type { ReservationsCalendarSelectionState } from "../models/ReservationsC
 const getSelectedAgendaId = (
   selectedDay: NullableUndefined<CalendarDate>,
   selectedMonth: NullableUndefined<CalendarDate>
-): string | undefined => {
+): NullableUndefined<string> => {
   if (selectedDay !== undefined) {
     return RESERVATIONS_CALENDAR_COPY.SELECTED_DAY_AGENDA_ID;
   }

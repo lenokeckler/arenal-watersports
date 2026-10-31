@@ -1,4 +1,5 @@
 import type { ReactElement } from "react";
+import type { NullableUndefined } from "@/app/types";
 import { Section, Text } from "@/app/components";
 import {
   ARIA_ROLE,
@@ -11,7 +12,9 @@ import {
   RESERVATION_CALENDAR_MESSAGES_CLASS,
 } from "../styles/ReservationCalendarGroups.styles";
 
-const getAgendaId = (label: string): string | undefined => {
+const getAgendaId = (
+  label: string
+): NullableUndefined<string> => {
   if (
     label === RESERVATIONS_CALENDAR_COPY.SELECTED_DAY_AGENDA
   ) {
