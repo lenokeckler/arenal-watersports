@@ -1,16 +1,27 @@
 import { SUPABASE } from "@/app/constants";
+import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 import type { ValidatedReservationFormInput } from "../models/ValidatedReservationFormInput.interface";
 
-export const VALIDATED_RESERVATION_INPUT: ValidatedReservationFormInput =
-  {
+export const VALIDATED_RESERVATION_INPUT = {
+  customerName: "RES04 Fixture Reservation",
+  date: "2028-02-29",
+  durationMinutes: 90,
+  peopleCount: 3,
+  time: "09:30",
+  equipmentCommitment: {
+    kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
     categoryId: "e2400000-0000-4000-8000-000000000101",
-    customerName: "RES04 Fixture Reservation",
-    date: "2028-02-29",
-    durationMinutes: 90,
-    peopleCount: 3,
     quantity: 2,
-    time: "09:30",
-  };
+  },
+} satisfies ValidatedReservationFormInput;
+
+export const VALIDATED_UNIT_RESERVATION_INPUT = {
+  ...VALIDATED_RESERVATION_INPUT,
+  equipmentCommitment: {
+    kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
+    unitId: "e2400000-0000-4000-8000-000000000102",
+  },
+} satisfies ValidatedReservationFormInput;
 
 export const CREATED_RESERVATION_ID =
   "e2400000-0000-4000-8000-000000000201";
