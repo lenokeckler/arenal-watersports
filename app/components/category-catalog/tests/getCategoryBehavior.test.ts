@@ -5,6 +5,7 @@ import {
   it,
   vi,
 } from "vitest";
+import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { getCategoryBehavior } from "../services/getCategoryBehavior";
 import { mapCategoryRowToBehavior } from "../utils/mapCategoryRowToBehavior";
@@ -88,6 +89,22 @@ describe("getCategoryBehavior", () => {
     mockMaybeSingle.mockResolvedValue({
       data: null,
       error: null,
+    });
+
+    const behavior = await getCategoryBehavior(
+      FAKE_CATEGORY_ID
+    );
+
+    expect(behavior).toBeNull();
+  });
+
+  it("returns null when the id is not a valid uuid", async () => {
+    mockMaybeSingle.mockResolvedValue({
+      data: null,
+      error: {
+        code: POSTGRES_ERROR_CODE.INVALID_TEXT_REPRESENTATION,
+        message: "invalid input syntax for type uuid",
+      },
     });
 
     const behavior = await getCategoryBehavior(
