@@ -45,6 +45,7 @@ const ReservationBlockDetails = ({
 export const ReservationCalendarBlock = ({
   block,
   reserveMobileFabSpace = false,
+  showEquipmentImage = true,
   showGuides = false,
 }: ReservationCalendarBlockProps): JSX.Element => (
   <Section
@@ -58,11 +59,13 @@ export const ReservationCalendarBlock = ({
     <div
       className={RESERVATION_CALENDAR_BLOCK_CONTENT_CLASS}
     >
-      <ReservationEquipmentImage
-        categoryName={
-          block.equipmentCategoryName ?? STRING.Empty
-        }
-      />
+      {showEquipmentImage && (
+        <ReservationEquipmentImage
+          categoryName={
+            block.equipmentCategoryName ?? STRING.Empty
+          }
+        />
+      )}
       <ReservationBlockDetails
         block={block}
         reserveMobileFabSpace={reserveMobileFabSpace}
