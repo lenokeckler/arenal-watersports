@@ -24,6 +24,7 @@ export const CALENDAR_QUERY_ROW: ReservationCalendarQueryRow =
         id: CALENDAR_DISPATCH.id,
       },
     ],
+    reservation_guides: [],
     reservation_items: [
       { ...CATEGORY_COMMITMENT, unit: null },
       { ...EXTRA_COMMITMENT, unit: null },

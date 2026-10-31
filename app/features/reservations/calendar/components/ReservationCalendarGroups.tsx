@@ -17,6 +17,7 @@ export const ReservationCalendarGroups = ({
   content,
   messages,
   period,
+  reserveMobileFabSpace,
 }: ReservationCalendarGroupsProps): NullableRef<ReactElement> => {
   const showAgenda =
     period.view === CALENDAR_VIEW.MONTH ||
@@ -42,6 +43,7 @@ export const ReservationCalendarGroups = ({
       {showAgenda && content.groups.length > 0 && (
         <ReservationCalendarGroupList
           groups={content.groups}
+          reserveMobileFabSpace={reserveMobileFabSpace}
         />
       )}
     </div>

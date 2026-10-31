@@ -6,6 +6,7 @@ export interface ReservationCalendarBlock {
   actualLabels: string[];
   customerName: string;
   equipmentLabel: string;
+  equipmentCategoryName?: string;
   guides: NullableUndefined<ReservationCalendarGuide[]>;
   id: string;
   scheduledLabel: string;
