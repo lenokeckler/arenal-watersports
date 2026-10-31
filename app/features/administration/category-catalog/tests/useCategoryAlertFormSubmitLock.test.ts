@@ -21,13 +21,13 @@ import {
   SUCCESS_RESULT,
 } from "./useCategoryAlertForm.constants";
 
-const mockRefresh = vi.fn();
+const mockPush = vi.fn();
 const mockShowToast = vi.fn();
 const mockUpdateCategoryAlertsAction = vi.fn();
 const mockUnstableRethrow = vi.fn();
 
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({ refresh: mockRefresh }),
+  useRouter: () => ({ push: mockPush }),
   unstable_rethrow: (error: unknown) =>
     mockUnstableRethrow(error),
 }));
@@ -61,7 +61,7 @@ describe("useCategoryAlertFormSubmit lock", () => {
       STATUS.ERROR,
       CATEGORY_CATALOG_COPY.GENERIC_MUTATION_ERROR
     );
-    expect(mockRefresh).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
     expect(result.current.isSubmitting).toBe(false);
   });
 
