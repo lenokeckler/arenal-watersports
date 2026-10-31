@@ -1,6 +1,8 @@
 export const CATEGORY_CATALOG_COPY = {
   CANCEL_BUTTON: "Cancelar",
   CREATE_CTA: "+ Agregar categoría",
+  CREATE_FORM_PURPOSE:
+    "Indique cómo se llama y cómo se cuenta en el inventario.",
   CREATE_FORM_TITLE: "Nueva categoría",
   CREATE_SUCCESS_TOAST: "Categoría creada.",
   DELETE_BUTTON: "Eliminar",
@@ -46,7 +48,7 @@ export const CATEGORY_CATALOG_COPY = {
   TRACKING_MODE_BY_UNIT_LABEL: "Por unidad",
   TRACKING_MODE_BY_UNIT_LOWERCASE: "por unidad",
   TRACKING_MODE_FIELD_LABEL: "Modo de conteo",
-  TRACKING_MODE_FIELD_PLACEHOLDER: "Selecciona un modo",
+  TRACKING_MODE_FIELD_PLACEHOLDER: "Seleccione un modo",
   TRACKING_MODE_MICRO_LABEL_BY_QUANTITY: "POR CANTIDAD",
   TRACKING_MODE_MICRO_LABEL_BY_UNIT: "POR UNIDAD",
   TRACKING_MODE_REQUIRED_ERROR:

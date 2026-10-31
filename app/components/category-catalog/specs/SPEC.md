@@ -55,14 +55,14 @@ and a clear error state they can retry from.
   The failure is wrapped with `CATEGORY_LIST_DIAGNOSTICS.FETCH_FAILED` and the original error as its
   `cause`.
 - View state and retry live in `hooks/useCategoryListViewModel.ts`, with the states in
-  `constants/CategoryListViewState.constants.ts`; the card action state is `NONE` and the card
-  handlers are no-ops until #18.
+  `constants/CategoryListViewState.constants.ts`; each card's action state comes from
+  `utils/resolveCategoryCardActionState.ts` and its handlers from `hooks/useCategoryCardActions.ts`.
 - The page file `app/(system)/administration/categories/page.tsx` renders `CategoryList`, reached through
   `PATHS.ADMINISTRATION.CATEGORIES`. The entry component redirects a worker who is not an administrator
   to `PATHS.HOME` before it reads any category, the same server check the other administration screens use.
 - The list is paginated on the server (RNF-027): `listCategories(page)` reads one page of
-  `CATEGORY_LIST_PAGINATION.PAGE_SIZE` rows with `.range()` and an exact count, and looks up records only
-  for the ids of that page. The page comes from the `page` query parameter, which falls back to the first
+  `CATEGORY_LIST_PAGINATION.PAGE_SIZE` rows with `.range()` after an exact head count (so a page past the last
+  one reads no rows), and looks up records only for the ids of that page. The page comes from the `page` query parameter, which falls back to the first
   page when it is not a positive integer; a page past the last one redirects to the last page, which is
   also where a delete of the last card of a page lands after the refresh. `CategoryListPagination` renders
   the previous and next links and "Página X de Y" only when there is more than one page.
@@ -74,6 +74,9 @@ and a clear error state they can retry from.
   @kendall122, tracked as its own story in issue #394 ("ADM-02.12.xx: Live category list"), which adds
   `equipment_categories` to the publication, subscribes the list and ships a second-client regression.
   Until that follow-up lands, RNF-025 stays open for this list.
+- The create screen is `app/(system)/administration/categories/new/page.tsx`, reached through
+  `PATHS.ADMINISTRATION.CATEGORIES_NEW`. `CategoryCreateForm` applies the same administrator redirect and
+  renders `CategoryCreateFormView`; `createCategoryAction` validates the trimmed name again on the server.
 - Skills that apply: `component-architecture`, `component-standards`, `constants-standards`,
   `styles-standards`, `structure-standards`, `unit-testing-standards`.
 
