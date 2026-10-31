@@ -1,6 +1,6 @@
 import type { Locator } from "@playwright/test";
 import { ARIA_ROLE } from "@/app/constants";
-import { CATEGORY_CATALOG_COPY } from "@/app/components/category-catalog/constants/CategoryCatalogCopy.constants";
+import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
 
 export const createCategoryBehaviorLinkPage = () => {
   const clickBehaviorLink = async (

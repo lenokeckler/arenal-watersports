@@ -1,4 +1,4 @@
-import { CATEGORY_TRACKING_MODE } from "@/app/components/category-catalog/constants/CategoryTrackingMode.constants";
+import { CATEGORY_TRACKING_MODE } from "@/app/features/administration/category-catalog/constants/CategoryTrackingMode.constants";
 import type { CategoryFixtureBehavior } from "../models/CategoryFixtureBehavior.interface";
 
 export const DEFAULT_CATEGORY_FIXTURE_BEHAVIOR: CategoryFixtureBehavior =

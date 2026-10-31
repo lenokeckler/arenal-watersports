@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { STRING } from "@/app/constants";
-import { CATEGORY_TRACKING_MODE } from "@/app/components/category-catalog/constants/CategoryTrackingMode.constants";
-import { USAGE_METRIC } from "@/app/components/category-catalog/constants/UsageMetric.constants";
+import { CATEGORY_TRACKING_MODE } from "@/app/features/administration/category-catalog/constants/CategoryTrackingMode.constants";
+import { USAGE_METRIC } from "@/app/features/administration/category-catalog/constants/UsageMetric.constants";
 import { createCategoryBehaviorFormPage } from "../pages/CategoryBehaviorForm.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 import {

@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { PATHS } from "@/app/constants";
-import { CATEGORY_CATALOG_COPY } from "@/app/components/category-catalog/constants/CategoryCatalogCopy.constants";
+import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
 import { createCategoryBehaviorFormPage } from "../pages/CategoryBehaviorForm.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 import {
