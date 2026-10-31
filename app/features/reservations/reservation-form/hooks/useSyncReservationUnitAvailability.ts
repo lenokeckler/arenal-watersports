@@ -12,6 +12,7 @@ const resetAvailability = (
   options.setAvailableUnits([]);
   options.setIsLoading(false);
   options.setHasError(false);
+  options.setResolvedRequestKey(null);
 };
 
 const startAvailabilityLookup = (
@@ -35,6 +36,7 @@ const startAvailabilityLookup = (
         options.setAvailableUnits(
           availability.availableUnits
         );
+        options.setResolvedRequestKey(options.requestKey);
       }
     })
     .catch(() => {
@@ -76,13 +78,7 @@ const synchronizeAvailability = (
 };
 
 export const useSyncReservationUnitAvailability = (
-  request: ReservationUnitAvailabilityInput,
-  setAvailableUnits: Dispatch<
-    SetStateAction<ReservationCategoryUnitOption[]>
-  >,
-  setIsLoading: Dispatch<SetStateAction<boolean>>,
-  setHasError: Dispatch<SetStateAction<boolean>>,
-  refreshKey: number
+  options: ReservationUnitAvailabilitySyncOptions
 ): void => {
   const {
     request,

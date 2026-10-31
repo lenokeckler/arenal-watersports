@@ -125,9 +125,6 @@ select is(
   'forma granted_by+granted_at: granted_by sale de auth.uid(), no del cliente'
 );
 
-update workers set last_work_area = 'operaciones'
-where id = '22222222-2222-2222-2222-222222222222';
-
 reset role;
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated"}';

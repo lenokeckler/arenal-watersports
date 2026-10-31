@@ -1,20 +1,20 @@
 import { STRING } from "@/app/constants";
+import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 import type { ReservationFormInput } from "../models/ReservationFormInput.interface";
-import type { ReservationUnitCategoryOption } from "../models/ReservationUnitCategoryOption.interface";
 import { RESERVATION_SCHEDULE } from "../constants/ReservationSchedule.constants";
 import { useReservationUnitAvailability } from "./useReservationUnitAvailability";
 
 export const useReservationEquipmentViewModel = (
-  unitCategories: ReservationUnitCategoryOption[],
+  categories: ReservationCategoryOption[],
   values: ReservationFormInput,
   durationHours: number,
   refreshKey: number
 ) => {
-  const selectedCategory = unitCategories.find(
+  const selectedCategory = categories.find(
     (category) => category.id === values.categoryId
   );
   const requiresConcreteUnit =
-    selectedCategory !== undefined;
+    selectedCategory?.isInterchangeable === false;
   const request = {
     categoryId: selectedCategory
       ? values.categoryId
@@ -31,7 +31,9 @@ export const useReservationEquipmentViewModel = (
   );
 
   return {
-    availableQuantity: availability.availableQuantity,
+    availableQuantity: selectedCategory?.isInterchangeable
+      ? availability.availableQuantity
+      : null,
     availableUnits: requiresConcreteUnit
       ? availability.availableUnits
       : [],

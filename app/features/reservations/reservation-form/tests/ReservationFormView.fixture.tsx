@@ -1,7 +1,6 @@
 import { render } from "@testing-library/react";
 import { vi } from "vitest";
 import ReservationFormView from "../ReservationFormView";
-import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 import { createReservationFormViewPage } from "./ReservationFormView.page";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 
@@ -12,21 +11,6 @@ const { routerBack } = vi.hoisted(() => ({
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ back: routerBack }),
 }));
-
-vi.mock(
-  "../hooks/useReservationEquipmentEligibility",
-  () => ({
-    useReservationEquipmentEligibility: (
-      categories: ReservationCategoryOption[]
-    ) => ({
-      categories,
-      hasError: false,
-      isLoading: false,
-      refreshKey: 0,
-      retry: vi.fn(),
-    }),
-  })
-);
 
 export const reservationRouterBack = routerBack;
 
@@ -42,10 +26,12 @@ export const renderReservationForm = (
           ? [
               {
                 id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
+                isInterchangeable: true,
                 name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
               },
               {
                 id: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_ID,
+                isInterchangeable: true,
                 name: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME,
               },
             ]

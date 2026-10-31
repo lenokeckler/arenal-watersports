@@ -13,8 +13,16 @@ export const useReservationFormViewModelActions = (
   const submitOptions = {
     ...equipment,
     resolvedDurationHours,
-    setFieldError: state.submission.setFieldError,
-    submitReservation: state.submission.submitReservation,
+    setFieldError: () => undefined,
+    submitReservation: (
+      input: Parameters<
+        typeof state.submission.submitReservation
+      >[0]
+    ) =>
+      state.submission.submitReservation(
+        input,
+        () => undefined
+      ),
     values: state.fields.values,
   };
   const isAvailabilityUnavailable =

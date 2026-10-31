@@ -1,13 +1,41 @@
+import Text from "@/app/components/text/Text";
+import { ARIA_ROLE } from "@/app/constants";
+import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
 import type { ReservationFormCardProps } from "../models/ReservationFormCardProps.interface";
-import ReservationEquipmentEligibilityFeedback from "./ReservationEquipmentEligibilityFeedback";
-import ReservationSubmissionFeedback from "./ReservationSubmissionFeedback";
+import {
+  RESERVATION_FORM_ERROR_CLASS,
+  RESERVATION_FORM_STATUS_CLASS,
+} from "../styles/ReservationFormView.styles";
 
-const ReservationFormFeedback = (
-  props: ReservationFormCardProps
-): React.JSX.Element => (
+const ReservationFormFeedback = ({
+  categories,
+  viewModel,
+}: ReservationFormCardProps): React.JSX.Element => (
   <>
-    <ReservationEquipmentEligibilityFeedback {...props} />
-    <ReservationSubmissionFeedback {...props} />
+    {categories.length === 0 && (
+      <Text
+        role={ARIA_ROLE.STATUS}
+        className={RESERVATION_FORM_ERROR_CLASS}
+      >
+        {RESERVATION_FORM_UI_COPY.NO_CATEGORIES}
+      </Text>
+    )}
+    {viewModel.formError && (
+      <Text
+        role={ARIA_ROLE.ALERT}
+        className={RESERVATION_FORM_ERROR_CLASS}
+      >
+        {viewModel.formError}
+      </Text>
+    )}
+    {viewModel.isSubmitted && (
+      <Text
+        role={ARIA_ROLE.STATUS}
+        className={RESERVATION_FORM_STATUS_CLASS}
+      >
+        {RESERVATION_FORM_UI_COPY.SUCCESS}
+      </Text>
+    )}
   </>
 );
 
