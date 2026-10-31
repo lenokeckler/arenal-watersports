@@ -382,10 +382,6 @@ npm run changelog:check -- origin/<base>
 - **Say it when a PR touches sensitive ground.** A PR that changes `supabase/migrations/`,
   `.github/` or the skills and agents (`.agents/`, `.claude/`, `AGENTS.md`) says so in
   _Developer Notes_, so the reviewer reads it with extra care.
-- **Deleting is guarded.** The `Deletion guard` check fails a PR that deletes or renames a
-  migration, or deletes a file another author added. Deleting your own files needs nothing. When
-  every flagged deletion is intended, the repository owner adds the `Approved deletion` label; any
-  later push removes it, so the new commits are approved again.
 - `develop` reaches `main` only through a `release/*` PR.
 - After a review: fix **every** thread and every other occurrence of the same pattern in the PR,
   push new commits, reply in each thread saying what changed, and swap `Code Review Rejected` /
