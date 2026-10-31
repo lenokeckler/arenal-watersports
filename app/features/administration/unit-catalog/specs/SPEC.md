@@ -43,3 +43,15 @@
 | A decommissioned unit is dimmed and has no edit link                                                        | `UnitListView.test.tsx`                             |
 | Empty, error and pagination states                                                                          | `UnitListView.test.tsx`                             |
 | By-unit category cards, active or inactive, link to their units; by-quantity cards do not                   | `CategoryCardUnitsLink.test.tsx` (category-catalog) |
+
+## 16.09 Unit form screen and create route
+
+| Requirement                                                                                                                  | Test                                   |
+| ---------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| `UnitFormView` is shared by create and edit; the heading and the submit label follow the mode                                | 16.11                                  |
+| Fields: code, status (editable statuses only), gauge bars; fuel level, usage and next oil change only with a motor           | 16.11                                  |
+| An empty fuel level reads as no reading; the usage label follows the metric (Horas, Kilómetros)                              | 16.11                                  |
+| Only an administrator opens `/administration/categories/[categoryId]/units/new`; an unknown or by-quantity category is a 404 | 16.11                                  |
+| The unit list links to the create route with "Agregar unidad"                                                                | `UnitListView.test.tsx` (if it breaks) |
+
+Component tests come in 16.11; the edit route in the next part.

@@ -9,9 +9,14 @@ import {
 import { UNIT_LIST_COPY } from "../constants/UnitListCopy.constants";
 import type { UnitListHeaderProps } from "../models/UnitListHeaderProps.interface";
 import { UNIT_LIST_HEADER_CLASS } from "../styles/UnitList.styles";
-import { UNIT_LIST_LINK_CLASS } from "../styles/UnitListLink.styles";
+import {
+  UNIT_LIST_ADD_LINK_CLASS,
+  UNIT_LIST_LINK_CLASS,
+} from "../styles/UnitListLink.styles";
+import { resolveUnitNewPath } from "../utils/resolveUnitPaths";
 
 const UnitListHeader = ({
+  categoryId,
   categoryName,
 }: UnitListHeaderProps): React.JSX.Element => (
   <div className={UNIT_LIST_HEADER_CLASS}>
@@ -24,6 +29,12 @@ const UnitListHeader = ({
       logoAlt={IMAGE_ALTS.COMPANY_LOGO}
       instruction={UNIT_LIST_COPY.LIST_PURPOSE}
     />
+    <Link
+      href={resolveUnitNewPath(categoryId)}
+      className={UNIT_LIST_ADD_LINK_CLASS}
+    >
+      {UNIT_LIST_COPY.ADD_LINK}
+    </Link>
     <Link
       href={PATHS.ADMINISTRATION.CATEGORIES}
       className={UNIT_LIST_LINK_CLASS}
