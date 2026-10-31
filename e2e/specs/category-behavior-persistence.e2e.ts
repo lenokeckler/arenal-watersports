@@ -16,7 +16,7 @@ import {
 } from "../constants/E2eCategoryBehavior.constants";
 
 test.describe("Category behavior persistence and access", () => {
-  test("saves a valid change, shows the success toast and keeps it after reload", async ({
+  test("saves a valid change, shows the success toast, returns to the list and keeps it when reopened", async ({
     page,
   }, testInfo) => {
     const categoryName = resolveCategoryBehaviorFixtureName(
@@ -29,9 +29,8 @@ test.describe("Category behavior persistence and access", () => {
 
     try {
       await logInAsAdmin(page);
-      await categoryBehaviorFormPage.goTo(
-        await findCategoryId(categoryName)
-      );
+      const categoryId = await findCategoryId(categoryName);
+      await categoryBehaviorFormPage.goTo(categoryId);
       await categoryBehaviorFormPage.checkIsReservable();
       await categoryBehaviorFormPage.checkGuideOnly();
       await categoryBehaviorFormPage.fillDuration(
@@ -44,8 +43,11 @@ test.describe("Category behavior persistence and access", () => {
           CATEGORY_CATALOG_COPY.BEHAVIOR_UPDATE_SUCCESS_TOAST
         )
       ).toBeVisible();
+      await expect(page).toHaveURL(
+        PATHS.ADMINISTRATION.CATEGORIES
+      );
 
-      await categoryBehaviorFormPage.reload();
+      await categoryBehaviorFormPage.goTo(categoryId);
 
       await expect(
         categoryBehaviorFormPage.getIsReservableCheckbox()
