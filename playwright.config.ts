@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import { loadEnvConfig } from "@next/env";
 import {
   E2E_ARTIFACT_MODE,
   E2E_BASE_URL,
@@ -16,6 +17,8 @@ import {
   E2E_WORKER_COUNT,
 } from "./e2e/constants/E2eRuntime.constants";
 import { E2E_RECOVERY_SERVER_ENV } from "./e2e/constants/E2ePasswordRecovery.constants";
+
+loadEnvConfig(process.cwd());
 
 const isContinuousIntegration = Boolean(process.env.CI);
 const mobileChromium = {

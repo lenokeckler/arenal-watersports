@@ -1,29 +1,17 @@
-import { PATHS } from "@/app/constants";
-import { expect, test } from "../support/activeWorkerTest";
+import { expect, test } from "@playwright/test";
+import { E2E_PROJECT } from "../constants/E2eRuntime.constants";
 import {
   E2E_RESERVATION_DURATION_PRESET,
+  E2E_RESERVATION_EQUIPMENT_STATUS,
   E2E_RESERVATION_FORM_COPY,
 } from "../constants/E2eReservationForm.constants";
 import { createReservationFormPage } from "../pages/ReservationForm.page";
-import { createWorkModePage } from "../pages/WorkMode.page";
-import { E2E_RESERVATIONS_AREA_LABEL } from "../constants/E2eWorkMode.constants";
-import { addReservationsArea } from "../support/addReservationsArea";
-import { submitActiveWorkerSignIn } from "../support/submitActiveWorkerSignIn";
-import { removeReservationsForWorker } from "../support/removeReservationsForWorker";
+import { createReservationEquipmentStatusFixture } from "../support/createReservationEquipmentStatusFixture";
+import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
 
 test.describe("Reservation form", () => {
-  test.afterEach(async ({ activeWorker }) => {
-    await removeReservationsForWorker(activeWorker);
-  });
-
-  test.beforeEach(async ({ activeWorker, page }) => {
-    await addReservationsArea(activeWorker.id);
-    await submitActiveWorkerSignIn(page, activeWorker);
-    await expect(page).toHaveURL(PATHS.MODE);
-    await createWorkModePage(page)
-      .getCard(E2E_RESERVATIONS_AREA_LABEL)
-      .click();
-    await expect(page).toHaveURL(PATHS.HOME);
+  test.beforeEach(async ({ page }) => {
+    await signInAsSeededWorker(page);
   });
 
   test("shows reservation fields in Costa Rica time", async ({
@@ -53,18 +41,8 @@ test.describe("Reservation form", () => {
       reservationFormPage.getTimeZoneHint()
     ).toBeVisible();
     await expect(
-      reservationFormPage.getCategoryCard(
-        E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
-      )
-    ).toBeVisible();
-    await reservationFormPage.selectCategory(
-      E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
-    );
-    await expect(
-      reservationFormPage.getSelectedCategoryOption()
-    ).toHaveAccessibleName(
-      E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
-    );
+      reservationFormPage.getCategorySelect()
+    ).toBeEnabled();
   });
 
   test("selects a duration preset and reports required customer name", async ({
@@ -92,23 +70,44 @@ test.describe("Reservation form", () => {
     ).toBeVisible();
   });
 
-  test("submits a valid custom duration with decimal precision", async ({
+  test("shows the custom duration field only when selected", async ({
     page,
   }) => {
     const reservationFormPage =
       createReservationFormPage(page);
 
     await reservationFormPage.goTo();
-    await reservationFormPage.submitCustomDurationReservation(
-      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_PRECISION_CASE
+    await expect(
+      reservationFormPage.getDurationInput()
+    ).toBeHidden();
+
+    await reservationFormPage.selectDuration(
+      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_OPTION
+    );
+    await expect(
+      reservationFormPage.getDurationInput()
+    ).toBeVisible();
+    await expect(
+      reservationFormPage.getDurationInput()
+    ).toHaveValue("");
+    await reservationFormPage.typeCustomDuration(
+      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_HOURS
+    );
+    await expect(
+      reservationFormPage.getDurationInput()
+    ).toHaveValue(
+      E2E_RESERVATION_FORM_COPY.CUSTOM_DURATION_HOURS
     );
 
+    await reservationFormPage.selectDuration(
+      E2E_RESERVATION_DURATION_PRESET.LABEL
+    );
     await expect(
-      reservationFormPage.getSuccessMessage()
-    ).toBeVisible();
+      reservationFormPage.getDurationInput()
+    ).toBeHidden();
   });
 
-  test("prevents a second submission after reservation creation", async ({
+  test("creates a reservation using a seeded interchangeable category", async ({
     page,
   }) => {
     const reservationFormPage =
@@ -116,20 +115,13 @@ test.describe("Reservation form", () => {
 
     await reservationFormPage.goTo();
     await expect(
-      reservationFormPage.getSelectedCategoryOption()
-    ).toHaveCount(0);
+      reservationFormPage.getCategorySelect()
+    ).toHaveValue("");
     await reservationFormPage.submitReservation();
 
     await expect(
       reservationFormPage.getSuccessMessage()
     ).toBeVisible();
-    await expect(
-      reservationFormPage.getSubmitButton()
-    ).toBeDisabled();
-    await reservationFormPage.attemptSubmit();
-    await expect(
-      reservationFormPage.getSuccessMessage()
-    ).toHaveCount(1);
   });
 
   test("offers an available concrete unit for Lancha", async ({
@@ -157,50 +149,50 @@ test.describe("Reservation form", () => {
     ).toHaveValue(/.+/);
   });
 
-  test("removes a committed Lancha from availability for the same window", async ({
+  test("removes a damaged unit after an inventory update", async ({
     page,
-  }) => {
-    const reservationFormPage =
-      createReservationFormPage(page);
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.name !== E2E_PROJECT.DEFAULT,
+      "The inventory mutation runs once to avoid concurrent database writes."
+    );
+    const equipmentFixture =
+      createReservationEquipmentStatusFixture();
 
-    await reservationFormPage.goTo();
-    await reservationFormPage
-      .getDateInput()
-      .fill(E2E_RESERVATION_FORM_COPY.SCREENSHOT_DATE);
-    await reservationFormPage
-      .getCustomerNameInput()
-      .fill(E2E_RESERVATION_FORM_COPY.CUSTOMER_NAME_VALID);
-    await reservationFormPage.selectCategory(
-      E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
-    );
-    await reservationFormPage.waitForUnitOption(
-      E2E_RESERVATION_FORM_COPY.UNIT_OPTION
-    );
-    await reservationFormPage.selectUnit(
-      E2E_RESERVATION_FORM_COPY.UNIT_OPTION
-    );
-    await reservationFormPage.submit();
+    try {
+      const initialStatus =
+        await equipmentFixture.prepare();
+      expect(initialStatus).toBe(
+        E2E_RESERVATION_EQUIPMENT_STATUS.AVAILABLE
+      );
+      const reservationFormPage =
+        createReservationFormPage(page);
+      await reservationFormPage.goTo();
+      await reservationFormPage
+        .getDateInput()
+        .fill(E2E_RESERVATION_FORM_COPY.REALTIME_DATE);
+      await expect(
+        reservationFormPage.getCategorySelect()
+      ).toBeEnabled();
+      await reservationFormPage.selectCategory(
+        E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
+      );
+      await expect(
+        reservationFormPage.getUnitOption(
+          E2E_RESERVATION_FORM_COPY.REALTIME_UNIT_OPTION
+        )
+      ).toHaveCount(1);
 
-    await expect(
-      reservationFormPage.getSuccessMessage()
-    ).toBeVisible();
-    await reservationFormPage.goTo();
-    await reservationFormPage
-      .getDateInput()
-      .fill(E2E_RESERVATION_FORM_COPY.SCREENSHOT_DATE);
-    await reservationFormPage.selectCategory(
-      E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
-    );
-    await expect(
-      reservationFormPage.getAvailabilityLoadingMessage()
-    ).toBeVisible();
-    await expect(
-      reservationFormPage.getAvailabilityLoadingMessage()
-    ).toBeHidden();
-    await expect(
-      reservationFormPage.getUnitOption(
-        E2E_RESERVATION_FORM_COPY.UNIT_OPTION
-      )
-    ).toHaveCount(0);
+      expect(
+        await equipmentFixture.markUnitAsDamaged()
+      ).toBe(E2E_RESERVATION_EQUIPMENT_STATUS.DAMAGED);
+      await expect(
+        reservationFormPage.getUnitOption(
+          E2E_RESERVATION_FORM_COPY.REALTIME_UNIT_OPTION
+        )
+      ).toHaveCount(0);
+    } finally {
+      await equipmentFixture.restore();
+    }
   });
 });

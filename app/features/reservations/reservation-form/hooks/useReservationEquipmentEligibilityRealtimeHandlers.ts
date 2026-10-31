@@ -6,6 +6,7 @@ export const useReservationEquipmentEligibilityRealtimeHandlers =
     isRealtimeConnectedRef,
     refresh,
     requestVersionRef,
+    setCategories,
     setHasError,
     setIsLoading,
     setRefreshKey,
@@ -20,12 +21,14 @@ export const useReservationEquipmentEligibilityRealtimeHandlers =
     const onUnavailable = useCallback((): void => {
       isRealtimeConnectedRef.current = false;
       requestVersionRef.current += 1;
+      setCategories([]);
       setHasError(true);
       setIsLoading(false);
       setRefreshKey((currentKey) => currentKey + 1);
     }, [
       isRealtimeConnectedRef,
       requestVersionRef,
+      setCategories,
       setHasError,
       setIsLoading,
       setRefreshKey,

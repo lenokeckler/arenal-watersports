@@ -35,6 +35,7 @@ export const useReservationEquipmentEligibilityController =
           snapshot.isRealtimeConnectedRef,
         refresh,
         requestVersionRef: snapshot.requestVersionRef,
+        setCategories: snapshot.setCategories,
         setHasError: snapshot.setHasError,
         setIsLoading: snapshot.setIsLoading,
         setRefreshKey: snapshot.setRefreshKey,
