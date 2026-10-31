@@ -12,6 +12,7 @@ import {
   CALENDAR_TOOLBAR_CLASS,
   CALENDAR_TITLE_CLASS,
   CALENDAR_ACTIONS_CLASS,
+  CALENDAR_PERIOD_TITLE_SR_ONLY_CLASS,
   CALENDAR_VIEW_GROUP_CLASS,
   CALENDAR_BUTTON_CLASS,
   resolveCalendarButtonClass,
@@ -59,8 +60,13 @@ export const CalendarToolbar = (
     <Title
       variant={TitleVariant.SECONDARY}
       text={props.title}
+      className={CALENDAR_PERIOD_TITLE_SR_ONLY_CLASS}
     />
-    <div className={CALENDAR_ACTIONS_CLASS}>
+    <div
+      className={CALENDAR_ACTIONS_CLASS}
+      role={ARIA_ROLE.GROUP}
+      aria-label={CALENDAR_TEXT.NAVIGATION}
+    >
       {[
         {
           label: CALENDAR_TEXT.PREVIOUS,

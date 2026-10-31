@@ -5,6 +5,7 @@ export const RESERVATIONS_CALENDAR_COPY = {
   DETAIL_SEPARATOR: ". ",
   EQUIPMENT: "Equipo comprometido:",
   EMPTY_PERIOD: "No hay reservas en este período.",
+  EMPTY_DAY: "No hay reservas en este día.",
   EXPECTED_RETURN: "Regreso esperado:",
   LOAD_ERROR:
     "No se pudo cargar el calendario. Intente de nuevo.",
@@ -14,6 +15,14 @@ export const RESERVATIONS_CALENDAR_COPY = {
   PARTIAL_COVERAGE:
     "La información cargada no cubre todo este período.",
   PERIOD_AGENDA: "Agenda de reservas del período",
+  SELECTED_DAY_AGENDA_ID:
+    "selected-day-reservations-agenda",
+  SELECTED_DAY_AGENDA:
+    "Agenda de reservas del día seleccionado",
+  SELECTED_MONTH_AGENDA_ID:
+    "selected-month-reservations-agenda",
+  SELECTED_MONTH_AGENDA:
+    "Agenda de reservas del mes seleccionado",
   REFRESH_ERROR:
     "No se pudo actualizar el calendario. Se muestran los datos anteriores.",
   REFRESHING: "Actualizando las reservas…",

@@ -11,7 +11,20 @@ import { buildCalendarPresentation } from "../utils/buildCalendarPresentation";
 import {
   CALENDAR_DAYS_CLASS,
   CALENDAR_SINGLE_DAY_CLASS,
+  CALENDAR_WEEK_DAYS_CLASS,
 } from "../styles/Calendar.styles";
+
+const getDaysClassName = (
+  selectedView: CalendarViewModel["selectedView"]
+): string => {
+  if (selectedView === CALENDAR_VIEW.DAY) {
+    return CALENDAR_SINGLE_DAY_CLASS;
+  }
+  if (selectedView === CALENDAR_VIEW.WEEK) {
+    return CALENDAR_WEEK_DAYS_CLASS;
+  }
+  return CALENDAR_DAYS_CLASS;
+};
 
 export const useCalendarViewModel = (
   props: CalendarViewProps
@@ -51,10 +64,7 @@ export const useCalendarViewModel = (
     props.allowedViews.includes(selectedView);
   return {
     hasAccess,
-    daysClassName:
-      selectedView === CALENDAR_VIEW.DAY
-        ? CALENDAR_SINGLE_DAY_CLASS
-        : CALENDAR_DAYS_CLASS,
+    daysClassName: getDaysClassName(selectedView),
     selectedView,
     preferenceError: state.preferenceError,
     toolbar: {

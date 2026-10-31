@@ -7,6 +7,7 @@ export const CALENDAR_TEXT = {
     [CALENDAR_VIEW.WEEK]: "Semana",
     [CALENDAR_VIEW.YEAR]: "Año",
   },
+  NAVIGATION: "Navegación del calendario",
   NEXT: "Siguiente",
   PREVIOUS: "Anterior",
   PERIOD_CONTENT: "Contenido del período",

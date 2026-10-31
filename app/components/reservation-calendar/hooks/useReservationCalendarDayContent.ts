@@ -4,6 +4,7 @@ import type { CalendarDate } from "@/app/types";
 import { buildCalendarPeriod } from "@/app/components/calendar/utils";
 import type { CalendarDayContent } from "@/app/components/calendar/models/CalendarDayContent.type";
 import type { NullableUndefined } from "@/app/types";
+import { useAppSelector } from "@/app/store/hooks";
 import type { ReservationCalendarSnapshot } from "../models/ReservationCalendarSnapshot.interface";
 import type { ReservationCalendarDayContentOptions } from "../models/ReservationCalendarDayContentOptions.interface";
 import { ReservationCalendarBlock } from "../components/ReservationCalendarBlock";
@@ -14,8 +15,11 @@ import { ReservationCalendarDayContent } from "../components/ReservationCalendar
 export const useReservationCalendarDayContent = (
   snapshot: NullableUndefined<ReservationCalendarSnapshot>,
   options: ReservationCalendarDayContentOptions = {}
-): CalendarDayContent =>
-  useCallback(
+): CalendarDayContent => {
+  const selectedView = useAppSelector(
+    (state) => state.calendar.selectedView
+  );
+  return useCallback(
     (date: CalendarDate) => {
       const period = buildCalendarPeriod(
         date,
@@ -35,6 +39,8 @@ export const useReservationCalendarDayContent = (
               getReservationCalendarMessages(content),
             reserveMobileFabSpace:
               options.reserveMobileFabSpace === true,
+            showEquipmentImage:
+              selectedView !== CALENDAR_VIEW.WEEK,
             showGuides: options.showGuides === true,
           }
         );
@@ -47,6 +53,8 @@ export const useReservationCalendarDayContent = (
           block,
           reserveMobileFabSpace:
             options.reserveMobileFabSpace === true,
+          showEquipmentImage:
+            selectedView !== CALENDAR_VIEW.WEEK,
           showGuides: options.showGuides === true,
           key: block.id,
         })
@@ -54,8 +62,10 @@ export const useReservationCalendarDayContent = (
     },
     [
       snapshot,
+      selectedView,
       options.reserveMobileFabSpace,
       options.showCoverageMessages,
       options.showGuides,
     ]
   );
+};

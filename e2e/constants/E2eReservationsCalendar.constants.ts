@@ -14,6 +14,9 @@ export const E2E_RESERVATIONS_CALENDAR_SCREENSHOT =
 export const E2E_RESERVATIONS_CALENDAR_MONTH_SCREENSHOT =
   "02-reservations-calendar-month";
 
+export const E2E_RESERVATIONS_CALENDAR_WEEK_SCREENSHOT =
+  "03-reservations-calendar-week";
+
 export const E2E_RESERVATIONS_CALENDAR_ATTRIBUTES = {
   PRESSED: "aria-pressed",
   TRUE: "true",
