@@ -38,10 +38,7 @@ const CategoryBehaviorFormFields = ({
         CATEGORY_CATALOG_COPY.UNITS_ARE_INTERCHANGEABLE_FIELD_LABEL
       }
       checked={values.unitsAreInterchangeable}
-      disabled={
-        isSubmitting ||
-        !availability.isUnitsAreInterchangeableEnabled
-      }
+      disabled={isSubmitting}
       onChange={onUnitsAreInterchangeableChange}
     />
     <CategoryBehaviorCheckboxField
