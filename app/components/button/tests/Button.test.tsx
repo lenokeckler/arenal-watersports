@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { LOADING_COPY } from "@/app/constants/strings/LoadingCopy.constants";
 import Button from "../Button";
 import {
   BUTTON_CHILDREN_TEXT,
@@ -33,14 +34,14 @@ describe("Button", () => {
     );
   });
 
-  it("falls back to children when isLoading is true and loadingText is not provided", () => {
+  it("falls back to the default loading copy when isLoading is true and loadingText is not provided", () => {
     render(
       <Button isLoading>{BUTTON_CHILDREN_TEXT}</Button>
     );
     const buttonPage = createButtonPage();
 
     expect(buttonPage.getButton()).toHaveTextContent(
-      BUTTON_CHILDREN_TEXT
+      LOADING_COPY.TEXT
     );
   });
 
