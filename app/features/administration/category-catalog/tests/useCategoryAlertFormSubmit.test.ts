@@ -5,7 +5,7 @@ import {
   it,
   vi,
 } from "vitest";
-import { STATUS } from "@/app/constants";
+import { PATHS, STATUS } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import type { UpdateCategoryAlertsInput } from "../models/UpdateCategoryAlertsInput.interface";
@@ -21,13 +21,13 @@ import {
   SUCCESS_RESULT,
 } from "./useCategoryAlertForm.constants";
 
-const mockRefresh = vi.fn();
+const mockPush = vi.fn();
 const mockShowToast = vi.fn();
 const mockOnValidationErrors = vi.fn();
 const mockUpdateCategoryAlertsAction = vi.fn();
 
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({ refresh: mockRefresh }),
+  useRouter: () => ({ push: mockPush }),
   unstable_rethrow: vi.fn(),
 }));
 
@@ -64,12 +64,12 @@ describe("useCategoryAlertFormSubmit", () => {
       mockUpdateCategoryAlertsAction
     ).not.toHaveBeenCalled();
     expect(mockShowToast).not.toHaveBeenCalled();
-    expect(mockRefresh).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
     expect(result.current.isSubmitting).toBe(false);
   });
 
   it.each(SUBMIT_CASES_BY_TYPE)(
-    "sends the $description input, shows the success toast and refreshes",
+    "sends the $description input, shows the success toast and returns to the category list",
     async ({ values, input }) => {
       mockUpdateCategoryAlertsAction.mockResolvedValue(
         SUCCESS_RESULT
@@ -91,12 +91,15 @@ describe("useCategoryAlertFormSubmit", () => {
         STATUS.SUCCESS,
         CATEGORY_CATALOG_COPY.ALERT_UPDATE_SUCCESS_TOAST
       );
-      expect(mockRefresh).toHaveBeenCalledTimes(1);
+      expect(mockPush).toHaveBeenCalledTimes(1);
+      expect(mockPush).toHaveBeenCalledWith(
+        PATHS.ADMINISTRATION.CATEGORIES
+      );
       expect(result.current.isSubmitting).toBe(false);
     }
   );
 
-  it("shows the server message and does not refresh when the action returns an error", async () => {
+  it("shows the server message and does not leave the screen when the action returns an error", async () => {
     mockUpdateCategoryAlertsAction.mockResolvedValue({
       status: CATEGORY_MUTATION_STATUS.ERROR,
       message:
@@ -110,6 +113,6 @@ describe("useCategoryAlertFormSubmit", () => {
       STATUS.ERROR,
       CATEGORY_CATALOG_COPY.ALERT_CATEGORY_NOT_FOUND_ERROR
     );
-    expect(mockRefresh).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
   });
 });
