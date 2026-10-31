@@ -1,8 +1,6 @@
-import { CategoryFormSubmitEvent } from "./CategoryFormSubmitEvent.type";
+import { FormSubmitEvent } from "@/app/utils/form-submit/models/FormSubmitEvent.type";
 
 export interface CategoryAlertFormSubmitViewModel {
   isSubmitting: boolean;
-  onSubmit: (
-    event: CategoryFormSubmitEvent
-  ) => Promise<void>;
+  onSubmit: (event: FormSubmitEvent) => Promise<void>;
 }

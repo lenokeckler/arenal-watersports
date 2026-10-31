@@ -1,8 +1,8 @@
 import { LENGTH } from "@/app/constants";
 import type { NullableUndefined } from "@/app/types";
-import { CATEGORY_LIST_PAGINATION } from "../constants/CategoryListPagination.constants";
+import { LIST_PAGINATION } from "./constants/ListPagination.constants";
 
-export const resolveCategoryListPage = (
+export const resolveListPage = (
   pageParam: NullableUndefined<string | string[]>
 ): number => {
   const page = Number(
@@ -12,7 +12,7 @@ export const resolveCategoryListPage = (
   );
 
   return Number.isSafeInteger(page) &&
-    page >= CATEGORY_LIST_PAGINATION.FIRST_PAGE
+    page >= LIST_PAGINATION.FIRST_PAGE
     ? page
-    : CATEGORY_LIST_PAGINATION.FIRST_PAGE;
+    : LIST_PAGINATION.FIRST_PAGE;
 };

@@ -1,11 +1,11 @@
 import type { ServerSupabaseClient } from "@/app/services/supabase/AppSupabaseClient.type";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
-import type { CategoryListPageRange } from "../models/CategoryListPageRange.interface";
+import type { ListPageRange } from "@/app/utils/list-pagination/models/ListPageRange.interface";
 import type { EquipmentCategoryRow } from "../models/EquipmentCategoryRow.type";
 
 export const fetchCategories = async (
   supabase: ServerSupabaseClient,
-  range: CategoryListPageRange
+  range: ListPageRange
 ): Promise<EquipmentCategoryRow[]> => {
   const { data: categoryRows, error: categoryRowsError } =
     await supabase

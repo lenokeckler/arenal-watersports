@@ -1,8 +1,8 @@
 import { createServerSupabaseClient } from "@/app/services/supabase";
 import type { CategoryListPage } from "../models/CategoryListPage.interface";
 import { mapCategoryRowToListItem } from "../utils/mapCategoryRowToListItem";
-import { resolveCategoryListPageCount } from "../utils/resolveCategoryListPageCount";
-import { resolveCategoryListPageRange } from "../utils/resolveCategoryListPageRange";
+import { resolveListPageCount } from "@/app/utils/list-pagination/resolveListPageCount";
+import { resolveListPageRange } from "@/app/utils/list-pagination/resolveListPageRange";
 import { fetchCategories } from "./fetchCategories";
 import { fetchCategoryCount } from "./fetchCategoryCount";
 import { fetchCategoryIdsWithRecords } from "./fetchCategoryIdsWithRecords";
@@ -12,7 +12,7 @@ export const listCategories = async (
 ): Promise<CategoryListPage> => {
   const supabase = await createServerSupabaseClient();
 
-  const pageCount = resolveCategoryListPageCount(
+  const pageCount = resolveListPageCount(
     await fetchCategoryCount(supabase)
   );
 
@@ -22,7 +22,7 @@ export const listCategories = async (
 
   const categoryRows = await fetchCategories(
     supabase,
-    resolveCategoryListPageRange(page)
+    resolveListPageRange(page)
   );
   const categoryIdsWithRecords =
     await fetchCategoryIdsWithRecords(
