@@ -5,13 +5,18 @@ import {
   CALENDAR_TEXT,
   OPERATIONS_CALENDAR_COPY,
   RESERVATIONS_CALENDAR_COPY,
+  STRING,
 } from "@/app/constants";
 import type {
   CalendarView,
   NullableRef,
 } from "@/app/types";
 import type { OperationsCalendarPage } from "./models/OperationsCalendarPage.interface";
-import { OPERATIONS_CALENDAR_TEST } from "./OperationsCalendar.constants";
+import {
+  OPERATIONS_CALENDAR_DEFAULTS,
+  OPERATIONS_CALENDAR_TEST,
+} from "./OperationsCalendar.constants";
+import { formatCalendarDate } from "@/app/components/calendar/utils/formatCalendarPresentation";
 
 const getBlocks = (): HTMLElement[] =>
   screen.queryAllByRole(ARIA_ROLE.GROUP, {
@@ -19,10 +24,28 @@ const getBlocks = (): HTMLElement[] =>
       RESERVATIONS_CALENDAR_COPY.RESERVATION_NAME
     ),
   });
+const hasEquipmentImage = (customerName: string): boolean =>
+  Boolean(
+    getBlocks()
+      .find((block) =>
+        block.textContent?.includes(customerName)
+      )
+      ?.querySelector("img")
+  );
 const getHeading = (): HTMLElement =>
   screen.getByRole(ARIA_ROLE.HEADING, {
     name: OPERATIONS_CALENDAR_COPY.TITLE,
   });
+const getWeekDayGridClassName = (): string => {
+  const dateLabel = screen.getByText(
+    formatCalendarDate(OPERATIONS_CALENDAR_DEFAULTS.today),
+    { selector: "p" }
+  );
+  return (
+    dateLabel.parentElement?.parentElement?.className ??
+    STRING.Empty
+  );
+};
 const getMessages = (message: string): HTMLElement[] =>
   screen.queryAllByText(message);
 const getView = (
@@ -56,7 +79,9 @@ export const createOperationsCalendarPage =
       navigate(CALENDAR_TEXT.LABELS[view]);
     return {
       getBlocks,
+      hasEquipmentImage,
       getHeading,
+      getWeekDayGridClassName,
       getMessages,
       getView,
       navigate,
