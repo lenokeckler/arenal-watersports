@@ -5,4 +5,5 @@ export interface ReservationCalendarGroupsProps {
   content: ReservationCalendarContent;
   messages: string[];
   period: CalendarPeriod;
+  reserveMobileFabSpace: boolean;
 }
