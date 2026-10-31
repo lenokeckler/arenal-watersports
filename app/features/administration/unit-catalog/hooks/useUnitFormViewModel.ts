@@ -44,6 +44,7 @@ export const useUnitFormViewModel = ({
     ...fields,
     decommissionedNotice,
     isReadOnly: decommissionedNotice !== null,
+    isStatusLocked: unit?.isOccupied ?? false,
     isSubmitting,
     onBack,
     onSubmit,
