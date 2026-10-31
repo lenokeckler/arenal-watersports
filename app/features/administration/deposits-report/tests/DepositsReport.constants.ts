@@ -65,6 +65,7 @@ export const HEADING_LEVEL_TWO = 2;
 export const HEADING_LEVEL_ONE = 1;
 export const ARIA_BUSY_ATTRIBUTE = "aria-busy";
 export const ARIA_BUSY_VALUE = "true";
+export const ARIA_BUSY_SELECTOR = `[${ARIA_BUSY_ATTRIBUTE}]`;
 export const SKELETON_TEXT_PATTERN = /RES-|US\$|₡/;
 export const NO_ASSUME_PATTERN = /no asuma/i;
 

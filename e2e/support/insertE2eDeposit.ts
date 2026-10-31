@@ -26,8 +26,10 @@ export const insertE2eDeposit = async (
       reservation_id: reservationId,
       resolved_at: isHeld
         ? null
-        : E2E_DEPOSIT_RESOLUTION_AT,
+        : (seed.resolvedAt ?? E2E_DEPOSIT_RESOLUTION_AT),
       resolved_by: isHeld ? null : workerId,
+      retained_amount: seed.retainedAmount ?? null,
+      retention_reason: seed.retentionReason ?? null,
       status: seed.status,
     })
     .select()
