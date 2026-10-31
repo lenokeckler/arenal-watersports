@@ -13,6 +13,7 @@ export const SUPABASE_RPC = {
   FINISH_PASSWORD_RECOVERY: "finish_password_recovery",
   GRANT_WORKER_AREA: "grant_worker_area",
   GRANT_WORKER_MARK: "grant_worker_mark",
+  HAS_AREA: "has_area",
   IS_ADMIN: "is_admin",
   ISSUE_PASSWORD_RESET_PIN: "issue_password_reset_pin",
   PREPARE_WORKER_TEMPORARY_PASSWORD:

@@ -14,6 +14,7 @@ export const OperationsCalendarView = (
     <CalendarView
       heading={OPERATIONS_CALENDAR_COPY.TITLE}
       today={props.today}
+      onPeriodChange={props.onPeriodChange}
       {...calendar}
     />
   );
