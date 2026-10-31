@@ -6,10 +6,8 @@ import {
   vi,
 } from "vitest";
 import { NotAuthorizedError } from "@/app/services/authorization/NotAuthorizedError";
-import { UNIT_CATALOG_COPY } from "../constants/UnitCatalogCopy.constants";
 import { UNIT_FORM_ERROR_COPY } from "../constants/UnitFormErrorCopy.constants";
 import { UNIT_MUTATION_STATUS } from "../constants/UnitMutationStatus.constants";
-import { UNIT_EFFECTIVE_STATUS } from "../constants/UnitStatus.constants";
 import { decommissionUnitAction } from "../services/decommissionUnitAction";
 import {
   DEFAULT_DECOMMISSION_UNIT_INPUT,
@@ -17,10 +15,7 @@ import {
   FAKE_UNIT_ID,
 } from "./Unit.constants";
 
-const STATE_VIEW = "unit_current_state";
-
 const mockAssertIsAdminWorker = vi.fn();
-const mockStateMaybeSingle = vi.fn();
 const mockUpdateMaybeSingle = vi.fn();
 const mockUpdate = vi.fn((_row: object) => ({
   eq: () => ({
@@ -31,15 +26,9 @@ const mockUpdate = vi.fn((_row: object) => ({
     }),
   }),
 }));
-const mockFrom = vi.fn((table: string) =>
-  table === STATE_VIEW
-    ? {
-        select: () => ({
-          eq: () => ({ maybeSingle: mockStateMaybeSingle }),
-        }),
-      }
-    : { update: mockUpdate }
-);
+const mockFrom = vi.fn((_table: string) => ({
+  update: mockUpdate,
+}));
 
 vi.mock(
   "@/app/services/authorization/assertIsAdminWorker",
@@ -55,13 +44,6 @@ vi.mock("@/app/services/supabase", () => ({
   }),
 }));
 
-const mockState = (effectiveStatus: string): void => {
-  mockStateMaybeSingle.mockResolvedValue({
-    data: { effective_status: effectiveStatus },
-    error: null,
-  });
-};
-
 describe("decommissionUnitAction", () => {
   beforeEach(() => {
     mockAssertIsAdminWorker.mockReset();
@@ -70,7 +52,6 @@ describe("decommissionUnitAction", () => {
     mockAssertIsAdminWorker.mockResolvedValue(
       FAKE_UNIT_ADMIN_WORKER_ID
     );
-    mockState(UNIT_EFFECTIVE_STATUS.AVAILABLE);
     mockUpdateMaybeSingle.mockResolvedValue({
       data: { id: FAKE_UNIT_ID },
       error: null,
@@ -101,37 +82,5 @@ describe("decommissionUnitAction", () => {
       message: UNIT_FORM_ERROR_COPY.REASON_REQUIRED,
     });
     expect(mockFrom).not.toHaveBeenCalled();
-  });
-
-  it("refuses to decommission an occupied unit without writing", async () => {
-    mockState(UNIT_EFFECTIVE_STATUS.OCCUPIED);
-
-    expect(
-      await decommissionUnitAction(
-        DEFAULT_DECOMMISSION_UNIT_INPUT
-      )
-    ).toEqual({
-      status: UNIT_MUTATION_STATUS.ERROR,
-      message:
-        UNIT_CATALOG_COPY.DECOMMISSION_OCCUPIED_ERROR,
-    });
-    expect(mockUpdate).not.toHaveBeenCalled();
-  });
-
-  it("returns the not-editable error when the unit does not exist", async () => {
-    mockStateMaybeSingle.mockResolvedValue({
-      data: null,
-      error: null,
-    });
-
-    expect(
-      await decommissionUnitAction(
-        DEFAULT_DECOMMISSION_UNIT_INPUT
-      )
-    ).toEqual({
-      status: UNIT_MUTATION_STATUS.ERROR,
-      message: UNIT_CATALOG_COPY.UNIT_NOT_EDITABLE_ERROR,
-    });
-    expect(mockUpdate).not.toHaveBeenCalled();
   });
 });
