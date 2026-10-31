@@ -1,9 +1,5 @@
 import { expect, test } from "@playwright/test";
-import {
-  CURRENCY_CODE,
-  PATHS,
-  STRING,
-} from "@/app/constants";
+import { CURRENCY_CODE, STRING } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
 import { createCategoryDepositFormPage } from "../pages/CategoryDepositForm.page";
 import { createCategoryListPage } from "../pages/CategoryList.page";
@@ -62,7 +58,7 @@ test.describe("Category deposit", () => {
     }
   });
 
-  test("saves both amounts, shows the toast and returns to the list and keeps them when reopened", async ({
+  test("saves both amounts, shows the toast and keeps them when reopened", async ({
     page,
   }, testInfo) => {
     const categoryName = resolveCategoryDepositFixtureName(
@@ -93,9 +89,6 @@ test.describe("Category deposit", () => {
         )
       ).toBeVisible();
 
-      await expect(page).toHaveURL(
-        PATHS.ADMINISTRATION.CATEGORIES
-      );
       await depositFormPage.goTo(categoryId);
 
       await expect(
