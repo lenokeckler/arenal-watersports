@@ -1,3 +1,4 @@
+import { PATHS } from "@/app/constants";
 import { E2E_ALERT_SAVE_CASES } from "../constants/E2eCategoryAlertCases.constants";
 import { expect, test } from "@playwright/test";
 import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
@@ -15,7 +16,7 @@ import { resolveCategoryAlertsFixtureName } from "../constants/E2eCategoryAlerts
 
 test.describe("Category alerts save", () => {
   for (const saveCase of E2E_ALERT_SAVE_CASES) {
-    test(`saves the thresholds and keeps them after reload (${saveCase.scenario})`, async ({
+    test(`saves the thresholds and returns to the list and keeps them when reopened (${saveCase.scenario})`, async ({
       page,
     }, testInfo) => {
       const categoryName = resolveCategoryAlertsFixtureName(
@@ -31,9 +32,9 @@ test.describe("Category alerts save", () => {
 
       try {
         await logInAsAdmin(page);
-        await alertsFormPage.goTo(
-          await findCategoryId(categoryName)
-        );
+        const categoryId =
+          await findCategoryId(categoryName);
+        await alertsFormPage.goTo(categoryId);
         await alertsFormPage.selectType(saveCase.alertType);
         await alertsFormPage.fillThresholds(saveCase.input);
         await alertsFormPage.submit();
@@ -47,7 +48,10 @@ test.describe("Category alerts save", () => {
           await readCategoryAlerts(categoryName)
         ).toEqual(saveCase.expected);
 
-        await alertsFormPage.reload();
+        await expect(page).toHaveURL(
+          PATHS.ADMINISTRATION.CATEGORIES
+        );
+        await alertsFormPage.goTo(categoryId);
 
         await expect(
           alertsFormPage.getTypeSelect()
