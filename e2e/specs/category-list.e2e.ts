@@ -4,14 +4,12 @@ import { CATEGORY_CATALOG_COPY } from "@/app/components/category-catalog/constan
 import { createCategoryListPage } from "../pages/CategoryList.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 import {
-  removeDeletableCategory,
-  seedDeletableCategory,
-} from "../support/categoryFixtures";
-import {
   addTariffToCategory,
   removeCategoryWithRecords,
+  removeDeletableCategory,
   seedCategoryWithRecords,
-} from "../support/categoryRecordsFixtures";
+  seedDeletableCategory,
+} from "../support/categoryFixtures";
 import {
   E2E_CATEGORY_GROUP_LABEL,
   E2E_CATEGORY_WITHOUT_GROUP_NAME,
