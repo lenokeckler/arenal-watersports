@@ -1,19 +1,52 @@
 import { renderHook } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import {
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_STATUS } from "../constants/CategoryStatus.constants";
 import { useCategoryListViewModel } from "../hooks/useCategoryListViewModel";
 import { DEFAULT_CATEGORY_LIST_ITEM } from "./CategoryListItem.constants";
 
+const mockRefresh = vi.fn();
+const mockShowToast = vi.fn();
+const mockMarkCategoryInactiveAction = vi.fn();
+const mockDeleteCategoryAction = vi.fn();
+
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
-    refresh: vi.fn(),
+    refresh: mockRefresh,
   }),
+  unstable_rethrow: vi.fn(),
+}));
+
+vi.mock("@/app/components/toast/utils/useToast", () => ({
+  useToast: () => ({ showToast: mockShowToast }),
+}));
+
+vi.mock("../services/markCategoryInactiveAction", () => ({
+  markCategoryInactiveAction: (categoryId: string) =>
+    mockMarkCategoryInactiveAction(categoryId),
+}));
+
+vi.mock("../services/deleteCategoryAction", () => ({
+  deleteCategoryAction: (categoryId: string) =>
+    mockDeleteCategoryAction(categoryId),
 }));
 
 describe("useCategoryListViewModel cards", () => {
-  it("hardcodes every card's action state to NONE regardless of the underlying category", () => {
+  beforeEach(() => {
+    mockRefresh.mockClear();
+    mockShowToast.mockClear();
+    mockMarkCategoryInactiveAction.mockReset();
+    mockDeleteCategoryAction.mockReset();
+  });
+
+  it("resolves each card's action state from its own category", () => {
     const categoryWithRecords = {
       ...DEFAULT_CATEGORY_LIST_ITEM,
       id: "with-records",
@@ -44,8 +77,8 @@ describe("useCategoryListViewModel cards", () => {
     expect(
       result.current.cards.map((card) => card.actionState)
     ).toEqual([
-      CATEGORY_CARD_ACTION_STATE.NONE,
-      CATEGORY_CARD_ACTION_STATE.NONE,
+      CATEGORY_CARD_ACTION_STATE.MARK_INACTIVE,
+      CATEGORY_CARD_ACTION_STATE.DELETE,
       CATEGORY_CARD_ACTION_STATE.NONE,
     ]);
   });
@@ -60,6 +93,19 @@ describe("useCategoryListViewModel cards", () => {
 
     expect(result.current.cards[0].category).toBe(
       DEFAULT_CATEGORY_LIST_ITEM
+    );
+  });
+
+  it("marks every card's action as not loading before any mutation is wired", () => {
+    const { result } = renderHook(() =>
+      useCategoryListViewModel({
+        categories: [DEFAULT_CATEGORY_LIST_ITEM],
+        fetchFailed: false,
+      })
+    );
+
+    expect(result.current.cards[0].isActionLoading).toBe(
+      false
     );
   });
 
@@ -85,35 +131,5 @@ describe("useCategoryListViewModel cards", () => {
     expect(result.current.cards[0].trackingModeLabel).toBe(
       CATEGORY_CATALOG_COPY.TRACKING_MODE_MICRO_LABEL_BY_UNIT
     );
-  });
-
-  it("marks every card's action as not loading before any mutation is wired", () => {
-    const { result } = renderHook(() =>
-      useCategoryListViewModel({
-        categories: [DEFAULT_CATEGORY_LIST_ITEM],
-        fetchFailed: false,
-      })
-    );
-
-    expect(result.current.cards[0].isActionLoading).toBe(
-      false
-    );
-  });
-
-  it("does not throw when a card's action handlers are invoked before mutations are wired", () => {
-    const { result } = renderHook(() =>
-      useCategoryListViewModel({
-        categories: [DEFAULT_CATEGORY_LIST_ITEM],
-        fetchFailed: false,
-      })
-    );
-    const [card] = result.current.cards;
-
-    expect(() => {
-      card.onDeleteClick();
-      card.onMarkInactiveClick();
-      card.onCancelClick();
-      card.onConfirmDeleteClick();
-    }).not.toThrow();
   });
 });
