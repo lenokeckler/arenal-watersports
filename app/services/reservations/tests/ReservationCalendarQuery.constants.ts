@@ -1,4 +1,7 @@
-import { PAGINATION } from "@/app/constants";
+import {
+  PAGINATION,
+  RESERVATION_CALENDAR_QUERY,
+} from "@/app/constants";
 import type { ReservationCalendarWindow } from "../models/ReservationCalendarWindow.interface";
 
 export const QUERY_WINDOW: ReservationCalendarWindow = {
@@ -67,7 +70,8 @@ export const INVALID_QUERY_PAGES = [
   Number.MAX_SAFE_INTEGER + 1,
   Number.MAX_SAFE_INTEGER,
   Math.floor(
-    Number.MAX_SAFE_INTEGER / PAGINATION.DEFAULT_PAGE_SIZE
+    Number.MAX_SAFE_INTEGER /
+      RESERVATION_CALENDAR_QUERY.PAGE_SIZE
   ),
 ] as const;
 
@@ -94,8 +98,8 @@ export const VALID_QUERY_INSTANTS = [
 
 export const MAXIMUM_QUERY_PAGE = Math.floor(
   (Number.MAX_SAFE_INTEGER -
-    (PAGINATION.DEFAULT_PAGE_SIZE - 1)) /
-    PAGINATION.DEFAULT_PAGE_SIZE
+    (RESERVATION_CALENDAR_QUERY.PAGE_SIZE - 1)) /
+    RESERVATION_CALENDAR_QUERY.PAGE_SIZE
 );
 
 export const OFFSET_QUERY_WINDOW: ReservationCalendarWindow =
