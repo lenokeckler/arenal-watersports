@@ -11,6 +11,7 @@ import {
 
 export const ReservationCalendarGroupList = ({
   groups,
+  reserveMobileFabSpace,
 }: ReservationCalendarGroupListProps): ReactElement => (
   <div className={RESERVATION_CALENDAR_GROUPS_CLASS}>
     {groups.map((group) => (
@@ -32,6 +33,7 @@ export const ReservationCalendarGroupList = ({
             <ReservationCalendarBlock
               key={block.id}
               block={block}
+              reserveMobileFabSpace={reserveMobileFabSpace}
             />
           ))}
         </div>

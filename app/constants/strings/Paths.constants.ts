@@ -16,6 +16,8 @@ export const PATHS = {
     CATEGORY_BEHAVIOR_SEGMENT: "behavior",
     CATEGORY_DEPOSIT_SEGMENT: "deposit",
     CATEGORY_UNITS_SEGMENT: "units",
+    RESERVATIONS_BY_WORKER:
+      "/administration/reports/reservations-by-worker",
     ROOT: "/administration",
     UNITS_NEW_SEGMENT: "new",
     WORKER_AREAS: "/administration/workers/areas",
@@ -25,6 +27,9 @@ export const PATHS = {
     EMAIL: "/profile/email",
     PASSWORD: "/profile/password",
     ROOT: "/profile",
+  },
+  OPERATIONS: {
+    CALENDAR: "/operations/calendar",
   },
   WELL_KNOWN: {
     CHANGE_PASSWORD: "/.well-known/change-password",
