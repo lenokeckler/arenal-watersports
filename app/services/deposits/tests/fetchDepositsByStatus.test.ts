@@ -41,7 +41,8 @@ describe("fetchDepositsByStatus", () => {
       DEPOSIT_QUERY.TABLE
     );
     expect(page.select).toHaveBeenCalledWith(
-      DEPOSIT_QUERY.SELECT
+      DEPOSIT_QUERY.SELECT,
+      { count: DEPOSIT_QUERY.COUNT }
     );
     expect(page.inFilter).toHaveBeenCalledWith(
       DEPOSIT_QUERY.STATUS_COLUMN,
