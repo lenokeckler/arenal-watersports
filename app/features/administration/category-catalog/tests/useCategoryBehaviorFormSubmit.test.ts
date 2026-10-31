@@ -5,7 +5,7 @@ import {
   it,
   vi,
 } from "vitest";
-import { STATUS, STRING } from "@/app/constants";
+import { PATHS, STATUS, STRING } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import type { UpdateCategoryBehaviorInput } from "../models/UpdateCategoryBehaviorInput.interface";
@@ -16,14 +16,14 @@ import {
   submitForm,
 } from "./useCategoryBehaviorFormSubmit.harness";
 
-const mockRefresh = vi.fn();
+const mockPush = vi.fn();
 const mockShowToast = vi.fn();
 const mockOnValidationErrors = vi.fn();
 const mockUpdateCategoryBehaviorAction = vi.fn();
 const mockUnstableRethrow = vi.fn();
 
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({ refresh: mockRefresh }),
+  useRouter: () => ({ push: mockPush }),
   unstable_rethrow: (error: unknown) =>
     mockUnstableRethrow(error),
 }));
@@ -44,7 +44,7 @@ const renderSubmit = (
 
 describe("useCategoryBehaviorFormSubmit", () => {
   beforeEach(() => {
-    mockRefresh.mockClear();
+    mockPush.mockClear();
     mockUnstableRethrow.mockReset();
     mockShowToast.mockClear();
     mockOnValidationErrors.mockClear();
@@ -69,7 +69,7 @@ describe("useCategoryBehaviorFormSubmit", () => {
     ).not.toHaveBeenCalled();
   });
 
-  it("sends the mapped input, shows the success toast and refreshes", async () => {
+  it("sends the mapped input, shows the success toast and returns to the category list", async () => {
     mockUpdateCategoryBehaviorAction.mockResolvedValue({
       status: CATEGORY_MUTATION_STATUS.SUCCESS,
     });
@@ -87,11 +87,14 @@ describe("useCategoryBehaviorFormSubmit", () => {
       STATUS.SUCCESS,
       CATEGORY_CATALOG_COPY.BEHAVIOR_UPDATE_SUCCESS_TOAST
     );
-    expect(mockRefresh).toHaveBeenCalledTimes(1);
+    expect(mockPush).toHaveBeenCalledTimes(1);
+    expect(mockPush).toHaveBeenCalledWith(
+      PATHS.ADMINISTRATION.CATEGORIES
+    );
     expect(result.current.isSubmitting).toBe(false);
   });
 
-  it("shows the server message and does not refresh when the action returns an error", async () => {
+  it("shows the server message and does not leave the screen when the action returns an error", async () => {
     mockUpdateCategoryBehaviorAction.mockResolvedValue({
       status: CATEGORY_MUTATION_STATUS.ERROR,
       message:
@@ -105,6 +108,6 @@ describe("useCategoryBehaviorFormSubmit", () => {
       STATUS.ERROR,
       CATEGORY_CATALOG_COPY.BEHAVIOR_CATEGORY_NOT_FOUND_ERROR
     );
-    expect(mockRefresh).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
   });
 });
