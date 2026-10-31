@@ -7,11 +7,12 @@ import {
 } from "next/navigation";
 import { PATHS, STATUS } from "@/app/constants";
 import { useToast } from "@/app/components/toast/utils/useToast";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import type { CategoryBehaviorFormSubmitOptions } from "../models/CategoryBehaviorFormSubmitOptions.interface";
 import type { CategoryBehaviorFormSubmitViewModel } from "../models/CategoryBehaviorFormSubmitViewModel.interface";
 import { updateCategoryBehaviorAction } from "../services/updateCategoryBehaviorAction";
 import { mapCategoryBehaviorFormValuesToInput } from "../utils/mapCategoryBehaviorFormValuesToInput";
-import { resolveUpdateCategoryBehaviorFeedback } from "../utils/resolveUpdateCategoryBehaviorFeedback";
+import { resolveCategoryMutationFeedback } from "../utils/resolveCategoryMutationFeedback";
 import { showGenericMutationErrorToast } from "../utils/showGenericMutationErrorToast";
 import { validateCategoryBehaviorFormValues } from "../utils/validateCategoryBehaviorFormValues";
 
@@ -52,8 +53,10 @@ export const useCategoryBehaviorFormSubmit = ({
           values
         )
       );
-      const feedback =
-        resolveUpdateCategoryBehaviorFeedback(result);
+      const feedback = resolveCategoryMutationFeedback(
+        result,
+        CATEGORY_CATALOG_COPY.BEHAVIOR_UPDATE_SUCCESS_TOAST
+      );
       showToast(feedback.status, feedback.message);
 
       if (feedback.status === STATUS.SUCCESS) {
