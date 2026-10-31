@@ -19,7 +19,7 @@ values
   ('aaaaaaaa-0000-0000-0000-000000000002', 'Legacy', 'by_unit', 'NaN', 'NaN',
    '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 
-\ir ../migrations/20261029000400_category_deposit_not_nan.sql
+\ir ../migrations/20261029000600_category_deposit_not_nan.sql
 
 select is(
   (select deposit_usd from equipment_categories
