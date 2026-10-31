@@ -91,3 +91,59 @@ US-ADM-12, as written in `docs/proyecto/historias-de-usuario.md`:
 - [ ] Una categoría puede llevar un grupo, opcional. Las que comparten grupo se muestran como una sola tarjeta en el tablero y como un solo bloque al reservar, pero se cuentan y se cobran por separado. Es el caso de los kayaks sencillos y los dobles, y el de los paddleboards cuando hay más de un tipo. — the list shows the optional group label per category; the shared card and block are carried by the board stories.
 - [ ] No se agrupa una categoría que se lleva por unidad con una que se lleva por cantidad: la tarjeta no podría sumar sus propios números. — validation is carried by #35-#38.
 - [x] Sin grupo, la categoría se muestra sola, que es el caso de la mayoría. — in the list, a category without a group renders as its own card with no group row.
+
+# Category deposit rules (US-ADM-14)
+
+## Intent
+
+Let the administration worker set, change and clear the guarantee deposit of a category, in dollars and in colones, each currency on its own. A category with no deposit is a valid state.
+
+## In scope
+
+- Part 14.01 (this branch): the rules only. `findMoneyAmountIssue` and `parseMoneyAmount` in `app/utils/money`, `CATEGORY_DEPOSIT_LIMITS`, `CATEGORY_DEPOSIT_ERROR_COPY`, the form and input models, and `validateCategoryDepositFormValues`.
+- Part 14.02: the form-to-input and deposit-to-form mappers, the data access and the administrator-only update action.
+- Part 14.03: the form state and submit hooks.
+- Part 14.04: the screen, its route and the card link.
+
+## Out of scope / deferred
+
+- Reading the deposit when a reservation is dispatched: carried by US-RES-29.
+- Converting or adding amounts of different currencies (RNF-034, RNF-035).
+- Tariffs (US-ADM-23 to US-ADM-25), which may use other limits with the same money-amount rules.
+
+## Requirements
+
+- Each field is judged on its own, after trimming its text.
+- A blank field means no deposit for that currency: no error, and it is parsed as `null`.
+- The text holds only digits with an optional single decimal separator, `.` or `,` (a Spanish-locale decimal keypad types a comma), followed by digits. `200,50` is read as 200.50. A sign, a second separator, a symbol, an exponent, a leading separator or a trailing separator is a format issue; `100,000` is read as 100.000 and fails on precision, so a thousands separator is never taken for an amount.
+- Leading zeros are not counted as integer digits.
+- At most 10 integer digits in USD and 12 in CRC, and at most 2 decimals in both. Anything more is a precision issue.
+- The value must be greater than zero: `0`, `000` and `0.00` are not-positive issues.
+- The checks run in this order: format, precision, positive.
+- The limits live only in `CATEGORY_DEPOSIT_LIMITS`; the precision message is built from them.
+
+## Edge cases & errors
+
+| Case                          | Observable result                           | Copy key                                             |
+| ----------------------------- | ------------------------------------------- | ---------------------------------------------------- |
+| Both fields blank             | No errors; both values parse as `null`      | none                                                 |
+| `1,5`, `100,000`, `-5`, `1e3` | Format error on that field only             | `CATEGORY_DEPOSIT_ERROR_COPY[currency].format`       |
+| Too many digits or decimals   | Precision error with that currency's limits | `CATEGORY_DEPOSIT_ERROR_COPY[currency].precision`    |
+| `0`, `0.00`                   | Not-positive error on that field only       | `CATEGORY_DEPOSIT_ERROR_COPY[currency].not_positive` |
+| `00012`                       | Valid; read as 12                           | none                                                 |
+| One currency invalid          | The other currency's field shows no error   | none                                                 |
+
+## Constraints
+
+- The money-amount rules are shared (`app/utils/money`) because tariffs and charges reuse them; only the limits are owned by the deposit.
+- The feature depends on the shared utils, never the other way round.
+- Skills that apply: `constants-standards`, `structure-standards`, `unit-testing-standards`, `code-standards`.
+
+## Acceptance criteria
+
+US-ADM-14, as written in `docs/proyecto/historias-de-usuario.md`:
+
+- [ ] Se registra el monto en dólares y en colones. Por ejemplo doscientos dólares o cien mil colones para los jet skis. — the amount rules are closed by 14.01 (`validateCategoryDepositFormValues`); the mapping to the update input and saving are 14.02, and the screen is 14.04.
+- [ ] El monto se puede modificar cuando la empresa lo decida. — `mapCategoryDepositToFormValues` prefills the stored amount and the update action saves it (14.02); the screen is 14.04.
+- [ ] Hay categorías sin depósito. Administración decide a cuáles ponerles, por ejemplo agregárselo también a los cuadraciclos. — a blank field is valid and parses as `null` (14.01); mapping it to the update input and persisting `null` is 14.02.
+- [ ] El monto que se le pide al cliente sale de la categoría del equipo que va a salir. — satisfied by the `deposit_usd` and `deposit_crc` columns of `equipment_categories`; the read at dispatch is left to US-RES-29.
