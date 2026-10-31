@@ -13,6 +13,10 @@ insert into workers (id, username, full_name, base_role)
 values ('22222222-2222-2222-2222-222222222222', 'ismael', 'Ismael', 'operaciones'),
        ('33333333-3333-3333-3333-333333333333', 'celso', 'Celso', 'reservas');
 
+insert into worker_areas (worker_id, area, granted_by)
+values ('11111111-1111-1111-1111-111111111111', 'reservas',
+        '33333333-3333-3333-3333-333333333333');
+
 insert into equipment_categories
   (id, name, tracking_mode, is_reservable, default_duration_minutes, created_by, updated_by)
 values ('aaaaaaaa-0000-0000-0000-000000000001', 'Lancha rapida', 'by_unit', true, 60,
@@ -120,9 +124,6 @@ select is(
   '11111111-1111-1111-1111-111111111111'::uuid,
   'forma granted_by+granted_at: granted_by sale de auth.uid(), no del cliente'
 );
-
-update workers set last_work_area = 'operaciones'
-where id = '22222222-2222-2222-2222-222222222222';
 
 reset role;
 set local role authenticated;
