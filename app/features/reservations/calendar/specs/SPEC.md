@@ -117,3 +117,12 @@ Reservations workers answer customers using visible reservation times, committed
 ## Acceptance criteria
 
 - [ ] Es la vista principal de quien trabaja en reservas.
+
+## Development chore — calendar visual quality
+
+This develop chore improves the existing calendar presentation and interaction quality. It is maintenance work requested by the project owner, not a new user story or a change to the acceptance criteria above.
+
+- Weekly calendar columns remain readable on mobile and desktop.
+- Month and year views retain their period agenda when a day or month is selected and show the selected agenda first.
+- Month and year overview cells show a subtle daily reservation-load treatment: green through two reservations, orange for three or four, and red for five or more. The reservation count is also available as a visible and accessible non-color cue.
+- Reservation and Operations calendar changes continue to follow the current develop behavior and shared calendar components.
