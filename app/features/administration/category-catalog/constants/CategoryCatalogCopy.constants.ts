@@ -31,8 +31,16 @@ export const CATEGORY_CATALOG_COPY = {
   DELETE_SUCCESS_TOAST: "Categoría eliminada.",
   DEPOSIT_CATEGORY_NOT_FOUND_ERROR:
     "No se encontró la categoría. Es posible que otra persona la haya eliminado.",
+  DEPOSIT_CRC_FIELD_LABEL: "Depósito en colones (CRC)",
+  DEPOSIT_FIELD_PLACEHOLDER: "Sin depósito",
+  DEPOSIT_FORM_HINT:
+    "Deje ambos campos vacíos si la categoría no lleva depósito. Cada monto se guarda en su moneda y no se convierte.",
+  DEPOSIT_FORM_TITLE: "Depósito de garantía",
+  DEPOSIT_LINK: "Depósito",
+  DEPOSIT_SUBMIT_BUTTON: "Guardar depósito",
   DEPOSIT_UPDATE_SUCCESS_TOAST:
     "Depósito de la categoría actualizado.",
+  DEPOSIT_USD_FIELD_LABEL: "Depósito en dólares (USD)",
   EMPTY_STATE_BODY:
     "Cada categoría que agregue aparece aquí.",
   EMPTY_STATE_TITLE: "Todavía no hay categorías.",
