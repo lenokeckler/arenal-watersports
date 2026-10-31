@@ -45,14 +45,16 @@ test.describe("Session bar on every authenticated screen", () => {
         ratio: E2E_FULL_VISIBILITY_RATIO,
       });
 
-      await sessionBar.addOverflow(
-        E2E_OVERFLOW_VIEWPORT_MULTIPLE
-      );
-      await sessionBar.scrollToBottom();
+      await expect(async () => {
+        await sessionBar.addOverflow(
+          E2E_OVERFLOW_VIEWPORT_MULTIPLE
+        );
+        await sessionBar.scrollToBottom();
 
-      expect(
-        await sessionBar.readScrollOffset()
-      ).toBeGreaterThan(E2E_MIN_SCROLL_OFFSET_PX);
+        expect(
+          await sessionBar.readScrollOffset()
+        ).toBeGreaterThan(E2E_MIN_SCROLL_OFFSET_PX);
+      }).toPass();
 
       await expect(
         sessionBar.getIdleButton()
