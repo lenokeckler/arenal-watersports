@@ -1,5 +1,9 @@
 import { expect, test } from "@playwright/test";
-import { CURRENCY_CODE, STRING } from "@/app/constants";
+import {
+  CURRENCY_CODE,
+  PATHS,
+  STRING,
+} from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
 import { createCategoryDepositFormPage } from "../pages/CategoryDepositForm.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
@@ -35,9 +39,8 @@ test.describe("Category deposit amounts", () => {
 
     try {
       await logInAsAdmin(page);
-      await depositFormPage.goTo(
-        await findCategoryId(categoryName)
-      );
+      const categoryId = await findCategoryId(categoryName);
+      await depositFormPage.goTo(categoryId);
       await depositFormPage.fillAmount(
         CURRENCY_CODE.USD,
         STRING.Empty
@@ -57,7 +60,10 @@ test.describe("Category deposit amounts", () => {
         await readCategoryDeposit(categoryName)
       ).toEqual(E2E_DEPOSIT_NONE);
 
-      await depositFormPage.reload();
+      await expect(page).toHaveURL(
+        PATHS.ADMINISTRATION.CATEGORIES
+      );
+      await depositFormPage.goTo(categoryId);
 
       await expect(
         depositFormPage.getAmountInput(CURRENCY_CODE.USD)
@@ -85,9 +91,9 @@ test.describe("Category deposit amounts", () => {
 
       try {
         await logInAsAdmin(page);
-        await depositFormPage.goTo(
-          await findCategoryId(categoryName)
-        );
+        const categoryId =
+          await findCategoryId(categoryName);
+        await depositFormPage.goTo(categoryId);
         await depositFormPage.fillAmount(
           saveCase.currency,
           saveCase.amountText
@@ -103,7 +109,10 @@ test.describe("Category deposit amounts", () => {
           await readCategoryDeposit(categoryName)
         ).toEqual(saveCase.expected);
 
-        await depositFormPage.reload();
+        await expect(page).toHaveURL(
+          PATHS.ADMINISTRATION.CATEGORIES
+        );
+        await depositFormPage.goTo(categoryId);
 
         await expect(
           depositFormPage.getAmountInput(saveCase.currency)

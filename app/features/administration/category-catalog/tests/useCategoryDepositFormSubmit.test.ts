@@ -5,7 +5,7 @@ import {
   it,
   vi,
 } from "vitest";
-import { STATUS } from "@/app/constants";
+import { PATHS, STATUS } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import type { UpdateCategoryDepositInput } from "../models/UpdateCategoryDepositInput.interface";
@@ -28,13 +28,13 @@ import {
   SUCCESS_RESULT,
 } from "./useCategoryDepositForm.constants";
 
-const mockRefresh = vi.fn();
+const mockPush = vi.fn();
 const mockShowToast = vi.fn();
 const mockOnValidationErrors = vi.fn();
 const mockUpdateCategoryDepositAction = vi.fn();
 
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({ refresh: mockRefresh }),
+  useRouter: () => ({ push: mockPush }),
   unstable_rethrow: vi.fn(),
 }));
 
@@ -71,7 +71,7 @@ describe("useCategoryDepositFormSubmit", () => {
       mockUpdateCategoryDepositAction
     ).not.toHaveBeenCalled();
     expect(mockShowToast).not.toHaveBeenCalled();
-    expect(mockRefresh).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
     expect(result.current.isSubmitting).toBe(false);
   });
 
@@ -102,7 +102,7 @@ describe("useCategoryDepositFormSubmit", () => {
       }),
     },
   ])(
-    "sends $description, shows the success toast and refreshes",
+    "sends $description, shows the success toast and returns to the category list",
     async ({ values, input }) => {
       mockUpdateCategoryDepositAction.mockResolvedValue(
         SUCCESS_RESULT
@@ -124,12 +124,15 @@ describe("useCategoryDepositFormSubmit", () => {
         STATUS.SUCCESS,
         CATEGORY_CATALOG_COPY.DEPOSIT_UPDATE_SUCCESS_TOAST
       );
-      expect(mockRefresh).toHaveBeenCalledTimes(1);
+      expect(mockPush).toHaveBeenCalledTimes(1);
+      expect(mockPush).toHaveBeenCalledWith(
+        PATHS.ADMINISTRATION.CATEGORIES
+      );
       expect(result.current.isSubmitting).toBe(false);
     }
   );
 
-  it("shows the server message and does not refresh when the action returns an error", async () => {
+  it("shows the server message and does not leave the screen when the action returns an error", async () => {
     mockUpdateCategoryDepositAction.mockResolvedValue({
       status: CATEGORY_MUTATION_STATUS.ERROR,
       message:
@@ -143,6 +146,6 @@ describe("useCategoryDepositFormSubmit", () => {
       STATUS.ERROR,
       CATEGORY_CATALOG_COPY.DEPOSIT_CATEGORY_NOT_FOUND_ERROR
     );
-    expect(mockRefresh).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
   });
 });
