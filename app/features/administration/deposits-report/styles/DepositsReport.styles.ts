@@ -1,8 +1,6 @@
+import { DEPOSIT_ROW_CARD_CLASS } from "@/app/components/deposit-ledger/styles/DepositRow.styles";
 import { DEPOSIT_SKELETON_PULSE_CLASS } from "@/app/components/deposit-ledger/styles/DepositSkeleton.styles";
 import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
-
-const DEPOSIT_ROW_BASE_CLASS =
-  "rounded-xl border border-l-4 border-outline-variant bg-card-tint-neutral-bg p-md backdrop-blur-md";
 
 export const DEPOSITS_REPORT_STACK_CLASS =
   "flex flex-col gap-md";
@@ -16,16 +14,13 @@ export const DEPOSITS_REPORT_HEADING_CLASS =
 export const DEPOSITS_REPORT_HELP_CLASS =
   "text-body-base text-on-surface-variant";
 
-export const DEPOSITS_REPORT_LIST_CLASS =
-  "flex flex-col gap-sm";
-
 export const PENDING_DEPOSIT_ROW_CLASS = joinClassNames(
-  DEPOSIT_ROW_BASE_CLASS,
+  DEPOSIT_ROW_CARD_CLASS,
   "border-l-tertiary"
 );
 
 export const RETAINED_DEPOSIT_ROW_CLASS = joinClassNames(
-  DEPOSIT_ROW_BASE_CLASS,
+  DEPOSIT_ROW_CARD_CLASS,
   "flex flex-col gap-sm border-l-error"
 );
 
@@ -37,9 +32,6 @@ export const RETAINED_REASON_LABEL_CLASS =
 
 export const RETAINED_REASON_TEXT_CLASS =
   "whitespace-pre-line break-words text-body-base text-on-surface";
-
-export const DEPOSITS_REPORT_SCREEN_READER_CLASS =
-  "sr-only";
 
 export const PENDING_DEPOSIT_SKELETON_ROW_CLASS =
   joinClassNames(

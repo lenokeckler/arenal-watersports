@@ -3,9 +3,9 @@ import { PATHS } from "@/app/constants";
 import DepositsHeading from "./components/DepositsHeading";
 import { DEPOSITS_REPORT_COPY } from "./constants/DepositsReportCopy.constants";
 import { DEPOSITS_REPORT_DOM_ID } from "./constants/DepositsReportDomId.constants";
-import DepositsPendingList from "./DepositsPendingList";
-import DepositsRetainedList from "./DepositsRetainedList";
-import DepositsSection from "./DepositsSection";
+import DepositsPendingList from "./components/DepositsPendingList";
+import DepositsRetainedList from "./components/DepositsRetainedList";
+import DepositsSection from "./components/DepositsSection";
 import type { DepositsViewProps } from "./models/DepositsViewProps.interface";
 import { DEPOSITS_REPORT_STACK_CLASS } from "./styles/DepositsReport.styles";
 

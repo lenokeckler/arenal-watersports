@@ -1,13 +1,11 @@
 import { Text, UnorderedList } from "@/app/components";
+import { SCREEN_READER_ONLY_CLASS } from "@/app/styles/ScreenReader.styles";
 import { ARIA_ROLE, UNORDERED_LIST } from "@/app/constants";
-import DepositsSection from "../DepositsSection";
+import DepositsSection from "./DepositsSection";
 import { DEPOSITS_REPORT_SKELETON_ROW_COUNT } from "../constants/DepositsReport.constants";
 import { DEPOSITS_REPORT_COPY } from "../constants/DepositsReportCopy.constants";
 import { DEPOSITS_REPORT_DOM_ID } from "../constants/DepositsReportDomId.constants";
-import {
-  DEPOSITS_REPORT_SCREEN_READER_CLASS,
-  DEPOSITS_REPORT_STACK_CLASS,
-} from "../styles/DepositsReport.styles";
+import { DEPOSITS_REPORT_STACK_CLASS } from "../styles/DepositsReport.styles";
 import DepositsHeading from "./DepositsHeading";
 import PendingDepositSkeletonRow from "./PendingDepositSkeletonRow";
 import RetainedDepositSkeletonRow from "./RetainedDepositSkeletonRow";
@@ -30,7 +28,7 @@ const DepositsLoading = (): React.JSX.Element => (
     <DepositsHeading />
     <Text
       role={ARIA_ROLE.STATUS}
-      className={DEPOSITS_REPORT_SCREEN_READER_CLASS}
+      className={SCREEN_READER_ONLY_CLASS}
     >
       {DEPOSITS_REPORT_COPY.LOADING_ANNOUNCEMENT}
     </Text>
@@ -41,6 +39,9 @@ const DepositsLoading = (): React.JSX.Element => (
     >
       <UnorderedList
         variant={UNORDERED_LIST.VARIANTS.PLAIN}
+        ariaLabel={
+          DEPOSITS_REPORT_COPY.PENDING_LIST_ARIA_LABEL
+        }
         items={PENDING_SKELETON_ITEMS}
       />
     </DepositsSection>
@@ -51,6 +52,9 @@ const DepositsLoading = (): React.JSX.Element => (
     >
       <UnorderedList
         variant={UNORDERED_LIST.VARIANTS.PLAIN}
+        ariaLabel={
+          DEPOSITS_REPORT_COPY.RETAINED_LIST_ARIA_LABEL
+        }
         items={RETAINED_SKELETON_ITEMS}
       />
     </DepositsSection>

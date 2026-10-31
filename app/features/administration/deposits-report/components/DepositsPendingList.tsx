@@ -2,11 +2,13 @@ import {
   DepositEmptyNotice,
   UnorderedList,
 } from "@/app/components";
-import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
-import { UNORDERED_LIST } from "@/app/constants";
-import PendingDepositRow from "./components/PendingDepositRow";
-import { DEPOSITS_REPORT_COPY } from "./constants/DepositsReportCopy.constants";
-import type { DepositsPendingListProps } from "./models/DepositsPendingListProps.interface";
+import {
+  MATERIAL_ICON_NAME,
+  UNORDERED_LIST,
+} from "@/app/constants";
+import PendingDepositRow from "./PendingDepositRow";
+import { DEPOSITS_REPORT_COPY } from "../constants/DepositsReportCopy.constants";
+import type { DepositsPendingListProps } from "../models/DepositsPendingListProps.interface";
 
 const DepositsPendingList = ({
   deposits,
