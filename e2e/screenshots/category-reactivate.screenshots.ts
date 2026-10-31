@@ -1,6 +1,9 @@
-import { test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
-import { E2E_CATEGORY_REACTIVATE_SCREENSHOT_BASENAME } from "../constants/E2eCategoryList.constants";
+import {
+  E2E_CATEGORY_REACTIVATE_SCREENSHOT_BASENAME,
+  E2E_TOAST_DISMISS_TIMEOUT_MILLISECONDS,
+} from "../constants/E2eCategoryList.constants";
 import { resolveReactivateCategoryName } from "../constants/E2eCategoryFixtures.constants";
 import { resolveDeviceScreenshotFileName } from "../constants/E2eScreenshot.constants";
 import { createCategoryReactivatePage } from "../pages/CategoryReactivate.page";
@@ -29,16 +32,18 @@ test.describe("Category reactivation screenshots", () => {
         categoryName
       );
       await categoryListPage
-        .getToastMessage(
+        .getReactivateButton(categoryName)
+        .waitFor();
+      await expect(
+        page.getByText(
           CATEGORY_CATALOG_COPY.MARK_INACTIVE_SUCCESS_TOAST
         )
-        .waitFor({ state: "hidden" });
+      ).toHaveCount(0, {
+        timeout: E2E_TOAST_DISMISS_TIMEOUT_MILLISECONDS,
+      });
       await categoryListPage
         .getReactivateButton(categoryName)
         .scrollIntoViewIfNeeded();
-      await categoryListPage
-        .getReactivateButton(categoryName)
-        .waitFor();
 
       await captureViewport(
         page,
