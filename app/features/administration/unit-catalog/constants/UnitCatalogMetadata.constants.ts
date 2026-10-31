@@ -10,3 +10,7 @@ export const UNIT_LIST_METADATA: Metadata = {
 export const UNIT_CREATE_METADATA: Metadata = {
   title: UNIT_FORM_TITLE[UNIT_FORM_MODE.CREATE],
 };
+
+export const UNIT_EDIT_METADATA: Metadata = {
+  title: UNIT_FORM_TITLE[UNIT_FORM_MODE.EDIT],
+};

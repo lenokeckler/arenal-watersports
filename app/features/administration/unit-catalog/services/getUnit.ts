@@ -2,6 +2,7 @@ import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
 import type { NullableRef } from "@/app/types";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+import { UNIT_EFFECTIVE_STATUS } from "../constants/UnitStatus.constants";
 import type { Unit } from "../models/Unit.interface";
 import { mapUnitRowToUnit } from "../utils/mapUnitRowToUnit";
 
@@ -24,6 +25,21 @@ export const getUnit = async (
     return null;
   }
   throwIfSupabaseError(error, "getUnit");
+  if (!unitRow) {
+    return null;
+  }
 
-  return unitRow ? mapUnitRowToUnit(unitRow) : null;
+  const { data: currentState, error: stateError } =
+    await supabase
+      .from("unit_current_state")
+      .select("effective_status")
+      .eq("id", unitId)
+      .maybeSingle();
+  throwIfSupabaseError(stateError, "getUnit");
+
+  return mapUnitRowToUnit(
+    unitRow,
+    currentState?.effective_status ===
+      UNIT_EFFECTIVE_STATUS.OCCUPIED
+  );
 };
