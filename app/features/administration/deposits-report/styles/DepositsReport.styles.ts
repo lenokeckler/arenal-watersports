@@ -28,7 +28,7 @@ export const RETAINED_REASON_CLASS =
   "flex flex-col gap-xs rounded-lg border border-card-tint-damaged-border bg-card-tint-damaged-bg p-sm";
 
 export const RETAINED_REASON_LABEL_CLASS =
-  "text-label-mono uppercase text-error";
+  "text-label-mono uppercase text-on-surface-variant";
 
 export const RETAINED_REASON_TEXT_CLASS =
   "whitespace-pre-line break-words text-body-base text-on-surface";
