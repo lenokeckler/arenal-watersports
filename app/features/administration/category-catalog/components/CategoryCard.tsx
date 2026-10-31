@@ -18,17 +18,12 @@ const CategoryCard = ({
   category,
   isInactive,
   trackingModeLabel,
-  actionState,
-  isActionLoading,
-  onCancelClick,
-  onConfirmDeleteClick,
-  onDeleteClick,
-  onMarkInactiveClick,
+  ...actionProps
 }: CategoryCardViewModel): React.JSX.Element => (
   <div
     className={resolveCategoryCardContainerClassName(
       isInactive,
-      actionState ===
+      actionProps.actionState ===
         CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
     )}
   >
@@ -50,14 +45,7 @@ const CategoryCard = ({
         CATEGORY_TRACKING_MODE.BY_UNIT && (
         <CategoryCardUnitsLink categoryId={category.id} />
       )}
-      <CategoryCardActions
-        actionState={actionState}
-        isActionLoading={isActionLoading}
-        onCancelClick={onCancelClick}
-        onConfirmDeleteClick={onConfirmDeleteClick}
-        onDeleteClick={onDeleteClick}
-        onMarkInactiveClick={onMarkInactiveClick}
-      />
+      <CategoryCardActions {...actionProps} />
     </div>
   </div>
 );

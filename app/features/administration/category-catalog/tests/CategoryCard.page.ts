@@ -49,6 +49,11 @@ export const createCategoryCardPage = () => {
       name: CATEGORY_CATALOG_COPY.DELETE_CATEGORY_BUTTON,
     });
 
+  const getReactivateButton = () =>
+    screen.queryByRole(ARIA_ROLE.BUTTON, {
+      name: CATEGORY_CATALOG_COPY.REACTIVATE_BUTTON,
+    });
+
   const getMarkInactiveButton = () =>
     screen.queryByRole(ARIA_ROLE.BUTTON, {
       name: CATEGORY_CATALOG_COPY.MARK_INACTIVE_BUTTON,
@@ -75,6 +80,14 @@ export const createCategoryCardPage = () => {
         name: CATEGORY_CATALOG_COPY.CANCEL_BUTTON,
       })
       .hasAttribute("disabled");
+
+  const clickReactivateButton = async (): Promise<void> => {
+    await user.click(
+      screen.getByRole(ARIA_ROLE.BUTTON, {
+        name: CATEGORY_CATALOG_COPY.REACTIVATE_BUTTON,
+      })
+    );
+  };
 
   const clickCancelButton = async (): Promise<void> => {
     await user.click(
@@ -105,11 +118,13 @@ export const createCategoryCardPage = () => {
     getGroupPrefix,
     getDeleteButton,
     getMarkInactiveButton,
+    getReactivateButton,
     getCancelButton,
     getConfirmDeleteButton,
     getConfirmDeleteMessage,
     isCancelButtonDisabled,
     clickCancelButton,
     clickConfirmDeleteButton,
+    clickReactivateButton,
   };
 };

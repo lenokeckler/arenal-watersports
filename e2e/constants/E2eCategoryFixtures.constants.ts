@@ -27,6 +27,10 @@ export const resolveMarkInactiveCategoryName = (
 ): string =>
   `${E2E_MARK_INACTIVE_CATEGORY_BASE_NAME} (${projectName})`;
 
+export const resolveReactivateCategoryName = (
+  projectName: string
+): string => `E2E Fixture — Reactivar (${projectName})`;
+
 export const E2E_CATEGORY_WITH_GROUP_NAME = "Kayak doble";
 
 export const E2E_CATEGORY_GROUP_LABEL = "Kayak";

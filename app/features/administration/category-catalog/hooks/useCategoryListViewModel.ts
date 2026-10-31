@@ -51,6 +51,9 @@ const buildCategoryCardViewModel = (
   onMarkInactiveClick: cardActions.onMarkInactiveClick(
     category.id
   ),
+  onReactivateClick: cardActions.onReactivateClick(
+    category.id
+  ),
 });
 
 export const useCategoryListViewModel = ({

@@ -8,7 +8,7 @@ export const resolveCategoryCardActionState = (
   isConfirmingThisCard: boolean
 ): CategoryCardActionState => {
   if (category.status === CATEGORY_STATUS.INACTIVE) {
-    return CATEGORY_CARD_ACTION_STATE.NONE;
+    return CATEGORY_CARD_ACTION_STATE.REACTIVATE;
   }
 
   if (category.hasRecords) {
