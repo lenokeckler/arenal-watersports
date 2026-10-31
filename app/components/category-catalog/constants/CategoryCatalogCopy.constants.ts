@@ -1,4 +1,6 @@
 export const CATEGORY_CATALOG_COPY = {
+  BEHAVIOR_CATEGORY_NOT_FOUND_ERROR:
+    "No se encontró la categoría. Es posible que otra persona la haya eliminado.",
   CANCEL_BUTTON: "Cancelar",
   CAN_BE_DAMAGED_FIELD_LABEL: "Puede dañarse",
   CONSUMES_FUEL_FIELD_LABEL: "Consume combustible",
