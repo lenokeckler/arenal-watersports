@@ -2,6 +2,7 @@ import { SUPABASE_TABLE } from "./SupabaseTable.constants";
 
 export const DEPOSIT_QUERY = {
   COUNT: "exact",
+  ID_COLUMN: "id",
   OPERATION: "fetch deposits by status",
   ORDER_COLUMN: "created_at",
   RESOLVED_AT_COLUMN: "resolved_at",

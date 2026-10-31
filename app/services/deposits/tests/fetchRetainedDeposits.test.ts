@@ -68,9 +68,16 @@ describe("fetchRetainedDeposits", () => {
 
     await fetchRetainedDeposits();
 
-    expect(page.order).toHaveBeenCalledWith(
+    expect(page.order).toHaveBeenCalledTimes(2);
+    expect(page.order).toHaveBeenNthCalledWith(
+      1,
       DEPOSIT_QUERY.RESOLVED_AT_COLUMN,
       { ascending: false, nullsFirst: false }
+    );
+    expect(page.order).toHaveBeenNthCalledWith(
+      2,
+      DEPOSIT_QUERY.ID_COLUMN,
+      { ascending: true }
     );
   });
 

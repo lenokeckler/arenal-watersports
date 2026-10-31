@@ -24,7 +24,8 @@ export const fetchRetainedDeposits = async (): Promise<
     .order(DEPOSIT_QUERY.RESOLVED_AT_COLUMN, {
       ascending: false,
       nullsFirst: false,
-    });
+    })
+    .order(DEPOSIT_QUERY.ID_COLUMN, { ascending: true });
 
   throwIfSupabaseError(
     error,
