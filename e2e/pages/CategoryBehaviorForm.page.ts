@@ -46,11 +46,6 @@ export const createCategoryBehaviorFormPage = (
       CATEGORY_CATALOG_COPY.IS_RESERVABLE_FIELD_LABEL
     );
 
-  const getUnitsAreInterchangeableCheckbox = (): Locator =>
-    getControl(
-      CATEGORY_CATALOG_COPY.UNITS_ARE_INTERCHANGEABLE_FIELD_LABEL
-    );
-
   const getHasMotorCheckbox = (): Locator =>
     getControl(CATEGORY_CATALOG_COPY.HAS_MOTOR_FIELD_LABEL);
 
@@ -128,7 +123,6 @@ export const createCategoryBehaviorFormPage = (
     getTrackingModeLine,
     getTrackingModeControl,
     getIsReservableCheckbox,
-    getUnitsAreInterchangeableCheckbox,
     getHasMotorCheckbox,
     getUsageMetricSelect,
     getHasConditionPhotosCheckbox,
