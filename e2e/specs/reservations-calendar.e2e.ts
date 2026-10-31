@@ -5,6 +5,11 @@ import { createReservationsCalendarPage } from "../pages/ReservationsCalendar.pa
 import { createWorkModePage } from "../pages/WorkMode.page";
 import { expect, test } from "../support/activeWorkerTest";
 import { addReservationsArea } from "../support/addReservationsArea";
+import { createReservationsCalendarHeatFixture } from "../support/createReservationsCalendarHeatFixture";
+import {
+  assertAvailableCalendarViews,
+  exerciseReservationsCalendarInteractions,
+} from "../support/reservationsCalendarAssertions";
 import { submitActiveWorkerSignIn } from "../support/submitActiveWorkerSignIn";
 
 test.describe("Reservations calendar", () => {
@@ -19,38 +24,42 @@ test.describe("Reservations calendar", () => {
     await expect(page).toHaveURL(PATHS.HOME);
   });
 
-  test("shows all reservation calendar views and selects a week", async ({
+  test("shows the heat map, selected agendas, and week layout", async ({
+    activeWorker,
     page,
-  }) => {
-    const calendarPage =
-      createReservationsCalendarPage(page);
-    await calendarPage.goTo();
+  }, testInfo) => {
+    const heatFixture =
+      await createReservationsCalendarHeatFixture(
+        activeWorker.id,
+        activeWorker.username,
+        testInfo.project.name
+      );
 
-    await expect(calendarPage.getHeading()).toBeVisible();
-    await expect(
-      calendarPage.getCreateReservationLink()
-    ).toHaveAttribute("href", PATHS.RESERVATIONS.NEW);
-    await expect(
-      calendarPage.getPeriodContent()
-    ).toBeVisible();
-    await expect(
-      calendarPage.getView(CALENDAR_VIEW.DAY)
-    ).toBeVisible();
-    await expect(
-      calendarPage.getView(CALENDAR_VIEW.WEEK)
-    ).toBeVisible();
-    await expect(
-      calendarPage.getView(CALENDAR_VIEW.MONTH)
-    ).toBeVisible();
-    await expect(
-      calendarPage.getView(CALENDAR_VIEW.YEAR)
-    ).toBeVisible();
-    await calendarPage.selectView(CALENDAR_VIEW.WEEK);
-    await expect(
-      calendarPage.getView(CALENDAR_VIEW.WEEK)
-    ).toHaveAttribute(
-      E2E_RESERVATIONS_CALENDAR_ATTRIBUTES.PRESSED,
-      E2E_RESERVATIONS_CALENDAR_ATTRIBUTES.TRUE
-    );
+    try {
+      const calendarPage =
+        createReservationsCalendarPage(page);
+      await calendarPage.goTo();
+      await expect(
+        calendarPage.getCreateReservationLink()
+      ).toHaveAttribute("href", PATHS.RESERVATIONS.NEW);
+      await expect(
+        calendarPage.getPeriodContent()
+      ).toBeVisible();
+      await assertAvailableCalendarViews(calendarPage);
+      await exerciseReservationsCalendarInteractions(
+        page,
+        calendarPage,
+        heatFixture,
+        testInfo.project.use.isMobile === true
+      );
+      await expect(
+        calendarPage.getView(CALENDAR_VIEW.WEEK)
+      ).toHaveAttribute(
+        E2E_RESERVATIONS_CALENDAR_ATTRIBUTES.PRESSED,
+        E2E_RESERVATIONS_CALENDAR_ATTRIBUTES.TRUE
+      );
+    } finally {
+      await heatFixture.remove();
+    }
   });
 });
