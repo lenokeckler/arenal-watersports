@@ -7,7 +7,7 @@ export const CALENDAR_TITLE_CLASS =
 export const CALENDAR_TOOLBAR_CLASS =
   "space-y-4 rounded-xl border border-white/10 bg-surface-container-low/80 p-4 shadow-lg backdrop-blur-xl sm:space-y-5 md:p-6";
 export const CALENDAR_ACTIONS_CLASS =
-  "flex flex-wrap gap-2";
+  "grid w-full max-w-[24rem] grid-cols-3 gap-2";
 export const CALENDAR_VIEW_GROUP_CLASS =
   "grid w-full auto-cols-fr grid-flow-col gap-1 rounded-lg border border-white/5 bg-surface-container-low p-1 shadow-inner";
 export const CALENDAR_BUTTON_CLASS =
