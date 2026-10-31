@@ -20,10 +20,8 @@ import {
 import { renderUnitForm } from "./renderUnitForm";
 
 const { REASON_LABEL } = UNIT_DECOMMISSION_COPY;
-const {
-  DECOMMISSION_OCCUPIED_ERROR,
-  DECOMMISSION_SUCCESS_TOAST,
-} = UNIT_CATALOG_COPY;
+const { UNIT_OCCUPIED_ERROR, DECOMMISSION_SUCCESS_TOAST } =
+  UNIT_CATALOG_COPY;
 
 const mocks = vi.hoisted(() => ({
   decommission: vi.fn(),
@@ -99,14 +97,14 @@ describe("Unit decommission panel", () => {
   it("shows the occupied message in a toast and stays on the confirmation", async () => {
     mocks.decommission.mockResolvedValue({
       status: UNIT_MUTATION_STATUS.ERROR,
-      message: DECOMMISSION_OCCUPIED_ERROR,
+      message: UNIT_OCCUPIED_ERROR,
     });
     const page = await confirmWithReason();
 
     await waitFor(() =>
       expect(mocks.showToast).toHaveBeenCalledWith(
         STATUS.ERROR,
-        DECOMMISSION_OCCUPIED_ERROR
+        UNIT_OCCUPIED_ERROR
       )
     );
     expect(mocks.push).not.toHaveBeenCalled();
