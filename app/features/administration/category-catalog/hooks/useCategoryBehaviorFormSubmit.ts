@@ -5,7 +5,7 @@ import {
   unstable_rethrow,
   useRouter,
 } from "next/navigation";
-import { STATUS } from "@/app/constants";
+import { PATHS, STATUS } from "@/app/constants";
 import { useToast } from "@/app/components/toast/utils/useToast";
 import type { CategoryBehaviorFormSubmitOptions } from "../models/CategoryBehaviorFormSubmitOptions.interface";
 import type { CategoryBehaviorFormSubmitViewModel } from "../models/CategoryBehaviorFormSubmitViewModel.interface";
@@ -57,7 +57,7 @@ export const useCategoryBehaviorFormSubmit = ({
       showToast(feedback.status, feedback.message);
 
       if (feedback.status === STATUS.SUCCESS) {
-        router.refresh();
+        router.push(PATHS.ADMINISTRATION.CATEGORIES);
       }
     } catch (error) {
       unstable_rethrow(error);
