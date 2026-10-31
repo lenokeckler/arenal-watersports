@@ -7,12 +7,14 @@ import {
 } from "vitest";
 import { DEPOSIT_QUERY } from "@/app/constants";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
+import { DepositsTruncatedError } from "../DepositsTruncatedError";
 import { fetchDepositsByStatus } from "../fetchDepositsByStatus";
 import {
   CRC_DEPOSIT_ITEM,
   CRC_DEPOSIT_ROW,
   MULTIPLE_STATUSES,
   POSTGREST_ERROR,
+  TRUNCATED_TOTAL_COUNT,
   USD_DEPOSIT_ITEM,
   USD_DEPOSIT_ROW,
 } from "./Deposits.constants";
@@ -41,7 +43,8 @@ describe("fetchDepositsByStatus", () => {
       DEPOSIT_QUERY.TABLE
     );
     expect(page.select).toHaveBeenCalledWith(
-      DEPOSIT_QUERY.SELECT
+      DEPOSIT_QUERY.SELECT,
+      { count: DEPOSIT_QUERY.COUNT }
     );
     expect(page.inFilter).toHaveBeenCalledWith(
       DEPOSIT_QUERY.STATUS_COLUMN,
@@ -102,6 +105,30 @@ describe("fetchDepositsByStatus", () => {
     await expect(
       fetchDepositsByStatus({ statuses: MULTIPLE_STATUSES })
     ).rejects.toBeInstanceOf(SupabaseQueryError);
+  });
+
+  it("throws DepositsTruncatedError when the count exceeds the rows", async () => {
+    DepositsQueryPage.respondingWith({
+      data: [USD_DEPOSIT_ROW],
+      error: null,
+      count: TRUNCATED_TOTAL_COUNT,
+    });
+
+    await expect(
+      fetchDepositsByStatus({ statuses: MULTIPLE_STATUSES })
+    ).rejects.toBeInstanceOf(DepositsTruncatedError);
+  });
+
+  it("throws DepositsTruncatedError when the count is null", async () => {
+    DepositsQueryPage.respondingWith({
+      data: [USD_DEPOSIT_ROW],
+      error: null,
+      count: null,
+    });
+
+    await expect(
+      fetchDepositsByStatus({ statuses: MULTIPLE_STATUSES })
+    ).rejects.toBeInstanceOf(DepositsTruncatedError);
   });
 
   it("returns an empty array without creating a client when no status is requested", async () => {

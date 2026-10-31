@@ -10,7 +10,17 @@ export class DepositsQueryPage {
   readonly from = vi.fn(() => ({ select: this.select }));
 
   constructor(result: DepositsQueryResult) {
-    this.order.mockResolvedValue(result);
+    const response = {
+      count: Array.isArray(result.data)
+        ? result.data.length
+        : null,
+      ...result,
+    };
+    this.order.mockImplementation(() =>
+      Object.assign(Promise.resolve(response), {
+        order: this.order,
+      })
+    );
     vi.mocked(createServerSupabaseClient).mockResolvedValue(
       {
         from: this.from,

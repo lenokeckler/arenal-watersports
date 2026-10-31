@@ -54,6 +54,9 @@ export const MULTIPLE_STATUSES = [
   DEPOSIT_STATUS.RETAINED,
 ] as const;
 
+export const TRUNCATED_ROW_COUNT = 1;
+export const TRUNCATED_TOTAL_COUNT = 2;
+
 export const POSTGREST_ERROR = {
   name: "PostgrestError",
   message: "permission denied",

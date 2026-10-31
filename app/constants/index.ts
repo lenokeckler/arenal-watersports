@@ -321,11 +321,16 @@ export {
 export { RESERVATION_CALENDAR_QUERY_ERROR } from "./supabase/ReservationCalendarQueryError.constants";
 export { DEPOSIT_QUERY } from "./supabase/DepositQuery.constants";
 export {
+  DEPOSIT_ROW_INCOMPLETE_ERROR_MESSAGE,
+  DEPOSITS_TRUNCATED_ERROR_MESSAGE,
+} from "./supabase/DepositsReadError.constants";
+export {
   CURRENCY_CODE,
   type CurrencyCode,
 } from "./money/CurrencyCode.constants";
 export {
   DEPOSIT_STATUS,
+  RETAINED_DEPOSIT_STATUSES,
   type DepositStatus,
 } from "./money/DepositStatus.constants";
 export { DEPOSIT_COPY } from "./money/DepositCopy.constants";
