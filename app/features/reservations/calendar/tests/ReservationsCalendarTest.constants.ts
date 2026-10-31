@@ -1,0 +1,3 @@
+export const RESERVATIONS_CALENDAR_TEST_TIMEOUT_MS = {
+  YEAR_VIEW: 15_000,
+} as const;
