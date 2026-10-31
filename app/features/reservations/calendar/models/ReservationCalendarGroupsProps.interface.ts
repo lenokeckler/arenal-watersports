@@ -1,9 +1,9 @@
 import type { CalendarPeriod } from "@/app/components/calendar/models";
-import type { ReservationCalendarContent } from "@/app/components/reservation-calendar/models/ReservationCalendarContent.interface";
+import type { ReservationCalendarAgendaContent } from "./ReservationCalendarAgendaContent.interface";
 
 export interface ReservationCalendarGroupsProps {
-  content: ReservationCalendarContent;
-  messages: string[];
   period: CalendarPeriod;
-  reserveMobileFabSpace: boolean;
+  periodAgenda: ReservationCalendarAgendaContent;
+  selectedDayAgenda?: ReservationCalendarAgendaContent;
+  selectedMonthAgenda?: ReservationCalendarAgendaContent;
 }
