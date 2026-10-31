@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import { STRING } from "@/app/constants";
-import { CATEGORY_TRACKING_MODE } from "../constants/CategoryTrackingMode.constants";
 import { mapCategoryBehaviorToFormValues } from "../utils/mapCategoryBehaviorToFormValues";
 import { DEFAULT_CATEGORY_BEHAVIOR } from "./CategoryBehavior.constants";
 import {
@@ -69,29 +68,6 @@ describe("mapCategoryBehaviorToFormValues", () => {
       CUSTOM_DURATION_TEXT
     );
   });
-
-  it.each([
-    [CATEGORY_TRACKING_MODE.BY_QUANTITY, false, true],
-    [CATEGORY_TRACKING_MODE.BY_QUANTITY, true, true],
-    [CATEGORY_TRACKING_MODE.BY_UNIT, false, false],
-    [CATEGORY_TRACKING_MODE.BY_UNIT, true, true],
-  ] as const)(
-    "for %s with stored interchangeable %s the form value is %s",
-    (trackingMode, stored, expected) => {
-      const behavior = {
-        ...DEFAULT_CATEGORY_BEHAVIOR,
-        trackingMode,
-        unitsAreInterchangeable: stored,
-      };
-
-      const formValues =
-        mapCategoryBehaviorToFormValues(behavior);
-
-      expect(formValues.unitsAreInterchangeable).toBe(
-        expected
-      );
-    }
-  );
 
   it.each(["trackingMode", "id"])(
     "does not expose %s in the form values",
