@@ -6,6 +6,7 @@ export const RESERVATION_FORM_FIELD = {
   PEOPLE_COUNT: "peopleCount",
   QUANTITY: "quantity",
   TIME: "time",
+  UNIT_ID: "unitId",
 } as const;
 
 export type ReservationFormField =
