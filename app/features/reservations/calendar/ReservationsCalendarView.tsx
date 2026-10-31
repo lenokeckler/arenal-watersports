@@ -10,15 +10,18 @@ import type { ReservationsCalendarViewProps } from "./models/ReservationsCalenda
 import { useReservationsCalendarViewModel } from "./hooks/useReservationsCalendarViewModel";
 import { ReservationsCalendarRefreshStatus } from "./components/ReservationsCalendarRefreshStatus";
 import { ReservationCalendarCreateLink } from "./components/ReservationCalendarCreateLink";
+import { RESERVATIONS_CALENDAR_VIEW_CLASS } from "./styles/ReservationsCalendarView.styles";
 
 export const ReservationsCalendarView = ({
   snapshot,
   today,
 }: ReservationsCalendarViewProps): ReactElement => {
-  const calendar =
-    useReservationsCalendarViewModel(snapshot);
+  const calendar = useReservationsCalendarViewModel(
+    snapshot,
+    today
+  );
   return (
-    <>
+    <div className={RESERVATIONS_CALENDAR_VIEW_CLASS}>
       <ReservationCalendarCreateLink />
       <CalendarView
         heading={RESERVATIONS_CALENDAR_COPY.TITLE}
@@ -27,12 +30,13 @@ export const ReservationsCalendarView = ({
         dayContent={calendar.dayContent}
         onPeriodChange={calendar.onPeriodChange}
         periodContent={calendar.periodContent}
+        selection={calendar.selection}
       />
       <ReservationsCalendarRefreshStatus
         hasRefreshError={calendar.hasRefreshError}
         isRefreshing={calendar.isRefreshing}
         onRetry={calendar.onRetry}
       />
-    </>
+    </div>
   );
 };
