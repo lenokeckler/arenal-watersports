@@ -1,16 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import type { CalendarDate } from "@/app/types";
 import type { NullableUndefined } from "@/app/types";
-import {
-  DOCUMENT,
-  RESERVATIONS_CALENDAR_COPY,
-} from "@/app/constants";
-import { calendarActions } from "@/app/store";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/app/store/hooks";
+import { RESERVATIONS_CALENDAR_COPY } from "@/app/constants";
+import { useAppSelector } from "@/app/store/hooks";
 import type { ReservationsCalendarSelectionState } from "../models/ReservationsCalendarSelectionState.interface";
+import { useScrollToSelectedAgenda } from "./useScrollToSelectedAgenda";
+import { useReservationsCalendarSelectionActions } from "./useReservationsCalendarSelectionActions";
 
 const getSelectedAgendaId = (
   selectedDay: NullableUndefined<CalendarDate>,
@@ -28,7 +23,6 @@ const getSelectedAgendaId = (
 export const useReservationsCalendarSelectionState = (
   today: CalendarDate
 ): ReservationsCalendarSelectionState => {
-  const dispatch = useAppDispatch();
   const anchor = useAppSelector(
     (state) => state.calendar.anchor
   );
@@ -37,39 +31,15 @@ export const useReservationsCalendarSelectionState = (
     useState<NullableUndefined<CalendarDate>>();
   const [selectedMonth, setSelectedMonth] =
     useState<NullableUndefined<CalendarDate>>();
-  useEffect(() => {
-    const agendaId = getSelectedAgendaId(
-      selectedDay,
-      selectedMonth
+  useScrollToSelectedAgenda(
+    getSelectedAgendaId(selectedDay, selectedMonth)
+  );
+  const { selectDay, selectMonth } =
+    useReservationsCalendarSelectionActions(
+      displayedAnchor,
+      setSelectedDay,
+      setSelectedMonth
     );
-    if (agendaId === undefined) {
-      return;
-    }
-    document.getElementById(agendaId)?.scrollIntoView({
-      behavior: DOCUMENT.SMOOTH,
-      block: "start",
-    });
-  }, [selectedDay, selectedMonth]);
-  const selectDay = useCallback(
-    (date: CalendarDate): void => {
-      setSelectedDay(date);
-      setSelectedMonth(undefined);
-      if (
-        date.year !== displayedAnchor.year ||
-        date.month !== displayedAnchor.month
-      ) {
-        dispatch(calendarActions.setAnchor(date));
-      }
-    },
-    [dispatch, displayedAnchor]
-  );
-  const selectMonth = useCallback(
-    (date: CalendarDate): void => {
-      setSelectedDay(undefined);
-      setSelectedMonth(date);
-    },
-    []
-  );
   return {
     selectedDay,
     selectedMonth,

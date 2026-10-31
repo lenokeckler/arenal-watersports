@@ -1,12 +1,9 @@
 import type { ReactElement } from "react";
 import type { NullableRef } from "@/app/types";
-import {
-  CALENDAR_VIEW,
-  RESERVATIONS_CALENDAR_COPY,
-} from "@/app/constants";
+import { CALENDAR_VIEW } from "@/app/constants";
 import type { ReservationCalendarGroupsProps } from "../models/ReservationCalendarGroupsProps.interface";
-import { ReservationCalendarAgenda } from "./ReservationCalendarAgenda";
 import { RESERVATION_CALENDAR_AGENDAS_CLASS } from "../styles/ReservationCalendarGroups.styles";
+import { ReservationCalendarAgendaList } from "./ReservationCalendarAgendaList";
 
 export const ReservationCalendarGroups = ({
   period,
@@ -28,31 +25,13 @@ export const ReservationCalendarGroups = ({
   }
   return (
     <div className={RESERVATION_CALENDAR_AGENDAS_CLASS}>
-      {selectedDayAgenda !== undefined && (
-        <ReservationCalendarAgenda
-          agenda={selectedDayAgenda}
-          label={
-            RESERVATIONS_CALENDAR_COPY.SELECTED_DAY_AGENDA
-          }
-          showGroups
-        />
-      )}
-      {selectedMonthAgenda !== undefined && (
-        <ReservationCalendarAgenda
-          agenda={selectedMonthAgenda}
-          label={
-            RESERVATIONS_CALENDAR_COPY.SELECTED_MONTH_AGENDA
-          }
-          showGroups
-        />
-      )}
-      {showPeriodStatus && (
-        <ReservationCalendarAgenda
-          agenda={periodAgenda}
-          label={RESERVATIONS_CALENDAR_COPY.PERIOD_AGENDA}
-          showGroups={showPeriodAgenda}
-        />
-      )}
+      <ReservationCalendarAgendaList
+        periodAgenda={periodAgenda}
+        selectedDayAgenda={selectedDayAgenda}
+        selectedMonthAgenda={selectedMonthAgenda}
+        showPeriodAgenda={showPeriodAgenda}
+        showPeriodStatus={showPeriodStatus}
+      />
     </div>
   );
 };
