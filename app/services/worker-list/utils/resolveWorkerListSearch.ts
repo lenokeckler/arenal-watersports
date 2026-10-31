@@ -4,9 +4,9 @@ import {
   WORKER_LIST_PAGE_PATTERN,
   WORKER_LIST_QUERY_PARAMETER,
   WORKER_LIST_STATUS,
-  type WorkerListBaseRole,
-  type WorkerListStatus,
-} from "@/app/constants/administration/WorkerList.constants";
+} from "@/app/constants";
+import type { WorkerListBaseRole } from "../models/WorkerListBaseRole.type";
+import type { WorkerListStatus } from "../models/WorkerListStatus.type";
 import type { WorkerListSearch } from "../models/WorkerListSearch.interface";
 import type { WorkerListSearchParameters } from "../models/WorkerListSearchParameters.type";
 import type { NullableUndefined } from "@/app/types";

@@ -9,8 +9,8 @@ import {
   PAGINATION,
   SUPABASE_WORK_AREA,
 } from "@/app/constants";
-import { SUPABASE_WORKER_STATUS } from "@/app/constants/supabase/SupabaseWorkerStatus.constants";
-import { WORKER_LIST_QUERY } from "@/app/constants/supabase/WorkerListQuery.constants";
+import { SUPABASE_WORKER_STATUS } from "@/app/constants";
+import { WORKER_LIST_QUERY } from "@/app/constants";
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
 import type { WorkerListSearch } from "../models/WorkerListSearch.interface";
 import { readWorkerListPage } from "../readWorkerListPage";

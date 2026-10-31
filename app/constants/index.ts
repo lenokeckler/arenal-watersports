@@ -266,8 +266,6 @@ export {
   WORKER_LIST_PAGE_PATTERN,
   WORKER_LIST_QUERY_PARAMETER,
   WORKER_LIST_STATUS,
-  type WorkerListBaseRole,
-  type WorkerListStatus,
 } from "./administration/WorkerList.constants";
 export { TEMPORARY_PASSWORD } from "./administration/TemporaryPassword.constants";
 export { POSTGRES_ERROR_CODE } from "./supabase/PostgresErrorCode.constants";

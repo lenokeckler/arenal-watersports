@@ -7,16 +7,10 @@ export const WORKER_LIST_BASE_ROLES = [
   SUPABASE_WORK_AREA.RESERVATIONS,
 ] as const satisfies readonly WorkArea[];
 
-export type WorkerListBaseRole =
-  (typeof WORKER_LIST_BASE_ROLES)[number];
-
 export const WORKER_LIST_STATUS = {
   ACTIVE: "active",
   INACTIVE: "inactive",
 } as const;
-
-export type WorkerListStatus =
-  (typeof WORKER_LIST_STATUS)[keyof typeof WORKER_LIST_STATUS];
 
 export const WORKER_LIST_QUERY_PARAMETER = {
   PAGE: "page",

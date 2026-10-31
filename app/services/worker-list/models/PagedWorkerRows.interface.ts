@@ -1,4 +1,4 @@
-﻿import type { WorkerListWorkerRow } from "./WorkerListWorkerRow.type";
+import type { WorkerListWorkerRow } from "./WorkerListWorkerRow.type";
 
 export interface PagedWorkerRows {
   pageCount: number;

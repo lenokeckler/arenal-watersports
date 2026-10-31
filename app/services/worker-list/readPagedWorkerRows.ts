@@ -1,4 +1,4 @@
-﻿import { PAGINATION } from "@/app/constants";
+import { PAGINATION } from "@/app/constants";
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
 import type { PagedWorkerRows } from "./models/PagedWorkerRows.interface";
 import type { WorkerListSearch } from "./models/WorkerListSearch.interface";

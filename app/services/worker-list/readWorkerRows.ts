@@ -1,18 +1,18 @@
-import { PAGINATION } from "@/app/constants";
-import { WORKER_LIST_STATUS } from "@/app/constants/administration/WorkerList.constants";
-import { SUPABASE_WORKER_STATUS } from "@/app/constants/supabase/SupabaseWorkerStatus.constants";
-import { WORKER_LIST_QUERY } from "@/app/constants/supabase/WorkerListQuery.constants";
+import {
+  PAGINATION,
+  SUPABASE_WORKER_STATUS,
+  WORKER_LIST_QUERY,
+  WORKER_LIST_STATUS,
+} from "@/app/constants";
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
 import type { WorkerListRowsResult } from "./models/WorkerListRowsResult.interface";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import type { WorkerListSearch } from "./models/WorkerListSearch.interface";
 
-export const buildWorkerQuery = (
-  supabase: ServerSupabaseClient,
-  search: WorkerListSearch,
-  asOf: string
-) => {
-  const query = supabase
+const createWorkerListQuery = (
+  supabase: ServerSupabaseClient
+) =>
+  supabase
     .from(WORKER_LIST_QUERY.TABLES.WORKERS)
     .select(WORKER_LIST_QUERY.WORKERS_PROJECTION, {
       count: WORKER_LIST_QUERY.COUNT,
@@ -24,26 +24,33 @@ export const buildWorkerQuery = (
       ascending: true,
     });
 
+export const buildWorkerQuery = (
+  supabase: ServerSupabaseClient,
+  search: WorkerListSearch,
+  asOf: string
+): ReturnType<typeof createWorkerListQuery> => {
+  let query = createWorkerListQuery(supabase);
+
   if (search.baseRole) {
-    query.eq(
+    query = query.eq(
       WORKER_LIST_QUERY.COLUMN.BASE_ROLE,
       search.baseRole
     );
   }
   if (search.status === WORKER_LIST_STATUS.ACTIVE) {
-    query
+    query = query
       .eq(
         WORKER_LIST_QUERY.COLUMN.STATUS,
         SUPABASE_WORKER_STATUS.ACTIVE
       )
       .is(WORKER_LIST_QUERY.COLUMN.DELETED_AT, null)
       .or(
-        `${WORKER_LIST_QUERY.COLUMN.EXPIRES_AT}.is.null,${WORKER_LIST_QUERY.COLUMN.EXPIRES_AT}.gt.${asOf}`
+        `${WORKER_LIST_QUERY.COLUMN.EXPIRES_AT}.${WORKER_LIST_QUERY.OPERATOR.IS_NULL},${WORKER_LIST_QUERY.COLUMN.EXPIRES_AT}.${WORKER_LIST_QUERY.OPERATOR.EXPIRES_AT_AFTER}${asOf}`
       );
   }
   if (search.status === WORKER_LIST_STATUS.INACTIVE) {
-    query.or(
-      `${WORKER_LIST_QUERY.COLUMN.STATUS}.neq.${SUPABASE_WORKER_STATUS.ACTIVE},${WORKER_LIST_QUERY.COLUMN.DELETED_AT}.not.is.null,${WORKER_LIST_QUERY.COLUMN.EXPIRES_AT}.lte.${asOf}`
+    query = query.or(
+      `${WORKER_LIST_QUERY.COLUMN.STATUS}.${WORKER_LIST_QUERY.OPERATOR.NOT_EQUAL}${SUPABASE_WORKER_STATUS.ACTIVE},${WORKER_LIST_QUERY.COLUMN.DELETED_AT}.${WORKER_LIST_QUERY.OPERATOR.IS_NOT_NULL},${WORKER_LIST_QUERY.COLUMN.EXPIRES_AT}.${WORKER_LIST_QUERY.OPERATOR.EXPIRES_AT_BEFORE_OR_ON}${asOf}`
     );
   }
 

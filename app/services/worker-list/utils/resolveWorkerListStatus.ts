@@ -1,6 +1,8 @@
-import { WORKER_LIST_STATUS } from "@/app/constants/administration/WorkerList.constants";
-import { SUPABASE_WORKER_STATUS } from "@/app/constants/supabase/SupabaseWorkerStatus.constants";
-import type { WorkerListStatus } from "@/app/constants/administration/WorkerList.constants";
+import {
+  SUPABASE_WORKER_STATUS,
+  WORKER_LIST_STATUS,
+} from "@/app/constants";
+import type { WorkerListStatus } from "../models/WorkerListStatus.type";
 import type { WorkerListWorkerRow } from "../models/WorkerListWorkerRow.type";
 
 export const resolveWorkerListStatus = (

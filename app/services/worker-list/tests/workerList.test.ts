@@ -3,8 +3,8 @@ import {
   SUPABASE_WORK_AREA,
   SUPABASE_WORKER_MARK,
 } from "@/app/constants";
-import { WORKER_LIST_STATUS } from "@/app/constants/administration/WorkerList.constants";
-import { SUPABASE_WORKER_STATUS } from "@/app/constants/supabase/SupabaseWorkerStatus.constants";
+import { WORKER_LIST_STATUS } from "@/app/constants";
+import { SUPABASE_WORKER_STATUS } from "@/app/constants";
 import type { WorkerListSources } from "../models/WorkerListSources.interface";
 import { mapWorkerListRows } from "../utils/mapWorkerListRows";
 import { resolveWorkerListSearch } from "../utils/resolveWorkerListSearch";

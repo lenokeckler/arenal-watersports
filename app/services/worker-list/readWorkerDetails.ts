@@ -1,4 +1,4 @@
-import { WORKER_LIST_QUERY } from "@/app/constants/supabase/WorkerListQuery.constants";
+import { WORKER_LIST_QUERY } from "@/app/constants";
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import type { WorkerListDetails } from "./models/WorkerListDetails.interface";

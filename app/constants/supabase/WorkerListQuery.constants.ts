@@ -9,6 +9,13 @@ export const WORKER_LIST_QUERY = {
     WORKER_ID: "worker_id",
   },
   COUNT: "exact",
+  OPERATOR: {
+    EXPIRES_AT_AFTER: "gt.",
+    EXPIRES_AT_BEFORE_OR_ON: "lte.",
+    IS_NULL: "is.null",
+    IS_NOT_NULL: "not.is.null",
+    NOT_EQUAL: "neq.",
+  },
   ORDER_BY: {
     FULL_NAME: "full_name",
     ID: "id",

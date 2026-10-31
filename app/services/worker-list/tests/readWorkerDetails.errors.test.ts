@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { WORKER_LIST_QUERY } from "@/app/constants/supabase/WorkerListQuery.constants";
+import { WORKER_LIST_QUERY } from "@/app/constants";
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import type { WorkerDetailsQueryResponse } from "./models/WorkerDetailsQueryResponse.interface";

@@ -1,8 +1,6 @@
-import type {
-  WorkerListBaseRole,
-  WorkerListStatus,
-} from "@/app/constants/administration/WorkerList.constants";
 import type { NullableUndefined } from "@/app/types";
+import type { WorkerListBaseRole } from "./WorkerListBaseRole.type";
+import type { WorkerListStatus } from "./WorkerListStatus.type";
 
 export interface WorkerListSearch {
   baseRole: NullableUndefined<WorkerListBaseRole>;
