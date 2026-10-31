@@ -1,5 +1,6 @@
 import { STRING } from "@/app/constants";
 import { describe, expect, it } from "vitest";
+import userEvent from "@testing-library/user-event";
 import {
   renderReservationForm,
   reservationRouterBack,
@@ -23,10 +24,27 @@ describe("ReservationFormView duration selection", () => {
       page.getCategoryChoice(
         RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME
       )
-    ).toHaveProperty("selected", true);
+    ).toHaveAttribute("aria-pressed", "true");
     expect(
       page.getEquipmentImage(STRING.Empty)
     ).toBeInTheDocument();
+  });
+
+  it("selects an equipment card from the keyboard", async () => {
+    const page = renderReservationForm();
+    const categoryCard = page.getCategoryChoice(
+      RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME
+    );
+    categoryCard.focus();
+
+    await userEvent.keyboard(
+      RESERVATION_FORM_VIEW_TEST.KEYBOARD_SELECT
+    );
+
+    expect(categoryCard).toHaveAttribute(
+      "aria-pressed",
+      "true"
+    );
   });
 
   it("calls browser back from the calendar action", async () => {

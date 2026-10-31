@@ -33,5 +33,5 @@ export const RESERVATION_FORM_UI_COPY = {
   NO_CATEGORIES:
     "No hay categorías de equipo disponibles para reservar.",
   EQUIPMENT_NOTE:
-    "El equipo se asigna por categoría y cantidad. La asignación de unidades se realiza durante el despacho.",
+    "Indique la cantidad de equipos intercambiables. Para la lancha, elija la unidad que quedará reservada.",
 } as const;

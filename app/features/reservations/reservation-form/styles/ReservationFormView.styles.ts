@@ -29,22 +29,25 @@ export const RESERVATION_FORM_GRID_CLASS =
 export const RESERVATION_FORM_FIELD_CLASS = "min-w-0";
 
 export const RESERVATION_FORM_CATEGORY_GRID_CLASS =
-  "grid grid-cols-3 gap-3";
+  "grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4";
 
 export const RESERVATION_FORM_CATEGORY_LEGEND_CLASS =
   "mb-3 text-sm font-medium text-on-surface-variant";
 
 export const RESERVATION_FORM_CATEGORY_OPTION_CLASS =
-  "group flex min-h-32 cursor-pointer flex-col gap-2 rounded-2xl border border-outline-variant bg-surface-container-high p-2 text-left text-sm font-medium text-on-surface transition-colors hover:border-primary focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary has-[:checked]:border-primary has-[:checked]:bg-primary/10 sm:min-h-40 sm:p-3";
+  "group relative flex min-h-32 min-w-0 w-full cursor-pointer flex-col gap-2 overflow-hidden rounded-2xl border border-outline-variant bg-surface-container-high p-2 text-left text-sm font-medium text-on-surface transition-all hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:p-3";
 
 export const RESERVATION_FORM_CATEGORY_OPTION_SELECTED_CLASS =
-  "shadow-lg shadow-primary/10";
-
-export const RESERVATION_FORM_CATEGORY_INPUT_CLASS =
-  "sr-only";
+  "border-primary bg-primary/10 shadow-lg shadow-primary/10";
 
 export const RESERVATION_FORM_CATEGORY_IMAGE_CLASS =
-  "h-20 w-full rounded-xl object-cover sm:h-28";
+  "aspect-[4/3] h-auto w-full rounded-xl object-cover";
+
+export const RESERVATION_FORM_CATEGORY_NAME_CLASS =
+  "w-full px-1 font-semibold leading-snug text-on-surface group-aria-pressed:text-primary";
+
+export const RESERVATION_FORM_CATEGORY_SELECTED_ICON_CLASS =
+  "absolute right-3 top-3 z-10 rounded-full bg-primary p-1 text-on-primary shadow-md";
 
 export const resolveReservationCategoryOptionClassName = (
   isSelected: boolean
