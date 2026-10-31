@@ -5,7 +5,6 @@ import type { CategoryBehaviorFormErrors } from "../models/CategoryBehaviorFormE
 import type { CategoryBehaviorFormFieldsViewModel } from "../models/CategoryBehaviorFormFieldsViewModel.interface";
 import type { CategoryBehaviorFormValues } from "../models/CategoryBehaviorFormValues.interface";
 import type { CategoryBehaviorFormViewModelProps } from "../models/CategoryBehaviorFormViewModelProps.interface";
-import { canEditUnitsAreInterchangeable } from "../utils/canEditUnitsAreInterchangeable";
 import { canTrackConditionPhotos } from "../utils/canTrackConditionPhotos";
 import { mapCategoryBehaviorToFormValues } from "../utils/mapCategoryBehaviorToFormValues";
 import { useCategoryBehaviorFieldHandlers } from "./useCategoryBehaviorFieldHandlers";
@@ -42,10 +41,6 @@ export const useCategoryBehaviorFormFields = ({
       isConditionPhotosEnabled: canTrackConditionPhotos(
         behavior.trackingMode
       ),
-      isUnitsAreInterchangeableEnabled:
-        canEditUnitsAreInterchangeable(
-          behavior.trackingMode
-        ),
       isUsageMetricEnabled: values.hasMotor,
     },
     showValidationErrors: setErrors,
