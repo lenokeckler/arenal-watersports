@@ -66,10 +66,14 @@ and a clear error state they can retry from.
   page when it is not a positive integer; a page past the last one redirects to the last page, which is
   also where a delete of the last card of a page lands after the refresh. `CategoryListPagination` renders
   the previous and next links and "Página X de Y" only when there is more than one page.
-- Cross-device updates (RNF-025) are a staged dependency, not part of this screen: the project has no
-  shared synchronization path yet (no realtime subscription in `app/`, and `equipment_categories` is not
-  in the `supabase_realtime` publication). Until that path lands, the list reflects another device's
-  change on the next navigation or refresh, and after this worker's own create, inactivate or delete.
+- Cross-device updates (RNF-025) are **not met by this screen**. This is an accepted, owned deviation:
+  the project has no shared synchronization path yet (no realtime subscription in `app/`, and
+  `equipment_categories` is not in the `supabase_realtime` publication), so the list reflects another
+  worker's change only after navigation or after the Retry of the error state, and after this worker's
+  own create, inactivate or delete. The live category-list subscription is a follow-up owned by
+  @kendall122, tracked as its own story in issue #394 ("ADM-02.12.xx: Live category list"), which adds
+  `equipment_categories` to the publication, subscribes the list and ships a second-client regression.
+  Until that follow-up lands, RNF-025 stays open for this list.
 - The create screen is `app/(system)/administration/categories/new/page.tsx`, reached through
   `PATHS.ADMINISTRATION.CATEGORIES_NEW`. `CategoryCreateForm` applies the same administrator redirect and
   renders `CategoryCreateFormView`; `createCategoryAction` validates the trimmed name again on the server.
