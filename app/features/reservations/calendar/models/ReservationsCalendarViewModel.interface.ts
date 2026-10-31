@@ -3,6 +3,7 @@ import type { CalendarPeriodContent } from "@/app/components/calendar/models/Cal
 import type { CalendarPeriodChangeHandler } from "@/app/components/calendar/models/CalendarPeriodChangeHandler.type";
 import type { ReservationCalendarSnapshot } from "@/app/components/reservation-calendar/models/ReservationCalendarSnapshot.interface";
 import type { NullableRef } from "@/app/types";
+import type { CalendarViewSelection } from "@/app/components/calendar/models/CalendarViewSelection.interface";
 
 export interface ReservationsCalendarViewModel {
   dayContent: CalendarDayContent;
@@ -12,4 +13,5 @@ export interface ReservationsCalendarViewModel {
   onRetry: () => void;
   periodContent: CalendarPeriodContent;
   snapshot: NullableRef<ReservationCalendarSnapshot>;
+  selection: CalendarViewSelection;
 }
