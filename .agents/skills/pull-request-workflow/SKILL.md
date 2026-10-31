@@ -312,20 +312,22 @@ it.
 ### The squash false conflict
 
 Squash-merging the bottom PR makes the next one show a conflict that is not real: its lower
-commits are already on `develop`, flattened into one. Prove it and clear it with an ours-merge —
-no force-push, the tree does not change:
+commits are already on `develop`, flattened into one. Clear it with `merge:after-squash` — no
+force-push, the tree does not change:
 
 ```bash
 git switch <child-branch> && git pull --ff-only
-git diff --quiet <merged-parent-head-sha> origin/develop && echo "same tree"   # must print
-git merge -s ours origin/develop -m "Merge develop after squash of <parent PR title>"
-git diff --quiet origin/<child-branch> HEAD && echo "tree unchanged"          # must print
+npm run merge:after-squash -- <parent PR number>
 git push origin HEAD
 ```
 
-The parent head SHA comes from `gh pr view <parent> --json headRefOid` (the branch is gone). If
-`same tree` does not print, someone else landed on `develop` in between: stop and resolve by hand
-— a fragment never conflicts, so look for a real code overlap.
+The command proves the conflict is false before it clears it: the parent PR is merged, this
+branch holds the parent's final head, and that head has the same tree as `origin/develop`. When
+any proof fails it stops without touching the branch, because clearing the conflict then would
+throw away what `develop` gained: someone else merged in between, or the parent changed after this
+branch took it. Run a real `git merge origin/develop` and resolve each conflict by hand keeping
+both sides — a fragment never conflicts, so look for a real code overlap. **Never type
+`git merge -s ours` yourself**: an unproven ours-merge is how #17 and #146 erased `develop`.
 
 ## 7. UI stories ship end-to-end coverage
 

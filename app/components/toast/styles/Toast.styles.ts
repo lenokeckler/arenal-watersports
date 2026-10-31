@@ -10,4 +10,4 @@ export const TOAST_MESSAGE_CLASS =
   "ml-3 text-sm lg:text-base font-normal text-on-surface";
 
 export const TOAST_CLOSE_BUTTON_CLASS =
-  "ml-auto text-on-surface-variant hover:text-on-surface bg-transparent border-none";
+  "ml-auto min-h-11 min-w-11 text-on-surface-variant hover:text-on-surface bg-transparent border-none";
