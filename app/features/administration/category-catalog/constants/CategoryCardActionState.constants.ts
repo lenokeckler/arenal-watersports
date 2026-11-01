@@ -3,4 +3,5 @@ export const CATEGORY_CARD_ACTION_STATE = {
   DELETE: "delete",
   MARK_INACTIVE: "mark_inactive",
   NONE: "none",
+  REACTIVATE: "reactivate",
 } as const;

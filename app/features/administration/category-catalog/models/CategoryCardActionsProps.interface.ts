@@ -7,4 +7,5 @@ export interface CategoryCardActionsProps {
   onConfirmDeleteClick: () => void;
   onDeleteClick: () => void;
   onMarkInactiveClick: () => void;
+  onReactivateClick: () => void;
 }
