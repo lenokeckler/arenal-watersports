@@ -103,7 +103,10 @@ describe("resolveReservationDetailChargeSummary", () => {
       RESERVATION_DETAIL_MONEY_FIXTURE.refunds
     );
 
-    expect(summary.charges[0].amountCharged).toBe(
+    expect(summary.charges[0].amountChargedGross).toBe(
+      RESERVATION_DETAIL_TEST.CHARGE_CRC
+    );
+    expect(summary.charges[0].amountChargedNet).toBe(
       RESERVATION_DETAIL_TEST.CHARGE_CRC
     );
     expect(summary.extraTimeCharges).toEqual([
