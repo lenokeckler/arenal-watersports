@@ -1,4 +1,7 @@
-import { RESERVATION_HISTORY_STATUS } from "@/app/constants";
+import {
+  PATHS,
+  RESERVATION_HISTORY_STATUS,
+} from "@/app/constants";
 import type { ReservationHistoryItem } from "@/app/services/board/reservation-history/models/ReservationHistoryItem.interface";
 import type { ReservationHistoryPage } from "@/app/services/board/reservation-history/models/ReservationHistoryPage.interface";
 import {
@@ -40,7 +43,7 @@ export const buildPage = (
   totalCount: items.length,
 });
 
-export const CLOSED_ITEM_HREF = `/history/${CLOSED_ITEM.id}?from=2026-10-01&to=2026-10-31&type=tour&category=${HISTORY_FULL_FILTERS.categoryId}&page=4`;
+export const CLOSED_ITEM_HREF = `${PATHS.HISTORY.ROOT}/${CLOSED_ITEM.id}?from=2026-10-01&to=2026-10-31&type=tour&category=${HISTORY_FULL_FILTERS.categoryId}&page=4`;
 export const EQUIPMENT_TEXT = "Kayak, Paddle board";
 export const GUIDES_TEXT = "Diego Rojas, Lucia Vega";
 export const CURRENCY_SIGN_PATTERN = /[$₡]/;

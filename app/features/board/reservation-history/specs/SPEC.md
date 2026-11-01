@@ -13,7 +13,8 @@ row also carries the text "Cancelada". A missing guide or equipment reads
 "Sin guía" or "Sin equipo". No money is shown.
 
 Filters, pagination, loading and error states and the detail route belong to
-later pull requests of the same story.
+later pull requests of the same story. The E2E spec, its page object and
+the captures arrive in the last pull request of the stack.
 
 ## Verification mapping
 

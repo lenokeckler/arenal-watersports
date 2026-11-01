@@ -1,9 +1,7 @@
-import { LENGTH } from "@/app/constants";
+import { LENGTH, STRING } from "@/app/constants";
 import { RESERVATION_HISTORY_COPY } from "../constants/ReservationHistoryCopy.constants";
-import { RESERVATION_HISTORY_VALUE_SEPARATOR } from "../constants/ReservationHistoryValueSeparator.constants";
 import type { ReservationHistoryRowLinesProps } from "../models/ReservationHistoryRowLinesProps.interface";
 import {
-  RESERVATION_HISTORY_ROW_CLAMPED_VALUE_CLASS,
   RESERVATION_HISTORY_ROW_LINES_CLASS,
   RESERVATION_HISTORY_ROW_VALUE_CLASS,
 } from "../styles/ReservationHistoryRow.styles";
@@ -18,22 +16,16 @@ const ReservationHistoryRowLines = ({
       value={
         item.equipmentNames.length === LENGTH.ZERO
           ? RESERVATION_HISTORY_COPY.NO_EQUIPMENT
-          : item.equipmentNames.join(
-              RESERVATION_HISTORY_VALUE_SEPARATOR
-            )
+          : item.equipmentNames.join(STRING.COMMA_SPACE)
       }
-      valueClassName={
-        RESERVATION_HISTORY_ROW_CLAMPED_VALUE_CLASS
-      }
+      valueClassName={RESERVATION_HISTORY_ROW_VALUE_CLASS}
     />
     <ReservationHistoryRowLine
       label={RESERVATION_HISTORY_COPY.GUIDE_LABEL}
       value={
         item.guideNames.length === LENGTH.ZERO
           ? RESERVATION_HISTORY_COPY.NO_GUIDE
-          : item.guideNames.join(
-              RESERVATION_HISTORY_VALUE_SEPARATOR
-            )
+          : item.guideNames.join(STRING.COMMA_SPACE)
       }
       valueClassName={RESERVATION_HISTORY_ROW_VALUE_CLASS}
     />

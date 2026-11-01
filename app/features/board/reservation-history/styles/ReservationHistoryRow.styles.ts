@@ -29,7 +29,7 @@ export const RESERVATION_HISTORY_ROW_DATE_CLASS =
   "font-mono text-label-mono text-on-surface-variant";
 
 export const RESERVATION_HISTORY_ROW_CUSTOMER_CLASS =
-  "line-clamp-2 break-words text-body-base font-semibold text-on-surface";
+  "wrap-anywhere text-body-base font-semibold text-on-surface";
 
 export const RESERVATION_HISTORY_ROW_MARKER_CLASS =
   "rounded-full border border-secondary px-2 py-0.5 font-mono text-label-mono uppercase text-secondary";
@@ -45,12 +45,6 @@ export const RESERVATION_HISTORY_ROW_LINE_LABEL_CLASS =
 
 export const RESERVATION_HISTORY_ROW_VALUE_CLASS =
   "break-words text-on-surface";
-
-export const RESERVATION_HISTORY_ROW_CLAMPED_VALUE_CLASS =
-  joinClassNames(
-    RESERVATION_HISTORY_ROW_VALUE_CLASS,
-    "line-clamp-2"
-  );
 
 export const RESERVATION_HISTORY_ROW_CHEVRON_CLASS =
   "shrink-0 text-on-surface-variant";

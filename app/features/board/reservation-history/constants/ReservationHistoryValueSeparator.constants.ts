@@ -1,1 +1,0 @@
-export const RESERVATION_HISTORY_VALUE_SEPARATOR = ", ";
