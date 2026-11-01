@@ -2,15 +2,12 @@ import {
   PAGINATION,
   RESERVATION_HISTORY_FILTER_PARAM,
 } from "@/app/constants";
-import type { ReservationHistoryQuery } from "@/app/services/board/reservation-history/models/ReservationHistoryQuery.interface";
+import type { ReservationHistoryLinkQuery } from "@/app/services/board/reservation-history/models/ReservationHistoryLinkQuery.type";
 
 export const buildReservationHistoryQueryString = ({
   filters,
   pageIndex,
-}: Pick<
-  ReservationHistoryQuery,
-  "filters" | "pageIndex"
->): string => {
+}: ReservationHistoryLinkQuery): string => {
   const searchParams = new URLSearchParams();
 
   if (filters.from !== null) {

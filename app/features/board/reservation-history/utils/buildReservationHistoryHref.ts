@@ -1,13 +1,10 @@
 import { PATHS } from "@/app/constants";
-import type { ReservationHistoryQuery } from "@/app/services/board/reservation-history/models/ReservationHistoryQuery.interface";
+import type { ReservationHistoryLinkQuery } from "@/app/services/board/reservation-history/models/ReservationHistoryLinkQuery.type";
 import { RESERVATION_HISTORY_HREF } from "../constants/ReservationHistoryHref.constants";
 import { buildReservationHistoryQueryString } from "./buildReservationHistoryQueryString";
 
 export const buildReservationHistoryHref = (
-  query: Pick<
-    ReservationHistoryQuery,
-    "filters" | "pageIndex"
-  >
+  query: ReservationHistoryLinkQuery
 ): string => {
   const queryString =
     buildReservationHistoryQueryString(query);
