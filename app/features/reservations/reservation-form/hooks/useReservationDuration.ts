@@ -50,12 +50,14 @@ const createReservationDurationHandlers = (
 
 export const useReservationDuration = (
   updateDurationValue: (hours: number) => void,
-  clearFieldError: (field: ReservationFormField) => void
+  clearFieldError: (field: ReservationFormField) => void,
+  initialCustomDurationDraft: string = STRING.Empty
 ) => {
-  const [isCustomDuration, setIsCustomDuration] =
-    useState(false);
+  const [isCustomDuration, setIsCustomDuration] = useState(
+    initialCustomDurationDraft !== STRING.Empty
+  );
   const [customDurationDraft, setCustomDurationDraft] =
-    useState<string>(STRING.Empty);
+    useState<string>(initialCustomDurationDraft);
   const handlers = createReservationDurationHandlers(
     setCustomDurationDraft,
     setIsCustomDuration,

@@ -91,8 +91,13 @@ export const useSyncReservationUnitAvailability = (
     setIsLoading,
     setResolvedRequestKey,
   } = options;
-  const { categoryId, date, durationMinutes, time } =
-    request;
+  const {
+    categoryId,
+    date,
+    durationMinutes,
+    excludeReservationId,
+    time,
+  } = request;
   const previousRequestWindowKey = useRef<string | null>(
     null
   );
@@ -104,6 +109,7 @@ export const useSyncReservationUnitAvailability = (
             categoryId,
             date,
             durationMinutes,
+            excludeReservationId,
             time,
           },
           refreshKey,
@@ -121,6 +127,7 @@ export const useSyncReservationUnitAvailability = (
       categoryId,
       date,
       durationMinutes,
+      excludeReservationId,
       time,
       refreshKey,
       requestKey,

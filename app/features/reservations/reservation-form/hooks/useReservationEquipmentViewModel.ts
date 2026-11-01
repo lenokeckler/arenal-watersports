@@ -1,12 +1,12 @@
 import { STRING } from "@/app/constants";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
-import type { ReservationFormInput } from "../models/ReservationFormInput.interface";
+import type { ReservationEquipmentRequestValues } from "../models/ReservationEquipmentRequestValues.interface";
 import { RESERVATION_SCHEDULE } from "../constants/ReservationSchedule.constants";
 import { useReservationUnitAvailability } from "./useReservationUnitAvailability";
 
 export const useReservationEquipmentViewModel = (
   categories: ReservationCategoryOption[],
-  values: ReservationFormInput,
+  values: ReservationEquipmentRequestValues,
   durationHours: number,
   refreshKey: number
 ) => {
@@ -23,6 +23,7 @@ export const useReservationEquipmentViewModel = (
     durationMinutes: Math.round(
       durationHours * RESERVATION_SCHEDULE.MINUTES_PER_HOUR
     ),
+    excludeReservationId: values.excludeReservationId,
     time: values.time,
   };
   const availability = useReservationUnitAvailability(
