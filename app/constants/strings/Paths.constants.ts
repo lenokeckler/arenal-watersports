@@ -12,13 +12,23 @@ export const PATHS = {
     ROOT: "/access",
   },
   ADMINISTRATION: {
+    CATEGORIES: "/administration/categories",
+    CATEGORIES_NEW: "/administration/categories/new",
+    CATEGORY_ALERTS_SEGMENT: "alerts",
+    CATEGORY_BEHAVIOR_SEGMENT: "behavior",
+    CATEGORY_DEPOSIT_SEGMENT: "deposit",
+    CATEGORY_UNITS_SEGMENT: "units",
+    RESERVATIONS_BY_WORKER:
+      "/administration/reports/reservations-by-worker",
     ROOT: "/administration",
+    UNITS_NEW_SEGMENT: "new",
     WORKER_AREAS: "/administration/workers/areas",
     WORKERS_NEW: "/administration/workers/new",
   },
   HOME: "/",
   MODE: "/mode",
   OPERATIONS: {
+    CALENDAR: "/operations/calendar",
     INVENTORY: OPERATIONS_INVENTORY_PATH,
     INVENTORY_CATEGORY: (categoryId: string) =>
       `${OPERATIONS_INVENTORY_PATH}/${encodeURIComponent(categoryId)}`,
@@ -37,5 +47,10 @@ export const PATHS = {
   },
   WELL_KNOWN: {
     CHANGE_PASSWORD: "/.well-known/change-password",
+  },
+  RESERVATIONS: {
+    CALENDAR: "/reservations/calendar",
+    DEPOSITS: "/reservations/deposits",
+    NEW: "/reservations/new",
   },
 } as const;

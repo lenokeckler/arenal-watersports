@@ -12,6 +12,7 @@ export const INPUT_TYPES = {
   SUBMIT: "submit",
   TEL: "tel",
   TEXT: "text",
+  TIME: "time",
   TEXTAREA: "textarea",
 } as const;
 
@@ -31,6 +32,7 @@ export type Autocomplete =
   (typeof AUTOCOMPLETE)[keyof typeof AUTOCOMPLETE];
 
 export const INPUT_MODE = {
+  DECIMAL: "decimal",
   EMAIL: "email",
   NUMERIC: "numeric",
 } as const;

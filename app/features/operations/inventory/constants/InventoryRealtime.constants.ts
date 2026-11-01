@@ -1,8 +1,9 @@
 import { INVENTORY_DATA_SOURCE } from "@/app/constants";
+import { REALTIME } from "@/app/components/realtime/constants/Realtime.constants";
 
 export const INVENTORY_REALTIME = {
   CHANNEL: "inventory-live-updates",
-  SCHEMA: "public",
+  SCHEMA: REALTIME.SCHEMA,
   TABLES: {
     CATEGORIES:
       INVENTORY_DATA_SOURCE.EQUIPMENT_CATEGORIES_TABLE,

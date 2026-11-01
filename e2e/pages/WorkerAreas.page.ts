@@ -25,6 +25,10 @@ export const createWorkerAreasPage = (page: Page) => {
       main.getByRole(ARIA_ROLE.BUTTON, {
         name: E2E_WORKER_AREAS_COPY.SEARCH,
       }),
+    getReservationsReportLink: (): Locator =>
+      main.getByRole(ARIA_ROLE.LINK, {
+        name: E2E_WORKER_AREAS_COPY.RESERVATIONS_REPORT,
+      }),
     getUsernameInput: (): Locator =>
       main.getByLabel(
         E2E_WORKER_AREAS_COPY.USERNAME_LABEL,
