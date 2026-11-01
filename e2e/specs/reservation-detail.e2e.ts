@@ -65,8 +65,11 @@ test("redirects a signed-in worker without Reservations access", async ({
 
 reservationDetailTest(
   "shows not found for malformed and nonexistent reservation ids",
-  async ({ page }) => {
+  async ({ page, reservationFixture }) => {
     const detailPage = createReservationDetailPage(page);
+    await expect(page).toHaveURL(
+      PATHS.RESERVATIONS.DETAIL(reservationFixture.id)
+    );
 
     await detailPage.goTo("not-a-reservation-id");
     await expect(
