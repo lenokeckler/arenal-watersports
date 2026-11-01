@@ -3,9 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
 import { EQUIPMENT_BOARD_COPY } from "../constants/EquipmentBoardCopy.constants";
 import {
-  ARIA_EXPANDED_ATTRIBUTE,
   ARIA_HIDDEN_ATTRIBUTE,
-  ARIA_TRUE,
   BAR_FILL_SELECTOR,
   BAR_SELECTOR,
   CARD_NOT_FOUND_MESSAGE,
@@ -53,28 +51,11 @@ export const createEquipmentBoardPage = () => {
     return card;
   };
 
-  const getMemberLines = (card: HTMLElement) =>
-    within(
-      within(card).getByRole(ARIA_ROLE.LIST)
-    ).getAllByRole(ARIA_ROLE.LISTITEM);
-
   const queryMemberList = (card: HTMLElement) =>
     within(card).queryByRole(ARIA_ROLE.LIST);
 
-  const getToggle = (card: HTMLElement) =>
-    within(card).getByRole(ARIA_ROLE.BUTTON);
-
-  const queryToggle = (card: HTMLElement) =>
+  const queryButton = (card: HTMLElement) =>
     within(card).queryByRole(ARIA_ROLE.BUTTON);
-
-  const isToggleExpanded = (card: HTMLElement) =>
-    getToggle(card).getAttribute(
-      ARIA_EXPANDED_ATTRIBUTE
-    ) === ARIA_TRUE;
-
-  const toggleCard = async (card: HTMLElement) => {
-    await user.click(getToggle(card));
-  };
 
   const getText = (container: HTMLElement, text: string) =>
     within(container).getByText(text);
@@ -137,15 +118,11 @@ export const createEquipmentBoardPage = () => {
     getHeadings,
     hasImage,
     getMain,
-    getMemberLines,
     getPageText,
     getRetryButton,
     getStatus,
     getText,
-    getToggle,
-    isToggleExpanded,
-    queryToggle,
-    toggleCard,
+    queryButton,
     isBarHidden,
     queryGrid,
     queryHeadings,

@@ -51,34 +51,3 @@ export const BOARD_CARD_BAR_TRACK_CLASS =
   "block h-2 w-full shrink-0 overflow-hidden rounded-full bg-on-surface/25";
 
 export const BOARD_CARD_BAR_FILL_CLASS = "fill-primary";
-
-export const BOARD_CARD_SLOT_CLASS =
-  "relative flex grow flex-col";
-
-export const BOARD_CARD_TOGGLE_CLASS =
-  "absolute inset-0 h-full w-full items-end justify-end pb-9 pr-2 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary md:pr-sm";
-
-export const BOARD_CARD_CHEVRON_CLASS =
-  "flex size-8 items-center justify-center rounded-full border border-primary/30 bg-background/70 text-on-surface backdrop-blur-md transition-transform";
-
-export const BOARD_CARD_CHEVRON_OPEN_CLASS = "rotate-180";
-
-export const resolveBoardCardChevronClassName = (
-  isOpen: boolean
-): string =>
-  joinClassNames(
-    BOARD_CARD_CHEVRON_CLASS,
-    isOpen && BOARD_CARD_CHEVRON_OPEN_CLASS
-  );
-
-export const BOARD_CARD_LINES_CLASS =
-  "flex flex-col gap-sm border-t border-outline-variant p-sm md:p-md";
-
-export const BOARD_CARD_LINE_CLASS =
-  "flex items-baseline justify-between gap-xs";
-
-export const BOARD_CARD_LINE_NAME_CLASS =
-  "min-w-0 break-words text-sm font-semibold text-on-surface";
-
-export const BOARD_CARD_LINE_FREE_CLASS =
-  "shrink-0 text-sm tabular-nums text-primary";

@@ -5,7 +5,6 @@ import { BOARD_GROUP_NAME } from "./EquipmentBoardUtils.constants";
 
 export const EDGE_CATEGORY_NAME = {
   ALL_FREE: "Todo libre",
-  DUPLICATE: "Kayak repetido",
   LONG: "Categoría de equipo reservable con un nombre extraordinariamente largo para un teléfono de trescientos veinte píxeles",
   NONE_FREE: "Sin libres",
   SPARE: "Kayak repuesto",
@@ -19,9 +18,6 @@ export const EDGE_BAR_WIDTHS = {
   HALF: "50",
 } as const;
 
-export const SINGULAR_FREE_PATTERN = /1 libre(?!s)/;
-export const ZERO_FREE_PATTERN = /0 libres/;
-
 const createSpareKayak = () =>
   createBoardCategory({
     freeCount: 0,
@@ -32,24 +28,9 @@ const createSpareKayak = () =>
     totalCount: 0,
   });
 
-const createDuplicateNamedKayak = (id: string) =>
-  createBoardCategory({
-    freeCount: 1,
-    groupName: BOARD_GROUP_NAME.KAYAK,
-    id,
-    inUseCount: 0,
-    name: EDGE_CATEGORY_NAME.DUPLICATE,
-    totalCount: 1,
-  });
-
 export const CARDS_WITH_ZERO_TOTAL_MEMBER = buildBoardCards(
   [createKayakDouble(), createSpareKayak()]
 );
-
-export const CARDS_WITH_DUPLICATE_NAMES = buildBoardCards([
-  createDuplicateNamedKayak("duplicate-a"),
-  createDuplicateNamedKayak("duplicate-b"),
-]);
 
 export const CARDS_WITH_LONG_NAME = buildBoardCards([
   createBoardCategory({

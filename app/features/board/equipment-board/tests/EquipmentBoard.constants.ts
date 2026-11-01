@@ -90,8 +90,6 @@ export const BAR_WIDTH_ATTRIBUTE = "width";
 export const BAR_SELECTOR = "svg";
 export const ARIA_HIDDEN_ATTRIBUTE = "aria-hidden";
 export const ARIA_HIDDEN_TRUE = "true";
-export const ARIA_EXPANDED_ATTRIBUTE = "aria-expanded";
-export const ARIA_TRUE = "true";
 export const ARIA_BUSY_ATTRIBUTE = "aria-busy";
 export const ARIA_BUSY_TRUE = "true";
 
@@ -128,8 +126,6 @@ export const NO_FREE_ROW: BoardCategoryRow = {
   free_count: FREE_LABEL_COUNTS.ZERO,
   total_count: FREE_LABEL_TOTAL,
 };
-
-export const FIRST_MEMBER_LINE_INDEX = 0;
 
 export const CARD_NOT_FOUND_MESSAGE =
   "Board card not found for label:";

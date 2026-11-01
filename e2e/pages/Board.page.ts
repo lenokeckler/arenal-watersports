@@ -49,19 +49,8 @@ export const createBoardPage = (page: Page) => {
     text: string
   ): Locator => card.getByText(text, { exact: true });
 
-  const getMemberLine = (
-    card: Locator,
-    categoryName: string
-  ): Locator =>
-    card.getByRole(ARIA_ROLE.LISTITEM).filter({
-      has: page.getByText(categoryName, { exact: true }),
-    });
-
-  const toggleCard = async (
-    card: Locator
-  ): Promise<void> => {
-    await card.getByRole(ARIA_ROLE.BUTTON).click();
-  };
+  const getButtons = (card: Locator): Locator =>
+    card.getByRole(ARIA_ROLE.BUTTON);
 
   const getTextInMain = (text: string): Locator =>
     main.getByText(text);
@@ -81,14 +70,13 @@ export const createBoardPage = (page: Page) => {
   return {
     countCardsInFirstRow,
     getCard,
+    getButtons,
     getCards,
     getCardText,
     getGrid,
     getHeading,
-    getMemberLine,
     getSubtitle,
     getTextInMain,
     goTo,
-    toggleCard,
   };
 };

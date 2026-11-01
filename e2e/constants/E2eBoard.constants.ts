@@ -1,5 +1,3 @@
-import { STRING } from "@/app/constants";
-import { EQUIPMENT_BOARD_COPY } from "@/app/features/board/equipment-board/constants/EquipmentBoardCopy.constants";
 import { resolveFreeOfTotalText } from "@/app/features/board/equipment-board/utils/resolveFreeOfTotalText";
 import {
   E2E_CATEGORY_GROUP_LABEL,
@@ -54,11 +52,6 @@ export const E2E_BOARD_CARDS_PER_ROW: Record<
   [E2E_PROJECT.DEFAULT]: 3,
   [E2E_PROJECT.MOBILE]: 2,
 };
-
-export const resolveBoardFreeText = (
-  freeCount: number
-): string =>
-  `${freeCount}${STRING.SPACE}${EQUIPMENT_BOARD_COPY.FREE_LABEL_PLURAL}`;
 
 export const resolveBoardChipText = (
   totalCount: number

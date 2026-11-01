@@ -5,7 +5,6 @@ import {
   E2E_BOARD_HIDDEN_CATEGORY_NAMES,
   E2E_BOARD_STANDALONE_CARDS,
   resolveBoardChipText,
-  resolveBoardFreeText,
 } from "../constants/E2eBoard.constants";
 import { EQUIPMENT_BOARD_COPY } from "@/app/features/board/equipment-board/constants/EquipmentBoardCopy.constants";
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
@@ -54,7 +53,7 @@ test.describe("Equipment board", () => {
     }
   });
 
-  test("shows the grouped categories as one collapsed card with summed totals that lists each member with its own counts when opened", async ({
+  test("shows the grouped categories as one plain card with the summed totals and no member lines", async ({
     page,
   }) => {
     const boardPage = createBoardPage(page);
@@ -69,38 +68,22 @@ test.describe("Equipment board", () => {
         resolveBoardChipText(E2E_BOARD_GROUP.TOTAL_COUNT)
       )
     ).toHaveCount(E2E_COUNT.ONE);
-
-    for (const member of E2E_BOARD_GROUP.MEMBERS) {
-      await expect(
-        boardPage.getMemberLine(groupCard, member.name)
-      ).toHaveCount(E2E_COUNT.NONE);
-    }
-
-    await boardPage.toggleCard(groupCard);
-
-    for (const member of E2E_BOARD_GROUP.MEMBERS) {
-      const line = boardPage.getMemberLine(
+    await expect(
+      boardPage.getCardText(
         groupCard,
-        member.name
-      );
+        EQUIPMENT_BOARD_COPY.PER_UNIT_CHIP
+      )
+    ).toHaveCount(E2E_COUNT.ONE);
+    await expect(
+      boardPage.getButtons(groupCard)
+    ).toHaveCount(E2E_COUNT.NONE);
 
-      await expect(line).toHaveCount(E2E_COUNT.ONE);
+    for (const member of E2E_BOARD_GROUP.MEMBERS) {
       await expect(
-        boardPage.getCardText(
-          line,
-          resolveBoardFreeText(member.totalCount)
-        )
-      ).toHaveCount(E2E_COUNT.ONE);
+        boardPage.getCardText(groupCard, member.name)
+      ).toHaveCount(E2E_COUNT.NONE);
       await expect(
         boardPage.getCard(member.name)
-      ).toHaveCount(E2E_COUNT.NONE);
-    }
-
-    await boardPage.toggleCard(groupCard);
-
-    for (const member of E2E_BOARD_GROUP.MEMBERS) {
-      await expect(
-        boardPage.getMemberLine(groupCard, member.name)
       ).toHaveCount(E2E_COUNT.NONE);
     }
   });

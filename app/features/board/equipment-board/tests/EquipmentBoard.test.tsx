@@ -50,12 +50,10 @@ describe("EquipmentBoard", () => {
     expect(page.getCard(JET_SKI_LABEL)).toBeInTheDocument();
   });
 
-  it("shows the grouped card with the summed totals and each member with its own counts", async () => {
+  it("shows the grouped card like any other card, with the summed totals and no member lines", async () => {
     render(await EquipmentBoard());
     const page = createEquipmentBoardPage();
     const kayakCard = page.getCard(KAYAK_LABEL);
-
-    await page.toggleCard(kayakCard);
 
     expect(
       page.getText(
@@ -66,8 +64,10 @@ describe("EquipmentBoard", () => {
         )
       )
     ).toBeInTheDocument();
-    expect(page.getMemberLines(kayakCard)).toHaveLength(
-      CARD_COUNT_WITH_GROUP
+    expect(page.queryButton(kayakCard)).toBeNull();
+    expect(page.queryMemberList(kayakCard)).toBeNull();
+    expect(page.getCardText(kayakCard)).not.toContain(
+      BOARD_CATEGORY_NAME.KAYAK_DOUBLE
     );
   });
 
@@ -83,7 +83,7 @@ describe("EquipmentBoard", () => {
 
     expect(page.getCards()).toHaveLength(1);
     expect(page.queryMemberList(card)).toBeNull();
-    expect(page.queryToggle(card)).toBeNull();
+    expect(page.queryButton(card)).toBeNull();
   });
 
   it("shows the empty state and no grid when there is no reservable equipment", async () => {
