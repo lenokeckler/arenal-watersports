@@ -11,11 +11,14 @@ export const SUPABASE_RPC = {
   EXCHANGE_PASSWORD_RESET_PIN:
     "exchange_password_reset_pin",
   FINISH_PASSWORD_RECOVERY: "finish_password_recovery",
+  GET_RESERVATION_HISTORY_RECORD:
+    "get_reservation_history_record",
   GRANT_WORKER_AREA: "grant_worker_area",
   GRANT_WORKER_MARK: "grant_worker_mark",
   HAS_AREA: "has_area",
   IS_ADMIN: "is_admin",
   ISSUE_PASSWORD_RESET_PIN: "issue_password_reset_pin",
+  LIST_RESERVATION_HISTORY: "list_reservation_history",
   PREPARE_WORKER_TEMPORARY_PASSWORD:
     "prepare_worker_temporary_password",
   PASSWORD_RESET_GRANT_IS_OPEN:
