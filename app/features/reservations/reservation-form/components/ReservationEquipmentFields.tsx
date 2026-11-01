@@ -8,6 +8,7 @@ import {
 import { ReservationEquipmentCategoryFields } from "./ReservationEquipmentCategoryFields";
 import ReservationQuantityField from "./ReservationQuantityField";
 import ReservationUnitField from "./ReservationUnitField";
+import ReservationCategoryAvailabilityPanel from "./ReservationCategoryAvailabilityPanel";
 
 const ReservationEquipmentFields = ({
   categories,
@@ -26,6 +27,15 @@ const ReservationEquipmentFields = ({
     <Text className={RESERVATION_FORM_EQUIPMENT_NOTE_CLASS}>
       {RESERVATION_FORM_UI_COPY.EQUIPMENT_NOTE}
     </Text>
+    <ReservationCategoryAvailabilityPanel
+      categoryName={
+        viewModel.categoryAvailabilityCategoryName
+      }
+      freeEquipmentCount={viewModel.categoryAvailability}
+      intervalLabel={viewModel.categoryAvailabilityInterval}
+      onRetry={viewModel.handleRetryCategoryAvailability}
+      state={viewModel.categoryAvailabilityState}
+    />
   </div>
 );
 
