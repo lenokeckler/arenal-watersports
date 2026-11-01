@@ -9,6 +9,7 @@ import { createReservationAction } from "../actions/createReservationAction";
 import { getAvailableReservationUnitsAction } from "../actions/getAvailableReservationUnitsAction";
 import { getReservationCategoryAvailabilityAction } from "../actions/getReservationCategoryAvailabilityAction";
 import { getReservationCategoryConflictsAction } from "../actions/getReservationCategoryConflictsAction";
+import { EMPTY_RESERVATION_EQUIPMENT_AVAILABILITY } from "../constants/ReservationAvailability.constants";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 import { RESERVATION_CATEGORY_AVAILABILITY_ROW } from "./getReservationInterval.constants";
 import { RESERVATION_CATEGORY_CONFLICT_WARNING_TEST } from "./ReservationCategoryConflictWarning.constants";
@@ -40,7 +41,14 @@ vi.mock(
 );
 
 describe("ReservationFormView category conflict warning", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.mocked(
+      getAvailableReservationUnitsAction
+    ).mockResolvedValue(
+      EMPTY_RESERVATION_EQUIPMENT_AVAILABILITY
+    );
+  });
   it("shows the conflict and allows reservation submission", async () => {
     vi.mocked(createReservationAction).mockResolvedValue({
       ok: true,
