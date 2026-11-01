@@ -87,3 +87,6 @@ export const DAY_WITHOUT_CURRENCIES: DailyIncome = {
   date: INCOME_DATE,
   currencies: [],
 };
+
+export const REDIRECT_ERROR_MESSAGE = "redirected";
+export const READ_FAILURE_MESSAGE = "read failed";
