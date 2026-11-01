@@ -41,11 +41,6 @@ export const createReservationHistoryPage = () => {
       name,
     });
 
-  const queryNavigationLink = (name: string) =>
-    within(getNavigation()).queryByRole(ARIA_ROLE.LINK, {
-      name,
-    });
-
   const getStatus = () =>
     screen.getByRole(ARIA_ROLE.STATUS);
 
@@ -73,6 +68,5 @@ export const createReservationHistoryPage = () => {
     queryInRow,
     queryList,
     queryNavigation,
-    queryNavigationLink,
   };
 };

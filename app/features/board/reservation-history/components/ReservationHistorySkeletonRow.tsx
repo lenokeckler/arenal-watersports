@@ -21,6 +21,12 @@ const ReservationHistorySkeletonRow =
       <div
         className={RESERVATION_HISTORY_SKELETON_LINE_CLASS}
       />
+      <div
+        className={RESERVATION_HISTORY_SKELETON_LINE_CLASS}
+      />
+      <div
+        className={RESERVATION_HISTORY_SKELETON_LINE_CLASS}
+      />
     </div>
   );
 

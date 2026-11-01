@@ -1,11 +1,11 @@
 "use client";
 
 import ReservationHistoryError from "@/app/features/board/reservation-history/components/ReservationHistoryError";
-import type { ReservationHistoryErrorProps } from "@/app/features/board/reservation-history/models/ReservationHistoryErrorProps.interface";
+import type { ReservationHistoryResetProps } from "@/app/features/board/reservation-history/models/ReservationHistoryResetProps.interface";
 
 const ReservationHistoryRouteError = ({
   reset,
-}: ReservationHistoryErrorProps): React.JSX.Element => (
+}: ReservationHistoryResetProps): React.JSX.Element => (
   <ReservationHistoryError reset={reset} />
 );
 

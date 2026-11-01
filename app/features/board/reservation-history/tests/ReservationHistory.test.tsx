@@ -19,6 +19,11 @@ import {
 } from "./ReservationHistory.constants";
 import { FORMAT_EXPECTED } from "./ReservationHistoryDateFormat.constants";
 import { createReservationHistoryPage } from "./ReservationHistory.page";
+import {
+  ARIA_DISABLED_ATTRIBUTE,
+  ARIA_TRUE_VALUE,
+  HREF_ATTRIBUTE,
+} from "./ReservationHistoryStates.constants";
 
 const renderScreen = (
   items = [CLOSED_ITEM, CANCELLED_ITEM],
@@ -157,16 +162,15 @@ describe("ReservationHistory", () => {
       PAGED_COUNT
     );
 
-    expect(
-      page.queryNavigationLink(
-        RESERVATION_HISTORY_COPY.PAGINATION_PREVIOUS
-      )
-    ).not.toBeInTheDocument();
-    expect(
-      page.getText(
-        RESERVATION_HISTORY_COPY.PAGINATION_PREVIOUS
-      )
-    ).toHaveAttribute("aria-disabled", "true");
+    const disabledEnd = page.getNavigationLink(
+      RESERVATION_HISTORY_COPY.PAGINATION_PREVIOUS
+    );
+
+    expect(disabledEnd).not.toHaveAttribute(HREF_ATTRIBUTE);
+    expect(disabledEnd).toHaveAttribute(
+      ARIA_DISABLED_ATTRIBUTE,
+      ARIA_TRUE_VALUE
+    );
   });
 
   it("shows the next end as a disabled non-link on the last page", () => {
@@ -176,13 +180,14 @@ describe("ReservationHistory", () => {
       PAGED_COUNT
     );
 
-    expect(
-      page.queryNavigationLink(
-        RESERVATION_HISTORY_COPY.PAGINATION_NEXT
-      )
-    ).not.toBeInTheDocument();
-    expect(
-      page.getText(RESERVATION_HISTORY_COPY.PAGINATION_NEXT)
-    ).toHaveAttribute("aria-disabled", "true");
+    const disabledEnd = page.getNavigationLink(
+      RESERVATION_HISTORY_COPY.PAGINATION_NEXT
+    );
+
+    expect(disabledEnd).not.toHaveAttribute(HREF_ATTRIBUTE);
+    expect(disabledEnd).toHaveAttribute(
+      ARIA_DISABLED_ATTRIBUTE,
+      ARIA_TRUE_VALUE
+    );
   });
 });

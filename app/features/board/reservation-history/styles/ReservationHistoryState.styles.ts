@@ -22,7 +22,7 @@ export const RESERVATION_HISTORY_ERROR_BODY_CLASS =
   "text-body-base text-on-error-container";
 
 export const RESERVATION_HISTORY_RETRY_CLASS =
-  "min-h-12 w-full md:w-auto";
+  "min-h-12 w-full md:w-auto md:self-start";
 
 export const RESERVATION_HISTORY_SKELETON_ITEM_CLASS =
   "flex min-h-12 animate-pulse flex-col gap-xs rounded-xl border border-l-4 border-outline-variant bg-card-tint-neutral-bg p-md motion-reduce:animate-none";

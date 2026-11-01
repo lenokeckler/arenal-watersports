@@ -10,13 +10,17 @@ import {
   render,
   within,
 } from "@testing-library/react";
-import ReservationHistoryError from "../components/ReservationHistoryError";
+import ReservationHistoryRouteError from "@/app/(system)/history/error";
 import { RESERVATION_HISTORY_COPY } from "../constants/ReservationHistoryCopy.constants";
 import { createReservationHistoryPage } from "./ReservationHistory.page";
 import { RAW_ERROR_TEXT } from "./ReservationHistoryStates.constants";
 
 const mockRefresh = vi.fn();
 const mockReset = vi.fn();
+const ROUTE_PROPS = {
+  error: new Error(RAW_ERROR_TEXT),
+  reset: mockReset,
+};
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ refresh: mockRefresh }),
@@ -29,7 +33,9 @@ describe("ReservationHistoryError", () => {
   });
 
   it("announces the failure in Spanish without raw error text", () => {
-    render(<ReservationHistoryError reset={mockReset} />);
+    render(
+      <ReservationHistoryRouteError {...ROUTE_PROPS} />
+    );
     const page = createReservationHistoryPage();
     const alert = within(page.getAlert());
 
@@ -45,7 +51,9 @@ describe("ReservationHistoryError", () => {
   });
 
   it("refreshes the route and resets the boundary on retry", () => {
-    render(<ReservationHistoryError reset={mockReset} />);
+    render(
+      <ReservationHistoryRouteError {...ROUTE_PROPS} />
+    );
     const page = createReservationHistoryPage();
 
     fireEvent.click(page.getRetryButton());

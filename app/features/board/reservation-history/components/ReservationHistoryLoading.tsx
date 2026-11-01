@@ -1,7 +1,10 @@
 import { Text, UnorderedList } from "@/app/components";
-import { ARIA_ROLE, UNORDERED_LIST } from "@/app/constants";
+import {
+  ARIA_ROLE,
+  PAGINATION,
+  UNORDERED_LIST,
+} from "@/app/constants";
 import { RESERVATION_HISTORY_COPY } from "../constants/ReservationHistoryCopy.constants";
-import { RESERVATION_HISTORY_SKELETON_ROW_COUNT } from "../constants/ReservationHistoryState.constants";
 import {
   RESERVATION_HISTORY_LIST_CLASS,
   RESERVATION_HISTORY_PAGE_CLASS,
@@ -11,7 +14,7 @@ import ReservationHistoryHeader from "./ReservationHistoryHeader";
 import ReservationHistorySkeletonRow from "./ReservationHistorySkeletonRow";
 
 const SKELETON_ITEMS = Array.from(
-  { length: RESERVATION_HISTORY_SKELETON_ROW_COUNT },
+  { length: PAGINATION.DEFAULT_PAGE_SIZE },
   () => ({ text: <ReservationHistorySkeletonRow /> })
 );
 

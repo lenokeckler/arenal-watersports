@@ -2,12 +2,12 @@ import { Button } from "@/app/components";
 import { BUTTON } from "@/app/components/button/constants";
 import { RESERVATION_HISTORY_COPY } from "../constants/ReservationHistoryCopy.constants";
 import { useReservationHistoryRetryViewModel } from "../hooks/useReservationHistoryRetryViewModel";
-import type { ReservationHistoryRetryButtonProps } from "../models/ReservationHistoryRetryButtonProps.interface";
+import type { ReservationHistoryResetProps } from "../models/ReservationHistoryResetProps.interface";
 import { RESERVATION_HISTORY_RETRY_CLASS } from "../styles/ReservationHistoryState.styles";
 
 const ReservationHistoryRetryButton = ({
   reset,
-}: ReservationHistoryRetryButtonProps): React.JSX.Element => {
+}: ReservationHistoryResetProps): React.JSX.Element => {
   const { handleRetry } =
     useReservationHistoryRetryViewModel({ reset });
 
