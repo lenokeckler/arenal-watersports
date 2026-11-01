@@ -2,17 +2,17 @@
 
 import { useRouter } from "next/navigation";
 import { LENGTH } from "@/app/constants";
-import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
 import { CATEGORY_LIST_VIEW_STATE } from "../constants/CategoryListViewState.constants";
+import { useCategoryCardActions } from "./useCategoryCardActions";
+import type { CategoryCardActionsViewModel } from "../models/CategoryCardActionsViewModel.interface";
 import type { CategoryCardViewModel } from "../models/CategoryCardViewModel.interface";
 import type { CategoryListItem } from "../models/CategoryListItem.interface";
 import type { CategoryListViewModel } from "../models/CategoryListViewModel.interface";
 import type { CategoryListViewModelProps } from "../models/CategoryListViewModelProps.interface";
 import type { CategoryListViewState } from "../models/CategoryListViewState.type";
 import { isCategoryInactive } from "../utils/isCategoryInactive";
+import { resolveCategoryCardActionState } from "../utils/resolveCategoryCardActionState";
 import { resolveCategoryTrackingModeLabel } from "../utils/resolveCategoryTrackingModeLabel";
-
-const ignoreCardAction = (): void => undefined;
 
 const resolveCategoryListViewState = (
   fetchFailed: boolean,
@@ -30,18 +30,27 @@ const resolveCategoryListViewState = (
 };
 
 const buildCategoryCardViewModel = (
-  category: CategoryListItem
+  category: CategoryListItem,
+  cardActions: CategoryCardActionsViewModel
 ): CategoryCardViewModel => ({
   category,
   isInactive: isCategoryInactive(category),
   trackingModeLabel:
     resolveCategoryTrackingModeLabel(category),
-  actionState: CATEGORY_CARD_ACTION_STATE.NONE,
-  isActionLoading: false,
-  onCancelClick: ignoreCardAction,
-  onConfirmDeleteClick: ignoreCardAction,
-  onDeleteClick: ignoreCardAction,
-  onMarkInactiveClick: ignoreCardAction,
+  actionState: resolveCategoryCardActionState(
+    category,
+    category.id === cardActions.confirmingCategoryId
+  ),
+  isActionLoading:
+    category.id === cardActions.pendingCategoryId,
+  onCancelClick: cardActions.onCancelClick(category.id),
+  onConfirmDeleteClick: cardActions.onConfirmDeleteClick(
+    category.id
+  ),
+  onDeleteClick: cardActions.onDeleteClick(category.id),
+  onMarkInactiveClick: cardActions.onMarkInactiveClick(
+    category.id
+  ),
 });
 
 export const useCategoryListViewModel = ({
@@ -49,13 +58,16 @@ export const useCategoryListViewModel = ({
   fetchFailed,
 }: CategoryListViewModelProps): CategoryListViewModel => {
   const router = useRouter();
+  const cardActions = useCategoryCardActions();
 
   const onRetry = (): void => {
     router.refresh();
   };
 
   return {
-    cards: categories.map(buildCategoryCardViewModel),
+    cards: categories.map((category) =>
+      buildCategoryCardViewModel(category, cardActions)
+    ),
     onRetry,
     viewState: resolveCategoryListViewState(
       fetchFailed,

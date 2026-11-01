@@ -11,16 +11,37 @@ import { useCategoryListViewModel } from "../hooks/useCategoryListViewModel";
 import { DEFAULT_CATEGORY_LIST_ITEM } from "./CategoryListItem.constants";
 
 const mockRefresh = vi.fn();
+const mockShowToast = vi.fn();
+const mockMarkCategoryInactiveAction = vi.fn();
+const mockDeleteCategoryAction = vi.fn();
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
     refresh: mockRefresh,
   }),
+  unstable_rethrow: vi.fn(),
+}));
+
+vi.mock("@/app/components/toast/utils/useToast", () => ({
+  useToast: () => ({ showToast: mockShowToast }),
+}));
+
+vi.mock("../services/markCategoryInactiveAction", () => ({
+  markCategoryInactiveAction: (categoryId: string) =>
+    mockMarkCategoryInactiveAction(categoryId),
+}));
+
+vi.mock("../services/deleteCategoryAction", () => ({
+  deleteCategoryAction: (categoryId: string) =>
+    mockDeleteCategoryAction(categoryId),
 }));
 
 describe("useCategoryListViewModel view state", () => {
   beforeEach(() => {
     mockRefresh.mockClear();
+    mockShowToast.mockClear();
+    mockMarkCategoryInactiveAction.mockReset();
+    mockDeleteCategoryAction.mockReset();
   });
 
   it("returns the ready view state when categories exist and the fetch succeeded", () => {
