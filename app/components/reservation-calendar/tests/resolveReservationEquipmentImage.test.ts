@@ -6,6 +6,12 @@ describe("resolveReservationEquipmentImage", () => {
     ["Jet Ski", "/images/equipment/jet-ski.webp"],
     ["Kayak Doble", "/images/equipment/kayak-doble.webp"],
     [
+      "Kayak individual",
+      "/images/equipment/kayak-individual.webp",
+    ],
+    ["Lancha", "/images/equipment/lancha.webp"],
+    ["Cuadraciclo", "/images/equipment/cuadraciclo.webp"],
+    [
       "  S\u00daP Board  ",
       "/images/equipment/paddleboard.webp",
     ],
@@ -20,7 +26,6 @@ describe("resolveReservationEquipmentImage", () => {
   );
 
   it.each([
-    "Lancha",
     "Super category",
     "Kayak accessory",
     "constructor",

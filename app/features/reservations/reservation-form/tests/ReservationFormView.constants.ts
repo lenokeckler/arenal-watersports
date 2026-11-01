@@ -8,6 +8,7 @@ export const RESERVATION_FORM_VIEW_TEST = {
   AVAILABLE_UNIT_ID: "cccccccc-0000-0000-0000-000000000001",
   AVAILABLE_UNIT_CODE: "LAN-01",
   CATEGORY_NAME: "Jet Ski",
+  KEYBOARD_SELECT: "{Enter}",
   CATEGORY_IMAGE_ALT:
     "Moto acuática para una reserva en el lago",
   DATE: "2028-02-29",

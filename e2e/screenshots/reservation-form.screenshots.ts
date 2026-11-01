@@ -45,7 +45,7 @@ test.describe("Reservation form screenshots", () => {
         E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
       )
       .waitFor();
-    await reservationFormPage.selectCategoryOption(
+    await reservationFormPage.selectCategory(
       E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
     );
     await page
@@ -76,6 +76,9 @@ test.describe("Reservation form screenshots", () => {
       )
     );
     await reservationFormPage.scrollToSubmit();
+    await reservationFormPage
+      .getQuantityInput()
+      .scrollIntoViewIfNeeded();
     await expect(
       reservationFormPage.getCategoryCard(
         E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION

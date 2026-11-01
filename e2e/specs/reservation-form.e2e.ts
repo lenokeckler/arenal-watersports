@@ -57,14 +57,14 @@ test.describe("Reservation form", () => {
         E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
       )
     ).toBeVisible();
-    await reservationFormPage.selectCategoryOption(
+    await reservationFormPage.selectCategory(
       E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
     );
     await expect(
-      reservationFormPage.getCategoryOption(
-        E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
-      )
-    ).toBeChecked();
+      reservationFormPage.getSelectedCategoryOption()
+    ).toHaveAccessibleName(
+      E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
+    );
   });
 
   test("selects a duration preset and reports required customer name", async ({
@@ -116,10 +116,8 @@ test.describe("Reservation form", () => {
 
     await reservationFormPage.goTo();
     await expect(
-      reservationFormPage.getCategoryOption(
-        E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
-      )
-    ).not.toBeChecked();
+      reservationFormPage.getSelectedCategoryOption()
+    ).toHaveCount(0);
     await reservationFormPage.submitReservation();
 
     await expect(
@@ -132,5 +130,77 @@ test.describe("Reservation form", () => {
     await expect(
       reservationFormPage.getSuccessMessage()
     ).toHaveCount(1);
+  });
+
+  test("offers an available concrete unit for Lancha", async ({
+    page,
+  }) => {
+    const reservationFormPage =
+      createReservationFormPage(page);
+
+    await reservationFormPage.goTo();
+    await reservationFormPage.selectCategory(
+      E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
+    );
+
+    await expect(
+      reservationFormPage.getQuantityInput()
+    ).toBeHidden();
+    await expect(
+      reservationFormPage.getUnitSelect()
+    ).toBeVisible();
+    await reservationFormPage.selectUnit(
+      E2E_RESERVATION_FORM_COPY.UNIT_OPTION
+    );
+    await expect(
+      reservationFormPage.getUnitSelect()
+    ).toHaveValue(/.+/);
+  });
+
+  test("removes a committed Lancha from availability for the same window", async ({
+    page,
+  }) => {
+    const reservationFormPage =
+      createReservationFormPage(page);
+
+    await reservationFormPage.goTo();
+    await reservationFormPage
+      .getDateInput()
+      .fill(E2E_RESERVATION_FORM_COPY.SCREENSHOT_DATE);
+    await reservationFormPage
+      .getCustomerNameInput()
+      .fill(E2E_RESERVATION_FORM_COPY.CUSTOMER_NAME_VALID);
+    await reservationFormPage.selectCategory(
+      E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
+    );
+    await reservationFormPage.waitForUnitOption(
+      E2E_RESERVATION_FORM_COPY.UNIT_OPTION
+    );
+    await reservationFormPage.selectUnit(
+      E2E_RESERVATION_FORM_COPY.UNIT_OPTION
+    );
+    await reservationFormPage.submit();
+
+    await expect(
+      reservationFormPage.getSuccessMessage()
+    ).toBeVisible();
+    await reservationFormPage.goTo();
+    await reservationFormPage
+      .getDateInput()
+      .fill(E2E_RESERVATION_FORM_COPY.SCREENSHOT_DATE);
+    await reservationFormPage.selectCategory(
+      E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
+    );
+    await expect(
+      reservationFormPage.getAvailabilityLoadingMessage()
+    ).toBeVisible();
+    await expect(
+      reservationFormPage.getAvailabilityLoadingMessage()
+    ).toBeHidden();
+    await expect(
+      reservationFormPage.getUnitOption(
+        E2E_RESERVATION_FORM_COPY.UNIT_OPTION
+      )
+    ).toHaveCount(0);
   });
 });
