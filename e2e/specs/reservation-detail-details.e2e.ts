@@ -24,12 +24,17 @@ reservationDetailTest(
     ).toContainText(reservationFixture.guideName);
     const charges = detailPage.getChargeSection();
     await expect(charges).toContainText(copy.PAID);
-    await expect(charges).toContainText(
-      fixture.AGREED_AMOUNT_DISPLAY
-    );
-    await expect(charges).toContainText(
-      fixture.CHARGED_AMOUNT_DISPLAY
-    );
+    await expect(
+      detailPage.getChargeAmountRow(copy.AMOUNT_TARGET)
+    ).toContainText(fixture.AGREED_AMOUNT_DISPLAY);
+    await expect(
+      detailPage.getChargeAmountRow(
+        copy.AMOUNT_CHARGED_GROSS
+      )
+    ).toContainText(fixture.GROSS_CHARGED_AMOUNT_DISPLAY);
+    await expect(
+      detailPage.getChargeAmountRow(copy.AMOUNT_CHARGED_NET)
+    ).toContainText(fixture.NET_CHARGED_AMOUNT_DISPLAY);
     await expect(charges).toContainText(
       copy.EXTRA_TIME_CHARGES
     );
@@ -37,9 +42,9 @@ reservationDetailTest(
       fixture.EXTRA_TIME_AMOUNT_DISPLAY
     );
     await expect(charges).toContainText(copy.REFUNDS);
-    await expect(charges).toContainText(
-      fixture.REFUND_AMOUNT_DISPLAY
-    );
+    await expect(
+      detailPage.getRefundSection()
+    ).toContainText(fixture.REFUND_AMOUNT_DISPLAY);
     expect(await detailPage.hasHorizontalOverflow()).toBe(
       false
     );

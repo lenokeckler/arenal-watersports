@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { randomUUID } from "node:crypto";
 import {
   E2E_RESERVATION_DETAIL_COPY,
   E2E_RESERVATION_DETAIL_SCREENSHOT,
@@ -10,7 +11,7 @@ import {
 import { createReservationDetailPage } from "../pages/ReservationDetail.page";
 import { captureViewport } from "../support/captureViewport";
 import { createReservationDetailFixture } from "../support/createReservationDetailFixture";
-import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
+import { signInAsPredefinedComboFixtureWorker } from "../support/signInAsPredefinedComboFixtureWorker";
 
 test("captures the complete reservation detail", async ({
   page,
@@ -21,7 +22,11 @@ test("captures the complete reservation detail", async ({
     createReservationDetailPage(page);
 
   try {
-    await signInAsSeededWorker(page);
+    await signInAsPredefinedComboFixtureWorker(
+      page,
+      reservationFixture.workerUsername,
+      reservationFixture.workerPassword
+    );
     await reservationDetailPage.goTo(reservationFixture.id);
     await expect(
       reservationDetailPage
@@ -44,6 +49,21 @@ test("captures the complete reservation detail", async ({
       page,
       resolveDeviceScreenshotFileName(
         E2E_RESERVATION_DETAIL_SCREENSHOT.BASENAME,
+        testInfo.project.name
+      ),
+      E2E_RESERVATION_DETAIL_SCREENSHOT.FULL_PAGE
+    );
+    await reservationDetailPage.goTo(randomUUID());
+    await expect(
+      page.getByText(
+        E2E_RESERVATION_DETAIL_COPY.MISSING_RESERVATION,
+        { exact: true }
+      )
+    ).toBeVisible();
+    await captureViewport(
+      page,
+      resolveDeviceScreenshotFileName(
+        E2E_RESERVATION_DETAIL_SCREENSHOT.NOT_FOUND_BASENAME,
         testInfo.project.name
       ),
       E2E_RESERVATION_DETAIL_SCREENSHOT.FULL_PAGE

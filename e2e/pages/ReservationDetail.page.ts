@@ -54,8 +54,29 @@ export const createReservationDetailPage = (page: Page) => {
         main,
         E2E_RESERVATION_DETAIL_COPY.CHARGE_STATUS
       ),
+    getChargeAmountRow: (label: string): Locator =>
+      getSection(
+        main,
+        E2E_RESERVATION_DETAIL_COPY.CHARGE_STATUS
+      )
+        .getByText(label, { exact: true })
+        .locator("xpath=.."),
+    getRefundSection: (): Locator =>
+      getSection(
+        main,
+        E2E_RESERVATION_DETAIL_COPY.CHARGE_STATUS
+      )
+        .getByText(E2E_RESERVATION_DETAIL_COPY.REFUNDS, {
+          exact: true,
+        })
+        .locator("xpath=.."),
     getDispatchGroup: (categoryName: string): Locator =>
       getDispatchGroup(main, categoryName),
+    getDispatchSection: (): Locator =>
+      getSection(
+        main,
+        E2E_RESERVATION_DETAIL_COPY.DISPATCHES
+      ),
     getEquipmentSection: (): Locator =>
       getSection(
         main,
