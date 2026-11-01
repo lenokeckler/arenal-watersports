@@ -1,4 +1,5 @@
 import {
+  ISO_DATE_MIN,
   ISO_DATE_PATTERN,
   ISO_DATE_UTC_MIDNIGHT_SUFFIX,
 } from "@/app/constants";
@@ -15,7 +16,8 @@ export const parseReservationHistoryDate = (
 
   if (
     candidate === undefined ||
-    !ISO_DATE_PATTERN.test(candidate)
+    !ISO_DATE_PATTERN.test(candidate) ||
+    candidate < ISO_DATE_MIN
   ) {
     return null;
   }

@@ -4,6 +4,8 @@ import {
   HISTORY_INVALID_DATES,
   HISTORY_LATER_VALID_DATE,
   HISTORY_LEAP_DAY,
+  HISTORY_MAX_DATE,
+  HISTORY_MIN_DATE,
   HISTORY_VALID_DATE,
 } from "./ReservationHistoryQuery.constants";
 
@@ -18,6 +20,15 @@ describe("parseReservationHistoryDate", () => {
     expect(
       parseReservationHistoryDate(HISTORY_LEAP_DAY)
     ).toBe(HISTORY_LEAP_DAY);
+  });
+
+  it("accepts the lowest and highest Postgres years", () => {
+    expect(
+      parseReservationHistoryDate(HISTORY_MIN_DATE)
+    ).toBe(HISTORY_MIN_DATE);
+    expect(
+      parseReservationHistoryDate(HISTORY_MAX_DATE)
+    ).toBe(HISTORY_MAX_DATE);
   });
 
   it("takes the first value of a repeated param", () => {

@@ -1,8 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { PAGINATION } from "@/app/constants";
+import {
+  PAGINATION,
+  POSTGRES_INTEGER_MAX,
+} from "@/app/constants";
 import { resolveReservationHistoryPageIndex } from "../utils/resolveReservationHistoryPageIndex";
 import {
   HISTORY_FIRST_PAGE_PARAMETER,
+  HISTORY_MAX_PAGE_PARAMETER,
   HISTORY_PAGE_PARAMETERS,
 } from "./ReservationHistoryQuery.constants";
 
@@ -51,14 +55,11 @@ describe("resolveReservationHistoryPageIndex", () => {
     }
   });
 
-  it("keeps the index safe at the largest safe page", () => {
-    const pageIndex = resolveReservationHistoryPageIndex(
-      HISTORY_PAGE_PARAMETERS.MAX_SAFE_NUMBER
-    );
-
-    expect(Number.isSafeInteger(pageIndex)).toBe(true);
-    expect(pageIndex).toBe(
-      Number.MAX_SAFE_INTEGER - PAGINATION.ONE_PAGE
-    );
+  it("accepts the largest page the SQL integer allows", () => {
+    expect(
+      resolveReservationHistoryPageIndex(
+        HISTORY_MAX_PAGE_PARAMETER
+      )
+    ).toBe(POSTGRES_INTEGER_MAX);
   });
 });

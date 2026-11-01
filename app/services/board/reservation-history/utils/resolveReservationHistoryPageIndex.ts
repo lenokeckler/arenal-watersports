@@ -1,4 +1,7 @@
-import { PAGINATION } from "@/app/constants";
+import {
+  PAGINATION,
+  POSTGRES_INTEGER_MAX,
+} from "@/app/constants";
 import type { NullableUndefined } from "@/app/types";
 import { readFirstSearchParam } from "./readFirstSearchParam";
 
@@ -13,8 +16,11 @@ export const resolveReservationHistoryPageIndex = (
 
   const pageNumber = Number(firstParam);
 
+  const pageIndex = pageNumber - PAGINATION.ONE_PAGE;
+
   return Number.isSafeInteger(pageNumber) &&
-    pageNumber >= PAGINATION.ONE_PAGE
-    ? pageNumber - PAGINATION.ONE_PAGE
+    pageIndex >= PAGINATION.DEFAULT_PAGE &&
+    pageIndex <= POSTGRES_INTEGER_MAX
+    ? pageIndex
     : PAGINATION.DEFAULT_PAGE;
 };

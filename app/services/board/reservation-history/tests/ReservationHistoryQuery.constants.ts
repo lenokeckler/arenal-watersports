@@ -1,10 +1,17 @@
-import { RESERVATION_TYPE } from "@/app/constants";
+import {
+  POSTGRES_INTEGER_MAX,
+  RESERVATION_TYPE,
+} from "@/app/constants";
 
 export const HISTORY_VALID_DATE = "2026-10-31";
 
 export const HISTORY_LATER_VALID_DATE = "2026-11-15";
 
 export const HISTORY_LEAP_DAY = "2028-02-29";
+
+export const HISTORY_MIN_DATE = "0001-01-01";
+
+export const HISTORY_MAX_DATE = "9999-12-31";
 
 export const HISTORY_NONEXISTENT_DAY = "2026-02-30";
 
@@ -13,6 +20,7 @@ export const HISTORY_MALFORMED_DATE = "not-a-date";
 export const HISTORY_INVALID_DATES = [
   "",
   HISTORY_NONEXISTENT_DAY,
+  "0000-01-01",
   "2027-02-29",
   "2026-13-01",
   "2026-00-10",
@@ -53,6 +61,10 @@ export const HISTORY_FIRST_PAGE_PARAMETER = "1";
 
 export const HISTORY_INVALID_PAGE_PARAMETER = "-1";
 
+export const HISTORY_MAX_PAGE_PARAMETER = String(
+  POSTGRES_INTEGER_MAX + 1
+);
+
 export const HISTORY_PAGE_PARAMETERS = {
   INVALID: [
     "",
@@ -63,7 +75,6 @@ export const HISTORY_PAGE_PARAMETERS = {
     "9007199254740993",
     "1e400",
   ],
-  MAX_SAFE_NUMBER: String(Number.MAX_SAFE_INTEGER),
   MULTIPLE: ["2", "3"],
   VALID: "4",
   VALID_INDEX: 3,
