@@ -78,7 +78,7 @@ test.describe("Sign-out for inactivity", () => {
         E2E_SESSION_ACTIVITY_MAX_SECONDS_AFTER_TAP
       );
     await homePage.goTo();
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
     await expect(homePage.getHeading()).toBeVisible();
   });
 });

@@ -69,7 +69,7 @@ test.describe("Recovery lifts the administration gate", () => {
       E2E_RECOVERY_PASSWORDS.NEW
     );
 
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
   });
 
   test("refuses the old password with the generic message once recovered", async ({

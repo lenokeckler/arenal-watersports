@@ -74,6 +74,6 @@ test.describe("Worker areas", () => {
   }) => {
     await createWorkerAreasPage(page).goTo();
 
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
   });
 });

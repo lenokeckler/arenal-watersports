@@ -68,7 +68,7 @@ test.describe("Password recovery reset", () => {
       E2E_RECOVERY_PASSWORDS.NEW
     );
 
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
   });
 
   test("refuses the old password", async ({
@@ -87,7 +87,7 @@ test.describe("Password recovery reset", () => {
     await expect(loginPage.getPasswordError()).toHaveText(
       E2E_LOGIN_COPY.INVALID_CREDENTIALS
     );
-    await expect(page).not.toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
   });
 
   test("mails a notice with no PIN and no link", async ({
