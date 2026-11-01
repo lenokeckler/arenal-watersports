@@ -73,6 +73,6 @@ test.describe("Account lock", () => {
       secondDevice.page,
       activeWorker
     );
-    await expect(secondDevice.page).toHaveURL(PATHS.HOME);
+    await expect(secondDevice.page).toHaveURL(PATHS.BOARD);
   });
 });

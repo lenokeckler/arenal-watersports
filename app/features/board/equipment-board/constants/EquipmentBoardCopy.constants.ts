@@ -5,7 +5,9 @@ export const EQUIPMENT_BOARD_COPY = {
   ERROR_BODY:
     "Revise su conexión e intente de nuevo. Mientras no cargue, no asuma que hay equipo libre.",
   ERROR_TITLE: "No se pudo cargar el tablero",
-  FREE_LABEL: "libres",
+  FREE_LABEL_PLURAL: "libres",
+  FREE_LABEL_SINGULAR: "libre",
+  GRID_LABEL: "Categorías de equipo reservable",
   IN_USE_OF_TOTAL: (inUse: number, total: number): string =>
     `${inUse} en uso de ${total}`,
   LOADING_ANNOUNCEMENT: "Cargando el tablero de equipo.",

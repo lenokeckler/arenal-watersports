@@ -20,7 +20,7 @@ test("shows the custom duration field only when selected", async ({
   await createWorkModePage(page)
     .getCard(E2E_RESERVATIONS_AREA_LABEL)
     .click();
-  await expect(page).toHaveURL(PATHS.HOME);
+  await expect(page).toHaveURL(PATHS.BOARD);
   const reservationFormPage =
     createReservationFormPage(page);
 
