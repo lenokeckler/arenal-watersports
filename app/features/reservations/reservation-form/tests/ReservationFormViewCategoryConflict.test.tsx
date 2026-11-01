@@ -81,12 +81,15 @@ describe("ReservationFormView category conflict warning", () => {
     });
     vi.mocked(
       getAvailableReservationUnitsAction
-    ).mockResolvedValue([
-      {
-        code: RESERVATION_FORM_VIEW_TEST.UNIT_CODE,
-        id: RESERVATION_FORM_VIEW_TEST.UNIT_ID,
-      },
-    ]);
+    ).mockResolvedValue({
+      availableQuantity: null,
+      availableUnits: [
+        {
+          code: RESERVATION_FORM_VIEW_TEST.AVAILABLE_UNIT_CODE,
+          id: RESERVATION_FORM_VIEW_TEST.AVAILABLE_UNIT_ID,
+        },
+      ],
+    });
     vi.mocked(
       getReservationCategoryAvailabilityAction
     ).mockResolvedValue(
@@ -97,7 +100,7 @@ describe("ReservationFormView category conflict warning", () => {
     ).mockResolvedValue([
       RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.RPC_ROW,
     ]);
-    const page = renderReservationForm();
+    const page = renderReservationForm(true, true);
 
     await page.selectCategoryChoice(
       RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME
@@ -107,13 +110,14 @@ describe("ReservationFormView category conflict warning", () => {
     );
     await page.findCategoryConflictWarning();
     await page.selectUnit(
-      RESERVATION_FORM_VIEW_TEST.UNIT_ID
+      RESERVATION_FORM_VIEW_TEST.AVAILABLE_UNIT_ID
     );
     await page.submit();
 
     expect(createReservationAction).toHaveBeenCalledWith(
       expect.objectContaining({
-        unitId: RESERVATION_FORM_VIEW_TEST.UNIT_ID,
+        unitId:
+          RESERVATION_FORM_VIEW_TEST.AVAILABLE_UNIT_ID,
       })
     );
   });
