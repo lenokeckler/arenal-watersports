@@ -1,1 +1,1 @@
-RES-06.18.03: Reservation edit form — people, time, duration and equipment of a scheduled reservation are edited at /reservations/<id>/edit (US-RES-18 · AWS-101)
+RES-06.18.03: Reservation edit form state — view model that loads a scheduled reservation into the form and keeps its unit across schedule changes (US-RES-18 · AWS-101)
