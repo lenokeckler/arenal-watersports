@@ -17,22 +17,14 @@ describe("mapReservationDetail", () => {
       {
         categoryName: RESERVATION_DETAIL_TEST.CATEGORY_NAME,
         dispatchId: RESERVATION_DETAIL_TEST.RESERVATION_ID,
-        fuelIn: null,
-        fuelOut: null,
         quantity: null,
         unitCode: RESERVATION_DETAIL_TEST.UNIT_CODE,
-        usageIn: null,
-        usageOut: null,
       },
       {
         categoryName: RESERVATION_DETAIL_TEST.CATEGORY_NAME,
         dispatchId: null,
-        fuelIn: null,
-        fuelOut: null,
         quantity: RESERVATION_DETAIL_TEST.QUANTITY,
         unitCode: null,
-        usageIn: null,
-        usageOut: null,
       },
     ]);
     expect(detail.extras).toEqual([
@@ -62,6 +54,48 @@ describe("mapReservationDetail", () => {
           RESERVATION_DETAIL_TEST.EXPECTED_RETURN,
         id: RESERVATION_DETAIL_TEST.RESERVATION_ID,
       },
+    ]);
+  });
+
+  it("uses the unavailable-name fallback for unresolved extra relations", () => {
+    const source = {
+      ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+      reservation_items:
+        RESERVATION_DETAIL_SOURCE_FIXTURE.reservation_items.map(
+          (item) =>
+            item.extra_id === null
+              ? item
+              : { ...item, extra: null }
+        ),
+    };
+    const detail = mapReservationDetail(
+      source,
+      RESERVATION_DETAIL_WORKER_NAMES_FIXTURE
+    );
+
+    expect(detail.extras).toEqual([
+      {
+        categoryName: RESERVATION_DETAIL_TEST.CATEGORY_NAME,
+        name: RESERVATION_DETAIL_TEST.MISSING_RELATED_NAME,
+        quantity: RESERVATION_DETAIL_TEST.QUANTITY,
+      },
+    ]);
+  });
+
+  it("uses the unavailable-name fallback for unresolved guides", () => {
+    const workerNames =
+      RESERVATION_DETAIL_WORKER_NAMES_FIXTURE.filter(
+        (worker) =>
+          worker.worker_id !==
+          RESERVATION_DETAIL_TEST.GUIDE_WORKER_ID
+      );
+    const detail = mapReservationDetail(
+      RESERVATION_DETAIL_SOURCE_FIXTURE,
+      workerNames
+    );
+
+    expect(detail.guides).toEqual([
+      RESERVATION_DETAIL_TEST.MISSING_RELATED_NAME,
     ]);
   });
 

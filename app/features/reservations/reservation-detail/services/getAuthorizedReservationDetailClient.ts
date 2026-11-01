@@ -22,24 +22,18 @@ export const getAuthorizedReservationDetailClient =
       redirect(PATHS.ACCESS.LOGIN);
     }
 
-    const [areaResult, administratorResult] =
-      await Promise.all([
-        supabase.rpc(RESERVATION_DETAIL_ACCESS.AREA_RPC, {
-          target: RESERVATION_DETAIL_ACCESS.AREA,
-        }),
-        supabase.rpc(RESERVATION_DETAIL_ACCESS.ADMIN_RPC),
-      ]);
+    const areaResult = await supabase.rpc(
+      RESERVATION_DETAIL_ACCESS.AREA_RPC,
+      {
+        target: RESERVATION_DETAIL_ACCESS.AREA,
+      }
+    );
 
     throwIfSupabaseError(
       areaResult.error,
       RESERVATION_DETAIL_OPERATION.ACCESS
     );
-    throwIfSupabaseError(
-      administratorResult.error,
-      RESERVATION_DETAIL_OPERATION.ACCESS
-    );
-
-    if (!areaResult.data && !administratorResult.data) {
+    if (!areaResult.data) {
       redirect(PATHS.HOME);
     }
 

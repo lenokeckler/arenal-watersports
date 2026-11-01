@@ -48,8 +48,6 @@ export const RESERVATION_DETAIL_SOURCE_FIXTURE = {
       dispatch_id: RESERVATION_DETAIL_TEST.RESERVATION_ID,
       extra: null,
       extra_id: null,
-      fuel_in: null,
-      fuel_out: null,
       quantity: null,
       unit: {
         category: {
@@ -58,8 +56,6 @@ export const RESERVATION_DETAIL_SOURCE_FIXTURE = {
         code: RESERVATION_DETAIL_TEST.UNIT_CODE,
       },
       unit_id: RESERVATION_DETAIL_TEST.RESERVATION_ID,
-      usage_in: null,
-      usage_out: null,
     },
     {
       category: {
@@ -69,13 +65,9 @@ export const RESERVATION_DETAIL_SOURCE_FIXTURE = {
       dispatch_id: null,
       extra: null,
       extra_id: null,
-      fuel_in: null,
-      fuel_out: null,
       quantity: RESERVATION_DETAIL_TEST.QUANTITY,
       unit: null,
       unit_id: null,
-      usage_in: null,
-      usage_out: null,
     },
     {
       category: {
@@ -85,13 +77,9 @@ export const RESERVATION_DETAIL_SOURCE_FIXTURE = {
       dispatch_id: null,
       extra: { name: RESERVATION_DETAIL_TEST.EXTRA_NAME },
       extra_id: RESERVATION_DETAIL_TEST.RESERVATION_ID,
-      fuel_in: null,
-      fuel_out: null,
       quantity: RESERVATION_DETAIL_TEST.QUANTITY,
       unit: null,
       unit_id: null,
-      usage_in: null,
-      usage_out: null,
     },
   ],
   reservation_pricing: RESERVATION_DETAIL_PRICING_FIXTURE,
