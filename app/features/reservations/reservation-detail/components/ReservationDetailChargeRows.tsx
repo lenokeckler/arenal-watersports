@@ -13,7 +13,7 @@ const ReservationDetailChargeRows = ({
       .filter(
         (charge) =>
           charge.amountTarget !== null ||
-          charge.amountCharged >
+          charge.amountChargedGross >
             RESERVATION_DETAIL_ZERO_MINOR_UNITS
       )
       .map((charge) => ({

@@ -25,9 +25,16 @@ const createChargeAmounts = (
             ),
     },
     {
-      label: copy.AMOUNT_CHARGED,
+      label: copy.AMOUNT_CHARGED_GROSS,
       value: formatReservationDetailAmount(
-        charge.amountCharged,
+        charge.amountChargedGross,
+        charge.currency
+      ),
+    },
+    {
+      label: copy.AMOUNT_CHARGED_NET,
+      value: formatReservationDetailAmount(
+        charge.amountChargedNet,
         charge.currency
       ),
     },
@@ -38,6 +45,19 @@ const createChargeAmounts = (
       label: copy.AMOUNT_REMAINING,
       value: formatReservationDetailAmount(
         charge.amountRemaining,
+        charge.currency
+      ),
+    });
+  }
+
+  if (
+    charge.amountCredit !== null &&
+    charge.amountCredit > 0
+  ) {
+    amounts.push({
+      label: copy.AMOUNT_CREDIT,
+      value: formatReservationDetailAmount(
+        charge.amountCredit,
         charge.currency
       ),
     });

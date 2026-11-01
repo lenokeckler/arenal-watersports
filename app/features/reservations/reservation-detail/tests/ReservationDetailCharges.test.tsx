@@ -75,9 +75,7 @@ describe("reservation detail charge totals", (): void => {
     const charges = renderChargesWithAdditionalTariff();
 
     expect(charges).toHaveTextContent(test.CHARGE_STATUS);
-    expect(charges).toHaveTextContent(
-      RESERVATION_DETAIL_CURRENCY.USD
-    );
+    expect(charges).toHaveTextContent(test.USD_SYMBOL);
     expect(charges).toHaveTextContent(test.CRC_SYMBOL);
     expect(charges).toHaveTextContent(
       formatExpectedAmount(
@@ -88,6 +86,76 @@ describe("reservation detail charge totals", (): void => {
     expect(charges).toHaveTextContent(
       formatExpectedAmount(
         test.CHARGE_CRC + test.ADDITIONAL_CHARGE_CRC,
+        RESERVATION_DETAIL_CURRENCY.CRC
+      )
+    );
+  });
+
+  it("distinguishes an undefined tariff from an unpriced reservation", (): void => {
+    const charges = renderCharges({
+      ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+      reservation_pricing: null,
+    });
+
+    expect(charges).toHaveTextContent(
+      RESERVATION_DETAIL_CHARGES_COPY.MISSING_AMOUNT
+    );
+    expect(charges).toHaveTextContent(
+      RESERVATION_DETAIL_CHARGES_COPY.UNPRICED
+    );
+  });
+
+  it("shows gross, net, refunded, and customer credit amounts", (): void => {
+    const source = {
+      ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+      refunds: [
+        {
+          amount: test.REFUND_CRC,
+          currency: RESERVATION_DETAIL_CURRENCY.CRC,
+        },
+      ],
+      reservation_pricing: {
+        ...RESERVATION_DETAIL_SOURCE_FIXTURE.reservation_pricing,
+        agreed_amount_crc: test.CHARGE_CRC / 2,
+      },
+    };
+    const charges = renderCharges(source);
+
+    expect(charges).toHaveTextContent(
+      RESERVATION_DETAIL_CHARGES_COPY.AMOUNT_CHARGED_GROSS
+    );
+    expect(charges).toHaveTextContent(
+      RESERVATION_DETAIL_CHARGES_COPY.AMOUNT_CHARGED_NET
+    );
+    expect(charges).toHaveTextContent(
+      RESERVATION_DETAIL_CHARGES_COPY.AMOUNT_CREDIT
+    );
+    expect(charges).toHaveTextContent(
+      RESERVATION_DETAIL_CHARGES_COPY.REFUNDS
+    );
+    expect(charges).toHaveTextContent(
+      formatExpectedAmount(
+        test.CHARGE_CRC,
+        RESERVATION_DETAIL_CURRENCY.CRC
+      )
+    );
+    expect(charges).toHaveTextContent(
+      formatExpectedAmount(
+        test.CHARGE_CRC - test.REFUND_CRC,
+        RESERVATION_DETAIL_CURRENCY.CRC
+      )
+    );
+    expect(charges).toHaveTextContent(
+      formatExpectedAmount(
+        test.CHARGE_CRC -
+          test.REFUND_CRC -
+          test.CHARGE_CRC / 2,
+        RESERVATION_DETAIL_CURRENCY.CRC
+      )
+    );
+    expect(charges).toHaveTextContent(
+      formatExpectedAmount(
+        test.REFUND_CRC,
         RESERVATION_DETAIL_CURRENCY.CRC
       )
     );
