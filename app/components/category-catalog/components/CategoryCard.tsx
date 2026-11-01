@@ -1,3 +1,4 @@
+import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
 import type { CategoryCardViewModel } from "../models/CategoryCardViewModel.interface";
 import { resolveCategoryCardContainerClassName } from "../styles/CategoryCard.styles";
 import CategoryCardActions from "./CategoryCardActions";
@@ -11,12 +12,16 @@ const CategoryCard = ({
   trackingModeLabel,
   actionState,
   isActionLoading,
+  onCancelClick,
+  onConfirmDeleteClick,
   onDeleteClick,
   onMarkInactiveClick,
 }: CategoryCardViewModel): React.JSX.Element => (
   <div
     className={resolveCategoryCardContainerClassName(
-      isInactive
+      isInactive,
+      actionState ===
+        CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
     )}
   >
     <CategoryCardNameRow
@@ -32,6 +37,8 @@ const CategoryCard = ({
     <CategoryCardActions
       actionState={actionState}
       isActionLoading={isActionLoading}
+      onCancelClick={onCancelClick}
+      onConfirmDeleteClick={onConfirmDeleteClick}
       onDeleteClick={onDeleteClick}
       onMarkInactiveClick={onMarkInactiveClick}
     />

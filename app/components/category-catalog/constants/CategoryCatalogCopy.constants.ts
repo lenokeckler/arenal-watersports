@@ -6,11 +6,16 @@ export const CATEGORY_CATALOG_COPY = {
   DELETE_CATEGORY_BUTTON: "Eliminar categoría",
   DELETE_CONFIRM_MESSAGE:
     "¿Eliminar esta categoría? No se puede deshacer.",
+  DELETE_HAS_RECORDS_ERROR:
+    "Esta categoría ya tiene unidades o existencias registradas y no se puede eliminar.",
+  DELETE_SUCCESS_TOAST: "Categoría eliminada.",
   EMPTY_STATE_BODY:
     "Cada categoría que agregue aparece aquí.",
   EMPTY_STATE_TITLE: "Todavía no hay categorías.",
   FETCH_ERROR_MESSAGE:
     "No se pudieron cargar las categorías.",
+  GENERIC_MUTATION_ERROR:
+    "No se pudo completar la acción. Intenta de nuevo.",
   GROUP_CONFLICT_ERROR:
     "Este grupo ya tiene categorías por cantidad; esta es por unidad.",
   GROUP_FIELD_LABEL: "Grupo",
