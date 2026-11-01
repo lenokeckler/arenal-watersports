@@ -6,7 +6,9 @@ export const FORMAT_INSTANTS = {
 
 export const FORMAT_EXPECTED = {
   AFTERNOON_DATE: "31 oct 2026",
+  AFTERNOON_DATE_TIME: "31 oct 2026, 2:35 p. m.",
   AT_MIDNIGHT_DATE: "31 oct 2026",
+  AT_MIDNIGHT_DATE_TIME: "31 oct 2026, 12:00 a. m.",
   BEFORE_MIDNIGHT_DATE: "30 oct 2026",
 } as const;
 
