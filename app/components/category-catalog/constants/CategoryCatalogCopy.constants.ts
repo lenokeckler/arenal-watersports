@@ -16,8 +16,6 @@ export const CATEGORY_CATALOG_COPY = {
     "No se pudieron cargar las categorías.",
   GENERIC_MUTATION_ERROR:
     "No se pudo completar la acción. Intenta de nuevo.",
-  GROUP_CONFLICT_ERROR:
-    "Este grupo ya tiene categorías por cantidad; esta es por unidad.",
   GROUP_FIELD_LABEL: "Grupo",
   GROUP_FIELD_PLACEHOLDER: "Opcional — ej. Kayaks",
   GROUP_PREFIX_LABEL: "GRUPO",
@@ -32,6 +30,8 @@ export const CATEGORY_CATALOG_COPY = {
     "Categoría marcada como inactiva.",
   NAME_FIELD_LABEL: "Nombre",
   NAME_FIELD_PLACEHOLDER: "Ej. Kayak doble",
+  NAME_FIELD_REQUIRED_ERROR:
+    "Escriba el nombre de la categoría.",
   PAGINATION_NAV_LABEL: "Paginación de categorías",
   PAGINATION_NEXT: "Siguiente",
   PAGINATION_OF: "de",
@@ -41,9 +41,13 @@ export const CATEGORY_CATALOG_COPY = {
   STATUS_PILL_INACTIVE: "INACTIVA",
   SUBMIT_BUTTON: "Guardar categoría",
   TRACKING_MODE_BY_QUANTITY_LABEL: "Por cantidad",
+  TRACKING_MODE_BY_QUANTITY_LOWERCASE: "por cantidad",
   TRACKING_MODE_BY_UNIT_LABEL: "Por unidad",
+  TRACKING_MODE_BY_UNIT_LOWERCASE: "por unidad",
   TRACKING_MODE_FIELD_LABEL: "Modo de conteo",
   TRACKING_MODE_FIELD_PLACEHOLDER: "Selecciona un modo",
   TRACKING_MODE_MICRO_LABEL_BY_QUANTITY: "POR CANTIDAD",
   TRACKING_MODE_MICRO_LABEL_BY_UNIT: "POR UNIDAD",
+  TRACKING_MODE_REQUIRED_ERROR:
+    "Seleccione un modo de conteo.",
 } as const;
