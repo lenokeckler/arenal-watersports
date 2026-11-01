@@ -16,7 +16,7 @@ export const useReservationEquipmentViewModel = (
   const requiresConcreteUnit =
     selectedCategory?.isInterchangeable === false;
   const request = {
-    categoryId: requiresConcreteUnit
+    categoryId: selectedCategory
       ? values.categoryId
       : STRING.Empty,
     date: values.date,
@@ -31,11 +31,17 @@ export const useReservationEquipmentViewModel = (
   );
 
   return {
+    availableQuantity: selectedCategory?.isInterchangeable
+      ? availability.availableQuantity
+      : null,
     availableUnits: requiresConcreteUnit
       ? availability.availableUnits
       : [],
     hasAvailabilityError: availability.hasError,
+    isAvailabilityResolved:
+      availability.isResolvedForCurrentRequest,
     isAvailabilityLoading: availability.isLoading,
     requiresConcreteUnit,
+    retryUnitAvailability: availability.retry,
   };
 };
