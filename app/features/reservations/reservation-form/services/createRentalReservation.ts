@@ -1,22 +1,13 @@
 import { createServerSupabaseClient } from "@/app/services/supabase";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { RESERVATION_SERVICE_OPERATION } from "../constants/ReservationServiceOperation.constants";
-import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 import type { ValidatedReservationFormInput } from "../models/ValidatedReservationFormInput.interface";
+import { buildReservationEquipmentPayload } from "../utils/buildReservationEquipmentPayload";
 
 export const createRentalReservation = async (
   input: ValidatedReservationFormInput
 ): Promise<string> => {
   const supabase = await createServerSupabaseClient();
-  const equipmentCommitment = input.equipmentCommitment;
-  const equipmentCommitmentPayload =
-    equipmentCommitment.kind ===
-    RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY
-      ? {
-          category_id: equipmentCommitment.categoryId,
-          quantity: equipmentCommitment.quantity,
-        }
-      : { unit_id: equipmentCommitment.unitId };
   const { data, error } = await supabase.rpc(
     "create_rental_reservation",
     {
@@ -26,7 +17,9 @@ export const createRentalReservation = async (
         duration_minutes: input.durationMinutes,
         people_count: input.peopleCount,
         time: input.time,
-        ...equipmentCommitmentPayload,
+        ...buildReservationEquipmentPayload(
+          input.equipmentCommitment
+        ),
       },
     }
   );
