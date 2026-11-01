@@ -1,7 +1,7 @@
 import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE, PATHS } from "@/app/constants";
-import { CATEGORY_CATALOG_COPY } from "@/app/components/category-catalog/constants/CategoryCatalogCopy.constants";
-import { CATEGORY_CREATE_FORM_FIELD_ID } from "@/app/components/category-catalog/constants/CategoryCreateFormFieldId.constants";
+import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
+import { CATEGORY_CREATE_FORM_FIELD_ID } from "@/app/features/administration/category-catalog/constants/CategoryCreateFormFieldId.constants";
 import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
 
 export const createCategoryCreateFormPage = (
