@@ -1,7 +1,9 @@
 import { STRING } from "@/app/constants";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 import type { ReservationEquipmentRequestValues } from "../models/ReservationEquipmentRequestValues.interface";
+import type { ReservationEquipmentViewModel } from "../models/ReservationEquipmentViewModel.interface";
 import { RESERVATION_SCHEDULE } from "../constants/ReservationSchedule.constants";
+import { useReservationCategoryAvailabilityPanelViewModel } from "./useReservationCategoryAvailabilityPanelViewModel";
 import { useReservationUnitAvailability } from "./useReservationUnitAvailability";
 
 export const useReservationEquipmentViewModel = (
@@ -9,7 +11,7 @@ export const useReservationEquipmentViewModel = (
   values: ReservationEquipmentRequestValues,
   durationHours: number,
   refreshKey: number
-) => {
+): ReservationEquipmentViewModel => {
   const selectedCategory = categories.find(
     (category) => category.id === values.categoryId
   );
@@ -26,23 +28,30 @@ export const useReservationEquipmentViewModel = (
     excludeReservationId: values.excludeReservationId,
     time: values.time,
   };
-  const availability = useReservationUnitAvailability(
+  const unitAvailability = useReservationUnitAvailability(
     request,
     refreshKey
   );
+  const categoryAvailability =
+    useReservationCategoryAvailabilityPanelViewModel({
+      category: selectedCategory,
+      refreshKey,
+      request,
+    });
 
   return {
+    ...categoryAvailability,
     availableQuantity: selectedCategory?.isInterchangeable
-      ? availability.availableQuantity
+      ? unitAvailability.availableQuantity
       : null,
     availableUnits: requiresConcreteUnit
-      ? availability.availableUnits
+      ? unitAvailability.availableUnits
       : [],
-    hasAvailabilityError: availability.hasError,
+    hasAvailabilityError: unitAvailability.hasError,
     isAvailabilityResolved:
-      availability.isResolvedForCurrentRequest,
-    isAvailabilityLoading: availability.isLoading,
+      unitAvailability.isResolvedForCurrentRequest,
+    isAvailabilityLoading: unitAvailability.isLoading,
     requiresConcreteUnit,
-    retryUnitAvailability: availability.retry,
+    retryUnitAvailability: unitAvailability.retry,
   };
 };
