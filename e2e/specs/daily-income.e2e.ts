@@ -59,7 +59,7 @@ test.describe("Daily income for operaciones", () => {
   }) => {
     await createDailyIncomePage(page).goTo();
 
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
     await expect(
       page.getByRole(ARIA_ROLE.HEADING, {
         name: DAILY_INCOME_COPY.PAGE_TITLE,
