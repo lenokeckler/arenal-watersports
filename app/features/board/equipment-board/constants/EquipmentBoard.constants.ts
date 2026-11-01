@@ -8,6 +8,13 @@ export const EQUIPMENT_BOARD_COUNT = {
   SINGULAR: 1,
 } as const;
 
+export const EQUIPMENT_BOARD_IMAGE = {
+  HEIGHT: 450,
+  SIZES:
+    "(min-width: 1024px) 384px, (min-width: 768px) 33vw, 50vw",
+  WIDTH: 600,
+} as const;
+
 export const EQUIPMENT_BOARD_PERCENT = {
   MAX: 100,
 } as const;

@@ -7,16 +7,19 @@ Let any worker see at a glance how much reservable equipment is free and how muc
 ## In scope
 
 - Read-only screen at `PATHS.BOARD`, rendered on the server, that becomes the entry screen.
-- One card per active reservable category tracked by unit: its name, the free count, and "N en uso de T".
+- One card per active reservable category tracked by unit: its product image, a "Por unidad" chip, a "N / T libres" chip, its name, a bar with the free share, and "N en uso de T".
 - Categories that administration grouped appear as one card with the summed totals and the member categories listed inside with their own counts.
-- Two cards per row on a phone.
+- Two cards per row on a phone, three from `md`.
+- A header with an icon tile, the title "Tablero" and the subtitle "Qué se puede alquilar en este momento.".
 - Loading, empty and error states with Spanish copy and a retry button.
 
 ## Out of scope
 
 - Per-unit screen (US-TAB-02), live updates (US-TAB-03), bottom navigation (US-TAB-04), visibility by role and work mode (US-TAB-07), per-device layout (US-TAB-12).
 - Reservable categories tracked by quantity: they have no per-unit "en uso" and are not shown.
-- Photos and status chips on cards.
+- Uploading or managing images: the image comes from the existing files in `public/images/equipment/`, picked by category name; a category with no known image shows a neutral placeholder.
+- The "actualizado en tiempo real" claim in the subtitle: it arrives with US-TAB-03.
+- Status chips on cards.
 - Cards as links or choosers: they are not interactive in this story.
 - Redirecting login and work-mode choice to the board; they keep `PATHS.HOME`.
 
@@ -42,13 +45,21 @@ con la finalidad de saber de un vistazo qué se puede alquilar en este momento.
 
 - RNF-010, RNF-011, RNF-025, RNF-026 and RNF-027 apply as in the other screens.
 
+## Design notes
+
+- Card layout, top to bottom: an image area (fixed aspect ratio, `object-contain` with padding) holding the "Por unidad" chip top-left, the "N / T libres" chip top-right ("libre" when exactly one is free) and the category name over the bottom-left; then a bar whose teal fill is the free share (free / total, so a card with everything free is full) on a grey track; then "N en uso de T" as secondary text; then, on a grouped card only, one compact two-line entry per member.
+- The grid keeps every card of a row at the same height; the bar sits right under the image so bars line up across a row.
+- Grid: 2 columns on a phone, 3 from `md`, inside a `max-w-7xl` page.
+- Colors come from the `@theme` tokens of `app/globals.css`; the image resolver is `resolveReservationEquipmentImage`.
+
 ## Edge cases & errors
 
 - A dispatched unit is in use even when its return time has passed; it is never free.
 - Free plus in use never exceeds the total; units in maintenance or damaged count only in the total.
 - A group with a single visible member renders as a plain card with the category name.
 - Group names that differ only in casing merge into one card.
-- A category with no units stays visible with zero counts.
+- A category with no units stays visible with zero counts and an empty bar.
+- A category with no known image renders the same card with a neutral placeholder in the image area.
 - A failed read shows the error state with a retry button and is never rendered as an empty board.
 
 ## Technical notes
@@ -63,5 +74,6 @@ con la finalidad de saber de un vistazo qué se puede alquilar en este momento.
 - [ ] A dispatched unit with an overdue return is counted in use and never as free; free plus in use never exceeds the total.
 - [ ] A grouped category is one card with summed totals and its members listed with their own counts.
 - [ ] On a phone the cards sit two per row.
+- [ ] Each card shows its image (or a placeholder), the "Por unidad" chip, the "N / T libres" chip, the name, the free-share bar and "N en uso de T".
 - [ ] Vests, paddles and extinguishers do not appear on the board.
 - [ ] Pending: choosing equipment for a reservation from the board (second half of the sixth criterion) needs the reservation creation flow and is not part of this story.

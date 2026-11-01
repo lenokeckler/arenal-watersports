@@ -21,6 +21,11 @@ export const createBoardPage = (page: Page) => {
       name: EQUIPMENT_BOARD_COPY.PAGE_TITLE,
     });
 
+  const getSubtitle = (): Locator =>
+    main.getByText(EQUIPMENT_BOARD_COPY.PAGE_DESCRIPTION, {
+      exact: true,
+    });
+
   const getGrid = (): Locator =>
     main.getByRole(ARIA_ROLE.LIST, {
       name: EQUIPMENT_BOARD_COPY.GRID_LABEL,
@@ -75,6 +80,7 @@ export const createBoardPage = (page: Page) => {
     getGrid,
     getHeading,
     getMemberLine,
+    getSubtitle,
     getTextInMain,
     goTo,
   };

@@ -6,6 +6,7 @@ import {
   BOARD_CARD_LINE_CLASS,
   BOARD_CARD_LINE_FREE_CLASS,
   BOARD_CARD_LINE_NAME_CLASS,
+  BOARD_CARD_LINE_STATS_CLASS,
   BOARD_CARD_LINES_CLASS,
   BOARD_CARD_USAGE_CLASS,
 } from "../styles/BoardCard.styles";
@@ -27,19 +28,21 @@ const BoardCardCategoryLines = ({
         <Text className={BOARD_CARD_LINE_NAME_CLASS}>
           {category.name}
         </Text>
-        <Text className={BOARD_CARD_LINE_FREE_CLASS}>
-          {category.freeCount}
-          {STRING.SPACE}
-          <InlineText>
-            {resolveFreeLabel(category.freeCount)}
-          </InlineText>
-        </Text>
-        <Text className={BOARD_CARD_USAGE_CLASS}>
-          {EQUIPMENT_BOARD_COPY.IN_USE_OF_TOTAL(
-            category.inUseCount,
-            category.totalCount
-          )}
-        </Text>
+        <div className={BOARD_CARD_LINE_STATS_CLASS}>
+          <Text className={BOARD_CARD_LINE_FREE_CLASS}>
+            {category.freeCount}
+            {STRING.SPACE}
+            <InlineText>
+              {resolveFreeLabel(category.freeCount)}
+            </InlineText>
+          </Text>
+          <Text className={BOARD_CARD_USAGE_CLASS}>
+            {EQUIPMENT_BOARD_COPY.IN_USE_OF_TOTAL(
+              category.inUseCount,
+              category.totalCount
+            )}
+          </Text>
+        </div>
       </div>
     ))}
   </div>

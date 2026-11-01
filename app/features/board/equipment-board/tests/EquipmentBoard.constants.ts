@@ -1,3 +1,4 @@
+import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
 import type { BoardCategoryRow } from "@/app/services/board";
 import { buildBoardCards } from "../utils/buildBoardCards";
 import { createBoardCategory } from "./createBoardCategory";
@@ -71,9 +72,16 @@ export const KAYAK_SUMMED = {
 export const CARD_COUNT_WITH_GROUP = 2;
 
 export const EXPECTED_BAR_WIDTHS = {
-  JET_SKI: "25",
-  KAYAK: "30",
+  JET_SKI: "50",
+  KAYAK: "50",
 } as const;
+
+export const IMAGE_ELEMENT_SELECTOR = "img";
+export const IMAGE_SOURCE_ATTRIBUTE = "src";
+export const JET_SKI_IMAGE_FILE = "jet-ski.webp";
+export const KAYAK_IMAGE_FILE = "kayak-doble.webp";
+
+export const SAILING_ICON_TEXT = MATERIAL_ICON_NAME.SAILING;
 
 export const BAR_FILL_SELECTOR = "rect";
 export const BAR_WIDTH_ATTRIBUTE = "width";
@@ -94,6 +102,8 @@ export const FREE_LABEL_COUNTS = {
   ZERO: 0,
 } as const;
 
+export const FREE_LABEL_TOTAL = 4;
+
 export const FREE_LABEL_CARD_NAMES = {
   NONE: "Tabla agotada",
   SINGLE: "Tabla única",
@@ -104,6 +114,7 @@ export const SINGLE_FREE_ROW: BoardCategoryRow = {
   category_id: "single-free",
   category_name: FREE_LABEL_CARD_NAMES.SINGLE,
   free_count: FREE_LABEL_COUNTS.ONE,
+  total_count: FREE_LABEL_TOTAL,
 };
 
 export const NO_FREE_ROW: BoardCategoryRow = {
@@ -111,6 +122,7 @@ export const NO_FREE_ROW: BoardCategoryRow = {
   category_id: "no-free",
   category_name: FREE_LABEL_CARD_NAMES.NONE,
   free_count: FREE_LABEL_COUNTS.ZERO,
+  total_count: FREE_LABEL_TOTAL,
 };
 
 export const FIRST_MEMBER_LINE_INDEX = 0;

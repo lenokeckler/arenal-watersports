@@ -5,7 +5,7 @@ import { BOARD_GROUP_NAME } from "./EquipmentBoardUtils.constants";
 import {
   CARDS_WITH_DUPLICATE_NAMES,
   CARDS_WITH_LONG_NAME,
-  CARDS_WITH_OVERBOOKED_AND_EMPTY,
+  CARDS_WITH_NONE_FREE_ALL_FREE_AND_EMPTY,
   CARDS_WITH_ZERO_TOTAL_MEMBER,
   EDGE_BAR_WIDTHS,
   EDGE_CATEGORY_NAME,
@@ -32,7 +32,7 @@ describe("EquipmentBoardContent edge cases", () => {
       ZERO_USAGE_PATTERN
     );
     expect(page.getBarWidth(card)).toBe(
-      EDGE_BAR_WIDTHS.QUARTER
+      EDGE_BAR_WIDTHS.HALF
     );
   });
 
@@ -68,19 +68,24 @@ describe("EquipmentBoardContent edge cases", () => {
     ).toBeInTheDocument();
   });
 
-  it("fills the bar completely for more in use than total and leaves it empty for a zero total", () => {
+  it("empties the bar when nothing is free, fills it when everything is free and leaves it empty for a zero total", () => {
     render(
       <EquipmentBoardContent
-        cards={CARDS_WITH_OVERBOOKED_AND_EMPTY}
+        cards={CARDS_WITH_NONE_FREE_ALL_FREE_AND_EMPTY}
       />
     );
     const page = createEquipmentBoardPage();
 
     expect(
       page.getBarWidth(
-        page.getCard(EDGE_CATEGORY_NAME.OVERBOOKED)
+        page.getCard(EDGE_CATEGORY_NAME.NONE_FREE)
       )
-    ).toBe(EDGE_BAR_WIDTHS.CLAMPED);
+    ).toBe(EDGE_BAR_WIDTHS.EMPTY);
+    expect(
+      page.getBarWidth(
+        page.getCard(EDGE_CATEGORY_NAME.ALL_FREE)
+      )
+    ).toBe(EDGE_BAR_WIDTHS.FULL);
     expect(
       page.getBarWidth(
         page.getCard(EDGE_CATEGORY_NAME.SPARE_GROUP_LEADER)

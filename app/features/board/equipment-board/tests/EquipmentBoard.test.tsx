@@ -9,6 +9,7 @@ import { render } from "@testing-library/react";
 import { readBoardCategories } from "@/app/services/board";
 import EquipmentBoard from "../EquipmentBoard";
 import { EQUIPMENT_BOARD_COPY } from "../constants/EquipmentBoardCopy.constants";
+import { resolveFreeOfTotalText } from "../utils/resolveFreeOfTotalText";
 import { BOARD_CATEGORY_NAME } from "./EquipmentBoardUtils.constants";
 import {
   BOARD_ROWS_WITH_GROUP,
@@ -55,7 +56,13 @@ describe("EquipmentBoard", () => {
     const kayakCard = page.getCard(KAYAK_LABEL);
 
     expect(
-      page.getCount(kayakCard, KAYAK_SUMMED.FREE)
+      page.getText(
+        kayakCard,
+        resolveFreeOfTotalText(
+          KAYAK_SUMMED.FREE,
+          KAYAK_SUMMED.TOTAL
+        )
+      )
     ).toBeInTheDocument();
     expect(
       page.getText(

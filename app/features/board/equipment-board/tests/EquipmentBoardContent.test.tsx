@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import EquipmentBoardContent from "../components/EquipmentBoardContent";
+import { resolveFreeOfTotalText } from "../utils/resolveFreeOfTotalText";
 import { EQUIPMENT_BOARD_COPY } from "../constants/EquipmentBoardCopy.constants";
 import { createKayakDouble } from "./createKayakCategories";
 import { DEFAULT_BOARD_CATEGORY } from "./EquipmentBoardUtils.constants";
@@ -36,12 +37,18 @@ describe("EquipmentBoardContent", () => {
     ).toEqual([JET_SKI_LABEL, KAYAK_LABEL]);
   });
 
-  it("states free units and the in-use sentence on a plain card", () => {
+  it("states free over total and the in-use sentence on a plain card", () => {
     const page = renderContent();
     const card = page.getCard(JET_SKI_LABEL);
 
     expect(
-      page.getCount(card, DEFAULT_BOARD_CATEGORY.freeCount)
+      page.getText(
+        card,
+        resolveFreeOfTotalText(
+          DEFAULT_BOARD_CATEGORY.freeCount,
+          DEFAULT_BOARD_CATEGORY.totalCount
+        )
+      )
     ).toBeInTheDocument();
     expect(
       page.getText(
@@ -74,7 +81,7 @@ describe("EquipmentBoardContent", () => {
     ).toBeInTheDocument();
   });
 
-  it("draws a decorative occupancy bar sized by the share in use", () => {
+  it("draws a decorative bar sized by the share free", () => {
     const page = renderContent();
 
     expect(
