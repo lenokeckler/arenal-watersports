@@ -1,3 +1,4 @@
+import { PAGINATION } from "@/app/constants";
 import {
   HISTORY_CANCELLED_RECORD_ROW,
   HISTORY_EMPTY_FILTERS,
@@ -90,3 +91,52 @@ export const HISTORY_READ_REJECTED_IDS = [
   " 0f6b1c1e-62f1-4e71-8d4d-2f3c7a9e5b10",
   "0f6b1c1e-62f1-4e71-8d4d-2f3c7a9e5b10\n",
 ] as const;
+
+export const HISTORY_READ_EXPECTED_ARGUMENTS = {
+  p_page_index: HISTORY_REQUESTED_PAGE_INDEX,
+  p_page_size: PAGINATION.DEFAULT_PAGE_SIZE,
+};
+
+export const HISTORY_READ_EXPECTED_PAGE = {
+  items: [
+    {
+      attendedByName: HISTORY_LIST_ROW.created_by_name,
+      customerName: HISTORY_LIST_ROW.customer_name,
+      equipmentNames: HISTORY_LIST_ROW.equipment_names,
+      guideNames: HISTORY_LIST_ROW.guide_names,
+      id: HISTORY_LIST_ROW.id,
+      startsAt: HISTORY_LIST_ROW.starts_at,
+      status: HISTORY_LIST_ROW.status,
+    },
+  ],
+  pageCount: PAGINATION.ONE_PAGE,
+  pageIndex: HISTORY_LIST_ROW.page_index,
+  totalCount: HISTORY_LIST_ROW.total_count,
+};
+
+export const HISTORY_READ_EXPECTED_EMPTY_PAGE = {
+  items: [],
+  pageCount: PAGINATION.ONE_PAGE,
+  pageIndex: PAGINATION.DEFAULT_PAGE,
+  totalCount: PAGINATION.ZERO_RESULTS,
+};
+
+export const HISTORY_READ_EXPECTED_RECORD = {
+  cancellationReason:
+    HISTORY_CANCELLED_RECORD_ROW.cancellation_reason,
+  createdBy: {
+    at: HISTORY_CANCELLED_RECORD_ROW.created_at,
+    name: HISTORY_CANCELLED_RECORD_ROW.created_by_name,
+  },
+  customerName: HISTORY_CANCELLED_RECORD_ROW.customer_name,
+  equipmentNames:
+    HISTORY_CANCELLED_RECORD_ROW.equipment_names,
+  guideNames: HISTORY_CANCELLED_RECORD_ROW.guide_names,
+  id: HISTORY_CANCELLED_RECORD_ROW.id,
+  startsAt: HISTORY_CANCELLED_RECORD_ROW.starts_at,
+  status: HISTORY_CANCELLED_RECORD_ROW.status,
+  updatedBy: {
+    at: HISTORY_CANCELLED_RECORD_ROW.updated_at,
+    name: HISTORY_CANCELLED_RECORD_ROW.updated_by_name,
+  },
+};

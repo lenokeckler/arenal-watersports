@@ -10,13 +10,13 @@ import {
   SUPABASE_RPC,
 } from "@/app/constants";
 import { assertActiveWorkModeAccess } from "@/app/services/work-mode/assertActiveWorkModeAccess";
-import { mapReservationHistoryRecord } from "../mapReservationHistoryRecord";
 import { readReservationHistoryRecord } from "../readReservationHistoryRecord";
 import { HISTORY_CANCELLED_RECORD_ROW } from "./ReservationHistory.constants";
 import {
   HISTORY_READ_ACCESS_REFUSED,
   HISTORY_READ_DATABASE_ERROR,
   HISTORY_READ_EMPTY_RESPONSE,
+  HISTORY_READ_EXPECTED_RECORD,
   HISTORY_READ_ERROR_RESPONSE,
   HISTORY_READ_MALFORMED_ID,
   HISTORY_READ_RECORD_RESPONSE,
@@ -73,9 +73,7 @@ describe("readReservationHistoryRecord", () => {
       { p_reservation_id: HISTORY_CANCELLED_RECORD_ROW.id }
     );
     expect(record).toStrictEqual(
-      mapReservationHistoryRecord(
-        HISTORY_CANCELLED_RECORD_ROW
-      )
+      HISTORY_READ_EXPECTED_RECORD
     );
   });
 

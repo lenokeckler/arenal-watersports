@@ -10,13 +10,14 @@ import {
   SUPABASE_RPC,
 } from "@/app/constants";
 import { assertActiveWorkModeAccess } from "@/app/services/work-mode/assertActiveWorkModeAccess";
-import { buildReservationHistoryListArguments } from "../buildReservationHistoryListArguments";
-import { buildReservationHistoryPage } from "../buildReservationHistoryPage";
 import { readReservationHistory } from "../readReservationHistory";
 import {
   HISTORY_READ_ACCESS_REFUSED,
   HISTORY_READ_DATABASE_ERROR,
   HISTORY_READ_EMPTY_RESPONSE,
+  HISTORY_READ_EXPECTED_ARGUMENTS,
+  HISTORY_READ_EXPECTED_EMPTY_PAGE,
+  HISTORY_READ_EXPECTED_PAGE,
   HISTORY_READ_ERROR_RESPONSE,
   HISTORY_READ_INVERTED_QUERY,
   HISTORY_READ_LIST_RESPONSE,
@@ -67,15 +68,9 @@ describe("readReservationHistory", () => {
 
     expect(rpc).toHaveBeenCalledWith(
       SUPABASE_RPC.LIST_RESERVATION_HISTORY,
-      buildReservationHistoryListArguments(
-        HISTORY_READ_QUERY
-      )
+      HISTORY_READ_EXPECTED_ARGUMENTS
     );
-    expect(page).toStrictEqual(
-      buildReservationHistoryPage(
-        HISTORY_READ_LIST_RESPONSE.data
-      )
-    );
+    expect(page).toStrictEqual(HISTORY_READ_EXPECTED_PAGE);
   });
 
   it("returns the empty page without a call for an inverted range", async () => {
@@ -85,7 +80,7 @@ describe("readReservationHistory", () => {
 
     expect(rpc).not.toHaveBeenCalled();
     expect(page).toStrictEqual(
-      buildReservationHistoryPage([])
+      HISTORY_READ_EXPECTED_EMPTY_PAGE
     );
   });
 
@@ -95,7 +90,7 @@ describe("readReservationHistory", () => {
     await expect(
       readReservationHistory(HISTORY_READ_QUERY)
     ).resolves.toStrictEqual(
-      buildReservationHistoryPage([])
+      HISTORY_READ_EXPECTED_EMPTY_PAGE
     );
   });
 
