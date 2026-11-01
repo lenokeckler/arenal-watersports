@@ -4,7 +4,7 @@ import { formatReservationDetailAmount } from "../utils/formatReservationDetailA
 import { RESERVATION_DETAIL_AMOUNT_FORMAT_TEST as test } from "./ReservationDetailAmountFormat.constants";
 
 describe("formatReservationDetailAmount", (): void => {
-  it("formats Costa Rican colones without decimal digits", (): void => {
+  it("formats Costa Rican colones with cents when present", (): void => {
     expect(
       formatReservationDetailAmount(
         test.CRC_AMOUNT,
@@ -13,7 +13,7 @@ describe("formatReservationDetailAmount", (): void => {
     ).toBe(test.CRC_EXPECTED);
   });
 
-  it("rounds Costa Rican colones to whole units", (): void => {
+  it("formats fractional Costa Rican colones to cents", (): void => {
     expect(
       formatReservationDetailAmount(
         test.CRC_ROUNDING_AMOUNT,

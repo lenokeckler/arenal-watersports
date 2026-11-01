@@ -1,6 +1,7 @@
 import type { ReservationDetail } from "../models/ReservationDetail.interface";
 import type { ReservationDetailReservationSource } from "../models/ReservationDetailReservationSource.interface";
 import type { ReservationDetailWorkerName } from "../models/ReservationDetailWorkerName.interface";
+import type { ReservationDetailChargeSummary } from "../models/ReservationDetailChargeSummary.interface";
 import { resolveReservationDetailChargeSummary } from "./resolveReservationDetailChargeSummary";
 import { getReservationDetailWorkerName } from "./getReservationDetailWorkerName";
 import { mapReservationDetailDispatches } from "./mapReservationDetailDispatches";
@@ -8,17 +9,39 @@ import { mapReservationDetailEquipment } from "./mapReservationDetailEquipment";
 import { mapReservationDetailExtras } from "./mapReservationDetailExtras";
 import { mapReservationDetailGuides } from "./mapReservationDetailGuides";
 
+const getReservationDetailChargeSummary = (
+  source: ReservationDetailReservationSource
+): ReservationDetailChargeSummary =>
+  resolveReservationDetailChargeSummary(
+    source.parent_reservation_id,
+    source.reservation_pricing,
+    source.reservation_charges,
+    source.refunds
+  );
+
+const mapReservationDetailAuditNames = (
+  source: ReservationDetailReservationSource,
+  workerNames: ReservationDetailWorkerName[]
+): Pick<
+  ReservationDetail,
+  "createdByName" | "updatedByName"
+> => ({
+  createdByName: getReservationDetailWorkerName(
+    workerNames,
+    source.created_by
+  ),
+  updatedByName: getReservationDetailWorkerName(
+    workerNames,
+    source.updated_by
+  ),
+});
+
 export const mapReservationDetail = (
   source: ReservationDetailReservationSource,
   workerNames: ReservationDetailWorkerName[]
 ): ReservationDetail => {
   const chargeSummary =
-    resolveReservationDetailChargeSummary(
-      source.parent_reservation_id,
-      source.reservation_pricing,
-      source.reservation_charges,
-      source.refunds
-    );
+    getReservationDetailChargeSummary(source);
 
   return {
     cancellation_reason: source.cancellation_reason,
@@ -28,10 +51,7 @@ export const mapReservationDetail = (
     code: source.code,
     comboName: source.combo?.name ?? null,
     created_at: source.created_at,
-    createdByName: getReservationDetailWorkerName(
-      workerNames,
-      source.created_by
-    ),
+    ...mapReservationDetailAuditNames(source, workerNames),
     customer_name: source.customer_name,
     dispatched_at: source.dispatched_at,
     dispatches: mapReservationDetailDispatches(source),
@@ -49,9 +69,5 @@ export const mapReservationDetail = (
     status: source.status,
     type: source.type,
     updated_at: source.updated_at,
-    updatedByName: getReservationDetailWorkerName(
-      workerNames,
-      source.updated_by
-    ),
   };
 };

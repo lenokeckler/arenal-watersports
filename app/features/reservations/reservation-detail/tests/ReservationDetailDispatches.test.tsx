@@ -43,6 +43,15 @@ describe("reservation detail dispatches", (): void => {
       renderReservationDetailWithTwoDispatchGroups();
 
     expect(dispatchGroups).toHaveLength(2);
+    expect(dispatchGroups[0]).toHaveTextContent(
+      copy.DISPATCHED_UNITS
+    );
+    expect(dispatchGroups[0]).toHaveTextContent(
+      test.UNIT_CODE
+    );
+    expect(dispatchGroups[1]).toHaveTextContent(
+      copy.MISSING_DISPATCH_UNITS
+    );
     expectDispatchGroupToShow(dispatchGroups[0], [
       test.CATEGORY_NAME,
       formatReservationCalendarDateTime(

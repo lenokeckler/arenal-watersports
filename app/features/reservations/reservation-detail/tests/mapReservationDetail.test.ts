@@ -7,6 +7,17 @@ import {
 import { RESERVATION_DETAIL_SOURCE_FIXTURE } from "./ReservationDetailSourceFixture.constants";
 
 describe("mapReservationDetail", () => {
+  it("maps unit codes to their dispatched group", () => {
+    const detail = mapReservationDetail(
+      RESERVATION_DETAIL_SOURCE_FIXTURE,
+      RESERVATION_DETAIL_WORKER_NAMES_FIXTURE
+    );
+
+    expect(detail.dispatches[0].unitCodes).toEqual([
+      test.UNIT_CODE,
+    ]);
+  });
+
   it("maps committed equipment", () => {
     const detail = mapReservationDetail(
       RESERVATION_DETAIL_SOURCE_FIXTURE,
@@ -16,23 +27,13 @@ describe("mapReservationDetail", () => {
     expect(detail.equipment).toEqual([
       {
         categoryName: test.CATEGORY_NAME,
-        dispatchId: test.RESERVATION_ID,
-        fuelIn: null,
-        fuelOut: null,
         quantity: null,
         unitCode: test.UNIT_CODE,
-        usageIn: null,
-        usageOut: null,
       },
       {
         categoryName: test.CATEGORY_NAME,
-        dispatchId: null,
-        fuelIn: null,
-        fuelOut: null,
         quantity: test.QUANTITY,
         unitCode: null,
-        usageIn: null,
-        usageOut: null,
       },
     ]);
   });
@@ -54,6 +55,31 @@ describe("mapReservationDetail", () => {
       {
         name: test.GUIDE_NAME,
         workerId: test.GUIDE_WORKER_ID,
+      },
+    ]);
+  });
+
+  it("uses the unavailable-name fallback for unresolved extra relations", () => {
+    const source = {
+      ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+      reservation_items:
+        RESERVATION_DETAIL_SOURCE_FIXTURE.reservation_items.map(
+          (item) =>
+            item.extra_id === null
+              ? item
+              : { ...item, extra: null }
+        ),
+    };
+    const detail = mapReservationDetail(
+      source,
+      RESERVATION_DETAIL_WORKER_NAMES_FIXTURE
+    );
+
+    expect(detail.extras).toEqual([
+      {
+        categoryName: test.CATEGORY_NAME,
+        name: test.MISSING_RELATED_NAME,
+        quantity: test.QUANTITY,
       },
     ]);
   });
@@ -115,6 +141,26 @@ describe("mapReservationDetail", () => {
         categoryName: test.CATEGORY_NAME,
         expectedReturnAt: test.EXPECTED_RETURN,
         id: test.RESERVATION_ID,
+        unitCodes: [test.UNIT_CODE],
+      },
+    ]);
+  });
+
+  it("uses the unavailable-name fallback for unresolved guides", () => {
+    const workerNames =
+      RESERVATION_DETAIL_WORKER_NAMES_FIXTURE.filter(
+        (worker) =>
+          worker.worker_id !== test.GUIDE_WORKER_ID
+      );
+    const detail = mapReservationDetail(
+      RESERVATION_DETAIL_SOURCE_FIXTURE,
+      workerNames
+    );
+
+    expect(detail.guides).toEqual([
+      {
+        name: test.MISSING_RELATED_NAME,
+        workerId: test.GUIDE_WORKER_ID,
       },
     ]);
   });
