@@ -29,17 +29,17 @@ export const updateReservationAction = async (
     return { ok: false, errors: validation.errors };
   }
 
+  let reservationId: string;
   try {
-    const reservationId = await updateReservation({
+    reservationId = await updateReservation({
       ...validation.value,
       expectedUpdatedAt: input.expectedUpdatedAt,
       reservationId: input.reservationId,
     });
-    revalidatePath(
-      resolveReservationEditPath(reservationId)
-    );
-    return { ok: true, reservationId };
   } catch (error) {
     return mapReservationEditError(error);
   }
+
+  revalidatePath(resolveReservationEditPath(reservationId));
+  return { ok: true, reservationId };
 };
