@@ -37,6 +37,8 @@ export const INVENTORY_DATA_SOURCE = {
   EQUIPMENT_STOCK_TABLE: "equipment_stock",
   EQUIPMENT_UNITS_TABLE: "equipment_units",
   RECORDED_STATUS_COLUMN: "recorded_status",
+  RESERVATION_DISPATCHES_TABLE: "reservation_dispatches",
+  RESERVATION_ITEMS_TABLE: "reservation_items",
   UNIT_CURRENT_STATE_VIEW: "unit_current_state",
   UNIT_CODE_COLUMN: "code",
   UNIT_DETAILS_SELECT:
