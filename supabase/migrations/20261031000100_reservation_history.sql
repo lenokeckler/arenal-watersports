@@ -43,7 +43,9 @@ begin
     raise exception using errcode = '42501';
   end if;
 
-  if p_page_index < 0 or p_page_size not between 1 and 100 or p_from > p_to then
+  if p_page_index is null or p_page_size is null
+    or p_page_index < 0 or p_page_size not between 1 and 100
+    or p_from > p_to then
     raise exception using errcode = '22023';
   end if;
 

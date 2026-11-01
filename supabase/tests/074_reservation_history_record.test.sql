@@ -1,5 +1,5 @@
 begin;
-select plan(15);
+select plan(17);
 
 insert into auth.users (id, email) values
   ('e3740000-0000-4000-8000-000000000001', 'history-record-admin@arenal.local'),
@@ -22,8 +22,28 @@ insert into reservations (id, customer_name, people_count, type, starts_at, dura
   ('e3740000-0000-4000-8000-000000000203', 'Record scheduled', 1, 'rental', '2030-01-03 15:00:00+00', 60, 'scheduled', null, 'e3740000-0000-4000-8000-000000000001', 'e3740000-0000-4000-8000-000000000001'),
   ('e3740000-0000-4000-8000-000000000204', 'Record dispatched', 1, 'rental', '2030-01-04 15:00:00+00', 60, 'dispatched', null, 'e3740000-0000-4000-8000-000000000001', 'e3740000-0000-4000-8000-000000000001');
 
+insert into equipment_categories (id, name, tracking_mode, is_reservable, default_duration_minutes, created_by, updated_by) values
+  ('e3740000-0000-4000-8000-000000000101', 'Record Alpha', 'by_unit', true, 60, 'e3740000-0000-4000-8000-000000000001', 'e3740000-0000-4000-8000-000000000001'),
+  ('e3740000-0000-4000-8000-000000000102', 'Record Beta', 'by_quantity', true, 60, 'e3740000-0000-4000-8000-000000000001', 'e3740000-0000-4000-8000-000000000001');
+
+insert into equipment_units (id, category_id, code, created_by, updated_by) values
+  ('e3740000-0000-4000-8000-000000000111', 'e3740000-0000-4000-8000-000000000101', 'RECORD-A1', 'e3740000-0000-4000-8000-000000000001', 'e3740000-0000-4000-8000-000000000001');
+
+insert into reservation_items (reservation_id, unit_id, category_id, quantity, created_by, updated_by) values
+  ('e3740000-0000-4000-8000-000000000201', 'e3740000-0000-4000-8000-000000000111', null, null, 'e3740000-0000-4000-8000-000000000001', 'e3740000-0000-4000-8000-000000000001'),
+  ('e3740000-0000-4000-8000-000000000201', null, 'e3740000-0000-4000-8000-000000000102', 2, 'e3740000-0000-4000-8000-000000000001', 'e3740000-0000-4000-8000-000000000001');
+
+insert into reservation_guides (reservation_id, worker_id, assigned_by) values
+  ('e3740000-0000-4000-8000-000000000201', 'e3740000-0000-4000-8000-000000000003', 'e3740000-0000-4000-8000-000000000001'),
+  ('e3740000-0000-4000-8000-000000000201', 'e3740000-0000-4000-8000-000000000002', 'e3740000-0000-4000-8000-000000000001');
+
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"e3740000-0000-4000-8000-000000000002","role":"authenticated"}';
+
+select is((select equipment_names from public.get_reservation_history_record('e3740000-0000-4000-8000-000000000201')),
+  array['Record Alpha', 'Record Beta'], 'The record lists its equipment category names');
+select is((select guide_names from public.get_reservation_history_record('e3740000-0000-4000-8000-000000000201')),
+  array['Record Operations', 'Record Reservations'], 'The record lists its guide names');
 
 select is((select customer_name || ':' || status::text from public.get_reservation_history_record('e3740000-0000-4000-8000-000000000201')),
   'Record closed:closed', 'A closed reservation has a record');
@@ -63,7 +83,7 @@ select throws_ok($$select * from public.get_reservation_history_record('e3740000
   null, 'The anonymous role cannot execute the record read');
 
 reset role;
-select is((select p.prosecdef from pg_proc p where p.proname = 'get_reservation_history_record'), true,
+select is((select p.prosecdef from pg_proc p where p.pronamespace = 'public'::regnamespace and p.proname = 'get_reservation_history_record'), true,
   'The record read runs as its owner');
 select is(
   (select count(*)::integer

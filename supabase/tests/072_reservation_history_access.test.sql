@@ -60,7 +60,7 @@ select ok(
   not has_function_privilege('authenticated', 'public.reservation_history_guide_names(uuid)', 'execute'),
   'Workers cannot execute the guide names helper');
 select is(
-  (select p.prosecdef from pg_proc p where p.proname = 'list_reservation_history'),
+  (select p.prosecdef from pg_proc p where p.pronamespace = 'public'::regnamespace and p.proname = 'list_reservation_history'),
   true,
   'The history list runs as its owner');
 select is(
