@@ -7,3 +7,5 @@ import {
 } from "@/app/components/button/styles/Button.styles";
 
 export const UNIT_LIST_LINK_CLASS = `${BUTTON_BASE_CLASS} ${BUTTON_VARIANT_CLASS[BUTTON.SECONDARY]} ${BUTTON_SIZE_CLASS[SIZE.FULL]} ${BUTTON_ENABLED_CLASS} min-h-11 rounded-md md:w-40`;
+
+export const UNIT_LIST_ADD_LINK_CLASS = `${BUTTON_BASE_CLASS} ${BUTTON_VARIANT_CLASS[BUTTON.PRIMARY]} ${BUTTON_SIZE_CLASS[SIZE.FULL]} ${BUTTON_ENABLED_CLASS} min-h-11 rounded-md md:w-40`;

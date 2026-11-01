@@ -39,14 +39,14 @@ and a clear error state they can retry from.
 
 ## Edge cases & errors
 
-| Case                    | Observable result                                                                                                  | Copy key                                            |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------- |
-| Ready, with groups      | One card per category; cards with a group show the group row, cards without one show none                          | `GROUP_PREFIX_LABEL`, `TRACKING_MODE_MICRO_LABEL_*` |
-| Empty list              | Empty state with title and body, no cards                                                                          | `EMPTY_STATE_TITLE`, `EMPTY_STATE_BODY`             |
-| Fetch failure           | `CategoryList` returns no categories and `fetchFailed: true`; the error state shows the message and a Retry button | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`               |
-| Retry, read succeeds    | The refresh re-renders the server component with the new list; the view state becomes ready or empty               | The keys of the resulting state                     |
-| Retry, read fails again | The error state is shown again                                                                                     | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`               |
-| Inactive category       | The card shows the pill and the inactive container class; no action is offered                                     | `STATUS_PILL_INACTIVE`                              |
+| Case                    | Observable result                                                                                                                                                            | Copy key                                                                |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Ready, with groups      | One card per category; cards with a group show the group row, cards without one show none                                                                                    | `GROUP_PREFIX_LABEL`, `TRACKING_MODE_MICRO_LABEL_*`                     |
+| Empty list              | Empty state with title and body, no cards                                                                                                                                    | `EMPTY_STATE_TITLE`, `EMPTY_STATE_BODY`                                 |
+| Fetch failure           | `CategoryList` returns no categories and `fetchFailed: true`; the error state shows the message and a Retry button                                                           | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`                                   |
+| Retry, read succeeds    | The refresh re-renders the server component with the new list; the view state becomes ready or empty                                                                         | The keys of the resulting state                                         |
+| Retry, read fails again | The error state is shown again                                                                                                                                               | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`                                   |
+| Inactive category       | The card shows the pill and the inactive container class; its only action is Reactivar, which sets the status back to active, shows the success toast and refreshes the list | `STATUS_PILL_INACTIVE`, `REACTIVATE_BUTTON`, `REACTIVATE_SUCCESS_TOAST` |
 
 ## Constraints
 

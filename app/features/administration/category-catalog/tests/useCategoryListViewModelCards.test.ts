@@ -79,7 +79,7 @@ describe("useCategoryListViewModel cards", () => {
     ).toEqual([
       CATEGORY_CARD_ACTION_STATE.MARK_INACTIVE,
       CATEGORY_CARD_ACTION_STATE.DELETE,
-      CATEGORY_CARD_ACTION_STATE.NONE,
+      CATEGORY_CARD_ACTION_STATE.REACTIVATE,
     ]);
   });
 

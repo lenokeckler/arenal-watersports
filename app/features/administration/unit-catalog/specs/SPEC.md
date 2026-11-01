@@ -43,3 +43,26 @@
 | A decommissioned unit is dimmed and has no edit link                                                        | `UnitListView.test.tsx`                             |
 | Empty, error and pagination states                                                                          | `UnitListView.test.tsx`                             |
 | By-unit category cards, active or inactive, link to their units; by-quantity cards do not                   | `CategoryCardUnitsLink.test.tsx` (category-catalog) |
+
+## 16.09 Unit form screen and create route
+
+| Requirement                                                                                                                  | Test                                   |
+| ---------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| `UnitFormView` is shared by create and edit; the heading and the submit label follow the mode                                | 16.11                                  |
+| Fields: code, status (editable statuses only), gauge bars; fuel level, usage and next oil change only with a motor           | 16.11                                  |
+| An empty fuel level reads as no reading; the usage label follows the metric (Horas, Kilómetros)                              | 16.11                                  |
+| Only an administrator opens `/administration/categories/[categoryId]/units/new`; an unknown or by-quantity category is a 404 | 16.11                                  |
+| The unit list links to the create route with "Agregar unidad"                                                                | `UnitListView.test.tsx` (if it breaks) |
+
+Component tests come in 16.11.
+
+## 16.10 Unit edit route and decommission
+
+| Requirement                                                                                                                                                                                                               | Test                                           |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| Only an administrator opens `/administration/categories/[categoryId]/units/[unitId]`; an unknown unit, a by-quantity category or a unit of another category is a 404                                                      | 16.11                                          |
+| An active unit opens in edit mode with its values; saving calls `updateUnitAction` and refreshes                                                                                                                          | `useUnitFormSubmit.test.ts`                    |
+| A decommissioned unit opens read-only: fields disabled, no save button, a notice with the date and the reason, no decommission button                                                                                     | `buildUnitDecommissionedNotice.test.ts`, 16.11 |
+| "Dar de baja" opens an inline panel with a required reason (at most 300); "Cancelar" closes it and clears the reason                                                                                                      | 16.11                                          |
+| "Confirmar baja" calls `decommissionUnitAction`; success toasts and returns to the unit list; an error result (for example occupied) toasts its message; a thrown error toasts a generic message after `unstable_rethrow` | 16.11                                          |
+| The panel and the buttons are disabled while the request is in flight                                                                                                                                                     | 16.11                                          |

@@ -21,7 +21,10 @@ const UnitListView = ({
 
   return (
     <div className={UNIT_LIST_CONTENT_CLASS}>
-      <UnitListHeader categoryName={category.name} />
+      <UnitListHeader
+        categoryId={category.id}
+        categoryName={category.name}
+      />
       <UnitListBody
         cards={cards}
         onRetry={onRetry}

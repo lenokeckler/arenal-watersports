@@ -17,7 +17,11 @@ vi.mock("@/app/services/supabase/client", () => ({
 }));
 
 const createRealtimeHarness = () => {
-  const channel = { on: vi.fn(), subscribe: vi.fn() };
+  const channel = {
+    on: vi.fn(),
+    subscribe: vi.fn(),
+    teardown: vi.fn(),
+  };
   channel.on.mockReturnValue(channel);
   channel.subscribe.mockReturnValue(channel);
   const removeChannel = vi
@@ -54,6 +58,8 @@ describe("calendar realtime", () => {
     );
     const change = channel.on.mock.calls[0][2];
     const status = channel.subscribe.mock.calls[0][0];
+    act(() => status("CONNECTING"));
+    expect(result.current).toBe(false);
     act(() => {
       change();
       change();
@@ -62,6 +68,10 @@ describe("calendar realtime", () => {
     });
     expect(refresh).toHaveBeenCalledOnce();
     act(() => status(CALENDAR_REALTIME.STATUS.ERROR));
+    expect(result.current).toBe(true);
+    act(() => status("CONNECTING"));
+    expect(result.current).toBe(true);
+    act(() => status(CALENDAR_REALTIME.STATUS.TIMED_OUT));
     expect(result.current).toBe(true);
     act(() => {
       status(CALENDAR_REALTIME.STATUS.SUBSCRIBED);
