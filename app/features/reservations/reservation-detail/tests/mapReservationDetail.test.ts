@@ -7,6 +7,17 @@ import {
 import { RESERVATION_DETAIL_SOURCE_FIXTURE } from "./ReservationDetailSourceFixture.constants";
 
 describe("mapReservationDetail", () => {
+  it("maps unit codes to their dispatched group", () => {
+    const detail = mapReservationDetail(
+      RESERVATION_DETAIL_SOURCE_FIXTURE,
+      RESERVATION_DETAIL_WORKER_NAMES_FIXTURE
+    );
+
+    expect(detail.dispatches[0].unitCodes).toEqual([
+      test.UNIT_CODE,
+    ]);
+  });
+
   it("maps committed equipment", () => {
     const detail = mapReservationDetail(
       RESERVATION_DETAIL_SOURCE_FIXTURE,
@@ -16,23 +27,13 @@ describe("mapReservationDetail", () => {
     expect(detail.equipment).toEqual([
       {
         categoryName: test.CATEGORY_NAME,
-        dispatchId: test.RESERVATION_ID,
-        fuelIn: null,
-        fuelOut: null,
         quantity: null,
         unitCode: test.UNIT_CODE,
-        usageIn: null,
-        usageOut: null,
       },
       {
         categoryName: test.CATEGORY_NAME,
-        dispatchId: null,
-        fuelIn: null,
-        fuelOut: null,
         quantity: test.QUANTITY,
         unitCode: null,
-        usageIn: null,
-        usageOut: null,
       },
     ]);
   });
@@ -115,6 +116,7 @@ describe("mapReservationDetail", () => {
         categoryName: test.CATEGORY_NAME,
         expectedReturnAt: test.EXPECTED_RETURN,
         id: test.RESERVATION_ID,
+        unitCodes: [test.UNIT_CODE],
       },
     ]);
   });
