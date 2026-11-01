@@ -15,7 +15,7 @@ import { useReservationEquipmentEligibility } from "../hooks/useReservationEquip
 describe("useReservationEquipmentEligibility connection", () => {
   beforeEach(resetRealtimeHarness);
 
-  it("clears options on connection loss and restores them on reconnection", async () => {
+  it("keeps cached options on connection loss and restores them on reconnection", async () => {
     const { result, unmount } = renderHook(() =>
       useReservationEquipmentEligibility(
         INITIAL_ELIGIBLE_CATEGORIES
@@ -64,7 +64,7 @@ describe("useReservationEquipmentEligibility connection", () => {
     ).toHaveBeenCalledOnce();
   });
 
-  it("removes selectable categories after a refresh request fails", async () => {
+  it("keeps selectable categories after a refresh request fails", async () => {
     const { result } = renderHook(() =>
       useReservationEquipmentEligibility(
         INITIAL_ELIGIBLE_CATEGORIES
