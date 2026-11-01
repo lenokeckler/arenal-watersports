@@ -4,7 +4,6 @@ import type { Database } from "@/app/types";
 import type { ReservationCategoryUnitOption } from "../models/ReservationCategoryUnitOption.interface";
 import type { ReservationUnitCommitment } from "../models/ReservationUnitCommitment.interface";
 import type { ReservationAvailabilityClientOptions } from "./models/ReservationAvailabilityClientOptions.interface";
-import type { ReservationAvailabilityClientRequest } from "./models/ReservationAvailabilityClientRequest.interface";
 import type { ReservationAvailabilityClientState } from "./models/ReservationAvailabilityClientState.interface";
 import {
   AVAILABLE_UNIT_TEST,
@@ -58,15 +57,14 @@ export const createReservationAvailabilityClient = (
   options: ReservationAvailabilityClientOptions = {}
 ) => {
   const requestPaths: string[] = [];
-  const requests: ReservationAvailabilityClientRequest[] =
-    [];
+  const requestLog: string[] = [];
   const state = { commitments, options, units };
   const mockFetch: typeof fetch = (input, init) => {
     const requestUrl =
       input instanceof Request ? input.url : String(input);
     const path = new URL(requestUrl).pathname;
     requestPaths.push(path);
-    requests.push({ body: init?.body, url: requestUrl });
+    requestLog.push(`${requestUrl} ${init?.body}`);
     const responseBody = getResponseBody(path, state);
     return Promise.resolve(
       new Response(JSON.stringify(responseBody), {
@@ -85,6 +83,6 @@ export const createReservationAvailabilityClient = (
       { global: { fetch: mockFetch } }
     ),
     requestPaths,
-    requests,
+    requestLog,
   };
 };

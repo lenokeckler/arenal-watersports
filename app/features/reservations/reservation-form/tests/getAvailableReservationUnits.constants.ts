@@ -2,7 +2,6 @@ import type { ReservationUnitCommitment } from "../models/ReservationUnitCommitm
 
 export const AVAILABLE_UNIT_TEST = {
   CATEGORY_ID: "category-concrete",
-  COMMITMENTS_PATH: "/reservation_items",
   CATEGORY_AVAILABILITY_RPC_PATH:
     "/rpc/category_availability",
   CATEGORY_COMMITTED_QUANTITY: 4,
@@ -49,7 +48,7 @@ export const RESERVATION_AVAILABILITY_EXCLUDING_INPUT_FIXTURE =
       AVAILABLE_UNIT_TEST.EXCLUDED_RESERVATION_ID,
   } as const;
 
-export const EXCLUDED_RESERVATION_COMMITMENT_FILTER = `neq.${AVAILABLE_UNIT_TEST.EXCLUDED_RESERVATION_ID}`;
+export const EXCLUDED_RESERVATION_COMMITMENT_FILTER = `reservation_id=neq.${AVAILABLE_UNIT_TEST.EXCLUDED_RESERVATION_ID}`;
 
 export const AVAILABLE_UNIT_OPTION_FIXTURE = {
   code: AVAILABLE_UNIT_TEST.UNIT_CODE,

@@ -14,30 +14,21 @@ describe("isReservationUnitAvailabilityInput", () => {
     ).toBe(true);
   });
 
-  it("accepts a reservation id to exclude, or none at all", () => {
-    expect(
-      isReservationUnitAvailabilityInput({
-        ...RESERVATION_AVAILABILITY_INPUT_FIXTURE,
-        excludeReservationId:
-          AVAILABLE_UNIT_TEST.EXCLUDED_RESERVATION_ID,
-      })
-    ).toBe(true);
-    expect(
-      isReservationUnitAvailabilityInput({
-        ...RESERVATION_AVAILABILITY_INPUT_FIXTURE,
-        excludeReservationId: undefined,
-      })
-    ).toBe(true);
-  });
-
-  it("rejects an excluded reservation id that is not a uuid", () => {
-    expect(
-      isReservationUnitAvailabilityInput({
-        ...RESERVATION_AVAILABILITY_INPUT_FIXTURE,
-        excludeReservationId: AVAILABLE_UNIT_TEST.DATE,
-      })
-    ).toBe(false);
-  });
+  it.each([
+    [AVAILABLE_UNIT_TEST.EXCLUDED_RESERVATION_ID, true],
+    [undefined, true],
+    [AVAILABLE_UNIT_TEST.DATE, false],
+  ])(
+    "checks the excluded reservation id %s",
+    (id, isValid) => {
+      expect(
+        isReservationUnitAvailabilityInput({
+          ...RESERVATION_AVAILABILITY_INPUT_FIXTURE,
+          excludeReservationId: id,
+        })
+      ).toBe(isValid);
+    }
+  );
 
   it("rejects null, arrays, and incomplete requests", () => {
     expect(isReservationUnitAvailabilityInput(null)).toBe(
