@@ -2505,13 +2505,6 @@ export type Database = {
       };
     };
     Functions: {
-      assert_unit_available_for_window: {
-        Args: {
-          p_reservation_window: unknown;
-          p_unit_id: string;
-        };
-        Returns: undefined;
-      };
       assert_reservable_equipment_category: {
         Args: { p_category_id: string };
         Returns: undefined;
@@ -2529,6 +2522,13 @@ export type Database = {
           p_date: string;
           p_people_count: number;
           p_time: string;
+        };
+        Returns: undefined;
+      };
+      assert_unit_available_for_window: {
+        Args: {
+          p_reservation_window: unknown;
+          p_unit_id: string;
         };
         Returns: undefined;
       };
@@ -2580,10 +2580,7 @@ export type Database = {
             };
             Returns: string;
           }
-        | {
-            Args: { p_payload: Json };
-            Returns: string;
-          };
+        | { Args: { p_payload: Json }; Returns: string };
       current_session_id: {
         Args: Record<PropertyKey, never>;
         Returns: string;
@@ -2611,6 +2608,22 @@ export type Database = {
       finish_password_recovery: {
         Args: { p_user_id: string };
         Returns: undefined;
+      };
+      get_reservation_history_record: {
+        Args: { p_reservation_id: string };
+        Returns: {
+          cancellation_reason: string;
+          created_at: string;
+          created_by_name: string;
+          customer_name: string;
+          equipment_names: string[];
+          guide_names: string[];
+          id: string;
+          starts_at: string;
+          status: Database["public"]["Enums"]["reservation_status"];
+          updated_at: string;
+          updated_by_name: string;
+        }[];
       };
       grant_worker_area: {
         Args: {
@@ -2654,10 +2667,6 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
       };
-      lock_reservable_unit: {
-        Args: { p_unit_id: string };
-        Returns: string;
-      };
       issue_password_reset_pin: {
         Args: {
           p_network_key: string;
@@ -2669,6 +2678,31 @@ export type Database = {
           personal_email: string;
           pin_id: string;
         }[];
+      };
+      list_reservation_history: {
+        Args: {
+          p_category_id?: string;
+          p_from?: string;
+          p_page_index: number;
+          p_page_size: number;
+          p_to?: string;
+          p_type?: Database["public"]["Enums"]["reservation_type"];
+        };
+        Returns: {
+          created_by_name: string;
+          customer_name: string;
+          equipment_names: string[];
+          guide_names: string[];
+          id: string;
+          page_index: number;
+          starts_at: string;
+          status: Database["public"]["Enums"]["reservation_status"];
+          total_count: number;
+        }[];
+      };
+      lock_reservable_unit: {
+        Args: { p_unit_id: string };
+        Returns: string;
       };
       mark_password_reset_pin_undelivered: {
         Args: { p_pin_id: string };
@@ -2758,6 +2792,18 @@ export type Database = {
         Args: { target_worker: string };
         Returns: string;
       };
+      require_reservations_access: {
+        Args: Record<PropertyKey, never>;
+        Returns: undefined;
+      };
+      reservation_history_equipment_names: {
+        Args: { p_reservation_id: string };
+        Returns: string[];
+      };
+      reservation_history_guide_names: {
+        Args: { p_reservation_id: string };
+        Returns: string[];
+      };
       retire_worker: {
         Args: { target_worker: string };
         Returns: string;
@@ -2815,6 +2861,24 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: string;
       };
+      unit_conflicts: {
+        Args: {
+          p_ends_at: string;
+          p_exclude_reservation?: string;
+          p_starts_at: string;
+          p_unit_id: string;
+        };
+        Returns: {
+          code: string;
+          ends_at: string;
+          reservation_id: string;
+          starts_at: string;
+        }[];
+      };
+      unlock_worker: {
+        Args: { target_worker: string };
+        Returns: string;
+      };
       validate_reservation_customer: {
         Args: {
           p_customer_name: string;
@@ -2837,24 +2901,6 @@ export type Database = {
           p_time: string;
         };
         Returns: unknown;
-      };
-      unit_conflicts: {
-        Args: {
-          p_ends_at: string;
-          p_exclude_reservation?: string;
-          p_starts_at: string;
-          p_unit_id: string;
-        };
-        Returns: {
-          code: string;
-          ends_at: string;
-          reservation_id: string;
-          starts_at: string;
-        }[];
-      };
-      unlock_worker: {
-        Args: { target_worker: string };
-        Returns: string;
       };
       workday_contains: {
         Args: { moment: string };
