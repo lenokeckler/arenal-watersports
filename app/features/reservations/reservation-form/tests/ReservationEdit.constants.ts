@@ -130,3 +130,6 @@ export const RESERVATION_EDIT_CATEGORY_OPTION = {
 
 export const RESERVATION_EDIT_LONG_DATE =
   "jueves, 12 de abril de 2035";
+
+export const RESERVATION_EDIT_NOT_FOUND_SIGNAL =
+  "NEXT_NOT_FOUND";

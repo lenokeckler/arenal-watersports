@@ -18,6 +18,7 @@ export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
   "/administration/categories/[categoryId]/units",
   "/administration/categories/[categoryId]/units/[unitId]",
   "/administration/categories/[categoryId]/units/new",
+  "/reservations/[reservationId]/edit",
 ];
 
 export const CLASSIFIED_PAGE_ROUTES: readonly string[] = [
