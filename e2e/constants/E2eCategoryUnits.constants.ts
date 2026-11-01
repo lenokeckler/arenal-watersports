@@ -12,6 +12,7 @@ export const E2E_CATEGORY_UNITS_SCREENSHOT_BASENAME =
   "us-adm-16-category-units";
 
 export const E2E_CATEGORY_UNITS_SCREENSHOT_STATE = {
+  CARD_LINK: "card-link",
   CREATE_ERROR: "create-error",
   DECOMMISSION: "decommission",
   LIST: "list",
