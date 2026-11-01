@@ -1,23 +1,15 @@
-import { redirect } from "next/navigation";
 import {
   BOARD_CATEGORY_OPERATION,
   BOARD_CATEGORY_QUERY,
-  PATHS,
 } from "@/app/constants";
-import { readSignedInUserId } from "@/app/services/authentication/readSignedInUserId";
-import { createServerSupabaseClient } from "@/app/services/supabase";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import type { BoardCategoryRow } from "./models/BoardCategoryRow.type";
+import { requireBoardSupabase } from "./requireBoardSupabase";
 
 export const readBoardCategories = async (): Promise<
   BoardCategoryRow[]
 > => {
-  const supabase = await createServerSupabaseClient();
-  const userId = await readSignedInUserId(supabase);
-
-  if (!userId) {
-    redirect(PATHS.ACCESS.LOGIN);
-  }
+  const supabase = await requireBoardSupabase();
 
   const { data, error } = await supabase
     .from(BOARD_CATEGORY_QUERY.VIEW)
