@@ -25,6 +25,16 @@ values
   ('e2400000-0000-4000-8000-000000000106', 'RES04 Cantidad no intercambiable fixture', 'active', 'by_quantity', true, false, 60,
    'e2400000-0000-4000-8000-000000000001', 'e2400000-0000-4000-8000-000000000001');
 
+insert into equipment_stock (category_id, quantity_available, updated_by)
+values
+  ('e2400000-0000-4000-8000-000000000101', 10, 'e2400000-0000-4000-8000-000000000001'),
+  ('e2400000-0000-4000-8000-000000000106', 10, 'e2400000-0000-4000-8000-000000000001');
+
+insert into equipment_units (id, category_id, code, status, created_by, updated_by)
+values ('e2400000-0000-4000-8000-000000000204', 'e2400000-0000-4000-8000-000000000104',
+        'RES04-KAYAK', 'available', 'e2400000-0000-4000-8000-000000000001',
+        'e2400000-0000-4000-8000-000000000001');
+
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"e2400000-0000-4000-8000-000000000002","role":"authenticated"}';
 
