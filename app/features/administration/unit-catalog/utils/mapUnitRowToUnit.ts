@@ -2,9 +2,11 @@ import type { Unit } from "../models/Unit.interface";
 import type { UnitRow } from "../models/UnitRow.type";
 
 export const mapUnitRowToUnit = (
-  unitRow: UnitRow
+  unitRow: UnitRow,
+  isOccupied: boolean
 ): Unit => ({
   id: unitRow.id,
+  isOccupied,
   categoryId: unitRow.category_id,
   code: unitRow.code,
   status: unitRow.status,
