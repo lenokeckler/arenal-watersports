@@ -31,7 +31,11 @@ describe("calculateReservationDetailCharges", () => {
     );
     expect(summary.charges).toEqual([
       {
-        amountCharged: RESERVATION_DETAIL_TEST.CHARGE_CRC,
+        amountChargedGross:
+          RESERVATION_DETAIL_TEST.CHARGE_CRC,
+        amountChargedNet:
+          RESERVATION_DETAIL_TEST.CHARGE_CRC,
+        amountCredit: RESERVATION_DETAIL_TEST.ZERO_AMOUNT,
         amountRemaining:
           RESERVATION_DETAIL_TEST.LIST_AMOUNT_CRC -
           RESERVATION_DETAIL_TEST.CHARGE_CRC,
@@ -40,7 +44,11 @@ describe("calculateReservationDetailCharges", () => {
         currency: RESERVATION_DETAIL_CURRENCY.CRC,
       },
       {
-        amountCharged: RESERVATION_DETAIL_TEST.CHARGE_USD,
+        amountChargedGross:
+          RESERVATION_DETAIL_TEST.CHARGE_USD,
+        amountChargedNet:
+          RESERVATION_DETAIL_TEST.CHARGE_USD,
+        amountCredit: RESERVATION_DETAIL_TEST.ZERO_AMOUNT,
         amountRemaining:
           RESERVATION_DETAIL_TEST.LIST_AMOUNT_USD -
           RESERVATION_DETAIL_TEST.CHARGE_USD,
@@ -82,13 +90,20 @@ describe("calculateReservationDetailCharges", () => {
     );
 
     expect(summary.status).toBe(
-      RESERVATION_DETAIL_CHARGE_STATUS.PAID
+      RESERVATION_DETAIL_CHARGE_STATUS.PARTIAL
     );
     expect(summary.charges[0].amountTarget).toBe(
       RESERVATION_DETAIL_TEST.CHARGE_CRC
     );
-    expect(summary.charges[0].amountCharged).toBe(
+    expect(summary.charges[0].amountChargedGross).toBe(
       RESERVATION_DETAIL_TEST.CHARGE_CRC
+    );
+    expect(summary.charges[0].amountChargedNet).toBe(
+      RESERVATION_DETAIL_TEST.CHARGE_CRC -
+        RESERVATION_DETAIL_TEST.REFUND_CRC
+    );
+    expect(summary.charges[0].amountRemaining).toBe(
+      RESERVATION_DETAIL_TEST.REFUND_CRC
     );
     expect(summary.refunds[0].amount).toBe(
       RESERVATION_DETAIL_TEST.REFUND_CRC
@@ -118,7 +133,7 @@ describe("calculateReservationDetailCharges", () => {
       ]
     );
 
-    expect(summary.charges[0].amountCharged).toBe(
+    expect(summary.charges[0].amountChargedGross).toBe(
       RESERVATION_DETAIL_TEST.CHARGE_CRC
     );
     expect(summary.extraTimeCharges[0].amountCharged).toBe(
@@ -127,5 +142,83 @@ describe("calculateReservationDetailCharges", () => {
     expect(summary.refunds[0].amount).toBe(
       RESERVATION_DETAIL_TEST.REFUND_CRC
     );
+  });
+
+  it("subtracts a full refund from net paid and returns the target to pending", () => {
+    const summary = calculateReservationDetailCharges(
+      {
+        ...RESERVATION_DETAIL_PRICING_FIXTURE,
+        agreed_amount_crc:
+          RESERVATION_DETAIL_TEST.CHARGE_CRC,
+      },
+      [
+        {
+          amount: RESERVATION_DETAIL_TEST.CHARGE_CRC,
+          currency: RESERVATION_DETAIL_CURRENCY.CRC,
+          kind: RESERVATION_DETAIL_CHARGE_KIND.TARIFF,
+        },
+      ],
+      [
+        {
+          amount: RESERVATION_DETAIL_TEST.CHARGE_CRC,
+          currency: RESERVATION_DETAIL_CURRENCY.CRC,
+        },
+      ]
+    );
+
+    expect(summary.status).toBe(
+      RESERVATION_DETAIL_CHARGE_STATUS.PENDING
+    );
+    expect(summary.charges[0]).toMatchObject({
+      amountChargedGross:
+        RESERVATION_DETAIL_TEST.CHARGE_CRC,
+      amountChargedNet: RESERVATION_DETAIL_TEST.ZERO_AMOUNT,
+      amountCredit: RESERVATION_DETAIL_TEST.ZERO_AMOUNT,
+      amountRemaining: RESERVATION_DETAIL_TEST.CHARGE_CRC,
+    });
+    expect(summary.refunds[0].amount).toBe(
+      RESERVATION_DETAIL_TEST.CHARGE_CRC
+    );
+  });
+
+  it("reports the net overpayment as customer credit", () => {
+    const summary = calculateReservationDetailCharges(
+      {
+        ...RESERVATION_DETAIL_PRICING_FIXTURE,
+        agreed_amount_crc:
+          RESERVATION_DETAIL_TEST.HALF_CHARGE_AMOUNT,
+        agreed_amount_usd: null,
+        list_amount_usd: null,
+      },
+      [
+        {
+          amount: RESERVATION_DETAIL_TEST.CHARGE_CRC,
+          currency: RESERVATION_DETAIL_CURRENCY.CRC,
+          kind: RESERVATION_DETAIL_CHARGE_KIND.TARIFF,
+        },
+      ],
+      [
+        {
+          amount: RESERVATION_DETAIL_TEST.REFUND_CRC,
+          currency: RESERVATION_DETAIL_CURRENCY.CRC,
+        },
+      ]
+    );
+
+    expect(summary.status).toBe(
+      RESERVATION_DETAIL_CHARGE_STATUS.PAID
+    );
+    expect(summary.charges[0]).toMatchObject({
+      amountChargedGross:
+        RESERVATION_DETAIL_TEST.CHARGE_CRC,
+      amountChargedNet:
+        RESERVATION_DETAIL_TEST.CHARGE_CRC -
+        RESERVATION_DETAIL_TEST.REFUND_CRC,
+      amountCredit:
+        RESERVATION_DETAIL_TEST.CHARGE_CRC -
+        RESERVATION_DETAIL_TEST.REFUND_CRC -
+        RESERVATION_DETAIL_TEST.HALF_CHARGE_AMOUNT,
+      amountRemaining: RESERVATION_DETAIL_TEST.ZERO_AMOUNT,
+    });
   });
 });

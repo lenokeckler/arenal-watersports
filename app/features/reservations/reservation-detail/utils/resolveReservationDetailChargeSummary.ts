@@ -16,7 +16,11 @@ const createParentChargeSummary =
   (): ReservationDetailChargeSummary => ({
     charges: RESERVATION_DETAIL_CURRENCIES.map(
       (currency) => ({
-        amountCharged: RESERVATION_DETAIL_ZERO_MINOR_UNITS,
+        amountChargedGross:
+          RESERVATION_DETAIL_ZERO_MINOR_UNITS,
+        amountChargedNet:
+          RESERVATION_DETAIL_ZERO_MINOR_UNITS,
+        amountCredit: null,
         amountRemaining: null,
         amountTarget: null,
         currency,

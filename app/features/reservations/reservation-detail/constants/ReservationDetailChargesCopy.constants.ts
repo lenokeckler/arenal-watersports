@@ -1,10 +1,12 @@
 export const RESERVATION_DETAIL_CHARGES_COPY = {
-  AMOUNT_CHARGED: "Cobrado",
+  AMOUNT_CHARGED_GROSS: "Cobrado bruto",
+  AMOUNT_CHARGED_NET: "Cobrado neto",
+  AMOUNT_CREDIT: "Saldo a favor",
   AMOUNT_REMAINING: "Pendiente",
-  AMOUNT_TARGET: "Tarifa acordada",
+  AMOUNT_TARGET: "Tarifa",
   CHARGE_STATUS: "Estado del cobro",
   EXTRA_TIME_CHARGES: "Tiempo adicional",
-  MISSING_AMOUNT: "Sin tarifa configurada",
+  MISSING_AMOUNT: "Tarifa no definida",
   MISSING_PARENT:
     "La tarifa se registra en la reserva original.",
   PAID: "Pagado",

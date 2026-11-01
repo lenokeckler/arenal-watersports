@@ -2,9 +2,12 @@ import { RESERVATION_DETAIL_CHARGE_STATUS } from "./ReservationDetail.constants"
 import { RESERVATION_DETAIL_CHARGES_COPY } from "./ReservationDetailChargesCopy.constants";
 
 export const RESERVATION_DETAIL_AMOUNT_FORMAT = {
-  CURRENCY_STYLE: "currency",
-  CRC_DECIMAL_DIGITS: 0,
-  USD_DECIMAL_DIGITS: 2,
+  CRC_SYMBOL: "₡",
+  CURRENCY_SYMBOL_SEPARATOR: "\u00A0",
+  FRACTIONAL_AMOUNT_DIGITS: 2,
+  USD_LOCALE: "en-US",
+  USD_SYMBOL: "US$",
+  WHOLE_AMOUNT_DIGITS: 0,
 } as const;
 
 export const RESERVATION_DETAIL_CHARGE_STATUS_COPY = {

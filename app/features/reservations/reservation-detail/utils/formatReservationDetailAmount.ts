@@ -3,19 +3,49 @@ import { RESERVATION_DETAIL_CURRENCY } from "../constants/ReservationDetail.cons
 import type { ReservationDetailCurrency } from "../constants/ReservationDetail.constants";
 import { RESERVATION_DETAIL_AMOUNT_FORMAT } from "../constants/ReservationDetailSectionsPresentation.constants";
 
+const getAmountFractionDigits = (
+  amount: number,
+  currency: ReservationDetailCurrency
+): number => {
+  if (
+    currency === RESERVATION_DETAIL_CURRENCY.CRC &&
+    Number.isInteger(amount)
+  ) {
+    return RESERVATION_DETAIL_AMOUNT_FORMAT.WHOLE_AMOUNT_DIGITS;
+  }
+
+  return RESERVATION_DETAIL_AMOUNT_FORMAT.FRACTIONAL_AMOUNT_DIGITS;
+};
+
+const getAmountLocale = (
+  currency: ReservationDetailCurrency
+): string =>
+  currency === RESERVATION_DETAIL_CURRENCY.USD
+    ? RESERVATION_DETAIL_AMOUNT_FORMAT.USD_LOCALE
+    : RESERVATION_CALENDAR_TIME.LOCALE;
+
+const getCurrencySymbol = (
+  currency: ReservationDetailCurrency
+): string =>
+  currency === RESERVATION_DETAIL_CURRENCY.CRC
+    ? RESERVATION_DETAIL_AMOUNT_FORMAT.CRC_SYMBOL
+    : RESERVATION_DETAIL_AMOUNT_FORMAT.USD_SYMBOL;
+
 export const formatReservationDetailAmount = (
   amount: number,
   currency: ReservationDetailCurrency
-): string =>
-  new Intl.NumberFormat(RESERVATION_CALENDAR_TIME.LOCALE, {
-    currency,
-    maximumFractionDigits:
-      currency === RESERVATION_DETAIL_CURRENCY.USD
-        ? RESERVATION_DETAIL_AMOUNT_FORMAT.USD_DECIMAL_DIGITS
-        : RESERVATION_DETAIL_AMOUNT_FORMAT.CRC_DECIMAL_DIGITS,
-    minimumFractionDigits:
-      currency === RESERVATION_DETAIL_CURRENCY.USD
-        ? RESERVATION_DETAIL_AMOUNT_FORMAT.USD_DECIMAL_DIGITS
-        : RESERVATION_DETAIL_AMOUNT_FORMAT.CRC_DECIMAL_DIGITS,
-    style: RESERVATION_DETAIL_AMOUNT_FORMAT.CURRENCY_STYLE,
-  }).format(amount);
+): string => {
+  const fractionDigits = getAmountFractionDigits(
+    amount,
+    currency
+  );
+  const formattedAmount = new Intl.NumberFormat(
+    getAmountLocale(currency),
+    {
+      maximumFractionDigits: fractionDigits,
+      minimumFractionDigits: fractionDigits,
+    }
+  ).format(amount);
+
+  return `${getCurrencySymbol(currency)}${RESERVATION_DETAIL_AMOUNT_FORMAT.CURRENCY_SYMBOL_SEPARATOR}${formattedAmount}`;
+};

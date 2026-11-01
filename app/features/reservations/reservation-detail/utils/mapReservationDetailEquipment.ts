@@ -17,13 +17,8 @@ const mapEquipmentItem = (
         item.unit?.category?.name ??
         item.category?.name ??
         null,
-      dispatchId: item.dispatch_id,
-      fuelIn: item.fuel_in,
-      fuelOut: item.fuel_out,
       quantity: item.quantity,
       unitCode: item.unit?.code ?? null,
-      usageIn: item.usage_in,
-      usageOut: item.usage_out,
     },
   ];
 };
