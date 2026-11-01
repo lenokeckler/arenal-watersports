@@ -2,6 +2,7 @@ import { RESERVATION_HISTORY_DOM_ID } from "../constants/ReservationHistoryDomId
 import type { ReservationHistoryInnerProps } from "../models/ReservationHistoryInnerProps.interface";
 import { RESERVATION_HISTORY_PAGE_CLASS } from "../styles/ReservationHistory.styles";
 import ReservationHistoryHeader from "./ReservationHistoryHeader";
+import ReservationHistoryPagination from "./ReservationHistoryPagination";
 import ReservationHistoryResults from "./ReservationHistoryResults";
 
 const ReservationHistoryInner = ({
@@ -15,6 +16,10 @@ const ReservationHistoryInner = ({
     <ReservationHistoryHeader />
     <ReservationHistoryResults
       items={page.items}
+      query={query}
+    />
+    <ReservationHistoryPagination
+      page={page}
       query={query}
     />
   </main>
