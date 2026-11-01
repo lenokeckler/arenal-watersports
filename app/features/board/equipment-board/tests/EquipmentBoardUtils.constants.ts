@@ -1,4 +1,5 @@
 import type { BoardCategoryRow } from "@/app/services/board";
+import { EQUIPMENT_BOARD_PERCENT } from "../constants/EquipmentBoard.constants";
 import type { BoardCategory } from "../models/BoardCategory.interface";
 
 export const DEFAULT_BOARD_CATEGORY: BoardCategory = {
@@ -35,9 +36,9 @@ export const NULL_BOARD_CATEGORY_ROW: BoardCategoryRow = {
 
 export const FILLED_BOARD_CATEGORY_ROW: BoardCategoryRow = {
   category_id: "category-filled",
-  category_name: "Kayak doble",
+  category_name: BOARD_CATEGORY_NAME.KAYAK_DOUBLE,
   free_count: 3,
-  group_name: "Kayak",
+  group_name: BOARD_GROUP_NAME.KAYAK,
   in_use_count: 2,
   total_count: 6,
 };
@@ -53,7 +54,7 @@ export const OCCUPANCY_CASES = {
 
 export const OCCUPANCY_EXPECTED = {
   EMPTY: 0,
-  FULL: 100,
+  FULL: EQUIPMENT_BOARD_PERCENT.MAX,
   ROUNDED_DOWN: 33,
   ROUNDED_UP: 67,
 } as const;

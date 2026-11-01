@@ -18,10 +18,10 @@ describe("buildBoardCards grouping", () => {
     const [card] = buildBoardCards([double, individual]);
 
     expect(card).toMatchObject({
-      freeCount: 5,
-      inUseCount: 3,
+      freeCount: double.freeCount + individual.freeCount,
+      inUseCount: double.inUseCount + individual.inUseCount,
       isGrouped: true,
-      totalCount: 10,
+      totalCount: double.totalCount + individual.totalCount,
     });
     expect(card.categories).toEqual([double, individual]);
     expect(card.categories[0]).toBe(double);

@@ -4,7 +4,11 @@ export const computeOccupancyPercent = (
   inUseCount: number,
   totalCount: number
 ): number => {
-  if (totalCount <= 0) {
+  const hasFiniteCounts =
+    Number.isFinite(inUseCount) &&
+    Number.isFinite(totalCount);
+
+  if (!hasFiniteCounts || totalCount <= 0) {
     return 0;
   }
 
