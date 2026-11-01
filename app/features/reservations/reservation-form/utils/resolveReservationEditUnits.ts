@@ -39,7 +39,7 @@ export const resolveReservationEditUnits = (
   );
 
   return {
-    isCurrentUnitKept: keptUnit !== null,
+    isCurrentUnitKept: keptUnit?.id === values.unitId,
     offeredUnits,
     retainedUnitId:
       !isLookupSettled || isSelectedUnitOffered
