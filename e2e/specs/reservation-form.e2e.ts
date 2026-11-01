@@ -23,7 +23,7 @@ test.describe("Reservation form", () => {
     await createWorkModePage(page)
       .getCard(E2E_RESERVATIONS_AREA_LABEL)
       .click();
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
   });
 
   test("shows reservation fields in Costa Rica time", async ({

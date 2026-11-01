@@ -16,5 +16,5 @@ export const signInToReservationsMode = async (
   await createWorkModePage(page)
     .getCard(E2E_RESERVATIONS_AREA_LABEL)
     .click();
-  await page.waitForURL(PATHS.HOME);
+  await page.waitForURL(PATHS.BOARD);
 };

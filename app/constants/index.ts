@@ -169,6 +169,10 @@ export {
 } from "./access/BlockedReauthentication.constants";
 export { SUPABASE_TABLE } from "./supabase/SupabaseTable.constants";
 export {
+  BOARD_CATEGORY_OPERATION,
+  BOARD_CATEGORY_QUERY,
+} from "./supabase/BoardCategoryQuery.constants";
+export {
   RESERVATIONS_BY_WORKER_OPERATION,
   RESERVATIONS_BY_WORKER_QUERY,
 } from "./supabase/ReservationsByWorkerQuery.constants";

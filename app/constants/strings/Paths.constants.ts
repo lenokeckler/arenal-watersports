@@ -1,4 +1,5 @@
 export const PATHS = {
+  BOARD: "/board",
   HOME: "/",
   MODE: "/mode",
   ACCESS: {
