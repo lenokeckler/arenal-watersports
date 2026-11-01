@@ -6,23 +6,26 @@ import {
 } from "../constants/E2eSupabase.constants";
 import { failE2eOperation } from "./failE2eOperation";
 import { readLocalSupabaseEnvironment } from "./readLocalSupabaseEnvironment";
+import { resolveE2eDatabaseContainer } from "./resolveE2eDatabaseContainer";
 
 const run = promisify(execFile);
 
 const readFailureReason = (error: unknown): string =>
   error instanceof Error ? error.message : String(error);
 
-export const runAuthSessionsPsql = (
+export const runAuthSessionsPsql = async (
   operation: string,
   query: string,
   userId: string
 ): Promise<string> => {
-  readLocalSupabaseEnvironment();
+  const { url } = readLocalSupabaseEnvironment();
+  const databaseContainer =
+    await resolveE2eDatabaseContainer(url);
 
   const psql = run("docker", [
     "exec",
     "-i",
-    E2E_AUTH_SESSIONS.DATABASE_CONTAINER,
+    databaseContainer,
     "psql",
     "-U",
     E2E_AUTH_SESSIONS.DATABASE_USER,
@@ -44,7 +47,7 @@ export const runAuthSessionsPsql = (
       failE2eOperation(
         operation,
         E2E_AUTH_SESSIONS_ERROR.EXEC_FAILED(
-          E2E_AUTH_SESSIONS.DATABASE_CONTAINER,
+          databaseContainer,
           readFailureReason(error)
         )
       )
