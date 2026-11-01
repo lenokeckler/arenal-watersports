@@ -3,7 +3,7 @@ import { vi } from "vitest";
 import { useCategoryAlertFormSubmit } from "../hooks/useCategoryAlertFormSubmit";
 import type { CategoryAlertFormErrors } from "../models/CategoryAlertFormErrors.interface";
 import type { CategoryAlertFormValues } from "../models/CategoryAlertFormValues.interface";
-import { buildCategoryFormSubmitEvent } from "./buildCategoryFormSubmitEvent";
+import { buildFormSubmitEvent } from "@/app/utils/form-submit/tests/buildFormSubmitEvent";
 import {
   buildCategoryAlertFormValues,
   CATEGORY_ALERT_ID,
@@ -32,7 +32,7 @@ export const submitCategoryAlertForm = async (
 
   await act(async () => {
     await result.current.onSubmit(
-      buildCategoryFormSubmitEvent(preventDefault)
+      buildFormSubmitEvent(preventDefault)
     );
   });
 

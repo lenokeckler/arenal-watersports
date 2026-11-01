@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { useCategoryAlertFormViewModel } from "../hooks/useCategoryAlertFormViewModel";
-import { buildCategoryFormSubmitEvent } from "./buildCategoryFormSubmitEvent";
+import { buildFormSubmitEvent } from "@/app/utils/form-submit/tests/buildFormSubmitEvent";
 import { DEFAULT_CATEGORY_ALERTS } from "./CategoryAlerts.constants";
 
 export const renderCategoryAlertViewModel = () =>
@@ -16,8 +16,6 @@ export const submitCategoryAlertViewModel = async (
   >["result"]
 ): Promise<void> => {
   await act(async () => {
-    await result.current.onSubmit(
-      buildCategoryFormSubmitEvent()
-    );
+    await result.current.onSubmit(buildFormSubmitEvent());
   });
 };

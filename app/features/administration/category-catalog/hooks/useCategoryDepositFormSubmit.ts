@@ -5,10 +5,10 @@ import { PATHS } from "@/app/constants";
 import { useToast } from "@/app/components/toast/utils/useToast";
 import type { CategoryDepositFormSubmitOptions } from "../models/CategoryDepositFormSubmitOptions.interface";
 import type { CategoryDepositFormSubmitViewModel } from "../models/CategoryDepositFormSubmitViewModel.interface";
-import type { CategoryFormSubmitEvent } from "../models/CategoryFormSubmitEvent.type";
+import type { FormSubmitEvent } from "@/app/utils/form-submit/models/FormSubmitEvent.type";
 import { reportCategoryDepositErrors } from "../utils/reportCategoryDepositErrors";
 import { submitCategoryDeposit } from "../utils/submitCategoryDeposit";
-import { useSubmissionLock } from "./useSubmissionLock";
+import { useSubmissionLock } from "@/app/utils/form-submit/hooks/useSubmissionLock";
 
 export const useCategoryDepositFormSubmit = ({
   categoryId,
@@ -20,7 +20,7 @@ export const useCategoryDepositFormSubmit = ({
   const { isSubmitting, runLocked } = useSubmissionLock();
 
   const onSubmit = async (
-    event: CategoryFormSubmitEvent
+    event: FormSubmitEvent
   ): Promise<void> => {
     event.preventDefault();
 
