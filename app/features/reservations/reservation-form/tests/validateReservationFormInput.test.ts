@@ -9,8 +9,10 @@ import {
   FRACTIONAL_COUNT,
   INVALID_FIELD_COUNT,
   INVALID_QUANTITY,
+  INVALID_RESERVATION_DURATION_HOURS,
   NEGATIVE_VALUE,
   SUBMINUTE_DURATION_HOURS,
+  VALID_CUSTOM_DURATION_MINUTE_CASES,
   ZERO_DURATION_HOURS,
   VALID_RESERVATION_FORM_INPUT,
 } from "./validateReservationFormInput.constants";
@@ -102,6 +104,36 @@ describe("validateReservationFormInput", () => {
       RESERVATION_FORM_FIELD.DURATION_HOURS
     );
   });
+
+  it.each(INVALID_RESERVATION_DURATION_HOURS)(
+    "rejects invalid duration %s with a duration error",
+    (durationHours) => {
+      const result = validateReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        durationHours,
+      });
+
+      expect(result.value).toBeNull();
+      expect(result.errors).toHaveProperty(
+        RESERVATION_FORM_FIELD.DURATION_HOURS
+      );
+    }
+  );
+
+  it.each(VALID_CUSTOM_DURATION_MINUTE_CASES)(
+    "accepts %s custom hours as %s minutes",
+    (durationHours, durationMinutes) => {
+      const result = validateReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        durationHours,
+      });
+
+      expect(result.value?.durationMinutes).toBe(
+        durationMinutes
+      );
+      expect(result.errors).toEqual({});
+    }
+  );
 
   it("rejects non-positive or fractional counts and missing fields", () => {
     const result = validateReservationFormInput({

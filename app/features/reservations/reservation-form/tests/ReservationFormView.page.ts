@@ -1,6 +1,7 @@
+import { createReservationEquipmentPage } from "./ReservationFormEquipment.page";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ARIA_ROLE, STRING } from "@/app/constants";
+import { ARIA_ROLE } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
 import { RESERVATION_FORM_FIELD_ID } from "../constants/ReservationFormUi.constants";
@@ -18,41 +19,22 @@ const queryCustomDurationInput = (
     `#${RESERVATION_FORM_FIELD_ID.DURATION}`
   );
 
+const queryQuantityInput = (
+  container: HTMLElement
+): NullableRef<HTMLInputElement> =>
+  container.querySelector<HTMLInputElement>(
+    `#${RESERVATION_FORM_FIELD_ID.QUANTITY}`
+  );
+
 const getSubmitButton = () =>
   screen.getByRole(ARIA_ROLE.BUTTON, {
     name: RESERVATION_FORM_UI_COPY.SUBMIT,
   });
 
-const getCategorySelect = () =>
-  screen.getByLabelText(
-    `${RESERVATION_FORM_UI_COPY.CATEGORY} ${STRING.ASTERISK}`,
-    {
-      exact: true,
-    }
-  );
-
-const getQuantityInput = () =>
-  screen.queryByLabelText(
-    RESERVATION_FORM_UI_COPY.QUANTITY,
-    {
-      exact: false,
-    }
-  );
-
-const getUnitSelect = () =>
-  screen.getByLabelText(RESERVATION_FORM_UI_COPY.UNIT, {
-    exact: false,
+const querySubmitButton = (): NullableRef<HTMLElement> =>
+  screen.queryByRole(ARIA_ROLE.BUTTON, {
+    name: RESERVATION_FORM_UI_COPY.SUBMIT,
   });
-
-const findUnitOption = () =>
-  screen.findByRole(ARIA_ROLE.OPTION, {
-    name: RESERVATION_FORM_VIEW_TEST.UNIT_CODE,
-  });
-
-const findUnitValidationError = () =>
-  screen.findByText(
-    RESERVATION_FORM_COPY[RESERVATION_FORM_FIELD.UNIT_ID]
-  );
 
 const getBackButton = () =>
   screen.getByRole(ARIA_ROLE.BUTTON, {
@@ -68,6 +50,9 @@ const findDurationValidationError = () =>
 
 const findSubmissionError = () =>
   screen.findByText(RESERVATION_FORM_UI_COPY.SUBMIT_ERROR);
+
+const findSuccessMessage = () =>
+  screen.findByText(RESERVATION_FORM_UI_COPY.SUCCESS);
 
 const selectDuration = async (
   user: ReturnType<typeof userEvent.setup>,
@@ -97,34 +82,46 @@ const submit = async (
   await user.click(getSubmitButton());
 };
 
+const createQuantityPage = (
+  user: ReturnType<typeof userEvent.setup>,
+  container: HTMLElement
+) => ({
+  setQuantity: async (quantity: string): Promise<void> => {
+    const quantityInput = queryQuantityInput(container);
+    if (!quantityInput) {
+      throw new Error(
+        "The equipment quantity field is missing."
+      );
+    }
+    await user.clear(quantityInput);
+    await user.type(quantityInput, quantity);
+  },
+});
+
 export const createReservationFormViewPage = (
   container: HTMLElement
 ) => {
   const user = userEvent.setup();
 
   return {
+    ...createReservationEquipmentPage(user),
     getDurationOption,
     getBackButton,
     findDurationValidationError,
     findSubmissionError,
+    findSuccessMessage,
     getSubmitButton,
-    getCategorySelect,
-    getQuantityInput,
-    getUnitSelect,
-    findUnitOption,
-    findUnitValidationError,
+    querySubmitButton,
     clickBack: async (): Promise<void> => {
       await user.click(getBackButton());
     },
     queryCustomDurationInput: () =>
       queryCustomDurationInput(container),
+    queryQuantityInput: () => queryQuantityInput(container),
     selectDuration: (label: string) =>
       selectDuration(user, label),
+    ...createQuantityPage(user, container),
     submit: () => submit(user),
-    selectCategory: (categoryId: string) =>
-      user.selectOptions(getCategorySelect(), categoryId),
-    selectUnit: (unitId: string) =>
-      user.selectOptions(getUnitSelect(), unitId),
     typeCustomDuration: (value: string) =>
       typeCustomDuration(user, container, value),
   };
