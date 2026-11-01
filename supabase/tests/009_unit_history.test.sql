@@ -1,5 +1,5 @@
 begin;
-select plan(21);
+select plan(17);
 
 insert into auth.users (id, email)
 values ('11111111-1111-1111-1111-111111111111', 'ope13-test@arenal.local');
@@ -62,38 +62,14 @@ select lives_ok(
 reset role;
 
 select is(
-  (select unit_id from damage_reports
+  (select row(unit_id, cause::text, description,
+              impact_delta, created_by)
+   from damage_reports
    where id = 'dddddddd-0000-0000-0000-000000000001'),
-  'bbbbbbbb-0000-0000-0000-000000000001'::uuid,
-  'el reporte conserva la unidad enviada'
-);
-
-select is(
-  (select cause::text from damage_reports
-   where id = 'dddddddd-0000-0000-0000-000000000001'),
-  'collision',
-  'el reporte conserva la causa enviada'
-);
-
-select is(
-  (select description from damage_reports
-   where id = 'dddddddd-0000-0000-0000-000000000001'),
-  'Golpe en el casco',
-  'el reporte conserva la descripcion enviada'
-);
-
-select is(
-  (select impact_delta from damage_reports
-   where id = 'dddddddd-0000-0000-0000-000000000001'),
-  1,
-  'el reporte conserva el aumento enviado'
-);
-
-select is(
-  (select created_by from damage_reports
-   where id = 'dddddddd-0000-0000-0000-000000000001'),
-  '11111111-1111-1111-1111-111111111111'::uuid,
-  'el reporte conserva la identidad del trabajador autenticado'
+  row('bbbbbbbb-0000-0000-0000-000000000001'::uuid,
+      'collision'::text, 'Golpe en el casco'::text, 1,
+      '11111111-1111-1111-1111-111111111111'::uuid),
+  'el reporte persiste sus datos y el trabajador autenticado'
 );
 
 select lives_ok(
