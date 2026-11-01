@@ -1,5 +1,5 @@
 begin;
-select plan(4);
+select plan(6);
 
 insert into auth.users (id, email) values
   ('e3000000-0000-4000-8000-000000000001', 'res17-review@arenal.local'),
@@ -12,6 +12,8 @@ insert into equipment_categories
   (id, name, tracking_mode, is_reservable, units_are_interchangeable, default_duration_minutes, created_by, updated_by)
 values
   ('e3000000-0000-4000-8000-000000000101', 'RES17 Review stock', 'by_quantity', true, true, 60,
+   'e3000000-0000-4000-8000-000000000001', 'e3000000-0000-4000-8000-000000000001'),
+  ('e3000000-0000-4000-8000-000000000102', 'RES17 Review inactive', 'by_quantity', false, true, 60,
    'e3000000-0000-4000-8000-000000000001', 'e3000000-0000-4000-8000-000000000001');
 insert into equipment_stock (category_id, quantity_available, updated_by)
 values ('e3000000-0000-4000-8000-000000000101', 2,
@@ -22,12 +24,17 @@ values
   ('e3000000-0000-4000-8000-000000000201', 'RES17 Review scheduled', 1, 'rental',
    '2035-06-01 15:00:00+00', 60, 'scheduled',
    'e3000000-0000-4000-8000-000000000001', 'e3000000-0000-4000-8000-000000000001');
+insert into reservations
+  (id, customer_name, people_count, type, starts_at, duration_minutes, status, created_by, updated_by)
+values
+  ('e3000000-0000-4000-8000-000000000202', 'RES17 Review target', 1, 'rental',
+   '2035-06-01 17:00:00+00', 60, 'scheduled',
+   'e3000000-0000-4000-8000-000000000001', 'e3000000-0000-4000-8000-000000000001');
 insert into reservation_items
   (id, reservation_id, category_id, quantity, created_by, updated_by)
 values ('e3000000-0000-4000-8000-000000000301', 'e3000000-0000-4000-8000-000000000201',
         'e3000000-0000-4000-8000-000000000101', 2,
-        'e3000000-0000-4000-8000-000000000001',
-        'e3000000-0000-4000-8000-000000000001');
+        'e3000000-0000-4000-8000-000000000001', 'e3000000-0000-4000-8000-000000000001');
 
 set local request.jwt.claims to '{"sub":"e3000000-0000-4000-8000-000000000001","role":"authenticated"}';
 set local role authenticated;
@@ -49,6 +56,18 @@ select throws_ok(
      where id = 'e3000000-0000-4000-8000-000000000301' $$,
   'P0001', 'Equipment category is not available for reservation',
   'raising a commitment still requires current stock eligibility'
+);
+select throws_ok(
+  $$ update reservation_items set category_id = 'e3000000-0000-4000-8000-000000000102', quantity = 1
+     where id = 'e3000000-0000-4000-8000-000000000301' $$,
+  'P0001', 'Equipment category is not available for reservation',
+  'lowering quantity cannot bypass category eligibility'
+);
+select throws_ok(
+  $$ update reservation_items set reservation_id = 'e3000000-0000-4000-8000-000000000202', quantity = 1
+     where id = 'e3000000-0000-4000-8000-000000000301' $$,
+  'P0001', 'Equipment category is not available for reservation',
+  'lowering quantity cannot bypass a changed reservation'
 );
 reset role;
 set local request.jwt.claims to '{"sub":"e3000000-0000-4000-8000-000000000002","role":"authenticated"}';
