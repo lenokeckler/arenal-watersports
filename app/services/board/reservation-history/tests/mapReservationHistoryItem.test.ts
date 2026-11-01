@@ -35,6 +35,12 @@ describe("mapReservationHistoryItem", () => {
         ...HISTORY_LIST_ROW,
         status: HISTORY_UNEXPECTED_STATUS,
       })
-    ).toThrow(RESERVATION_HISTORY_ERROR.UNEXPECTED_STATUS);
+    ).toThrow(
+      expect.objectContaining({
+        cause: HISTORY_UNEXPECTED_STATUS,
+        message:
+          RESERVATION_HISTORY_ERROR.UNEXPECTED_STATUS,
+      })
+    );
   });
 });

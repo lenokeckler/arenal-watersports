@@ -12,7 +12,8 @@ export const resolveReservationHistoryStatus = (
   ).find((candidate) => candidate === status);
   if (resolved === undefined) {
     throw new Error(
-      RESERVATION_HISTORY_ERROR.UNEXPECTED_STATUS
+      RESERVATION_HISTORY_ERROR.UNEXPECTED_STATUS,
+      { cause: status }
     );
   }
   return resolved;
