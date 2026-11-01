@@ -19,7 +19,7 @@ export const EQUIPMENT_BOARD_DESCRIPTION_CLASS =
   "max-w-prose text-body-base text-on-surface-variant";
 
 export const EQUIPMENT_BOARD_GRID_CLASS =
-  "grid grid-cols-2 gap-sm md:grid-cols-3 md:gap-md";
+  "flex flex-wrap justify-center gap-sm md:gap-md";
 
 export const EQUIPMENT_BOARD_GRID_ITEM_CLASS =
-  "flex min-w-0";
+  "flex w-[calc((100%-var(--spacing-sm))/2)] shrink-0 grow-0 min-w-0 md:w-[calc((100%-2*var(--spacing-md))/3)]";
