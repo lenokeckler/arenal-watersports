@@ -10,12 +10,12 @@ import {
   EDGE_BAR_WIDTHS,
   EDGE_CATEGORY_NAME,
   SINGULAR_FREE_PATTERN,
-  ZERO_USAGE_PATTERN,
+  ZERO_FREE_PATTERN,
 } from "./EquipmentBoardEdge.constants";
 import { createEquipmentBoardPage } from "./EquipmentBoard.page";
 
 describe("EquipmentBoardContent edge cases", () => {
-  it("keeps a zero-total member listed with 0 en uso de 0 without moving the group bar", () => {
+  it("keeps a zero-total member listed with 0 libres without moving the group bar", () => {
     render(
       <EquipmentBoardContent
         cards={CARDS_WITH_ZERO_TOTAL_MEMBER}
@@ -29,7 +29,7 @@ describe("EquipmentBoardContent edge cases", () => {
       EDGE_CATEGORY_NAME.SPARE
     );
     expect(spareLine.textContent).toMatch(
-      ZERO_USAGE_PATTERN
+      ZERO_FREE_PATTERN
     );
     expect(page.getBarWidth(card)).toBe(
       EDGE_BAR_WIDTHS.HALF

@@ -9,6 +9,7 @@ import {
   ARIA_HIDDEN_TRUE,
   BOARD_CARDS,
   CARD_COUNT_WITH_GROUP,
+  EN_USO_TEXT,
   EXPECTED_BAR_WIDTHS,
   FIRST_MEMBER_LINE_INDEX,
   HEADING_LEVEL_TWO,
@@ -37,7 +38,7 @@ describe("EquipmentBoardContent", () => {
     ).toEqual([JET_SKI_LABEL, KAYAK_LABEL]);
   });
 
-  it("states free over total and the in-use sentence on a plain card", () => {
+  it("states free over total on a plain card and no in-use text", () => {
     const page = renderContent();
     const card = page.getCard(JET_SKI_LABEL);
 
@@ -50,19 +51,13 @@ describe("EquipmentBoardContent", () => {
         )
       )
     ).toBeInTheDocument();
-    expect(
-      page.getText(
-        card,
-        EQUIPMENT_BOARD_COPY.IN_USE_OF_TOTAL(
-          DEFAULT_BOARD_CATEGORY.inUseCount,
-          DEFAULT_BOARD_CATEGORY.totalCount
-        )
-      )
-    ).toBeInTheDocument();
     expect(page.queryMemberList(card)).toBeNull();
+    expect(page.getCardText(card)).not.toContain(
+      EN_USO_TEXT
+    );
   });
 
-  it("lists each member category inside the grouped card with its own counts", () => {
+  it("lists each member category inside the grouped card with its name and free count", () => {
     const page = renderContent();
     const kayakDouble = createKayakDouble();
     const lines = page.getMemberLines(
@@ -71,14 +66,10 @@ describe("EquipmentBoardContent", () => {
 
     expect(lines).toHaveLength(CARD_COUNT_WITH_GROUP);
     expect(
-      page.getText(
-        lines[FIRST_MEMBER_LINE_INDEX],
-        EQUIPMENT_BOARD_COPY.IN_USE_OF_TOTAL(
-          kayakDouble.inUseCount,
-          kayakDouble.totalCount
-        )
-      )
-    ).toBeInTheDocument();
+      page.getCardText(lines[FIRST_MEMBER_LINE_INDEX])
+    ).toBe(
+      `${kayakDouble.name}${kayakDouble.freeCount} ${EQUIPMENT_BOARD_COPY.FREE_LABEL_PLURAL}`
+    );
   });
 
   it("draws a decorative bar sized by the share free", () => {

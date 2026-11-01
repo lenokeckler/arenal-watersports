@@ -9,7 +9,7 @@ export const EQUIPMENT_BOARD_COUNT = {
 } as const;
 
 export const EQUIPMENT_BOARD_IMAGE = {
-  HEIGHT: 450,
+  HEIGHT: 600,
   SIZES:
     "(min-width: 1024px) 384px, (min-width: 768px) 33vw, 50vw",
   WIDTH: 600,

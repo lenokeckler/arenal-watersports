@@ -64,15 +64,6 @@ describe("EquipmentBoard", () => {
         )
       )
     ).toBeInTheDocument();
-    expect(
-      page.getText(
-        kayakCard,
-        EQUIPMENT_BOARD_COPY.IN_USE_OF_TOTAL(
-          KAYAK_SUMMED.IN_USE,
-          KAYAK_SUMMED.TOTAL
-        )
-      )
-    ).toBeInTheDocument();
     expect(page.getMemberLines(kayakCard)).toHaveLength(
       CARD_COUNT_WITH_GROUP
     );

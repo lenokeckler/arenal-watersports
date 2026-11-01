@@ -7,7 +7,7 @@ Let any worker see at a glance how much reservable equipment is free and how muc
 ## In scope
 
 - Read-only screen at `PATHS.BOARD`, rendered on the server, that becomes the entry screen.
-- One card per active reservable category tracked by unit: its product image, a "Por unidad" chip, a "N / T libres" chip, its name, a bar with the free share, and "N en uso de T".
+- One card per active reservable category tracked by unit: its product image, a "Por unidad" chip, a "N / T libres" chip, its name and a bar with the free share.
 - Categories that administration grouped appear as one card with the summed totals and the member categories listed inside with their own counts.
 - Two cards per row on a phone, three from `md`.
 - A header with an icon tile, the title "Tablero" and the subtitle "Qué se puede alquilar en este momento.".
@@ -47,8 +47,9 @@ con la finalidad de saber de un vistazo qué se puede alquilar en este momento.
 
 ## Design notes
 
-- Card layout, top to bottom: an image area (fixed aspect ratio, `object-contain` with padding) holding the "Por unidad" chip top-left, the "N / T libres" chip top-right ("libre" when exactly one is free) and the category name over the bottom-left; then a bar whose teal fill is the free share (free / total, so a card with everything free is full) on a grey track; then "N en uso de T" as secondary text; then, on a grouped card only, one compact two-line entry per member.
-- The grid keeps every card of a row at the same height; the bar sits right under the image so bars line up across a row.
+- The whole card is the photo: a square image area, `object-cover`, full-bleed and clipped by the card's rounded corners. Floating over it, the "Por unidad" chip top-left (shown from `lg`; on narrower screens it is hidden so the chips never collide), the "N / T libres" chip top-right ("libre" when exactly one is free) on a dark translucent blurred backdrop, and the category name bottom-left over a dark gradient, with the free bar drawn under the name at the very bottom (teal fill is free / total, so a card with everything free is full). A grouped card shows, below the photo and inside the same rounded card, one compact line per member with its name and "N libres".
+- The "en uso" count was dropped from the cards on the product owner's request (Kendall and Leno's reference). The criterion "cuántas libres y cuántas en uso sobre el total" is carried by the free/total chip and the free-share bar: in use is the total minus the free.
+- Every photo is square, so every card of a row has the same image height; a grouped card is taller and its row neighbours stretch to match.
 - Grid: 2 columns on a phone, 3 from `md`, inside a `max-w-7xl` page.
 - Colors come from the `@theme` tokens of `app/globals.css`; the image resolver is `resolveReservationEquipmentImage`.
 
@@ -70,10 +71,10 @@ con la finalidad de saber de un vistazo qué se puede alquilar en este momento.
 
 ## Acceptance criteria
 
-- [ ] Each reservable category tracked by unit has one card with its free count and "N en uso de T".
+- [ ] Each reservable category tracked by unit has one card with its free count over the total in a chip and a bar with the free share.
 - [ ] A dispatched unit with an overdue return is counted in use and never as free; free plus in use never exceeds the total.
 - [ ] A grouped category is one card with summed totals and its members listed with their own counts.
 - [ ] On a phone the cards sit two per row.
-- [ ] Each card shows its image (or a placeholder), the "Por unidad" chip, the "N / T libres" chip, the name, the free-share bar and "N en uso de T".
+- [ ] Each card shows its image (or a placeholder), the "Por unidad" chip, the "N / T libres" chip, the name and the free-share bar.
 - [ ] Vests, paddles and extinguishers do not appear on the board.
 - [ ] Pending: choosing equipment for a reservation from the board (second half of the sixth criterion) needs the reservation creation flow and is not part of this story.

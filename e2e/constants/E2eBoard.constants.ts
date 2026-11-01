@@ -43,8 +43,6 @@ export const E2E_BOARD_HIDDEN_CATEGORY_NAMES = [
   "Extintor",
 ] as const;
 
-export const E2E_BOARD_IDLE_IN_USE_COUNT = 0;
-
 export const E2E_BOARD_LAYOUT = {
   ROW_TOLERANCE_PX: 1,
 } as const;
@@ -61,14 +59,6 @@ export const resolveBoardFreeText = (
   freeCount: number
 ): string =>
   `${freeCount}${STRING.SPACE}${EQUIPMENT_BOARD_COPY.FREE_LABEL_PLURAL}`;
-
-export const resolveBoardUsageText = (
-  totalCount: number
-): string =>
-  EQUIPMENT_BOARD_COPY.IN_USE_OF_TOTAL(
-    E2E_BOARD_IDLE_IN_USE_COUNT,
-    totalCount
-  );
 
 export const resolveBoardChipText = (
   totalCount: number

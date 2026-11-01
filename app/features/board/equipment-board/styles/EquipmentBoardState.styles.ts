@@ -40,23 +40,8 @@ export const EQUIPMENT_BOARD_SKELETON_CARD_CLASS =
     "animate-pulse motion-reduce:animate-none"
   );
 
-export const EQUIPMENT_BOARD_SKELETON_BAR_CLASS =
-  "rounded bg-surface-container-high";
-
 export const EQUIPMENT_BOARD_SKELETON_MEDIA_CLASS =
   joinClassNames(
     BOARD_CARD_MEDIA_ASPECT_CLASS,
     "bg-surface-container-high"
-  );
-
-export const EQUIPMENT_BOARD_SKELETON_USAGE_CLASS =
-  joinClassNames(
-    EQUIPMENT_BOARD_SKELETON_BAR_CLASS,
-    "h-4 w-1/2"
-  );
-
-export const EQUIPMENT_BOARD_SKELETON_TRACK_CLASS =
-  joinClassNames(
-    EQUIPMENT_BOARD_SKELETON_BAR_CLASS,
-    "h-2 w-full rounded-full"
   );

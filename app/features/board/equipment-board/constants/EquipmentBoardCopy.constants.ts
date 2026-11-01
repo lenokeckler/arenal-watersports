@@ -13,8 +13,6 @@ export const EQUIPMENT_BOARD_COPY = {
     freeLabel: string
   ): string => `${free} / ${total} ${freeLabel}`,
   GRID_LABEL: "Categorías de equipo reservable",
-  IN_USE_OF_TOTAL: (inUse: number, total: number): string =>
-    `${inUse} en uso de ${total}`,
   LOADING_ANNOUNCEMENT: "Cargando el tablero de equipo.",
   METADATA_TITLE: "Tablero — Arenal Water Sports",
   PAGE_DESCRIPTION:

@@ -20,7 +20,7 @@ export const EDGE_BAR_WIDTHS = {
 } as const;
 
 export const SINGULAR_FREE_PATTERN = /1 libre(?!s)/;
-export const ZERO_USAGE_PATTERN = /0 en uso de 0/;
+export const ZERO_FREE_PATTERN = /0 libres/;
 
 const createSpareKayak = () =>
   createBoardCategory({
