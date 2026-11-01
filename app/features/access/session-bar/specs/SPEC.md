@@ -57,4 +57,6 @@ that asks for one confirming tap and tells the worker what is happening.
 - The selected theme is saved in browser local storage, not account data, and restored on the next page load in that browser.
 - The session bar presents an action label and icon that match the next theme, and its control remains keyboard accessible at mobile widths.
 - Unit tests cover reading a saved theme, switching in both directions, applying the root theme attribute, and continuing when local storage rejects a write.
-- The application-wide surface audit, contrast targets, and browser coverage remain pending in later US-TAB-11 units.
+- Shared calendar surfaces, reservation calendar surfaces, and refresh errors use theme-aware semantic colors in both themes.
+- Light-theme text roles reach at least 7:1 contrast over the app's page and card surfaces; meaningful boundaries reach at least 3:1.
+- Browser coverage verifies theme switching, local persistence after reload, and the light-theme token contrast matrix.
