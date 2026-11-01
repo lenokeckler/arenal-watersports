@@ -1,4 +1,5 @@
-import { Text } from "@/app/components";
+import { Text, Title } from "@/app/components";
+import { TitleVariant } from "@/app/components/title/constants";
 import { RESERVATION_HISTORY_COPY } from "../constants/ReservationHistoryCopy.constants";
 import type { ReservationHistoryCancellationBlockProps } from "../models/ReservationHistoryCancellationBlockProps.interface";
 import {
@@ -15,13 +16,15 @@ const ReservationHistoryCancellationBlock = ({
       RESERVATION_HISTORY_DETAIL_CANCELLATION_CLASS
     }
   >
-    <Text
+    <Title
+      variant={TitleVariant.SECONDARY}
       className={
         RESERVATION_HISTORY_DETAIL_SECTION_TITLE_CLASS
       }
-    >
-      {RESERVATION_HISTORY_COPY.CANCELLATION_REASON_TITLE}
-    </Text>
+      text={
+        RESERVATION_HISTORY_COPY.CANCELLATION_REASON_TITLE
+      }
+    />
     <Text
       className={RESERVATION_HISTORY_DETAIL_REASON_CLASS}
     >

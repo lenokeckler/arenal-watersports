@@ -1,4 +1,5 @@
-import { Text } from "@/app/components";
+import { Text, Title } from "@/app/components";
+import { TitleVariant } from "@/app/components/title/constants";
 import { RESERVATION_HISTORY_COPY } from "../constants/ReservationHistoryCopy.constants";
 import type { ReservationHistoryRecordProps } from "../models/ReservationHistoryRecordProps.interface";
 import {
@@ -15,13 +16,13 @@ const ReservationHistorySignatureCard = ({
   <section
     className={RESERVATION_HISTORY_DETAIL_CARD_CLASS}
   >
-    <Text
+    <Title
+      variant={TitleVariant.SECONDARY}
       className={
         RESERVATION_HISTORY_DETAIL_SECTION_TITLE_CLASS
       }
-    >
-      {RESERVATION_HISTORY_COPY.SIGNATURE_TITLE}
-    </Text>
+      text={RESERVATION_HISTORY_COPY.SIGNATURE_TITLE}
+    />
     <dl className={RESERVATION_HISTORY_DETAIL_FIELDS_CLASS}>
       <ReservationHistorySignatureEntry
         title={RESERVATION_HISTORY_COPY.CREATED_BY_LABEL}
