@@ -10,7 +10,7 @@ export const EQUIPMENT_BOARD_DESCRIPTION_CLASS =
   "mt-xs max-w-prose text-body-base text-on-surface-variant";
 
 export const EQUIPMENT_BOARD_GRID_CLASS =
-  "grid grid-cols-2 gap-sm md:grid-cols-3 md:gap-md lg:grid-cols-4";
+  "grid grid-cols-2 items-start gap-sm md:grid-cols-3 md:gap-md lg:grid-cols-4";
 
 export const EQUIPMENT_BOARD_GRID_ITEM_CLASS =
   "flex min-w-0";
