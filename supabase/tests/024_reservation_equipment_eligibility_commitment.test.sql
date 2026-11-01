@@ -40,6 +40,9 @@ select is((select count(*)::integer from reservations where customer_name like '
   'rejected equipment leaves no reservation behind');
 
 reset role;
+set local request.jwt.claims to '';
+update workers set blocked_reason = 'administration'
+where id = 'e2700000-0000-4000-8000-000000000001';
 update equipment_units set status = 'available' where id = 'e2700000-0000-4000-8000-000000000201';
 update equipment_stock set quantity_available = 1 where category_id = 'e2700000-0000-4000-8000-000000000102';
 set local role authenticated;
