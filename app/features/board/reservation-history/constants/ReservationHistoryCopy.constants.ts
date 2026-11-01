@@ -1,6 +1,17 @@
 export const RESERVATION_HISTORY_COPY = {
   ATTENDED_BY_LABEL: "Atendió",
+  BACK_TO_HISTORY: "Volver al historial",
+  CANCELLATION_REASON_TITLE: "Motivo de la cancelación",
   CANCELLED: "Cancelada",
+  CLOSED: "Cerrada",
+  CREATED_BY_LABEL: "Creada por",
+  CUSTOMER_LABEL: "A nombre de",
+  DATE_LABEL: "Fecha",
+  DETAIL_ERROR_TITLE: "No se pudo cargar la reserva",
+  DETAIL_LOADING_ANNOUNCEMENT: "Cargando reserva",
+  DETAIL_METADATA_TITLE:
+    "Detalle de la reserva — Arenal Water Sports",
+  DETAIL_TITLE: "Detalle de la reserva",
   EMPTY_BODY:
     "Las reservas cerradas o canceladas aparecerán aquí.",
   EMPTY_TITLE: "Aún no hay reservas en el historial",
@@ -24,8 +35,12 @@ export const RESERVATION_HISTORY_COPY = {
   LOADING_ANNOUNCEMENT: "Cargando historial",
   METADATA_TITLE:
     "Historial de reservas — Arenal Water Sports",
+  NO_CANCELLATION_REASON: "Sin motivo registrado",
   NO_EQUIPMENT: "Sin equipo",
   NO_GUIDE: "Sin guía",
+  NOT_FOUND_BODY:
+    "No existe en el historial o no está disponible para usted.",
+  NOT_FOUND_TITLE: "Reserva no encontrada",
   PAGE_DESCRIPTION:
     "Consulte las reservas ya cerradas o canceladas.",
   PAGE_TITLE: "Historial de reservas",
@@ -35,7 +50,11 @@ export const RESERVATION_HISTORY_COPY = {
   PAGINATION_PAGE: "Página",
   PAGINATION_PREVIOUS: "Anterior",
   RETRY: "Reintentar",
+  SIGNATURE_TIME_ZONE_NOTE: "Hora de Costa Rica",
+  SIGNATURE_TITLE: "Registro",
+  STATUS_LABEL: "Estado",
   TYPE_COMBO: "Combo",
   TYPE_RENTAL: "Renta",
   TYPE_TOUR: "Tour",
+  UPDATED_BY_LABEL: "Modificada por última vez por",
 } as const;
