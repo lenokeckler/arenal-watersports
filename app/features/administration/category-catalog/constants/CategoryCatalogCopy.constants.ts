@@ -1,0 +1,113 @@
+export const CATEGORY_CATALOG_COPY = {
+  ALERT_CATEGORY_NOT_FOUND_ERROR:
+    "No se encontró la categoría. Es posible que otra persona la haya eliminado.",
+  ALERT_EXPIRY_DAYS_FIELD_LABEL:
+    "Días de anticipación al vencimiento",
+  ALERT_EXPIRY_DAYS_PLACEHOLDER: "Ejemplo: 30",
+  ALERT_FORM_HINT:
+    "Elija cómo avisa esta categoría. Solo se piden los datos del tipo de aviso elegido.",
+  ALERT_FORM_TITLE: "Avisos del inventario",
+  ALERT_LINK: "Avisos",
+  ALERT_MIN_QUANTITY_FIELD_LABEL: "Cantidad mínima",
+  ALERT_MIN_QUANTITY_PLACEHOLDER: "Ejemplo: 5",
+  ALERT_SUBMIT_BUTTON: "Guardar avisos",
+  ALERT_TYPE_BOTH_LABEL: "Por cantidad y vencimiento",
+  ALERT_TYPE_EXPIRY_LABEL: "Por vencimiento",
+  ALERT_TYPE_FIELD_LABEL: "Tipo de aviso",
+  ALERT_TYPE_NONE_LABEL: "Sin aviso",
+  ALERT_TYPE_QUANTITY_LABEL: "Por cantidad",
+  ALERT_UPDATE_SUCCESS_TOAST:
+    "Avisos de la categoría actualizados.",
+  BEHAVIOR_CATEGORY_NOT_FOUND_ERROR:
+    "No se encontró la categoría. Es posible que otra persona la haya eliminado.",
+  BEHAVIOR_FORM_TITLE: "Comportamiento de la categoría",
+  BEHAVIOR_LINK: "Comportamiento",
+  BEHAVIOR_SUBMIT_BUTTON: "Guardar comportamiento",
+  BEHAVIOR_TRACKING_MODE_LINE_LABEL: "Modo de conteo:",
+  BEHAVIOR_UPDATE_SUCCESS_TOAST:
+    "Comportamiento de la categoría actualizado.",
+  BEHAVIOR_USAGE_METRIC_PLACEHOLDER:
+    "Seleccione una métrica",
+  CANCEL_BUTTON: "Cancelar",
+  CAN_BE_DAMAGED_FIELD_LABEL: "Puede dañarse",
+  CONSUMES_FUEL_FIELD_LABEL: "Consume combustible",
+  CREATE_CTA: "+ Agregar categoría",
+  CREATE_FORM_PURPOSE:
+    "Indique cómo se llama y cómo se cuenta en el inventario.",
+  CREATE_FORM_TITLE: "Nueva categoría",
+  CREATE_SUCCESS_TOAST: "Categoría creada.",
+  DEFAULT_DURATION_MINUTES_FIELD_LABEL:
+    "Duración predeterminada (minutos)",
+  DEFAULT_DURATION_MINUTES_FIELD_PLACEHOLDER: "Ej. 60",
+  DEFAULT_DURATION_MINUTES_REQUIRED_WHEN_RESERVABLE_ERROR:
+    "Ingrese la duración predeterminada en minutos para una categoría reservable.",
+  DELETE_BUTTON: "Eliminar",
+  DELETE_CATEGORY_BUTTON: "Eliminar categoría",
+  DELETE_CONFIRM_MESSAGE:
+    "¿Eliminar esta categoría? No se puede deshacer.",
+  DELETE_HAS_RECORDS_ERROR:
+    "Esta categoría ya tiene unidades o existencias registradas y no se puede eliminar.",
+  DELETE_SUCCESS_TOAST: "Categoría eliminada.",
+  DEPOSIT_CATEGORY_NOT_FOUND_ERROR:
+    "No se encontró la categoría. Es posible que otra persona la haya eliminado.",
+  DEPOSIT_CRC_FIELD_LABEL: "Depósito en colones (CRC)",
+  DEPOSIT_FIELD_PLACEHOLDER: "Sin depósito",
+  DEPOSIT_FORM_HINT:
+    "Deje ambos campos vacíos si la categoría no lleva depósito. Cada monto se guarda en su moneda y no se convierte.",
+  DEPOSIT_FORM_TITLE: "Depósito de garantía",
+  DEPOSIT_LINK: "Depósito",
+  DEPOSIT_SUBMIT_BUTTON: "Guardar depósito",
+  DEPOSIT_UPDATE_SUCCESS_TOAST:
+    "Depósito de la categoría actualizado.",
+  DEPOSIT_USD_FIELD_LABEL: "Depósito en dólares (USD)",
+  EMPTY_STATE_BODY:
+    "Cada categoría que agregue aparece aquí.",
+  EMPTY_STATE_TITLE: "Todavía no hay categorías.",
+  FETCH_ERROR_MESSAGE:
+    "No se pudieron cargar las categorías.",
+  GENERIC_MUTATION_ERROR:
+    "No se pudo completar la acción. Intente de nuevo.",
+  GROUP_FIELD_LABEL: "Grupo",
+  GROUP_FIELD_PLACEHOLDER: "Opcional — ej. Kayaks",
+  GROUP_PREFIX_LABEL: "GRUPO",
+  GUIDE_ONLY_FIELD_LABEL: "Uso exclusivo de guías",
+  HAS_CONDITION_PHOTOS_FIELD_LABEL:
+    "Requiere fotos de condición",
+  HAS_MOTOR_FIELD_LABEL: "Tiene motor",
+  IS_RESERVABLE_FIELD_LABEL: "Es reservable",
+  LIST_PURPOSE:
+    "Todo lo que la empresa posee, listo para contar.",
+  LIST_TITLE: "Categorías del inventario",
+  LOADING_TEXT_CREATING: "Guardando…",
+  LOADING_TEXT_DELETING: "Eliminando…",
+  LOADING_TEXT_UPDATING: "Actualizando…",
+  MARK_INACTIVE_BUTTON: "Marcar inactiva",
+  MARK_INACTIVE_SUCCESS_TOAST:
+    "Categoría marcada como inactiva.",
+  NAME_FIELD_LABEL: "Nombre",
+  NAME_FIELD_PLACEHOLDER: "Ej. Kayak doble",
+  NAME_FIELD_REQUIRED_ERROR:
+    "Escriba el nombre de la categoría.",
+  PAGINATION_NAV_LABEL: "Paginación de categorías",
+  REACTIVATE_BUTTON: "Reactivar",
+  REACTIVATE_SUCCESS_TOAST: "Categoría reactivada.",
+  RETRY_BUTTON: "Reintentar",
+  STATUS_PILL_INACTIVE: "INACTIVA",
+  SUBMIT_BUTTON: "Guardar categoría",
+  TRACKING_MODE_BY_QUANTITY_LABEL: "Por cantidad",
+  TRACKING_MODE_BY_QUANTITY_LOWERCASE: "por cantidad",
+  TRACKING_MODE_BY_UNIT_LABEL: "Por unidad",
+  TRACKING_MODE_BY_UNIT_LOWERCASE: "por unidad",
+  TRACKING_MODE_FIELD_LABEL: "Modo de conteo",
+  TRACKING_MODE_FIELD_PLACEHOLDER: "Seleccione un modo",
+  TRACKING_MODE_MICRO_LABEL_BY_QUANTITY: "POR CANTIDAD",
+  TRACKING_MODE_MICRO_LABEL_BY_UNIT: "POR UNIDAD",
+  TRACKING_MODE_REQUIRED_ERROR:
+    "Seleccione un modo de conteo.",
+  UNITS_ARE_INTERCHANGEABLE_FIELD_LABEL:
+    "Las unidades son intercambiables",
+  UNITS_LINK: "Unidades",
+  USAGE_METRIC_ENGINE_HOURS_LABEL: "Horas de motor",
+  USAGE_METRIC_FIELD_LABEL: "Métrica de uso",
+  USAGE_METRIC_KILOMETERS_LABEL: "Kilómetros",
+} as const;

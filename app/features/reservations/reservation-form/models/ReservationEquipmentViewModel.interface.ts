@@ -4,6 +4,7 @@ import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOpt
 import type { ReservationCategoryConflictWarningViewModel } from "./ReservationCategoryConflictWarningViewModel.interface";
 
 export interface ReservationEquipmentViewModel {
+  availableQuantity: NullableRef<number>;
   availableUnits: ReservationCategoryUnitOption[];
   categoryAvailability: NullableRef<number>;
   categoryAvailabilityCategoryName: string;
@@ -12,6 +13,8 @@ export interface ReservationEquipmentViewModel {
   categoryConflictWarning: ReservationCategoryConflictWarningViewModel;
   handleRetryCategoryAvailability: () => void;
   hasAvailabilityError: boolean;
+  isAvailabilityResolved: boolean;
   isAvailabilityLoading: boolean;
   requiresConcreteUnit: boolean;
+  retryUnitAvailability: () => void;
 }

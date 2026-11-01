@@ -59,8 +59,8 @@ describe("ReservationFormView category conflict warning", () => {
     ]);
     const page = renderReservationForm();
 
-    await page.selectCategory(
-      RESERVATION_FORM_VIEW_TEST.CATEGORY_ID
+    await page.selectCategoryChoice(
+      RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME
     );
     await page.findCategoryConflictWarning();
     await page.findCategoryConflictCode();
@@ -99,10 +99,12 @@ describe("ReservationFormView category conflict warning", () => {
     ]);
     const page = renderReservationForm();
 
-    await page.selectCategory(
-      RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
+    await page.selectCategoryChoice(
+      RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME
     );
-    await page.findUnitOption();
+    await page.findAvailableUnit(
+      RESERVATION_FORM_VIEW_TEST.AVAILABLE_UNIT_CODE
+    );
     await page.findCategoryConflictWarning();
     await page.selectUnit(
       RESERVATION_FORM_VIEW_TEST.UNIT_ID
@@ -132,8 +134,8 @@ describe("ReservationFormView category conflict warning", () => {
     ).mockRejectedValue(new Error("Lookup unavailable"));
     const page = renderReservationForm();
 
-    await page.selectCategory(
-      RESERVATION_FORM_VIEW_TEST.CATEGORY_ID
+    await page.selectCategoryChoice(
+      RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME
     );
     await page.findCategoryConflictError();
 

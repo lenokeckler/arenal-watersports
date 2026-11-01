@@ -40,6 +40,7 @@ export const viewModelHarness = (() => {
     current: {
       availableUnits: [{ code: "LANCHA-1", id: "unit-1" }],
       hasAvailabilityError: false,
+      isAvailabilityResolved: true,
       isAvailabilityLoading: false,
       requiresConcreteUnit: true,
     },
@@ -141,6 +142,7 @@ export const resetViewModelHarness = (): void => {
   viewModelHarness.equipment.current = {
     availableUnits: [{ code: "LANCHA-1", id: "unit-1" }],
     hasAvailabilityError: false,
+    isAvailabilityResolved: true,
     isAvailabilityLoading: false,
     requiresConcreteUnit: true,
   };
