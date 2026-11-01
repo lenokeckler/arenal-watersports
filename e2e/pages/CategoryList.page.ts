@@ -81,8 +81,17 @@ export const createCategoryListPage = (page: Page) => {
       CATEGORY_CATALOG_COPY.DELETE_CONFIRM_MESSAGE
     );
 
+  const getCreateLink = (): Locator =>
+    page.getByRole(ARIA_ROLE.LINK, {
+      name: CATEGORY_CATALOG_COPY.CREATE_CTA,
+    });
+
   const getToastMessage = (message: string): Locator =>
     page.getByText(message);
+
+  const clickCreateLink = async (): Promise<void> => {
+    await getCreateLink().click();
+  };
 
   const clickCategoryDeleteButton = async (
     categoryName: string
@@ -123,7 +132,9 @@ export const createCategoryListPage = (page: Page) => {
     getCategoryCancelButton,
     getCategoryConfirmDeleteButton,
     getCategoryConfirmDeleteMessage,
+    getCreateLink,
     getToastMessage,
+    clickCreateLink,
     clickCategoryDeleteButton,
     clickCategoryMarkInactiveButton,
     clickCategoryCancelButton,
