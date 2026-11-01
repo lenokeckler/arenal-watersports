@@ -13,6 +13,7 @@ import {
 import { assertActiveWorkModeAccess } from "@/app/services/work-mode/assertActiveWorkModeAccess";
 import { readReservationHistoryCategoryOptions } from "../readReservationHistoryCategoryOptions";
 import {
+  HISTORY_READ_ACCESS_REFUSED,
   HISTORY_READ_CATEGORY_FILTER_METHODS,
   HISTORY_READ_CATEGORY_RESPONSE,
   HISTORY_READ_CATEGORY_ROWS,
@@ -115,5 +116,19 @@ describe("readReservationHistoryCategoryOptions", () => {
       ),
       name: HISTORY_READ_SUPABASE_ERROR_NAME,
     });
+  });
+
+  it("stops before the database when access is refused", async () => {
+    vi.mocked(
+      assertActiveWorkModeAccess
+    ).mockRejectedValueOnce(HISTORY_READ_ACCESS_REFUSED);
+
+    await expect(
+      readReservationHistoryCategoryOptions()
+    ).rejects.toBe(HISTORY_READ_ACCESS_REFUSED);
+    expect(
+      supabaseMocks.createServerSupabaseClient
+    ).not.toHaveBeenCalled();
+    expect(from).not.toHaveBeenCalled();
   });
 });

@@ -72,3 +72,21 @@ export const HISTORY_READ_CATEGORY_FILTER_METHODS = [
 
 export const HISTORY_READ_SUPABASE_ERROR_NAME =
   "SupabaseQueryError";
+
+export const HISTORY_READ_ACCESS_REFUSED = new Error(
+  "access refused"
+);
+
+export const HISTORY_READ_UPPERCASE_ID =
+  HISTORY_CANCELLED_RECORD_ROW.id.toUpperCase();
+
+export const HISTORY_READ_REJECTED_IDS = [
+  "",
+  "0f6b1c1e-62f1-4e71-8d4d-2f3c7a9e5b1",
+  "0f6b1c1e-62f1-4e71-8d4d-2f3c7a9e5b100",
+  "0f6b1c1e-62f1-4e71-8d4d-2f3c7a9e5bzz",
+  "0f6b1c1e62f14e718d4d2f3c7a9e5b10",
+  "{0f6b1c1e-62f1-4e71-8d4d-2f3c7a9e5b10}",
+  " 0f6b1c1e-62f1-4e71-8d4d-2f3c7a9e5b10",
+  "0f6b1c1e-62f1-4e71-8d4d-2f3c7a9e5b10\n",
+] as const;

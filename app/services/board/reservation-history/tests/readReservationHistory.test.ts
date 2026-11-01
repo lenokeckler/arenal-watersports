@@ -14,6 +14,7 @@ import { buildReservationHistoryListArguments } from "../buildReservationHistory
 import { buildReservationHistoryPage } from "../buildReservationHistoryPage";
 import { readReservationHistory } from "../readReservationHistory";
 import {
+  HISTORY_READ_ACCESS_REFUSED,
   HISTORY_READ_DATABASE_ERROR,
   HISTORY_READ_EMPTY_RESPONSE,
   HISTORY_READ_ERROR_RESPONSE,
@@ -110,5 +111,29 @@ describe("readReservationHistory", () => {
       ),
       name: HISTORY_READ_SUPABASE_ERROR_NAME,
     });
+  });
+
+  it("stops before the database when access is refused", async () => {
+    vi.mocked(
+      assertActiveWorkModeAccess
+    ).mockRejectedValueOnce(HISTORY_READ_ACCESS_REFUSED);
+
+    await expect(
+      readReservationHistory(HISTORY_READ_QUERY)
+    ).rejects.toBe(HISTORY_READ_ACCESS_REFUSED);
+    expect(
+      supabaseMocks.createServerSupabaseClient
+    ).not.toHaveBeenCalled();
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it("refuses an inverted range without answering it", async () => {
+    vi.mocked(
+      assertActiveWorkModeAccess
+    ).mockRejectedValueOnce(HISTORY_READ_ACCESS_REFUSED);
+
+    await expect(
+      readReservationHistory(HISTORY_READ_INVERTED_QUERY)
+    ).rejects.toBe(HISTORY_READ_ACCESS_REFUSED);
   });
 });
