@@ -172,6 +172,10 @@ export {
   RESERVATIONS_BY_WORKER_OPERATION,
   RESERVATIONS_BY_WORKER_QUERY,
 } from "./supabase/ReservationsByWorkerQuery.constants";
+export {
+  RESERVATION_HISTORY_OPERATION,
+  RESERVATION_HISTORY_QUERY,
+} from "./supabase/ReservationHistoryQuery.constants";
 export { SUPABASE_SIGN_OUT_SCOPE } from "./supabase/SupabaseSignOutScope.constants";
 export {
   SUPABASE_AUTH_COOKIE,
