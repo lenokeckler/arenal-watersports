@@ -1,5 +1,3 @@
-import { STRING } from "@/app/constants";
-
 export const RESERVATION_TIME_ZONE = "America/Costa_Rica";
 
 export const RESERVATION_FORM_ACCESS = {
@@ -28,11 +26,12 @@ export const RESERVATION_FORM_DEFAULT_VALUES = {
   peopleCount: 1,
   quantity: 1,
   time: "09:00",
-  unitId: STRING.Empty,
+  unitId: "",
 } as const;
 
 export const RESERVATION_FORM_FIELD_ID = {
   CATEGORY: "reservation-category",
+  CATEGORY_ERROR: "reservation-category-error",
   CUSTOMER_NAME: "reservation-customer-name",
   DATE: "reservation-date",
   DURATION: "reservation-duration",
@@ -40,5 +39,14 @@ export const RESERVATION_FORM_FIELD_ID = {
   PEOPLE_COUNT: "reservation-people-count",
   QUANTITY: "reservation-quantity",
   TIME: "reservation-time",
-  UNIT: "reservation-equipment-unit",
+  UNIT: "reservation-unit",
+} as const;
+
+export const RESERVATION_FORM_INPUT_TYPE = {
+  RADIO: "radio",
+} as const;
+
+export const RESERVATION_FORM_CATEGORY_IMAGE_SIZE = {
+  HEIGHT: 128,
+  WIDTH: 192,
 } as const;

@@ -3,6 +3,7 @@ import type { ReservationCategoryAvailabilityPanelState } from "./ReservationCat
 import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOption.interface";
 
 export interface ReservationEquipmentViewModel {
+  availableQuantity: NullableRef<number>;
   availableUnits: ReservationCategoryUnitOption[];
   categoryAvailability: NullableRef<number>;
   categoryAvailabilityCategoryName: string;
@@ -10,6 +11,8 @@ export interface ReservationEquipmentViewModel {
   categoryAvailabilityState: ReservationCategoryAvailabilityPanelState;
   handleRetryCategoryAvailability: () => void;
   hasAvailabilityError: boolean;
+  isAvailabilityResolved: boolean;
   isAvailabilityLoading: boolean;
   requiresConcreteUnit: boolean;
+  retryUnitAvailability: () => void;
 }

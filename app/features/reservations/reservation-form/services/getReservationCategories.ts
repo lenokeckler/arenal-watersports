@@ -13,7 +13,7 @@ export const getReservationCategories = async (): Promise<
   const supabase: SupabaseClient<Database> =
     await getAuthorizedReservationFormClient();
   const { data, error } = await supabase.rpc(
-    "reservable_equipment_categories"
+    "reservable_equipment_categories" as never
   );
 
   throwIfSupabaseError(
@@ -21,7 +21,12 @@ export const getReservationCategories = async (): Promise<
     RESERVATION_CATEGORY_OPERATION
   );
 
-  return (data ?? []).map((category) => ({
+  const categories = (data ?? []) as unknown as Array<{
+    id: string;
+    name: string;
+    units_are_interchangeable: boolean;
+  }>;
+  return categories.map((category) => ({
     id: category.id,
     isInterchangeable: category.units_are_interchangeable,
     name: category.name,

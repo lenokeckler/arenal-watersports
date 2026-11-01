@@ -6,15 +6,13 @@ import type { ReservationCategoryOption } from "./ReservationCategoryOption.inte
 import type { ReservationCategoryAvailabilityPanelState } from "./ReservationCategoryAvailabilityPanelState.type";
 
 export interface ReservationFormViewModel {
-  errors: Partial<Record<ReservationFormField, string>>;
   categories: ReservationCategoryOption[];
-  hasEquipmentEligibilityError: boolean;
-  hasEquipmentSelectionChanged: boolean;
-  isEquipmentEligibilityLoading: boolean;
+  errors: Partial<Record<ReservationFormField, string>>;
   formError: string;
   isPending: boolean;
   isSubmitted: boolean;
   availableUnits: ReservationCategoryUnitOption[];
+  availableQuantity: NullableRef<number>;
   requiresConcreteUnit: boolean;
   isAvailabilityLoading: boolean;
   hasAvailabilityError: boolean;
@@ -22,6 +20,7 @@ export interface ReservationFormViewModel {
   categoryAvailabilityCategoryName: string;
   categoryAvailabilityInterval: string;
   categoryAvailabilityState: ReservationCategoryAvailabilityPanelState;
+  isSubmitDisabled: boolean;
   isCustomDuration: boolean;
   customDurationDraft: string;
   values: ReservationFormInput;
@@ -33,12 +32,16 @@ export interface ReservationFormViewModel {
   handlePeopleCountChange: (value: number) => void;
   handleQuantityChange: (value: number) => void;
   handleCategoryChange: (value: string) => void;
-  handleTimeChange: (value: string) => void;
   handleUnitChange: (value: string) => void;
+  retryUnitAvailability: () => void;
+  isEquipmentEligibilityLoading: boolean;
+  hasEquipmentEligibilityError: boolean;
+  hasEquipmentSelectionChanged: boolean;
+  handleRetryEquipmentEligibility: () => void;
+  handleTimeChange: (value: string) => void;
   handleBack: () => void;
   handleSubmit: (
     event: React.FormEvent<HTMLFormElement>
   ) => void;
-  handleRetryEquipmentEligibility: () => void;
   handleRetryCategoryAvailability: () => void;
 }
