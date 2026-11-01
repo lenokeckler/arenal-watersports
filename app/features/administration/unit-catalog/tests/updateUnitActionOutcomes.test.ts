@@ -8,6 +8,7 @@ import {
 import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { UNIT_CATALOG_COPY } from "../constants/UnitCatalogCopy.constants";
+import { UNIT_DATABASE_MESSAGE } from "../constants/UnitDatabaseMessage.constants";
 import { UNIT_MUTATION_STATUS } from "../constants/UnitMutationStatus.constants";
 import { updateUnitAction } from "../services/updateUnitAction";
 import {
@@ -97,6 +98,23 @@ describe("updateUnitAction outcomes", () => {
     ).toEqual({
       status: UNIT_MUTATION_STATUS.ERROR,
       codeError: UNIT_CATALOG_COPY.CODE_DUPLICATE_ERROR,
+    });
+  });
+
+  it("returns the occupied error when the database refuses a status change", async () => {
+    mockMaybeSingle.mockResolvedValue({
+      data: null,
+      error: {
+        code: POSTGRES_ERROR_CODE.RAISE_EXCEPTION,
+        message: UNIT_DATABASE_MESSAGE.UNIT_OCCUPIED,
+      },
+    });
+
+    expect(
+      await updateUnitAction(DEFAULT_UPDATE_UNIT_INPUT)
+    ).toEqual({
+      status: UNIT_MUTATION_STATUS.ERROR,
+      message: UNIT_CATALOG_COPY.UNIT_OCCUPIED_ERROR,
     });
   });
 

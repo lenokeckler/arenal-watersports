@@ -27,5 +27,14 @@ export const mapUnitWriteErrorToResult = (
       message: UNIT_CATALOG_COPY.CATEGORY_NOT_BY_UNIT_ERROR,
     };
   }
+  if (
+    error?.code === POSTGRES_ERROR_CODE.RAISE_EXCEPTION &&
+    error.message === UNIT_DATABASE_MESSAGE.UNIT_OCCUPIED
+  ) {
+    return {
+      status: UNIT_MUTATION_STATUS.ERROR,
+      message: UNIT_CATALOG_COPY.UNIT_OCCUPIED_ERROR,
+    };
+  }
   return null;
 };
