@@ -1,5 +1,6 @@
 import { MaterialIcon, Text } from "@/app/components";
 import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
+import BackLink from "@/app/components/back-link/BackLink";
 import { ARIA_ROLE } from "@/app/constants";
 import { RESERVATION_HISTORY_COPY } from "../constants/ReservationHistoryCopy.constants";
 import type { ReservationHistoryErrorProps } from "../models/ReservationHistoryErrorProps.interface";
@@ -16,6 +17,7 @@ import ReservationHistoryHeader from "./ReservationHistoryHeader";
 import ReservationHistoryRetryButton from "./ReservationHistoryRetryButton";
 
 const ReservationHistoryError = ({
+  backHref,
   reset,
   title,
 }: ReservationHistoryErrorProps): React.JSX.Element => (
@@ -51,6 +53,12 @@ const ReservationHistoryError = ({
       </div>
       <ReservationHistoryRetryButton reset={reset} />
     </div>
+    {backHref === undefined ? null : (
+      <BackLink
+        href={backHref}
+        label={RESERVATION_HISTORY_COPY.BACK_TO_HISTORY}
+      />
+    )}
   </main>
 );
 

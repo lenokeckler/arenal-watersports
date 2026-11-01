@@ -15,6 +15,9 @@ const ReservationHistoryDetailLoading =
     <main
       className={RESERVATION_HISTORY_PAGE_CLASS}
       aria-busy
+      aria-labelledby={
+        RESERVATION_HISTORY_DOM_ID.DETAIL_TITLE
+      }
     >
       <Title
         id={RESERVATION_HISTORY_DOM_ID.DETAIL_TITLE}

@@ -10,7 +10,9 @@ const ReservationHistoryDetailLines = ({
     {names.length === LENGTH.ZERO ? (
       <Text>{fallback}</Text>
     ) : (
-      names.map((name) => <Text key={name}>{name}</Text>)
+      names.map((name, index) => (
+        <Text key={`${name}${index}`}>{name}</Text>
+      ))
     )}
   </>
 );
