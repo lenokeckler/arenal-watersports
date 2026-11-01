@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type { NullableRef } from "@/app/types";
 import type { ReservationCategoryUnitOption } from "../models/ReservationCategoryUnitOption.interface";
 import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
+import { getReservationUnitAvailabilityRequestKey } from "../utils/getReservationUnitAvailabilityRequestKey";
+import { getReservationUnitAvailabilityWindowKey } from "../utils/getReservationUnitAvailabilityWindowKey";
 import { useSyncReservationUnitAvailability } from "./useSyncReservationUnitAvailability";
 
 export const useReservationUnitAvailability = (
-  request: ReservationUnitAvailabilityInput
+  request: ReservationUnitAvailabilityInput,
+  refreshKey: number
 ) => {
+  const [retryKey, setRetryKey] = useState(0);
+  const retry = useCallback((): void => {
+    setRetryKey((currentKey) => currentKey + 1);
+  }, []);
   const [availableUnits, setAvailableUnits] = useState<
     ReservationCategoryUnitOption[]
   >([]);
@@ -14,14 +21,25 @@ export const useReservationUnitAvailability = (
     useState<NullableRef<number>>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [retryIndex, setRetryIndex] = useState(0);
+  const [resolvedRequestKey, setResolvedRequestKey] =
+    useState<NullableRef<string>>(null);
+  const requestKey =
+    getReservationUnitAvailabilityRequestKey(
+      request,
+      refreshKey + retryKey
+    );
+  const requestWindowKey =
+    getReservationUnitAvailabilityWindowKey(request);
   useSyncReservationUnitAvailability({
     request,
-    retryIndex,
+    refreshKey,
+    requestKey,
+    requestWindowKey,
     setAvailableQuantity,
     setAvailableUnits,
     setHasError,
     setIsLoading,
+    setResolvedRequestKey,
   });
 
   return {
@@ -29,7 +47,8 @@ export const useReservationUnitAvailability = (
     availableUnits,
     hasError,
     isLoading,
-    retry: () =>
-      setRetryIndex((currentIndex) => currentIndex + 1),
+    isResolvedForCurrentRequest:
+      resolvedRequestKey === requestKey,
+    retry,
   };
 };
