@@ -11,7 +11,7 @@ export const useReservationFormSubmission = () => {
 
   const submit = async (
     values: ReservationFormInput
-  ): Promise<void> => {
+  ): Promise<ReservationFormActionResult | undefined> => {
     let result: ReservationFormActionResult;
     try {
       result = await createReservationAction(values);
@@ -19,15 +19,25 @@ export const useReservationFormSubmission = () => {
       submission.setSubmissionError(
         RESERVATION_FORM_UI_COPY.SUBMIT_ERROR
       );
-      return;
+      return undefined;
     }
-    submission.applyResult(result);
+    return result;
   };
 
   const submitReservation = (
-    values: ReservationFormInput
+    values: ReservationFormInput,
+    onUnitUnavailable: () => void
   ): void => {
-    startTransition(() => submit(values));
+    startTransition(async () => {
+      const result = await submit(values);
+      if (!result) {
+        return;
+      }
+      if (!result.ok && result.unitUnavailable) {
+        onUnitUnavailable();
+      }
+      submission.applyResult(result);
+    });
   };
 
   return {
@@ -36,7 +46,6 @@ export const useReservationFormSubmission = () => {
     formError: submission.formError,
     isPending,
     isSubmitted: submission.isSubmitted,
-    setFieldError: submission.setFieldError,
     submitReservation,
   };
 };

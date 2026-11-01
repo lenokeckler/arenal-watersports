@@ -1,0 +1,1 @@
+ADM-02.16.01: Share submission lock and pagination helpers — move the form submission lock, the form event type and the list pagination helpers out of the category catalog so the unit catalog can reuse them (US-ADM-16 · AWS-68)
