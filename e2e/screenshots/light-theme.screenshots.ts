@@ -12,6 +12,7 @@ import { createWorkModePage } from "../pages/WorkMode.page";
 import { captureViewport } from "../support/captureViewport";
 import { addReservationsArea } from "../support/addReservationsArea";
 import { waitForCalendarPeriod } from "../support/reservationsCalendarAssertions";
+import { waitForVisualStability } from "../support/waitForVisualStability";
 import { submitActiveWorkerSignIn } from "../support/submitActiveWorkerSignIn";
 import { expect, test } from "../support/activeWorkerTest";
 
@@ -33,6 +34,10 @@ test("captures the Reservations calendar in dark and light themes", async ({
   await calendarPage.goTo();
   await expect(calendarPage.getHeading()).toBeVisible();
   await waitForCalendarPeriod(page, calendarPage);
+  await waitForVisualStability(page);
+  await expect(
+    calendarPage.getRefreshStatus()
+  ).toBeHidden();
 
   const themePage = createLightThemePage(page);
   await captureViewport(
@@ -46,6 +51,10 @@ test("captures the Reservations calendar in dark and light themes", async ({
     THEME.LIGHT
   );
   await waitForCalendarPeriod(page, calendarPage);
+  await waitForVisualStability(page);
+  await expect(
+    calendarPage.getRefreshStatus()
+  ).toBeHidden();
   await captureViewport(
     page,
     `${E2E_LIGHT_THEME_SCREENSHOT.LIGHT}-${testInfo.project.name}${E2E_LIGHT_THEME_SCREENSHOT_EXTENSION}`
