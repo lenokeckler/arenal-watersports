@@ -1,5 +1,5 @@
 export const CATEGORY_CARD_ACTIONS_BUTTON_CLASS =
-  "min-h-11 w-full md:w-40";
+  "min-h-11 w-full md:w-auto md:flex-1 md:basis-36";
 
 export const CATEGORY_CARD_ACTIONS_CONFIRM_CLASS =
   "flex w-full flex-col gap-3";

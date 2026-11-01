@@ -1,14 +1,10 @@
 import type { Nullable } from "@/app/types";
+import type { CategoryCardDeleteActionsViewModel } from "./CategoryCardDeleteActionsViewModel.interface";
+import type { CategoryCardStatusActionsViewModel } from "./CategoryCardStatusActionsViewModel.interface";
 
-export interface CategoryCardActionsViewModel {
-  confirmingCategoryId: Nullable<string>;
+export interface CategoryCardActionsViewModel
+  extends
+    CategoryCardDeleteActionsViewModel,
+    CategoryCardStatusActionsViewModel {
   pendingCategoryId: Nullable<string>;
-  onCancelClick: (categoryId: string) => () => void;
-  onConfirmDeleteClick: (
-    categoryId: string
-  ) => () => Promise<void>;
-  onDeleteClick: (categoryId: string) => () => void;
-  onMarkInactiveClick: (
-    categoryId: string
-  ) => () => Promise<void>;
 }

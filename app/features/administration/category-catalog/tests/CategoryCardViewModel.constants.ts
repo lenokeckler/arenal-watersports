@@ -17,4 +17,5 @@ export const DEFAULT_CATEGORY_CARD_VIEW_MODEL: CategoryCardViewModel =
     onConfirmDeleteClick: ignoreCardAction,
     onDeleteClick: ignoreCardAction,
     onMarkInactiveClick: ignoreCardAction,
+    onReactivateClick: ignoreCardAction,
   };
