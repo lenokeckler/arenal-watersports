@@ -1,7 +1,7 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE, type Theme } from "@/app/constants";
-import { THEME_TOGGLE_COPY } from "../constants/ThemeToggleCopy.constants";
+import { THEME_TOGGLE_ACCESSIBLE_COPY } from "../constants/ThemeToggleCopy.constants";
 
 export const createSessionBarViewPage = () => {
   const user = userEvent.setup();
@@ -22,7 +22,7 @@ export const createSessionBarViewPage = () => {
 
   const getThemeButton = (theme: Theme) =>
     within(getBanner()).getByRole(ARIA_ROLE.BUTTON, {
-      name: THEME_TOGGLE_COPY[theme],
+      name: THEME_TOGGLE_ACCESSIBLE_COPY[theme],
     });
 
   const getStatus = () =>
