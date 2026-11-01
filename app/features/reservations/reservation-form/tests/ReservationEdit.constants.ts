@@ -1,6 +1,8 @@
 import { RESERVATION_CALENDAR_ACTIVE_STATUS } from "@/app/constants";
+import type { ReservationEditInput } from "../models/ReservationEditInput.interface";
 import type { ReservationEditRow } from "../models/ReservationEditRow.type";
 import type { ReservationEditRowItem } from "../models/ReservationEditRowItem.type";
+import { VALID_RESERVATION_FORM_INPUT } from "./reservationFormUtils.constants";
 
 export const RESERVATION_EDIT_TEST = {
   CATEGORY_ID: "e3180000-0000-4000-8000-000000000101",
@@ -17,6 +19,7 @@ export const RESERVATION_EDIT_TEST = {
   SECOND_ITEM_ID: "e3180000-0000-4000-8000-000000000602",
   UNIT_CODE: "PONTOON-1",
   UNIT_ID: "e3180000-0000-4000-8000-000000000201",
+  UNKNOWN_ERROR: "Unexpected database failure",
 } as const;
 
 export const COSTA_RICA_TIME_CASES = [
@@ -77,3 +80,11 @@ export const RESERVATION_EDIT_ROW: ReservationEditRow = {
   type: RESERVATION_EDIT_TEST.RENTAL_TYPE,
   updated_at: RESERVATION_EDIT_TEST.MICROSECOND_INSTANT,
 };
+
+export const VALID_RESERVATION_EDIT_INPUT: ReservationEditInput =
+  {
+    ...VALID_RESERVATION_FORM_INPUT,
+    expectedUpdatedAt:
+      RESERVATION_EDIT_TEST.MICROSECOND_INSTANT,
+    reservationId: RESERVATION_EDIT_TEST.RESERVATION_ID,
+  };
