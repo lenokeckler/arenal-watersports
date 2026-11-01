@@ -14,8 +14,8 @@ export const ALERT_ROW_COLUMNS = [
 export const ALERT_SELECTION =
   "id, alert_min_quantity, alert_expiry_days";
 
-const DEFAULT_MIN_QUANTITY = 5;
-const DEFAULT_EXPIRY_DAYS = 30;
+export const DEFAULT_MIN_QUANTITY = 5;
+export const DEFAULT_EXPIRY_DAYS = 30;
 const DEFAULT_MIN_QUANTITY_TEXT = "5";
 const DEFAULT_EXPIRY_DAYS_TEXT = "30";
 
@@ -59,3 +59,7 @@ export const buildUpdateCategoryAlertsInput = (
   ...DEFAULT_UPDATE_CATEGORY_ALERTS_INPUT,
   ...overrides,
 });
+
+export const INPUT_WITHOUT_ALERTS = {
+  categoryId: CATEGORY_ALERT_ID,
+} as UpdateCategoryAlertsInput;
