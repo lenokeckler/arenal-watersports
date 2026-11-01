@@ -145,9 +145,10 @@ select is(
    from pg_publication_tables
    where pubname = 'supabase_realtime'
      and tablename in ('reservations', 'reservation_items',
-                       'equipment_units', 'equipment_stock')),
-  4,
-  'las cuatro tablas del tablero estan publicadas en tiempo real'
+                       'equipment_units', 'equipment_stock',
+                       'equipment_categories')),
+  5,
+  'las tablas de reservas e inventario estan publicadas en tiempo real'
 );
 
 select is(
