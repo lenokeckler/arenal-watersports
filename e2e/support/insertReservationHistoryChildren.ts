@@ -5,7 +5,10 @@ import {
   E2E_RESERVATION_HISTORY_COLUMN,
   E2E_RESERVATION_HISTORY_ERROR,
 } from "../constants/E2eReservationHistory.constants";
-import { E2E_SUPABASE_TABLE } from "../constants/E2eSupabase.constants";
+import {
+  E2E_SUPABASE_COLUMN,
+  E2E_SUPABASE_TABLE,
+} from "../constants/E2eSupabase.constants";
 import { failE2eOperation } from "./failE2eOperation";
 import type { E2eReservationHistorySeed } from "./models/E2eReservationHistorySeed.interface";
 import { readReservationHistoryCatalogueId } from "./readReservationHistoryCatalogueId";
@@ -58,7 +61,7 @@ export const insertReservationHistoryChildren = async (
     .insert({
       [column.ASSIGNED_BY]: seed.creatorId,
       [column.RESERVATION_ID]: reservationId,
-      [column.WORKER_ID]: seed.guideId,
+      [E2E_SUPABASE_COLUMN.WORKER_ID]: seed.guideId,
     });
   const error = items.error ?? guide.error;
 

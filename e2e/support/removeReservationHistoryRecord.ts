@@ -1,16 +1,20 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { LENGTH } from "@/app/constants";
 import {
   E2E_RESERVATION_HISTORY_CHILD_TABLES,
   E2E_RESERVATION_HISTORY_COLUMN,
   E2E_RESERVATION_HISTORY_ERROR,
 } from "../constants/E2eReservationHistory.constants";
-import { E2E_SUPABASE_TABLE } from "../constants/E2eSupabase.constants";
+import { E2E_SUPABASE_ERROR } from "../constants/E2eSupabase.constants";
 import { failE2eOperation } from "./failE2eOperation";
+import { removeE2eReservation } from "./removeE2eReservation";
 
 export const removeReservationHistoryRecord = async (
   supabase: SupabaseClient,
   reservationId: string
 ): Promise<void> => {
+  const failures: string[] = [];
+
   for (const table of E2E_RESERVATION_HISTORY_CHILD_TABLES) {
     const { error } = await supabase
       .from(table)
@@ -21,22 +25,16 @@ export const removeReservationHistoryRecord = async (
       );
 
     if (error) {
-      failE2eOperation(
-        E2E_RESERVATION_HISTORY_ERROR.REMOVE_OPERATION,
-        error.message
-      );
+      failures.push(error.message);
     }
   }
 
-  const { error } = await supabase
-    .from(E2E_SUPABASE_TABLE.RESERVATIONS)
-    .delete()
-    .eq(E2E_RESERVATION_HISTORY_COLUMN.ID, reservationId);
-
-  if (error) {
+  if (failures.length > LENGTH.ZERO) {
     failE2eOperation(
       E2E_RESERVATION_HISTORY_ERROR.REMOVE_OPERATION,
-      error.message
+      failures.join(E2E_SUPABASE_ERROR.REASON_SEPARATOR)
     );
   }
+
+  await removeE2eReservation(supabase, reservationId);
 };

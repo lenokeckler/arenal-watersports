@@ -1,4 +1,7 @@
-import { RESERVATION_TYPE } from "@/app/constants";
+import {
+  PAGINATION,
+  RESERVATION_TYPE,
+} from "@/app/constants";
 import { RESERVATION_HISTORY_COPY } from "@/app/features/board/reservation-history/constants/ReservationHistoryCopy.constants";
 import { E2E_SUPABASE_TABLE } from "./E2eSupabase.constants";
 
@@ -12,6 +15,7 @@ export const E2E_RESERVATION_HISTORY_STATUS = {
 } as const;
 
 export const E2E_RESERVATION_HISTORY = {
+  BATCH_LABEL: "batch",
   CANCELLATION_REASON: "TAB-09 E2E weather",
   CUSTOMER_PREFIX: "TAB-09 E2E",
   DURATION_MINUTES: 60,
@@ -36,17 +40,14 @@ export const E2E_RESERVATION_HISTORY_COLUMN = {
   CUSTOMER_NAME: "customer_name",
   DURATION_MINUTES: "duration_minutes",
   EXTRA_ID: "extra_id",
-  ID: "id",
   NAME: "name",
   PEOPLE_COUNT: "people_count",
   QUANTITY: "quantity",
   RESERVATION_ID: "reservation_id",
   STARTS_AT: "starts_at",
-  STATUS: "status",
   TYPE: "type",
   UNIT_ID: "unit_id",
   UPDATED_BY: "updated_by",
-  WORKER_ID: "worker_id",
 } as const;
 
 export const E2E_RESERVATION_HISTORY_ERROR = {
@@ -59,3 +60,34 @@ export const E2E_RESERVATION_HISTORY_CHILD_TABLES = [
   E2E_SUPABASE_TABLE.RESERVATION_ITEMS,
   E2E_SUPABASE_TABLE.RESERVATION_GUIDES,
 ] as const;
+
+export const E2E_RESERVATION_HISTORY_DAY = {
+  BASE_DATE: "2032-01-01",
+  DAYS_PER_WORKER: 4,
+  ISO_DATE_LENGTH: 10,
+  MS_PER_DAY: 86_400_000,
+  START_TIME: "T15:00:00.000Z",
+  TIME_ORIGIN: "T00:00:00.000Z",
+} as const;
+
+export const E2E_RESERVATION_HISTORY_DAY_OFFSET = {
+  AFTER_RANGE: 3,
+  FIRST: 0,
+  SECOND: 1,
+  THIRD: 2,
+} as const;
+
+export const E2E_RESERVATION_HISTORY_PAGES = {
+  COUNT: 2,
+  FIRST: 1,
+  PARAM: PAGINATION.QUERY_PARAMS.PAGE,
+  SECOND: 2,
+} as const;
+
+export const E2E_RESERVATION_HISTORY_LOOKUP = {
+  ALTERNATE_CATEGORY_NAME: "Kayak doble",
+  ALTERNATE_UNIT_CODE: "KD-01",
+  DEFAULT_CATEGORY_NAME: "Jet Ski",
+  PAGE_PARAM_OUT_OF_RANGE: "999",
+  SEEDED_ADMIN_NAME: "Administración",
+} as const;

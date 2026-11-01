@@ -3,7 +3,10 @@ import {
   E2E_RESERVATION_HISTORY_COLUMN,
   E2E_RESERVATION_HISTORY_ERROR,
 } from "../constants/E2eReservationHistory.constants";
-import { E2E_SUPABASE_TABLE } from "../constants/E2eSupabase.constants";
+import {
+  E2E_SUPABASE_COLUMN,
+  E2E_SUPABASE_TABLE,
+} from "../constants/E2eSupabase.constants";
 import { createServiceRoleClient } from "./createServiceRoleClient";
 import { failE2eOperation } from "./failE2eOperation";
 import { insertReservationHistoryChildren } from "./insertReservationHistoryChildren";
@@ -29,12 +32,12 @@ export const createReservationHistoryRecord = async (
         E2E_RESERVATION_HISTORY.PEOPLE_COUNT,
       [column.STARTS_AT]:
         seed.startsAt ?? E2E_RESERVATION_HISTORY.STARTS_AT,
-      [column.STATUS]: seed.status,
+      [E2E_SUPABASE_COLUMN.STATUS]: seed.status,
       [column.TYPE]:
         seed.type ?? E2E_RESERVATION_HISTORY.TYPE,
       [column.UPDATED_BY]: seed.updaterId,
     })
-    .select(column.ID)
+    .select(E2E_SUPABASE_COLUMN.ID)
     .single();
 
   if (error) {
@@ -54,7 +57,7 @@ export const createReservationHistoryRecord = async (
       seed
     );
   } catch (childError: unknown) {
-    await remove();
+    await Promise.allSettled([remove()]);
     throw childError;
   }
 
