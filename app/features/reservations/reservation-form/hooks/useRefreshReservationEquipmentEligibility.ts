@@ -28,12 +28,10 @@ export const useRefreshReservationEquipmentEligibility = ({
       } else if (
         requestVersionRef.current === currentVersion
       ) {
-        setCategories([]);
         setHasError(true);
       }
     } catch {
       if (requestVersionRef.current === currentVersion) {
-        setCategories([]);
         setHasError(true);
       }
     } finally {

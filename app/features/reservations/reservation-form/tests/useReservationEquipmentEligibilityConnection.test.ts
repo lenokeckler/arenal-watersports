@@ -40,7 +40,9 @@ describe("useReservationEquipmentEligibility connection", () => {
       )
     );
 
-    expect(result.current.categories).toEqual([]);
+    expect(result.current.categories).toEqual(
+      INITIAL_ELIGIBLE_CATEGORIES
+    );
     expect(result.current.hasError).toBe(true);
     realtimeHarness.getCategories.mockResolvedValueOnce(
       INITIAL_ELIGIBLE_CATEGORIES
@@ -83,7 +85,9 @@ describe("useReservationEquipmentEligibility connection", () => {
     await waitFor(() =>
       expect(result.current.hasError).toBe(true)
     );
-    expect(result.current.categories).toEqual([]);
+    expect(result.current.categories).toEqual(
+      INITIAL_ELIGIBLE_CATEGORIES
+    );
 
     realtimeHarness.getCategories.mockResolvedValueOnce(
       INITIAL_ELIGIBLE_CATEGORIES
@@ -111,7 +115,9 @@ describe("useReservationEquipmentEligibility connection", () => {
       expect(result.current.hasError).toBe(true)
     );
 
-    expect(result.current.categories).toEqual([]);
+    expect(result.current.categories).toEqual(
+      INITIAL_ELIGIBLE_CATEGORIES
+    );
     expect(result.current.isLoading).toBe(false);
     expect(realtimeHarness.channelCount()).toBe(0);
   });
@@ -158,7 +164,9 @@ describe("useReservationEquipmentEligibility connection", () => {
       );
       act(() => realtimeHarness.statusHandlers[0](status));
 
-      expect(result.current.categories).toEqual([]);
+      expect(result.current.categories).toEqual(
+        INITIAL_ELIGIBLE_CATEGORIES
+      );
       expect(result.current.hasError).toBe(true);
     }
   );
