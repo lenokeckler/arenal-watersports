@@ -20,3 +20,5 @@ export const FILTER_TYPE_EVENT = {
     value: FILTER_CHANGE_TYPE,
   },
 };
+
+export const PAGE_SHOW_EVENT_NAME = "pageshow";

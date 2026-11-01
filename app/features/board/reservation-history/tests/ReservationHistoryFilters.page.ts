@@ -3,6 +3,8 @@ import { ARIA_ROLE, STRING } from "@/app/constants";
 import { RESERVATION_HISTORY_COPY } from "../constants/ReservationHistoryCopy.constants";
 import { DESCRIBED_BY_ATTRIBUTE } from "./ReservationHistoryFiltersForm.constants";
 
+const OPTION_SELECTOR = "option";
+
 export const createReservationHistoryFiltersPage = () => {
   const getField = (label: string) =>
     screen.getByLabelText<
@@ -16,7 +18,7 @@ export const createReservationHistoryFiltersPage = () => {
 
   const getOptionLabels = (label: string) =>
     Array.from(
-      (getField(label) as HTMLSelectElement).options
+      getField(label).querySelectorAll(OPTION_SELECTOR)
     ).map((option) => option.textContent);
 
   const getSubmitButton = () =>
@@ -33,12 +35,16 @@ export const createReservationHistoryFiltersPage = () => {
   const queryText = (text: string) =>
     screen.queryByText(text);
 
+  const queryAlert = () =>
+    screen.queryByRole(ARIA_ROLE.ALERT);
+
   return {
     getDescription,
     getField,
     getForm,
     getOptionLabels,
     getSubmitButton,
+    queryAlert,
     queryText,
   };
 };

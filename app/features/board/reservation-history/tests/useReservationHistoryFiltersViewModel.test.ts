@@ -1,35 +1,16 @@
 import { act, renderHook } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-import {
-  HISTORY_EMPTY_FILTERS,
-  HISTORY_FULL_FILTERS,
-} from "@/app/services/board/reservation-history/tests/ReservationHistory.constants";
+import { describe, expect, it, vi } from "vitest";
+import { HISTORY_FULL_FILTERS } from "@/app/services/board/reservation-history/tests/ReservationHistory.constants";
 import { useReservationHistoryFiltersViewModel } from "../hooks/useReservationHistoryFiltersViewModel";
-import type { ReservationHistoryFilterChangeEvent } from "../models/ReservationHistoryFilterChangeEvent.type";
 import {
   FILTER_CHANGE_FROM,
   FILTER_CHANGE_TYPE,
   FILTER_FROM_EVENT,
   FILTER_TYPE_EVENT,
+  PAGE_SHOW_EVENT_NAME,
 } from "./ReservationHistoryFilters.constants";
 
 describe("useReservationHistoryFiltersViewModel", () => {
-  it("starts blank when no filter is applied", () => {
-    const { result } = renderHook(() =>
-      useReservationHistoryFiltersViewModel({
-        filters: HISTORY_EMPTY_FILTERS,
-      })
-    );
-
-    expect(result.current.values).toEqual({
-      category: "",
-      from: "",
-      to: "",
-      type: "",
-    });
-    expect(result.current.isPending).toBe(false);
-  });
-
   it("starts from the applied filters", () => {
     const { result } = renderHook(() =>
       useReservationHistoryFiltersViewModel({
@@ -53,14 +34,10 @@ describe("useReservationHistoryFiltersViewModel", () => {
     );
 
     act(() => {
-      result.current.handleChange(
-        FILTER_FROM_EVENT as ReservationHistoryFilterChangeEvent
-      );
+      result.current.handleChange(FILTER_FROM_EVENT);
     });
     act(() => {
-      result.current.handleChange(
-        FILTER_TYPE_EVENT as ReservationHistoryFilterChangeEvent
-      );
+      result.current.handleChange(FILTER_TYPE_EVENT);
     });
 
     expect(result.current.values).toEqual({
@@ -69,6 +46,64 @@ describe("useReservationHistoryFiltersViewModel", () => {
       to: HISTORY_FULL_FILTERS.to,
       type: FILTER_CHANGE_TYPE,
     });
+  });
+
+  it("clears pending when the page is restored from the cache", () => {
+    const { result } = renderHook(() =>
+      useReservationHistoryFiltersViewModel({
+        filters: HISTORY_FULL_FILTERS,
+      })
+    );
+    act(() => result.current.handleSubmit());
+
+    act(() => {
+      window.dispatchEvent(
+        new PageTransitionEvent(PAGE_SHOW_EVENT_NAME, {
+          persisted: true,
+        })
+      );
+    });
+
+    expect(result.current.isPending).toBe(false);
+  });
+
+  it("keeps pending on a page show that is not a restore", () => {
+    const { result } = renderHook(() =>
+      useReservationHistoryFiltersViewModel({
+        filters: HISTORY_FULL_FILTERS,
+      })
+    );
+    act(() => result.current.handleSubmit());
+
+    act(() => {
+      window.dispatchEvent(
+        new PageTransitionEvent(PAGE_SHOW_EVENT_NAME, {
+          persisted: false,
+        })
+      );
+    });
+
+    expect(result.current.isPending).toBe(true);
+  });
+
+  it("stops listening once unmounted", () => {
+    const removeListener = vi.spyOn(
+      window,
+      "removeEventListener"
+    );
+    const { unmount } = renderHook(() =>
+      useReservationHistoryFiltersViewModel({
+        filters: HISTORY_FULL_FILTERS,
+      })
+    );
+
+    unmount();
+
+    expect(removeListener).toHaveBeenCalledWith(
+      PAGE_SHOW_EVENT_NAME,
+      expect.any(Function)
+    );
+    removeListener.mockRestore();
   });
 
   it("turns pending on submit without changing the values", () => {

@@ -1,6 +1,8 @@
 import FormField from "@/app/components/form-field/FormField";
 import { FORM_FIELD_VARIANT } from "@/app/components/form-field/constants/FormFieldVariant.constants";
+import { Text } from "@/app/components";
 import {
+  ARIA_ROLE,
   INPUT_TYPES,
   RESERVATION_HISTORY_FILTER_PARAM,
   STRING,
@@ -8,6 +10,7 @@ import {
 import { RESERVATION_HISTORY_COPY } from "../constants/ReservationHistoryCopy.constants";
 import { RESERVATION_HISTORY_DOM_ID } from "../constants/ReservationHistoryDomId.constants";
 import type { ReservationHistoryDateFieldsProps } from "../models/ReservationHistoryDateFieldsProps.interface";
+import { RESERVATION_HISTORY_FILTERS_ANNOUNCEMENT_CLASS } from "../styles/ReservationHistoryFilters.styles";
 
 const ReservationHistoryDateFields = ({
   hasInvertedDateRange,
@@ -41,6 +44,16 @@ const ReservationHistoryDateFields = ({
       }
       showErrorText
     />
+    {hasInvertedDateRange && (
+      <Text
+        role={ARIA_ROLE.ALERT}
+        className={
+          RESERVATION_HISTORY_FILTERS_ANNOUNCEMENT_CLASS
+        }
+      >
+        {RESERVATION_HISTORY_COPY.FILTER_DATE_RANGE_ERROR}
+      </Text>
+    )}
   </>
 );
 

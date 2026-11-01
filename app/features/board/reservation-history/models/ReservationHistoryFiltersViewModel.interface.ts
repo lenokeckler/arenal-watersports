@@ -1,9 +1,9 @@
-import type { ReservationHistoryFilterChangeEvent } from "./ReservationHistoryFilterChangeEvent.type";
+import type { ReservationHistoryFieldChange } from "./ReservationHistoryFieldChange.interface";
 import type { ReservationHistoryFilterValues } from "./ReservationHistoryFilterValues.interface";
 
 export interface ReservationHistoryFiltersViewModel {
   handleChange: (
-    _event: ReservationHistoryFilterChangeEvent
+    _event: ReservationHistoryFieldChange
   ) => void;
   handleSubmit: () => void;
   isPending: boolean;

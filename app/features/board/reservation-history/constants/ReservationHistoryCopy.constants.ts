@@ -8,6 +8,7 @@ export const RESERVATION_HISTORY_COPY = {
   ERROR_BODY: "Revise su conexión e intente de nuevo.",
   ERROR_TITLE: "No se pudo cargar el historial",
   FILTER_ALL: "Todos",
+  FILTER_CATEGORY_UNAVAILABLE: "Equipo no disponible",
   FILTER_DATE_RANGE_ERROR:
     "La fecha final no puede ser anterior a la inicial.",
   FILTER_FROM_LABEL: "Desde",
@@ -34,4 +35,7 @@ export const RESERVATION_HISTORY_COPY = {
   PAGINATION_PAGE: "Página",
   PAGINATION_PREVIOUS: "Anterior",
   RETRY: "Reintentar",
+  TYPE_COMBO: "Combo",
+  TYPE_RENTAL: "Renta",
+  TYPE_TOUR: "Tour",
 } as const;

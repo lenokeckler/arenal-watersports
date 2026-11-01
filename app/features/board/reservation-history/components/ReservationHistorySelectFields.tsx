@@ -53,7 +53,8 @@ const ReservationHistorySelectFields = ({
           RESERVATION_HISTORY_FILTERS_SELECT_SIZE_CLASS
         }
         options={buildReservationHistoryCategoryFilterOptions(
-          categoryOptions
+          categoryOptions,
+          values.category
         )}
         value={values.category}
         onChange={onChange}

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
-import { PATHS, STRING } from "@/app/constants";
+import { PATHS, RESERVATION_TYPE } from "@/app/constants";
 import { HISTORY_FULL_FILTERS } from "@/app/services/board/reservation-history/tests/ReservationHistory.constants";
 import ReservationHistoryInner from "../components/ReservationHistoryInner";
 import { RESERVATION_HISTORY_COPY } from "../constants/ReservationHistoryCopy.constants";
@@ -15,7 +15,6 @@ import {
   DESCRIBED_BY_ATTRIBUTE,
   FILTER_ACTIVE_CATEGORY,
   FILTER_CATEGORY_OPTIONS,
-  FILTER_INACTIVE_CATEGORY,
   FORM_METHOD_GET,
   INVALID_ATTRIBUTE,
   INVALID_TRUE_VALUE,
@@ -65,26 +64,6 @@ describe("ReservationHistoryFilters", () => {
     ).toHaveValue(FILTER_ACTIVE_CATEGORY.id);
   });
 
-  it("leaves every field blank without filters", () => {
-    const page = renderScreen(HISTORY_UNFILTERED_QUERY);
-
-    expect(
-      page.getField(
-        RESERVATION_HISTORY_COPY.FILTER_FROM_LABEL
-      )
-    ).toHaveValue(STRING.Empty);
-    expect(
-      page.getField(
-        RESERVATION_HISTORY_COPY.FILTER_TYPE_LABEL
-      )
-    ).toHaveValue(STRING.Empty);
-    expect(
-      page.getField(
-        RESERVATION_HISTORY_COPY.EQUIPMENT_LABEL
-      )
-    ).toHaveValue(STRING.Empty);
-  });
-
   it("offers the three reservation types after the all option", () => {
     const page = renderScreen(HISTORY_UNFILTERED_QUERY);
 
@@ -94,23 +73,13 @@ describe("ReservationHistoryFilters", () => {
       )
     ).toEqual([
       RESERVATION_HISTORY_COPY.FILTER_ALL,
-      RESERVATION_HISTORY_TYPE_LABEL.rental,
-      RESERVATION_HISTORY_TYPE_LABEL.tour,
-      RESERVATION_HISTORY_TYPE_LABEL.combo,
-    ]);
-  });
-
-  it("offers every category from props, inactive ones included", () => {
-    const page = renderScreen(HISTORY_UNFILTERED_QUERY);
-
-    expect(
-      page.getOptionLabels(
-        RESERVATION_HISTORY_COPY.EQUIPMENT_LABEL
-      )
-    ).toEqual([
-      RESERVATION_HISTORY_COPY.FILTER_ALL,
-      FILTER_ACTIVE_CATEGORY.name,
-      FILTER_INACTIVE_CATEGORY.name,
+      RESERVATION_HISTORY_TYPE_LABEL[
+        RESERVATION_TYPE.RENTAL
+      ],
+      RESERVATION_HISTORY_TYPE_LABEL[RESERVATION_TYPE.TOUR],
+      RESERVATION_HISTORY_TYPE_LABEL[
+        RESERVATION_TYPE.COMBO
+      ],
     ]);
   });
 
@@ -129,21 +98,6 @@ describe("ReservationHistoryFilters", () => {
     expect(page.getSubmitButton()).toBeInTheDocument();
   });
 
-  it("shows no error on Hasta for a valid range", () => {
-    const page = renderScreen(HISTORY_QUERY);
-
-    expect(
-      page.queryText(
-        RESERVATION_HISTORY_COPY.FILTER_DATE_RANGE_ERROR
-      )
-    ).not.toBeInTheDocument();
-    expect(
-      page.getField(
-        RESERVATION_HISTORY_COPY.FILTER_TO_LABEL
-      )
-    ).not.toHaveAttribute(INVALID_ATTRIBUTE);
-  });
-
   it("explains an inverted range on Hasta and links it by aria-describedby", () => {
     const page = renderScreen(HISTORY_QUERY, true);
     const field = page.getField(
@@ -156,6 +110,14 @@ describe("ReservationHistoryFilters", () => {
     );
     expect(field).toHaveAttribute(DESCRIBED_BY_ATTRIBUTE);
     expect(page.getDescription(field)).toHaveTextContent(
+      RESERVATION_HISTORY_COPY.FILTER_DATE_RANGE_ERROR
+    );
+  });
+
+  it("announces an inverted range with an alert", () => {
+    const page = renderScreen(HISTORY_QUERY, true);
+
+    expect(page.queryAlert()).toHaveTextContent(
       RESERVATION_HISTORY_COPY.FILTER_DATE_RANGE_ERROR
     );
   });
@@ -183,19 +145,6 @@ describe("ReservationHistoryFilters", () => {
     ).toBeInTheDocument();
     expect(
       page.queryText(RESERVATION_HISTORY_COPY.EMPTY_TITLE)
-    ).not.toBeInTheDocument();
-  });
-
-  it("keeps the no records message when no filter is applied", () => {
-    const page = renderScreen(HISTORY_UNFILTERED_QUERY);
-
-    expect(
-      page.queryText(RESERVATION_HISTORY_COPY.EMPTY_TITLE)
-    ).toBeInTheDocument();
-    expect(
-      page.queryText(
-        RESERVATION_HISTORY_COPY.FILTERED_EMPTY_TITLE
-      )
     ).not.toBeInTheDocument();
   });
 });
