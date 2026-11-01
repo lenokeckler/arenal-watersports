@@ -104,6 +104,7 @@ export const CATEGORY_CATALOG_COPY = {
     "Seleccione un modo de conteo.",
   UNITS_ARE_INTERCHANGEABLE_FIELD_LABEL:
     "Las unidades son intercambiables",
+  UNITS_LINK: "Unidades",
   USAGE_METRIC_ENGINE_HOURS_LABEL: "Horas de motor",
   USAGE_METRIC_FIELD_LABEL: "Métrica de uso",
   USAGE_METRIC_KILOMETERS_LABEL: "Kilómetros",
