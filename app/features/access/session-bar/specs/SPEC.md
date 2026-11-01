@@ -18,7 +18,7 @@ that asks for one confirming tap and tells the worker what is happening.
 
 - The two-tap state machine, the double-tap latch, the reset timeout and the sign-out call (owned
   by `useLogoutViewModel`).
-- Any bottom navigation, theme toggle or confirmation dialog.
+- Any bottom navigation or confirmation dialog.
 
 ## Requirements
 
@@ -50,3 +50,11 @@ that asks for one confirming tap and tells the worker what is happening.
 - Unit tests in `tests/` cover every button phase, the status region, the view model (two taps,
   single sign-out, failure and retry) and the bar (one banner, the button last, the error only on
   failure, no logout route handler). The browser flow is covered by the end-to-end specs of US-ACC-08.
+
+## Theme preference (US-TAB-11)
+
+- A signed-in worker can switch between light and dark themes from the session bar without signing out.
+- The selected theme is saved in browser local storage, not account data, and restored on the next page load in that browser.
+- The session bar presents an action label and icon that match the next theme, and its control remains keyboard accessible at mobile widths.
+- Unit tests cover reading a saved theme, switching in both directions, applying the root theme attribute, and continuing when local storage rejects a write.
+- The application-wide surface audit, contrast targets, and browser coverage remain pending in later US-TAB-11 units.
