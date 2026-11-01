@@ -1,5 +1,4 @@
 export const RESERVATION_DETAIL_ACCESS = {
-  ADMIN_RPC: "is_admin",
   AREA: "reservas",
   AREA_RPC: "has_area",
 } as const;

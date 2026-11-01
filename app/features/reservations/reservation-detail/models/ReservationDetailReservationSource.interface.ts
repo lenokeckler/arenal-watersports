@@ -45,16 +45,12 @@ export interface ReservationDetailReservationSource extends Pick<
     dispatch_id: NullableRef<string>;
     extra: NullableRef<{ name: string }>;
     extra_id: NullableRef<string>;
-    fuel_in: NullableRef<number>;
-    fuel_out: NullableRef<number>;
     quantity: NullableRef<number>;
     unit: NullableRef<{
       category: NullableRef<{ name: string }>;
       code: string;
     }>;
     unit_id: NullableRef<string>;
-    usage_in: NullableRef<number>;
-    usage_out: NullableRef<number>;
   }[];
   reservation_pricing: NullableRef<ReservationDetailPricingSource>;
 }
