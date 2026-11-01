@@ -58,6 +58,7 @@ export const DEFAULT_UNIT_ROW: UnitRow = {
 
 export const DEFAULT_UNIT: Unit = {
   id: FAKE_UNIT_ID,
+  isOccupied: false,
   categoryId: FAKE_CATEGORY_ID,
   code: "JET-01",
   status: UNIT_STATUS.AVAILABLE,

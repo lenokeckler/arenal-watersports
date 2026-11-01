@@ -7,6 +7,10 @@ import {
 } from "vitest";
 import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
+import {
+  UNIT_EFFECTIVE_STATUS,
+  UNIT_STATUS,
+} from "../constants/UnitStatus.constants";
 import { getUnit } from "../services/getUnit";
 import {
   DEFAULT_UNIT,
@@ -58,13 +62,52 @@ describe("getUnit", () => {
   });
 
   it("returns the row mapped to a unit", async () => {
-    mockMaybeSingle.mockResolvedValue({
-      data: DEFAULT_UNIT_ROW,
-      error: null,
-    });
+    mockMaybeSingle
+      .mockResolvedValueOnce({
+        data: DEFAULT_UNIT_ROW,
+        error: null,
+      })
+      .mockResolvedValueOnce({
+        data: { effective_status: UNIT_STATUS.AVAILABLE },
+        error: null,
+      });
 
     expect(await getUnit(FAKE_UNIT_ID)).toEqual(
       DEFAULT_UNIT
+    );
+  });
+
+  it("marks the unit as occupied when its effective status is occupied", async () => {
+    mockMaybeSingle
+      .mockResolvedValueOnce({
+        data: DEFAULT_UNIT_ROW,
+        error: null,
+      })
+      .mockResolvedValueOnce({
+        data: {
+          effective_status: UNIT_EFFECTIVE_STATUS.OCCUPIED,
+        },
+        error: null,
+      });
+
+    expect(await getUnit(FAKE_UNIT_ID)).toMatchObject({
+      isOccupied: true,
+    });
+  });
+
+  it("throws when the effective status read fails", async () => {
+    mockMaybeSingle
+      .mockResolvedValueOnce({
+        data: DEFAULT_UNIT_ROW,
+        error: null,
+      })
+      .mockResolvedValueOnce({
+        data: null,
+        error: { code: "500", message: "boom" },
+      });
+
+    await expect(getUnit(FAKE_UNIT_ID)).rejects.toThrow(
+      SupabaseQueryError
     );
   });
 
