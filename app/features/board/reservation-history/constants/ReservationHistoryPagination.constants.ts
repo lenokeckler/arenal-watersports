@@ -1,0 +1,3 @@
+export const RESERVATION_HISTORY_PAGINATION = {
+  PAGE_NUMBER_OFFSET: 1,
+} as const;

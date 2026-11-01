@@ -35,15 +35,23 @@ export const HISTORY_QUERY = {
 } as const;
 
 export const buildPage = (
-  items: readonly ReservationHistoryItem[]
+  items: readonly ReservationHistoryItem[],
+  pageIndex = 0,
+  pageCount = 1
 ): ReservationHistoryPage => ({
   items,
-  pageCount: 1,
-  pageIndex: 0,
+  pageCount,
+  pageIndex,
   totalCount: items.length,
 });
 
 export const CLOSED_ITEM_HREF = `${PATHS.HISTORY.ROOT}/${CLOSED_ITEM.id}?from=2026-10-01&to=2026-10-31&type=tour&category=${HISTORY_FULL_FILTERS.categoryId}&page=4`;
+export const PAGED_INDEX = 1;
+export const PAGED_COUNT = 3;
+export const PAGED_STATUS_TEXT = "Página 2 de 3";
+const FILTERS_QUERY_STRING = `from=2026-10-01&to=2026-10-31&type=tour&category=${HISTORY_FULL_FILTERS.categoryId}`;
+export const PREVIOUS_PAGE_HREF = `${PATHS.HISTORY.ROOT}?${FILTERS_QUERY_STRING}`;
+export const NEXT_PAGE_HREF = `${PATHS.HISTORY.ROOT}?${FILTERS_QUERY_STRING}&page=3`;
 export const EQUIPMENT_TEXT = "Kayak, Paddle board";
 export const GUIDES_TEXT = "Diego Rojas, Lucia Vega";
 export const CURRENCY_SIGN_PATTERN = /[$₡]/;

@@ -14,4 +14,9 @@ export const RESERVATION_HISTORY_COPY = {
   PAGE_DESCRIPTION:
     "Consulte las reservas ya cerradas o canceladas.",
   PAGE_TITLE: "Historial de reservas",
+  PAGINATION_NAV_LABEL: "Paginación del historial",
+  PAGINATION_NEXT: "Siguiente",
+  PAGINATION_OF: "de",
+  PAGINATION_PAGE: "Página",
+  PAGINATION_PREVIOUS: "Anterior",
 } as const;

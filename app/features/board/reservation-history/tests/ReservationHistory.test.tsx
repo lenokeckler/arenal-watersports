@@ -10,17 +10,24 @@ import {
   EQUIPMENT_TEXT,
   GUIDES_TEXT,
   HISTORY_QUERY,
+  NEXT_PAGE_HREF,
+  PAGED_COUNT,
+  PAGED_INDEX,
+  PAGED_STATUS_TEXT,
+  PREVIOUS_PAGE_HREF,
   buildPage,
 } from "./ReservationHistory.constants";
 import { FORMAT_EXPECTED } from "./ReservationHistoryDateFormat.constants";
 import { createReservationHistoryPage } from "./ReservationHistory.page";
 
 const renderScreen = (
-  items = [CLOSED_ITEM, CANCELLED_ITEM]
+  items = [CLOSED_ITEM, CANCELLED_ITEM],
+  pageIndex = 0,
+  pageCount = 1
 ) => {
   render(
     <ReservationHistoryInner
-      page={buildPage(items)}
+      page={buildPage(items, pageIndex, pageCount)}
       query={HISTORY_QUERY}
     />
   );
@@ -113,5 +120,69 @@ describe("ReservationHistory", () => {
       page.getText(RESERVATION_HISTORY_COPY.EMPTY_TITLE)
     ).toBeInTheDocument();
     expect(page.queryList()).not.toBeInTheDocument();
+  });
+
+  it("hides the pagination with a single page", () => {
+    const page = renderScreen();
+
+    expect(page.queryNavigation()).not.toBeInTheDocument();
+  });
+
+  it("links both ends carrying the filters on a middle page", () => {
+    const page = renderScreen(
+      [CLOSED_ITEM],
+      PAGED_INDEX,
+      PAGED_COUNT
+    );
+
+    expect(
+      page.getText(PAGED_STATUS_TEXT)
+    ).toBeInTheDocument();
+    expect(
+      page.getNavigationLink(
+        RESERVATION_HISTORY_COPY.PAGINATION_PREVIOUS
+      )
+    ).toHaveAttribute("href", PREVIOUS_PAGE_HREF);
+    expect(
+      page.getNavigationLink(
+        RESERVATION_HISTORY_COPY.PAGINATION_NEXT
+      )
+    ).toHaveAttribute("href", NEXT_PAGE_HREF);
+  });
+
+  it("shows the previous end as a disabled non-link on the first page", () => {
+    const page = renderScreen(
+      [CLOSED_ITEM],
+      0,
+      PAGED_COUNT
+    );
+
+    expect(
+      page.queryNavigationLink(
+        RESERVATION_HISTORY_COPY.PAGINATION_PREVIOUS
+      )
+    ).not.toBeInTheDocument();
+    expect(
+      page.getText(
+        RESERVATION_HISTORY_COPY.PAGINATION_PREVIOUS
+      )
+    ).toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("shows the next end as a disabled non-link on the last page", () => {
+    const page = renderScreen(
+      [CLOSED_ITEM],
+      PAGED_COUNT - 1,
+      PAGED_COUNT
+    );
+
+    expect(
+      page.queryNavigationLink(
+        RESERVATION_HISTORY_COPY.PAGINATION_NEXT
+      )
+    ).not.toBeInTheDocument();
+    expect(
+      page.getText(RESERVATION_HISTORY_COPY.PAGINATION_NEXT)
+    ).toHaveAttribute("aria-disabled", "true");
   });
 });
