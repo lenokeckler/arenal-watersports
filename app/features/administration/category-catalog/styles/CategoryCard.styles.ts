@@ -25,7 +25,7 @@ export const resolveCategoryCardContainerClassName = (
   );
 
 export const CATEGORY_CARD_BUTTONS_CLASS =
-  "flex flex-col gap-3 md:order-5 md:ml-auto md:flex-row md:items-center";
+  "flex flex-col gap-3 md:order-5 md:ml-auto md:w-full md:flex-row md:flex-wrap md:items-center md:justify-end";
 
 export const CATEGORY_CARD_NAME_ROW_CLASS =
   "flex items-start justify-between gap-3 md:contents";
