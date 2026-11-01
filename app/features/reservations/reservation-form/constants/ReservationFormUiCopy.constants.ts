@@ -34,4 +34,11 @@ export const RESERVATION_FORM_UI_COPY = {
     "No hay categorías de equipo disponibles para reservar.",
   EQUIPMENT_NOTE:
     "Indique la cantidad de equipos intercambiables. Para la lancha, elija la unidad que quedará reservada.",
+  EQUIPMENT_ELIGIBILITY_LOADING:
+    "Actualizando las categorías disponibles…",
+  EQUIPMENT_ELIGIBILITY_ERROR:
+    "No fue posible actualizar las categorías disponibles.",
+  RETRY_EQUIPMENT_ELIGIBILITY: "Reintentar actualización",
+  EQUIPMENT_SELECTION_CHANGED:
+    "La disponibilidad cambió. Seleccione otra categoría o unidad.",
 } as const;

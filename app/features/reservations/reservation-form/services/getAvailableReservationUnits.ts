@@ -10,12 +10,12 @@ import type { ReservationEquipmentAvailability } from "../models/ReservationEqui
 import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
 import { getAvailableConcreteReservationUnits } from "./getAvailableConcreteReservationUnits";
 import { getAuthorizedReservationFormClient } from "./getAuthorizedReservationFormClient";
-import { getReservationWindow } from "../utils/getReservationWindow";
+import { getReservationInterval } from "../utils/getReservationInterval";
 
 const getAvailableCategoryQuantity = async (
   supabase: SupabaseClient<Database>,
   categoryId: string,
-  window: ReturnType<typeof getReservationWindow>
+  window: ReturnType<typeof getReservationInterval>
 ): Promise<number> => {
   const { data, error } = await supabase.rpc(
     RESERVATION_AVAILABILITY.RPC.CATEGORY_AVAILABILITY,
@@ -61,7 +61,7 @@ export const getAvailableReservationUnits = async (
   if (!category) {
     return EMPTY_RESERVATION_EQUIPMENT_AVAILABILITY;
   }
-  const window = getReservationWindow(input);
+  const window = getReservationInterval(input);
   if (category.units_are_interchangeable) {
     const availableQuantity =
       await getAvailableCategoryQuantity(
