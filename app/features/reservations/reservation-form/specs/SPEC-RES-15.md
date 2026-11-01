@@ -43,3 +43,6 @@ This change does not alter reservation persistence, dispatch/return windows, can
 - Form unit: integration into the existing reservation form, preserving the Stitch visual language, responsive layout, entered values, realtime invalidation, and retry behavior. Playwright coverage and mobile/desktop captures belong to that UI unit. The ignored local preview is not changed by this PR.
 
 The query unit preserves the RPC's negative `free` result and does not treat aggregate category availability as proof that a concrete unit is available. The data, query, and form units expose category availability for the selected interval. A local fixture or preview alone does not complete the acceptance criterion.
+- Form unit, pending: integration into the existing reservation form and ignored local preview, preserving the Stitch visual language, responsive layout, entered values, realtime invalidation, and retry behavior. Playwright coverage and mobile/desktop captures belong to that UI unit.
+
+The query unit preserves the RPC's negative `free` result and does not treat aggregate category availability as proof that a concrete unit is available. The data and query units are complete; the acceptance criterion remains pending until the form exposes the selected interval's availability. A local fixture or preview alone does not complete it.
