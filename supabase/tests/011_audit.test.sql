@@ -43,7 +43,7 @@ values ('aaaaaaaa-0000-0000-0000-000000000002', 'Chaleco', 'by_quantity',
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 
 set local role authenticated;
-set local request.jwt.claims to '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}';
+set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated"}';
 
 insert into reservations
   (id, customer_name, people_count, type, starts_at, duration_minutes, created_by, updated_by)
@@ -53,12 +53,12 @@ values ('dddddddd-0000-0000-0000-000000000001', 'Maria', 2, 'rental',
 
 select is(
   (select created_by from reservations where id = 'dddddddd-0000-0000-0000-000000000001'),
-  '11111111-1111-1111-1111-111111111111'::uuid,
+  '33333333-3333-3333-3333-333333333333'::uuid,
   'forma created_by+updated_by: created_by sale de auth.uid(), no del cliente'
 );
 select is(
   (select updated_by from reservations where id = 'dddddddd-0000-0000-0000-000000000001'),
-  '11111111-1111-1111-1111-111111111111'::uuid,
+  '33333333-3333-3333-3333-333333333333'::uuid,
   'forma created_by+updated_by: updated_by tambien se firma al insertar'
 );
 
@@ -77,7 +77,7 @@ select is(
 );
 select is(
   (select created_by from reservations where id = 'dddddddd-0000-0000-0000-000000000001'),
-  '11111111-1111-1111-1111-111111111111'::uuid,
+  '33333333-3333-3333-3333-333333333333'::uuid,
   'created_by sobrevive una actualizacion: sigue siendo quien creo la fila'
 );
 
