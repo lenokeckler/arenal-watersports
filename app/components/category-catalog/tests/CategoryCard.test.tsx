@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { resolveCategoryBehaviorPath } from "../utils/resolveCategoryBehaviorPath";
 import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
 import { CATEGORY_STATUS } from "../constants/CategoryStatus.constants";
 import CategoryCard from "../components/CategoryCard";
@@ -17,6 +18,39 @@ describe("CategoryCard", () => {
       categoryCardPage.getNameHeading(
         DEFAULT_CATEGORY_CARD_VIEW_MODEL.category.name
       )
+    ).toBeInTheDocument();
+  });
+
+  it("links to the behavior form of the category", () => {
+    render(
+      <CategoryCard {...DEFAULT_CATEGORY_CARD_VIEW_MODEL} />
+    );
+    const categoryCardPage = createCategoryCardPage();
+
+    expect(
+      categoryCardPage.getBehaviorLink()
+    ).toHaveAttribute(
+      "href",
+      resolveCategoryBehaviorPath(
+        DEFAULT_CATEGORY_CARD_VIEW_MODEL.category.id
+      )
+    );
+  });
+
+  it("keeps the behavior link for an inactive category", () => {
+    const viewModel = {
+      ...DEFAULT_CATEGORY_CARD_VIEW_MODEL,
+      actionState: CATEGORY_CARD_ACTION_STATE.NONE,
+      category: {
+        ...DEFAULT_CATEGORY_CARD_VIEW_MODEL.category,
+        status: CATEGORY_STATUS.INACTIVE,
+      },
+    };
+    render(<CategoryCard {...viewModel} />);
+    const categoryCardPage = createCategoryCardPage();
+
+    expect(
+      categoryCardPage.getBehaviorLink()
     ).toBeInTheDocument();
   });
 

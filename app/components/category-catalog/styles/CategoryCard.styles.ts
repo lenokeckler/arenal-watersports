@@ -24,6 +24,9 @@ export const resolveCategoryCardContainerClassName = (
     isInactive && CATEGORY_CARD_CONTAINER_INACTIVE_CLASS
   );
 
+export const CATEGORY_CARD_BUTTONS_CLASS =
+  "flex flex-col gap-3 md:order-5 md:ml-auto md:flex-row md:items-center";
+
 export const CATEGORY_CARD_NAME_ROW_CLASS =
   "flex items-start justify-between gap-3 md:contents";
 
