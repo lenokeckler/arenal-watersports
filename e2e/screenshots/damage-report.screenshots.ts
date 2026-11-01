@@ -1,8 +1,6 @@
 import { expect, test } from "@playwright/test";
-import {
-  E2E_DAMAGE_REPORT_COPY,
-  E2E_DAMAGE_REPORT_SCREENSHOT_BASENAME,
-} from "../constants/E2eDamageReport.constants";
+import { DAMAGE_REPORT_COPY } from "@/app/features/operations/damage-report/constants/DamageReportCopy.constants";
+import { E2E_DAMAGE_REPORT_SCREENSHOT_BASENAME } from "../constants/E2eDamageReport.constants";
 import { resolveDeviceScreenshotFileName } from "../constants/E2eScreenshot.constants";
 import { createDamageReportPage } from "../pages/DamageReport.page";
 import { captureViewport } from "../support/captureViewport";
@@ -39,7 +37,7 @@ test.describe("Damage report screenshots", () => {
     await damageReportPage.submit();
     await expect(
       damageReportPage.getCauseRequiredError()
-    ).toHaveText(E2E_DAMAGE_REPORT_COPY.CAUSE_REQUIRED);
+    ).toHaveText(DAMAGE_REPORT_COPY.CAUSE_REQUIRED_ERROR);
 
     await captureViewport(
       page,

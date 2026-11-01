@@ -1,24 +1,24 @@
 begin;
-select plan(16);
+select plan(21);
 
 insert into auth.users (id, email)
-values ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local');
+values ('11111111-1111-1111-1111-111111111111', 'ope13-test@arenal.local');
 insert into workers (id, username, full_name, personal_email, base_role)
-values ('11111111-1111-1111-1111-111111111111', 'admin', 'Administración', 'admin@correo.com', 'administracion');
+values ('11111111-1111-1111-1111-111111111111', 'ope13-test', 'Operaciones test', 'ope13-test@correo.com', 'operaciones');
 
 insert into equipment_categories
   (id, name, tracking_mode, is_reservable, has_motor, usage_metric,
    has_condition_photos, default_duration_minutes, created_by, updated_by)
-values ('aaaaaaaa-0000-0000-0000-000000000001', 'Jet Ski', 'by_unit', true, true,
+values ('aaaaaaaa-0000-0000-0000-000000000001', 'OPE-13 Test Jet Ski', 'by_unit', true, true,
         'engine_hours', true, 60,
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 
 insert into equipment_units (id, category_id, code, created_by, updated_by)
-values ('bbbbbbbb-0000-0000-0000-000000000001', 'aaaaaaaa-0000-0000-0000-000000000001', 'JET-01',
+values ('bbbbbbbb-0000-0000-0000-000000000001', 'aaaaaaaa-0000-0000-0000-000000000001', 'OPE13-UNIT-01',
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 
 insert into equipment_units (id, category_id, code, created_by, updated_by)
-values ('bbbbbbbb-0000-0000-0000-000000000002', 'aaaaaaaa-0000-0000-0000-000000000001', 'JET-02',
+values ('bbbbbbbb-0000-0000-0000-000000000002', 'aaaaaaaa-0000-0000-0000-000000000001', 'OPE13-UNIT-02',
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 
 insert into unit_condition_photos (unit_id, angle, storage_path, uploaded_by)
@@ -48,11 +48,52 @@ select throws_ok(
   'un impact_delta negativo es rechazado'
 );
 
+set local request.jwt.claims = '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}';
+set local role authenticated;
+
 select lives_ok(
-  $$ insert into damage_reports (unit_id, cause, description, impact_delta, created_by)
-     values ('bbbbbbbb-0000-0000-0000-000000000001', 'collision', 'Golpe en el casco', 1,
-             '11111111-1111-1111-1111-111111111111') $$,
+  $$ insert into damage_reports (id, unit_id, cause, description, impact_delta, created_by)
+     values ('dddddddd-0000-0000-0000-000000000001',
+             'bbbbbbbb-0000-0000-0000-000000000001', 'collision', 'Golpe en el casco', 1,
+             null) $$,
   'un reporte de dano valido, sin reserva, se acepta'
+);
+
+reset role;
+
+select is(
+  (select unit_id from damage_reports
+   where id = 'dddddddd-0000-0000-0000-000000000001'),
+  'bbbbbbbb-0000-0000-0000-000000000001'::uuid,
+  'el reporte conserva la unidad enviada'
+);
+
+select is(
+  (select cause::text from damage_reports
+   where id = 'dddddddd-0000-0000-0000-000000000001'),
+  'collision',
+  'el reporte conserva la causa enviada'
+);
+
+select is(
+  (select description from damage_reports
+   where id = 'dddddddd-0000-0000-0000-000000000001'),
+  'Golpe en el casco',
+  'el reporte conserva la descripcion enviada'
+);
+
+select is(
+  (select impact_delta from damage_reports
+   where id = 'dddddddd-0000-0000-0000-000000000001'),
+  1,
+  'el reporte conserva el aumento enviado'
+);
+
+select is(
+  (select created_by from damage_reports
+   where id = 'dddddddd-0000-0000-0000-000000000001'),
+  '11111111-1111-1111-1111-111111111111'::uuid,
+  'el reporte conserva la identidad del trabajador autenticado'
 );
 
 select lives_ok(

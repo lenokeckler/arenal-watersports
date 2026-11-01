@@ -1,4 +1,5 @@
 import type { Database } from "@/app/types";
+import { DAMAGE_REPORT_COPY } from "./DamageReportCopy.constants";
 
 export const DAMAGE_REPORT_CAUSES: Array<{
   key: Database["public"]["Enums"]["damage_cause"];
@@ -8,21 +9,21 @@ export const DAMAGE_REPORT_CAUSES: Array<{
   {
     key: "rollover",
     value: "rollover",
-    label: "Vuelco",
+    label: DAMAGE_REPORT_COPY.CAUSES.ROLLOVER,
   },
   {
     key: "collision",
     value: "collision",
-    label: "Choque",
+    label: DAMAGE_REPORT_COPY.CAUSES.COLLISION,
   },
   {
     key: "machine_failure",
     value: "machine_failure",
-    label: "Falla de máquina",
+    label: DAMAGE_REPORT_COPY.CAUSES.MACHINE_FAILURE,
   },
   {
     key: "other",
     value: "other",
-    label: "Otra",
+    label: DAMAGE_REPORT_COPY.CAUSES.OTHER,
   },
 ];

@@ -1,0 +1,21 @@
+export const DAMAGE_REPORT_COPY = {
+  CAUSES: {
+    COLLISION: "Choque",
+    MACHINE_FAILURE: "Falla de máquina",
+    OTHER: "Otra",
+    ROLLOVER: "Vuelco",
+  },
+  CAUSE_LABEL: "Causa",
+  CAUSE_PLACEHOLDER: "Seleccionar causa",
+  CAUSE_REQUIRED_ERROR: "Debe seleccionar una causa.",
+  DESCRIPTION_LABEL: "Descripción",
+  DESCRIPTION_PLACEHOLDER: "Describa lo ocurrido",
+  ERROR: "No se pudo registrar el reporte de daño.",
+  IMPACT_DELTA_LABEL: "Aumento del conteo de golpes",
+  LOADING_BUTTON: "Registrando...",
+  SUBMIT_BUTTON: "Reportar daño",
+  SUCCESS: "Reporte de daño registrado correctamente.",
+  TITLE: "Reporte de daño",
+  UNIT_LABEL: "Unidad afectada",
+  UNIT_PLACEHOLDER: "Seleccionar unidad",
+} as const;

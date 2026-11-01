@@ -1,4 +1,5 @@
 import type { FormEvent } from "react";
+import type { NullableRef } from "@/app/types";
 import type { DamageReportFieldChangeHandler } from "./DamageReportFieldChangeHandler.type";
 import type { DamageReportFormValues } from "./DamageReportFormValues.interface";
 import type { DamageReportUnit } from "./DamageReportUnit.interface";
@@ -10,7 +11,7 @@ export interface DamageReportFormViewModel {
   handleUnitChange: DamageReportFieldChangeHandler;
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
   isSubmitting: boolean;
-  submissionError: string | null;
+  submissionError: NullableRef<string>;
   submissionSuccess: boolean;
   units: DamageReportUnit[];
   values: DamageReportFormValues;

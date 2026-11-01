@@ -1,8 +1,10 @@
-import type { Database } from "@/app/types";
+import type { Database, NullableRef } from "@/app/types";
 
 export interface DamageReportFormValues {
   unitId: string;
-  cause: Database["public"]["Enums"]["damage_cause"] | null;
+  cause: NullableRef<
+    Database["public"]["Enums"]["damage_cause"]
+  >;
   description: string;
   impactDelta: number;
 }

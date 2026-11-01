@@ -3,6 +3,7 @@
 import FormField from "@/app/components/form-field/FormField";
 import { INPUT_TYPES } from "@/app/constants";
 import { DAMAGE_REPORT_CAUSES } from "../constants/DamageReportCause.constants";
+import { DAMAGE_REPORT_COPY } from "../constants/DamageReportCopy.constants";
 import type { DamageReportFormViewModel } from "../models/DamageReportFormViewModel.interface";
 import Button from "@/app/components/button/Button";
 import {
@@ -46,9 +47,9 @@ const DamageReportForm = ({
         <FormField
           id="damage-report-unit"
           name="unitId"
-          label="Unidad afectada"
+          label={DAMAGE_REPORT_COPY.UNIT_LABEL}
           value={values.unitId}
-          placeholder="Seleccionar unidad"
+          placeholder={DAMAGE_REPORT_COPY.UNIT_PLACEHOLDER}
           type={INPUT_TYPES.SELECT}
           onChange={handleUnitChange}
           options={units.map((unit) => ({
@@ -61,8 +62,8 @@ const DamageReportForm = ({
         <FormField
           id="damage-report-cause"
           name="cause"
-          label="Causa"
-          placeholder="Seleccionar causa"
+          label={DAMAGE_REPORT_COPY.CAUSE_LABEL}
+          placeholder={DAMAGE_REPORT_COPY.CAUSE_PLACEHOLDER}
           value={values.cause ?? ""}
           type={INPUT_TYPES.SELECT}
           onChange={handleCauseChange}
@@ -72,9 +73,11 @@ const DamageReportForm = ({
         <FormField
           id="damage-report-description"
           name="description"
-          label="Descripción"
+          label={DAMAGE_REPORT_COPY.DESCRIPTION_LABEL}
           value={values.description}
-          placeholder="Describa lo ocurrido"
+          placeholder={
+            DAMAGE_REPORT_COPY.DESCRIPTION_PLACEHOLDER
+          }
           type={INPUT_TYPES.TEXTAREA}
           onChange={handleDescriptionChange}
         />
@@ -82,7 +85,7 @@ const DamageReportForm = ({
         <FormField
           id="damage-report-impact-delta"
           name="impactDelta"
-          label="Aumento del conteo de golpes"
+          label={DAMAGE_REPORT_COPY.IMPACT_DELTA_LABEL}
           value={String(values.impactDelta)}
           type={INPUT_TYPES.NUMBER}
           onChange={handleImpactDeltaChange}
@@ -91,7 +94,7 @@ const DamageReportForm = ({
 
       {submissionSuccess && (
         <p className={DAMAGE_REPORT_SUCCESS_CLASS}>
-          Reporte de daño registrado correctamente.
+          {DAMAGE_REPORT_COPY.SUCCESS}
         </p>
       )}
 
@@ -109,8 +112,8 @@ const DamageReportForm = ({
           disabled={isSubmitting}
         >
           {isSubmitting
-            ? "Registrando..."
-            : "Reportar daño"}
+            ? DAMAGE_REPORT_COPY.LOADING_BUTTON
+            : DAMAGE_REPORT_COPY.SUBMIT_BUTTON}
         </Button>
       </div>
     </form>

@@ -1,14 +1,7 @@
 import { createServerSupabaseClient } from "@/app/services/supabase";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
-import type { Database } from "@/app/types";
+import type { CreateDamageReportInput } from "../models/CreateDamageReportInput.interface";
 import { validateDamageReportInput } from "./validateDamageReportInput";
-
-export interface CreateDamageReportInput {
-  unitId: string;
-  cause: Database["public"]["Enums"]["damage_cause"];
-  description: string;
-  impactDelta: number;
-}
 
 export const createDamageReport = async (
   input: CreateDamageReportInput
@@ -18,7 +11,12 @@ export const createDamageReport = async (
 
   const {
     data: { user },
+    error: authError,
   } = await supabase.auth.getUser();
+
+  if (authError) {
+    throw authError;
+  }
 
   if (!user) {
     throw new Error("No authenticated user found");

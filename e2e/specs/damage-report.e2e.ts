@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
+import { DAMAGE_REPORT_COPY } from "@/app/features/operations/damage-report/constants/DamageReportCopy.constants";
 import {
   E2E_DAMAGE_REPORT_CAUSES,
-  E2E_DAMAGE_REPORT_COPY,
   E2E_DAMAGE_REPORT_FORM_INPUT,
 } from "../constants/E2eDamageReport.constants";
 import { createDamageReportPage } from "../pages/DamageReport.page";
@@ -20,7 +20,7 @@ test.describe("Damage report", () => {
     await damageReportPage.goTo();
 
     await expect(damageReportPage.getHeading()).toHaveText(
-      E2E_DAMAGE_REPORT_COPY.HEADING
+      DAMAGE_REPORT_COPY.TITLE
     );
     await expect(
       damageReportPage.getUnitSelect()

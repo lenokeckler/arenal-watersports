@@ -1,8 +1,10 @@
 "use client";
 
+import type { NullableRef } from "@/app/types";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { submitDamageReport } from "../actions/submitDamageReport";
+import { DAMAGE_REPORT_COPY } from "../constants/DamageReportCopy.constants";
 import type { DamageReportFormViewModel } from "../models/DamageReportFormViewModel.interface";
 import type { DamageReportUnit } from "../models/DamageReportUnit.interface";
 import { useDamageReportFormValues } from "./useDamageReportFormValues";
@@ -13,9 +15,8 @@ export const useDamageReportFormViewModel = (
   const form = useDamageReportFormValues();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionError, setSubmissionError] = useState<
-    string | null
-  >(null);
+  const [submissionError, setSubmissionError] =
+    useState<NullableRef<string>>(null);
   const [submissionSuccess, setSubmissionSuccess] =
     useState(false);
 
@@ -27,7 +28,9 @@ export const useDamageReportFormViewModel = (
     const { cause } = form.values;
 
     if (!cause) {
-      setSubmissionError("Debe seleccionar una causa.");
+      setSubmissionError(
+        DAMAGE_REPORT_COPY.CAUSE_REQUIRED_ERROR
+      );
       return;
     }
 
@@ -35,20 +38,19 @@ export const useDamageReportFormViewModel = (
     setSubmissionError(null);
     setSubmissionSuccess(false);
 
-    const result = await submitDamageReport({
-      ...form.values,
-      cause,
-    });
+    try {
+      await submitDamageReport({
+        ...form.values,
+        cause,
+      });
 
-    setIsSubmitting(false);
-
-    if (!result.ok) {
-      setSubmissionError(result.error);
-      return;
+      form.resetValues();
+      setSubmissionSuccess(true);
+    } catch {
+      setSubmissionError(DAMAGE_REPORT_COPY.ERROR);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    form.resetValues();
-    setSubmissionSuccess(true);
   };
 
   return {

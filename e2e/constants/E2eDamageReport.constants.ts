@@ -1,15 +1,5 @@
 import { DAMAGE_REPORT_CAUSES } from "@/app/features/operations/damage-report/constants/DamageReportCause.constants";
 
-export const E2E_DAMAGE_REPORT_COPY = {
-  HEADING: "Reporte de daño",
-  UNIT_LABEL: "Unidad afectada",
-  CAUSE_LABEL: "Causa",
-  DESCRIPTION_LABEL: "Descripción",
-  IMPACT_DELTA_LABEL: "Aumento del conteo de golpes",
-  SUBMIT: "Reportar daño",
-  CAUSE_REQUIRED: "Debe seleccionar una causa.",
-} as const;
-
 export const E2E_DAMAGE_REPORT_CAUSES =
   DAMAGE_REPORT_CAUSES;
 

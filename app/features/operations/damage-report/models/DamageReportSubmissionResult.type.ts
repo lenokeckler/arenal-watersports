@@ -1,2 +1,1 @@
-export type DamageReportSubmissionResult =
-  { ok: true } | { ok: false; error: string };
+export type DamageReportSubmissionResult = { ok: true };
