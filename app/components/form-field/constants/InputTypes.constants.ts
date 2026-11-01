@@ -32,6 +32,7 @@ export type Autocomplete =
   (typeof AUTOCOMPLETE)[keyof typeof AUTOCOMPLETE];
 
 export const INPUT_MODE = {
+  DECIMAL: "decimal",
   EMAIL: "email",
   NUMERIC: "numeric",
 } as const;

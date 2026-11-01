@@ -22,6 +22,12 @@ export const createCategoryCardPage = () => {
     screen.queryByRole(ARIA_ROLE.LINK, {
       name: CATEGORY_CATALOG_COPY.BEHAVIOR_LINK,
     });
+
+  const getDepositLink = () =>
+    screen.queryByRole(ARIA_ROLE.LINK, {
+      name: CATEGORY_CATALOG_COPY.DEPOSIT_LINK,
+    });
+
   const getTrackingModeLabel = (label: string) =>
     screen.queryByText(label);
 
@@ -82,6 +88,7 @@ export const createCategoryCardPage = () => {
     getInactivePill,
     getGroupRow,
     getBehaviorLink,
+    getDepositLink,
     getTrackingModeLabel,
     getGroupPrefix,
     getDeleteButton,

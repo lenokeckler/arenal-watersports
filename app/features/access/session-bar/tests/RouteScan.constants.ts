@@ -13,6 +13,7 @@ export const ROUTE_SEPARATOR = "/";
 
 export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
   "/administration/categories/[categoryId]/behavior",
+  "/administration/categories/[categoryId]/deposit",
 ];
 
 export const CLASSIFIED_PAGE_ROUTES: readonly string[] = [
