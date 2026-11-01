@@ -2911,6 +2911,20 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: string;
       };
+      reservation_category_conflicts: {
+        Args: {
+          p_category_id: string;
+          p_ends_at: string;
+          p_starts_at: string;
+        };
+        Returns: {
+          code: string;
+          customer_name: string;
+          ends_at: string;
+          reservation_id: string;
+          starts_at: string;
+        }[];
+      };
       unit_conflicts: {
         Args: {
           p_ends_at: string;
