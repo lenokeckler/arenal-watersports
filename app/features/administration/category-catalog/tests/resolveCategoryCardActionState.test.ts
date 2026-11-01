@@ -27,7 +27,7 @@ describe("resolveCategoryCardActionState", () => {
     ).toBe(CATEGORY_CARD_ACTION_STATE.MARK_INACTIVE);
   });
 
-  it("returns NONE for an inactive category regardless of records", () => {
+  it("returns REACTIVATE for an inactive category regardless of records", () => {
     const category = {
       ...DEFAULT_CATEGORY_LIST_ITEM,
       hasRecords: true,
@@ -36,7 +36,7 @@ describe("resolveCategoryCardActionState", () => {
 
     expect(
       resolveCategoryCardActionState(category, false)
-    ).toBe(CATEGORY_CARD_ACTION_STATE.NONE);
+    ).toBe(CATEGORY_CARD_ACTION_STATE.REACTIVATE);
   });
 
   it("returns CONFIRM_DELETE for an active card being confirmed", () => {
@@ -50,7 +50,7 @@ describe("resolveCategoryCardActionState", () => {
     ).toBe(CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE);
   });
 
-  it("returns NONE for an inactive card even while it is marked as being confirmed", () => {
+  it("returns REACTIVATE for an inactive card even while it is marked as being confirmed", () => {
     const category = {
       ...DEFAULT_CATEGORY_LIST_ITEM,
       hasRecords: false,
@@ -59,7 +59,7 @@ describe("resolveCategoryCardActionState", () => {
 
     expect(
       resolveCategoryCardActionState(category, true)
-    ).toBe(CATEGORY_CARD_ACTION_STATE.NONE);
+    ).toBe(CATEGORY_CARD_ACTION_STATE.REACTIVATE);
   });
 
   it("returns MARK_INACTIVE for an active card with records being confirmed, since categories with records never reach the DELETE state that starts a confirm", () => {
