@@ -7,6 +7,18 @@ export const RESERVATION_HISTORY_COPY = {
   EQUIPMENT_LABEL: "Equipo",
   ERROR_BODY: "Revise su conexión e intente de nuevo.",
   ERROR_TITLE: "No se pudo cargar el historial",
+  FILTER_ALL: "Todos",
+  FILTER_CATEGORY_UNAVAILABLE: "Equipo no disponible",
+  FILTER_DATE_RANGE_ERROR:
+    "La fecha final no puede ser anterior a la inicial.",
+  FILTER_FROM_LABEL: "Desde",
+  FILTER_SUBMIT: "Aplicar filtros",
+  FILTER_SUBMIT_PENDING: "Aplicando filtros...",
+  FILTER_TO_LABEL: "Hasta",
+  FILTER_TYPE_LABEL: "Tipo de reserva",
+  FILTERED_EMPTY_BODY:
+    "Ninguna reserva coincide con los filtros. Cambie las fechas, el tipo o el equipo e intente de nuevo.",
+  FILTERED_EMPTY_TITLE: "Sin resultados",
   GUIDE_LABEL: "Guía",
   LIST_ARIA_LABEL: "Lista de reservas del historial",
   LOADING_ANNOUNCEMENT: "Cargando historial",
@@ -23,4 +35,7 @@ export const RESERVATION_HISTORY_COPY = {
   PAGINATION_PAGE: "Página",
   PAGINATION_PREVIOUS: "Anterior",
   RETRY: "Reintentar",
+  TYPE_COMBO: "Combo",
+  TYPE_RENTAL: "Renta",
+  TYPE_TOUR: "Tour",
 } as const;
