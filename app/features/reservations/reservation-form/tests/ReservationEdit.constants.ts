@@ -121,3 +121,12 @@ export const RESERVATION_EDIT: ReservationEdit = {
   peopleCount: 3,
   time: RESERVATION_EDIT_TEST.EXPECTED_TIME,
 };
+
+export const RESERVATION_EDIT_CATEGORY_OPTION = {
+  id: RESERVATION_EDIT_TEST.CATEGORY_ID,
+  isInterchangeable: false,
+  name: RESERVATION_EDIT_TEST.CATEGORY_NAME,
+};
+
+export const RESERVATION_EDIT_LONG_DATE =
+  "jueves, 12 de abril de 2035";
