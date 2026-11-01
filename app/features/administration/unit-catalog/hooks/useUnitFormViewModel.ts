@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { UNIT_FORM_INITIAL_VALUES } from "../constants/UnitFormInitialValues.constants";
 import type { UnitFormViewModel } from "../models/UnitFormViewModel.interface";
 import type { UnitFormViewModelProps } from "../models/UnitFormViewModelProps.interface";
+import { buildUnitDecommissionedNotice } from "../utils/buildUnitDecommissionedNotice";
 import { mapUnitRowToFormValues } from "../utils/mapUnitRowToFormValues";
 import { resolveCategoryUnitsPath } from "../utils/resolveUnitPaths";
 import { useUnitFormFields } from "./useUnitFormFields";
@@ -35,5 +36,17 @@ export const useUnitFormViewModel = ({
     router.push(resolveCategoryUnitsPath(category.id));
   };
 
-  return { ...fields, isSubmitting, onBack, onSubmit };
+  const decommissionedNotice = unit
+    ? buildUnitDecommissionedNotice(unit)
+    : null;
+
+  return {
+    ...fields,
+    decommissionedNotice,
+    isReadOnly: decommissionedNotice !== null,
+    isStatusLocked: unit?.isOccupied ?? false,
+    isSubmitting,
+    onBack,
+    onSubmit,
+  };
 };

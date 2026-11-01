@@ -9,7 +9,8 @@ const UnitFormFields = ({
   values,
   errors,
   category,
-  isSubmitting,
+  isDisabled,
+  isStatusLocked,
   onCodeChange,
   onStatusChange,
   ...motorHandlers
@@ -22,12 +23,12 @@ const UnitFormFields = ({
       placeholder={UNIT_FORM_COPY.CODE_PLACEHOLDER}
       value={values.code}
       error={errors.code}
-      disabled={isSubmitting}
+      disabled={isDisabled}
       onChange={onCodeChange}
     />
     <UnitFormStatusField
       value={values.status}
-      disabled={isSubmitting}
+      disabled={isDisabled || isStatusLocked}
       onChange={onStatusChange}
     />
     {category.hasMotor && (
@@ -36,7 +37,7 @@ const UnitFormFields = ({
         values={values}
         errors={errors}
         usageMetric={category.usageMetric}
-        disabled={isSubmitting}
+        disabled={isDisabled}
       />
     )}
   </>

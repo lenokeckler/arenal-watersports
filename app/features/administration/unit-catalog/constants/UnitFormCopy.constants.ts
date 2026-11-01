@@ -1,4 +1,5 @@
 export const UNIT_FORM_COPY = {
+  BACK_BUTTON: "Volver",
   CANCEL_BUTTON: "Cancelar",
   CATEGORY_PREFIX: "Categoría:",
   CODE_LABEL: "Código",
