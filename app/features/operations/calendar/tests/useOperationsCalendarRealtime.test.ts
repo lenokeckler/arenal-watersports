@@ -22,10 +22,12 @@ describe("useOperationsCalendarRealtime", (): void => {
   it("subscribes to each table that can change calendar data", (): void => {
     const on = vi.fn();
     const subscribe = vi.fn();
-    const channel = { on, subscribe };
+    const channel = { on, subscribe, teardown: vi.fn() };
     on.mockReturnValue(channel);
     subscribe.mockReturnValue(channel);
-    const removeChannel = vi.fn();
+    const removeChannel = vi
+      .fn()
+      .mockResolvedValue(undefined);
     const supabase = {
       channel: vi.fn(() => channel),
       removeChannel,
