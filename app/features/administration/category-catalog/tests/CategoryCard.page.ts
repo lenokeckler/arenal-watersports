@@ -28,6 +28,16 @@ export const createCategoryCardPage = () => {
       name: CATEGORY_CATALOG_COPY.DEPOSIT_LINK,
     });
 
+  const getUnitsLink = () =>
+    screen.queryByRole(ARIA_ROLE.LINK, {
+      name: CATEGORY_CATALOG_COPY.UNITS_LINK,
+    });
+
+  const getAlertsLink = () =>
+    screen.queryByRole(ARIA_ROLE.LINK, {
+      name: CATEGORY_CATALOG_COPY.ALERT_LINK,
+    });
+
   const getTrackingModeLabel = (label: string) =>
     screen.queryByText(label);
 
@@ -89,6 +99,8 @@ export const createCategoryCardPage = () => {
     getGroupRow,
     getBehaviorLink,
     getDepositLink,
+    getAlertsLink,
+    getUnitsLink,
     getTrackingModeLabel,
     getGroupPrefix,
     getDeleteButton,

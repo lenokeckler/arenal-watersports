@@ -8,7 +8,7 @@ import {
 import { PATHS } from "@/app/constants";
 import { isAdministratorSignedIn } from "@/app/services/worker-registration";
 import CategoryList from "../CategoryList";
-import { resolveCategoryListPageHref } from "../utils/resolveCategoryListPageHref";
+import { resolveListPageHref } from "@/app/utils/list-pagination/resolveListPageHref";
 import { listCategories } from "../services/listCategories";
 import { DEFAULT_CATEGORY_LIST_ITEM } from "./CategoryListItem.constants";
 
@@ -116,7 +116,10 @@ describe("CategoryList", () => {
     ).rejects.toThrow(REDIRECT_ERROR_MESSAGE);
 
     expect(redirectMock).toHaveBeenCalledWith(
-      resolveCategoryListPageHref(2)
+      resolveListPageHref(
+        PATHS.ADMINISTRATION.CATEGORIES,
+        2
+      )
     );
   });
 });
