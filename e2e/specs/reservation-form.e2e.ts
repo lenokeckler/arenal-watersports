@@ -8,9 +8,17 @@ import {
 import { createReservationFormPage } from "../pages/ReservationForm.page";
 import { createReservationEquipmentStatusFixture } from "../support/createReservationEquipmentStatusFixture";
 import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
+import { addReservationsArea } from "../support/addReservationsArea";
+import { readWorkerIdByUsername } from "../support/readWorkerIdByUsername";
+import { E2E_LOGIN_ACCOUNT } from "../constants/E2eLogin.constants";
 
 test.describe("Reservation form", () => {
   test.beforeEach(async ({ page }) => {
+    await addReservationsArea(
+      await readWorkerIdByUsername(
+        E2E_LOGIN_ACCOUNT.USERNAME
+      )
+    );
     await signInAsSeededWorker(page);
   });
 
