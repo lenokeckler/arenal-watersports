@@ -8,6 +8,7 @@ import { createLoginPage } from "../pages/Login.page";
 import { createProfilePage } from "../pages/Profile.page";
 import { createSessionBarPage } from "../pages/SessionBar.page";
 import { expect, test } from "../support/activeWorkerTest";
+import { pauseClockAfter } from "../support/pauseClockAfter";
 
 test.describe("Sign out", () => {
   test("asks for confirmation on the first tap and signs out on the second from the home page", async ({
@@ -66,7 +67,10 @@ test.describe("Sign out", () => {
       time: E2E_LOGOUT_CLOCK.START,
     });
     await createHomePage(page).goTo();
-    await page.clock.pauseAt(E2E_LOGOUT_CLOCK.PAUSE_AT);
+    await pauseClockAfter(
+      page,
+      E2E_LOGOUT_CLOCK.PAUSE_DELAY_MS
+    );
     await sessionBar.press();
     await expect(
       sessionBar.getConfirmButton()

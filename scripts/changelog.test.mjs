@@ -10,6 +10,8 @@ import {
 const STORY_BRANCH = "feat/acc-01/us-01-03-login-screen";
 const STORY_FRAGMENT =
   "changelog/unreleased/feature/feat-acc-01-us-01-03-login-screen.md";
+const RESTORED_FRAGMENT =
+  "changelog/unreleased/feature/feat-acc-01-us-02-01-sign-in-lockout.md";
 const RELEASE_BRANCH = "release/0.1.0";
 const ENTRY =
   "ACC-01.01.03: Login screen — the login screen (US-ACC-01 · AWS-30)";
@@ -118,6 +120,37 @@ describe("checkPullRequestFiles", () => {
         STORY_BRANCH
       )
     ).toHaveLength(1);
+  });
+
+  it("does not count fragments restored from the base history", () => {
+    expect(
+      checkPullRequestFiles(
+        [
+          { path: STORY_FRAGMENT, status: "A" },
+          {
+            path: RESTORED_FRAGMENT,
+            restored: true,
+            status: "A",
+          },
+        ],
+        STORY_BRANCH
+      )
+    ).toEqual([]);
+  });
+
+  it("still asks for its own fragment when only restored ones are added", () => {
+    expect(
+      checkPullRequestFiles(
+        [
+          {
+            path: RESTORED_FRAGMENT,
+            restored: true,
+            status: "A",
+          },
+        ],
+        STORY_BRANCH
+      )[0]
+    ).toContain("found 0");
   });
 
   it("skips the check on a release branch", () => {
