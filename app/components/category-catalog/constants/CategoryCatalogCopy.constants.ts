@@ -2,6 +2,7 @@ export const CATEGORY_CATALOG_COPY = {
   CANCEL_BUTTON: "Cancelar",
   CREATE_CTA: "+ Agregar categoría",
   CREATE_FORM_TITLE: "Nueva categoría",
+  CREATE_SUCCESS_TOAST: "Categoría creada.",
   DELETE_BUTTON: "Eliminar",
   DELETE_CATEGORY_BUTTON: "Eliminar categoría",
   DELETE_CONFIRM_MESSAGE:
