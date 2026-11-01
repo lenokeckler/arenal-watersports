@@ -20,6 +20,20 @@ Let the administration worker choose, per category, whether the inventory alert 
 - `0`, negatives, decimals such as `1.5`, text and whitespace-only are rejected on that field only.
 - The database keeps each column null or greater than zero (`categories_alert_quantity_positive`, `categories_alert_expiry_positive`), proved by `070_category_alerts.test.sql`.
 
+## Part 15.04 requirements
+
+| Requirement                                                                                                             | Test                                                                                                                  |
+| ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Its own page at `/administration/categories/[categoryId]/alerts` with the heading and the hint                          | `CategoryAlertsForm.test.tsx` "renders the heading and the hint"; `resolveCategoryAlertsPath.test.ts`                 |
+| The type selector offers none, quantity, expiry and both, in that order                                                 | `CategoryAlertsForm.test.tsx` "offers the four alert types in order"                                                  |
+| Only the fields of the chosen type are rendered; stored values prefill type and fields                                  | `CategoryAlertsForm.test.tsx` "prefills the $alertType type...", "shows the quantity field..."                        |
+| Numeric fields open the digits keypad; the type and fields are described by the hint; an error sits under its own field | `CategoryAlertsFormSubmit.test.tsx`; `CategoryAlertsForm.test.tsx` "describes the type and both fields with the hint" |
+| Typed values are sent as numbers and what does not apply as `null`                                                      | `CategoryAlertsFormSubmit.test.tsx` "sends numbers and null..."                                                       |
+| Fields and Cancelar are disabled while saving; Cancelar returns to the list                                             | `CategoryAlertsForm.test.tsx`                                                                                         |
+| A visitor who is not administration goes to the home; an unknown category shows not found                               | `CategoryAlerts.test.tsx`                                                                                             |
+| Every category card, active or inactive, links to its alerts screen                                                     | `CategoryCardAlertsLink.test.tsx`                                                                                     |
+| After a category is created the worker lands on its alerts screen                                                       | `handleCreateCategoryResult.test.ts`, `useCategoryCreateFormViewModel.test.ts`, `category-create.e2e.ts`              |
+
 ## Acceptance criteria
 
 US-ADM-15, as written in `docs/proyecto/historias-de-usuario.md`:
