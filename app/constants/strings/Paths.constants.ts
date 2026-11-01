@@ -12,6 +12,7 @@ export const PATHS = {
   ADMINISTRATION: {
     CATEGORIES: "/administration/categories",
     CATEGORIES_NEW: "/administration/categories/new",
+    CATEGORY_BEHAVIOR_SEGMENT: "behavior",
     ROOT: "/administration",
     RESERVATIONS_BY_WORKER:
       "/administration/reports/reservations-by-worker",

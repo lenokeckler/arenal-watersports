@@ -1,3 +1,4 @@
+import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
 import type { NullableRef } from "@/app/types";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
@@ -14,6 +15,12 @@ export const getCategoryBehavior = async (
     .select("*")
     .eq("id", categoryId)
     .maybeSingle();
+  if (
+    error?.code ===
+    POSTGRES_ERROR_CODE.INVALID_TEXT_REPRESENTATION
+  ) {
+    return null;
+  }
   throwIfSupabaseError(error, "getCategoryBehavior");
 
   return categoryRow

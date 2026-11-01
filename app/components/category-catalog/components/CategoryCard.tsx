@@ -1,7 +1,11 @@
 import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
 import type { CategoryCardViewModel } from "../models/CategoryCardViewModel.interface";
-import { resolveCategoryCardContainerClassName } from "../styles/CategoryCard.styles";
+import {
+  CATEGORY_CARD_BUTTONS_CLASS,
+  resolveCategoryCardContainerClassName,
+} from "../styles/CategoryCard.styles";
 import CategoryCardActions from "./CategoryCardActions";
+import CategoryCardBehaviorLink from "./CategoryCardBehaviorLink";
 import CategoryCardGroupRow from "./CategoryCardGroupRow";
 import CategoryCardNameRow from "./CategoryCardNameRow";
 import CategoryCardTrackingMode from "./CategoryCardTrackingMode";
@@ -34,14 +38,17 @@ const CategoryCard = ({
         groupName={category.groupName}
       />
     )}
-    <CategoryCardActions
-      actionState={actionState}
-      isActionLoading={isActionLoading}
-      onCancelClick={onCancelClick}
-      onConfirmDeleteClick={onConfirmDeleteClick}
-      onDeleteClick={onDeleteClick}
-      onMarkInactiveClick={onMarkInactiveClick}
-    />
+    <div className={CATEGORY_CARD_BUTTONS_CLASS}>
+      <CategoryCardBehaviorLink categoryId={category.id} />
+      <CategoryCardActions
+        actionState={actionState}
+        isActionLoading={isActionLoading}
+        onCancelClick={onCancelClick}
+        onConfirmDeleteClick={onConfirmDeleteClick}
+        onDeleteClick={onDeleteClick}
+        onMarkInactiveClick={onMarkInactiveClick}
+      />
+    </div>
   </div>
 );
 
