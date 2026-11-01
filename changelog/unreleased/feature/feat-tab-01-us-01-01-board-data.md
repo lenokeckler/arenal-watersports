@@ -1,1 +1,1 @@
-TAB-01.01.01: Board data layer — board constants, models and spec for the available equipment board (US-TAB-01 · AWS-41)
+TAB-01.01.01: Board data layer — board constants, models and the category summary view that counts free and in-use units (US-TAB-01 · AWS-41)
