@@ -59,6 +59,31 @@ describe("mapReservationDetail", () => {
     ]);
   });
 
+  it("uses the unavailable-name fallback for unresolved extra relations", () => {
+    const source = {
+      ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+      reservation_items:
+        RESERVATION_DETAIL_SOURCE_FIXTURE.reservation_items.map(
+          (item) =>
+            item.extra_id === null
+              ? item
+              : { ...item, extra: null }
+        ),
+    };
+    const detail = mapReservationDetail(
+      source,
+      RESERVATION_DETAIL_WORKER_NAMES_FIXTURE
+    );
+
+    expect(detail.extras).toEqual([
+      {
+        categoryName: test.CATEGORY_NAME,
+        name: test.MISSING_RELATED_NAME,
+        quantity: test.QUANTITY,
+      },
+    ]);
+  });
+
   it("preserves distinct guide identities for matching names", () => {
     const detail = mapReservationDetail(
       {
@@ -117,6 +142,25 @@ describe("mapReservationDetail", () => {
         expectedReturnAt: test.EXPECTED_RETURN,
         id: test.RESERVATION_ID,
         unitCodes: [test.UNIT_CODE],
+      },
+    ]);
+  });
+
+  it("uses the unavailable-name fallback for unresolved guides", () => {
+    const workerNames =
+      RESERVATION_DETAIL_WORKER_NAMES_FIXTURE.filter(
+        (worker) =>
+          worker.worker_id !== test.GUIDE_WORKER_ID
+      );
+    const detail = mapReservationDetail(
+      RESERVATION_DETAIL_SOURCE_FIXTURE,
+      workerNames
+    );
+
+    expect(detail.guides).toEqual([
+      {
+        name: test.MISSING_RELATED_NAME,
+        workerId: test.GUIDE_WORKER_ID,
       },
     ]);
   });
