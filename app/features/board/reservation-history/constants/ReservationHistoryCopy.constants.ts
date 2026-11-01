@@ -14,9 +14,4 @@ export const RESERVATION_HISTORY_COPY = {
   PAGE_DESCRIPTION:
     "Consulte las reservas ya cerradas o canceladas.",
   PAGE_TITLE: "Historial de reservas",
-  ROW_ARIA_LABEL: (
-    customerName: string,
-    date: string
-  ): string =>
-    `Ver detalle de la reserva de ${customerName}, ${date}`,
 } as const;

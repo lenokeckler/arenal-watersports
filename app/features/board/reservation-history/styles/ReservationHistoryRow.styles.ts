@@ -3,7 +3,7 @@ import type { ReservationHistoryStatus } from "@/app/services/board/reservation-
 import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
 
 const RESERVATION_HISTORY_ROW_BASE_CLASS =
-  "flex min-h-11 items-center justify-between gap-sm rounded-xl border border-l-4 border-outline-variant bg-card-tint-neutral-bg p-md backdrop-blur-md transition-colors hover:border-primary/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none";
+  "flex min-h-12 items-center justify-between gap-sm rounded-xl border border-l-4 border-outline-variant bg-card-tint-neutral-bg p-md backdrop-blur-md transition-colors hover:border-primary/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none";
 
 export const RESERVATION_HISTORY_ROW_CLASS: Record<
   ReservationHistoryStatus,
