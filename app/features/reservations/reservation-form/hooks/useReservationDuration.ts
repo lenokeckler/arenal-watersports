@@ -13,8 +13,7 @@ const createReservationDurationHandlers = (
   setCustomDurationDraft: Dispatch<SetStateAction<string>>,
   setIsCustomDuration: Dispatch<SetStateAction<boolean>>,
   updateDurationValue: (hours: number) => void,
-  clearFieldError: (field: ReservationFormField) => void,
-  clearUnitSelection: () => void
+  clearFieldError: (field: ReservationFormField) => void
 ) => {
   const selectPreset = (hours: number): void => {
     setIsCustomDuration(false);
@@ -41,7 +40,6 @@ const createReservationDurationHandlers = (
     }
     setCustomDurationDraft(value);
     clearFieldError(RESERVATION_FORM_FIELD.DURATION_HOURS);
-    clearUnitSelection();
   };
   return {
     selectCustomDuration,
@@ -52,8 +50,7 @@ const createReservationDurationHandlers = (
 
 export const useReservationDuration = (
   updateDurationValue: (hours: number) => void,
-  clearFieldError: (field: ReservationFormField) => void,
-  clearUnitSelection: () => void
+  clearFieldError: (field: ReservationFormField) => void
 ) => {
   const [isCustomDuration, setIsCustomDuration] =
     useState(false);
@@ -63,8 +60,7 @@ export const useReservationDuration = (
     setCustomDurationDraft,
     setIsCustomDuration,
     updateDurationValue,
-    clearFieldError,
-    clearUnitSelection
+    clearFieldError
   );
   const resolveDurationHours = (
     selectedDurationHours: number
