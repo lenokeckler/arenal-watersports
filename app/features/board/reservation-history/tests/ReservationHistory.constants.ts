@@ -5,6 +5,7 @@ import {
 import type { ReservationHistoryItem } from "@/app/services/board/reservation-history/models/ReservationHistoryItem.interface";
 import type { ReservationHistoryPage } from "@/app/services/board/reservation-history/models/ReservationHistoryPage.interface";
 import {
+  HISTORY_EMPTY_FILTERS,
   HISTORY_FULL_FILTERS,
   HISTORY_REQUESTED_PAGE_INDEX,
 } from "@/app/services/board/reservation-history/tests/ReservationHistory.constants";
@@ -32,6 +33,11 @@ export const CANCELLED_ITEM: ReservationHistoryItem = {
 export const HISTORY_QUERY = {
   filters: HISTORY_FULL_FILTERS,
   pageIndex: HISTORY_REQUESTED_PAGE_INDEX,
+} as const;
+
+export const HISTORY_UNFILTERED_QUERY = {
+  filters: HISTORY_EMPTY_FILTERS,
+  pageIndex: 0,
 } as const;
 
 export const buildPage = (

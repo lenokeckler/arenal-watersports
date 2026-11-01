@@ -15,6 +15,9 @@ export const RESERVATION_HISTORY_COPY = {
   FILTER_SUBMIT_PENDING: "Aplicando filtros...",
   FILTER_TO_LABEL: "Hasta",
   FILTER_TYPE_LABEL: "Tipo de reserva",
+  FILTERED_EMPTY_BODY:
+    "Ninguna reserva coincide con los filtros. Cambie las fechas, el tipo o el equipo e intente de nuevo.",
+  FILTERED_EMPTY_TITLE: "Sin resultados",
   GUIDE_LABEL: "Guía",
   LIST_ARIA_LABEL: "Lista de reservas del historial",
   LOADING_ANNOUNCEMENT: "Cargando historial",
