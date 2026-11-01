@@ -88,14 +88,29 @@ describe("resolveReservationDetailChargeSummary", () => {
     ]);
   });
 
-  it("does not expose extra-time charges on an ordinary reservation", () => {
+  it("separates extra-time charges from ordinary tariff totals", () => {
     const summary = resolveReservationDetailChargeSummary(
       null,
       RESERVATION_DETAIL_PRICING_FIXTURE,
-      RESERVATION_DETAIL_MONEY_FIXTURE.charges,
+      [
+        ...RESERVATION_DETAIL_MONEY_FIXTURE.charges,
+        {
+          amount: RESERVATION_DETAIL_TEST.CHARGE_CRC,
+          currency: RESERVATION_DETAIL_CURRENCY.CRC,
+          kind: RESERVATION_DETAIL_CHARGE_KIND.EXTRA_TIME,
+        },
+      ],
       RESERVATION_DETAIL_MONEY_FIXTURE.refunds
     );
 
-    expect(summary.extraTimeCharges).toEqual([]);
+    expect(summary.charges[0].amountCharged).toBe(
+      RESERVATION_DETAIL_TEST.CHARGE_CRC
+    );
+    expect(summary.extraTimeCharges).toEqual([
+      {
+        amountCharged: RESERVATION_DETAIL_TEST.CHARGE_CRC,
+        currency: RESERVATION_DETAIL_CURRENCY.CRC,
+      },
+    ]);
   });
 });

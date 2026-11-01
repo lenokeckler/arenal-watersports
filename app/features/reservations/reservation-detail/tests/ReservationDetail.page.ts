@@ -21,6 +21,12 @@ export const createReservationDetailPage =
           name: RESERVATION_DETAIL_SECTIONS_COPY.DISPATCHES,
         })
       ).getAllByRole("listitem"),
+    getEquipmentText: (text: string): HTMLElement =>
+      within(
+        screen.getByRole(ARIA_ROLE.REGION, {
+          name: RESERVATION_DETAIL_SECTIONS_COPY.EQUIPMENT,
+        })
+      ).getByText(text),
     getText: (text: string): HTMLElement =>
       screen.getByText(text),
     getTexts: (text: string): HTMLElement[] =>

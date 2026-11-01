@@ -7,7 +7,9 @@ describe("reservation detail operational collections", (): void => {
   it("shows committed equipment, extras, and assigned guides", (): void => {
     const page = renderReservationDetail();
 
-    expect(page.getText(test.UNIT_CODE)).toBeVisible();
+    expect(
+      page.getEquipmentText(test.UNIT_CODE)
+    ).toBeVisible();
     expect(page.getText(test.EXTRA_NAME)).toBeVisible();
     expect(page.getText(test.GUIDE_NAME)).toBeVisible();
     expect(

@@ -6,4 +6,5 @@ export interface ReservationDetailDispatch {
   categoryName: NullableRef<string>;
   expectedReturnAt: NullableRef<string>;
   id: string;
+  unitCodes: string[];
 }

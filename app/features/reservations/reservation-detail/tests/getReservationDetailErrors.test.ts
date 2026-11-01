@@ -39,7 +39,7 @@ describe("getReservationDetail query errors", () => {
     });
     vi.mocked(
       getAuthorizedReservationDetailClient
-    ).mockResolvedValue(supabase as never);
+    ).mockResolvedValue(supabase.client);
 
     await expect(
       getReservationDetail(
@@ -69,7 +69,7 @@ describe("getReservationDetail query errors", () => {
     });
     vi.mocked(
       getAuthorizedReservationDetailClient
-    ).mockResolvedValue(supabase as never);
+    ).mockResolvedValue(supabase.client);
 
     await expect(
       getReservationDetail(
