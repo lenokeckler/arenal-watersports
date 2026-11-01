@@ -18,6 +18,9 @@ export const PATHS = {
     WORKER_AREAS: "/administration/workers/areas",
     WORKERS_NEW: "/administration/workers/new",
   },
+  HISTORY: {
+    ROOT: "/history",
+  },
   PROFILE: {
     EMAIL: "/profile/email",
     PASSWORD: "/profile/password",
