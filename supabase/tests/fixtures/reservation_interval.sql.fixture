@@ -1,0 +1,89 @@
+create temporary table interval_fixture as
+select
+  'e2800000-0000-4000-8000-000000000001'::uuid as worker_id,
+  'e2800000-0000-4000-8000-000000000101'::uuid as quantity_category,
+  'e2800000-0000-4000-8000-000000000102'::uuid as unit_category,
+  'e2800000-0000-4000-8000-000000000103'::uuid as missing_stock_category,
+  'e2800000-0000-4000-8000-000000000104'::uuid as empty_stock_category,
+  '2035-04-12 10:00:00+00'::timestamptz as starts_at,
+  '2035-04-12 12:00:00+00'::timestamptz as ends_at,
+  2::integer as physical_capacity,
+  1::integer as single_commitment,
+  3::integer as mixed_peak,
+  0::integer as empty_capacity,
+  (-1)::integer as overbooked_free;
+
+insert into auth.users (id, email)
+select worker_id, 'res15-interval@arenal.local' from interval_fixture;
+insert into workers (id, username, full_name, base_role)
+select worker_id, 'res15-interval', 'RES15 Interval', 'reservas' from interval_fixture;
+
+insert into equipment_categories
+  (id, name, tracking_mode, is_reservable, units_are_interchangeable,
+   default_duration_minutes, created_by, updated_by)
+select categories.id, categories.name, categories.mode::tracking_mode,
+  true, true, 60, fixture.worker_id, fixture.worker_id
+from interval_fixture fixture cross join lateral (values
+  (fixture.quantity_category, 'RES15 Quantity', 'by_quantity'),
+  (fixture.unit_category, 'RES15 Unit', 'by_unit'),
+  (fixture.missing_stock_category, 'RES15 Missing stock', 'by_quantity'),
+  (fixture.empty_stock_category, 'RES15 Empty stock', 'by_quantity')
+) categories(id, name, mode);
+
+insert into equipment_stock
+  (category_id, quantity_available, quantity_damaged, quantity_in_repair, updated_by)
+select quantity_category, physical_capacity, mixed_peak, mixed_peak, worker_id
+from interval_fixture
+union all
+select empty_stock_category, empty_capacity, mixed_peak, mixed_peak, worker_id
+from interval_fixture;
+
+insert into equipment_units (category_id, code, status, created_by, updated_by)
+select fixture.unit_category, units.code, units.status::unit_status,
+  fixture.worker_id, fixture.worker_id
+from interval_fixture fixture cross join (values
+  ('RES15-FIRST', 'available'),
+  ('RES15-SECOND', 'available'),
+  ('RES15-DAMAGED', 'damaged'),
+  ('RES15-REPAIR', 'in_repair'),
+  ('RES15-MAINTENANCE', 'in_maintenance')
+) units(code, status);
+
+create temporary table interval_commitments (
+  customer_name text primary key,
+  starts_offset interval not null,
+  duration_minutes integer not null,
+  quantity integer,
+  category_id uuid,
+  unit_code text,
+  status reservation_status not null default 'scheduled'
+);
+
+create function pg_temp.persist_interval_commitments()
+returns void language plpgsql as $$
+begin
+  insert into reservations (customer_name, people_count, type, starts_at,
+    duration_minutes, status, cancellation_reason, closed_at, dispatched_at, created_by, updated_by)
+  select commitment.customer_name, fixture.single_commitment, 'rental',
+    fixture.starts_at + commitment.starts_offset, commitment.duration_minutes,
+    commitment.status,
+    case when commitment.status = 'cancelled' then 'Fixture cancellation' end,
+    case when commitment.status = 'closed' then fixture.ends_at end,
+    case when commitment.status = 'dispatched' then fixture.starts_at end,
+    fixture.worker_id, fixture.worker_id
+  from interval_commitments commitment cross join interval_fixture fixture;
+
+  insert into reservation_items
+    (reservation_id, category_id, quantity, unit_id, created_by, updated_by)
+  select reservation.id,
+    case when commitment.unit_code is null
+      then coalesce(commitment.category_id, fixture.quantity_category) end,
+    commitment.quantity, unit.id, fixture.worker_id, fixture.worker_id
+  from interval_commitments commitment
+  join reservations reservation using (customer_name)
+  cross join interval_fixture fixture
+  left join equipment_units unit on unit.code = commitment.unit_code;
+end;
+$$;
+
+grant select on interval_fixture to authenticated, anon;
