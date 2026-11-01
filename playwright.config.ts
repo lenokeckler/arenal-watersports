@@ -1,6 +1,5 @@
 import { loadEnvConfig } from "@next/env";
 import { defineConfig, devices } from "@playwright/test";
-import { loadEnvConfig } from "@next/env";
 import {
   E2E_ARTIFACT_MODE,
   E2E_BASE_URL,
