@@ -9,6 +9,7 @@ import { useReservationEquipmentViewModel } from "./useReservationEquipmentViewM
 import { STRING } from "@/app/constants";
 import type { ReservationFormViewModelOptions } from "../models/ReservationFormViewModelOptions.interface";
 import { useReservationEquipmentEligibility } from "./useReservationEquipmentEligibility";
+import { useReservationFormEquipmentSelection } from "./useReservationFormEquipmentSelection";
 
 export const useReservationFormViewModel = (
   options: ReservationFormViewModelOptions
@@ -48,6 +49,18 @@ export const useReservationFormViewModel = (
     ),
     eligibility.refreshKey
   );
+  const selection = useReservationFormEquipmentSelection({
+    availableUnits: equipment.availableUnits,
+    categories: eligibleCategories,
+    isAvailabilityResolved:
+      equipment.isAvailabilityResolved,
+    isEligibilityError: eligibility.hasError,
+    isEligibilityLoading: eligibility.isLoading,
+    selectedCategoryId: fields.values.categoryId,
+    selectedUnitId: fields.values.unitId,
+    onCategoryChange: fields.handleCategoryChange,
+    onUnitChange: fields.handleUnitChange,
+  });
   const isSubmitDisabled =
     submission.isPending ||
     submission.isSubmitted ||
@@ -79,8 +92,10 @@ export const useReservationFormViewModel = (
     ...equipment,
     isEquipmentEligibilityLoading: eligibility.isLoading,
     hasEquipmentEligibilityError: eligibility.hasError,
-    hasEquipmentSelectionChanged: false,
+    hasEquipmentSelectionChanged: selection.hasChanged,
     handleRetryEquipmentEligibility: eligibility.retry,
+    handleCategoryChange: selection.handleCategoryChange,
+    handleUnitChange: selection.handleUnitChange,
     isSubmitDisabled,
     customDurationDraft: duration.customDurationDraft,
     handleCustomDurationSelection: () => {

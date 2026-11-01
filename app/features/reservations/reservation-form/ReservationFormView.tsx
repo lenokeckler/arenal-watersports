@@ -81,7 +81,7 @@ const ReservationFormView = ({
             onSubmit={viewModel.handleSubmit}
           >
             <ReservationFormFields
-              categories={allCategories}
+              categories={viewModel.categories}
               viewModel={viewModel}
             />
             {allCategories.length === 0 && (
