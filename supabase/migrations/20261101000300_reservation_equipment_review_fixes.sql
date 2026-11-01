@@ -55,6 +55,7 @@ begin
     end if;
     if new.unit_id is null and new.category_id is not null
       and new.category_id = old.category_id
+      and new.reservation_id = old.reservation_id
       and new.quantity < old.quantity and exists (
         select 1 from reservations
         where id = new.reservation_id and status = 'scheduled'
