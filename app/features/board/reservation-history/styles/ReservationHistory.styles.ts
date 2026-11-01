@@ -16,9 +16,6 @@ export const RESERVATION_HISTORY_LIST_CLASS =
 export const RESERVATION_HISTORY_EMPTY_CLASS =
   "flex flex-col items-center gap-sm rounded-xl border border-dashed border-outline-variant p-lg text-center";
 
-export const RESERVATION_HISTORY_EMPTY_ICON_CLASS =
-  "text-4xl text-on-surface-variant";
-
 export const RESERVATION_HISTORY_EMPTY_TITLE_CLASS =
   "text-title-md text-on-surface";
 
