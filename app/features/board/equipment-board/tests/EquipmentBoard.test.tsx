@@ -55,6 +55,8 @@ describe("EquipmentBoard", () => {
     const page = createEquipmentBoardPage();
     const kayakCard = page.getCard(KAYAK_LABEL);
 
+    await page.toggleCard(kayakCard);
+
     expect(
       page.getText(
         kayakCard,
@@ -81,6 +83,7 @@ describe("EquipmentBoard", () => {
 
     expect(page.getCards()).toHaveLength(1);
     expect(page.queryMemberList(card)).toBeNull();
+    expect(page.queryToggle(card)).toBeNull();
   });
 
   it("shows the empty state and no grid when there is no reservable equipment", async () => {

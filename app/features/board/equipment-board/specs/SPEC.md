@@ -8,7 +8,7 @@ Let any worker see at a glance how much reservable equipment is free and how muc
 
 - Read-only screen at `PATHS.BOARD`, rendered on the server, that becomes the entry screen.
 - One card per active reservable category tracked by unit: its product image, a "Por unidad" chip, a "N / T libres" chip, its name and a bar with the free share.
-- Categories that administration grouped appear as one card with the summed totals and the member categories listed inside with their own counts.
+- Categories that administration grouped appear as one card with the summed totals and the member categories shown, when the card is opened, with their own counts.
 - Two cards per row on a phone, three from `md`.
 - A header with an icon tile, the title "Tablero" and the subtitle "Qué se puede alquilar en este momento.".
 - Loading, empty and error states with Spanish copy and a retry button.
@@ -47,9 +47,9 @@ con la finalidad de saber de un vistazo qué se puede alquilar en este momento.
 
 ## Design notes
 
-- The whole card is the photo: a square image area, `object-cover`, full-bleed and clipped by the card's rounded corners. Floating over it, the "Por unidad" chip top-left (shown from `lg`; on narrower screens it is hidden so the chips never collide), the "N / T libres" chip top-right ("libre" when exactly one is free) on a dark translucent blurred backdrop, and the category name bottom-left over a dark gradient, with the free bar drawn under the name at the very bottom (teal fill is free / total, so a card with everything free is full). A grouped card shows, below the photo and inside the same rounded card, one compact line per member with its name and "N libres".
+- The whole card is the photo: a square image area, `object-cover`, full-bleed and clipped by the card's rounded corners. Floating over it, the "Por unidad" chip top-left (at every width; below `md` its text shortens to "Unidad" and the chip tightens so both chips stay on one row), the "N / T libres" chip top-right ("libre" when exactly one is free) on a dark translucent blurred backdrop, and the category name bottom-left over a dark gradient, with the free bar drawn under the name at the very bottom (teal fill is free / total, so a card with everything free is full). A grouped card is the only interactive card: its photo is a toggle (a real button named after the group, `aria-expanded`, `aria-controls`, a chevron) that is collapsed by default; opening it shows, below the photo and inside the same rounded card and under a divider, one line per member with its name and "N libres". Each member row is its own component so it can become a link to its units screen in a later story (US-TAB-02) without restructuring.
 - The "en uso" count was dropped from the cards on the product owner's request (Kendall and Leno's reference). The criterion "cuántas libres y cuántas en uso sobre el total" is carried by the free/total chip and the free-share bar: in use is the total minus the free.
-- Every photo is square, so every card of a row has the same image height; a grouped card is taller and its row neighbours stretch to match.
+- Every photo is square, and the photo grows to fill the row height, so neighbouring cards end flush; an opened grouped card is taller and its row neighbours stretch to match.
 - Grid: 2 columns on a phone, 3 from `md`, inside a `max-w-7xl` page.
 - Colors come from the `@theme` tokens of `app/globals.css`; the image resolver is `resolveReservationEquipmentImage`.
 
@@ -57,7 +57,8 @@ con la finalidad de saber de un vistazo qué se puede alquilar en este momento.
 
 - A dispatched unit is in use even when its return time has passed; it is never free.
 - Free plus in use never exceeds the total; units in maintenance or damaged count only in the total.
-- A group with a single visible member renders as a plain card with the category name.
+- A group with a single visible member renders as a plain card with the category name, with no toggle.
+- "Sin fusionarse por dentro" is satisfied by the member options shown on opening the grouped card.
 - Group names that differ only in casing merge into one card.
 - A category with no units stays visible with zero counts and an empty bar.
 - A category with no known image renders the same card with a neutral placeholder in the image area.
@@ -73,7 +74,7 @@ con la finalidad de saber de un vistazo qué se puede alquilar en este momento.
 
 - [ ] Each reservable category tracked by unit has one card with its free count over the total in a chip and a bar with the free share.
 - [ ] A dispatched unit with an overdue return is counted in use and never as free; free plus in use never exceeds the total.
-- [ ] A grouped category is one card with summed totals and its members listed with their own counts.
+- [ ] A grouped category is one card with summed totals, collapsed by default, whose members are listed with their own counts when it is opened and hidden again when closed.
 - [ ] On a phone the cards sit two per row.
 - [ ] Each card shows its image (or a placeholder), the "Por unidad" chip, the "N / T libres" chip, the name and the free-share bar.
 - [ ] Vests, paddles and extinguishers do not appear on the board.

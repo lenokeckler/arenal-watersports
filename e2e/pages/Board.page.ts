@@ -57,6 +57,12 @@ export const createBoardPage = (page: Page) => {
       has: page.getByText(categoryName, { exact: true }),
     });
 
+  const toggleCard = async (
+    card: Locator
+  ): Promise<void> => {
+    await card.getByRole(ARIA_ROLE.BUTTON).click();
+  };
+
   const getTextInMain = (text: string): Locator =>
     main.getByText(text);
 
@@ -83,5 +89,6 @@ export const createBoardPage = (page: Page) => {
     getSubtitle,
     getTextInMain,
     goTo,
+    toggleCard,
   };
 };

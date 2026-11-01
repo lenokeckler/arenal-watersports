@@ -15,7 +15,7 @@ import {
 import { createEquipmentBoardPage } from "./EquipmentBoard.page";
 
 describe("EquipmentBoardContent edge cases", () => {
-  it("keeps a zero-total member listed with 0 libres without moving the group bar", () => {
+  it("keeps a zero-total member listed with 0 libres without moving the group bar", async () => {
     render(
       <EquipmentBoardContent
         cards={CARDS_WITH_ZERO_TOTAL_MEMBER}
@@ -23,6 +23,8 @@ describe("EquipmentBoardContent edge cases", () => {
     );
     const page = createEquipmentBoardPage();
     const card = page.getCard(BOARD_GROUP_NAME.KAYAK);
+
+    await page.toggleCard(card);
     const [, spareLine] = page.getMemberLines(card);
 
     expect(spareLine).toHaveTextContent(
@@ -36,16 +38,17 @@ describe("EquipmentBoardContent edge cases", () => {
     );
   });
 
-  it("lists two members that share a name as two separate lines", () => {
+  it("lists two members that share a name as two separate lines", async () => {
     render(
       <EquipmentBoardContent
         cards={CARDS_WITH_DUPLICATE_NAMES}
       />
     );
     const page = createEquipmentBoardPage();
-    const lines = page.getMemberLines(
-      page.getCard(BOARD_GROUP_NAME.KAYAK)
-    );
+    const card = page.getCard(BOARD_GROUP_NAME.KAYAK);
+
+    await page.toggleCard(card);
+    const lines = page.getMemberLines(card);
 
     expect(lines).toHaveLength(
       CARDS_WITH_DUPLICATE_NAMES[0].categories.length

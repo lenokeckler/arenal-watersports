@@ -54,7 +54,7 @@ test.describe("Equipment board", () => {
     }
   });
 
-  test("shows the grouped categories as one card with summed totals and each member listed with its own counts", async ({
+  test("shows the grouped categories as one collapsed card with summed totals that lists each member with its own counts when opened", async ({
     page,
   }) => {
     const boardPage = createBoardPage(page);
@@ -71,6 +71,14 @@ test.describe("Equipment board", () => {
     ).toHaveCount(E2E_COUNT.ONE);
 
     for (const member of E2E_BOARD_GROUP.MEMBERS) {
+      await expect(
+        boardPage.getMemberLine(groupCard, member.name)
+      ).toHaveCount(E2E_COUNT.NONE);
+    }
+
+    await boardPage.toggleCard(groupCard);
+
+    for (const member of E2E_BOARD_GROUP.MEMBERS) {
       const line = boardPage.getMemberLine(
         groupCard,
         member.name
@@ -85,6 +93,14 @@ test.describe("Equipment board", () => {
       ).toHaveCount(E2E_COUNT.ONE);
       await expect(
         boardPage.getCard(member.name)
+      ).toHaveCount(E2E_COUNT.NONE);
+    }
+
+    await boardPage.toggleCard(groupCard);
+
+    for (const member of E2E_BOARD_GROUP.MEMBERS) {
+      await expect(
+        boardPage.getMemberLine(groupCard, member.name)
       ).toHaveCount(E2E_COUNT.NONE);
     }
   });

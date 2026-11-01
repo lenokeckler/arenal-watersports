@@ -19,5 +19,6 @@ export const EQUIPMENT_BOARD_COPY = {
     "Qué se puede alquilar en este momento.",
   PAGE_TITLE: "Tablero",
   PER_UNIT_CHIP: "Por unidad",
+  PER_UNIT_CHIP_SHORT: "Unidad",
   RETRY: "Reintentar",
 } as const;

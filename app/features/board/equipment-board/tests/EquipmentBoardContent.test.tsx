@@ -57,12 +57,13 @@ describe("EquipmentBoardContent", () => {
     );
   });
 
-  it("lists each member category inside the grouped card with its name and free count", () => {
+  it("lists each member category inside the grouped card with its name and free count once expanded", async () => {
     const page = renderContent();
     const kayakDouble = createKayakDouble();
-    const lines = page.getMemberLines(
-      page.getCard(KAYAK_LABEL)
-    );
+    const kayakCard = page.getCard(KAYAK_LABEL);
+
+    await page.toggleCard(kayakCard);
+    const lines = page.getMemberLines(kayakCard);
 
     expect(lines).toHaveLength(CARD_COUNT_WITH_GROUP);
     expect(
@@ -70,6 +71,37 @@ describe("EquipmentBoardContent", () => {
     ).toBe(
       `${kayakDouble.name}${kayakDouble.freeCount} ${EQUIPMENT_BOARD_COPY.FREE_LABEL_PLURAL}`
     );
+  });
+
+  it("keeps the member lines out of the grouped card until it is toggled, and hides them again", async () => {
+    const page = renderContent();
+    const kayakCard = page.getCard(KAYAK_LABEL);
+
+    expect(page.isToggleExpanded(kayakCard)).toBe(false);
+    expect(page.queryMemberList(kayakCard)).toBeNull();
+
+    await page.toggleCard(kayakCard);
+
+    expect(page.isToggleExpanded(kayakCard)).toBe(true);
+    expect(page.getMemberLines(kayakCard)).toHaveLength(
+      CARD_COUNT_WITH_GROUP
+    );
+
+    await page.toggleCard(kayakCard);
+
+    expect(page.isToggleExpanded(kayakCard)).toBe(false);
+    expect(page.queryMemberList(kayakCard)).toBeNull();
+  });
+
+  it("names the toggle after the group and gives plain cards no button", () => {
+    const page = renderContent();
+
+    expect(
+      page.getToggle(page.getCard(KAYAK_LABEL))
+    ).toHaveAccessibleName(KAYAK_LABEL);
+    expect(
+      page.queryToggle(page.getCard(JET_SKI_LABEL))
+    ).toBeNull();
   });
 
   it("draws a decorative bar sized by the share free", () => {

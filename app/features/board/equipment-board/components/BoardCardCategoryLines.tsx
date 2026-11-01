@@ -1,13 +1,7 @@
-import { InlineText, Text } from "@/app/components";
-import { ARIA_ROLE, STRING } from "@/app/constants";
+import { ARIA_ROLE } from "@/app/constants";
 import type { BoardCardCategoryLinesProps } from "../models/BoardCardCategoryLinesProps.interface";
-import {
-  BOARD_CARD_LINE_CLASS,
-  BOARD_CARD_LINE_FREE_CLASS,
-  BOARD_CARD_LINE_NAME_CLASS,
-  BOARD_CARD_LINES_CLASS,
-} from "../styles/BoardCard.styles";
-import { resolveFreeLabel } from "../utils/resolveFreeLabel";
+import { BOARD_CARD_LINES_CLASS } from "../styles/BoardCard.styles";
+import BoardCardCategoryLine from "./BoardCardCategoryLine";
 
 const BoardCardCategoryLines = ({
   categories,
@@ -17,22 +11,10 @@ const BoardCardCategoryLines = ({
     className={BOARD_CARD_LINES_CLASS}
   >
     {categories.map((category) => (
-      <div
+      <BoardCardCategoryLine
         key={category.id}
-        role={ARIA_ROLE.LISTITEM}
-        className={BOARD_CARD_LINE_CLASS}
-      >
-        <Text className={BOARD_CARD_LINE_NAME_CLASS}>
-          {category.name}
-        </Text>
-        <Text className={BOARD_CARD_LINE_FREE_CLASS}>
-          {category.freeCount}
-          {STRING.SPACE}
-          <InlineText>
-            {resolveFreeLabel(category.freeCount)}
-          </InlineText>
-        </Text>
-      </div>
+        category={category}
+      />
     ))}
   </div>
 );
