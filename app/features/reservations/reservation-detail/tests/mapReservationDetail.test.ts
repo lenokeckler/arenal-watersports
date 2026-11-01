@@ -17,22 +17,14 @@ describe("mapReservationDetail", () => {
       {
         categoryName: RESERVATION_DETAIL_TEST.CATEGORY_NAME,
         dispatchId: RESERVATION_DETAIL_TEST.RESERVATION_ID,
-        fuelIn: null,
-        fuelOut: null,
         quantity: null,
         unitCode: RESERVATION_DETAIL_TEST.UNIT_CODE,
-        usageIn: null,
-        usageOut: null,
       },
       {
         categoryName: RESERVATION_DETAIL_TEST.CATEGORY_NAME,
         dispatchId: null,
-        fuelIn: null,
-        fuelOut: null,
         quantity: RESERVATION_DETAIL_TEST.QUANTITY,
         unitCode: null,
-        usageIn: null,
-        usageOut: null,
       },
     ]);
     expect(detail.extras).toEqual([

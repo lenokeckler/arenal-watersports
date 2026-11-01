@@ -7,6 +7,7 @@ export const createReservationDetailSupabaseClient = () => {
   const query = {
     eq: vi.fn().mockReturnThis(),
     maybeSingle: vi.fn(),
+    order: vi.fn().mockReturnThis(),
     select: vi.fn().mockReturnThis(),
   };
   const from = vi.fn().mockReturnValue(query);
