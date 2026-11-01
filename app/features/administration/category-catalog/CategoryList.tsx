@@ -6,8 +6,8 @@ import CategoryListView from "./CategoryListView";
 import type { CategoryListProps } from "./models/CategoryListProps.interface";
 import type { CategoryListViewProps } from "./models/CategoryListViewProps.interface";
 import { listCategories } from "./services/listCategories";
-import { resolveCategoryListPage } from "./utils/resolveCategoryListPage";
-import { resolveCategoryListPageHref } from "./utils/resolveCategoryListPageHref";
+import { resolveListPage } from "@/app/utils/list-pagination/resolveListPage";
+import { resolveListPageHref } from "@/app/utils/list-pagination/resolveListPageHref";
 
 const fetchCategoryListViewProps = async (
   currentPage: number
@@ -45,7 +45,7 @@ const CategoryList = async ({
 
   const categoryListViewProps =
     await fetchCategoryListViewProps(
-      resolveCategoryListPage(pageParam)
+      resolveListPage(pageParam)
     );
 
   if (
@@ -54,7 +54,8 @@ const CategoryList = async ({
     categoryListViewProps.pageCount > LENGTH.ZERO
   ) {
     redirect(
-      resolveCategoryListPageHref(
+      resolveListPageHref(
+        PATHS.ADMINISTRATION.CATEGORIES,
         categoryListViewProps.pageCount
       )
     );
