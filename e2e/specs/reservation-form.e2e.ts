@@ -115,8 +115,8 @@ test.describe("Reservation form", () => {
 
     await reservationFormPage.goTo();
     await expect(
-      reservationFormPage.getCategorySelect()
-    ).toHaveValue("");
+      reservationFormPage.getSelectedCategoryOption()
+    ).toHaveCount(0);
     await reservationFormPage.submitReservation();
 
     await expect(
