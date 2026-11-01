@@ -27,7 +27,7 @@ export const CATEGORY_CATALOG_COPY = {
   FETCH_ERROR_MESSAGE:
     "No se pudieron cargar las categorías.",
   GENERIC_MUTATION_ERROR:
-    "No se pudo completar la acción. Intenta de nuevo.",
+    "No se pudo completar la acción. Intente de nuevo.",
   GROUP_FIELD_LABEL: "Grupo",
   GROUP_FIELD_PLACEHOLDER: "Opcional — ej. Kayaks",
   GROUP_PREFIX_LABEL: "GRUPO",
