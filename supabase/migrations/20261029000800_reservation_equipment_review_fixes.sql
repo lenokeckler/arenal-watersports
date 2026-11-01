@@ -48,9 +48,9 @@ begin
     return new;
   end if;
   if tg_op = 'UPDATE' then
-    if row(new.reservation_id, new.unit_id, new.category_id)
+    if row(new.reservation_id, new.unit_id, new.category_id, new.quantity)
       is not distinct from
-      row(old.reservation_id, old.unit_id, old.category_id) then
+      row(old.reservation_id, old.unit_id, old.category_id, old.quantity) then
       return new;
     end if;
     if new.unit_id is null and new.category_id is not null
@@ -87,6 +87,12 @@ begin
     return new;
   end if;
   if has_area('operaciones') and not has_area('reservas') then
+    if new.unit_id is not null and not exists (
+      select 1 from equipment_units
+      where id = new.unit_id and status = 'available'
+    ) then
+      raise exception 'Equipment category is not available for reservation';
+    end if;
     return new;
   end if;
   if new.unit_id is not null then
