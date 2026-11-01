@@ -13,6 +13,9 @@ export const createReservationHistoryPage = () => {
   const queryList = () =>
     screen.queryByRole(ARIA_ROLE.LIST);
 
+  const getAllItems = () =>
+    screen.getAllByRole(ARIA_ROLE.LISTITEM);
+
   const getRows = () =>
     within(getList()).getAllByRole(ARIA_ROLE.LISTITEM);
 
@@ -43,14 +46,28 @@ export const createReservationHistoryPage = () => {
       name,
     });
 
+  const getStatus = () =>
+    screen.getByRole(ARIA_ROLE.STATUS);
+
+  const getAlert = () => screen.getByRole(ARIA_ROLE.ALERT);
+
+  const getRetryButton = () =>
+    screen.getByRole(ARIA_ROLE.BUTTON, {
+      name: RESERVATION_HISTORY_COPY.RETRY,
+    });
+
   const getText = (text: string) => screen.getByText(text);
 
   return {
+    getAlert,
+    getAllItems,
     getInRow,
     getNavigationLink,
     getList,
     getMain,
+    getRetryButton,
     getRowLink,
+    getStatus,
     getRows,
     getText,
     queryInRow,
