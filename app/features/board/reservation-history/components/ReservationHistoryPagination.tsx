@@ -1,4 +1,4 @@
-import Text from "@/app/components/text/Text";
+import { Text } from "@/app/components";
 import { PAGINATION, STRING } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import { RESERVATION_HISTORY_COPY } from "../constants/ReservationHistoryCopy.constants";
@@ -51,7 +51,10 @@ const ReservationHistoryPagination = ({
         ].join(STRING.SPACE)}
       </Text>
       <ReservationHistoryPageLink
-        isEnabled={pageNumber < page.pageCount}
+        isEnabled={
+          page.pageIndex + PAGINATION.ONE_PAGE <
+          page.pageCount
+        }
         label={RESERVATION_HISTORY_COPY.PAGINATION_NEXT}
         href={buildReservationHistoryHref({
           filters: query.filters,

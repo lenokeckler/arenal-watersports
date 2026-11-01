@@ -1,5 +1,5 @@
-import Link from "@/app/components/link/Link";
-import { Text } from "@/app/components/text/Text";
+import { Link, Text } from "@/app/components";
+import { ARIA_ROLE } from "@/app/constants";
 import type { ReservationHistoryPageLinkProps } from "../models/ReservationHistoryPageLinkProps.interface";
 import {
   RESERVATION_HISTORY_DISABLED_PAGE_LINK_CLASS,
@@ -20,6 +20,7 @@ const ReservationHistoryPageLink = ({
     </Link>
   ) : (
     <Text
+      role={ARIA_ROLE.LINK}
       aria-disabled
       className={
         RESERVATION_HISTORY_DISABLED_PAGE_LINK_CLASS
