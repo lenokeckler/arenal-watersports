@@ -17,6 +17,7 @@ import type { CreateCategoryInput } from "../models/CreateCategoryInput.interfac
 import { createCategoryAction } from "../services/createCategoryAction";
 import { handleCreateCategoryResult } from "../utils/handleCreateCategoryResult";
 import { showGenericMutationErrorToast } from "../utils/showGenericMutationErrorToast";
+import { resolveCategoryAlertsPath } from "../utils/resolveCategoryAlertsPath";
 import { validateCategoryCreateFormValues } from "../utils/validateCategoryCreateFormValues";
 
 const buildCreateCategoryInput = (
@@ -113,8 +114,10 @@ export const useCategoryCreateFormViewModel =
         );
         handleCreateCategoryResult(result, {
           showToast,
-          onSuccess: () =>
-            router.push(PATHS.ADMINISTRATION.CATEGORIES),
+          onSuccess: (categoryId) =>
+            router.push(
+              resolveCategoryAlertsPath(categoryId)
+            ),
           onGroupNameError: (groupNameError) =>
             setErrors({ groupName: groupNameError }),
           onNameError: (nameError) =>

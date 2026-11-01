@@ -7,3 +7,6 @@ export const VALID_CATEGORY_CREATE_FORM_VALUES: CategoryCreateFormValues =
     name: "Kayak doble",
     trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
   };
+
+export const FAKE_CREATED_CATEGORY_ID =
+  "fake-created-category-id";
