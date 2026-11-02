@@ -10,7 +10,7 @@ export const INVENTORY_COUNTS_GRID_CLASS: Record<
   [INVENTORY_TRACKING_MODE.BY_QUANTITY]:
     "grid grid-cols-2 gap-2 sm:grid-cols-4",
   [INVENTORY_TRACKING_MODE.BY_UNIT]:
-    "grid grid-cols-2 gap-2 sm:grid-cols-5",
+    "grid grid-cols-2 gap-2 sm:grid-cols-6",
 };
 
 export const INVENTORY_COUNT_CLASS =

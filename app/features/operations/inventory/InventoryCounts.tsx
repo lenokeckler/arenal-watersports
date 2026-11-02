@@ -36,6 +36,13 @@ const InventoryCounts = ({
       label={INVENTORY_COPY.AVAILABLE}
       value={category.available}
     />
+    {category.trackingMode ===
+    INVENTORY_TRACKING_MODE.BY_UNIT ? (
+      <InventoryCountItem
+        label={INVENTORY_COPY.IN_USE}
+        value={category.inUse}
+      />
+    ) : null}
     <InventoryCountItem
       label={INVENTORY_COPY.DAMAGED}
       value={category.damaged}
