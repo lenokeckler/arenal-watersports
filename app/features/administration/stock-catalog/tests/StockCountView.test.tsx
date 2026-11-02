@@ -7,6 +7,7 @@ import {
 } from "vitest";
 import { STOCK_ADJUSTMENT_REASON } from "../constants/StockAdjustmentReason.constants";
 import { STOCK_COUNT_COPY } from "../constants/StockCountCopy.constants";
+import { STOCK_EMPTY_LEVELS } from "../constants/StockEmptyLevels.constants";
 import { STOCK_REASON_COPY } from "../constants/StockReasonCopy.constants";
 import { DEFAULT_STOCK_CATEGORY } from "./Stock.constants";
 import { renderStockCountView } from "./renderStockCountView";
@@ -44,15 +45,19 @@ describe("StockCountView", () => {
     const page = renderStockCountView();
 
     expect(
-      page.getControl(STOCK_COUNT_COPY.AVAILABLE_LABEL)
+      page.getQuantityInput(
+        STOCK_COUNT_COPY.AVAILABLE_LABEL
+      )
     ).toHaveValue("10");
     expect(
-      page.getControl(STOCK_COUNT_COPY.DAMAGED_LABEL)
+      page.getQuantityInput(STOCK_COUNT_COPY.DAMAGED_LABEL)
     ).toHaveValue("2");
     expect(
-      page.getControl(STOCK_COUNT_COPY.IN_REPAIR_LABEL)
+      page.getQuantityInput(
+        STOCK_COUNT_COPY.IN_REPAIR_LABEL
+      )
     ).toHaveValue("1");
-    expect(page.getTotal()).toHaveTextContent("13");
+    expect(page.getSummaryTotal()).toHaveTextContent("13");
   });
 
   it("offers the four reasons in Spanish", () => {
@@ -65,12 +70,23 @@ describe("StockCountView", () => {
     );
   });
 
-  it("preselects the initial count when the category has no history", () => {
-    const page = renderStockCountView({ movements: [] });
+  it("preselects the initial count when the category has no count yet", () => {
+    const page = renderStockCountView({
+      levels: STOCK_EMPTY_LEVELS,
+      movements: [],
+    });
 
     expect(
       page.getControl(STOCK_COUNT_COPY.REASON_LABEL)
     ).toHaveValue(STOCK_ADJUSTMENT_REASON.INITIAL_COUNT);
+  });
+
+  it("preselects a count correction when units are registered but no movement exists", () => {
+    const page = renderStockCountView({ movements: [] });
+
+    expect(
+      page.getControl(STOCK_COUNT_COPY.REASON_LABEL)
+    ).toHaveValue(STOCK_ADJUSTMENT_REASON.COUNT_CORRECTION);
   });
 
   it("preselects a count correction when the category already has history", () => {

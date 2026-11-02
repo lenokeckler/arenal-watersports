@@ -55,9 +55,9 @@ describe("StockCountView history and read states", () => {
     expect(
       content.getByText(card.totalText)
     ).toBeInTheDocument();
-    card.lines.forEach((line) => {
-      expect(content.getByText(line)).toBeInTheDocument();
-    });
+    expect(
+      content.getByText(card.changesText)
+    ).toBeInTheDocument();
   });
 
   it("shows the empty history state when nothing was counted yet", () => {

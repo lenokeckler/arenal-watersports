@@ -9,25 +9,31 @@ import StockCountActions from "./StockCountActions";
 import StockExpiryField from "./StockExpiryField";
 import StockQuantityFields from "./StockQuantityFields";
 import StockReasonField from "./StockReasonField";
-import StockTotal from "./StockTotal";
+import StockSummary from "./StockSummary";
 
 const StockCountForm = ({
   hasExpiryAlert,
   viewModel,
 }: StockCountSectionProps): React.JSX.Element => {
-  const { errors, handlers, isSubmitting, values } =
-    viewModel;
+  const {
+    changes,
+    errors,
+    handlers,
+    isSubmitting,
+    values,
+  } = viewModel;
 
   return (
     <form onSubmit={viewModel.onSubmit}>
       <div className={STOCK_COUNT_FORM_CARD_CLASS}>
         <StockQuantityFields
+          changes={changes}
           disabled={isSubmitting}
           errors={errors}
           handlers={handlers}
           values={values}
         />
-        <StockTotal total={viewModel.total} />
+        <StockSummary summary={viewModel.summary} />
         {hasExpiryAlert && (
           <StockExpiryField
             disabled={isSubmitting}

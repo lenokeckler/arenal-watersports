@@ -138,7 +138,9 @@ describe("StockCountView submit failures", () => {
 
     expect(page.getSavingButton()).toBeDisabled();
     expect(
-      page.getControl(STOCK_COUNT_COPY.AVAILABLE_LABEL)
+      page.getQuantityInput(
+        STOCK_COUNT_COPY.AVAILABLE_LABEL
+      )
     ).toBeDisabled();
   });
 });

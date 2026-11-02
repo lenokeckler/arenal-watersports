@@ -5,16 +5,15 @@ import type { StockMovementCard } from "../models/StockMovementCard.interface";
 import {
   STOCK_HISTORY_CARD_CLASS,
   STOCK_HISTORY_CARD_HEADING_CLASS,
+  STOCK_HISTORY_CHANGES_CLASS,
   STOCK_HISTORY_DATE_CLASS,
-  STOCK_HISTORY_LINE_CLASS,
-  STOCK_HISTORY_LINES_CLASS,
   STOCK_HISTORY_REASON_CHIP_CLASS,
   STOCK_HISTORY_TOTAL_CLASS,
 } from "../styles/StockHistory.styles";
 
 const StockHistoryCard = ({
+  changesText,
   dateText,
-  lines,
   reasonLabel,
   totalText,
 }: StockMovementCard): React.JSX.Element => (
@@ -33,19 +32,14 @@ const StockHistoryCard = ({
         {reasonLabel}
       </InlineText>
     </div>
-    <div className={STOCK_HISTORY_LINES_CLASS}>
-      {lines.map((line) => (
-        <Text
-          key={line}
-          className={STOCK_HISTORY_LINE_CLASS}
-        >
-          {line}
-        </Text>
-      ))}
-    </div>
     <Text className={STOCK_HISTORY_TOTAL_CLASS}>
       {totalText}
     </Text>
+    {changesText && (
+      <Text className={STOCK_HISTORY_CHANGES_CLASS}>
+        {changesText}
+      </Text>
+    )}
   </div>
 );
 

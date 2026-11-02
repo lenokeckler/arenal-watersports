@@ -29,16 +29,38 @@ export const createStockCountPage = () => {
       name: STOCK_COUNT_COPY.LOADING_TEXT,
     });
 
-  const getTotal = () =>
-    screen.getByText(STOCK_COUNT_COPY.TOTAL_LABEL, {
-      selector: "span",
-    }).parentElement as HTMLElement;
+  const getQuantityInput = (label: string) =>
+    screen.getByRole(ARIA_ROLE.TEXTBOX, { name: label });
+
+  const getQuantityBlock = (label: string) =>
+    within(
+      screen.getByRole(ARIA_ROLE.GROUP, { name: label })
+    );
+
+  const getSummaryTotal = () =>
+    screen.getByText(
+      STOCK_COUNT_COPY.TOTAL_REGISTERED_LABEL,
+      { selector: "span" }
+    ).parentElement as HTMLElement;
+
+  const clickStep = (prefix: string, label: string) =>
+    user.click(
+      screen.getByRole(ARIA_ROLE.BUTTON, {
+        name: `${prefix} ${label}`,
+      })
+    );
+
+  const increase = (label: string) =>
+    clickStep(STOCK_COUNT_COPY.INCREASE_PREFIX, label);
+
+  const decrease = (label: string) =>
+    clickStep(STOCK_COUNT_COPY.DECREASE_PREFIX, label);
 
   const setQuantity = async (
     label: string,
     text: string
   ) => {
-    const field = getControl(label);
+    const field = getQuantityInput(label);
     await user.clear(field);
     await user.type(field, text);
   };
@@ -115,7 +137,12 @@ export const createStockCountPage = () => {
     clickRetry,
     getAlert,
     getBackLink,
+    decrease,
     getControl,
+    getQuantityBlock,
+    getQuantityInput,
+    getSummaryTotal,
+    increase,
     getHeading,
     getHistoryCard,
     getHistoryCardContent,
@@ -126,7 +153,6 @@ export const createStockCountPage = () => {
     getSaveButton,
     getSavingButton,
     getText,
-    getTotal,
     queryControl,
     selectReason,
     setExpiryDate,
