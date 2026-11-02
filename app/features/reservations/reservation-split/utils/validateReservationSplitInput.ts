@@ -10,6 +10,7 @@ import type { ReservationSplitDepartureInput } from "../models/ReservationSplitD
 import type { ReservationSplitErrors } from "../models/ReservationSplitErrors.interface";
 import type { ReservationSplitInput } from "../models/ReservationSplitInput.interface";
 import type { ReservationSplitItemInput } from "../models/ReservationSplitItemInput.interface";
+import { hasReservationSplitErrors } from "./hasReservationSplitErrors";
 
 const isValidPeopleCount = (peopleCount: number): boolean =>
   Number.isInteger(peopleCount) &&
@@ -81,7 +82,7 @@ export const validateReservationSplitInput = (
     validateReservationSplitDeparture
   );
   const hasErrors = departures.some(
-    (errors) => Object.keys(errors).length > 0
+    hasReservationSplitErrors
   );
 
   return hasErrors ? { departures } : null;
