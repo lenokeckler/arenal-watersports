@@ -1,10 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import ListPagination from "@/app/components/list-pagination/ListPagination";
 import { LENGTH } from "@/app/constants";
-import {
-  readBoardCategory,
-  readBoardCategoryUnits,
-} from "@/app/services/board";
+import { readBoardCategory } from "@/app/services/board";
 import { resolveBoardCategoryPath } from "@/app/utils/board-paths/resolveBoardCategoryPath";
 import { resolveListPage } from "@/app/utils/list-pagination/resolveListPage";
 import { resolveListPageCount } from "@/app/utils/list-pagination/resolveListPageCount";
@@ -13,12 +10,14 @@ import {
   safeNumber,
   safeString,
 } from "@/app/utils/safe-value/SafeValue";
+import CategoryGroupSwitch from "./components/CategoryGroupSwitch";
 import CategoryUnitsEmpty from "./components/CategoryUnitsEmpty";
 import CategoryUnitsHeader from "./components/CategoryUnitsHeader";
 import CategoryUnitsList from "./components/CategoryUnitsList";
 import { CATEGORY_UNITS_COPY } from "./constants/CategoryUnitsCopy.constants";
 import type { CategoryUnitsProps } from "./models/CategoryUnitsProps.interface";
 import { CATEGORY_UNITS_PAGE_CLASS } from "./styles/CategoryUnits.styles";
+import { readCategoryUnitsContent } from "./services/readCategoryUnitsContent";
 import { mapBoardCategoryUnitRow } from "./utils/mapBoardCategoryUnitRow";
 
 const CategoryUnits = async ({
@@ -41,16 +40,22 @@ const CategoryUnits = async ({
   }
 
   const categoryName = safeString(category.category_name);
-  const rows =
-    pageCount === LENGTH.ZERO
-      ? []
-      : await readBoardCategoryUnits(categoryId, page);
+  const { groupMembers, rows } =
+    await readCategoryUnitsContent({
+      categoryId,
+      page,
+      pageCount,
+    });
 
   return (
     <main className={CATEGORY_UNITS_PAGE_CLASS}>
       <CategoryUnitsHeader
         categoryName={categoryName}
         unitCount={unitCount}
+      />
+      <CategoryGroupSwitch
+        currentCategoryId={categoryId}
+        members={groupMembers}
       />
       {rows.length === LENGTH.ZERO ? (
         <CategoryUnitsEmpty />

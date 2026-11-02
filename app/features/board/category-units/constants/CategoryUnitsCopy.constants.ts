@@ -14,6 +14,7 @@ export const CATEGORY_UNITS_COPY = {
     "Revise su conexión e intente de nuevo. Mientras no cargue, no asuma que hay unidades libres.",
   ERROR_TITLE: "No se pudieron cargar las unidades",
   FALLBACK_TITLE: "Unidades de la categoría",
+  GROUP_SWITCH_LABEL: "Categorías del mismo grupo",
   LIST_LABEL: (categoryName: string): string =>
     `Unidades de ${categoryName}`,
   LOADING_ANNOUNCEMENT:
