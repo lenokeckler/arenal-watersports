@@ -1,13 +1,17 @@
 import { STRING } from "@/app/constants";
 import { describe, expect, it } from "vitest";
 import { mapCategoryRowToListItem } from "../utils/mapCategoryRowToListItem";
+import {
+  DEFAULT_CATEGORY_LIST_SOURCES,
+  DEFAULT_CATEGORY_QUANTITY,
+} from "./CategoryListSources.constants";
 import { DEFAULT_EQUIPMENT_CATEGORY_ROW } from "./EquipmentCategoryRow.constants";
 
 describe("mapCategoryRowToListItem", () => {
   it("marks hasRecords false when the category id is not in the set", () => {
     const categoryListItem = mapCategoryRowToListItem(
       DEFAULT_EQUIPMENT_CATEGORY_ROW,
-      new Set()
+      DEFAULT_CATEGORY_LIST_SOURCES
     );
 
     expect(categoryListItem.hasRecords).toBe(false);
@@ -16,7 +20,12 @@ describe("mapCategoryRowToListItem", () => {
   it("marks hasRecords true when the category id is in the set", () => {
     const categoryListItem = mapCategoryRowToListItem(
       DEFAULT_EQUIPMENT_CATEGORY_ROW,
-      new Set([DEFAULT_EQUIPMENT_CATEGORY_ROW.id])
+      {
+        ...DEFAULT_CATEGORY_LIST_SOURCES,
+        categoryIdsWithRecords: new Set([
+          DEFAULT_EQUIPMENT_CATEGORY_ROW.id,
+        ]),
+      }
     );
 
     expect(categoryListItem.hasRecords).toBe(true);
@@ -30,7 +39,7 @@ describe("mapCategoryRowToListItem", () => {
 
     const categoryListItem = mapCategoryRowToListItem(
       categoryRow,
-      new Set()
+      DEFAULT_CATEGORY_LIST_SOURCES
     );
 
     expect(categoryListItem.groupName).toBeNull();
@@ -44,7 +53,7 @@ describe("mapCategoryRowToListItem", () => {
 
     const categoryListItem = mapCategoryRowToListItem(
       categoryRow,
-      new Set()
+      DEFAULT_CATEGORY_LIST_SOURCES
     );
 
     expect(categoryListItem.groupName).toBe(STRING.Empty);
@@ -53,7 +62,7 @@ describe("mapCategoryRowToListItem", () => {
   it("maps id, name, status and trackingMode straight from the row", () => {
     const categoryListItem = mapCategoryRowToListItem(
       DEFAULT_EQUIPMENT_CATEGORY_ROW,
-      new Set()
+      DEFAULT_CATEGORY_LIST_SOURCES
     );
 
     expect(categoryListItem).toMatchObject({
@@ -63,5 +72,28 @@ describe("mapCategoryRowToListItem", () => {
       trackingMode:
         DEFAULT_EQUIPMENT_CATEGORY_ROW.tracking_mode,
     });
+  });
+
+  it("carries the current quantity of the category", () => {
+    const categoryListItem = mapCategoryRowToListItem(
+      DEFAULT_EQUIPMENT_CATEGORY_ROW,
+      DEFAULT_CATEGORY_LIST_SOURCES
+    );
+
+    expect(categoryListItem.currentQuantity).toBe(
+      DEFAULT_CATEGORY_QUANTITY
+    );
+  });
+
+  it("reads a category missing from the quantity view as zero", () => {
+    const categoryListItem = mapCategoryRowToListItem(
+      DEFAULT_EQUIPMENT_CATEGORY_ROW,
+      {
+        ...DEFAULT_CATEGORY_LIST_SOURCES,
+        quantityByCategoryId: new Map(),
+      }
+    );
+
+    expect(categoryListItem.currentQuantity).toBe(0);
   });
 });

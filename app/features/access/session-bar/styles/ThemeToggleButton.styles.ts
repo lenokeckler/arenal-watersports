@@ -1,0 +1,2 @@
+export const THEME_TOGGLE_BUTTON_CLASS =
+  "inline-flex min-h-12 min-w-12 items-center justify-center gap-xs rounded-lg border border-outline px-sm py-xs text-button font-semibold text-on-surface transition-colors duration-150 hover:border-primary aria-pressed:border-primary aria-pressed:bg-primary/10 active:bg-primary/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none";

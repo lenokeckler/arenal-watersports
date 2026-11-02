@@ -56,6 +56,7 @@ describe("CategoryList", () => {
     vi.mocked(listCategories).mockResolvedValue({
       categories: [DEFAULT_CATEGORY_LIST_ITEM],
       pageCount: 1,
+      totalCount: 1,
     });
 
     const element = await CategoryList({
@@ -68,6 +69,7 @@ describe("CategoryList", () => {
       currentPage: 1,
       fetchFailed: false,
       pageCount: 1,
+      totalCount: 1,
     });
   });
 
@@ -85,6 +87,7 @@ describe("CategoryList", () => {
 
     expect(element.props.fetchFailed).toBe(true);
     expect(element.props.categories).toEqual([]);
+    expect(element.props.totalCount).toBe(0);
   });
 
   it("reads the page named in the address", async () => {
@@ -94,6 +97,7 @@ describe("CategoryList", () => {
     vi.mocked(listCategories).mockResolvedValue({
       categories: [DEFAULT_CATEGORY_LIST_ITEM],
       pageCount: 3,
+      totalCount: 25,
     });
 
     const element = await CategoryList({ pageParam: "2" });
@@ -109,6 +113,7 @@ describe("CategoryList", () => {
     vi.mocked(listCategories).mockResolvedValue({
       categories: [],
       pageCount: 2,
+      totalCount: 15,
     });
 
     await expect(
