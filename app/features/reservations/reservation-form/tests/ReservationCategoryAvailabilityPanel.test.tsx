@@ -30,8 +30,18 @@ describe("ReservationCategoryAvailabilityPanel result states", () => {
       );
 
       expect(
-        page.getAvailabilityCount(freeEquipmentCount)
+        page.getAvailabilityCount(
+          Math.max(0, freeEquipmentCount)
+        )
       ).toBeInTheDocument();
+      if (
+        state ===
+        RESERVATION_CATEGORY_AVAILABILITY_PANEL_STATE.OVERCOMMITTED
+      ) {
+        expect(page.getStatus()).toHaveTextContent(
+          RESERVATION_FORM_UI_COPY.CATEGORY_AVAILABILITY_OVERCOMMITTED
+        );
+      }
     }
   );
 

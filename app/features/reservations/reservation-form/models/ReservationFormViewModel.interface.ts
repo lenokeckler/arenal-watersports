@@ -1,25 +1,18 @@
 import type { NullableRef } from "@/app/types";
 import type { ReservationFormField } from "./ReservationFormField.constants";
 import type { ReservationFormInput } from "./ReservationFormInput.interface";
-import type { ReservationType } from "./ReservationType.type";
 import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOption.interface";
 import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
 import type { ReservationCategoryAvailabilityPanelState } from "./ReservationCategoryAvailabilityPanelState.type";
-import type { ReservationCategoryConflictWarningViewModel } from "./ReservationCategoryConflictWarningViewModel.interface";
-import type { CustomComboFormViewModel } from "./CustomComboFormViewModel.interface";
-import type { PredefinedComboFormViewModel } from "./PredefinedComboFormViewModel.interface";
-import type { ReservationExtrasViewModel } from "./ReservationExtrasViewModel.interface";
 
 export interface ReservationFormViewModel {
-  errors: Partial<Record<ReservationFormField, string>>;
   categories: ReservationCategoryOption[];
-  hasEquipmentEligibilityError: boolean;
-  hasEquipmentSelectionChanged: boolean;
-  isEquipmentEligibilityLoading: boolean;
+  errors: Partial<Record<ReservationFormField, string>>;
   formError: string;
   isPending: boolean;
   isSubmitted: boolean;
   availableUnits: ReservationCategoryUnitOption[];
+  availableQuantity: NullableRef<number>;
   requiresConcreteUnit: boolean;
   isAvailabilityLoading: boolean;
   hasAvailabilityError: boolean;
@@ -27,13 +20,10 @@ export interface ReservationFormViewModel {
   categoryAvailabilityCategoryName: string;
   categoryAvailabilityInterval: string;
   categoryAvailabilityState: ReservationCategoryAvailabilityPanelState;
-  categoryConflictWarning: ReservationCategoryConflictWarningViewModel;
+  isSubmitDisabled: boolean;
   isCustomDuration: boolean;
   customDurationDraft: string;
   values: ReservationFormInput;
-  customCombo: CustomComboFormViewModel;
-  predefinedCombo: PredefinedComboFormViewModel;
-  extras: ReservationExtrasViewModel;
   handleCustomerNameChange: (value: string) => void;
   handleDateChange: (value: string) => void;
   handleDurationChange: (value: number) => void;
@@ -41,18 +31,17 @@ export interface ReservationFormViewModel {
   handleCustomDurationSelection: () => void;
   handlePeopleCountChange: (value: number) => void;
   handleQuantityChange: (value: number) => void;
-  handleReservationTypeChange: (
-    value: ReservationType
-  ) => void;
-  handleGuideToggle: (guideId: string) => void;
-  handleExtraToggle: (extraId: string) => void;
   handleCategoryChange: (value: string) => void;
-  handleTimeChange: (value: string) => void;
   handleUnitChange: (value: string) => void;
+  retryUnitAvailability: () => void;
+  isEquipmentEligibilityLoading: boolean;
+  hasEquipmentEligibilityError: boolean;
+  hasEquipmentSelectionChanged: boolean;
+  handleRetryEquipmentEligibility: () => void;
+  handleTimeChange: (value: string) => void;
   handleBack: () => void;
   handleSubmit: (
     event: React.FormEvent<HTMLFormElement>
   ) => void;
-  handleRetryEquipmentEligibility: () => void;
   handleRetryCategoryAvailability: () => void;
 }

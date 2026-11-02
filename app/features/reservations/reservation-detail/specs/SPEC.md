@@ -21,10 +21,10 @@ Let Reservations open one read-only view of an outing and see its reservation, c
 
 ## Requirements
 
-- Se muestra toda la información asociada a la salida.
-- Incluye el equipo comprometido, los extras, los guías asignados y el estado del cobro.
-- Indica quién creó la reserva y quién la modificó de último.
-- Lista cada grupo despachado con su hora real de salida, su hora de regreso y, si ya volvió, su hora de llegada.
+- Se muestra toda la informaci?n asociada a la salida.
+- Incluye el equipo comprometido, los extras, los gu?as asignados y el estado del cobro.
+- Indica qui?n cre? la reserva y qui?n la modific? de ?ltimo.
+- Lista cada grupo despachado con su hora real de salida, su hora de regreso y, si ya volvi?, su hora de llegada.
 - Require an authenticated account with the Reservations area using the existing server authorization pattern and Supabase RLS.
 - Keep currency amounts separate; never convert currencies or include deposits in charge status.
 - Calculate base-tariff status from `tariff` charges only; show `extra_time` charges and reservation-level refunds separately because refunds are not linked to a charge kind.
@@ -45,7 +45,7 @@ Let Reservations open one read-only view of an outing and see its reservation, c
 
 PR #222 delivers the reservation detail read model only. These story criteria remain open until the stacked screen and E2E parts are complete.
 
-- [ ] Se muestra toda la información asociada a la salida.
-- [ ] Incluye el equipo comprometido, los extras, los guías asignados y el estado del cobro.
-- [ ] Indica quién creó la reserva y quién la modificó de último.
-- [ ] Lista cada grupo despachado con su hora real de salida, su hora de regreso y, si ya volvió, su hora de llegada.
+- [ ] Se muestra toda la informaci?n asociada a la salida.
+- [ ] Incluye el equipo comprometido, los extras, los gu?as asignados y el estado del cobro.
+- [ ] Indica qui?n cre? la reserva y qui?n la modific? de ?ltimo.
+- [ ] Lista cada grupo despachado con su hora real de salida, su hora de regreso y, si ya volvi?, su hora de llegada.
