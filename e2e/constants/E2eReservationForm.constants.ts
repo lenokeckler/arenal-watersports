@@ -1,4 +1,5 @@
 import { RESERVATION_FORM_UI_COPY } from "@/app/features/reservations/reservation-form/constants/ReservationFormUiCopy.constants";
+import { E2E_PROJECT } from "./E2eRuntime.constants";
 
 export const E2E_RESERVATION_FORM_COPY = {
   HEADING: "Nueva reserva",
@@ -67,6 +68,31 @@ export const E2E_RESERVATION_FORM_ELIGIBILITY_SCREENSHOT_SUFFIX =
 
 export const E2E_RESERVATION_CATEGORY_AVAILABILITY_SCREENSHOT_BASENAME =
   "us-res-15-01-interval-availability";
+
+export const E2E_RESERVATION_CATEGORY_CONFLICT = {
+  FIRST_CUSTOMER_NAME: "Cliente de referencia",
+  SECOND_CUSTOMER_NAME: "Cliente de seguimiento",
+  SCREENSHOT_BASENAME:
+    "us-res-16-02-category-conflict-warning",
+  WARNING_TITLE:
+    RESERVATION_FORM_UI_COPY.CATEGORY_CONFLICT_WARNING_TITLE,
+  REFERENCE_DATE: "2098-12-15",
+  DATE_SAFE_UTC_HOUR: 12,
+  CANCEL_REASON:
+    "Playwright reservation conflict fixture cleanup",
+  PROJECT_DATE_OFFSETS: {
+    [E2E_PROJECT.MOBILE]: 0,
+    [E2E_PROJECT.DEFAULT]: 1,
+    [E2E_PROJECT.SCREENSHOTS_MOBILE]: 2,
+    [E2E_PROJECT.SCREENSHOTS]: 3,
+  },
+  PROJECT_CUSTOMER_SUFFIXES: {
+    [E2E_PROJECT.MOBILE]: "móvil",
+    [E2E_PROJECT.DEFAULT]: "escritorio",
+    [E2E_PROJECT.SCREENSHOTS_MOBILE]: "captura móvil",
+    [E2E_PROJECT.SCREENSHOTS]: "captura escritorio",
+  },
+} as const;
 
 export const E2E_RESERVATION_CATEGORY_AVAILABILITY_COUNT_PATTERN =
   new RegExp(

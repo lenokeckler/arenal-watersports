@@ -1,3 +1,5 @@
 import type { LogoutViewModel } from "./LogoutViewModel.interface";
+import type { ThemeViewModel } from "./ThemeViewModel.interface";
 
-export type SessionBarViewProps = LogoutViewModel;
+export interface SessionBarViewProps
+  extends LogoutViewModel, ThemeViewModel {}

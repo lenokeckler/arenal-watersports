@@ -50,6 +50,15 @@ export const renderReservationForm = (
                 isInterchangeable: true,
                 name: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME,
               },
+              ...(hasUnitCategory
+                ? [
+                    {
+                      id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
+                      isInterchangeable: true,
+                      name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
+                    },
+                  ]
+                : []),
             ]
           : []
       }

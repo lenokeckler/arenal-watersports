@@ -87,7 +87,7 @@ export const createReservationEquipmentStatusFixture =
           }
         }
         const { error: signOutError } =
-          await supabase.auth.signOut();
+          await supabase.auth.signOut({ scope: "local" });
         if (restorationError) {
           throw restorationError;
         }

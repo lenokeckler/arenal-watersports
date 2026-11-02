@@ -21,6 +21,11 @@ export const createBoardPage = (page: Page) => {
       name: EQUIPMENT_BOARD_COPY.PAGE_TITLE,
     });
 
+  const getSubtitle = (): Locator =>
+    main.getByText(EQUIPMENT_BOARD_COPY.PAGE_DESCRIPTION, {
+      exact: true,
+    });
+
   const getGrid = (): Locator =>
     main.getByRole(ARIA_ROLE.LIST, {
       name: EQUIPMENT_BOARD_COPY.GRID_LABEL,
@@ -44,13 +49,8 @@ export const createBoardPage = (page: Page) => {
     text: string
   ): Locator => card.getByText(text, { exact: true });
 
-  const getMemberLine = (
-    card: Locator,
-    categoryName: string
-  ): Locator =>
-    card.getByRole(ARIA_ROLE.LISTITEM).filter({
-      has: page.getByText(categoryName, { exact: true }),
-    });
+  const getButtons = (card: Locator): Locator =>
+    card.getByRole(ARIA_ROLE.BUTTON);
 
   const getTextInMain = (text: string): Locator =>
     main.getByText(text);
@@ -70,11 +70,12 @@ export const createBoardPage = (page: Page) => {
   return {
     countCardsInFirstRow,
     getCard,
+    getButtons,
     getCards,
     getCardText,
     getGrid,
     getHeading,
-    getMemberLine,
+    getSubtitle,
     getTextInMain,
     goTo,
   };
