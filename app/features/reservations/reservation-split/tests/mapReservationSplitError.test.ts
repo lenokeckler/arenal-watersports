@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
+import { RESERVATION_SPLIT_ERROR } from "../constants/ReservationSplitError.constants";
 import { RESERVATION_SPLIT_FEEDBACK_COPY } from "../constants/ReservationSplitFeedbackCopy.constants";
 import { mapReservationSplitError } from "../utils/mapReservationSplitError";
 import {
   FORM_ERROR_CASES,
-  INVALID_TIME_MESSAGE,
   TWO_DEPARTURES,
   UNMAPPED_MESSAGE,
   WRAPPED_PREFIX,
@@ -11,8 +11,8 @@ import {
 
 describe("mapReservationSplitError", () => {
   it.each(FORM_ERROR_CASES)(
-    "maps %s to a form error",
-    (_name, message, formError) => {
+    "maps the refusal %s to a form error",
+    (message, formError) => {
       expect(
         mapReservationSplitError(
           new Error(`${WRAPPED_PREFIX}${message}`),
@@ -33,7 +33,9 @@ describe("mapReservationSplitError", () => {
 
     expect(
       mapReservationSplitError(
-        new Error(INVALID_TIME_MESSAGE),
+        new Error(
+          RESERVATION_SPLIT_ERROR.INVALID_TIME_MESSAGE
+        ),
         TWO_DEPARTURES
       )
     ).toEqual({

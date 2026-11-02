@@ -9,6 +9,7 @@ import { revalidatePath } from "next/cache";
 import { PATHS } from "@/app/constants";
 import { assertReservationCalendarAccess } from "@/app/services/reservations/assertReservationCalendarAccess";
 import { splitReservationAction } from "../actions/splitReservationAction";
+import { RESERVATION_SPLIT_ERROR } from "../constants/ReservationSplitError.constants";
 import { RESERVATION_SPLIT_FEEDBACK_COPY } from "../constants/ReservationSplitFeedbackCopy.constants";
 import { splitReservation } from "../services/splitReservation";
 import {
@@ -19,7 +20,6 @@ import {
 import { SPLIT_DEPARTURE_CODE } from "./splitReservation.constants";
 import {
   SPLIT_ACCESS_REDIRECT,
-  SPLIT_STALE_MESSAGE,
   SPLIT_UNEXPECTED_ERROR,
 } from "./splitReservationAction.constants";
 
@@ -90,20 +90,23 @@ describe("splitReservationAction", () => {
     expect(splitReservation).not.toHaveBeenCalled();
   });
 
-  it("returns the stale message without revalidating", async () => {
-    vi.mocked(splitReservation).mockRejectedValue(
-      new Error(SPLIT_STALE_MESSAGE)
-    );
+  it.each(RESERVATION_SPLIT_ERROR.FORM_ERROR_LOOKUP)(
+    "returns the form error of the refusal $message without revalidating",
+    async ({ formError, message }) => {
+      vi.mocked(splitReservation).mockRejectedValue(
+        new Error(message)
+      );
 
-    await expect(
-      splitReservationAction(VALID_SPLIT_INPUT)
-    ).resolves.toEqual({
-      ok: false,
-      errors: { departures: [] },
-      formError: RESERVATION_SPLIT_FEEDBACK_COPY.STALE,
-    });
-    expect(revalidatePath).not.toHaveBeenCalled();
-  });
+      await expect(
+        splitReservationAction(VALID_SPLIT_INPUT)
+      ).resolves.toEqual({
+        ok: false,
+        errors: { departures: [] },
+        formError,
+      });
+      expect(revalidatePath).not.toHaveBeenCalled();
+    }
+  );
 
   it("rethrows an unexpected failure for server logging", async () => {
     vi.mocked(splitReservation).mockRejectedValue(
