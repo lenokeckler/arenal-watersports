@@ -1,38 +1,15 @@
-import { createBrowserSupabaseClient } from "@/app/services/supabase/client";
 import { CALENDAR_REALTIME } from "../constants/CalendarRealtime.constants";
-import { createCalendarRefreshScheduler } from "./createCalendarRefreshScheduler";
-import { subscribeCalendarTables } from "./subscribeCalendarTables";
+import { subscribeRealtimeRefresh } from "@/app/components/realtime/utils/subscribeRealtimeRefresh";
 
 export const subscribeCalendarRealtime = (
   channelName: string,
   notify: () => void,
   onConnectionError: (hasError: boolean) => void
-): (() => void) => {
-  const supabase = createBrowserSupabaseClient();
-  const scheduler = createCalendarRefreshScheduler(notify);
-  const channel = supabase.channel(channelName);
-  subscribeCalendarTables(channel, scheduler.schedule);
-  channel.subscribe((status) => {
-    if (scheduler.isDisposed()) {
-      return;
-    }
-    const subscribed =
-      status === CALENDAR_REALTIME.STATUS.SUBSCRIBED;
-    onConnectionError(!subscribed);
-    if (subscribed) {
-      scheduler.schedule();
-    }
+): (() => void) =>
+  subscribeRealtimeRefresh({
+    channelName,
+    onConnectionError,
+    onRefresh: notify,
+    schema: CALENDAR_REALTIME.SCHEMA,
+    tables: Object.values(CALENDAR_REALTIME.TABLES),
   });
-  window.addEventListener(
-    CALENDAR_REALTIME.ONLINE,
-    scheduler.schedule
-  );
-  return () => {
-    scheduler.dispose();
-    window.removeEventListener(
-      CALENDAR_REALTIME.ONLINE,
-      scheduler.schedule
-    );
-    void supabase.removeChannel(channel);
-  };
-};

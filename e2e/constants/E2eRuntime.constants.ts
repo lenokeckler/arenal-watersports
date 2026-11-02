@@ -76,6 +76,7 @@ export const E2E_ARTIFACT_MODE = {
 } as const;
 
 export const HEADING_LEVEL = {
+  CARD: 3,
   PAGE: 1,
   SCREEN: 2,
 } as const;

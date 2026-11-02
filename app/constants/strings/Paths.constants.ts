@@ -1,4 +1,5 @@
 export const PATHS = {
+  BOARD: "/board",
   HOME: "/",
   MODE: "/mode",
   ACCESS: {
@@ -10,10 +11,17 @@ export const PATHS = {
     ROOT: "/access",
   },
   ADMINISTRATION: {
+    CATEGORIES: "/administration/categories",
+    CATEGORIES_NEW: "/administration/categories/new",
+    CATEGORY_ALERTS_SEGMENT: "alerts",
+    CATEGORY_BEHAVIOR_SEGMENT: "behavior",
+    CATEGORY_DEPOSIT_SEGMENT: "deposit",
+    CATEGORY_UNITS_SEGMENT: "units",
     DEPOSITS: "/administration/reports/deposits",
-    ROOT: "/administration",
     RESERVATIONS_BY_WORKER:
       "/administration/reports/reservations-by-worker",
+    ROOT: "/administration",
+    UNITS_NEW_SEGMENT: "new",
     WORKER_AREAS: "/administration/workers/areas",
     WORKERS_NEW: "/administration/workers/new",
   },
@@ -31,6 +39,7 @@ export const PATHS = {
   RESERVATIONS: {
     CALENDAR: "/reservations/calendar",
     DEPOSITS: "/reservations/deposits",
+    INCOME: "/reservations/income",
     NEW: "/reservations/new",
   },
 } as const;

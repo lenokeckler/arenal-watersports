@@ -8,7 +8,7 @@ the account behaves as if it only had that area.
 
 ## In scope
 
-- `WorkModeGate` on the home: an account with more than one area and no valid mode is sent to
+- `WorkModeGate` on the board page (`ensureWorkModeChosen` runs before the board reads anything): an account with more than one area and no valid mode is sent to
   `PATHS.MODE` (`/mode`).
 - `WorkModeSelector` at `/mode`: one large card per enabled area (Operaciones, Reservas,
   Administración, in that order), the current one marked "Modo actual". Choosing posts

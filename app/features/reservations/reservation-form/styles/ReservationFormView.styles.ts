@@ -98,6 +98,9 @@ export const RESERVATION_FORM_UNIT_EMPTY_NOTE_CLASS =
 export const RESERVATION_FORM_RETRY_CLASS =
   "mt-2 min-h-11 text-primary underline";
 
+export const RESERVATION_FORM_RETRY_BUTTON_CLASS =
+  "mt-2 min-h-11 rounded-full";
+
 export const resolveReservationDurationButtonClassName = (
   isSelected: boolean
 ): string =>
