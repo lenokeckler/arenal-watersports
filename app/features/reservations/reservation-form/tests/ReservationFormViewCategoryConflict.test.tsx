@@ -58,7 +58,10 @@ describe("ReservationFormView category conflict warning", () => {
     vi.mocked(
       getReservationCategoryAvailabilityAction
     ).mockResolvedValue(
-      RESERVATION_CATEGORY_AVAILABILITY_ROW
+      {
+        ...RESERVATION_CATEGORY_AVAILABILITY_ROW,
+        free: 2,
+      }
     );
     vi.mocked(
       getReservationCategoryConflictsAction
@@ -101,7 +104,10 @@ describe("ReservationFormView category conflict warning", () => {
     vi.mocked(
       getReservationCategoryAvailabilityAction
     ).mockResolvedValue(
-      RESERVATION_CATEGORY_AVAILABILITY_ROW
+      {
+        ...RESERVATION_CATEGORY_AVAILABILITY_ROW,
+        free: 2,
+      }
     );
     vi.mocked(
       getReservationCategoryConflictsAction
@@ -139,7 +145,10 @@ describe("ReservationFormView category conflict warning", () => {
     vi.mocked(
       getReservationCategoryAvailabilityAction
     ).mockResolvedValue(
-      RESERVATION_CATEGORY_AVAILABILITY_ROW
+      {
+        ...RESERVATION_CATEGORY_AVAILABILITY_ROW,
+        free: 2,
+      }
     );
     vi.mocked(
       getReservationCategoryConflictsAction
