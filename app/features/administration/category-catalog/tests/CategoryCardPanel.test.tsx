@@ -37,7 +37,21 @@ describe("CategoryCard options panel", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("points Editar at the panel and marks it expanded while it is open", () => {
+  it("does not point Editar at a panel that is not mounted while it is closed", () => {
+    render(<CategoryCard {...CLOSED_CATEGORY_CARD} />);
+    const categoryCardPage = createCategoryCardPage();
+
+    expect(
+      categoryCardPage.getEditButton()
+    ).not.toHaveAttribute("aria-controls");
+    expect(
+      document.getElementById(
+        DEFAULT_CATEGORY_CARD_PANEL_ID
+      )
+    ).not.toBeInTheDocument();
+  });
+
+  it("points Editar at a mounted panel and marks it expanded while it is open", () => {
     render(
       <CategoryCard {...DEFAULT_CATEGORY_CARD_VIEW_MODEL} />
     );
@@ -52,6 +66,11 @@ describe("CategoryCard options panel", () => {
       "aria-controls",
       DEFAULT_CATEGORY_CARD_PANEL_ID
     );
+    expect(
+      document.getElementById(
+        DEFAULT_CATEGORY_CARD_PANEL_ID
+      )
+    ).toBeInTheDocument();
   });
 
   it("shows the options and the state action when it is open", () => {

@@ -17,7 +17,7 @@ const CategoryCardEditButton = ({
   <Button
     variant={BUTTON.BASE}
     aria-expanded={isOpen}
-    aria-controls={panelId}
+    aria-controls={isOpen ? panelId : undefined}
     onClick={onClick}
     className={CATEGORY_CARD_EDIT_BUTTON_CLASS}
   >
