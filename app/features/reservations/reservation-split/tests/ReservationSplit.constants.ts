@@ -147,6 +147,14 @@ export const SPLIT_DRAFT: ReservationSplitDraft = {
 };
 
 export const SPLIT_DEPARTURE_NUMBER = 2;
+export const SPLIT_PEOPLE_ERROR =
+  "Cada salida necesita al menos 1 persona.";
+export const SPLIT_ITEMS_ERROR =
+  "Cada salida necesita al menos 1 equipo.";
+
+export const SPLIT_SECOND_DRAFT_KEY = "draft-2";
+export const SPLIT_SECOND_DEPARTURE_NUMBER = 3;
+export const SPLIT_SECOND_DRAFT_TIME = "17:00";
 
 export const SPLIT_DURATION_CASES = [
   [30, "30 min"],
