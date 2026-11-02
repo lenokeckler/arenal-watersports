@@ -14,13 +14,15 @@ test.describe("Category card layout", () => {
       createCategoryCardLayoutPage(page);
 
     await logInAsAdmin(page);
-    await categoryListPage.goTo();
-    await categoryListPage.getHeading().waitFor();
 
     for (const categoryName of [
       E2E_CATEGORY_WITH_RECORDS_NAME,
       E2E_CATEGORY_WITH_GROUP_NAME,
     ]) {
+      await categoryListPage.goToCategory(categoryName);
+      await categoryListPage.openCategoryOptions(
+        categoryName
+      );
       expect(
         await categoryListPage.hasActionOutsideCard(
           categoryName

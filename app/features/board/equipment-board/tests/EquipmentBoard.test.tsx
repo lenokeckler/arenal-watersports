@@ -9,6 +9,7 @@ import { render } from "@testing-library/react";
 import { readBoardCategories } from "@/app/services/board";
 import EquipmentBoard from "../EquipmentBoard";
 import { EQUIPMENT_BOARD_COPY } from "../constants/EquipmentBoardCopy.constants";
+import { resolveFreeOfTotalText } from "../utils/resolveFreeOfTotalText";
 import { BOARD_CATEGORY_NAME } from "./EquipmentBoardUtils.constants";
 import {
   BOARD_ROWS_WITH_GROUP,
@@ -49,25 +50,24 @@ describe("EquipmentBoard", () => {
     expect(page.getCard(JET_SKI_LABEL)).toBeInTheDocument();
   });
 
-  it("shows the grouped card with the summed totals and each member with its own counts", async () => {
+  it("shows the grouped card like any other card, with the summed totals and no member lines", async () => {
     render(await EquipmentBoard());
     const page = createEquipmentBoardPage();
     const kayakCard = page.getCard(KAYAK_LABEL);
 
     expect(
-      page.getCount(kayakCard, KAYAK_SUMMED.FREE)
-    ).toBeInTheDocument();
-    expect(
       page.getText(
         kayakCard,
-        EQUIPMENT_BOARD_COPY.IN_USE_OF_TOTAL(
-          KAYAK_SUMMED.IN_USE,
+        resolveFreeOfTotalText(
+          KAYAK_SUMMED.FREE,
           KAYAK_SUMMED.TOTAL
         )
       )
     ).toBeInTheDocument();
-    expect(page.getMemberLines(kayakCard)).toHaveLength(
-      CARD_COUNT_WITH_GROUP
+    expect(page.queryButton(kayakCard)).toBeNull();
+    expect(page.queryMemberList(kayakCard)).toBeNull();
+    expect(page.getCardText(kayakCard)).not.toContain(
+      BOARD_CATEGORY_NAME.KAYAK_DOUBLE
     );
   });
 
@@ -83,6 +83,7 @@ describe("EquipmentBoard", () => {
 
     expect(page.getCards()).toHaveLength(1);
     expect(page.queryMemberList(card)).toBeNull();
+    expect(page.queryButton(card)).toBeNull();
   });
 
   it("shows the empty state and no grid when there is no reservable equipment", async () => {

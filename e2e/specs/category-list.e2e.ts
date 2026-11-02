@@ -48,7 +48,12 @@ test.describe("Category list", () => {
   }) => {
     const categoryListPage = createCategoryListPage(page);
 
-    await categoryListPage.goTo();
+    await categoryListPage.goToCategory(
+      E2E_CATEGORY_WITH_RECORDS_NAME
+    );
+    await categoryListPage.openCategoryOptions(
+      E2E_CATEGORY_WITH_RECORDS_NAME
+    );
 
     await expect(
       categoryListPage.getCategoryMarkInactiveButton(
@@ -73,7 +78,10 @@ test.describe("Category list", () => {
     const categoryListPage = createCategoryListPage(page);
 
     try {
-      await categoryListPage.goTo();
+      await categoryListPage.goToCategory(categoryName);
+      await categoryListPage.openCategoryOptions(
+        categoryName
+      );
 
       await expect(
         categoryListPage.getCategoryDeleteButton(
@@ -90,7 +98,9 @@ test.describe("Category list", () => {
   }) => {
     const categoryListPage = createCategoryListPage(page);
 
-    await categoryListPage.goTo();
+    await categoryListPage.goToCategory(
+      E2E_CATEGORY_WITH_GROUP_NAME
+    );
 
     await expect(
       categoryListPage.getCategoryCard(
@@ -106,7 +116,9 @@ test.describe("Category list", () => {
   }) => {
     const categoryListPage = createCategoryListPage(page);
 
-    await categoryListPage.goTo();
+    await categoryListPage.goToCategory(
+      E2E_CATEGORY_WITHOUT_GROUP_NAME
+    );
 
     await expect(
       categoryListPage.getCategoryGroupMeta(
@@ -125,7 +137,7 @@ test.describe("Category list", () => {
     const categoryListPage = createCategoryListPage(page);
 
     try {
-      await categoryListPage.goTo();
+      await categoryListPage.goToCategory(categoryName);
       await categoryListPage.clickCategoryMarkInactiveButton(
         categoryName
       );
@@ -136,7 +148,7 @@ test.describe("Category list", () => {
         )
       ).toBeVisible();
       await expect(
-        categoryListPage.getCategoryInactivePill(
+        categoryListPage.getCategoryInactiveChip(
           categoryName
         )
       ).toBeVisible();
@@ -161,7 +173,7 @@ test.describe("Category list", () => {
     const categoryListPage = createCategoryListPage(page);
 
     try {
-      await categoryListPage.goTo();
+      await categoryListPage.goToCategory(categoryName);
       await categoryListPage.clickCategoryDeleteButton(
         categoryName
       );
@@ -202,7 +214,7 @@ test.describe("Category list", () => {
     const categoryListPage = createCategoryListPage(page);
 
     try {
-      await categoryListPage.goTo();
+      await categoryListPage.goToCategory(categoryName);
       await categoryListPage.clickCategoryDeleteButton(
         categoryName
       );
@@ -234,7 +246,7 @@ test.describe("Category list", () => {
     const categoryListPage = createCategoryListPage(page);
 
     try {
-      await categoryListPage.goTo();
+      await categoryListPage.goToCategory(categoryName);
       await categoryListPage.clickCategoryDeleteButton(
         categoryName
       );

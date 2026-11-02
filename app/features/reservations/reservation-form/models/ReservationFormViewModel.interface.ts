@@ -4,6 +4,7 @@ import type { ReservationFormInput } from "./ReservationFormInput.interface";
 import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOption.interface";
 import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
 import type { ReservationCategoryAvailabilityPanelState } from "./ReservationCategoryAvailabilityPanelState.type";
+import type { ReservationCategoryConflictWarningViewModel } from "./ReservationCategoryConflictWarningViewModel.interface";
 
 export interface ReservationFormViewModel {
   categories: ReservationCategoryOption[];
@@ -20,6 +21,7 @@ export interface ReservationFormViewModel {
   categoryAvailabilityCategoryName: string;
   categoryAvailabilityInterval: string;
   categoryAvailabilityState: ReservationCategoryAvailabilityPanelState;
+  categoryConflictWarning: ReservationCategoryConflictWarningViewModel;
   isSubmitDisabled: boolean;
   isCustomDuration: boolean;
   customDurationDraft: string;

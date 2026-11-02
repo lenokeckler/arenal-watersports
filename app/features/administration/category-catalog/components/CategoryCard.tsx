@@ -1,52 +1,56 @@
+import { ARIA_ROLE } from "@/app/constants";
 import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
-import { CATEGORY_TRACKING_MODE } from "../constants/CategoryTrackingMode.constants";
 import type { CategoryCardViewModel } from "../models/CategoryCardViewModel.interface";
 import {
-  CATEGORY_CARD_BUTTONS_CLASS,
+  CATEGORY_CARD_ACTIONS_ROW_CLASS,
+  CATEGORY_CARD_ROW_CLASS,
   resolveCategoryCardContainerClassName,
 } from "../styles/CategoryCard.styles";
-import CategoryCardActions from "./CategoryCardActions";
-import CategoryCardAlertsLink from "./CategoryCardAlertsLink";
-import CategoryCardBehaviorLink from "./CategoryCardBehaviorLink";
-import CategoryCardDepositLink from "./CategoryCardDepositLink";
-import CategoryCardGroupRow from "./CategoryCardGroupRow";
-import CategoryCardNameRow from "./CategoryCardNameRow";
-import CategoryCardTrackingMode from "./CategoryCardTrackingMode";
-import CategoryCardUnitsLink from "./CategoryCardUnitsLink";
+import CategoryCardEditButton from "./CategoryCardEditButton";
+import CategoryCardPanel from "./CategoryCardPanel";
+import CategoryCardStatusChip from "./CategoryCardStatusChip";
+import CategoryCardSummary from "./CategoryCardSummary";
 
 const CategoryCard = ({
   category,
   isInactive,
-  trackingModeLabel,
+  isPanelOpen,
+  onTogglePanelClick,
+  panelId,
+  subtitle,
   ...actionProps
 }: CategoryCardViewModel): React.JSX.Element => (
   <div
+    role={ARIA_ROLE.GROUP}
+    aria-label={category.name}
     className={resolveCategoryCardContainerClassName(
-      isInactive,
       actionProps.actionState ===
         CATEGORY_CARD_ACTION_STATE.CONFIRM_DELETE
     )}
   >
-    <CategoryCardNameRow
-      name={category.name}
-      isInactive={isInactive}
-    />
-    <CategoryCardTrackingMode label={trackingModeLabel} />
-    {category.groupName && (
-      <CategoryCardGroupRow
+    <div className={CATEGORY_CARD_ROW_CLASS}>
+      <CategoryCardSummary
+        name={category.name}
+        subtitle={subtitle}
         groupName={category.groupName}
+        isInactive={isInactive}
+      />
+      <div className={CATEGORY_CARD_ACTIONS_ROW_CLASS}>
+        <CategoryCardStatusChip status={category.status} />
+        <CategoryCardEditButton
+          isOpen={isPanelOpen}
+          panelId={panelId}
+          onClick={onTogglePanelClick}
+        />
+      </div>
+    </div>
+    {isPanelOpen && (
+      <CategoryCardPanel
+        category={category}
+        panelId={panelId}
+        {...actionProps}
       />
     )}
-    <div className={CATEGORY_CARD_BUTTONS_CLASS}>
-      <CategoryCardBehaviorLink categoryId={category.id} />
-      <CategoryCardDepositLink categoryId={category.id} />
-      <CategoryCardAlertsLink categoryId={category.id} />
-      {category.trackingMode ===
-        CATEGORY_TRACKING_MODE.BY_UNIT && (
-        <CategoryCardUnitsLink categoryId={category.id} />
-      )}
-      <CategoryCardActions {...actionProps} />
-    </div>
   </div>
 );
 
