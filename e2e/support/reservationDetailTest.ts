@@ -2,7 +2,7 @@ import { test } from "@playwright/test";
 import type { ReservationDetailE2eFixtures } from "../models/ReservationDetailE2eFixtures.interface";
 import { createReservationDetailPage } from "../pages/ReservationDetail.page";
 import { createReservationDetailFixture } from "./createReservationDetailFixture";
-import { signInAsSeededWorker } from "./signInAsSeededWorker";
+import { signInWithCredentials } from "./signInWithCredentials";
 
 export const reservationDetailTest =
   test.extend<ReservationDetailE2eFixtures>({
@@ -13,7 +13,11 @@ export const reservationDetailTest =
       const reservationFixture =
         await createReservationDetailFixture();
       try {
-        await signInAsSeededWorker(page);
+        await signInWithCredentials(
+          page,
+          reservationFixture.workerUsername,
+          reservationFixture.workerPassword
+        );
         await createReservationDetailPage(page).goTo(
           reservationFixture.id
         );

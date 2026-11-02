@@ -44,7 +44,7 @@ const insertCharges = async (
     .insert([
       createCharge(
         resources,
-        fixture.AGREED_AMOUNT_USD,
+        fixture.CHARGED_AMOUNT_USD,
         values.CHARGE_KIND.TARIFF
       ),
       createCharge(
