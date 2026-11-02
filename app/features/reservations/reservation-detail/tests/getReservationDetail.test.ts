@@ -95,4 +95,23 @@ describe("getReservationDetail", () => {
       )
     ).resolves.toBeNull();
   });
+
+  it("returns null without querying for a malformed reservation id", async () => {
+    const supabase =
+      createReservationDetailSupabaseClient();
+    vi.mocked(
+      getAuthorizedReservationDetailClient
+    ).mockResolvedValue(supabase.client);
+
+    await expect(
+      getReservationDetail(
+        RESERVATION_DETAIL_TEST.MALFORMED_RESERVATION_ID
+      )
+    ).resolves.toBeNull();
+
+    expect(
+      getAuthorizedReservationDetailClient
+    ).not.toHaveBeenCalled();
+    expect(supabase.from).not.toHaveBeenCalled();
+  });
 });
