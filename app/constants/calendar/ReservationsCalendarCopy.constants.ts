@@ -12,6 +12,7 @@ export const RESERVATIONS_CALENDAR_COPY = {
   MISSING_EQUIPMENT: "Equipo pendiente de registrar",
   MISSING_SNAPSHOT:
     "Aún no se ha cargado información de reservas.",
+  ORIGIN: "Salida de",
   PARTIAL_COVERAGE:
     "La información cargada no cubre todo este período.",
   PERIOD_AGENDA: "Agenda de reservas del período",
