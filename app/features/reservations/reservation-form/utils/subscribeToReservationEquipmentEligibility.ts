@@ -6,6 +6,7 @@ export const subscribeToReservationEquipmentEligibility =
     isActive,
     onChange,
     onStatus,
+    subscriptionAttempt,
     supabase,
   }: ReservationEquipmentEligibilitySubscription) => {
     const {
@@ -24,7 +25,7 @@ export const subscribeToReservationEquipmentEligibility =
     }
 
     const channel = supabase.channel(
-      RESERVATION_EQUIPMENT_REALTIME.CHANNEL_NAME
+      `${RESERVATION_EQUIPMENT_REALTIME.CHANNEL_NAME_PREFIX}${subscriptionAttempt}`
     );
     Object.values(
       RESERVATION_EQUIPMENT_REALTIME.TABLE

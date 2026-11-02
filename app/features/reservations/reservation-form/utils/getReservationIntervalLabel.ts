@@ -1,35 +1,18 @@
 import { STRING } from "@/app/constants";
-import type { NullableRef } from "@/app/types";
 import { RESERVATION_AVAILABILITY } from "../constants/ReservationAvailability.constants";
 import { RESERVATION_TIME_ZONE } from "../constants/ReservationFormUi.constants";
-import type { ReservationInterval } from "../models/ReservationInterval.interface";
 import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
 import { getReservationInterval } from "./getReservationInterval";
 import { isReservationUnitAvailabilityInput } from "./isReservationUnitAvailabilityInput";
 
-const resolveInterval = (
-  input:
-    ReservationUnitAvailabilityInput | ReservationInterval
-): NullableRef<ReservationInterval> => {
-  if ("startsAt" in input) {
-    return input;
-  }
-  if (!isReservationUnitAvailabilityInput(input)) {
-    return null;
-  }
-
-  return getReservationInterval(input);
-};
-
 export const getReservationIntervalLabel = (
-  input:
-    ReservationUnitAvailabilityInput | ReservationInterval
+  input: ReservationUnitAvailabilityInput
 ): string => {
-  const interval = resolveInterval(input);
-  if (!interval) {
+  if (!isReservationUnitAvailabilityInput(input)) {
     return STRING.Empty;
   }
 
+  const interval = getReservationInterval(input);
   const dateFormatter = new Intl.DateTimeFormat(
     RESERVATION_AVAILABILITY.LOCALE,
     {

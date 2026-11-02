@@ -1,0 +1,1 @@
+ACC-01.06.35: Recovery E2E support and same answer — the browser tests read the PIN from the local inbox and prove that an unknown, a blocked, a retired and a no-email account see exactly the same recovery screens and receive no mail (US-ACC-06 · AWS-35)

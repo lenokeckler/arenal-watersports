@@ -1,10 +1,8 @@
 import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
-import type { ReservationGuideLoadResult } from "./ReservationGuideLoadResult.type";
-import type { ReservationPredefinedCombo } from "./ReservationPredefinedCombo.interface";
+import type { ReservationUnitCategoryOption } from "./ReservationUnitCategoryOption.interface";
 
 export interface ReservationFormViewProps {
   categories: ReservationCategoryOption[];
-  guideLoadResult: ReservationGuideLoadResult;
+  unitCategories: ReservationUnitCategoryOption[];
   initialDate: string;
-  predefinedCombos: ReservationPredefinedCombo[];
 }
