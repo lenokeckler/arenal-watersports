@@ -1,6 +1,7 @@
 import { vi } from "vitest";
 import { RESERVATION_EQUIPMENT_REALTIME } from "../constants/ReservationEquipmentRealtime.constants";
 import { subscribeToReservationEquipmentEligibility } from "../utils/subscribeToReservationEquipmentEligibility";
+import { RESERVATION_EQUIPMENT_REALTIME_SUBSCRIPTION_TEST } from "./ReservationEquipmentRealtimeSubscription.constants";
 import type { ReservationRealtimeTableFilter } from "./models/ReservationRealtimeTableFilter.interface";
 
 export const createRealtimeSubscriptionHarness = () => {
@@ -38,6 +39,8 @@ export const createRealtimeSubscriptionHarness = () => {
       isActive: () => isActive,
       onChange,
       onStatus: vi.fn(),
+      subscriptionAttempt:
+        RESERVATION_EQUIPMENT_REALTIME_SUBSCRIPTION_TEST.INITIAL_ATTEMPT,
       supabase: supabase as never,
     });
 

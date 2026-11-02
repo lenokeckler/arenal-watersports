@@ -9,15 +9,16 @@ import {
   FRACTIONAL_COUNT,
   INVALID_FIELD_COUNT,
   INVALID_QUANTITY,
+  INVALID_RESERVATION_DURATION_HOURS,
+  NEGATIVE_VALUE,
   SUBMINUTE_DURATION_HOURS,
+  VALID_CUSTOM_DURATION_MINUTE_CASES,
   ZERO_DURATION_HOURS,
   VALID_RESERVATION_FORM_INPUT,
-  VALID_GUIDE_IDS,
 } from "./validateReservationFormInput.constants";
 import { validateReservationFormInput } from "../utils/validateReservationFormInput";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
-import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 
 describe("validateReservationFormInput", () => {
   it("trims the customer name and converts hours to whole minutes", () => {
@@ -29,10 +30,7 @@ describe("validateReservationFormInput", () => {
       customerName: EXPECTED_TRIMMED_CUSTOMER_NAME,
       date: VALID_RESERVATION_FORM_INPUT.date,
       durationMinutes: EXPECTED_DURATION_MINUTES,
-      extraIds: [],
-      guideIds: [],
       peopleCount: VALID_RESERVATION_FORM_INPUT.peopleCount,
-      reservationType: RESERVATION_TYPE.RENTAL,
       time: VALID_RESERVATION_FORM_INPUT.time,
       equipmentCommitment: {
         kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
@@ -41,28 +39,6 @@ describe("validateReservationFormInput", () => {
       },
     });
     expect(result.errors).toEqual({});
-  });
-
-  it("preserves a selected tour reservation type", () => {
-    const result = validateReservationFormInput({
-      ...VALID_RESERVATION_FORM_INPUT,
-      reservationType: RESERVATION_TYPE.TOUR,
-    });
-
-    expect(result.value?.reservationType).toBe(
-      RESERVATION_TYPE.TOUR
-    );
-    expect(result.errors).toEqual({});
-  });
-
-  it("preserves all selected guide identifiers", () => {
-    const result = validateReservationFormInput({
-      ...VALID_RESERVATION_FORM_INPUT,
-      guideIds: VALID_GUIDE_IDS,
-      reservationType: RESERVATION_TYPE.TOUR,
-    });
-
-    expect(result.value?.guideIds).toEqual(VALID_GUIDE_IDS);
   });
 
   it("validates a concrete unit without requiring a category quantity", () => {
@@ -129,6 +105,36 @@ describe("validateReservationFormInput", () => {
     );
   });
 
+  it.each(INVALID_RESERVATION_DURATION_HOURS)(
+    "rejects invalid duration %s with a duration error",
+    (durationHours) => {
+      const result = validateReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        durationHours,
+      });
+
+      expect(result.value).toBeNull();
+      expect(result.errors).toHaveProperty(
+        RESERVATION_FORM_FIELD.DURATION_HOURS
+      );
+    }
+  );
+
+  it.each(VALID_CUSTOM_DURATION_MINUTE_CASES)(
+    "accepts %s custom hours as %s minutes",
+    (durationHours, durationMinutes) => {
+      const result = validateReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        durationHours,
+      });
+
+      expect(result.value?.durationMinutes).toBe(
+        durationMinutes
+      );
+      expect(result.errors).toEqual({});
+    }
+  );
+
   it("rejects non-positive or fractional counts and missing fields", () => {
     const result = validateReservationFormInput({
       ...VALID_RESERVATION_FORM_INPUT,
@@ -141,6 +147,34 @@ describe("validateReservationFormInput", () => {
     expect(result.value).toBeNull();
     expect(Object.keys(result.errors)).toHaveLength(
       INVALID_FIELD_COUNT
+    );
+  });
+
+  it("rejects negative people, equipment, and duration values", () => {
+    const negativePeopleResult =
+      validateReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        peopleCount: NEGATIVE_VALUE,
+      });
+    const negativeQuantityResult =
+      validateReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        quantity: NEGATIVE_VALUE,
+      });
+    const negativeDurationResult =
+      validateReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        durationHours: NEGATIVE_VALUE,
+      });
+
+    expect(negativePeopleResult.errors).toHaveProperty(
+      RESERVATION_FORM_FIELD.PEOPLE_COUNT
+    );
+    expect(negativeQuantityResult.errors).toHaveProperty(
+      RESERVATION_FORM_FIELD.QUANTITY
+    );
+    expect(negativeDurationResult.errors).toHaveProperty(
+      RESERVATION_FORM_FIELD.DURATION_HOURS
     );
   });
 });

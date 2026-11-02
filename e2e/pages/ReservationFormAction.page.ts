@@ -34,5 +34,9 @@ export const createReservationFormActionPage = (
       await getSubmitButton().scrollIntoViewIfNeeded();
     },
     submit: (): Promise<void> => getSubmitButton().click(),
+    attemptSubmit: (): Promise<void> =>
+      getSubmitButton().evaluate(
+        (button: HTMLButtonElement) => button.click()
+      ),
   };
 };

@@ -16,7 +16,7 @@ import {
   CREATE_RESERVATION_RPC_URL,
   SUCCESS_STATUS,
   VALIDATED_RESERVATION_INPUT,
-  VALIDATED_RESERVATION_WITH_EXTRAS_INPUT,
+  VALIDATED_UNIT_RESERVATION_INPUT,
 } from "./createRentalReservation.constants";
 
 vi.mock("@/app/services/supabase", () => ({
@@ -69,12 +69,8 @@ describe("createRentalReservation", () => {
             date: VALIDATED_RESERVATION_INPUT.date,
             duration_minutes:
               VALIDATED_RESERVATION_INPUT.durationMinutes,
-            extra_ids: VALIDATED_RESERVATION_INPUT.extraIds,
-            guide_ids: [],
             people_count:
               VALIDATED_RESERVATION_INPUT.peopleCount,
-            reservation_type:
-              VALIDATED_RESERVATION_INPUT.reservationType,
             time: VALIDATED_RESERVATION_INPUT.time,
             category_id:
               VALIDATED_RESERVATION_INPUT
@@ -88,9 +84,9 @@ describe("createRentalReservation", () => {
     );
   });
 
-  it("sends selected extra ids with the concrete boat commitment", async () => {
+  it("sends a concrete unit in one JSON payload", async () => {
     await createRentalReservation(
-      VALIDATED_RESERVATION_WITH_EXTRAS_INPUT
+      VALIDATED_UNIT_RESERVATION_INPUT
     );
 
     expect(fetchMock).toHaveBeenCalledWith(
@@ -100,20 +96,15 @@ describe("createRentalReservation", () => {
         body: JSON.stringify({
           p_payload: {
             customer_name:
-              VALIDATED_RESERVATION_WITH_EXTRAS_INPUT.customerName,
-            date: VALIDATED_RESERVATION_WITH_EXTRAS_INPUT.date,
+              VALIDATED_UNIT_RESERVATION_INPUT.customerName,
+            date: VALIDATED_UNIT_RESERVATION_INPUT.date,
             duration_minutes:
-              VALIDATED_RESERVATION_WITH_EXTRAS_INPUT.durationMinutes,
-            extra_ids:
-              VALIDATED_RESERVATION_WITH_EXTRAS_INPUT.extraIds,
-            guide_ids: [],
+              VALIDATED_UNIT_RESERVATION_INPUT.durationMinutes,
             people_count:
-              VALIDATED_RESERVATION_WITH_EXTRAS_INPUT.peopleCount,
-            reservation_type:
-              VALIDATED_RESERVATION_WITH_EXTRAS_INPUT.reservationType,
-            time: VALIDATED_RESERVATION_WITH_EXTRAS_INPUT.time,
+              VALIDATED_UNIT_RESERVATION_INPUT.peopleCount,
+            time: VALIDATED_UNIT_RESERVATION_INPUT.time,
             unit_id:
-              VALIDATED_RESERVATION_WITH_EXTRAS_INPUT
+              VALIDATED_UNIT_RESERVATION_INPUT
                 .equipmentCommitment.unitId,
           },
         }),
