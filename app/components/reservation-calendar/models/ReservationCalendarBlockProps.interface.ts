@@ -3,5 +3,6 @@ import type { ReservationCalendarBlock } from "./ReservationCalendarBlock.interf
 export interface ReservationCalendarBlockProps {
   block: ReservationCalendarBlock;
   reserveMobileFabSpace?: boolean;
+  showEquipmentImage?: boolean;
   showGuides?: boolean;
 }

@@ -1,0 +1,1 @@
+ADM-02.12.03.01: Category delete actions — the server actions that mark a category inactive or delete it (the database refuses the delete when records exist), the administrators-only delete policy, and the delete confirmation row on the card (US-ADM-12 · AWS-64)

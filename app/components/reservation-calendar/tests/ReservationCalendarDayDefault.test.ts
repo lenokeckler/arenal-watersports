@@ -13,6 +13,7 @@ import {
 } from "./ReservationCalendarDay.constants";
 import { createReservationCalendarDayPage } from "./ReservationCalendarDay.page";
 import { renderReservationCalendarDay } from "./renderReservationCalendarDay";
+import { ReservationCalendarStoreProvider } from "./ReservationCalendarStoreProvider";
 
 describe("Reservation calendar default daily content", () => {
   it.each(CALENDAR_DAY_COVERAGE_CASES)(
@@ -26,8 +27,9 @@ describe("Reservation calendar default daily content", () => {
   );
 
   it("preserves null for a missing snapshot", () => {
-    const { result } = renderHook(() =>
-      useReservationCalendarDayContent(undefined)
+    const { result } = renderHook(
+      () => useReservationCalendarDayContent(undefined),
+      { wrapper: ReservationCalendarStoreProvider }
     );
 
     expect(result.current(CALENDAR_DAY_DATE)).toBeNull();
@@ -80,7 +82,10 @@ describe("Reservation calendar daily coverage updates", () => {
           CALENDAR_DAY_EMPTY,
           options
         ),
-      { initialProps: { showCoverageMessages: false } }
+      {
+        initialProps: { showCoverageMessages: false },
+        wrapper: ReservationCalendarStoreProvider,
+      }
     );
     const content = render(
       result.current(CALENDAR_DAY_DATE)

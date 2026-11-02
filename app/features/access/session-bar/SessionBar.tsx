@@ -2,6 +2,7 @@
 
 import SessionBarView from "./SessionBarView";
 import { useLogoutViewModel } from "./hooks/useLogoutViewModel";
+import { useThemeViewModel } from "./hooks/useThemeViewModel";
 
 const SessionBar = (): React.JSX.Element => {
   const {
@@ -10,6 +11,7 @@ const SessionBar = (): React.JSX.Element => {
     errorMessage,
     pendingAnnouncement,
   } = useLogoutViewModel();
+  const { theme, handleToggle } = useThemeViewModel();
 
   return (
     <SessionBarView
@@ -17,6 +19,8 @@ const SessionBar = (): React.JSX.Element => {
       handlePress={handlePress}
       errorMessage={errorMessage}
       pendingAnnouncement={pendingAnnouncement}
+      theme={theme}
+      handleToggle={handleToggle}
     />
   );
 };

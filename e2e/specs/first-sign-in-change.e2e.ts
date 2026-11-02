@@ -19,10 +19,10 @@ test.describe("First sign-in password change", () => {
     });
 
     await firstSignInPage.submit();
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
 
     await firstSignInPage.goTo();
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
 
     await context.clearCookies();
     await loginPage.goTo();
@@ -32,7 +32,7 @@ test.describe("First sign-in password change", () => {
     );
     await loginPage.submit();
 
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
   });
 
   test("sends a signed-out visitor to the login", async ({
