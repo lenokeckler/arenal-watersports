@@ -1,0 +1,1 @@
+ACC-01.08.14: Sign-out survives a server failure and a double tap end to end — a browser test proves the phone is freed even when the sign-out request fails, and that a quick double tap sends one request (US-ACC-08 · AWS-37)

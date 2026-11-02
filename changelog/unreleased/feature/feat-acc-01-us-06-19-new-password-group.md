@@ -1,0 +1,1 @@
+ACC-01.06.19: Shared new password group — the new password field with its live rules checklist moves from the password change form to the shared components, unchanged, so the recovery screen can reuse it (US-ACC-06 · AWS-35)

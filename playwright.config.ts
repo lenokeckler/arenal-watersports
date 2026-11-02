@@ -1,11 +1,10 @@
-import { defineConfig, devices } from "@playwright/test";
 import { loadEnvConfig } from "@next/env";
+import { defineConfig, devices } from "@playwright/test";
 import {
   E2E_ARTIFACT_MODE,
   E2E_BASE_URL,
   E2E_DESKTOP_VIEWPORT,
   E2E_DEVICE_NAME,
-  E2E_GLOBAL_SETUP,
   E2E_HTML_REPORT_OPEN_MODE,
   E2E_OUTPUT_DIR,
   E2E_PROJECT,
@@ -17,6 +16,7 @@ import {
   E2E_TIMEOUT_MS,
   E2E_WORKER_COUNT,
 } from "./e2e/constants/E2eRuntime.constants";
+import { E2E_RECOVERY_SERVER_ENV } from "./e2e/constants/E2ePasswordRecovery.constants";
 
 loadEnvConfig(process.cwd());
 
@@ -30,7 +30,6 @@ const desktopChromium = {
 };
 
 export default defineConfig({
-  globalSetup: E2E_GLOBAL_SETUP,
   testDir: E2E_TEST_DIR,
   timeout: E2E_TIMEOUT_MS.TEST,
   expect: { timeout: E2E_TIMEOUT_MS.EXPECT },
@@ -63,27 +62,62 @@ export default defineConfig({
   projects: [
     {
       name: E2E_PROJECT.MOBILE,
+      testIgnore: E2E_TEST_MATCH.ADMIN_RECOVERY,
       testMatch: E2E_TEST_MATCH.DEFAULT,
       use: mobileChromium,
     },
     {
       name: E2E_PROJECT.DEFAULT,
+      testIgnore: E2E_TEST_MATCH.ADMIN_RECOVERY,
       testMatch: E2E_TEST_MATCH.DEFAULT,
       use: desktopChromium,
     },
     {
+      name: E2E_PROJECT.ADMIN_RECOVERY,
+      dependencies: [
+        E2E_PROJECT.MOBILE,
+        E2E_PROJECT.DEFAULT,
+      ],
+      fullyParallel: false,
+      testMatch: E2E_TEST_MATCH.ADMIN_RECOVERY,
+      use: mobileChromium,
+      workers: E2E_WORKER_COUNT.ADMIN_RECOVERY,
+    },
+    {
       name: E2E_PROJECT.SCREENSHOTS_MOBILE,
+      testIgnore: E2E_TEST_MATCH.ADMIN_SCREENSHOTS,
       testMatch: E2E_TEST_MATCH.SCREENSHOTS,
       use: mobileChromium,
     },
     {
       name: E2E_PROJECT.SCREENSHOTS,
+      testIgnore: E2E_TEST_MATCH.ADMIN_SCREENSHOTS,
       testMatch: E2E_TEST_MATCH.SCREENSHOTS,
       use: desktopChromium,
+    },
+    {
+      name: E2E_PROJECT.ADMIN_SCREENSHOTS_MOBILE,
+      dependencies: [
+        E2E_PROJECT.SCREENSHOTS_MOBILE,
+        E2E_PROJECT.SCREENSHOTS,
+      ],
+      fullyParallel: false,
+      testMatch: E2E_TEST_MATCH.ADMIN_SCREENSHOTS,
+      use: mobileChromium,
+      workers: E2E_WORKER_COUNT.ADMIN_SCREENSHOTS,
+    },
+    {
+      name: E2E_PROJECT.ADMIN_SCREENSHOTS,
+      dependencies: [E2E_PROJECT.ADMIN_SCREENSHOTS_MOBILE],
+      fullyParallel: false,
+      testMatch: E2E_TEST_MATCH.ADMIN_SCREENSHOTS,
+      use: desktopChromium,
+      workers: E2E_WORKER_COUNT.ADMIN_SCREENSHOTS,
     },
   ],
   webServer: {
     command: E2E_SERVER.COMMAND,
+    env: { ...E2E_RECOVERY_SERVER_ENV },
     reuseExistingServer: !isContinuousIntegration,
     timeout: E2E_SERVER.STARTUP_TIMEOUT_MS,
     url: E2E_BASE_URL,

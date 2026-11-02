@@ -1,0 +1,20 @@
+import { REALTIME } from "@/app/components/realtime/constants/Realtime.constants";
+
+export const CALENDAR_REALTIME = {
+  CHANGE: REALTIME.CHANGE,
+  EVENT: REALTIME.EVENT,
+  SCHEMA: REALTIME.SCHEMA,
+  TABLES: {
+    RESERVATIONS: "reservations",
+    DISPATCHES: "reservation_dispatches",
+    ITEMS: "reservation_items",
+  },
+  STATUS: {
+    SUBSCRIBED: REALTIME.STATUS.SUBSCRIBED,
+    ERROR: REALTIME.STATUS.CHANNEL_ERROR,
+    TIMED_OUT: REALTIME.STATUS.TIMED_OUT,
+    CLOSED: REALTIME.STATUS.CLOSED,
+  },
+  ONLINE: REALTIME.ONLINE,
+  COALESCE_MS: REALTIME.COALESCE_MS,
+} as const;

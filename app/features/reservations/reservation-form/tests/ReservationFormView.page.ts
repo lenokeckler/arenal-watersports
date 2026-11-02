@@ -1,73 +1,100 @@
-import userEvent, {
-  type UserEvent,
-} from "@testing-library/user-event";
-import { createFormQueries } from "./ReservationFormView.queries";
-import { STRING } from "@/app/constants";
+import { createReservationEquipmentPage } from "./ReservationFormEquipment.page";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { ARIA_ROLE } from "@/app/constants";
+import type { NullableRef } from "@/app/types";
+import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
+import { RESERVATION_FORM_FIELD_ID } from "../constants/ReservationFormUi.constants";
+import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
+import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 
-const createEquipmentActions = (
-  user: UserEvent,
-  queries: ReturnType<typeof createFormQueries>
-) => ({
-  selectCategory: async (
-    categoryId: string
-  ): Promise<void> => {
-    await user.selectOptions(
-      queries.getCategorySelect(),
-      categoryId
-    );
-  },
-  selectUnit: async (unitId: string): Promise<void> => {
-    await user.selectOptions(
-      queries.getUnitSelect(),
-      unitId
-    );
-  },
-});
+const getDurationOption = (label: string) =>
+  screen.getByRole(ARIA_ROLE.BUTTON, { name: label });
 
-const createReservationActions = (
-  user: UserEvent,
-  queries: ReturnType<typeof createFormQueries>
+const queryCustomDurationInput = (
+  container: HTMLElement
+): NullableRef<HTMLInputElement> =>
+  container.querySelector<HTMLInputElement>(
+    `#${RESERVATION_FORM_FIELD_ID.DURATION}`
+  );
+
+const queryQuantityInput = (
+  container: HTMLElement
+): NullableRef<HTMLInputElement> =>
+  container.querySelector<HTMLInputElement>(
+    `#${RESERVATION_FORM_FIELD_ID.QUANTITY}`
+  );
+
+const getSubmitButton = () =>
+  screen.getByRole(ARIA_ROLE.BUTTON, {
+    name: RESERVATION_FORM_UI_COPY.SUBMIT,
+  });
+
+const querySubmitButton = (): NullableRef<HTMLElement> =>
+  screen.queryByRole(ARIA_ROLE.BUTTON, {
+    name: RESERVATION_FORM_UI_COPY.SUBMIT,
+  });
+
+const getBackButton = () =>
+  screen.getByRole(ARIA_ROLE.BUTTON, {
+    name: RESERVATION_FORM_VIEW_TEST.BACK_TO_CALENDAR,
+  });
+
+const findDurationValidationError = () =>
+  screen.findByText(
+    RESERVATION_FORM_COPY[
+      RESERVATION_FORM_FIELD.DURATION_HOURS
+    ]
+  );
+
+const findSubmissionError = () =>
+  screen.findByText(RESERVATION_FORM_UI_COPY.SUBMIT_ERROR);
+
+const findSuccessMessage = () =>
+  screen.findByText(RESERVATION_FORM_UI_COPY.SUCCESS);
+
+const selectDuration = async (
+  user: ReturnType<typeof userEvent.setup>,
+  label: string
+): Promise<void> => {
+  await user.click(getDurationOption(label));
+};
+
+const typeCustomDuration = async (
+  user: ReturnType<typeof userEvent.setup>,
+  container: HTMLElement,
+  value: string
+): Promise<void> => {
+  const customDurationInput =
+    queryCustomDurationInput(container);
+  if (!customDurationInput) {
+    throw new Error(
+      "Custom duration input is not visible."
+    );
+  }
+  await user.type(customDurationInput, value);
+};
+
+const submit = async (
+  user: ReturnType<typeof userEvent.setup>
+): Promise<void> => {
+  await user.click(getSubmitButton());
+};
+
+const createQuantityPage = (
+  user: ReturnType<typeof userEvent.setup>,
+  container: HTMLElement
 ) => ({
-  clickBack: async (): Promise<void> => {
-    await user.click(queries.getBackButton());
-  },
-  selectDuration: async (label: string): Promise<void> => {
-    await user.click(queries.getDurationOption(label));
-  },
-  submit: async (): Promise<void> => {
-    await user.click(queries.getSubmitButton());
-  },
-  fillCustomerName: async (
-    value: string
-  ): Promise<void> => {
-    await user.type(queries.getCustomerNameInput(), value);
-  },
-  typeCustomDuration: async (
-    value: string
-  ): Promise<void> => {
-    const input = queries.queryCustomDurationInput();
-    if (!input) {
+  setQuantity: async (quantity: string): Promise<void> => {
+    const quantityInput = queryQuantityInput(container);
+    if (!quantityInput) {
       throw new Error(
-        "Custom duration input is not visible."
+        "The equipment quantity field is missing."
       );
     }
-    await user.type(input, value);
-  },
-  selectReservationType: async (
-    label: string
-  ): Promise<void> => {
-    await user.click(
-      queries.getReservationTypeRadio(label)
-    );
-  },
-  toggleExtra: async (name: string): Promise<void> => {
-    await user.click(queries.getExtraCheckbox(name));
-  },
-  clickExtrasRetry: async (): Promise<void> => {
-    await user.click(queries.getExtrasRetryButton());
-  },
-  clickQuoteRetry: async (): Promise<void> => {
-    await user.click(queries.getQuoteRetryButton());
+    await user.clear(quantityInput);
+    await user.type(quantityInput, quantity);
   },
 });
 
@@ -75,12 +102,27 @@ export const createReservationFormViewPage = (
   container: HTMLElement
 ) => {
   const user = userEvent.setup();
-  const queries = createFormQueries(container);
+
   return {
-    ...queries,
-    ...createEquipmentActions(user, queries),
-    ...createReservationActions(user, queries),
-    getRenderedText: (): string =>
-      container.textContent ?? STRING.Empty,
+    ...createReservationEquipmentPage(user),
+    getDurationOption,
+    getBackButton,
+    findDurationValidationError,
+    findSubmissionError,
+    findSuccessMessage,
+    getSubmitButton,
+    querySubmitButton,
+    clickBack: async (): Promise<void> => {
+      await user.click(getBackButton());
+    },
+    queryCustomDurationInput: () =>
+      queryCustomDurationInput(container),
+    queryQuantityInput: () => queryQuantityInput(container),
+    selectDuration: (label: string) =>
+      selectDuration(user, label),
+    ...createQuantityPage(user, container),
+    submit: () => submit(user),
+    typeCustomDuration: (value: string) =>
+      typeCustomDuration(user, container, value),
   };
 };

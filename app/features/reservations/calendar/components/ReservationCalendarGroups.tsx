@@ -1,49 +1,37 @@
 import type { ReactElement } from "react";
 import type { NullableRef } from "@/app/types";
-import { Text } from "@/app/components";
-import {
-  ARIA_ROLE,
-  CALENDAR_VIEW,
-  RESERVATIONS_CALENDAR_COPY,
-} from "@/app/constants";
+import { CALENDAR_VIEW } from "@/app/constants";
 import type { ReservationCalendarGroupsProps } from "../models/ReservationCalendarGroupsProps.interface";
-import { ReservationCalendarGroupList } from "./ReservationCalendarGroupList";
-import {
-  RESERVATION_CALENDAR_AGENDA_CLASS,
-  RESERVATION_CALENDAR_MESSAGES_CLASS,
-} from "../styles/ReservationCalendarGroups.styles";
+import { RESERVATION_CALENDAR_AGENDAS_CLASS } from "../styles/ReservationCalendarGroups.styles";
+import { ReservationCalendarAgendaList } from "./ReservationCalendarAgendaList";
 
 export const ReservationCalendarGroups = ({
-  content,
-  messages,
   period,
+  periodAgenda,
+  selectedDayAgenda,
+  selectedMonthAgenda,
 }: ReservationCalendarGroupsProps): NullableRef<ReactElement> => {
-  const showAgenda =
+  const showPeriodAgenda =
     period.view === CALENDAR_VIEW.MONTH ||
     period.view === CALENDAR_VIEW.YEAR;
-  if (!showAgenda && messages.length === 0) {
+  const showPeriodStatus =
+    showPeriodAgenda || periodAgenda.messages.length > 0;
+  if (
+    !showPeriodStatus &&
+    selectedDayAgenda === undefined &&
+    selectedMonthAgenda === undefined
+  ) {
     return null;
   }
   return (
-    <div
-      role={ARIA_ROLE.REGION}
-      aria-label={RESERVATIONS_CALENDAR_COPY.PERIOD_AGENDA}
-      className={RESERVATION_CALENDAR_AGENDA_CLASS}
-    >
-      {messages.length > 0 && (
-        <div
-          className={RESERVATION_CALENDAR_MESSAGES_CLASS}
-        >
-          {messages.map((message) => (
-            <Text key={message}>{message}</Text>
-          ))}
-        </div>
-      )}
-      {showAgenda && content.groups.length > 0 && (
-        <ReservationCalendarGroupList
-          groups={content.groups}
-        />
-      )}
+    <div className={RESERVATION_CALENDAR_AGENDAS_CLASS}>
+      <ReservationCalendarAgendaList
+        periodAgenda={periodAgenda}
+        selectedDayAgenda={selectedDayAgenda}
+        selectedMonthAgenda={selectedMonthAgenda}
+        showPeriodAgenda={showPeriodAgenda}
+        showPeriodStatus={showPeriodStatus}
+      />
     </div>
   );
 };

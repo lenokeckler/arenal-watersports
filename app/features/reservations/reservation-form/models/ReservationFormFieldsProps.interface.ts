@@ -1,7 +1,6 @@
 import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
-import type { ReservationGuideAssignmentViewModel } from "./ReservationGuideAssignmentViewModel.interface";
+import type { ReservationFormValuesProps } from "./ReservationFormValuesProps.interface";
 
-export interface ReservationFormFieldsProps {
+export interface ReservationFormFieldsProps extends ReservationFormValuesProps {
   categories: ReservationCategoryOption[];
-  viewModel: ReservationGuideAssignmentViewModel;
 }

@@ -1,7 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { E2E_RESERVATION_FORM_MOBILE_VIEWPORT } from "../constants/E2eReservationForm.constants";
 import { E2E_RESERVATION_FORM_COPY } from "../constants/E2eReservationForm.constants";
-import { RESERVATION_TYPE_COPY } from "@/app/features/reservations/reservation-form/constants/ReservationTypeCopy.constants";
 import { createReservationFormPage } from "../pages/ReservationForm.page";
 import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
 
@@ -21,9 +20,6 @@ test.describe("Reservation form responsive layout", () => {
       createReservationFormPage(page);
 
     await reservationFormPage.goTo();
-    await reservationFormPage.selectReservationType(
-      RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
-    );
     await reservationFormPage.selectCategory(
       E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
     );

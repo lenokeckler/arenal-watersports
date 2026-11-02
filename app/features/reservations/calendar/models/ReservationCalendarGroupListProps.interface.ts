@@ -1,5 +1,5 @@
-import type { ReservationCalendarGroupsProps } from "./ReservationCalendarGroupsProps.interface";
+import type { ReservationCalendarDayGroup } from "@/app/components/reservation-calendar/models/ReservationCalendarDayGroup.interface";
 
 export interface ReservationCalendarGroupListProps {
-  groups: ReservationCalendarGroupsProps["content"]["groups"];
+  groups: ReservationCalendarDayGroup[];
 }
