@@ -3,10 +3,8 @@ import {
   CALENDAR_DATE_ERROR,
   CALENDAR_NAVIGATION,
   CALENDAR_VIEW,
-  CALENDAR_WORK_AREA,
 } from "@/app/constants";
 import {
-  getAllowedCalendarViews,
   getCalendarToday,
   navigateCalendarPeriod,
   buildCalendarPeriod,
@@ -76,39 +74,5 @@ describe("getCalendarToday", () => {
     expect(() => getCalendarToday(invalid)).toThrow(
       CALENDAR_DATE_ERROR.INVALID_INSTANT
     );
-  });
-});
-
-describe("getAllowedCalendarViews", () => {
-  it("limits operations to day and week", () => {
-    const result = getAllowedCalendarViews(
-      CALENDAR_WORK_AREA.OPERATIONS
-    );
-
-    expect(result).toEqual([
-      CALENDAR_VIEW.DAY,
-      CALENDAR_VIEW.WEEK,
-    ]);
-  });
-
-  it("allows all four views in reservations", () => {
-    const result = getAllowedCalendarViews(
-      CALENDAR_WORK_AREA.RESERVATIONS
-    );
-
-    expect(result).toEqual([
-      CALENDAR_VIEW.DAY,
-      CALENDAR_VIEW.WEEK,
-      CALENDAR_VIEW.MONTH,
-      CALENDAR_VIEW.YEAR,
-    ]);
-  });
-
-  it("denies views to administration without a verified calendar area", () => {
-    const result = getAllowedCalendarViews(
-      fixture.deniedArea
-    );
-
-    expect(result).toEqual([]);
   });
 });

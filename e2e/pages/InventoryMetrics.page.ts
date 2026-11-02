@@ -12,6 +12,7 @@ export const createInventoryMetricsPage = (page: Page) => {
   return {
     getAvailable: () => getMetric(INVENTORY_COPY.AVAILABLE),
     getDamaged: () => getMetric(INVENTORY_COPY.DAMAGED),
+    getInUse: () => getMetric(INVENTORY_COPY.IN_USE),
     getInRepair: () => getMetric(INVENTORY_COPY.IN_REPAIR),
     getTotal: () => getMetric(INVENTORY_COPY.TOTAL),
   };

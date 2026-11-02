@@ -1,5 +1,6 @@
 import { Text } from "@/app/components";
 import { PAGINATION } from "@/app/constants";
+import type { NullableRef } from "@/app/types";
 import InventoryPaginationLink from "./components/InventoryPaginationLink";
 import { INVENTORY_COPY } from "./constants/InventoryCopy.constants";
 import type { InventoryPaginationProps } from "./models/InventoryPaginationProps.interface";
@@ -12,7 +13,7 @@ const InventoryPagination = ({
   pageIndex,
   pageCount,
   pagePath,
-}: InventoryPaginationProps): React.JSX.Element | null => {
+}: InventoryPaginationProps): NullableRef<React.JSX.Element> => {
   if (pageCount <= PAGINATION.ONE_PAGE) {
     return null;
   }

@@ -2,9 +2,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import languageReducer from "./slices/languageSlice";
 import { STORE_SLICES } from "./constants";
 import toastReducer from "@/app/components/toast/store/toastSlice";
+import calendarReducer from "@/app/components/calendar/store/calendarSlice";
 
 export const store = configureStore({
   reducer: {
+    [STORE_SLICES.CALENDAR]: calendarReducer,
     [STORE_SLICES.LANGUAGE]: languageReducer,
     [STORE_SLICES.TOAST]: toastReducer,
   },
@@ -15,3 +17,4 @@ export { setLanguage } from "./slices/languageSlice";
 export { default as languageReducer } from "./slices/languageSlice";
 export { useLanguage } from "./useLanguage";
 export { toastActions } from "@/app/components/toast/store/toastSlice";
+export { calendarActions } from "@/app/components/calendar/store/calendarSlice";

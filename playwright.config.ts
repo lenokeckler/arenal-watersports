@@ -1,5 +1,5 @@
-import { defineConfig, devices } from "@playwright/test";
 import { loadEnvConfig } from "@next/env";
+import { defineConfig, devices } from "@playwright/test";
 import {
   E2E_ARTIFACT_MODE,
   E2E_AUTH_STORAGE_PATH,

@@ -1,5 +1,5 @@
-import type { CalendarView } from "./CalendarView.type";
-import type { CalendarDate } from "./CalendarDate.interface";
+import type { CalendarView } from "@/app/types";
+import type { CalendarDate } from "@/app/types";
 import type { CalendarMonth } from "./CalendarMonth.interface";
 
 export interface CalendarPeriod {

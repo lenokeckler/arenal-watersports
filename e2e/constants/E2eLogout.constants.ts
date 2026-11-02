@@ -11,7 +11,7 @@ const CONFIRM_WINDOW_MS = 5000;
 
 export const E2E_LOGOUT_CLOCK = {
   START: new Date("2026-01-01T12:00:00Z"),
-  PAUSE_AT: new Date("2026-01-01T12:00:01Z"),
+  PAUSE_DELAY_MS: 1000,
   ONE_MS: 1,
   BEFORE_RESET_MS: CONFIRM_WINDOW_MS - 1,
 } as const;
