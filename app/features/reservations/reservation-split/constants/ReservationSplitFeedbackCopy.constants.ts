@@ -2,6 +2,8 @@ export const RESERVATION_SPLIT_FEEDBACK_COPY = {
   CATEGORY_UNAVAILABLE:
     "Ya no hay equipo disponible de esa categoría. Elija otro equipo o inténtelo más tarde.",
   DEPARTURES_MIN: "Agregue al menos una salida nueva.",
+  EQUIPMENT_DUPLICATE:
+    "Cada equipo solo puede aparecer una vez en la salida.",
   EQUIPMENT_MIN: "Cada salida necesita al menos 1 equipo.",
   NOT_FOUND:
     "No se encontró la reserva. Vuelva al calendario e inténtelo de nuevo.",
@@ -19,7 +21,7 @@ export const RESERVATION_SPLIT_FEEDBACK_COPY = {
   SUBMIT_ERROR:
     "No fue posible dividir la reserva. Revise los datos e inténtelo de nuevo.",
   TIME_INVALID:
-    "Indique una hora válida, por ejemplo 2:30 p. m.",
+    "Indique una hora válida, por ejemplo 14:30",
   TIME_REQUIRED: "Indique la hora de inicio de la salida.",
   UNIT_UNAVAILABLE:
     "La unidad ya está ocupada en el horario de la nueva salida. Elija otra salida para esa unidad o cambie la hora.",

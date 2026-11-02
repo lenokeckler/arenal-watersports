@@ -22,6 +22,12 @@ const isValidItem = (
   Number.isInteger(item.quantity) &&
   item.quantity >= RESERVATION_SPLIT_LIMITS.MIN_QUANTITY;
 
+const hasDuplicateItem = (
+  items: ReservationSplitItemInput[]
+): boolean =>
+  new Set(items.map((item) => item.itemId)).size !==
+  items.length;
+
 const resolveTimeError = (
   time: string
 ): NullableUndefined<string> => {
@@ -52,6 +58,10 @@ export const validateReservationSplitDeparture = (
   ) {
     errors.items =
       RESERVATION_SPLIT_FEEDBACK_COPY.EQUIPMENT_MIN;
+  }
+  if (hasDuplicateItem(departure.items)) {
+    errors.items =
+      RESERVATION_SPLIT_FEEDBACK_COPY.EQUIPMENT_DUPLICATE;
   }
   return errors;
 };

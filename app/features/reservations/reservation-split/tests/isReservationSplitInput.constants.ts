@@ -3,6 +3,8 @@ import {
   VALID_SPLIT_INPUT,
 } from "./ReservationSplit.constants";
 
+const NOT_A_UUID = "not-a-uuid";
+
 export const MALFORMED_INPUT_CASES: [string, unknown][] = [
   ["null", null],
   ["a string", "split"],
@@ -34,7 +36,12 @@ export const MALFORMED_INPUT_CASES: [string, unknown][] = [
       departures: [
         {
           ...VALID_DEPARTURE_INPUT,
-          items: [{ itemId: "a", quantity: "1" }],
+          items: [
+            {
+              itemId: VALID_DEPARTURE_INPUT.items[0].itemId,
+              quantity: "1",
+            },
+          ],
         },
       ],
     },
@@ -47,6 +54,22 @@ export const MALFORMED_INPUT_CASES: [string, unknown][] = [
         {
           ...VALID_DEPARTURE_INPUT,
           items: [{ quantity: 1 }],
+        },
+      ],
+    },
+  ],
+  [
+    "a reservation id that is not a uuid",
+    { ...VALID_SPLIT_INPUT, reservationId: NOT_A_UUID },
+  ],
+  [
+    "an item id that is not a uuid",
+    {
+      ...VALID_SPLIT_INPUT,
+      departures: [
+        {
+          ...VALID_DEPARTURE_INPUT,
+          items: [{ itemId: NOT_A_UUID, quantity: 1 }],
         },
       ],
     },

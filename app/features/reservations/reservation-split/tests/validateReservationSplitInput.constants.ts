@@ -52,6 +52,30 @@ export const DEPARTURE_ERROR_CASES: [
     },
   ],
   [
+    "a negative quantity",
+    {
+      items: [
+        { ...VALID_DEPARTURE_INPUT.items[0], quantity: -1 },
+      ],
+    },
+    {
+      items: RESERVATION_SPLIT_FEEDBACK_COPY.EQUIPMENT_MIN,
+    },
+  ],
+  [
+    "a repeated item",
+    {
+      items: [
+        VALID_DEPARTURE_INPUT.items[0],
+        VALID_DEPARTURE_INPUT.items[0],
+      ],
+    },
+    {
+      items:
+        RESERVATION_SPLIT_FEEDBACK_COPY.EQUIPMENT_DUPLICATE,
+    },
+  ],
+  [
     "zero quantity",
     {
       items: [

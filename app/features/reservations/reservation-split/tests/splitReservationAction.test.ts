@@ -18,6 +18,7 @@ import {
 } from "./ReservationSplit.constants";
 import { SPLIT_DEPARTURE_CODE } from "./splitReservation.constants";
 import {
+  SPLIT_ACCESS_REDIRECT,
   SPLIT_STALE_MESSAGE,
   SPLIT_UNEXPECTED_ERROR,
 } from "./splitReservationAction.constants";
@@ -112,5 +113,16 @@ describe("splitReservationAction", () => {
     await expect(
       splitReservationAction(VALID_SPLIT_INPUT)
     ).rejects.toBe(SPLIT_UNEXPECTED_ERROR);
+  });
+
+  it("lets an access redirect through without splitting", async () => {
+    vi.mocked(
+      assertReservationCalendarAccess
+    ).mockRejectedValue(SPLIT_ACCESS_REDIRECT);
+
+    await expect(
+      splitReservationAction(VALID_SPLIT_INPUT)
+    ).rejects.toBe(SPLIT_ACCESS_REDIRECT);
+    expect(splitReservation).not.toHaveBeenCalled();
   });
 });

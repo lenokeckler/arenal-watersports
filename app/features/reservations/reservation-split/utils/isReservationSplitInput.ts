@@ -1,4 +1,4 @@
-import { TYPE_OF } from "@/app/constants";
+import { TYPE_OF, UUID_PATTERN } from "@/app/constants";
 import type { ReservationSplitDepartureInput } from "../models/ReservationSplitDepartureInput.interface";
 import type { ReservationSplitInput } from "../models/ReservationSplitInput.interface";
 import type { ReservationSplitItemInput } from "../models/ReservationSplitItemInput.interface";
@@ -6,12 +6,16 @@ import type { ReservationSplitItemInput } from "../models/ReservationSplitItemIn
 const isObject = (value: unknown): value is object =>
   typeof value === TYPE_OF.OBJECT && value !== null;
 
+const isUuid = (value: unknown): value is string =>
+  typeof value === TYPE_OF.STRING &&
+  UUID_PATTERN.test(`${value}`);
+
 const isItemInput = (
   value: unknown
 ): value is ReservationSplitItemInput =>
   isObject(value) &&
   "itemId" in value &&
-  typeof value.itemId === TYPE_OF.STRING &&
+  isUuid(value.itemId) &&
   "quantity" in value &&
   typeof value.quantity === TYPE_OF.NUMBER;
 
@@ -37,4 +41,4 @@ export const isReservationSplitInput = (
   "expectedUpdatedAt" in input &&
   typeof input.expectedUpdatedAt === TYPE_OF.STRING &&
   "reservationId" in input &&
-  typeof input.reservationId === TYPE_OF.STRING;
+  isUuid(input.reservationId);
