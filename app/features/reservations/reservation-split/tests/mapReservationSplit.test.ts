@@ -3,6 +3,7 @@ import { RESERVATION_CALENDAR_ACTIVE_STATUS } from "@/app/constants";
 import { RESERVATION_SPLIT_BLOCK } from "../constants/ReservationSplitBlock.constants";
 import { mapReservationSplit } from "../utils/mapReservationSplit";
 import {
+  COSTA_RICA_MIDNIGHT_CASES,
   EXPECTED_SPLIT,
   QUANTITY_ITEM_ROW,
   SINGLE_PERSON_COUNT,
@@ -73,4 +74,17 @@ describe("mapReservationSplit", () => {
       RESERVATION_SPLIT_BLOCK.NONE
     );
   });
+
+  it.each(COSTA_RICA_MIDNIGHT_CASES)(
+    "reads %s as Costa Rica %s at %s",
+    (startsAt, date, time) => {
+      const split = mapReservationSplit({
+        ...SPLIT_ROW,
+        starts_at: startsAt,
+      });
+
+      expect(split.date).toBe(date);
+      expect(split.time).toBe(time);
+    }
+  );
 });
