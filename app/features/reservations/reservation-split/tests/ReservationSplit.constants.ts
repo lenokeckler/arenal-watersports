@@ -4,6 +4,8 @@ import type { ReservationSplitDepartureInput } from "../models/ReservationSplitD
 import type { ReservationSplitInput } from "../models/ReservationSplitInput.interface";
 import type { ReservationSplit } from "../models/ReservationSplit.interface";
 import type { ReservationSplitItemRow } from "../models/ReservationSplitItemRow.interface";
+import type { ReservationSplitDraft } from "../models/ReservationSplitDraft.interface";
+import type { ReservationSplitItem } from "../models/ReservationSplitItem.interface";
 import type { ReservationSplitRow } from "../models/ReservationSplitRow.interface";
 
 export const SPLIT_RESERVATION_ID =
@@ -125,3 +127,23 @@ export const COSTA_RICA_MIDNIGHT_CASES = [
   ["2035-04-13T06:00:00+00:00", "2035-04-13", "00:00"],
   ["2035-04-13T05:59:00+00:00", "2035-04-12", "23:59"],
 ] as const;
+
+export const SPLIT_DRAFT_KEY = "draft-1";
+export const SPLIT_DRAFT_TIME = "16:00";
+
+export const SPLIT_UNIT_ITEM: ReservationSplitItem = {
+  categoryName: SPLIT_BOAT_CATEGORY.name,
+  id: UNIT_ITEM_ROW.id,
+  kind: RESERVATION_SPLIT_ITEM_KIND.UNIT,
+  label: "Lancha L-03",
+  pieces: 1,
+};
+
+export const SPLIT_DRAFT: ReservationSplitDraft = {
+  key: SPLIT_DRAFT_KEY,
+  peopleCount: 1,
+  quantities: {},
+  time: SPLIT_DRAFT_TIME,
+};
+
+export const SPLIT_DEPARTURE_NUMBER = 2;
