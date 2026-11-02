@@ -82,7 +82,7 @@ test.describe("Category create", () => {
       await expect(page).toHaveURL(
         E2E_CATEGORY_ALERTS_URL_PATTERN
       );
-      await categoryListPage.goTo();
+      await categoryListPage.goToCategory(categoryName);
       await expect(
         categoryListPage.getCategoryCard(categoryName)
       ).toBeVisible();
