@@ -5,6 +5,8 @@ export const RESERVATION_SPLIT_FEEDBACK_COPY = {
   EQUIPMENT_DUPLICATE:
     "Cada equipo solo puede aparecer una vez en la salida.",
   EQUIPMENT_MIN: "Cada salida necesita al menos 1 equipo.",
+  NETWORK_ERROR:
+    "Sin conexión. Sus datos siguen aquí; vuelva a intentarlo cuando tenga señal.",
   NOT_FOUND:
     "No se encontró la reserva. Vuelva al calendario e inténtelo de nuevo.",
   NOT_SCHEDULED:
