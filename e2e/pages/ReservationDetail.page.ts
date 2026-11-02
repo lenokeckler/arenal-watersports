@@ -92,6 +92,10 @@ export const createReservationDetailPage = (page: Page) => {
         E2E_RESERVATION_DETAIL_COPY.RESERVATION
       ),
     getReservationContent: (): Locator => main,
+    getReservationStatus: (status: string): Locator =>
+      main.locator("header").getByText(status, {
+        exact: true,
+      }),
     getReservationHeading: (
       customerName: string
     ): Locator => getReservationHeading(main, customerName),

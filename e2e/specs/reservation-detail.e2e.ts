@@ -94,7 +94,9 @@ reservationDetailTest(
     await page.reload();
 
     await expect(
-      page.getByText(copy.CANCELLED, { exact: true })
+      createReservationDetailPage(page).getReservationStatus(
+        copy.CANCELLED
+      )
     ).toBeVisible();
   }
 );
