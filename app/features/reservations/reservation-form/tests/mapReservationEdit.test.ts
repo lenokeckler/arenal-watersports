@@ -72,6 +72,21 @@ describe("mapReservationEdit", () => {
     }
   );
 
+  it("describes every item but the extras, by id", () => {
+    const { equipmentLabels } = mapRow({
+      reservation_items: [
+        categoryItem,
+        extraItem,
+        unitItem,
+      ],
+    });
+
+    expect(equipmentLabels).toEqual([
+      test.UNIT_LABEL,
+      test.CATEGORY_LABEL,
+    ]);
+  });
+
   it.each<[Partial<ReservationEditRow>]>([
     [{ reservation_items: [extraItem] }],
     [

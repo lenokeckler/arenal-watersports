@@ -7,9 +7,11 @@ import {
   vi,
 } from "vitest";
 import { RESERVATION_EDIT_COPY } from "../constants/ReservationEditCopy.constants";
+import { RESERVATION_EQUIPMENT_LOCK as lock } from "../constants/ReservationEquipmentLock.constants";
 import {
   RESERVATION_EDIT,
   RESERVATION_EDIT_LONG_DATE,
+  RESERVATION_EDIT_TEST,
 } from "./ReservationEdit.constants";
 import {
   renderReservationEdit,
@@ -46,6 +48,40 @@ describe("ReservationEditView", () => {
     expect(page.getHeading()).toBeInTheDocument();
     expect(page.getSubmitButton()).toBeInTheDocument();
   });
+
+  it("keeps the equipment controls of a single unlocked item", () => {
+    const page = renderReservationEdit();
+
+    expect(
+      page.queryEquipmentControls()
+    ).toBeInTheDocument();
+  });
+
+  it.each([
+    [lock.COMBO, RESERVATION_EDIT_COPY.COMBO_LOCKED],
+    [
+      lock.MULTIPLE_ITEMS,
+      RESERVATION_EDIT_COPY.MULTIPLE_ITEMS_LOCKED,
+    ],
+  ])(
+    "shows %s equipment read-only with its reason",
+    (equipmentLock, notice) => {
+      const page = renderReservationEdit({
+        ...RESERVATION_EDIT,
+        equipmentLabels: [
+          RESERVATION_EDIT_TEST.UNIT_LABEL,
+          RESERVATION_EDIT_TEST.CATEGORY_LABEL,
+        ],
+        equipmentLock,
+      });
+
+      expect(page.getLockedEquipment()).toHaveTextContent(
+        RESERVATION_EDIT_TEST.CATEGORY_LABEL
+      );
+      expect(page.getLockNotice(notice)).toBeVisible();
+      expect(page.queryEquipmentControls()).toBeNull();
+    }
+  );
 
   it("keeps the form on screen after a successful save", async () => {
     vi.mocked(updateAction).mockResolvedValue({

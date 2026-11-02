@@ -3,6 +3,7 @@ import { vi } from "vitest";
 import ReservationEditView from "../ReservationEditView";
 import { updateReservationAction } from "../actions/updateReservationAction";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
+import type { ReservationEdit } from "../models/ReservationEdit.interface";
 import {
   RESERVATION_EDIT,
   RESERVATION_EDIT_CATEGORY_OPTION,
@@ -59,11 +60,13 @@ vi.mock(
 
 export const updateAction = updateReservationAction;
 
-export const renderReservationEdit = () => {
+export const renderReservationEdit = (
+  reservation: ReservationEdit = RESERVATION_EDIT
+) => {
   const { container } = render(
     <ReservationEditView
       categories={[RESERVATION_EDIT_CATEGORY_OPTION]}
-      reservation={RESERVATION_EDIT}
+      reservation={reservation}
     />
   );
   return createReservationEditPage(container);
