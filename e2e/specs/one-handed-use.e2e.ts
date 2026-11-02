@@ -8,14 +8,12 @@ import {
 } from "../constants/E2eReservationForm.constants";
 import { E2E_PROJECT } from "../constants/E2eRuntime.constants";
 import { createOneHandedUsePage } from "../pages/OneHandedUse.page";
-import { grantReservationsAreaToWorker } from "../support/grantReservationsAreaToWorker";
-import { signInAsActiveWorker } from "../support/signInAsActiveWorker";
+import { signInToReservationsMode } from "../support/signInToReservationsMode";
 import { test } from "../support/activeWorkerTest";
 
 test.beforeEach(
   async ({ activeWorker, page }, testInfo) => {
-    await grantReservationsAreaToWorker(activeWorker.id);
-    await signInAsActiveWorker(page, activeWorker);
+    await signInToReservationsMode(page, activeWorker);
 
     if (testInfo.project.name === E2E_PROJECT.MOBILE) {
       await page.setViewportSize({
