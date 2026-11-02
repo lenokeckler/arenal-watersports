@@ -1,13 +1,14 @@
 import { randomUUID } from "node:crypto";
 import { HTTP_STATUS, PATHS } from "@/app/constants";
 import { RESERVATION_EDIT_COPY as copy } from "@/app/features/reservations/reservation-form/constants/ReservationEditCopy.constants";
+import { RESERVATION_FORM_UI_COPY as uiCopy } from "@/app/features/reservations/reservation-form/constants/ReservationFormUiCopy.constants";
 import {
   E2E_RESERVATION_EDIT as values,
+  E2E_RESERVATION_EDIT_SAVE_WAIT as saveWait,
   E2E_RESERVATION_EDIT_SEED as seed,
   E2E_RESERVATION_EDIT_SQL,
 } from "../constants/E2eReservationEdit.constants";
 import { E2E_RESERVATION_FORM_COPY as formCopy } from "../constants/E2eReservationForm.constants";
-import { E2E_TIMEOUT_MS } from "../constants/E2eRuntime.constants";
 import { E2E_WORKER } from "../constants/E2eWorker.constants";
 import { E2E_OPERATIONS_AREA_LABEL as operationsArea } from "../constants/E2eWorkMode.constants";
 import { createOperationsCalendarPage } from "../pages/OperationsCalendar.page";
@@ -49,9 +50,9 @@ test.describe("Reservation edit", () => {
     await edit.getTimeInput().fill(values.TIME);
     await edit.save();
 
-    await expect(edit.getText(copy.SUCCESS)).toBeVisible({
-      timeout: E2E_TIMEOUT_MS.POST_SUBMIT,
-    });
+    await expect(edit.getText(copy.SUCCESS)).toBeVisible(
+      saveWait
+    );
     await expect(
       edit.getText(E2E_WORKER.FULL_NAME)
     ).toBeVisible();
@@ -107,16 +108,14 @@ test.describe("Reservation edit", () => {
           await second.save();
           await expect(
             second.getText(values.SECOND_WORKER_NAME)
-          ).toBeVisible({
-            timeout: E2E_TIMEOUT_MS.POST_SUBMIT,
-          });
+          ).toBeVisible(saveWait);
         }
       );
       await edit.save();
 
-      await expect(edit.getText(copy.STALE)).toBeVisible({
-        timeout: E2E_TIMEOUT_MS.POST_SUBMIT,
-      });
+      await expect(edit.getText(copy.STALE)).toBeVisible(
+        saveWait
+      );
     } finally {
       await removeReservationsForWorker(activeWorker);
       await secondWorker.remove();

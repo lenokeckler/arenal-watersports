@@ -1,6 +1,7 @@
 import { RESERVATION_CALENDAR_ACTIVE_STATUS as status } from "@/app/constants";
 import { RESERVATION_EDIT_QUERY } from "@/app/features/reservations/reservation-form/constants/ReservationEditQuery.constants";
 import { E2E_RESERVATION_FORM_COPY } from "./E2eReservationForm.constants";
+import { E2E_TIMEOUT_MS } from "./E2eRuntime.constants";
 
 export const E2E_RESERVATION_EDIT = {
   NAME_OPERATION: "name the second edit worker",
@@ -10,6 +11,10 @@ export const E2E_RESERVATION_EDIT = {
   SEED_OPERATION: "seed a reservation to edit",
   TEST_MODE: "default",
   TIME: "15:30",
+} as const;
+
+export const E2E_RESERVATION_EDIT_SAVE_WAIT = {
+  timeout: E2E_TIMEOUT_MS.POST_SUBMIT,
 } as const;
 
 export const E2E_RESERVATION_EDIT_SEED = {
