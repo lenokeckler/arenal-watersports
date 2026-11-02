@@ -1,4 +1,28 @@
 export const RESERVATION_SPLIT_UI_COPY = {
+  DURATION_HOURS: (hours: number): string =>
+    hours === 1 ? "1 hora" : `${hours} horas`,
+  DURATION_HOURS_MINUTES: (
+    hours: number,
+    minutes: number
+  ): string => `${hours} h ${minutes} min`,
+  DURATION_MINUTES: (minutes: number): string =>
+    `${minutes} min`,
+  LABEL_CUSTOMER: "Cliente",
+  LABEL_DATE: "Fecha",
+  LABEL_DURATION: "Duración",
+  LABEL_EQUIPMENT: "Equipo",
+  LABEL_PEOPLE: "Personas",
+  LABEL_START_TIME: "Hora de inicio",
+  ORIGINAL_HEADING: "Salida original",
+  ORIGINAL_STAYS: "Se quedan en esta salida.",
+  ORIGINAL_TIME_HINT: "Esta salida conserva su hora.",
+  REMAINING_OF: (
+    remaining: number,
+    total: number
+  ): string => `${remaining} de ${total}`,
+  UNIT_GOES_TO: (departureNumber: number): string =>
+    `Va en la salida ${departureNumber}`,
+  UNIT_STAYS: "Se queda",
   STEPPER_ADD_ARIA: (
     label: string,
     departureNumber: number
