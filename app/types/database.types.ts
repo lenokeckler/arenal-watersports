@@ -3004,6 +3004,10 @@ export type Database = {
           starts_at: string;
         }[];
       };
+      reservation_is_split_child: {
+        Args: { p_reservation_id: string };
+        Returns: boolean;
+      };
       retire_worker: {
         Args: { target_worker: string };
         Returns: string;
