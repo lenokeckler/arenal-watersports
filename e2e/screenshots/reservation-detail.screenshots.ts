@@ -11,7 +11,7 @@ import {
 import { createReservationDetailPage } from "../pages/ReservationDetail.page";
 import { captureViewport } from "../support/captureViewport";
 import { createReservationDetailFixture } from "../support/createReservationDetailFixture";
-import { signInAsPredefinedComboFixtureWorker } from "../support/signInAsPredefinedComboFixtureWorker";
+import { signInWithCredentials } from "../support/signInWithCredentials";
 
 test("captures the complete reservation detail", async ({
   page,
@@ -22,7 +22,7 @@ test("captures the complete reservation detail", async ({
     createReservationDetailPage(page);
 
   try {
-    await signInAsPredefinedComboFixtureWorker(
+    await signInWithCredentials(
       page,
       reservationFixture.workerUsername,
       reservationFixture.workerPassword

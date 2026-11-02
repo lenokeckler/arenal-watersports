@@ -3,7 +3,7 @@ import { calendarActions } from "@/app/store";
 import { useAppDispatch } from "@/app/store/hooks";
 import type { CalendarNavigation } from "../models";
 import type { CalendarView } from "@/app/types";
-import type { CalendarState } from "@/app/store/slices/CalendarState.interface";
+import type { CalendarState } from "@/app/components/calendar/store/CalendarState.interface";
 import type { CalendarActions } from "../models/CalendarActions.type";
 import type { CalendarViewProps } from "../models/CalendarViewProps.interface";
 import { navigateCalendarPeriod } from "../utils";

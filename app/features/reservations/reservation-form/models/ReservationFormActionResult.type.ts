@@ -6,4 +6,5 @@ export type ReservationFormActionResult =
       ok: false;
       errors: ReservationFormValidation["errors"];
       formError?: string;
+      unitUnavailable?: boolean;
     };

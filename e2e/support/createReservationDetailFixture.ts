@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { createServiceRoleSupabaseClient } from "@/app/services/supabase";
 import {
   E2E_RESERVATION_DETAIL_FIXTURE as fixture,
   E2E_RESERVATION_DETAIL_VALUES as values,
@@ -7,7 +8,6 @@ import type { ReservationDetailFixture } from "../models/ReservationDetailFixtur
 import type { ReservationDetailFixtureCatalog } from "../models/ReservationDetailFixtureCatalog.interface";
 import type { ReservationDetailFixtureResources } from "../models/ReservationDetailFixtureResources.interface";
 import type { ReservationDetailFixtureAuthWorker } from "../models/ReservationDetailFixtureAuthWorker.interface";
-import { createLocalPredefinedComboFixtureClient } from "./createLocalPredefinedComboFixtureClient";
 import { ensureReservationDetailFixtureWrite } from "./ensureReservationDetailFixtureWrite";
 import { deleteReservationDetailFixture } from "./deleteReservationDetailFixture";
 import { deleteReservationDetailFixtureWorker } from "./deleteReservationDetailFixtureWorker";
@@ -38,7 +38,7 @@ const createFixtureCustomerName = (
 
 const insertFixtureWithCleanup = async (
   supabase: ReturnType<
-    typeof createLocalPredefinedComboFixtureClient
+    typeof createServiceRoleSupabaseClient
   >,
   resources: ReservationDetailFixtureResources,
   customerName: string
@@ -61,7 +61,7 @@ const insertFixtureWithCleanup = async (
 const createFixtureCleanup =
   (
     supabase: ReturnType<
-      typeof createLocalPredefinedComboFixtureClient
+      typeof createServiceRoleSupabaseClient
     >,
     reservationId: string,
     worker: ReservationDetailFixtureAuthWorker
@@ -86,7 +86,7 @@ const createFixtureCleanup =
 
 const mapFixture = (
   supabase: ReturnType<
-    typeof createLocalPredefinedComboFixtureClient
+    typeof createServiceRoleSupabaseClient
   >,
   catalog: ReservationDetailFixtureCatalog,
   resources: ReservationDetailFixtureResources,
@@ -166,8 +166,7 @@ const mapFixture = (
 
 export const createReservationDetailFixture =
   async (): Promise<ReservationDetailFixture> => {
-    const supabase =
-      createLocalPredefinedComboFixtureClient();
+    const supabase = createServiceRoleSupabaseClient();
     const catalog =
       await loadReservationDetailFixtureCatalog(supabase);
     const workerId = randomUUID();
