@@ -3,6 +3,9 @@
 const OPERATIONS_INVENTORY_PATH = "/operations/inventory";
 
 export const PATHS = {
+  BOARD: "/board",
+  HOME: "/",
+  MODE: "/mode",
   ACCESS: {
     FIRST_SIGN_IN: "/access/first-sign-in",
     LOGIN: "/access/login",
@@ -25,8 +28,6 @@ export const PATHS = {
     WORKER_AREAS: "/administration/workers/areas",
     WORKERS_NEW: "/administration/workers/new",
   },
-  HOME: "/",
-  MODE: "/mode",
   OPERATIONS: {
     CALENDAR: "/operations/calendar",
     INVENTORY: OPERATIONS_INVENTORY_PATH,
@@ -51,6 +52,7 @@ export const PATHS = {
   RESERVATIONS: {
     CALENDAR: "/reservations/calendar",
     DEPOSITS: "/reservations/deposits",
+    INCOME: "/reservations/income",
     NEW: "/reservations/new",
   },
 } as const;

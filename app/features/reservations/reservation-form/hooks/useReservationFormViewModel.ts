@@ -8,6 +8,8 @@ import { useReservationDuration } from "./useReservationDuration";
 import { useReservationEquipmentViewModel } from "./useReservationEquipmentViewModel";
 import { STRING } from "@/app/constants";
 import type { ReservationFormViewModelOptions } from "../models/ReservationFormViewModelOptions.interface";
+import { useReservationEquipmentEligibility } from "./useReservationEquipmentEligibility";
+import { useReservationFormEquipmentSelection } from "./useReservationFormEquipmentSelection";
 
 export const useReservationFormViewModel = (
   options: ReservationFormViewModelOptions
@@ -20,6 +22,16 @@ export const useReservationFormViewModel = (
   } = options;
   const router = useRouter();
   const submission = useReservationFormSubmission();
+  const eligibility =
+    useReservationEquipmentEligibility(categories);
+  const eligibleCategories = eligibility.categories.map(
+    (category) =>
+      unitCategories.some(
+        (unitCategory) => unitCategory.id === category.id
+      )
+        ? { ...category, isInterchangeable: false }
+        : category
+  );
   const fields = useReservationFormFields(
     initialDate,
     initialCategoryId,
@@ -30,16 +42,29 @@ export const useReservationFormViewModel = (
     submission.clearFieldError
   );
   const equipment = useReservationEquipmentViewModel(
-    unitCategories,
+    eligibleCategories,
     fields.values,
     duration.resolveDurationHours(
       fields.values.durationHours
-    )
+    ),
+    eligibility.refreshKey
   );
+  const selection = useReservationFormEquipmentSelection({
+    availableUnits: equipment.availableUnits,
+    categories: eligibleCategories,
+    isAvailabilityResolved:
+      equipment.isAvailabilityResolved,
+    isEligibilityError: eligibility.hasError,
+    isEligibilityLoading: eligibility.isLoading,
+    selectedCategoryId: fields.values.categoryId,
+    selectedUnitId: fields.values.unitId,
+    onCategoryChange: fields.handleCategoryChange,
+    onUnitChange: fields.handleUnitChange,
+  });
   const isSubmitDisabled =
     submission.isPending ||
     submission.isSubmitted ||
-    categories.length === 0 ||
+    eligibleCategories.length === 0 ||
     (equipment.requiresConcreteUnit &&
       (equipment.isAvailabilityLoading ||
         equipment.hasAvailabilityError ||
@@ -61,9 +86,16 @@ export const useReservationFormViewModel = (
       );
     };
   return {
+    categories: eligibleCategories,
     ...fields,
     ...submission,
     ...equipment,
+    isEquipmentEligibilityLoading: eligibility.isLoading,
+    hasEquipmentEligibilityError: eligibility.hasError,
+    hasEquipmentSelectionChanged: selection.hasChanged,
+    handleRetryEquipmentEligibility: eligibility.retry,
+    handleCategoryChange: selection.handleCategoryChange,
+    handleUnitChange: selection.handleUnitChange,
     isSubmitDisabled,
     customDurationDraft: duration.customDurationDraft,
     handleCustomDurationSelection: () => {

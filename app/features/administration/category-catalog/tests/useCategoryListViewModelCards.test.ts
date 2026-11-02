@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 import {
   beforeEach,
   describe,
@@ -7,9 +7,9 @@ import {
   vi,
 } from "vitest";
 import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
-import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_STATUS } from "../constants/CategoryStatus.constants";
 import { useCategoryListViewModel } from "../hooks/useCategoryListViewModel";
+import { resolveCategorySubtitle } from "../utils/resolveCategorySubtitle";
 import { DEFAULT_CATEGORY_LIST_ITEM } from "./CategoryListItem.constants";
 
 const mockRefresh = vi.fn();
@@ -109,7 +109,7 @@ describe("useCategoryListViewModel cards", () => {
     );
   });
 
-  it("derives the inactive flag and the tracking mode label of every card from its category", () => {
+  it("derives the inactive flag and the subtitle of every card from its category", () => {
     const inactiveCategory = {
       ...DEFAULT_CATEGORY_LIST_ITEM,
       status: CATEGORY_STATUS.INACTIVE,
@@ -128,8 +128,73 @@ describe("useCategoryListViewModel cards", () => {
     expect(
       result.current.cards.map((card) => card.isInactive)
     ).toEqual([false, true]);
-    expect(result.current.cards[0].trackingModeLabel).toBe(
-      CATEGORY_CATALOG_COPY.TRACKING_MODE_MICRO_LABEL_BY_UNIT
+    expect(result.current.cards[0].subtitle).toBe(
+      resolveCategorySubtitle(DEFAULT_CATEGORY_LIST_ITEM)
+    );
+  });
+
+  it("starts with every options panel closed", () => {
+    const { result } = renderHook(() =>
+      useCategoryListViewModel({
+        categories: [DEFAULT_CATEGORY_LIST_ITEM],
+        fetchFailed: false,
+      })
+    );
+
+    expect(result.current.cards[0].isPanelOpen).toBe(false);
+  });
+
+  it("opens only the panel of the card whose Editar was pressed and closes it on a second press", () => {
+    const otherCategory = {
+      ...DEFAULT_CATEGORY_LIST_ITEM,
+      id: "other-category",
+    };
+    const { result } = renderHook(() =>
+      useCategoryListViewModel({
+        categories: [
+          DEFAULT_CATEGORY_LIST_ITEM,
+          otherCategory,
+        ],
+        fetchFailed: false,
+      })
+    );
+
+    act(() => result.current.cards[0].onTogglePanelClick());
+
+    expect(
+      result.current.cards.map((card) => card.isPanelOpen)
+    ).toEqual([true, false]);
+
+    act(() => result.current.cards[1].onTogglePanelClick());
+
+    expect(
+      result.current.cards.map((card) => card.isPanelOpen)
+    ).toEqual([false, true]);
+
+    act(() => result.current.cards[1].onTogglePanelClick());
+
+    expect(
+      result.current.cards.map((card) => card.isPanelOpen)
+    ).toEqual([false, false]);
+  });
+
+  it("gives every card its own panel id", () => {
+    const otherCategory = {
+      ...DEFAULT_CATEGORY_LIST_ITEM,
+      id: "other-category",
+    };
+    const { result } = renderHook(() =>
+      useCategoryListViewModel({
+        categories: [
+          DEFAULT_CATEGORY_LIST_ITEM,
+          otherCategory,
+        ],
+        fetchFailed: false,
+      })
+    );
+
+    expect(result.current.cards[0].panelId).not.toBe(
+      result.current.cards[1].panelId
     );
   });
 });
