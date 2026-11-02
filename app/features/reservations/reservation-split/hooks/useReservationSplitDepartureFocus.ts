@@ -29,7 +29,6 @@ export const useReservationSplitDepartureFocus = (
     if (!heading) {
       return;
     }
-    heading.tabIndex = RESERVATION_SPLIT_FOCUS.TAB_INDEX;
     heading.focus();
     heading.scrollIntoView({
       block: RESERVATION_SPLIT_FOCUS.SCROLL_BLOCK,

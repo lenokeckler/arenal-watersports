@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
+import { assertReservationCalendarAccess } from "@/app/services/reservations/assertReservationCalendarAccess";
 import { RESERVATION_SPLIT_BLOCK } from "./constants/ReservationSplitBlock.constants";
 import ReservationSplitUnavailable from "./components/ReservationSplitUnavailable";
 import type { ReservationSplitProps } from "./models/ReservationSplitProps.interface";
 import { getReservationSplit } from "./services/getReservationSplit";
 import ReservationSplitView from "./ReservationSplitView";
-import { assertReservationCalendarAccess } from "@/app/services/reservations/assertReservationCalendarAccess";
 
 const ReservationSplit = async ({
   reservationId,
