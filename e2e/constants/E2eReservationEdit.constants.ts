@@ -43,3 +43,12 @@ with reservation as (
 )
 select id from reservation;`,
 } as const;
+
+export const E2E_RESERVATION_EDIT_SCREENSHOT_STATE = {
+  CALENDAR_LINK: "calendar-link",
+  FORM: "form",
+  LOCKED_COMBO: "locked-combo",
+  NON_EDITABLE: "non-editable",
+  STALE: "stale",
+  SUCCESS: "success",
+} as const;
