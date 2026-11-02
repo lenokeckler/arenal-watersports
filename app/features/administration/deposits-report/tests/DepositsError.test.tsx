@@ -1,5 +1,6 @@
 import { render, within } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
 import DepositsError from "../components/DepositsError";
 import { DEPOSITS_REPORT_COPY } from "../constants/DepositsReportCopy.constants";
 import {
@@ -10,7 +11,7 @@ import { createDepositsReportPage } from "./DepositsReport.page";
 
 describe("DepositsError", () => {
   it("announces the failure with its title and the no-empty-list warning", () => {
-    render(<DepositsError />);
+    render(<DepositsError reset={vi.fn()} />);
     const alert = createDepositsReportPage().getAlert();
 
     expect(
@@ -27,7 +28,7 @@ describe("DepositsError", () => {
   });
 
   it("renders no section, list or empty state in place of the lists", () => {
-    render(<DepositsError />);
+    render(<DepositsError reset={vi.fn()} />);
     const page = createDepositsReportPage();
 
     expect(
@@ -50,5 +51,20 @@ describe("DepositsError", () => {
         DEPOSITS_REPORT_COPY.RETAINED_EMPTY_TITLE
       )
     ).not.toBeInTheDocument();
+  });
+
+  it("retries the read when the worker taps the retry button", async () => {
+    const reset = vi.fn();
+    render(<DepositsError reset={reset} />);
+
+    await userEvent
+      .setup()
+      .click(
+        createDepositsReportPage().getButton(
+          DEPOSITS_REPORT_COPY.RETRY
+        )
+      );
+
+    expect(reset).toHaveBeenCalledOnce();
   });
 });

@@ -13,7 +13,7 @@ test.describe("Deposits report access", () => {
 
     await reportPage.goTo();
 
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
     await expect(reportPage.getMain()).not.toContainText(
       depositsReport.heldUsd.customerName
     );

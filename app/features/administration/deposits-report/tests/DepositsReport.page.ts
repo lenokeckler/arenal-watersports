@@ -34,6 +34,9 @@ export const createDepositsReportPage = () => {
 
   const getAlert = () => screen.getByRole(ARIA_ROLE.ALERT);
 
+  const getButton = (name: string) =>
+    screen.getByRole(ARIA_ROLE.BUTTON, { name });
+
   const getStatus = () =>
     screen.getByRole(ARIA_ROLE.STATUS);
 
@@ -65,6 +68,7 @@ export const createDepositsReportPage = () => {
     getAlert,
     getAllRows,
     getBusyRegion,
+    getButton,
     getByRawText,
     getHeadings,
     getInRow,
