@@ -1,1 +1,1 @@
-RES-06.19.07: Reservation split screen — the screen at /reservations/<id>/split where a reservation is split into departures (US-RES-19 · AWS-102)
+RES-06.19.07: Reservation split original card — the card of the split screen that shows what stays on the original reservation (US-RES-19 · AWS-102)
