@@ -15,6 +15,7 @@ export const MATERIAL_ICON_NAME = {
   EVENT: "event",
   EVENT_AVAILABLE: "event_available",
   EXPAND_MORE: "expand_more",
+  LIGHT_MODE: "light_mode",
   LOCK_OPEN: "lock_open",
   LOCK_RESET: "lock_reset",
   LOGIN: "login",
