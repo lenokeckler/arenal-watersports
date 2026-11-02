@@ -13,6 +13,8 @@ export const RESERVATION_FORM_UI_COPY = {
   CUSTOM_DURATION: "Otra duración en horas",
   CUSTOM_DURATION_OPTION: "Otra duración",
   CATEGORY: "Equipo",
+  CATEGORY_UNAVAILABLE:
+    "La categoría seleccionada dejó de estar disponible. Elija otra categoría.",
   CATEGORY_PLACEHOLDER: "Seleccione una categoría",
   QUANTITY: "Cantidad de equipos",
   UNIT: "Unidad",
@@ -24,12 +26,18 @@ export const RESERVATION_FORM_UI_COPY = {
     "No hay unidades disponibles para este horario.",
   UNIT_UNAVAILABLE:
     "La unidad seleccionada dejó de estar disponible. Elija otra unidad.",
+  UNIT_CONFLICT:
+    "La unidad seleccionada ya tiene una reserva en ese horario. Elija otra unidad o cambie el horario.",
   RETRY_AVAILABILITY: "Volver a consultar",
   SUBMIT: "Registrar reserva",
   SUBMITTING: "Guardando reserva…",
   SUCCESS: "La reserva quedó registrada correctamente.",
   SUBMIT_ERROR:
-    "No fue posible registrar la reserva. Revise los datos e inténtelo de nuevo.",
+    "No fue posible guardar la reserva por un error del sistema. Sus datos se conservaron; inténtelo de nuevo. Si persiste, informe a Administración.",
+  SUBMIT_RESERVATION_ACCESS_ERROR:
+    "Su cuenta necesita el área de Reservas habilitada y activa para registrar esta reserva. Solicite a Administración que revise su acceso.",
+  SUBMIT_UNEXPECTED_ERROR:
+    "El sistema devolvió una respuesta inesperada. No se confirmó la reserva; verifique el calendario antes de intentarlo de nuevo.",
   NO_CATEGORIES:
     "No hay categorías de equipo disponibles para reservar.",
   EQUIPMENT_QUANTITY_NOTE:
@@ -57,8 +65,6 @@ export const RESERVATION_FORM_UI_COPY = {
     "Consultando reservas de esta categoría…",
   CATEGORY_CONFLICT_WARNING_ERROR:
     "No fue posible verificar los cruces de horario. Puede continuar con el registro.",
-  EQUIPMENT_NOTE:
-    "Indique la cantidad de equipos intercambiables. Para la lancha, elija la unidad que quedará reservada.",
   EQUIPMENT_ELIGIBILITY_LOADING:
     "Actualizando las categorías disponibles…",
   EQUIPMENT_ELIGIBILITY_ERROR:

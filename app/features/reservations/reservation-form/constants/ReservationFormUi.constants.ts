@@ -35,11 +35,29 @@ export const RESERVATION_FORM_FIELD_ID = {
   CUSTOMER_NAME: "reservation-customer-name",
   DATE: "reservation-date",
   DURATION: "reservation-duration",
+  DURATION_ERROR: "reservation-duration-error",
+  DURATION_GROUP: "reservation-duration-group",
   HEADING: "reservation-form-heading",
   PEOPLE_COUNT: "reservation-people-count",
   QUANTITY: "reservation-quantity",
+  SUBMISSION_ERROR: "reservation-submission-error",
   TIME: "reservation-time",
   UNIT: "reservation-unit",
+} as const;
+
+export const RESERVATION_FORM_FOCUS_TARGET = {
+  TAB_INDEX: -1,
+} as const;
+
+export const RESERVATION_FORM_ERROR_TARGET_ID = {
+  categoryId: RESERVATION_FORM_FIELD_ID.CATEGORY,
+  customerName: RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME,
+  date: RESERVATION_FORM_FIELD_ID.DATE,
+  durationHours: RESERVATION_FORM_FIELD_ID.DURATION_GROUP,
+  peopleCount: RESERVATION_FORM_FIELD_ID.PEOPLE_COUNT,
+  quantity: RESERVATION_FORM_FIELD_ID.QUANTITY,
+  time: RESERVATION_FORM_FIELD_ID.TIME,
+  unitId: RESERVATION_FORM_FIELD_ID.UNIT,
 } as const;
 
 export const RESERVATION_FORM_INPUT_TYPE = {

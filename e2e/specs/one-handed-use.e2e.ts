@@ -81,9 +81,6 @@ test("shows accessible equipment fields", async ({
   ).toHaveAccessibleName(
     new RegExp(RESERVATION_FORM_UI_COPY.QUANTITY)
   );
-  await expect(
-    oneHandedUsePage.getEquipmentNote()
-  ).toHaveText(RESERVATION_FORM_UI_COPY.EQUIPMENT_NOTE);
 });
 
 test("shows duration choices and reservation actions", async ({
