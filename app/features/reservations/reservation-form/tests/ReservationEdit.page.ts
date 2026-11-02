@@ -20,6 +20,17 @@ export const createReservationEditPage = (
       screen.findByText(message),
     findSuccessMessage: () =>
       screen.findByText(RESERVATION_EDIT_COPY.SUCCESS),
+    getBackLinks: () =>
+      screen.getAllByRole(ARIA_ROLE.LINK, {
+        name: RESERVATION_EDIT_COPY.BACK_TO_CALENDAR,
+      }),
+    getUnavailableHeading: () =>
+      screen.getByRole(ARIA_ROLE.HEADING, {
+        name: RESERVATION_EDIT_COPY.UNAVAILABLE_TITLE,
+      }),
+    getUnavailableMessage: () =>
+      screen.getByRole(ARIA_ROLE.STATUS),
+    queryButton: () => screen.queryByRole(ARIA_ROLE.BUTTON),
     getLockedEquipment: () =>
       screen.getByRole(ARIA_ROLE.LIST, {
         name: RESERVATION_EDIT_COPY.LOCKED_EQUIPMENT_LABEL,

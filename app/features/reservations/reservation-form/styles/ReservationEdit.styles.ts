@@ -1,4 +1,9 @@
-import { RESERVATION_FORM_FIELD_WIDE_CLASS } from "./ReservationFormView.styles";
+import { BUTTON_PRIMARY_CLASS } from "@/app/components/button/styles/Button.styles";
+import {
+  RESERVATION_FORM_BACK_CLASS,
+  RESERVATION_FORM_FIELD_WIDE_CLASS,
+  RESERVATION_FORM_SUBMIT_CLASS,
+} from "./ReservationFormView.styles";
 
 export const RESERVATION_EDIT_LAST_EDIT_CLASS =
   "mb-4 break-words text-sm text-on-surface-variant";
@@ -16,3 +21,7 @@ export const RESERVATION_EDIT_SUMMARY_LABEL_CLASS =
 
 export const RESERVATION_EDIT_SUMMARY_VALUE_CLASS =
   "break-words text-base font-semibold text-on-surface";
+
+export const RESERVATION_EDIT_UNAVAILABLE_ACTION_CLASS = `mt-4 inline-flex items-center justify-center font-semibold ${BUTTON_PRIMARY_CLASS} ${RESERVATION_FORM_SUBMIT_CLASS}`;
+
+export const RESERVATION_EDIT_UNAVAILABLE_BACK_CLASS = `inline-flex w-fit items-center ${RESERVATION_FORM_BACK_CLASS}`;
