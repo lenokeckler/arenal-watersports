@@ -1,16 +1,20 @@
 import { randomUUID } from "node:crypto";
-import { E2E_RESERVATION_DETAIL_FIXTURE as fixture } from "../constants/E2eReservationDetail.constants";
+import type { NullableRef } from "@/app/types";
+import { createServiceRoleSupabaseClient } from "@/app/services/supabase";
+import {
+  E2E_RESERVATION_DETAIL_FIXTURE as fixture,
+  E2E_RESERVATION_DETAIL_VALUES as values,
+} from "../constants/E2eReservationDetail.constants";
 import type { ReservationDetailFixture } from "../models/ReservationDetailFixture.interface";
 import type { ReservationDetailFixtureCatalog } from "../models/ReservationDetailFixtureCatalog.interface";
 import type { ReservationDetailFixtureResources } from "../models/ReservationDetailFixtureResources.interface";
 import type { ReservationDetailFixtureAuthWorker } from "../models/ReservationDetailFixtureAuthWorker.interface";
-import { createServiceRoleSupabaseClient } from "@/app/services/supabase";
-import { createReservationDetailFixtureWorker } from "./createReservationDetailFixtureWorker";
+import { ensureReservationDetailFixtureWrite } from "./ensureReservationDetailFixtureWrite";
 import { deleteReservationDetailFixture } from "./deleteReservationDetailFixture";
 import { deleteReservationDetailFixtureWorker } from "./deleteReservationDetailFixtureWorker";
+import { createReservationDetailFixtureWorker } from "./createReservationDetailFixtureWorker";
 import { insertReservationDetailFixture } from "./insertReservationDetailFixture";
 import { loadReservationDetailFixtureCatalog } from "./loadReservationDetailFixtureCatalog";
-import { ensureReservationDetailFixtureWrite } from "./ensureReservationDetailFixtureWrite";
 
 const createFixtureResources = (
   catalog: ReservationDetailFixtureCatalog,
@@ -90,27 +94,76 @@ const mapFixture = (
   customerName: string,
   worker: ReservationDetailFixtureAuthWorker,
   cleanup: () => Promise<void>
-): ReservationDetailFixture => ({
-  cancel: async (): Promise<void> => {
-    const { error } = await supabase
-      .from("reservations")
-      .update({
-        cancellation_reason: fixture.CANCELLATION_REASON,
-        status: fixture.CANCELLED_STATUS,
-      })
-      .eq("id", resources.reservationId);
-    ensureReservationDetailFixtureWrite(error);
-  },
-  cleanup,
-  customerName,
-  createdByName: fixture.WORKER_NAME,
-  firstCategoryName: fixture.FIRST_CATEGORY_NAME,
-  guideName: catalog.guideName,
-  id: resources.reservationId,
-  secondCategoryName: fixture.SECOND_CATEGORY_NAME,
-  workerPassword: worker.password,
-  workerUsername: worker.username,
-});
+): ReservationDetailFixture => {
+  let splitChildId: NullableRef<string> = null;
+
+  return {
+    cancel: async (): Promise<void> => {
+      const { error } = await supabase
+        .from("reservations")
+        .update({
+          cancellation_reason: fixture.CANCELLATION_REASON,
+          status: "cancelled",
+        })
+        .eq("id", resources.reservationId);
+      ensureReservationDetailFixtureWrite(error);
+    },
+    cleanup: async (): Promise<void> => {
+      if (splitChildId !== null) {
+        await deleteReservationDetailFixture(
+          supabase,
+          splitChildId
+        );
+      }
+      await cleanup();
+    },
+    clearDetails: async (): Promise<void> => {
+      const tables = [
+        "refunds",
+        "reservation_charges",
+        "reservation_items",
+        "reservation_guides",
+        "reservation_dispatches",
+        "reservation_pricing",
+      ] as const;
+
+      for (const table of tables) {
+        const { error } = await supabase
+          .from(table)
+          .delete()
+          .eq("reservation_id", resources.reservationId);
+        ensureReservationDetailFixtureWrite(error);
+      }
+    },
+    createSplitChild: async (): Promise<string> => {
+      splitChildId = randomUUID();
+      const { error } = await supabase
+        .from("reservations")
+        .insert({
+          created_by: resources.createdById,
+          customer_name: customerName,
+          duration_minutes:
+            fixture.RESERVATION_DURATION_MINUTES,
+          id: splitChildId,
+          parent_reservation_id: resources.reservationId,
+          people_count: fixture.PEOPLE_COUNT,
+          starts_at: fixture.RESERVATION_START,
+          type: values.RESERVATION_TYPE.TOUR,
+          updated_by: resources.createdById,
+        });
+      ensureReservationDetailFixtureWrite(error);
+      return splitChildId;
+    },
+    customerName,
+    createdByName: fixture.WORKER_NAME,
+    firstCategoryName: fixture.FIRST_CATEGORY_NAME,
+    guideName: catalog.guideName,
+    id: resources.reservationId,
+    secondCategoryName: fixture.SECOND_CATEGORY_NAME,
+    workerPassword: worker.password,
+    workerUsername: worker.username,
+  };
+};
 
 export const createReservationDetailFixture =
   async (): Promise<ReservationDetailFixture> => {

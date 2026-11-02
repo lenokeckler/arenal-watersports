@@ -1,6 +1,8 @@
 export interface ReservationDetailFixture {
   cancel: () => Promise<void>;
   cleanup: () => Promise<void>;
+  clearDetails: () => Promise<void>;
+  createSplitChild: () => Promise<string>;
   customerName: string;
   createdByName: string;
   firstCategoryName: string;
