@@ -9,17 +9,17 @@ export const CALENDAR_ROOT_CLASS =
 export const CALENDAR_TITLE_CLASS =
   "text-headline-lg-mobile font-semibold text-primary md:text-headline-lg";
 export const CALENDAR_TOOLBAR_CLASS =
-  "space-y-4 rounded-xl border border-white/10 bg-surface-container-low/80 p-4 shadow-lg backdrop-blur-xl sm:space-y-5 md:p-6";
+  "space-y-4 rounded-xl border border-outline-variant bg-surface-container-low/80 p-4 shadow-lg backdrop-blur-xl sm:space-y-5 md:p-6";
 export const CALENDAR_ACTIONS_CLASS =
   "mx-auto grid w-full max-w-[24rem] grid-cols-3 gap-2";
 export const CALENDAR_PERIOD_TITLE_SR_ONLY_CLASS =
   "sr-only";
 export const CALENDAR_VIEW_GROUP_CLASS =
-  "grid w-full auto-cols-fr grid-flow-col gap-1 rounded-lg border border-white/5 bg-surface-container-low p-1 shadow-inner";
+  "grid w-full auto-cols-fr grid-flow-col gap-1 rounded-lg border border-outline-variant bg-surface-container-low p-1 shadow-inner";
 export const CALENDAR_BUTTON_CLASS =
   "min-h-11 min-w-0 w-full rounded-md px-2 font-semibold text-on-surface-variant transition-colors hover:bg-surface-variant/30 hover:text-on-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:px-4";
 export const CALENDAR_SELECTED_CLASS =
-  "bg-primary-container/20 text-primary shadow-[inset_0_0_10px_rgba(87,241,219,0.1)]";
+  "bg-primary-container/20 text-primary shadow-[inset_0_0_10px_var(--glow-primary)]";
 export const CALENDAR_UNSELECTED_CLASS =
   "text-on-surface-variant";
 export const CALENDAR_DAYS_CLASS =
@@ -29,9 +29,9 @@ export const CALENDAR_WEEK_DAY_COLUMN_WIDTH_CLASS =
 export const CALENDAR_WEEK_DAYS_CLASS = `grid w-full min-w-0 grid-flow-col ${CALENDAR_WEEK_DAY_COLUMN_WIDTH_CLASS} gap-3 overflow-x-auto pb-2 lg:grid-flow-row lg:grid-cols-7 lg:overflow-x-visible`;
 export const CALENDAR_SINGLE_DAY_CLASS = "grid gap-3";
 export const CALENDAR_DAY_CLASS =
-  "min-h-32 min-w-0 rounded-xl border border-white/10 bg-surface-container-high/70 p-4 shadow-lg backdrop-blur-xl transition-colors hover:bg-surface-container-high/90";
+  "min-h-32 min-w-0 rounded-xl border border-outline-variant bg-surface-container-high/70 p-4 shadow-lg backdrop-blur-xl transition-colors hover:bg-surface-container-high/90";
 export const CALENDAR_MONTH_CLASS =
-  "space-y-3 rounded-xl border border-white/10 bg-surface-container-high/70 p-4 shadow-lg backdrop-blur-xl md:p-5";
+  "space-y-3 rounded-xl border border-outline-variant bg-surface-container-high/70 p-4 shadow-lg backdrop-blur-xl md:p-5";
 export const CALENDAR_MONTH_SELECT_BUTTON_CLASS =
   "flex min-h-11 w-full items-center rounded-md px-2 text-left text-sm font-semibold text-on-surface hover:bg-surface-variant/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 export const CALENDAR_MONTH_SELECTED_CLASS =

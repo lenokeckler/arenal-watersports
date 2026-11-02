@@ -1,24 +1,37 @@
 import Link from "@/app/components/link/Link";
-import ScreenHeading from "@/app/components/screen-header/ScreenHeading";
+import Text from "@/app/components/text/Text";
+import Title from "@/app/components/title/Title";
 import {
   ADMINISTRATION_SCREEN_TITLE_ID,
-  IMAGE_ALTS,
   PATHS,
+  TitleVariant,
 } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
+import type { CategoryListHeaderProps } from "../models/CategoryListHeaderProps.interface";
 import {
   CATEGORY_LIST_HEADER_CLASS,
   CATEGORY_LIST_HEADER_CREATE_LINK_CLASS,
+  CATEGORY_LIST_HEADER_SUBTITLE_CLASS,
+  CATEGORY_LIST_HEADER_TEXT_CLASS,
+  CATEGORY_LIST_HEADER_TITLE_CLASS,
 } from "../styles/CategoryListHeader.styles";
+import { resolveCategoryInventoryLabel } from "../utils/resolveCategoryInventoryLabel";
 
-const CategoryListHeader = (): React.JSX.Element => (
+const CategoryListHeader = ({
+  totalCount,
+}: CategoryListHeaderProps): React.JSX.Element => (
   <div className={CATEGORY_LIST_HEADER_CLASS}>
-    <ScreenHeading
-      title={CATEGORY_CATALOG_COPY.LIST_TITLE}
-      titleId={ADMINISTRATION_SCREEN_TITLE_ID}
-      logoAlt={IMAGE_ALTS.COMPANY_LOGO}
-      instruction={CATEGORY_CATALOG_COPY.LIST_PURPOSE}
-    />
+    <div className={CATEGORY_LIST_HEADER_TEXT_CLASS}>
+      <Title
+        id={ADMINISTRATION_SCREEN_TITLE_ID}
+        variant={TitleVariant.PRIMARY}
+        text={CATEGORY_CATALOG_COPY.LIST_TITLE}
+        className={CATEGORY_LIST_HEADER_TITLE_CLASS}
+      />
+      <Text className={CATEGORY_LIST_HEADER_SUBTITLE_CLASS}>
+        {resolveCategoryInventoryLabel(totalCount)}
+      </Text>
+    </div>
     <Link
       href={PATHS.ADMINISTRATION.CATEGORIES_NEW}
       className={CATEGORY_LIST_HEADER_CREATE_LINK_CLASS}
