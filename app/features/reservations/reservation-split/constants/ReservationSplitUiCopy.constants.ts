@@ -1,4 +1,9 @@
 export const RESERVATION_SPLIT_UI_COPY = {
+  ACTIONS: "Acciones de la división",
+  ADD_DEPARTURE: "Agregar otra salida",
+  ADD_DEPARTURE_BLOCKED:
+    "No quedan personas ni equipos para otra salida.",
+  BACK_TO_CALENDAR: "Volver al calendario",
   CARRIES_UNITS: (units: string): string =>
     `Lleva: ${units}.`,
   DEPARTURE_HEADING: (departureNumber: number): string =>
@@ -44,6 +49,10 @@ export const RESERVATION_SPLIT_UI_COPY = {
   UNIT_OPTION_NO_TIME: "sin hora",
   UNIT_OPTION_ORIGINAL: (time: string): string =>
     `Salida original · ${time}`,
+  SUBMIT: "Dividir reserva",
+  SUBMITTING: "Dividiendo reserva…",
+  SUCCESS: (departures: number): string =>
+    `La reserva quedó dividida en ${departures} salidas.`,
   STEPPER_ADD_ARIA: (
     label: string,
     departureNumber: number

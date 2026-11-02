@@ -1,5 +1,7 @@
 import { RESERVATION_SPLIT_BLOCK } from "../constants/ReservationSplitBlock.constants";
 import { RESERVATION_SPLIT_ITEM_KIND } from "../constants/ReservationSplitItemKind.constants";
+import { RESERVATION_SPLIT_UI_COPY } from "../constants/ReservationSplitUiCopy.constants";
+import type { ReservationSplitCreatedDeparture } from "../models/ReservationSplitCreatedDeparture.interface";
 import type { ReservationSplitDepartureInput } from "../models/ReservationSplitDepartureInput.interface";
 import type { ReservationSplitInput } from "../models/ReservationSplitInput.interface";
 import type { ReservationSplit } from "../models/ReservationSplit.interface";
@@ -171,3 +173,34 @@ export const SPLIT_OTHER_UNIT_ITEM: ReservationSplitItem = {
   id: "e2900000-0000-4000-8000-000000000404",
   label: "Lancha L-04",
 };
+
+export const SPLIT_FORM_ERROR = "Sin conexión.";
+export const SPLIT_CALENDAR_HREF = "/reservations/calendar";
+
+export const SPLIT_CREATED_DEPARTURES: ReservationSplitCreatedDeparture[] =
+  [
+    {
+      code: "R-000124",
+      reservationId: "e1900000-0000-4000-8000-000000000061",
+    },
+    {
+      code: "R-000125",
+      reservationId: "e1900000-0000-4000-8000-000000000062",
+    },
+  ];
+
+export const SPLIT_SUBMIT_STATE_CASES = [
+  ["idle", {}, RESERVATION_SPLIT_UI_COPY.SUBMIT, false],
+  [
+    "pending",
+    { isPending: true, isSubmitDisabled: true },
+    RESERVATION_SPLIT_UI_COPY.SUBMITTING,
+    true,
+  ],
+  [
+    "stale",
+    { isStale: true, isSubmitDisabled: true },
+    RESERVATION_SPLIT_UI_COPY.SUBMIT,
+    true,
+  ],
+] as const;
