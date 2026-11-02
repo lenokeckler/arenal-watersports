@@ -13,5 +13,5 @@ export const signInAsActiveWorker = async (
   await loginPage.fillUsername(activeWorker.username);
   await loginPage.fillPassword(activeWorker.password);
   await loginPage.submit();
-  await page.waitForURL(PATHS.HOME);
+  await page.waitForURL(PATHS.BOARD);
 };

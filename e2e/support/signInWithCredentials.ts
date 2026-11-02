@@ -13,5 +13,5 @@ export const signInWithCredentials = async (
   await loginPage.fillUsername(username);
   await loginPage.fillPassword(password);
   await loginPage.submit();
-  await page.waitForURL(PATHS.HOME);
+  await page.waitForURL(PATHS.BOARD);
 };

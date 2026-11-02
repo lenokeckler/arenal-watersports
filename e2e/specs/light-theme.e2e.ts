@@ -9,7 +9,7 @@ import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
 test.describe("Light theme", () => {
   test.beforeEach(async ({ page }) => {
     await signInAsSeededWorker(page);
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
 
     const homePage = createHomePage(page);
     await homePage.goTo();

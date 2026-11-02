@@ -21,7 +21,7 @@ test("captures the Operations calendar", async ({
   await workModePage
     .getCard(E2E_OPERATIONS_AREA_LABEL)
     .click();
-  await expect(page).toHaveURL(PATHS.HOME);
+  await expect(page).toHaveURL(PATHS.BOARD);
 
   const calendarPage = createOperationsCalendarPage(page);
   await calendarPage.goTo();
