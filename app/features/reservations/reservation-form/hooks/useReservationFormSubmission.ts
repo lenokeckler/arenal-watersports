@@ -1,11 +1,17 @@
 import { useTransition } from "react";
-import { createReservationAction } from "../actions/createReservationAction";
-import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { RESERVATION_FORM_SUBMISSION_DEFAULTS } from "../constants/ReservationFormSubmission.constants";
 import type { ReservationFormActionResult } from "../models/ReservationFormActionResult.type";
 import type { ReservationFormInput } from "../models/ReservationFormInput.interface";
+import type { ReservationFormSubmissionOptions } from "../models/ReservationFormSubmissionOptions.interface";
 import { useReservationSubmissionState } from "./useReservationSubmissionState";
 
-export const useReservationFormSubmission = () => {
+export const useReservationFormSubmission = (
+  options?: ReservationFormSubmissionOptions
+) => {
+  const { submitAction, submitErrorCopy } = {
+    ...RESERVATION_FORM_SUBMISSION_DEFAULTS,
+    ...options,
+  };
   const submission = useReservationSubmissionState();
   const [isPending, startTransition] = useTransition();
 
@@ -14,11 +20,9 @@ export const useReservationFormSubmission = () => {
   ): Promise<ReservationFormActionResult | undefined> => {
     let result: ReservationFormActionResult;
     try {
-      result = await createReservationAction(values);
+      result = await submitAction(values);
     } catch {
-      submission.setSubmissionError(
-        RESERVATION_FORM_UI_COPY.SUBMIT_ERROR
-      );
+      submission.setSubmissionError(submitErrorCopy);
       return undefined;
     }
     return result;

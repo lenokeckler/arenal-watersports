@@ -6,13 +6,15 @@ import type { ReservationFormInput } from "../models/ReservationFormInput.interf
 export const useReservationFormValues = (
   initialDate: string,
   initialCategoryId: string,
-  clearFieldError: (field: ReservationFormField) => void
+  clearFieldError: (field: ReservationFormField) => void,
+  initialValues?: ReservationFormInput
 ) => {
   const [values, setValues] =
     useState<ReservationFormInput>({
       ...RESERVATION_FORM_DEFAULT_VALUES,
       date: initialDate,
       categoryId: initialCategoryId,
+      ...initialValues,
     });
 
   const updateValue = <

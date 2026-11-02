@@ -7,5 +7,6 @@ export const getReservationUnitAvailabilityWindowKey = (
     request.categoryId,
     request.date,
     request.durationMinutes,
+    request.excludeReservationId,
     request.time,
   ]);

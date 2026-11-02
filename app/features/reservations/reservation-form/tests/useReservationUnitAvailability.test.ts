@@ -13,6 +13,7 @@ import { getAvailableReservationUnitsAction } from "../actions/getAvailableReser
 import { useReservationUnitAvailability } from "../hooks/useReservationUnitAvailability";
 import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
 import { AVAILABLE_UNIT_TEST } from "./getAvailableReservationUnits.constants";
+import { RESERVATION_EDIT_TEST } from "./ReservationEdit.constants";
 
 vi.mock(
   "../actions/getAvailableReservationUnitsAction",
@@ -75,5 +76,38 @@ describe("useReservationUnitAvailability", () => {
         id: AVAILABLE_UNIT_TEST.UNIT_ID,
       },
     ]);
+  });
+
+  it("re-fetches when the excluded reservation changes", async () => {
+    vi.mocked(
+      getAvailableReservationUnitsAction
+    ).mockResolvedValue({
+      availableQuantity: null,
+      availableUnits: [],
+    });
+    const request: ReservationUnitAvailabilityInput = {
+      categoryId: AVAILABLE_UNIT_TEST.CATEGORY_ID,
+      date: AVAILABLE_UNIT_TEST.DATE,
+      durationMinutes: AVAILABLE_UNIT_TEST.DURATION_MINUTES,
+      excludeReservationId:
+        RESERVATION_EDIT_TEST.RESERVATION_ID,
+      time: AVAILABLE_UNIT_TEST.TIME,
+    };
+    const { rerender } = renderHook(
+      (input) => useReservationUnitAvailability(input, 0),
+      { initialProps: request }
+    );
+    const nextRequest = {
+      ...request,
+      excludeReservationId: RESERVATION_EDIT_TEST.UNIT_ID,
+    };
+
+    rerender(nextRequest);
+
+    await waitFor(() =>
+      expect(
+        getAvailableReservationUnitsAction
+      ).toHaveBeenLastCalledWith(nextRequest)
+    );
   });
 });
