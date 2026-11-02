@@ -6,9 +6,13 @@ export interface UnorderedListItem {
   id?: string;
 }
 export interface UnorderedListProps {
+  id?: string;
+  role?: React.AriaRole;
+  "aria-labelledby"?: string;
   className?: string;
   style?: React.CSSProperties;
   variant?: UnorderedListVariant;
+  ariaLabel?: string;
   validationMessages?: string[];
   items?: (string | UnorderedListItem)[];
 }

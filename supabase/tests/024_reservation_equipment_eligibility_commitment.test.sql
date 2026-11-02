@@ -40,8 +40,10 @@ select is((select count(*)::integer from reservations where customer_name like '
   'rejected equipment leaves no reservation behind');
 
 reset role;
+set local request.jwt.claims to '';
 update equipment_units set status = 'available' where id = 'e2700000-0000-4000-8000-000000000201';
 update equipment_stock set quantity_available = 1 where category_id = 'e2700000-0000-4000-8000-000000000102';
+set local request.jwt.claims to '{"sub":"e2700000-0000-4000-8000-000000000001","role":"authenticated"}';
 set local role authenticated;
 select lives_ok(
   $$ select create_rental_reservation(jsonb_build_object('customer_name', 'RES17 Returned unit', 'people_count', 1,
@@ -69,10 +71,15 @@ select throws_ok(
   $$ select create_rental_reservation(jsonb_build_object('customer_name', 'RES17 Operations', 'people_count', 1,
     'date', '2035-05-02', 'time', '09:00', 'duration_minutes', 60,
     'category_id', 'e2700000-0000-4000-8000-000000000101', 'quantity', 1)) $$,
-  '42501', null, 'physical eligibility does not grant Operations reservation creation'
+  'P0001', 'Reservations access is required',
+  'physical eligibility does not grant Operations reservation creation'
 );
 reset role;
-update workers set status = 'blocked' where id = 'e2700000-0000-4000-8000-000000000001';
+set local request.jwt.claims to '';
+set local role postgres;
+update workers set status = 'blocked', blocked_reason = 'administration'
+where id = 'e2700000-0000-4000-8000-000000000001';
+reset role;
 set local request.jwt.claims to '{"sub":"e2700000-0000-4000-8000-000000000001","role":"authenticated"}';
 set local role authenticated;
 select throws_ok($$ select lock_reservable_category('e2700000-0000-4000-8000-000000000101') $$,

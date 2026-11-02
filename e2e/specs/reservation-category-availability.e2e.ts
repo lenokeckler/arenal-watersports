@@ -33,5 +33,7 @@ test("shows category availability for the selected future interval", async ({
   );
   await expect(
     reservationPage.getAvailabilityCount()
-  ).toBeVisible();
+  ).toHaveText(
+    E2E_RESERVATION_FORM_COPY.CATEGORY_AVAILABILITY_EXPECTED_COUNT
+  );
 });
