@@ -210,3 +210,10 @@ export const SPLIT_UNAVAILABLE_REASONS = [
   RESERVATION_SPLIT_BLOCK.TOO_FEW_PEOPLE,
   RESERVATION_SPLIT_BLOCK.TOO_LITTLE_EQUIPMENT,
 ] as const;
+
+export const SPLIT_QUANTITY_ONLY_SPLIT: ReservationSplit = {
+  ...EXPECTED_SPLIT,
+  items: EXPECTED_SPLIT.items.filter(
+    (item) => item.kind !== RESERVATION_SPLIT_ITEM_KIND.UNIT
+  ),
+};

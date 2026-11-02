@@ -6,6 +6,8 @@ export const RESERVATION_SPLIT_UI_COPY = {
   BACK_TO_CALENDAR: "Volver al calendario",
   CARRIES_UNITS: (units: string): string =>
     `Lleva: ${units}.`,
+  CHARGE_NOTE:
+    "El cobro y el depósito se quedan en la reserva original. Las salidas nuevas no tienen cobro propio; solo se suma el tiempo adicional que generen.",
   DEPARTURE_HEADING: (departureNumber: number): string =>
     `Salida ${departureNumber}`,
   DESCRIPTION:
@@ -42,6 +44,9 @@ export const RESERVATION_SPLIT_UI_COPY = {
   SAME_DAY_HINT: "Mismo día que la reserva original.",
   TIME_ZONE: "Hora de Costa Rica · UTC−06:00",
   TITLE: "Dividir reserva",
+  UNITS_HELPER:
+    "Cada unidad va completa en una sola salida.",
+  UNITS_LEGEND: "Equipo por unidad",
   UNIT_GOES_TO: (departureNumber: number): string =>
     `Va en la salida ${departureNumber}`,
   UNIT_STAYS: "Se queda",
