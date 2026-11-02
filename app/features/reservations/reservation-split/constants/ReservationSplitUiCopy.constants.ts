@@ -8,6 +8,8 @@ export const RESERVATION_SPLIT_UI_COPY = {
     `Lleva: ${units}.`,
   DEPARTURE_HEADING: (departureNumber: number): string =>
     `Salida ${departureNumber}`,
+  DESCRIPTION:
+    "Reparta las personas y el equipo en salidas distintas. La reserva original sigue siendo la primera salida.",
   DURATION_HOURS: (hours: number): string =>
     hours === 1 ? "1 hora" : `${hours} horas`,
   DURATION_HOURS_MINUTES: (
@@ -39,6 +41,7 @@ export const RESERVATION_SPLIT_UI_COPY = {
   ): string => `Quitar la salida ${departureNumber}`,
   SAME_DAY_HINT: "Mismo día que la reserva original.",
   TIME_ZONE: "Hora de Costa Rica · UTC−06:00",
+  TITLE: "Dividir reserva",
   UNIT_GOES_TO: (departureNumber: number): string =>
     `Va en la salida ${departureNumber}`,
   UNIT_STAYS: "Se queda",

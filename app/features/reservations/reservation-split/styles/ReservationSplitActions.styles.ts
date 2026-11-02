@@ -34,5 +34,5 @@ export const RESERVATION_SPLIT_SUCCESS_CLASS =
 export const RESERVATION_SPLIT_SUCCESS_LIST_CLASS =
   "space-y-1 font-mono text-base tabular-nums text-primary";
 
-export const RESERVATION_SPLIT_SUCCESS_LINK_CLASS =
+export const RESERVATION_SPLIT_CALENDAR_LINK_CLASS =
   "inline-flex min-h-12 w-full items-center justify-center rounded-full bg-primary px-6 font-semibold text-on-primary transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:w-auto md:min-w-56";

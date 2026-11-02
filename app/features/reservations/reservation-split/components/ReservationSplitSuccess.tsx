@@ -5,7 +5,7 @@ import { RESERVATION_SPLIT_UI_COPY } from "../constants/ReservationSplitUiCopy.c
 import type { ReservationSplitSuccessProps } from "../models/ReservationSplitSuccessProps.interface";
 import {
   RESERVATION_SPLIT_SUCCESS_CLASS,
-  RESERVATION_SPLIT_SUCCESS_LINK_CLASS,
+  RESERVATION_SPLIT_CALENDAR_LINK_CLASS,
   RESERVATION_SPLIT_SUCCESS_LIST_CLASS,
 } from "../styles/ReservationSplitActions.styles";
 
@@ -26,7 +26,7 @@ const ReservationSplitSuccess = ({
     </ul>
     <Link
       href={PATHS.RESERVATIONS.CALENDAR}
-      className={RESERVATION_SPLIT_SUCCESS_LINK_CLASS}
+      className={RESERVATION_SPLIT_CALENDAR_LINK_CLASS}
     >
       {RESERVATION_SPLIT_UI_COPY.BACK_TO_CALENDAR}
     </Link>
