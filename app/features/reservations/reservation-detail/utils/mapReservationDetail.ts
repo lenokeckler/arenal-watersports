@@ -22,9 +22,18 @@ const getReservationDetailChargeSummary = (
 const mapReservationDetailAuditNames = (
   source: ReservationDetailReservationSource,
   workerNames: ReservationDetailWorkerName[]
-): Pick<ReservationDetail, "createdByName" | "updatedByName"> => ({
-  createdByName: getReservationDetailWorkerName(workerNames, source.created_by),
-  updatedByName: getReservationDetailWorkerName(workerNames, source.updated_by),
+): Pick<
+  ReservationDetail,
+  "createdByName" | "updatedByName"
+> => ({
+  createdByName: getReservationDetailWorkerName(
+    workerNames,
+    source.created_by
+  ),
+  updatedByName: getReservationDetailWorkerName(
+    workerNames,
+    source.updated_by
+  ),
 });
 
 const mapReservationDetailBase = (
@@ -64,7 +73,8 @@ export const mapReservationDetail = (
   source: ReservationDetailReservationSource,
   workerNames: ReservationDetailWorkerName[]
 ): ReservationDetail => {
-  const chargeSummary = getReservationDetailChargeSummary(source);
+  const chargeSummary =
+    getReservationDetailChargeSummary(source);
 
   return {
     ...mapReservationDetailBase(source),

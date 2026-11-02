@@ -1,9 +1,34 @@
 import Text from "@/app/components/text/Text";
-import { ARIA_ROLE } from "@/app/constants";
+import Button from "@/app/components/button/Button";
+import { ARIA_ROLE, BUTTON } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
 import type { ReservationFormValuesProps } from "../models/ReservationFormValuesProps.interface";
-import { RESERVATION_FORM_UNIT_EMPTY_NOTE_CLASS } from "../styles/ReservationFormView.styles";
+import {
+  RESERVATION_FORM_RETRY_CLASS,
+  RESERVATION_FORM_UNIT_EMPTY_NOTE_CLASS,
+} from "../styles/ReservationFormView.styles";
+
+const AvailabilityError = ({
+  viewModel,
+}: ReservationFormValuesProps): React.JSX.Element => (
+  <>
+    <Text
+      role={ARIA_ROLE.ALERT}
+      className={RESERVATION_FORM_UNIT_EMPTY_NOTE_CLASS}
+    >
+      {RESERVATION_FORM_UI_COPY.AVAILABILITY_ERROR}
+    </Text>
+    <Button
+      type="button"
+      variant={BUTTON.BASE}
+      className={RESERVATION_FORM_RETRY_CLASS}
+      onClick={viewModel.retryUnitAvailability}
+    >
+      {RESERVATION_FORM_UI_COPY.RETRY_AVAILABILITY}
+    </Button>
+  </>
+);
 
 const ReservationUnitAvailabilityMessage = ({
   viewModel,
@@ -20,14 +45,7 @@ const ReservationUnitAvailabilityMessage = ({
   }
 
   if (viewModel.hasAvailabilityError) {
-    return (
-      <Text
-        role={ARIA_ROLE.ALERT}
-        className={RESERVATION_FORM_UNIT_EMPTY_NOTE_CLASS}
-      >
-        {RESERVATION_FORM_UI_COPY.AVAILABILITY_ERROR}
-      </Text>
-    );
+    return <AvailabilityError viewModel={viewModel} />;
   }
 
   if (viewModel.availableUnits.length > 0) {
