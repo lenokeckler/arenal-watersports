@@ -12,11 +12,23 @@ export const useSyncReservationCategoryAvailability = (
     setHasError,
     setIsLoading,
   } = sync;
-  const { categoryId, date, durationMinutes, time } = input;
+  const {
+    categoryId,
+    date,
+    durationMinutes,
+    excludeReservationId,
+    time,
+  } = input;
   useEffect(
     () =>
       syncReservationCategoryAvailability({
-        input: { categoryId, date, durationMinutes, time },
+        input: {
+          categoryId,
+          date,
+          durationMinutes,
+          excludeReservationId,
+          time,
+        },
         setAvailability,
         setHasError,
         setIsLoading,
@@ -25,6 +37,7 @@ export const useSyncReservationCategoryAvailability = (
       categoryId,
       date,
       durationMinutes,
+      excludeReservationId,
       time,
       refreshKey,
       setAvailability,

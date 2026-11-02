@@ -2896,6 +2896,21 @@ export type Database = {
           units_are_interchangeable: boolean;
         }[];
       };
+      reservation_category_conflicts: {
+        Args: {
+          p_category_id: string;
+          p_ends_at: string;
+          p_exclude_reservation?: string;
+          p_starts_at: string;
+        };
+        Returns: {
+          code: string;
+          customer_name: string;
+          ends_at: string;
+          reservation_id: string;
+          starts_at: string;
+        }[];
+      };
       reservation_equipment_differs: {
         Args: {
           p_category_id: string;
@@ -2961,20 +2976,6 @@ export type Database = {
       touch_current_session_activity: {
         Args: Record<PropertyKey, never>;
         Returns: string;
-      };
-      reservation_category_conflicts: {
-        Args: {
-          p_category_id: string;
-          p_ends_at: string;
-          p_starts_at: string;
-        };
-        Returns: {
-          code: string;
-          customer_name: string;
-          ends_at: string;
-          reservation_id: string;
-          starts_at: string;
-        }[];
       };
       unit_conflicts: {
         Args: {

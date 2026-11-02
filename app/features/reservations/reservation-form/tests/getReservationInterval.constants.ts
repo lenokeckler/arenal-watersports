@@ -49,6 +49,16 @@ export const RESERVATION_CATEGORY_AVAILABILITY_INPUT = {
   time: "10:00",
 } satisfies ReservationUnitAvailabilityInput;
 
+export const RESERVATION_CATEGORY_EXCLUDED_RESERVATION_ID =
+  "e3180000-0000-4000-8000-000000000301";
+
+export const RESERVATION_CATEGORY_AVAILABILITY_EXCLUDING_INPUT =
+  {
+    ...RESERVATION_CATEGORY_AVAILABILITY_INPUT,
+    excludeReservationId:
+      RESERVATION_CATEGORY_EXCLUDED_RESERVATION_ID,
+  } satisfies ReservationUnitAvailabilityInput;
+
 export const RESERVATION_CATEGORY_AVAILABILITY_CROSS_DAY_INPUT =
   {
     categoryId: "category-1",

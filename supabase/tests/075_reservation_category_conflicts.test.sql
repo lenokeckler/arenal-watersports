@@ -60,13 +60,13 @@ select results_eq(
 );
 
 select ok(not (select prosecdef from pg_proc
-  where oid = 'reservation_category_conflicts(uuid,timestamptz,timestamptz)'::regprocedure),
+  where oid = 'reservation_category_conflicts(uuid,timestamptz,timestamptz,uuid)'::regprocedure),
   'the conflict function runs with caller row-level security');
 select ok(has_function_privilege('authenticated',
-  'reservation_category_conflicts(uuid,timestamptz,timestamptz)', 'EXECUTE'),
+  'reservation_category_conflicts(uuid,timestamptz,timestamptz,uuid)', 'EXECUTE'),
   'authenticated callers can execute the conflict function');
 select ok(not has_function_privilege('anon',
-  'reservation_category_conflicts(uuid,timestamptz,timestamptz)', 'EXECUTE'),
+  'reservation_category_conflicts(uuid,timestamptz,timestamptz,uuid)', 'EXECUTE'),
   'anonymous callers cannot execute the conflict function');
 
 select set_config('request.jwt.claims',
