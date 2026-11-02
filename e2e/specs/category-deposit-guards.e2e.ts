@@ -17,7 +17,10 @@ import {
   E2E_DEPOSIT_NONE,
   resolveCategoryDepositFixtureName,
 } from "../constants/E2eCategoryDeposit.constants";
-import { E2E_COUNT } from "../constants/E2eRuntime.constants";
+import {
+  E2E_COUNT,
+  E2E_SIGNED_OUT_STORAGE_STATE,
+} from "../constants/E2eRuntime.constants";
 
 test.describe("Category deposit guards", () => {
   for (const invalidCase of E2E_DEPOSIT_INVALID_INPUT_CASES) {
@@ -105,14 +108,20 @@ test.describe("Category deposit guards", () => {
     );
   });
 
-  test("sends a signed-out visitor to the login", async ({
-    page,
-  }) => {
-    const depositFormPage =
-      createCategoryDepositFormPage(page);
+  test.describe("Signed-out visitor", () => {
+    test.use({
+      storageState: E2E_SIGNED_OUT_STORAGE_STATE,
+    });
 
-    await depositFormPage.goTo(E2E_UNKNOWN_CATEGORY_ID);
+    test("sends a signed-out visitor to the login", async ({
+      page,
+    }) => {
+      const depositFormPage =
+        createCategoryDepositFormPage(page);
 
-    await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+      await depositFormPage.goTo(E2E_UNKNOWN_CATEGORY_ID);
+
+      await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+    });
   });
 });

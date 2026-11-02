@@ -17,7 +17,10 @@ import {
   E2E_ALERT_NONE,
   resolveCategoryAlertsFixtureName,
 } from "../constants/E2eCategoryAlerts.constants";
-import { E2E_COUNT } from "../constants/E2eRuntime.constants";
+import {
+  E2E_COUNT,
+  E2E_SIGNED_OUT_STORAGE_STATE,
+} from "../constants/E2eRuntime.constants";
 
 test.describe("Category alerts guards", () => {
   for (const invalidCase of E2E_ALERT_INVALID_INPUT_CASES) {
@@ -104,14 +107,20 @@ test.describe("Category alerts guards", () => {
     );
   });
 
-  test("sends a signed-out visitor to the login", async ({
-    page,
-  }) => {
-    const alertsFormPage =
-      createCategoryAlertsFormPage(page);
+  test.describe("Signed-out visitor", () => {
+    test.use({
+      storageState: E2E_SIGNED_OUT_STORAGE_STATE,
+    });
 
-    await alertsFormPage.goTo(E2E_UNKNOWN_CATEGORY_ID);
+    test("sends a signed-out visitor to the login", async ({
+      page,
+    }) => {
+      const alertsFormPage =
+        createCategoryAlertsFormPage(page);
 
-    await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+      await alertsFormPage.goTo(E2E_UNKNOWN_CATEGORY_ID);
+
+      await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+    });
   });
 });

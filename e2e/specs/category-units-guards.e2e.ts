@@ -13,7 +13,10 @@ import {
   E2E_UNIT_DEFAULT_INPUT,
 } from "../constants/E2eCategoryUnits.constants";
 import { E2E_UNKNOWN_CATEGORY_ID } from "../constants/E2eCategoryBehavior.constants";
-import { E2E_COUNT } from "../constants/E2eRuntime.constants";
+import {
+  E2E_COUNT,
+  E2E_SIGNED_OUT_STORAGE_STATE,
+} from "../constants/E2eRuntime.constants";
 
 test.describe("Category units guards", () => {
   test("a duplicate code shows the field error and creates nothing", async ({
@@ -83,12 +86,18 @@ test.describe("Category units guards", () => {
     );
   });
 
-  test("sends a signed-out visitor to the login", async ({
-    page,
-    formPage,
-  }) => {
-    await formPage.goTo(E2E_UNKNOWN_CATEGORY_ID);
+  test.describe("Signed-out visitor", () => {
+    test.use({
+      storageState: E2E_SIGNED_OUT_STORAGE_STATE,
+    });
 
-    await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+    test("sends a signed-out visitor to the login", async ({
+      page,
+      formPage,
+    }) => {
+      await formPage.goTo(E2E_UNKNOWN_CATEGORY_ID);
+
+      await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+    });
   });
 });

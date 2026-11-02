@@ -63,6 +63,14 @@ export const E2E_TEST_MATCH = {
 
 export const E2E_TEST_DIR = "./e2e";
 
+export const E2E_AUTH_STORAGE_PATH =
+  "playwright-artifacts/admin-storage-state.json";
+
+export const E2E_SIGNED_OUT_STORAGE_STATE = {
+  cookies: [],
+  origins: [],
+};
+
 export const E2E_REPORTER = {
   HTML: "html",
   LIST: "list",
