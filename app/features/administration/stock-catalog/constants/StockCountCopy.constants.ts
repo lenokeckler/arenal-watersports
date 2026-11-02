@@ -1,7 +1,9 @@
 export const STOCK_COUNT_COPY = {
+  AVAILABLE_FOR_USE_LABEL: "Disponibles para uso",
   AVAILABLE_LABEL: "Disponibles",
   BACK_TO_CATEGORIES_LINK: "Volver a categorías",
   DAMAGED_LABEL: "Dañados",
+  DECREASE_PREFIX: "Disminuir",
   EXPIRY_DATE_LABEL: "Fecha de vencimiento",
   FETCH_ERROR_MESSAGE: "No se pudo cargar el conteo.",
   FORM_HINT:
@@ -11,10 +13,13 @@ export const STOCK_COUNT_COPY = {
   HISTORY_EMPTY_TITLE:
     "Todavía no hay conteos registrados.",
   HISTORY_TITLE: "Historial de conteos",
+  INCREASE_PREFIX: "Aumentar",
   IN_REPAIR_LABEL: "En reparación",
   LOADING_TEXT: "Guardando…",
   METADATA_TITLE: "Conteo del inventario",
   MOVEMENT_ARROW: "→",
+  MOVEMENT_TOTAL_LABEL: "Total de unidades",
+  NEEDS_ATTENTION_LABEL: "Requieren atención",
   PAGINATION_NAV_LABEL:
     "Paginación del historial de conteos",
   REASON_LABEL: "Motivo",
@@ -22,5 +27,5 @@ export const STOCK_COUNT_COPY = {
   SAVE_BUTTON: "Guardar conteo",
   SAVE_SUCCESS_TOAST: "Conteo guardado.",
   TITLE_PREFIX: "Conteo de",
-  TOTAL_LABEL: "Total",
+  TOTAL_REGISTERED_LABEL: "Total registrado",
 } as const;

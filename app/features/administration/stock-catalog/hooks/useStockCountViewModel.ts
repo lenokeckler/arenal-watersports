@@ -5,7 +5,8 @@ import { STOCK_COUNT_VIEW_STATE } from "../constants/StockCountViewState.constan
 import type { StockCountViewModel } from "../models/StockCountViewModel.interface";
 import type { StockCountViewModelProps } from "../models/StockCountViewModelProps.interface";
 import { buildStockMovementCard } from "../utils/buildStockMovementCard";
-import { resolveStockFormTotal } from "../utils/resolveStockFormTotal";
+import { resolveStockCountSummary } from "../utils/resolveStockCountSummary";
+import { resolveStockQuantityChanges } from "../utils/resolveStockQuantityChanges";
 import { useStockCountFields } from "./useStockCountFields";
 import { useStockCountSubmit } from "./useStockCountSubmit";
 
@@ -39,10 +40,17 @@ export const useStockCountViewModel = ({
   return {
     ...fields,
     cards: movements.map(buildStockMovementCard),
+    changes: resolveStockQuantityChanges(
+      levels,
+      fields.values
+    ),
     isSubmitting,
     onRetry,
     onSubmit,
-    total: resolveStockFormTotal(fields.values),
+    summary: resolveStockCountSummary(
+      levels,
+      fields.values
+    ),
     viewState: fetchFailed
       ? STOCK_COUNT_VIEW_STATE.ERROR
       : STOCK_COUNT_VIEW_STATE.READY,

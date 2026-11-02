@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { STOCK_ADJUSTMENT_REASON } from "../constants/StockAdjustmentReason.constants";
+import type { StockQuantityField } from "../constants/StockQuantityField.constants";
 import type { StockCountFieldsProps } from "../models/StockCountFieldsProps.interface";
 import type { StockCountFieldsViewModel } from "../models/StockCountFieldsViewModel.interface";
 import type { StockFormErrors } from "../models/StockFormErrors.interface";
@@ -12,6 +13,7 @@ import { clearStockFormErrors } from "../utils/clearStockFormErrors";
 import { hasRegisteredStockCount } from "../utils/hasRegisteredStockCount";
 import { mapStockLevelsToFormValues } from "../utils/mapStockLevelsToFormValues";
 import { resolveStockDefaultReason } from "../utils/resolveStockDefaultReason";
+import { stepStockQuantity } from "../utils/stepStockQuantity";
 
 export const useStockCountFields = ({
   hasHistory,
@@ -47,6 +49,20 @@ export const useStockCountFields = ({
       clearError(field);
     };
 
+  const onQuantityStep = (
+    field: StockQuantityField,
+    step: number
+  ): void => {
+    setValues((currentValues) => ({
+      ...currentValues,
+      [field]: stepStockQuantity(
+        currentValues[field],
+        step
+      ),
+    }));
+    clearError(field);
+  };
+
   const onReasonChange: StockFormFieldChangeHandler = (
     event
   ) => {
@@ -75,6 +91,7 @@ export const useStockCountFields = ({
       onExpiryDateChange:
         buildTextChangeHandler("expiryDate"),
       onInRepairChange: buildTextChangeHandler("inRepair"),
+      onQuantityStep,
       onReasonChange,
     },
     markSaved,
