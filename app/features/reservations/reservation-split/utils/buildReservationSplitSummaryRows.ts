@@ -1,3 +1,4 @@
+import { RESERVATION_SPLIT_DRAFT } from "../constants/ReservationSplitDraft.constants";
 import { RESERVATION_SPLIT_UI_COPY } from "../constants/ReservationSplitUiCopy.constants";
 import type { ReservationSplit } from "../models/ReservationSplit.interface";
 import type { ReservationSplitRemainder } from "../models/ReservationSplitRemainder.interface";
@@ -30,6 +31,9 @@ export const buildReservationSplitSummaryRows = (
   },
   {
     hint: RESERVATION_SPLIT_UI_COPY.ORIGINAL_STAYS,
+    isAtMinimum:
+      remainder.peopleCount <=
+      RESERVATION_SPLIT_DRAFT.MIN_PEOPLE,
     term: RESERVATION_SPLIT_UI_COPY.LABEL_PEOPLE,
     value: RESERVATION_SPLIT_UI_COPY.REMAINING_OF(
       remainder.peopleCount,

@@ -13,8 +13,19 @@ export const RESERVATION_SPLIT_DETAILS_CLASS =
 export const RESERVATION_SPLIT_TERM_CLASS =
   "text-sm text-on-surface-variant";
 
-export const RESERVATION_SPLIT_DEFINITION_CLASS =
-  "break-words text-base font-semibold text-on-surface";
+const RESERVATION_SPLIT_DEFINITION_BASE_CLASS =
+  "break-words text-base font-semibold tabular-nums";
+
+const RESERVATION_SPLIT_DEFINITION_CLASS = `${RESERVATION_SPLIT_DEFINITION_BASE_CLASS} text-on-surface`;
+
+const RESERVATION_SPLIT_DEFINITION_MINIMUM_CLASS = `${RESERVATION_SPLIT_DEFINITION_BASE_CLASS} text-primary`;
+
+export const resolveReservationSplitDefinitionClassName = (
+  isAtMinimum: boolean
+): string =>
+  isAtMinimum
+    ? RESERVATION_SPLIT_DEFINITION_MINIMUM_CLASS
+    : RESERVATION_SPLIT_DEFINITION_CLASS;
 
 export const RESERVATION_SPLIT_HINT_CLASS =
   "text-sm font-normal text-on-surface-variant";
@@ -28,8 +39,14 @@ export const RESERVATION_SPLIT_EQUIPMENT_ROW_CLASS =
 const RESERVATION_SPLIT_EQUIPMENT_COUNT_CLASS =
   "text-right font-semibold tabular-nums";
 
+const RESERVATION_SPLIT_EQUIPMENT_COUNT_MINIMUM_CLASS = `${RESERVATION_SPLIT_EQUIPMENT_COUNT_CLASS} text-primary`;
+
 export const resolveReservationSplitEquipmentValueClassName =
-  (isUnit: boolean): string =>
-    isUnit
-      ? RESERVATION_SPLIT_HINT_CLASS
+  (isUnit: boolean, isAtMinimum: boolean): string => {
+    if (isUnit) {
+      return RESERVATION_SPLIT_HINT_CLASS;
+    }
+    return isAtMinimum
+      ? RESERVATION_SPLIT_EQUIPMENT_COUNT_MINIMUM_CLASS
       : RESERVATION_SPLIT_EQUIPMENT_COUNT_CLASS;
+  };
