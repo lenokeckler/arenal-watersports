@@ -60,7 +60,7 @@ test("redirects a signed-in worker without Reservations access", async ({
   await signInAsSeededWorker(page);
   await page.goto(PATHS.RESERVATIONS.DETAIL(randomUUID()));
 
-  await expect(page).toHaveURL(PATHS.HOME);
+  await expect(page).toHaveURL(PATHS.BOARD);
 });
 
 reservationDetailTest(
