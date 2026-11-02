@@ -34,6 +34,8 @@ export const RESERVATION_FORM_UI_COPY = {
   SUCCESS: "La reserva quedó registrada correctamente.",
   SUBMIT_ERROR:
     "No fue posible guardar la reserva por un error del sistema. Sus datos se conservaron; inténtelo de nuevo. Si persiste, informe a Administración.",
+  SUBMIT_RESERVATION_ACCESS_ERROR:
+    "Su cuenta necesita el área de Reservas habilitada y activa para registrar esta reserva. Solicite a Administración que revise su acceso.",
   SUBMIT_UNEXPECTED_ERROR:
     "El sistema devolvió una respuesta inesperada. No se confirmó la reserva; verifique el calendario antes de intentarlo de nuevo.",
   NO_CATEGORIES:
@@ -63,8 +65,6 @@ export const RESERVATION_FORM_UI_COPY = {
     "Consultando reservas de esta categoría…",
   CATEGORY_CONFLICT_WARNING_ERROR:
     "No fue posible verificar los cruces de horario. Puede continuar con el registro.",
-  EQUIPMENT_NOTE:
-    "Indique la cantidad de equipos intercambiables. Para la lancha, elija la unidad que quedará reservada.",
   EQUIPMENT_ELIGIBILITY_LOADING:
     "Actualizando las categorías disponibles…",
   EQUIPMENT_ELIGIBILITY_ERROR:

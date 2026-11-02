@@ -31,6 +31,28 @@ const resolveUnavailableCategoryError = (
   };
 };
 
+const resolveReservationAccessError = (
+  error: Error
+): Nullable<ReservationFormActionResult> => {
+  if (
+    !error.message.includes(
+      RESERVATION_SERVICE_OPERATION.RESERVATION_ACCESS_REQUIRED
+    ) &&
+    !error.message.includes(
+      RESERVATION_SERVICE_OPERATION.EQUIPMENT_RESERVATION_ACCESS_REQUIRED
+    )
+  ) {
+    return null;
+  }
+
+  return {
+    ok: false,
+    errors: {},
+    formError:
+      RESERVATION_FORM_UI_COPY.SUBMIT_RESERVATION_ACCESS_ERROR,
+  };
+};
+
 const resolveUnavailableUnitError = (
   error: Error
 ): Nullable<ReservationFormActionResult> => {
@@ -68,6 +90,10 @@ const resolveKnownReservationCreationError = (
     resolveUnavailableCategoryError(error);
   if (categoryError) {
     return categoryError;
+  }
+  const accessError = resolveReservationAccessError(error);
+  if (accessError) {
+    return accessError;
   }
   return resolveUnavailableUnitError(error);
 };

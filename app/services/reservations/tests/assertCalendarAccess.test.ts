@@ -75,7 +75,7 @@ describe.each(accessChecks)(
         current: otherArea,
       });
       await expect(assertAccess()).rejects.toThrow(
-        PATHS.HOME
+        PATHS.MODE
       );
     });
 

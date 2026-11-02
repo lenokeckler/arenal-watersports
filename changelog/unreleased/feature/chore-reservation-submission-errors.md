@@ -1,1 +1,1 @@
-chore - Reservation submission errors — show actionable equipment errors and focus the first invalid field
+chore - Reservation submission errors — show actionable errors, align administrator access, focus invalid fields, and remove redundant equipment guidance

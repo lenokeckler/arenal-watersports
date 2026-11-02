@@ -40,13 +40,6 @@ export const createOneHandedUsePage = (page: Page) => {
       main.getByText(RESERVATION_FORM_UI_COPY.DURATION, {
         exact: true,
       }),
-    getEquipmentNote: (): Locator =>
-      main.getByText(
-        RESERVATION_FORM_UI_COPY.EQUIPMENT_NOTE,
-        {
-          exact: true,
-        }
-      ),
     getMainButtons: (): Locator =>
       main.getByRole(ARIA_ROLE.BUTTON),
   };
