@@ -7,7 +7,12 @@ as $$
 declare
   category_tracking_mode tracking_mode;
 begin
-  perform require_reservations_access();
+  if auth.uid() is null then
+    raise exception 'Authenticated worker is required';
+  end if;
+  if not has_area('reservas') then
+    raise exception 'Equipment reservation access is required';
+  end if;
 
   select category.tracking_mode into category_tracking_mode
   from equipment_categories as category

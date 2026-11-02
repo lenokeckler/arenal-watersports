@@ -54,6 +54,30 @@ describe.each(accessChecks)(
       );
     });
 
+    it("does not infer area access from administration mode", async () => {
+      vi.mocked(
+        readWorkModeOverviewAsSignedIn
+      ).mockResolvedValue({
+        areas: [SUPABASE_WORK_AREA.ADMINISTRATION],
+        current: SUPABASE_WORK_AREA.ADMINISTRATION,
+      });
+      await expect(assertAccess()).rejects.toThrow(
+        PATHS.HOME
+      );
+    });
+
+    it("requires the requested area as the active mode", async () => {
+      vi.mocked(
+        readWorkModeOverviewAsSignedIn
+      ).mockResolvedValue({
+        areas: [area, SUPABASE_WORK_AREA.ADMINISTRATION],
+        current: SUPABASE_WORK_AREA.ADMINISTRATION,
+      });
+      await expect(assertAccess()).rejects.toThrow(
+        PATHS.MODE
+      );
+    });
+
     it("redirects an expired session to login", async () => {
       vi.mocked(
         readWorkModeOverviewAsSignedIn

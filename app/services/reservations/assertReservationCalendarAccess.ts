@@ -10,22 +10,13 @@ export const assertReservationCalendarAccess = async (
   if (overview === null) {
     redirect(PATHS.ACCESS.LOGIN);
   }
-  const hasAdministratorAccess =
-    workArea === SUPABASE_WORK_AREA.RESERVATIONS &&
-    overview.current === SUPABASE_WORK_AREA.ADMINISTRATION;
-  if (
-    !overview.areas.includes(workArea) &&
-    !hasAdministratorAccess
-  ) {
+  if (!overview.areas.includes(workArea)) {
     redirect(PATHS.HOME);
   }
   if (overview.current === null) {
     redirect(PATHS.MODE);
   }
-  if (
-    overview.current !== workArea &&
-    !hasAdministratorAccess
-  ) {
+  if (overview.current !== workArea) {
     redirect(PATHS.MODE);
   }
 };

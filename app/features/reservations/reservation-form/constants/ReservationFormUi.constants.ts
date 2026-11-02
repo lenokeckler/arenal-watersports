@@ -3,7 +3,6 @@ export const RESERVATION_TIME_ZONE = "America/Costa_Rica";
 export const RESERVATION_FORM_ACCESS = {
   AREA: "reservas",
   AREA_RPC: "has_area",
-  ADMIN_RPC: "is_admin",
 } as const;
 
 export const RESERVATION_DURATION_PRESETS = [

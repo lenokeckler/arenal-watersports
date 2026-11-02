@@ -1,22 +1,30 @@
-﻿import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { DOCUMENT_LANGUAGE } from "@/app/constants";
 import { RESERVATION_DURATION_PRESETS } from "@/app/features/reservations/reservation-form/constants/ReservationFormUi.constants";
 import { RESERVATION_FORM_UI_COPY } from "@/app/features/reservations/reservation-form/constants/ReservationFormUiCopy.constants";
-import { E2E_RESERVATION_FORM_MOBILE_VIEWPORT } from "../constants/E2eReservationForm.constants";
+import {
+  E2E_RESERVATION_FORM_COPY,
+  E2E_RESERVATION_FORM_MOBILE_VIEWPORT,
+} from "../constants/E2eReservationForm.constants";
 import { E2E_PROJECT } from "../constants/E2eRuntime.constants";
 import { createOneHandedUsePage } from "../pages/OneHandedUse.page";
-import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
+import { grantReservationsAreaToWorker } from "../support/grantReservationsAreaToWorker";
+import { signInAsActiveWorker } from "../support/signInAsActiveWorker";
+import { test } from "../support/activeWorkerTest";
 
-test.beforeEach(async ({ page }, testInfo) => {
-  await signInAsSeededWorker(page);
+test.beforeEach(
+  async ({ activeWorker, page }, testInfo) => {
+    await grantReservationsAreaToWorker(activeWorker.id);
+    await signInAsActiveWorker(page, activeWorker);
 
-  if (testInfo.project.name === E2E_PROJECT.MOBILE) {
-    await page.setViewportSize({
-      width: E2E_RESERVATION_FORM_MOBILE_VIEWPORT.WIDTH,
-      height: E2E_RESERVATION_FORM_MOBILE_VIEWPORT.HEIGHT,
-    });
+    if (testInfo.project.name === E2E_PROJECT.MOBILE) {
+      await page.setViewportSize({
+        width: E2E_RESERVATION_FORM_MOBILE_VIEWPORT.WIDTH,
+        height: E2E_RESERVATION_FORM_MOBILE_VIEWPORT.HEIGHT,
+      });
+    }
   }
-});
+);
 
 test("shows Spanish reservation copy and accessible fields", async ({
   page,
@@ -72,10 +80,10 @@ test("shows accessible equipment fields", async ({
     new RegExp(RESERVATION_FORM_UI_COPY.CATEGORY)
   );
   await expect(
-    oneHandedUsePage.getCategoryPlaceholder()
-  ).toHaveText(
-    RESERVATION_FORM_UI_COPY.CATEGORY_PLACEHOLDER
-  );
+    oneHandedUsePage.getCategoryCard(
+      E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION
+    )
+  ).toBeVisible();
   await expect(
     oneHandedUsePage.getQuantityInput()
   ).toHaveAccessibleName(
