@@ -34,6 +34,23 @@ export const E2E_DEPOSITS_REPORT_SEEDS = {
   },
 } as const satisfies Record<string, E2eDepositSeed>;
 
+export const E2E_DEPOSITS_REPORT_PAGING = {
+  COUNT: 21,
+  DAY_DIGITS: 2,
+  DAY_PAD: "0",
+  RESOLVED_AT_PREFIX: "2029-01-",
+  RESOLVED_AT_SUFFIX: "T18:00:00Z",
+  SECOND_PAGE_URL: /[?&]retainedPage=2(&|$)/,
+  SECOND_PAGE_STATUS: /^Página 2 de/,
+  SEED: {
+    amount: 50,
+    currency: CURRENCY_CODE.USD,
+    retainedAmount: 10,
+    retentionReason: "Daño de prueba de paginación",
+    status: DEPOSIT_STATUS.RETAINED,
+  } satisfies E2eDepositSeed,
+} as const;
+
 export const E2E_DEPOSITS_REPORT_TOTAL_PATTERN = /total/i;
 
 export const E2E_DEPOSITS_REPORT_SCREENSHOT_BASENAME = {
