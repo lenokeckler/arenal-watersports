@@ -2,6 +2,7 @@ import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { resolveCategoryBehaviorPath } from "../utils/resolveCategoryBehaviorPath";
 import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_STATUS } from "../constants/CategoryStatus.constants";
 import CategoryCard from "../components/CategoryCard";
 import { DEFAULT_CATEGORY_CARD_VIEW_MODEL } from "./CategoryCardViewModel.constants";
@@ -86,15 +87,15 @@ describe("CategoryCard", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders the tracking mode label it receives", () => {
+  it("renders the subtitle it receives", () => {
     render(
       <CategoryCard {...DEFAULT_CATEGORY_CARD_VIEW_MODEL} />
     );
     const categoryCardPage = createCategoryCardPage();
 
     expect(
-      categoryCardPage.getTrackingModeLabel(
-        DEFAULT_CATEGORY_CARD_VIEW_MODEL.trackingModeLabel
+      categoryCardPage.getSubtitle(
+        DEFAULT_CATEGORY_CARD_VIEW_MODEL.subtitle
       )
     ).toBeInTheDocument();
   });
@@ -110,7 +111,7 @@ describe("CategoryCard", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows the inactive pill and hides every action for an inactive category", () => {
+  it("shows the inactive chip and hides every action for an inactive category", () => {
     const viewModel = {
       ...DEFAULT_CATEGORY_CARD_VIEW_MODEL,
       actionState: CATEGORY_CARD_ACTION_STATE.NONE,
@@ -124,8 +125,15 @@ describe("CategoryCard", () => {
     const categoryCardPage = createCategoryCardPage();
 
     expect(
-      categoryCardPage.getInactivePill()
+      categoryCardPage.getStatusChip(
+        CATEGORY_CATALOG_COPY.STATUS_LABEL_INACTIVE
+      )
     ).toBeInTheDocument();
+    expect(
+      categoryCardPage.getStatusChip(
+        CATEGORY_CATALOG_COPY.STATUS_LABEL_ACTIVE
+      )
+    ).not.toBeInTheDocument();
     expect(
       categoryCardPage.getDeleteButton()
     ).not.toBeInTheDocument();
@@ -134,14 +142,21 @@ describe("CategoryCard", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("hides the inactive pill for an active category", () => {
+  it("shows the active chip for an active category", () => {
     render(
       <CategoryCard {...DEFAULT_CATEGORY_CARD_VIEW_MODEL} />
     );
     const categoryCardPage = createCategoryCardPage();
 
     expect(
-      categoryCardPage.getInactivePill()
+      categoryCardPage.getStatusChip(
+        CATEGORY_CATALOG_COPY.STATUS_LABEL_ACTIVE
+      )
+    ).toBeInTheDocument();
+    expect(
+      categoryCardPage.getStatusChip(
+        CATEGORY_CATALOG_COPY.STATUS_LABEL_INACTIVE
+      )
     ).not.toBeInTheDocument();
   });
 });

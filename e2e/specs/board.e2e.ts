@@ -4,9 +4,9 @@ import {
   E2E_BOARD_GROUP,
   E2E_BOARD_HIDDEN_CATEGORY_NAMES,
   E2E_BOARD_STANDALONE_CARDS,
-  resolveBoardFreeText,
-  resolveBoardUsageText,
+  resolveBoardChipText,
 } from "../constants/E2eBoard.constants";
+import { EQUIPMENT_BOARD_COPY } from "@/app/features/board/equipment-board/constants/EquipmentBoardCopy.constants";
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 import { createBoardPage } from "../pages/Board.page";
 import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
@@ -20,7 +20,16 @@ test.describe("Equipment board", () => {
     await expect(boardPage.getGrid()).toBeVisible();
   });
 
-  test("shows one card per reservable category with its free, in use and total counts", async ({
+  test("shows the board title and its subtitle", async ({
+    page,
+  }) => {
+    const boardPage = createBoardPage(page);
+
+    await expect(boardPage.getHeading()).toBeVisible();
+    await expect(boardPage.getSubtitle()).toBeVisible();
+  });
+
+  test("shows one card per reservable category with its by-unit chip, and free over total", async ({
     page,
   }) => {
     const boardPage = createBoardPage(page);
@@ -32,19 +41,19 @@ test.describe("Equipment board", () => {
       await expect(
         boardPage.getCardText(
           card,
-          resolveBoardFreeText(seeded.totalCount)
+          EQUIPMENT_BOARD_COPY.PER_UNIT_CHIP
         )
       ).toHaveCount(E2E_COUNT.ONE);
       await expect(
         boardPage.getCardText(
           card,
-          resolveBoardUsageText(seeded.totalCount)
+          resolveBoardChipText(seeded.totalCount)
         )
       ).toHaveCount(E2E_COUNT.ONE);
     }
   });
 
-  test("shows the grouped categories as one card with summed totals and each member listed with its own counts", async ({
+  test("shows the grouped categories as one plain card with the summed totals and no member lines", async ({
     page,
   }) => {
     const boardPage = createBoardPage(page);
@@ -56,35 +65,23 @@ test.describe("Equipment board", () => {
     await expect(
       boardPage.getCardText(
         groupCard,
-        resolveBoardFreeText(E2E_BOARD_GROUP.TOTAL_COUNT)
+        resolveBoardChipText(E2E_BOARD_GROUP.TOTAL_COUNT)
       )
     ).toHaveCount(E2E_COUNT.ONE);
     await expect(
       boardPage.getCardText(
         groupCard,
-        resolveBoardUsageText(E2E_BOARD_GROUP.TOTAL_COUNT)
+        EQUIPMENT_BOARD_COPY.PER_UNIT_CHIP
       )
     ).toHaveCount(E2E_COUNT.ONE);
+    await expect(
+      boardPage.getButtons(groupCard)
+    ).toHaveCount(E2E_COUNT.NONE);
 
     for (const member of E2E_BOARD_GROUP.MEMBERS) {
-      const line = boardPage.getMemberLine(
-        groupCard,
-        member.name
-      );
-
-      await expect(line).toHaveCount(E2E_COUNT.ONE);
       await expect(
-        boardPage.getCardText(
-          line,
-          resolveBoardFreeText(member.totalCount)
-        )
-      ).toHaveCount(E2E_COUNT.ONE);
-      await expect(
-        boardPage.getCardText(
-          line,
-          resolveBoardUsageText(member.totalCount)
-        )
-      ).toHaveCount(E2E_COUNT.ONE);
+        boardPage.getCardText(groupCard, member.name)
+      ).toHaveCount(E2E_COUNT.NONE);
       await expect(
         boardPage.getCard(member.name)
       ).toHaveCount(E2E_COUNT.NONE);

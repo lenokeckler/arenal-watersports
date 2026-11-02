@@ -13,13 +13,14 @@ const fetchCategoryListViewProps = async (
   currentPage: number
 ): Promise<CategoryListViewProps> => {
   try {
-    const { categories, pageCount } =
+    const { categories, pageCount, totalCount } =
       await listCategories(currentPage);
     return {
       categories,
       currentPage,
       fetchFailed: false,
       pageCount,
+      totalCount,
     };
   } catch (error) {
     const fetchError = new Error(
@@ -32,6 +33,7 @@ const fetchCategoryListViewProps = async (
       fetchError,
       fetchFailed: true,
       pageCount: LENGTH.ZERO,
+      totalCount: LENGTH.ZERO,
     };
   }
 };

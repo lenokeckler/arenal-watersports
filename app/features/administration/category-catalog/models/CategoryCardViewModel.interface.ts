@@ -4,7 +4,10 @@ import { CategoryListItem } from "./CategoryListItem.interface";
 export interface CategoryCardViewModel {
   category: CategoryListItem;
   isInactive: boolean;
-  trackingModeLabel: string;
+  subtitle: string;
+  isPanelOpen: boolean;
+  panelId: string;
+  onTogglePanelClick: () => void;
   actionState: CategoryCardActionState;
   isActionLoading: boolean;
   onCancelClick: () => void;
