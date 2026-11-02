@@ -1,5 +1,6 @@
 import { LOGOUT_COPY } from "../constants/LogoutCopy.constants";
 import { LOGOUT_PHASE } from "../constants/LogoutPhase.constants";
+import { THEME } from "@/app/constants";
 import type { SessionBarViewProps } from "../models/SessionBarViewProps.type";
 
 export const ANNOUNCEMENT = LOGOUT_COPY.PENDING;
@@ -13,6 +14,8 @@ export const IDLE_PROPS: SessionBarViewProps = {
   handlePress: () => undefined,
   errorMessage: null,
   pendingAnnouncement: "",
+  theme: THEME.DARK,
+  handleToggle: () => undefined,
 };
 
 export const NON_FAILED_PHASES = [
@@ -23,3 +26,4 @@ export const NON_FAILED_PHASES = [
 
 export const ERROR_MESSAGE = LOGOUT_COPY.ERROR;
 export const BUTTON_LABEL = LOGOUT_COPY.BUTTON;
+export const SESSION_BAR_BUTTON_COUNT = 2;

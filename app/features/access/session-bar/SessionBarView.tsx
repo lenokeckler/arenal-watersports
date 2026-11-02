@@ -1,6 +1,7 @@
 import FormErrorBanner from "@/app/components/form-error-banner/FormErrorBanner";
 import LogoutButton from "./components/LogoutButton";
 import LogoutStatus from "./components/LogoutStatus";
+import ThemeToggleButton from "./components/ThemeToggleButton";
 import type { SessionBarViewProps } from "./models/SessionBarViewProps.type";
 import {
   SESSION_BAR_CLASS,
@@ -12,10 +13,16 @@ const SessionBarView = ({
   handlePress,
   errorMessage,
   pendingAnnouncement,
+  theme,
+  handleToggle,
 }: SessionBarViewProps): React.JSX.Element => (
   <header className={SESSION_BAR_CLASS}>
     <div className={SESSION_BAR_ROW_CLASS}>
       <LogoutStatus message={pendingAnnouncement} />
+      <ThemeToggleButton
+        onPress={handleToggle}
+        theme={theme}
+      />
       <LogoutButton
         phase={phase}
         onPress={handlePress}
