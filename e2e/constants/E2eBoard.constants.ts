@@ -1,5 +1,4 @@
-import { STRING } from "@/app/constants";
-import { EQUIPMENT_BOARD_COPY } from "@/app/features/board/equipment-board/constants/EquipmentBoardCopy.constants";
+import { resolveFreeOfTotalText } from "@/app/features/board/equipment-board/utils/resolveFreeOfTotalText";
 import {
   E2E_CATEGORY_GROUP_LABEL,
   E2E_CATEGORY_WITH_GROUP_NAME,
@@ -42,8 +41,6 @@ export const E2E_BOARD_HIDDEN_CATEGORY_NAMES = [
   "Extintor",
 ] as const;
 
-export const E2E_BOARD_IDLE_IN_USE_COUNT = 0;
-
 export const E2E_BOARD_LAYOUT = {
   ROW_TOLERANCE_PX: 1,
 } as const;
@@ -52,19 +49,10 @@ export const E2E_BOARD_CARDS_PER_ROW: Record<
   string,
   number
 > = {
-  [E2E_PROJECT.DEFAULT]: 4,
+  [E2E_PROJECT.DEFAULT]: 3,
   [E2E_PROJECT.MOBILE]: 2,
 };
 
-export const resolveBoardFreeText = (
-  freeCount: number
-): string =>
-  `${freeCount}${STRING.SPACE}${EQUIPMENT_BOARD_COPY.FREE_LABEL_PLURAL}`;
-
-export const resolveBoardUsageText = (
+export const resolveBoardChipText = (
   totalCount: number
-): string =>
-  EQUIPMENT_BOARD_COPY.IN_USE_OF_TOTAL(
-    E2E_BOARD_IDLE_IN_USE_COUNT,
-    totalCount
-  );
+): string => resolveFreeOfTotalText(totalCount, totalCount);

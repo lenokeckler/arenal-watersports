@@ -10,10 +10,14 @@ import { CATEGORY_DEPOSIT_FORM_FIELD_ID } from "@/app/features/administration/ca
 import { resolveCategoryDepositPath } from "@/app/features/administration/category-catalog/utils/resolveCategoryDepositPath";
 import { E2E_NEXT_NOT_FOUND_MESSAGE } from "../constants/E2eCategoryBehavior.constants";
 import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
+import { createCategoryCardOptionsPage } from "./CategoryCardOptions.page";
 
 export const createCategoryDepositFormPage = (
   page: Page
 ) => {
+  const categoryCardOptionsPage =
+    createCategoryCardOptionsPage();
+
   const goTo = async (
     categoryId: string
   ): Promise<void> => {
@@ -23,6 +27,7 @@ export const createCategoryDepositFormPage = (
   const clickDepositLink = async (
     categoryCard: Locator
   ): Promise<void> => {
+    await categoryCardOptionsPage.openOptions(categoryCard);
     await categoryCard
       .getByRole(ARIA_ROLE.LINK, {
         name: CATEGORY_CATALOG_COPY.DEPOSIT_LINK,
