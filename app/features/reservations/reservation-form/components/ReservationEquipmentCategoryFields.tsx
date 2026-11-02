@@ -1,7 +1,10 @@
 import { Text } from "@/app/components";
 import { ARIA_ROLE } from "@/app/constants";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
-import { RESERVATION_FORM_FIELD_ID } from "../constants/ReservationFormUi.constants";
+import {
+  RESERVATION_FORM_FOCUS_TARGET,
+  RESERVATION_FORM_FIELD_ID,
+} from "../constants/ReservationFormUi.constants";
 import type { ReservationFormFieldsProps } from "../models/ReservationFormFieldsProps.interface";
 import {
   RESERVATION_FORM_CATEGORY_GRID_CLASS,
@@ -16,6 +19,8 @@ export const ReservationEquipmentCategoryFields = ({
   viewModel,
 }: ReservationFormFieldsProps): React.JSX.Element => (
   <fieldset
+    id={RESERVATION_FORM_FIELD_ID.CATEGORY}
+    tabIndex={RESERVATION_FORM_FOCUS_TARGET.TAB_INDEX}
     className={RESERVATION_FORM_FIELD_CLASS}
     aria-describedby={
       viewModel.errors.categoryId

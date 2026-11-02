@@ -8,29 +8,83 @@ import type { ReservationFormActionResult } from "../models/ReservationFormActio
 import { isReservationFormInput } from "../utils/isReservationFormInput";
 import { RESERVATION_SERVICE_OPERATION } from "../constants/ReservationServiceOperation.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
+import { reportServerError } from "@/app/services/observability";
+import type { Nullable } from "@/app/types";
+
+const resolveUnavailableCategoryError = (
+  error: Error
+): Nullable<ReservationFormActionResult> => {
+  if (
+    !error.message.includes(
+      RESERVATION_SERVICE_OPERATION.CATEGORY_UNAVAILABLE
+    )
+  ) {
+    return null;
+  }
+
+  return {
+    ok: false,
+    errors: {
+      [RESERVATION_FORM_FIELD.CATEGORY_ID]:
+        RESERVATION_FORM_UI_COPY.CATEGORY_UNAVAILABLE,
+    },
+  };
+};
+
+const resolveUnavailableUnitError = (
+  error: Error
+): Nullable<ReservationFormActionResult> => {
+  const isUnitConflict = error.message.includes(
+    RESERVATION_SERVICE_OPERATION.UNIT_CONFLICT
+  );
+  if (
+    !isUnitConflict &&
+    !error.message.includes(
+      RESERVATION_SERVICE_OPERATION.UNIT_UNAVAILABLE
+    )
+  ) {
+    return null;
+  }
+
+  return {
+    ok: false,
+    errors: {
+      [RESERVATION_FORM_FIELD.UNIT_ID]: isUnitConflict
+        ? RESERVATION_FORM_UI_COPY.UNIT_CONFLICT
+        : RESERVATION_FORM_UI_COPY.UNIT_UNAVAILABLE,
+    },
+    unitUnavailable: true,
+  };
+};
+
+const resolveKnownReservationCreationError = (
+  error: unknown
+): Nullable<ReservationFormActionResult> => {
+  if (!(error instanceof Error)) {
+    return null;
+  }
+
+  const categoryError =
+    resolveUnavailableCategoryError(error);
+  if (categoryError) {
+    return categoryError;
+  }
+  return resolveUnavailableUnitError(error);
+};
 
 const handleReservationCreationError = (
   error: unknown
 ): ReservationFormActionResult => {
-  if (
-    error instanceof Error &&
-    (error.message.includes(
-      RESERVATION_SERVICE_OPERATION.UNIT_UNAVAILABLE
-    ) ||
-      error.message.includes(
-        RESERVATION_SERVICE_OPERATION.UNIT_CONFLICT
-      ))
-  ) {
-    return {
-      ok: false,
-      errors: {
-        [RESERVATION_FORM_FIELD.UNIT_ID]:
-          RESERVATION_FORM_UI_COPY.UNIT_UNAVAILABLE,
-      },
-      unitUnavailable: true,
-    };
+  const knownError =
+    resolveKnownReservationCreationError(error);
+  if (knownError) {
+    return knownError;
   }
 
+  reportServerError(
+    RESERVATION_SERVICE_OPERATION.CREATE_RENTAL,
+    error
+  );
   throw error;
 };
 
