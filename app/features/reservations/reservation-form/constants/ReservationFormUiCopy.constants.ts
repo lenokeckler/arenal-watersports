@@ -17,6 +17,8 @@ export const RESERVATION_FORM_UI_COPY = {
     "La categoría seleccionada dejó de estar disponible. Elija otra categoría.",
   CATEGORY_PLACEHOLDER: "Seleccione una categoría",
   QUANTITY: "Cantidad de equipos",
+  QUANTITY_UNAVAILABLE:
+    "La cantidad solicitada supera los equipos disponibles para este horario.",
   UNIT: "Unidad",
   UNIT_PLACEHOLDER: "Seleccione una unidad disponible",
   AVAILABILITY_LOADING: "Consultando disponibilidad…",

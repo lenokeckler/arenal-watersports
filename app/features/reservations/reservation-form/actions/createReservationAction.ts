@@ -31,6 +31,26 @@ const resolveUnavailableCategoryError = (
   };
 };
 
+const resolveUnavailableQuantityError = (
+  error: Error
+): Nullable<ReservationFormActionResult> => {
+  if (
+    !error.message.includes(
+      RESERVATION_SERVICE_OPERATION.QUANTITY_UNAVAILABLE
+    )
+  ) {
+    return null;
+  }
+
+  return {
+    ok: false,
+    errors: {
+      [RESERVATION_FORM_FIELD.QUANTITY]:
+        RESERVATION_FORM_UI_COPY.QUANTITY_UNAVAILABLE,
+    },
+  };
+};
+
 const resolveReservationAccessError = (
   error: Error
 ): Nullable<ReservationFormActionResult> => {
@@ -90,6 +110,11 @@ const resolveKnownReservationCreationError = (
     resolveUnavailableCategoryError(error);
   if (categoryError) {
     return categoryError;
+  }
+  const quantityError =
+    resolveUnavailableQuantityError(error);
+  if (quantityError) {
+    return quantityError;
   }
   const accessError = resolveReservationAccessError(error);
   if (accessError) {

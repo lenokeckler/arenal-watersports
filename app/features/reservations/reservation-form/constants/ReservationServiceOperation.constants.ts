@@ -6,6 +6,8 @@ export const RESERVATION_SERVICE_OPERATION = {
     "Equipment reservation access is required",
   MISSING_CREATED_ID:
     "Supabase returned no identifier for the created reservation",
+  QUANTITY_UNAVAILABLE:
+    "Equipment category quantity is not available for reservation",
   RESERVATION_ACCESS_REQUIRED:
     "Reservations access is required",
   UNIT_CONFLICT:
