@@ -1,7 +1,7 @@
 export const STOCK_COUNT_COPY = {
   AVAILABLE_FOR_USE_LABEL: "Disponibles para uso",
   AVAILABLE_LABEL: "Disponibles",
-  BACK_TO_CATEGORIES_LINK: "Volver a categorías",
+  BACK_TO_CATEGORIES_BUTTON: "Volver a categorías",
   DAMAGED_LABEL: "Dañados",
   DECREASE_PREFIX: "Disminuir",
   EXPIRY_DATE_LABEL: "Fecha de vencimiento",
