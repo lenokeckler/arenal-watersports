@@ -1,4 +1,5 @@
 export const RESERVATION_SPLIT_FIELD_ID = {
+  ALERT: "reservation-split-alert",
   HEADING: "reservation-split-heading",
   HEADING_PREFIX: "reservation-split-heading-",
   ORIGINAL_HEADING: "reservation-split-heading-original",
@@ -24,3 +25,8 @@ export const RESERVATION_SPLIT_DATE_FORMAT = {
 export const RESERVATION_SPLIT_MINUTES_PER_HOUR = 60;
 
 export const RESERVATION_SPLIT_LIST_SEPARATOR = ", ";
+
+export const RESERVATION_SPLIT_FOCUS = {
+  SCROLL_BLOCK: "nearest",
+  TAB_INDEX: -1,
+} as const;

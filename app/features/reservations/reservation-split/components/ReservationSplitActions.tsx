@@ -7,6 +7,11 @@ import {
 import { BUTTON } from "@/app/components/button/constants";
 import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
 import { ARIA_ROLE } from "@/app/constants";
+import {
+  RESERVATION_SPLIT_FIELD_ID,
+  RESERVATION_SPLIT_FOCUS,
+} from "../constants/ReservationSplitUi.constants";
+import { useReservationSplitAlertFocus } from "../hooks/useReservationSplitAlertFocus";
 import { RESERVATION_SPLIT_UI_COPY } from "../constants/ReservationSplitUiCopy.constants";
 import type { ReservationSplitActionsProps } from "../models/ReservationSplitActionsProps.interface";
 import {
@@ -22,6 +27,7 @@ const ReservationSplitActions = ({
   viewModel,
 }: ReservationSplitActionsProps): React.JSX.Element => {
   const noteId = useId();
+  useReservationSplitAlertFocus(viewModel.formError);
   const isAddBlocked = !viewModel.canAddDeparture;
 
   return (
@@ -59,7 +65,9 @@ const ReservationSplitActions = ({
       </div>
       {viewModel.formError && (
         <Text
+          id={RESERVATION_SPLIT_FIELD_ID.ALERT}
           role={ARIA_ROLE.ALERT}
+          tabIndex={RESERVATION_SPLIT_FOCUS.TAB_INDEX}
           className={RESERVATION_SPLIT_ALERT_CLASS}
         >
           {viewModel.formError}

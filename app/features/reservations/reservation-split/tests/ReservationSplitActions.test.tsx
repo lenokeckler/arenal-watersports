@@ -117,4 +117,18 @@ describe("ReservationSplitSuccess", () => {
       SPLIT_CALENDAR_HREF
     );
   });
+
+  it("moves focus to the alert when a submit fails", () => {
+    const viewModel = buildReservationSplitViewModel(
+      EXPECTED_SPLIT,
+      { formError: SPLIT_FORM_ERROR }
+    );
+    render(
+      <ReservationSplitActions viewModel={viewModel} />
+    );
+
+    expect(
+      createReservationSplitActionsPage().queryAlert()
+    ).toHaveFocus();
+  });
 });
