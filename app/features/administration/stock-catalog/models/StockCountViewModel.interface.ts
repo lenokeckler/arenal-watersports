@@ -12,6 +12,7 @@ export interface StockCountViewModel extends StockCountSubmitViewModel {
   changes: StockQuantityChanges;
   errors: StockFormErrors;
   handlers: StockFieldHandlers;
+  onBack: () => void;
   onRetry: () => void;
   summary: StockCountSummary;
   values: StockFormValues;
