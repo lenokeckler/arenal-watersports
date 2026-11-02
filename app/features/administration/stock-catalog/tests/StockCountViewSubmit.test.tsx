@@ -8,6 +8,7 @@ import {
 import { waitFor } from "@testing-library/react";
 import { STATUS } from "@/app/constants";
 import { STOCK_ADJUSTMENT_REASON } from "../constants/StockAdjustmentReason.constants";
+import { STOCK_EMPTY_LEVELS } from "../constants/StockEmptyLevels.constants";
 import { STOCK_COUNT_COPY } from "../constants/StockCountCopy.constants";
 import {
   DEFAULT_STOCK_LEVELS,
@@ -92,7 +93,10 @@ describe("StockCountView submit", () => {
   });
 
   it("registers the first count as the initial count, then offers a correction", async () => {
-    const page = renderStockCountView({ movements: [] });
+    const page = renderStockCountView({
+      levels: STOCK_EMPTY_LEVELS,
+      movements: [],
+    });
 
     await page.setQuantity(
       STOCK_COUNT_COPY.AVAILABLE_LABEL,

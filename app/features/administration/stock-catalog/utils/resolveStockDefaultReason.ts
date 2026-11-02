@@ -4,8 +4,8 @@ import {
 } from "../constants/StockAdjustmentReason.constants";
 
 export const resolveStockDefaultReason = (
-  hasHistory: boolean
+  hasRegisteredCount: boolean
 ): StockAdjustmentReason =>
-  hasHistory
+  hasRegisteredCount
     ? STOCK_ADJUSTMENT_REASON.COUNT_CORRECTION
     : STOCK_ADJUSTMENT_REASON.INITIAL_COUNT;

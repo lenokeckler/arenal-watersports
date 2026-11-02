@@ -1,7 +1,7 @@
 export interface StockMovementCard {
+  changesText: string;
   dateText: string;
   id: string;
-  lines: string[];
   reasonLabel: string;
   totalText: string;
 }

@@ -1,18 +1,12 @@
-import Link from "@/app/components/link/Link";
 import ScreenHeading from "@/app/components/screen-header/ScreenHeading";
 import {
   ADMINISTRATION_SCREEN_TITLE_ID,
-  PATHS,
   STRING,
 } from "@/app/constants";
 import { STOCK_COUNT_COPY } from "../constants/StockCountCopy.constants";
 import { STOCK_COUNT_FIELD_ID } from "../constants/StockCountFieldId.constants";
 import type { StockCountHeaderProps } from "../models/StockCountHeaderProps.interface";
-import {
-  STOCK_COUNT_HEADER_ACTIONS_CLASS,
-  STOCK_COUNT_HEADER_CLASS,
-} from "../styles/StockCount.styles";
-import { STOCK_COUNT_LINK_CLASS } from "../styles/StockCountLink.styles";
+import { STOCK_COUNT_HEADER_CLASS } from "../styles/StockCount.styles";
 
 const StockCountHeader = ({
   categoryName,
@@ -28,14 +22,6 @@ const StockCountHeader = ({
       instruction={STOCK_COUNT_COPY.FORM_HINT}
       instructionId={STOCK_COUNT_FIELD_ID.HINT}
     />
-    <div className={STOCK_COUNT_HEADER_ACTIONS_CLASS}>
-      <Link
-        href={PATHS.ADMINISTRATION.CATEGORIES}
-        className={STOCK_COUNT_LINK_CLASS}
-      >
-        {STOCK_COUNT_COPY.BACK_TO_CATEGORIES_LINK}
-      </Link>
-    </div>
   </div>
 );
 

@@ -10,19 +10,16 @@ export const STOCK_HISTORY_CARD_CLASS =
   "flex flex-col gap-2 rounded-2xl border border-outline-variant bg-surface-container p-4";
 
 export const STOCK_HISTORY_CARD_HEADING_CLASS =
-  "flex flex-wrap items-start justify-between gap-2";
+  "flex flex-wrap items-center justify-between gap-2";
 
 export const STOCK_HISTORY_DATE_CLASS =
-  "text-body-base font-medium text-on-surface";
+  "text-body-base text-on-surface-variant";
 
 export const STOCK_HISTORY_REASON_CHIP_CLASS =
-  "rounded-full border border-outline px-2 py-0.5 font-mono text-label-mono uppercase text-on-surface-variant";
-
-export const STOCK_HISTORY_LINES_CLASS =
-  "flex flex-col gap-1";
-
-export const STOCK_HISTORY_LINE_CLASS =
-  "text-sm text-on-surface-variant";
+  "rounded-full border border-outline px-3 py-1 text-sm font-medium text-on-surface";
 
 export const STOCK_HISTORY_TOTAL_CLASS =
-  "text-body-base font-medium text-on-surface";
+  "text-title-md font-semibold text-on-surface";
+
+export const STOCK_HISTORY_CHANGES_CLASS =
+  "text-body-base text-on-surface-variant";
