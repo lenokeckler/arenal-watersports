@@ -3103,6 +3103,40 @@ export type Database = {
         Args: { p_user_id: string };
         Returns: boolean;
       };
+      split_departure_into_reservation: {
+        Args: {
+          p_date: string;
+          p_departure: Json;
+          p_original: Database["public"]["Tables"]["reservations"]["Row"];
+        };
+        Returns: {
+          cancellation_reason: string | null;
+          closed_at: string | null;
+          code: string;
+          combo_id: string | null;
+          created_at: string;
+          created_by: string;
+          customer_name: string;
+          dispatched_at: string | null;
+          duration_minutes: number;
+          ends_at: string | null;
+          extra_time_minutes: number;
+          id: string;
+          parent_reservation_id: string | null;
+          people_count: number;
+          starts_at: string;
+          status: Database["public"]["Enums"]["reservation_status"];
+          type: Database["public"]["Enums"]["reservation_type"];
+          updated_at: string;
+          updated_by: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "reservations";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       split_item_allocations: {
         Args: { p_departures: Json };
         Returns: {
