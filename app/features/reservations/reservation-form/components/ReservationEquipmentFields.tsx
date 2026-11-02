@@ -5,10 +5,11 @@ import {
   RESERVATION_FORM_EQUIPMENT_NOTE_CLASS,
   RESERVATION_FORM_FIELD_WIDE_CLASS,
 } from "../styles/ReservationFormView.styles";
+import ReservationCategoryAvailabilityPanel from "./ReservationCategoryAvailabilityPanel";
+import ReservationCategoryConflictWarning from "./ReservationCategoryConflictWarning";
 import { ReservationEquipmentCategoryFields } from "./ReservationEquipmentCategoryFields";
 import ReservationQuantityField from "./ReservationQuantityField";
 import ReservationUnitField from "./ReservationUnitField";
-import ReservationCategoryAvailabilityPanel from "./ReservationCategoryAvailabilityPanel";
 
 const ReservationEquipmentFields = ({
   categories,
@@ -35,6 +36,9 @@ const ReservationEquipmentFields = ({
       intervalLabel={viewModel.categoryAvailabilityInterval}
       onRetry={viewModel.handleRetryCategoryAvailability}
       state={viewModel.categoryAvailabilityState}
+    />
+    <ReservationCategoryConflictWarning
+      viewModel={viewModel.categoryConflictWarning}
     />
   </div>
 );
