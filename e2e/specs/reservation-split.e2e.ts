@@ -1,9 +1,5 @@
 import { randomUUID } from "node:crypto";
-import {
-  HTTP_STATUS,
-  RESERVATIONS_CALENDAR_COPY as calendarCopy,
-  STRING,
-} from "@/app/constants";
+import { HTTP_STATUS } from "@/app/constants";
 import { RESERVATION_SPLIT_BLOCK } from "@/app/features/reservations/reservation-split/constants/ReservationSplitBlock.constants";
 import { RESERVATION_SPLIT_FEEDBACK_COPY as feedback } from "@/app/features/reservations/reservation-split/constants/ReservationSplitFeedbackCopy.constants";
 import { RESERVATION_SPLIT_UI_COPY as copy } from "@/app/features/reservations/reservation-split/constants/ReservationSplitUiCopy.constants";
@@ -29,8 +25,6 @@ import { signInToReservationsMode } from "../support/signInToReservationsMode";
 const submitWait = { timeout: E2E_TIMEOUT_MS.POST_SUBMIT };
 
 test.describe("Reservation split", () => {
-  test.describe.configure({ mode: values.TEST_MODE });
-
   test.beforeEach(async ({ activeWorker, page }) => {
     await signInToReservationsMode(page, activeWorker);
   });
@@ -49,16 +43,13 @@ test.describe("Reservation split", () => {
     );
     const calendar = createReservationsCalendarPage(page);
     const split = createReservationSplitPage(page);
-    const origin = [
-      calendarCopy.ORIGIN,
-      original.code,
-    ].join(STRING.SPACE);
+    const operations = createOperationsCalendarPage(page);
 
     await calendar.goTo();
     await calendar
       .getSplitLink(original.customerName)
       .click();
-    await split.fillDeparture(original.unitLabel);
+    await split.fillDeparture(original);
     await split.submit();
 
     await expect(
@@ -74,9 +65,10 @@ test.describe("Reservation split", () => {
 
     await calendar.goTo();
     await expect(
-      calendar
-        .getBlock(original.customerName)
-        .filter({ hasText: origin })
+      calendar.getOriginBlock(
+        original.customerName,
+        original.code
+      )
     ).toBeVisible();
     expect(
       await readReservationSplitState(original.id)
@@ -93,14 +85,15 @@ test.describe("Reservation split", () => {
     await createWorkModePage(page)
       .getCard(operationsArea)
       .click();
-    await createOperationsCalendarPage(page).goTo();
+    await operations.goTo();
     await expect(
-      calendar
-        .getBlock(original.customerName)
-        .filter({ hasText: origin })
+      operations.getOriginBlock(
+        original.customerName,
+        original.code
+      )
     ).toBeVisible();
     await expect(
-      calendar.getSplitLink(original.customerName)
+      operations.getSplitLink(original.customerName)
     ).toHaveCount(0);
   });
 
@@ -154,7 +147,7 @@ test.describe("Reservation split", () => {
     const split = createReservationSplitPage(page);
 
     await split.goTo(original.id);
-    await split.fillDeparture(original.unitLabel);
+    await split.fillDeparture(original);
     await runWorkerSql(
       values.STALE_OPERATION,
       sql.TOUCH,

@@ -2,15 +2,11 @@ import {
   CHARGE_QUERY,
   SUPABASE_TABLE,
 } from "@/app/constants";
+import { E2E_RESERVATION_SPLIT as values } from "../constants/E2eReservationSplit.constants";
 import { E2E_SUPABASE_COLUMN } from "../constants/E2eSupabase.constants";
 import { createServiceRoleClient } from "./createServiceRoleClient";
 import { failE2eOperation } from "./failE2eOperation";
 import type { ReservationSplitState } from "./models/ReservationSplitState.interface";
-
-const PARENT_COLUMN = "parent_reservation_id";
-const RESERVATION_COLUMN = "reservation_id";
-const READ_OPERATION = "read the split reservation state";
-const EXACT_COUNT = "exact";
 
 export const readReservationSplitState = async (
   originalId: string
@@ -19,10 +15,10 @@ export const readReservationSplitState = async (
   const children = await supabase
     .from(SUPABASE_TABLE.RESERVATIONS)
     .select(E2E_SUPABASE_COLUMN.ID)
-    .eq(PARENT_COLUMN, originalId);
+    .eq(values.PARENT_COLUMN, originalId);
   if (children.error) {
     return failE2eOperation(
-      READ_OPERATION,
+      values.READ_OPERATION,
       children.error.message
     );
   }
@@ -34,13 +30,13 @@ export const readReservationSplitState = async (
     const { count, error } = await supabase
       .from(table)
       .select(E2E_SUPABASE_COLUMN.ID, {
-        count: EXACT_COUNT,
+        count: values.EXACT_COUNT,
         head: true,
       })
-      .in(RESERVATION_COLUMN, reservationIds);
+      .in(values.RESERVATION_COLUMN, reservationIds);
     if (error) {
       return failE2eOperation(
-        READ_OPERATION,
+        values.READ_OPERATION,
         error.message
       );
     }

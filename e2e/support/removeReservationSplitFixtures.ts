@@ -9,10 +9,13 @@ import { runWorkerSql } from "./runWorkerSql";
 export const removeReservationSplitFixtures = async (
   activeWorker: ActiveWorker
 ): Promise<void> => {
-  await runWorkerSql(
-    values.FIXTURE_OPERATION,
-    sql.CLEANUP,
-    activeWorker.id
-  );
-  await removeReservationsForWorker(activeWorker);
+  try {
+    await runWorkerSql(
+      values.FIXTURE_OPERATION,
+      sql.CLEANUP,
+      activeWorker.id
+    );
+  } finally {
+    await removeReservationsForWorker(activeWorker);
+  }
 };

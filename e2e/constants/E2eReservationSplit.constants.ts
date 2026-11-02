@@ -6,6 +6,13 @@ import { E2E_CHARGE_KIND } from "./E2eDailyIncome.constants";
 import { E2E_PROJECT } from "./E2eRuntime.constants";
 
 export const E2E_RESERVATION_SPLIT = {
+  EXACT_COUNT: "exact",
+  ID_CODE_SEPARATOR: ",",
+  MISSING_UNIT:
+    "no split unit is configured for the project",
+  PARENT_COLUMN: "parent_reservation_id",
+  READ_OPERATION: "read the split reservation state",
+  RESERVATION_COLUMN: "reservation_id",
   ARIA_DISABLED: "aria-disabled",
   ARIA_TRUE: "true",
   CATEGORY: "Kayak doble",
@@ -14,7 +21,6 @@ export const E2E_RESERVATION_SPLIT = {
   DEPARTURE_NUMBER: 2,
   DEPARTURE_PEOPLE_STEPS: 2,
   DEPARTURE_QUANTITY_STEPS: 2,
-  DEPARTURE_TIME: "14:00",
   DEPOSIT_AMOUNT: "100000",
   EXPECTED_DEPARTURES: 2,
   FIXTURE_OPERATION: "seed a reservation to split",
@@ -25,17 +31,25 @@ export const E2E_RESERVATION_SPLIT = {
   QUANTITY: "4",
   SCREENSHOT_BASENAME: "reservation-split",
   STALE_OPERATION: "touch the reservation to split",
-  TEST_MODE: "default",
   UNIT_CATEGORY: "Lancha",
 } as const;
 
-export const E2E_RESERVATION_SPLIT_UNIT_BY_PROJECT: Readonly<
-  Record<string, string>
+export const E2E_RESERVATION_SPLIT_SLOT_BY_PROJECT: Readonly<
+  Record<string, { time: string; unit: string }>
 > = {
-  [E2E_PROJECT.DEFAULT]: "BENNINGTON",
-  [E2E_PROJECT.MOBILE]: "PONTOON",
-  [E2E_PROJECT.SCREENSHOTS]: "BENNINGTON",
-  [E2E_PROJECT.SCREENSHOTS_MOBILE]: "PONTOON",
+  [E2E_PROJECT.MOBILE]: { time: "14:00", unit: "PONTOON" },
+  [E2E_PROJECT.DEFAULT]: {
+    time: "16:00",
+    unit: "BENNINGTON",
+  },
+  [E2E_PROJECT.SCREENSHOTS_MOBILE]: {
+    time: "18:00",
+    unit: "PONTOON",
+  },
+  [E2E_PROJECT.SCREENSHOTS]: {
+    time: "20:00",
+    unit: "BENNINGTON",
+  },
 };
 
 export const E2E_RESERVATION_SPLIT_SEED = {

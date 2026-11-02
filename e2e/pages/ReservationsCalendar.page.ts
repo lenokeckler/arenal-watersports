@@ -14,6 +14,7 @@ import {
   E2E_RESERVATIONS_CALENDAR_COPY,
   E2E_RESERVATIONS_CALENDAR_SELECTORS,
 } from "../constants/E2eReservationsCalendar.constants";
+import { locateOriginBlock } from "../support/locateOriginBlock";
 import { getMainRegion } from "../support/mainRegion";
 
 export const createReservationsCalendarPage = (
@@ -44,6 +45,11 @@ export const createReservationsCalendarPage = (
       main.getByRole(ARIA_ROLE.GROUP, {
         name: customerName,
       }),
+    getOriginBlock: (
+      customerName: string,
+      originCode: string
+    ): Locator =>
+      locateOriginBlock(main, customerName, originCode),
     getSplitLink: (customerName: string): Locator =>
       main.getByRole(ARIA_ROLE.LINK, {
         name: `${RESERVATIONS_CALENDAR_COPY.SPLIT_RESERVATION_LABEL} ${customerName}`,

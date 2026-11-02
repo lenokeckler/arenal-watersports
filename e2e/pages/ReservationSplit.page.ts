@@ -8,6 +8,7 @@ import { RESERVATION_SPLIT_UI_COPY as copy } from "@/app/features/reservations/r
 import type { NullableRef } from "@/app/types";
 import { resolveReservationSplitPath } from "@/app/utils/reservations/resolveReservationSplitPath";
 import { E2E_RESERVATION_SPLIT as values } from "../constants/E2eReservationSplit.constants";
+import type { ReservationSplitFixture } from "../support/models/ReservationSplitFixture.interface";
 import { getMainRegion } from "../support/mainRegion";
 
 export const createReservationSplitPage = (page: Page) => {
@@ -42,12 +43,12 @@ export const createReservationSplitPage = (page: Page) => {
 
   return {
     fillDeparture: async (
-      unitLabel: string
+      fixture: ReservationSplitFixture
     ): Promise<void> => {
       await main
         .getByLabel(copy.LABEL_START_TIME)
         .first()
-        .fill(values.DEPARTURE_TIME);
+        .fill(fixture.departureTime);
       await stepUp(
         copy.PEOPLE,
         values.DEPARTURE_NUMBER,
@@ -59,10 +60,10 @@ export const createReservationSplitPage = (page: Page) => {
         values.DEPARTURE_QUANTITY_STEPS
       );
       await getUnitOption(
-        unitLabel,
+        fixture.unitLabel,
         copy.UNIT_OPTION_DEPARTURE(
           values.DEPARTURE_NUMBER,
-          values.DEPARTURE_TIME
+          fixture.departureTime
         )
       ).click();
     },
@@ -73,7 +74,9 @@ export const createReservationSplitPage = (page: Page) => {
     getAlert: (): Locator =>
       main.getByRole(ARIA_ROLE.ALERT),
     getCreatedCodes: (): Locator =>
-      main.getByRole(ARIA_ROLE.LISTITEM),
+      main
+        .getByRole(ARIA_ROLE.LIST)
+        .getByRole(ARIA_ROLE.LISTITEM),
     getStepUp: (
       label: string,
       departureNumber: number

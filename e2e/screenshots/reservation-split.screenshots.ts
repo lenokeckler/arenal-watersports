@@ -1,7 +1,3 @@
-import {
-  RESERVATIONS_CALENDAR_COPY as calendarCopy,
-  STRING,
-} from "@/app/constants";
 import { RESERVATION_SPLIT_BLOCK } from "@/app/features/reservations/reservation-split/constants/ReservationSplitBlock.constants";
 import { RESERVATION_SPLIT_FEEDBACK_COPY as feedback } from "@/app/features/reservations/reservation-split/constants/ReservationSplitFeedbackCopy.constants";
 import { RESERVATION_SPLIT_UI_COPY as copy } from "@/app/features/reservations/reservation-split/constants/ReservationSplitUiCopy.constants";
@@ -25,13 +21,6 @@ test("captures every reservation split state", async ({
 }, testInfo) => {
   await signInToReservationsMode(page, activeWorker);
   const project = testInfo.project.name;
-  const original = await seedSplit(
-    activeWorker.id,
-    project
-  );
-  const locked = await seedSplit(activeWorker.id, project, {
-    status: values.UNAVAILABLE_STATUS,
-  });
   const calendar = createReservationsCalendarPage(page);
   const split = createReservationSplitPage(page);
   const captureState = (name: string): Promise<void> =>
@@ -42,6 +31,17 @@ test("captures every reservation split state", async ({
     );
 
   try {
+    const original = await seedSplit(
+      activeWorker.id,
+      project
+    );
+    const locked = await seedSplit(
+      activeWorker.id,
+      project,
+      {
+        status: values.UNAVAILABLE_STATUS,
+      }
+    );
     await calendar.goTo();
     await expect(
       calendar.getSplitLink(original.customerName)
@@ -60,12 +60,12 @@ test("captures every reservation split state", async ({
     ).toBeVisible();
     await captureState(state.ERROR);
 
-    await split.fillDeparture(original.unitLabel);
+    await split.fillDeparture(original);
     await split.getAddDeparture().click();
     await captureState(state.TWO_DEPARTURES);
 
     await split.goTo(original.id);
-    await split.fillDeparture(original.unitLabel);
+    await split.fillDeparture(original);
     await split.submit();
     await expect(
       split.getText(
@@ -85,11 +85,10 @@ test("captures every reservation split state", async ({
 
     await calendar.goTo();
     await expect(
-      calendar.getBlock(original.customerName).filter({
-        hasText: [calendarCopy.ORIGIN, original.code].join(
-          STRING.SPACE
-        ),
-      })
+      calendar.getOriginBlock(
+        original.customerName,
+        original.code
+      )
     ).toBeVisible();
     await captureState(state.ORIGIN_MARKER);
   } finally {
