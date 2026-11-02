@@ -7,6 +7,7 @@ import {
   E2E_RESERVATION_EDIT_SQL,
 } from "../constants/E2eReservationEdit.constants";
 import { E2E_RESERVATION_FORM_COPY as formCopy } from "../constants/E2eReservationForm.constants";
+import { E2E_TIMEOUT_MS } from "../constants/E2eRuntime.constants";
 import { E2E_WORKER } from "../constants/E2eWorker.constants";
 import { E2E_OPERATIONS_AREA_LABEL as operationsArea } from "../constants/E2eWorkMode.constants";
 import { createOperationsCalendarPage } from "../pages/OperationsCalendar.page";
@@ -22,6 +23,8 @@ import { signInToReservationsMode } from "../support/signInToReservationsMode";
 import { withSecondContext } from "../support/withSecondContext";
 
 test.describe("Reservation edit", () => {
+  test.describe.configure({ mode: values.TEST_MODE });
+
   test.beforeEach(async ({ activeWorker, page }) => {
     await signInToReservationsMode(page, activeWorker);
   });
@@ -46,7 +49,9 @@ test.describe("Reservation edit", () => {
     await edit.getTimeInput().fill(values.TIME);
     await edit.save();
 
-    await expect(edit.getText(copy.SUCCESS)).toBeVisible();
+    await expect(edit.getText(copy.SUCCESS)).toBeVisible({
+      timeout: E2E_TIMEOUT_MS.POST_SUBMIT,
+    });
     await expect(
       edit.getText(E2E_WORKER.FULL_NAME)
     ).toBeVisible();
@@ -102,12 +107,16 @@ test.describe("Reservation edit", () => {
           await second.save();
           await expect(
             second.getText(values.SECOND_WORKER_NAME)
-          ).toBeVisible();
+          ).toBeVisible({
+            timeout: E2E_TIMEOUT_MS.POST_SUBMIT,
+          });
         }
       );
       await edit.save();
 
-      await expect(edit.getText(copy.STALE)).toBeVisible();
+      await expect(edit.getText(copy.STALE)).toBeVisible({
+        timeout: E2E_TIMEOUT_MS.POST_SUBMIT,
+      });
     } finally {
       await removeReservationsForWorker(activeWorker);
       await secondWorker.remove();

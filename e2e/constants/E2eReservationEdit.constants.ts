@@ -8,6 +8,7 @@ export const E2E_RESERVATION_EDIT = {
   SCREENSHOT_BASENAME: "reservation-edit",
   SECOND_WORKER_NAME: "Segunda Persona E2E",
   SEED_OPERATION: "seed a reservation to edit",
+  TEST_MODE: "default",
   TIME: "15:30",
 } as const;
 

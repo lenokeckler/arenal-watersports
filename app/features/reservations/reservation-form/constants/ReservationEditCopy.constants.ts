@@ -29,7 +29,7 @@ export const RESERVATION_EDIT_COPY = {
     "Solo se modifican las reservas agendadas que tienen equipo asignado.",
   UNAVAILABLE_TITLE: "Esta reserva no se puede modificar",
   UNIT_UNAVAILABLE:
-    "Una unidad de esta reserva no está disponible para el horario elegido. Elija otro horario u otra unidad.",
+    "Una unidad de esta reserva no está disponible para el horario elegido.",
 } as const;
 
 export const RESERVATION_EDIT_LOCK_COPY = {
