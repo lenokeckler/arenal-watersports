@@ -7,6 +7,7 @@ import { createServiceRoleSupabaseClient } from "@/app/services/supabase";
 import { deleteReservationDetailFixture } from "./deleteReservationDetailFixture";
 import { insertReservationDetailFixture } from "./insertReservationDetailFixture";
 import { loadReservationDetailFixtureCatalog } from "./loadReservationDetailFixtureCatalog";
+import { ensureReservationDetailFixtureWrite } from "./ensureReservationDetailFixtureWrite";
 
 const createFixtureResources = (
   catalog: ReservationDetailFixtureCatalog
@@ -69,11 +70,24 @@ const createFixtureCleanup =
   };
 
 const mapFixture = (
+  supabase: ReturnType<
+    typeof createServiceRoleSupabaseClient
+  >,
   catalog: ReservationDetailFixtureCatalog,
   resources: ReservationDetailFixtureResources,
   customerName: string,
   cleanup: () => Promise<void>
 ): ReservationDetailFixture => ({
+  cancel: async (): Promise<void> => {
+    const { error } = await supabase
+      .from("reservations")
+      .update({
+        cancellation_reason: fixture.CANCELLATION_REASON,
+        status: fixture.CANCELLED_STATUS,
+      })
+      .eq("id", resources.reservationId);
+    ensureReservationDetailFixtureWrite(error);
+  },
   cleanup,
   customerName,
   createdByName: catalog.createdByName,
@@ -98,6 +112,7 @@ export const createReservationDetailFixture =
       customerName
     );
     return mapFixture(
+      supabase,
       catalog,
       resources,
       customerName,

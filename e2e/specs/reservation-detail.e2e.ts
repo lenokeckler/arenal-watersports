@@ -42,3 +42,17 @@ reservationDetailTest(
     );
   }
 );
+
+reservationDetailTest(
+  "identifies a cancelled reservation",
+  async ({ page, reservationFixture }) => {
+    await reservationFixture.cancel();
+    await page.reload();
+
+    await expect(
+      createReservationDetailPage(
+        page
+      ).getReservationStatus(copy.CANCELLED)
+    ).toBeVisible();
+  }
+);
