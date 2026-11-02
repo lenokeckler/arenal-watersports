@@ -1,5 +1,7 @@
 import { RESERVATION_SPLIT_BLOCK } from "../constants/ReservationSplitBlock.constants";
 import { RESERVATION_SPLIT_ITEM_KIND } from "../constants/ReservationSplitItemKind.constants";
+import type { ReservationSplitDepartureInput } from "../models/ReservationSplitDepartureInput.interface";
+import type { ReservationSplitInput } from "../models/ReservationSplitInput.interface";
 import type { ReservationSplit } from "../models/ReservationSplit.interface";
 import type { ReservationSplitItemRow } from "../models/ReservationSplitItemRow.interface";
 import type { ReservationSplitRow } from "../models/ReservationSplitRow.interface";
@@ -105,3 +107,16 @@ export const EXPECTED_SPLIT: ReservationSplit = {
 export const SINGLE_PERSON_COUNT = 1;
 export const SINGLE_PIECE_QUANTITY = 1;
 export const MALFORMED_RESERVATION_ID = "not-a-uuid";
+
+export const VALID_DEPARTURE_INPUT: ReservationSplitDepartureInput =
+  {
+    items: [{ itemId: UNIT_ITEM_ROW.id, quantity: 1 }],
+    peopleCount: 2,
+    time: "15:00",
+  };
+
+export const VALID_SPLIT_INPUT: ReservationSplitInput = {
+  departures: [VALID_DEPARTURE_INPUT],
+  expectedUpdatedAt: SPLIT_UPDATED_AT,
+  reservationId: SPLIT_RESERVATION_ID,
+};
