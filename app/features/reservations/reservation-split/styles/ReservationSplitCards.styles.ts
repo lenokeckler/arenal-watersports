@@ -50,3 +50,30 @@ export const resolveReservationSplitEquipmentValueClassName =
       ? RESERVATION_SPLIT_EQUIPMENT_COUNT_MINIMUM_CLASS
       : RESERVATION_SPLIT_EQUIPMENT_COUNT_CLASS;
   };
+
+export const RESERVATION_SPLIT_DEPARTURE_CLASS =
+  "space-y-4 rounded-2xl border border-outline-variant bg-surface-container-high/70 p-4 md:p-5";
+
+export const RESERVATION_SPLIT_DEPARTURE_HEADER_CLASS =
+  "flex items-center justify-between gap-3";
+
+export const RESERVATION_SPLIT_REMOVE_CLASS =
+  "min-h-11 min-w-11 rounded-lg px-3 text-sm font-semibold text-error underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-error active:opacity-80";
+
+export const RESERVATION_SPLIT_DEPARTURE_GRID_CLASS =
+  "grid grid-cols-1 gap-4 md:grid-cols-2";
+
+export const RESERVATION_SPLIT_FIELD_WIDE_CLASS =
+  "min-w-0 md:col-span-2";
+
+export const RESERVATION_SPLIT_TIME_FIELD_CLASS =
+  "!min-h-12";
+
+export const RESERVATION_SPLIT_TIME_HINT_CLASS =
+  "mt-2 text-sm text-primary";
+
+export const RESERVATION_SPLIT_EQUIPMENT_LEGEND_CLASS =
+  "mb-3 text-sm font-medium text-on-surface-variant";
+
+export const RESERVATION_SPLIT_EQUIPMENT_ERROR_CLASS =
+  "text-sm text-error";
