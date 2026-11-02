@@ -38,6 +38,30 @@ export const createCategoryUnitsPage = () => {
     return unit;
   };
 
+  const getRow = (unit: HTMLElement) => {
+    const row = unit.firstElementChild;
+
+    if (!row) {
+      throw new Error(UNIT_NOT_FOUND_MESSAGE);
+    }
+
+    return row;
+  };
+
+  const getCode = (unit: HTMLElement) =>
+    within(unit).getByRole(ARIA_ROLE.HEADING, {
+      level: HEADING_LEVEL_TWO,
+    });
+
+  const getRowSectionCount = (unit: HTMLElement) =>
+    getRow(unit).children.length;
+
+  const precedes = (first: Element, second: Element) =>
+    Boolean(
+      first.compareDocumentPosition(second) &
+      Node.DOCUMENT_POSITION_FOLLOWING
+    );
+
   const getText = (container: HTMLElement, text: string) =>
     within(container).getByText(text);
 
@@ -68,14 +92,18 @@ export const createCategoryUnitsPage = () => {
     container.textContent;
 
   return {
+    getCode,
     getDecorativeElements,
     getInteractiveElements,
     getList,
+    getRow,
+    getRowSectionCount,
     getReturnText,
     getText,
     getUnit,
     getUnits,
     getUnitText,
+    precedes,
     queryReturnText,
     queryText,
   };

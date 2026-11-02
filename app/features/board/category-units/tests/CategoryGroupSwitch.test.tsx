@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import { ARIA_CURRENT } from "@/app/constants";
+import {
+  CATEGORY_GROUP_SWITCH_LINK_CURRENT_CLASS,
+  CATEGORY_GROUP_SWITCH_LINK_IDLE_CLASS,
+} from "../styles/CategoryGroupSwitch.styles";
 import { resolveBoardCategoryPath } from "@/app/utils/board-paths/resolveBoardCategoryPath";
 import CategoryGroupSwitch from "../components/CategoryGroupSwitch";
 import {
@@ -67,6 +71,17 @@ describe("CategoryGroupSwitch", () => {
     expect(
       page.getSwitchLink(GROUP_DOUBLE.name)
     ).not.toHaveAttribute(ARIA_CURRENT_ATTRIBUTE);
+  });
+
+  it("fills the current pill with the primary color and leaves the others on the surface", () => {
+    const page = renderSwitch();
+
+    expect(
+      page.getSwitchLink(GROUP_DOUBLE.name)
+    ).toHaveClass(CATEGORY_GROUP_SWITCH_LINK_CURRENT_CLASS);
+    expect(
+      page.getSwitchLink(GROUP_INDIVIDUAL.name)
+    ).toHaveClass(CATEGORY_GROUP_SWITCH_LINK_IDLE_CLASS);
   });
 
   it("renders nothing when the category has no siblings", () => {
