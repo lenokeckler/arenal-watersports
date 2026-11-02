@@ -16,6 +16,7 @@ export const PATHS = {
     CATEGORY_ALERTS_SEGMENT: "alerts",
     CATEGORY_BEHAVIOR_SEGMENT: "behavior",
     CATEGORY_DEPOSIT_SEGMENT: "deposit",
+    CATEGORY_STOCK_SEGMENT: "stock",
     CATEGORY_UNITS_SEGMENT: "units",
     RESERVATIONS_BY_WORKER:
       "/administration/reports/reservations-by-worker",
