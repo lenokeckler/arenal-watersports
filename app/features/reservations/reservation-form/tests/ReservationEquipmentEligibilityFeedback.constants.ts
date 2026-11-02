@@ -19,6 +19,12 @@ export const RESERVATION_EQUIPMENT_FEEDBACK_VIEW_MODEL = {
   categoryAvailabilityInterval: STRING.Empty,
   categoryAvailabilityState:
     RESERVATION_CATEGORY_AVAILABILITY_PANEL_STATE.INACTIVE,
+  categoryConflictWarning: {
+    hasError: false,
+    isLoading: false,
+    items: [],
+    retry: vi.fn(),
+  },
   isSubmitDisabled: false,
   isCustomDuration: false,
   customDurationDraft: "",

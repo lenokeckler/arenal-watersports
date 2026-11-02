@@ -26,7 +26,7 @@ test.describe("Category behavior rules", () => {
 
     try {
       await logInAsAdmin(page);
-      await categoryListPage.goTo();
+      await categoryListPage.goToCategory(categoryName);
       await createCategoryBehaviorLinkPage().clickBehaviorLink(
         categoryListPage.getCategoryCard(categoryName)
       );
