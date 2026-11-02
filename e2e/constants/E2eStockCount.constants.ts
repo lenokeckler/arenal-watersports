@@ -16,6 +16,8 @@ export const E2E_STOCK_HISTORY_INDEX = {
   NEWEST: 0,
 } as const;
 
+export const E2E_STOCK_HIDDEN_ROW_COUNT = 0;
+
 export const E2E_STOCK_HISTORY_ROWS = {
   AFTER_DISCARD: 2,
 } as const;

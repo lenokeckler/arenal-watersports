@@ -5,6 +5,7 @@ import type { StockAdjustmentReason } from "@/app/features/administration/stock-
 import { STOCK_COUNT_COPY } from "@/app/features/administration/stock-catalog/constants/StockCountCopy.constants";
 import { STOCK_REASON_COPY } from "@/app/features/administration/stock-catalog/constants/StockReasonCopy.constants";
 import { resolveCategoryStockPath } from "@/app/features/administration/stock-catalog/utils/resolveStockPaths";
+import { formatStockValueChange } from "@/app/features/administration/stock-catalog/utils/formatStockValueChange";
 import { formatStockTransition } from "@/app/features/administration/stock-catalog/utils/formatStockTransition";
 import { E2E_NEXT_NOT_FOUND_MESSAGE } from "../constants/E2eCategoryBehavior.constants";
 import {
@@ -48,11 +49,17 @@ export const createStockCountPage = (page: Page) => {
   const getField = (label: string): Locator =>
     page.getByLabel(label);
 
+  const getQuantityInput = (label: string): Locator =>
+    page.getByRole(ARIA_ROLE.TEXTBOX, {
+      exact: true,
+      name: label,
+    });
+
   const fillQuantity = async (
     label: string,
     quantity: string
   ): Promise<void> => {
-    await getField(label).fill(quantity);
+    await getQuantityInput(label).fill(quantity);
   };
 
   const selectReason = async (
@@ -68,7 +75,7 @@ export const createStockCountPage = (page: Page) => {
 
   const getTotal = (): Locator =>
     page
-      .getByText(STOCK_COUNT_COPY.TOTAL_LABEL, {
+      .getByText(STOCK_COUNT_COPY.TOTAL_REGISTERED_LABEL, {
         exact: true,
       })
       .locator(E2E_PARENT_SELECTOR);
@@ -85,7 +92,9 @@ export const createStockCountPage = (page: Page) => {
     page.getByText(message);
 
   const getHistoryRows = (): Locator =>
-    page.getByRole(ARIA_ROLE.GROUP);
+    page.getByRole(ARIA_ROLE.GROUP).filter({
+      hasText: STOCK_COUNT_COPY.MOVEMENT_TOTAL_LABEL,
+    });
 
   const getNewestHistoryRow = (): Locator =>
     getHistoryRows().nth(E2E_STOCK_HISTORY_INDEX.NEWEST);
@@ -103,6 +112,18 @@ export const createStockCountPage = (page: Page) => {
   ): Locator =>
     row.getByText(formatStockTransition(label, from, to));
 
+  const getRowTotal = (
+    row: Locator,
+    from: number,
+    to: number
+  ): Locator =>
+    row.getByText(
+      [
+        STOCK_COUNT_COPY.MOVEMENT_TOTAL_LABEL,
+        formatStockValueChange(from, to),
+      ].join(STRING.SPACE)
+    );
+
   const getNotFoundMessage = (): Locator =>
     page.getByText(E2E_NEXT_NOT_FOUND_MESSAGE);
 
@@ -116,6 +137,7 @@ export const createStockCountPage = (page: Page) => {
     getNotFoundMessage,
     getReasonSelect,
     getRowReason,
+    getRowTotal,
     getRowTransition,
     getStockLink,
     getToastMessage,

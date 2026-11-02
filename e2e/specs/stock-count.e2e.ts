@@ -6,6 +6,7 @@ import {
   E2E_STOCK_AFTER_DISCARD,
   E2E_STOCK_AVAILABLE,
   E2E_STOCK_COUNT_SCENARIO,
+  E2E_STOCK_HIDDEN_ROW_COUNT,
   E2E_STOCK_HISTORY_ROWS,
   E2E_STOCK_INITIAL_COUNT,
   E2E_STOCK_TOTALS,
@@ -78,9 +79,8 @@ test.describe("Stock count", () => {
         )
       ).toBeVisible();
       await expect(
-        stockCountPage.getRowTransition(
+        stockCountPage.getRowTotal(
           initialRow,
-          STOCK_COUNT_COPY.TOTAL_LABEL,
           E2E_STOCK_TOTALS.BEFORE_INITIAL_COUNT,
           E2E_STOCK_TOTALS.AFTER_INITIAL_COUNT
         )
@@ -121,11 +121,10 @@ test.describe("Stock count", () => {
           E2E_STOCK_UNCHANGED.DAMAGED,
           E2E_STOCK_UNCHANGED.DAMAGED
         )
-      ).toBeVisible();
+      ).toHaveCount(E2E_STOCK_HIDDEN_ROW_COUNT);
       await expect(
-        stockCountPage.getRowTransition(
+        stockCountPage.getRowTotal(
           discardRow,
-          STOCK_COUNT_COPY.TOTAL_LABEL,
           E2E_STOCK_TOTALS.AFTER_INITIAL_COUNT,
           E2E_STOCK_TOTALS.AFTER_DISCARD
         )
