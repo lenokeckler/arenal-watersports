@@ -32,6 +32,14 @@ describe("ReservationEditView", () => {
     expect(page.queryDateInput()).toBeNull();
   });
 
+  it("shows the last editor as one sentence", () => {
+    const page = renderReservationEdit();
+
+    expect(
+      page.getSummaryValue(RESERVATION_EDIT.lastEditLabel)
+    ).toBeInTheDocument();
+  });
+
   it("uses the edit copy", () => {
     const page = renderReservationEdit();
 

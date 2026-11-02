@@ -8,9 +8,11 @@ import {
 import { createClient } from "@supabase/supabase-js";
 import { SUPABASE } from "@/app/constants";
 import type { Database } from "@/app/types";
+import { RESERVATION_EDIT_QUERY } from "../constants/ReservationEditQuery.constants";
 import { getAuthorizedReservationFormClient } from "../services/getAuthorizedReservationFormClient";
 import { getReservationEdit } from "../services/getReservationEdit";
 import {
+  RESERVATION_EDIT_EDITOR_ROW,
   RESERVATION_EDIT_ROW,
   RESERVATION_EDIT_TEST as test,
 } from "./ReservationEdit.constants";
@@ -22,9 +24,20 @@ vi.mock(
   })
 );
 
-const mockClient = (rows: object[]) => {
-  const fetchRows: typeof fetch = () =>
-    Promise.resolve(Response.json(rows));
+const mockClient = (
+  rows: object[],
+  editors: object[] = [RESERVATION_EDIT_EDITOR_ROW]
+) => {
+  const fetchRows: typeof fetch = (url) =>
+    Promise.resolve(
+      Response.json(
+        url
+          .toString()
+          .includes(RESERVATION_EDIT_QUERY.EDITOR_RPC)
+          ? editors
+          : rows
+      )
+    );
   vi.mocked(
     getAuthorizedReservationFormClient
   ).mockResolvedValue(
@@ -61,6 +74,19 @@ describe("getReservationEdit", () => {
 
     await expect(
       getReservationEdit(test.RESERVATION_ID)
-    ).resolves.toMatchObject({ id: test.RESERVATION_ID });
+    ).resolves.toMatchObject({
+      id: test.RESERVATION_ID,
+      lastEditLabel: test.EXPECTED_LAST_EDIT,
+    });
+  });
+
+  it("fails when the last editor has no name", async () => {
+    mockClient([RESERVATION_EDIT_ROW], []);
+
+    await expect(
+      getReservationEdit(test.RESERVATION_ID)
+    ).rejects.toThrow(
+      RESERVATION_EDIT_QUERY.MISSING_EDITOR
+    );
   });
 });

@@ -1,6 +1,11 @@
-import { RESERVATION_CALENDAR_ACTIVE_STATUS } from "@/app/constants";
+import {
+  RESERVATION_CALENDAR_ACTIVE_STATUS,
+  STRING,
+} from "@/app/constants";
+import { formatReservationCalendarDateTime } from "@/app/components/reservation-calendar/utils/formatReservationCalendarDateTime";
 import { mapReservationCalendarQueryEquipment } from "@/app/services/reservations/utils/mapReservationCalendarQueryEquipment";
 import type { NullableRef } from "@/app/types";
+import { RESERVATION_EDIT_COPY } from "../constants/ReservationEditCopy.constants";
 import { RESERVATION_EDIT_QUERY } from "../constants/ReservationEditQuery.constants";
 import {
   RESERVATION_EQUIPMENT_LOCK,
@@ -49,8 +54,21 @@ const mapEquipment = (
     : null;
 };
 
+const buildLastEditLabel = (
+  lastEditorName: string,
+  updatedAt: string
+): string =>
+  [
+    RESERVATION_EDIT_COPY.LAST_EDIT,
+    [
+      lastEditorName,
+      formatReservationCalendarDateTime(updatedAt),
+    ].join(RESERVATION_EDIT_COPY.LAST_EDIT_SEPARATOR),
+  ].join(STRING.SPACE);
+
 export const mapReservationEdit = (
-  row: ReservationEditRow
+  row: ReservationEditRow,
+  lastEditorName: string
 ): ReservationEdit => {
   const editableItems = getEditableItems(row);
   const startsAt = new Date(row.starts_at);
@@ -68,6 +86,10 @@ export const mapReservationEdit = (
       row.status ===
         RESERVATION_CALENDAR_ACTIVE_STATUS.SCHEDULED &&
       editableItems.length > 0,
+    lastEditLabel: buildLastEditLabel(
+      lastEditorName,
+      row.updated_at
+    ),
     lastEditedAt: row.updated_at,
     peopleCount: row.people_count,
     time: getCostaRicaTime(startsAt),

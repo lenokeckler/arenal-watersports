@@ -2,6 +2,7 @@
 
 import { AUTOCOMPLETE } from "@/app/constants";
 import ReservationEditFields from "./components/ReservationEditFields";
+import ReservationEditLastEdit from "./components/ReservationEditLastEdit";
 import ReservationEditSummary from "./components/ReservationEditSummary";
 import ReservationFormFeedback from "./components/ReservationFormFeedback";
 import ReservationFormHeader from "./components/ReservationFormHeader";
@@ -34,6 +35,9 @@ const ReservationEditView = ({
         <div className={RESERVATION_FORM_CARD_CLASS}>
           <ReservationEditSummary
             reservation={reservation}
+          />
+          <ReservationEditLastEdit
+            label={reservation.lastEditLabel}
           />
           <form
             noValidate
