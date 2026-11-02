@@ -1,9 +1,13 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { ARIA_ROLE } from "@/app/constants";
 import { describe, expect, it, vi } from "vitest";
 import ReservationSplitUnitChoice from "../components/ReservationSplitUnitChoice";
+import { RESERVATION_SPLIT_UI_COPY } from "../constants/ReservationSplitUiCopy.constants";
 import {
   SPLIT_DRAFT,
   SPLIT_DRAFT_KEY,
+  SPLIT_OTHER_UNIT_ITEM,
   SPLIT_ORIGINAL_TIME,
   SPLIT_UNIT_ERROR,
   SPLIT_UNIT_ITEM,
@@ -75,5 +79,41 @@ describe("ReservationSplitUnitChoice", () => {
       SPLIT_UNIT_ERROR
     );
     expect(page.getOriginalOption()).toBeDisabled();
+  });
+
+  it("keeps two units in separate radio groups", async () => {
+    const { page } = renderChoice();
+    render(
+      <ReservationSplitUnitChoice
+        drafts={[SPLIT_DRAFT]}
+        onSelect={vi.fn()}
+        originalTime={SPLIT_ORIGINAL_TIME}
+        selectedKey={null}
+        unit={SPLIT_OTHER_UNIT_ITEM}
+      />
+    );
+    const [first, second] = screen.getAllByRole(
+      ARIA_ROLE.RADIO,
+      {
+        name: RESERVATION_SPLIT_UI_COPY.UNIT_OPTION_ORIGINAL(
+          SPLIT_ORIGINAL_TIME
+        ),
+      }
+    );
+
+    await userEvent.setup().click(first);
+    await userEvent.keyboard("{ArrowDown}");
+
+    expect(first).toHaveAttribute(
+      "name",
+      SPLIT_UNIT_ITEM.id
+    );
+    expect(second).toHaveAttribute(
+      "name",
+      SPLIT_OTHER_UNIT_ITEM.id
+    );
+    expect(page.getGroup()).toContainElement(first);
+    expect(page.getGroup()).not.toContainElement(second);
+    expect(second).not.toHaveFocus();
   });
 });

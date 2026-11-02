@@ -165,3 +165,9 @@ export const SPLIT_DURATION_CASES = [
   [150, "2 h 30 min"],
   [1440, "24 horas"],
 ] as const;
+
+export const SPLIT_OTHER_UNIT_ITEM: ReservationSplitItem = {
+  ...SPLIT_UNIT_ITEM,
+  id: "e2900000-0000-4000-8000-000000000404",
+  label: "Lancha L-04",
+};
