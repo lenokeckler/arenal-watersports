@@ -9,6 +9,7 @@ import type { StockFormFieldChangeHandler } from "../models/StockFormFieldChange
 import type { StockFormValues } from "../models/StockFormValues.interface";
 import type { StockTextField } from "../models/StockTextField.type";
 import { clearStockFormErrors } from "../utils/clearStockFormErrors";
+import { hasRegisteredStockCount } from "../utils/hasRegisteredStockCount";
 import { mapStockLevelsToFormValues } from "../utils/mapStockLevelsToFormValues";
 import { resolveStockDefaultReason } from "../utils/resolveStockDefaultReason";
 
@@ -20,7 +21,9 @@ export const useStockCountFields = ({
     () =>
       mapStockLevelsToFormValues(
         levels,
-        resolveStockDefaultReason(hasHistory)
+        resolveStockDefaultReason(
+          hasRegisteredStockCount(levels, hasHistory)
+        )
       )
   );
   const [errors, setErrors] = useState<StockFormErrors>({});
