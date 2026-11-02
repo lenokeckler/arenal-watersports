@@ -39,7 +39,9 @@ as $$
          case when item.value->>'quantity' ~ '^[0-9]{1,9}$'
               then (item.value->>'quantity')::integer end
   from jsonb_array_elements(p_departures) with ordinality as departure(value, position)
-  cross join lateral jsonb_array_elements(departure.value->'items') as item(value);
+  cross join lateral jsonb_array_elements(
+    case when jsonb_typeof(departure.value->'items') = 'array' then departure.value->'items' else '[]'::jsonb end
+  ) as item(value);
 $$;
 
 create function assert_split_departures_shape(p_departures jsonb)
