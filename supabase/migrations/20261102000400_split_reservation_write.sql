@@ -35,6 +35,9 @@ declare
   item reservation_items;
 begin
   select * into item from reservation_items where id = p_item_id for update;
+  if not found then
+    raise exception 'Split equipment does not belong to the reservation';
+  end if;
   if p_quantity = coalesce(item.quantity, 1) then
     update reservation_items
     set reservation_id = p_departure_id, updated_by = authenticated_worker_id
