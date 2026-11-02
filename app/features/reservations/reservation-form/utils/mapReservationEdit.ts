@@ -2,6 +2,7 @@ import {
   RESERVATION_CALENDAR_ACTIVE_STATUS,
   STRING,
 } from "@/app/constants";
+import { describeReservationEquipment } from "@/app/components/reservation-calendar/utils/describeReservationEquipment";
 import { formatReservationCalendarDateTime } from "@/app/components/reservation-calendar/utils/formatReservationCalendarDateTime";
 import { mapReservationCalendarQueryEquipment } from "@/app/services/reservations/utils/mapReservationCalendarQueryEquipment";
 import type { NullableRef } from "@/app/types";
@@ -18,17 +19,31 @@ import type { ReservationEditRowItem } from "../models/ReservationEditRowItem.ty
 import { getCostaRicaDate } from "./getCostaRicaDate";
 import { getCostaRicaTime } from "./getCostaRicaTime";
 
+const getItemsInIdOrder = (
+  row: ReservationEditRow
+): ReservationEditRowItem[] =>
+  [...row.reservation_items].sort((first, second) =>
+    first.id.localeCompare(second.id)
+  );
+
 const getEditableItems = (
   row: ReservationEditRow
 ): ReservationEditRowItem[] =>
-  row.reservation_items
-    .filter(
-      (item) =>
-        item.extra_id === null && item.dispatch_id === null
-    )
-    .sort((first, second) =>
-      first.id.localeCompare(second.id)
-    );
+  getItemsInIdOrder(row).filter(
+    (item) =>
+      item.extra_id === null && item.dispatch_id === null
+  );
+
+const buildEquipmentLabels = (
+  row: ReservationEditRow
+): string[] =>
+  getItemsInIdOrder(row).flatMap((item) => {
+    const equipment =
+      mapReservationCalendarQueryEquipment(item);
+    return equipment
+      ? [describeReservationEquipment(equipment)]
+      : [];
+  });
 
 const resolveEquipmentLock = (
   row: ReservationEditRow,
@@ -77,6 +92,7 @@ export const mapReservationEdit = (
     date: getCostaRicaDate(startsAt),
     durationMinutes: row.duration_minutes,
     equipment: mapEquipment(editableItems),
+    equipmentLabels: buildEquipmentLabels(row),
     equipmentLock: resolveEquipmentLock(
       row,
       editableItems.length

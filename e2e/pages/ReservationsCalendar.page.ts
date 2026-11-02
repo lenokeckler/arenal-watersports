@@ -40,6 +40,14 @@ export const createReservationsCalendarPage = (
     });
 
   return {
+    getBlock: (customerName: string): Locator =>
+      main.getByRole(ARIA_ROLE.GROUP, {
+        name: customerName,
+      }),
+    getModifyLink: (customerName: string): Locator =>
+      main.getByRole(ARIA_ROLE.LINK, {
+        name: `${RESERVATIONS_CALENDAR_COPY.MODIFY_RESERVATION_LABEL} ${customerName}`,
+      }),
     getHeading: (): Locator =>
       main.getByRole(ARIA_ROLE.HEADING, {
         name: E2E_RESERVATIONS_CALENDAR_COPY.HEADING,
