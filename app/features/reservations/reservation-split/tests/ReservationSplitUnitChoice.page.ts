@@ -31,10 +31,18 @@ export const createReservationSplitUnitChoicePage = () => {
       name: SPLIT_UNIT_ITEM.label,
     });
 
+  const selectNoTimeDeparture = () =>
+    user.click(
+      getDepartureOption(
+        RESERVATION_SPLIT_UI_COPY.UNIT_OPTION_NO_TIME
+      )
+    );
+
   return {
     getDepartureOption,
     getGroup,
     getOriginalOption,
+    selectNoTimeDeparture,
     selectDeparture: () => user.click(getDepartureOption()),
   };
 };
