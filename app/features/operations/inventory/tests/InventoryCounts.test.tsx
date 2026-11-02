@@ -52,7 +52,9 @@ describe("InventoryCounts", () => {
       countsPage.getMetricValue(INVENTORY_COPY.DAMAGED)
     ).toBe(`${category.damaged}`);
     expect(
-      countsPage.getMetricValue(INVENTORY_COPY.IN_MAINTENANCE)
+      countsPage.getMetricValue(
+        INVENTORY_COPY.IN_MAINTENANCE
+      )
     ).toBe(`${category.inMaintenance}`);
     expect(
       countsPage.getMetricValue(INVENTORY_COPY.IN_REPAIR)
@@ -64,7 +66,9 @@ describe("InventoryCounts", () => {
 
   it("keeps zero quantities visible rather than omitting them", () => {
     const category = {
-      ...mapInventorySummary(INVENTORY_QUANTITY_SUMMARY_ROW),
+      ...mapInventorySummary(
+        INVENTORY_QUANTITY_SUMMARY_ROW
+      ),
       available: 0,
       damaged: 0,
       inRepair: 0,
@@ -89,7 +93,9 @@ describe("InventoryCounts", () => {
 
   it("shows the in-use count, including zero, before damaged units", () => {
     render(
-      <InventoryCounts category={INVENTORY_UNIT_COUNTS_CATEGORY} />
+      <InventoryCounts
+        category={INVENTORY_UNIT_COUNTS_CATEGORY}
+      />
     );
     const countsPage = createInventoryCountsPage();
 
@@ -113,7 +119,9 @@ describe("InventoryCounts", () => {
     );
     const countsPage = createInventoryCountsPage();
 
-    expect(countsPage.getInUseCount()).not.toBeInTheDocument();
+    expect(
+      countsPage.getInUseCount()
+    ).not.toBeInTheDocument();
     expect(countsPage.getCountLabels()).toEqual([
       INVENTORY_COPY.AVAILABLE,
       INVENTORY_COPY.DAMAGED,

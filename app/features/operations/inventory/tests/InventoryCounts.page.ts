@@ -16,21 +16,26 @@ export const createInventoryCountsPage = () => {
   const getInUseCount = () =>
     screen.queryByText(INVENTORY_COPY.IN_USE);
 
-  const getMetricValue = (label: string): Nullable<string> =>
+  const getMetricValue = (
+    label: string
+  ): Nullable<string> =>
     screen.getByText(label).parentElement?.firstElementChild
       ?.textContent;
 
   const getCountLabels = () =>
     screen
       .getAllByText(
-        new RegExp(`^(${INVENTORY_COUNT_LABELS.join("|")})$`)
+        new RegExp(
+          `^(${INVENTORY_COUNT_LABELS.join("|")})$`
+        )
       )
       .map((label) => label.textContent);
 
   const getZeroValues = () =>
     screen.getAllByText(PAGINATION.ZERO_RESULTS.toString());
 
-  const queryMetric = (label: string) => screen.queryByText(label);
+  const queryMetric = (label: string) =>
+    screen.queryByText(label);
 
   return {
     getCountLabels,
