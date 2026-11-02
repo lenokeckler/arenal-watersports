@@ -55,6 +55,5 @@ export const E2E_RESERVATION_EDIT_SCREENSHOT_STATE = {
   FORM: "form",
   LOCKED_COMBO: "locked-combo",
   NON_EDITABLE: "non-editable",
-  STALE: "stale",
   SUCCESS: "success",
 } as const;

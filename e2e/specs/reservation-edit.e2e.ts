@@ -38,8 +38,9 @@ test.describe("Reservation edit", () => {
     activeWorker,
     page,
   }) => {
-    const reservation = await seedEdit(activeWorker.id);
-    const { customerName } = reservation;
+    const { customerName } = await seedEdit(
+      activeWorker.id
+    );
     const calendar = createReservationsCalendarPage(page);
     const edit = createReservationEditPage(page);
     const workMode = createWorkModePage(page);
@@ -53,6 +54,9 @@ test.describe("Reservation edit", () => {
     await expect(edit.getText(copy.SUCCESS)).toBeVisible(
       saveWait
     );
+    await expect(
+      edit.getText(uiCopy.CATEGORY_CONFLICT_WARNING_TITLE)
+    ).toHaveCount(0);
     await expect(
       edit.getText(E2E_WORKER.FULL_NAME)
     ).toBeVisible();

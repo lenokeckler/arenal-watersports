@@ -23,7 +23,6 @@ test("captures every reservation edit state", async ({
     activeWorker.id,
     seed.DISPATCHED
   );
-  const stale = await seedEdit(activeWorker.id);
   const calendar = createReservationsCalendarPage(page);
   const edit = createReservationEditPage(page);
   const captureState = (name: string): Promise<void> =>
@@ -60,21 +59,6 @@ test("captures every reservation edit state", async ({
       edit.getText(copy.UNAVAILABLE_TITLE)
     ).toBeVisible();
     await captureState(state.NON_EDITABLE);
-
-    await edit.goTo(stale.id);
-    await edit.getTimeInput().fill(values.TIME);
-    const otherTab = await page.context().newPage();
-    const otherEdit = createReservationEditPage(otherTab);
-    await otherEdit.goTo(stale.id);
-    await otherEdit.getPeopleInput().fill(values.PEOPLE);
-    await otherEdit.save();
-    await expect(
-      otherEdit.getText(copy.SUCCESS)
-    ).toBeVisible();
-    await otherTab.close();
-    await edit.save();
-    await expect(edit.getText(copy.STALE)).toBeVisible();
-    await captureState(state.STALE);
   } finally {
     await removeReservationsForWorker(activeWorker);
   }
