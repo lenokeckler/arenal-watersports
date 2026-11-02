@@ -2711,6 +2711,39 @@ export type Database = {
         };
         Returns: undefined;
       };
+      assert_reservation_splittable: {
+        Args: {
+          p_expected_updated_at: string;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
+        };
+        Returns: undefined;
+      };
+      assert_split_allocations_valid: {
+        Args: {
+          p_departures: Json;
+          p_reservation_id: string;
+        };
+        Returns: undefined;
+      };
+      assert_split_departure_units_available: {
+        Args: {
+          p_items: Json;
+          p_reservation_id: string;
+          p_window: unknown;
+        };
+        Returns: undefined;
+      };
+      assert_split_departures_shape: {
+        Args: { p_departures: Json };
+        Returns: undefined;
+      };
+      assert_split_remainder: {
+        Args: {
+          p_departures: Json;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
+        };
+        Returns: undefined;
+      };
       assert_unit_available_for_window: {
         Args: {
           p_reservation_window: unknown;
@@ -2957,6 +2990,20 @@ export type Database = {
           units_are_interchangeable: boolean;
         }[];
       };
+      reservation_category_conflicts: {
+        Args: {
+          p_category_id: string;
+          p_ends_at: string;
+          p_starts_at: string;
+        };
+        Returns: {
+          code: string;
+          customer_name: string;
+          ends_at: string;
+          reservation_id: string;
+          starts_at: string;
+        }[];
+      };
       retire_worker: {
         Args: { target_worker: string };
         Returns: string;
@@ -3010,23 +3057,43 @@ export type Database = {
         Args: { p_user_id: string };
         Returns: boolean;
       };
+      split_item_allocations: {
+        Args: { p_departures: Json };
+        Returns: {
+          departure_position: number;
+          item_id: string;
+          quantity: number;
+        }[];
+      };
+      split_movable_items: {
+        Args: { p_reservation_id: string };
+        Returns: {
+          category_id: string | null;
+          created_at: string;
+          created_by: string;
+          dispatch_id: string | null;
+          extra_id: string | null;
+          fuel_in: number | null;
+          fuel_out: number | null;
+          id: string;
+          quantity: number | null;
+          reservation_id: string;
+          unit_id: string | null;
+          updated_at: string;
+          updated_by: string;
+          usage_in: number | null;
+          usage_out: number | null;
+        }[];
+        SetofOptions: {
+          from: "*";
+          to: "reservation_items";
+          isOneToOne: false;
+          isSetofReturn: true;
+        };
+      };
       touch_current_session_activity: {
         Args: Record<PropertyKey, never>;
         Returns: string;
-      };
-      reservation_category_conflicts: {
-        Args: {
-          p_category_id: string;
-          p_ends_at: string;
-          p_starts_at: string;
-        };
-        Returns: {
-          code: string;
-          customer_name: string;
-          ends_at: string;
-          reservation_id: string;
-          starts_at: string;
-        }[];
       };
       unit_conflicts: {
         Args: {
