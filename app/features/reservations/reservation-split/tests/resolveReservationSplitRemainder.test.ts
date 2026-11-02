@@ -30,7 +30,10 @@ describe("canAddReservationSplitDeparture", () => {
     "decides with %s",
     (_name, remainder, expected) => {
       expect(
-        canAddReservationSplitDeparture(remainder)
+        canAddReservationSplitDeparture(
+          remainder,
+          FILLED_STATE
+        )
       ).toBe(expected);
     }
   );

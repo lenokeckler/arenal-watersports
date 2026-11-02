@@ -111,7 +111,8 @@ export const useReservationSplitDrafts = (
     const key = createKey();
     setState((current) =>
       canAddReservationSplitDeparture(
-        resolveReservationSplitRemainder(split, current)
+        resolveReservationSplitRemainder(split, current),
+        current
       )
         ? {
             ...current,
@@ -147,8 +148,10 @@ export const useReservationSplitDrafts = (
   return {
     addDeparture,
     assignUnit,
-    canAddDeparture:
-      canAddReservationSplitDeparture(remainder),
+    canAddDeparture: canAddReservationSplitDeparture(
+      remainder,
+      state
+    ),
     remainder,
     removeDeparture,
     setTime,

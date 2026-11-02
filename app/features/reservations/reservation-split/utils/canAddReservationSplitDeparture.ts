@@ -1,12 +1,26 @@
 import { RESERVATION_SPLIT_DRAFT } from "../constants/ReservationSplitDraft.constants";
+import type { ReservationSplitDraftsState } from "../models/ReservationSplitDraftsState.interface";
 import type { ReservationSplitRemainder } from "../models/ReservationSplitRemainder.interface";
+import { buildReservationSplitDepartureInput } from "./buildReservationSplitDepartureInput";
 
 export const canAddReservationSplitDeparture = (
-  remainder: ReservationSplitRemainder
-): boolean =>
-  remainder.peopleCount -
-    RESERVATION_SPLIT_DRAFT.INITIAL_PEOPLE_COUNT >=
-    RESERVATION_SPLIT_DRAFT.MIN_REMAINING_PEOPLE &&
-  remainder.pieces -
-    RESERVATION_SPLIT_DRAFT.NEW_DEPARTURE_MIN_PIECES >=
-    RESERVATION_SPLIT_DRAFT.MIN_REMAINING_PIECES;
+  remainder: ReservationSplitRemainder,
+  state: ReservationSplitDraftsState
+): boolean => {
+  const emptyDrafts = state.drafts.filter(
+    (draft) =>
+      buildReservationSplitDepartureInput(
+        draft,
+        state.unitAssignments
+      ).items.length === RESERVATION_SPLIT_DRAFT.NONE
+  ).length;
+
+  return (
+    remainder.peopleCount >
+      RESERVATION_SPLIT_DRAFT.MIN_REMAINING_PEOPLE &&
+    remainder.pieces -
+      emptyDrafts *
+        RESERVATION_SPLIT_DRAFT.NEW_DEPARTURE_MIN_PIECES >
+      RESERVATION_SPLIT_DRAFT.MIN_REMAINING_PIECES
+  );
+};
