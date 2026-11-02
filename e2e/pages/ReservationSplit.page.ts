@@ -66,6 +66,10 @@ export const createReservationSplitPage = (page: Page) => {
         )
       ).click();
     },
+    getAddDeparture: (): Locator =>
+      main.getByRole(ARIA_ROLE.BUTTON, {
+        name: copy.ADD_DEPARTURE,
+      }),
     getAlert: (): Locator =>
       main.getByRole(ARIA_ROLE.ALERT),
     getCreatedCodes: (): Locator =>
