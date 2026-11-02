@@ -25,6 +25,9 @@ export const resolveE2eDatabaseContainer = (
     );
 
   resolvedContainers.set(url, resolution);
+  void resolution.catch(() => {
+    resolvedContainers.delete(url);
+  });
 
   return resolution;
 };

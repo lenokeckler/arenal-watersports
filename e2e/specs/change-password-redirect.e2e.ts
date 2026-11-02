@@ -1,4 +1,5 @@
 import { PATHS } from "@/app/constants";
+import { E2E_SIGNED_OUT_STORAGE_STATE } from "../constants/E2eRuntime.constants";
 import { createProfilePasswordPage } from "../pages/ProfilePassword.page";
 import { expect, test } from "../support/activeWorkerTest";
 
@@ -14,13 +15,19 @@ test.describe("Change password well-known address", () => {
     await expect(passwordPage.getHeading()).toBeVisible();
   });
 
-  test("sends a signed-out visitor to the login", async ({
-    page,
-  }) => {
-    const passwordPage = createProfilePasswordPage(page);
+  test.describe("signed-out visitor", () => {
+    test.use({
+      storageState: E2E_SIGNED_OUT_STORAGE_STATE,
+    });
 
-    await passwordPage.goToWellKnownChangePassword();
+    test("sends a signed-out visitor to the login", async ({
+      page,
+    }) => {
+      const passwordPage = createProfilePasswordPage(page);
 
-    await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+      await passwordPage.goToWellKnownChangePassword();
+
+      await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+    });
   });
 });

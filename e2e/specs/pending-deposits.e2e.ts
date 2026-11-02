@@ -5,7 +5,10 @@ import {
   PENDING_DEPOSITS_COPY,
 } from "@/app/features/reservations/pending-deposits/constants/PendingDepositsCopy.constants";
 import { formatMoney } from "@/app/utils/money/formatMoney";
-import { E2E_COUNT } from "../constants/E2eRuntime.constants";
+import {
+  E2E_COUNT,
+  E2E_SIGNED_OUT_STORAGE_STATE,
+} from "../constants/E2eRuntime.constants";
 import { createPendingDepositsPage } from "../pages/PendingDeposits.page";
 import type { E2eSeededDeposit } from "../support/models/E2eSeededDeposit.interface";
 import { test } from "../support/pendingDepositsTest";
@@ -78,6 +81,10 @@ test.describe("Pending deposits", () => {
 });
 
 baseTest.describe("Pending deposits signed out", () => {
+  baseTest.use({
+    storageState: E2E_SIGNED_OUT_STORAGE_STATE,
+  });
+
   baseTest(
     "sends a signed-out visitor to the login",
     async ({ page }) => {
