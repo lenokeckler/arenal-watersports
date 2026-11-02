@@ -22,6 +22,7 @@ export const RESERVATION_DETAIL_TEST = {
   ERROR_CODE: "XX000",
   ERROR_MESSAGE: "Reservation detail query failed",
   EXPECTED_RETURN: "2026-10-21T11:00:00.000Z",
+  MALFORMED_RESERVATION_ID: "not-a-reservation-id",
   SECOND_EXPECTED_RETURN: "2026-10-21T12:15:00.000Z",
   MISSING_RELATED_NAME: "Nombre no disponible",
   EXTRA_NAME: "Chaleco",

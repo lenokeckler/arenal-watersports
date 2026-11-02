@@ -17,6 +17,7 @@ const mapEquipmentItem = (
         item.unit?.category?.name ??
         item.category?.name ??
         null,
+      dispatchId: item.dispatch_id,
       quantity: item.quantity,
       unitCode: item.unit?.code ?? null,
     },

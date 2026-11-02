@@ -27,11 +27,13 @@ describe("mapReservationDetail", () => {
     expect(detail.equipment).toEqual([
       {
         categoryName: test.CATEGORY_NAME,
+        dispatchId: test.RESERVATION_ID,
         quantity: null,
         unitCode: test.UNIT_CODE,
       },
       {
         categoryName: test.CATEGORY_NAME,
+        dispatchId: null,
         quantity: test.QUANTITY,
         unitCode: null,
       },

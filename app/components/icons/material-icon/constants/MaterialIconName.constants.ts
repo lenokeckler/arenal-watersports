@@ -7,6 +7,8 @@ export const MATERIAL_ICON_NAME = {
   CHECK_CIRCLE: "check_circle",
   CHEVRON_RIGHT: "chevron_right",
   CONTENT_COPY: "content_copy",
+  DASHBOARD: "dashboard",
+  DARK_MODE: "dark_mode",
   DELETE: "delete",
   DIRECTIONS_BOAT: "directions_boat",
   ERROR: "error",
