@@ -22,47 +22,54 @@ export const useReservationSplitViewModel = (
       (draft) => draft.key === key
     );
 
-  const withClearedErrors =
+  const whenIdle =
     <Args extends unknown[]>(
       action: (...args: Args) => void
     ) =>
     (...args: Args): void => {
-      action(...args);
-      submission.clearErrors();
+      if (!submission.isPending) {
+        action(...args);
+      }
     };
 
-  const setTime: ReservationSplitViewModel["setTime"] = (
-    key,
-    time
-  ) => {
-    drafts.setTime(key, time);
-    submission.clearDepartureError(
-      indexOfDeparture(key),
-      "time"
-    );
-  };
+  const withClearedErrors = <Args extends unknown[]>(
+    action: (...args: Args) => void
+  ) =>
+    whenIdle((...args: Args): void => {
+      action(...args);
+      submission.clearErrors();
+    });
+
+  const setTime: ReservationSplitViewModel["setTime"] =
+    whenIdle((key, time) => {
+      drafts.setTime(key, time);
+      submission.clearDepartureError(
+        indexOfDeparture(key),
+        "time"
+      );
+    });
 
   const stepPeopleCount: ReservationSplitViewModel["stepPeopleCount"] =
-    (key, delta) => {
+    whenIdle((key, delta) => {
       drafts.stepPeopleCount(key, delta);
       submission.clearDepartureError(
         indexOfDeparture(key),
         "peopleCount"
       );
-    };
+    });
 
   const stepQuantity: ReservationSplitViewModel["stepQuantity"] =
-    (key, itemId, delta) => {
+    whenIdle((key, itemId, delta) => {
       drafts.stepQuantity(key, itemId, delta);
       submission.clearDepartureError(
         indexOfDeparture(key),
         "items"
       );
-    };
+    });
 
   const handleSubmit: ReservationSplitViewModel["handleSubmit"] =
     (event) => {
-      event.preventDefault();
+      event?.preventDefault();
       if (isSubmitDisabled) {
         return;
       }

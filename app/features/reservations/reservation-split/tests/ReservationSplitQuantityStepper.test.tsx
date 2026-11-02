@@ -81,4 +81,26 @@ describe("ReservationSplitQuantityStepper", () => {
     );
     expect(page.getErrorText()).toBeVisible();
   });
+
+  it("freezes both buttons without showing the limit note", async () => {
+    const onIncrease = vi.fn();
+    render(
+      <ReservationSplitQuantityStepper
+        {...STEPPER_PROPS}
+        isFrozen
+        onIncrease={onIncrease}
+      />
+    );
+    const page =
+      createReservationSplitQuantityStepperPage();
+
+    await page.increase();
+
+    expect(onIncrease).not.toHaveBeenCalled();
+    expect(page.getDecreaseButton()).toHaveAttribute(
+      ARIA_DISABLED_ATTRIBUTE,
+      ARIA_TRUE
+    );
+    expect(page.queryAtMaxNote()).not.toBeInTheDocument();
+  });
 });

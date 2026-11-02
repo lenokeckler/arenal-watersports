@@ -21,6 +21,7 @@ const ReservationSplitQuantityStepper = ({
   canIncrease,
   departureNumber,
   error,
+  isFrozen = false,
   label,
   onDecrease,
   onIncrease,
@@ -58,11 +59,15 @@ const ReservationSplitQuantityStepper = ({
               label,
               departureNumber
             )}
-            aria-disabled={!canDecrease}
+            aria-disabled={!canDecrease || isFrozen}
             className={resolveReservationSplitStepperButtonClassName(
-              !canDecrease
+              !canDecrease || isFrozen
             )}
-            onClick={canDecrease ? onDecrease : undefined}
+            onClick={
+              canDecrease && !isFrozen
+                ? onDecrease
+                : undefined
+            }
           >
             <MaterialIcon
               name={MATERIAL_ICON_NAME.REMOVE}
@@ -91,11 +96,15 @@ const ReservationSplitQuantityStepper = ({
               label,
               departureNumber
             )}
-            aria-disabled={!canIncrease}
+            aria-disabled={!canIncrease || isFrozen}
             className={resolveReservationSplitStepperButtonClassName(
-              !canIncrease
+              !canIncrease || isFrozen
             )}
-            onClick={canIncrease ? onIncrease : undefined}
+            onClick={
+              canIncrease && !isFrozen
+                ? onIncrease
+                : undefined
+            }
           >
             <MaterialIcon name={MATERIAL_ICON_NAME.ADD} />
           </button>

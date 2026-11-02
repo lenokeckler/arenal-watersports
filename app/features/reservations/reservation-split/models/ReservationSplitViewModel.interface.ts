@@ -6,7 +6,7 @@ export interface ReservationSplitViewModel extends ReservationSplitDraftsApi {
   createdDepartures: ReservationSplitCreatedDeparture[];
   errors: ReservationSplitErrors;
   formError: string;
-  handleSubmit: (event: React.FormEvent) => void;
+  handleSubmit: (event?: React.FormEvent) => void;
   isPending: boolean;
   isStale: boolean;
   isSubmitDisabled: boolean;

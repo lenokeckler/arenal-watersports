@@ -21,6 +21,9 @@ vi.mock("../actions/splitReservationAction", () => ({
 }));
 
 const VALID_TIME = "15:00";
+const QUANTITY_ID = EXPECTED_SPLIT.items[1].id;
+const EXTRA_DEPARTURES = 2;
+const MIDDLE = 1;
 
 const renderViewModel = () =>
   renderHook(() =>
@@ -116,6 +119,38 @@ describe("useReservationSplitViewModel", () => {
     expect(result.current.isSubmitDisabled).toBe(true);
     expect(result.current.state.drafts[0].time).toBe(
       VALID_TIME
+    );
+  });
+
+  it("ignores removing a departure while the submit is pending", () => {
+    vi.mocked(splitReservationAction).mockReturnValue(
+      new Promise(() => undefined)
+    );
+    const { result } = renderHook(() =>
+      useReservationSplitViewModel(EXPECTED_SPLIT)
+    );
+    for (let added = 0; added < EXTRA_DEPARTURES; added++) {
+      act(() => result.current.addDeparture());
+    }
+    result.current.state.drafts.forEach(({ key }) => {
+      act(() => result.current.setTime(key, VALID_TIME));
+      act(() =>
+        result.current.stepQuantity(key, QUANTITY_ID, 1)
+      );
+    });
+    const sentCount = result.current.state.drafts.length;
+    act(() =>
+      result.current.handleSubmit(buildFormSubmitEvent())
+    );
+
+    act(() =>
+      result.current.removeDeparture(
+        result.current.state.drafts[MIDDLE].key
+      )
+    );
+
+    expect(result.current.state.drafts).toHaveLength(
+      sentCount
     );
   });
 });

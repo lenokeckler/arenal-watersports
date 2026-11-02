@@ -3,6 +3,7 @@ export interface ReservationSplitQuantityStepperProps {
   canIncrease: boolean;
   departureNumber: number;
   error?: string;
+  isFrozen?: boolean;
   label: string;
   onDecrease: () => void;
   onIncrease: () => void;
