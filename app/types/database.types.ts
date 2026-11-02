@@ -2691,6 +2691,17 @@ export type Database = {
       };
     };
     Functions: {
+      adjust_equipment_stock: {
+        Args: {
+          p_available: number;
+          p_category_id: string;
+          p_damaged: number;
+          p_expiry_date?: string;
+          p_in_repair: number;
+          p_reason: string;
+        };
+        Returns: undefined;
+      };
       assert_reservable_equipment_category: {
         Args: { p_category_id: string };
         Returns: undefined;
@@ -2957,6 +2968,20 @@ export type Database = {
           units_are_interchangeable: boolean;
         }[];
       };
+      reservation_category_conflicts: {
+        Args: {
+          p_category_id: string;
+          p_ends_at: string;
+          p_starts_at: string;
+        };
+        Returns: {
+          code: string;
+          customer_name: string;
+          ends_at: string;
+          reservation_id: string;
+          starts_at: string;
+        }[];
+      };
       retire_worker: {
         Args: { target_worker: string };
         Returns: string;
@@ -3013,20 +3038,6 @@ export type Database = {
       touch_current_session_activity: {
         Args: Record<PropertyKey, never>;
         Returns: string;
-      };
-      reservation_category_conflicts: {
-        Args: {
-          p_category_id: string;
-          p_ends_at: string;
-          p_starts_at: string;
-        };
-        Returns: {
-          code: string;
-          customer_name: string;
-          ends_at: string;
-          reservation_id: string;
-          starts_at: string;
-        }[];
       };
       unit_conflicts: {
         Args: {
