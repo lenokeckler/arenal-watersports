@@ -1,0 +1,4 @@
+export const RESERVATION_EQUIPMENT_REALTIME_SUBSCRIPTION_TEST =
+  {
+    INITIAL_ATTEMPT: 0,
+  } as const;

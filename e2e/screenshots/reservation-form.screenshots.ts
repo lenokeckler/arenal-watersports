@@ -34,7 +34,7 @@ test.describe("Reservation form screenshots", () => {
     await createWorkModePage(page)
       .getCard(E2E_RESERVATIONS_AREA_LABEL)
       .click();
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
     const reservationFormPage =
       createReservationFormPage(page);
 

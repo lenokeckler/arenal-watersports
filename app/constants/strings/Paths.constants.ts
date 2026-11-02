@@ -4,6 +4,8 @@ const OPERATIONS_INVENTORY_PATH = "/operations/inventory";
 
 export const PATHS = {
   BOARD: "/board",
+  HOME: "/",
+  MODE: "/mode",
   ACCESS: {
     FIRST_SIGN_IN: "/access/first-sign-in",
     LOGIN: "/access/login",

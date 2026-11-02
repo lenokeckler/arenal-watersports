@@ -91,6 +91,6 @@ test.describe("Profile password change", () => {
 
     await loginPage.fillPassword(E2E_PROFILE_NEW_PASSWORD);
     await loginPage.submit();
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
   });
 });
