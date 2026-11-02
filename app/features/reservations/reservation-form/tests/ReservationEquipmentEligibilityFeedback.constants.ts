@@ -1,4 +1,6 @@
+import { STRING } from "@/app/constants";
 import { vi } from "vitest";
+import { RESERVATION_CATEGORY_AVAILABILITY_PANEL_STATE } from "../constants/ReservationCategoryAvailabilityPanelState.constants";
 import type { ReservationFormViewModel } from "../models/ReservationFormViewModel.interface";
 
 export const RESERVATION_EQUIPMENT_FEEDBACK_VIEW_MODEL = {
@@ -12,6 +14,17 @@ export const RESERVATION_EQUIPMENT_FEEDBACK_VIEW_MODEL = {
   requiresConcreteUnit: false,
   isAvailabilityLoading: false,
   hasAvailabilityError: false,
+  categoryAvailability: null,
+  categoryAvailabilityCategoryName: STRING.Empty,
+  categoryAvailabilityInterval: STRING.Empty,
+  categoryAvailabilityState:
+    RESERVATION_CATEGORY_AVAILABILITY_PANEL_STATE.INACTIVE,
+  categoryConflictWarning: {
+    hasError: false,
+    isLoading: false,
+    items: [],
+    retry: vi.fn(),
+  },
   isSubmitDisabled: false,
   isCustomDuration: false,
   customDurationDraft: "",
@@ -39,6 +52,7 @@ export const RESERVATION_EQUIPMENT_FEEDBACK_VIEW_MODEL = {
   hasEquipmentEligibilityError: false,
   hasEquipmentSelectionChanged: false,
   handleRetryEquipmentEligibility: vi.fn(),
+  handleRetryCategoryAvailability: vi.fn(),
   handleTimeChange: vi.fn(),
   handleBack: vi.fn(),
   handleSubmit: vi.fn(),

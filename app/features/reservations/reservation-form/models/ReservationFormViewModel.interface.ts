@@ -1,8 +1,10 @@
+import type { NullableRef } from "@/app/types";
 import type { ReservationFormField } from "./ReservationFormField.constants";
 import type { ReservationFormInput } from "./ReservationFormInput.interface";
 import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOption.interface";
 import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
-import type { NullableRef } from "@/app/types";
+import type { ReservationCategoryAvailabilityPanelState } from "./ReservationCategoryAvailabilityPanelState.type";
+import type { ReservationCategoryConflictWarningViewModel } from "./ReservationCategoryConflictWarningViewModel.interface";
 
 export interface ReservationFormViewModel {
   categories: ReservationCategoryOption[];
@@ -15,6 +17,11 @@ export interface ReservationFormViewModel {
   requiresConcreteUnit: boolean;
   isAvailabilityLoading: boolean;
   hasAvailabilityError: boolean;
+  categoryAvailability: NullableRef<number>;
+  categoryAvailabilityCategoryName: string;
+  categoryAvailabilityInterval: string;
+  categoryAvailabilityState: ReservationCategoryAvailabilityPanelState;
+  categoryConflictWarning: ReservationCategoryConflictWarningViewModel;
   isSubmitDisabled: boolean;
   isCustomDuration: boolean;
   customDurationDraft: string;
@@ -38,4 +45,5 @@ export interface ReservationFormViewModel {
   handleSubmit: (
     event: React.FormEvent<HTMLFormElement>
   ) => void;
+  handleRetryCategoryAvailability: () => void;
 }

@@ -32,6 +32,31 @@ export const RESERVATION_FORM_UI_COPY = {
     "No fue posible registrar la reserva. Revise los datos e inténtelo de nuevo.",
   NO_CATEGORIES:
     "No hay categorías de equipo disponibles para reservar.",
+  EQUIPMENT_QUANTITY_NOTE:
+    "Los equipos intercambiables se reservan por cantidad; Operaciones asigna cada unidad al despachar.",
+  EQUIPMENT_UNIT_NOTE:
+    "La lancha se compromete por unidad concreta y permanece en tierra hasta que Operaciones la despache.",
+  CATEGORY_AVAILABILITY: "Disponibilidad en este horario",
+  CATEGORY_AVAILABILITY_AVAILABLE: "Disponibles",
+  CATEGORY_AVAILABILITY_CONTEXT:
+    "Resumen por categoría; no confirma la disponibilidad de una unidad concreta.",
+  CATEGORY_AVAILABILITY_ERROR:
+    "No fue posible consultar la disponibilidad para este horario.",
+  CATEGORY_AVAILABILITY_LOADING:
+    "Consultando equipos comprometidos en este horario…",
+  CATEGORY_AVAILABILITY_OVERCOMMITTED:
+    "La demanda supera la capacidad registrada para este horario.",
+  CATEGORY_AVAILABILITY_RETRY: "Reintentar consulta",
+  CATEGORY_AVAILABILITY_UNAVAILABLE:
+    "No hay equipos disponibles en este horario.",
+  CATEGORY_CONFLICT_WARNING_TITLE:
+    "Posible cruce de disponibilidad",
+  CATEGORY_CONFLICT_WARNING_DESCRIPTION:
+    "El horario coincide con otras reservas de esta categoría. Puede continuar si la operación se acomoda sobre la marcha.",
+  CATEGORY_CONFLICT_WARNING_LOADING:
+    "Consultando reservas de esta categoría…",
+  CATEGORY_CONFLICT_WARNING_ERROR:
+    "No fue posible verificar los cruces de horario. Puede continuar con el registro.",
   EQUIPMENT_NOTE:
     "Indique la cantidad de equipos intercambiables. Para la lancha, elija la unidad que quedará reservada.",
   EQUIPMENT_ELIGIBILITY_LOADING:
