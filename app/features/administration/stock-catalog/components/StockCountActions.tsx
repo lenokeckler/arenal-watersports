@@ -1,16 +1,15 @@
 import Button from "@/app/components/button/Button";
-import Link from "@/app/components/link/Link";
-import { BUTTON, PATHS, SIZE } from "@/app/constants";
+import { BUTTON, SIZE } from "@/app/constants";
 import { STOCK_COUNT_COPY } from "../constants/StockCountCopy.constants";
 import type { StockCountActionsProps } from "../models/StockCountActionsProps.interface";
 import {
   STOCK_COUNT_ACTION_BUTTON_CLASS,
   STOCK_COUNT_ACTIONS_CLASS,
 } from "../styles/StockCount.styles";
-import { STOCK_COUNT_LINK_CLASS } from "../styles/StockCountLink.styles";
 
 const StockCountActions = ({
   isSubmitting,
+  onBack,
 }: StockCountActionsProps): React.JSX.Element => (
   <div className={STOCK_COUNT_ACTIONS_CLASS}>
     <Button
@@ -23,12 +22,16 @@ const StockCountActions = ({
     >
       {STOCK_COUNT_COPY.SAVE_BUTTON}
     </Button>
-    <Link
-      href={PATHS.ADMINISTRATION.CATEGORIES}
-      className={STOCK_COUNT_LINK_CLASS}
+    <Button
+      variant={BUTTON.SECONDARY}
+      size={SIZE.LG}
+      type="button"
+      disabled={isSubmitting}
+      onClick={onBack}
+      className={STOCK_COUNT_ACTION_BUTTON_CLASS}
     >
-      {STOCK_COUNT_COPY.BACK_TO_CATEGORIES_LINK}
-    </Link>
+      {STOCK_COUNT_COPY.BACK_TO_CATEGORIES_BUTTON}
+    </Button>
   </div>
 );
 
