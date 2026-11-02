@@ -72,6 +72,13 @@ and a clear error state they can retry from.
   (Marcar inactiva or Eliminar with its confirmation, or Reactivar). The open row lives in
   `useCategoryCardPanels`, so one panel is open at a time and it stays open across `router.refresh()`.
   Every behaviour and server action of the state flows is unchanged.
+- Administration sub-screens (behavior, deposit, alerts, create, units list, unit form, worker
+  registration, worker areas, reservations by worker) render their heading with `hasLogo={false}` on the
+  shared `ScreenHeading`; the prop defaults to true, so login, work mode and profile keep the logo. The
+  title stays centered like the instruction below it, with no gap where the logo was.
+- Action buttons are centered: the form action rows are `mx-auto w-full max-w-sm` two-column grids, and the
+  units list header groups "Agregar unidad" and "Volver a categorías" in a centered column on a phone and a
+  centered row from `md`.
 - Pagination: 10 rows per page for this list only (`CATEGORY_LIST_PAGINATION.PAGE_SIZE`);
   `resolveListPageRange` and `resolveListPageCount` take an optional page size that defaults to the
   global one. `ListPagination` stays centered below the rows.
