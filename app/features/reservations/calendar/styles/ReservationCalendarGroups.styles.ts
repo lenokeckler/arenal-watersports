@@ -1,5 +1,5 @@
 export const RESERVATION_CALENDAR_AGENDA_CLASS =
-  "scroll-mt-32 space-y-4 rounded-xl border border-white/10 bg-surface-container-low/70 p-4 pr-20 shadow-lg backdrop-blur-xl sm:pr-6 md:p-6";
+  "scroll-mt-32 space-y-4 rounded-xl border border-outline-variant bg-surface-container-low/70 p-4 pr-20 shadow-lg backdrop-blur-xl sm:pr-6 md:p-6";
 
 export const RESERVATION_CALENDAR_AGENDAS_CLASS =
   "space-y-4";
