@@ -1,61 +1,42 @@
-import { createElement, useCallback } from "react";
-import { CALENDAR_VIEW } from "@/app/constants";
+import { useCallback } from "react";
 import type { CalendarDate } from "@/app/types";
-import { buildCalendarPeriod } from "@/app/components/calendar/utils";
 import type { CalendarDayContent } from "@/app/components/calendar/models/CalendarDayContent.type";
 import type { NullableUndefined } from "@/app/types";
+import { useAppSelector } from "@/app/store/hooks";
 import type { ReservationCalendarSnapshot } from "../models/ReservationCalendarSnapshot.interface";
 import type { ReservationCalendarDayContentOptions } from "../models/ReservationCalendarDayContentOptions.interface";
-import { ReservationCalendarBlock } from "../components/ReservationCalendarBlock";
-import { buildReservationCalendarContent } from "../utils/buildReservationCalendarContent";
-import { getReservationCalendarMessages } from "../utils/getReservationCalendarMessages";
-import { ReservationCalendarDayContent } from "../components/ReservationCalendarDayContent";
+import { buildReservationCalendarDayContent } from "../utils/buildReservationCalendarDayContent";
 
 export const useReservationCalendarDayContent = (
   snapshot: NullableUndefined<ReservationCalendarSnapshot>,
   options: ReservationCalendarDayContentOptions = {}
-): CalendarDayContent =>
-  useCallback(
-    (date: CalendarDate) => {
-      const period = buildCalendarPeriod(
-        date,
-        CALENDAR_VIEW.DAY
-      );
-      const content = buildReservationCalendarContent(
+): CalendarDayContent => {
+  const reserveMobileFabSpace =
+    options.reserveMobileFabSpace === true;
+  const showCoverageMessages =
+    options.showCoverageMessages === true;
+  const showGuides = options.showGuides === true;
+  const selectedView = useAppSelector(
+    (state) => state.calendar.selectedView
+  );
+  return useCallback(
+    (date: CalendarDate) =>
+      buildReservationCalendarDayContent(
         snapshot,
-        period
-      );
-      const group = content.groups[0];
-      if (options.showCoverageMessages === true) {
-        return createElement(
-          ReservationCalendarDayContent,
-          {
-            blocks: group?.blocks ?? [],
-            messages:
-              getReservationCalendarMessages(content),
-            reserveMobileFabSpace:
-              options.reserveMobileFabSpace === true,
-            showGuides: options.showGuides === true,
-          }
-        );
-      }
-      if (group === undefined) {
-        return null;
-      }
-      return group.blocks.map((block) =>
-        createElement(ReservationCalendarBlock, {
-          block,
-          reserveMobileFabSpace:
-            options.reserveMobileFabSpace === true,
-          showGuides: options.showGuides === true,
-          key: block.id,
-        })
-      );
-    },
+        {
+          reserveMobileFabSpace,
+          showCoverageMessages,
+          showGuides,
+        },
+        selectedView,
+        date
+      ),
     [
       snapshot,
-      options.reserveMobileFabSpace,
-      options.showCoverageMessages,
-      options.showGuides,
+      selectedView,
+      reserveMobileFabSpace,
+      showCoverageMessages,
+      showGuides,
     ]
   );
+};

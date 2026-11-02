@@ -7,6 +7,7 @@ export const ReservationCalendarDayContent = ({
   blocks,
   messages,
   reserveMobileFabSpace = false,
+  showEquipmentImage,
   showGuides = false,
 }: ReservationCalendarDayContentProps): ReactElement => (
   <Fragment>
@@ -18,6 +19,7 @@ export const ReservationCalendarDayContent = ({
         key={block.id}
         block={block}
         reserveMobileFabSpace={reserveMobileFabSpace}
+        showEquipmentImage={showEquipmentImage}
         showGuides={showGuides}
       />
     ))}
