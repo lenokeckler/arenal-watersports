@@ -21,6 +21,16 @@ as $$
       and reservation.status in ('scheduled', 'dispatched')
       and reservation.id is distinct from p_exclude_reservation
       and item.id is distinct from p_exclude_item_id
+    union all
+    select combo_item.quantity,
+      reservation.starts_at,
+      reservation.ends_at
+    from reservations as reservation
+    join combo_items as combo_item
+      on combo_item.combo_id = reservation.combo_id
+    where combo_item.category_id = p_category_id
+      and reservation.status in ('scheduled', 'dispatched')
+      and reservation.id is distinct from p_exclude_reservation
   ), events as (
     select event.at, sum(event.quantity) as quantity
     from commitments as commitment
@@ -85,9 +95,6 @@ begin
   where category.id = p_category_id;
   if category_tracking_mode is null then
     return;
-  end if;
-  if not category_is_interchangeable then
-    raise exception 'Equipment category is not available for reservation';
   end if;
   select reservation.starts_at, reservation.ends_at
     into reservation_starts_at, reservation_ends_at

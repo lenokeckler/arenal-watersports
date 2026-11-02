@@ -23,6 +23,47 @@ begin
 end;
 $$;
 
+create or replace function validate_reservation_equipment_commitment(
+  p_category_id uuid,
+  p_quantity integer,
+  p_unit_id uuid
+) returns uuid
+language plpgsql set search_path = public
+as $$
+begin
+  if p_unit_id is not null then
+    if p_category_id is not null or p_quantity is not null then
+      raise exception 'A unit commitment cannot include a category or quantity';
+    end if;
+    if not exists (
+      select 1 from equipment_units as unit
+      join equipment_categories as category on category.id = unit.category_id
+      where unit.id = p_unit_id
+        and category.status = 'active'
+        and category.is_reservable
+        and category.tracking_mode = 'by_unit'
+        and not category.units_are_interchangeable
+    ) then
+      raise exception 'Equipment unit is not available for reservation';
+    end if;
+    return lock_reservable_unit(p_unit_id);
+  end if;
+  if p_category_id is null or p_quantity is null or p_quantity <= 0 then
+    raise exception 'A category and positive equipment quantity are required';
+  end if;
+  perform lock_reservable_category(p_category_id);
+  if not exists (
+    select 1 from equipment_categories as category
+    where category.id = p_category_id
+      and (category.tracking_mode = 'by_quantity'
+        or category.units_are_interchangeable)
+  ) then
+    raise exception 'Equipment category is not available for reservation';
+  end if;
+  return p_category_id;
+end;
+$$;
+
 create function private.lock_reservable_category_identity(
   p_category_id uuid,
   p_unit_id uuid
@@ -48,8 +89,12 @@ begin
       and category.is_reservable
     for share;
   end if;
-  if not found or (p_unit_id is null and not category_is_interchangeable)
-    or (p_unit_id is not null and category_is_interchangeable) then
+  if not found
+    or (category_tracking_mode = 'by_unit' and p_unit_id is null
+      and not category_is_interchangeable)
+    or (category_tracking_mode = 'by_unit' and p_unit_id is not null
+      and category_is_interchangeable)
+    or (category_tracking_mode = 'by_quantity' and p_unit_id is not null) then
     raise exception 'Equipment category is not available for reservation';
   end if;
   return category_tracking_mode;
@@ -108,7 +153,6 @@ begin
   where category.status = 'active'
     and category.is_reservable
     and category.tracking_mode = 'by_unit'
-    and not category.units_are_interchangeable
     and exists (
       select 1 from equipment_units as unit
       where unit.id = p_unit_id and unit.category_id = category.id

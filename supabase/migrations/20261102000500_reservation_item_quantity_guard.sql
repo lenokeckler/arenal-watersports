@@ -22,15 +22,6 @@ begin
   if not has_area('reservas') then
     raise exception 'Equipment reservation access is required';
   end if;
-  if not exists (
-    select 1 from equipment_categories
-    where id = p_new_item.category_id
-      and status = 'active'
-      and is_reservable
-      and units_are_interchangeable
-  ) then
-    raise exception 'Equipment category is not available for reservation';
-  end if;
   return true;
 end;
 $$;
@@ -45,30 +36,15 @@ begin
     return false;
   end if;
   if p_item.unit_id is null then
-    raise exception 'Equipment reservation access is required';
+    return true;
   end if;
-  perform category.id
-  from equipment_categories as category
-  join equipment_units as unit on unit.category_id = category.id
-  where unit.id = p_item.unit_id and unit.status = 'available'
-  for share of category;
+  perform unit.id
+  from equipment_units as unit
+  where unit.id = p_item.unit_id and unit.status = 'available';
   if not found then
     raise exception 'Equipment category is not available for reservation';
   end if;
   return true;
-end;
-$$;
-
-create function private.reject_operations_category_quantity_item(
-  p_item reservation_items
-) returns void
-language plpgsql security invoker set search_path = public
-as $$
-begin
-  if has_area('operaciones') and not has_area('reservas')
-    and p_item.unit_id is null and p_item.category_id is not null then
-    raise exception 'Equipment reservation access is required';
-  end if;
 end;
 $$;
 
@@ -84,13 +60,6 @@ revoke all on function private.validate_operations_reservation_item(
 grant execute on function private.validate_operations_reservation_item(
   reservation_items
 ) to authenticated, service_role;
-revoke all on function private.reject_operations_category_quantity_item(
-  reservation_items
-) from public;
-grant execute on function private.reject_operations_category_quantity_item(
-  reservation_items
-) to authenticated, service_role;
-
 create function private.assert_reservation_item_capacity(
   p_item reservation_items,
   p_exclude_item_id uuid

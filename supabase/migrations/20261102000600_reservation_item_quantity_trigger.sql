@@ -18,7 +18,6 @@ begin
   if new.unit_id is null and new.category_id is null then
     return new;
   end if;
-  perform private.reject_operations_category_quantity_item(new);
   if not exists (
     select 1 from reservations
     where id = new.reservation_id
@@ -31,6 +30,9 @@ begin
   end if;
   if private.validate_operations_reservation_item(new) then
     return new;
+  end if;
+  if not has_area('reservas') then
+    raise exception 'Equipment reservation access is required';
   end if;
   if tg_op = 'UPDATE' then
     excluded_item_id := old.id;

@@ -12,7 +12,7 @@ begin
   if p_item.unit_id is not null then
     committed_category_id := lock_reservable_unit(p_item.unit_id);
     if committed_category_id is null then
-      raise exception 'Equipment unit is not available for reservation';
+      raise exception 'Equipment category is not available for reservation';
     end if;
   else
     perform lock_reservable_category(committed_category_id, null);
@@ -26,7 +26,7 @@ begin
   end if;
   select reservation.starts_at, reservation.ends_at
     into reservation_starts_at, reservation_ends_at
-  from reservations
+  from reservations as reservation
   where reservation.id = p_item.reservation_id;
   if exists (
     select 1 from unit_conflicts(
