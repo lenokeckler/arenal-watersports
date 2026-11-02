@@ -38,7 +38,12 @@ test.describe("Category units screenshots", () => {
       );
     };
 
-    await createCategoryListPage(page).goTo();
+    await createCategoryListPage(page).goToCategory(
+      categoryName
+    );
+    await createCategoryListPage(page).openCategoryOptions(
+      categoryName
+    );
     await listPage
       .getUnitsLink(
         createCategoryListPage(page).getCategoryCard(

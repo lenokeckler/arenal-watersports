@@ -9,6 +9,8 @@ import {
   CARD_NOT_FOUND_MESSAGE,
   BAR_WIDTH_ATTRIBUTE,
   HEADING_LEVEL_TWO,
+  IMAGE_ELEMENT_SELECTOR,
+  IMAGE_SOURCE_ATTRIBUTE,
 } from "./EquipmentBoard.constants";
 
 export const createEquipmentBoardPage = () => {
@@ -49,13 +51,11 @@ export const createEquipmentBoardPage = () => {
     return card;
   };
 
-  const getMemberLines = (card: HTMLElement) =>
-    within(
-      within(card).getByRole(ARIA_ROLE.LIST)
-    ).getAllByRole(ARIA_ROLE.LISTITEM);
-
   const queryMemberList = (card: HTMLElement) =>
     within(card).queryByRole(ARIA_ROLE.LIST);
+
+  const queryButton = (card: HTMLElement) =>
+    within(card).queryByRole(ARIA_ROLE.BUTTON);
 
   const getText = (container: HTMLElement, text: string) =>
     within(container).getByText(text);
@@ -63,10 +63,13 @@ export const createEquipmentBoardPage = () => {
   const getCardText = (card: HTMLElement) =>
     card.textContent;
 
-  const getCount = (
-    container: HTMLElement,
-    count: number
-  ) => within(container).getByText(`${count}`);
+  const hasImage = (card: HTMLElement) =>
+    card.querySelector(IMAGE_ELEMENT_SELECTOR) !== null;
+
+  const getImageSource = (card: HTMLElement) =>
+    card
+      .querySelector(IMAGE_ELEMENT_SELECTOR)
+      ?.getAttribute(IMAGE_SOURCE_ATTRIBUTE);
 
   const getBarWidth = (card: HTMLElement) =>
     card
@@ -108,17 +111,18 @@ export const createEquipmentBoardPage = () => {
     getAlert,
     getBarWidth,
     getCard,
-    getCount,
+    getImageSource,
     getCardText,
     getCards,
     getGrid,
     getHeadings,
+    hasImage,
     getMain,
-    getMemberLines,
     getPageText,
     getRetryButton,
     getStatus,
     getText,
+    queryButton,
     isBarHidden,
     queryGrid,
     queryHeadings,

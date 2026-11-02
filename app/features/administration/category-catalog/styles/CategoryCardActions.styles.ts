@@ -1,5 +1,13 @@
+import {
+  CATEGORY_CARD_DANGER_OPTION_CLASS,
+  CATEGORY_CARD_OPTION_CLASS,
+} from "./CategoryCardOption.styles";
+
 export const CATEGORY_CARD_ACTIONS_BUTTON_CLASS =
-  "min-h-11 w-full md:w-auto md:flex-1 md:basis-36";
+  CATEGORY_CARD_OPTION_CLASS;
+
+export const CATEGORY_CARD_ACTIONS_DELETE_BUTTON_CLASS =
+  CATEGORY_CARD_DANGER_OPTION_CLASS;
 
 export const CATEGORY_CARD_ACTIONS_CONFIRM_CLASS =
   "flex w-full flex-col gap-3";

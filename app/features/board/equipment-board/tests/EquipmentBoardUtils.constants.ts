@@ -43,18 +43,24 @@ export const FILLED_BOARD_CATEGORY_ROW: BoardCategoryRow = {
   total_count: 6,
 };
 
-export const OCCUPANCY_CASES = {
-  CLAMPED_ABOVE: { inUse: 9, total: 4 },
-  CLAMPED_BELOW: { inUse: -3, total: 4 },
-  FULL: { inUse: 4, total: 4 },
-  ROUNDED_DOWN: { inUse: 1, total: 3 },
-  ROUNDED_UP: { inUse: 2, total: 3 },
-  ZERO_TOTAL: { inUse: 2, total: 0 },
+export const FREE_PERCENT_CASES = {
+  CLAMPED_ABOVE: { freeCount: 9, totalCount: 4 },
+  CLAMPED_BELOW: { freeCount: -3, totalCount: 4 },
+  FULL: { freeCount: 4, totalCount: 4 },
+  ROUNDED_DOWN: { freeCount: 1, totalCount: 3 },
+  ROUNDED_UP: { freeCount: 2, totalCount: 3 },
+  ZERO_TOTAL: { freeCount: 2, totalCount: 0 },
 } as const;
 
-export const OCCUPANCY_EXPECTED = {
+export const FREE_PERCENT_EXPECTED = {
   EMPTY: 0,
   FULL: EQUIPMENT_BOARD_PERCENT.MAX,
   ROUNDED_DOWN: 33,
   ROUNDED_UP: 67,
 } as const;
+
+export const FREE_OF_TOTAL_CASES = [
+  { expected: "0 / 4 libres", freeCount: 0, totalCount: 4 },
+  { expected: "1 / 4 libre", freeCount: 1, totalCount: 4 },
+  { expected: "9 / 9 libres", freeCount: 9, totalCount: 9 },
+] as const;

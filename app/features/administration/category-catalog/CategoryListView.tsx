@@ -1,7 +1,10 @@
 "use client";
 
 import ListPagination from "@/app/components/list-pagination/ListPagination";
-import { PATHS } from "@/app/constants";
+import {
+  PATHS,
+  WIDE_LAYOUT_MARKER_PROPS,
+} from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "./constants/CategoryCatalogCopy.constants";
 import CategoryListBody from "./components/CategoryListBody";
 import CategoryListHeader from "./components/CategoryListHeader";
@@ -14,13 +17,17 @@ const CategoryListView = ({
   currentPage,
   fetchFailed,
   pageCount,
+  totalCount,
 }: CategoryListViewProps): React.JSX.Element => {
   const { cards, onRetry, viewState } =
     useCategoryListViewModel({ categories, fetchFailed });
 
   return (
-    <div className={CATEGORY_LIST_CONTENT_CLASS}>
-      <CategoryListHeader />
+    <div
+      className={CATEGORY_LIST_CONTENT_CLASS}
+      {...WIDE_LAYOUT_MARKER_PROPS}
+    >
+      <CategoryListHeader totalCount={totalCount} />
       <CategoryListBody
         cards={cards}
         onRetry={onRetry}

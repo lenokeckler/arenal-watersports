@@ -9,10 +9,12 @@ import { render } from "@testing-library/react";
 import { readBoardCategories } from "@/app/services/board";
 import EquipmentBoard from "../EquipmentBoard";
 import { EQUIPMENT_BOARD_COPY } from "../constants/EquipmentBoardCopy.constants";
+import { DEFAULT_BOARD_CATEGORY } from "./EquipmentBoardUtils.constants";
 import {
   DEFAULT_BOARD_ROW,
   FREE_LABEL_CARD_NAMES,
   FREE_LABEL_COUNTS,
+  FREE_LABEL_TOTAL,
   JET_SKI_LABEL,
   NO_FREE_ROW,
   SINGLE_FREE_ROW,
@@ -43,7 +45,11 @@ describe("EquipmentBoard free label", () => {
     expect(
       await renderCardText(FREE_LABEL_CARD_NAMES.SINGLE)
     ).toContain(
-      `${FREE_LABEL_COUNTS.ONE} ${EQUIPMENT_BOARD_COPY.FREE_LABEL_SINGULAR}`
+      EQUIPMENT_BOARD_COPY.FREE_OF_TOTAL(
+        FREE_LABEL_COUNTS.ONE,
+        FREE_LABEL_TOTAL,
+        EQUIPMENT_BOARD_COPY.FREE_LABEL_SINGULAR
+      )
     );
   });
 
@@ -51,13 +57,21 @@ describe("EquipmentBoard free label", () => {
     expect(
       await renderCardText(FREE_LABEL_CARD_NAMES.NONE)
     ).toContain(
-      `${FREE_LABEL_COUNTS.ZERO} ${EQUIPMENT_BOARD_COPY.FREE_LABEL_PLURAL}`
+      EQUIPMENT_BOARD_COPY.FREE_OF_TOTAL(
+        FREE_LABEL_COUNTS.ZERO,
+        FREE_LABEL_TOTAL,
+        EQUIPMENT_BOARD_COPY.FREE_LABEL_PLURAL
+      )
     );
   });
 
   it("writes the plural for several free units", async () => {
     expect(await renderCardText(JET_SKI_LABEL)).toContain(
-      `${DEFAULT_BOARD_ROW.free_count} ${EQUIPMENT_BOARD_COPY.FREE_LABEL_PLURAL}`
+      EQUIPMENT_BOARD_COPY.FREE_OF_TOTAL(
+        DEFAULT_BOARD_CATEGORY.freeCount,
+        DEFAULT_BOARD_CATEGORY.totalCount,
+        EQUIPMENT_BOARD_COPY.FREE_LABEL_PLURAL
+      )
     );
   });
 });
