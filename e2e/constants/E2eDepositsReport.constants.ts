@@ -56,4 +56,5 @@ export const E2E_DEPOSITS_REPORT_TOTAL_PATTERN = /total/i;
 export const E2E_DEPOSITS_REPORT_SCREENSHOT_BASENAME = {
   BLANK_REASON: "02-deposits-report-blank-reason",
   LIST: "01-deposits-report-list",
+  RETAINED_PAGE_TWO: "03-deposits-report-retained-page-two",
 } as const;
