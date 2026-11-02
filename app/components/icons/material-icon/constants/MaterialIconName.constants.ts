@@ -8,6 +8,7 @@ export const MATERIAL_ICON_NAME = {
   CHEVRON_RIGHT: "chevron_right",
   CONTENT_COPY: "content_copy",
   DELETE: "delete",
+  DIRECTIONS_BOAT: "directions_boat",
   ERROR: "error",
   EVENT: "event",
   EVENT_AVAILABLE: "event_available",
@@ -23,6 +24,7 @@ export const MATERIAL_ICON_NAME = {
   RADIO_BUTTON_UNCHECKED: "radio_button_unchecked",
   SAILING: "sailing",
   SEARCH: "search",
+  SUPPORT_AGENT: "support_agent",
   VISIBILITY: "visibility",
   VISIBILITY_OFF: "visibility_off",
 } as const;
