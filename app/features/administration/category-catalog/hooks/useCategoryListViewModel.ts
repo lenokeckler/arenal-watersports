@@ -4,7 +4,9 @@ import { useRouter } from "next/navigation";
 import { LENGTH } from "@/app/constants";
 import { CATEGORY_LIST_VIEW_STATE } from "../constants/CategoryListViewState.constants";
 import { useCategoryCardActions } from "./useCategoryCardActions";
+import { useCategoryCardPanels } from "./useCategoryCardPanels";
 import type { CategoryCardActionsViewModel } from "../models/CategoryCardActionsViewModel.interface";
+import type { CategoryCardPanelsViewModel } from "../models/CategoryCardPanelsViewModel.interface";
 import type { CategoryCardViewModel } from "../models/CategoryCardViewModel.interface";
 import type { CategoryListItem } from "../models/CategoryListItem.interface";
 import type { CategoryListViewModel } from "../models/CategoryListViewModel.interface";
@@ -12,7 +14,8 @@ import type { CategoryListViewModelProps } from "../models/CategoryListViewModel
 import type { CategoryListViewState } from "../models/CategoryListViewState.type";
 import { isCategoryInactive } from "../utils/isCategoryInactive";
 import { resolveCategoryCardActionState } from "../utils/resolveCategoryCardActionState";
-import { resolveCategoryTrackingModeLabel } from "../utils/resolveCategoryTrackingModeLabel";
+import { resolveCategoryCardPanelId } from "../utils/resolveCategoryCardPanelId";
+import { resolveCategorySubtitle } from "../utils/resolveCategorySubtitle";
 
 const resolveCategoryListViewState = (
   fetchFailed: boolean,
@@ -31,12 +34,17 @@ const resolveCategoryListViewState = (
 
 const buildCategoryCardViewModel = (
   category: CategoryListItem,
-  cardActions: CategoryCardActionsViewModel
+  cardActions: CategoryCardActionsViewModel,
+  cardPanels: CategoryCardPanelsViewModel
 ): CategoryCardViewModel => ({
   category,
   isInactive: isCategoryInactive(category),
-  trackingModeLabel:
-    resolveCategoryTrackingModeLabel(category),
+  subtitle: resolveCategorySubtitle(category),
+  isPanelOpen: category.id === cardPanels.openCategoryId,
+  panelId: resolveCategoryCardPanelId(category.id),
+  onTogglePanelClick: cardPanels.onTogglePanelClick(
+    category.id
+  ),
   actionState: resolveCategoryCardActionState(
     category,
     category.id === cardActions.confirmingCategoryId
@@ -62,6 +70,7 @@ export const useCategoryListViewModel = ({
 }: CategoryListViewModelProps): CategoryListViewModel => {
   const router = useRouter();
   const cardActions = useCategoryCardActions();
+  const cardPanels = useCategoryCardPanels();
 
   const onRetry = (): void => {
     router.refresh();
@@ -69,7 +78,11 @@ export const useCategoryListViewModel = ({
 
   return {
     cards: categories.map((category) =>
-      buildCategoryCardViewModel(category, cardActions)
+      buildCategoryCardViewModel(
+        category,
+        cardActions,
+        cardPanels
+      )
     ),
     onRetry,
     viewState: resolveCategoryListViewState(

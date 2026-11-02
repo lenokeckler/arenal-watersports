@@ -44,7 +44,7 @@ test.describe("Category list screenshots", () => {
 
     try {
       await logInAsAdmin(page);
-      await categoryListPage.goTo();
+      await categoryListPage.goToCategory(categoryName);
       await categoryListPage.getHeading().waitFor();
       await categoryListPage.clickCategoryDeleteButton(
         categoryName

@@ -18,7 +18,12 @@ test.describe("Category units list", () => {
     );
     const categoryListPage = createCategoryListPage(page);
 
-    await categoryListPage.goTo();
+    await categoryListPage.goToCategory(
+      quantityCategory.categoryName
+    );
+    await categoryListPage.openCategoryOptions(
+      quantityCategory.categoryName
+    );
 
     await expect(
       listPage.getUnitsLink(
@@ -28,6 +33,9 @@ test.describe("Category units list", () => {
       )
     ).toHaveCount(E2E_COUNT.NONE);
 
+    await categoryListPage.goToCategory(
+      unitCategory.categoryName
+    );
     await listPage.clickUnitsLink(
       categoryListPage.getCategoryCard(
         unitCategory.categoryName
