@@ -25,6 +25,15 @@ vi.mock(
 describe("getReservationDetail", () => {
   beforeEach(() => vi.clearAllMocks());
 
+  it("returns null without querying Supabase for a malformed id", async () => {
+    await expect(
+      getReservationDetail("abc")
+    ).resolves.toBeNull();
+    expect(
+      getAuthorizedReservationDetailClient
+    ).not.toHaveBeenCalled();
+  });
+
   it("loads and projects one reservation through the authenticated client", async () => {
     const supabase =
       createReservationDetailSupabaseClient();
@@ -85,24 +94,5 @@ describe("getReservationDetail", () => {
         RESERVATION_DETAIL_TEST.RESERVATION_ID
       )
     ).resolves.toBeNull();
-  });
-
-  it("returns null without querying for a malformed reservation id", async () => {
-    const supabase =
-      createReservationDetailSupabaseClient();
-    vi.mocked(
-      getAuthorizedReservationDetailClient
-    ).mockResolvedValue(supabase.client);
-
-    await expect(
-      getReservationDetail(
-        RESERVATION_DETAIL_TEST.MALFORMED_RESERVATION_ID
-      )
-    ).resolves.toBeNull();
-
-    expect(
-      getAuthorizedReservationDetailClient
-    ).not.toHaveBeenCalled();
-    expect(supabase.from).not.toHaveBeenCalled();
   });
 });
