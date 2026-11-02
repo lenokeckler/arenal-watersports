@@ -95,7 +95,7 @@ describe("reservation detail charge status", () => {
     expect(summary.status).toBe(
       RESERVATION_DETAIL_CHARGE_STATUS.PARTIAL
     );
-    expect(summary.charges[0].amountCharged).toBe(
+    expect(summary.charges[0].amountChargedGross).toBe(
       RESERVATION_DETAIL_TEST.HALF_CHARGE_AMOUNT
     );
   });

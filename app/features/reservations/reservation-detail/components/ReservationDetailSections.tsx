@@ -6,6 +6,7 @@ import {
   RESERVATION_DETAIL_SECTIONS_GRID_CLASS,
 } from "../styles/ReservationDetailSections.styles";
 import ReservationDetailAuditSection from "./ReservationDetailAuditSection";
+import ReservationDetailChargesSection from "./ReservationDetailChargesSection";
 import ReservationDetailDispatchSection from "./ReservationDetailDispatchSection";
 import ReservationDetailEquipmentSection from "./ReservationDetailEquipmentSection";
 import ReservationDetailExtrasSection from "./ReservationDetailExtrasSection";
@@ -26,6 +27,7 @@ const ReservationDetailSections = ({
     >
       <ReservationDetailExtrasSection detail={detail} />
       <ReservationDetailGuidesSection detail={detail} />
+      <ReservationDetailChargesSection detail={detail} />
     </div>
     <div className={RESERVATION_DETAIL_AUDIT_COLUMN_CLASS}>
       <ReservationDetailAuditSection detail={detail} />

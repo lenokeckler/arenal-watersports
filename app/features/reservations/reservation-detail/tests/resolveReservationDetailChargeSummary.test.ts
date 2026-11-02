@@ -46,13 +46,21 @@ describe("resolveReservationDetailChargeSummary", () => {
     );
     expect(summary.charges).toEqual([
       {
-        amountCharged: RESERVATION_DETAIL_TEST.ZERO_AMOUNT,
+        amountChargedGross:
+          RESERVATION_DETAIL_TEST.ZERO_AMOUNT,
+        amountChargedNet:
+          RESERVATION_DETAIL_TEST.ZERO_AMOUNT,
+        amountCredit: null,
         amountRemaining: null,
         amountTarget: null,
         currency: RESERVATION_DETAIL_CURRENCY.CRC,
       },
       {
-        amountCharged: RESERVATION_DETAIL_TEST.ZERO_AMOUNT,
+        amountChargedGross:
+          RESERVATION_DETAIL_TEST.ZERO_AMOUNT,
+        amountChargedNet:
+          RESERVATION_DETAIL_TEST.ZERO_AMOUNT,
+        amountCredit: null,
         amountRemaining: null,
         amountTarget: null,
         currency: RESERVATION_DETAIL_CURRENCY.USD,
@@ -95,7 +103,10 @@ describe("resolveReservationDetailChargeSummary", () => {
       RESERVATION_DETAIL_MONEY_FIXTURE.refunds
     );
 
-    expect(summary.charges[0].amountCharged).toBe(
+    expect(summary.charges[0].amountChargedGross).toBe(
+      RESERVATION_DETAIL_TEST.CHARGE_CRC
+    );
+    expect(summary.charges[0].amountChargedNet).toBe(
       RESERVATION_DETAIL_TEST.CHARGE_CRC
     );
     expect(summary.extraTimeCharges).toEqual([
