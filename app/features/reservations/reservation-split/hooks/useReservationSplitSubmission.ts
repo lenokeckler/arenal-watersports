@@ -50,6 +50,7 @@ export const useReservationSplitSubmission =
     const clearDepartureError: ReservationSplitSubmission["clearDepartureError"] =
       (index, field) => {
         setErrors((current) => ({
+          ...current,
           departures: current.departures.map(
             (departure, position) =>
               position === index

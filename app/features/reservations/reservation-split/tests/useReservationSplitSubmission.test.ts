@@ -19,6 +19,8 @@ vi.mock("../actions/splitReservationAction", () => ({
   splitReservationAction: vi.fn(),
 }));
 
+const ORIGINAL_ERROR = "original error";
+
 const submitInput = async () => {
   const hook = renderHook(() =>
     useReservationSplitSubmission()
@@ -104,5 +106,25 @@ describe("useReservationSplitSubmission", () => {
       peopleCount: peopleError,
       time: undefined,
     });
+  });
+
+  it("keeps the original error when one departure field is fixed", () => {
+    const { result } = renderHook(() =>
+      useReservationSplitSubmission()
+    );
+    act(() =>
+      result.current.reportErrors({
+        departures: [{ time: "time error" }],
+        original: ORIGINAL_ERROR,
+      })
+    );
+
+    act(() =>
+      result.current.clearDepartureError(0, "time")
+    );
+
+    expect(result.current.errors.original).toBe(
+      ORIGINAL_ERROR
+    );
   });
 });
