@@ -1,7 +1,7 @@
 export const DEPOSITS_REPORT_COPY = {
   BACK: "Volver al inicio",
   ERROR_BODY:
-    "Revise su conexión y vuelva a cargar la página. Mientras no carguen las listas, no asuma que no hay depósitos pendientes ni retenidos.",
+    "Revise su conexión y toque «Volver a intentar». Mientras no carguen las listas, no asuma que no hay depósitos pendientes ni retenidos.",
   ERROR_TITLE: "No se pudieron cargar los depósitos",
   LOADING_ANNOUNCEMENT:
     "Cargando depósitos pendientes y retenidos.",
@@ -26,4 +26,5 @@ export const DEPOSITS_REPORT_COPY = {
     "Dinero que la empresa se quedó por un daño. Cada uno muestra su motivo.",
   RETAINED_LIST_ARIA_LABEL: "Lista de depósitos retenidos",
   RETENTION_REASON_LABEL: "Motivo",
+  RETRY: "Volver a intentar",
 } as const;

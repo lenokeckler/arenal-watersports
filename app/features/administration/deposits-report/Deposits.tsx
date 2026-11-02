@@ -5,6 +5,7 @@ import {
   fetchRetainedDeposits,
 } from "@/app/services/deposits";
 import { isAdministratorSignedIn } from "@/app/services/worker-registration";
+import { LIST_PAGINATION } from "@/app/utils/list-pagination/constants/ListPagination.constants";
 import DepositsView from "./DepositsView";
 
 const Deposits = async (): Promise<React.JSX.Element> => {
@@ -12,16 +13,19 @@ const Deposits = async (): Promise<React.JSX.Element> => {
     redirect(PATHS.HOME);
   }
 
-  const [pendingDeposits, retainedDeposits] =
-    await Promise.all([
-      fetchPendingDeposits(),
-      fetchRetainedDeposits(),
-    ]);
+  const [pendingPage, retainedPage] = await Promise.all([
+    fetchPendingDeposits(LIST_PAGINATION.FIRST_PAGE),
+    fetchRetainedDeposits(LIST_PAGINATION.FIRST_PAGE),
+  ]);
+
+  if (!retainedPage) {
+    redirect(PATHS.HOME);
+  }
 
   return (
     <DepositsView
-      pendingDeposits={pendingDeposits}
-      retainedDeposits={retainedDeposits}
+      pendingDeposits={pendingPage.items}
+      retainedDeposits={retainedPage.items}
     />
   );
 };

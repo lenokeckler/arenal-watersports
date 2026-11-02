@@ -14,7 +14,7 @@ Let the person in Administración see every pending deposit and every retained d
 
 ## Out of scope
 
-- Totals or sums of any kind, filters, pagination, dates, actions on a deposit, charts.
+- Totals or sums of any kind, filters, dates, actions on a deposit, charts.
 - A navigation entry to the screen.
 - Retained money inside the income screen: it needs the ADM-26 stack and US-RES-30.
 - The remainder of a partially retained deposit.
@@ -40,7 +40,8 @@ Los depósitos pendientes son plata de otra persona que la empresa tiene en la m
 
 ## Edge cases & errors
 
-- A failed or truncated read shows one error block in place of both sections and says an empty list must not be assumed; it is never rendered as an empty list.
+- A failed read shows one error block in place of both sections, says an empty list must not be assumed, and offers "Volver a intentar"; it is never rendered as an empty list.
+- Each list reads one server page of 20 (`range`, RNF-027), so the report keeps working past the PostgREST `max_rows` limit; the page controls land in ADM-06.31.05.
 - Zero held deposits shows the pending empty state; zero retained deposits shows the retained empty state.
 - A retained reason that is empty or only whitespace shows "Sin motivo registrado"; a real reason is shown unchanged, with its line breaks.
 - USD and CRC deposits sit in the same list, each printed in its own currency; no figure combines them.
@@ -59,4 +60,4 @@ Los depósitos pendientes son plata de otra persona que la empresa tiene en la m
 - [ ] A retained deposit without a written reason says "Sin motivo registrado".
 - [ ] Each amount is shown in its own currency and no total or sum is shown.
 - [ ] A worker who is not an administrator is redirected and receives no deposit data.
-- [ ] A failed or truncated read is announced as an error and never looks like an empty list.
+- [ ] A failed read is announced as an error, offers a retry, and never looks like an empty list.

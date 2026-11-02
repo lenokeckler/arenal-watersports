@@ -12,5 +12,5 @@ export const signInAsSeededWorker = async (
   await loginPage.fillUsername(E2E_LOGIN_ACCOUNT.USERNAME);
   await loginPage.fillPassword(E2E_LOGIN_ACCOUNT.PASSWORD);
   await loginPage.submit();
-  await page.waitForURL(PATHS.HOME);
+  await page.waitForURL(PATHS.BOARD);
 };

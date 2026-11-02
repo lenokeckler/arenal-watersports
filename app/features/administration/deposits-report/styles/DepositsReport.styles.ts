@@ -5,6 +5,9 @@ import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
 export const DEPOSITS_REPORT_STACK_CLASS =
   "flex flex-col gap-md";
 
+export const DEPOSITS_REPORT_RETRY_CLASS =
+  "min-h-12 w-full sm:w-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+
 export const DEPOSITS_REPORT_SECTION_CLASS =
   "flex flex-col gap-sm";
 

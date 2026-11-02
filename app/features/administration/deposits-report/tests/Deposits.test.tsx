@@ -23,6 +23,7 @@ import {
   USD_RETAINED_DEPOSIT,
 } from "./DepositsReport.constants";
 import { createDepositsReportPage } from "./DepositsReport.page";
+import { createFirstPage } from "./createFirstPage";
 
 vi.mock("next/navigation", () => ({
   redirect: vi.fn(),
@@ -46,13 +47,15 @@ describe("Deposits", () => {
     vi.mocked(isAdministratorSignedIn).mockResolvedValue(
       true
     );
-    vi.mocked(fetchPendingDeposits).mockResolvedValue([
-      USD_HELD_DEPOSIT,
-    ]);
-    vi.mocked(fetchRetainedDeposits).mockResolvedValue([
-      USD_RETAINED_DEPOSIT,
-      CRC_PARTIAL_DEPOSIT,
-    ]);
+    vi.mocked(fetchPendingDeposits).mockResolvedValue(
+      createFirstPage([USD_HELD_DEPOSIT])
+    );
+    vi.mocked(fetchRetainedDeposits).mockResolvedValue(
+      createFirstPage([
+        USD_RETAINED_DEPOSIT,
+        CRC_PARTIAL_DEPOSIT,
+      ])
+    );
   });
 
   it("redirects a non-administrator home before any read runs", async () => {
@@ -67,6 +70,18 @@ describe("Deposits", () => {
     expect(redirect).toHaveBeenCalledWith(PATHS.HOME);
     expect(fetchPendingDeposits).not.toHaveBeenCalled();
     expect(fetchRetainedDeposits).not.toHaveBeenCalled();
+  });
+
+  it("redirects home when the retained read refuses a non-administrator", async () => {
+    vi.mocked(fetchRetainedDeposits).mockResolvedValue(
+      null
+    );
+
+    await expect(Deposits()).rejects.toThrow(
+      REDIRECT_MESSAGE
+    );
+
+    expect(redirect).toHaveBeenCalledWith(PATHS.HOME);
   });
 
   it("renders the pending and the retained deposits for an administrator", async () => {

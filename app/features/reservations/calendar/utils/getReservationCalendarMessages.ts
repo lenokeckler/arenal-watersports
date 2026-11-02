@@ -2,7 +2,8 @@ import { RESERVATIONS_CALENDAR_COPY } from "@/app/constants";
 import type { ReservationCalendarContent } from "@/app/components/reservation-calendar/models/ReservationCalendarContent.interface";
 
 export const getReservationCalendarMessages = (
-  content: ReservationCalendarContent
+  content: ReservationCalendarContent,
+  emptyMessage: string = RESERVATIONS_CALENDAR_COPY.EMPTY_PERIOD
 ): string[] => {
   const messages: string[] = [];
   if (!content.hasSnapshot) {
@@ -26,7 +27,7 @@ export const getReservationCalendarMessages = (
     content.hasAllResults &&
     content.groups.length === 0
   ) {
-    messages.push(RESERVATIONS_CALENDAR_COPY.EMPTY_PERIOD);
+    messages.push(emptyMessage);
   }
   return messages;
 };
