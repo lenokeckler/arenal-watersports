@@ -26,3 +26,12 @@ export const RESERVATION_SPLIT_LOCKED_TITLE_CLASS =
   "font-semibold";
 
 export const RESERVATION_SPLIT_LOCKED_ACTION_CLASS = "mt-4";
+
+export const RESERVATION_SPLIT_SUCCESS_CLASS =
+  "space-y-4 rounded-xl border border-primary/40 bg-primary/10 px-4 py-4 text-on-surface";
+
+export const RESERVATION_SPLIT_SUCCESS_LIST_CLASS =
+  "space-y-1 font-mono text-base tabular-nums text-primary";
+
+export const RESERVATION_SPLIT_CALENDAR_LINK_CLASS =
+  "inline-flex min-h-12 w-full items-center justify-center rounded-full bg-primary px-6 font-semibold text-on-primary transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:w-auto md:min-w-56";

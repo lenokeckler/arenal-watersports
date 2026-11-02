@@ -5,7 +5,6 @@ import ReservationSplitUnavailable from "../components/ReservationSplitUnavailab
 import { RESERVATION_SPLIT_UI_COPY } from "../constants/ReservationSplitUiCopy.constants";
 import { RESERVATION_SPLIT_UNAVAILABLE_COPY } from "../constants/ReservationSplitUnavailableCopy.constants";
 import {
-  EXPECTED_SPLIT,
   SPLIT_CALENDAR_HREF,
   SPLIT_UNAVAILABLE_REASONS,
 } from "./ReservationSplit.constants";
@@ -14,13 +13,10 @@ const HREF_ATTRIBUTE = "href";
 
 describe("ReservationSplitUnavailable", () => {
   it.each(SPLIT_UNAVAILABLE_REASONS)(
-    "shows the reason, the reservation and a way back for %s",
+    "shows the reason and a way back for %s",
     (reason) => {
       render(
-        <ReservationSplitUnavailable
-          reason={reason}
-          split={EXPECTED_SPLIT}
-        />
+        <ReservationSplitUnavailable reason={reason} />
       );
       const copy =
         RESERVATION_SPLIT_UNAVAILABLE_COPY[reason];
@@ -30,12 +26,6 @@ describe("ReservationSplitUnavailable", () => {
       ).toBeInTheDocument();
       expect(
         screen.getByText(copy.body)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(EXPECTED_SPLIT.code)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(EXPECTED_SPLIT.customerName)
       ).toBeInTheDocument();
       expect(
         screen.getAllByRole(ARIA_ROLE.LINK, {

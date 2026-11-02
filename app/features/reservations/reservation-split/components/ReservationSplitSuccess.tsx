@@ -7,7 +7,7 @@ import {
   RESERVATION_SPLIT_SUCCESS_CLASS,
   RESERVATION_SPLIT_CALENDAR_LINK_CLASS,
   RESERVATION_SPLIT_SUCCESS_LIST_CLASS,
-} from "../styles/ReservationSplitActions.styles";
+} from "../styles/ReservationSplitLayout.styles";
 
 const ReservationSplitSuccess = ({
   createdDepartures,

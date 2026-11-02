@@ -3,8 +3,8 @@ import { ARIA_ROLE, PATHS } from "@/app/constants";
 import { RESERVATION_SPLIT_UI_COPY } from "../constants/ReservationSplitUiCopy.constants";
 import { RESERVATION_SPLIT_UNAVAILABLE_COPY } from "../constants/ReservationSplitUnavailableCopy.constants";
 import type { ReservationSplitUnavailableProps } from "../models/ReservationSplitUnavailableProps.interface";
-import { RESERVATION_SPLIT_CALENDAR_LINK_CLASS } from "../styles/ReservationSplitActions.styles";
 import {
+  RESERVATION_SPLIT_CALENDAR_LINK_CLASS,
   RESERVATION_SPLIT_LOCKED_ACTION_CLASS,
   RESERVATION_SPLIT_LOCKED_CLASS,
   RESERVATION_SPLIT_LOCKED_TITLE_CLASS,
@@ -13,7 +13,6 @@ import ReservationSplitLayout from "./ReservationSplitLayout";
 
 const ReservationSplitUnavailable = ({
   reason,
-  split,
 }: ReservationSplitUnavailableProps): React.JSX.Element => {
   const copy = RESERVATION_SPLIT_UNAVAILABLE_COPY[reason];
 
@@ -29,8 +28,6 @@ const ReservationSplitUnavailable = ({
           {copy.title}
         </Text>
         <Text>{copy.body}</Text>
-        <Text>{split.code}</Text>
-        <Text>{split.customerName}</Text>
       </div>
       <div
         className={RESERVATION_SPLIT_LOCKED_ACTION_CLASS}

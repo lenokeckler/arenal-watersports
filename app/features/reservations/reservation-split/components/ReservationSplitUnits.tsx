@@ -20,19 +20,17 @@ const ReservationSplitUnits = ({
   }
 
   return (
-    <div className={RESERVATION_SPLIT_UNITS_CLASS}>
-      <div>
-        <Text
-          className={RESERVATION_SPLIT_UNITS_LEGEND_CLASS}
-        >
-          {RESERVATION_SPLIT_UI_COPY.UNITS_LEGEND}
-        </Text>
-        <Text
-          className={RESERVATION_SPLIT_UNITS_HELPER_CLASS}
-        >
-          {RESERVATION_SPLIT_UI_COPY.UNITS_HELPER}
-        </Text>
-      </div>
+    <fieldset className={RESERVATION_SPLIT_UNITS_CLASS}>
+      <legend
+        className={RESERVATION_SPLIT_UNITS_LEGEND_CLASS}
+      >
+        {RESERVATION_SPLIT_UI_COPY.UNITS_LEGEND}
+      </legend>
+      <Text
+        className={RESERVATION_SPLIT_UNITS_HELPER_CLASS}
+      >
+        {RESERVATION_SPLIT_UI_COPY.UNITS_HELPER}
+      </Text>
       {units.map((unit) => (
         <ReservationSplitUnitChoice
           key={unit.id}
@@ -48,7 +46,7 @@ const ReservationSplitUnits = ({
           }
         />
       ))}
-    </div>
+    </fieldset>
   );
 };
 

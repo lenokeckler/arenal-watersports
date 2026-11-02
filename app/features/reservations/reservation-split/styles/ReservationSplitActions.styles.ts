@@ -6,7 +6,7 @@ const RESERVATION_SPLIT_ADD_BASE_CLASS =
   "min-h-12 w-full gap-2 rounded-full md:w-auto";
 
 export const RESERVATION_SPLIT_ADD_BLOCKED_CLASS =
-  "opacity-50";
+  "cursor-default opacity-50 hover:bg-transparent";
 
 export const resolveReservationSplitAddClassName = (
   isBlocked: boolean
@@ -27,12 +27,3 @@ export const RESERVATION_SPLIT_ACTIONS_CLASS =
 
 export const RESERVATION_SPLIT_SUBMIT_CLASS =
   "min-h-12 w-full rounded-full md:w-auto md:min-w-56";
-
-export const RESERVATION_SPLIT_SUCCESS_CLASS =
-  "space-y-4 rounded-xl border border-primary/40 bg-primary/10 px-4 py-4 text-on-surface";
-
-export const RESERVATION_SPLIT_SUCCESS_LIST_CLASS =
-  "space-y-1 font-mono text-base tabular-nums text-primary";
-
-export const RESERVATION_SPLIT_CALENDAR_LINK_CLASS =
-  "inline-flex min-h-12 w-full items-center justify-center rounded-full bg-primary px-6 font-semibold text-on-primary transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:w-auto md:min-w-56";
