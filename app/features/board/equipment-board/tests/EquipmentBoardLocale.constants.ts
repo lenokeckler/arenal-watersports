@@ -24,15 +24,25 @@ export const SPANISH_GROUP_NAME = {
   UNPADDED: "kayak",
 } as const;
 
-export const OCCUPANCY_BOUNDARY_CASES = {
-  HALF_ROUNDS_UP: { inUse: 1, total: 8 },
-  NEGATIVE_TOTAL: { inUse: 1, total: -4 },
-  NOT_A_NUMBER_IN_USE: { inUse: Number.NaN, total: 5 },
-  NOT_A_NUMBER_TOTAL: { inUse: 1, total: Number.NaN },
-  ZERO_IN_USE: { inUse: 0, total: 5 },
+export const FREE_PERCENT_BOUNDARY_CASES = {
+  HALF_ROUNDS_UP: { freeCount: 1, totalCount: 8 },
+  INFINITE_FREE: {
+    freeCount: Number.POSITIVE_INFINITY,
+    totalCount: 5,
+  },
+  NEGATIVE_TOTAL: { freeCount: 1, totalCount: -4 },
+  NONE_FREE: { freeCount: 0, totalCount: 5 },
+  NOT_A_NUMBER_FREE: {
+    freeCount: Number.NaN,
+    totalCount: 5,
+  },
+  NOT_A_NUMBER_TOTAL: {
+    freeCount: 1,
+    totalCount: Number.NaN,
+  },
 } as const;
 
-export const OCCUPANCY_BOUNDARY_EXPECTED = {
+export const FREE_PERCENT_BOUNDARY_EXPECTED = {
   EMPTY: 0,
   HALF_ROUNDS_UP: 13,
 } as const;

@@ -1,7 +1,6 @@
 import ScreenHeading from "@/app/components/screen-header/ScreenHeading";
 import {
   ADMINISTRATION_SCREEN_TITLE_ID,
-  IMAGE_ALTS,
   STRING,
 } from "@/app/constants";
 import { UNIT_FORM_COPY } from "../constants/UnitFormCopy.constants";
@@ -16,7 +15,7 @@ const UnitFormHeader = ({
   <ScreenHeading
     title={UNIT_FORM_TITLE[mode]}
     titleId={ADMINISTRATION_SCREEN_TITLE_ID}
-    logoAlt={IMAGE_ALTS.COMPANY_LOGO}
+    hasLogo={false}
     instruction={[
       UNIT_FORM_COPY.CATEGORY_PREFIX,
       categoryName,

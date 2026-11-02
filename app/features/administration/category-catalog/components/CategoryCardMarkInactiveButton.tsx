@@ -1,5 +1,5 @@
 import Button from "@/app/components/button/Button";
-import { BUTTON, SIZE } from "@/app/constants";
+import { BUTTON } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import type { CategoryCardActionButtonProps } from "../models/CategoryCardActionButtonProps.interface";
 import { CATEGORY_CARD_ACTIONS_BUTTON_CLASS } from "../styles/CategoryCardActions.styles";
@@ -9,8 +9,7 @@ const CategoryCardMarkInactiveButton = ({
   onClick,
 }: CategoryCardActionButtonProps): React.JSX.Element => (
   <Button
-    variant={BUTTON.SECONDARY}
-    size={SIZE.FULL}
+    variant={BUTTON.BASE}
     isLoading={isLoading}
     loadingText={
       CATEGORY_CATALOG_COPY.LOADING_TEXT_UPDATING

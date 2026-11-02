@@ -51,7 +51,7 @@ test.describe("Category create guards", () => {
         PATHS.ADMINISTRATION.CATEGORIES_NEW
       );
 
-      await categoryListPage.goTo();
+      await categoryListPage.goToCategory(categoryName);
 
       await expect(
         categoryListPage.getCategoryCard(categoryName)
@@ -95,7 +95,7 @@ test.describe("Category create guards", () => {
         PATHS.ADMINISTRATION.CATEGORIES_NEW
       );
 
-      await categoryListPage.goTo();
+      await categoryListPage.goToCategory(categoryName);
 
       await expect(
         categoryListPage.getCategoryCard(categoryName)

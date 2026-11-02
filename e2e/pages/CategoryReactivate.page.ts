@@ -17,28 +17,18 @@ export const createCategoryReactivatePage = (
         name: CATEGORY_CATALOG_COPY.REACTIVATE_BUTTON,
       });
 
-  const getExactInactivePill = (
-    categoryName: string
-  ): Locator =>
-    categoryListPage
-      .getCategoryCard(categoryName)
-      .getByText(
-        CATEGORY_CATALOG_COPY.STATUS_PILL_INACTIVE,
-        {
-          exact: true,
-        }
-      );
-
   const clickReactivateButton = async (
     categoryName: string
   ): Promise<void> => {
+    await categoryListPage.openCategoryOptions(
+      categoryName
+    );
     await getReactivateButton(categoryName).click();
   };
 
   return {
     ...categoryListPage,
     clickReactivateButton,
-    getExactInactivePill,
     getReactivateButton,
   };
 };
