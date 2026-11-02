@@ -328,10 +328,7 @@ export {
 } from "./supabase/ReservationCalendarQuery.constants";
 export { RESERVATION_CALENDAR_QUERY_ERROR } from "./supabase/ReservationCalendarQueryError.constants";
 export { DEPOSIT_QUERY } from "./supabase/DepositQuery.constants";
-export {
-  DEPOSIT_ROW_INCOMPLETE_ERROR_MESSAGE,
-  DEPOSITS_TRUNCATED_ERROR_MESSAGE,
-} from "./supabase/DepositsReadError.constants";
+export { DEPOSIT_ROW_INCOMPLETE_ERROR_MESSAGE } from "./supabase/DepositsReadError.constants";
 export {
   CURRENCY_CODE,
   type CurrencyCode,

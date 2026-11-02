@@ -6,15 +6,16 @@ import {
   vi,
 } from "vitest";
 import { DEPOSIT_QUERY } from "@/app/constants";
+import { LIST_PAGINATION } from "@/app/utils/list-pagination/constants/ListPagination.constants";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
-import { DepositsTruncatedError } from "../DepositsTruncatedError";
 import { fetchDepositsByStatus } from "../fetchDepositsByStatus";
 import {
   CRC_DEPOSIT_ITEM,
   CRC_DEPOSIT_ROW,
+  FIRST_PAGE_RANGE,
   MULTIPLE_STATUSES,
   POSTGREST_ERROR,
-  TRUNCATED_TOTAL_COUNT,
+  TWO_DEPOSITS_COUNT,
   USD_DEPOSIT_ITEM,
   USD_DEPOSIT_ROW,
 } from "./Deposits.constants";
@@ -24,20 +25,23 @@ vi.mock("@/app/services/supabase", () => ({
   createServerSupabaseClient: vi.fn(),
 }));
 
+const FIRST_PAGE_QUERY = {
+  page: LIST_PAGINATION.FIRST_PAGE,
+  statuses: MULTIPLE_STATUSES,
+};
+
 describe("fetchDepositsByStatus", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("reads the deposits table with the select, status filter and oldest-first order", async () => {
+  it("reads one page of the deposits table with the select, status filter and oldest-first order", async () => {
     const page = DepositsQueryPage.respondingWith({
       data: [],
       error: null,
     });
 
-    await fetchDepositsByStatus({
-      statuses: MULTIPLE_STATUSES,
-    });
+    await fetchDepositsByStatus(FIRST_PAGE_QUERY);
 
     expect(page.from).toHaveBeenCalledWith(
       DEPOSIT_QUERY.TABLE
@@ -50,37 +54,47 @@ describe("fetchDepositsByStatus", () => {
       DEPOSIT_QUERY.STATUS_COLUMN,
       [...MULTIPLE_STATUSES]
     );
-    expect(page.order).toHaveBeenCalledWith(
+    expect(page.order).toHaveBeenNthCalledWith(
+      1,
       DEPOSIT_QUERY.ORDER_COLUMN,
       { ascending: true }
     );
+    expect(page.order).toHaveBeenNthCalledWith(
+      2,
+      DEPOSIT_QUERY.ID_COLUMN,
+      { ascending: true }
+    );
+    expect(page.range).toHaveBeenCalledWith(
+      FIRST_PAGE_RANGE.from,
+      FIRST_PAGE_RANGE.to
+    );
   });
 
-  it("returns the mapped items in the order received", async () => {
+  it("returns the mapped items in the order received with the page totals", async () => {
     DepositsQueryPage.respondingWith({
       data: [USD_DEPOSIT_ROW, CRC_DEPOSIT_ROW],
       error: null,
     });
 
-    const items = await fetchDepositsByStatus({
-      statuses: MULTIPLE_STATUSES,
+    expect(
+      await fetchDepositsByStatus(FIRST_PAGE_QUERY)
+    ).toEqual({
+      items: [USD_DEPOSIT_ITEM, CRC_DEPOSIT_ITEM],
+      page: LIST_PAGINATION.FIRST_PAGE,
+      pageCount: LIST_PAGINATION.FIRST_PAGE,
+      totalCount: TWO_DEPOSITS_COUNT,
     });
-
-    expect(items).toEqual([
-      USD_DEPOSIT_ITEM,
-      CRC_DEPOSIT_ITEM,
-    ]);
   });
 
-  it("returns an empty array when no deposit matches", async () => {
+  it("returns no items when no deposit matches", async () => {
     DepositsQueryPage.respondingWith({
       data: [],
       error: null,
     });
 
-    const items = await fetchDepositsByStatus({
-      statuses: MULTIPLE_STATUSES,
-    });
+    const { items } = await fetchDepositsByStatus(
+      FIRST_PAGE_QUERY
+    );
 
     expect(items).toEqual([]);
   });
@@ -92,7 +106,7 @@ describe("fetchDepositsByStatus", () => {
     });
 
     await expect(
-      fetchDepositsByStatus({ statuses: MULTIPLE_STATUSES })
+      fetchDepositsByStatus(FIRST_PAGE_QUERY)
     ).rejects.toBeInstanceOf(SupabaseQueryError);
   });
 
@@ -103,45 +117,24 @@ describe("fetchDepositsByStatus", () => {
     });
 
     await expect(
-      fetchDepositsByStatus({ statuses: MULTIPLE_STATUSES })
+      fetchDepositsByStatus(FIRST_PAGE_QUERY)
     ).rejects.toBeInstanceOf(SupabaseQueryError);
   });
 
-  it("throws DepositsTruncatedError when the count exceeds the rows", async () => {
-    DepositsQueryPage.respondingWith({
-      data: [USD_DEPOSIT_ROW],
-      error: null,
-      count: TRUNCATED_TOTAL_COUNT,
-    });
-
-    await expect(
-      fetchDepositsByStatus({ statuses: MULTIPLE_STATUSES })
-    ).rejects.toBeInstanceOf(DepositsTruncatedError);
-  });
-
-  it("throws DepositsTruncatedError when the count is null", async () => {
-    DepositsQueryPage.respondingWith({
-      data: [USD_DEPOSIT_ROW],
-      error: null,
-      count: null,
-    });
-
-    await expect(
-      fetchDepositsByStatus({ statuses: MULTIPLE_STATUSES })
-    ).rejects.toBeInstanceOf(DepositsTruncatedError);
-  });
-
-  it("returns an empty array without creating a client when no status is requested", async () => {
+  it("returns an empty page without creating a client when no status is requested", async () => {
     const page = DepositsQueryPage.respondingWith({
       data: [],
       error: null,
     });
 
-    const items = await fetchDepositsByStatus({
-      statuses: [],
-    });
+    const { items, pageCount } =
+      await fetchDepositsByStatus({
+        page: LIST_PAGINATION.FIRST_PAGE,
+        statuses: [],
+      });
 
     expect(items).toEqual([]);
+    expect(pageCount).toBe(0);
     expect(page.clientCreations).toBe(0);
   });
 });

@@ -5,6 +5,7 @@ export const DEPOSIT_QUERY = {
   ID_COLUMN: "id",
   OPERATION: "fetch deposits by status",
   ORDER_COLUMN: "created_at",
+  OUT_OF_RANGE_ERROR: "PGRST103",
   RESOLVED_AT_COLUMN: "resolved_at",
   RETAINED_OPERATION: "fetch retained deposits",
   RETAINED_SELECT:
