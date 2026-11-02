@@ -41,7 +41,7 @@ describe("Reservation form extra selection", () => {
     });
     const page = await selectConcreteBoat();
     const extraName =
-      RESERVATION_FORM_VIEW_TEST.EXTRA_SERVICE_NAME;
+      RESERVATION_FORM_VIEW_TEST.EXTRA_EQUIPMENT_NAME;
     await page.toggleExtra(extraName);
     expect(page.getExtraCheckbox(extraName)).toBeChecked();
     await page.toggleExtra(extraName);
@@ -53,7 +53,7 @@ describe("Reservation form extra selection", () => {
     expect(createReservationAction).toHaveBeenCalledWith(
       expect.objectContaining({
         extraIds: [
-          RESERVATION_FORM_VIEW_TEST.EXTRA_SERVICE_ID,
+          RESERVATION_FORM_VIEW_TEST.EXTRA_EQUIPMENT_ID,
         ],
       })
     );

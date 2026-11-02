@@ -58,6 +58,12 @@ describe("Reservation form server quote", () => {
       })
     );
     const page = await selectConcreteBoat();
+    expect(page.getRenderedText()).not.toContain(
+      RESERVATION_FORM_UI_COPY.QUOTE_MISSING_TARIFF
+    );
+    await page.toggleExtra(
+      RESERVATION_FORM_VIEW_TEST.EXTRA_SERVICE_NAME
+    );
     expect(page.getRenderedText()).toContain(
       RESERVATION_FORM_UI_COPY.QUOTE_MISSING_TARIFF
     );

@@ -1,12 +1,12 @@
+import FormField from "@/app/components/form-field/FormField";
 import InlineText from "@/app/components/text/InlineText";
-import Label from "@/app/components/text/Label";
 import Text from "@/app/components/text/Text";
 import { INPUT_TYPES } from "@/app/constants";
 import { CUSTOM_COMBO_FORM_CURRENCY } from "../constants/CustomComboFormCopy.constants";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import type { ReservationExtraOptionProps } from "../models/ReservationExtraOptionProps.interface";
 import {
-  RESERVATION_EXTRAS_CHECKBOX_CLASS,
   RESERVATION_EXTRAS_INVENTORY_CLASS,
   RESERVATION_EXTRAS_OPTION_CONTENT_CLASS,
   RESERVATION_EXTRAS_PRICES_CLASS,
@@ -14,56 +14,67 @@ import {
 } from "../styles/ReservationExtras.styles";
 import { formatCustomComboAmount } from "../utils/formatCustomComboAmount";
 
-const ReservationExtraOption = ({
-  extraId,
-  isSelected,
-  name,
-  occupiesInventory,
-  onToggle,
+const ReservationExtraPrices = ({
   priceCrc,
   priceUsd,
 }: ReservationExtraOptionProps): React.JSX.Element => (
-  <Label
-    className={resolveReservationExtrasOptionClassName(
-      isSelected
-    )}
-  >
-    <input
-      checked={isSelected}
-      className={RESERVATION_EXTRAS_CHECKBOX_CLASS}
-      onChange={() => onToggle(extraId)}
-      type={INPUT_TYPES.CHECKBOX}
-      value={extraId}
-    />
-    <div
-      className={RESERVATION_EXTRAS_OPTION_CONTENT_CLASS}
-    >
-      <InlineText>{name}</InlineText>
-      <div className={RESERVATION_EXTRAS_PRICES_CLASS}>
-        <InlineText>
-          {CUSTOM_COMBO_FORM_CURRENCY.CRC}:{" "}
-          {formatCustomComboAmount(
-            priceCrc,
-            CUSTOM_COMBO_FORM_CURRENCY.CRC
-          )}
-        </InlineText>
-        <InlineText>
-          {CUSTOM_COMBO_FORM_CURRENCY.USD}:{" "}
-          {formatCustomComboAmount(
-            priceUsd,
-            CUSTOM_COMBO_FORM_CURRENCY.USD
-          )}
-        </InlineText>
-      </div>
-      {occupiesInventory ? (
-        <Text
-          className={RESERVATION_EXTRAS_INVENTORY_CLASS}
-        >
-          {RESERVATION_FORM_UI_COPY.EXTRA_INVENTORY_NOTE}
-        </Text>
-      ) : null}
-    </div>
-  </Label>
+  <div className={RESERVATION_EXTRAS_PRICES_CLASS}>
+    <InlineText>
+      {CUSTOM_COMBO_FORM_CURRENCY.CRC}:{" "}
+      {formatCustomComboAmount(
+        priceCrc,
+        CUSTOM_COMBO_FORM_CURRENCY.CRC
+      )}
+    </InlineText>
+    <InlineText>
+      {CUSTOM_COMBO_FORM_CURRENCY.USD}:{" "}
+      {formatCustomComboAmount(
+        priceUsd,
+        CUSTOM_COMBO_FORM_CURRENCY.USD
+      )}
+    </InlineText>
+  </div>
 );
+
+const ReservationExtraOption = (
+  props: ReservationExtraOptionProps
+): React.JSX.Element => {
+  const {
+    extraId,
+    isSelected,
+    name,
+    occupiesInventory,
+    onToggle,
+  } = props;
+  return (
+    <div
+      className={resolveReservationExtrasOptionClassName(
+        isSelected
+      )}
+    >
+      <FormField
+        checked={isSelected}
+        id={extraId}
+        label={name}
+        name={RESERVATION_FORM_FIELD.EXTRA_IDS}
+        onChange={(_event) => onToggle(extraId)}
+        type={INPUT_TYPES.CHECKBOX}
+        value={name}
+      />
+      <div
+        className={RESERVATION_EXTRAS_OPTION_CONTENT_CLASS}
+      >
+        <ReservationExtraPrices {...props} />
+        {occupiesInventory ? (
+          <Text
+            className={RESERVATION_EXTRAS_INVENTORY_CLASS}
+          >
+            {RESERVATION_FORM_UI_COPY.EXTRA_INVENTORY_NOTE}
+          </Text>
+        ) : null}
+      </div>
+    </div>
+  );
+};
 
 export default ReservationExtraOption;
