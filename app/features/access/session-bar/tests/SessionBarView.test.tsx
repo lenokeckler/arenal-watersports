@@ -8,6 +8,7 @@ import {
   ERROR_MESSAGE,
   IDLE_PROPS,
   NON_FAILED_PHASES,
+  SESSION_BAR_BUTTON_COUNT,
 } from "./SessionBarView.constants";
 import { createSessionBarViewPage } from "./SessionBarView.page";
 
@@ -19,11 +20,16 @@ describe("SessionBarView", () => {
     expect(page.getBanners()).toHaveLength(1);
   });
 
-  it("holds exactly one button named Cerrar sesión when idle", () => {
+  it("renders the logout button alongside the theme control when idle", () => {
     render(<SessionBarView {...IDLE_PROPS} />);
     const page = createSessionBarViewPage();
 
-    expect(page.getButtons()).toHaveLength(1);
+    expect(page.getButtons()).toHaveLength(
+      SESSION_BAR_BUTTON_COUNT
+    );
+    expect(
+      page.getThemeButton(IDLE_PROPS.theme)
+    ).toBeInTheDocument();
     expect(
       page.getButton(BUTTON_LABEL)
     ).toBeInTheDocument();

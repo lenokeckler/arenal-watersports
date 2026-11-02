@@ -4,6 +4,7 @@ import type { ReservationEquipmentRequestValues } from "../models/ReservationEqu
 import type { ReservationEquipmentViewModel } from "../models/ReservationEquipmentViewModel.interface";
 import { RESERVATION_SCHEDULE } from "../constants/ReservationSchedule.constants";
 import { useReservationCategoryAvailabilityPanelViewModel } from "./useReservationCategoryAvailabilityPanelViewModel";
+import { useReservationCategoryConflictWarning } from "./useReservationCategoryConflictWarning";
 import { useReservationUnitAvailability } from "./useReservationUnitAvailability";
 
 export const useReservationEquipmentViewModel = (
@@ -38,9 +39,15 @@ export const useReservationEquipmentViewModel = (
       refreshKey,
       request,
     });
+  const categoryConflictWarning =
+    useReservationCategoryConflictWarning(
+      request,
+      refreshKey
+    );
 
   return {
     ...categoryAvailability,
+    categoryConflictWarning,
     availableQuantity: selectedCategory?.isInterchangeable
       ? unitAvailability.availableQuantity
       : null,
