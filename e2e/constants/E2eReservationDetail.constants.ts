@@ -5,7 +5,6 @@ import {
   RESERVATION_DETAIL_STATUS_COPY,
   RESERVATION_DETAIL_TYPE_COPY,
 } from "@/app/features/reservations/reservation-detail/constants/ReservationDetailPresentation.constants";
-import { RESERVATION_TYPE } from "@/app/features/reservations/reservation-form/constants/ReservationType.constants";
 import {
   RESERVATION_DETAIL_CHARGE_KIND,
   RESERVATION_DETAIL_CURRENCY,
@@ -63,7 +62,7 @@ export const E2E_RESERVATION_DETAIL_FIXTURE = {
 export const E2E_RESERVATION_DETAIL_VALUES = {
   CHARGE_KIND: RESERVATION_DETAIL_CHARGE_KIND,
   CURRENCY: RESERVATION_DETAIL_CURRENCY,
-  RESERVATION_TYPE,
+  RESERVATION_TYPE: { TOUR: "tour" },
 } as const;
 
 export const E2E_RESERVATION_DETAIL_COPY = {

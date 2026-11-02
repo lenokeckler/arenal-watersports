@@ -1,11 +1,9 @@
-import {
-  render,
-  renderHook,
-  screen,
-} from "@testing-library/react";
+import { render, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { RESERVATIONS_CALENDAR_COPY as copy } from "@/app/constants";
+import { RESERVATION_CALENDAR_GUIDE_COPY } from "../constants/ReservationCalendarGuideCopy.constants";
 import { useReservationCalendarDayContent } from "../hooks/useReservationCalendarDayContent";
+import type { ReservationCalendarDayContentOptions } from "../models/ReservationCalendarDayContentOptions.interface";
 import { CALENDAR_DAY_COVERAGE_CASES } from "./ReservationCalendarDayCases.constants";
 import {
   CALENDAR_DAY_DATE,
@@ -15,6 +13,7 @@ import {
 } from "./ReservationCalendarDay.constants";
 import { createReservationCalendarDayPage } from "./ReservationCalendarDay.page";
 import { renderReservationCalendarDay } from "./renderReservationCalendarDay";
+import { ReservationCalendarStoreProvider } from "./ReservationCalendarStoreProvider";
 
 describe("Reservation calendar default daily content", () => {
   it.each(CALENDAR_DAY_COVERAGE_CASES)(
@@ -28,8 +27,9 @@ describe("Reservation calendar default daily content", () => {
   );
 
   it("preserves null for a missing snapshot", () => {
-    const { result } = renderHook(() =>
-      useReservationCalendarDayContent(undefined)
+    const { result } = renderHook(
+      () => useReservationCalendarDayContent(undefined),
+      { wrapper: ReservationCalendarStoreProvider }
     );
 
     expect(result.current(CALENDAR_DAY_DATE)).toBeNull();
@@ -42,41 +42,50 @@ describe("Reservation calendar default daily content", () => {
     expect(page.getCustomer()).toBeVisible();
   });
 
-  it("does not expose guide attribution in the default Reservations content", () => {
+  it("keeps guide details hidden unless requested", () => {
     const snapshot = {
       ...CALENDAR_DAY_SNAPSHOT,
-      entries: [
-        {
-          ...CALENDAR_DAY_SNAPSHOT.entries[0],
+      entries: CALENDAR_DAY_SNAPSHOT.entries.map(
+        (entry) => ({
+          ...entry,
           guides: [
             {
               fullName: CALENDAR_DAY_GUIDE_TEST.FULL_NAME,
+              id: CALENDAR_DAY_GUIDE_TEST.ID,
               type: CALENDAR_DAY_GUIDE_TEST.TYPE,
             },
           ],
-        },
-      ],
+        })
+      ),
     };
     renderReservationCalendarDay(snapshot);
+    const page = createReservationCalendarDayPage();
 
     expect(
-      screen.queryByText(CALENDAR_DAY_GUIDE_TEST.FULL_NAME)
+      page.getMessage(RESERVATION_CALENDAR_GUIDE_COPY.LABEL)
     ).toBeNull();
     expect(
-      screen.queryByText(CALENDAR_DAY_GUIDE_TEST.TYPE_LABEL)
-    ).toBeNull();
+      page.getReservationBlock()
+    ).not.toHaveAccessibleName(
+      expect.stringContaining(
+        CALENDAR_DAY_GUIDE_TEST.FULL_NAME
+      )
+    );
   });
 });
 
 describe("Reservation calendar daily coverage updates", () => {
   it("updates messages when the flag changes with the same snapshot", () => {
     const { result, rerender } = renderHook(
-      (showCoverageMessages: boolean) =>
+      (options: ReservationCalendarDayContentOptions) =>
         useReservationCalendarDayContent(
           CALENDAR_DAY_EMPTY,
-          { showCoverageMessages }
+          options
         ),
-      { initialProps: false }
+      {
+        initialProps: { showCoverageMessages: false },
+        wrapper: ReservationCalendarStoreProvider,
+      }
     );
     const content = render(
       result.current(CALENDAR_DAY_DATE)
@@ -84,12 +93,12 @@ describe("Reservation calendar daily coverage updates", () => {
     const page = createReservationCalendarDayPage();
 
     expect(result.current(CALENDAR_DAY_DATE)).toBeNull();
-    rerender(true);
+    rerender({ showCoverageMessages: true });
     content.rerender(result.current(CALENDAR_DAY_DATE));
     expect(
       page.getMessage(copy.EMPTY_PERIOD)
     ).toBeVisible();
-    rerender(false);
+    rerender({ showCoverageMessages: false });
     content.rerender(result.current(CALENDAR_DAY_DATE));
     expect(page.getMessage(copy.EMPTY_PERIOD)).toBeNull();
     expect(result.current(CALENDAR_DAY_DATE)).toBeNull();

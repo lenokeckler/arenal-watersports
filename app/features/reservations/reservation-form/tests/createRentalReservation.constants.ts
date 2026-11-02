@@ -1,15 +1,12 @@
 import { SUPABASE } from "@/app/constants";
 import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
-import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import type { ValidatedReservationFormInput } from "../models/ValidatedReservationFormInput.interface";
 
 export const VALIDATED_RESERVATION_INPUT = {
   customerName: "RES04 Fixture Reservation",
   date: "2028-02-29",
   durationMinutes: 90,
-  extraIds: [],
   peopleCount: 3,
-  reservationType: RESERVATION_TYPE.RENTAL,
   time: "09:30",
   equipmentCommitment: {
     kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
@@ -24,17 +21,6 @@ export const VALIDATED_UNIT_RESERVATION_INPUT = {
     kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
     unitId: "e2400000-0000-4000-8000-000000000102",
   },
-} satisfies ValidatedReservationFormInput;
-
-export const VALIDATED_RESERVATION_WITH_EXTRAS_INPUT = {
-  ...VALIDATED_UNIT_RESERVATION_INPUT,
-  extraIds: ["e2400000-0000-4000-8000-000000000401"],
-} satisfies ValidatedReservationFormInput;
-
-export const VALIDATED_TOUR_RESERVATION_INPUT = {
-  ...VALIDATED_RESERVATION_INPUT,
-  guideIds: ["e2400000-0000-4000-8000-000000000301"],
-  reservationType: RESERVATION_TYPE.TOUR,
 } satisfies ValidatedReservationFormInput;
 
 export const CREATED_RESERVATION_ID =

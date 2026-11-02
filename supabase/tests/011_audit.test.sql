@@ -12,8 +12,6 @@ values ('11111111-1111-1111-1111-111111111111', 'admin', 'Administración', 'adm
 insert into workers (id, username, full_name, base_role)
 values ('22222222-2222-2222-2222-222222222222', 'ismael', 'Ismael', 'operaciones'),
        ('33333333-3333-3333-3333-333333333333', 'celso', 'Celso', 'reservas');
-insert into worker_marks (worker_id, mark, granted_by)
-values ('22222222-2222-2222-2222-222222222222', 'guia', '11111111-1111-1111-1111-111111111111');
 
 insert into equipment_categories
   (id, name, tracking_mode, is_reservable, default_duration_minutes, created_by, updated_by)
@@ -41,22 +39,22 @@ values ('aaaaaaaa-0000-0000-0000-000000000002', 'Chaleco', 'by_quantity',
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 
 set local role authenticated;
-set local request.jwt.claims to '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}';
+set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated"}';
 
 insert into reservations
   (id, customer_name, people_count, type, starts_at, duration_minutes, created_by, updated_by)
-values ('dddddddd-0000-0000-0000-000000000001', 'Maria', 2, 'tour',
+values ('dddddddd-0000-0000-0000-000000000001', 'Maria', 2, 'rental',
         '2026-09-05 10:00:00+00', 60,
         '22222222-2222-2222-2222-222222222222', '22222222-2222-2222-2222-222222222222');
 
 select is(
   (select created_by from reservations where id = 'dddddddd-0000-0000-0000-000000000001'),
-  '11111111-1111-1111-1111-111111111111'::uuid,
+  '33333333-3333-3333-3333-333333333333'::uuid,
   'forma created_by+updated_by: created_by sale de auth.uid(), no del cliente'
 );
 select is(
   (select updated_by from reservations where id = 'dddddddd-0000-0000-0000-000000000001'),
-  '11111111-1111-1111-1111-111111111111'::uuid,
+  '33333333-3333-3333-3333-333333333333'::uuid,
   'forma created_by+updated_by: updated_by tambien se firma al insertar'
 );
 
@@ -75,7 +73,7 @@ select is(
 );
 select is(
   (select created_by from reservations where id = 'dddddddd-0000-0000-0000-000000000001'),
-  '11111111-1111-1111-1111-111111111111'::uuid,
+  '33333333-3333-3333-3333-333333333333'::uuid,
   'created_by sobrevive una actualizacion: sigue siendo quien creo la fila'
 );
 
@@ -123,18 +121,21 @@ select is(
   'forma granted_by+granted_at: granted_by sale de auth.uid(), no del cliente'
 );
 
+update workers set last_work_area = 'operaciones'
+where id = '22222222-2222-2222-2222-222222222222';
+
 reset role;
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated"}';
 
 insert into reservation_guides (reservation_id, worker_id, assigned_by)
-values ('dddddddd-0000-0000-0000-000000000001', '22222222-2222-2222-2222-222222222222',
+values ('dddddddd-0000-0000-0000-000000000001', '11111111-1111-1111-1111-111111111111',
         '11111111-1111-1111-1111-111111111111');
 
 select is(
   (select assigned_by from reservation_guides
    where reservation_id = 'dddddddd-0000-0000-0000-000000000001'
-     and worker_id = '22222222-2222-2222-2222-222222222222'),
+     and worker_id = '11111111-1111-1111-1111-111111111111'),
   '33333333-3333-3333-3333-333333333333'::uuid,
   'forma assigned_by+assigned_at: assigned_by sale de auth.uid(), no del cliente'
 );

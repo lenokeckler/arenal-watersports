@@ -3,7 +3,7 @@ import { E2E_RESERVATION_DETAIL_FIXTURE as fixture } from "../constants/E2eReser
 import type { ReservationDetailFixture } from "../models/ReservationDetailFixture.interface";
 import type { ReservationDetailFixtureCatalog } from "../models/ReservationDetailFixtureCatalog.interface";
 import type { ReservationDetailFixtureResources } from "../models/ReservationDetailFixtureResources.interface";
-import { createLocalPredefinedComboFixtureClient } from "./createLocalPredefinedComboFixtureClient";
+import { createServiceRoleSupabaseClient } from "@/app/services/supabase";
 import { deleteReservationDetailFixture } from "./deleteReservationDetailFixture";
 import { insertReservationDetailFixture } from "./insertReservationDetailFixture";
 import { loadReservationDetailFixtureCatalog } from "./loadReservationDetailFixtureCatalog";
@@ -30,7 +30,7 @@ const createFixtureCustomerName = (
 
 const insertFixtureWithCleanup = async (
   supabase: ReturnType<
-    typeof createLocalPredefinedComboFixtureClient
+    typeof createServiceRoleSupabaseClient
   >,
   resources: ReservationDetailFixtureResources,
   customerName: string
@@ -53,7 +53,7 @@ const insertFixtureWithCleanup = async (
 const createFixtureCleanup =
   (
     supabase: ReturnType<
-      typeof createLocalPredefinedComboFixtureClient
+      typeof createServiceRoleSupabaseClient
     >,
     reservationId: string
   ): (() => Promise<void>) =>
@@ -85,8 +85,7 @@ const mapFixture = (
 
 export const createReservationDetailFixture =
   async (): Promise<ReservationDetailFixture> => {
-    const supabase =
-      createLocalPredefinedComboFixtureClient();
+    const supabase = createServiceRoleSupabaseClient();
     const catalog =
       await loadReservationDetailFixtureCatalog(supabase);
     const resources = createFixtureResources(catalog);
