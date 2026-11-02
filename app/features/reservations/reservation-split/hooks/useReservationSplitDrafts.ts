@@ -5,22 +5,19 @@ import type { NullableRef } from "@/app/types";
 import { RESERVATION_SPLIT_DRAFT } from "../constants/ReservationSplitDraft.constants";
 import type { ReservationSplit } from "../models/ReservationSplit.interface";
 import type { ReservationSplitDepartureMax } from "../models/ReservationSplitDepartureMax.interface";
+import type { ReservationSplitDraftsApi } from "../models/ReservationSplitDraftsApi.interface";
 import type { ReservationSplitDraft } from "../models/ReservationSplitDraft.interface";
 import { buildReservationSplitDraft } from "../utils/buildReservationSplitDraft";
 import { buildReservationSplitInitialState } from "../utils/buildReservationSplitInitialState";
 import { canAddReservationSplitDeparture } from "../utils/canAddReservationSplitDeparture";
+import { clampReservationSplitValue } from "../utils/clampReservationSplitValue";
+import { releaseReservationSplitUnits } from "../utils/releaseReservationSplitUnits";
 import { resolveReservationSplitDepartureMax } from "../utils/resolveReservationSplitDepartureMax";
 import { resolveReservationSplitRemainder } from "../utils/resolveReservationSplitRemainder";
 
-const clamp = (
-  value: number,
-  minimum: number,
-  maximum: number
-): number => Math.min(Math.max(value, minimum), maximum);
-
 export const useReservationSplitDrafts = (
   split: ReservationSplit
-) => {
+): ReservationSplitDraftsApi => {
   const nextKey = useRef(
     RESERVATION_SPLIT_DRAFT.FIRST_ADDED_KEY
   );
@@ -71,9 +68,9 @@ export const useReservationSplitDrafts = (
   ): void =>
     updateDraft(key, (draft, max) => ({
       ...draft,
-      peopleCount: clamp(
+      peopleCount: clampReservationSplitValue(
         draft.peopleCount + delta,
-        RESERVATION_SPLIT_DRAFT.MIN_PEOPLE_COUNT,
+        RESERVATION_SPLIT_DRAFT.MIN_PEOPLE,
         max.peopleCount
       ),
     }));
@@ -89,7 +86,7 @@ export const useReservationSplitDrafts = (
             ...draft,
             quantities: {
               ...draft.quantities,
-              [itemId]: clamp(
+              [itemId]: clampReservationSplitValue(
                 draft.quantities[itemId] + delta,
                 RESERVATION_SPLIT_DRAFT.NONE,
                 max.quantities[itemId]
@@ -123,8 +120,7 @@ export const useReservationSplitDrafts = (
         },
       };
       return resolveReservationSplitRemainder(split, next)
-        .pieces <
-        RESERVATION_SPLIT_DRAFT.MIN_REMAINING_PIECES
+        .pieces < RESERVATION_SPLIT_DRAFT.MIN_PIECES
         ? current
         : next;
     });
@@ -155,13 +151,9 @@ export const useReservationSplitDrafts = (
             drafts: current.drafts.filter(
               (draft) => draft.key !== key
             ),
-            unitAssignments: Object.fromEntries(
-              Object.entries(current.unitAssignments).map(
-                ([unitId, assignedKey]) => [
-                  unitId,
-                  assignedKey === key ? null : assignedKey,
-                ]
-              )
+            unitAssignments: releaseReservationSplitUnits(
+              current.unitAssignments,
+              key
             ),
           }
         : current

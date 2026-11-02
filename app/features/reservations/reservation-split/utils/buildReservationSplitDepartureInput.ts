@@ -19,8 +19,8 @@ export const buildReservationSplitDepartureInput = (
       .filter(
         ([, departureKey]) => departureKey === draft.key
       )
-      .map(([itemId]) => ({
-        itemId,
+      .map(([unitId]) => ({
+        itemId: unitId,
         quantity: RESERVATION_SPLIT_LIMITS.UNIT_PIECES,
       })),
   ],

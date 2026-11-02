@@ -9,6 +9,7 @@ import type { ReservationSplitDraftsState } from "../models/ReservationSplitDraf
 import type { ReservationSplitErrors } from "../models/ReservationSplitErrors.interface";
 import type { ReservationSplitRemainder } from "../models/ReservationSplitRemainder.interface";
 import { buildReservationSplitDepartureInput } from "./buildReservationSplitDepartureInput";
+import { hasReservationSplitErrors } from "./hasReservationSplitErrors";
 import { resolveReservationSplitRemainder } from "./resolveReservationSplitRemainder";
 import { validateReservationSplitDeparture } from "./validateReservationSplitInput";
 
@@ -17,12 +18,12 @@ const resolveOriginalError = (
 ): NullableUndefined<string> => {
   if (
     remainder.peopleCount <
-    RESERVATION_SPLIT_DRAFT.MIN_REMAINING_PEOPLE
+    RESERVATION_SPLIT_DRAFT.MIN_PEOPLE
   ) {
     return RESERVATION_SPLIT_FEEDBACK_COPY.ORIGINAL_PEOPLE_MIN;
   }
   return remainder.pieces <
-    RESERVATION_SPLIT_DRAFT.MIN_REMAINING_PIECES
+    RESERVATION_SPLIT_DRAFT.MIN_PIECES
     ? RESERVATION_SPLIT_FEEDBACK_COPY.ORIGINAL_EQUIPMENT_MIN
     : undefined;
 };
@@ -43,7 +44,7 @@ export const validateReservationSplitDrafts = (
     resolveReservationSplitRemainder(split, state)
   );
   const hasDepartureErrors = departures.some(
-    (errors) => Object.keys(errors).length > 0
+    hasReservationSplitErrors
   );
 
   return original || hasDepartureErrors

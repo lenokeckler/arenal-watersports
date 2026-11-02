@@ -18,7 +18,7 @@ export const resolveReservationSplitDepartureMax = (
 ): ReservationSplitDepartureMax => {
   const giveablePieces = resolveGiveable(
     remainder.pieces,
-    RESERVATION_SPLIT_DRAFT.MIN_REMAINING_PIECES
+    RESERVATION_SPLIT_DRAFT.MIN_PIECES
   );
 
   return {
@@ -26,7 +26,7 @@ export const resolveReservationSplitDepartureMax = (
       draft.peopleCount +
       resolveGiveable(
         remainder.peopleCount,
-        RESERVATION_SPLIT_DRAFT.MIN_REMAINING_PEOPLE
+        RESERVATION_SPLIT_DRAFT.MIN_PEOPLE
       ),
     quantities: Object.fromEntries(
       Object.entries(draft.quantities).map(

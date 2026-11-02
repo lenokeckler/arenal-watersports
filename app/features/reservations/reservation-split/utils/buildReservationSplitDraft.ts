@@ -9,7 +9,7 @@ export const buildReservationSplitDraft = (
   key: string
 ): ReservationSplitDraft => ({
   key,
-  peopleCount: RESERVATION_SPLIT_DRAFT.INITIAL_PEOPLE_COUNT,
+  peopleCount: RESERVATION_SPLIT_DRAFT.MIN_PEOPLE,
   quantities: Object.fromEntries(
     split.items
       .filter(
@@ -18,7 +18,7 @@ export const buildReservationSplitDraft = (
       )
       .map((item) => [
         item.id,
-        RESERVATION_SPLIT_DRAFT.INITIAL_QUANTITY,
+        RESERVATION_SPLIT_DRAFT.NONE,
       ])
   ),
   time: STRING.Empty,

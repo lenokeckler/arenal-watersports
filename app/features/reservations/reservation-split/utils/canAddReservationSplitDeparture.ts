@@ -17,10 +17,9 @@ export const canAddReservationSplitDeparture = (
 
   return (
     remainder.peopleCount >
-      RESERVATION_SPLIT_DRAFT.MIN_REMAINING_PEOPLE &&
+      RESERVATION_SPLIT_DRAFT.MIN_PEOPLE &&
     remainder.pieces -
-      emptyDrafts *
-        RESERVATION_SPLIT_DRAFT.NEW_DEPARTURE_MIN_PIECES >
-      RESERVATION_SPLIT_DRAFT.MIN_REMAINING_PIECES
+      emptyDrafts * RESERVATION_SPLIT_DRAFT.MIN_PIECES >
+      RESERVATION_SPLIT_DRAFT.MIN_PIECES
   );
 };
