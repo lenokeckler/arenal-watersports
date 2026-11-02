@@ -2991,6 +2991,7 @@ export type Database = {
         Args: {
           p_category_id: string;
           p_ends_at: string;
+          p_exclude_reservation?: string;
           p_starts_at: string;
         };
         Returns: {

@@ -5,7 +5,7 @@ export const RESERVATION_EDIT_COPY = {
   COMBO_LOCKED:
     "El equipo de un combo no se cambia; si el paquete cambió, cancele esta reserva y cree una nueva.",
   DESCRIPTION:
-    "Actualice la cantidad de personas, la hora, el equipo o la duración.",
+    "Cambie la cantidad de personas, la hora, la duración o el equipo.",
   LAST_EDIT: "Última modificación:",
   LAST_EDIT_SEPARATOR: " · ",
   MULTIPLE_ITEMS_LOCKED:

@@ -6,6 +6,7 @@ import type { ReservationEdit } from "../models/ReservationEdit.interface";
 import { mapReservationEdit } from "../utils/mapReservationEdit";
 import { buildReservationEditQuery } from "./buildReservationEditQuery";
 import { getAuthorizedReservationFormClient } from "./getAuthorizedReservationFormClient";
+import { getReservationLastEditorName } from "./getReservationLastEditorName";
 
 export const getReservationEdit = async (
   reservationId: string
@@ -24,5 +25,14 @@ export const getReservationEdit = async (
     error,
     RESERVATION_EDIT_QUERY.READ_OPERATION
   );
-  return row && mapReservationEdit(row);
+  if (!row) {
+    return null;
+  }
+  return mapReservationEdit(
+    row,
+    await getReservationLastEditorName(
+      supabase,
+      row.updated_by
+    )
+  );
 };

@@ -4,7 +4,7 @@ import { FORM_FIELD_VARIANT } from "@/app/components/form-field/constants/FormFi
 import Text from "@/app/components/text/Text";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
 import { RESERVATION_FORM_FIELD_ID } from "../constants/ReservationFormUi.constants";
-import type { ReservationFormValuesProps } from "../models/ReservationFormValuesProps.interface";
+import type { ReservationCustomerScheduleFieldsProps } from "../models/ReservationCustomerScheduleFieldsProps.interface";
 import {
   RESERVATION_FORM_FIELD_CLASS,
   RESERVATION_FORM_FIELD_WIDE_CLASS,
@@ -14,26 +14,29 @@ import {
 import ReservationDurationSelector from "./ReservationDurationSelector";
 
 const ReservationCustomerScheduleFields = ({
+  hidesCustomerAndDate = false,
   viewModel,
-}: ReservationFormValuesProps): React.JSX.Element => (
+}: ReservationCustomerScheduleFieldsProps): React.JSX.Element => (
   <>
-    <div className={RESERVATION_FORM_FIELD_WIDE_CLASS}>
-      <FormField
-        id={RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}
-        name={RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}
-        label={RESERVATION_FORM_UI_COPY.CUSTOMER_NAME}
-        classNameField={RESERVATION_FORM_INPUT_CLASS}
-        value={viewModel.values.customerName}
-        onChange={(event) =>
-          viewModel.handleCustomerNameChange(
-            event.target.value
-          )
-        }
-        error={viewModel.errors.customerName}
-        showErrorText
-        variant={FORM_FIELD_VARIANT.GLASS}
-      />
-    </div>
+    {!hidesCustomerAndDate && (
+      <div className={RESERVATION_FORM_FIELD_WIDE_CLASS}>
+        <FormField
+          id={RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}
+          name={RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}
+          label={RESERVATION_FORM_UI_COPY.CUSTOMER_NAME}
+          classNameField={RESERVATION_FORM_INPUT_CLASS}
+          value={viewModel.values.customerName}
+          onChange={(event) =>
+            viewModel.handleCustomerNameChange(
+              event.target.value
+            )
+          }
+          error={viewModel.errors.customerName}
+          showErrorText
+          variant={FORM_FIELD_VARIANT.GLASS}
+        />
+      </div>
+    )}
     <div className={RESERVATION_FORM_FIELD_CLASS}>
       <FormField
         id={RESERVATION_FORM_FIELD_ID.PEOPLE_COUNT}
@@ -52,22 +55,24 @@ const ReservationCustomerScheduleFields = ({
         variant={FORM_FIELD_VARIANT.GLASS}
       />
     </div>
-    <div className={RESERVATION_FORM_FIELD_CLASS}>
-      <FormField
-        id={RESERVATION_FORM_FIELD_ID.DATE}
-        name={RESERVATION_FORM_FIELD_ID.DATE}
-        label={RESERVATION_FORM_UI_COPY.DATE}
-        classNameField={RESERVATION_FORM_INPUT_CLASS}
-        type={INPUT_TYPES.DATE}
-        value={viewModel.values.date}
-        onChange={(event) =>
-          viewModel.handleDateChange(event.target.value)
-        }
-        error={viewModel.errors.date}
-        showErrorText
-        variant={FORM_FIELD_VARIANT.GLASS}
-      />
-    </div>
+    {!hidesCustomerAndDate && (
+      <div className={RESERVATION_FORM_FIELD_CLASS}>
+        <FormField
+          id={RESERVATION_FORM_FIELD_ID.DATE}
+          name={RESERVATION_FORM_FIELD_ID.DATE}
+          label={RESERVATION_FORM_UI_COPY.DATE}
+          classNameField={RESERVATION_FORM_INPUT_CLASS}
+          type={INPUT_TYPES.DATE}
+          value={viewModel.values.date}
+          onChange={(event) =>
+            viewModel.handleDateChange(event.target.value)
+          }
+          error={viewModel.errors.date}
+          showErrorText
+          variant={FORM_FIELD_VARIANT.GLASS}
+        />
+      </div>
+    )}
     <div className={RESERVATION_FORM_FIELD_CLASS}>
       <FormField
         id={RESERVATION_FORM_FIELD_ID.TIME}

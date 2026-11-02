@@ -10,6 +10,7 @@ export interface ReservationEdit {
   equipmentLock: ReservationEquipmentLock;
   id: string;
   isEditable: boolean;
+  lastEditLabel: string;
   lastEditedAt: string;
   peopleCount: number;
   time: string;
