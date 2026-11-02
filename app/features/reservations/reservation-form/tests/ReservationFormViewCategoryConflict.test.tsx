@@ -57,12 +57,10 @@ describe("ReservationFormView category conflict warning", () => {
     });
     vi.mocked(
       getReservationCategoryAvailabilityAction
-    ).mockResolvedValue(
-      {
-        ...RESERVATION_CATEGORY_AVAILABILITY_ROW,
-        free: 2,
-      }
-    );
+    ).mockResolvedValue({
+      ...RESERVATION_CATEGORY_AVAILABILITY_ROW,
+      free: 2,
+    });
     vi.mocked(
       getReservationCategoryConflictsAction
     ).mockResolvedValue([
@@ -103,12 +101,10 @@ describe("ReservationFormView category conflict warning", () => {
     });
     vi.mocked(
       getReservationCategoryAvailabilityAction
-    ).mockResolvedValue(
-      {
-        ...RESERVATION_CATEGORY_AVAILABILITY_ROW,
-        free: 2,
-      }
-    );
+    ).mockResolvedValue({
+      ...RESERVATION_CATEGORY_AVAILABILITY_ROW,
+      free: 2,
+    });
     vi.mocked(
       getReservationCategoryConflictsAction
     ).mockResolvedValue([
@@ -144,12 +140,10 @@ describe("ReservationFormView category conflict warning", () => {
     });
     vi.mocked(
       getReservationCategoryAvailabilityAction
-    ).mockResolvedValue(
-      {
-        ...RESERVATION_CATEGORY_AVAILABILITY_ROW,
-        free: 2,
-      }
-    );
+    ).mockResolvedValue({
+      ...RESERVATION_CATEGORY_AVAILABILITY_ROW,
+      free: 2,
+    });
     vi.mocked(
       getReservationCategoryConflictsAction
     ).mockRejectedValue(new Error("Lookup unavailable"));
