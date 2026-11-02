@@ -7,4 +7,6 @@ export interface ReservationDetailFixture {
   guideName: string;
   id: string;
   secondCategoryName: string;
+  workerPassword: string;
+  workerUsername: string;
 }
