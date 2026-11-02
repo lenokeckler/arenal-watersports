@@ -40,5 +40,7 @@ export const PATHS = {
     DEPOSITS: "/reservations/deposits",
     INCOME: "/reservations/income",
     NEW: "/reservations/new",
+    ROOT: "/reservations",
+    SPLIT_SEGMENT: "split",
   },
 } as const;
