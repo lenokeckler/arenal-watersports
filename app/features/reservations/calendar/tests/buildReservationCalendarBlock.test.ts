@@ -15,6 +15,7 @@ describe("complete reservation information", (): void => {
     const block = buildReservationCalendarBlock(entry);
     expect(block.customerName).toBe(entry.customerName);
     expect(block.id).toBe(entry.id);
+    expect(block.status).toBe(entry.status);
     expect(block.equipmentLabel).toBe(expected.EQUIPMENT);
     expect(block.scheduledLabel).toBe(expected.SCHEDULED);
     expect(entry).toEqual(original);

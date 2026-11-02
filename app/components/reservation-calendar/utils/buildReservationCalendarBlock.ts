@@ -79,5 +79,6 @@ export const buildReservationCalendarBlock = (
     guides: entry.guides,
     id: entry.id,
     scheduledLabel,
+    status: entry.status,
   };
 };
