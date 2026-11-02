@@ -11,7 +11,6 @@ import {
   RESERVATION_SPLIT_FIELD_ID,
   RESERVATION_SPLIT_FOCUS,
 } from "../constants/ReservationSplitUi.constants";
-import { useReservationSplitAlertFocus } from "../hooks/useReservationSplitAlertFocus";
 import { RESERVATION_SPLIT_UI_COPY } from "../constants/ReservationSplitUiCopy.constants";
 import type { ReservationSplitActionsProps } from "../models/ReservationSplitActionsProps.interface";
 import {
@@ -27,7 +26,6 @@ const ReservationSplitActions = ({
   viewModel,
 }: ReservationSplitActionsProps): React.JSX.Element => {
   const noteId = useId();
-  useReservationSplitAlertFocus(viewModel.formError);
   const isAddBlocked = !viewModel.canAddDeparture;
 
   return (

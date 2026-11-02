@@ -7,6 +7,7 @@ import { validateReservationSplitDrafts } from "../utils/validateReservationSpli
 import { RESERVATION_SPLIT_DRAFT } from "../constants/ReservationSplitDraft.constants";
 import { RESERVATION_SPLIT_UI_COPY } from "../constants/ReservationSplitUiCopy.constants";
 import { useReservationSplitDepartureFocus } from "./useReservationSplitDepartureFocus";
+import { useReservationSplitErrorFocus } from "./useReservationSplitErrorFocus";
 import { useReservationSplitDrafts } from "./useReservationSplitDrafts";
 import { useReservationSplitSubmission } from "./useReservationSplitSubmission";
 
@@ -16,6 +17,11 @@ export const useReservationSplitViewModel = (
   const drafts = useReservationSplitDrafts(split);
   const submission = useReservationSplitSubmission();
   const focus = useReservationSplitDepartureFocus(
+    drafts.state.drafts
+  );
+  useReservationSplitErrorFocus(
+    submission.errors,
+    submission.formError,
     drafts.state.drafts
   );
   const isSubmitDisabled =

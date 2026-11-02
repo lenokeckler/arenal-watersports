@@ -17,6 +17,7 @@ vi.mock("../actions/splitReservationAction", () => ({
 }));
 
 const FIRST_DEPARTURE_NUMBER = 2;
+const FIRST_DEPARTURE_INDEX = 0;
 const ADDED_DEPARTURE_NUMBER = 3;
 
 const getHeading = (departureNumber: number) =>
@@ -77,5 +78,26 @@ describe("ReservationSplitView focus and announcements", () => {
         ADDED_DEPARTURE_NUMBER
       )
     );
+  });
+
+  it("focuses the first invalid control and not the alert when the form is incomplete", async () => {
+    render(<ReservationSplitView split={EXPECTED_SPLIT} />);
+
+    await userEvent.click(
+      screen.getByRole(ARIA_ROLE.BUTTON, {
+        name: RESERVATION_SPLIT_UI_COPY.SUBMIT,
+      })
+    );
+
+    expect(
+      screen.getAllByLabelText(
+        new RegExp(
+          RESERVATION_SPLIT_UI_COPY.LABEL_START_TIME
+        )
+      )[FIRST_DEPARTURE_INDEX]
+    ).toHaveFocus();
+    expect(
+      screen.queryByRole(ARIA_ROLE.ALERT)
+    ).not.toBeInTheDocument();
   });
 });

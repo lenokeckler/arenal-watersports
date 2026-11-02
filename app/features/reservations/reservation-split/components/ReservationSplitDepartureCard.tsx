@@ -64,6 +64,7 @@ const ReservationSplitDepartureCard = (
               viewModel.remainder
             ).peopleCount
           }
+          controlId={`${RESERVATION_SPLIT_FIELD_ID.PEOPLE_PREFIX}${draft.key}`}
           departureNumber={departureNumber}
           error={errors?.peopleCount}
           isFrozen={viewModel.isPending}
