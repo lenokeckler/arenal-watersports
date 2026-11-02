@@ -129,7 +129,9 @@ export const COSTA_RICA_MIDNIGHT_CASES = [
 ] as const;
 
 export const SPLIT_DRAFT_KEY = "draft-1";
+export const SPLIT_ORIGINAL_TIME = "14:30";
 export const SPLIT_DRAFT_TIME = "16:00";
+export const SPLIT_UNIT_ERROR = "Elija una salida.";
 
 export const SPLIT_UNIT_ITEM: ReservationSplitItem = {
   categoryName: SPLIT_BOAT_CATEGORY.name,
