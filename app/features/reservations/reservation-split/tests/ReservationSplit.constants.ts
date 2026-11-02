@@ -147,3 +147,11 @@ export const SPLIT_DRAFT: ReservationSplitDraft = {
 };
 
 export const SPLIT_DEPARTURE_NUMBER = 2;
+
+export const SPLIT_DURATION_CASES = [
+  [30, "30 min"],
+  [60, "1 hora"],
+  [90, "1 h 30 min"],
+  [150, "2 h 30 min"],
+  [1440, "24 horas"],
+] as const;

@@ -1,6 +1,12 @@
 export const RESERVATION_SPLIT_UI_COPY = {
   DURATION_HOURS: (hours: number): string =>
     hours === 1 ? "1 hora" : `${hours} horas`,
+  DURATION_HOURS_MINUTES: (
+    hours: number,
+    minutes: number
+  ): string => `${hours} h ${minutes} min`,
+  DURATION_MINUTES: (minutes: number): string =>
+    `${minutes} min`,
   LABEL_CUSTOMER: "Cliente",
   LABEL_DATE: "Fecha",
   LABEL_DURATION: "Duración",

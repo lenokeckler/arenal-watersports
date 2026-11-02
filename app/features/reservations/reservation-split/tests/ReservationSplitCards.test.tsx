@@ -2,12 +2,14 @@ import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import ReservationSplitOriginalCard from "../components/ReservationSplitOriginalCard";
 import { RESERVATION_SPLIT_UI_COPY } from "../constants/ReservationSplitUiCopy.constants";
+import { formatReservationSplitDuration } from "../utils/formatReservationSplitDuration";
 import { buildReservationSplitViewModel } from "./buildReservationSplitViewModel";
 import {
   EXPECTED_SPLIT,
   SPLIT_DEPARTURE_NUMBER,
   SPLIT_DRAFT,
   SPLIT_DRAFT_KEY,
+  SPLIT_DURATION_CASES,
   SPLIT_UNIT_ITEM,
 } from "./ReservationSplit.constants";
 import { createReservationSplitCardsPage } from "./ReservationSplitCards.page";
@@ -70,4 +72,15 @@ describe("ReservationSplitOriginalCard", () => {
       )
     ).toBeVisible();
   });
+});
+
+describe("formatReservationSplitDuration", () => {
+  it.each(SPLIT_DURATION_CASES)(
+    "formats %i minutes as %s",
+    (minutes, expected) => {
+      expect(formatReservationSplitDuration(minutes)).toBe(
+        expected
+      );
+    }
+  );
 });
