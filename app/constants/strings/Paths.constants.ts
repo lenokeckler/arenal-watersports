@@ -1,5 +1,6 @@
 export const PATHS = {
   BOARD: "/board",
+  BOARD_CATEGORIES: "/board/categories",
   HOME: "/",
   MODE: "/mode",
   ACCESS: {

@@ -20,3 +20,12 @@ export const CATEGORY_UNIT_RETURN_DATE_FORMAT = {
   LOCALE: string;
   OPTIONS: Intl.DateTimeFormatOptions;
 };
+
+export const CATEGORY_UNITS_SKELETON = {
+  ROW_COUNT: 4,
+} as const;
+
+export const CATEGORY_UNITS_SKELETON_INDEXES = Array.from(
+  { length: CATEGORY_UNITS_SKELETON.ROW_COUNT },
+  (_, index) => index
+);
