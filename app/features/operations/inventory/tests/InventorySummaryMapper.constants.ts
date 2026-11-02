@@ -10,6 +10,7 @@ export const INVENTORY_UNIT_SUMMARY_ROW: InventorySummaryDatabaseRow =
     quantity_available: 2,
     quantity_damaged: 1,
     quantity_in_maintenance: 1,
+    quantity_in_use: 1,
     quantity_in_repair: 0,
     quantity_total: 4,
     tracking_mode: INVENTORY_TRACKING_MODE.BY_UNIT,
@@ -23,6 +24,7 @@ export const INVENTORY_QUANTITY_SUMMARY_ROW: InventorySummaryDatabaseRow =
     quantity_available: 10,
     quantity_damaged: 2,
     quantity_in_maintenance: 0,
+    quantity_in_use: 0,
     quantity_in_repair: 3,
     quantity_total: 15,
     tracking_mode: INVENTORY_TRACKING_MODE.BY_QUANTITY,
@@ -36,6 +38,7 @@ export const INVENTORY_BOAT_SUMMARY_ROW: InventorySummaryDatabaseRow =
     quantity_available: 2,
     quantity_damaged: 0,
     quantity_in_maintenance: 0,
+    quantity_in_use: 0,
     quantity_in_repair: 0,
     quantity_total: 2,
     tracking_mode: INVENTORY_TRACKING_MODE.BY_UNIT,
@@ -56,6 +59,7 @@ export const INVALID_INVENTORY_SUMMARY_ROW: InventorySummaryDatabaseRow =
     quantity_available: null,
     quantity_damaged: null,
     quantity_in_maintenance: null,
+    quantity_in_use: null,
     quantity_in_repair: null,
     quantity_total: null,
     tracking_mode: null,
@@ -68,6 +72,7 @@ export const REQUIRED_INVENTORY_SUMMARY_FIELDS: (keyof InventorySummaryDatabaseR
     "quantity_available",
     "quantity_damaged",
     "quantity_in_maintenance",
+    "quantity_in_use",
     "quantity_in_repair",
     "quantity_total",
     "tracking_mode",
@@ -77,6 +82,7 @@ export const EXPECTED_INVENTORY_SUMMARIES: InventoryCategorySummary[] =
   [
     {
       id: "aaaaaaaa-0000-0000-0000-000000000001",
+      inUse: 1,
       name: "Jet Ski",
       trackingMode: INVENTORY_TRACKING_MODE.BY_UNIT,
       available: 2,
@@ -87,6 +93,7 @@ export const EXPECTED_INVENTORY_SUMMARIES: InventoryCategorySummary[] =
     },
     {
       id: "aaaaaaaa-0000-0000-0000-000000000002",
+      inUse: 0,
       name: "Chaleco",
       trackingMode: INVENTORY_TRACKING_MODE.BY_QUANTITY,
       available: 10,
@@ -97,6 +104,7 @@ export const EXPECTED_INVENTORY_SUMMARIES: InventoryCategorySummary[] =
     },
     {
       id: "aaaaaaaa-0000-0000-0000-000000000003",
+      inUse: 0,
       name: "Lancha",
       trackingMode: INVENTORY_TRACKING_MODE.BY_UNIT,
       available: 2,

@@ -1,13 +1,32 @@
 import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE, PATHS } from "@/app/constants";
+import { LIST_PAGINATION_COPY } from "@/app/components/list-pagination/constants/ListPaginationCopy.constants";
 import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
-import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
-
-const CATEGORY_CARD_SELECTOR = "div:has(> div > h3)";
+import { LIST_PAGINATION } from "@/app/utils/list-pagination/constants/ListPagination.constants";
+import { resolveListPageHref } from "@/app/utils/list-pagination/resolveListPageHref";
+import {
+  E2E_COUNT,
+  HEADING_LEVEL,
+} from "../constants/E2eRuntime.constants";
+import { createCategoryCardOptionsPage } from "./CategoryCardOptions.page";
 
 export const createCategoryListPage = (page: Page) => {
+  const categoryCardOptionsPage =
+    createCategoryCardOptionsPage();
+
+  const goToPage = async (
+    pageNumber: number
+  ): Promise<void> => {
+    await page.goto(
+      resolveListPageHref(
+        PATHS.ADMINISTRATION.CATEGORIES,
+        pageNumber
+      )
+    );
+  };
+
   const goTo = async (): Promise<void> => {
-    await page.goto(PATHS.ADMINISTRATION.CATEGORIES);
+    await goToPage(LIST_PAGINATION.FIRST_PAGE);
   };
 
   const getHeading = (): Locator =>
@@ -17,12 +36,44 @@ export const createCategoryListPage = (page: Page) => {
     });
 
   const getCategoryCard = (categoryName: string): Locator =>
-    page.locator(CATEGORY_CARD_SELECTOR).filter({
+    page.getByRole(ARIA_ROLE.GROUP).filter({
       has: page.getByRole(ARIA_ROLE.HEADING, {
         level: HEADING_LEVEL.CARD,
         name: categoryName,
       }),
     });
+
+  const getNextPageLink = (): Locator =>
+    page.getByRole(ARIA_ROLE.LINK, {
+      name: LIST_PAGINATION_COPY.NEXT,
+    });
+
+  const goToCategory = async (
+    categoryName: string
+  ): Promise<void> => {
+    let pageNumber = LIST_PAGINATION.FIRST_PAGE;
+
+    await goToPage(pageNumber);
+    await getHeading().waitFor();
+
+    while (
+      (await getCategoryCard(categoryName).count()) ===
+        E2E_COUNT.NONE &&
+      (await getNextPageLink().count()) > E2E_COUNT.NONE
+    ) {
+      pageNumber += 1;
+      await goToPage(pageNumber);
+      await getHeading().waitFor();
+    }
+  };
+
+  const openCategoryOptions = async (
+    categoryName: string
+  ): Promise<void> => {
+    await categoryCardOptionsPage.openOptions(
+      getCategoryCard(categoryName)
+    );
+  };
 
   const getCategoryGroupMeta = (
     categoryName: string
@@ -51,11 +102,20 @@ export const createCategoryListPage = (page: Page) => {
       }
     );
 
-  const getCategoryInactivePill = (
+  const getCategoryStatusChip = (
+    categoryName: string,
+    statusLabel: string
+  ): Locator =>
+    getCategoryCard(categoryName).getByText(statusLabel, {
+      exact: true,
+    });
+
+  const getCategoryInactiveChip = (
     categoryName: string
   ): Locator =>
-    getCategoryCard(categoryName).getByText(
-      CATEGORY_CATALOG_COPY.STATUS_PILL_INACTIVE
+    getCategoryStatusChip(
+      categoryName,
+      CATEGORY_CATALOG_COPY.STATUS_LABEL_INACTIVE
     );
 
   const getCategoryCancelButton = (
@@ -96,12 +156,14 @@ export const createCategoryListPage = (page: Page) => {
   const clickCategoryDeleteButton = async (
     categoryName: string
   ): Promise<void> => {
+    await openCategoryOptions(categoryName);
     await getCategoryDeleteButton(categoryName).click();
   };
 
   const clickCategoryMarkInactiveButton = async (
     categoryName: string
   ): Promise<void> => {
+    await openCategoryOptions(categoryName);
     await getCategoryMarkInactiveButton(
       categoryName
     ).click();
@@ -123,12 +185,15 @@ export const createCategoryListPage = (page: Page) => {
 
   return {
     goTo,
+    goToCategory,
     getHeading,
     getCategoryCard,
+    openCategoryOptions,
     getCategoryGroupMeta,
     getCategoryDeleteButton,
     getCategoryMarkInactiveButton,
-    getCategoryInactivePill,
+    getCategoryStatusChip,
+    getCategoryInactiveChip,
     getCategoryCancelButton,
     getCategoryConfirmDeleteButton,
     getCategoryConfirmDeleteMessage,

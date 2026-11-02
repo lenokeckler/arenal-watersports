@@ -4,8 +4,10 @@ import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOpt
 import type { ReservationUnitAvailabilityInput } from "./ReservationUnitAvailabilityInput.interface";
 
 export interface ReservationUnitAvailabilitySyncOptions {
-  retryIndex: number;
   request: ReservationUnitAvailabilityInput;
+  refreshKey: number;
+  requestKey: string;
+  requestWindowKey: string;
   setAvailableQuantity: Dispatch<
     SetStateAction<NullableRef<number>>
   >;
@@ -14,4 +16,7 @@ export interface ReservationUnitAvailabilitySyncOptions {
   >;
   setHasError: Dispatch<SetStateAction<boolean>>;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
+  setResolvedRequestKey: Dispatch<
+    SetStateAction<NullableRef<string>>
+  >;
 }

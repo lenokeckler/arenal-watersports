@@ -24,7 +24,7 @@ test.describe("Work mode", () => {
     await modePage
       .getCard(E2E_RESERVATIONS_AREA_LABEL)
       .click();
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
     await expect(
       modePage.getSwitch(E2E_RESERVATIONS_AREA_LABEL)
     ).toBeVisible();
@@ -44,7 +44,7 @@ test.describe("Work mode", () => {
 
     await context.clearCookies();
     await submitActiveWorkerSignIn(page, activeWorker);
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
     await expect(
       modePage.getSwitch(E2E_OPERATIONS_AREA_LABEL)
     ).toBeVisible();
@@ -55,10 +55,10 @@ test.describe("Work mode", () => {
   }) => {
     const modePage = createWorkModePage(page);
 
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
     await expect(modePage.getSwitchLink()).toHaveCount(0);
     await modePage.goTo();
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
     await expect(
       page.getByText(E2E_WORK_MODE_COPY.HEADING)
     ).toHaveCount(0);

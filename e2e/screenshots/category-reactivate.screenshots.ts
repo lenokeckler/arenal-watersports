@@ -27,7 +27,7 @@ test.describe("Category reactivation screenshots", () => {
 
     try {
       await logInAsAdmin(page);
-      await categoryListPage.goTo();
+      await categoryListPage.goToCategory(categoryName);
       await categoryListPage.clickCategoryMarkInactiveButton(
         categoryName
       );

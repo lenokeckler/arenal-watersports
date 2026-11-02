@@ -21,12 +21,14 @@ test.describe("Category reactivation", () => {
 
     try {
       await logInAsAdmin(page);
-      await categoryListPage.goTo();
+      await categoryListPage.goToCategory(categoryName);
       await categoryListPage.clickCategoryMarkInactiveButton(
         categoryName
       );
       await expect(
-        categoryListPage.getExactInactivePill(categoryName)
+        categoryListPage.getCategoryInactiveChip(
+          categoryName
+        )
       ).toBeVisible();
       await expect(
         categoryListPage.getReactivateButton(categoryName)
@@ -42,7 +44,9 @@ test.describe("Category reactivation", () => {
         )
       ).toBeVisible();
       await expect(
-        categoryListPage.getExactInactivePill(categoryName)
+        categoryListPage.getCategoryInactiveChip(
+          categoryName
+        )
       ).toHaveCount(0);
       await expect(
         categoryListPage.getReactivateButton(categoryName)
