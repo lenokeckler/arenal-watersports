@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import type { NullableRef } from "@/app/types";
 import { createServiceRoleSupabaseClient } from "@/app/services/supabase";
 import {
   E2E_RESERVATION_DETAIL_FIXTURE as fixture,
@@ -94,7 +95,7 @@ const mapFixture = (
   worker: ReservationDetailFixtureAuthWorker,
   cleanup: () => Promise<void>
 ): ReservationDetailFixture => {
-  let splitChildId: string | null = null;
+  let splitChildId: NullableRef<string> = null;
 
   return {
     cancel: async (): Promise<void> => {
