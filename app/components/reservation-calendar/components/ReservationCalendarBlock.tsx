@@ -15,6 +15,7 @@ import {
   RESERVATION_CALENDAR_BLOCK_EQUIPMENT_CLASS,
   RESERVATION_CALENDAR_BLOCK_GROUPS_CLASS,
   RESERVATION_CALENDAR_BLOCK_NAME_CLASS,
+  RESERVATION_CALENDAR_BLOCK_ORIGIN_CLASS,
   RESERVATION_CALENDAR_BLOCK_TIME_CLASS,
   resolveReservationCalendarBlockDetailsClass,
 } from "../styles/ReservationCalendar.styles";
@@ -34,6 +35,13 @@ const ReservationBlockDetails = ({
     <Text className={RESERVATION_CALENDAR_BLOCK_NAME_CLASS}>
       {block.customerName}
     </Text>
+    {block.originLabel ? (
+      <Text
+        className={RESERVATION_CALENDAR_BLOCK_ORIGIN_CLASS}
+      >
+        {block.originLabel}
+      </Text>
+    ) : null}
     <Text
       className={RESERVATION_CALENDAR_BLOCK_EQUIPMENT_CLASS}
     >
@@ -43,6 +51,7 @@ const ReservationBlockDetails = ({
 );
 
 export const ReservationCalendarBlock = ({
+  actions,
   block,
   reserveMobileFabSpace = false,
   showEquipmentImage = true,
@@ -78,5 +87,14 @@ export const ReservationCalendarBlock = ({
       items={block.actualLabels}
       className={RESERVATION_CALENDAR_BLOCK_GROUPS_CLASS}
     />
+    {actions ? (
+      <div
+        className={resolveReservationCalendarBlockDetailsClass(
+          reserveMobileFabSpace
+        )}
+      >
+        {actions}
+      </div>
+    ) : null}
   </Section>
 );

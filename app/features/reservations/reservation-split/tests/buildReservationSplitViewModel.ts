@@ -18,6 +18,7 @@ export const buildReservationSplitViewModel = (
 
   return {
     addDeparture: vi.fn(),
+    announcement: "",
     assignUnit: vi.fn(),
     canAddDeparture: true,
     createdDepartures: [],

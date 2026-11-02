@@ -46,6 +46,7 @@ export const buildReservationCalendarDayContent = (
   }
   return group.blocks.map((block) =>
     createElement(ReservationCalendarBlock, {
+      actions: options.renderBlockActions?.(block),
       block,
       reserveMobileFabSpace:
         options.reserveMobileFabSpace === true,

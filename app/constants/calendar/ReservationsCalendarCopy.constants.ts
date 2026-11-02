@@ -12,6 +12,7 @@ export const RESERVATIONS_CALENDAR_COPY = {
   MISSING_EQUIPMENT: "Equipo pendiente de registrar",
   MISSING_SNAPSHOT:
     "Aún no se ha cargado información de reservas.",
+  ORIGIN: "Salida de",
   PARTIAL_COVERAGE:
     "La información cargada no cubre todo este período.",
   PERIOD_AGENDA: "Agenda de reservas del período",
@@ -35,6 +36,8 @@ export const RESERVATIONS_CALENDAR_COPY = {
   QUANTITY_SEPARATOR: " × ",
   RESERVATION_NAME: "Reserva a nombre de",
   SCHEDULED: "Horario agendado:",
+  SPLIT_RESERVATION: "Dividir",
+  SPLIT_RESERVATION_LABEL: "Dividir reserva de",
   TITLE: "Calendario de reservas",
   UNKNOWN_EXPECTED_RETURN: "Sin hora prevista",
   UNKNOWN_RETURN: "Sin regreso registrado",

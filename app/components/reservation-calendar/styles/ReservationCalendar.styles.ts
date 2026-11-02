@@ -30,6 +30,9 @@ export const RESERVATION_CALENDAR_BLOCK_TIME_CLASS =
 export const RESERVATION_CALENDAR_BLOCK_NAME_CLASS =
   "break-words text-base font-semibold leading-6 text-on-surface";
 
+export const RESERVATION_CALENDAR_BLOCK_ORIGIN_CLASS =
+  "inline-block self-start break-words rounded border border-outline-variant px-1.5 py-0.5 text-xs leading-4 text-on-surface-variant";
+
 export const RESERVATION_CALENDAR_BLOCK_EQUIPMENT_CLASS =
   "break-words text-sm leading-5 text-on-surface-variant";
 

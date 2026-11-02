@@ -4,6 +4,10 @@ import type { ReservationSplit } from "../models/ReservationSplit.interface";
 import type { ReservationSplitViewModel } from "../models/ReservationSplitViewModel.interface";
 import { buildReservationSplitInput } from "../utils/buildReservationSplitInput";
 import { validateReservationSplitDrafts } from "../utils/validateReservationSplitDrafts";
+import { RESERVATION_SPLIT_DRAFT } from "../constants/ReservationSplitDraft.constants";
+import { RESERVATION_SPLIT_UI_COPY } from "../constants/ReservationSplitUiCopy.constants";
+import { useReservationSplitDepartureFocus } from "./useReservationSplitDepartureFocus";
+import { useReservationSplitErrorFocus } from "./useReservationSplitErrorFocus";
 import { useReservationSplitDrafts } from "./useReservationSplitDrafts";
 import { useReservationSplitSubmission } from "./useReservationSplitSubmission";
 
@@ -12,6 +16,14 @@ export const useReservationSplitViewModel = (
 ): ReservationSplitViewModel => {
   const drafts = useReservationSplitDrafts(split);
   const submission = useReservationSplitSubmission();
+  const focus = useReservationSplitDepartureFocus(
+    drafts.state.drafts
+  );
+  useReservationSplitErrorFocus(
+    submission.errors,
+    submission.formError,
+    drafts.state.drafts
+  );
   const isSubmitDisabled =
     submission.isPending ||
     submission.isStale ||
@@ -39,6 +51,34 @@ export const useReservationSplitViewModel = (
       action(...args);
       submission.clearErrors();
     });
+
+  const addDeparture = withClearedErrors(() => {
+    drafts.addDeparture();
+    focus.moveFocus({
+      index: drafts.state.drafts.length,
+      message: RESERVATION_SPLIT_UI_COPY.ANNOUNCE_ADDED(
+        drafts.state.drafts.length +
+          RESERVATION_SPLIT_DRAFT.FIRST_NEW_DEPARTURE_NUMBER
+      ),
+    });
+  });
+
+  const removeDeparture = withClearedErrors(
+    (key: string) => {
+      const index = indexOfDeparture(key);
+      drafts.removeDeparture(key);
+      focus.moveFocus({
+        index: Math.max(
+          index - RESERVATION_SPLIT_DRAFT.MIN_DEPARTURES,
+          RESERVATION_SPLIT_DRAFT.NONE
+        ),
+        message: RESERVATION_SPLIT_UI_COPY.ANNOUNCE_REMOVED(
+          index +
+            RESERVATION_SPLIT_DRAFT.FIRST_NEW_DEPARTURE_NUMBER
+        ),
+      });
+    }
+  );
 
   const setTime: ReservationSplitViewModel["setTime"] =
     whenIdle((key, time) => {
@@ -88,7 +128,8 @@ export const useReservationSplitViewModel = (
 
   return {
     ...drafts,
-    addDeparture: withClearedErrors(drafts.addDeparture),
+    addDeparture,
+    announcement: focus.announcement,
     assignUnit: withClearedErrors(drafts.assignUnit),
     createdDepartures: submission.createdDepartures,
     errors: submission.errors,
@@ -97,9 +138,7 @@ export const useReservationSplitViewModel = (
     isPending: submission.isPending,
     isStale: submission.isStale,
     isSubmitDisabled,
-    removeDeparture: withClearedErrors(
-      drafts.removeDeparture
-    ),
+    removeDeparture,
     setTime,
     stepPeopleCount,
     stepQuantity,
