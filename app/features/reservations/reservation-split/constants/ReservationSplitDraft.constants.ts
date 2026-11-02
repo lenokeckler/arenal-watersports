@@ -1,0 +1,4 @@
+export const RESERVATION_SPLIT_DRAFT = {
+  INITIAL_PEOPLE_COUNT: 1,
+  INITIAL_QUANTITY: 0,
+} as const;
