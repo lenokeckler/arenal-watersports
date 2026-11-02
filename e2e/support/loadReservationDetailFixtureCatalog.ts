@@ -24,27 +24,18 @@ const getRequiredId = <
 const loadWorkers = async (
   supabase: SupabaseClient<Database>
 ): Promise<ReservationDetailFixtureWorkers> => {
-  const [creatorResult, guideResult] = await Promise.all([
-    supabase
-      .from("workers")
-      .select("id, full_name")
-      .eq("username", fixture.CREATED_BY_USERNAME)
-      .maybeSingle(),
-    supabase
-      .from("workers")
-      .select("id, full_name")
-      .eq("username", fixture.GUIDE_USERNAME)
-      .maybeSingle(),
-  ]);
+  const creatorResult = await supabase
+    .from("workers")
+    .select("id, full_name")
+    .eq("username", fixture.CREATED_BY_USERNAME)
+    .maybeSingle();
+  const creator = ensureReservationDetailFixtureLookup(
+    creatorResult,
+    fixture.OPERATION.LOAD_CREATED_BY
+  );
   return {
-    createdBy: ensureReservationDetailFixtureLookup(
-      creatorResult,
-      fixture.OPERATION.LOAD_CREATED_BY
-    ),
-    guide: ensureReservationDetailFixtureLookup(
-      guideResult,
-      fixture.OPERATION.LOAD_GUIDE
-    ),
+    createdBy: creator,
+    guide: creator,
   };
 };
 
