@@ -55,7 +55,10 @@ const StockCountForm = ({
             {errors.form}
           </Text>
         )}
-        <StockCountActions isSubmitting={isSubmitting} />
+        <StockCountActions
+          isSubmitting={isSubmitting}
+          onBack={viewModel.onBack}
+        />
       </div>
     </form>
   );

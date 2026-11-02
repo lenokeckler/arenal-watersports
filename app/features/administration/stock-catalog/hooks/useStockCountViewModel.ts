@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { PATHS } from "@/app/constants";
 import { STOCK_COUNT_VIEW_STATE } from "../constants/StockCountViewState.constants";
 import type { StockCountViewModel } from "../models/StockCountViewModel.interface";
 import type { StockCountViewModelProps } from "../models/StockCountViewModelProps.interface";
@@ -33,6 +34,10 @@ export const useStockCountViewModel = ({
     values: fields.values,
   });
 
+  const onBack = (): void => {
+    router.push(PATHS.ADMINISTRATION.CATEGORIES);
+  };
+
   const onRetry = (): void => {
     router.refresh();
   };
@@ -45,6 +50,7 @@ export const useStockCountViewModel = ({
       fields.values
     ),
     isSubmitting,
+    onBack,
     onRetry,
     onSubmit,
     summary: resolveStockCountSummary(

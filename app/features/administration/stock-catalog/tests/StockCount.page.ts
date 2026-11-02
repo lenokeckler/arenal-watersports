@@ -103,10 +103,13 @@ export const createStockCountPage = () => {
   const getAlert = () =>
     screen.queryByRole(ARIA_ROLE.ALERT);
 
-  const getBackLink = () =>
-    screen.queryByRole(ARIA_ROLE.LINK, {
-      name: STOCK_COUNT_COPY.BACK_TO_CATEGORIES_LINK,
+  const getBackButton = () =>
+    screen.queryByRole(ARIA_ROLE.BUTTON, {
+      name: STOCK_COUNT_COPY.BACK_TO_CATEGORIES_BUTTON,
     });
+
+  const clickBack = () =>
+    user.click(getBackButton() as HTMLElement);
 
   const getHeading = (title: string) =>
     screen.queryByRole(ARIA_ROLE.HEADING, { name: title });
@@ -136,7 +139,8 @@ export const createStockCountPage = () => {
   return {
     clickRetry,
     getAlert,
-    getBackLink,
+    clickBack,
+    getBackButton,
     decrease,
     getControl,
     getQuantityBlock,
