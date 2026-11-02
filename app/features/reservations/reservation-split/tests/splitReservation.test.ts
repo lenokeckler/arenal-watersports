@@ -7,7 +7,7 @@ import {
   vi,
 } from "vitest";
 import { createClient } from "@supabase/supabase-js";
-import { SUPABASE } from "@/app/constants";
+import { API, SUPABASE } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
 import type { Database } from "@/app/types";
 import { RESERVATION_SPLIT_ERROR } from "../constants/ReservationSplitError.constants";
@@ -77,7 +77,7 @@ describe("splitReservation", () => {
       SPLIT_RPC_URL,
       expect.objectContaining({
         body: JSON.stringify({ p_payload: SPLIT_PAYLOAD }),
-        method: "POST",
+        method: API.METHODS.POST,
       })
     );
   });

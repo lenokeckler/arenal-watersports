@@ -120,3 +120,8 @@ export const VALID_SPLIT_INPUT: ReservationSplitInput = {
   expectedUpdatedAt: SPLIT_UPDATED_AT,
   reservationId: SPLIT_RESERVATION_ID,
 };
+
+export const COSTA_RICA_MIDNIGHT_CASES = [
+  ["2035-04-13T06:00:00+00:00", "2035-04-13", "00:00"],
+  ["2035-04-13T05:59:00+00:00", "2035-04-12", "23:59"],
+] as const;
