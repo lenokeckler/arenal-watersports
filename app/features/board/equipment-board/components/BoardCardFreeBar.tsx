@@ -1,13 +1,13 @@
 import { EQUIPMENT_BOARD_BAR } from "../constants/EquipmentBoard.constants";
-import type { BoardCardOccupancyBarProps } from "../models/BoardCardOccupancyBarProps.interface";
+import type { BoardCardFreeBarProps } from "../models/BoardCardFreeBarProps.interface";
 import {
   BOARD_CARD_BAR_FILL_CLASS,
   BOARD_CARD_BAR_TRACK_CLASS,
 } from "../styles/BoardCard.styles";
 
-const BoardCardOccupancyBar = ({
+const BoardCardFreeBar = ({
   percent,
-}: BoardCardOccupancyBarProps): React.JSX.Element => (
+}: BoardCardFreeBarProps): React.JSX.Element => (
   <svg
     viewBox={EQUIPMENT_BOARD_BAR.VIEWBOX}
     preserveAspectRatio={
@@ -25,4 +25,4 @@ const BoardCardOccupancyBar = ({
   </svg>
 );
 
-export default BoardCardOccupancyBar;
+export default BoardCardFreeBar;

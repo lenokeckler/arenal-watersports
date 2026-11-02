@@ -280,6 +280,10 @@ export { TEMPORARY_PASSWORD } from "./administration/TemporaryPassword.constants
 export { POSTGRES_ERROR_CODE } from "./supabase/PostgresErrorCode.constants";
 export { ADMINISTRATION_SCREEN_TITLE_ID } from "./administration/AdministrationScreen.constants";
 export {
+  WIDE_LAYOUT_ATTRIBUTE,
+  WIDE_LAYOUT_MARKER_PROPS,
+} from "./administration/WideLayout.constants";
+export {
   GRANTABLE_WORKER_AREAS,
   WORKER_AREA_CHANGE_RESULT,
   WORKER_AREA_FIELD,
