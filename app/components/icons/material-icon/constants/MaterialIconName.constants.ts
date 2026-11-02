@@ -24,6 +24,7 @@ export const MATERIAL_ICON_NAME = {
   PERSON_ADD: "person_add",
   PROGRESS_ACTIVITY: "progress_activity",
   RADIO_BUTTON_UNCHECKED: "radio_button_unchecked",
+  REMOVE: "remove",
   SAILING: "sailing",
   SEARCH: "search",
   VISIBILITY: "visibility",
