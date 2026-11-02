@@ -36,6 +36,8 @@ export const RESERVATIONS_CALENDAR_COPY = {
   QUANTITY_SEPARATOR: " × ",
   RESERVATION_NAME: "Reserva a nombre de",
   SCHEDULED: "Horario agendado:",
+  SPLIT_RESERVATION: "Dividir",
+  SPLIT_RESERVATION_LABEL: "Dividir reserva de",
   TITLE: "Calendario de reservas",
   UNKNOWN_EXPECTED_RETURN: "Sin hora prevista",
   UNKNOWN_RETURN: "Sin regreso registrado",

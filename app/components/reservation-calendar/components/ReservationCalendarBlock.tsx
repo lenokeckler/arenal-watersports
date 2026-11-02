@@ -51,6 +51,7 @@ const ReservationBlockDetails = ({
 );
 
 export const ReservationCalendarBlock = ({
+  actions,
   block,
   reserveMobileFabSpace = false,
   showEquipmentImage = true,
@@ -86,5 +87,14 @@ export const ReservationCalendarBlock = ({
       items={block.actualLabels}
       className={RESERVATION_CALENDAR_BLOCK_GROUPS_CLASS}
     />
+    {actions ? (
+      <div
+        className={resolveReservationCalendarBlockDetailsClass(
+          reserveMobileFabSpace
+        )}
+      >
+        {actions}
+      </div>
+    ) : null}
   </Section>
 );

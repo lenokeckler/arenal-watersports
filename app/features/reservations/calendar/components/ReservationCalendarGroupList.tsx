@@ -3,6 +3,7 @@ import { Section, Title } from "@/app/components";
 import { TitleVariant } from "@/app/constants";
 import type { ReservationCalendarGroupListProps } from "../models/ReservationCalendarGroupListProps.interface";
 import { ReservationCalendarBlock } from "@/app/components/reservation-calendar/components/ReservationCalendarBlock";
+import { renderReservationCalendarBlockActions } from "../utils/renderReservationCalendarBlockActions";
 import {
   RESERVATION_CALENDAR_GROUPS_CLASS,
   RESERVATION_CALENDAR_GROUP_CLASS,
@@ -31,6 +32,9 @@ export const ReservationCalendarGroupList = ({
           {group.blocks.map((block) => (
             <ReservationCalendarBlock
               key={block.id}
+              actions={renderReservationCalendarBlockActions(
+                block
+              )}
               block={block}
             />
           ))}
