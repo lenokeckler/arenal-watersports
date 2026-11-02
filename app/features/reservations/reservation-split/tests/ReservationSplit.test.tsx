@@ -14,12 +14,14 @@ import ReservationSplitView from "../ReservationSplitView";
 import { getReservationSplit } from "../services/getReservationSplit";
 import {
   EXPECTED_SPLIT,
+  NEXT_NOT_FOUND,
+  NEXT_REDIRECT,
   SPLIT_RESERVATION_ID,
 } from "./ReservationSplit.constants";
 
 vi.mock("next/navigation", () => ({
   notFound: vi.fn(() => {
-    throw new Error("NEXT_NOT_FOUND");
+    throw new Error(NEXT_NOT_FOUND);
   }),
 }));
 
@@ -46,7 +48,7 @@ describe("ReservationSplit", () => {
   it("checks access before reading the reservation", async () => {
     vi.mocked(
       assertReservationCalendarAccess
-    ).mockRejectedValue(new Error("NEXT_REDIRECT"));
+    ).mockRejectedValue(new Error(NEXT_REDIRECT));
 
     await expect(renderEntry()).rejects.toThrow();
     expect(getReservationSplit).not.toHaveBeenCalled();

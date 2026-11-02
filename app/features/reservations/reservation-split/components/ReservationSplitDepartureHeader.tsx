@@ -3,7 +3,10 @@ import { TitleVariant } from "@/app/constants";
 import Button from "@/app/components/button/Button";
 import { BUTTON } from "@/app/components/button/constants";
 import { RESERVATION_SPLIT_DRAFT } from "../constants/ReservationSplitDraft.constants";
-import { RESERVATION_SPLIT_FIELD_ID } from "../constants/ReservationSplitUi.constants";
+import {
+  RESERVATION_SPLIT_FIELD_ID,
+  RESERVATION_SPLIT_FOCUS,
+} from "../constants/ReservationSplitUi.constants";
 import { RESERVATION_SPLIT_UI_COPY } from "../constants/ReservationSplitUiCopy.constants";
 import type { ReservationSplitDepartureCardProps } from "../models/ReservationSplitDepartureCardProps.interface";
 import {
@@ -24,6 +27,7 @@ const ReservationSplitDepartureHeader = ({
       text={RESERVATION_SPLIT_UI_COPY.DEPARTURE_HEADING(
         departureNumber
       )}
+      tabIndex={RESERVATION_SPLIT_FOCUS.TAB_INDEX}
       className={RESERVATION_SPLIT_CARD_HEADING_CLASS}
     />
     {viewModel.state.drafts.length >

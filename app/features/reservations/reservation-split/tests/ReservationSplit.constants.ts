@@ -217,3 +217,6 @@ export const SPLIT_QUANTITY_ONLY_SPLIT: ReservationSplit = {
     (item) => item.kind !== RESERVATION_SPLIT_ITEM_KIND.UNIT
   ),
 };
+
+export const NEXT_NOT_FOUND = "NEXT_NOT_FOUND";
+export const NEXT_REDIRECT = "NEXT_REDIRECT";

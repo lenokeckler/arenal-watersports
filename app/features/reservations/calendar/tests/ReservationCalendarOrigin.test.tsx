@@ -1,6 +1,9 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render } from "@testing-library/react";
-import { RESERVATIONS_CALENDAR_COPY as copy } from "@/app/constants";
+import {
+  RESERVATIONS_CALENDAR_COPY as copy,
+  STRING,
+} from "@/app/constants";
 import { ReservationCalendarBlock } from "@/app/components/reservation-calendar/components/ReservationCalendarBlock";
 import { buildReservationCalendarBlock } from "@/app/components/reservation-calendar/utils/buildReservationCalendarBlock";
 import { mapReservationCalendarEntry } from "../utils/mapReservationCalendarEntry";
@@ -9,7 +12,9 @@ import { CALENDAR_RESERVATION } from "./ReservationCalendar.constants";
 import { CALENDAR_BLOCK_ENTRY } from "./ReservationCalendarDisplay.constants";
 
 const ORIGIN_CODE = "R-000123";
-const ORIGIN_LABEL = [copy.ORIGIN, ORIGIN_CODE].join(" ");
+const ORIGIN_LABEL = [copy.ORIGIN, ORIGIN_CODE].join(
+  STRING.SPACE
+);
 
 afterEach(cleanup);
 
