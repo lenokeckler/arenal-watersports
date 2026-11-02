@@ -1,5 +1,9 @@
 import { useId } from "react";
 import { ARIA_ROLE } from "@/app/constants";
+import Button from "@/app/components/button/Button";
+import { BUTTON } from "@/app/components/button/constants";
+import { InlineText } from "@/app/components/text/InlineText";
+import { Text } from "@/app/components/text/Text";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
 import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
 import { RESERVATION_SPLIT_UI_COPY } from "../constants/ReservationSplitUiCopy.constants";
@@ -39,11 +43,11 @@ const ReservationSplitQuantityStepper = ({
       className={RESERVATION_SPLIT_STEPPER_WRAPPER_CLASS}
     >
       <div className={RESERVATION_SPLIT_STEPPER_ROW_CLASS}>
-        <span
+        <InlineText
           className={RESERVATION_SPLIT_STEPPER_LABEL_CLASS}
         >
           {label}
-        </span>
+        </InlineText>
         <div
           role={ARIA_ROLE.GROUP}
           aria-label={RESERVATION_SPLIT_UI_COPY.STEPPER_GROUP_ARIA(
@@ -53,7 +57,8 @@ const ReservationSplitQuantityStepper = ({
           aria-describedby={describedBy}
           className={RESERVATION_SPLIT_STEPPER_GROUP_CLASS}
         >
-          <button
+          <Button
+            variant={BUTTON.BASE}
             type="button"
             aria-label={RESERVATION_SPLIT_UI_COPY.STEPPER_REMOVE_ARIA(
               label,
@@ -72,16 +77,16 @@ const ReservationSplitQuantityStepper = ({
             <MaterialIcon
               name={MATERIAL_ICON_NAME.REMOVE}
             />
-          </button>
-          <span
+          </Button>
+          <InlineText
             aria-hidden
             className={
               RESERVATION_SPLIT_STEPPER_VALUE_CLASS
             }
           >
             {value}
-          </span>
-          <span
+          </InlineText>
+          <InlineText
             className={
               RESERVATION_SPLIT_STEPPER_SCREEN_READER_CLASS
             }
@@ -89,8 +94,9 @@ const ReservationSplitQuantityStepper = ({
             {RESERVATION_SPLIT_UI_COPY.STEPPER_VALUE_SR(
               value
             )}
-          </span>
-          <button
+          </InlineText>
+          <Button
+            variant={BUTTON.BASE}
             type="button"
             aria-label={RESERVATION_SPLIT_UI_COPY.STEPPER_ADD_ARIA(
               label,
@@ -107,24 +113,24 @@ const ReservationSplitQuantityStepper = ({
             }
           >
             <MaterialIcon name={MATERIAL_ICON_NAME.ADD} />
-          </button>
+          </Button>
         </div>
       </div>
       {!canIncrease && (
-        <p
+        <Text
           id={maxId}
           className={RESERVATION_SPLIT_STEPPER_HELPER_CLASS}
         >
           {RESERVATION_SPLIT_UI_COPY.STEPPER_AT_MAX}
-        </p>
+        </Text>
       )}
       {error && (
-        <p
+        <Text
           id={errorId}
           className={RESERVATION_SPLIT_STEPPER_ERROR_CLASS}
         >
           {error}
-        </p>
+        </Text>
       )}
     </div>
   );

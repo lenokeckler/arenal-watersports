@@ -13,9 +13,9 @@ export const RESERVATION_SPLIT_STEPPER_GROUP_CLASS =
 const RESERVATION_SPLIT_STEPPER_BUTTON_BASE_CLASS =
   "inline-flex min-h-12 min-w-12 items-center justify-center rounded-full text-primary transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 
-export const RESERVATION_SPLIT_STEPPER_BUTTON_CLASS = `${RESERVATION_SPLIT_STEPPER_BUTTON_BASE_CLASS} hover:bg-primary/10 active:bg-primary/20`;
+const RESERVATION_SPLIT_STEPPER_BUTTON_CLASS = `${RESERVATION_SPLIT_STEPPER_BUTTON_BASE_CLASS} hover:bg-primary/10 active:bg-primary/20`;
 
-export const RESERVATION_SPLIT_STEPPER_BUTTON_BLOCKED_CLASS = `${RESERVATION_SPLIT_STEPPER_BUTTON_BASE_CLASS} cursor-default opacity-50`;
+const RESERVATION_SPLIT_STEPPER_BUTTON_BLOCKED_CLASS = `${RESERVATION_SPLIT_STEPPER_BUTTON_BASE_CLASS} opacity-50`;
 
 export const RESERVATION_SPLIT_STEPPER_VALUE_CLASS =
   "min-w-12 px-1 text-center text-lg font-semibold tabular-nums text-on-surface";
