@@ -55,6 +55,10 @@ begin
     raise exception
       'una reserva con cobro de tarifa o deposito no puede pasar a ser una salida nacida de una division';
   end if;
+  if exists (select 1 from reservations c where c.parent_reservation_id = new.id) then
+    raise exception
+      'una reserva con salidas nacidas de una division no puede pasar a ser una salida';
+  end if;
   if reservation_is_split_child(new.parent_reservation_id) then
     raise exception
       'una salida nacida de una division debe apuntar a la reserva original';

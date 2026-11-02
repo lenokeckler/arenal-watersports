@@ -1,5 +1,5 @@
 begin;
-select plan(5);
+select plan(6);
 \ir fixtures/split_reservation.sql.fixture
 
 insert into reservation_charges (reservation_id, kind, amount, currency, payment_method, created_by)
@@ -45,6 +45,13 @@ select lives_ok(
   $$ update reservations set parent_reservation_id = 'e2900000-0000-4000-8000-000000000301'
      where id = 'e2900000-0000-4000-8000-000000000305' $$,
   'a clean reservation can become a departure of the original'
+);
+
+select throws_ok(
+  $$ update reservations set parent_reservation_id = 'e2900000-0000-4000-8000-000000000306'
+     where id = 'e2900000-0000-4000-8000-000000000301' $$,
+  'P0001', 'una reserva con salidas nacidas de una division no puede pasar a ser una salida',
+  'a reservation that already has departures cannot become a departure'
 );
 
 reset role;
