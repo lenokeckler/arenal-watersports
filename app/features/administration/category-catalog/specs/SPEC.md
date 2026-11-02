@@ -10,10 +10,11 @@ and a clear error state they can retry from.
 
 - `CategoryList`, a Server Component that reads the list through `listCategories` and hands it to
   `CategoryListView`.
-- The header: title and purpose line.
+- The header: title, the registered total as text and the create link.
 - Three view states: ready, empty and error.
-- One card per category: name, an inactive pill, the tracking-mode label and, when present, the
-  group row.
+- One row per category: name, a subtitle with the tracking mode and the current quantity, a status
+  chip, one Editar button and, when present, the group row. Editar expands the options panel of that
+  row.
 - The Retry button of the error state.
 - Spanish copy, read from `CATEGORY_CATALOG_COPY`.
 
@@ -31,22 +32,49 @@ and a clear error state they can retry from.
   stock rows. `mapCategoryRowToListItem` turns each row into a `CategoryListItem`.
 - The view state is `error` when the read failed, `empty` when it succeeded with no categories, and
   `ready` otherwise.
-- Each card shows the category name, the tracking-mode label from `resolveCategoryTrackingModeLabel`
-  and, when `groupName` is set, a group row made of `GROUP_PREFIX_LABEL` and the group name.
-- A category whose status is inactive shows the `STATUS_PILL_INACTIVE` pill and a distinct container
-  class (`resolveCategoryCardContainerClassName`).
+- Each row shows the category name, the subtitle from `resolveCategorySubtitle` and, when `groupName`
+  is set, a group row made of `GROUP_PREFIX_LABEL` and the group name.
+- Every row shows a status chip with the word of its status (`STATUS_LABEL_ACTIVE` or
+  `STATUS_LABEL_INACTIVE`), never colour alone; an inactive row also dims its name block.
 - Retry calls `router.refresh()`, which re-runs the server read.
 
 ## Edge cases & errors
 
-| Case                    | Observable result                                                                                                                                                            | Copy key                                                                |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Ready, with groups      | One card per category; cards with a group show the group row, cards without one show none                                                                                    | `GROUP_PREFIX_LABEL`, `TRACKING_MODE_MICRO_LABEL_*`                     |
-| Empty list              | Empty state with title and body, no cards                                                                                                                                    | `EMPTY_STATE_TITLE`, `EMPTY_STATE_BODY`                                 |
-| Fetch failure           | `CategoryList` returns no categories and `fetchFailed: true`; the error state shows the message and a Retry button                                                           | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`                                   |
-| Retry, read succeeds    | The refresh re-renders the server component with the new list; the view state becomes ready or empty                                                                         | The keys of the resulting state                                         |
-| Retry, read fails again | The error state is shown again                                                                                                                                               | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`                                   |
-| Inactive category       | The card shows the pill and the inactive container class; its only action is Reactivar, which sets the status back to active, shows the success toast and refreshes the list | `STATUS_PILL_INACTIVE`, `REACTIVATE_BUTTON`, `REACTIVATE_SUCCESS_TOAST` |
+| Case                    | Observable result                                                                                                                                                                    | Copy key                                                                 |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| Ready, with groups      | One row per category; rows with a group show the group row, rows without one show none                                                                                               | `GROUP_PREFIX_LABEL`, `TRACKING_MODE_*_LABEL`                            |
+| Empty list              | Empty state with title and body, no cards                                                                                                                                            | `EMPTY_STATE_TITLE`, `EMPTY_STATE_BODY`                                  |
+| Fetch failure           | `CategoryList` returns no categories and `fetchFailed: true`; the error state shows the message and a Retry button                                                                   | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`                                    |
+| Retry, read succeeds    | The refresh re-renders the server component with the new list; the view state becomes ready or empty                                                                                 | The keys of the resulting state                                          |
+| Retry, read fails again | The error state is shown again                                                                                                                                                       | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`                                    |
+| Inactive category       | The row shows the Inactiva chip; its only state action, inside the options panel, is Reactivar, which sets the status back to active, shows the success toast and refreshes the list | `STATUS_LABEL_INACTIVE`, `REACTIVATE_BUTTON`, `REACTIVATE_SUCCESS_TOAST` |
+
+## Design notes (list redesign)
+
+- Layout: the screen is wide and centered, not a login-style card. `CategoryListView` puts
+  `WIDE_LAYOUT_MARKER_PROPS` (`data-layout-wide`) on its root. The shell of
+  `app/features/access/access-screen-shell` reacts with CSS `has-[[data-layout-wide]]:` variants
+  (`ACCESS_SHELL_WIDE_CARD_CLASS`, plus `items-start` on the embedded content): the card widens to
+  `max-w-4xl` and drops its chrome only when that marker is inside. Every other administration screen
+  renders exactly as before because none of them carries the marker.
+- Header: `Categorías del inventario`, the text `Inventario registrado: N categorías` (singular for one,
+  from the exact head count of the read) and the `+ Agregar categoría` link to
+  `PATHS.ADMINISTRATION.CATEGORIES_NEW`.
+- Row: name (two lines at most), subtitle `Por cantidad · N unidades` or `Por unidad · N unidades`
+  (`1 unidad` in the singular), status chip (`Activa` in the primary colour, `Inactiva` in the error
+  colour, always with its word and a dot) and one outlined Editar button of at least 44 px.
+- N is the current quantity, read by the view `category_current_quantity` (`security_invoker`): for a
+  by-quantity category the sum of available, damaged and in-repair stock; for a by-unit category the
+  count of units that are not decommissioned. It covers active and inactive categories.
+  `fetchCategoryQuantities` reads it for the ids of the page only.
+- Options panel: Editar is a button with `aria-expanded` and `aria-controls`; the panel under the row
+  holds Comportamiento, Depósito, Avisos, Unidades (by-unit categories only) and the state action
+  (Marcar inactiva or Eliminar with its confirmation, or Reactivar). The open row lives in
+  `useCategoryCardPanels`, so one panel is open at a time and it stays open across `router.refresh()`.
+  Every behaviour and server action of the state flows is unchanged.
+- Pagination: 10 rows per page for this list only (`CATEGORY_LIST_PAGINATION.PAGE_SIZE`);
+  `resolveListPageRange` and `resolveListPageCount` take an optional page size that defaults to the
+  global one. `ListPagination` stays centered below the rows.
 
 ## Constraints
 
@@ -61,7 +89,7 @@ and a clear error state they can retry from.
   `PATHS.ADMINISTRATION.CATEGORIES`. The entry component redirects a worker who is not an administrator
   to `PATHS.HOME` before it reads any category, the same server check the other administration screens use.
 - The list is paginated on the server (RNF-027): `listCategories(page)` reads one page of
-  `LIST_PAGINATION.PAGE_SIZE` rows with `.range()` after an exact head count (so a page past the last
+  `CATEGORY_LIST_PAGINATION.PAGE_SIZE` (10) rows with `.range()` after an exact head count (so a page past the last
   one reads no rows), and looks up records only for the ids of that page. The page comes from the `page` query parameter, which falls back to the first
   page when it is not a positive integer; a page past the last one redirects to the last page, which is
   also where a delete of the last card of a page lands after the refresh. `ListPagination` (shared, `app/components/list-pagination`) renders

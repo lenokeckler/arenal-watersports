@@ -10,10 +10,24 @@ export const createCategoryCardPage = () => {
   const getNameHeading = (name: string) =>
     screen.queryByRole(ARIA_ROLE.HEADING, { name });
 
-  const getInactivePill = () =>
-    screen.queryByText(
-      CATEGORY_CATALOG_COPY.STATUS_PILL_INACTIVE
+  const getStatusChip = (label: string) =>
+    screen.queryByText(label, { exact: true });
+
+  const getSubtitle = (subtitle: string) =>
+    screen.queryByText(subtitle);
+
+  const getEditButton = () =>
+    screen.queryByRole(ARIA_ROLE.BUTTON, {
+      name: CATEGORY_CATALOG_COPY.EDIT_BUTTON,
+    });
+
+  const clickEditButton = async (): Promise<void> => {
+    await user.click(
+      screen.getByRole(ARIA_ROLE.BUTTON, {
+        name: CATEGORY_CATALOG_COPY.EDIT_BUTTON,
+      })
     );
+  };
 
   const getGroupRow = (groupName: string) =>
     screen.queryByText(groupName);
@@ -37,9 +51,6 @@ export const createCategoryCardPage = () => {
     screen.queryByRole(ARIA_ROLE.LINK, {
       name: CATEGORY_CATALOG_COPY.ALERT_LINK,
     });
-
-  const getTrackingModeLabel = (label: string) =>
-    screen.queryByText(label);
 
   const getGroupPrefix = () =>
     screen.queryByText(CATEGORY_GROUP_PREFIX_LABEL);
@@ -108,13 +119,15 @@ export const createCategoryCardPage = () => {
 
   return {
     getNameHeading,
-    getInactivePill,
+    getStatusChip,
+    getSubtitle,
+    getEditButton,
+    clickEditButton,
     getGroupRow,
     getBehaviorLink,
     getDepositLink,
     getAlertsLink,
     getUnitsLink,
-    getTrackingModeLabel,
     getGroupPrefix,
     getDeleteButton,
     getMarkInactiveButton,
