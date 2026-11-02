@@ -16,6 +16,7 @@ export const createScreenHeaderPage = () => {
 
   return {
     getLogo: () => screen.getByAltText(HEADER_LOGO_ALT),
+    queryLogo: () => screen.queryByAltText(HEADER_LOGO_ALT),
     getTitle,
     getTitleId: () => getTitle().getAttribute(ID_ATTRIBUTE),
   };

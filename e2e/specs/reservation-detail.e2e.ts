@@ -106,10 +106,11 @@ reservationDetailTest(
   async ({ page, reservationFixture }) => {
     const childId =
       await reservationFixture.createSplitChild();
-    await createReservationDetailPage(page).goTo(childId);
+    const detailPage = createReservationDetailPage(page);
+    await detailPage.goTo(childId);
 
     await expect(
-      page.getByText(copy.PARENT_CHARGE, { exact: true })
+      detailPage.getParentChargeNotice()
     ).toBeVisible();
   }
 );

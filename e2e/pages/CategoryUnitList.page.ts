@@ -7,8 +7,12 @@ import { UNIT_STATUS_LABEL } from "@/app/features/administration/unit-catalog/co
 import { resolveCategoryUnitsPath } from "@/app/features/administration/unit-catalog/utils/resolveUnitPaths";
 import { E2E_NEXT_NOT_FOUND_MESSAGE } from "../constants/E2eCategoryBehavior.constants";
 import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
+import { createCategoryCardOptionsPage } from "./CategoryCardOptions.page";
 
 export const createCategoryUnitListPage = (page: Page) => {
+  const categoryCardOptionsPage =
+    createCategoryCardOptionsPage();
+
   const goTo = async (
     categoryId: string
   ): Promise<void> => {
@@ -23,6 +27,7 @@ export const createCategoryUnitListPage = (page: Page) => {
   const clickUnitsLink = async (
     categoryCard: Locator
   ): Promise<void> => {
+    await categoryCardOptionsPage.openOptions(categoryCard);
     await getUnitsLink(categoryCard).click();
   };
 
