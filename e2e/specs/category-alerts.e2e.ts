@@ -26,7 +26,7 @@ test.describe("Category alerts", () => {
 
     try {
       await logInAsAdmin(page);
-      await categoryListPage.goTo();
+      await categoryListPage.goToCategory(categoryName);
       await alertsFormPage.clickAlertsLink(
         categoryListPage.getCategoryCard(categoryName)
       );
