@@ -83,29 +83,51 @@ export const useReservationSplitDrafts = (
     itemId: string,
     delta: number
   ): void =>
-    updateDraft(key, (draft, max) => ({
-      ...draft,
-      quantities: {
-        ...draft.quantities,
-        [itemId]: clamp(
-          draft.quantities[itemId] + delta,
-          RESERVATION_SPLIT_DRAFT.NONE,
-          max.quantities[itemId]
-        ),
-      },
-    }));
+    updateDraft(key, (draft, max) =>
+      itemId in draft.quantities
+        ? {
+            ...draft,
+            quantities: {
+              ...draft.quantities,
+              [itemId]: clamp(
+                draft.quantities[itemId] + delta,
+                RESERVATION_SPLIT_DRAFT.NONE,
+                max.quantities[itemId]
+              ),
+            },
+          }
+        : draft
+    );
 
   const assignUnit = (
     unitId: string,
     departureKey: NullableRef<string>
   ): void =>
-    setState((current) => ({
-      ...current,
-      unitAssignments: {
-        ...current.unitAssignments,
-        [unitId]: departureKey,
-      },
-    }));
+    setState((current) => {
+      const isKnownTarget =
+        departureKey === null ||
+        current.drafts.some(
+          (draft) => draft.key === departureKey
+        );
+      if (
+        !isKnownTarget ||
+        !(unitId in current.unitAssignments)
+      ) {
+        return current;
+      }
+      const next = {
+        ...current,
+        unitAssignments: {
+          ...current.unitAssignments,
+          [unitId]: departureKey,
+        },
+      };
+      return resolveReservationSplitRemainder(split, next)
+        .pieces <
+        RESERVATION_SPLIT_DRAFT.MIN_REMAINING_PIECES
+        ? current
+        : next;
+    });
 
   const addDeparture = (): void => {
     const key = createKey();
