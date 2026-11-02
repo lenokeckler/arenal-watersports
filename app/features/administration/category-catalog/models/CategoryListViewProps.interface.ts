@@ -7,4 +7,5 @@ export interface CategoryListViewProps {
   fetchError?: NullableUndefined<Error>;
   fetchFailed: boolean;
   pageCount: number;
+  totalCount: number;
 }

@@ -1,11 +1,11 @@
 import { EQUIPMENT_BOARD_PERCENT } from "../constants/EquipmentBoard.constants";
 
-export const computeOccupancyPercent = (
-  inUseCount: number,
+export const computeFreePercent = (
+  freeCount: number,
   totalCount: number
 ): number => {
   const hasFiniteCounts =
-    Number.isFinite(inUseCount) &&
+    Number.isFinite(freeCount) &&
     Number.isFinite(totalCount);
 
   if (!hasFiniteCounts || totalCount <= 0) {
@@ -13,7 +13,7 @@ export const computeOccupancyPercent = (
   }
 
   const percent = Math.round(
-    (inUseCount / totalCount) * EQUIPMENT_BOARD_PERCENT.MAX
+    (freeCount / totalCount) * EQUIPMENT_BOARD_PERCENT.MAX
   );
 
   return Math.min(

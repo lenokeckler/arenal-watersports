@@ -30,6 +30,8 @@ export const CATEGORY_CATALOG_COPY = {
     "Seleccione una métrica",
   CANCEL_BUTTON: "Cancelar",
   CAN_BE_DAMAGED_FIELD_LABEL: "Puede dañarse",
+  CATEGORY_COUNT_PLURAL: "categorías",
+  CATEGORY_COUNT_SINGULAR: "categoría",
   CONSUMES_FUEL_FIELD_LABEL: "Consume combustible",
   CREATE_CTA: "+ Agregar categoría",
   CREATE_FORM_PURPOSE:
@@ -60,6 +62,7 @@ export const CATEGORY_CATALOG_COPY = {
   DEPOSIT_UPDATE_SUCCESS_TOAST:
     "Depósito de la categoría actualizado.",
   DEPOSIT_USD_FIELD_LABEL: "Depósito en dólares (USD)",
+  EDIT_BUTTON: "Editar",
   EMPTY_STATE_BODY:
     "Cada categoría que agregue aparece aquí.",
   EMPTY_STATE_TITLE: "Todavía no hay categorías.",
@@ -74,9 +77,8 @@ export const CATEGORY_CATALOG_COPY = {
   HAS_CONDITION_PHOTOS_FIELD_LABEL:
     "Requiere fotos de condición",
   HAS_MOTOR_FIELD_LABEL: "Tiene motor",
+  INVENTORY_COUNT_PREFIX: "Inventario registrado:",
   IS_RESERVABLE_FIELD_LABEL: "Es reservable",
-  LIST_PURPOSE:
-    "Todo lo que la empresa posee, listo para contar.",
   LIST_TITLE: "Categorías del inventario",
   LOADING_TEXT_CREATING: "Guardando…",
   LOADING_TEXT_DELETING: "Eliminando…",
@@ -92,7 +94,8 @@ export const CATEGORY_CATALOG_COPY = {
   REACTIVATE_BUTTON: "Reactivar",
   REACTIVATE_SUCCESS_TOAST: "Categoría reactivada.",
   RETRY_BUTTON: "Reintentar",
-  STATUS_PILL_INACTIVE: "INACTIVA",
+  STATUS_LABEL_ACTIVE: "Activa",
+  STATUS_LABEL_INACTIVE: "Inactiva",
   SUBMIT_BUTTON: "Guardar categoría",
   TRACKING_MODE_BY_QUANTITY_LABEL: "Por cantidad",
   TRACKING_MODE_BY_QUANTITY_LOWERCASE: "por cantidad",
@@ -100,13 +103,13 @@ export const CATEGORY_CATALOG_COPY = {
   TRACKING_MODE_BY_UNIT_LOWERCASE: "por unidad",
   TRACKING_MODE_FIELD_LABEL: "Modo de conteo",
   TRACKING_MODE_FIELD_PLACEHOLDER: "Seleccione un modo",
-  TRACKING_MODE_MICRO_LABEL_BY_QUANTITY: "POR CANTIDAD",
-  TRACKING_MODE_MICRO_LABEL_BY_UNIT: "POR UNIDAD",
   TRACKING_MODE_REQUIRED_ERROR:
     "Seleccione un modo de conteo.",
   UNITS_ARE_INTERCHANGEABLE_FIELD_LABEL:
     "Las unidades son intercambiables",
   UNITS_LINK: "Unidades",
+  UNIT_COUNT_PLURAL: "unidades",
+  UNIT_COUNT_SINGULAR: "unidad",
   USAGE_METRIC_ENGINE_HOURS_LABEL: "Horas de motor",
   USAGE_METRIC_FIELD_LABEL: "Métrica de uso",
   USAGE_METRIC_KILOMETERS_LABEL: "Kilómetros",
