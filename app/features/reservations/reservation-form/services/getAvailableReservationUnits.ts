@@ -14,14 +14,15 @@ import { getReservationInterval } from "../utils/getReservationInterval";
 
 const getAvailableCategoryQuantity = async (
   supabase: SupabaseClient<Database>,
-  categoryId: string,
+  input: ReservationUnitAvailabilityInput,
   window: ReturnType<typeof getReservationInterval>
 ): Promise<number> => {
   const { data, error } = await supabase.rpc(
     RESERVATION_AVAILABILITY.RPC.CATEGORY_AVAILABILITY,
     {
-      p_category_id: categoryId,
+      p_category_id: input.categoryId,
       p_ends_at: window.endsAt,
+      p_exclude_reservation: input.excludeReservationId,
       p_starts_at: window.startsAt,
     }
   );
@@ -66,7 +67,7 @@ export const getAvailableReservationUnits = async (
     const availableQuantity =
       await getAvailableCategoryQuantity(
         supabase,
-        input.categoryId,
+        input,
         window
       );
     return {
@@ -75,12 +76,12 @@ export const getAvailableReservationUnits = async (
     };
   }
   const availableUnits =
-    await getAvailableConcreteReservationUnits(
-      supabase,
-      input.categoryId,
-      window.startsAt,
-      window.endsAt
-    );
+    await getAvailableConcreteReservationUnits(supabase, {
+      categoryId: input.categoryId,
+      endsAt: window.endsAt,
+      excludeReservationId: input.excludeReservationId,
+      startsAt: window.startsAt,
+    });
   return {
     availableQuantity: null,
     availableUnits,

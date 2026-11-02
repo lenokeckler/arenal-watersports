@@ -57,12 +57,14 @@ export const createReservationAvailabilityClient = (
   options: ReservationAvailabilityClientOptions = {}
 ) => {
   const requestPaths: string[] = [];
+  const requestLog: string[] = [];
   const state = { commitments, options, units };
-  const mockFetch: typeof fetch = (input) => {
+  const mockFetch: typeof fetch = (input, init) => {
     const requestUrl =
       input instanceof Request ? input.url : String(input);
     const path = new URL(requestUrl).pathname;
     requestPaths.push(path);
+    requestLog.push(`${requestUrl} ${init?.body}`);
     const responseBody = getResponseBody(path, state);
     return Promise.resolve(
       new Response(JSON.stringify(responseBody), {
@@ -81,5 +83,6 @@ export const createReservationAvailabilityClient = (
       { global: { fetch: mockFetch } }
     ),
     requestPaths,
+    requestLog,
   };
 };

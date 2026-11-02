@@ -1,6 +1,7 @@
 import type { ReservationEquipmentAvailability } from "../models/ReservationEquipmentAvailability.interface";
 
 export const RESERVATION_AVAILABILITY = {
+  EXCLUDED_RESERVATION_COLUMN: "reservation_id",
   MILLISECONDS_PER_MINUTE: 60_000,
   DATE_FORMAT: {
     DAY: "numeric",

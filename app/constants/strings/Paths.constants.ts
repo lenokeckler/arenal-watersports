@@ -38,7 +38,9 @@ export const PATHS = {
   RESERVATIONS: {
     CALENDAR: "/reservations/calendar",
     DEPOSITS: "/reservations/deposits",
+    EDIT_SEGMENT: "edit",
     INCOME: "/reservations/income",
     NEW: "/reservations/new",
+    ROOT: "/reservations",
   },
 } as const;
