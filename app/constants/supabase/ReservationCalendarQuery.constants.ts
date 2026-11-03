@@ -19,6 +19,11 @@ export const RESERVATION_CALENDAR_QUERY = {
   },
   COUNT: "exact",
   MATCHING_DISPATCHES: "matching_dispatches",
+  MAX_CONCURRENT_PAGE_READS: 4,
+  MINIMUM_TOTAL_COUNT: 0,
+  PAGE_SIZE: 100,
+  INITIAL_REQUEST_SEQUENCE: 0,
+  REQUEST_SEQUENCE_INCREMENT: 1,
   OPERATORS: {
     EQUAL: "eq",
     GREATER_THAN: "gt",
@@ -38,6 +43,10 @@ export const RESERVATION_CALENDAR_QUERY = {
     reservation_dispatches!reservation_dispatches_reservation_id_fkey(
       id,category_id,dispatched_at,ends_at,closed_at,
       category:equipment_categories!reservation_dispatches_category_id_fkey(id,name)
+    ),
+    reservation_guides!reservation_guides_reservation_id_fkey(
+      worker_id,
+      workers!reservation_guides_worker_id_fkey(full_name,is_external_guide)
     ),
     matching_dispatches:reservation_dispatches!reservation_dispatches_reservation_id_fkey()
   `,

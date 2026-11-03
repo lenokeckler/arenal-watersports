@@ -7,6 +7,9 @@ export const DEPOSIT_ITEM_DETAILS_CLASS =
 export const DEPOSIT_ITEM_CUSTOMER_CLASS =
   "break-words text-body-base font-semibold text-on-surface";
 
+export const DEPOSIT_ITEM_META_CLASS =
+  "text-label-mono text-on-surface-variant";
+
 export const DEPOSIT_ITEM_CODE_CLASS =
   "font-mono text-label-mono text-on-surface-variant";
 
@@ -15,6 +18,3 @@ export const DEPOSIT_ITEM_MONEY_CLASS =
 
 export const DEPOSIT_ITEM_AMOUNT_CLASS =
   "whitespace-nowrap text-title-md font-semibold tabular-nums text-on-surface";
-
-export const DEPOSIT_ITEM_CURRENCY_CLASS =
-  "text-label-mono text-on-surface-variant";
