@@ -1,7 +1,7 @@
 import { InlineText, Link } from "@/app/components";
 import { PATHS, WORK_AREA_LABEL } from "@/app/constants";
-import { readWorkModeOverviewAsSignedIn } from "@/app/services/work-mode";
 import type { NullableRef } from "@/app/types";
+import type { WorkModeSwitchProps } from "./models/WorkModeSwitchProps.interface";
 import { hasSeveralWorkAreas } from "@/app/utils/work-mode/hasSeveralWorkAreas";
 import { WORK_MODE_COPY } from "./constants/WorkModeCopy.constants";
 import {
@@ -9,11 +9,9 @@ import {
   WORK_MODE_SWITCH_LINK_CLASS,
 } from "./styles/WorkMode.styles";
 
-const WorkModeSwitch = async (): Promise<
-  NullableRef<React.JSX.Element>
-> => {
-  const overview = await readWorkModeOverviewAsSignedIn();
-
+const WorkModeSwitch = ({
+  overview,
+}: WorkModeSwitchProps): NullableRef<React.JSX.Element> => {
   if (
     !overview?.current ||
     !hasSeveralWorkAreas(overview)

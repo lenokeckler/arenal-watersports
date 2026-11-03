@@ -1,0 +1,39 @@
+"use client";
+
+import type { NullableRef } from "@/app/types";
+import SystemNavigationItems from "./components/SystemNavigationItems";
+import SystemNavigationMenu from "./components/SystemNavigationMenu";
+import { SYSTEM_NAVIGATION_COPY } from "./constants/SystemNavigationCopy.constants";
+import type { SystemNavigationProps } from "./models/SystemNavigationProps.interface";
+import { useSystemNavigationViewModel } from "./hooks/useSystemNavigationViewModel";
+import { SYSTEM_NAVIGATION_CLASS } from "./styles/SystemNavigation.styles";
+
+const SystemNavigation = ({
+  overview,
+}: SystemNavigationProps): NullableRef<React.JSX.Element> => {
+  const viewModel = useSystemNavigationViewModel(overview);
+  if (!viewModel.canShowNavigation) {
+    return null;
+  }
+
+  return (
+    <nav
+      aria-label={SYSTEM_NAVIGATION_COPY.LABEL}
+      className={SYSTEM_NAVIGATION_CLASS}
+    >
+      <SystemNavigationItems
+        items={viewModel.items}
+        pathname={viewModel.pathname}
+        isMenuOpen={viewModel.isMenuOpen}
+        toggleMenu={viewModel.toggleMenu}
+      />
+      <SystemNavigationMenu
+        isOpen={viewModel.isMenuOpen}
+        canChangeMode={viewModel.canChangeMode}
+        closeMenu={viewModel.closeMenu}
+      />
+    </nav>
+  );
+};
+
+export default SystemNavigation;
