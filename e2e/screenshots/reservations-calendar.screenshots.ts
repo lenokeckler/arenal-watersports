@@ -33,7 +33,7 @@ test("captures the Reservations calendar states", async ({
     await workModePage
       .getCard(E2E_RESERVATIONS_AREA_LABEL)
       .click();
-    await expect(page).toHaveURL(PATHS.BOARD);
+    await expect(page).toHaveURL(PATHS.HOME);
 
     const calendarPage =
       createReservationsCalendarPage(page);
