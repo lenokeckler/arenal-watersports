@@ -345,6 +345,7 @@ export {
   DEPOSIT_STATUS,
   type DepositStatus,
 } from "./money/DepositStatus.constants";
+export { DEPOSIT_COPY } from "./money/DepositCopy.constants";
 export {
   MONEY_AMOUNT_ISSUE,
   type MoneyAmountIssue,
