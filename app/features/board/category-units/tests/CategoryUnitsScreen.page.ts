@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
 import { LIST_PAGINATION_COPY } from "@/app/components/list-pagination/constants/ListPaginationCopy.constants";
@@ -19,6 +19,24 @@ export const createCategoryUnitsScreenPage = () => {
   const getBackLink = () =>
     screen.getByRole(ARIA_ROLE.LINK, {
       name: CATEGORY_UNITS_COPY.BACK_TO_BOARD,
+    });
+
+  const getGroupSwitch = () =>
+    screen.getByRole(ARIA_ROLE.NAVIGATION, {
+      name: CATEGORY_UNITS_COPY.GROUP_SWITCH_LABEL,
+    });
+
+  const queryGroupSwitch = () =>
+    screen.queryByRole(ARIA_ROLE.NAVIGATION, {
+      name: CATEGORY_UNITS_COPY.GROUP_SWITCH_LABEL,
+    });
+
+  const getSwitchLinks = () =>
+    within(getGroupSwitch()).getAllByRole(ARIA_ROLE.LINK);
+
+  const getSwitchLink = (name: string) =>
+    within(getGroupSwitch()).getByRole(ARIA_ROLE.LINK, {
+      name,
     });
 
   const queryList = () =>
@@ -58,11 +76,15 @@ export const createCategoryUnitsScreenPage = () => {
     ...createCategoryUnitsPage(),
     getAlert,
     getBackLink,
+    getGroupSwitch,
     getMain,
     getPageText,
     getRetryButton,
     getStatus,
+    getSwitchLink,
+    getSwitchLinks,
     getTitle,
+    queryGroupSwitch,
     queryList,
     queryNextLink,
     queryPageText,

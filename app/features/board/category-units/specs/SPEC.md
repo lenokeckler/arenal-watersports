@@ -15,12 +15,13 @@ Let any worker see the state of every unit of one category, and, for an occupied
 - The return time is shown in Costa Rica time; the date is added when the return is not today.
 - The status is never conveyed by color alone: the chip carries the Spanish word and the dot is decorative.
 - Rows have no photo, no buttons and nothing interactive.
+- Reached from the board: every card links here (a grouped card opens its first member by name).
+- Group switch, a design decision of the product owner: when the category belongs to a group with more than one visible member, a `nav` under the header ("Categorías del mismo grupo") shows one pill link per member, by name, the current one with `aria-current="page"`, each linking to that member's units screen. A category without a group, or alone in it, shows nothing.
 
 ## Out of scope
 
 - Dispatching from this screen: it belongs to Operations (US-OPE-02).
 - Opening the reservation detail (pending, see below).
-- The links from the board cards to this screen and the Playwright specs: the next pull request of this story.
 - Live refresh (US-TAB-03), overdue marker, a connection-lost notice.
 
 ## Requirements
@@ -53,6 +54,7 @@ con la finalidad de saber cuáles puedo ofrecer y cuándo vuelven las que están
 - The category and its unit total come from `readBoardCategory`; the page of units from `readBoardCategoryUnits(categoryId, page)`. The page count is the total divided by the page size.
 - A category that is missing, has an invalid id, is not on the board or is not visible to the worker answers `notFound()`: an empty list would claim the category has no units.
 - A visible category with no units shows the empty state and reads no units.
+- The members of the group come from `readBoardCategoryGroup(categoryId)`: it reads the board summary, finds the category and keeps the rows whose lower-cased, non-blank `group_name` matches (the same key as the board cards), ordered like the card target. An invalid id returns no members without querying; a failed read reaches `error.tsx`.
 - A page past the last one redirects to the last page; a page param that is not a positive integer is the first page.
 - A failed read reaches `error.tsx` and its retry button; it never renders as an empty or free list.
 - `page.tsx` awaits `ensureWorkModeChosen()` first, like the board.
@@ -77,4 +79,6 @@ con la finalidad de saber cuáles puedo ofrecer y cuándo vuelven las que están
 - [ ] The units are paginated on the server, 20 per page; pagination shows only with more than one page and a page past the end redirects to the last one.
 - [ ] Loading, empty, error (with retry) and not found states are shown in Spanish; a read failure never shows an empty list.
 - [ ] Reservas and Operaciones read the same screen and nothing on it dispatches.
-- [ ] Pending in later pull requests: the board card links, the Playwright specs and the latest-return rule end to end.
+- [ ] The board cards link to this screen.
+- [ ] A category in a group of two or more shows the switch links with the current one marked; others show none.
+- [ ] Pending in later pull requests: the latest-return rule end to end.

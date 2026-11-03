@@ -28,6 +28,7 @@ vi.mock("next/navigation", () => navigation);
 
 vi.mock("@/app/services/board", () => ({
   readBoardCategory: vi.fn(),
+  readBoardCategoryGroup: vi.fn().mockResolvedValue([]),
   readBoardCategoryUnits: vi.fn(),
 }));
 

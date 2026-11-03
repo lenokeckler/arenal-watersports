@@ -1,5 +1,5 @@
+import { resolveBoardGroupKey } from "@/app/utils/board-categories/resolveBoardGroupKey";
 import type { BoardCategory } from "../models/BoardCategory.interface";
-import { resolveBoardGroupKey } from "./resolveBoardGroupKey";
 
 export const groupBoardCategories = (
   categories: BoardCategory[]
