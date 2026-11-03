@@ -7,6 +7,7 @@ import {
 } from "vitest";
 import { PATHS } from "@/app/constants";
 import { isAdministratorSignedIn } from "@/app/services/worker-registration";
+import { STOCK_COUNT_COPY } from "../constants/StockCountCopy.constants";
 import { STOCK_CATEGORY_TRACKING_MODE } from "../constants/StockCategoryTrackingMode.constants";
 import { getStockCategory } from "../services/getStockCategory";
 import { getStockLevels } from "../services/getStockLevels";
@@ -108,6 +109,25 @@ describe("StockCount", () => {
       expect(getStockLevels).not.toHaveBeenCalled();
     }
   );
+
+  it("shows the view in its error state when the category read fails", async () => {
+    mockedCategoryRead.mockRejectedValue(
+      new Error("category read failed")
+    );
+
+    const element = await renderStockCount();
+
+    expect(element.props).toMatchObject({
+      category: {
+        id: FAKE_STOCK_CATEGORY_ID,
+        name: STOCK_COUNT_COPY.UNREADABLE_CATEGORY_NAME,
+      },
+      fetchFailed: true,
+      movements: [],
+    });
+    expect(notFoundMock).not.toHaveBeenCalled();
+    expect(getStockLevels).not.toHaveBeenCalled();
+  });
 
   it("passes the category, the levels and the movements to the view", async () => {
     const element = await renderStockCount();

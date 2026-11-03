@@ -12,10 +12,11 @@ import { STOCK_EMPTY_LEVELS } from "./constants/StockEmptyLevels.constants";
 import type { StockCategory } from "./models/StockCategory.interface";
 import type { StockCountProps } from "./models/StockCountProps.interface";
 import type { StockCountViewProps } from "./models/StockCountViewProps.interface";
-import { getStockCategory } from "./services/getStockCategory";
+import { getStockCategoryResult } from "./services/getStockCategoryResult";
 import { getStockLevels } from "./services/getStockLevels";
 import { listStockMovements } from "./services/listStockMovements";
 import StockCountView from "./StockCountView";
+import { buildUnreadableStockCountViewProps } from "./utils/buildUnreadableStockCountViewProps";
 import { resolveCategoryStockPath } from "./utils/resolveStockPaths";
 
 const fetchStockCountViewProps = async (
@@ -57,7 +58,19 @@ const StockCount = async ({
     redirect(PATHS.HOME);
   }
 
-  const category = await getStockCategory(categoryId);
+  const currentPage = resolveListPage(pageParam);
+  const { category, isReadFailed } =
+    await getStockCategoryResult(categoryId);
+  if (isReadFailed) {
+    return (
+      <StockCountView
+        {...buildUnreadableStockCountViewProps(
+          categoryId,
+          currentPage
+        )}
+      />
+    );
+  }
   if (
     !category ||
     category.trackingMode !==
@@ -68,7 +81,7 @@ const StockCount = async ({
 
   const viewProps = await fetchStockCountViewProps(
     category,
-    resolveListPage(pageParam)
+    currentPage
   );
 
   if (
