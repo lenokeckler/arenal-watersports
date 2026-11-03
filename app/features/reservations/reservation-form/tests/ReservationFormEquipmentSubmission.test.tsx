@@ -123,5 +123,6 @@ describe("reservation equipment submission", () => {
       "aria-describedby",
       error.id
     );
+    expect(categoryGroup).toHaveFocus();
   });
 });

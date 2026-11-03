@@ -45,23 +45,26 @@ update equipment_units set status = 'available' where id = 'e2700000-0000-4000-8
 update equipment_stock set quantity_available = 1 where category_id = 'e2700000-0000-4000-8000-000000000102';
 set local request.jwt.claims to '{"sub":"e2700000-0000-4000-8000-000000000001","role":"authenticated"}';
 set local role authenticated;
-select lives_ok(
+select throws_ok(
   $$ select create_rental_reservation(jsonb_build_object('customer_name', 'RES17 Returned unit', 'people_count', 1,
     'date', '2035-05-02', 'time', '09:00', 'duration_minutes', 60,
     'category_id', 'e2700000-0000-4000-8000-000000000101', 'quantity', 3)) $$,
-  'returning equipment to service permits category quantities above physical capacity'
+  'P0001', 'Equipment category quantity is not available for reservation',
+  'returning one unit permits commitments only up to physical capacity'
 );
-select lives_ok(
+select throws_ok(
   $$ select create_rental_reservation(jsonb_build_object('customer_name', 'RES17 Returned stock', 'people_count', 1,
     'date', '2035-05-02', 'time', '09:00', 'duration_minutes', 60,
     'category_id', 'e2700000-0000-4000-8000-000000000102', 'quantity', 3)) $$,
-  'positive available stock permits commitments without a capacity ceiling'
+  'P0001', 'Equipment category quantity is not available for reservation',
+  'positive stock permits commitments only up to physical capacity'
 );
-select lives_ok(
+select throws_ok(
   $$ select create_rental_reservation(jsonb_build_object('customer_name', 'RES17 Overbooked', 'people_count', 1,
     'date', '2035-05-02', 'time', '09:00', 'duration_minutes', 60,
     'category_id', 'e2700000-0000-4000-8000-000000000101', 'quantity', 3)) $$,
-  'physical eligibility does not introduce collision blocking for category commitments'
+  'P0001', 'Equipment category quantity is not available for reservation',
+  'overlapping category commitments cannot exceed physical capacity'
 );
 
 reset role;
