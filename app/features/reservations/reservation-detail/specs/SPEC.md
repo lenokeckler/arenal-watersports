@@ -15,7 +15,6 @@ Let Reservations open one read-only view of an outing and see its reservation, c
 
 - Creating or changing reservations, equipment assignments, extras, guides, charges, refunds, or dispatches.
 - Showing monetary information to Operations.
-- Adding an active-area mode guard from US-ACC-11 or US-TAB-07.
 - Claiming an actual return timestamp: the current schema stores `ends_at` as an expected return and `closed_at` as actual arrival.
 - Inventing pricing when a reservation has no pricing row.
 
@@ -26,6 +25,7 @@ Let Reservations open one read-only view of an outing and see its reservation, c
 - Indica qui?n cre? la reserva y qui?n la modific? de ?ltimo.
 - Lista cada grupo despachado con su hora real de salida, su hora de regreso y, si ya volvi?, su hora de llegada.
 - Require an authenticated account with the Reservations area using the existing server authorization pattern and Supabase RLS.
+- Require Reservations to be the authenticated worker's active work mode before reading the detail, including when opening its URL directly.
 - Keep currency amounts separate; never convert currencies or include deposits in charge status.
 - Calculate base-tariff status from `tariff` charges only; show `extra_time` charges and reservation-level refunds separately because refunds are not linked to a charge kind.
 - Treat `reservation_dispatches.dispatched_at` as actual departure, `ends_at` as expected return, and `closed_at` as actual arrival.

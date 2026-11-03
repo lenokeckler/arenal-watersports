@@ -6,8 +6,10 @@ import {
   vi,
 } from "vitest";
 import { PATHS, SUPABASE_WORK_AREA } from "@/app/constants";
+import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
 import { redirect } from "next/navigation";
 import { readWorkModeOverviewAsSignedIn } from "@/app/services/work-mode/readWorkModeOverviewAsSignedIn";
+import { readWorkModeOverview } from "@/app/services/work-mode/readWorkModeOverview";
 import { assertReservationCalendarAccess } from "../assertReservationCalendarAccess";
 import { assertOperationsCalendarAccess } from "../assertOperationsCalendarAccess";
 
@@ -19,6 +21,10 @@ vi.mock("next/navigation", () => ({
 vi.mock(
   "@/app/services/work-mode/readWorkModeOverviewAsSignedIn",
   () => ({ readWorkModeOverviewAsSignedIn: vi.fn() })
+);
+vi.mock(
+  "@/app/services/work-mode/readWorkModeOverview",
+  () => ({ readWorkModeOverview: vi.fn() })
 );
 
 const accessChecks = [
@@ -40,7 +46,10 @@ describe.each(accessChecks)(
     it("allows an account with the matching area and active mode", async () => {
       vi.mocked(
         readWorkModeOverviewAsSignedIn
-      ).mockResolvedValue({ areas: [area], current: area });
+      ).mockResolvedValue({
+        areas: [area],
+        current: area,
+      });
       await expect(assertAccess()).resolves.toBeUndefined();
       expect(redirect).not.toHaveBeenCalled();
     });
@@ -48,7 +57,10 @@ describe.each(accessChecks)(
     it("refuses an account without the required area", async () => {
       vi.mocked(
         readWorkModeOverviewAsSignedIn
-      ).mockResolvedValue({ areas: [], current: area });
+      ).mockResolvedValue({
+        areas: [],
+        current: area,
+      });
       await expect(assertAccess()).rejects.toThrow(
         PATHS.HOME
       );
@@ -106,10 +118,47 @@ describe.each(accessChecks)(
     it("requires an active mode selection", async () => {
       vi.mocked(
         readWorkModeOverviewAsSignedIn
-      ).mockResolvedValue({ areas: [area], current: null });
+      ).mockResolvedValue({
+        areas: [area],
+        current: null,
+      });
       await expect(assertAccess()).rejects.toThrow(
         PATHS.MODE
       );
     });
   }
 );
+
+describe("reservation detail access", () => {
+  const supabase = {} as ServerSupabaseClient;
+
+  beforeEach(() => vi.clearAllMocks());
+
+  it("allows Reservations mode using the request Supabase client", async () => {
+    vi.mocked(readWorkModeOverview).mockResolvedValue({
+      areas: [SUPABASE_WORK_AREA.RESERVATIONS],
+      current: SUPABASE_WORK_AREA.RESERVATIONS,
+    });
+
+    await expect(
+      assertReservationCalendarAccess(undefined, supabase)
+    ).resolves.toBeUndefined();
+    expect(readWorkModeOverview).toHaveBeenCalledWith(
+      supabase
+    );
+  });
+
+  it("refuses detail access when Operations is active", async () => {
+    vi.mocked(readWorkModeOverview).mockResolvedValue({
+      areas: [
+        SUPABASE_WORK_AREA.RESERVATIONS,
+        SUPABASE_WORK_AREA.OPERATIONS,
+      ],
+      current: SUPABASE_WORK_AREA.OPERATIONS,
+    });
+
+    await expect(
+      assertReservationCalendarAccess(undefined, supabase)
+    ).rejects.toThrow(PATHS.MODE);
+  });
+});
