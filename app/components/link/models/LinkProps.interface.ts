@@ -7,5 +7,4 @@ export interface LinkProps {
   ariaLabel?: string;
   onClick?: () => void;
   ariaCurrent?: AriaCurrentValue;
-  ariaLabel?: string;
 }
