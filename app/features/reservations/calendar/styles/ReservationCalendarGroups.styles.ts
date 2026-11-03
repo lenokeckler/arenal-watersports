@@ -13,5 +13,8 @@ export const RESERVATION_CALENDAR_GROUP_CLASS =
 export const RESERVATION_CALENDAR_GROUP_BLOCKS_CLASS =
   "grid min-w-0 gap-2 sm:grid-cols-2 lg:grid-cols-3";
 
+export const RESERVATION_CALENDAR_GROUP_BLOCK_LINK_CLASS =
+  "block min-w-0 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary hover:brightness-105 active:brightness-95";
+
 export const RESERVATION_CALENDAR_MESSAGES_CLASS =
   "space-y-2 rounded-lg border border-outline-variant bg-surface-container-high/60 p-3 text-sm leading-5 text-on-surface-variant";
