@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { STRING } from "@/app/constants";
-import { resolveBoardGroupKey } from "../utils/resolveBoardGroupKey";
-import { BOARD_GROUP_NAME } from "./EquipmentBoardUtils.constants";
+import { resolveBoardGroupKey } from "../resolveBoardGroupKey";
+import { BOARD_GROUP_NAME } from "./BoardCategories.constants";
 
 describe("resolveBoardGroupKey", () => {
   it("returns null for a null group name", () => {

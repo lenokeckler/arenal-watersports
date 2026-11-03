@@ -2,7 +2,10 @@ import { expect, test as baseTest } from "@playwright/test";
 import { ARIA_ROLE, PATHS } from "@/app/constants";
 import { DAILY_INCOME_COPY } from "@/app/features/reservations/daily-income/constants/DailyIncomeCopy.constants";
 import { formatMoney } from "@/app/utils/money/formatMoney";
-import { E2E_COUNT } from "../constants/E2eRuntime.constants";
+import {
+  E2E_COUNT,
+  E2E_SIGNED_OUT_STORAGE_STATE,
+} from "../constants/E2eRuntime.constants";
 import { createDailyIncomePage } from "../pages/DailyIncome.page";
 import { test } from "../support/dailyIncomeTest";
 
@@ -77,12 +80,18 @@ test.describe("Daily income for operaciones", () => {
 });
 
 baseTest.describe("Daily income signed out", () => {
-  baseTest(
-    "sends a signed-out visitor to the login",
-    async ({ page }) => {
-      await createDailyIncomePage(page).goTo();
+  baseTest.describe("signed-out visitor", () => {
+    baseTest.use({
+      storageState: E2E_SIGNED_OUT_STORAGE_STATE,
+    });
 
-      await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
-    }
-  );
+    baseTest(
+      "sends a signed-out visitor to the login",
+      async ({ page }) => {
+        await createDailyIncomePage(page).goTo();
+
+        await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+      }
+    );
+  });
 });
