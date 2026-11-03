@@ -2692,6 +2692,17 @@ export type Database = {
       };
     };
     Functions: {
+      adjust_equipment_stock: {
+        Args: {
+          p_available: number;
+          p_category_id: string;
+          p_damaged: number;
+          p_expiry_date?: string;
+          p_in_repair: number;
+          p_reason: string;
+        };
+        Returns: undefined;
+      };
       assert_reservable_equipment_category: {
         Args: { p_category_id: string };
         Returns: undefined;
