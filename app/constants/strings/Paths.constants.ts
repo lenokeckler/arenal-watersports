@@ -4,6 +4,7 @@ const OPERATIONS_INVENTORY_PATH = "/operations/inventory";
 
 export const PATHS = {
   BOARD: "/board",
+  BOARD_CATEGORIES: "/board/categories",
   HOME: "/",
   MODE: "/mode",
   ACCESS: {
