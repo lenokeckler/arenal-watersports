@@ -24,10 +24,17 @@ export const createInventoryWorkerFixture = async (
       username,
     });
   if (workerError) {
-    const { error: cleanupError } =
-      await client.auth.admin.deleteUser(id);
-    if (cleanupError) {
-      throw cleanupError;
+    try {
+      const { error: cleanupError } =
+        await client.auth.admin.deleteUser(id);
+      if (cleanupError) {
+        throw cleanupError;
+      }
+    } catch (cleanupError) {
+      throw new AggregateError(
+        [workerError, cleanupError],
+        "createInventoryWorkerFixture failed and its cleanup failed"
+      );
     }
     throwIfSupabaseError(workerError, username);
   }

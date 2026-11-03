@@ -107,7 +107,7 @@ test.describe("Category alerts guards", () => {
     );
   });
 
-  test.describe("signed-out visitor", () => {
+  test.describe("Signed-out visitor", () => {
     test.use({
       storageState: E2E_SIGNED_OUT_STORAGE_STATE,
     });

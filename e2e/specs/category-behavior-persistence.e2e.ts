@@ -125,7 +125,7 @@ test.describe("Category behavior persistence and access", () => {
     ).toBeVisible();
   });
 
-  test.describe("signed-out visitor", () => {
+  test.describe("Signed-out visitor", () => {
     test.use({
       storageState: E2E_SIGNED_OUT_STORAGE_STATE,
     });

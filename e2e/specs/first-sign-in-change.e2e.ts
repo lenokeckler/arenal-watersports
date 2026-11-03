@@ -35,6 +35,12 @@ test.describe("First sign-in password change", () => {
 
     await expect(page).toHaveURL(PATHS.BOARD);
   });
+});
+
+test.describe("First sign-in for a signed-out visitor", () => {
+  test.use({
+    storageState: E2E_SIGNED_OUT_STORAGE_STATE,
+  });
 
   test.describe("signed-out visitor", () => {
     test.use({

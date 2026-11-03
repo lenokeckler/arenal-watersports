@@ -1,9 +1,25 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   E2E_DATABASE_CONTAINER_EXPECTED,
   E2E_DATABASE_CONTAINER_FIXTURE,
 } from "./ResolveE2eDatabaseContainer.constants";
-import { selectE2eDatabaseContainer } from "../resolveE2eDatabaseContainer";
+import {
+  resolveE2eDatabaseContainer,
+  selectE2eDatabaseContainer,
+} from "../resolveE2eDatabaseContainer";
+
+const mocks = vi.hoisted(() => ({
+  inspectContainers: vi.fn(),
+  readContainerIds: vi.fn(),
+}));
+
+vi.mock("../inspectE2eDockerContainers", () => ({
+  inspectE2eDockerContainers: mocks.inspectContainers,
+}));
+
+vi.mock("../readRunningE2eDockerContainerIds", () => ({
+  readRunningE2eDockerContainerIds: mocks.readContainerIds,
+}));
 
 describe("selectE2eDatabaseContainer", () => {
   it("selects the isolated database matching the local API port", () => {
@@ -35,7 +51,9 @@ describe("selectE2eDatabaseContainer", () => {
       E2E_DATABASE_CONTAINER_EXPECTED.DEFAULT_NAME
     );
   });
+});
 
+describe("rejects non-local database targets", () => {
   it("rejects a hosted Supabase URL", () => {
     expect(() =>
       selectE2eDatabaseContainer(
@@ -57,7 +75,9 @@ describe("selectE2eDatabaseContainer", () => {
       E2E_DATABASE_CONTAINER_EXPECTED.MISSING_GATEWAY_MESSAGE
     );
   });
+});
 
+describe("rejects ambiguous or unmatched database containers", () => {
   it("rejects multiple gateways publishing the configured API port", () => {
     expect(() =>
       selectE2eDatabaseContainer(
@@ -84,5 +104,40 @@ describe("selectE2eDatabaseContainer", () => {
     ).toThrow(
       E2E_DATABASE_CONTAINER_EXPECTED.MISSING_DATABASE_MESSAGE
     );
+  });
+});
+
+describe("resolveE2eDatabaseContainer", () => {
+  it("retries a URL after its first resolution fails", async () => {
+    mocks.readContainerIds
+      .mockRejectedValueOnce(
+        new Error(
+          E2E_DATABASE_CONTAINER_EXPECTED.TRANSIENT_INSPECTION_ERROR
+        )
+      )
+      .mockResolvedValue(
+        E2E_DATABASE_CONTAINER_FIXTURE.CONTAINER_IDS
+      );
+    mocks.inspectContainers.mockResolvedValue([
+      E2E_DATABASE_CONTAINER_FIXTURE.ISOLATED_GATEWAY,
+      E2E_DATABASE_CONTAINER_FIXTURE.ISOLATED_DATABASE,
+    ]);
+
+    await expect(
+      resolveE2eDatabaseContainer(
+        E2E_DATABASE_CONTAINER_FIXTURE.ISOLATED_URL
+      )
+    ).rejects.toThrow(
+      E2E_DATABASE_CONTAINER_EXPECTED.TRANSIENT_INSPECTION_ERROR
+    );
+
+    await expect(
+      resolveE2eDatabaseContainer(
+        E2E_DATABASE_CONTAINER_FIXTURE.ISOLATED_URL
+      )
+    ).resolves.toBe(
+      E2E_DATABASE_CONTAINER_EXPECTED.ISOLATED_NAME
+    );
+    expect(mocks.readContainerIds).toHaveBeenCalledTimes(2);
   });
 });

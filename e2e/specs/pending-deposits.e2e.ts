@@ -80,7 +80,7 @@ test.describe("Pending deposits", () => {
   });
 });
 
-baseTest.describe("Pending deposits signed out", () => {
+baseTest.describe("Pending deposits", () => {
   baseTest.describe("signed-out visitor", () => {
     baseTest.use({
       storageState: E2E_SIGNED_OUT_STORAGE_STATE,

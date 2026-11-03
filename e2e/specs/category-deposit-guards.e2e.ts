@@ -1,6 +1,9 @@
 import { expect, test } from "@playwright/test";
 import { PATHS } from "@/app/constants";
-import { E2E_SIGNED_OUT_STORAGE_STATE } from "../constants/E2eRuntime.constants";
+import {
+  E2E_COUNT,
+  E2E_SIGNED_OUT_STORAGE_STATE,
+} from "../constants/E2eRuntime.constants";
 import { CATEGORY_DEPOSIT_ERROR_COPY } from "@/app/features/administration/category-catalog/constants/CategoryDepositErrorCopy.constants";
 import { createCategoryDepositFormPage } from "../pages/CategoryDepositForm.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
@@ -18,7 +21,6 @@ import {
   E2E_DEPOSIT_NONE,
   resolveCategoryDepositFixtureName,
 } from "../constants/E2eCategoryDeposit.constants";
-import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 
 test.describe("Category deposit guards", () => {
   for (const invalidCase of E2E_DEPOSIT_INVALID_INPUT_CASES) {
@@ -106,7 +108,7 @@ test.describe("Category deposit guards", () => {
     );
   });
 
-  test.describe("signed-out visitor", () => {
+  test.describe("Signed-out visitor", () => {
     test.use({
       storageState: E2E_SIGNED_OUT_STORAGE_STATE,
     });
