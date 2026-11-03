@@ -10,4 +10,9 @@ export const mapReservationDetailDispatches = (
     categoryName: dispatch.category?.name ?? null,
     expectedReturnAt: dispatch.ends_at,
     id: dispatch.id,
+    unitCodes: source.reservation_items.flatMap((item) =>
+      item.dispatch_id === dispatch.id && item.unit
+        ? [item.unit.code]
+        : []
+    ),
   }));

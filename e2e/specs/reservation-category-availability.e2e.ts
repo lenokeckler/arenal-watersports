@@ -1,13 +1,14 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "../support/activeWorkerTest";
 import { RESERVATION_FORM_UI_COPY } from "@/app/features/reservations/reservation-form/constants/ReservationFormUiCopy.constants";
 import { E2E_RESERVATION_FORM_COPY } from "../constants/E2eReservationForm.constants";
 import { createReservationCategoryAvailabilityPage } from "../pages/ReservationCategoryAvailability.page";
-import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
+import { signInToReservationsMode } from "../support/signInToReservationsMode";
 
 test("shows category availability for the selected future interval", async ({
+  activeWorker,
   page,
 }) => {
-  await signInAsSeededWorker(page);
+  await signInToReservationsMode(page, activeWorker);
   const reservationPage =
     createReservationCategoryAvailabilityPage(page);
 

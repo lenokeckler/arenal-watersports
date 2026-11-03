@@ -68,7 +68,7 @@ const getReservationDetailChargeStatus = (
   if (
     configuredCurrencies.every(
       (charge) =>
-        charge.amountCharged >=
+        charge.amountChargedNet >=
         (charge.amountTarget ??
           RESERVATION_DETAIL_ZERO_MINOR_UNITS)
     )
@@ -78,7 +78,7 @@ const getReservationDetailChargeStatus = (
 
   return configuredCurrencies.some(
     (charge) =>
-      charge.amountCharged >
+      charge.amountChargedNet >
       RESERVATION_DETAIL_ZERO_MINOR_UNITS
   )
     ? RESERVATION_DETAIL_CHARGE_STATUS.PARTIAL
@@ -88,10 +88,11 @@ const getReservationDetailChargeStatus = (
 const createCharge = (
   pricing: NullableRef<ReservationDetailPricingSource>,
   recordedCharges: ReservationDetailRecordedCharge[],
+  refunds: ReservationDetailMoneyEntry[],
   currency: ReservationDetailCharge["currency"]
 ): ReservationDetailCharge => {
   const amountTarget = getTargetAmount(pricing, currency);
-  const amountCharged = sumCurrencyAmount(
+  const amountChargedGross = sumCurrencyAmount(
     recordedCharges.filter(
       (charge) =>
         charge.kind ===
@@ -99,15 +100,31 @@ const createCharge = (
     ),
     currency
   );
+  const amountRefunded = sumCurrencyAmount(
+    refunds,
+    currency
+  );
+  const amountChargedNet =
+    amountChargedGross - amountRefunded;
 
   return {
-    amountCharged: toMajorUnits(amountCharged),
+    amountChargedGross: toMajorUnits(amountChargedGross),
+    amountChargedNet: toMajorUnits(amountChargedNet),
+    amountCredit:
+      amountTarget === null
+        ? null
+        : toMajorUnits(
+            Math.max(
+              amountChargedNet - amountTarget,
+              RESERVATION_DETAIL_ZERO_MINOR_UNITS
+            )
+          ),
     amountRemaining:
       amountTarget === null
         ? null
         : toMajorUnits(
             Math.max(
-              amountTarget - amountCharged,
+              amountTarget - amountChargedNet,
               RESERVATION_DETAIL_ZERO_MINOR_UNITS
             )
           ),
@@ -126,7 +143,12 @@ export const calculateReservationDetailCharges = (
 ): ReservationDetailChargeSummary => {
   const charges = RESERVATION_DETAIL_CURRENCIES.map(
     (currency) =>
-      createCharge(pricing, recordedCharges, currency)
+      createCharge(
+        pricing,
+        recordedCharges,
+        refunds,
+        currency
+      )
   );
   const configuredCurrencies = charges.filter(
     (charge) => charge.amountTarget !== null
