@@ -4,6 +4,7 @@ import {
   DEFINITION_SELECTOR,
   HIDDEN_SIGN_SELECTOR,
   TERM_SELECTOR,
+  TIME_SELECTOR,
 } from "./Income.constants";
 
 export const createIncomePage = () => {
@@ -43,7 +44,21 @@ export const createIncomePage = () => {
   const getWithin = (container: HTMLElement) =>
     within(container);
 
+  const getMain = () => screen.getByRole(ARIA_ROLE.MAIN);
+
+  const getAlert = () => screen.getByRole(ARIA_ROLE.ALERT);
+
+  const getStatus = () =>
+    screen.getByRole(ARIA_ROLE.STATUS);
+
+  const getDate = (text: string) =>
+    screen.getByText(text, { selector: TIME_SELECTOR });
+
   return {
+    getAlert,
+    getDate,
+    getMain,
+    getStatus,
     getFigure,
     getFigureText,
     getHeadings,
