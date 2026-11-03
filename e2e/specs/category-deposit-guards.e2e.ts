@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { PATHS } from "@/app/constants";
+import { E2E_SIGNED_OUT_STORAGE_STATE } from "../constants/E2eRuntime.constants";
 import { CATEGORY_DEPOSIT_ERROR_COPY } from "@/app/features/administration/category-catalog/constants/CategoryDepositErrorCopy.constants";
 import { createCategoryDepositFormPage } from "../pages/CategoryDepositForm.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
@@ -105,14 +106,20 @@ test.describe("Category deposit guards", () => {
     );
   });
 
-  test("sends a signed-out visitor to the login", async ({
-    page,
-  }) => {
-    const depositFormPage =
-      createCategoryDepositFormPage(page);
+  test.describe("signed-out visitor", () => {
+    test.use({
+      storageState: E2E_SIGNED_OUT_STORAGE_STATE,
+    });
 
-    await depositFormPage.goTo(E2E_UNKNOWN_CATEGORY_ID);
+    test("sends a signed-out visitor to the login", async ({
+      page,
+    }) => {
+      const depositFormPage =
+        createCategoryDepositFormPage(page);
 
-    await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+      await depositFormPage.goTo(E2E_UNKNOWN_CATEGORY_ID);
+
+      await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+    });
   });
 });
