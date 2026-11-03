@@ -20,6 +20,7 @@ export const createInventoryWorkerFixture = async (
       created_by: E2E_INVENTORY_SCENARIO.ADMIN_ID,
       full_name: username,
       id,
+      must_change_password: false,
       username,
     });
   if (workerError) {

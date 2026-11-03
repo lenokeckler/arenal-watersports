@@ -33,7 +33,7 @@ test("denies inventory to a reservations worker without operations access", asyn
     await page.context().clearCookies();
     await authenticateInventoryUser(page, fixture.username);
     await createInventoryPage(page).goTo();
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
   } finally {
     await fixture.cleanup();
   }
