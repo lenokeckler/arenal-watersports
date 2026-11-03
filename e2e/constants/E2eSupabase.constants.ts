@@ -89,10 +89,10 @@ export const E2E_SUPABASE_ERROR = {
 } as const;
 
 export const E2E_AUTH_SESSIONS = {
-  DATABASE: "postgres",
-  DATABASE_USER: "postgres",
   COUNT_QUERY:
     "select count(*) from auth.sessions where user_id = :'uid'",
+  DATABASE: "postgres",
+  DATABASE_USER: "postgres",
   DELETE_QUERY:
     "delete from auth.sessions where user_id = :'uid'",
   STOP_ON_ERROR_VARIABLE: "ON_ERROR_STOP=1",
