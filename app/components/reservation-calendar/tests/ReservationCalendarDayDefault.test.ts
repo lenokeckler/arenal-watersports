@@ -15,7 +15,7 @@ import { createReservationCalendarDayPage } from "./ReservationCalendarDay.page"
 import { renderReservationCalendarDay } from "./renderReservationCalendarDay";
 import { ReservationCalendarStoreProvider } from "./ReservationCalendarStoreProvider";
 
-describe("Reservation calendar default daily content", () => {
+describe("Reservation calendar missing daily content", () => {
   it.each(CALENDAR_DAY_COVERAGE_CASES)(
     "adds no message for $name by default",
     ({ snapshot, message }) => {
@@ -34,12 +34,15 @@ describe("Reservation calendar default daily content", () => {
 
     expect(result.current(CALENDAR_DAY_DATE)).toBeNull();
   });
+});
 
+describe("Reservation calendar loaded daily content", () => {
   it("keeps existing blocks without opting into messages", () => {
     renderReservationCalendarDay(CALENDAR_DAY_SNAPSHOT);
     const page = createReservationCalendarDayPage();
 
     expect(page.getCustomer()).toBeVisible();
+    expect(page.getDetailLink()).toBeNull();
   });
 
   it("keeps guide details hidden unless requested", () => {
