@@ -13,5 +13,6 @@ export const ARIA_ROLE = {
   LISTITEM: "listitem",
   STATUS: "status",
   LINK: "link",
+  NAVIGATION: "navigation",
   TEXTBOX: "textbox",
 } as const;

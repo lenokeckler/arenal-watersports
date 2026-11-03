@@ -1,7 +1,8 @@
+import { compareBoardCategories } from "@/app/utils/board-categories/compareBoardCategories";
+import { resolveBoardGroupKey } from "@/app/utils/board-categories/resolveBoardGroupKey";
 import { safeString } from "@/app/utils/safe-value/SafeValue";
 import type { BoardCard } from "../models/BoardCard.interface";
 import type { BoardCategory } from "../models/BoardCategory.interface";
-import { resolveBoardGroupKey } from "./resolveBoardGroupKey";
 
 const sumCounts = (
   members: BoardCategory[],
@@ -11,6 +12,11 @@ const sumCounts = (
     (total, member) => total + pickCount(member),
     0
   );
+
+const resolveTargetCategoryId = (
+  members: BoardCategory[]
+): string =>
+  [...members].sort(compareBoardCategories)[0].id;
 
 export const buildBoardCard = (
   members: BoardCategory[]
@@ -36,6 +42,7 @@ export const buildBoardCard = (
     label: isGrouped
       ? safeString(firstMember.groupName)
       : firstMember.name,
+    targetCategoryId: resolveTargetCategoryId(members),
     totalCount: sumCounts(
       members,
       (member) => member.totalCount
