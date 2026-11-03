@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
@@ -80,6 +80,7 @@ const typeCustomDuration = async (
 const submit = async (
   user: ReturnType<typeof userEvent.setup>
 ): Promise<void> => {
+  await waitFor(() => getSubmitButton());
   await user.click(getSubmitButton());
 };
 
@@ -112,6 +113,25 @@ export const createReservationFormViewPage = (
     findSubmissionError,
     findSuccessMessage,
     getFocusedElement: () => document.activeElement,
+    getCustomerNameInput: () =>
+      container.querySelector<HTMLInputElement>(
+        `#${RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}`
+      ),
+    setCustomerName: async (
+      value: string
+    ): Promise<void> => {
+      const input =
+        container.querySelector<HTMLInputElement>(
+          `#${RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}`
+        );
+      if (input === null) {
+        throw new Error(
+          "The customer name field is missing."
+        );
+      }
+      await user.clear(input);
+      await user.type(input, value);
+    },
     getSubmitButton,
     querySubmitButton,
     findCategoryConflictWarning: () =>

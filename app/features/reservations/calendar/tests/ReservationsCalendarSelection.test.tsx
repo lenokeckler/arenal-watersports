@@ -90,6 +90,19 @@ describe("Reservations calendar month selection", () => {
       page.getDaySelection(fixture.PADDED_NOVEMBER_DATE)
     ).toHaveAttribute(fixture.PRESSED, fixture.TRUE);
   });
+
+  it("scrolls again when the same day is selected twice", async () => {
+    store.dispatch(
+      calendarActions.setAnchor(fixture.OCTOBER_DATE)
+    );
+    renderReservationsCalendar(fixture.SNAPSHOT);
+    const page = createReservationsCalendarPage();
+    await page.selectView(CALENDAR_VIEW.MONTH);
+    await page.selectDay(fixture.OCTOBER_DATE);
+    await page.selectDay(fixture.OCTOBER_DATE);
+
+    expect(getAgendaScrollMock()).toHaveBeenCalledTimes(2);
+  });
 });
 
 describe("Reservations calendar empty selected day", () => {

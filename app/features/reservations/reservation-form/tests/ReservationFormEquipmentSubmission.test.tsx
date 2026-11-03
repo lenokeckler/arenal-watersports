@@ -21,6 +21,30 @@ vi.mock(
 );
 
 describe("reservation equipment submission", () => {
+  it("requires a model and focuses its selector", async () => {
+    vi.mocked(
+      getAvailableReservationUnitsAction
+    ).mockResolvedValue({
+      availableQuantity: null,
+      availableUnits: [
+        {
+          id: RESERVATION_FORM_VIEW_TEST.AVAILABLE_UNIT_ID,
+          code: RESERVATION_FORM_VIEW_TEST.AVAILABLE_UNIT_CODE,
+        },
+      ],
+    });
+    const page = renderReservationForm(true, true);
+    await page.selectCategoryChoice(
+      RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME
+    );
+    const unitSelect = await page.findUnitSelect();
+    await page.submit();
+
+    expect(await page.findUnitError()).toBeInTheDocument();
+    expect(unitSelect).toHaveFocus();
+    expect(createReservationAction).not.toHaveBeenCalled();
+  });
+
   it("clears an unavailable unit, reports the error, and reloads options", async () => {
     vi.mocked(
       getAvailableReservationUnitsAction
@@ -51,7 +75,7 @@ describe("reservation equipment submission", () => {
         RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME
       )
     ).toHaveAttribute("aria-pressed", "true");
-    expect(page.getSubmitButton()).toBeDisabled();
+    expect(page.getSubmitButton()).toBeEnabled();
     expect(page.getUnitSelect()).toBeInTheDocument();
     const unitSelect = await page.findUnitSelect();
     await page.findAvailableUnit(
@@ -69,7 +93,7 @@ describe("reservation equipment submission", () => {
     await waitFor(() =>
       expect(
         getAvailableReservationUnitsAction
-      ).toHaveBeenCalledTimes(2)
+      ).toHaveBeenCalledTimes(3)
     );
   });
 

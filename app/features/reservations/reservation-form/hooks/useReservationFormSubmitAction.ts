@@ -40,7 +40,8 @@ export const useReservationFormSubmitAction = (
 
   const submitReservation = (
     values: ReservationFormInput,
-    onUnitUnavailable: () => void
+    onUnitUnavailable: () => void,
+    onSuccess?: () => void
   ): void => {
     startTransition(async () => {
       const result = await executeReservationAction(
@@ -56,6 +57,8 @@ export const useReservationFormSubmitAction = (
         if (result.unitUnavailable) {
           onUnitUnavailable();
         }
+      } else {
+        onSuccess?.();
       }
       submission.applyResult(result);
     });
