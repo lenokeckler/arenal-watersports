@@ -1,5 +1,5 @@
 begin;
-select plan(13);
+select plan(14);
 
 insert into auth.users (id, email) values
   ('e2800000-0000-4000-8000-000000000001', 'res17-direct@arenal.local'),
@@ -37,11 +37,18 @@ select throws_ok(
   'P0001', 'Equipment category is not available for reservation',
   'direct writes cannot select a damaged unit from an otherwise usable category'
 );
-select lives_ok(
+select throws_ok(
   $$ insert into reservation_items (id, reservation_id, category_id, quantity) values
     ('e2800000-0000-4000-8000-000000000401', 'e2800000-0000-4000-8000-000000000301',
      'e2800000-0000-4000-8000-000000000101', 2) $$,
-  'direct category commitments retain positive quantity semantics'
+  'P0001', 'Equipment category quantity is not available for reservation',
+  'direct category commitments cannot exceed available interchangeable units'
+);
+select lives_ok(
+  $$ insert into reservation_items (id, reservation_id, category_id, quantity) values
+    ('e2800000-0000-4000-8000-000000000401', 'e2800000-0000-4000-8000-000000000301',
+     'e2800000-0000-4000-8000-000000000101', 1) $$,
+  'direct category commitments allow quantities within physical capacity'
 );
 select throws_ok(
   $$ update reservation_items set unit_id = 'e2800000-0000-4000-8000-000000000202', category_id = null, quantity = null
@@ -105,7 +112,7 @@ select lives_ok(
     ('e2800000-0000-4000-8000-000000000301', 'e2800000-0000-4000-8000-000000000201') $$,
   'Operations keeps its existing right to assign an available interchangeable unit'
 );
-select is((select quantity from reservation_items where id = 'e2800000-0000-4000-8000-000000000401'), 2,
+select is((select quantity from reservation_items where id = 'e2800000-0000-4000-8000-000000000401'), 1,
   'rejected changes preserve the original commitment');
 reset role;
 select * from finish();
