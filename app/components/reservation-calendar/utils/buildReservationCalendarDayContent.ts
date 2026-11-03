@@ -9,8 +9,8 @@ import { buildCalendarPeriod } from "@/app/components/calendar/utils";
 import type { CalendarDayContent } from "@/app/components/calendar/models/CalendarDayContent.type";
 import type { ReservationCalendarSnapshot } from "../models/ReservationCalendarSnapshot.interface";
 import type { ReservationCalendarDayContentOptions } from "../models/ReservationCalendarDayContentOptions.interface";
-import { ReservationCalendarBlock } from "../components/ReservationCalendarBlock";
 import { buildReservationCalendarContent } from "./buildReservationCalendarContent";
+import { buildReservationCalendarBlockElements } from "./buildReservationCalendarBlockElements";
 import { getReservationCalendarMessages } from "./getReservationCalendarMessages";
 import { ReservationCalendarDayContent } from "../components/ReservationCalendarDayContent";
 
@@ -34,6 +34,7 @@ export const buildReservationCalendarDayContent = (
   if (options.showCoverageMessages === true) {
     return createElement(ReservationCalendarDayContent, {
       blocks: group?.blocks ?? [],
+      enableDetailLinks: options.enableDetailLinks === true,
       messages: getReservationCalendarMessages(content),
       reserveMobileFabSpace:
         options.reserveMobileFabSpace === true,
@@ -44,14 +45,9 @@ export const buildReservationCalendarDayContent = (
   if (group === undefined) {
     return null;
   }
-  return group.blocks.map((block) =>
-    createElement(ReservationCalendarBlock, {
-      block,
-      reserveMobileFabSpace:
-        options.reserveMobileFabSpace === true,
-      showEquipmentImage,
-      showGuides: options.showGuides === true,
-      key: block.id,
-    })
+  return buildReservationCalendarBlockElements(
+    group.blocks,
+    options,
+    showEquipmentImage
   );
 };

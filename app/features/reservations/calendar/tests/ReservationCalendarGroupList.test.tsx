@@ -9,10 +9,13 @@ import {
   PATHS,
   RESERVATIONS_CALENDAR_COPY,
 } from "@/app/constants";
-import type { CalendarDate } from "@/app/types";
 import { ReservationCalendarGroupList } from "../components/ReservationCalendarGroupList";
 import { buildReservationCalendarBlock } from "@/app/components/reservation-calendar/utils/buildReservationCalendarBlock";
 import { CALENDAR_BLOCK_ENTRY } from "./ReservationCalendarDisplay.constants";
+import {
+  RESERVATION_CALENDAR_GROUP_LIST_DATE,
+  RESERVATION_CALENDAR_GROUP_LIST_DATE_LABEL,
+} from "./ReservationCalendarGroupList.constants";
 import { createReservationCalendarGroupListPage } from "./ReservationCalendarGroupList.page";
 
 afterEach(cleanup);
@@ -29,12 +32,9 @@ describe("reservation calendar group navigation", (): void => {
         groups={[
           {
             blocks: [block],
-            date: {
-              year: 2026,
-              month: 10,
-              day: 14,
-            } satisfies CalendarDate,
-            dateLabel: "14 de octubre de 2026",
+            date: RESERVATION_CALENDAR_GROUP_LIST_DATE,
+            dateLabel:
+              RESERVATION_CALENDAR_GROUP_LIST_DATE_LABEL,
           },
         ]}
       />
