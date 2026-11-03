@@ -12,6 +12,7 @@ export const E2E_LOCAL_SUPABASE_HOSTS: readonly string[] = [
 export const E2E_SUPABASE_TABLE = {
   PASSWORD_RESET_PINS: "password_reset_pins",
   PASSWORD_RESET_REQUESTS: "password_reset_requests",
+  RESERVATION_ITEMS: "reservation_items",
   RESERVATIONS: "reservations",
   WORKER_AREAS: "worker_areas",
   WORKER_MARKS: "worker_marks",
@@ -28,6 +29,7 @@ export const E2E_SUPABASE_FILTER = {
 
 export const E2E_SUPABASE_COLUMN = {
   BLOCKED_REASON: "blocked_reason",
+  CREATED_BY: "created_by",
   CREATED_AT: "created_at",
   EXPIRES_AT: "expires_at",
   DELETED_AT: "deleted_at",
@@ -42,6 +44,14 @@ export const E2E_SUPABASE_COLUMN = {
 } as const;
 
 export const E2E_WORKER_DEPENDENT_TABLES = [
+  {
+    column: E2E_SUPABASE_COLUMN.CREATED_BY,
+    table: E2E_SUPABASE_TABLE.RESERVATION_ITEMS,
+  },
+  {
+    column: E2E_SUPABASE_COLUMN.CREATED_BY,
+    table: E2E_SUPABASE_TABLE.RESERVATIONS,
+  },
   {
     column: E2E_SUPABASE_COLUMN.WORKER_ID,
     table: E2E_SUPABASE_TABLE.WORKER_AREAS,

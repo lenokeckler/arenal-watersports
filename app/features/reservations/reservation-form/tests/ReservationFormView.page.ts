@@ -111,6 +111,7 @@ export const createReservationFormViewPage = (
     findDurationValidationError,
     findSubmissionError,
     findSuccessMessage,
+    getFocusedElement: () => document.activeElement,
     getSubmitButton,
     querySubmitButton,
     findCategoryConflictWarning: () =>
