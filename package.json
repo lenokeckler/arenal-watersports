@@ -25,6 +25,7 @@
     "story": "node scripts/story.mjs",
     "changelog": "node scripts/changelog.mjs",
     "changelog:check": "node scripts/changelog.mjs --check",
+    "merge:after-squash": "node scripts/merge-after-squash.mjs",
     "stories:jira": "node scripts/stories-to-jira.mjs",
     "agents:sync": "node scripts/sync-agents.mjs",
     "agents:check": "node scripts/sync-agents.mjs --check",

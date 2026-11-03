@@ -9,6 +9,7 @@ export const VALID_RESERVATION_FORM_INPUT: ReservationFormInput =
     peopleCount: 2,
     quantity: 1,
     time: "09:30",
+    unitId: "",
   };
 
 export const COSTA_RICA_DATE_CASE = {

@@ -6,4 +6,5 @@ export interface ReservationFormInput {
   peopleCount: number;
   quantity: number;
   time: string;
+  unitId: string;
 }

@@ -54,4 +54,21 @@ describe("ScreenHeader", () => {
       ARIA_HIDDEN_FALSE
     );
   });
+
+  it("renders no logo when hasLogo is false and keeps the title", () => {
+    render(
+      <ScreenHeader
+        title={HEADER_TITLE}
+        titleId={HEADER_TITLE_ID}
+        hasLogo={false}
+      />
+    );
+
+    expect(
+      createScreenHeaderPage().queryLogo()
+    ).not.toBeInTheDocument();
+    expect(createScreenHeaderPage().getTitleId()).toBe(
+      HEADER_TITLE_ID
+    );
+  });
 });

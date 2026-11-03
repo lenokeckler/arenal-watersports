@@ -9,6 +9,7 @@ export const VALID_RESERVATION_FORM_INPUT: ReservationFormInput =
     peopleCount: 3,
     quantity: 2,
     time: "09:30",
+    unitId: "",
   };
 
 export const INVALID_DATE = "2027-02-29";
@@ -33,6 +34,8 @@ export const VALID_CUSTOM_DURATION_MINUTE_CASES = [
   [16.9, 1014],
 ] as const;
 export const EXPECTED_DURATION_MINUTES = 90;
+export const CONCRETE_UNIT_ID =
+  "e2500000-0000-4000-8000-000000000201";
 export const FRACTIONAL_COUNT = 1.5;
 export const INVALID_QUANTITY = 0;
 export const NEGATIVE_VALUE = -1;

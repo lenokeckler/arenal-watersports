@@ -24,6 +24,11 @@ export const buildCalendarPresentation = (
       { ...month, day: CALENDAR_DATE.FIRST_DAY },
       true
     ),
+    date: {
+      day: CALENDAR_DATE.FIRST_DAY,
+      month: month.month,
+      year: month.year,
+    },
     cells: buildCalendarCells(
       month.days,
       today,
