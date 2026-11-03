@@ -1,4 +1,10 @@
+﻿import { PAGINATION } from "./Pagination.constant";
+
+const OPERATIONS_INVENTORY_PATH = "/operations/inventory";
+
 export const PATHS = {
+  BOARD: "/board",
+  BOARD_CATEGORIES: "/board/categories",
   HOME: "/",
   MODE: "/mode",
   ACCESS: {
@@ -10,10 +16,33 @@ export const PATHS = {
     ROOT: "/access",
   },
   ADMINISTRATION: {
+    CATEGORIES: "/administration/categories",
+    CATEGORIES_NEW: "/administration/categories/new",
+    CATEGORY_ALERTS_SEGMENT: "alerts",
+    CATEGORY_BEHAVIOR_SEGMENT: "behavior",
+    CATEGORY_DEPOSIT_SEGMENT: "deposit",
+    CATEGORY_STOCK_SEGMENT: "stock",
+    CATEGORY_UNITS_SEGMENT: "units",
     INCOME: "/administration/income",
+    RESERVATIONS_BY_WORKER:
+      "/administration/reports/reservations-by-worker",
     ROOT: "/administration",
+    UNITS_NEW_SEGMENT: "new",
     WORKER_AREAS: "/administration/workers/areas",
     WORKERS_NEW: "/administration/workers/new",
+  },
+  OPERATIONS: {
+    CALENDAR: "/operations/calendar",
+    INVENTORY: OPERATIONS_INVENTORY_PATH,
+    INVENTORY_CATEGORY: (categoryId: string) =>
+      `${OPERATIONS_INVENTORY_PATH}/${encodeURIComponent(categoryId)}`,
+    INVENTORY_CATEGORY_PAGE: (
+      categoryId: string,
+      pageIndex: number
+    ) =>
+      `${OPERATIONS_INVENTORY_PATH}/${encodeURIComponent(categoryId)}?${PAGINATION.QUERY_PARAMS.PAGE}=${pageIndex}`,
+    INVENTORY_PAGE: (pageIndex: number) =>
+      `${OPERATIONS_INVENTORY_PATH}?${PAGINATION.QUERY_PARAMS.PAGE}=${pageIndex}`,
   },
   PROFILE: {
     EMAIL: "/profile/email",
@@ -25,7 +54,10 @@ export const PATHS = {
   },
   RESERVATIONS: {
     CALENDAR: "/reservations/calendar",
+    DETAIL: (reservationId: string): string =>
+      `/reservations/${encodeURIComponent(reservationId)}`,
     DEPOSITS: "/reservations/deposits",
+    INCOME: "/reservations/income",
     NEW: "/reservations/new",
   },
 } as const;

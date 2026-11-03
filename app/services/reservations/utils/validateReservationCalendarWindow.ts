@@ -1,5 +1,6 @@
 import {
   PAGINATION,
+  RESERVATION_CALENDAR_QUERY,
   RESERVATION_CALENDAR_QUERY_ERROR,
 } from "@/app/constants";
 import type { ReservationCalendarWindow } from "../models/ReservationCalendarWindow.interface";
@@ -9,9 +10,11 @@ export const validateReservationCalendarWindow = (
   window: ReservationCalendarWindow
 ): ReservationCalendarWindow => {
   const firstRecordIndex =
-    window.page * PAGINATION.DEFAULT_PAGE_SIZE;
+    window.page * RESERVATION_CALENDAR_QUERY.PAGE_SIZE;
   const lastRecordIndex =
-    firstRecordIndex + PAGINATION.DEFAULT_PAGE_SIZE - 1;
+    firstRecordIndex +
+    RESERVATION_CALENDAR_QUERY.PAGE_SIZE -
+    1;
   if (
     !Number.isSafeInteger(window.page) ||
     window.page < PAGINATION.DEFAULT_PAGE ||

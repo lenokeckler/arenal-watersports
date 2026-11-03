@@ -4,6 +4,7 @@ import type { ReservationFormField } from "../models/ReservationFormField.consta
 import type { ReservationFormInput } from "../models/ReservationFormInput.interface";
 import type { ReservationFormValidation } from "../models/ReservationFormValidation.interface";
 import type { ValidatedReservationFormInput } from "../models/ValidatedReservationFormInput.interface";
+import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 import type { NullableRef } from "@/app/types";
 import {
   getReservationDurationMinutes,
@@ -18,13 +19,21 @@ const buildValidatedInput = (
   input: ReservationFormInput,
   durationMinutes: number
 ): ValidatedReservationFormInput => ({
-  categoryId: input.categoryId.trim(),
   customerName: input.customerName.trim(),
   date: input.date,
   durationMinutes,
   peopleCount: input.peopleCount,
-  quantity: input.quantity,
   time: input.time,
+  equipmentCommitment: input.unitId.trim()
+    ? {
+        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
+        unitId: input.unitId.trim(),
+      }
+    : {
+        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
+        categoryId: input.categoryId.trim(),
+        quantity: input.quantity,
+      },
 });
 
 const addFieldError = (
@@ -87,11 +96,13 @@ const validateEquipment = (
     RESERVATION_FORM_FIELD.CATEGORY_ID,
     Boolean(input.categoryId.trim())
   );
-  addFieldError(
-    errors,
-    RESERVATION_FORM_FIELD.QUANTITY,
-    isPositiveInteger(input.quantity)
-  );
+  if (!input.unitId.trim()) {
+    addFieldError(
+      errors,
+      RESERVATION_FORM_FIELD.QUANTITY,
+      isPositiveInteger(input.quantity)
+    );
+  }
   return errors;
 };
 
