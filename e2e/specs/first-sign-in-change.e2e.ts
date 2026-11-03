@@ -42,13 +42,19 @@ test.describe("First sign-in for a signed-out visitor", () => {
     storageState: E2E_SIGNED_OUT_STORAGE_STATE,
   });
 
-  test("sends a signed-out visitor to the login", async ({
-    page,
-  }) => {
-    const firstSignInPage = createFirstSignInPage(page);
+  test.describe("signed-out visitor", () => {
+    test.use({
+      storageState: E2E_SIGNED_OUT_STORAGE_STATE,
+    });
 
-    await firstSignInPage.goTo();
+    test("sends a signed-out visitor to the login", async ({
+      page,
+    }) => {
+      const firstSignInPage = createFirstSignInPage(page);
 
-    await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+      await firstSignInPage.goTo();
+
+      await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+    });
   });
 });

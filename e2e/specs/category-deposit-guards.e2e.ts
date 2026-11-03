@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { PATHS } from "@/app/constants";
+import { E2E_SIGNED_OUT_STORAGE_STATE } from "../constants/E2eRuntime.constants";
 import { CATEGORY_DEPOSIT_ERROR_COPY } from "@/app/features/administration/category-catalog/constants/CategoryDepositErrorCopy.constants";
 import { createCategoryDepositFormPage } from "../pages/CategoryDepositForm.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";

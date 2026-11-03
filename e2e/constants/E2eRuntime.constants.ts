@@ -29,6 +29,7 @@ export const E2E_WORKER_COUNT = {
   ADMIN_RECOVERY: 1,
   ADMIN_SCREENSHOTS: 1,
   CI: 1,
+  LOCAL: 1,
 } as const;
 
 export const E2E_OUTPUT_DIR = {
@@ -47,9 +48,13 @@ export const E2E_PROJECT = {
   ADMIN_SCREENSHOTS: "chromium-desktop-admin-screenshots",
   ADMIN_SCREENSHOTS_MOBILE:
     "chromium-mobile-admin-screenshots",
+  AUTH_SETUP: "auth-setup",
   DEFAULT: "chromium-desktop",
+  DESKTOP_AUTH_SETUP: "desktop-auth-setup",
   MOBILE: "chromium-mobile",
   SCREENSHOTS: "chromium-desktop-screenshots",
+  SCREENSHOTS_DESKTOP_AUTH_SETUP:
+    "screenshots-desktop-auth-setup",
   SCREENSHOTS_MOBILE: "chromium-mobile-screenshots",
 } as const;
 
@@ -57,6 +62,7 @@ export const E2E_TEST_MATCH = {
   ADMIN_RECOVERY: "**/specs/*.admin.e2e.ts",
   ADMIN_SCREENSHOTS:
     "**/screenshots/*.admin.screenshots.ts",
+  AUTH_SETUP: "**/setup/*.setup.ts",
   DEFAULT: "**/specs/*.e2e.ts",
   SCREENSHOTS: "**/screenshots/*.screenshots.ts",
 } as const;

@@ -80,17 +80,19 @@ test.describe("Pending deposits", () => {
   });
 });
 
-baseTest.describe("Pending deposits signed out", () => {
-  baseTest.use({
-    storageState: E2E_SIGNED_OUT_STORAGE_STATE,
+baseTest.describe("Pending deposits", () => {
+  baseTest.describe("signed-out visitor", () => {
+    baseTest.use({
+      storageState: E2E_SIGNED_OUT_STORAGE_STATE,
+    });
+
+    baseTest(
+      "sends a signed-out visitor to the login",
+      async ({ page }) => {
+        await createPendingDepositsPage(page).goTo();
+
+        await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+      }
+    );
   });
-
-  baseTest(
-    "sends a signed-out visitor to the login",
-    async ({ page }) => {
-      await createPendingDepositsPage(page).goTo();
-
-      await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
-    }
-  );
 });
