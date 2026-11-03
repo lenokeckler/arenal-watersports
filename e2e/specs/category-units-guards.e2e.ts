@@ -1,5 +1,6 @@
 import { expect } from "@playwright/test";
 import { PATHS } from "@/app/constants";
+import { E2E_SIGNED_OUT_STORAGE_STATE } from "../constants/E2eRuntime.constants";
 import { UNIT_CATALOG_COPY } from "@/app/features/administration/unit-catalog/constants/UnitCatalogCopy.constants";
 import { UNIT_FORM_FIELD_ID } from "@/app/features/administration/unit-catalog/constants/UnitFormFieldId.constants";
 import { UNIT_FORM_MODE } from "@/app/features/administration/unit-catalog/constants/UnitFormMode.constants";
@@ -83,12 +84,18 @@ test.describe("Category units guards", () => {
     );
   });
 
-  test("sends a signed-out visitor to the login", async ({
-    page,
-    formPage,
-  }) => {
-    await formPage.goTo(E2E_UNKNOWN_CATEGORY_ID);
+  test.describe("signed-out visitor", () => {
+    test.use({
+      storageState: E2E_SIGNED_OUT_STORAGE_STATE,
+    });
 
-    await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+    test("sends a signed-out visitor to the login", async ({
+      page,
+      formPage,
+    }) => {
+      await formPage.goTo(E2E_UNKNOWN_CATEGORY_ID);
+
+      await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+    });
   });
 });
