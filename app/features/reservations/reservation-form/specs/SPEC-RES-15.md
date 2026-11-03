@@ -25,14 +25,16 @@ For capacity two, one quantity-one commitment from 10:00 to 11:00 and another fr
 
 US-RES-17 remains responsible for physical equipment eligibility. US-RES-07 remains responsible for category quantity commitments and the concrete Lancha exception. A concrete Lancha must itself be free for the whole requested interval; an aggregate category peak does not replace `unit_conflicts` or the concrete-unit query.
 
-This change does not alter reservation persistence, dispatch/return windows, cancellation rules, overdue-dispatch policies, unit status, or inventory CRUD. US-RES-16 owns collision warnings and the decision to continue despite a collision; this story adds no quantity ceiling or submission block.
+This change does not alter reservation persistence, dispatch/return windows, cancellation rules, overdue-dispatch policies, unit status, or inventory CRUD. US-RES-16 owns collision warnings and the decision to continue despite a collision.
 
 ## Form behavior
 
 - The existing reservation form displays the selected equipment category and the interval in Costa Rica time alongside the category's `free` count.
 - The panel reports loading, query failure with retry, positive availability, zero availability, and negative availability without changing the returned count.
 - A negative `free` value remains visible as a negative number and is described as overcommitted capacity.
-- The category summary is informational. It does not replace concrete-unit availability, add a booking limit, or block reservation submission.
+- The category summary remains informational for concrete-unit availability. For quantity-tracked categories, the selected quantity cannot exceed the returned free count.
+- A quantity above the free count displays a field error and blocks form submission.
+- Reservation-item writes recheck quantity capacity after locking the category stock row, so concurrent submissions cannot exceed interval availability.
 - Changing the selected interval re-queries availability. Existing equipment Realtime refreshes invalidate the category query.
 - The panel is responsive and follows the reservation form's Stitch visual language on mobile and desktop.
 

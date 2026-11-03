@@ -21,6 +21,7 @@ Operations workers can inspect the company's active inventory by category and se
 ## Requirements
 
 - Categories tracked by unit show each non-decommissioned unit's code and status.
+- Categories tracked by unit show the number of units in use, and status counts reconcile to the total.
 - Categories tracked by quantity show available, damaged, in-repair, and total quantities.
 - Users without operations area access cannot read this screen; administrators retain their configured access.
 - Empty results, invalid categories, and read failures have explicit outcomes.
@@ -43,4 +44,5 @@ Operations workers can inspect the company's active inventory by category and se
 
 - El inventario cubre todo lo que la empresa tiene, incluidos los jet skis y las lanchas.
 - Al entrar a una categoría identificada una por una se ven sus unidades con su código y su estado, por ejemplo los cuatro o cinco jet skis que haya.
+- En las categorías identificadas una por una se ve cuántas unidades están en uso, y los conteos por estado cuadran con el total.
 - Al entrar a una categoría llevada por cantidad se ve cuántos hay y cuántos están disponibles, dañados o en reparación.
