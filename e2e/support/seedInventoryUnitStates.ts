@@ -3,6 +3,7 @@ import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import {
   E2E_INVENTORY_SCENARIO,
   E2E_INVENTORY_UNIT_STATES,
+  E2E_INVENTORY_UNIT_SEED_SELECT,
 } from "../constants/E2eInventoryScenario.constants";
 import type { E2eInventoryFixture } from "../models/E2eInventoryFixture.type";
 
@@ -16,9 +17,27 @@ export const seedInventoryUnitStates = async (
     status,
     updated_by: E2E_INVENTORY_SCENARIO.ADMIN_ID,
   }));
-  const { error } = await fixture.client
+  const { data, error } = await fixture.client
     .from(INVENTORY_DATA_SOURCE.EQUIPMENT_UNITS_TABLE)
-    .insert(units);
+    .insert(units)
+    .select(E2E_INVENTORY_UNIT_SEED_SELECT);
   throwIfSupabaseError(error, fixture.name);
-  return units;
+  if (data === null) {
+    throw new Error(
+      E2E_INVENTORY_SCENARIO.MISSING_UNIT_INSERT_RESULT
+    );
+  }
+
+  const idsByCode = new Map(
+    data.map(({ code, id }) => [code, id])
+  );
+  return units.map((unit) => {
+    const id = idsByCode.get(unit.code);
+    if (!id) {
+      throw new Error(
+        E2E_INVENTORY_SCENARIO.MISSING_UNIT_INSERT_RESULT
+      );
+    }
+    return { ...unit, id };
+  });
 };

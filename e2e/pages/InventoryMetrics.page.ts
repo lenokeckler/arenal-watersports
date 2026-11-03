@@ -3,11 +3,9 @@ import { INVENTORY_COPY } from "@/app/features/operations/inventory/constants/In
 import { getMainRegion } from "../support/mainRegion";
 
 export const createInventoryMetricsPage = (page: Page) => {
-  const mainRegion = getMainRegion(page);
+  const metrics = getMainRegion(page).locator("div.grid");
   const getMetric = (label: string) =>
-    mainRegion
-      .getByText(label, { exact: true })
-      .locator("..");
+    metrics.getByText(label, { exact: true }).locator("..");
 
   return {
     getAvailable: () => getMetric(INVENTORY_COPY.AVAILABLE),

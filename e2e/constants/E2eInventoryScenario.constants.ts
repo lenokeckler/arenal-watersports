@@ -7,6 +7,8 @@ export const E2E_INVENTORY_SCENARIO = {
   ID_COLUMN: "id",
   INVALID_CATEGORY: "invalid-category",
   MISSING_CATEGORY: "ffffffff-ffff-ffff-ffff-ffffffffffff",
+  MISSING_UNIT_INSERT_RESULT:
+    "The inventory unit fixture insert returned incomplete data.",
   OUT_OF_RANGE_PAGE: 999,
   STOCK: {
     quantity_available: 7,
@@ -20,6 +22,20 @@ export const E2E_INVENTORY_SCENARIO = {
   },
   UNIT_CODE_PREFIX: "E2E-",
 } as const;
+
+export const E2E_INVENTORY_ACTIVE_DISPATCH = {
+  CUSTOMER_NAME_PREFIX: "E2E inventory active dispatch",
+  DURATION_MINUTES: 60,
+  MISSING_AVAILABLE_UNIT:
+    "The occupied inventory fixture has no available unit.",
+  MISSING_RESERVATION_ITEM:
+    "The occupied inventory fixture reservation item was not returned.",
+  PEOPLE_COUNT: 1,
+  RESERVATION_ID_COLUMN: "reservation_id",
+  RESERVATION_TYPE: "rental",
+} as const;
+
+export const E2E_INVENTORY_UNIT_SEED_SELECT = "id, code";
 
 export const E2E_INVENTORY_UNIT_STATES = [
   INVENTORY_UNIT_STATUS.AVAILABLE,
