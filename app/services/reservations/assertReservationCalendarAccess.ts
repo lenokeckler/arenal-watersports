@@ -17,6 +17,6 @@ export const assertReservationCalendarAccess = async (
     redirect(PATHS.MODE);
   }
   if (overview.current !== workArea) {
-    redirect(PATHS.HOME);
+    redirect(PATHS.MODE);
   }
 };

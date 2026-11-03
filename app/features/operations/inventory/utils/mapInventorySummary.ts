@@ -38,6 +38,7 @@ export const mapInventorySummary = (
   row: InventorySummaryDatabaseRow
 ): InventoryCategorySummary => ({
   id: requireSummaryValue(row.category_id),
+  inUse: requireSummaryValue(row.quantity_in_use),
   name: requireSummaryValue(row.category_name),
   trackingMode: resolveTrackingMode(row.tracking_mode),
   available: requireSummaryValue(row.quantity_available),
