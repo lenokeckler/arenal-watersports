@@ -77,9 +77,6 @@ export const RESERVATION_FORM_DURATION_SELECTED_CLASS =
 export const RESERVATION_FORM_CUSTOM_DURATION_CLASS =
   "mt-4 w-full min-w-full";
 
-export const RESERVATION_FORM_EQUIPMENT_NOTE_CLASS =
-  "rounded-2xl border border-primary/30 bg-primary/5 p-4 text-sm text-on-surface-variant md:col-span-2";
-
 export const RESERVATION_FORM_SUBMIT_CLASS =
   "min-h-12 w-full rounded-full md:w-auto md:min-w-56";
 
@@ -97,6 +94,9 @@ export const RESERVATION_FORM_UNIT_EMPTY_NOTE_CLASS =
 
 export const RESERVATION_FORM_RETRY_CLASS =
   "mt-2 min-h-11 text-primary underline";
+
+export const RESERVATION_FORM_RETRY_BUTTON_CLASS =
+  "mt-2 min-h-11 rounded-full";
 
 export const resolveReservationDurationButtonClassName = (
   isSelected: boolean

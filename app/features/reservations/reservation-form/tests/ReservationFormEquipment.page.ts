@@ -57,4 +57,10 @@ export const createReservationEquipmentPage = (
         RESERVATION_FORM_FIELD.CATEGORY_ID
       ]
     ),
+  queryCategoryError: () =>
+    screen.queryByText(
+      RESERVATION_FORM_COPY[
+        RESERVATION_FORM_FIELD.CATEGORY_ID
+      ]
+    ),
 });
