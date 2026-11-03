@@ -52,6 +52,9 @@ test("shows codes and statuses for unit-tracked inventory", async ({
       INVENTORY_UNIT_STATUS.AVAILABLE
     )
   ).toBeVisible();
+  await expect(
+    createInventoryMetricsPage(page).getInUse()
+  ).toBeVisible();
 });
 
 test("shows totals and condition counts for quantity inventory", async ({

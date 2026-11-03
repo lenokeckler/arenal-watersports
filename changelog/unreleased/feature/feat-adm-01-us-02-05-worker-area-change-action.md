@@ -1,0 +1,1 @@
+ADM-01.02.05: Worker area change action — the area forms post to a server action that checks the area and intent, applies the change and returns to the worker with a notice, or answers with the refusal (US-ADM-02 · AWS-54)

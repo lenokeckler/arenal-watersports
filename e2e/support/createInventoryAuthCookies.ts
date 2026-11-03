@@ -1,6 +1,9 @@
 import { createServerClient } from "@supabase/ssr";
 import type { Session } from "@supabase/supabase-js";
-import { SUPABASE } from "@/app/constants";
+import {
+  SUPABASE,
+  SUPABASE_COOKIE_OPTIONS,
+} from "@/app/constants";
 import type { Database } from "@/app/types";
 import { E2E_AUTH_ERROR } from "../constants/E2eInventory.constants";
 import type { E2eAuthCookie } from "../models/E2eAuthCookie.interface";
@@ -13,6 +16,7 @@ export const createInventoryAuthCookies = async (
     SUPABASE.URL,
     SUPABASE.ANON_KEY,
     {
+      cookieOptions: SUPABASE_COOKIE_OPTIONS,
       cookies: {
         getAll: () => [],
         setAll: (cookies) => {

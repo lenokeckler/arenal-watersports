@@ -23,6 +23,8 @@ export const E2E_LOCAL_SUPABASE_HOSTS = [
 export const E2E_AUTH_ERROR = {
   INVALID_URL:
     "The local Supabase URL is missing or invalid.",
+  INVENTORY_AUTH_USER_CREATION:
+    "The inventory E2E auth user could not be created.",
   LINK: "The seeded E2E administrator link could not be generated.",
   NON_LOCAL_URL:
     "E2E authentication requires local Supabase.",

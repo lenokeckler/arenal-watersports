@@ -1,0 +1,53 @@
+import {
+  AuthApiError,
+  AuthWeakPasswordError,
+  type WeakPasswordReasons,
+} from "@supabase/supabase-js";
+import {
+  HTTP_STATUS,
+  SUPABASE_AUTH_ERROR_CODE,
+} from "@/app/constants";
+
+const REJECTED_MESSAGE = "rejected by the auth server";
+const WEAK_PASSWORD_REASONS: WeakPasswordReasons[] = [
+  "length",
+];
+
+export const SAME_PASSWORD_ERROR = new AuthApiError(
+  REJECTED_MESSAGE,
+  HTTP_STATUS.UNPROCESSABLE_ENTITY,
+  SUPABASE_AUTH_ERROR_CODE.SAME_PASSWORD
+);
+
+export const WEAK_PASSWORD_ERROR = new AuthApiError(
+  REJECTED_MESSAGE,
+  HTTP_STATUS.UNPROCESSABLE_ENTITY,
+  SUPABASE_AUTH_ERROR_CODE.WEAK_PASSWORD
+);
+
+export const VALIDATION_FAILED_ERROR = new AuthApiError(
+  REJECTED_MESSAGE,
+  HTTP_STATUS.BAD_REQUEST,
+  SUPABASE_AUTH_ERROR_CODE.VALIDATION_FAILED
+);
+
+export const CURRENT_PASSWORD_MISMATCH_ERROR =
+  new AuthApiError(
+    REJECTED_MESSAGE,
+    HTTP_STATUS.BAD_REQUEST,
+    SUPABASE_AUTH_ERROR_CODE.CURRENT_PASSWORD_MISMATCH
+  );
+
+export const CURRENT_PASSWORD_REQUIRED_ERROR =
+  new AuthApiError(
+    REJECTED_MESSAGE,
+    HTTP_STATUS.BAD_REQUEST,
+    SUPABASE_AUTH_ERROR_CODE.CURRENT_PASSWORD_REQUIRED
+  );
+
+export const REAL_WEAK_PASSWORD_ERROR =
+  new AuthWeakPasswordError(
+    REJECTED_MESSAGE,
+    HTTP_STATUS.UNPROCESSABLE_ENTITY,
+    WEAK_PASSWORD_REASONS
+  );
