@@ -15,7 +15,6 @@ import {
   E2E_UNKNOWN_CATEGORY_ID,
   resolveCategoryBehaviorFixtureName,
 } from "../constants/E2eCategoryBehavior.constants";
-import { E2E_SIGNED_OUT_STORAGE_STATE } from "../constants/E2eRuntime.constants";
 
 test.describe("Category behavior persistence and access", () => {
   test("saves a valid change, shows the success toast, returns to the list and keeps it when reopened", async ({
