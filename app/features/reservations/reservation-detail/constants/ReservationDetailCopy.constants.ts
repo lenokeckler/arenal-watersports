@@ -1,0 +1,27 @@
+export const RESERVATION_DETAIL_COPY = {
+  CANCELLATION_REASON: "Motivo de cancelación",
+  CANCELLED: "Cancelada",
+  CLOSED: "Finalizada",
+  COMBO: "Combo",
+  COMBO_SEPARATOR: " · ",
+  CUSTOMER: "Cliente",
+  DISPATCHED: "En curso",
+  DURATION: "Duración",
+  ERROR_TITLE: "No fue posible mostrar la reserva.",
+  HOURS_SUFFIX: "h",
+  LOADING: "Cargando el detalle de la reserva",
+  MINUTES_SUFFIX: "min",
+  MISSING_RESERVATION: "No encontramos esta reserva.",
+  MISSING_RESERVATION_DESCRIPTION:
+    "Revise el código y vuelva a intentarlo.",
+  PEOPLE: "personas",
+  RENTAL: "Alquiler",
+  RESERVATION: "Reserva",
+  RESERVATION_DATE: "Fecha y hora",
+  RETRY: "Intentar de nuevo",
+  SCHEDULED: "Agendada",
+  TITLE: "Detalle de reserva",
+  TOUR: "Tour",
+  UNKNOWN_ERROR:
+    "No se pudo cargar el detalle de la reserva.",
+} as const;

@@ -37,6 +37,8 @@ export const PATHS = {
   },
   RESERVATIONS: {
     CALENDAR: "/reservations/calendar",
+    DETAIL: (reservationId: string): string =>
+      `/reservations/${encodeURIComponent(reservationId)}`,
     DEPOSITS: "/reservations/deposits",
     INCOME: "/reservations/income",
     NEW: "/reservations/new",
