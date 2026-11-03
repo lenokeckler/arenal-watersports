@@ -1,5 +1,6 @@
 import { screen, within } from "@testing-library/react";
 import { ARIA_ROLE } from "@/app/constants";
+import { ARIA_BUSY_SELECTOR } from "./DepositsReport.constants";
 
 export const createDepositsReportPage = () => {
   const getList = (name: string) =>
@@ -20,6 +21,9 @@ export const createDepositsReportPage = () => {
   const getHeadings = (level: number) =>
     screen.getAllByRole(ARIA_ROLE.HEADING, { level });
 
+  const getBusyRegion = (listName: string) =>
+    getList(listName).closest(ARIA_BUSY_SELECTOR);
+
   const getText = (text: string) => screen.getByText(text);
 
   const queryText = (text: string) =>
@@ -29,6 +33,9 @@ export const createDepositsReportPage = () => {
     screen.queryByText(pattern);
 
   const getAlert = () => screen.getByRole(ARIA_ROLE.ALERT);
+
+  const getButton = (name: string) =>
+    screen.getByRole(ARIA_ROLE.BUTTON, { name });
 
   const getStatus = () =>
     screen.getByRole(ARIA_ROLE.STATUS);
@@ -60,6 +67,8 @@ export const createDepositsReportPage = () => {
   return {
     getAlert,
     getAllRows,
+    getBusyRegion,
+    getButton,
     getByRawText,
     getHeadings,
     getInRow,
