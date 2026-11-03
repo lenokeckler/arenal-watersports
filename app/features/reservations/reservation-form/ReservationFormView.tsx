@@ -9,7 +9,10 @@ import Button from "@/app/components/button/Button";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
 import { RESERVATION_FORM_UI_COPY } from "./constants/ReservationFormUiCopy.constants";
-import { RESERVATION_FORM_FIELD_ID } from "./constants/ReservationFormUi.constants";
+import {
+  RESERVATION_FORM_FOCUS_TARGET,
+  RESERVATION_FORM_FIELD_ID,
+} from "./constants/ReservationFormUi.constants";
 import { useReservationFormViewModel } from "./hooks/useReservationFormViewModel";
 import type { ReservationFormViewProps } from "./models/ReservationFormViewProps.interface";
 import {
@@ -94,7 +97,13 @@ const ReservationFormView = ({
             )}
             {viewModel.formError && (
               <Text
+                id={
+                  RESERVATION_FORM_FIELD_ID.SUBMISSION_ERROR
+                }
                 role="alert"
+                tabIndex={
+                  RESERVATION_FORM_FOCUS_TARGET.TAB_INDEX
+                }
                 className={RESERVATION_FORM_ERROR_CLASS}
               >
                 {viewModel.formError}

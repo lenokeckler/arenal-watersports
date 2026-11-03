@@ -2752,6 +2752,7 @@ El inventario cubre todo lo que la empresa tiene, incluidos los jet skis y las l
 - El inventario cubre todo lo que la empresa tiene, incluidos los jet skis y las lanchas.
 - Al entrar a una categoría identificada una por una se ven sus unidades con su código y su estado, por ejemplo los cuatro o cinco jet skis que haya.
 - Al entrar a una categoría llevada por cantidad se ve cuántos hay y cuántos están disponibles, dañados o en reparación.
+- En las categorías identificadas una por una se ve cuántas unidades están en uso, y los conteos por estado cuadran con el total.
 
 ---
 
