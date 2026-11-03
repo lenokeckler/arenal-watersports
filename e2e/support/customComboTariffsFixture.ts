@@ -84,6 +84,7 @@ const setupCustomComboTariffs = async (): Promise<
       .in("name", [
         E2E_CUSTOM_COMBO_FIXTURE.REGULAR_CATEGORY_NAME,
         E2E_CUSTOM_COMBO_FIXTURE.GUIDE_ONLY_CATEGORY_NAME,
+        E2E_CUSTOM_COMBO_FIXTURE.BOAT_CATEGORY_NAME,
       ])
       .eq("is_reservable", true)
       .eq("status", "active");
@@ -102,10 +103,15 @@ const setupCustomComboTariffs = async (): Promise<
       name ===
       E2E_CUSTOM_COMBO_FIXTURE.GUIDE_ONLY_CATEGORY_NAME
   );
+  const boatCategory = categories.find(
+    ({ name }) =>
+      name === E2E_CUSTOM_COMBO_FIXTURE.BOAT_CATEGORY_NAME
+  );
   if (
     !regularCategory ||
     regularCategory.guide_only ||
-    !guideOnlyCategory?.guide_only
+    !guideOnlyCategory?.guide_only ||
+    !boatCategory?.guide_only
   ) {
     throw new Error(
       E2E_CUSTOM_COMBO_FIXTURE.FIXTURE_FAILURE
@@ -125,6 +131,7 @@ const setupCustomComboTariffs = async (): Promise<
   const categoryIds = [
     regularCategory.id,
     guideOnlyCategory.id,
+    boatCategory.id,
   ];
   const { data: originalTariffs, error: tariffError } =
     await supabase
@@ -157,6 +164,16 @@ const setupCustomComboTariffs = async (): Promise<
       amount_usd:
         E2E_CUSTOM_COMBO_FIXTURE.TOUR_TARIFF.amountUsd,
       category_id: guideOnlyCategory.id,
+      created_by: worker.id,
+      type: E2E_CUSTOM_COMBO_FIXTURE.TOUR_TARIFF.type,
+      updated_by: worker.id,
+    },
+    {
+      amount_crc:
+        E2E_CUSTOM_COMBO_FIXTURE.TOUR_TARIFF.amountCrc,
+      amount_usd:
+        E2E_CUSTOM_COMBO_FIXTURE.TOUR_TARIFF.amountUsd,
+      category_id: boatCategory.id,
       created_by: worker.id,
       type: E2E_CUSTOM_COMBO_FIXTURE.TOUR_TARIFF.type,
       updated_by: worker.id,

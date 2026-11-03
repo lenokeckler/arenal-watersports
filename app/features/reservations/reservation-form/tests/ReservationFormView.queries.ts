@@ -43,6 +43,18 @@ const createReservationQueries = (
           exact: false,
         }
       ),
+    getExtraCheckbox: (name: string) =>
+      form.getByLabelText(name, { exact: false }),
+    getExtrasQuote: () =>
+      form.getByText(RESERVATION_FORM_UI_COPY.QUOTE_TITLE),
+    getExtrasRetryButton: () =>
+      form.getByRole(ARIA_ROLE.BUTTON, {
+        name: RESERVATION_FORM_UI_COPY.EXTRAS_RETRY,
+      }),
+    getQuoteRetryButton: () =>
+      form.getByRole(ARIA_ROLE.BUTTON, {
+        name: RESERVATION_FORM_UI_COPY.QUOTE_RETRY,
+      }),
     queryCustomDurationInput:
       (): NullableRef<HTMLInputElement> =>
         container.querySelector<HTMLInputElement>(

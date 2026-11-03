@@ -2,6 +2,7 @@ import userEvent, {
   type UserEvent,
 } from "@testing-library/user-event";
 import { createFormQueries } from "./ReservationFormView.queries";
+import { STRING } from "@/app/constants";
 
 const createEquipmentActions = (
   user: UserEvent,
@@ -59,6 +60,15 @@ const createReservationActions = (
       queries.getReservationTypeRadio(label)
     );
   },
+  toggleExtra: async (name: string): Promise<void> => {
+    await user.click(queries.getExtraCheckbox(name));
+  },
+  clickExtrasRetry: async (): Promise<void> => {
+    await user.click(queries.getExtrasRetryButton());
+  },
+  clickQuoteRetry: async (): Promise<void> => {
+    await user.click(queries.getQuoteRetryButton());
+  },
 });
 
 export const createReservationFormViewPage = (
@@ -70,5 +80,7 @@ export const createReservationFormViewPage = (
     ...queries,
     ...createEquipmentActions(user, queries),
     ...createReservationActions(user, queries),
+    getRenderedText: (): string =>
+      container.textContent ?? STRING.Empty,
   };
 };
