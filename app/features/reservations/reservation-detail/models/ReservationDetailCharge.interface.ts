@@ -2,7 +2,9 @@ import type { ReservationDetailCurrency } from "../constants/ReservationDetail.c
 import type { NullableRef } from "@/app/types";
 
 export interface ReservationDetailCharge {
-  amountCharged: number;
+  amountChargedGross: number;
+  amountChargedNet: number;
+  amountCredit: NullableRef<number>;
   amountRemaining: NullableRef<number>;
   amountTarget: NullableRef<number>;
   currency: ReservationDetailCurrency;

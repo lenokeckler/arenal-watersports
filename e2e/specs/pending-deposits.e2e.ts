@@ -5,7 +5,10 @@ import {
   PATHS,
 } from "@/app/constants";
 import { formatMoney } from "@/app/utils/money/formatMoney";
-import { E2E_COUNT } from "../constants/E2eRuntime.constants";
+import {
+  E2E_COUNT,
+  E2E_SIGNED_OUT_STORAGE_STATE,
+} from "../constants/E2eRuntime.constants";
 import { createPendingDepositsPage } from "../pages/PendingDeposits.page";
 import type { E2eSeededDeposit } from "../support/models/E2eSeededDeposit.interface";
 import { test } from "../support/pendingDepositsTest";
@@ -77,13 +80,19 @@ test.describe("Pending deposits", () => {
   });
 });
 
-baseTest.describe("Pending deposits signed out", () => {
-  baseTest(
-    "sends a signed-out visitor to the login",
-    async ({ page }) => {
-      await createPendingDepositsPage(page).goTo();
+baseTest.describe("Pending deposits", () => {
+  baseTest.describe("signed-out visitor", () => {
+    baseTest.use({
+      storageState: E2E_SIGNED_OUT_STORAGE_STATE,
+    });
 
-      await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
-    }
-  );
+    baseTest(
+      "sends a signed-out visitor to the login",
+      async ({ page }) => {
+        await createPendingDepositsPage(page).goTo();
+
+        await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
+      }
+    );
+  });
 });
