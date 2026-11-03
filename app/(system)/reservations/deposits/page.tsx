@@ -4,8 +4,10 @@ import PendingDeposits from "@/app/features/reservations/pending-deposits/Pendin
 
 export const metadata: Metadata = PENDING_DEPOSITS_METADATA;
 
-const PendingDepositsPage = (): React.JSX.Element => (
-  <PendingDeposits />
+const PendingDepositsPage = async ({
+  searchParams,
+}: PageProps<"/reservations/deposits">): Promise<React.JSX.Element> => (
+  <PendingDeposits pageParam={(await searchParams).page} />
 );
 
 export default PendingDepositsPage;
