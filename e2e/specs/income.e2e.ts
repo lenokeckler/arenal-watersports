@@ -78,7 +78,7 @@ workerTest.describe("Daily income report access", () => {
       const incomePage = createIncomePage(page);
       await incomePage.goTo();
 
-      await expect(page).toHaveURL(PATHS.HOME);
+      await expect(page).toHaveURL(PATHS.BOARD);
       await expect(incomePage.getPageTitle()).toHaveCount(
         E2E_COUNT.NONE
       );
@@ -92,7 +92,7 @@ workerTest.describe("Daily income report access", () => {
       const incomePage = createIncomePage(page);
       await incomePage.goTo();
 
-      await expect(page).toHaveURL(PATHS.HOME);
+      await expect(page).toHaveURL(PATHS.BOARD);
       await expect(incomePage.getPageTitle()).toHaveCount(
         E2E_COUNT.NONE
       );
