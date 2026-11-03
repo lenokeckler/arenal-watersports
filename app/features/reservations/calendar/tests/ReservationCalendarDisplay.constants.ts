@@ -45,26 +45,22 @@ export const CALENDAR_BLOCK_ENTRY: ReservationCalendarEntry =
 
 export const CALENDAR_BLOCK_EXPECTED = {
   ACTUAL_LABELS: [
-    "Kayak doble. Salida real: 14 de octubre de 2026, 10:15. Regreso esperado: 14 de octubre de 2026, 11:15. Regreso real: 14 de octubre de 2026, 11:30",
-    "Moto acuática. Salida real: 14 de octubre de 2026, 12:00. Regreso esperado: Sin hora prevista. Regreso real: Sin regreso registrado",
+    "Kayak doble. Salida real: 10:15. Regreso esperado: 11:15. Regreso real: 11:30",
+    "Moto acuática. Salida real: 12:00. Regreso esperado: Sin hora prevista. Regreso real: Sin regreso registrado",
   ],
-  ACTUAL_DEPARTURE:
-    "Salida real: 14 de octubre de 2026, 10:15",
-  ACTUAL_RETURN:
-    "Regreso real: 14 de octubre de 2026, 11:30",
-  BEFORE_MIDNIGHT: "13 de octubre de 2026, 23:59",
+  ACTUAL_DEPARTURE: "Salida real: 10:15",
+  ACTUAL_RETURN: "Regreso real: 11:30",
+  BEFORE_MIDNIGHT: "23:59",
   EQUIPMENT:
     "12 × Kayak doble de travesía para dos personas, Moto acuática de turismo JS-00000003",
-  EXPECTED_RETURN:
-    "Regreso esperado: 14 de octubre de 2026, 11:15",
+  EXPECTED_RETURN: "Regreso esperado: 11:15",
   MIDNIGHT: "14 de octubre de 2026, 00:00",
   MISSING_ACTUAL_RETURN:
-    "Kayak doble. Salida real: 14 de octubre de 2026, 10:15. Regreso esperado: 14 de octubre de 2026, 11:15. Regreso real: Sin regreso registrado",
+    "Kayak doble. Salida real: 10:15. Regreso esperado: 11:15. Regreso real: Sin regreso registrado",
   MISSING_EXPECTED_RETURN:
-    "Kayak doble. Salida real: 14 de octubre de 2026, 10:15. Regreso esperado: Sin hora prevista. Regreso real: 14 de octubre de 2026, 11:30",
-  NEXT_DAY: "15 de octubre de 2026, 00:00",
-  SCHEDULED:
-    "Horario agendado: 14 de octubre de 2026, 10:00 – 14 de octubre de 2026, 11:00",
+    "Kayak doble. Salida real: 10:15. Regreso esperado: Sin hora prevista. Regreso real: 11:30",
+  NEXT_DAY: "00:00",
+  SCHEDULED: "Horario agendado: 10:00 – 11:00",
 } as const;
 
 export const CALENDAR_BLOCK_INSTANT = {

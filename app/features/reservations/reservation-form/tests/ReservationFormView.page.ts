@@ -112,6 +112,25 @@ export const createReservationFormViewPage = (
     findSubmissionError,
     findSuccessMessage,
     getFocusedElement: () => document.activeElement,
+    getCustomerNameInput: () =>
+      container.querySelector<HTMLInputElement>(
+        `#${RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}`
+      ),
+    setCustomerName: async (
+      value: string
+    ): Promise<void> => {
+      const input =
+        container.querySelector<HTMLInputElement>(
+          `#${RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}`
+        );
+      if (input === null) {
+        throw new Error(
+          "The customer name field is missing."
+        );
+      }
+      await user.clear(input);
+      await user.type(input, value);
+    },
     getSubmitButton,
     querySubmitButton,
     findCategoryConflictWarning: () =>
