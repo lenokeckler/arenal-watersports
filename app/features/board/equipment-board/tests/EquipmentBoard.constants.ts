@@ -93,6 +93,8 @@ export const ARIA_HIDDEN_TRUE = "true";
 export const ARIA_BUSY_ATTRIBUTE = "aria-busy";
 export const ARIA_BUSY_TRUE = "true";
 
+export const HREF_ATTRIBUTE = "href";
+
 export const HEADING_LEVEL_ONE = 1;
 export const HEADING_LEVEL_TWO = 2;
 
