@@ -1,8 +1,3 @@
-import {
-  CURRENCY_CODE,
-  type CurrencyCode,
-} from "@/app/constants";
-
 export const PENDING_DEPOSITS_COPY = {
   EMPTY_BODY:
     "Todo el dinero de clientes que teníamos en mano ya fue resuelto.",
@@ -17,10 +12,4 @@ export const PENDING_DEPOSITS_COPY = {
   PAGE_DESCRIPTION:
     "Este dinero es de sus clientes. Mientras no se resuelva, sigue apareciendo aquí con la reserva a la que pertenece.",
   PAGE_TITLE: "Depósitos pendientes",
-  RESERVATION_CODE_LABEL: "Reserva",
 } as const;
-
-export const CURRENCY_NAME: Record<CurrencyCode, string> = {
-  [CURRENCY_CODE.USD]: "Dólares",
-  [CURRENCY_CODE.CRC]: "Colones",
-};
