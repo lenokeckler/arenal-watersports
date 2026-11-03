@@ -2448,6 +2448,7 @@ export type Database = {
           quantity_damaged: number | null;
           quantity_in_maintenance: number | null;
           quantity_in_repair: number | null;
+          quantity_in_use: number | null;
           quantity_total: number | null;
           tracking_mode:
             | Database["public"]["Enums"]["tracking_mode"]

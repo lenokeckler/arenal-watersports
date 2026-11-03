@@ -51,6 +51,7 @@ export const INVENTORY_SERVICE_UNIT_SUMMARY_ROW: InventorySummaryDatabaseRow =
     quantity_in_maintenance: 1,
     quantity_in_repair: 0,
     quantity_total: 4,
+    quantity_in_use: 1,
     tracking_mode: INVENTORY_TRACKING_MODE.BY_UNIT,
   };
 
@@ -64,6 +65,7 @@ export const INVENTORY_SERVICE_QUANTITY_SUMMARY_ROW: InventorySummaryDatabaseRow
     quantity_in_maintenance: 0,
     quantity_in_repair: 3,
     quantity_total: 15,
+    quantity_in_use: 0,
     tracking_mode: INVENTORY_TRACKING_MODE.BY_QUANTITY,
   };
 
