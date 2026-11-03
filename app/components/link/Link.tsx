@@ -6,11 +6,15 @@ const Link = ({
   children,
   className,
   onClick,
+  ariaCurrent,
+  ariaLabel,
 }: LinkProps) => (
   <NextLink
     href={href}
     className={className}
     onClick={onClick}
+    aria-current={ariaCurrent}
+    aria-label={ariaLabel}
   >
     {children}
   </NextLink>

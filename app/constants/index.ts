@@ -70,6 +70,10 @@ export { EVENT } from "./strings/Event.constants";
 export { LOGO } from "./strings/Logo.constants";
 export { DISPLAY_NAME } from "./strings/DisplayName.constants";
 export { APP_NAME } from "./strings/AppName.constants";
+export {
+  ARIA_CURRENT,
+  type AriaCurrentValue,
+} from "./strings/AriaCurrent.constants";
 export { ARIA_LABEL } from "./strings/AriaLabel.constants";
 export { ARIA_ROLE } from "./strings/AriaRole.constants";
 export type { UnorderedListVariant } from "@/app/components/list/UnorderedList.constants";
@@ -169,9 +173,14 @@ export {
 } from "./access/BlockedReauthentication.constants";
 export { SUPABASE_TABLE } from "./supabase/SupabaseTable.constants";
 export {
+  BOARD_CATEGORY_DETAIL_OPERATION,
   BOARD_CATEGORY_OPERATION,
   BOARD_CATEGORY_QUERY,
 } from "./supabase/BoardCategoryQuery.constants";
+export {
+  BOARD_CATEGORY_UNITS_OPERATION,
+  BOARD_CATEGORY_UNITS_QUERY,
+} from "./supabase/BoardCategoryUnitsQuery.constants";
 export {
   RESERVATIONS_BY_WORKER_OPERATION,
   RESERVATIONS_BY_WORKER_QUERY,
@@ -328,14 +337,17 @@ export {
 } from "./supabase/ReservationCalendarQuery.constants";
 export { RESERVATION_CALENDAR_QUERY_ERROR } from "./supabase/ReservationCalendarQueryError.constants";
 export { DEPOSIT_QUERY } from "./supabase/DepositQuery.constants";
+export { DEPOSIT_ROW_INCOMPLETE_ERROR_MESSAGE } from "./supabase/DepositsReadError.constants";
 export {
   CURRENCY_CODE,
   type CurrencyCode,
 } from "./money/CurrencyCode.constants";
 export {
   DEPOSIT_STATUS,
+  RETAINED_DEPOSIT_STATUSES,
   type DepositStatus,
 } from "./money/DepositStatus.constants";
+export { DEPOSIT_COPY } from "./money/DepositCopy.constants";
 export {
   MONEY_AMOUNT_ISSUE,
   type MoneyAmountIssue,
