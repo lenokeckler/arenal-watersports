@@ -54,6 +54,7 @@ export const EXPECTED_UNIT_INVENTORY_CATEGORY_DETAILS: InventoryCategoryDetails 
   {
     category: {
       id: "aaaaaaaa-0000-0000-0000-000000000001",
+      inUse: 1,
       name: "Jet Ski",
       trackingMode: INVENTORY_TRACKING_MODE.BY_UNIT,
       available: 2,
@@ -74,6 +75,7 @@ export const EXPECTED_QUANTITY_INVENTORY_CATEGORY_DETAILS: InventoryCategoryDeta
   {
     category: {
       id: "aaaaaaaa-0000-0000-0000-000000000002",
+      inUse: 0,
       name: "Chaleco",
       trackingMode: INVENTORY_TRACKING_MODE.BY_QUANTITY,
       available: 10,
