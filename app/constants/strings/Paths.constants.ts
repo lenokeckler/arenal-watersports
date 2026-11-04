@@ -61,7 +61,9 @@ export const PATHS = {
     DETAIL: (reservationId: string): string =>
       `/reservations/${encodeURIComponent(reservationId)}`,
     DEPOSITS: "/reservations/deposits",
+    EDIT_SEGMENT: "edit",
     INCOME: "/reservations/income",
     NEW: "/reservations/new",
+    ROOT: "/reservations",
   },
 } as const;
