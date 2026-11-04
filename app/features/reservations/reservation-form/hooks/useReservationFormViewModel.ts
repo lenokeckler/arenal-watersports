@@ -37,6 +37,11 @@ export const useReservationFormViewModel = (
 
   return {
     ...state.fields,
+    handleReservationTypeChange: (value) =>
+      state.fields.handleReservationTypeChange(
+        value,
+        equipment.categories
+      ),
     ...state.submission,
     ...state.duration,
     ...state.durationHandlers,

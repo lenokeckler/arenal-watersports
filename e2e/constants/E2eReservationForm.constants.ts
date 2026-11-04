@@ -1,6 +1,8 @@
 import { RESERVATION_FORM_UI_COPY } from "@/app/features/reservations/reservation-form/constants/ReservationFormUiCopy.constants";
 import { E2E_PROJECT } from "./E2eRuntime.constants";
 
+const E2E_RESERVATION_LANCHA_UNIT_OPTION = "PONTOON";
+
 export const E2E_RESERVATION_FORM_COPY = {
   HEADING: "Nueva reserva",
   BACK_TO_CALENDAR: "Volver al calendario",
@@ -21,12 +23,13 @@ export const E2E_RESERVATION_FORM_COPY = {
   CATEGORY: "Equipo",
   CATEGORY_FIELD_NAME: "Equipo *",
   UNIT: "Unidad de lancha",
-  UNIT_OPTION: "PONTOON",
+  UNIT_OPTION: E2E_RESERVATION_LANCHA_UNIT_OPTION,
   CATEGORY_OPTION: "Jet Ski",
   CATEGORY_AVAILABILITY_OPTION: "Kayak doble",
   CATEGORY_AVAILABILITY_TIME: "10:00",
   CONCRETE_CATEGORY_OPTION: "Lancha",
-  REALTIME_UNIT_OPTION: "BENNINGTON",
+  RESERVATION_TYPE_TOUR: "Tour",
+  REALTIME_UNIT_OPTION: E2E_RESERVATION_LANCHA_UNIT_OPTION,
   REALTIME_DATE: "2099-12-31",
   CUSTOMER_NAME_VALID: "US-RES-04 E2E reservation",
   SUBMIT: "Registrar reserva",

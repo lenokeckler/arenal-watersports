@@ -63,7 +63,6 @@ export const useReservationFormFields = (
   ] = useState(false);
   const handleReservationTypeChange =
     createReservationTypeChangeHandler(
-      categories,
       values,
       updateValue,
       setHasReservationTypeSelectionReset
@@ -75,7 +74,14 @@ export const useReservationFormFields = (
       setHasReservationTypeSelectionReset(false)
     ),
     ...numericFieldHandlers,
-    handleReservationTypeChange,
+    handleReservationTypeChange: (
+      value,
+      currentCategories
+    ) =>
+      handleReservationTypeChange(
+        value,
+        currentCategories ?? categories
+      ),
     hasReservationTypeSelectionReset,
     values,
   };

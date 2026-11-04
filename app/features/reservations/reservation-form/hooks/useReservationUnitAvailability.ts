@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getReservationUnitAvailabilityRequestKey } from "../utils/getReservationUnitAvailabilityRequestKey";
 import type { ReservationCategoryUnitOption } from "../models/ReservationCategoryUnitOption.interface";
 import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
 import { useSyncReservationUnitAvailability } from "./useSyncReservationUnitAvailability";
@@ -12,13 +13,27 @@ export const useReservationUnitAvailability = (
   >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  useSyncReservationUnitAvailability(
+  const [resolvedRequestKey, setResolvedRequestKey] =
+    useState("");
+  const requestKey =
+    getReservationUnitAvailabilityRequestKey(
+      request,
+      refreshKey
+    );
+  useSyncReservationUnitAvailability({
     request,
+    requestKey,
     setAvailableUnits,
-    setIsLoading,
     setHasError,
-    refreshKey
-  );
+    setIsLoading,
+    setResolvedRequestKey,
+  });
 
-  return { availableUnits, hasError, isLoading };
+  return {
+    availableUnits,
+    hasError,
+    isLoading,
+    isResolvedForCurrentRequest:
+      resolvedRequestKey === requestKey,
+  };
 };

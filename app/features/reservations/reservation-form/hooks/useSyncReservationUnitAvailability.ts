@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import type { ReservationCategoryUnitOption } from "../models/ReservationCategoryUnitOption.interface";
 import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
+import type { ReservationUnitAvailabilitySyncOptions } from "../models/ReservationUnitAvailabilitySyncOptions.interface";
 import { getAvailableReservationUnitsAction } from "../actions/getAvailableReservationUnitsAction";
 import { isReservationUnitAvailabilityInput } from "../utils/isReservationUnitAvailabilityInput";
 
@@ -10,89 +11,99 @@ const resetAvailability = (
     SetStateAction<ReservationCategoryUnitOption[]>
   >,
   setIsLoading: Dispatch<SetStateAction<boolean>>,
-  setHasError: Dispatch<SetStateAction<boolean>>
+  setHasError: Dispatch<SetStateAction<boolean>>,
+  setResolvedRequestKey: Dispatch<SetStateAction<string>>
 ): void => {
   setAvailableUnits([]);
   setIsLoading(false);
   setHasError(false);
+  setResolvedRequestKey("");
 };
 
 const startAvailabilityLookup = (
   request: ReservationUnitAvailabilityInput,
-  setAvailableUnits: Dispatch<
-    SetStateAction<ReservationCategoryUnitOption[]>
-  >,
-  setIsLoading: Dispatch<SetStateAction<boolean>>,
-  setHasError: Dispatch<SetStateAction<boolean>>
+  options: ReservationUnitAvailabilitySyncOptions
 ): (() => void) => {
   let isCurrentRequest = true;
-  setAvailableUnits([]);
-  setIsLoading(true);
-  setHasError(false);
+  options.setAvailableUnits([]);
+  options.setIsLoading(true);
+  options.setHasError(false);
   getAvailableReservationUnitsAction(request)
     .then((units) => {
       if (isCurrentRequest) {
-        setAvailableUnits(units);
+        options.setAvailableUnits(units);
       }
     })
     .catch(() => {
       if (isCurrentRequest) {
-        setHasError(true);
+        options.setHasError(true);
       }
     })
     .finally(() => {
       if (isCurrentRequest) {
-        setIsLoading(false);
+        options.setResolvedRequestKey(options.requestKey);
+        options.setIsLoading(false);
       }
     });
-
   return () => {
     isCurrentRequest = false;
   };
 };
 
+const synchronizeAvailability = (
+  options: ReservationUnitAvailabilitySyncOptions
+): (() => void) | undefined => {
+  if (
+    !isReservationUnitAvailabilityInput(options.request)
+  ) {
+    resetAvailability(
+      options.setAvailableUnits,
+      options.setIsLoading,
+      options.setHasError,
+      options.setResolvedRequestKey
+    );
+    return undefined;
+  }
+  return startAvailabilityLookup(options.request, options);
+};
+
 export const useSyncReservationUnitAvailability = (
-  request: ReservationUnitAvailabilityInput,
-  setAvailableUnits: Dispatch<
-    SetStateAction<ReservationCategoryUnitOption[]>
-  >,
-  setIsLoading: Dispatch<SetStateAction<boolean>>,
-  setHasError: Dispatch<SetStateAction<boolean>>,
-  refreshKey: number
+  options: ReservationUnitAvailabilitySyncOptions
 ): void => {
   const { categoryId, date, durationMinutes, time } =
-    request;
-  useEffect(() => {
-    const currentRequest = {
+    options.request;
+  const {
+    requestKey,
+    setAvailableUnits,
+    setHasError,
+    setIsLoading,
+    setResolvedRequestKey,
+  } = options;
+  useEffect(
+    () =>
+      synchronizeAvailability({
+        request: {
+          categoryId,
+          date,
+          durationMinutes,
+          time,
+        },
+        requestKey,
+        setAvailableUnits,
+        setHasError,
+        setIsLoading,
+        setResolvedRequestKey,
+      }),
+    [
       categoryId,
       date,
       durationMinutes,
       time,
-    };
-    if (
-      !isReservationUnitAvailabilityInput(currentRequest)
-    ) {
-      resetAvailability(
-        setAvailableUnits,
-        setIsLoading,
-        setHasError
-      );
-      return undefined;
-    }
-    return startAvailabilityLookup(
-      currentRequest,
+      requestKey,
       setAvailableUnits,
+      setHasError,
       setIsLoading,
-      setHasError
-    );
-  }, [
-    categoryId,
-    date,
-    durationMinutes,
-    time,
-    setAvailableUnits,
-    setHasError,
-    setIsLoading,
-    refreshKey,
-  ]);
+      setResolvedRequestKey,
+    ]
+  );
 };

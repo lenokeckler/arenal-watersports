@@ -11,6 +11,7 @@ import {
   viewModelHarness,
 } from "./ReservationFormViewModel.testHarness";
 import { useReservationFormViewModel } from "../hooks/useReservationFormViewModel";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 
 describe("useReservationFormViewModel selection invalidation", () => {
   beforeEach(resetViewModelHarness);
@@ -55,6 +56,7 @@ describe("useReservationFormViewModel selection invalidation", () => {
       availableUnits: [],
       hasAvailabilityError: false,
       isAvailabilityLoading: false,
+      isAvailabilityResolved: true,
       requiresConcreteUnit: true,
     };
     const { result } = renderHook(() =>
@@ -77,6 +79,7 @@ describe("useReservationFormViewModel selection invalidation", () => {
       availableUnits: [],
       hasAvailabilityError: false,
       isAvailabilityLoading: false,
+      isAvailabilityResolved: true,
       requiresConcreteUnit: true,
     };
     const { result, rerender } = renderHook(() =>
@@ -87,6 +90,7 @@ describe("useReservationFormViewModel selection invalidation", () => {
       availableUnits: [{ code: "LANCHA-2", id: "unit-2" }],
       hasAvailabilityError: false,
       isAvailabilityLoading: false,
+      isAvailabilityResolved: true,
       requiresConcreteUnit: true,
     };
     rerender();
@@ -107,6 +111,7 @@ describe("useReservationFormViewModel selection invalidation", () => {
       availableUnits: [],
       hasAvailabilityError: false,
       isAvailabilityLoading: false,
+      isAvailabilityResolved: true,
       requiresConcreteUnit: true,
     };
     const { result } = renderHook(() =>
@@ -119,5 +124,56 @@ describe("useReservationFormViewModel selection invalidation", () => {
     expect(
       result.current.hasEquipmentSelectionChanged
     ).toBe(false);
+  });
+
+  it("keeps the unit while live availability is unresolved", () => {
+    viewModelHarness.equipment.current = {
+      availableUnits: [],
+      hasAvailabilityError: false,
+      isAvailabilityLoading: false,
+      isAvailabilityResolved: false,
+      requiresConcreteUnit: true,
+    };
+    const { result } = renderHook(() =>
+      useReservationFormViewModel("2030-04-12", [])
+    );
+
+    expect(
+      viewModelHarness.handleUnitChange
+    ).not.toHaveBeenCalled();
+    expect(
+      result.current.hasEquipmentSelectionChanged
+    ).toBe(false);
+  });
+
+  it("uses live categories when changing reservation type", () => {
+    const liveCategories = [
+      {
+        id: "category-1",
+        isGuideOnly: true,
+        isInterchangeable: false,
+        name: "Lancha",
+      },
+    ];
+    viewModelHarness.eligibility.current.categories =
+      liveCategories;
+    viewModelHarness.values.reservationType =
+      RESERVATION_TYPE.TOUR;
+    const { result } = renderHook(() =>
+      useReservationFormViewModel("2030-04-12", [])
+    );
+
+    act(() =>
+      result.current.handleReservationTypeChange(
+        RESERVATION_TYPE.RENTAL
+      )
+    );
+
+    expect(
+      viewModelHarness.handleReservationTypeChange
+    ).toHaveBeenCalledWith(
+      RESERVATION_TYPE.RENTAL,
+      liveCategories
+    );
   });
 });

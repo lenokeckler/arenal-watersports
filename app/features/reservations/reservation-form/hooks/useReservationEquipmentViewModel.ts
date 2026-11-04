@@ -56,6 +56,8 @@ export const useReservationEquipmentViewModel = (
       : [],
     hasAvailabilityError: unitAvailability.hasError,
     isAvailabilityLoading: unitAvailability.isLoading,
+    isAvailabilityResolved:
+      unitAvailability.isResolvedForCurrentRequest,
     requiresConcreteUnit,
   };
 };

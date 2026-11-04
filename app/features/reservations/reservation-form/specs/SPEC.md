@@ -16,7 +16,6 @@ Allow a reservations worker to record a reservation with its type, customer name
 
 ## Out of scope
 
-- Criterion 5 remains dependent on integrating open calendar PR #101. This work must not fabricate a local calendar or substitute visibility behavior.
 - US-RES-08 guide assignment, combo composition, and package pricing.
 - US-RES-15 availability and collision checking.
 - US-RES-16 collision warnings.

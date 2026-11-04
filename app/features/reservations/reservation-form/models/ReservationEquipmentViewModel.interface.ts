@@ -13,5 +13,6 @@ export interface ReservationEquipmentViewModel {
   handleRetryCategoryAvailability: () => void;
   hasAvailabilityError: boolean;
   isAvailabilityLoading: boolean;
+  isAvailabilityResolved: boolean;
   requiresConcreteUnit: boolean;
 }

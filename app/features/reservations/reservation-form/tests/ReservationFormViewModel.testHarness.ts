@@ -1,14 +1,17 @@
 import { vi } from "vitest";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
+import type { ReservationFormInput } from "../models/ReservationFormInput.interface";
 
 export const viewModelHarness = (() => {
-  const values = {
+  const values: ReservationFormInput = {
     categoryId: "category-1",
     customerName: "Reserva del muelle",
     date: "2030-04-12",
     durationHours: 2,
     peopleCount: 4,
     quantity: 1,
+    reservationType: RESERVATION_TYPE.RENTAL,
     time: "09:30",
     unitId: "unit-1",
   };
@@ -19,6 +22,7 @@ export const viewModelHarness = (() => {
   const handleUnitChange = vi.fn((value: string) => {
     values.unitId = value;
   });
+  const handleReservationTypeChange = vi.fn();
   const eligibility: {
     current: {
       categories: ReservationCategoryOption[];
@@ -41,6 +45,7 @@ export const viewModelHarness = (() => {
       availableUnits: [{ code: "LANCHA-1", id: "unit-1" }],
       hasAvailabilityError: false,
       isAvailabilityLoading: false,
+      isAvailabilityResolved: true,
       requiresConcreteUnit: true,
     },
   };
@@ -49,6 +54,7 @@ export const viewModelHarness = (() => {
     eligibility,
     equipment,
     handleCategoryChange,
+    handleReservationTypeChange,
     handleUnitChange,
     values,
   };
@@ -68,6 +74,8 @@ vi.mock("../hooks/useReservationFormState", () => ({
     fields: {
       handleCategoryChange:
         viewModelHarness.handleCategoryChange,
+      handleReservationTypeChange:
+        viewModelHarness.handleReservationTypeChange,
       handleUnitChange: viewModelHarness.handleUnitChange,
       values: viewModelHarness.values,
     },
@@ -96,6 +104,8 @@ vi.mock(
   () => ({
     useReservationEquipmentViewModel: () => ({
       ...viewModelHarness.equipment.current,
+      categories:
+        viewModelHarness.eligibility.current.categories,
       categoryConflictWarning: {
         hasError: false,
         isLoading: false,
@@ -120,10 +130,13 @@ export const resetViewModelHarness = (): void => {
   viewModelHarness.values.durationHours = 2;
   viewModelHarness.values.peopleCount = 4;
   viewModelHarness.values.quantity = 1;
+  viewModelHarness.values.reservationType =
+    RESERVATION_TYPE.RENTAL;
   viewModelHarness.values.time = "09:30";
   viewModelHarness.values.unitId = "unit-1";
   viewModelHarness.handleCategoryChange.mockClear();
   viewModelHarness.handleUnitChange.mockClear();
+  viewModelHarness.handleReservationTypeChange.mockClear();
   viewModelHarness.eligibility.current = {
     categories: [
       {
@@ -142,6 +155,7 @@ export const resetViewModelHarness = (): void => {
     availableUnits: [{ code: "LANCHA-1", id: "unit-1" }],
     hasAvailabilityError: false,
     isAvailabilityLoading: false,
+    isAvailabilityResolved: true,
     requiresConcreteUnit: true,
   };
 };

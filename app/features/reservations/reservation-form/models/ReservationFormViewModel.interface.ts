@@ -19,6 +19,7 @@ export interface ReservationFormViewModel extends ReservationFormFieldsViewModel
   requiresConcreteUnit: boolean;
   isAvailabilityLoading: boolean;
   hasAvailabilityError: boolean;
+  isAvailabilityResolved: boolean;
   categoryAvailability: NullableRef<number>;
   categoryAvailabilityCategoryName: string;
   categoryAvailabilityInterval: string;
