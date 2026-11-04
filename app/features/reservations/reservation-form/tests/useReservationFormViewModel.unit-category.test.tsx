@@ -14,6 +14,7 @@ describe("useReservationFormViewModel concrete unit selection", () => {
         categories: [
           {
             id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
+            isGuideOnly: false,
             name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
           },
         ],
@@ -22,6 +23,7 @@ describe("useReservationFormViewModel concrete unit selection", () => {
         unitCategories: [
           {
             id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
+            isGuideOnly: false,
             name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
           },
         ],
