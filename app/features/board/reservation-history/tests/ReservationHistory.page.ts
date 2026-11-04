@@ -13,6 +13,9 @@ export const createReservationHistoryPage = () => {
   const queryList = () =>
     screen.queryByRole(ARIA_ROLE.LIST);
 
+  const getAllItems = () =>
+    screen.getAllByRole(ARIA_ROLE.LISTITEM);
+
   const getRows = () =>
     within(getList()).getAllByRole(ARIA_ROLE.LISTITEM);
 
@@ -25,16 +28,45 @@ export const createReservationHistoryPage = () => {
   const queryInRow = (row: HTMLElement, text: string) =>
     within(row).queryByText(text);
 
+  const queryNavigation = () =>
+    screen.queryByRole(ARIA_ROLE.NAVIGATION);
+
+  const getNavigation = () =>
+    screen.getByRole(ARIA_ROLE.NAVIGATION, {
+      name: RESERVATION_HISTORY_COPY.PAGINATION_NAV_LABEL,
+    });
+
+  const getNavigationLink = (name: string) =>
+    within(getNavigation()).getByRole(ARIA_ROLE.LINK, {
+      name,
+    });
+
+  const getStatus = () =>
+    screen.getByRole(ARIA_ROLE.STATUS);
+
+  const getAlert = () => screen.getByRole(ARIA_ROLE.ALERT);
+
+  const getRetryButton = () =>
+    screen.getByRole(ARIA_ROLE.BUTTON, {
+      name: RESERVATION_HISTORY_COPY.RETRY,
+    });
+
   const getText = (text: string) => screen.getByText(text);
 
   return {
+    getAlert,
+    getAllItems,
     getInRow,
+    getNavigationLink,
     getList,
     getMain,
+    getRetryButton,
     getRowLink,
+    getStatus,
     getRows,
     getText,
     queryInRow,
     queryList,
+    queryNavigation,
   };
 };

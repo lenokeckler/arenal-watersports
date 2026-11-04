@@ -1,20 +1,23 @@
+import { Suspense } from "react";
 import { parseReservationHistorySearchParams } from "@/app/services/board/reservation-history/utils/parseReservationHistorySearchParams";
-import { readReservationHistory } from "@/app/services/board/reservation-history/readReservationHistory";
-import ReservationHistoryInner from "./components/ReservationHistoryInner";
+import ReservationHistoryContent from "./components/ReservationHistoryContent";
+import ReservationHistoryLoading from "./components/ReservationHistoryLoading";
 import type { ReservationHistoryProps } from "./models/ReservationHistoryProps.interface";
+import { buildReservationHistoryQueryString } from "./utils/buildReservationHistoryQueryString";
 
-const ReservationHistory = async ({
+const ReservationHistory = ({
   searchParams,
-}: ReservationHistoryProps): Promise<React.JSX.Element> => {
+}: ReservationHistoryProps): React.JSX.Element => {
   const query =
     parseReservationHistorySearchParams(searchParams);
-  const page = await readReservationHistory(query);
 
   return (
-    <ReservationHistoryInner
-      page={page}
-      query={query}
-    />
+    <Suspense
+      key={buildReservationHistoryQueryString(query)}
+      fallback={<ReservationHistoryLoading />}
+    >
+      <ReservationHistoryContent query={query} />
+    </Suspense>
   );
 };
 
