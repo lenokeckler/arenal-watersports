@@ -13,6 +13,7 @@ import type { ReservationFormViewModelOptions } from "../models/ReservationFormV
 import { useReservationEquipmentEligibility } from "./useReservationEquipmentEligibility";
 import { useReservationFormEquipmentSelection } from "./useReservationFormEquipmentSelection";
 import { isReservationQuantityUnavailable } from "../utils/isReservationQuantityUnavailable";
+import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
 
 export const useReservationFormViewModel = (
   options: ReservationFormViewModelOptions
@@ -75,16 +76,30 @@ export const useReservationFormViewModel = (
   });
   const isSubmitDisabled =
     submission.isPending ||
-    submission.isSubmitted ||
     eligibleCategories.length === 0 ||
     (equipment.requiresConcreteUnit &&
       (equipment.isAvailabilityLoading ||
-        equipment.hasAvailabilityError ||
-        fields.values.unitId === STRING.Empty)) ||
+        equipment.hasAvailabilityError)) ||
     isQuantityUnavailable;
   const handleSubmit: ReservationFormViewModel["handleSubmit"] =
     (event) => {
       event.preventDefault();
+      if (
+        equipment.requiresConcreteUnit &&
+        fields.values.unitId === STRING.Empty
+      ) {
+        submission.applyResult({
+          ok: false,
+          errors: {
+            [RESERVATION_FORM_FIELD.UNIT_ID]:
+              RESERVATION_FORM_COPY[
+                RESERVATION_FORM_FIELD.UNIT_ID
+              ],
+          },
+        });
+        submission.requestErrorFocus();
+        return;
+      }
       if (isQuantityUnavailable) {
         return;
       }
@@ -97,6 +112,11 @@ export const useReservationFormViewModel = (
         },
         () => {
           fields.handleUnitChange(STRING.Empty);
+          equipment.retryUnitAvailability();
+        },
+        () => {
+          fields.reset();
+          duration.reset();
           equipment.retryUnitAvailability();
         }
       );
