@@ -14,6 +14,13 @@ export const useReservationFormValues = (
       date: initialDate,
       categoryId: initialCategoryId,
     });
+  const reset = (): void => {
+    setValues({
+      ...RESERVATION_FORM_DEFAULT_VALUES,
+      date: initialDate,
+      categoryId: initialCategoryId,
+    });
+  };
 
   const updateValue = <
     K extends keyof ReservationFormInput,
@@ -28,5 +35,5 @@ export const useReservationFormValues = (
     clearFieldError(field);
   };
 
-  return { updateValue, values };
+  return { reset, updateValue, values };
 };

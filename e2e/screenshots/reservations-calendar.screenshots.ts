@@ -2,17 +2,12 @@ import { PATHS } from "@/app/constants";
 import { expect, test } from "../support/activeWorkerTest";
 import { E2E_RESERVATIONS_AREA_LABEL } from "../constants/E2eWorkMode.constants";
 import { createReservationsCalendarPage } from "../pages/ReservationsCalendar.page";
+import { createReservationsCalendarDetailNavigationPage } from "../pages/ReservationsCalendarDetailNavigation.page";
 import { createWorkModePage } from "../pages/WorkMode.page";
 import { addReservationsArea } from "../support/addReservationsArea";
 import { createReservationsCalendarHeatFixture } from "../support/createReservationsCalendarHeatFixture";
 import { submitActiveWorkerSignIn } from "../support/submitActiveWorkerSignIn";
-import {
-  captureCalendarDayAgenda,
-  captureCalendarInitialState,
-  captureCalendarMonthState,
-  captureCalendarWeekState,
-  captureCalendarYearState,
-} from "./reservationsCalendarCaptureSteps";
+import { captureReservationsCalendarStates } from "./reservationsCalendarCaptureSteps";
 
 test("captures the Reservations calendar states", async ({
   activeWorker,
@@ -33,10 +28,14 @@ test("captures the Reservations calendar states", async ({
     await workModePage
       .getCard(E2E_RESERVATIONS_AREA_LABEL)
       .click();
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
 
-    const calendarPage =
-      createReservationsCalendarPage(page);
+    const calendarPage = {
+      ...createReservationsCalendarPage(page),
+      ...createReservationsCalendarDetailNavigationPage(
+        page
+      ),
+    };
     await calendarPage.goTo();
     const context = {
       calendarPage,
@@ -44,11 +43,10 @@ test("captures the Reservations calendar states", async ({
       page,
       projectName: testInfo.project.name,
     };
-    await captureCalendarInitialState(context);
-    await captureCalendarMonthState(context);
-    await captureCalendarDayAgenda(context, heatFixture);
-    await captureCalendarYearState(context, heatFixture);
-    await captureCalendarWeekState(context);
+    await captureReservationsCalendarStates(
+      context,
+      heatFixture
+    );
   } finally {
     await heatFixture.remove();
   }

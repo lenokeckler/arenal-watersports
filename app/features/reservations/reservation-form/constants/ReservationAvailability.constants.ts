@@ -2,6 +2,17 @@ import type { ReservationEquipmentAvailability } from "../models/ReservationEqui
 
 export const RESERVATION_AVAILABILITY = {
   MILLISECONDS_PER_MINUTE: 60_000,
+  DATE_FORMAT: {
+    DAY: "numeric",
+    MONTH: "long",
+    WEEKDAY: "long",
+    YEAR: "numeric",
+  },
+  LOCALE: "es-CR",
+  TIME_FORMAT: {
+    HOUR: "2-digit",
+    MINUTE: "2-digit",
+  },
   ERROR: {
     CATEGORY_AVAILABILITY_MISSING:
       "Category interval availability returned no result",

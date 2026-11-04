@@ -1,5 +1,4 @@
-import { createReservationEquipmentPage } from "./ReservationFormEquipment.page";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
@@ -7,7 +6,9 @@ import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constant
 import { RESERVATION_FORM_FIELD_ID } from "../constants/ReservationFormUi.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { RESERVATION_CATEGORY_CONFLICT_WARNING_TEST } from "./ReservationCategoryConflictWarning.constants";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
+import { createReservationEquipmentPage } from "./ReservationFormEquipment.page";
 
 const getDurationOption = (label: string) =>
   screen.getByRole(ARIA_ROLE.BUTTON, { name: label });
@@ -79,6 +80,7 @@ const typeCustomDuration = async (
 const submit = async (
   user: ReturnType<typeof userEvent.setup>
 ): Promise<void> => {
+  await waitFor(() => getSubmitButton());
   await user.click(getSubmitButton());
 };
 
@@ -110,8 +112,52 @@ export const createReservationFormViewPage = (
     findDurationValidationError,
     findSubmissionError,
     findSuccessMessage,
+    getFocusedElement: () => document.activeElement,
+    getCustomerNameInput: () =>
+      container.querySelector<HTMLInputElement>(
+        `#${RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}`
+      ),
+    setCustomerName: async (
+      value: string
+    ): Promise<void> => {
+      const input =
+        container.querySelector<HTMLInputElement>(
+          `#${RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}`
+        );
+      if (input === null) {
+        throw new Error(
+          "The customer name field is missing."
+        );
+      }
+      await user.clear(input);
+      await user.type(input, value);
+    },
     getSubmitButton,
     querySubmitButton,
+    findCategoryConflictWarning: () =>
+      screen.findByRole(ARIA_ROLE.ALERT, {
+        name: RESERVATION_FORM_UI_COPY.CATEGORY_CONFLICT_WARNING_TITLE,
+      }),
+    findCategoryConflictError: () =>
+      screen.findByText(
+        RESERVATION_FORM_UI_COPY.CATEGORY_CONFLICT_WARNING_ERROR
+      ),
+    queryCategoryConflictWarning: () =>
+      screen.queryByRole(ARIA_ROLE.ALERT, {
+        name: RESERVATION_FORM_UI_COPY.CATEGORY_CONFLICT_WARNING_TITLE,
+      }),
+    findCategoryConflictCode: () =>
+      screen.findByText(
+        RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.CODE
+      ),
+    findCategoryConflictCustomerName: () =>
+      screen.findByText(
+        RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.CUSTOMER_NAME
+      ),
+    findCategoryConflictInterval: () =>
+      screen.findByText(
+        RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.INTERVAL
+      ),
     clickBack: async (): Promise<void> => {
       await user.click(getBackButton());
     },

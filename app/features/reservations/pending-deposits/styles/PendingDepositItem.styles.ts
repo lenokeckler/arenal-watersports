@@ -1,20 +1,13 @@
-export const DEPOSIT_ITEM_CONTAINER_CLASS =
-  "flex min-h-11 items-center justify-between gap-sm rounded-xl border border-l-4 border-outline-variant border-l-tertiary bg-card-tint-neutral-bg p-md backdrop-blur-md";
+import { DEPOSIT_ROW_CARD_CLASS } from "@/app/components/deposit-ledger/styles/DepositRow.styles";
+import { DEPOSIT_SKELETON_PULSE_CLASS } from "@/app/components/deposit-ledger/styles/DepositSkeleton.styles";
+import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
 
-export const DEPOSIT_ITEM_DETAILS_CLASS =
-  "flex min-w-0 flex-col gap-xs";
+export const DEPOSIT_ITEM_CONTAINER_CLASS = joinClassNames(
+  DEPOSIT_ROW_CARD_CLASS,
+  "border-l-tertiary"
+);
 
-export const DEPOSIT_ITEM_CUSTOMER_CLASS =
-  "break-words text-body-base font-semibold text-on-surface";
-
-export const DEPOSIT_ITEM_META_CLASS =
-  "text-label-mono text-on-surface-variant";
-
-export const DEPOSIT_ITEM_CODE_CLASS =
-  "font-mono text-label-mono text-on-surface-variant";
-
-export const DEPOSIT_ITEM_MONEY_CLASS =
-  "shrink-0 text-right";
-
-export const DEPOSIT_ITEM_AMOUNT_CLASS =
-  "whitespace-nowrap text-title-md font-semibold tabular-nums text-on-surface";
+export const DEPOSIT_SKELETON_ITEM_CLASS = joinClassNames(
+  DEPOSIT_ITEM_CONTAINER_CLASS,
+  DEPOSIT_SKELETON_PULSE_CLASS
+);

@@ -10,6 +10,7 @@ import { createSessionBarPage } from "../pages/SessionBar.page";
 import { expect, test } from "../support/activeWorkerTest";
 import { getMainRegion } from "../support/mainRegion";
 import { STATELESS_PRE_LOGIN_SCREENS } from "../support/preLoginScreens";
+import { resolveSystemRoute } from "../support/resolveSystemRoute";
 
 test.describe("Session bar on every authenticated screen", () => {
   for (const route of E2E_SYSTEM_ROUTES) {
@@ -18,7 +19,9 @@ test.describe("Session bar on every authenticated screen", () => {
     }) => {
       const sessionBar = createSessionBarPage(page);
 
-      await page.goto(route);
+      await sessionBar.goTo(
+        await resolveSystemRoute(route)
+      );
 
       await expect(getMainRegion(page)).toBeVisible();
       await expect(sessionBar.getBar()).toHaveCount(
@@ -37,7 +40,9 @@ test.describe("Session bar on every authenticated screen", () => {
     }) => {
       const sessionBar = createSessionBarPage(page);
 
-      await page.goto(route);
+      await sessionBar.goTo(
+        await resolveSystemRoute(route)
+      );
 
       await expect(
         sessionBar.getIdleButton()
@@ -45,14 +50,16 @@ test.describe("Session bar on every authenticated screen", () => {
         ratio: E2E_FULL_VISIBILITY_RATIO,
       });
 
-      await sessionBar.addOverflow(
-        E2E_OVERFLOW_VIEWPORT_MULTIPLE
-      );
-      await sessionBar.scrollToBottom();
+      await expect(async () => {
+        await sessionBar.addOverflow(
+          E2E_OVERFLOW_VIEWPORT_MULTIPLE
+        );
+        await sessionBar.scrollToBottom();
 
-      expect(
-        await sessionBar.readScrollOffset()
-      ).toBeGreaterThan(E2E_MIN_SCROLL_OFFSET_PX);
+        expect(
+          await sessionBar.readScrollOffset()
+        ).toBeGreaterThan(E2E_MIN_SCROLL_OFFSET_PX);
+      }).toPass();
 
       await expect(
         sessionBar.getIdleButton()
