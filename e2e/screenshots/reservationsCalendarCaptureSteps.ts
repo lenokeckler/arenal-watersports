@@ -19,6 +19,7 @@ import {
 } from "../support/reservationsCalendarAgendaAssertions";
 import { captureFullPage } from "../support/captureFullPage";
 import type { ReservationsCalendarCaptureContext } from "./models/ReservationsCalendarCaptureContext.interface";
+import { captureReservationCalendarDetailLinkFocus } from "./reservationsCalendarFocusCaptureSteps";
 
 export const captureCalendarInitialState = async (
   context: ReservationsCalendarCaptureContext
@@ -71,10 +72,7 @@ export const captureCalendarDayAgenda = async (
 ): Promise<void> => {
   const { calendarPage, page, projectName } = context;
   const selectedDay = getFirstCalendarHeatDay(fixture);
-  await calendarPage.selectDay(
-    selectedDay.date,
-    selectedDay.count
-  );
+  await calendarPage.selectDayByDate(selectedDay.date);
   await assertSelectedDayAgenda(calendarPage, selectedDay);
   await captureFullPage(
     page,
@@ -118,5 +116,20 @@ export const captureCalendarWeekState = async (
     page,
     E2E_RESERVATIONS_CALENDAR_WEEK_SCREENSHOT,
     projectName
+  );
+};
+
+export const captureReservationsCalendarStates = async (
+  context: ReservationsCalendarCaptureContext,
+  fixture: ReservationsCalendarHeatFixture
+): Promise<void> => {
+  await captureCalendarInitialState(context);
+  await captureCalendarMonthState(context);
+  await captureCalendarDayAgenda(context, fixture);
+  await captureCalendarYearState(context, fixture);
+  await captureCalendarWeekState(context);
+  await captureReservationCalendarDetailLinkFocus(
+    context,
+    fixture
   );
 };
