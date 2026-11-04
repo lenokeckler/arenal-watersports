@@ -7,7 +7,6 @@ import {
 } from "vitest";
 import { PATHS } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
-import { RESERVATION_FORM_ACCESS } from "../constants/ReservationFormUi.constants";
 import { getAuthorizedReservationFormClient } from "../services/getAuthorizedReservationFormClient";
 import { RESERVATION_ACCESS_TEST_FIXTURE } from "./getAuthorizedReservationFormClient.constants";
 
@@ -24,7 +23,6 @@ vi.mock("@/app/services/supabase", () => ({
 
 const createSupabaseClientFixture = (
   hasReservationArea: boolean,
-  isAdministrator: boolean,
   hasAuthenticatedWorker: boolean
 ) => {
   const supabaseClient = {
@@ -40,18 +38,10 @@ const createSupabaseClientFixture = (
         error: null,
       }),
     },
-    rpc: vi
-      .fn()
-      .mockImplementation((functionName: string) =>
-        Promise.resolve({
-          data:
-            functionName ===
-            RESERVATION_FORM_ACCESS.AREA_RPC
-              ? hasReservationArea
-              : isAdministrator,
-          error: null,
-        })
-      ),
+    rpc: vi.fn().mockResolvedValue({
+      data: hasReservationArea,
+      error: null,
+    }),
   };
 
   vi.mocked(createServerSupabaseClient).mockResolvedValue(
@@ -67,7 +57,7 @@ describe("getAuthorizedReservationFormClient", () => {
   });
 
   it("allows an authenticated worker with the reservations area", async () => {
-    createSupabaseClientFixture(true, false, true);
+    createSupabaseClientFixture(true, true);
 
     await expect(
       getAuthorizedReservationFormClient()
@@ -75,17 +65,8 @@ describe("getAuthorizedReservationFormClient", () => {
     expect(redirect).not.toHaveBeenCalled();
   });
 
-  it("allows an administrator without the reservations area", async () => {
-    createSupabaseClientFixture(false, true, true);
-
-    await expect(
-      getAuthorizedReservationFormClient()
-    ).resolves.toBeDefined();
-    expect(redirect).not.toHaveBeenCalled();
-  });
-
-  it("redirects a worker without the reservations area", async () => {
-    createSupabaseClientFixture(false, false, true);
+  it("redirects an administrator without the reservations area", async () => {
+    createSupabaseClientFixture(false, true);
 
     await expect(
       getAuthorizedReservationFormClient()
@@ -96,7 +77,7 @@ describe("getAuthorizedReservationFormClient", () => {
   });
 
   it("redirects visitors without a session to login", async () => {
-    createSupabaseClientFixture(false, false, false);
+    createSupabaseClientFixture(false, false);
 
     await expect(
       getAuthorizedReservationFormClient()

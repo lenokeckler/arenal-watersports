@@ -60,7 +60,7 @@ export const resolveReservationCategoryOptionClassName = (
   );
 
 export const RESERVATION_FORM_FIELD_WIDE_CLASS =
-  "min-w-0 md:col-span-2";
+  "flex min-w-0 flex-col gap-4 md:col-span-2";
 
 export const RESERVATION_FORM_TIME_HINT_CLASS =
   "mt-2 text-sm text-primary";
@@ -77,9 +77,6 @@ export const RESERVATION_FORM_DURATION_SELECTED_CLASS =
 export const RESERVATION_FORM_CUSTOM_DURATION_CLASS =
   "mt-4 w-full min-w-full";
 
-export const RESERVATION_FORM_EQUIPMENT_NOTE_CLASS =
-  "rounded-2xl border border-primary/30 bg-primary/5 p-4 text-sm text-on-surface-variant md:col-span-2";
-
 export const RESERVATION_FORM_SUBMIT_CLASS =
   "min-h-12 w-full rounded-full md:w-auto md:min-w-56";
 
@@ -87,16 +84,19 @@ export const RESERVATION_FORM_ACTIONS_CLASS =
   "sticky bottom-0 z-20 -mx-4 mt-6 flex flex-col gap-3 border-t border-outline-variant/50 bg-background/95 px-4 py-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] backdrop-blur md:static md:mx-0 md:flex-row md:items-center md:justify-end md:border-0 md:bg-transparent md:p-0 md:pt-2 md:backdrop-blur-none";
 
 export const RESERVATION_FORM_STATUS_CLASS =
-  "rounded-xl border border-primary/40 bg-primary/10 px-4 py-3 text-on-surface";
+  "my-4 rounded-xl border border-primary/40 bg-primary/10 px-4 py-3 text-on-surface";
 
 export const RESERVATION_FORM_ERROR_CLASS =
-  "rounded-xl border border-error/50 bg-error-container/30 px-4 py-3 text-error";
+  "my-4 rounded-xl border border-error/50 bg-error-container/30 px-4 py-3 text-error";
 
 export const RESERVATION_FORM_UNIT_EMPTY_NOTE_CLASS =
   "mt-2 text-sm text-on-surface-variant";
 
 export const RESERVATION_FORM_RETRY_CLASS =
   "mt-2 min-h-11 text-primary underline";
+
+export const RESERVATION_FORM_RETRY_BUTTON_CLASS =
+  "mt-2 min-h-11 rounded-full";
 
 export const resolveReservationDurationButtonClassName = (
   isSelected: boolean

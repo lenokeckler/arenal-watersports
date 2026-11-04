@@ -13,6 +13,14 @@ export const ROUTE_GROUP_PATTERN = /^\(.*\)$/;
 export const ROUTE_SEPARATOR = "/";
 
 export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
+  "/reservations/[reservationId]",
+  "/administration/categories/[categoryId]/alerts",
+  "/administration/categories/[categoryId]/behavior",
+  "/administration/categories/[categoryId]/deposit",
+  "/administration/categories/[categoryId]/units",
+  "/administration/categories/[categoryId]/units/[unitId]",
+  "/administration/categories/[categoryId]/units/new",
+  "/board/categories/[categoryId]",
   `${PATHS.HISTORY.ROOT}${ROUTE_SEPARATOR}[reservationId]`,
 ];
 
