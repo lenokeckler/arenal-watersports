@@ -3,6 +3,9 @@ import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
 export const RESERVATION_CALENDAR_BLOCK_CLASS =
   "space-y-1 rounded-lg border border-outline-variant border-l-4 border-l-primary bg-surface-container-high/70 p-3 text-left shadow-lg backdrop-blur-xl";
 
+export const RESERVATION_CALENDAR_BLOCK_LINK_CLASS =
+  "block min-w-0 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary hover:brightness-105 active:brightness-95";
+
 export const RESERVATION_CALENDAR_BLOCK_CONTENT_CLASS =
   "flex items-center gap-3";
 

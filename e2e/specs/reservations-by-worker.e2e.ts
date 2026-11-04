@@ -120,6 +120,6 @@ test.describe("Reservations by worker", () => {
       signedInPage
     ).goTo();
 
-    await expect(signedInPage).toHaveURL(PATHS.HOME);
+    await expect(signedInPage).toHaveURL(PATHS.BOARD);
   });
 });

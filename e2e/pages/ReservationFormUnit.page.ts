@@ -19,10 +19,8 @@ export const createReservationFormUnitPage = (
         RESERVATION_FORM_UI_COPY.AVAILABILITY_LOADING,
         { exact: true }
       ),
-    getUnitOption: (unitCode: string): Locator =>
-      getUnitSelect().locator("option", {
-        hasText: unitCode,
-      }),
+    getUnitOption: (label: string): Locator =>
+      getUnitSelect().locator("option", { hasText: label }),
     getSelectedUnitOption: (): Locator =>
       getUnitSelect().locator("option:checked"),
     selectUnit: async (label: string): Promise<void> => {
