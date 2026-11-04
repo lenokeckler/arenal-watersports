@@ -14,4 +14,10 @@ export const RESERVATION_SERVICE_OPERATION = {
     "Equipment unit conflicts with another reservation",
   UNIT_UNAVAILABLE:
     "Equipment unit is not available for reservation",
+  UPDATE: "update reservation",
+  UPDATE_RPC: "update_reservation",
+  MISSING_UPDATED_ID:
+    "Supabase returned no identifier for the updated reservation",
+  RESERVATION_STALE:
+    "Reservation changed since the form was loaded",
 } as const;

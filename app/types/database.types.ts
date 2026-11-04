@@ -2891,12 +2891,33 @@ export type Database = {
         };
         Returns: undefined;
       };
+      assert_reservation_equipment_editable: {
+        Args: {
+          p_reservation_id: string;
+          p_reservation_type: Database["public"]["Enums"]["reservation_type"];
+        };
+        Returns: undefined;
+      };
       assert_reservation_identity: {
         Args: {
           p_customer_name: string;
           p_date: string;
           p_people_count: number;
           p_time: string;
+        };
+        Returns: undefined;
+      };
+      assert_reservation_modifiable: {
+        Args: {
+          p_expected_updated_at: string;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
+        };
+        Returns: undefined;
+      };
+      assert_reservation_units_available: {
+        Args: {
+          p_reservation_id: string;
+          p_reservation_window: unknown;
         };
         Returns: undefined;
       };
@@ -3171,6 +3192,15 @@ export type Database = {
         Args: { target_worker: string };
         Returns: string;
       };
+      replace_reservation_equipment: {
+        Args: {
+          p_category_id: string;
+          p_quantity: number;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
+          p_unit_id: string;
+        };
+        Returns: undefined;
+      };
       require_reservations_access: {
         Args: Record<PropertyKey, never>;
         Returns: undefined;
@@ -3196,6 +3226,15 @@ export type Database = {
           reservation_id: string;
           starts_at: string;
         }[];
+      };
+      reservation_equipment_differs: {
+        Args: {
+          p_category_id: string;
+          p_quantity: number;
+          p_reservation_id: string;
+          p_unit_id: string;
+        };
+        Returns: boolean;
       };
       reservation_history_equipment_names: {
         Args: { p_reservation_id: string };
@@ -3278,6 +3317,10 @@ export type Database = {
       };
       unlock_worker: {
         Args: { target_worker: string };
+        Returns: string;
+      };
+      update_reservation: {
+        Args: { p_payload: Json };
         Returns: string;
       };
       validate_reservation_customer: {
