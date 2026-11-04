@@ -48,9 +48,10 @@ select throws_ok(
   'P0001', 'Equipment unit is not available for reservation', 'a unit in maintenance refuses a window change'
 );
 
-select lives_ok(
+select throws_ok(
   $$ select update_reservation(pg_temp.reservation_payload('e3180000-0000-4000-8000-000000000305', '{"quantity":50}')) $$,
-  'a quantity above the stock does not block the change'
+  'P0001', 'Equipment category quantity is not available for reservation',
+  'a quantity above the stock is refused'
 );
 
 select lives_ok(
