@@ -87,7 +87,7 @@ test.describe("Sign out", () => {
     await page.clock.runFor(E2E_LOGOUT_CLOCK.ONE_MS);
 
     await expect(sessionBar.getIdleButton()).toBeVisible();
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
     await createProfilePage(page).goTo();
     await expect(page).toHaveURL(PATHS.PROFILE.ROOT);
   });

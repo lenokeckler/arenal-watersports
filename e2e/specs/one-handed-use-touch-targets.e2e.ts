@@ -1,4 +1,5 @@
-﻿import { expect, test } from "@playwright/test";
+﻿import { expect } from "@playwright/test";
+import { test } from "../support/activeWorkerTest";
 import {
   E2E_ONE_HANDED_USE_MINIMUM_ACTION_GAP,
   E2E_ONE_HANDED_USE_MINIMUM_DURATION_GAP,
@@ -7,18 +8,20 @@ import {
 import { E2E_RESERVATION_FORM_MOBILE_VIEWPORT } from "../constants/E2eReservationForm.constants";
 import { E2E_PROJECT } from "../constants/E2eRuntime.constants";
 import { createOneHandedUsePage } from "../pages/OneHandedUse.page";
-import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
+import { signInToReservationsMode } from "../support/signInToReservationsMode";
 
-test.beforeEach(async ({ page }, testInfo) => {
-  await signInAsSeededWorker(page);
+test.beforeEach(
+  async ({ activeWorker, page }, testInfo) => {
+    await signInToReservationsMode(page, activeWorker);
 
-  if (testInfo.project.name === E2E_PROJECT.MOBILE) {
-    await page.setViewportSize({
-      width: E2E_RESERVATION_FORM_MOBILE_VIEWPORT.WIDTH,
-      height: E2E_RESERVATION_FORM_MOBILE_VIEWPORT.HEIGHT,
-    });
+    if (testInfo.project.name === E2E_PROJECT.MOBILE) {
+      await page.setViewportSize({
+        width: E2E_RESERVATION_FORM_MOBILE_VIEWPORT.WIDTH,
+        height: E2E_RESERVATION_FORM_MOBILE_VIEWPORT.HEIGHT,
+      });
+    }
   }
-});
+);
 
 test("provides spaced controls with minimum touch targets", async ({
   page,
