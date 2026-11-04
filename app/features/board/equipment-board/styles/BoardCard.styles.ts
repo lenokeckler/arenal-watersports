@@ -3,6 +3,14 @@ import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
 export const BOARD_CARD_CLASS =
   "flex w-full min-w-0 flex-col overflow-hidden rounded-xl border border-outline-variant bg-card-tint-neutral-bg shadow-lg backdrop-blur-md";
 
+export const BOARD_CARD_INTERACTIVE_CLASS = joinClassNames(
+  BOARD_CARD_CLASS,
+  "relative transition-transform duration-200 hover:scale-102 active:scale-98 motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100"
+);
+
+export const BOARD_CARD_LINK_CLASS =
+  "absolute inset-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary";
+
 export const BOARD_CARD_MEDIA_ASPECT_CLASS =
   "aspect-square w-full shrink-0 grow";
 
