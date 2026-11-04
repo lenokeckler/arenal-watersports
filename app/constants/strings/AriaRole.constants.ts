@@ -9,10 +9,10 @@ export const ARIA_ROLE = {
   BANNER: "banner",
   HEADING: "heading",
   MAIN: "main",
-  NAVIGATION: "navigation",
   LIST: "list",
   LISTITEM: "listitem",
   STATUS: "status",
   LINK: "link",
+  NAVIGATION: "navigation",
   TEXTBOX: "textbox",
 } as const;

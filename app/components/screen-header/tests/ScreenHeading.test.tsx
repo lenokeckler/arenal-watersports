@@ -6,16 +6,19 @@ import {
   HEADER_TITLE,
   HEADER_TITLE_ID,
   HEADING_INSTRUCTION,
+  HEADING_INSTRUCTION_ID,
+  ID_ATTRIBUTE,
 } from "./ScreenHeader.constants";
 import { createScreenHeaderPage } from "./ScreenHeader.page";
 
-const renderScreenHeading = () =>
+const renderScreenHeading = (instructionId?: string) =>
   render(
     <ScreenHeading
       title={HEADER_TITLE}
       titleId={HEADER_TITLE_ID}
       logoAlt={HEADER_LOGO_ALT}
       instruction={HEADING_INSTRUCTION}
+      instructionId={instructionId}
     />
   );
 
@@ -34,5 +37,13 @@ describe("ScreenHeading", () => {
     expect(
       screen.getByText(HEADING_INSTRUCTION)
     ).toBeVisible();
+  });
+
+  it("gives the instruction the id it receives", () => {
+    renderScreenHeading(HEADING_INSTRUCTION_ID);
+
+    expect(
+      screen.getByText(HEADING_INSTRUCTION)
+    ).toHaveAttribute(ID_ATTRIBUTE, HEADING_INSTRUCTION_ID);
   });
 });

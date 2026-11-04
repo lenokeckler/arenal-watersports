@@ -1,46 +1,33 @@
 import { useState } from "react";
-import { STRING } from "@/app/constants";
 import type { ReservationFormActionResult } from "../models/ReservationFormActionResult.type";
 import type { ReservationFormField } from "../models/ReservationFormField.constants";
-
-const EMPTY_ERRORS: Partial<
-  Record<ReservationFormField, string>
-> = {};
+import { useReservationErrorFocusRequest } from "./useReservationErrorFocusRequest";
+import { useReservationSubmissionErrors } from "./useReservationSubmissionErrors";
 
 export const useReservationSubmissionState = () => {
-  const [errors, setErrors] = useState(EMPTY_ERRORS);
-  const [formError, setFormError] = useState<string>(
-    STRING.Empty
-  );
+  const submissionErrors = useReservationSubmissionErrors();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const errorFocus = useReservationErrorFocusRequest();
 
-  const clearFieldError = (field: ReservationFormField) => {
-    setErrors((currentErrors) => ({
-      ...currentErrors,
-      [field]: undefined,
-    }));
-    setFormError(STRING.Empty);
+  const clearFieldError = (
+    field: ReservationFormField
+  ): void => {
+    submissionErrors.clearFieldError(field);
     setIsSubmitted(false);
   };
   const applyResult = (
     result: ReservationFormActionResult
   ): void => {
-    if (result.ok) {
-      setErrors(EMPTY_ERRORS);
-      setFormError(STRING.Empty);
-      setIsSubmitted(true);
-      return;
-    }
-    setErrors(result.errors);
-    setFormError(result.formError ?? STRING.Empty);
+    submissionErrors.applyResult(result);
+    setIsSubmitted(result.ok);
   };
 
   return {
+    ...submissionErrors,
     applyResult,
     clearFieldError,
-    errors,
-    formError,
+    errorFocusRequest: errorFocus.errorFocusRequest,
     isSubmitted,
-    setSubmissionError: setFormError,
+    requestErrorFocus: errorFocus.requestErrorFocus,
   };
 };

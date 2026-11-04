@@ -41,7 +41,7 @@ test.describe("Administration account recovery", () => {
       E2E_LOGIN_ACCOUNT.USERNAME,
       E2E_RECOVERY_PASSWORDS.NEW
     );
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
     const state = await readWorkerAccountState(
       seededAdmin.id
     );

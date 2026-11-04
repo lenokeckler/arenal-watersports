@@ -35,6 +35,10 @@ export const E2E_DATABASE_CONTAINER_FIXTURE = {
     "54321"
   ),
   DEFAULT_URL: "http://127.0.0.1:54321",
+  CONTAINER_IDS: [
+    "isolated-gateway-id",
+    "isolated-database-id",
+  ],
   ISOLATED_DATABASE: createDockerContainer(
     "/supabase_db_arenal-adm29-test",
     "arenal-adm29-test",
@@ -67,4 +71,6 @@ export const E2E_DATABASE_CONTAINER_EXPECTED = {
     "E2E could not resolve the local database container: No local Supabase API gateway publishes port 58521.",
   REMOTE_URL_MESSAGE:
     "E2E could not resolve the local database container: E2E only runs against the local Supabase, not project.supabase.co.",
+  TRANSIENT_INSPECTION_ERROR:
+    "Temporary Docker inspection failure.",
 } as const;
