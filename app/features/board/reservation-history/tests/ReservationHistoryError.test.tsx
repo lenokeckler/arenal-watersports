@@ -8,12 +8,18 @@ import {
 import {
   fireEvent,
   render,
+  screen,
   within,
 } from "@testing-library/react";
+import ReservationHistoryDetailRouteError from "@/app/(system)/history/[reservationId]/error";
 import ReservationHistoryRouteError from "@/app/(system)/history/error";
+import { ARIA_ROLE, PATHS } from "@/app/constants";
 import { RESERVATION_HISTORY_COPY } from "../constants/ReservationHistoryCopy.constants";
 import { createReservationHistoryPage } from "./ReservationHistory.page";
-import { RAW_ERROR_TEXT } from "./ReservationHistoryStates.constants";
+import {
+  HREF_ATTRIBUTE,
+  RAW_ERROR_TEXT,
+} from "./ReservationHistoryStates.constants";
 
 const mockRefresh = vi.fn();
 const mockReset = vi.fn();
@@ -60,5 +66,25 @@ describe("ReservationHistoryError", () => {
 
     expect(mockRefresh).toHaveBeenCalledTimes(1);
     expect(mockReset).toHaveBeenCalledTimes(1);
+  });
+
+  it("names the record failure and offers the way back to the list", () => {
+    render(
+      <ReservationHistoryDetailRouteError
+        {...ROUTE_PROPS}
+      />
+    );
+    const page = createReservationHistoryPage();
+
+    expect(
+      within(page.getAlert()).getByText(
+        RESERVATION_HISTORY_COPY.DETAIL_ERROR_TITLE
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole(ARIA_ROLE.LINK, {
+        name: RESERVATION_HISTORY_COPY.BACK_TO_HISTORY,
+      })
+    ).toHaveAttribute(HREF_ATTRIBUTE, PATHS.HISTORY.ROOT);
   });
 });
