@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
+import type { ReservationHistoryLinkQuery } from "@/app/services/board/reservation-history/models/ReservationHistoryLinkQuery.type";
 import { RESERVATION_HISTORY_COPY } from "../constants/ReservationHistoryCopy.constants";
 import ReservationHistoryInner from "../components/ReservationHistoryInner";
 import {
@@ -10,6 +11,7 @@ import {
   EQUIPMENT_TEXT,
   GUIDES_TEXT,
   HISTORY_QUERY,
+  HISTORY_UNFILTERED_QUERY,
   NEXT_PAGE_HREF,
   PAGED_COUNT,
   PAGED_INDEX,
@@ -28,12 +30,15 @@ import {
 const renderScreen = (
   items = [CLOSED_ITEM, CANCELLED_ITEM],
   pageIndex = 0,
-  pageCount = 1
+  pageCount = 1,
+  query: ReservationHistoryLinkQuery = HISTORY_QUERY
 ) => {
   render(
     <ReservationHistoryInner
       page={buildPage(items, pageIndex, pageCount)}
-      query={HISTORY_QUERY}
+      query={query}
+      categoryOptions={[]}
+      hasInvertedDateRange={false}
     />
   );
   return createReservationHistoryPage();
@@ -119,7 +124,12 @@ describe("ReservationHistory", () => {
   });
 
   it("shows the empty state and no list without records", () => {
-    const page = renderScreen([]);
+    const page = renderScreen(
+      [],
+      0,
+      1,
+      HISTORY_UNFILTERED_QUERY
+    );
 
     expect(
       page.getText(RESERVATION_HISTORY_COPY.EMPTY_TITLE)
