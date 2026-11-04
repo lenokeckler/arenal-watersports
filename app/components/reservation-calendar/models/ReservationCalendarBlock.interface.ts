@@ -1,3 +1,4 @@
+import type { NullableUndefined } from "@/app/types";
 import type { ReservationCalendarGuide } from "./ReservationCalendarGuide.type";
 
 export interface ReservationCalendarBlock {
@@ -5,7 +6,8 @@ export interface ReservationCalendarBlock {
   actualLabels: string[];
   customerName: string;
   equipmentLabel: string;
-  guides: ReservationCalendarGuide[];
+  equipmentCategoryName?: string;
+  guides: NullableUndefined<ReservationCalendarGuide[]>;
   id: string;
   scheduledLabel: string;
 }

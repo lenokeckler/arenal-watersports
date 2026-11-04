@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import { VALID_RESERVATION_FORM_INPUT } from "./reservationFormUtils.constants";
 import { isReservationFormInput } from "../utils/isReservationFormInput";
-import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 
 describe("isReservationFormInput", () => {
   it("accepts a correctly shaped reservation form input", () => {
@@ -23,7 +23,7 @@ describe("isReservationFormInput", () => {
     );
   });
 
-  it("rejects an unknown reservation type", () => {
+  it("rejects an unsupported reservation type", () => {
     const malformedInput = {
       ...VALID_RESERVATION_FORM_INPUT,
       reservationType: "unsupported",

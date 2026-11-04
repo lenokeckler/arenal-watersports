@@ -1,4 +1,3 @@
-import { STRING } from "@/app/constants";
 import { useReservationFormFields } from "./useReservationFormFields";
 import { useReservationFormSubmission } from "./useReservationFormSubmission";
 import { useReservationDuration } from "./useReservationDuration";
@@ -15,8 +14,7 @@ export const useReservationFormState = (
   );
   const duration = useReservationDuration(
     fields.handleDurationChange,
-    submission.clearFieldError,
-    () => fields.handleUnitChange(STRING.Empty)
+    submission.clearFieldError
   );
 
   const durationHandlers = {

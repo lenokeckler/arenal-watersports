@@ -40,6 +40,7 @@ export const viewModelHarness = (() => {
     current: {
       availableUnits: [{ code: "LANCHA-1", id: "unit-1" }],
       hasAvailabilityError: false,
+      isAvailabilityResolved: true,
       isAvailabilityLoading: false,
       requiresConcreteUnit: true,
     },
@@ -100,6 +101,7 @@ vi.mock(
         hasError: false,
         isLoading: false,
         items: [],
+        retry: vi.fn(),
       },
     }),
   })
@@ -128,7 +130,6 @@ export const resetViewModelHarness = (): void => {
     categories: [
       {
         id: "category-1",
-        isGuideOnly: true,
         isInterchangeable: false,
         name: "Lancha",
       },
@@ -141,6 +142,7 @@ export const resetViewModelHarness = (): void => {
   viewModelHarness.equipment.current = {
     availableUnits: [{ code: "LANCHA-1", id: "unit-1" }],
     hasAvailabilityError: false,
+    isAvailabilityResolved: true,
     isAvailabilityLoading: false,
     requiresConcreteUnit: true,
   };

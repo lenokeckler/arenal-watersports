@@ -31,6 +31,8 @@ export const createReservationCalendarBlockPage = (
   return {
     getBlock,
     getFocusableElements,
+    getEquipmentImages: (): HTMLImageElement[] =>
+      Array.from(getBlock().querySelectorAll("img")),
     getText,
     getTexts,
   };

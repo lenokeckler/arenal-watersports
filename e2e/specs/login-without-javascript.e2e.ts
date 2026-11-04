@@ -1,4 +1,3 @@
-import { expect, test } from "@playwright/test";
 import { API, PATHS, STRING } from "@/app/constants";
 import {
   E2E_LOGIN_ACCOUNT,
@@ -6,18 +5,18 @@ import {
   E2E_LOGIN_WRONG_PASSWORD,
 } from "../constants/E2eLogin.constants";
 import { createLoginPage } from "../pages/Login.page";
+import { expect, test } from "../support/activeWorkerTest";
 
 test.describe("Login without JavaScript", () => {
   test.use({ javaScriptEnabled: false });
 
   test("posts a wrong password without putting the credentials in the URL", async ({
+    activeWorker,
     page,
   }) => {
     const loginPage = createLoginPage(page);
     await loginPage.goTo();
-    await loginPage.fillUsername(
-      E2E_LOGIN_ACCOUNT.USERNAME
-    );
+    await loginPage.fillUsername(activeWorker.username);
     await loginPage.fillPassword(E2E_LOGIN_WRONG_PASSWORD);
     const submission = loginPage.waitForSubmission();
 
@@ -48,6 +47,6 @@ test.describe("Login without JavaScript", () => {
 
     await loginPage.submit();
 
-    await expect(page).toHaveURL(PATHS.HOME);
+    await expect(page).toHaveURL(PATHS.BOARD);
   });
 });

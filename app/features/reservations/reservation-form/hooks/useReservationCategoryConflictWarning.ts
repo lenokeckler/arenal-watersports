@@ -2,10 +2,12 @@ import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnit
 import type { ReservationCategoryConflictLookupState } from "../models/ReservationCategoryConflictLookupState.interface";
 import { getReservationCategoryConflictsAction } from "../actions/getReservationCategoryConflictsAction";
 import { isReservationUnitAvailabilityInput } from "../utils/isReservationUnitAvailabilityInput";
-import { mapReservationCategoryConflictsToWarningItems } from "../utils/mapReservationCategoryConflictsToWarningItems";
-import { useEffect, useState } from "react";
+import { getConflictWarningViewModel } from "../utils/getConflictWarningViewModel";
+import { useCallback, useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import type { ReservationCategoryConflictWarningViewModel } from "../models/ReservationCategoryConflictWarningViewModel.interface";
+
+const REFRESH_TRIGGER_INCREMENT = 1;
 
 const EMPTY_CONFLICT_LOOKUP_STATE: ReservationCategoryConflictLookupState =
   {
@@ -14,15 +16,6 @@ const EMPTY_CONFLICT_LOOKUP_STATE: ReservationCategoryConflictLookupState =
     isLoading: false,
     request: null,
   };
-
-const isSameRequest = (
-  left: ReservationUnitAvailabilityInput,
-  right: ReservationUnitAvailabilityInput
-): boolean =>
-  left.categoryId === right.categoryId &&
-  left.date === right.date &&
-  left.durationMinutes === right.durationMinutes &&
-  left.time === right.time;
 
 const getReservationCategoryConflictLookupState = async (
   requestedInput: ReservationUnitAvailabilityInput
@@ -61,32 +54,10 @@ const activateReservationCategoryConflictLookup = (
   });
 };
 
-const getConflictWarningViewModel = (
-  lookup: ReservationCategoryConflictLookupState,
-  currentRequest: ReservationUnitAvailabilityInput,
-  isValidRequest: boolean
-): ReservationCategoryConflictWarningViewModel => {
-  const hasCurrentLookup =
-    lookup.request !== null &&
-    isSameRequest(lookup.request, currentRequest);
-  const conflicts = hasCurrentLookup
-    ? lookup.conflicts
-    : [];
-
-  return {
-    hasError: hasCurrentLookup && lookup.hasError,
-    isLoading:
-      isValidRequest &&
-      (!hasCurrentLookup || lookup.isLoading),
-    items:
-      mapReservationCategoryConflictsToWarningItems(
-        conflicts
-      ),
-  };
-};
-
 const useReservationCategoryConflictLookup = (
   request: ReservationUnitAvailabilityInput,
+  refreshKey: number,
+  retryRevision: number,
   setLookup: Dispatch<
     SetStateAction<ReservationCategoryConflictLookupState>
   >
@@ -125,23 +96,49 @@ const useReservationCategoryConflictLookup = (
     return () => {
       isCurrentRequest = false;
     };
-  }, [categoryId, date, durationMinutes, time, setLookup]);
+  }, [
+    categoryId,
+    date,
+    durationMinutes,
+    time,
+    refreshKey,
+    retryRevision,
+    setLookup,
+  ]);
 };
 
 export const useReservationCategoryConflictWarning = (
-  request: ReservationUnitAvailabilityInput
+  request: ReservationUnitAvailabilityInput,
+  refreshKey: number
 ): ReservationCategoryConflictWarningViewModel => {
   const [lookup, setLookup] = useState(
     EMPTY_CONFLICT_LOOKUP_STATE
   );
+  const [retryRevision, setRetryRevision] = useState(0);
+  const retry = useCallback(
+    () =>
+      setRetryRevision(
+        (currentRevision) =>
+          currentRevision + REFRESH_TRIGGER_INCREMENT
+      ),
+    []
+  );
   const currentRequest = request;
   const isValidRequest =
     isReservationUnitAvailabilityInput(currentRequest);
-  useReservationCategoryConflictLookup(request, setLookup);
-
-  return getConflictWarningViewModel(
-    lookup,
-    currentRequest,
-    isValidRequest
+  useReservationCategoryConflictLookup(
+    request,
+    refreshKey,
+    retryRevision,
+    setLookup
   );
+
+  return {
+    ...getConflictWarningViewModel(
+      lookup,
+      currentRequest,
+      isValidRequest
+    ),
+    retry,
+  };
 };

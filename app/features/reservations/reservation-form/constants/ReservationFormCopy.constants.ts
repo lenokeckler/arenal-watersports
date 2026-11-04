@@ -13,7 +13,7 @@ export const RESERVATION_FORM_COPY = {
     "Ingrese una cantidad entera de personas mayor que cero.",
   [RESERVATION_FORM_FIELD.QUANTITY]:
     "Ingrese una cantidad entera de equipos mayor que cero.",
-  [RESERVATION_FORM_FIELD.UNIT_ID]:
-    "Seleccione una unidad disponible para la lancha.",
   [RESERVATION_FORM_FIELD.TIME]: "Ingrese una hora válida.",
+  [RESERVATION_FORM_FIELD.UNIT_ID]:
+    "Seleccione una unidad disponible.",
 } as const;

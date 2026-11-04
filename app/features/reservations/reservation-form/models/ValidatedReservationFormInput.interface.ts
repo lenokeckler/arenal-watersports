@@ -1,5 +1,5 @@
-import type { ReservationType } from "./ReservationType.type";
 import type { ReservationEquipmentCommitment } from "./ReservationEquipmentCommitment.type";
+import type { ReservationType } from "./ReservationType.type";
 
 export interface ValidatedReservationFormInput {
   customerName: string;
