@@ -34,6 +34,7 @@ describe("Reservation calendar loaded daily blocks", () => {
     const page = createReservationCalendarDayPage();
 
     expect(page.getCustomer()).toBeVisible();
+    expect(page.getDetailLink()).toBeNull();
     expect(
       page.getMessage(copy.INCOMPLETE_RESULTS)
     ).toBeVisible();

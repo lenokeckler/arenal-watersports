@@ -22,6 +22,7 @@ export const AVAILABLE_UNIT_TEST = {
   TIME: "09:00",
   UNIT_CODE: "PONTOON",
   UNIT_ID: "unit-available",
+  REFRESH_KEY: 0,
 } as const;
 
 export const TEST_SUPABASE_CLIENT = {

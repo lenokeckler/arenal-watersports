@@ -6,3 +6,5 @@ export const ID_ATTRIBUTE = "id";
 export const ARIA_HIDDEN_ATTRIBUTE = "aria-hidden";
 export const ARIA_HIDDEN_FALSE = "false";
 export const HEADING_INSTRUCTION = "Revise sus datos.";
+export const HEADING_INSTRUCTION_ID =
+  "profile-screen-instruction";

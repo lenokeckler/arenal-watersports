@@ -9,7 +9,10 @@ import Button from "@/app/components/button/Button";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
 import { RESERVATION_FORM_UI_COPY } from "./constants/ReservationFormUiCopy.constants";
-import { RESERVATION_FORM_FIELD_ID } from "./constants/ReservationFormUi.constants";
+import {
+  RESERVATION_FORM_FOCUS_TARGET,
+  RESERVATION_FORM_FIELD_ID,
+} from "./constants/ReservationFormUi.constants";
 import { useReservationFormViewModel } from "./hooks/useReservationFormViewModel";
 import type { ReservationFormViewProps } from "./models/ReservationFormViewProps.interface";
 import {
@@ -32,7 +35,14 @@ const ReservationFormView = ({
   initialDate,
   unitCategories,
 }: ReservationFormViewProps): React.JSX.Element => {
-  const allCategories = [...categories, ...unitCategories];
+  const allCategories = Array.from(
+    new Map(
+      [...categories, ...unitCategories].map((category) => [
+        category.id,
+        category,
+      ])
+    ).values()
+  );
   const viewModel = useReservationFormViewModel({
     categories: allCategories,
     initialCategoryId: STRING.Empty,
@@ -74,7 +84,7 @@ const ReservationFormView = ({
             onSubmit={viewModel.handleSubmit}
           >
             <ReservationFormFields
-              categories={allCategories}
+              categories={viewModel.categories}
               viewModel={viewModel}
             />
             {allCategories.length === 0 && (
@@ -87,7 +97,13 @@ const ReservationFormView = ({
             )}
             {viewModel.formError && (
               <Text
+                id={
+                  RESERVATION_FORM_FIELD_ID.SUBMISSION_ERROR
+                }
                 role="alert"
+                tabIndex={
+                  RESERVATION_FORM_FOCUS_TARGET.TAB_INDEX
+                }
                 className={RESERVATION_FORM_ERROR_CLASS}
               >
                 {viewModel.formError}

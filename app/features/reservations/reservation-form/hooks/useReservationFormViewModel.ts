@@ -7,7 +7,13 @@ import { useReservationFormSubmission } from "./useReservationFormSubmission";
 import { useReservationDuration } from "./useReservationDuration";
 import { useReservationEquipmentViewModel } from "./useReservationEquipmentViewModel";
 import { STRING } from "@/app/constants";
+import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import type { ReservationFormViewModelOptions } from "../models/ReservationFormViewModelOptions.interface";
+import { useReservationEquipmentEligibility } from "./useReservationEquipmentEligibility";
+import { useReservationFormEquipmentSelection } from "./useReservationFormEquipmentSelection";
+import { isReservationQuantityUnavailable } from "../utils/isReservationQuantityUnavailable";
+import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
 
 export const useReservationFormViewModel = (
   options: ReservationFormViewModelOptions
@@ -20,6 +26,16 @@ export const useReservationFormViewModel = (
   } = options;
   const router = useRouter();
   const submission = useReservationFormSubmission();
+  const eligibility =
+    useReservationEquipmentEligibility(categories);
+  const eligibleCategories = eligibility.categories.map(
+    (category) =>
+      unitCategories.some(
+        (unitCategory) => unitCategory.id === category.id
+      )
+        ? { ...category, isInterchangeable: false }
+        : category
+  );
   const fields = useReservationFormFields(
     initialDate,
     initialCategoryId,
@@ -30,23 +46,63 @@ export const useReservationFormViewModel = (
     submission.clearFieldError
   );
   const equipment = useReservationEquipmentViewModel(
-    unitCategories,
+    eligibleCategories,
     fields.values,
     duration.resolveDurationHours(
       fields.values.durationHours
-    )
+    ),
+    eligibility.refreshKey
   );
+  const isQuantityUnavailable =
+    isReservationQuantityUnavailable(
+      eligibleCategories.find(
+        (category) =>
+          category.id === fields.values.categoryId
+      )?.isInterchangeable === true,
+      fields.values.quantity,
+      equipment.categoryAvailability
+    );
+  const selection = useReservationFormEquipmentSelection({
+    availableUnits: equipment.availableUnits,
+    categories: eligibleCategories,
+    isAvailabilityResolved:
+      equipment.isAvailabilityResolved,
+    isEligibilityError: eligibility.hasError,
+    isEligibilityLoading: eligibility.isLoading,
+    selectedCategoryId: fields.values.categoryId,
+    selectedUnitId: fields.values.unitId,
+    onCategoryChange: fields.handleCategoryChange,
+    onUnitChange: fields.handleUnitChange,
+  });
   const isSubmitDisabled =
     submission.isPending ||
-    submission.isSubmitted ||
-    categories.length === 0 ||
+    eligibleCategories.length === 0 ||
     (equipment.requiresConcreteUnit &&
       (equipment.isAvailabilityLoading ||
-        equipment.hasAvailabilityError ||
-        fields.values.unitId === STRING.Empty));
+        equipment.hasAvailabilityError)) ||
+    isQuantityUnavailable;
   const handleSubmit: ReservationFormViewModel["handleSubmit"] =
     (event) => {
       event.preventDefault();
+      if (
+        equipment.requiresConcreteUnit &&
+        fields.values.unitId === STRING.Empty
+      ) {
+        submission.applyResult({
+          ok: false,
+          errors: {
+            [RESERVATION_FORM_FIELD.UNIT_ID]:
+              RESERVATION_FORM_COPY[
+                RESERVATION_FORM_FIELD.UNIT_ID
+              ],
+          },
+        });
+        submission.requestErrorFocus();
+        return;
+      }
+      if (isQuantityUnavailable) {
+        return;
+      }
       submission.submitReservation(
         {
           ...fields.values,
@@ -57,13 +113,32 @@ export const useReservationFormViewModel = (
         () => {
           fields.handleUnitChange(STRING.Empty);
           equipment.retryUnitAvailability();
+        },
+        () => {
+          fields.reset();
+          duration.reset();
+          equipment.retryUnitAvailability();
         }
       );
     };
   return {
+    categories: eligibleCategories,
     ...fields,
     ...submission,
+    errors: isQuantityUnavailable
+      ? {
+          ...submission.errors,
+          [RESERVATION_FORM_FIELD.QUANTITY]:
+            RESERVATION_FORM_UI_COPY.QUANTITY_UNAVAILABLE,
+        }
+      : submission.errors,
     ...equipment,
+    isEquipmentEligibilityLoading: eligibility.isLoading,
+    hasEquipmentEligibilityError: eligibility.hasError,
+    hasEquipmentSelectionChanged: selection.hasChanged,
+    handleRetryEquipmentEligibility: eligibility.retry,
+    handleCategoryChange: selection.handleCategoryChange,
+    handleUnitChange: selection.handleUnitChange,
     isSubmitDisabled,
     customDurationDraft: duration.customDurationDraft,
     handleCustomDurationSelection: () => {

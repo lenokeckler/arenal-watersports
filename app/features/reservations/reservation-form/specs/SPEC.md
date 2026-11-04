@@ -20,7 +20,7 @@ Allow a reservations worker to record a rental reservation with its customer nam
 - US-RES-08 reservation editing.
 - US-RES-15 availability and collision checking.
 - US-RES-16 collision warnings.
-- US-RES-17 equipment maintenance, damage, or retirement filtering.
+- US-RES-17 live inventory updates and equipment-selection presentation are implemented by the follow-up UI unit in PR #155.
 - Tour, combo, customer email, or other contact fields.
 
 ## Requirements
@@ -30,7 +30,7 @@ Allow a reservations worker to record a rental reservation with its customer nam
 - Convert duration hours to integer minutes without rounding.
 - Persist the reservation and exactly one valid equipment commitment in one invoker-security database transaction.
 - Derive `created_by` and `updated_by` from `auth.uid()` in the database function.
-- For category commitments, allow only active, reservable categories whose units are interchangeable; tracking mode does not determine category eligibility.
+- Determine physical eligibility from tracking mode: unit-tracked categories require an available unit, and quantity-tracked categories require positive available stock. Determine commitment shape from interchangeability: interchangeable categories use a quantity commitment, while non-interchangeable categories use a concrete unit.
 - Show active, reservable interchangeable categories with a positive quantity field; do not ask Reservations to select an exact machine for these categories.
 - Show active, reservable non-interchangeable categories with a concrete-unit selector containing units recorded as available.
 - Require one available concrete unit for non-interchangeable categories and submit it through the existing validated server action and RPC.
@@ -86,3 +86,15 @@ The reservation form and mutation accept exactly one of these forms: an intercha
 - “Comprometer el equipo no es despacharlo: la unidad sigue en tierra hasta que operaciones la saque.”
 
 Unit 1 implements the atomic persistence and data-integrity boundary for both commitment shapes. Unit 2 exposes both commitment shapes within the reservation form: interchangeable equipment uses category plus quantity, and the Lancha uses an available concrete unit.
+
+## US-RES-17 equipment eligibility data
+
+### Acceptance criterion
+
+- No se ofrece equipo que esté en mantenimiento o dado de baja.
+
+The invoker-security category query returns only active, reservable categories with usable physical equipment: an available unit for unit-tracked categories or positive available stock for quantity-tracked categories. The mutation revalidates and locks this physical eligibility before persistence. Category commitments remain quantities and may exceed usable inventory; interval availability and collision warnings belong to US-RES-15 and US-RES-16.
+
+Authenticated direct inserts or equipment-identity changes on scheduled reservation items enforce the same physical eligibility, including the exact selected unit when present. Existing Operations permissions, extra-only items, unchanged commitments, dispatched items and historical records retain their existing behavior. Trusted database maintenance roles retain their existing administrative authority. Failed commitments roll back the reservation transaction.
+
+The eligibility service provides physically eligible categories for initial reads. The follow-up UI unit subscribes to authenticated Realtime changes, refreshes the server snapshot, keeps cached categories usable during connection failures, and reconciles selected categories and units only after current availability is resolved.
