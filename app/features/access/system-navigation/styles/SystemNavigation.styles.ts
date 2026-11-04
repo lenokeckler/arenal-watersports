@@ -3,9 +3,9 @@ import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
 export const SYSTEM_NAVIGATION_CLASS =
   "fixed inset-x-0 bottom-0 z-40 border-t border-outline bg-surface-container/95 pb-[env(safe-area-inset-bottom)] text-on-surface shadow-lg backdrop-blur";
 export const SYSTEM_NAVIGATION_LIST_CLASS =
-  "mx-auto grid max-w-screen-lg grid-cols-5 items-stretch";
+  "mx-auto flex w-full max-w-screen-lg items-stretch";
 export const SYSTEM_NAVIGATION_ITEM_CLASS =
-  "flex min-h-12 flex-col items-center justify-center gap-0.5 px-1 py-2 text-label-mono uppercase text-on-surface-variant transition-colors hover:text-primary focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-primary motion-reduce:transition-none";
+  "flex min-h-12 flex-1 flex-col items-center justify-center gap-0.5 px-1 py-2 text-label-mono uppercase text-on-surface-variant transition-colors hover:text-primary focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-primary motion-reduce:transition-none";
 export const SYSTEM_NAVIGATION_ACTIVE_CLASS =
   "text-primary";
 export const SYSTEM_NAVIGATION_ICON_CLASS =

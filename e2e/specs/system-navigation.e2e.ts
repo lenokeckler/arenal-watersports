@@ -4,6 +4,7 @@ import {
   E2E_SYSTEM_NAVIGATION_EXPECTED_LINKS,
   E2E_SYSTEM_NAVIGATION_KEY,
   E2E_SYSTEM_NAVIGATION_ARIA,
+  E2E_SYSTEM_NAVIGATION_TOLERANCE_PX,
 } from "../constants/E2eSystemNavigation.constants";
 import { createSystemNavigationPage } from "../pages/SystemNavigation.page";
 import { createWorkModePage } from "../pages/WorkMode.page";
@@ -29,6 +30,11 @@ test("shows Operations links and supports keyboard navigation", async ({
   await expect(
     navigationPage.getNavigation()
   ).toBeVisible();
+  await expect(
+    await navigationPage.getItemSpacingDifference()
+  ).toBeLessThanOrEqual(
+    E2E_SYSTEM_NAVIGATION_TOLERANCE_PX.EDGE_SPACING
+  );
   await expect(
     navigationPage.getLink(
       E2E_SYSTEM_NAVIGATION_EXPECTED_LINKS.BOARD_LABEL

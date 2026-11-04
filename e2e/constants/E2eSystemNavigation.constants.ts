@@ -35,9 +35,22 @@ export const E2E_SYSTEM_NAVIGATION_KEY = {
 } as const;
 
 export const E2E_SYSTEM_NAVIGATION_ARIA = {
+  BUTTON: ARIA_ROLE.BUTTON,
   CURRENT_PAGE: ARIA_CURRENT.PAGE,
   LINK: ARIA_ROLE.LINK,
   NAVIGATION: ARIA_ROLE.NAVIGATION,
+} as const;
+
+export const E2E_SYSTEM_NAVIGATION_TOLERANCE_PX = {
+  EDGE_SPACING: 2,
+} as const;
+
+export const E2E_SYSTEM_NAVIGATION_MEASUREMENT = {
+  ITEM_SPACING: "measure system navigation item spacing",
+  NOT_ENOUGH_ITEMS:
+    "the navigation has fewer than two items",
+  NOT_LAID_OUT:
+    "the navigation or its controls have no size",
 } as const;
 
 export const resolveSystemNavigationScreenshotName = (

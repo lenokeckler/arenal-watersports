@@ -1,6 +1,9 @@
 import { PATHS } from "@/app/constants";
 import { E2E_RESERVATIONS_AREA_LABEL } from "../constants/E2eWorkMode.constants";
-import { E2E_SYSTEM_NAVIGATION_EXPECTED_LINKS } from "../constants/E2eSystemNavigation.constants";
+import {
+  E2E_SYSTEM_NAVIGATION_EXPECTED_LINKS,
+  E2E_SYSTEM_NAVIGATION_TOLERANCE_PX,
+} from "../constants/E2eSystemNavigation.constants";
 import { createSystemNavigationPage } from "../pages/SystemNavigation.page";
 import { createWorkModePage } from "../pages/WorkMode.page";
 import { expect, test } from "../support/activeWorkerTest";
@@ -25,6 +28,11 @@ test("shows Reservations links and hides Inventory", async ({
   await expect(
     navigationPage.getNavigation()
   ).toBeVisible();
+  await expect(
+    await navigationPage.getItemSpacingDifference()
+  ).toBeLessThanOrEqual(
+    E2E_SYSTEM_NAVIGATION_TOLERANCE_PX.EDGE_SPACING
+  );
   await expect(
     navigationPage.getLink(
       E2E_SYSTEM_NAVIGATION_EXPECTED_LINKS.CALENDAR_LABEL
