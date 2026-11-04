@@ -1,21 +1,13 @@
-import type { RealtimeChannel } from "@supabase/supabase-js";
+import { subscribeRealtimeTables } from "@/app/components/realtime/utils/subscribeRealtimeTables";
 import { CALENDAR_REALTIME } from "../constants/CalendarRealtime.constants";
 
 export const subscribeCalendarTables = (
-  channel: RealtimeChannel,
+  channel: Parameters<typeof subscribeRealtimeTables>[0],
   onChange: () => void
-): void => {
-  for (const table of Object.values(
-    CALENDAR_REALTIME.TABLES
-  )) {
-    channel.on(
-      CALENDAR_REALTIME.CHANGE,
-      {
-        event: CALENDAR_REALTIME.EVENT,
-        schema: CALENDAR_REALTIME.SCHEMA,
-        table,
-      },
-      onChange
-    );
-  }
-};
+): void =>
+  subscribeRealtimeTables(
+    channel,
+    CALENDAR_REALTIME.SCHEMA,
+    Object.values(CALENDAR_REALTIME.TABLES),
+    onChange
+  );

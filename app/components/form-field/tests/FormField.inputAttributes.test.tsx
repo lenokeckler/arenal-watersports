@@ -67,6 +67,17 @@ describe("FormField input attributes", () => {
     );
   });
 
+  it("forwards the decimal keypad hint to the input", () => {
+    const page = renderField({
+      inputMode: INPUT_MODE.DECIMAL,
+    });
+
+    expect(page.getInput()).toHaveAttribute(
+      INPUT_MODE_ATTRIBUTE,
+      INPUT_MODE.DECIMAL
+    );
+  });
+
   it("renders none of them by default", () => {
     const page = renderField();
 

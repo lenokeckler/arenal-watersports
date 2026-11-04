@@ -2,7 +2,6 @@ import BackLink from "@/app/components/back-link/BackLink";
 import ScreenHeading from "@/app/components/screen-header/ScreenHeading";
 import {
   ADMINISTRATION_SCREEN_TITLE_ID,
-  IMAGE_ALTS,
   PATHS,
 } from "@/app/constants";
 import { RESERVATIONS_BY_WORKER_COPY } from "./constants/ReservationsByWorkerCopy.constants";
@@ -18,7 +17,7 @@ const ReservationsByWorkerView = ({
     <ScreenHeading
       title={RESERVATIONS_BY_WORKER_COPY.TITLE}
       titleId={ADMINISTRATION_SCREEN_TITLE_ID}
-      logoAlt={IMAGE_ALTS.COMPANY_LOGO}
+      hasLogo={false}
       instruction={RESERVATIONS_BY_WORKER_COPY.INSTRUCTION}
     />
     <ReservationsByWorkerRecords

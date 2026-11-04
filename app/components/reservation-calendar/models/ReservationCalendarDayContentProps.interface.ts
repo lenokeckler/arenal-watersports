@@ -2,6 +2,7 @@ import type { ReservationCalendarBlock } from "./ReservationCalendarBlock.interf
 
 export interface ReservationCalendarDayContentProps {
   blocks: ReservationCalendarBlock[];
+  enableDetailLinks?: boolean;
   messages: string[];
   reserveMobileFabSpace?: boolean;
   showEquipmentImage: boolean;
