@@ -16,7 +16,10 @@ export const useReservationsCalendarViewModel = (
   );
   const dayContent = useReservationCalendarDayContent(
     snapshotState.snapshot ?? undefined,
-    { reserveMobileFabSpace: true }
+    {
+      enableDetailLinks: true,
+      reserveMobileFabSpace: true,
+    }
   );
   const calendarSelection = useReservationCalendarSelection(
     snapshotState.snapshot ?? undefined,

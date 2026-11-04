@@ -1,11 +1,19 @@
 export const RESERVATION_SERVICE_OPERATION = {
+  CATEGORY_UNAVAILABLE:
+    "Equipment category is not available for reservation",
   CREATE_RENTAL: "create rental reservation",
+  EQUIPMENT_RESERVATION_ACCESS_REQUIRED:
+    "Equipment reservation access is required",
   MISSING_CREATED_ID:
     "Supabase returned no identifier for the created reservation",
-  UNIT_UNAVAILABLE:
-    "Equipment unit is not available for reservation",
+  QUANTITY_UNAVAILABLE:
+    "Equipment category quantity is not available for reservation",
+  RESERVATION_ACCESS_REQUIRED:
+    "Reservations access is required",
   UNIT_CONFLICT:
     "Equipment unit conflicts with another reservation",
+  UNIT_UNAVAILABLE:
+    "Equipment unit is not available for reservation",
   UPDATE: "update reservation",
   UPDATE_RPC: "update_reservation",
   MISSING_UPDATED_ID:
@@ -19,6 +27,4 @@ export const RESERVATION_SERVICE_OPERATION = {
     "Combo equipment cannot be changed",
   MULTIPLE_EQUIPMENT_LOCKED:
     "Reservation with several equipment items cannot change equipment",
-  CATEGORY_UNAVAILABLE:
-    "Equipment category is not available for reservation",
 } as const;

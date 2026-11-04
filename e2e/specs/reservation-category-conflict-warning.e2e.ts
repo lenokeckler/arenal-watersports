@@ -1,13 +1,14 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "../support/activeWorkerTest";
 import { createReservationCategoryConflictPage } from "../pages/ReservationCategoryConflict.page";
 import { createReservationCategoryConflictFixture } from "../support/createReservationCategoryConflictFixture";
 import { getReservationConflictDate } from "../support/getReservationConflictDate";
-import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
+import { signInToReservationsMode } from "../support/signInToReservationsMode";
 
 test("warns about an overlapping category reservation and allows submission", async ({
+  activeWorker,
   page,
 }) => {
-  await signInAsSeededWorker(page);
+  await signInToReservationsMode(page, activeWorker);
   const reservationPage =
     createReservationCategoryConflictPage(page);
   const projectName = test.info().project.name;

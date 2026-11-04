@@ -7,9 +7,13 @@ import { useReservationFormSubmission } from "./useReservationFormSubmission";
 import { useReservationDuration } from "./useReservationDuration";
 import { useReservationEquipmentViewModel } from "./useReservationEquipmentViewModel";
 import { STRING } from "@/app/constants";
+import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import type { ReservationFormViewModelOptions } from "../models/ReservationFormViewModelOptions.interface";
 import { useReservationEquipmentEligibility } from "./useReservationEquipmentEligibility";
 import { useReservationFormEquipmentSelection } from "./useReservationFormEquipmentSelection";
+import { isReservationQuantityUnavailable } from "../utils/isReservationQuantityUnavailable";
+import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
 
 export const useReservationFormViewModel = (
   options: ReservationFormViewModelOptions
@@ -49,6 +53,15 @@ export const useReservationFormViewModel = (
     ),
     eligibility.refreshKey
   );
+  const isQuantityUnavailable =
+    isReservationQuantityUnavailable(
+      eligibleCategories.find(
+        (category) =>
+          category.id === fields.values.categoryId
+      )?.isInterchangeable === true,
+      fields.values.quantity,
+      equipment.categoryAvailability
+    );
   const selection = useReservationFormEquipmentSelection({
     availableUnits: equipment.availableUnits,
     categories: eligibleCategories,
@@ -63,15 +76,33 @@ export const useReservationFormViewModel = (
   });
   const isSubmitDisabled =
     submission.isPending ||
-    submission.isSubmitted ||
     eligibleCategories.length === 0 ||
     (equipment.requiresConcreteUnit &&
       (equipment.isAvailabilityLoading ||
-        equipment.hasAvailabilityError ||
-        fields.values.unitId === STRING.Empty));
+        equipment.hasAvailabilityError)) ||
+    isQuantityUnavailable;
   const handleSubmit: ReservationFormViewModel["handleSubmit"] =
     (event) => {
       event.preventDefault();
+      if (
+        equipment.requiresConcreteUnit &&
+        fields.values.unitId === STRING.Empty
+      ) {
+        submission.applyResult({
+          ok: false,
+          errors: {
+            [RESERVATION_FORM_FIELD.UNIT_ID]:
+              RESERVATION_FORM_COPY[
+                RESERVATION_FORM_FIELD.UNIT_ID
+              ],
+          },
+        });
+        submission.requestErrorFocus();
+        return;
+      }
+      if (isQuantityUnavailable) {
+        return;
+      }
       submission.submitReservation(
         {
           ...fields.values,
@@ -82,6 +113,11 @@ export const useReservationFormViewModel = (
         () => {
           fields.handleUnitChange(STRING.Empty);
           equipment.retryUnitAvailability();
+        },
+        () => {
+          fields.reset();
+          duration.reset();
+          equipment.retryUnitAvailability();
         }
       );
     };
@@ -89,6 +125,13 @@ export const useReservationFormViewModel = (
     categories: eligibleCategories,
     ...fields,
     ...submission,
+    errors: isQuantityUnavailable
+      ? {
+          ...submission.errors,
+          [RESERVATION_FORM_FIELD.QUANTITY]:
+            RESERVATION_FORM_UI_COPY.QUANTITY_UNAVAILABLE,
+        }
+      : submission.errors,
     ...equipment,
     isEquipmentEligibilityLoading: eligibility.isLoading,
     hasEquipmentEligibilityError: eligibility.hasError,

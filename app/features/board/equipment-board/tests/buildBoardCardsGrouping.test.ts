@@ -86,4 +86,41 @@ describe("buildBoardCards grouping", () => {
       label: double.name,
     });
   });
+
+  it("targets the first member by name on a grouped card, whatever the input order", () => {
+    const double = createKayakDouble();
+    const individual = createKayakIndividual();
+
+    const [fromIndividualFirst] = buildBoardCards([
+      individual,
+      double,
+    ]);
+    const [fromDoubleFirst] = buildBoardCards([
+      double,
+      individual,
+    ]);
+
+    expect(fromIndividualFirst.targetCategoryId).toBe(
+      double.id
+    );
+    expect(fromDoubleFirst.targetCategoryId).toBe(
+      double.id
+    );
+  });
+
+  it("targets the single member of a group that has one visible category", () => {
+    const individual = createKayakIndividual();
+
+    const [card] = buildBoardCards([individual]);
+
+    expect(card.targetCategoryId).toBe(individual.id);
+  });
+
+  it("targets the category of a plain card", () => {
+    const category = createBoardCategory();
+
+    const [card] = buildBoardCards([category]);
+
+    expect(card.targetCategoryId).toBe(category.id);
+  });
 });
