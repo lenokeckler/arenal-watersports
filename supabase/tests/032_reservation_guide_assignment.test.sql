@@ -11,7 +11,7 @@ insert into auth.users (id, email) values
 insert into workers (id, username, full_name, base_role, status) values
   ('e3200000-0000-4000-8000-000000000001', 'res12-reservas', 'RES12 Reservas', 'reservas', 'active'),
   ('e3200000-0000-4000-8000-000000000002', 'res12-guide-one', 'RES12 Guide One', 'operaciones', 'active'),
-  ('e3200000-0000-4000-8000-000000000003', 'res12-guide-two', 'RES12 Guide Two', 'operaciones', 'blocked'),
+  ('e3200000-0000-4000-8000-000000000003', 'res12-guide-two', 'RES12 Guide Two', 'operaciones', 'active'),
   ('e3200000-0000-4000-8000-000000000004', 'res12-worker', 'RES12 Worker', 'operaciones', 'active'),
   ('e3200000-0000-4000-8000-000000000005', 'res12-guide-three', 'RES12 Guide Three', 'operaciones', 'active');
 

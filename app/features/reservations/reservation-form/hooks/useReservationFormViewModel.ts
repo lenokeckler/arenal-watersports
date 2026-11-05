@@ -4,10 +4,9 @@ import type { ReservationGuideAssignmentViewModel } from "../models/ReservationG
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 import type { ReservationGuideLoadResult } from "../models/ReservationGuideLoadResult.type";
 import { EMPTY_RESERVATION_GUIDE_LOAD_RESULT } from "../constants/ReservationGuideLoad.constants";
-import { filterReservationCategoriesByType } from "../utils/filterReservationCategoriesByType";
-import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import { useReservationFormViewModelDependencies } from "./useReservationFormViewModelDependencies";
 import { useReservationGuideLoadViewModel } from "./useReservationGuideLoadViewModel";
+import { useReservationGuideSelectionSyncViewModel } from "./useReservationGuideSelectionSyncViewModel";
 
 export const useReservationFormViewModel = (
   initialDate: string,
@@ -16,34 +15,25 @@ export const useReservationFormViewModel = (
 ): ReservationGuideAssignmentViewModel => {
   const guideLoad =
     useReservationGuideLoadViewModel(guideLoadResult);
-  const { handleSubmit, handlers, resources, router } =
+  const { handleSubmit, resources, router } =
     useReservationFormViewModelDependencies(
       initialDate,
       categories
     );
-  const { state, eligibility } = resources;
+  const { state } = resources;
+  useReservationGuideSelectionSyncViewModel(
+    guideLoad.isLoading,
+    guideLoad.result,
+    state.fields.reconcileGuideSelection
+  );
   return {
-    categories: filterReservationCategoriesByType(
-      eligibility.categories,
-      state.fields.values.reservationType ??
-        RESERVATION_TYPE.RENTAL
-    ),
     ...state.fields,
     ...state.submission,
     ...state.duration,
-    ...resources.equipment,
     ...state.durationHandlers,
-    ...handlers,
+    ...resources.equipment,
     handleBack: router.back,
-    handleReservationTypeChange:
-      state.fields.handleReservationTypeChange,
-    handleGuideToggle: state.fields.handleGuideToggle,
-    handleRetryEquipmentEligibility: eligibility.retry,
     handleSubmit,
-    hasEquipmentEligibilityError: eligibility.hasError,
-    hasEquipmentSelectionChanged:
-      resources.hasEquipmentSelectionChanged,
-    isEquipmentEligibilityLoading: eligibility.isLoading,
     guideLoadResult: guideLoad.result,
     isGuideLoading: guideLoad.isLoading,
     handleRetryGuideLoading: guideLoad.retry,

@@ -5,6 +5,12 @@ import { renderReservationForm } from "./ReservationFormView.fixture";
 import { RESERVATION_GUIDE_ASSIGNMENT_TEST } from "./ReservationGuideAssignment.constants";
 import { RESERVATION_GUIDE_SELECTION_TEST } from "./ReservationGuideSelection.constants";
 
+export const createFailedGuideLoadResult =
+  (): ReservationGuideLoadResult => ({
+    code: RESERVATION_GUIDE_ASSIGNMENT_TEST.LOAD_ERROR_CODE,
+    kind: RESERVATION_GUIDE_LOAD_RESULT_KIND.FAILURE,
+  });
+
 export const renderReservationGuideForm = (
   guideLoadResult: ReservationGuideLoadResult = {
     guides: [
@@ -20,7 +26,10 @@ export const renderReservationGuideForm = (
     kind: RESERVATION_GUIDE_LOAD_RESULT_KIND.SUCCESS,
   }
 ) => {
-  const page = renderReservationForm(guideLoadResult);
+  const page = renderReservationForm(
+    undefined,
+    guideLoadResult
+  );
   return {
     ...page,
     ...createReservationGuideAssignmentPage(document.body),
