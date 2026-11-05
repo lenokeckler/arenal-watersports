@@ -20,7 +20,7 @@ describe("useReservationFormViewModel preservation", () => {
       ...viewModelHarness.values,
     };
     const { result, rerender } = renderHook(() =>
-      useReservationFormViewModel("2030-04-12", [])
+      useReservationFormViewModel("2030-04-12", [], [])
     );
     viewModelHarness.eligibility.current = {
       categories: [],
