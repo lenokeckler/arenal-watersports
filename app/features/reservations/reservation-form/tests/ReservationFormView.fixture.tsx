@@ -52,6 +52,7 @@ const renderReservationFormContainer = (
   const { container } = render(
     <ReservationFormView
       categories={categories}
+      guideOptions={[]}
       initialDate={RESERVATION_FORM_VIEW_TEST.DATE}
     />
   );

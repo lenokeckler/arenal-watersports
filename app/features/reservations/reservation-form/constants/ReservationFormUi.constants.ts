@@ -26,6 +26,7 @@ export const RESERVATION_FORM_DEFAULT_VALUES = {
   customerName: "",
   date: "",
   durationHours: 1,
+  guideIds: [] as string[],
   peopleCount: 1,
   quantity: 1,
   reservationType: RESERVATION_TYPE.RENTAL,

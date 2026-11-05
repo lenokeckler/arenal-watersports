@@ -1,6 +1,10 @@
 import type { ReservationType } from "./ReservationType.type";
 
 export interface ReservationFormFieldHandlers {
+  handleGuideToggle: (guideId: string) => void;
+  reconcileGuideSelection: (
+    availableGuideIds: string[]
+  ) => void;
   handleCategoryChange: (value: string) => void;
   handleCustomerNameChange: (value: string) => void;
   handleDateChange: (value: string) => void;

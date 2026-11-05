@@ -17,6 +17,11 @@ export const isReservationFormInput = (
     typeof input.date === "string" &&
     "durationHours" in input &&
     typeof input.durationHours === "number" &&
+    (!("guideIds" in input) ||
+      (Array.isArray(input.guideIds) &&
+        input.guideIds.every(
+          (guideId) => typeof guideId === "string"
+        ))) &&
     "peopleCount" in input &&
     typeof input.peopleCount === "number" &&
     "quantity" in input &&

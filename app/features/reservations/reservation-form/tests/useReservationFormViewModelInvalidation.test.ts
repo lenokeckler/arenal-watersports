@@ -24,7 +24,7 @@ describe("useReservationFormViewModel selection invalidation", () => {
       retry: vi.fn(),
     };
     const { result } = renderHook(() =>
-      useReservationFormViewModel("2030-04-12", [])
+      useReservationFormViewModel("2030-04-12", [], [])
     );
 
     expect(
@@ -58,7 +58,7 @@ describe("useReservationFormViewModel selection invalidation", () => {
       requiresConcreteUnit: true,
     };
     const { result } = renderHook(() =>
-      useReservationFormViewModel("2030-04-12", [])
+      useReservationFormViewModel("2030-04-12", [], [])
     );
 
     expect(
@@ -80,7 +80,7 @@ describe("useReservationFormViewModel selection invalidation", () => {
       requiresConcreteUnit: true,
     };
     const { result, rerender } = renderHook(() =>
-      useReservationFormViewModel("2030-04-12", [])
+      useReservationFormViewModel("2030-04-12", [], [])
     );
 
     viewModelHarness.equipment.current = {
@@ -110,7 +110,7 @@ describe("useReservationFormViewModel selection invalidation", () => {
       requiresConcreteUnit: true,
     };
     const { result } = renderHook(() =>
-      useReservationFormViewModel("2030-04-12", [])
+      useReservationFormViewModel("2030-04-12", [], [])
     );
 
     expect(

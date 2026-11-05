@@ -1,47 +1,38 @@
 "use client";
 
-import { STRING } from "@/app/constants";
-import { useRouter } from "next/navigation";
+import { useEffect, useEffectEvent } from "react";
 import type { ReservationFormViewModel } from "../models/ReservationFormViewModel.interface";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
-import { createReservationFormSubmitHandler } from "../utils/createReservationFormSubmitHandler";
-import { useReservationFormState } from "./useReservationFormState";
-import { useReservationFormEquipmentViewModel } from "./useReservationFormEquipmentViewModel";
+import type { ReservationGuideOption } from "../models/ReservationGuideOption.interface";
+import { useReservationFormViewModelDependencies } from "./useReservationFormViewModelDependencies";
 
 export const useReservationFormViewModel = (
   initialDate: string,
-  categories: ReservationCategoryOption[]
+  categories: ReservationCategoryOption[],
+  guideOptions: ReservationGuideOption[]
 ): ReservationFormViewModel => {
-  const router = useRouter();
-  const state = useReservationFormState(
-    initialDate,
-    STRING.Empty,
-    categories
-  );
-  const resolvedDurationHours =
-    state.duration.resolveDurationHours(
-      state.fields.values.durationHours
+  const { handleSubmit, resources, router } =
+    useReservationFormViewModelDependencies(
+      initialDate,
+      categories
     );
-  const equipment = useReservationFormEquipmentViewModel(
-    categories,
-    state.fields,
-    resolvedDurationHours
+  const { state } = resources;
+  const reconcileLoadedGuides = useEffectEvent(
+    (guideIds: string[]) =>
+      state.fields.reconcileGuideSelection(guideIds)
   );
-  const handleSubmit = createReservationFormSubmitHandler({
-    ...equipment,
-    resolvedDurationHours,
-    setFieldError: state.submission.setFieldError,
-    submitReservation: state.submission.submitReservation,
-    values: state.fields.values,
-  });
-
+  useEffect(() => {
+    reconcileLoadedGuides(
+      guideOptions.map((guide) => guide.id)
+    );
+  }, [guideOptions]);
   return {
     ...state.fields,
     ...state.submission,
     ...state.duration,
     ...state.durationHandlers,
+    ...resources.equipment,
     handleBack: router.back,
     handleSubmit,
-    ...equipment,
   };
 };
