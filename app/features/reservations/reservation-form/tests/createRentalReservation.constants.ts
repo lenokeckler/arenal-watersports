@@ -27,6 +27,7 @@ export const VALIDATED_UNIT_RESERVATION_INPUT = {
 
 export const VALIDATED_TOUR_RESERVATION_INPUT = {
   ...VALIDATED_RESERVATION_INPUT,
+  guideIds: ["e2400000-0000-4000-8000-000000000301"],
   reservationType: RESERVATION_TYPE.TOUR,
 } satisfies ValidatedReservationFormInput;
 
