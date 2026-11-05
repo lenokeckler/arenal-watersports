@@ -8,11 +8,13 @@ export const useReservationFormSubmission = () => {
   useReservationFormErrorFocus(submission);
 
   return {
+    applyResult: submission.applyResult,
     clearFieldError: submission.clearFieldError,
     errors: submission.errors,
     formError: submission.formError,
     isPending: action.isPending,
     isSubmitted: submission.isSubmitted,
+    requestErrorFocus: submission.requestErrorFocus,
     submitReservation: action.submitReservation,
   };
 };

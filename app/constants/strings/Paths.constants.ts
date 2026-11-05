@@ -23,12 +23,17 @@ export const PATHS = {
     CATEGORY_DEPOSIT_SEGMENT: "deposit",
     CATEGORY_STOCK_SEGMENT: "stock",
     CATEGORY_UNITS_SEGMENT: "units",
+    DEPOSITS: "/administration/reports/deposits",
+    INCOME: "/administration/income",
     RESERVATIONS_BY_WORKER:
       "/administration/reports/reservations-by-worker",
     ROOT: "/administration",
     UNITS_NEW_SEGMENT: "new",
     WORKER_AREAS: "/administration/workers/areas",
     WORKERS_NEW: "/administration/workers/new",
+  },
+  HISTORY: {
+    ROOT: "/history",
   },
   OPERATIONS: {
     CALENDAR: "/operations/calendar",
@@ -56,7 +61,9 @@ export const PATHS = {
     DETAIL: (reservationId: string): string =>
       `/reservations/${encodeURIComponent(reservationId)}`,
     DEPOSITS: "/reservations/deposits",
+    EDIT_SEGMENT: "edit",
     INCOME: "/reservations/income",
     NEW: "/reservations/new",
+    ROOT: "/reservations",
   },
 } as const;
