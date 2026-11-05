@@ -60,12 +60,13 @@ declare
   assigned_reservation_type reservation_type;
 begin
   if current_user in ('postgres', 'supabase_admin', 'service_role') then return new; end if;
+  if not (has_area('reservas') or is_admin()) then return new; end if;
   select reservation.type into assigned_reservation_type
   from reservations as reservation where reservation.id = new.reservation_id for update;
   if not found or assigned_reservation_type <> 'tour' then
     raise exception 'Guides can only be assigned to tour reservations';
   end if;
-  if new.assigned_by is distinct from auth.uid() then
+  if tg_op = 'INSERT' and new.assigned_by is distinct from auth.uid() then
     raise exception 'Assignment author must match the authenticated worker';
   end if;
   if not private.is_active_guide(new.worker_id) then
