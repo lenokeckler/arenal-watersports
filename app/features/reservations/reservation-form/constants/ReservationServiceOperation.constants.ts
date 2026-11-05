@@ -1,4 +1,5 @@
 export const RESERVATION_SERVICE_OPERATION = {
+  CREATE_CUSTOM_COMBO: "create custom combo reservation",
   CREATE_RENTAL: "create rental reservation",
   LOAD_CUSTOM_COMBO_PRICE: "load custom combo price",
   LOAD_GUIDES: "load reservation guides",
