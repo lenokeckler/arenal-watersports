@@ -22,7 +22,8 @@ export const CATEGORY_UNIT_RETURN_DATE_FORMAT = {
 };
 
 export const CATEGORY_UNITS_SKELETON = {
-  ROW_COUNT: 4,
+  DETAIL_ROW_COUNT: 2,
+  ROW_COUNT: 6,
 } as const;
 
 export const CATEGORY_UNITS_SKELETON_INDEXES = Array.from(
