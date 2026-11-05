@@ -1,7 +1,6 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
-import { LIST_PAGINATION_COPY } from "@/app/components/list-pagination/constants/ListPaginationCopy.constants";
 import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 import { HEADING_LEVEL_ONE } from "./CategoryUnitsScreen.constants";
 import { createCategoryUnitsPage } from "./CategoryUnits.page";
@@ -50,12 +49,17 @@ export const createCategoryUnitsScreenPage = () => {
 
   const queryNextLink = () =>
     screen.queryByRole(ARIA_ROLE.LINK, {
-      name: LIST_PAGINATION_COPY.NEXT,
+      name: CATEGORY_UNITS_COPY.PAGINATION_NEXT,
     });
 
   const queryPreviousLink = () =>
     screen.queryByRole(ARIA_ROLE.LINK, {
-      name: LIST_PAGINATION_COPY.PREVIOUS,
+      name: CATEGORY_UNITS_COPY.PAGINATION_PREVIOUS,
+    });
+
+  const getPagination = () =>
+    screen.getByRole(ARIA_ROLE.NAVIGATION, {
+      name: CATEGORY_UNITS_COPY.PAGINATION_NAV_LABEL,
     });
 
   const getAlert = () => screen.getByRole(ARIA_ROLE.ALERT);
@@ -78,6 +82,7 @@ export const createCategoryUnitsScreenPage = () => {
     getBackLink,
     getGroupSwitch,
     getMain,
+    getPagination,
     getPageText,
     getRetryButton,
     getStatus,

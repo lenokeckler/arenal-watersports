@@ -9,20 +9,35 @@ const returnDateFormat = new Intl.DateTimeFormat(
   CATEGORY_UNIT_RETURN_DATE_FORMAT.OPTIONS
 );
 
+const RETURN_COPY = {
+  late: {
+    at: CATEGORY_UNITS_COPY.OVERDUE_RETURNS_AT,
+    on: CATEGORY_UNITS_COPY.OVERDUE_RETURNS_ON,
+  },
+  onTime: {
+    at: CATEGORY_UNITS_COPY.RETURNS_AT,
+    on: CATEGORY_UNITS_COPY.RETURNS_ON,
+  },
+} as const;
+
 export const formatCategoryUnitReturn = (
   returnsAt: string,
-  now: Date
+  now: Date,
+  isOverdue: boolean
 ): string => {
+  const copy = isOverdue
+    ? RETURN_COPY.late
+    : RETURN_COPY.onTime;
   const returnInstant = new Date(
     parseReservationCalendarInstant(returnsAt)
   );
   const time = formatReservationCalendarTime(returnsAt);
 
   if (isSameCostaRicaDay(returnInstant, now)) {
-    return CATEGORY_UNITS_COPY.RETURNS_AT(time);
+    return copy.at(time);
   }
 
-  return CATEGORY_UNITS_COPY.RETURNS_ON(
+  return copy.on(
     returnDateFormat.format(returnInstant),
     time
   );

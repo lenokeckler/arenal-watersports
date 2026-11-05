@@ -57,3 +57,21 @@ export const CATEGORY_UNITS_SKELETON_CHIP_CLASS =
     CATEGORY_UNITS_SKELETON_BAR_CLASS,
     "h-6 w-24 rounded-full"
   );
+
+export const CATEGORY_UNITS_SKELETON_HEADER_CLASS =
+  "flex items-center justify-between gap-sm";
+
+export const CATEGORY_UNITS_SKELETON_DETAIL_CLASS =
+  "flex flex-col gap-1 border-t border-outline-variant pt-sm";
+
+export const CATEGORY_UNITS_SKELETON_RETURN_CLASS =
+  joinClassNames(
+    CATEGORY_UNITS_SKELETON_BAR_CLASS,
+    "h-6 w-1/2"
+  );
+
+export const CATEGORY_UNITS_SKELETON_LINE_CLASS =
+  joinClassNames(
+    CATEGORY_UNITS_SKELETON_BAR_CLASS,
+    "h-5 w-3/4"
+  );

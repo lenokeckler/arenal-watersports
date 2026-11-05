@@ -6,7 +6,8 @@ import { buildUnitOccupancy } from "./buildUnitOccupancy";
 import { resolveBoardUnitStatus } from "./resolveBoardUnitStatus";
 
 export const mapBoardCategoryUnitRow = (
-  row: BoardCategoryUnitRow
+  row: BoardCategoryUnitRow,
+  now: Date
 ): CategoryUnit => {
   const status = resolveBoardUnitStatus(
     row.effective_status
@@ -17,7 +18,9 @@ export const mapBoardCategoryUnitRow = (
   return {
     code: safeString(row.unit_code),
     id: safeString(row.unit_id),
-    occupancy: isOccupied ? buildUnitOccupancy(row) : null,
+    occupancy: isOccupied
+      ? buildUnitOccupancy(row, now)
+      : null,
     status,
   };
 };
