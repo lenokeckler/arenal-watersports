@@ -1,5 +1,6 @@
 import type { CustomComboReservationInput } from "../models/CustomComboReservationInput.interface";
 import { CUSTOM_COMBO_PRICING_MAX_DURATION_MINUTES } from "../constants/CustomComboPricing.constants";
+import { CUSTOM_COMBO_AGREED_AMOUNT_MAX } from "../constants/CustomComboAgreedAmount.constants";
 import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 
 export const VALID_CUSTOM_COMBO_RESERVATION_INPUT: CustomComboReservationInput =
@@ -28,6 +29,11 @@ export const VALID_CUSTOM_COMBO_RESERVATION_INPUT: CustomComboReservationInput =
 
 export const EXPECTED_CUSTOM_COMBO_DURATION_MINUTES = 90;
 export const NEGATIVE_AGREED_AMOUNT = -1;
+export const CUSTOM_COMBO_AGREED_AMOUNT_INCREMENT = 0.01;
+export const MAX_CUSTOM_COMBO_AGREED_AMOUNT_CRC =
+  CUSTOM_COMBO_AGREED_AMOUNT_MAX.CRC;
+export const MAX_CUSTOM_COMBO_AGREED_AMOUNT_USD =
+  CUSTOM_COMBO_AGREED_AMOUNT_MAX.USD;
 export const NON_FINITE_AGREED_AMOUNTS = [
   Number.NaN,
   Number.POSITIVE_INFINITY,
