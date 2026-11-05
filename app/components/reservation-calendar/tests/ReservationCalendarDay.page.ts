@@ -15,6 +15,10 @@ export const createReservationCalendarDayPage =
       screen.queryByText(message);
     const getCustomer = (): HTMLElement =>
       screen.getByText(CALENDAR_DAY_ENTRY.customerName);
+    const getDetailLink = (): NullableRef<HTMLElement> =>
+      screen.queryByRole(ARIA_ROLE.LINK, {
+        name: `${RESERVATIONS_CALENDAR_COPY.OPEN_RESERVATION_DETAIL} ${CALENDAR_DAY_ENTRY.customerName}`,
+      });
     const getReservationBlock = (): HTMLElement =>
       screen.getByRole(ARIA_ROLE.GROUP, {
         name: new RegExp(
@@ -22,5 +26,10 @@ export const createReservationCalendarDayPage =
         ),
       });
 
-    return { getCustomer, getMessage, getReservationBlock };
+    return {
+      getCustomer,
+      getDetailLink,
+      getMessage,
+      getReservationBlock,
+    };
   };

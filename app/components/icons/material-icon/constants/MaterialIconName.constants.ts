@@ -28,6 +28,7 @@ export const MATERIAL_ICON_NAME = {
   SAILING: "sailing",
   SEARCH: "search",
   SUPPORT_AGENT: "support_agent",
+  TRENDING_DOWN: "trending_down",
   VISIBILITY: "visibility",
   VISIBILITY_OFF: "visibility_off",
 } as const;
