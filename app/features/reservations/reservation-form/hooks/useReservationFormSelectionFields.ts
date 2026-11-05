@@ -35,4 +35,8 @@ export const useReservationFormSelectionFields = (
       );
     }
   },
+  handleGuideIdsChange: (guideIds: string[]): void =>
+    updateValue(RESERVATION_FORM_FIELD.GUIDE_IDS, guideIds),
+  handleUnitChange: (value: string): void =>
+    updateValue(RESERVATION_FORM_FIELD.UNIT_ID, value),
 });

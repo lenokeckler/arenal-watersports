@@ -23,9 +23,7 @@ describe("validateCustomComboReservationInput", () => {
       VALID_CUSTOM_COMBO_RESERVATION_INPUT
     );
 
-    expect(result.value?.customerName).toBe(
-      "MarÃ­a LÃ³pez"
-    );
+    expect(result.value?.customerName).toBe("María López");
     expect(result.value?.durationMinutes).toBe(
       EXPECTED_CUSTOM_COMBO_DURATION_MINUTES
     );

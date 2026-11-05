@@ -1,13 +1,16 @@
 import type { NullableRef } from "@/app/types";
-import type { ReservationFormField } from "./ReservationFormField.constants";
+import type { ReservationFormErrorField } from "./ReservationFormField.constants";
 import type { ReservationFormFieldsViewModel } from "./ReservationFormFieldsViewModel.interface";
 import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOption.interface";
 import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
 import type { ReservationCategoryAvailabilityPanelState } from "./ReservationCategoryAvailabilityPanelState.type";
 import type { ReservationCategoryConflictWarningViewModel } from "./ReservationCategoryConflictWarningViewModel.interface";
+import type { CustomComboFormViewModel } from "./CustomComboFormViewModel.interface";
 
 export interface ReservationFormViewModel extends ReservationFormFieldsViewModel {
-  errors: Partial<Record<ReservationFormField, string>>;
+  errors: Partial<
+    Record<ReservationFormErrorField, string>
+  >;
   categories: ReservationCategoryOption[];
   hasEquipmentEligibilityError: boolean;
   hasEquipmentSelectionChanged: boolean;
@@ -26,6 +29,7 @@ export interface ReservationFormViewModel extends ReservationFormFieldsViewModel
   categoryConflictWarning: ReservationCategoryConflictWarningViewModel;
   isCustomDuration: boolean;
   customDurationDraft: string;
+  customCombo: CustomComboFormViewModel;
   handleCustomDurationChange: (value: string) => void;
   handleCustomDurationSelection: () => void;
   handleBack: () => void;
