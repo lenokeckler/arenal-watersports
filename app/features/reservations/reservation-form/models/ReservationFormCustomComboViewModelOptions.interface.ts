@@ -1,4 +1,4 @@
-import type { ReservationFormField } from "./ReservationFormField.constants";
+import type { ReservationFormErrorField } from "./ReservationFormField.constants";
 import type { ReservationFormInput } from "./ReservationFormInput.interface";
 import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
 import type { CustomComboReservationInput } from "./CustomComboReservationInput.interface";
@@ -6,13 +6,15 @@ import type { ReservationType } from "./ReservationType.type";
 
 export interface ReservationFormCustomComboViewModelOptions {
   categories: ReservationCategoryOption[];
-  clearFieldError: (field: ReservationFormField) => void;
+  clearFieldError: (
+    field: ReservationFormErrorField
+  ) => void;
   durationHours: number;
   onGuideIdsChange: (guideIds: string[]) => void;
   reservationType: ReservationType;
   requiresConcreteUnit: boolean;
   setFieldError: (
-    field: ReservationFormField,
+    field: ReservationFormErrorField,
     message: string
   ) => void;
   submitCustomComboReservation: (

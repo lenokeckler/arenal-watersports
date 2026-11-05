@@ -114,4 +114,29 @@ describe("useCustomComboPricing", () => {
       CUSTOM_COMBO_PRICING_TEST.PRICING
     );
   });
+
+  it("sends concrete unit selections without category quantities", async () => {
+    vi.mocked(
+      getCustomComboPricingAction
+    ).mockResolvedValue({
+      ok: true,
+      pricing: CUSTOM_COMBO_PRICING_TEST.PRICING,
+    });
+    const { result } = renderHook(() =>
+      useCustomComboPricing(
+        CUSTOM_COMBO_PRICING_TEST.UNIT_INPUT,
+        true
+      )
+    );
+    await waitFor(() =>
+      expect(result.current.state.status).toBe(
+        CUSTOM_COMBO_PRICING_STATUS.READY
+      )
+    );
+    expect(
+      getCustomComboPricingAction
+    ).toHaveBeenCalledWith(
+      CUSTOM_COMBO_PRICING_TEST.UNIT_INPUT
+    );
+  });
 });

@@ -59,18 +59,15 @@ const applyDraftChanges = (result: {
 }) => {
   act(() => {
     result.current.handleItemChange({
-      categoryId:
-        CUSTOM_COMBO_FORM_TEST.REGULAR_CATEGORY_ID,
+      ...CUSTOM_COMBO_FORM_TEST.REGULAR_SELECTION,
       quantity: CUSTOM_COMBO_FORM_TEST.VALID_QUANTITY,
     });
     result.current.handleItemChange({
-      categoryId:
-        CUSTOM_COMBO_FORM_TEST.REGULAR_CATEGORY_ID,
+      ...CUSTOM_COMBO_FORM_TEST.REGULAR_SELECTION,
       quantity: CUSTOM_COMBO_FORM_TEST.UPDATED_QUANTITY,
     });
     result.current.handleItemChange({
-      categoryId:
-        CUSTOM_COMBO_FORM_TEST.REGULAR_CATEGORY_ID,
+      ...CUSTOM_COMBO_FORM_TEST.REGULAR_SELECTION,
       quantity: CUSTOM_COMBO_FORM_TEST.INVALID_QUANTITY,
     });
     result.current.handleAgreedAmountCrcChange(
@@ -87,8 +84,7 @@ const expectDraftChanges = (result: {
 }) => {
   expect(result.current.draft.items).toEqual([
     {
-      categoryId:
-        CUSTOM_COMBO_FORM_TEST.REGULAR_CATEGORY_ID,
+      ...CUSTOM_COMBO_FORM_TEST.REGULAR_SELECTION,
       quantity: CUSTOM_COMBO_FORM_TEST.UPDATED_QUANTITY,
     },
   ]);
@@ -107,8 +103,7 @@ describe("useCustomComboForm", () => {
     );
     act(() =>
       result.current.handleItemChange({
-        categoryId:
-          CUSTOM_COMBO_FORM_TEST.REGULAR_CATEGORY_ID,
+        ...CUSTOM_COMBO_FORM_TEST.REGULAR_SELECTION,
         quantity: CUSTOM_COMBO_FORM_TEST.UPDATED_QUANTITY,
       })
     );

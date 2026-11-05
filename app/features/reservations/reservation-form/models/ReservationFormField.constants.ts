@@ -1,3 +1,5 @@
+import type { CustomComboReservationField } from "./CustomComboReservationField.constants";
+
 export const RESERVATION_FORM_FIELD = {
   CATEGORY_ID: "categoryId",
   CUSTOMER_NAME: "customerName",
@@ -14,3 +16,6 @@ export const RESERVATION_FORM_FIELD = {
 
 export type ReservationFormField =
   (typeof RESERVATION_FORM_FIELD)[keyof typeof RESERVATION_FORM_FIELD];
+
+export type ReservationFormErrorField =
+  ReservationFormField | CustomComboReservationField;

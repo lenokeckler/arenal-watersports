@@ -26,13 +26,10 @@ describe("useCustomComboForm guide eligibility", () => {
     );
     act(() => {
       result.current.handleItemChange({
-        categoryId:
-          CUSTOM_COMBO_FORM_TEST.GUIDE_CATEGORY_ID,
-        quantity: CUSTOM_COMBO_FORM_TEST.UPDATED_QUANTITY,
+        ...CUSTOM_COMBO_FORM_TEST.GUIDE_UNIT_SELECTION,
       });
       result.current.handleItemChange({
-        categoryId:
-          CUSTOM_COMBO_FORM_TEST.REGULAR_CATEGORY_ID,
+        ...CUSTOM_COMBO_FORM_TEST.REGULAR_SELECTION,
         quantity: CUSTOM_COMBO_FORM_TEST.UPDATED_QUANTITY,
       });
       result.current.handleItemRemoval(

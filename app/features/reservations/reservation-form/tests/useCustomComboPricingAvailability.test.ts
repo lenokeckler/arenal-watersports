@@ -58,6 +58,7 @@ const renderComboFormWithSelection = () => {
   );
   act(() =>
     rendered.result.current.handleItemChange({
+      kind: CUSTOM_COMBO_FORM_TEST.CATEGORY_SELECTION_KIND,
       categoryId:
         CUSTOM_COMBO_FORM_TEST.REGULAR_CATEGORY_ID,
       quantity: CUSTOM_COMBO_FORM_TEST.VALID_QUANTITY,
