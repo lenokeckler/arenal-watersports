@@ -7,9 +7,7 @@ export const filterReservationCategoriesByType = (
   reservationType: ReservationType
 ): ReservationCategoryOption[] => {
   if (reservationType === RESERVATION_TYPE.COMBO) {
-    return categories.filter(
-      (category) => category.isInterchangeable
-    );
+    return categories;
   }
 
   if (reservationType === RESERVATION_TYPE.TOUR) {

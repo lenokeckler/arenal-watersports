@@ -10,11 +10,13 @@ const resetAvailability = (
     SetStateAction<ReservationCategoryUnitOption[]>
   >,
   setIsLoading: Dispatch<SetStateAction<boolean>>,
-  setHasError: Dispatch<SetStateAction<boolean>>
+  setHasError: Dispatch<SetStateAction<boolean>>,
+  setHasLoaded: Dispatch<SetStateAction<boolean>>
 ): void => {
   setAvailableUnits([]);
   setIsLoading(false);
   setHasError(false);
+  setHasLoaded(false);
 };
 
 const startAvailabilityLookup = (
@@ -23,12 +25,14 @@ const startAvailabilityLookup = (
     SetStateAction<ReservationCategoryUnitOption[]>
   >,
   setIsLoading: Dispatch<SetStateAction<boolean>>,
-  setHasError: Dispatch<SetStateAction<boolean>>
+  setHasError: Dispatch<SetStateAction<boolean>>,
+  setHasLoaded: Dispatch<SetStateAction<boolean>>
 ): (() => void) => {
   let isCurrentRequest = true;
   setAvailableUnits([]);
   setIsLoading(true);
   setHasError(false);
+  setHasLoaded(false);
   getAvailableReservationUnitsAction(request)
     .then((units) => {
       if (isCurrentRequest) {
@@ -43,6 +47,7 @@ const startAvailabilityLookup = (
     .finally(() => {
       if (isCurrentRequest) {
         setIsLoading(false);
+        setHasLoaded(true);
       }
     });
 
@@ -58,6 +63,7 @@ export const useSyncReservationUnitAvailability = (
   >,
   setIsLoading: Dispatch<SetStateAction<boolean>>,
   setHasError: Dispatch<SetStateAction<boolean>>,
+  setHasLoaded: Dispatch<SetStateAction<boolean>>,
   refreshKey: number
 ): void => {
   const { categoryId, date, durationMinutes, time } =
@@ -75,7 +81,8 @@ export const useSyncReservationUnitAvailability = (
       resetAvailability(
         setAvailableUnits,
         setIsLoading,
-        setHasError
+        setHasError,
+        setHasLoaded
       );
       return undefined;
     }
@@ -83,7 +90,8 @@ export const useSyncReservationUnitAvailability = (
       currentRequest,
       setAvailableUnits,
       setIsLoading,
-      setHasError
+      setHasError,
+      setHasLoaded
     );
   }, [
     categoryId,
@@ -92,6 +100,7 @@ export const useSyncReservationUnitAvailability = (
     time,
     setAvailableUnits,
     setHasError,
+    setHasLoaded,
     setIsLoading,
     refreshKey,
   ]);

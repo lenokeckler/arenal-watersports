@@ -153,6 +153,35 @@ test.describe("Reservation form", () => {
     ).toHaveValue(/.+/);
   });
 
+  test("selects an available concrete Lancha unit in a custom combo", async ({
+    page,
+  }) => {
+    const reservationFormPage =
+      createReservationFormPage(page);
+
+    await reservationFormPage.goTo();
+    await reservationFormPage.selectReservationType(
+      RESERVATION_TYPE_COPY.OPTIONS.COMBO.label
+    );
+    await reservationFormPage
+      .getDateInput()
+      .fill(E2E_RESERVATION_FORM_COPY.SCREENSHOT_DATE);
+    await reservationFormPage.waitForCustomComboUnitOption(
+      E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION,
+      E2E_RESERVATION_FORM_COPY.UNIT_OPTION
+    );
+    await reservationFormPage.selectCustomComboUnit(
+      E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION,
+      E2E_RESERVATION_FORM_COPY.UNIT_OPTION
+    );
+
+    await expect(
+      reservationFormPage.getSelectedCustomComboUnitOption(
+        E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
+      )
+    ).toHaveText(E2E_RESERVATION_FORM_COPY.UNIT_OPTION);
+  });
+
   test("removes a damaged unit after an inventory update", async ({
     page,
   }, testInfo) => {

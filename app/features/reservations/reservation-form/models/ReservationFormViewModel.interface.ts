@@ -18,6 +18,7 @@ export interface ReservationFormViewModel extends ReservationFormFieldsViewModel
   formError: string;
   isPending: boolean;
   isSubmitted: boolean;
+  resolvedDurationHours: number;
   availableUnits: ReservationCategoryUnitOption[];
   requiresConcreteUnit: boolean;
   isAvailabilityLoading: boolean;

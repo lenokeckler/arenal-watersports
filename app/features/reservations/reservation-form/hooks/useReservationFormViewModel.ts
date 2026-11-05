@@ -47,6 +47,7 @@ export const useReservationFormViewModel = (
     ...state.durationHandlers,
     ...equipment,
     customCombo,
+    resolvedDurationHours: resources.resolvedDurationHours,
     handleBack: router.back,
     handleSubmit,
     guideLoadResult: guideLoad.result,

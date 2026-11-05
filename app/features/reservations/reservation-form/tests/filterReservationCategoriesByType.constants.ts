@@ -33,6 +33,7 @@ export const EXPECTED_TOUR_CATEGORY_IDS = [
 ];
 export const EXPECTED_COMBO_CATEGORY_IDS = [
   "category-rental",
+  "category-guide-only",
 ];
 
 export const TOUR_RESERVATION_TYPE = RESERVATION_TYPE.TOUR;

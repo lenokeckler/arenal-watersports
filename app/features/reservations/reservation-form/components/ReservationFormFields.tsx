@@ -9,48 +9,62 @@ import CustomComboEquipmentSelection from "./CustomComboEquipmentSelection";
 import CustomComboPricingSummary from "./CustomComboPricingSummary";
 import CustomComboNoGuideState from "./CustomComboNoGuideState";
 
-const ReservationFormFields = ({
+const CustomComboFields = ({
   categories,
   viewModel,
 }: ReservationFormFieldsProps): React.JSX.Element => (
-  <div className={RESERVATION_FORM_GRID_CLASS}>
-    <ReservationTypeField viewModel={viewModel} />
-    {viewModel.values.reservationType ===
-    RESERVATION_TYPE.COMBO ? (
-      <>
-        <CustomComboEquipmentSelection
-          categories={categories}
-          viewModel={viewModel.customCombo}
-        />
-        {viewModel.customCombo.hasGuideOnlyItem ? (
-          <ReservationGuideAssignmentField
-            viewModel={viewModel}
-          />
-        ) : (
-          <CustomComboNoGuideState />
-        )}
-        <CustomComboPricingSummary
-          viewModel={viewModel.customCombo}
-        />
-      </>
-    ) : null}
-    {viewModel.values.reservationType ===
-    RESERVATION_TYPE.TOUR ? (
+  <>
+    <CustomComboEquipmentSelection
+      categories={categories}
+      date={viewModel.values.date}
+      durationHours={viewModel.resolvedDurationHours}
+      time={viewModel.values.time}
+      viewModel={viewModel.customCombo}
+    />
+    {viewModel.customCombo.hasGuideOnlyItem ? (
       <ReservationGuideAssignmentField
         viewModel={viewModel}
       />
-    ) : null}
-    <ReservationCustomerScheduleFields
-      viewModel={viewModel}
+    ) : (
+      <CustomComboNoGuideState />
+    )}
+    <CustomComboPricingSummary
+      errors={viewModel.errors}
+      viewModel={viewModel.customCombo}
     />
-    {viewModel.values.reservationType ===
-    RESERVATION_TYPE.COMBO ? null : (
-      <ReservationEquipmentFields
-        categories={categories}
+  </>
+);
+
+const ReservationFormFields = ({
+  categories,
+  viewModel,
+}: ReservationFormFieldsProps): React.JSX.Element => {
+  const reservationType = viewModel.values.reservationType;
+  return (
+    <div className={RESERVATION_FORM_GRID_CLASS}>
+      <ReservationTypeField viewModel={viewModel} />
+      {reservationType === RESERVATION_TYPE.COMBO ? (
+        <CustomComboFields
+          categories={categories}
+          viewModel={viewModel}
+        />
+      ) : null}
+      {reservationType === RESERVATION_TYPE.TOUR ? (
+        <ReservationGuideAssignmentField
+          viewModel={viewModel}
+        />
+      ) : null}
+      <ReservationCustomerScheduleFields
         viewModel={viewModel}
       />
-    )}
-  </div>
-);
+      {reservationType === RESERVATION_TYPE.COMBO ? null : (
+        <ReservationEquipmentFields
+          categories={categories}
+          viewModel={viewModel}
+        />
+      )}
+    </div>
+  );
+};
 
 export default ReservationFormFields;

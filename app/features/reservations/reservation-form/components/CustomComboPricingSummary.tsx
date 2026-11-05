@@ -14,6 +14,7 @@ import CustomComboAgreedAmounts from "./CustomComboAgreedAmounts";
 import CustomComboPriceTotals from "./CustomComboPriceTotals";
 
 const CustomComboPricingSummary = ({
+  errors,
   viewModel,
 }: CustomComboPricingSummaryProps): React.JSX.Element => {
   const statusMessage = getCustomComboPricingStatusMessage(
@@ -49,7 +50,10 @@ const CustomComboPricingSummary = ({
       <Text className={CUSTOM_COMBO_PRICING_STATUS_CLASS}>
         {CUSTOM_COMBO_FORM_COPY.AGREED_AMOUNT_HINT}
       </Text>
-      <CustomComboAgreedAmounts viewModel={viewModel} />
+      <CustomComboAgreedAmounts
+        errors={errors}
+        viewModel={viewModel}
+      />
     </Section>
   );
 };

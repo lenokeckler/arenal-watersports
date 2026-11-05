@@ -1,8 +1,9 @@
 export const CUSTOM_COMBO_FORM_COPY = {
   TITLE: "Arme el combo",
   DESCRIPTION:
-    "Elija las categorías y cantidades que necesita para esta solicitud.",
+    "Elija las categorías, cantidades y unidades que necesita para esta solicitud.",
   ADD: "Agregar",
+  REMOVE_ITEM: "Quitar del combo",
   DECREASE: "Disminuir cantidad de",
   INCREASE: "Aumentar cantidad de",
   NO_CATEGORIES:
@@ -36,5 +37,6 @@ export const CUSTOM_COMBO_FORM_CURRENCY = {
 
 export const CUSTOM_COMBO_FORM_INPUT_ID = {
   CRC_AMOUNT: "custom-combo-crc-amount",
+  UNIT_PREFIX: "custom-combo-unit-",
   USD_AMOUNT: "custom-combo-usd-amount",
 } as const;
