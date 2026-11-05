@@ -5,7 +5,7 @@ declare
   locked_unit_category_id uuid;
 begin
   if auth.uid() is null then raise exception 'Authenticated worker is required'; end if;
-  if not (has_area('reservas') or is_admin()) then raise exception 'Reservations access is required'; end if;
+  if not has_area('reservas') then raise exception 'Reservations access is required'; end if;
   select unit.category_id into locked_unit_category_id from equipment_units as unit where unit.id = p_unit_id;
   if not found then return null; end if;
   perform category.id from equipment_categories as category
