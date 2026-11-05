@@ -2432,6 +2432,10 @@ export type Database = {
           usable: number;
         }[];
       };
+      create_custom_combo_reservation: {
+        Args: { p_payload: Json };
+        Returns: string;
+      };
       create_rental_reservation: {
         Args: { p_payload: Json };
         Returns: string;
