@@ -9,7 +9,7 @@ declare
   selection_count integer;
   duplicate_count integer;
 begin
-  if auth.uid() is null or not (has_area('reservas') or is_admin()) then
+  if auth.uid() is null or not has_area('reservas') then
     raise exception 'Reservation access is required';
   end if;
   if jsonb_typeof(p_items) is distinct from 'array'
