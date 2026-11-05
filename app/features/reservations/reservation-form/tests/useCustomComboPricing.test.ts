@@ -24,7 +24,7 @@ describe("useCustomComboPricing", () => {
 
   it("skips empty selections and sends the exact input for a nullable quote", async () => {
     const { result, rerender } = renderHook(
-      ({ input }) => useCustomComboPricing(input),
+      ({ input }) => useCustomComboPricing(input, true),
       {
         initialProps: {
           input: CUSTOM_COMBO_PRICING_TEST.EMPTY_INPUT,
@@ -89,7 +89,7 @@ describe("useCustomComboPricing", () => {
         pricing: CUSTOM_COMBO_PRICING_TEST.PRICING,
       });
     const { result, rerender } = renderHook(
-      ({ input }) => useCustomComboPricing(input),
+      ({ input }) => useCustomComboPricing(input, true),
       {
         initialProps: {
           input: CUSTOM_COMBO_PRICING_TEST.FIRST_INPUT,

@@ -24,12 +24,15 @@ export const useReservationFormViewModel = (
       categories
     );
   const { state, eligibility } = resources;
-  const customCombo = useCustomComboForm(
-    eligibility.categories,
-    resources.resolvedDurationHours,
-    state.fields.handleGuideIdsChange,
-    state.submission.clearFieldError
-  );
+  const customCombo = useCustomComboForm({
+    categories: eligibility.categories,
+    clearFieldError: state.submission.clearFieldError,
+    durationHours: resources.resolvedDurationHours,
+    onGuideIdsChange: state.fields.handleGuideIdsChange,
+    reservationType:
+      state.fields.values.reservationType ??
+      RESERVATION_TYPE.RENTAL,
+  });
   const handleSubmit = createReservationFormSubmitHandler({
     ...resources.equipment,
     customCombo: {

@@ -20,6 +20,6 @@ export const RESERVATION_FORM_COPY = {
   [RESERVATION_FORM_FIELD.UNIT_ID]:
     "Seleccione una unidad disponible para la lancha.",
   [RESERVATION_FORM_FIELD.ITEMS]:
-    "Seleccione al menos un equipo con una cantidad vÃ¡lida.",
+    "Seleccione al menos un equipo con una cantidad válida.",
   [RESERVATION_FORM_FIELD.TIME]: "Ingrese una hora válida.",
 } as const;
