@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 import { CUSTOM_COMBO_RESERVATION_FIELD } from "../models/CustomComboReservationField.constants";
 import { hasValidCustomComboEquipmentSelections } from "../utils/hasValidCustomComboEquipmentSelections";
 import { validateCustomComboReservationInput } from "../utils/validateCustomComboReservationInput";
@@ -51,6 +52,35 @@ describe("validateCustomComboReservationInput", () => {
     expect(
       hasValidCustomComboEquipmentSelections(
         invalidQuantitySelections
+      )
+    ).toBe(false);
+  });
+
+  it("rejects repeated unit assignments and incomplete unit selections", () => {
+    const unitSelection = {
+      kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
+      categoryId: "aaaaaaaa-0000-0000-0000-000000000003",
+      unitId: "aaaaaaaa-0000-0000-0000-000000000301",
+    } as const;
+    const duplicateUnitSelections = [
+      unitSelection,
+      {
+        ...unitSelection,
+        categoryId: "aaaaaaaa-0000-0000-0000-000000000004",
+      },
+    ];
+    const incompleteUnitSelection = [
+      { ...unitSelection, unitId: " " },
+    ];
+
+    expect(
+      hasValidCustomComboEquipmentSelections(
+        duplicateUnitSelections
+      )
+    ).toBe(false);
+    expect(
+      hasValidCustomComboEquipmentSelections(
+        incompleteUnitSelection
       )
     ).toBe(false);
   });

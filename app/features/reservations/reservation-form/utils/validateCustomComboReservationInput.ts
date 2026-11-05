@@ -7,6 +7,7 @@ import type { CustomComboReservationInput } from "../models/CustomComboReservati
 import type { CustomComboReservationValidation } from "../models/CustomComboReservationValidation.interface";
 import type { CustomComboReservationField } from "../models/CustomComboReservationField.constants";
 import type { ValidatedCustomComboReservationInput } from "../models/ValidatedCustomComboReservationInput.interface";
+import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 import {
   isValidReservationDate,
   isValidReservationTime,
@@ -28,10 +29,19 @@ const buildValidatedInput = (
     input.durationHours *
     RESERVATION_SCHEDULE.MINUTES_PER_HOUR,
   guideIds: input.guideIds ?? [],
-  items: input.items.map((selection) => ({
-    categoryId: selection.categoryId.trim(),
-    quantity: selection.quantity,
-  })),
+  items: input.items.map((selection) =>
+    selection.kind ===
+    RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT
+      ? {
+          ...selection,
+          categoryId: selection.categoryId.trim(),
+          unitId: selection.unitId.trim(),
+        }
+      : {
+          ...selection,
+          categoryId: selection.categoryId.trim(),
+        }
+  ),
   peopleCount: input.peopleCount,
   time: input.time,
 });
