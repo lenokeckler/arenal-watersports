@@ -1,5 +1,6 @@
 import type { CustomComboReservationInput } from "../models/CustomComboReservationInput.interface";
 import { CUSTOM_COMBO_PRICING_MAX_DURATION_MINUTES } from "../constants/CustomComboPricing.constants";
+import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 
 export const VALID_CUSTOM_COMBO_RESERVATION_INPUT: CustomComboReservationInput =
   {
@@ -11,10 +12,12 @@ export const VALID_CUSTOM_COMBO_RESERVATION_INPUT: CustomComboReservationInput =
     guideIds: ["e2500000-0000-4000-8000-000000000301"],
     items: [
       {
+        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
         categoryId: "aaaaaaaa-0000-0000-0000-000000000001",
         quantity: 2,
       },
       {
+        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
         categoryId: "aaaaaaaa-0000-0000-0000-000000000002",
         quantity: 1,
       },
