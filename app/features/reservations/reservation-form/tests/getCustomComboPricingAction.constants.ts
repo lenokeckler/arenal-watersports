@@ -18,6 +18,15 @@ export const CUSTOM_COMBO_PRICING_ACTION_TEST = {
       },
     ],
   } satisfies CustomComboPricingInput,
+  INVALID_DURATION_INPUT: {
+    durationHours: 0,
+    items: [
+      {
+        categoryId: "aaaaaaaa-0000-0000-0000-000000000001",
+        quantity: 1,
+      },
+    ],
+  },
   INVALID_INPUT: {
     durationHours: 1.5,
     items: [
