@@ -1,3 +1,5 @@
+import { LOADING_COPY } from "@/app/constants/strings/LoadingCopy.constants";
+
 export const SPINNER_SIZE = {
   SMALL: "sm",
   MEDIUM: "md",
@@ -5,7 +7,7 @@ export const SPINNER_SIZE = {
 } as const;
 
 export const SPINNER_ARIA = {
-  LABEL: "Loading",
-  SCREEN_READER_TEXT: "Loading...",
+  LABEL: LOADING_COPY.LABEL,
+  SCREEN_READER_TEXT: LOADING_COPY.TEXT,
   ROLE: "status",
 } as const;

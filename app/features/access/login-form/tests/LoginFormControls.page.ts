@@ -4,8 +4,6 @@ import { ARIA_ROLE } from "@/app/constants";
 import { LOGIN_FORM_COPY } from "../constants/LoginFormCopy.constants";
 
 export const createLoginFormControlsPage = () => {
-  const queryBanner = () =>
-    screen.queryByRole(ARIA_ROLE.ALERT);
   const getSubmit = (label: string) =>
     screen.getByRole(ARIA_ROLE.BUTTON, {
       name: new RegExp(label),
@@ -24,6 +22,5 @@ export const createLoginFormControlsPage = () => {
     getLoginIcon,
     getPendingSubmit,
     getProgressIcon,
-    queryBanner,
   };
 };

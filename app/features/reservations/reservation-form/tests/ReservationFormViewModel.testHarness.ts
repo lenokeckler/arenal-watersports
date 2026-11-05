@@ -1,10 +1,9 @@
 import { vi } from "vitest";
 import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
-import type { ReservationFormInput } from "../models/ReservationFormInput.interface";
 
 export const viewModelHarness = (() => {
-  const values: ReservationFormInput = {
+  const values = {
     categoryId: "category-1",
     customerName: "Reserva del muelle",
     date: "2030-04-12",
@@ -22,7 +21,6 @@ export const viewModelHarness = (() => {
   const handleUnitChange = vi.fn((value: string) => {
     values.unitId = value;
   });
-  const handleReservationTypeChange = vi.fn();
   const eligibility: {
     current: {
       categories: ReservationCategoryOption[];
@@ -44,8 +42,8 @@ export const viewModelHarness = (() => {
     current: {
       availableUnits: [{ code: "LANCHA-1", id: "unit-1" }],
       hasAvailabilityError: false,
-      isAvailabilityLoading: false,
       isAvailabilityResolved: true,
+      isAvailabilityLoading: false,
       requiresConcreteUnit: true,
     },
   };
@@ -54,7 +52,6 @@ export const viewModelHarness = (() => {
     eligibility,
     equipment,
     handleCategoryChange,
-    handleReservationTypeChange,
     handleUnitChange,
     values,
   };
@@ -74,8 +71,6 @@ vi.mock("../hooks/useReservationFormState", () => ({
     fields: {
       handleCategoryChange:
         viewModelHarness.handleCategoryChange,
-      handleReservationTypeChange:
-        viewModelHarness.handleReservationTypeChange,
       handleUnitChange: viewModelHarness.handleUnitChange,
       values: viewModelHarness.values,
     },
@@ -104,12 +99,11 @@ vi.mock(
   () => ({
     useReservationEquipmentViewModel: () => ({
       ...viewModelHarness.equipment.current,
-      categories:
-        viewModelHarness.eligibility.current.categories,
       categoryConflictWarning: {
         hasError: false,
         isLoading: false,
         items: [],
+        retry: vi.fn(),
       },
     }),
   })
@@ -130,19 +124,16 @@ export const resetViewModelHarness = (): void => {
   viewModelHarness.values.durationHours = 2;
   viewModelHarness.values.peopleCount = 4;
   viewModelHarness.values.quantity = 1;
-  viewModelHarness.values.reservationType =
-    RESERVATION_TYPE.RENTAL;
   viewModelHarness.values.time = "09:30";
   viewModelHarness.values.unitId = "unit-1";
   viewModelHarness.handleCategoryChange.mockClear();
   viewModelHarness.handleUnitChange.mockClear();
-  viewModelHarness.handleReservationTypeChange.mockClear();
   viewModelHarness.eligibility.current = {
     categories: [
       {
         id: "category-1",
-        isGuideOnly: true,
         isInterchangeable: false,
+        isGuideOnly: false,
         name: "Lancha",
       },
     ],
@@ -154,8 +145,8 @@ export const resetViewModelHarness = (): void => {
   viewModelHarness.equipment.current = {
     availableUnits: [{ code: "LANCHA-1", id: "unit-1" }],
     hasAvailabilityError: false,
-    isAvailabilityLoading: false,
     isAvailabilityResolved: true,
+    isAvailabilityLoading: false,
     requiresConcreteUnit: true,
   };
 };

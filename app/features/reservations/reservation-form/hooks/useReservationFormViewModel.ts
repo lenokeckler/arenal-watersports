@@ -1,52 +1,175 @@
 "use client";
 
-import { STRING } from "@/app/constants";
-import { useRouter } from "next/navigation";
 import type { ReservationFormViewModel } from "../models/ReservationFormViewModel.interface";
-import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
-import { createReservationFormSubmitHandler } from "../utils/createReservationFormSubmitHandler";
-import { useReservationFormState } from "./useReservationFormState";
-import { useReservationFormEquipmentViewModel } from "./useReservationFormEquipmentViewModel";
+import { useRouter } from "next/navigation";
+import { useReservationFormFields } from "./useReservationFormFields";
+import { useReservationFormSubmission } from "./useReservationFormSubmission";
+import { useReservationDuration } from "./useReservationDuration";
+import { useReservationEquipmentViewModel } from "./useReservationEquipmentViewModel";
+import { STRING } from "@/app/constants";
+import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
+import type { ReservationFormViewModelOptions } from "../models/ReservationFormViewModelOptions.interface";
+import { useReservationEquipmentEligibility } from "./useReservationEquipmentEligibility";
+import { useReservationFormEquipmentSelection } from "./useReservationFormEquipmentSelection";
+import { isReservationQuantityUnavailable } from "../utils/isReservationQuantityUnavailable";
+import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
+import { filterReservationCategoriesByType } from "../utils/filterReservationCategoriesByType";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 
 export const useReservationFormViewModel = (
-  initialDate: string,
-  categories: ReservationCategoryOption[]
+  options: ReservationFormViewModelOptions
 ): ReservationFormViewModel => {
-  const router = useRouter();
-  const state = useReservationFormState(
-    initialDate,
-    STRING.Empty,
-    categories
-  );
-  const resolvedDurationHours =
-    state.duration.resolveDurationHours(
-      state.fields.values.durationHours
-    );
-  const equipment = useReservationFormEquipmentViewModel(
+  const {
     categories,
-    state.fields,
-    resolvedDurationHours
+    initialCategoryId,
+    initialDate,
+    unitCategories,
+  } = options;
+  const router = useRouter();
+  const submission = useReservationFormSubmission();
+  const eligibility =
+    useReservationEquipmentEligibility(categories);
+  const eligibleCategories = eligibility.categories.map(
+    (category) =>
+      unitCategories.some(
+        (unitCategory) => unitCategory.id === category.id
+      )
+        ? { ...category, isInterchangeable: false }
+        : category
   );
-  const handleSubmit = createReservationFormSubmitHandler({
-    ...equipment,
-    resolvedDurationHours,
-    setFieldError: state.submission.setFieldError,
-    submitReservation: state.submission.submitReservation,
-    values: state.fields.values,
+  const fields = useReservationFormFields(
+    initialDate,
+    initialCategoryId,
+    submission.clearFieldError,
+    eligibleCategories
+  );
+  const categoriesForReservationType =
+    filterReservationCategoriesByType(
+      eligibleCategories,
+      fields.values.reservationType ??
+        RESERVATION_TYPE.RENTAL
+    );
+  const duration = useReservationDuration(
+    fields.handleDurationChange,
+    submission.clearFieldError
+  );
+  const equipment = useReservationEquipmentViewModel(
+    categoriesForReservationType,
+    fields.values,
+    duration.resolveDurationHours(
+      fields.values.durationHours
+    ),
+    eligibility.refreshKey
+  );
+  const isQuantityUnavailable =
+    isReservationQuantityUnavailable(
+      categoriesForReservationType.find(
+        (category) =>
+          category.id === fields.values.categoryId
+      )?.isInterchangeable === true,
+      fields.values.quantity,
+      equipment.categoryAvailability
+    );
+  const selection = useReservationFormEquipmentSelection({
+    availableUnits: equipment.availableUnits,
+    categories: categoriesForReservationType,
+    isAvailabilityResolved:
+      equipment.isAvailabilityResolved,
+    isEligibilityError: eligibility.hasError,
+    isEligibilityLoading: eligibility.isLoading,
+    selectedCategoryId: fields.values.categoryId,
+    selectedUnitId: fields.values.unitId,
+    onCategoryChange: fields.handleCategoryChange,
+    onUnitChange: fields.handleUnitChange,
   });
-
+  const isSubmitDisabled =
+    submission.isPending ||
+    submission.isSubmitted ||
+    categoriesForReservationType.length === 0 ||
+    (equipment.requiresConcreteUnit &&
+      (equipment.isAvailabilityLoading ||
+        equipment.hasAvailabilityError)) ||
+    isQuantityUnavailable;
+  const handleSubmit: ReservationFormViewModel["handleSubmit"] =
+    (event) => {
+      event.preventDefault();
+      if (
+        equipment.requiresConcreteUnit &&
+        fields.values.unitId === STRING.Empty
+      ) {
+        submission.applyResult({
+          ok: false,
+          errors: {
+            [RESERVATION_FORM_FIELD.UNIT_ID]:
+              RESERVATION_FORM_COPY[
+                RESERVATION_FORM_FIELD.UNIT_ID
+              ],
+          },
+        });
+        submission.requestErrorFocus();
+        return;
+      }
+      if (isQuantityUnavailable) {
+        return;
+      }
+      submission.submitReservation(
+        {
+          ...fields.values,
+          durationHours: duration.resolveDurationHours(
+            fields.values.durationHours
+          ),
+        },
+        () => {
+          fields.handleUnitChange(STRING.Empty);
+          equipment.retryUnitAvailability();
+        },
+        () => {
+          fields.reset();
+          duration.reset();
+          equipment.retryUnitAvailability();
+        }
+      );
+    };
   return {
-    ...state.fields,
+    categories: categoriesForReservationType,
+    ...fields,
     handleReservationTypeChange: (value) =>
-      state.fields.handleReservationTypeChange(
+      fields.handleReservationTypeChange(
         value,
-        equipment.categories
+        eligibleCategories
       ),
-    ...state.submission,
-    ...state.duration,
-    ...state.durationHandlers,
-    handleBack: router.back,
-    handleSubmit,
+    ...submission,
+    errors: isQuantityUnavailable
+      ? {
+          ...submission.errors,
+          [RESERVATION_FORM_FIELD.QUANTITY]:
+            RESERVATION_FORM_UI_COPY.QUANTITY_UNAVAILABLE,
+        }
+      : submission.errors,
     ...equipment,
+    isEquipmentEligibilityLoading: eligibility.isLoading,
+    hasEquipmentEligibilityError: eligibility.hasError,
+    hasEquipmentSelectionChanged: selection.hasChanged,
+    handleRetryEquipmentEligibility: eligibility.retry,
+    handleCategoryChange: selection.handleCategoryChange,
+    handleUnitChange: selection.handleUnitChange,
+    isSubmitDisabled,
+    customDurationDraft: duration.customDurationDraft,
+    handleCustomDurationSelection: () => {
+      duration.selectCustomDuration();
+      fields.handleUnitChange(STRING.Empty);
+    },
+    handleCustomDurationChange: (value: string) => {
+      duration.updateCustomDurationDraft(value);
+      fields.handleUnitChange(STRING.Empty);
+    },
+    handleDurationChange: (value: number) => {
+      duration.selectPreset(value);
+      fields.handleUnitChange(STRING.Empty);
+    },
+    handleBack: router.back,
+    isCustomDuration: duration.isCustomDuration,
+    handleSubmit,
   };
 };

@@ -30,24 +30,53 @@ vi.mock(
 
 export const reservationRouterBack = routerBack;
 
-export const renderReservationForm = () => {
+export const renderReservationForm = (
+  hasCategories = true,
+  hasUnitCategory = false,
+  hasGuideOnlyCategory = false
+) => {
   routerBack.mockClear();
   const { container } = render(
     <ReservationFormView
-      categories={[
-        {
-          id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
-          isGuideOnly: false,
-          isInterchangeable: true,
-          name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
-        },
-        {
-          id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
-          isGuideOnly: true,
-          isInterchangeable: false,
-          name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
-        },
-      ]}
+      categories={
+        hasCategories
+          ? [
+              {
+                id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
+                isInterchangeable: true,
+                isGuideOnly: false,
+                name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
+              },
+              {
+                id: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_ID,
+                isInterchangeable: true,
+                isGuideOnly: hasGuideOnlyCategory,
+                name: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME,
+              },
+              ...(hasUnitCategory
+                ? [
+                    {
+                      id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
+                      isInterchangeable: true,
+                      isGuideOnly: false,
+                      name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
+                    },
+                  ]
+                : []),
+            ]
+          : []
+      }
+      unitCategories={
+        hasUnitCategory
+          ? [
+              {
+                id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
+                isGuideOnly: false,
+                name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
+              },
+            ]
+          : []
+      }
       initialDate={RESERVATION_FORM_VIEW_TEST.DATE}
     />
   );
