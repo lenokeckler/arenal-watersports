@@ -68,7 +68,7 @@ test.describe("Password recovery reset", () => {
       E2E_RECOVERY_PASSWORDS.NEW
     );
 
-    await expect(page).toHaveURL(PATHS.BOARD);
+    await expect(page).toHaveURL(PATHS.HOME);
   });
 
   test("refuses the old password", async ({
