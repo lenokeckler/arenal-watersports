@@ -1,6 +1,8 @@
 import userEvent, {
   type UserEvent,
 } from "@testing-library/user-event";
+import { createReservationTypeFieldPage } from "./ReservationTypeField.page";
+import { createReservationFormCustomerPage } from "./ReservationFormCustomer.page";
 import { createFormQueries } from "./ReservationFormView.queries";
 
 const createEquipmentActions = (
@@ -36,11 +38,6 @@ const createReservationActions = (
   submit: async (): Promise<void> => {
     await user.click(queries.getSubmitButton());
   },
-  fillCustomerName: async (
-    value: string
-  ): Promise<void> => {
-    await user.type(queries.getCustomerNameInput(), value);
-  },
   typeCustomDuration: async (
     value: string
   ): Promise<void> => {
@@ -52,13 +49,6 @@ const createReservationActions = (
     }
     await user.type(input, value);
   },
-  selectReservationType: async (
-    label: string
-  ): Promise<void> => {
-    await user.click(
-      queries.getReservationTypeRadio(label)
-    );
-  },
 });
 
 export const createReservationFormViewPage = (
@@ -68,6 +58,8 @@ export const createReservationFormViewPage = (
   const queries = createFormQueries(container);
   return {
     ...queries,
+    ...createReservationTypeFieldPage(),
+    ...createReservationFormCustomerPage(),
     ...createEquipmentActions(user, queries),
     ...createReservationActions(user, queries),
   };

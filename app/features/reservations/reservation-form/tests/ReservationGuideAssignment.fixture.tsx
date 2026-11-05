@@ -26,7 +26,10 @@ export const renderReservationGuideForm = (
     kind: RESERVATION_GUIDE_LOAD_RESULT_KIND.SUCCESS,
   }
 ) => {
-  const page = renderReservationForm(guideLoadResult);
+  const page = renderReservationForm(
+    undefined,
+    guideLoadResult
+  );
   return {
     ...page,
     ...createReservationGuideAssignmentPage(document.body),
