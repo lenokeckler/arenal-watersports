@@ -115,6 +115,8 @@ Unit 1 implements the atomic persistence and data-integrity boundary for both co
 - Explain each choice using its story description and keep rental as the initial selection.
 - Show categories marked `guide_only` only when `tour` is selected.
 - Clear a selected guide-only category and its concrete unit when switching from `tour` to `rental` or `combo`.
+- Explain when changing reservation type clears a previously selected guide-only category and concrete unit.
+- Describe the empty category state without instructing the worker to select a reservation type that is already selected.
 - Submit the selected reservation type through the existing reservation action.
 - This US-RES-08 unit does not implement combo composition or pricing, or assignment of a specific guide; those behaviors belong to US-RES-09/10 and US-RES-12 respectively.
 
