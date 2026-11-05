@@ -1,7 +1,7 @@
 import type { ReservationFormInput } from "./ReservationFormInput.interface";
 import type { ReservationFormValueField } from "./ReservationFormValueField.type";
 
-export type ReservationFormValueUpdater = <
+export type UpdateReservationFormValue = <
   Field extends ReservationFormValueField,
 >(
   field: Field,

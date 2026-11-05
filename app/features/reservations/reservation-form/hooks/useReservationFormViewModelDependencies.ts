@@ -1,7 +1,6 @@
 import { useRouter } from "next/navigation";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 import { useReservationFormResources } from "./useReservationFormResources";
-import { createReservationFormHandlers } from "./createReservationFormHandlers";
 
 export const useReservationFormViewModelDependencies = (
   initialDate: string,
@@ -12,6 +11,5 @@ export const useReservationFormViewModelDependencies = (
     initialDate,
     categories
   );
-  const handlers = createReservationFormHandlers(resources);
-  return { handlers, resources, router };
+  return { resources, router };
 };

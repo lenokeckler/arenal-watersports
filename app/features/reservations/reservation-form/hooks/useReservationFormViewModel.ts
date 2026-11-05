@@ -4,68 +4,51 @@ import type { ReservationGuideAssignmentViewModel } from "../models/ReservationG
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 import type { ReservationGuideLoadResult } from "../models/ReservationGuideLoadResult.type";
 import { EMPTY_RESERVATION_GUIDE_LOAD_RESULT } from "../constants/ReservationGuideLoad.constants";
-import { filterReservationCategoriesByType } from "../utils/filterReservationCategoriesByType";
 import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import { useReservationFormViewModelDependencies } from "./useReservationFormViewModelDependencies";
-import { useReservationGuideLoadViewModel } from "./useReservationGuideLoadViewModel";
-import { useCustomComboForm } from "./useCustomComboForm";
-import { createReservationFormSubmitHandler } from "../utils/createReservationFormSubmitHandler";
+import { useReservationFormCustomComboViewModel } from "./useReservationFormCustomComboViewModel";
+import { useReservationGuideAssignmentState } from "./useReservationGuideAssignmentState";
 
 export const useReservationFormViewModel = (
   initialDate: string,
   categories: ReservationCategoryOption[],
   guideLoadResult: ReservationGuideLoadResult = EMPTY_RESERVATION_GUIDE_LOAD_RESULT
 ): ReservationGuideAssignmentViewModel => {
-  const guideLoad =
-    useReservationGuideLoadViewModel(guideLoadResult);
-  const { handlers, resources, router } =
+  const { resources, router } =
     useReservationFormViewModelDependencies(
       initialDate,
       categories
     );
-  const { state, eligibility } = resources;
-  const customCombo = useCustomComboForm(
-    eligibility.categories,
-    resources.resolvedDurationHours,
-    state.fields.handleGuideIdsChange,
-    state.submission.clearFieldError
+  const { state, equipment } = resources;
+  const guideLoad = useReservationGuideAssignmentState(
+    state.fields.reconcileGuideSelection,
+    guideLoadResult
   );
-  const handleSubmit = createReservationFormSubmitHandler({
-    ...resources.equipment,
-    customCombo: {
-      draft: customCombo.draft,
-      hasGuideOnlyItem: customCombo.hasGuideOnlyItem,
-    },
-    resolvedDurationHours: resources.resolvedDurationHours,
-    setFieldError: state.submission.setFieldError,
-    submitCustomComboReservation:
-      state.submission.submitCustomComboReservation,
-    submitReservation: state.submission.submitReservation,
-    values: state.fields.values,
-  });
+  const { customCombo, handleSubmit } =
+    useReservationFormCustomComboViewModel({
+      categories: equipment.categories,
+      clearFieldError: state.submission.clearFieldError,
+      durationHours: resources.resolvedDurationHours,
+      onGuideIdsChange: state.fields.handleGuideIdsChange,
+      reservationType:
+        state.fields.values.reservationType ??
+        RESERVATION_TYPE.RENTAL,
+      requiresConcreteUnit: equipment.requiresConcreteUnit,
+      setFieldError: state.submission.setFieldError,
+      submitCustomComboReservation:
+        state.submission.submitCustomComboReservation,
+      submitReservation: state.submission.submitReservation,
+      values: state.fields.values,
+    });
   return {
-    categories: filterReservationCategoriesByType(
-      eligibility.categories,
-      state.fields.values.reservationType ??
-        RESERVATION_TYPE.RENTAL
-    ),
     ...state.fields,
     ...state.submission,
     ...state.duration,
-    ...resources.equipment,
-    customCombo,
     ...state.durationHandlers,
-    ...handlers,
+    ...equipment,
+    customCombo,
     handleBack: router.back,
-    handleReservationTypeChange:
-      state.fields.handleReservationTypeChange,
-    handleGuideToggle: state.fields.handleGuideToggle,
-    handleRetryEquipmentEligibility: eligibility.retry,
     handleSubmit,
-    hasEquipmentEligibilityError: eligibility.hasError,
-    hasEquipmentSelectionChanged:
-      resources.hasEquipmentSelectionChanged,
-    isEquipmentEligibilityLoading: eligibility.isLoading,
     guideLoadResult: guideLoad.result,
     isGuideLoading: guideLoad.isLoading,
     handleRetryGuideLoading: guideLoad.retry,

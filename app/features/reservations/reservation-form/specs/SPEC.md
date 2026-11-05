@@ -10,7 +10,7 @@ Allow a reservations worker to record a reservation with its type, customer name
 - Unit 2: form screen, local form state, equipment commitment selection, and interactive validation presentation.
 - Persist only the customer name from customer identity/contact information.
 - Persist the creator from the authenticated session.
-- For rental and tour reservations, persist one equipment commitment: an active, reservable category with positive quantity or one concrete unit from an active, reservable, non-interchangeable category. Custom combos persist one category and quantity commitment per selected equipment item.
+- For rental and tour reservations, persist one equipment commitment: an active, reservable category with positive quantity or one concrete unit from an active, reservable, non-interchangeable category. Custom combos persist one commitment per distinct selected category: category and quantity for interchangeable equipment, or one concrete unit for non-interchangeable equipment such as a Lancha.
 - Default new forms to `rental` and persist the selected `rental`, `tour`, or `combo` type.
 - Interpret civil date and time in `America/Costa_Rica` regardless of server timezone.
 
@@ -25,10 +25,10 @@ Allow a reservations worker to record a reservation with its type, customer name
 
 ## Requirements
 
-- Validate a non-empty customer name, positive whole person count, valid civil date and time, and positive duration convertible to whole minutes. Rental and tour reservations require one selected category and positive whole quantity; custom combos require distinct selected categories and positive whole quantity per item.
+- Validate a non-empty customer name, positive whole person count, valid civil date and time, and positive duration convertible to whole minutes. Rental and tour reservations require one selected category and positive whole quantity; custom combos require distinct selected categories with a positive whole quantity for interchangeable equipment or one concrete unit for non-interchangeable equipment.
 - Accept custom positive durations only when their value converts to a whole number of minutes; accepted custom precision beyond that constraint remains a product ambiguity.
 - Convert duration hours to integer minutes without rounding.
-- Persist each reservation and its equipment commitments in one invoker-security database transaction. Rental and tour reservations have one commitment; custom combos have one category/quantity commitment per selected item and never mix concrete units into the combo.
+- Persist each reservation and its equipment commitments in one invoker-security database transaction. Rental and tour reservations have one commitment; custom combos can mix category/quantity items and unit-only items, with exactly one commitment shape per selected category.
 - Derive `created_by` and `updated_by` from `auth.uid()` in the database function.
 - Determine physical eligibility from tracking mode: unit-tracked categories require an available unit, and quantity-tracked categories require positive available stock. Determine commitment shape from interchangeability: interchangeable categories use a quantity commitment, while non-interchangeable categories use a concrete unit.
 - Show active, reservable interchangeable categories with a positive quantity field; do not ask Reservations to select an exact machine for these categories.
@@ -42,8 +42,8 @@ Allow a reservations worker to record a reservation with its type, customer name
 ## Edge cases & errors
 
 - Invalid dates, times, empty names, non-positive people/quantity/duration, and non-whole-minute durations are rejected before persistence.
-- Inactive, non-reservable, missing, or non-interchangeable categories are rejected for rental and tour category commitments. Custom combo items use active, reservable categories and quantities.
-- Missing, unavailable, or interchangeable-category units are rejected for unit commitments; category/quantity fields cannot be combined with a concrete unit.
+- Inactive, non-reservable, or missing categories are rejected for all commitment types. Custom combo items use category/quantity for interchangeable equipment and a concrete unit for non-interchangeable equipment.
+- Missing, unavailable, or interchangeable-category units are rejected for unit commitments; RPC unit items contain only `unit_id`, without category or quantity fields.
 - A non-interchangeable category without an available unit cannot be submitted from the form.
 - A concrete unit with an overlapping scheduled or dispatched reservation is rejected.
 - Missing authenticated identity is rejected.
@@ -52,8 +52,8 @@ Allow a reservations worker to record a reservation with its type, customer name
 
 ## Constraints
 
-- Each rental or tour reservation created by the standard form has either a category plus quantity item or one concrete unit item, never both. A custom combo has one category plus quantity item for each selected equipment and no concrete-unit items.
-- For standalone rental and tour reservations, the Lancha exception is a unit commitment at reservation time; interchangeable equipment remains quantity-committed for Operations to select during dispatch. Combo items remain category/quantity commitments.
+- Each rental or tour reservation created by the standard form has either a category plus quantity item or one concrete unit item, never both. Each custom combo component is either a category/quantity item or a unit-only item; a Lancha's concrete unit is selected during reservation.
+- For standalone rental and tour reservations, the Lancha exception is a unit commitment at reservation time; interchangeable equipment remains quantity-committed for Operations to select during dispatch. Custom combos also use a concrete unit for each non-interchangeable component while preserving their package-specific composition and pricing rules.
 - Criterion 5 cannot be fulfilled until calendar PR #101 is integrated.
 - The Unit 2 equipment selection stays within this form and follows existing Stitch styling and responsive form conventions.
 - Skills: code-standards, structure-standards, component-architecture, constants-standards, stack-rules, eslint-standards, prettier-standards, unit-testing-standards, pull-request-workflow.
@@ -115,6 +115,8 @@ Unit 1 implements the atomic persistence and data-integrity boundary for both co
 - Explain each choice using its story description and keep rental as the initial selection.
 - Show categories marked `guide_only` only when `tour` is selected.
 - Clear a selected guide-only category and its concrete unit when switching from `tour` to `rental` or `combo`.
+- Explain when changing reservation type clears a previously selected guide-only category and concrete unit.
+- Describe the empty category state without instructing the worker to select a reservation type that is already selected.
 - Submit the selected reservation type through the existing reservation action.
 - This US-RES-08 unit does not implement combo composition or pricing, or assignment of a specific guide; those behaviors belong to US-RES-09/10 and US-RES-12 respectively.
 
