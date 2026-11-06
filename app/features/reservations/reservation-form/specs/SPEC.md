@@ -2,7 +2,7 @@
 
 ## Intent
 
-Allow a reservations worker to record a reservation with its type, customer name, group size, Costa Rica date and time, duration, and one valid equipment commitment.
+Allow a reservations worker to record a rental reservation with its customer name, group size, Costa Rica date and time, duration, and one valid equipment commitment.
 
 ## In scope
 
@@ -11,17 +11,16 @@ Allow a reservations worker to record a reservation with its type, customer name
 - Persist only the customer name from customer identity/contact information.
 - Persist the creator from the authenticated session.
 - Persist one of two equipment commitments: an active, reservable, interchangeable category with positive quantity, or one concrete unit from an active, reservable, non-interchangeable category.
-- Default new forms to `rental` and persist the selected `rental`, `tour`, or `combo` type.
+- Let Reservations choose `rental`, `tour`, or `combo`; callers without a selected type continue to default to `rental`.
 - Interpret civil date and time in `America/Costa_Rica` regardless of server timezone.
 
 ## Out of scope
 
 - Criterion 5 remains dependent on integrating open calendar PR #101. This work must not fabricate a local calendar or substitute visibility behavior.
-- US-RES-08 guide assignment, combo composition, and package pricing.
 - US-RES-15 availability and collision checking.
 - US-RES-16 collision warnings.
-- US-RES-17 live inventory updates and equipment-selection presentation remain owned by its follow-up UI unit.
-- Guide assignment, combo composition, package pricing, customer email, or other contact fields.
+- US-RES-17 live inventory updates and equipment-selection presentation are implemented by the follow-up UI unit in PR #155.
+- Customer email or other contact fields.
 
 ## Requirements
 
@@ -91,41 +90,36 @@ Unit 1 implements the atomic persistence and data-integrity boundary for both co
 
 ### Acceptance criteria
 
-- Renta: el cliente se lleva el equipo por su cuenta.
-- Tour: la salida va acompañada por un guía.
-- Combo: junta varios equipos distintos en un solo paquete.
-- Hay equipo que solo puede salir en tour, como las lanchas y los cuadraciclos.
+- Existing callers without a reservation type default to `rental`.
+- The reservation type accepts only `rental`, `tour`, or `combo` and is persisted by the reservation RPC.
+- The category query exposes `guide_only`; guide-only categories and units can only be committed by `tour` reservations.
+- Direct scheduled-item inserts enforce the same guide-only rule.
 
-### Data unit scope
+Guide assignment remains owned by US-RES-12. Combo composition and pricing remain owned by US-RES-09 and US-RES-10.
+The form lets Reservations choose rental, tour, or combo; guide-only equipment is available only for tours, and changing away from tour clears its category and unit selection.
 
-- The validated reservation input carries `rental`, `tour`, or `combo` and the RPC persists the selected value.
-- Existing callers without a type remain `rental`; the form unit exposes type selection.
-- The category query exposes `guide_only`; the database rejects guide-only category and unit commitments unless the reservation type is `tour`, including direct scheduled-item inserts.
-- Criterion 1 data classification is supported; the form unit must expose the type choice and retain the existing rental flow.
-- Criterion 2 remains pending guide assignment in US-RES-12. This unit stores `tour` but does not assign a worker.
-- Criterion 3 remains pending combo composition and package pricing in US-RES-09 and US-RES-10.
-- Criterion 4 is enforced at the database boundary for category and unit commitments.
-- Tariff selection and payment behavior are not implemented in this unit.
+## US-RES-18 reservation editing
 
-## US-RES-08 reservation type form
+A Reservations worker changes the people count, time, duration or equipment of a `scheduled` reservation from `/reservations/<id>/edit`. The customer name, the date, pricing and charges do not change here; the date belongs to US-RES-20. One `update_reservation` database transaction persists the change, and `reservations.updated_by` and `updated_at` record who made it.
 
-### UI behavior
+### Rules
 
-- Present accessible, responsive choices for `rental`, `tour`, and `combo` before the customer and equipment fields.
-- Explain each choice using its story description and keep rental as the initial selection.
-- Show categories marked `guide_only` only when `tour` is selected.
-- Clear a selected guide-only category and its concrete unit when switching from `tour` to `rental` or `combo`.
-- Explain when changing reservation type clears a previously selected guide-only category and concrete unit.
-- Describe the empty category state without instructing the worker to select a reservation type that is already selected.
-- Submit the selected reservation type through the existing reservation action.
-- Do not implement combo composition, package pricing, or assignment of a specific guide.
+- Only a `scheduled` reservation can be modified.
+- The form sends the `updated_at` it loaded as an opaque string. A different or missing value refuses the save, so a colleague's change is never overwritten.
+- The date stays the reservation's current Costa Rica date.
+- A save that changes nothing writes nothing and keeps the last editor.
+- Equipment targets are the items with no extra and no dispatch. A change updates the same item row.
+- A combo's equipment cannot change, and neither can the equipment of a reservation with several targets. A people or schedule change on them is accepted when the payload carries a current target unchanged.
+- Changed equipment passes the same commitment validation as create, except a quantity decrease on the same category with no unit, which is accepted even with no stock left.
+- Changed equipment or a changed window re-checks every unit of the reservation: it must be reservable and free for the new window, ignoring the reservation itself. A people change alone does not, so a unit that went to maintenance after the booking keeps its reservation.
 
-### Acceptance criteria mapping
+### Acceptance criteria
 
-- Criterion 1 is represented by the rental selection and its description.
-- Criterion 2 is represented by the tour selection and its description; assigning a guide remains pending in US-RES-12.
-- Criterion 3 is represented by selecting and persisting `combo`; equipment composition and package pricing remain pending in US-RES-09 and US-RES-10.
-- Criterion 4 is enforced by the data unit and reinforced by filtering `guide_only` categories in the form.
+- “Se actualiza la información cuando cambian las condiciones del cliente.”
+- “El cambio queda registrado a nombre de quien lo hizo.”
+- “El equipo de un combo no se cambia al modificar la reserva: si el paquete cambió, se cancela y se crea una reserva nueva.”
+
+The data unit closes the first two criteria at database level and enforces the third. The screens close them for the user.
 
 ## US-RES-17 equipment eligibility data
 
@@ -137,4 +131,4 @@ The invoker-security category query returns only active, reservable categories w
 
 Authenticated direct inserts or equipment-identity changes on scheduled reservation items enforce the same physical eligibility, including the exact selected unit when present. Existing Operations permissions, extra-only items, unchanged commitments, dispatched items and historical records retain their existing behavior. Trusted database maintenance roles retain their existing administrative authority. Failed commitments roll back the reservation transaction.
 
-The eligibility service and refresh action provide physically eligible categories for initial and subsequent reads. Realtime inventory updates and form option filtering remain in the subsequent UI unit.
+The eligibility service provides physically eligible categories for initial reads. The follow-up UI unit subscribes to authenticated Realtime changes, refreshes the server snapshot, keeps cached categories usable during connection failures, and reconciles selected categories and units only after current availability is resolved.

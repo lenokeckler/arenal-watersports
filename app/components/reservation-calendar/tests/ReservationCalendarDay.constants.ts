@@ -1,8 +1,8 @@
 import type { CalendarDate } from "@/app/types";
-import { RESERVATION_CALENDAR_GUIDE_TYPE } from "@/app/constants";
-import { RESERVATION_CALENDAR_GUIDE_COPY } from "../constants/ReservationCalendarGuideCopy.constants";
 import type { ReservationCalendarEntry } from "../models/ReservationCalendarEntry.interface";
 import type { ReservationCalendarSnapshot } from "../models/ReservationCalendarSnapshot.interface";
+import { RESERVATION_CALENDAR_GUIDE_TYPE } from "@/app/constants";
+import { RESERVATION_CALENDAR_GUIDE_COPY } from "../constants/ReservationCalendarGuideCopy.constants";
 
 export const CALENDAR_DAY_DATE: CalendarDate = {
   day: 15,
@@ -12,6 +12,7 @@ export const CALENDAR_DAY_DATE: CalendarDate = {
 
 export const CALENDAR_DAY_GUIDE_TEST = {
   FULL_NAME: "Operations guide",
+  ID: "operations-guide",
   TYPE: RESERVATION_CALENDAR_GUIDE_TYPE.INTERNAL,
   TYPE_LABEL: RESERVATION_CALENDAR_GUIDE_COPY.ACCOUNT,
 } as const;

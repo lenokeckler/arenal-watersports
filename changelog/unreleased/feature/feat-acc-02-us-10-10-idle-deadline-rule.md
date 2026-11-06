@@ -1,0 +1,1 @@
+ACC-02.10.10: Idle deadline rule — the night inactivity limit counts thirty minutes in a row from 7:00 p.m. or the last action, and the story now asks for a warning two minutes before (US-ACC-10 · AWS-39)

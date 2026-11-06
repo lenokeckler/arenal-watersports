@@ -4,4 +4,5 @@ export interface ReservationCategoryConflictWarningViewModel {
   hasError: boolean;
   isLoading: boolean;
   items: ReservationCategoryConflictWarningItem[];
+  retry: () => void;
 }

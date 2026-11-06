@@ -8,12 +8,14 @@ import type { ReservationType } from "../models/ReservationType.type";
 
 export const createReservationTypeChangeHandler =
   (
-    categories: ReservationCategoryOption[],
     values: ReservationFormInput,
     updateValue: UpdateReservationFormValue,
     onSelectionReset: (wasReset: boolean) => void
   ) =>
-  (value: ReservationType) => {
+  (
+    value: ReservationType,
+    categories: ReservationCategoryOption[]
+  ) => {
     updateValue(
       RESERVATION_FORM_FIELD.RESERVATION_TYPE,
       value

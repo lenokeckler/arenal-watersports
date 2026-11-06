@@ -1,6 +1,12 @@
 import type { ReactElement } from "react";
 import { Section, Title } from "@/app/components";
-import { TitleVariant } from "@/app/constants";
+import {
+  PATHS,
+  RESERVATIONS_CALENDAR_COPY,
+  TitleVariant,
+} from "@/app/constants";
+import Link from "@/app/components/link/Link";
+import { RESERVATION_CALENDAR_BLOCK_LINK_CLASS } from "@/app/components/reservation-calendar/styles/ReservationCalendar.styles";
 import type { ReservationCalendarGroupListProps } from "../models/ReservationCalendarGroupListProps.interface";
 import { ReservationCalendarBlock } from "@/app/components/reservation-calendar/components/ReservationCalendarBlock";
 import {
@@ -29,10 +35,16 @@ export const ReservationCalendarGroupList = ({
           }
         >
           {group.blocks.map((block) => (
-            <ReservationCalendarBlock
+            <Link
               key={block.id}
-              block={block}
-            />
+              href={PATHS.RESERVATIONS.DETAIL(block.id)}
+              ariaLabel={`${RESERVATIONS_CALENDAR_COPY.OPEN_RESERVATION_DETAIL} ${block.customerName}`}
+              className={
+                RESERVATION_CALENDAR_BLOCK_LINK_CLASS
+              }
+            >
+              <ReservationCalendarBlock block={block} />
+            </Link>
           ))}
         </div>
       </Section>

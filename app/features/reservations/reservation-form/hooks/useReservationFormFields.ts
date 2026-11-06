@@ -1,9 +1,9 @@
-import { STRING } from "@/app/constants";
 import { useState } from "react";
-import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
-import type { ReservationFormFieldsViewModel } from "../models/ReservationFormFieldsViewModel.interface";
+import { STRING } from "@/app/constants";
 import type { ReservationFormField } from "../models/ReservationFormField.constants";
+import type { ReservationFormFieldsViewModel } from "../models/ReservationFormFieldsViewModel.interface";
 import type { UpdateReservationFormValue } from "../models/UpdateReservationFormValue.type";
+import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { createReservationTypeChangeHandler } from "../utils/createReservationTypeChangeHandler";
 import { createReservationFormNumericFieldHandlers } from "../utils/createReservationFormNumericFieldHandlers";
@@ -50,32 +50,44 @@ export const useReservationFormFields = (
   initialDate: string,
   initialCategoryId: string,
   clearFieldError: (field: ReservationFormField) => void,
-  categories: ReservationCategoryOption[]
+  liveCategories: ReservationCategoryOption[] = []
 ): ReservationFormFieldsViewModel => {
-  const { updateValue, values } = useReservationFormValues(
-    initialDate,
-    initialCategoryId,
-    clearFieldError
-  );
+  const { reset, updateValue, values } =
+    useReservationFormValues(
+      initialDate,
+      initialCategoryId,
+      clearFieldError
+    );
   const [
     hasReservationTypeSelectionReset,
     setHasReservationTypeSelectionReset,
   ] = useState(false);
   const handleReservationTypeChange =
     createReservationTypeChangeHandler(
-      categories,
       values,
       updateValue,
       setHasReservationTypeSelectionReset
     );
-  const numericFieldHandlers =
-    createReservationFormNumericFieldHandlers(updateValue);
+
   return {
     ...createBasicFieldHandlers(updateValue, () =>
       setHasReservationTypeSelectionReset(false)
     ),
-    ...numericFieldHandlers,
-    handleReservationTypeChange,
+    ...createReservationFormNumericFieldHandlers(
+      updateValue
+    ),
+    reset: () => {
+      reset();
+      setHasReservationTypeSelectionReset(false);
+    },
+    handleReservationTypeChange: (
+      value,
+      currentCategories
+    ) =>
+      handleReservationTypeChange(
+        value,
+        currentCategories ?? liveCategories
+      ),
     hasReservationTypeSelectionReset,
     values,
   };

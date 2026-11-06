@@ -27,12 +27,15 @@ describe("useReservationUnitAvailability", () => {
   it("refreshes available units when the reservation interval changes", async () => {
     vi.mocked(
       getAvailableReservationUnitsAction
-    ).mockResolvedValue([
-      {
-        code: AVAILABLE_UNIT_TEST.UNIT_CODE,
-        id: AVAILABLE_UNIT_TEST.UNIT_ID,
-      },
-    ]);
+    ).mockResolvedValue({
+      availableQuantity: null,
+      availableUnits: [
+        {
+          code: AVAILABLE_UNIT_TEST.UNIT_CODE,
+          id: AVAILABLE_UNIT_TEST.UNIT_ID,
+        },
+      ],
+    });
     const initialRequest: ReservationUnitAvailabilityInput =
       {
         categoryId: AVAILABLE_UNIT_TEST.CATEGORY_ID,
@@ -43,14 +46,17 @@ describe("useReservationUnitAvailability", () => {
       };
     const { rerender, result } = renderHook(
       ({ request }) =>
-        useReservationUnitAvailability(
-          request,
-          AVAILABLE_UNIT_TEST.REFRESH_KEY
-        ),
+        useReservationUnitAvailability(request, 0),
       { initialProps: { request: initialRequest } }
+    );
+    expect(result.current.isResolvedForCurrentRequest).toBe(
+      false
     );
     await waitFor(() =>
       expect(result.current.availableUnits).toHaveLength(1)
+    );
+    expect(result.current.isResolvedForCurrentRequest).toBe(
+      true
     );
 
     const nextRequest = {
@@ -60,6 +66,9 @@ describe("useReservationUnitAvailability", () => {
       time: "10:30",
     };
     rerender({ request: nextRequest });
+    expect(result.current.isResolvedForCurrentRequest).toBe(
+      false
+    );
 
     await waitFor(() =>
       expect(
@@ -68,6 +77,9 @@ describe("useReservationUnitAvailability", () => {
     );
     await waitFor(() =>
       expect(result.current.availableUnits).toHaveLength(1)
+    );
+    expect(result.current.isResolvedForCurrentRequest).toBe(
+      true
     );
     expect(result.current.availableUnits).toEqual([
       {

@@ -1,4 +1,5 @@
 import type { ReservationType } from "./ReservationType.type";
+import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
 
 export interface ReservationFormFieldHandlers {
   handleCategoryChange: (value: string) => void;
@@ -8,7 +9,8 @@ export interface ReservationFormFieldHandlers {
   handlePeopleCountChange: (value: number) => void;
   handleQuantityChange: (value: number) => void;
   handleReservationTypeChange: (
-    value: ReservationType
+    value: ReservationType,
+    categories?: ReservationCategoryOption[]
   ) => void;
   handleTimeChange: (value: string) => void;
   handleUnitChange: (value: string) => void;
