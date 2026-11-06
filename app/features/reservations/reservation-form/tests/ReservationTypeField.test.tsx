@@ -136,16 +136,10 @@ describe("ReservationTypeField", () => {
 
   it("offers combo without adding package composition fields", () => {
     const page = renderReservationForm();
+    const comboOption = page.getReservationTypeRadio(
+      RESERVATION_TYPE_COPY.OPTIONS.COMBO.label
+    );
 
-    expect(
-      page.getReservationTypeRadio(
-        RESERVATION_TYPE_COPY.OPTIONS.COMBO.label
-      )
-    ).toBeInTheDocument();
-    expect(
-      page.getReservationTypeRadio(
-        RESERVATION_TYPE_COPY.OPTIONS.COMBO.label
-      )
-    ).not.toBeChecked();
+    expect(comboOption).not.toBeChecked();
   });
 });
