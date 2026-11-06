@@ -39,6 +39,11 @@ export const E2E_DEVICE_NAME = {
   MOBILE: "Pixel 7",
 } as const;
 
+export const E2E_CSS_POSITION = {
+  STATIC: "static",
+  STICKY: "sticky",
+} as const;
+
 export const E2E_PROJECT = {
   DEFAULT: "chromium-desktop",
   MOBILE: "chromium-mobile",

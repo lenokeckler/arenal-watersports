@@ -1,5 +1,5 @@
 export const RESERVATION_FORM_PAGE_CLASS =
-  "mx-auto flex w-full max-w-4xl flex-col gap-5 px-gutter py-6 pb-28 md:gap-6 md:py-10 md:pb-10";
+  "mx-auto flex w-full max-w-4xl flex-col gap-5 px-gutter py-6 pb-32 md:gap-6 md:py-10 md:pb-10";
 
 export const RESERVATION_FORM_MAIN_CLASS =
   "min-h-screen bg-background text-on-background";

@@ -1,19 +1,21 @@
 import ReservationFormView from "./ReservationFormView";
+import { loadReservationGuideDirectory } from "./services/loadReservationGuideDirectory";
 import { getReservationCategories } from "./services/getReservationCategories";
-import { getReservationGuides } from "./services/getReservationGuides";
 import { getCostaRicaDate } from "./utils/getCostaRicaDate";
 
 const ReservationForm =
   async (): Promise<React.JSX.Element> => {
-    const [categories, guideOptions] = await Promise.all([
-      getReservationCategories(),
-      getReservationGuides(),
-    ]);
+    const [categories, guideLoadResult] = await Promise.all(
+      [
+        getReservationCategories(),
+        loadReservationGuideDirectory(),
+      ]
+    );
 
     return (
       <ReservationFormView
         categories={categories}
-        guideOptions={guideOptions}
+        guideLoadResult={guideLoadResult}
         initialDate={getCostaRicaDate(new Date())}
       />
     );

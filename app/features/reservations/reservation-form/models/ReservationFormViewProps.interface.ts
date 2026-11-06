@@ -1,8 +1,8 @@
 import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
-import type { ReservationGuideOption } from "./ReservationGuideOption.interface";
+import type { ReservationGuideLoadResult } from "./ReservationGuideLoadResult.type";
 
 export interface ReservationFormViewProps {
   categories: ReservationCategoryOption[];
-  guideOptions: ReservationGuideOption[];
+  guideLoadResult: ReservationGuideLoadResult;
   initialDate: string;
 }

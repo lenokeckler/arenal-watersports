@@ -1,31 +1,31 @@
 "use client";
 
-import { useEffect, useEffectEvent } from "react";
-import type { ReservationFormViewModel } from "../models/ReservationFormViewModel.interface";
+import type { ReservationGuideAssignmentViewModel } from "../models/ReservationGuideAssignmentViewModel.interface";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
-import type { ReservationGuideOption } from "../models/ReservationGuideOption.interface";
+import type { ReservationGuideLoadResult } from "../models/ReservationGuideLoadResult.type";
+import { EMPTY_RESERVATION_GUIDE_LOAD_RESULT } from "../constants/ReservationGuideLoad.constants";
 import { useReservationFormViewModelDependencies } from "./useReservationFormViewModelDependencies";
+import { useReservationGuideLoadViewModel } from "./useReservationGuideLoadViewModel";
+import { useReservationGuideSelectionSyncViewModel } from "./useReservationGuideSelectionSyncViewModel";
 
 export const useReservationFormViewModel = (
   initialDate: string,
   categories: ReservationCategoryOption[],
-  guideOptions: ReservationGuideOption[]
-): ReservationFormViewModel => {
+  guideLoadResult: ReservationGuideLoadResult = EMPTY_RESERVATION_GUIDE_LOAD_RESULT
+): ReservationGuideAssignmentViewModel => {
+  const guideLoad =
+    useReservationGuideLoadViewModel(guideLoadResult);
   const { handleSubmit, resources, router } =
     useReservationFormViewModelDependencies(
       initialDate,
       categories
     );
   const { state } = resources;
-  const reconcileLoadedGuides = useEffectEvent(
-    (guideIds: string[]) =>
-      state.fields.reconcileGuideSelection(guideIds)
+  useReservationGuideSelectionSyncViewModel(
+    guideLoad.isLoading,
+    guideLoad.result,
+    state.fields.reconcileGuideSelection
   );
-  useEffect(() => {
-    reconcileLoadedGuides(
-      guideOptions.map((guide) => guide.id)
-    );
-  }, [guideOptions]);
   return {
     ...state.fields,
     ...state.submission,
@@ -34,5 +34,8 @@ export const useReservationFormViewModel = (
     ...resources.equipment,
     handleBack: router.back,
     handleSubmit,
+    guideLoadResult: guideLoad.result,
+    isGuideLoading: guideLoad.isLoading,
+    handleRetryGuideLoading: guideLoad.retry,
   };
 };
