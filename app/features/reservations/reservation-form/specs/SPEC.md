@@ -86,6 +86,17 @@ The reservation form and mutation accept exactly one of these forms: an intercha
 
 Unit 1 implements the atomic persistence and data-integrity boundary for both commitment shapes. Unit 2 exposes both commitment shapes within the reservation form: interchangeable equipment uses category plus quantity, and the Lancha uses an available concrete unit.
 
+## US-RES-08 reservation type data contract
+
+### Acceptance criteria
+
+- Existing callers without a reservation type default to `rental`.
+- The reservation type accepts only `rental`, `tour`, or `combo` and is persisted by the reservation RPC.
+- The category query exposes `guide_only`; guide-only categories and units can only be committed by `tour` reservations.
+- Direct scheduled-item inserts enforce the same guide-only rule.
+
+Guide assignment remains owned by US-RES-12. Combo composition and pricing remain owned by US-RES-09 and US-RES-10.
+
 ## US-RES-18 reservation editing
 
 A Reservations worker changes the people count, time, duration or equipment of a `scheduled` reservation from `/reservations/<id>/edit`. The customer name, the date, pricing and charges do not change here; the date belongs to US-RES-20. One `update_reservation` database transaction persists the change, and `reservations.updated_by` and `updated_at` record who made it.

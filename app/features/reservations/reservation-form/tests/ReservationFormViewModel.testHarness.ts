@@ -131,6 +131,7 @@ export const resetViewModelHarness = (): void => {
       {
         id: "category-1",
         isInterchangeable: false,
+        isGuideOnly: false,
         name: "Lancha",
       },
     ],

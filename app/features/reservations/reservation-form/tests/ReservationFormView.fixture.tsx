@@ -43,11 +43,13 @@ export const renderReservationForm = (
               {
                 id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
                 isInterchangeable: true,
+                isGuideOnly: false,
                 name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
               },
               {
                 id: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_ID,
                 isInterchangeable: true,
+                isGuideOnly: false,
                 name: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME,
               },
               ...(hasUnitCategory
@@ -55,6 +57,7 @@ export const renderReservationForm = (
                     {
                       id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
                       isInterchangeable: true,
+                      isGuideOnly: false,
                       name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
                     },
                   ]
@@ -67,6 +70,7 @@ export const renderReservationForm = (
           ? [
               {
                 id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
+                isGuideOnly: false,
                 name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
               },
             ]

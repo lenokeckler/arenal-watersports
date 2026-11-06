@@ -1,3 +1,5 @@
+import type { ReservationType } from "./ReservationType.type";
+
 export interface ReservationFormInput {
   categoryId: string;
   customerName: string;
@@ -5,6 +7,7 @@ export interface ReservationFormInput {
   durationHours: number;
   peopleCount: number;
   quantity: number;
+  reservationType?: ReservationType;
   time: string;
   unitId: string;
 }
