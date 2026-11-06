@@ -1,35 +1,11 @@
 import { screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { ARIA_ROLE, STRING } from "@/app/constants";
-import type { NullableRef } from "@/app/types";
-import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { ARIA_ROLE } from "@/app/constants";
 
-export const createReservationTypeFieldPage = () => {
-  const user = userEvent.setup();
-  const getReservationTypeRadio = (label: string) =>
-    screen.getByLabelText(label, { exact: false });
-  const getCategorySelect = () =>
-    screen.getByLabelText(
-      `${RESERVATION_FORM_UI_COPY.CATEGORY} ${STRING.ASTERISK}`,
-      { exact: true }
-    );
-
-  return {
-    getReservationTypeRadio,
-    getReservationTypeDescription: (description: string) =>
-      screen.getByText(description, { exact: true }),
-    findStatusMessage: () =>
-      screen.findByRole(ARIA_ROLE.STATUS),
-    queryCategoryOption: (
-      categoryId: string
-    ): NullableRef<HTMLOptionElement> =>
-      getCategorySelect().querySelector<HTMLOptionElement>(
-        `option[value="${categoryId}"]`
-      ),
-    selectReservationType: async (
-      label: string
-    ): Promise<void> => {
-      await user.click(getReservationTypeRadio(label));
-    },
-  };
-};
+export const createReservationTypeFieldPage = () => ({
+  getReservationTypeRadio: (label: string) =>
+    screen.getByLabelText(label, { exact: false }),
+  getReservationTypeDescription: (description: string) =>
+    screen.getByText(description, { exact: true }),
+  findStatusMessage: () =>
+    screen.findByRole(ARIA_ROLE.STATUS),
+});

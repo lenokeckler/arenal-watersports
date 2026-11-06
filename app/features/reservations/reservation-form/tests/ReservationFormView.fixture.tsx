@@ -30,37 +30,55 @@ vi.mock(
 
 export const reservationRouterBack = routerBack;
 
-const RESERVATION_FORM_VIEW_CATEGORIES = [
-  {
-    id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
-    isGuideOnly: false,
-    isInterchangeable: true,
-    name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
-  },
-  {
-    id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
-    isGuideOnly: true,
-    isInterchangeable: false,
-    name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
-  },
-] satisfies ReservationCategoryOption[];
-
-const renderReservationFormContainer = (
-  categories: ReservationCategoryOption[]
+export const renderReservationForm = (
+  hasCategories = true,
+  hasUnitCategory = false,
+  hasGuideOnlyCategory = false
 ) => {
   routerBack.mockClear();
   const { container } = render(
     <ReservationFormView
-      categories={categories}
+      categories={
+        hasCategories
+          ? [
+              {
+                id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
+                isInterchangeable: true,
+                isGuideOnly: false,
+                name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
+              },
+              {
+                id: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_ID,
+                isInterchangeable: true,
+                isGuideOnly: hasGuideOnlyCategory,
+                name: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME,
+              },
+              ...(hasUnitCategory
+                ? [
+                    {
+                      id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
+                      isInterchangeable: true,
+                      isGuideOnly: hasGuideOnlyCategory,
+                      name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
+                    },
+                  ]
+                : []),
+            ]
+          : []
+      }
+      unitCategories={
+        hasUnitCategory
+          ? [
+              {
+                id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
+                isGuideOnly: hasGuideOnlyCategory,
+                name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
+              },
+            ]
+          : []
+      }
       initialDate={RESERVATION_FORM_VIEW_TEST.DATE}
     />
   );
-  return container;
+  return createReservationFormViewPage(container);
 };
-
-export const renderReservationForm = (
-  categories: ReservationCategoryOption[] = RESERVATION_FORM_VIEW_CATEGORIES
-) =>
-  createReservationFormViewPage(
-    renderReservationFormContainer(categories)
-  );

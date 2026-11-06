@@ -22,12 +22,15 @@ vi.mock(
 beforeEach(() => {
   vi.mocked(
     getAvailableReservationUnitsAction
-  ).mockResolvedValue([]);
+  ).mockResolvedValue({
+    availableQuantity: null,
+    availableUnits: [],
+  });
 });
 
 describe("ReservationTypeField", () => {
   it("defaults to rental and hides guide-only categories", () => {
-    const page = renderReservationForm();
+    const page = renderReservationForm(true, true, true);
 
     expect(
       page.getReservationTypeRadio(
@@ -42,7 +45,7 @@ describe("ReservationTypeField", () => {
   });
 
   it("offers guide-only categories only for tours", async () => {
-    const page = renderReservationForm();
+    const page = renderReservationForm(true, true, true);
 
     await page.selectReservationType(
       RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
@@ -51,7 +54,7 @@ describe("ReservationTypeField", () => {
       RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
     );
 
-    expect(page.getCategorySelect()).toHaveDisplayValue(
+    expect(page.getSelectedCategoryOption()).toHaveAccessibleName(
       RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME
     );
   });
@@ -62,7 +65,7 @@ describe("ReservationTypeField", () => {
   ])(
     "clears a guide-only selection when switching to %s",
     async (reservationTypeLabel) => {
-      const page = renderReservationForm();
+      const page = renderReservationForm(true, true, true);
 
       await page.selectReservationType(
         RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
@@ -74,9 +77,7 @@ describe("ReservationTypeField", () => {
         reservationTypeLabel
       );
 
-      expect(page.getCategorySelect()).toHaveValue(
-        STRING.Empty
-      );
+      expect(page.getSelectedCategoryOption()).not.toBeInTheDocument();
       expect(
         page.queryCategoryOption(
           RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
@@ -93,13 +94,16 @@ describe("ReservationTypeField", () => {
   it("clears a selected concrete unit when changing to a non-tour type", async () => {
     vi.mocked(
       getAvailableReservationUnitsAction
-    ).mockResolvedValue([
-      {
+    ).mockResolvedValue({
+      availableQuantity: null,
+      availableUnits: [
+        {
         code: RESERVATION_FORM_VIEW_TEST.UNIT_CODE,
         id: RESERVATION_FORM_VIEW_TEST.UNIT_ID,
-      },
-    ]);
-    const page = renderReservationForm();
+        },
+      ],
+    });
+    const page = renderReservationForm(true, true, true);
 
     await page.selectReservationType(
       RESERVATION_TYPE_COPY.OPTIONS.TOUR.label

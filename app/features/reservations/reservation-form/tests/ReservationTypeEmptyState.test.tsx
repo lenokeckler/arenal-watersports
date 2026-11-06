@@ -6,7 +6,7 @@ import { RESERVATION_TYPE_EMPTY_STATE_TEST } from "./ReservationTypeEmptyState.c
 
 describe("ReservationForm empty state", () => {
   it("shows a neutral empty state for tours without categories", async () => {
-    const page = renderReservationForm([]);
+    const page = renderReservationForm(false);
 
     await page.selectReservationType(
       RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
