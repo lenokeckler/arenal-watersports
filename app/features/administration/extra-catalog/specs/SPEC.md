@@ -63,3 +63,5 @@ The administration worker keeps the list of extras that reservations can add to 
 | One extra is read by id; an unknown or malformed id gives null                                     | `getExtra.test.ts`                      |
 | Create trims the name, rejects a blank or duplicate name as a name error, and refuses a non-admin  | `createExtraAction.test.ts`             |
 | Rename trims the name, maps a duplicate to a name error, and reports an extra deleted meanwhile    | `updateExtraAction.test.ts`             |
+| Reactivate touches only the inactive extra with the given id                                       | `reactivateExtraAction.test.ts`         |
+| Removal calls the database function with the id, narrows its outcome and translates its two errors | `deleteOrDeactivateExtraAction.test.ts` |
