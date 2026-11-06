@@ -13,6 +13,9 @@ import { createReservationEquipmentPage } from "./ReservationFormEquipment.page"
 const getDurationOption = (label: string) =>
   screen.getByRole(ARIA_ROLE.BUTTON, { name: label });
 
+const getReservationTypeOption = (label: string) =>
+  screen.getByLabelText(label, { exact: false });
+
 const queryCustomDurationInput = (
   container: HTMLElement
 ): NullableRef<HTMLInputElement> =>
@@ -108,6 +111,18 @@ export const createReservationFormViewPage = (
   return {
     ...createReservationEquipmentPage(user),
     getDurationOption,
+    selectReservationType: async (
+      label: string
+    ): Promise<void> => {
+      await user.click(getReservationTypeOption(label));
+    },
+    isReservationTypeSelected: (label: string): boolean =>
+      (getReservationTypeOption(label) as HTMLInputElement)
+        .checked,
+    findReservationTypeSelectionReset: () =>
+      screen.findByText(
+        RESERVATION_FORM_UI_COPY.RESERVATION_TYPE_SELECTION_CLEARED
+      ),
     getBackButton,
     findDurationValidationError,
     findSubmissionError,

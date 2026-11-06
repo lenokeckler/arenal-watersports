@@ -32,7 +32,8 @@ export const reservationRouterBack = routerBack;
 
 export const renderReservationForm = (
   hasCategories = true,
-  hasUnitCategory = false
+  hasUnitCategory = false,
+  hasGuideOnlyCategory = false
 ) => {
   routerBack.mockClear();
   const { container } = render(
@@ -49,7 +50,7 @@ export const renderReservationForm = (
               {
                 id: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_ID,
                 isInterchangeable: true,
-                isGuideOnly: false,
+                isGuideOnly: hasGuideOnlyCategory,
                 name: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME,
               },
               ...(hasUnitCategory
