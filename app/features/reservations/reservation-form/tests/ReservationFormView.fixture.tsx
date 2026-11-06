@@ -58,7 +58,7 @@ export const renderReservationForm = (
                     {
                       id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
                       isInterchangeable: true,
-                      isGuideOnly: false,
+                      isGuideOnly: hasGuideOnlyCategory,
                       name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
                     },
                   ]
@@ -71,7 +71,7 @@ export const renderReservationForm = (
           ? [
               {
                 id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
-                isGuideOnly: false,
+                isGuideOnly: hasGuideOnlyCategory,
                 name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
               },
             ]
