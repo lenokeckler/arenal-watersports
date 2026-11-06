@@ -1,1 +1,0 @@
-alter publication supabase_realtime add table reservation_dispatches;
