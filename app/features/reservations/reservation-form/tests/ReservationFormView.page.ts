@@ -1,6 +1,6 @@
-import { screen, waitFor } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ARIA_ROLE } from "@/app/constants";
+import { ARIA_ROLE, STRING } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
 import { RESERVATION_FORM_FIELD_ID } from "../constants/ReservationFormUi.constants";
@@ -8,13 +8,11 @@ import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
 import { RESERVATION_CATEGORY_CONFLICT_WARNING_TEST } from "./ReservationCategoryConflictWarning.constants";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
-import { createReservationEquipmentPage } from "./ReservationFormEquipment.page";
+import { createReservationFormCustomerPage } from "./ReservationFormCustomer.page";
+import { createReservationTypeFieldPage } from "./ReservationTypeField.page";
 
 const getDurationOption = (label: string) =>
   screen.getByRole(ARIA_ROLE.BUTTON, { name: label });
-
-const getReservationTypeOption = (label: string) =>
-  screen.getByLabelText(label, { exact: false });
 
 const queryCustomDurationInput = (
   container: HTMLElement
@@ -23,22 +21,41 @@ const queryCustomDurationInput = (
     `#${RESERVATION_FORM_FIELD_ID.DURATION}`
   );
 
-const queryQuantityInput = (
-  container: HTMLElement
-): NullableRef<HTMLInputElement> =>
-  container.querySelector<HTMLInputElement>(
-    `#${RESERVATION_FORM_FIELD_ID.QUANTITY}`
-  );
-
 const getSubmitButton = () =>
   screen.getByRole(ARIA_ROLE.BUTTON, {
     name: RESERVATION_FORM_UI_COPY.SUBMIT,
   });
 
-const querySubmitButton = (): NullableRef<HTMLElement> =>
-  screen.queryByRole(ARIA_ROLE.BUTTON, {
-    name: RESERVATION_FORM_UI_COPY.SUBMIT,
+const getCategorySelect = () =>
+  screen.getByLabelText(
+    `${RESERVATION_FORM_UI_COPY.CATEGORY} ${STRING.ASTERISK}`,
+    {
+      exact: true,
+    }
+  );
+
+const getQuantityInput = () =>
+  screen.queryByLabelText(
+    RESERVATION_FORM_UI_COPY.QUANTITY,
+    {
+      exact: false,
+    }
+  );
+
+const getUnitSelect = () =>
+  screen.getByLabelText(RESERVATION_FORM_UI_COPY.UNIT, {
+    exact: false,
   });
+
+const findUnitOption = () =>
+  screen.findByRole(ARIA_ROLE.OPTION, {
+    name: RESERVATION_FORM_VIEW_TEST.UNIT_CODE,
+  });
+
+const findUnitValidationError = () =>
+  screen.findByText(
+    RESERVATION_FORM_COPY[RESERVATION_FORM_FIELD.UNIT_ID]
+  );
 
 const getBackButton = () =>
   screen.getByRole(ARIA_ROLE.BUTTON, {
@@ -54,9 +71,6 @@ const findDurationValidationError = () =>
 
 const findSubmissionError = () =>
   screen.findByText(RESERVATION_FORM_UI_COPY.SUBMIT_ERROR);
-
-const findSuccessMessage = () =>
-  screen.findByText(RESERVATION_FORM_UI_COPY.SUCCESS);
 
 const selectDuration = async (
   user: ReturnType<typeof userEvent.setup>,
@@ -83,72 +97,26 @@ const typeCustomDuration = async (
 const submit = async (
   user: ReturnType<typeof userEvent.setup>
 ): Promise<void> => {
-  await waitFor(() => getSubmitButton());
   await user.click(getSubmitButton());
 };
-
-const createQuantityPage = (
-  user: ReturnType<typeof userEvent.setup>,
-  container: HTMLElement
-) => ({
-  setQuantity: async (quantity: string): Promise<void> => {
-    const quantityInput = queryQuantityInput(container);
-    if (!quantityInput) {
-      throw new Error(
-        "The equipment quantity field is missing."
-      );
-    }
-    await user.clear(quantityInput);
-    await user.type(quantityInput, quantity);
-  },
-});
 
 export const createReservationFormViewPage = (
   container: HTMLElement
 ) => {
   const user = userEvent.setup();
+  const reservationTypePage =
+    createReservationTypeFieldPage();
+  const reservationCustomerPage =
+    createReservationFormCustomerPage();
 
   return {
-    ...createReservationEquipmentPage(user),
+    ...reservationTypePage,
+    ...reservationCustomerPage,
     getDurationOption,
-    selectReservationType: async (
-      label: string
-    ): Promise<void> => {
-      await user.click(getReservationTypeOption(label));
-    },
-    isReservationTypeSelected: (label: string): boolean =>
-      (getReservationTypeOption(label) as HTMLInputElement)
-        .checked,
-    findReservationTypeSelectionReset: () =>
-      screen.findByText(
-        RESERVATION_FORM_UI_COPY.RESERVATION_TYPE_SELECTION_CLEARED
-      ),
     getBackButton,
     findDurationValidationError,
     findSubmissionError,
-    findSuccessMessage,
-    getFocusedElement: () => document.activeElement,
-    getCustomerNameInput: () =>
-      container.querySelector<HTMLInputElement>(
-        `#${RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}`
-      ),
-    setCustomerName: async (
-      value: string
-    ): Promise<void> => {
-      const input =
-        container.querySelector<HTMLInputElement>(
-          `#${RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}`
-        );
-      if (input === null) {
-        throw new Error(
-          "The customer name field is missing."
-        );
-      }
-      await user.clear(input);
-      await user.type(input, value);
-    },
     getSubmitButton,
-    querySubmitButton,
     findCategoryConflictWarning: () =>
       screen.findByRole(ARIA_ROLE.ALERT, {
         name: RESERVATION_FORM_UI_COPY.CATEGORY_CONFLICT_WARNING_TITLE,
@@ -173,16 +141,23 @@ export const createReservationFormViewPage = (
       screen.findByText(
         RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.INTERVAL
       ),
+    getCategorySelect,
+    getQuantityInput,
+    getUnitSelect,
+    findUnitOption,
+    findUnitValidationError,
     clickBack: async (): Promise<void> => {
       await user.click(getBackButton());
     },
     queryCustomDurationInput: () =>
       queryCustomDurationInput(container),
-    queryQuantityInput: () => queryQuantityInput(container),
     selectDuration: (label: string) =>
       selectDuration(user, label),
-    ...createQuantityPage(user, container),
     submit: () => submit(user),
+    selectCategory: (categoryId: string) =>
+      user.selectOptions(getCategorySelect(), categoryId),
+    selectUnit: (unitId: string) =>
+      user.selectOptions(getUnitSelect(), unitId),
     typeCustomDuration: (value: string) =>
       typeCustomDuration(user, container, value),
   };
