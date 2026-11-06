@@ -23,7 +23,8 @@ const getSelectedCategoryOption = () =>
 
 const getCategoryName = (categoryId: string): string => {
   if (
-    categoryId === RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
+    categoryId ===
+    RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
   ) {
     return RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME;
   }
@@ -127,8 +128,10 @@ export const createReservationFormViewPage = (
   container: HTMLElement
 ) => {
   const user = userEvent.setup();
-  const reservationTypePage = createReservationTypeFieldPage();
-  const reservationCustomerPage = createReservationFormCustomerPage();
+  const reservationTypePage =
+    createReservationTypeFieldPage();
+  const reservationCustomerPage =
+    createReservationFormCustomerPage();
 
   return {
     ...createReservationEquipmentPage(user),
@@ -137,7 +140,9 @@ export const createReservationFormViewPage = (
     getDurationOption,
     getSelectedCategoryOption,
     findUnitOption: () =>
-      screen.findByText(RESERVATION_FORM_VIEW_TEST.UNIT_CODE),
+      screen.findByText(
+        RESERVATION_FORM_VIEW_TEST.UNIT_CODE
+      ),
     getCategorySelect: () =>
       screen.getByRole(ARIA_ROLE.GROUP, {
         name: RESERVATION_FORM_UI_COPY.CATEGORY,
@@ -147,7 +152,9 @@ export const createReservationFormViewPage = (
         name: getCategoryName(categoryId),
         exact: true,
       }),
-    selectCategory: async (categoryId: string): Promise<void> => {
+    selectCategory: async (
+      categoryId: string
+    ): Promise<void> => {
       await user.click(
         screen.getByRole(ARIA_ROLE.BUTTON, {
           name: getCategoryName(categoryId),

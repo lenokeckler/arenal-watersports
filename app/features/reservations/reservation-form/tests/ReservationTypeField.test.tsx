@@ -54,7 +54,9 @@ describe("ReservationTypeField", () => {
       RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
     );
 
-    expect(page.getSelectedCategoryOption()).toHaveAccessibleName(
+    expect(
+      page.getSelectedCategoryOption()
+    ).toHaveAccessibleName(
       RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME
     );
   });
@@ -77,7 +79,9 @@ describe("ReservationTypeField", () => {
         reservationTypeLabel
       );
 
-      expect(page.getSelectedCategoryOption()).not.toBeInTheDocument();
+      expect(
+        page.getSelectedCategoryOption()
+      ).not.toBeInTheDocument();
       expect(
         page.queryCategoryOption(
           RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
@@ -98,8 +102,8 @@ describe("ReservationTypeField", () => {
       availableQuantity: null,
       availableUnits: [
         {
-        code: RESERVATION_FORM_VIEW_TEST.UNIT_CODE,
-        id: RESERVATION_FORM_VIEW_TEST.UNIT_ID,
+          code: RESERVATION_FORM_VIEW_TEST.UNIT_CODE,
+          id: RESERVATION_FORM_VIEW_TEST.UNIT_ID,
         },
       ],
     });
