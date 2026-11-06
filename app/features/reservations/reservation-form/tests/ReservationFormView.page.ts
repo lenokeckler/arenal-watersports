@@ -21,6 +21,21 @@ const getReservationTypeOption = (label: string) =>
 const getSelectedCategoryOption = () =>
   screen.queryByRole(ARIA_ROLE.BUTTON, { pressed: true });
 
+const getCategoryName = (categoryId: string): string => {
+  if (
+    categoryId === RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
+  ) {
+    return RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME;
+  }
+  if (
+    categoryId ===
+    RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_ID
+  ) {
+    return RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME;
+  }
+  return RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME;
+};
+
 const queryCustomDurationInput = (
   container: HTMLElement
 ): NullableRef<HTMLInputElement> =>
@@ -123,30 +138,22 @@ export const createReservationFormViewPage = (
     getSelectedCategoryOption,
     findUnitOption: () =>
       screen.findByText(RESERVATION_FORM_VIEW_TEST.UNIT_CODE),
-    getCategorySelect: () => screen.getByRole(ARIA_ROLE.GROUP),
-    queryCategoryOption: (categoryId: string) => {
-      const categoryName =
-        categoryId === RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
-          ? RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME
-          : categoryId === RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_ID
-            ? RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME
-            : RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME;
-      return screen.queryByRole(ARIA_ROLE.BUTTON, {
-        name: categoryName,
+    getCategorySelect: () =>
+      screen.getByRole(ARIA_ROLE.GROUP, {
+        name: RESERVATION_FORM_UI_COPY.CATEGORY,
+      }),
+    queryCategoryOption: (categoryId: string) =>
+      screen.queryByRole(ARIA_ROLE.BUTTON, {
+        name: getCategoryName(categoryId),
         exact: true,
-      });
-    },
+      }),
     selectCategory: async (categoryId: string): Promise<void> => {
-      const categoryName =
-        categoryId === RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
-          ? RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME
-          : categoryId === RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_ID
-            ? RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME
-            : RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME;
-      await user.click(screen.getByRole(ARIA_ROLE.BUTTON, {
-        name: categoryName,
-        exact: true,
-      }));
+      await user.click(
+        screen.getByRole(ARIA_ROLE.BUTTON, {
+          name: getCategoryName(categoryId),
+          exact: true,
+        })
+      );
     },
     selectReservationType: async (
       label: string
