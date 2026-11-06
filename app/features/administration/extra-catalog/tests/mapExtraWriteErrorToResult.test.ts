@@ -25,6 +25,12 @@ describe("mapExtraWriteErrorToResult", () => {
         message: EXTRA_CATALOG_COPY.NOT_FOUND_ERROR,
       },
     },
+    {
+      code: POSTGRES_ERROR_CODE.INVALID_TEXT_REPRESENTATION,
+      expected: {
+        message: EXTRA_CATALOG_COPY.NOT_FOUND_ERROR,
+      },
+    },
   ])(
     "maps the $code error to a friendly result",
     ({ code, expected }) => {
