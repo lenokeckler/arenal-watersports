@@ -25,7 +25,11 @@ export const mapExtraWriteErrorToResult = (
       message: EXTRA_CATALOG_COPY.FORBIDDEN_ERROR,
     };
   }
-  if (error?.code === POSTGRES_ERROR_CODE.NO_DATA_FOUND) {
+  if (
+    error?.code === POSTGRES_ERROR_CODE.NO_DATA_FOUND ||
+    error?.code ===
+      POSTGRES_ERROR_CODE.INVALID_TEXT_REPRESENTATION
+  ) {
     return {
       status: EXTRA_MUTATION_STATUS.ERROR,
       message: EXTRA_CATALOG_COPY.NOT_FOUND_ERROR,
