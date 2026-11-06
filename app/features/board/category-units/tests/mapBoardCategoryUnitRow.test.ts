@@ -4,6 +4,9 @@ import { mapBoardCategoryUnitRow } from "../utils/mapBoardCategoryUnitRow";
 import { CATEGORY_UNITS_ERROR } from "../constants/CategoryUnits.constants";
 import {
   DEFAULT_CATEGORY_UNIT,
+  NOW,
+  RETURNS_EXACTLY_NOW,
+  RETURNS_ONE_MS_BEFORE_NOW,
   DEFAULT_UNIT_OCCUPANCY,
   OCCUPIED_CATEGORY_UNIT,
 } from "./CategoryUnits.constants";
@@ -16,13 +19,14 @@ import {
 describe("mapBoardCategoryUnitRow", () => {
   it("maps an available row without occupancy", () => {
     expect(
-      mapBoardCategoryUnitRow(DEFAULT_BOARD_UNIT_ROW)
+      mapBoardCategoryUnitRow(DEFAULT_BOARD_UNIT_ROW, NOW)
     ).toEqual(DEFAULT_CATEGORY_UNIT);
   });
 
   it("maps an occupied row with its occupancy, keeping the reservation id", () => {
     const unit = mapBoardCategoryUnitRow(
-      OCCUPIED_BOARD_UNIT_ROW
+      OCCUPIED_BOARD_UNIT_ROW,
+      NOW
     );
 
     expect(unit).toEqual(OCCUPIED_CATEGORY_UNIT);
@@ -32,11 +36,14 @@ describe("mapBoardCategoryUnitRow", () => {
   });
 
   it("never carries occupancy on a unit that is not occupied", () => {
-    const unit = mapBoardCategoryUnitRow({
-      ...OCCUPIED_BOARD_UNIT_ROW,
-      effective_status:
-        INVENTORY_UNIT_STATUS.IN_MAINTENANCE,
-    });
+    const unit = mapBoardCategoryUnitRow(
+      {
+        ...OCCUPIED_BOARD_UNIT_ROW,
+        effective_status:
+          INVENTORY_UNIT_STATUS.IN_MAINTENANCE,
+      },
+      NOW
+    );
 
     expect(unit.status).toBe(
       INVENTORY_UNIT_STATUS.IN_MAINTENANCE
@@ -48,11 +55,41 @@ describe("mapBoardCategoryUnitRow", () => {
     "throws when an occupied row misses a column: %o",
     (override) => {
       expect(() =>
-        mapBoardCategoryUnitRow({
-          ...OCCUPIED_BOARD_UNIT_ROW,
-          ...override,
-        })
+        mapBoardCategoryUnitRow(
+          {
+            ...OCCUPIED_BOARD_UNIT_ROW,
+            ...override,
+          },
+          NOW
+        )
       ).toThrow(CATEGORY_UNITS_ERROR.INCOMPLETE_OCCUPANCY);
     }
   );
+
+  it("is not overdue when the return is exactly now", () => {
+    const unit = mapBoardCategoryUnitRow(
+      {
+        ...OCCUPIED_BOARD_UNIT_ROW,
+        returns_at: RETURNS_EXACTLY_NOW,
+      },
+      NOW
+    );
+
+    expect(unit.occupancy?.isOverdue).toBe(false);
+  });
+
+  it("is overdue as soon as the return is in the past", () => {
+    const unit = mapBoardCategoryUnitRow(
+      {
+        ...OCCUPIED_BOARD_UNIT_ROW,
+        returns_at: RETURNS_ONE_MS_BEFORE_NOW,
+      },
+      NOW
+    );
+
+    expect(unit.occupancy?.isOverdue).toBe(true);
+    expect(unit.status).toBe(
+      INVENTORY_UNIT_STATUS.OCCUPIED
+    );
+  });
 });

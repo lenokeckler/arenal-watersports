@@ -4,7 +4,7 @@ import type { CategoryUnitReservationProps } from "../models/CategoryUnitReserva
 import {
   CATEGORY_UNIT_CUSTOMER_CLASS,
   CATEGORY_UNIT_DETAIL_CLASS,
-  CATEGORY_UNIT_RETURN_CLASS,
+  resolveCategoryUnitReturnClass,
 } from "../styles/CategoryUnitRow.styles";
 import { formatCategoryUnitReturn } from "../utils/formatCategoryUnitReturn";
 import CategoryUnitReservationReference from "./CategoryUnitReservationReference";
@@ -13,10 +13,15 @@ const CategoryUnitReservation = ({
   occupancy,
 }: CategoryUnitReservationProps): React.JSX.Element => (
   <div className={CATEGORY_UNIT_DETAIL_CLASS}>
-    <Text className={CATEGORY_UNIT_RETURN_CLASS}>
+    <Text
+      className={resolveCategoryUnitReturnClass(
+        occupancy.isOverdue
+      )}
+    >
       {formatCategoryUnitReturn(
         occupancy.returnsAt,
-        new Date()
+        new Date(),
+        occupancy.isOverdue
       )}
     </Text>
     <Text className={CATEGORY_UNIT_CUSTOMER_CLASS}>
