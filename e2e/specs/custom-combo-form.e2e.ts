@@ -61,7 +61,9 @@ test.describe("Custom combo unit availability", () => {
       reservationFormPage.getSelectedCustomComboUnitOption(
         E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
       )
-    ).toHaveValue("");
+    ).toHaveText(
+      E2E_RESERVATION_FORM_COPY.UNIT_PLACEHOLDER
+    );
     await reservationFormPage.waitForCustomComboUnitOption(
       E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION,
       E2E_RESERVATION_FORM_COPY.UNIT_OPTION
