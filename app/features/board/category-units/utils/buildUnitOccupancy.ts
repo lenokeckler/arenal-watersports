@@ -1,9 +1,11 @@
+import { parseReservationCalendarInstant } from "@/app/components/reservation-calendar/utils/parseReservationCalendarInstant";
 import type { BoardCategoryUnitRow } from "@/app/services/board";
 import { CATEGORY_UNITS_ERROR } from "../constants/CategoryUnits.constants";
 import type { UnitOccupancy } from "../models/UnitOccupancy.interface";
 
 export const buildUnitOccupancy = (
-  row: BoardCategoryUnitRow
+  row: BoardCategoryUnitRow,
+  now: Date
 ): UnitOccupancy => {
   const {
     customer_name: customerName,
@@ -30,6 +32,9 @@ export const buildUnitOccupancy = (
 
   return {
     customerName,
+    isOverdue:
+      parseReservationCalendarInstant(returnsAt) <
+      now.getTime(),
     reservationCode,
     reservationEndsAt,
     reservationId,
