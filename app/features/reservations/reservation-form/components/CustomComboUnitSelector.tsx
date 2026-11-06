@@ -3,7 +3,10 @@ import { ARIA_ROLE } from "@/app/constants";
 import FormField from "@/app/components/form-field/FormField";
 import { FORM_FIELD_VARIANT } from "@/app/components/form-field/constants/FormFieldVariant.constants";
 import Text from "@/app/components/text/Text";
-import type { NullableRef } from "@/app/types";
+import type {
+  NullableRef,
+  NullableUndefined,
+} from "@/app/types";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
 import { CUSTOM_COMBO_FORM_INPUT_ID } from "../constants/CustomComboFormCopy.constants";
 import type { CustomComboUnitSelectorProps } from "../models/CustomComboUnitSelectorProps.interface";
@@ -37,10 +40,9 @@ const getAvailabilityMessage = (
 const getAvailabilityRole = (
   isLoading: boolean,
   hasError: boolean
-):
-  | typeof ARIA_ROLE.STATUS
-  | typeof ARIA_ROLE.ALERT
-  | undefined => {
+): NullableUndefined<
+  typeof ARIA_ROLE.STATUS | typeof ARIA_ROLE.ALERT
+> => {
   if (isLoading) {
     return ARIA_ROLE.STATUS;
   }
