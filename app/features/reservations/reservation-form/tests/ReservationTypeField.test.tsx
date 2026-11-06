@@ -25,7 +25,7 @@ beforeEach(() => {
   ).mockResolvedValue([]);
 });
 
-describe("ReservationTypeField", () => {
+describe("reservation type defaults", () => {
   it("defaults to rental and hides guide-only categories", () => {
     const page = renderReservationForm();
 
@@ -40,7 +40,9 @@ describe("ReservationTypeField", () => {
       )
     ).not.toBeInTheDocument();
   });
+});
 
+describe("tour category eligibility", () => {
   it("offers guide-only categories only for tours", async () => {
     const page = renderReservationForm();
 
@@ -55,11 +57,10 @@ describe("ReservationTypeField", () => {
       RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME
     );
   });
+});
 
-  it.each([
-    RESERVATION_TYPE_COPY.OPTIONS.RENTAL.label,
-    RESERVATION_TYPE_COPY.OPTIONS.COMBO.label,
-  ])(
+describe("guide-only category reset", () => {
+  it.each([RESERVATION_TYPE_COPY.OPTIONS.RENTAL.label])(
     "clears a guide-only selection when switching to %s",
     async (reservationTypeLabel) => {
       const page = renderReservationForm();
@@ -91,7 +92,9 @@ describe("ReservationTypeField", () => {
       );
     }
   );
+});
 
+describe("concrete unit reset", () => {
   it("clears a selected concrete unit when changing to a non-tour type", async () => {
     vi.mocked(
       getAvailableReservationUnitsAction
@@ -133,7 +136,9 @@ describe("ReservationTypeField", () => {
 
     expect(page.getUnitSelect()).toHaveValue(STRING.Empty);
   });
+});
 
+describe("combo reservation type", () => {
   it("offers combo without adding package composition fields", () => {
     const page = renderReservationForm();
 

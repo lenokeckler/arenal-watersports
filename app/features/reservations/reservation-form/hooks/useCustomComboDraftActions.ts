@@ -1,4 +1,6 @@
 import type { Dispatch } from "react";
+import { INDEX, STRING } from "@/app/constants";
+import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 import { CUSTOM_COMBO_DRAFT_ACTION } from "../constants/CustomComboDraftAction.constants";
 import { CUSTOM_COMBO_RESERVATION_FIELD } from "../models/CustomComboReservationField.constants";
 import type { CustomComboDraftAction } from "../models/CustomComboDraftAction.type";
@@ -73,5 +75,33 @@ export const useCustomComboDraftActions = (
     },
     handleItemChange,
     handleItemRemoval,
+    handleItemQuantityChange: (
+      categoryId: string,
+      quantity: number
+    ): void => {
+      if (quantity <= INDEX.ZERO) {
+        handleItemRemoval(categoryId);
+        return;
+      }
+      handleItemChange({
+        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
+        categoryId,
+        quantity,
+      });
+    },
+    handleItemUnitChange: (
+      categoryId: string,
+      unitId: string
+    ): void => {
+      if (unitId === STRING.Empty) {
+        handleItemRemoval(categoryId);
+        return;
+      }
+      handleItemChange({
+        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
+        categoryId,
+        unitId,
+      });
+    },
   };
 };

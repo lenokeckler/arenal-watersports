@@ -27,13 +27,13 @@ export const RESERVATION_FORM_UI_COPY = {
   EQUIPMENT_QUANTITY_NOTE:
     "Los equipos intercambiables se reservan por cantidad; Operaciones asigna cada unidad al despachar.",
   EQUIPMENT_UNIT_NOTE:
-    "La lancha se compromete por unidad concreta y permanece en tierra hasta que Operaciones la despache.",
+    "La unidad elegida queda comprometida para este horario y Operaciones la despacha al iniciar la actividad.",
   NO_AVAILABLE_UNITS:
     "No hay unidades disponibles para esta categoría.",
   AVAILABILITY_ERROR:
     "No fue posible verificar la disponibilidad. Inténtelo de nuevo.",
   AVAILABILITY_LOADING:
-    "Verificando disponibilidad de la lancha…",
+    "Verificando disponibilidad de la unidad…",
   CATEGORY_AVAILABILITY: "Disponibilidad en este horario",
   CATEGORY_AVAILABILITY_AVAILABLE: "Disponibles",
   CATEGORY_AVAILABILITY_CONTEXT:
@@ -55,7 +55,7 @@ export const RESERVATION_FORM_UI_COPY = {
     "Consultando reservas de esta categoría…",
   CATEGORY_CONFLICT_WARNING_ERROR:
     "No fue posible verificar los cruces de horario. Puede continuar con el registro.",
-  UNIT: "Unidad de lancha",
+  UNIT: "Unidad concreta",
   UNIT_PLACEHOLDER: "Seleccione una unidad disponible",
   EQUIPMENT_ELIGIBILITY_ERROR:
     "No fue posible actualizar el equipo disponible. Revise su conexión e intente de nuevo.",
