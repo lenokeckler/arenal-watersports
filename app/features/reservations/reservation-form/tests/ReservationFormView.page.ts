@@ -150,7 +150,6 @@ export const createReservationFormViewPage = (
     queryCategoryOption: (categoryId: string) =>
       screen.queryByRole(ARIA_ROLE.BUTTON, {
         name: getCategoryName(categoryId),
-        exact: true,
       }),
     selectCategory: async (
       categoryId: string
@@ -158,7 +157,6 @@ export const createReservationFormViewPage = (
       await user.click(
         screen.getByRole(ARIA_ROLE.BUTTON, {
           name: getCategoryName(categoryId),
-          exact: true,
         })
       );
     },
