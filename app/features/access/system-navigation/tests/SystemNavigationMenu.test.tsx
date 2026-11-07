@@ -1,6 +1,12 @@
 import { render } from "@testing-library/react";
 import type { ComponentProps } from "react";
-import { describe, expect, it, vi } from "vitest";
+import {
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import { PATHS } from "@/app/constants";
 import SystemNavigation from "../SystemNavigation";
 import { SYSTEM_NAVIGATION_COPY } from "../constants/SystemNavigationCopy.constants";
@@ -8,8 +14,12 @@ import { SYSTEM_NAVIGATION_MENU_ID } from "../constants/SystemNavigationMenu.con
 import { SYSTEM_NAVIGATION_TEST_OVERVIEW } from "./SystemNavigation.constants";
 import { createSystemNavigationPage } from "./SystemNavigation.page";
 
+const systemNavigationMocks = vi.hoisted(() => ({
+  pathname: "",
+}));
+
 vi.mock("next/navigation", () => ({
-  usePathname: () => PATHS.BOARD,
+  usePathname: () => systemNavigationMocks.pathname,
 }));
 
 vi.mock("next/link", async () => {
@@ -37,6 +47,10 @@ vi.mock("next/link", async () => {
 });
 
 describe("SystemNavigation menu", () => {
+  beforeEach(() => {
+    systemNavigationMocks.pathname = PATHS.BOARD;
+  });
+
   it("shows existing paths and closes after navigation", async () => {
     render(
       <SystemNavigation

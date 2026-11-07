@@ -1,42 +1,27 @@
 import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
-import { PATHS, SUPABASE_WORK_AREA } from "@/app/constants";
-import type { WorkArea } from "@/app/types";
-import type { SystemNavigationItem } from "../models/SystemNavigationItem.interface";
+import { PATHS } from "@/app/constants";
 import { SYSTEM_NAVIGATION_COPY } from "./SystemNavigationCopy.constants";
 
-export const buildSystemNavigationItems = (
-  area: WorkArea
-): readonly SystemNavigationItem[] => {
-  const calendarPath =
-    area === SUPABASE_WORK_AREA.OPERATIONS
-      ? PATHS.OPERATIONS.CALENDAR
-      : PATHS.RESERVATIONS.CALENDAR;
-  const items: SystemNavigationItem[] = [
-    {
-      label: SYSTEM_NAVIGATION_COPY.BOARD,
-      href: PATHS.BOARD,
-      icon: MATERIAL_ICON_NAME.DASHBOARD,
-    },
-    {
-      label: SYSTEM_NAVIGATION_COPY.CALENDAR,
-      href: calendarPath,
-      icon: MATERIAL_ICON_NAME.EVENT,
-    },
-  ];
-
-  if (area === SUPABASE_WORK_AREA.OPERATIONS) {
-    items.push({
-      label: SYSTEM_NAVIGATION_COPY.INVENTORY,
-      href: PATHS.OPERATIONS.INVENTORY,
-      icon: MATERIAL_ICON_NAME.DIRECTIONS_BOAT,
-    });
-  }
-
-  items.push({
+export const SYSTEM_NAVIGATION_ITEMS = {
+  BOARD: {
+    label: SYSTEM_NAVIGATION_COPY.BOARD,
+    href: PATHS.BOARD,
+    icon: MATERIAL_ICON_NAME.DASHBOARD,
+  },
+  HISTORY: {
     label: SYSTEM_NAVIGATION_COPY.HISTORY,
     href: PATHS.HISTORY.ROOT,
     icon: MATERIAL_ICON_NAME.HISTORY,
-  });
+  },
+} as const;
 
-  return items;
-};
+export const SYSTEM_NAVIGATION_CALENDAR_ITEM = {
+  label: SYSTEM_NAVIGATION_COPY.CALENDAR,
+  icon: MATERIAL_ICON_NAME.EVENT,
+} as const;
+
+export const SYSTEM_NAVIGATION_INVENTORY_ITEM = {
+  label: SYSTEM_NAVIGATION_COPY.INVENTORY,
+  href: PATHS.OPERATIONS.INVENTORY,
+  icon: MATERIAL_ICON_NAME.DIRECTIONS_BOAT,
+} as const;

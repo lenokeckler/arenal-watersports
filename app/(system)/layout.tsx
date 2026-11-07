@@ -11,7 +11,7 @@ const SystemLayout = async ({
   const overview = await readWorkModeOverviewAsSignedIn();
 
   return (
-    <SystemScreen>
+    <SystemScreen overview={overview}>
       <SessionActivityTracker />
       <SessionBar />
       <WorkModeSwitch overview={overview} />

@@ -11,13 +11,14 @@ import { SYSTEM_NAVIGATION_CLASS } from "./styles/SystemNavigation.styles";
 const SystemNavigation = ({
   overview,
 }: SystemNavigationProps): NullableRef<React.JSX.Element> => {
-  const viewModel = useSystemNavigationViewModel(overview);
+  const [viewModel, navigationRef] =
+    useSystemNavigationViewModel(overview);
   if (!viewModel.canShowNavigation) {
     return null;
   }
-
   return (
     <nav
+      ref={navigationRef}
       aria-label={SYSTEM_NAVIGATION_COPY.LABEL}
       className={SYSTEM_NAVIGATION_CLASS}
     >
@@ -35,5 +36,4 @@ const SystemNavigation = ({
     </nav>
   );
 };
-
 export default SystemNavigation;

@@ -1,33 +1,35 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { SUPABASE_WORK_AREA } from "@/app/constants";
 import type { WorkModeOverview } from "@/app/services/work-mode/models/WorkModeOverview.interface";
 import { hasSeveralWorkAreas } from "@/app/utils/work-mode/hasSeveralWorkAreas";
-import { buildSystemNavigationItems } from "../constants/SystemNavigationItems.constants";
-import type { SystemNavigationViewModel } from "../models/SystemNavigationViewModel.interface";
+import { shouldShowSystemNavigation } from "@/app/utils/work-mode/shouldShowSystemNavigation";
+import { buildSystemNavigationItems } from "../utils/buildSystemNavigationItems";
+import { useSystemNavigationMenuDismissal } from "./useSystemNavigationMenuDismissal";
+import { useSystemNavigationMenuState } from "./useSystemNavigationMenuState";
+import type { SystemNavigationViewModelResult } from "../models/SystemNavigationViewModelResult.type";
 
 export const useSystemNavigationViewModel = (
   overview: WorkModeOverview
-): SystemNavigationViewModel => {
+): SystemNavigationViewModelResult => {
   const pathname = usePathname();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuState = useSystemNavigationMenuState(pathname);
+  const navigationRef = useSystemNavigationMenuDismissal(
+    menuState.isMenuOpen,
+    menuState.closeMenu
+  );
   const area = overview.current;
-  const isCurrentAreaGranted =
-    area !== null && overview.areas.includes(area);
-  const isSupportedArea =
-    area === SUPABASE_WORK_AREA.OPERATIONS ||
-    area === SUPABASE_WORK_AREA.RESERVATIONS;
 
-  return {
+  const viewModel = {
     items: area ? buildSystemNavigationItems(area) : [],
     pathname,
-    isMenuOpen,
-    toggleMenu: () => setIsMenuOpen((isOpen) => !isOpen),
-    closeMenu: () => setIsMenuOpen(false),
+    ...menuState,
     canChangeMode: hasSeveralWorkAreas(overview),
-    canShowNavigation:
-      isCurrentAreaGranted && isSupportedArea,
+    canShowNavigation: shouldShowSystemNavigation(
+      overview,
+      pathname
+    ),
   };
+
+  return [viewModel, navigationRef];
 };
