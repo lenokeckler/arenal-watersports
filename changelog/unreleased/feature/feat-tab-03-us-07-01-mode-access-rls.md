@@ -1,1 +1,1 @@
-TAB-03.07.01: Mode access enforcement \u2014 verify direct RLS and history RPC restrictions for workers active in operations mode (US-TAB-07 \u00b7 AWS-47)\n
+TAB-03.07.01: Mode access enforcement — verify direct RLS and history RPC restrictions for workers active in operations mode (US-TAB-07 · AWS-47)
