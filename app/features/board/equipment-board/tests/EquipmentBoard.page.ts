@@ -9,9 +9,8 @@ import {
   CARD_NOT_FOUND_MESSAGE,
   BAR_WIDTH_ATTRIBUTE,
   HEADING_LEVEL_TWO,
-  IMAGE_ELEMENT_SELECTOR,
-  IMAGE_SOURCE_ATTRIBUTE,
 } from "./EquipmentBoard.constants";
+import { createEquipmentBoardImagePage } from "./EquipmentBoardImage.page";
 
 export const createEquipmentBoardPage = () => {
   const user = userEvent.setup();
@@ -76,14 +75,6 @@ export const createEquipmentBoardPage = () => {
   const getCardText = (card: HTMLElement) =>
     card.textContent;
 
-  const hasImage = (card: HTMLElement) =>
-    card.querySelector(IMAGE_ELEMENT_SELECTOR) !== null;
-
-  const getImageSource = (card: HTMLElement) =>
-    card
-      .querySelector(IMAGE_ELEMENT_SELECTOR)
-      ?.getAttribute(IMAGE_SOURCE_ATTRIBUTE);
-
   const getBarWidth = (card: HTMLElement) =>
     card
       .querySelector(BAR_FILL_SELECTOR)
@@ -121,18 +112,17 @@ export const createEquipmentBoardPage = () => {
   };
 
   return {
+    ...createEquipmentBoardImagePage(),
     getAlert,
     getBarWidth,
     getCard,
     getCardLink,
     getCardLinks,
-    getImageSource,
     getCardText,
     getCards,
     getGrid,
     getHeadings,
     getLinksIn,
-    hasImage,
     getMain,
     getPageText,
     getRetryButton,

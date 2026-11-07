@@ -25,7 +25,7 @@ test.describe("Reservations calendar", () => {
     await workModePage
       .getCard(E2E_RESERVATIONS_AREA_LABEL)
       .click();
-    await expect(page).toHaveURL(PATHS.BOARD);
+    await expect(page).toHaveURL(PATHS.HOME);
   });
 
   test("shows the heat map, selected agendas, and week layout", async ({
