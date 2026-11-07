@@ -71,6 +71,8 @@ describe("createRentalReservation", () => {
               VALIDATED_RESERVATION_INPUT.durationMinutes,
             people_count:
               VALIDATED_RESERVATION_INPUT.peopleCount,
+            reservation_type:
+              VALIDATED_RESERVATION_INPUT.reservationType,
             time: VALIDATED_RESERVATION_INPUT.time,
             category_id:
               VALIDATED_RESERVATION_INPUT
@@ -102,6 +104,8 @@ describe("createRentalReservation", () => {
               VALIDATED_UNIT_RESERVATION_INPUT.durationMinutes,
             people_count:
               VALIDATED_UNIT_RESERVATION_INPUT.peopleCount,
+            reservation_type:
+              VALIDATED_UNIT_RESERVATION_INPUT.reservationType,
             time: VALIDATED_UNIT_RESERVATION_INPUT.time,
             unit_id:
               VALIDATED_UNIT_RESERVATION_INPUT

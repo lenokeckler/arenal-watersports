@@ -32,6 +32,9 @@ export const PATHS = {
     WORKER_AREAS: "/administration/workers/areas",
     WORKERS_NEW: "/administration/workers/new",
   },
+  HISTORY: {
+    ROOT: "/history",
+  },
   OPERATIONS: {
     CALENDAR: "/operations/calendar",
     INVENTORY: OPERATIONS_INVENTORY_PATH,
@@ -58,7 +61,9 @@ export const PATHS = {
     DETAIL: (reservationId: string): string =>
       `/reservations/${encodeURIComponent(reservationId)}`,
     DEPOSITS: "/reservations/deposits",
+    EDIT_SEGMENT: "edit",
     INCOME: "/reservations/income",
     NEW: "/reservations/new",
+    ROOT: "/reservations",
   },
 } as const;

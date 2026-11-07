@@ -1,3 +1,5 @@
+import { RESERVATION_TYPE } from "./ReservationType.constants";
+
 export const RESERVATION_TIME_ZONE = "America/Costa_Rica";
 
 export const RESERVATION_FORM_ACCESS = {
@@ -24,6 +26,7 @@ export const RESERVATION_FORM_DEFAULT_VALUES = {
   durationHours: 1,
   peopleCount: 1,
   quantity: 1,
+  reservationType: RESERVATION_TYPE.RENTAL,
   time: "09:00",
   unitId: "",
 } as const;
@@ -39,6 +42,7 @@ export const RESERVATION_FORM_FIELD_ID = {
   HEADING: "reservation-form-heading",
   PEOPLE_COUNT: "reservation-people-count",
   QUANTITY: "reservation-quantity",
+  RESERVATION_TYPE: "reservation-type",
   SUBMISSION_ERROR: "reservation-submission-error",
   TIME: "reservation-time",
   UNIT: "reservation-unit",

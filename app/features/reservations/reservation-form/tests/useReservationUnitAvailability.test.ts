@@ -49,8 +49,14 @@ describe("useReservationUnitAvailability", () => {
         useReservationUnitAvailability(request, 0),
       { initialProps: { request: initialRequest } }
     );
+    expect(result.current.isResolvedForCurrentRequest).toBe(
+      false
+    );
     await waitFor(() =>
       expect(result.current.availableUnits).toHaveLength(1)
+    );
+    expect(result.current.isResolvedForCurrentRequest).toBe(
+      true
     );
 
     const nextRequest = {
@@ -60,6 +66,9 @@ describe("useReservationUnitAvailability", () => {
       time: "10:30",
     };
     rerender({ request: nextRequest });
+    expect(result.current.isResolvedForCurrentRequest).toBe(
+      false
+    );
 
     await waitFor(() =>
       expect(
@@ -68,6 +77,9 @@ describe("useReservationUnitAvailability", () => {
     );
     await waitFor(() =>
       expect(result.current.availableUnits).toHaveLength(1)
+    );
+    expect(result.current.isResolvedForCurrentRequest).toBe(
+      true
     );
     expect(result.current.availableUnits).toEqual([
       {

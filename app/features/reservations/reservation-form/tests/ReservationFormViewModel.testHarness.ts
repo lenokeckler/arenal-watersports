@@ -1,4 +1,5 @@
 import { vi } from "vitest";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 
 export const viewModelHarness = (() => {
@@ -9,6 +10,7 @@ export const viewModelHarness = (() => {
     durationHours: 2,
     peopleCount: 4,
     quantity: 1,
+    reservationType: RESERVATION_TYPE.RENTAL,
     time: "09:30",
     unitId: "unit-1",
   };
@@ -131,6 +133,7 @@ export const resetViewModelHarness = (): void => {
       {
         id: "category-1",
         isInterchangeable: false,
+        isGuideOnly: false,
         name: "Lancha",
       },
     ],
