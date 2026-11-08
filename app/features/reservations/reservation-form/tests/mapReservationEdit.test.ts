@@ -13,10 +13,13 @@ import {
 } from "./ReservationEdit.constants";
 
 const mapRow = (overrides: Partial<ReservationEditRow>) =>
-  mapReservationEdit({
-    ...RESERVATION_EDIT_ROW,
-    ...overrides,
-  });
+  mapReservationEdit(
+    {
+      ...RESERVATION_EDIT_ROW,
+      ...overrides,
+    },
+    test.EDITOR_NAME
+  );
 
 describe("mapReservationEdit", () => {
   it("maps a category item into the form starting values", () => {
@@ -29,6 +32,7 @@ describe("mapReservationEdit", () => {
       },
       equipmentLock: lock.NONE,
       isEditable: true,
+      lastEditLabel: test.EXPECTED_LAST_EDIT,
       lastEditedAt: test.MICROSECOND_INSTANT,
       time: test.EXPECTED_TIME,
     });
