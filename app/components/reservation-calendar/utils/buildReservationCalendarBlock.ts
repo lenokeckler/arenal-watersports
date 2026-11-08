@@ -8,7 +8,7 @@ import type { ReservationCalendarBlock } from "../models/ReservationCalendarBloc
 import type { ReservationCalendarDispatch } from "../models/ReservationCalendarDispatch.interface";
 import type { ReservationCalendarEntry } from "../models/ReservationCalendarEntry.interface";
 import { describeReservationEquipment } from "./describeReservationEquipment";
-import { formatReservationCalendarDateTime } from "./formatReservationCalendarDateTime";
+import { formatReservationCalendarTime } from "./formatReservationCalendarTime";
 
 const describeInstant = (
   label: string,
@@ -18,7 +18,7 @@ const describeInstant = (
   const value =
     instant === null
       ? unknownLabel
-      : formatReservationCalendarDateTime(instant);
+      : formatReservationCalendarTime(instant);
   return [label, value].join(STRING.SPACE);
 };
 
@@ -29,7 +29,7 @@ const describeDispatch = (
     dispatch.categoryName,
     [
       copy.ACTUAL_DEPARTURE,
-      formatReservationCalendarDateTime(dispatch.startsAt),
+      formatReservationCalendarTime(dispatch.startsAt),
     ].join(STRING.SPACE),
     describeInstant(
       copy.EXPECTED_RETURN,
@@ -53,8 +53,8 @@ export const buildReservationCalendarBlock = (
           .map(describeReservationEquipment)
           .join(STRING.COMMA_SPACE);
   const scheduledRange = [
-    formatReservationCalendarDateTime(entry.startsAt),
-    formatReservationCalendarDateTime(entry.endsAt),
+    formatReservationCalendarTime(entry.startsAt),
+    formatReservationCalendarTime(entry.endsAt),
   ].join(CALENDAR_PRESENTATION.PERIOD_SEPARATOR);
   const scheduledLabel = [
     copy.SCHEDULED,

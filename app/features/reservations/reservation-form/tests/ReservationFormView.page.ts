@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
@@ -12,6 +12,9 @@ import { createReservationEquipmentPage } from "./ReservationFormEquipment.page"
 
 const getDurationOption = (label: string) =>
   screen.getByRole(ARIA_ROLE.BUTTON, { name: label });
+
+const getReservationTypeOption = (label: string) =>
+  screen.getByLabelText(label, { exact: false });
 
 const queryCustomDurationInput = (
   container: HTMLElement
@@ -80,6 +83,7 @@ const typeCustomDuration = async (
 const submit = async (
   user: ReturnType<typeof userEvent.setup>
 ): Promise<void> => {
+  await waitFor(() => getSubmitButton());
   await user.click(getSubmitButton());
 };
 
@@ -107,10 +111,42 @@ export const createReservationFormViewPage = (
   return {
     ...createReservationEquipmentPage(user),
     getDurationOption,
+    selectReservationType: async (
+      label: string
+    ): Promise<void> => {
+      await user.click(getReservationTypeOption(label));
+    },
+    isReservationTypeSelected: (label: string): boolean =>
+      (getReservationTypeOption(label) as HTMLInputElement)
+        .checked,
+    findReservationTypeSelectionReset: () =>
+      screen.findByText(
+        RESERVATION_FORM_UI_COPY.RESERVATION_TYPE_SELECTION_CLEARED
+      ),
     getBackButton,
     findDurationValidationError,
     findSubmissionError,
     findSuccessMessage,
+    getFocusedElement: () => document.activeElement,
+    getCustomerNameInput: () =>
+      container.querySelector<HTMLInputElement>(
+        `#${RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}`
+      ),
+    setCustomerName: async (
+      value: string
+    ): Promise<void> => {
+      const input =
+        container.querySelector<HTMLInputElement>(
+          `#${RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}`
+        );
+      if (input === null) {
+        throw new Error(
+          "The customer name field is missing."
+        );
+      }
+      await user.clear(input);
+      await user.type(input, value);
+    },
     getSubmitButton,
     querySubmitButton,
     findCategoryConflictWarning: () =>

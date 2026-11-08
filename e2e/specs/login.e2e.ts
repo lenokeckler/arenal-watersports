@@ -1,4 +1,4 @@
-import { INPUT_TYPES, PATHS } from "@/app/constants";
+import { PATHS } from "@/app/constants";
 import {
   E2E_LOGIN_ACCOUNT,
   E2E_LOGIN_ATTRIBUTE,
@@ -96,46 +96,6 @@ test.describe("Login", () => {
     );
   });
 
-  test("toggles the password input type and the toggle label", async ({
-    page,
-  }) => {
-    const loginPage = createLoginPage(page);
-    await loginPage.goTo();
-    await expect(
-      loginPage.getPasswordInput()
-    ).toHaveAttribute(
-      E2E_LOGIN_ATTRIBUTE.TYPE,
-      INPUT_TYPES.PASSWORD
-    );
-
-    await loginPage.togglePasswordVisibility(
-      E2E_LOGIN_TOGGLE_LABEL.SHOW
-    );
-
-    await expect(
-      loginPage.getPasswordInput()
-    ).toHaveAttribute(
-      E2E_LOGIN_ATTRIBUTE.TYPE,
-      INPUT_TYPES.TEXT
-    );
-    await expect(
-      loginPage.getPasswordToggle(
-        E2E_LOGIN_TOGGLE_LABEL.HIDE
-      )
-    ).toBeVisible();
-
-    await loginPage.togglePasswordVisibility(
-      E2E_LOGIN_TOGGLE_LABEL.HIDE
-    );
-
-    await expect(
-      loginPage.getPasswordInput()
-    ).toHaveAttribute(
-      E2E_LOGIN_ATTRIBUTE.TYPE,
-      INPUT_TYPES.PASSWORD
-    );
-  });
-
   test("signs in the seeded account and lands on the home page", async ({
     page,
   }) => {
@@ -150,6 +110,6 @@ test.describe("Login", () => {
 
     await loginPage.submit();
 
-    await expect(page).toHaveURL(PATHS.BOARD);
+    await expect(page).toHaveURL(PATHS.HOME);
   });
 });

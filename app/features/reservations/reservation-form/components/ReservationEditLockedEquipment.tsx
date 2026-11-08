@@ -5,11 +5,9 @@ import type { ReservationEditLockedEquipmentProps } from "../models/ReservationE
 import {
   RESERVATION_EDIT_LOCKED_EQUIPMENT_CLASS,
   RESERVATION_EDIT_LOCKED_EQUIPMENT_LIST_CLASS,
+  RESERVATION_EDIT_LOCKED_EQUIPMENT_NOTE_CLASS,
 } from "../styles/ReservationEdit.styles";
-import {
-  RESERVATION_FORM_CATEGORY_LEGEND_CLASS,
-  RESERVATION_FORM_EQUIPMENT_NOTE_CLASS,
-} from "../styles/ReservationFormView.styles";
+import { RESERVATION_FORM_CATEGORY_LEGEND_CLASS } from "../styles/ReservationFormView.styles";
 
 const ReservationEditLockedEquipment = ({
   equipmentLabels,
@@ -30,7 +28,11 @@ const ReservationEditLockedEquipment = ({
       }
       items={equipmentLabels}
     />
-    <Text className={RESERVATION_FORM_EQUIPMENT_NOTE_CLASS}>
+    <Text
+      className={
+        RESERVATION_EDIT_LOCKED_EQUIPMENT_NOTE_CLASS
+      }
+    >
       {notice}
     </Text>
   </div>

@@ -116,7 +116,7 @@ test.describe("Login screenshots", () => {
     );
 
     await loginPage.submit();
-    await expect(page).toHaveURL(PATHS.BOARD);
+    await expect(page).toHaveURL(PATHS.HOME);
     await homePage.getHeading().waitFor();
 
     await captureViewport(

@@ -76,6 +76,13 @@ export const createReservationsCalendarPage = (
       customerName: string
     ): Locator =>
       agenda.getByText(customerName, { exact: true }),
+    getReservationDetailLink: (
+      customerName: string
+    ): Locator =>
+      main.getByRole(ARIA_ROLE.LINK, {
+        name: `${RESERVATIONS_CALENDAR_COPY.OPEN_RESERVATION_DETAIL} ${customerName}`,
+        exact: true,
+      }),
     getPeriodMessage: (message: string): Locator =>
       main.getByText(message, { exact: true }),
     getRefreshStatus: (): Locator =>

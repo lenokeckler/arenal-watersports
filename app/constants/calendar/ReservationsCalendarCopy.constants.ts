@@ -14,6 +14,8 @@ export const RESERVATIONS_CALENDAR_COPY = {
     "Aún no se ha cargado información de reservas.",
   MODIFY_RESERVATION: "Modificar",
   MODIFY_RESERVATION_LABEL: "Modificar la reserva de",
+  OPEN_RESERVATION_DETAIL:
+    "Abrir detalle de la reserva a nombre de",
   PARTIAL_COVERAGE:
     "La información cargada no cubre todo este período.",
   PERIOD_AGENDA: "Agenda de reservas del período",

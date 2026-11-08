@@ -13,6 +13,9 @@ export const RESERVATION_EDIT_LOCKED_EQUIPMENT_CLASS = `${RESERVATION_FORM_FIELD
 export const RESERVATION_EDIT_LOCKED_EQUIPMENT_LIST_CLASS =
   "rounded-xl bg-surface-container-low/70 p-4 text-base text-on-surface [&_li]:break-words [&_ul]:list-none [&_ul]:space-y-2";
 
+export const RESERVATION_EDIT_LOCKED_EQUIPMENT_NOTE_CLASS =
+  "rounded-2xl border border-primary/30 bg-primary/5 p-4 text-sm text-on-surface-variant md:col-span-2";
+
 export const RESERVATION_EDIT_SUMMARY_CLASS =
   "mb-4 grid grid-cols-1 gap-3 rounded-xl bg-surface-container-low/70 px-4 py-3 md:grid-cols-2";
 

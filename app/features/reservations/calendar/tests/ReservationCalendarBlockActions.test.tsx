@@ -46,6 +46,14 @@ describe("Reservation block modify link", () => {
     );
   });
 
+  it("keeps the modify link outside the detail link", () => {
+    const page = renderAgendaBlock(status.SCHEDULED);
+
+    expect(page.getDetailLink()).not.toContainElement(
+      page.getModifyLink()
+    );
+  });
+
   it("offers no link on a dispatched block", () => {
     expect(
       renderAgendaBlock(status.DISPATCHED).getModifyLink()

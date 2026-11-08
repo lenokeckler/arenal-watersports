@@ -1,3 +1,4 @@
+import { isValidElement } from "react";
 import {
   beforeEach,
   describe,
@@ -5,28 +6,30 @@ import {
   it,
   vi,
 } from "vitest";
-import { redirect } from "next/navigation";
-import { PATHS } from "@/app/constants";
-import HomePage from "../page";
-import { REDIRECT_SIGNAL_MESSAGE } from "./HomePage.constants";
+import EquipmentBoardEntry from "@/app/features/board/equipment-board/EquipmentBoardEntry";
+import { EQUIPMENT_BOARD_METADATA } from "@/app/features/board/equipment-board/constants/EquipmentBoardMetadata.constants";
+import HomePage, { metadata } from "../page";
 
-vi.mock("next/navigation", () => ({
-  redirect: vi.fn(),
-}));
+vi.mock(
+  "@/app/features/board/equipment-board/EquipmentBoardEntry",
+  () => ({
+    default: vi.fn(),
+  })
+);
 
 describe("HomePage", () => {
   beforeEach(() => {
     vi.resetAllMocks();
-    vi.mocked(redirect).mockImplementation(() => {
-      throw new Error(REDIRECT_SIGNAL_MESSAGE);
-    });
   });
 
-  it("sends the entry route to the equipment board", () => {
-    expect(() => HomePage()).toThrow(
-      REDIRECT_SIGNAL_MESSAGE
-    );
-    expect(redirect).toHaveBeenCalledTimes(1);
-    expect(redirect).toHaveBeenCalledWith(PATHS.BOARD);
+  it("exports the board metadata", () => {
+    expect(metadata).toBe(EQUIPMENT_BOARD_METADATA);
+  });
+
+  it("renders the shared guarded board entry", () => {
+    const page = HomePage();
+
+    expect(isValidElement(page)).toBe(true);
+    expect(page.type).toBe(EquipmentBoardEntry);
   });
 });

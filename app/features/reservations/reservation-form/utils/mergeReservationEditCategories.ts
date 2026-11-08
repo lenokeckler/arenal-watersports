@@ -19,6 +19,7 @@ export const mergeReservationEditCategories = (
     ...categories,
     {
       id: equipment.categoryId,
+      isGuideOnly: false,
       isInterchangeable: equipment.unitId === null,
       name: equipment.categoryName,
     },

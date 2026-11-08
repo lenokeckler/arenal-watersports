@@ -1,18 +1,20 @@
 import NextLink from "next/link";
-import { LinkProps } from "./LinkProps";
+import type { LinkProps } from "./models/LinkProps.interface";
 
 const Link = ({
-  ariaLabel,
   href,
   children,
   className,
+  ariaLabel,
   onClick,
+  ariaCurrent,
 }: LinkProps) => (
   <NextLink
-    aria-label={ariaLabel}
     href={href}
     className={className}
+    aria-label={ariaLabel}
     onClick={onClick}
+    aria-current={ariaCurrent}
   >
     {children}
   </NextLink>

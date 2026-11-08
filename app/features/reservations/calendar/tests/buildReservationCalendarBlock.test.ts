@@ -73,8 +73,8 @@ describe("static accessible descriptions", (): void => {
   });
 });
 
-describe("Costa Rica date continuity", (): void => {
-  it("retains original full dates across a multi-day reservation", (): void => {
+describe("Costa Rica reservation time display", (): void => {
+  it("shows times without repeating dates for a multi-day reservation", (): void => {
     const block = buildReservationCalendarBlock({
       ...entry,
       startsAt: instant.BEFORE_MIDNIGHT,
@@ -86,6 +86,7 @@ describe("Costa Rica date continuity", (): void => {
     expect(block.scheduledLabel).toContain(
       expected.NEXT_DAY
     );
+    expect(block.scheduledLabel).not.toContain("2026");
   });
   it("formats Costa Rica midnight with its correct full civil date", (): void => {
     expect(

@@ -1,5 +1,8 @@
 import { screen, within } from "@testing-library/react";
-import { ARIA_ROLE } from "@/app/constants";
+import {
+  ARIA_ROLE,
+  RESERVATIONS_CALENDAR_COPY,
+} from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import type { ReservationCalendarBlock } from "@/app/components/reservation-calendar/models/ReservationCalendarBlock.interface";
 import type { ReservationCalendarBlockPage } from "./models/ReservationCalendarBlockPage.interface";
@@ -31,8 +34,14 @@ export const createReservationCalendarBlockPage = (
   };
   return {
     getBlock,
+    getDetailLink: (): HTMLElement =>
+      screen.getByRole(ARIA_ROLE.LINK, {
+        name: `${RESERVATIONS_CALENDAR_COPY.OPEN_RESERVATION_DETAIL} ${block.customerName}`,
+      }),
     getModifyLink: (): NullableRef<HTMLElement> =>
-      within(getBlock()).queryByRole(ARIA_ROLE.LINK),
+      screen.queryByRole(ARIA_ROLE.LINK, {
+        name: `${RESERVATIONS_CALENDAR_COPY.MODIFY_RESERVATION_LABEL} ${block.customerName}`,
+      }),
     getFocusableElements,
     getEquipmentImages: (): HTMLImageElement[] =>
       Array.from(getBlock().querySelectorAll("img")),

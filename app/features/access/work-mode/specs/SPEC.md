@@ -12,7 +12,7 @@ the account behaves as if it only had that area.
   `PATHS.MODE` (`/mode`).
 - `WorkModeSelector` at `/mode`: one large card per enabled area (Operaciones, Reservas,
   Administración, in that order), the current one marked "Modo actual". Choosing posts
-  `submitWorkModeChoice`, which calls `choose_work_area` and returns to the home.
+  `submitWorkModeChoice`, which calls `choose_work_area` and returns to `/`, which renders the guarded equipment board.
 - An account with a single area is sent to the home and never sees the selector.
 
 ## Out of scope
