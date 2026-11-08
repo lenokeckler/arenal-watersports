@@ -80,7 +80,7 @@ describe("runExtraCardMutation", () => {
     expect(onSettled).toHaveBeenCalledOnce();
   });
 
-  it("marks the extra pending, then clears it only while it is still the pending one", async () => {
+  it("adds the extra to the pending ones, then removes only that one", async () => {
     await run(() =>
       Promise.resolve({
         message: SUCCESS_MESSAGE,
@@ -90,9 +90,16 @@ describe("runExtraCardMutation", () => {
 
     const [markPending] = setPendingExtraId.mock.calls[0];
     const [clear] = setPendingExtraId.mock.calls[1];
-    expect(markPending(OTHER_EXTRA_ID)).toBe(FAKE_EXTRA_ID);
-    expect(clear(FAKE_EXTRA_ID)).toBeNull();
-    expect(clear(OTHER_EXTRA_ID)).toBe(OTHER_EXTRA_ID);
+    expect(markPending([OTHER_EXTRA_ID])).toEqual([
+      OTHER_EXTRA_ID,
+      FAKE_EXTRA_ID,
+    ]);
+    expect(markPending([FAKE_EXTRA_ID])).toEqual([
+      FAKE_EXTRA_ID,
+    ]);
+    expect(clear([FAKE_EXTRA_ID, OTHER_EXTRA_ID])).toEqual([
+      OTHER_EXTRA_ID,
+    ]);
   });
 });
 

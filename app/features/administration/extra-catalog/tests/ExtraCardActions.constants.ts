@@ -44,6 +44,6 @@ export const buildExtraCardActionsViewModel = (
   onConfirmRemovalClick: () => vi.fn(),
   onReactivateClick: () => vi.fn(),
   onRemoveClick: () => vi.fn(),
-  pendingExtraId: null,
+  pendingExtraIds: [],
   ...overrides,
 });

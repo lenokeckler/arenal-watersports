@@ -14,7 +14,9 @@ export const buildExtraCardViewModel = (
   ),
   editHref: resolveExtraEditPath(extra.id),
   id: extra.id,
-  isActionLoading: extra.id === cardActions.pendingExtraId,
+  isActionLoading: cardActions.pendingExtraIds.includes(
+    extra.id
+  ),
   name: extra.name,
   onCancelClick: cardActions.onCancelClick,
   onConfirmRemovalClick: cardActions.onConfirmRemovalClick(
