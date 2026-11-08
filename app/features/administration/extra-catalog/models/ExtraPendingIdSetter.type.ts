@@ -1,5 +1,5 @@
-import type { ExtraIdUpdater } from "./ExtraIdUpdater.type";
+import type { ExtraPendingIdsUpdater } from "./ExtraPendingIdsUpdater.type";
 
 export type ExtraPendingIdSetter = (
-  update: ExtraIdUpdater
+  update: ExtraPendingIdsUpdater
 ) => void;
