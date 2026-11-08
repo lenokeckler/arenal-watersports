@@ -14,6 +14,7 @@ import { createExtraAction } from "../services/createExtraAction";
 import { FAKE_EXTRA_NAME } from "./Extra.constants";
 import {
   BLANK_EXTRA_NAME,
+  NON_STRING_EXTRA_NAMES,
   EXTRAS_TABLE,
   FAKE_EXTRA_ADMIN_WORKER_ID,
   PADDED_EXTRA_NAME,
@@ -73,6 +74,21 @@ describe("createExtraAction", () => {
     });
     expect(mockInsert).not.toHaveBeenCalled();
   });
+
+  it.each(NON_STRING_EXTRA_NAMES)(
+    "returns a name error without writing when the name is the non-string value %j",
+    async (name) => {
+      const result = await createExtraAction({
+        name: name as never,
+      });
+
+      expect(result).toEqual({
+        status: EXTRA_MUTATION_STATUS.ERROR,
+        nameError: EXTRA_CATALOG_COPY.NAME_REQUIRED_ERROR,
+      });
+      expect(mockInsert).not.toHaveBeenCalled();
+    }
+  );
 
   it("inserts the trimmed name stamped with the admin worker", async () => {
     const result = await createExtraAction({

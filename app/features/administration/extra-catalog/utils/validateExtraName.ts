@@ -3,8 +3,8 @@ import { STRING } from "@/app/constants";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
 
 export const validateExtraName = (
-  name: string
+  name: unknown
 ): NullableUndefined<string> =>
-  name.trim() === STRING.Empty
+  typeof name !== "string" || name.trim() === STRING.Empty
     ? EXTRA_CATALOG_COPY.NAME_REQUIRED_ERROR
     : undefined;
