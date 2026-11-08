@@ -130,6 +130,7 @@ export const RESERVATION_EDIT: ReservationEdit = {
 
 export const RESERVATION_EDIT_CATEGORY_OPTION = {
   id: RESERVATION_EDIT_TEST.CATEGORY_ID,
+  isGuideOnly: false,
   isInterchangeable: false,
   name: RESERVATION_EDIT_TEST.CATEGORY_NAME,
 };
