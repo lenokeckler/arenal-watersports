@@ -63,4 +63,14 @@ export const RESERVATION_EDIT_ERROR_RULES: readonly ReservationEditErrorRule[] =
         ok: false,
       },
     },
+    {
+      message: operation.QUANTITY_UNAVAILABLE,
+      result: {
+        errors: {
+          [RESERVATION_FORM_FIELD.QUANTITY]:
+            copy.QUANTITY_UNAVAILABLE,
+        },
+        ok: false,
+      },
+    },
   ];

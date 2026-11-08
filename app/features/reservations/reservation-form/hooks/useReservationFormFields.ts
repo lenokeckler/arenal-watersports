@@ -10,7 +10,7 @@ export const useReservationFormFields = (
   clearFieldError: (field: ReservationFormField) => void,
   options?: ReservationFormFieldsOptions
 ) => {
-  const { updateValue, values } = useReservationFormValues(
+  const { reset, updateValue, values } = useReservationFormValues(
     initialDate,
     initialCategoryId,
     clearFieldError,
@@ -27,6 +27,7 @@ export const useReservationFormFields = (
       updateValue("categoryId", value);
       updateValue("unitId", STRING.Empty);
     },
+    reset,
     handleCustomerNameChange: (value: string) =>
       updateValue("customerName", value),
     handleDateChange: (value: string) => {

@@ -46,6 +46,10 @@ export const createReservationEquipmentPage = (
   findAvailableUnit: (unitCode: string) =>
     screen.findByText(unitCode),
   getUnitSelect,
+  findUnitError: () =>
+    screen.findByText(
+      RESERVATION_FORM_COPY[RESERVATION_FORM_FIELD.UNIT_ID]
+    ),
   getCategoryGroup,
   findUnitUnavailableError: () =>
     screen.findByText(
@@ -53,6 +57,12 @@ export const createReservationEquipmentPage = (
     ),
   findCategoryError: () =>
     screen.findByText(
+      RESERVATION_FORM_COPY[
+        RESERVATION_FORM_FIELD.CATEGORY_ID
+      ]
+    ),
+  queryCategoryError: () =>
+    screen.queryByText(
       RESERVATION_FORM_COPY[
         RESERVATION_FORM_FIELD.CATEGORY_ID
       ]

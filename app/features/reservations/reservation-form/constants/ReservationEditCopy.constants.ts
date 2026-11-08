@@ -14,6 +14,8 @@ export const RESERVATION_EDIT_COPY = {
     "No se encontró esta reserva. Vuelva al calendario.",
   NOT_MODIFIABLE:
     "Esta reserva ya no está agendada y no se puede modificar. Recargue la página.",
+  QUANTITY_UNAVAILABLE:
+    "La cantidad solicitada supera los equipos disponibles para este horario.",
   STALE:
     "Esta reserva cambió mientras usted la editaba. Vuelva al calendario y ábrala de nuevo para ver la versión actual.",
   SUBMIT: "Guardar cambios",

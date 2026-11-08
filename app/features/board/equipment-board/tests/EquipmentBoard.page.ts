@@ -51,6 +51,19 @@ export const createEquipmentBoardPage = () => {
     return card;
   };
 
+  const getCardLink = (label: string) =>
+    screen.getByRole(ARIA_ROLE.LINK, { name: label });
+
+  const getCardLinks = () =>
+    within(getGrid()).getAllByRole(ARIA_ROLE.LINK);
+
+  const getLinksIn = (card: HTMLElement) =>
+    within(card).getAllByRole(ARIA_ROLE.LINK);
+
+  const tab = async () => {
+    await user.tab();
+  };
+
   const queryMemberList = (card: HTMLElement) =>
     within(card).queryByRole(ARIA_ROLE.LIST);
 
@@ -111,11 +124,14 @@ export const createEquipmentBoardPage = () => {
     getAlert,
     getBarWidth,
     getCard,
+    getCardLink,
+    getCardLinks,
     getImageSource,
     getCardText,
     getCards,
     getGrid,
     getHeadings,
+    getLinksIn,
     hasImage,
     getMain,
     getPageText,
@@ -129,5 +145,6 @@ export const createEquipmentBoardPage = () => {
     queryMemberList,
     queryText,
     retry,
+    tab,
   };
 };
