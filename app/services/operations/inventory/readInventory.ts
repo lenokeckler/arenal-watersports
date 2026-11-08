@@ -12,6 +12,7 @@ import type {
 } from "./models/InventoryReadModels.interface";
 import { requireInventoryAccess } from "./requireInventoryAccess";
 import { readInventoryUnitPage } from "./readInventoryUnits";
+import { listInventoryStockMovements } from "./listInventoryStockMovements";
 import { resolveInventoryQueryPage } from "./utils/resolveInventoryQueryPage";
 import {
   createEmptyInventoryUnitPage,
@@ -61,6 +62,7 @@ export const getInventoryCategoryDetails = async (
 
   if (!UUID_PATTERN.test(categoryId)) {
     return {
+      movements: null,
       summary: null,
       units: createEmptyInventoryUnitPage(
         normalizedPageIndex
@@ -84,6 +86,7 @@ export const getInventoryCategoryDetails = async (
 
   if (!data) {
     return {
+      movements: null,
       summary: null,
       units: createEmptyInventoryUnitPage(
         normalizedPageIndex
@@ -94,7 +97,14 @@ export const getInventoryCategoryDetails = async (
   if (
     data.tracking_mode !== INVENTORY_TRACKING_MODE.BY_UNIT
   ) {
+    const movements = await listInventoryStockMovements(
+      supabase,
+      categoryId,
+      normalizedPageIndex
+    );
+
     return {
+      movements,
       summary: data,
       units: createEmptyInventoryUnitPage(
         normalizedPageIndex
@@ -108,5 +118,5 @@ export const getInventoryCategoryDetails = async (
     normalizedPageIndex
   );
 
-  return { summary: data, units };
+  return { movements: null, summary: data, units };
 };
