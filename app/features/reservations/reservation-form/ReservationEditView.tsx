@@ -46,6 +46,7 @@ const ReservationEditView = ({
           >
             <ReservationEditFields
               categories={viewModel.categories}
+              reservation={reservation}
               viewModel={viewModel}
             />
             <ReservationFormFeedback

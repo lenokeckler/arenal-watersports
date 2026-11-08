@@ -6,6 +6,12 @@ export const RESERVATION_CALENDAR_BLOCK_CLASS =
 export const RESERVATION_CALENDAR_BLOCK_LINK_CLASS =
   "block min-w-0 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary hover:brightness-105 active:brightness-95";
 
+export const RESERVATION_CALENDAR_BLOCK_ENTRY_CLASS =
+  "min-w-0 space-y-1";
+
+export const RESERVATION_CALENDAR_BLOCK_ACTIONS_CLASS =
+  "px-3";
+
 export const RESERVATION_CALENDAR_BLOCK_CONTENT_CLASS =
   "flex items-center gap-3";
 
