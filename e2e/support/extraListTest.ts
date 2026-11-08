@@ -6,6 +6,10 @@ import {
 import type { ExtraListFixtures } from "../models/ExtraListFixtures.interface";
 import { createExtraListPage } from "../pages/ExtraList.page";
 import { insertExtra, removeExtras } from "./extraFixtures";
+import {
+  insertExtraUsage,
+  removeExtraUsages,
+} from "./extraUsageFixtures";
 import { logInAsAdmin } from "./logInAsAdmin";
 
 export const test = base.extend<ExtraListFixtures>({
@@ -34,5 +38,20 @@ export const test = base.extend<ExtraListFixtures>({
     });
 
     await removeExtras(seededIds);
+  },
+  seedUsedExtra: async ({ seedExtra }, provide) => {
+    const reservationIds: string[] = [];
+
+    await provide(async (overrides = {}) => {
+      const extra = await seedExtra(overrides);
+      const reservationId = await insertExtraUsage(
+        extra.id
+      );
+      reservationIds.push(reservationId);
+
+      return { ...extra, reservationId };
+    });
+
+    await removeExtraUsages(reservationIds);
   },
 });
