@@ -4,6 +4,7 @@ import { CATEGORY_CARD_OPTIONS_CLASS } from "../styles/CategoryCardPanel.styles"
 import CategoryCardAlertsLink from "./CategoryCardAlertsLink";
 import CategoryCardBehaviorLink from "./CategoryCardBehaviorLink";
 import CategoryCardDepositLink from "./CategoryCardDepositLink";
+import CategoryCardStockLink from "./CategoryCardStockLink";
 import CategoryCardUnitsLink from "./CategoryCardUnitsLink";
 
 const CategoryCardOptions = ({
@@ -16,6 +17,10 @@ const CategoryCardOptions = ({
     <CategoryCardAlertsLink categoryId={categoryId} />
     {trackingMode === CATEGORY_TRACKING_MODE.BY_UNIT && (
       <CategoryCardUnitsLink categoryId={categoryId} />
+    )}
+    {trackingMode ===
+      CATEGORY_TRACKING_MODE.BY_QUANTITY && (
+      <CategoryCardStockLink categoryId={categoryId} />
     )}
   </div>
 );

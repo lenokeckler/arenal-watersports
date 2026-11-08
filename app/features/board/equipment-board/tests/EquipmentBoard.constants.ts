@@ -79,6 +79,7 @@ export const EXPECTED_BAR_WIDTHS = {
 export const EN_USO_TEXT = "en uso";
 
 export const IMAGE_ELEMENT_SELECTOR = "img";
+export const IMAGE_PRIORITY_ATTRIBUTE = "data-priority";
 export const IMAGE_SOURCE_ATTRIBUTE = "src";
 export const JET_SKI_IMAGE_FILE = "jet-ski.webp";
 export const KAYAK_IMAGE_FILE = "kayak-doble.webp";
@@ -92,6 +93,8 @@ export const ARIA_HIDDEN_ATTRIBUTE = "aria-hidden";
 export const ARIA_HIDDEN_TRUE = "true";
 export const ARIA_BUSY_ATTRIBUTE = "aria-busy";
 export const ARIA_BUSY_TRUE = "true";
+
+export const HREF_ATTRIBUTE = "href";
 
 export const HEADING_LEVEL_ONE = 1;
 export const HEADING_LEVEL_TWO = 2;

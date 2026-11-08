@@ -31,15 +31,24 @@ export const useReservationsCalendarSelectionState = (
     useState<NullableUndefined<CalendarDate>>();
   const [selectedMonth, setSelectedMonth] =
     useState<NullableUndefined<CalendarDate>>();
-  useScrollToSelectedAgenda(
-    getSelectedAgendaId(selectedDay, selectedMonth)
+  const [scrollRequest, setScrollRequest] = useState(0);
+  const actions = useReservationsCalendarSelectionActions(
+    displayedAnchor,
+    setSelectedDay,
+    setSelectedMonth
   );
-  const { selectDay, selectMonth } =
-    useReservationsCalendarSelectionActions(
-      displayedAnchor,
-      setSelectedDay,
-      setSelectedMonth
-    );
+  useScrollToSelectedAgenda(
+    getSelectedAgendaId(selectedDay, selectedMonth),
+    scrollRequest
+  );
+  const selectDay = (date: CalendarDate): void => {
+    actions.selectDay(date);
+    setScrollRequest((request) => request + 1);
+  };
+  const selectMonth = (date: CalendarDate): void => {
+    actions.selectMonth(date);
+    setScrollRequest((request) => request + 1);
+  };
   return {
     selectedDay,
     selectedMonth,

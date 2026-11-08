@@ -7,5 +7,6 @@ export interface BoardCard {
   inUseCount: number;
   isGrouped: boolean;
   label: string;
+  targetCategoryId: string;
   totalCount: number;
 }

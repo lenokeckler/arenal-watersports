@@ -47,6 +47,6 @@ test.describe("Login without JavaScript", () => {
 
     await loginPage.submit();
 
-    await expect(page).toHaveURL(PATHS.BOARD);
+    await expect(page).toHaveURL(PATHS.HOME);
   });
 });
