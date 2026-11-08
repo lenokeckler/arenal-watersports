@@ -16,9 +16,13 @@ import BoardCardUnitChip from "./BoardCardUnitChip";
 
 const BoardCardMedia = ({
   card,
+  isPriorityImage,
 }: BoardCardProps): React.JSX.Element => (
   <div className={BOARD_CARD_MEDIA_CLASS}>
-    <BoardCardImage label={card.label} />
+    <BoardCardImage
+      isPriorityImage={isPriorityImage}
+      label={card.label}
+    />
     <div className={BOARD_CARD_CHIPS_CLASS}>
       <BoardCardUnitChip />
       <InlineText className={BOARD_CARD_FREE_CHIP_CLASS}>

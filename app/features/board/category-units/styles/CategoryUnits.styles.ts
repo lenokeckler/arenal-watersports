@@ -14,7 +14,20 @@ export const CATEGORY_UNITS_SUBTITLE_CLASS =
   "max-w-prose text-body-base text-on-surface-variant";
 
 export const CATEGORY_UNITS_LIST_CLASS =
-  "grid grid-cols-1 items-start gap-sm md:grid-cols-2 md:gap-md";
+  "grid grid-cols-1 items-start gap-2 md:grid-cols-2";
 
 export const CATEGORY_UNITS_LIST_ITEM_CLASS =
   "flex min-w-0";
+
+export const CATEGORY_UNITS_PAGINATION_CLASS =
+  "grid grid-cols-[1fr_auto_1fr] items-center gap-sm";
+
+const CATEGORY_UNITS_PAGINATION_LINK_CLASS =
+  "inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-outline-variant bg-card-tint-neutral-bg px-md text-button font-semibold text-on-surface hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+
+export const CATEGORY_UNITS_PAGINATION_PREVIOUS_CLASS = `${CATEGORY_UNITS_PAGINATION_LINK_CLASS} col-start-1 justify-self-start`;
+
+export const CATEGORY_UNITS_PAGINATION_NEXT_CLASS = `${CATEGORY_UNITS_PAGINATION_LINK_CLASS} col-start-3 justify-self-end`;
+
+export const CATEGORY_UNITS_PAGINATION_STATUS_CLASS =
+  "col-start-2 text-center text-body-base tabular-nums text-on-surface-variant";

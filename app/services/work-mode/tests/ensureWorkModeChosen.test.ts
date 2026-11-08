@@ -7,7 +7,7 @@ import {
 } from "vitest";
 import { redirect } from "next/navigation";
 import { PATHS } from "@/app/constants";
-import { readWorkModeOverviewAsSignedIn } from "@/app/services/work-mode";
+import { readWorkModeOverviewAsSignedIn } from "../readWorkModeOverviewAsSignedIn";
 import { ensureWorkModeChosen } from "../ensureWorkModeChosen";
 import {
   MULTI_AREA_WITH_MODE,
@@ -20,7 +20,7 @@ vi.mock("next/navigation", () => ({
   redirect: vi.fn(),
 }));
 
-vi.mock("@/app/services/work-mode", () => ({
+vi.mock("../readWorkModeOverviewAsSignedIn", () => ({
   readWorkModeOverviewAsSignedIn: vi.fn(),
 }));
 

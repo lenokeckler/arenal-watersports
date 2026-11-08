@@ -22,6 +22,21 @@ export const RETURNS_TODAY_AFTER_UTC_MIDNIGHT =
   "2026-11-03T05:30:00.000Z";
 export const RETURNS_TOMORROW = "2026-11-03T09:15:00-06:00";
 
+export const RETURNS_EXACTLY_NOW = NOW.toISOString();
+export const RETURNS_ONE_MS_BEFORE_NOW = new Date(
+  NOW.getTime() - 1
+).toISOString();
+export const RETURNS_OVERDUE_TODAY =
+  "2026-11-02T10:00:00-06:00";
+export const RETURNS_OVERDUE_YESTERDAY =
+  "2026-11-01T15:30:00-06:00";
+
+export const EXPECTED_OVERDUE = {
+  TIME_TODAY: "10:00",
+  TIME_YESTERDAY: "15:30",
+  DATE_YESTERDAY: "1 nov",
+} as const;
+
 export const EXPECTED_TIME = {
   AFTER_UTC_MIDNIGHT: "23:30",
   TODAY: "14:30",
@@ -38,6 +53,7 @@ export const RESERVATION_WINDOW = {
 
 export const DEFAULT_UNIT_OCCUPANCY: UnitOccupancy = {
   customerName: "María Rojas",
+  isOverdue: false,
   reservationCode: "R-000123",
   reservationEndsAt: RESERVATION_WINDOW.ENDS_AT,
   reservationId: "reservation-123",

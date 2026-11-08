@@ -27,5 +27,6 @@ export const STOCK_COUNT_COPY = {
   SAVE_BUTTON: "Guardar conteo",
   SAVE_SUCCESS_TOAST: "Conteo guardado.",
   TITLE_PREFIX: "Conteo de",
+  UNREADABLE_CATEGORY_NAME: "la categoría",
   TOTAL_REGISTERED_LABEL: "Total registrado",
 } as const;

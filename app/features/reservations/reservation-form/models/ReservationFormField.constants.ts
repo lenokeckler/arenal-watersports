@@ -5,6 +5,7 @@ export const RESERVATION_FORM_FIELD = {
   DURATION_HOURS: "durationHours",
   PEOPLE_COUNT: "peopleCount",
   QUANTITY: "quantity",
+  RESERVATION_TYPE: "reservationType",
   TIME: "time",
   UNIT_ID: "unitId",
 } as const;
