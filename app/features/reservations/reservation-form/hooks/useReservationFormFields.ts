@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { STRING } from "@/app/constants";
 import type { ReservationFormField } from "../models/ReservationFormField.constants";
+import type { ReservationFormFieldsOptions } from "../models/ReservationFormFieldsOptions.interface";
 import type { ReservationFormFieldsViewModel } from "../models/ReservationFormFieldsViewModel.interface";
 import type { UpdateReservationFormValue } from "../models/UpdateReservationFormValue.type";
-import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { createReservationTypeChangeHandler } from "../utils/createReservationTypeChangeHandler";
 import { createReservationFormNumericFieldHandlers } from "../utils/createReservationFormNumericFieldHandlers";
@@ -11,7 +11,8 @@ import { useReservationFormValues } from "./useReservationFormValues";
 
 const createBasicFieldHandlers = (
   updateValue: UpdateReservationFormValue,
-  clearSelectionResetNotice: () => void
+  clearSelectionResetNotice: () => void,
+  clearUnitAfterScheduleChange: () => void
 ) => ({
   handleCategoryChange: (value: string) => {
     clearSelectionResetNotice();
@@ -35,10 +36,7 @@ const createBasicFieldHandlers = (
   },
   handleTimeChange: (value: string) => {
     updateValue(RESERVATION_FORM_FIELD.TIME, value);
-    updateValue(
-      RESERVATION_FORM_FIELD.UNIT_ID,
-      STRING.Empty
-    );
+    clearUnitAfterScheduleChange();
   },
   handleUnitChange: (value: string) => {
     clearSelectionResetNotice();
@@ -50,13 +48,14 @@ export const useReservationFormFields = (
   initialDate: string,
   initialCategoryId: string,
   clearFieldError: (field: ReservationFormField) => void,
-  liveCategories: ReservationCategoryOption[] = []
+  options: ReservationFormFieldsOptions = {}
 ): ReservationFormFieldsViewModel => {
   const { reset, updateValue, values } =
     useReservationFormValues(
       initialDate,
       initialCategoryId,
-      clearFieldError
+      clearFieldError,
+      options.initialValues
     );
   const [
     hasReservationTypeSelectionReset,
@@ -68,13 +67,24 @@ export const useReservationFormFields = (
       updateValue,
       setHasReservationTypeSelectionReset
     );
+  const clearUnitAfterScheduleChange = (): void => {
+    if (!options.keepsUnitOnScheduleChange) {
+      updateValue(
+        RESERVATION_FORM_FIELD.UNIT_ID,
+        STRING.Empty
+      );
+    }
+  };
 
   return {
-    ...createBasicFieldHandlers(updateValue, () =>
-      setHasReservationTypeSelectionReset(false)
+    ...createBasicFieldHandlers(
+      updateValue,
+      () => setHasReservationTypeSelectionReset(false),
+      clearUnitAfterScheduleChange
     ),
     ...createReservationFormNumericFieldHandlers(
-      updateValue
+      updateValue,
+      clearUnitAfterScheduleChange
     ),
     reset: () => {
       reset();
@@ -86,7 +96,7 @@ export const useReservationFormFields = (
     ) =>
       handleReservationTypeChange(
         value,
-        currentCategories ?? liveCategories
+        currentCategories ?? options.liveCategories ?? []
       ),
     hasReservationTypeSelectionReset,
     values,

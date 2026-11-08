@@ -20,6 +20,11 @@ export const E2E_TIMEOUT_MS = {
   TEST: 120_000,
 } as const;
 
+export const E2E_VIEWPORT = {
+  MOBILE: "mobile",
+  DESKTOP: "desktop",
+} as const;
+
 export const E2E_RETRY_COUNT = {
   CI: 2,
   LOCAL: 0,
