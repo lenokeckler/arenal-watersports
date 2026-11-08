@@ -12,6 +12,7 @@ Allow a reservations worker to record a rental reservation with its customer nam
 - Persist the creator from the authenticated session.
 - Persist one of two equipment commitments: an active, reservable, interchangeable category with positive quantity, or one concrete unit from an active, reservable, non-interchangeable category.
 - Let Reservations choose `rental`, `tour`, or `combo`; callers without a selected type continue to default to `rental`.
+- Persist selected guide assignments transactionally for tours.
 - Interpret civil date and time in `America/Costa_Rica` regardless of server timezone.
 
 ## Out of scope
