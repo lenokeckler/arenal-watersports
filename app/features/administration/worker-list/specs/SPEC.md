@@ -11,10 +11,11 @@ Let administration inspect worker account access and current status.
 - Show an explicit empty state for a valid empty result.
 - Redirect denied access before presenting any worker rows.
 - Preserve role, status, and zero-based page URL parameters for pagination.
+- Let an administrator filter the list by base role and account status.
+- Apply filters before server pagination and reset the page index when applying a new filter.
 
 ## Out of scope
 
-- Filter controls, which belong to ADM-11 part03.
 - Creating, editing, blocking, or deleting worker accounts.
 - Database and access-policy changes.
 
@@ -32,8 +33,10 @@ Let administration inspect worker account access and current status.
 
 ## Acceptance criteria
 
-- [ ] Shows name, username, base role, additional areas, marks, expiry date, and status.
-- [ ] Identifies external temporary guides as current or disabled.
-- [ ] Shows a valid empty state.
-- [ ] Redirects denied access before rendering rows.
-- [ ] Preserves zero-based pagination and role/status URL parameters.
+- [x] Shows name, username, base role, additional areas, marks, expiry date, and status (PR #468).
+- [x] Identifies external temporary guides as current or disabled (PR #468).
+- [x] Filters by base role and account status (PR #469).
+- [x] Applies filters before server pagination and retains them in pagination links (PR #469).
+- [x] Shows a valid empty state (PR #468).
+- [x] Redirects denied access before rendering rows (PR #468).
+- [x] Preserves zero-based pagination and role/status URL parameters (PR #468).

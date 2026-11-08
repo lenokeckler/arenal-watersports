@@ -22,6 +22,11 @@ export const WORKER_LIST_COPY = {
   EMPTY: "No se encontraron trabajadores.",
   EMPTY_VALUE: "Ninguna",
   EXTERNAL_GUIDE: "Guía externo",
+  FILTER_ALL: "Todos",
+  FILTER_APPLY: "Aplicar filtros",
+  FILTER_APPLY_PENDING: "Aplicando filtros...",
+  FILTER_ROLE_LABEL: "Rol base",
+  FILTER_STATUS_LABEL: "Estado",
   INACTIVE: "Inactivo",
   INSTRUCTION:
     "Consulte las cuentas y los permisos de cada trabajador.",
