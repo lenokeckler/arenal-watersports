@@ -1,51 +1,30 @@
-import { useTransition } from "react";
-import { createReservationAction } from "../actions/createReservationAction";
-import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
-import type { ReservationFormActionResult } from "../models/ReservationFormActionResult.type";
-import type { ReservationFormInput } from "../models/ReservationFormInput.interface";
+import { RESERVATION_FORM_SUBMISSION_DEFAULTS } from "../constants/ReservationFormSubmission.constants";
+import type { ReservationFormSubmissionOptions } from "../models/ReservationFormSubmissionOptions.interface";
+import { useReservationFormErrorFocus } from "./useReservationFormErrorFocus";
+import { useReservationFormSubmitAction } from "./useReservationFormSubmitAction";
 import { useReservationSubmissionState } from "./useReservationSubmissionState";
 
-export const useReservationFormSubmission = () => {
+export const useReservationFormSubmission = (
+  options?: ReservationFormSubmissionOptions
+) => {
   const submission = useReservationSubmissionState();
-  const [isPending, startTransition] = useTransition();
-
-  const submit = async (
-    values: ReservationFormInput
-  ): Promise<ReservationFormActionResult | undefined> => {
-    let result: ReservationFormActionResult;
-    try {
-      result = await createReservationAction(values);
-    } catch {
-      submission.setSubmissionError(
-        RESERVATION_FORM_UI_COPY.SUBMIT_ERROR
-      );
-      return undefined;
+  const action = useReservationFormSubmitAction(
+    submission,
+    {
+      ...RESERVATION_FORM_SUBMISSION_DEFAULTS,
+      ...options,
     }
-    return result;
-  };
-
-  const submitReservation = (
-    values: ReservationFormInput,
-    onUnitUnavailable: () => void
-  ): void => {
-    startTransition(async () => {
-      const result = await submit(values);
-      if (!result) {
-        return;
-      }
-      if (!result.ok && result.unitUnavailable) {
-        onUnitUnavailable();
-      }
-      submission.applyResult(result);
-    });
-  };
+  );
+  useReservationFormErrorFocus(submission);
 
   return {
+    applyResult: submission.applyResult,
     clearFieldError: submission.clearFieldError,
     errors: submission.errors,
     formError: submission.formError,
-    isPending,
+    isPending: action.isPending,
     isSubmitted: submission.isSubmitted,
-    submitReservation,
+    requestErrorFocus: submission.requestErrorFocus,
+    submitReservation: action.submitReservation,
   };
 };

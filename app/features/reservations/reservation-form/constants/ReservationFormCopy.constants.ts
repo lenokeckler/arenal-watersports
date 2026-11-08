@@ -16,4 +16,6 @@ export const RESERVATION_FORM_COPY = {
   [RESERVATION_FORM_FIELD.TIME]: "Ingrese una hora válida.",
   [RESERVATION_FORM_FIELD.UNIT_ID]:
     "Seleccione una unidad disponible.",
+  [RESERVATION_FORM_FIELD.RESERVATION_TYPE]:
+    "Seleccione un tipo de reserva válido.",
 } as const;

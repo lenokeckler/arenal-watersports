@@ -32,3 +32,6 @@ export const SERVICE_FAILURE_MESSAGE = "read failed";
 export const HEADING_LEVEL_ONE = 1;
 export const ARIA_BUSY_ATTRIBUTE = "aria-busy";
 export const ARIA_BUSY_VALUE = "true";
+
+export const SECOND_PAGE = 2;
+export const SECOND_PAGE_PARAM = "2";

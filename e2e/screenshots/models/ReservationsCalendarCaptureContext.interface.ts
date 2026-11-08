@@ -1,10 +1,8 @@
 import type { Page } from "@playwright/test";
-import type { createReservationsCalendarPage } from "../../pages/ReservationsCalendar.page";
+import type { ReservationsCalendarDetailNavigationPage } from "../../support/models/ReservationsCalendarDetailNavigationPage.type";
 
 export interface ReservationsCalendarCaptureContext {
-  calendarPage: ReturnType<
-    typeof createReservationsCalendarPage
-  >;
+  calendarPage: ReservationsCalendarDetailNavigationPage;
   isMobile: boolean;
   page: Page;
   projectName: string;
