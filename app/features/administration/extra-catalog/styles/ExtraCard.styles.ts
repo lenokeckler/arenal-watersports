@@ -1,10 +1,3 @@
-import {
-  BUTTON_BASE_CLASS,
-  BUTTON_ENABLED_CLASS,
-  BUTTON_SIZE_CLASS,
-  BUTTON_VARIANT_CLASS,
-} from "@/app/components/button/styles/Button.styles";
-import { BUTTON, SIZE } from "@/app/constants";
 import { EXTRA_STATUS } from "../constants/ExtraStatus.constants";
 import type { ExtraStatus } from "../models/ExtraStatus.type";
 
@@ -38,5 +31,3 @@ export const EXTRA_CARD_STATUS_DOT_CLASS: Record<
   [EXTRA_STATUS.ACTIVE]: `${EXTRA_CARD_STATUS_DOT_BASE_CLASS} bg-primary`,
   [EXTRA_STATUS.INACTIVE]: `${EXTRA_CARD_STATUS_DOT_BASE_CLASS} bg-error`,
 };
-
-export const EXTRA_CARD_EDIT_LINK_CLASS = `${BUTTON_BASE_CLASS} ${BUTTON_VARIANT_CLASS[BUTTON.SECONDARY]} ${BUTTON_SIZE_CLASS[SIZE.FULL]} ${BUTTON_ENABLED_CLASS} min-h-11 rounded-md md:w-40`;
