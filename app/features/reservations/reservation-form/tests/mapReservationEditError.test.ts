@@ -47,6 +47,16 @@ describe("mapReservationEditError", () => {
         ok: false,
       },
     ],
+    [
+      operation.QUANTITY_UNAVAILABLE,
+      {
+        errors: {
+          [RESERVATION_FORM_FIELD.QUANTITY]:
+            copy.QUANTITY_UNAVAILABLE,
+        },
+        ok: false,
+      },
+    ],
   ])("maps %s", (message, result) => {
     expect(
       mapReservationEditError(new Error(message))

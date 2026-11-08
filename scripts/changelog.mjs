@@ -24,6 +24,7 @@ const LIST_MARKER = "- ";
 const CHECK_FLAG = "--check";
 const RELEASE_BRANCH_PREFIX = "release/";
 const ADDED_STATUS = "A";
+const DEVELOP_BRANCH = "origin/develop";
 
 export const CHANGELOG_SECTION = {
   BUGFIX: { directory: "bugfix", heading: "## Bugfix" },
@@ -183,10 +184,30 @@ const existedInHistory = (base, path) =>
     { cwd: REPO_ROOT, encoding: "utf8" }
   ).trim() !== "";
 
+const referenceExists = (reference) =>
+  execFileSync(
+    "git",
+    [
+      "for-each-ref",
+      "--format=%(refname)",
+      `refs/remotes/${reference}`,
+    ],
+    { cwd: REPO_ROOT, encoding: "utf8" }
+  ).trim() !== "";
+
+const existsInReference = (reference, path) =>
+  execFileSync(
+    "git",
+    ["ls-tree", "-r", "--name-only", reference, "--", path],
+    { cwd: REPO_ROOT, encoding: "utf8" }
+  ).trim() === path;
+
 const isRestoredFragment = (base, change) =>
   change.status === ADDED_STATUS &&
   FRAGMENT_PATH_PATTERN.test(change.path) &&
-  existedInHistory(base, change.path);
+  (existedInHistory(base, change.path) ||
+    (referenceExists(DEVELOP_BRANCH) &&
+      existsInReference(DEVELOP_BRANCH, change.path)));
 
 const readChanges = (base) =>
   execFileSync(

@@ -1,5 +1,10 @@
+﻿import { PAGINATION } from "./Pagination.constant";
+
+const OPERATIONS_INVENTORY_PATH = "/operations/inventory";
+
 export const PATHS = {
   BOARD: "/board",
+  BOARD_CATEGORIES: "/board/categories",
   HOME: "/",
   MODE: "/mode",
   ACCESS: {
@@ -16,7 +21,10 @@ export const PATHS = {
     CATEGORY_ALERTS_SEGMENT: "alerts",
     CATEGORY_BEHAVIOR_SEGMENT: "behavior",
     CATEGORY_DEPOSIT_SEGMENT: "deposit",
+    CATEGORY_STOCK_SEGMENT: "stock",
     CATEGORY_UNITS_SEGMENT: "units",
+    DEPOSITS: "/administration/reports/deposits",
+    INCOME: "/administration/income",
     RESERVATIONS_BY_WORKER:
       "/administration/reports/reservations-by-worker",
     ROOT: "/administration",
@@ -24,19 +32,34 @@ export const PATHS = {
     WORKER_AREAS: "/administration/workers/areas",
     WORKERS_NEW: "/administration/workers/new",
   },
+  HISTORY: {
+    ROOT: "/history",
+  },
+  OPERATIONS: {
+    CALENDAR: "/operations/calendar",
+    INVENTORY: OPERATIONS_INVENTORY_PATH,
+    INVENTORY_CATEGORY: (categoryId: string) =>
+      `${OPERATIONS_INVENTORY_PATH}/${encodeURIComponent(categoryId)}`,
+    INVENTORY_CATEGORY_PAGE: (
+      categoryId: string,
+      pageIndex: number
+    ) =>
+      `${OPERATIONS_INVENTORY_PATH}/${encodeURIComponent(categoryId)}?${PAGINATION.QUERY_PARAMS.PAGE}=${pageIndex}`,
+    INVENTORY_PAGE: (pageIndex: number) =>
+      `${OPERATIONS_INVENTORY_PATH}?${PAGINATION.QUERY_PARAMS.PAGE}=${pageIndex}`,
+  },
   PROFILE: {
     EMAIL: "/profile/email",
     PASSWORD: "/profile/password",
     ROOT: "/profile",
-  },
-  OPERATIONS: {
-    CALENDAR: "/operations/calendar",
   },
   WELL_KNOWN: {
     CHANGE_PASSWORD: "/.well-known/change-password",
   },
   RESERVATIONS: {
     CALENDAR: "/reservations/calendar",
+    DETAIL: (reservationId: string): string =>
+      `/reservations/${encodeURIComponent(reservationId)}`,
     DEPOSITS: "/reservations/deposits",
     EDIT_SEGMENT: "edit",
     INCOME: "/reservations/income",
