@@ -20,8 +20,12 @@ export const E2E_WORK_MODE_SQL = {
   ADD_OPERATION: "give the worker the reservations area",
   ADD_OPERATIONS_OPERATION:
     "give the worker the operations area",
+  SELECT_RESERVATIONS_MODE_OPERATION:
+    "select Reservations mode for route access",
   READ_MODE:
     "select coalesce(last_work_area::text, '') from public.workers where id = :'uid'",
+  SELECT_RESERVATIONS_MODE:
+    "update public.workers set last_work_area = 'reservas' where id = :'uid'",
   READ_OPERATION: "read the last work mode of the worker",
 } as const;
 
