@@ -1,4 +1,7 @@
 import { RESERVATION_CALENDAR_ACTIVE_STATUS } from "@/app/constants";
+import { RESERVATION_EQUIPMENT_LOCK } from "../constants/ReservationEquipmentLock.constants";
+import type { ReservationEdit } from "../models/ReservationEdit.interface";
+import type { ReservationEditEquipment } from "../models/ReservationEditEquipment.interface";
 import type { ReservationEditInput } from "../models/ReservationEditInput.interface";
 import type { ReservationEditRow } from "../models/ReservationEditRow.type";
 import type { ReservationEditRowItem } from "../models/ReservationEditRowItem.type";
@@ -88,3 +91,33 @@ export const VALID_RESERVATION_EDIT_INPUT: ReservationEditInput =
       RESERVATION_EDIT_TEST.MICROSECOND_INSTANT,
     reservationId: RESERVATION_EDIT_TEST.RESERVATION_ID,
   };
+
+export const RESERVATION_EDIT_CATEGORY_EQUIPMENT: ReservationEditEquipment =
+  {
+    categoryId: RESERVATION_EDIT_TEST.CATEGORY_ID,
+    categoryName: RESERVATION_EDIT_TEST.CATEGORY_NAME,
+    quantity: RESERVATION_EDIT_TEST.QUANTITY,
+    unitCode: null,
+    unitId: null,
+  };
+
+export const RESERVATION_EDIT_UNIT_EQUIPMENT: ReservationEditEquipment =
+  {
+    ...RESERVATION_EDIT_CATEGORY_EQUIPMENT,
+    quantity: 1,
+    unitCode: RESERVATION_EDIT_TEST.UNIT_CODE,
+    unitId: RESERVATION_EDIT_TEST.UNIT_ID,
+  };
+
+export const RESERVATION_EDIT: ReservationEdit = {
+  customerName: "Familia Vargas",
+  date: RESERVATION_EDIT_TEST.EXPECTED_DATE,
+  durationMinutes: 90,
+  equipment: RESERVATION_EDIT_UNIT_EQUIPMENT,
+  equipmentLock: RESERVATION_EQUIPMENT_LOCK.NONE,
+  id: RESERVATION_EDIT_TEST.RESERVATION_ID,
+  isEditable: true,
+  lastEditedAt: RESERVATION_EDIT_TEST.MICROSECOND_INSTANT,
+  peopleCount: 3,
+  time: RESERVATION_EDIT_TEST.EXPECTED_TIME,
+};
