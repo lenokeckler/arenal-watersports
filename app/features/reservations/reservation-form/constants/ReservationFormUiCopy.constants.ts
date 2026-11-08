@@ -41,7 +41,9 @@ export const RESERVATION_FORM_UI_COPY = {
   SUBMIT_UNEXPECTED_ERROR:
     "El sistema devolvió una respuesta inesperada. No se confirmó la reserva; verifique el calendario antes de intentarlo de nuevo.",
   NO_CATEGORIES:
-    "No hay categorías de equipo disponibles para reservar.",
+    "No hay categorías de equipo disponibles para esta reserva.",
+  RESERVATION_TYPE_SELECTION_CLEARED:
+    "La categoría seleccionada solo está disponible para Tour y se borró al cambiar el tipo de salida. Seleccione otra categoría.",
   EQUIPMENT_QUANTITY_NOTE:
     "Los equipos intercambiables se reservan por cantidad; Operaciones asigna cada unidad al despachar.",
   EQUIPMENT_UNIT_NOTE:

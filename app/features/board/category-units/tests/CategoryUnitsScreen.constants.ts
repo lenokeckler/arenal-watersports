@@ -1,7 +1,7 @@
 import { PAGINATION, PATHS } from "@/app/constants";
 import type { BoardCategoryRow } from "@/app/services/board";
 import { LIST_PAGINATION } from "@/app/utils/list-pagination/constants/ListPagination.constants";
-import { LIST_PAGINATION_COPY } from "@/app/components/list-pagination/constants/ListPaginationCopy.constants";
+import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 import { CATEGORY_NAME } from "./CategoryUnits.constants";
 
 export const CATEGORY_ID =
@@ -59,8 +59,14 @@ export const FIRST_PAGE_HREF = CATEGORY_PATH;
 export const LAST_PAGE_HREF = `${CATEGORY_PATH}?${PAGINATION.QUERY_PARAMS.PAGE}=${PAGE_COUNT.MANY}`;
 
 export const PAGE_STATUS = {
-  FIRST_OF_MANY: `${LIST_PAGINATION_COPY.PAGE} ${PAGE.FIRST} ${LIST_PAGINATION_COPY.OF} ${PAGE_COUNT.MANY}`,
-  SECOND_OF_MANY: `${LIST_PAGINATION_COPY.PAGE} ${PAGE.SECOND} ${LIST_PAGINATION_COPY.OF} ${PAGE_COUNT.MANY}`,
+  FIRST_OF_MANY: CATEGORY_UNITS_COPY.PAGINATION_PAGE_OF(
+    PAGE.FIRST,
+    PAGE_COUNT.MANY
+  ),
+  SECOND_OF_MANY: CATEGORY_UNITS_COPY.PAGINATION_PAGE_OF(
+    PAGE.SECOND,
+    PAGE_COUNT.MANY
+  ),
 } as const;
 
 export const HEADING_LEVEL_ONE = 1;
@@ -71,3 +77,5 @@ export const NAVIGATION_SIGNAL = {
 } as const;
 
 export const READ_FAILURE_MESSAGE = "read failed";
+
+export const TAP_TARGET_CLASS = "min-h-11 min-w-11";

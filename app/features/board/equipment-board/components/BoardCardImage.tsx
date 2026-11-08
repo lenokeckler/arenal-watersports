@@ -10,6 +10,7 @@ import {
 } from "../styles/BoardCard.styles";
 
 const BoardCardImage = ({
+  isPriorityImage,
   label,
 }: BoardCardImageProps): React.JSX.Element => {
   const image = resolveReservationEquipmentImage(label);
@@ -33,7 +34,7 @@ const BoardCardImage = ({
       sizes={EQUIPMENT_BOARD_IMAGE.SIZES}
       src={image.source}
       width={EQUIPMENT_BOARD_IMAGE.WIDTH}
-      priority={false}
+      priority={isPriorityImage}
     />
   );
 };

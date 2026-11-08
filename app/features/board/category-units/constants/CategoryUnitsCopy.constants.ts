@@ -23,7 +23,20 @@ export const CATEGORY_UNITS_COPY = {
   NOT_FOUND_BODY:
     "Es posible que la categoría ya no esté activa o que el enlace no sea correcto.",
   NOT_FOUND_TITLE: "Esta categoría no está en el tablero",
+  OVERDUE_CHIP: "Retrasada",
+  OVERDUE_RETURNS_AT: (time: string): string =>
+    `Debía regresar a las ${time}`,
+  OVERDUE_RETURNS_ON: (
+    date: string,
+    time: string
+  ): string => `Debía regresar el ${date} a las ${time}`,
   PAGINATION_NAV_LABEL: "Paginación de unidades",
+  PAGINATION_NEXT: "Siguiente",
+  PAGINATION_PAGE_OF: (
+    page: number,
+    pageCount: number
+  ): string => `${page} de ${pageCount}`,
+  PAGINATION_PREVIOUS: "Anterior",
   RESERVATION_LINE: (
     reservationCode: string,
     reservationWindow: string

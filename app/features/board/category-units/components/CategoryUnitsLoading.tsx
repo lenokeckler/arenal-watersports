@@ -1,7 +1,10 @@
 import { Text } from "@/app/components";
 import { ARIA_ROLE } from "@/app/constants";
 import { SCREEN_READER_ONLY_CLASS } from "@/app/styles/ScreenReader.styles";
-import { CATEGORY_UNITS_SKELETON_INDEXES } from "../constants/CategoryUnits.constants";
+import {
+  CATEGORY_UNITS_SKELETON,
+  CATEGORY_UNITS_SKELETON_INDEXES,
+} from "../constants/CategoryUnits.constants";
 import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 import {
   CATEGORY_UNITS_LIST_CLASS,
@@ -32,7 +35,12 @@ const CategoryUnitsLoading = (): React.JSX.Element => (
             key={skeletonIndex}
             className={CATEGORY_UNITS_LIST_ITEM_CLASS}
           >
-            <CategoryUnitSkeletonRow />
+            <CategoryUnitSkeletonRow
+              withDetail={
+                skeletonIndex <
+                CATEGORY_UNITS_SKELETON.DETAIL_ROW_COUNT
+              }
+            />
           </div>
         )
       )}

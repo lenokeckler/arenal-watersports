@@ -96,6 +96,7 @@ export const CATEGORY_CATALOG_COPY = {
   RETRY_BUTTON: "Reintentar",
   STATUS_LABEL_ACTIVE: "Activa",
   STATUS_LABEL_INACTIVE: "Inactiva",
+  STOCK_LINK: "Conteo",
   SUBMIT_BUTTON: "Guardar categoría",
   TRACKING_MODE_BY_QUANTITY_LABEL: "Por cantidad",
   TRACKING_MODE_BY_QUANTITY_LOWERCASE: "por cantidad",

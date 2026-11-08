@@ -14,6 +14,8 @@ import { useReservationEquipmentEligibility } from "./useReservationEquipmentEli
 import { useReservationFormEquipmentSelection } from "./useReservationFormEquipmentSelection";
 import { isReservationQuantityUnavailable } from "../utils/isReservationQuantityUnavailable";
 import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
+import { filterReservationCategoriesByType } from "../utils/filterReservationCategoriesByType";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 
 export const useReservationFormViewModel = (
   options: ReservationFormViewModelOptions
@@ -39,14 +41,21 @@ export const useReservationFormViewModel = (
   const fields = useReservationFormFields(
     initialDate,
     initialCategoryId,
-    submission.clearFieldError
+    submission.clearFieldError,
+    { liveCategories: eligibleCategories }
   );
+  const categoriesForReservationType =
+    filterReservationCategoriesByType(
+      eligibleCategories,
+      fields.values.reservationType ??
+        RESERVATION_TYPE.RENTAL
+    );
   const duration = useReservationDuration(
     fields.handleDurationChange,
     submission.clearFieldError
   );
   const equipment = useReservationEquipmentViewModel(
-    eligibleCategories,
+    categoriesForReservationType,
     fields.values,
     duration.resolveDurationHours(
       fields.values.durationHours
@@ -55,7 +64,7 @@ export const useReservationFormViewModel = (
   );
   const isQuantityUnavailable =
     isReservationQuantityUnavailable(
-      eligibleCategories.find(
+      categoriesForReservationType.find(
         (category) =>
           category.id === fields.values.categoryId
       )?.isInterchangeable === true,
@@ -64,7 +73,7 @@ export const useReservationFormViewModel = (
     );
   const selection = useReservationFormEquipmentSelection({
     availableUnits: equipment.availableUnits,
-    categories: eligibleCategories,
+    categories: categoriesForReservationType,
     isAvailabilityResolved:
       equipment.isAvailabilityResolved,
     isEligibilityError: eligibility.hasError,
@@ -76,7 +85,8 @@ export const useReservationFormViewModel = (
   });
   const isSubmitDisabled =
     submission.isPending ||
-    eligibleCategories.length === 0 ||
+    submission.isSubmitted ||
+    categoriesForReservationType.length === 0 ||
     (equipment.requiresConcreteUnit &&
       (equipment.isAvailabilityLoading ||
         equipment.hasAvailabilityError)) ||
@@ -122,8 +132,13 @@ export const useReservationFormViewModel = (
       );
     };
   return {
-    categories: eligibleCategories,
+    categories: categoriesForReservationType,
     ...fields,
+    handleReservationTypeChange: (value) =>
+      fields.handleReservationTypeChange(
+        value,
+        eligibleCategories
+      ),
     ...submission,
     errors: isQuantityUnavailable
       ? {
