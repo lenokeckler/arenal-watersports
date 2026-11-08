@@ -3088,6 +3088,40 @@ export type Database = {
         };
         Returns: boolean;
       };
+      insert_split_departure: {
+        Args: {
+          p_departure: Json;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
+          p_window: unknown;
+        };
+        Returns: {
+          cancellation_reason: string | null;
+          closed_at: string | null;
+          code: string;
+          combo_id: string | null;
+          created_at: string;
+          created_by: string;
+          customer_name: string;
+          dispatched_at: string | null;
+          duration_minutes: number;
+          ends_at: string | null;
+          extra_time_minutes: number;
+          id: string;
+          parent_reservation_id: string | null;
+          people_count: number;
+          starts_at: string;
+          status: Database["public"]["Enums"]["reservation_status"];
+          type: Database["public"]["Enums"]["reservation_type"];
+          updated_at: string;
+          updated_by: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "reservations";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       is_active_worker: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
@@ -3192,6 +3226,14 @@ export type Database = {
       password_reset_retention_hours: {
         Args: Record<PropertyKey, never>;
         Returns: number;
+      };
+      place_split_item: {
+        Args: {
+          p_departure_id: string;
+          p_item_id: string;
+          p_quantity: number;
+        };
+        Returns: undefined;
       };
       prepare_worker_temporary_password: {
         Args: { target_worker: string };
@@ -3335,6 +3377,40 @@ export type Database = {
         Args: { p_user_id: string };
         Returns: boolean;
       };
+      split_departure_into_reservation: {
+        Args: {
+          p_date: string;
+          p_departure: Json;
+          p_original: Database["public"]["Tables"]["reservations"]["Row"];
+        };
+        Returns: {
+          cancellation_reason: string | null;
+          closed_at: string | null;
+          code: string;
+          combo_id: string | null;
+          created_at: string;
+          created_by: string;
+          customer_name: string;
+          dispatched_at: string | null;
+          duration_minutes: number;
+          ends_at: string | null;
+          extra_time_minutes: number;
+          id: string;
+          parent_reservation_id: string | null;
+          people_count: number;
+          starts_at: string;
+          status: Database["public"]["Enums"]["reservation_status"];
+          type: Database["public"]["Enums"]["reservation_type"];
+          updated_at: string;
+          updated_by: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "reservations";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       split_item_allocations: {
         Args: { p_departures: Json };
         Returns: {
@@ -3368,6 +3444,13 @@ export type Database = {
           isOneToOne: false;
           isSetofReturn: true;
         };
+      };
+      split_reservation: {
+        Args: { p_payload: Json };
+        Returns: {
+          departure_code: string;
+          departure_id: string;
+        }[];
       };
       touch_current_session_activity: {
         Args: Record<PropertyKey, never>;
