@@ -11,3 +11,11 @@ export const BLANK_EXTRA_NAME = "   ";
 export const SERVER_ERROR_CODE = "500";
 export const INVALID_UUID_MESSAGE =
   "invalid input syntax for type uuid";
+export const NON_STRING_EXTRA_NAMES: readonly unknown[] = [
+  null,
+  undefined,
+  42,
+  true,
+  {},
+  ["extra"],
+];
