@@ -64,7 +64,7 @@ describe("buildExtraCardViewModel", () => {
 
   it("marks only the pending extra as loading", () => {
     const cardActions = buildExtraCardActionsViewModel({
-      pendingExtraId: DEFAULT_EXTRA.id,
+      pendingExtraIds: [DEFAULT_EXTRA.id],
     });
 
     expect(

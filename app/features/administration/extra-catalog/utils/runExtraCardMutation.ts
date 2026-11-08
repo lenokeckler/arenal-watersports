@@ -2,7 +2,8 @@ import { unstable_rethrow } from "next/navigation";
 import { STATUS } from "@/app/constants";
 import { EXTRA_MUTATION_STATUS } from "../constants/ExtraMutationStatus.constants";
 import type { RunExtraCardMutationOptions } from "../models/RunExtraCardMutationOptions.interface";
-import { clearExtraIdWhenCurrent } from "./clearExtraIdWhenCurrent";
+import { addPendingExtraId } from "./addPendingExtraId";
+import { removePendingExtraId } from "./removePendingExtraId";
 
 export const runExtraCardMutation = async ({
   extraId,
@@ -12,7 +13,7 @@ export const runExtraCardMutation = async ({
   setPendingExtraId,
   showToast,
 }: RunExtraCardMutationOptions): Promise<void> => {
-  setPendingExtraId(() => extraId);
+  setPendingExtraId(addPendingExtraId(extraId));
 
   try {
     const result = await mutate(extraId);
@@ -25,7 +26,7 @@ export const runExtraCardMutation = async ({
     unstable_rethrow(error);
     showToast(STATUS.ERROR, genericErrorMessage);
   } finally {
-    setPendingExtraId(clearExtraIdWhenCurrent(extraId));
+    setPendingExtraId(removePendingExtraId(extraId));
     onSettled();
   }
 };

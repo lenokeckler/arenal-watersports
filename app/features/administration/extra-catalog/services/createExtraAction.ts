@@ -7,6 +7,7 @@ import { EXTRA_MUTATION_STATUS } from "../constants/ExtraMutationStatus.constant
 import type { CreateExtraInput } from "../models/CreateExtraInput.interface";
 import type { ExtraMutationResult } from "../models/ExtraMutationResult.interface";
 import { mapExtraWriteErrorToResult } from "../utils/mapExtraWriteErrorToResult";
+import { readExtraName } from "../utils/readExtraName";
 import { validateExtraName } from "../utils/validateExtraName";
 
 export const createExtraAction = async (
@@ -15,7 +16,7 @@ export const createExtraAction = async (
   const supabase = await createServerSupabaseClient();
   const adminWorkerId = await assertIsAdminWorker(supabase);
 
-  const nameError = validateExtraName(input.name);
+  const nameError = validateExtraName(readExtraName(input));
   if (nameError) {
     return {
       status: EXTRA_MUTATION_STATUS.ERROR,
