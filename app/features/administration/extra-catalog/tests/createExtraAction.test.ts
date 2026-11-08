@@ -90,6 +90,21 @@ describe("createExtraAction", () => {
     }
   );
 
+  it.each([null, undefined])(
+    "returns a name error without writing when the whole input is %j",
+    async (input) => {
+      const result = await createExtraAction(
+        input as never
+      );
+
+      expect(result).toEqual({
+        status: EXTRA_MUTATION_STATUS.ERROR,
+        nameError: EXTRA_CATALOG_COPY.NAME_REQUIRED_ERROR,
+      });
+      expect(mockInsert).not.toHaveBeenCalled();
+    }
+  );
+
   it("inserts the trimmed name stamped with the admin worker", async () => {
     const result = await createExtraAction({
       name: PADDED_EXTRA_NAME,

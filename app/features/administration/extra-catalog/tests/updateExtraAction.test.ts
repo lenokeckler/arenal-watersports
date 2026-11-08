@@ -116,6 +116,21 @@ describe("updateExtraAction", () => {
     }
   );
 
+  it.each([null, undefined])(
+    "returns a name error without writing when the whole input is %j",
+    async (input) => {
+      const result = await updateExtraAction(
+        input as never
+      );
+
+      expect(result).toEqual({
+        status: EXTRA_MUTATION_STATUS.ERROR,
+        nameError: EXTRA_CATALOG_COPY.NAME_REQUIRED_ERROR,
+      });
+      expect(mockUpdate).not.toHaveBeenCalled();
+    }
+  );
+
   it("renames the extra by id with the trimmed name stamped with the admin worker", async () => {
     const result = await updateExtraAction({
       ...UPDATE_INPUT,
