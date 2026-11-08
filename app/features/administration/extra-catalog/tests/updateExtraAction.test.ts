@@ -18,6 +18,7 @@ import {
 } from "./Extra.constants";
 import {
   BLANK_EXTRA_NAME,
+  NON_STRING_EXTRA_NAMES,
   EXTRA_ID_COLUMN,
   EXTRAS_TABLE,
   FAKE_EXTRA_ADMIN_WORKER_ID,
@@ -98,6 +99,22 @@ describe("updateExtraAction", () => {
     });
     expect(mockUpdate).not.toHaveBeenCalled();
   });
+
+  it.each(NON_STRING_EXTRA_NAMES)(
+    "returns a name error without writing when the name is the non-string value %j",
+    async (name) => {
+      const result = await updateExtraAction({
+        ...UPDATE_INPUT,
+        name: name as never,
+      });
+
+      expect(result).toEqual({
+        status: EXTRA_MUTATION_STATUS.ERROR,
+        nameError: EXTRA_CATALOG_COPY.NAME_REQUIRED_ERROR,
+      });
+      expect(mockUpdate).not.toHaveBeenCalled();
+    }
+  );
 
   it("renames the extra by id with the trimmed name stamped with the admin worker", async () => {
     const result = await updateExtraAction({
