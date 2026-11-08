@@ -21,7 +21,7 @@ export const EXTRA_CARD_REACTIVATE_BUTTON_CLASS = `${EXTRA_CARD_ACTION_SHAPE_CLA
 export const EXTRA_CARD_REMOVE_BUTTON_CLASS = `${EXTRA_CARD_ACTION_SHAPE_CLASS} border-error text-error hover:bg-error-container/30`;
 
 export const EXTRA_CARD_CONFIRM_CLASS =
-  "flex w-full flex-col gap-3 md:max-w-md";
+  "flex w-full flex-col gap-3 md:w-96 md:shrink-0";
 
 export const EXTRA_CARD_CONFIRM_MESSAGE_CLASS =
   "text-body-base text-on-surface";
