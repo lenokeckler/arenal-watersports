@@ -1,3 +1,4 @@
+import { UUID_PATTERN } from "@/app/constants";
 import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
 import { RESERVATION_SCHEDULE } from "../constants/ReservationSchedule.constants";
 import {
@@ -5,6 +6,22 @@ import {
   isValidReservationDate,
   isValidReservationTime,
 } from "./validateReservationSchedule";
+
+const isExcludedReservationIdValid = (
+  input: object
+): boolean => {
+  if (
+    !("excludeReservationId" in input) ||
+    input.excludeReservationId === undefined
+  ) {
+    return true;
+  }
+
+  return (
+    typeof input.excludeReservationId === "string" &&
+    UUID_PATTERN.test(input.excludeReservationId)
+  );
+};
 
 export const isReservationUnitAvailabilityInput = (
   input: unknown
@@ -33,6 +50,7 @@ export const isReservationUnitAvailabilityInput = (
     getReservationDurationMinutes(
       input.durationMinutes /
         RESERVATION_SCHEDULE.MINUTES_PER_HOUR
-    ) !== null
+    ) !== null &&
+    isExcludedReservationIdValid(input)
   );
 };

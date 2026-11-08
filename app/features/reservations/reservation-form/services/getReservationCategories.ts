@@ -22,11 +22,13 @@ export const getReservationCategories = async (): Promise<
   );
 
   const categories = (data ?? []) as unknown as Array<{
+    guide_only: boolean;
     id: string;
     name: string;
     units_are_interchangeable: boolean;
   }>;
   return categories.map((category) => ({
+    isGuideOnly: category.guide_only,
     id: category.id,
     isInterchangeable: category.units_are_interchangeable,
     name: category.name,

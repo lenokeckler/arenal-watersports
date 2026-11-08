@@ -6,5 +6,8 @@ import type {
 export interface E2eDepositSeed {
   amount: number;
   currency: CurrencyCode;
+  resolvedAt?: string;
+  retainedAmount?: number;
+  retentionReason?: string;
   status: DepositStatus;
 }

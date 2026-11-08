@@ -21,6 +21,7 @@ export const createReservationFormCategoryPage = (
     getCategoryGroup,
     getCategorySelect: getCategoryGroup,
     getCategoryCard,
+    getCategoryOption: getCategoryCard,
     getSelectedCategoryOption: (): Locator =>
       getCategoryGroup().getByRole(ARIA_ROLE.BUTTON, {
         pressed: true,
