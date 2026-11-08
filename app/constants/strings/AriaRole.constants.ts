@@ -15,4 +15,6 @@ export const ARIA_ROLE = {
   LINK: "link",
   NAVIGATION: "navigation",
   TEXTBOX: "textbox",
+  TABLE: "table",
+  COLUMNHEADER: "columnheader",
 } as const;

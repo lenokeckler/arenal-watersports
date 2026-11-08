@@ -30,6 +30,7 @@ export const PATHS = {
     ROOT: "/administration",
     UNITS_NEW_SEGMENT: "new",
     WORKER_AREAS: "/administration/workers/areas",
+    WORKERS: "/administration/workers",
     WORKERS_NEW: "/administration/workers/new",
   },
   HISTORY: {
