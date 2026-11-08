@@ -1,33 +1,27 @@
 import { useEffect } from "react";
-import type { Dispatch, SetStateAction } from "react";
-import type { ReservationCategoryUnitOption } from "../models/ReservationCategoryUnitOption.interface";
-import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
+import type { ReservationUnitAvailabilitySyncOptions } from "../models/ReservationUnitAvailabilitySyncOptions.interface";
 import { getAvailableReservationUnitsAction } from "../actions/getAvailableReservationUnitsAction";
 import { isReservationUnitAvailabilityInput } from "../utils/isReservationUnitAvailabilityInput";
 
-const resetAvailability = (
-  setAvailableUnits: Dispatch<
-    SetStateAction<ReservationCategoryUnitOption[]>
-  >,
-  setIsLoading: Dispatch<SetStateAction<boolean>>,
-  setHasError: Dispatch<SetStateAction<boolean>>,
-  setHasLoaded: Dispatch<SetStateAction<boolean>>
-): void => {
+const resetAvailability = ({
+  setAvailableUnits,
+  setHasError,
+  setHasLoaded,
+  setIsLoading,
+}: ReservationUnitAvailabilitySyncOptions): void => {
   setAvailableUnits([]);
   setIsLoading(false);
   setHasError(false);
   setHasLoaded(false);
 };
 
-const startAvailabilityLookup = (
-  request: ReservationUnitAvailabilityInput,
-  setAvailableUnits: Dispatch<
-    SetStateAction<ReservationCategoryUnitOption[]>
-  >,
-  setIsLoading: Dispatch<SetStateAction<boolean>>,
-  setHasError: Dispatch<SetStateAction<boolean>>,
-  setHasLoaded: Dispatch<SetStateAction<boolean>>
-): (() => void) => {
+const startAvailabilityLookup = ({
+  request,
+  setAvailableUnits,
+  setHasError,
+  setHasLoaded,
+  setIsLoading,
+}: ReservationUnitAvailabilitySyncOptions): (() => void) => {
   let isCurrentRequest = true;
   setAvailableUnits([]);
   setIsLoading(true);
@@ -56,52 +50,56 @@ const startAvailabilityLookup = (
   };
 };
 
+const synchronizeAvailability = (
+  options: ReservationUnitAvailabilitySyncOptions
+): (() => void) | undefined => {
+  if (
+    !isReservationUnitAvailabilityInput(options.request)
+  ) {
+    resetAvailability(options);
+    return undefined;
+  }
+  return startAvailabilityLookup(options);
+};
+
 export const useSyncReservationUnitAvailability = (
-  request: ReservationUnitAvailabilityInput,
-  setAvailableUnits: Dispatch<
-    SetStateAction<ReservationCategoryUnitOption[]>
-  >,
-  setIsLoading: Dispatch<SetStateAction<boolean>>,
-  setHasError: Dispatch<SetStateAction<boolean>>,
-  setHasLoaded: Dispatch<SetStateAction<boolean>>,
-  refreshKey: number
+  options: ReservationUnitAvailabilitySyncOptions
 ): void => {
-  const { categoryId, date, durationMinutes, time } =
-    request;
-  useEffect(() => {
-    const currentRequest = {
-      categoryId,
-      date,
-      durationMinutes,
-      time,
-    };
-    if (
-      !isReservationUnitAvailabilityInput(currentRequest)
-    ) {
-      resetAvailability(
-        setAvailableUnits,
-        setIsLoading,
-        setHasError,
-        setHasLoaded
-      );
-      return undefined;
-    }
-    return startAvailabilityLookup(
-      currentRequest,
-      setAvailableUnits,
-      setIsLoading,
-      setHasError,
-      setHasLoaded
-    );
-  }, [
-    categoryId,
-    date,
-    durationMinutes,
-    time,
+  const {
+    request: { categoryId, date, durationMinutes, time },
+    refreshKey,
+  } = options;
+  const {
     setAvailableUnits,
     setHasError,
     setHasLoaded,
     setIsLoading,
-    refreshKey,
-  ]);
+  } = options;
+  useEffect(
+    () =>
+      synchronizeAvailability({
+        request: {
+          categoryId,
+          date,
+          durationMinutes,
+          time,
+        },
+        refreshKey,
+        setAvailableUnits,
+        setHasError,
+        setHasLoaded,
+        setIsLoading,
+      }),
+    [
+      categoryId,
+      date,
+      durationMinutes,
+      time,
+      setAvailableUnits,
+      setHasError,
+      setHasLoaded,
+      setIsLoading,
+      refreshKey,
+    ]
+  );
 };

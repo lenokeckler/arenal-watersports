@@ -30,7 +30,60 @@ const createItemChangeHandler =
     }
   };
 
-export const useCustomComboDraftActions = (
+const createItemRemovalHandler =
+  (
+    dispatch: Dispatch<CustomComboDraftAction>,
+    clearFieldError: (
+      field: ReservationFormErrorField
+    ) => void
+  ) =>
+  (categoryId: string): void => {
+    dispatch({
+      type: CUSTOM_COMBO_DRAFT_ACTION.ITEM_REMOVAL,
+      categoryId,
+    });
+    clearFieldError(RESERVATION_FORM_FIELD.ITEMS);
+  };
+
+const createItemQuantityChangeHandler =
+  (
+    handleItemChange: (
+      selection: CustomComboEquipmentSelection
+    ) => void,
+    handleItemRemoval: (categoryId: string) => void
+  ) =>
+  (categoryId: string, quantity: number): void => {
+    if (quantity <= INDEX.ZERO) {
+      handleItemRemoval(categoryId);
+      return;
+    }
+    handleItemChange({
+      kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
+      categoryId,
+      quantity,
+    });
+  };
+
+const createItemUnitChangeHandler =
+  (
+    handleItemChange: (
+      selection: CustomComboEquipmentSelection
+    ) => void,
+    handleItemRemoval: (categoryId: string) => void
+  ) =>
+  (categoryId: string, unitId: string): void => {
+    if (unitId === STRING.Empty) {
+      handleItemRemoval(categoryId);
+      return;
+    }
+    handleItemChange({
+      kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
+      categoryId,
+      unitId,
+    });
+  };
+
+const createItemActions = (
   draft: CustomComboReservationDraft,
   dispatch: Dispatch<CustomComboDraftAction>,
   clearFieldError: (
@@ -42,66 +95,70 @@ export const useCustomComboDraftActions = (
     dispatch,
     clearFieldError
   );
-  const handleItemRemoval = (categoryId: string): void => {
-    dispatch({
-      type: CUSTOM_COMBO_DRAFT_ACTION.ITEM_REMOVAL,
-      categoryId,
-    });
-    clearFieldError(RESERVATION_FORM_FIELD.ITEMS);
-  };
-
+  const handleItemRemoval = createItemRemovalHandler(
+    dispatch,
+    clearFieldError
+  );
   return {
-    handleAgreedAmountCrcChange: (
-      value: CustomComboReservationDraft["agreedAmountCrc"]
-    ): void => {
-      dispatch({
-        type: CUSTOM_COMBO_DRAFT_ACTION.AGREED_AMOUNT_CRC_CHANGE,
-        value,
-      });
-      clearFieldError(
-        CUSTOM_COMBO_RESERVATION_FIELD.AGREED_AMOUNT_CRC
-      );
-    },
-    handleAgreedAmountUsdChange: (
-      value: CustomComboReservationDraft["agreedAmountUsd"]
-    ): void => {
-      dispatch({
-        type: CUSTOM_COMBO_DRAFT_ACTION.AGREED_AMOUNT_USD_CHANGE,
-        value,
-      });
-      clearFieldError(
-        CUSTOM_COMBO_RESERVATION_FIELD.AGREED_AMOUNT_USD
-      );
-    },
     handleItemChange,
     handleItemRemoval,
-    handleItemQuantityChange: (
-      categoryId: string,
-      quantity: number
-    ): void => {
-      if (quantity <= INDEX.ZERO) {
-        handleItemRemoval(categoryId);
-        return;
-      }
-      handleItemChange({
-        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
-        categoryId,
-        quantity,
-      });
-    },
-    handleItemUnitChange: (
-      categoryId: string,
-      unitId: string
-    ): void => {
-      if (unitId === STRING.Empty) {
-        handleItemRemoval(categoryId);
-        return;
-      }
-      handleItemChange({
-        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
-        categoryId,
-        unitId,
-      });
-    },
+    handleItemQuantityChange:
+      createItemQuantityChangeHandler(
+        handleItemChange,
+        handleItemRemoval
+      ),
+    handleItemUnitChange: createItemUnitChangeHandler(
+      handleItemChange,
+      handleItemRemoval
+    ),
   };
+};
+
+const createAgreedAmountActions = (
+  dispatch: Dispatch<CustomComboDraftAction>,
+  clearFieldError: (
+    field: ReservationFormErrorField
+  ) => void
+) => ({
+  handleAgreedAmountCrcChange: (
+    value: CustomComboReservationDraft["agreedAmountCrc"]
+  ): void => {
+    dispatch({
+      type: CUSTOM_COMBO_DRAFT_ACTION.AGREED_AMOUNT_CRC_CHANGE,
+      value,
+    });
+    clearFieldError(
+      CUSTOM_COMBO_RESERVATION_FIELD.AGREED_AMOUNT_CRC
+    );
+  },
+  handleAgreedAmountUsdChange: (
+    value: CustomComboReservationDraft["agreedAmountUsd"]
+  ): void => {
+    dispatch({
+      type: CUSTOM_COMBO_DRAFT_ACTION.AGREED_AMOUNT_USD_CHANGE,
+      value,
+    });
+    clearFieldError(
+      CUSTOM_COMBO_RESERVATION_FIELD.AGREED_AMOUNT_USD
+    );
+  },
+});
+
+export const useCustomComboDraftActions = (
+  draft: CustomComboReservationDraft,
+  dispatch: Dispatch<CustomComboDraftAction>,
+  clearFieldError: (
+    field: ReservationFormErrorField
+  ) => void
+) => {
+  const agreedAmountActions = createAgreedAmountActions(
+    dispatch,
+    clearFieldError
+  );
+  const itemActions = createItemActions(
+    draft,
+    dispatch,
+    clearFieldError
+  );
+  return { ...agreedAmountActions, ...itemActions };
 };

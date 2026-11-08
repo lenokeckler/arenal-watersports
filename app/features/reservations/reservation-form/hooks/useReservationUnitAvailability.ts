@@ -13,14 +13,14 @@ export const useReservationUnitAvailability = (
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
-  useSyncReservationUnitAvailability(
+  useSyncReservationUnitAvailability({
     request,
+    refreshKey,
     setAvailableUnits,
-    setIsLoading,
     setHasError,
     setHasLoaded,
-    refreshKey
-  );
+    setIsLoading,
+  });
 
   return { availableUnits, hasError, hasLoaded, isLoading };
 };
