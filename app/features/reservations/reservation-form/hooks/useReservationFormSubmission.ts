@@ -8,10 +8,13 @@ export const useReservationFormSubmission = (
   options?: ReservationFormSubmissionOptions
 ) => {
   const submission = useReservationSubmissionState();
-  const action = useReservationFormSubmitAction(submission, {
-    ...RESERVATION_FORM_SUBMISSION_DEFAULTS,
-    ...options,
-  });
+  const action = useReservationFormSubmitAction(
+    submission,
+    {
+      ...RESERVATION_FORM_SUBMISSION_DEFAULTS,
+      ...options,
+    }
+  );
   useReservationFormErrorFocus(submission);
 
   return {

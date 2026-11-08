@@ -8,6 +8,7 @@ import {
 
 const CURRENT_CATEGORY = {
   id: RESERVATION_EDIT_TEST.CATEGORY_ID,
+  isGuideOnly: false,
   name: RESERVATION_EDIT_TEST.CATEGORY_NAME,
 };
 
