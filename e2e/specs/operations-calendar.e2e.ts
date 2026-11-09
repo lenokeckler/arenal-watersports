@@ -18,7 +18,7 @@ test.describe("Operations calendar", () => {
     await workModePage
       .getCard(E2E_OPERATIONS_AREA_LABEL)
       .click();
-    await expect(page).toHaveURL(PATHS.BOARD);
+    await expect(page).toHaveURL(PATHS.HOME);
   });
 
   test("shows only daily and weekly views and loads a week", async ({

@@ -1,0 +1,1 @@
+export const POSTGRES_INTEGER_MAX = 2_147_483_647;
