@@ -55,6 +55,17 @@ export const resolveInventoryStockMessageClassName = (
     ? INVENTORY_STOCK_NOTICE_CLASS
     : INVENTORY_STOCK_ERROR_CLASS;
 
+export const INVENTORY_MOVEMENT_LIST_CLASS = "grid gap-3";
+
+export const INVENTORY_MOVEMENT_CARD_CLASS =
+  "grid gap-3 rounded-lg border border-outline/60 bg-surface-container-low p-4";
+
+export const INVENTORY_MOVEMENT_DETAILS_CLASS =
+  "grid gap-2 text-body-sm text-on-surface-variant sm:grid-cols-2";
+
+export const INVENTORY_MOVEMENT_CHANGE_CLASS =
+  "text-body-sm text-on-surface";
+
 export const INVENTORY_UNIT_STATUS_CLASS: Record<
   ActiveInventoryUnitStatus,
   string
