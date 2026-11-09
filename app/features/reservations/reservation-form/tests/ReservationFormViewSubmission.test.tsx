@@ -12,13 +12,22 @@ vi.mock("../actions/createReservationAction", () => ({
 }));
 
 describe("ReservationFormView submission", () => {
-  it("prevents another submission after a successful reservation", async () => {
+  it("resets values after a successful reservation", async () => {
     vi.mocked(createReservationAction).mockResolvedValue({
       ok: true,
       reservationId:
         RESERVATION_FORM_VIEW_TEST.CREATED_RESERVATION_ID,
     });
     const page = renderReservationForm();
+    await page.setCustomerName(
+      RESERVATION_FORM_VIEW_TEST.CUSTOMER_NAME
+    );
+    await page.setQuantity(
+      RESERVATION_FORM_VIEW_TEST.VALID_EQUIPMENT_QUANTITY
+    );
+    await page.selectCategoryChoice(
+      RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME
+    );
 
     await page.submit();
     expect(
@@ -28,7 +37,6 @@ describe("ReservationFormView submission", () => {
     const submitButton = page.querySubmitButton();
     if (submitButton !== null) {
       expect(submitButton).toBeDisabled();
-      await page.submit();
     } else {
       expect(submitButton).not.toBeInTheDocument();
     }
@@ -36,6 +44,13 @@ describe("ReservationFormView submission", () => {
     expect(createReservationAction).toHaveBeenCalledTimes(
       1
     );
+    expect(page.getCustomerNameInput()).toHaveValue("");
+    expect(page.queryQuantityInput()).toHaveValue(1);
+    expect(
+      page.getCategoryChoice(
+        RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME
+      )
+    ).toHaveAttribute("aria-pressed", "false");
   });
 
   it("submits the custom duration as a number", async () => {
@@ -160,6 +175,9 @@ describe("ReservationFormView submission", () => {
         )
       );
     const page = renderReservationForm();
+    await page.setCustomerName(
+      RESERVATION_FORM_VIEW_TEST.CUSTOMER_NAME
+    );
 
     await page.submit();
     expect(
@@ -173,6 +191,9 @@ describe("ReservationFormView submission", () => {
     expect(
       page.queryCategoryError()
     ).not.toBeInTheDocument();
+    expect(page.getCustomerNameInput()).toHaveValue(
+      RESERVATION_FORM_VIEW_TEST.CUSTOMER_NAME
+    );
     expect(page.getFocusedElement()).toHaveAttribute(
       "id",
       RESERVATION_FORM_FIELD_ID.SUBMISSION_ERROR

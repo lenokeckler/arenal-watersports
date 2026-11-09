@@ -11,6 +11,9 @@ export const useReservationCalendarDayContent = (
   snapshot: NullableUndefined<ReservationCalendarSnapshot>,
   options: ReservationCalendarDayContentOptions = {}
 ): CalendarDayContent => {
+  const enableDetailLinks =
+    options.enableDetailLinks === true;
+  const { renderBlockActions } = options;
   const reserveMobileFabSpace =
     options.reserveMobileFabSpace === true;
   const showCoverageMessages =
@@ -24,6 +27,8 @@ export const useReservationCalendarDayContent = (
       buildReservationCalendarDayContent(
         snapshot,
         {
+          enableDetailLinks,
+          renderBlockActions,
           reserveMobileFabSpace,
           showCoverageMessages,
           showGuides,
@@ -33,7 +38,9 @@ export const useReservationCalendarDayContent = (
       ),
     [
       snapshot,
+      enableDetailLinks,
       selectedView,
+      renderBlockActions,
       reserveMobileFabSpace,
       showCoverageMessages,
       showGuides,

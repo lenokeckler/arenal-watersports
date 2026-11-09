@@ -28,7 +28,7 @@ test.describe("Session proxy", () => {
 
       await homePage.goTo();
 
-      await expect(page).toHaveURL(PATHS.BOARD);
+      await expect(page).toHaveURL(PATHS.HOME);
     });
   });
 });

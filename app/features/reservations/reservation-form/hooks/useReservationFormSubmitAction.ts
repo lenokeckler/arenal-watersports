@@ -1,51 +1,62 @@
 import { useTransition } from "react";
 import type { NullableUndefined } from "@/app/types";
-import { createReservationAction } from "../actions/createReservationAction";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
 import type { ReservationFormActionResult } from "../models/ReservationFormActionResult.type";
 import type { ReservationFormInput } from "../models/ReservationFormInput.interface";
+import type { ReservationFormSubmissionOptions } from "../models/ReservationFormSubmissionOptions.interface";
 import type { useReservationSubmissionState } from "./useReservationSubmissionState";
 
 type ReservationSubmissionState = ReturnType<
   typeof useReservationSubmissionState
 >;
 
+type ResolvedSubmissionOptions =
+  Required<ReservationFormSubmissionOptions>;
+
 const resolveSafeSubmissionErrorCopy = (
-  error: unknown
+  error: unknown,
+  submitErrorCopy: string
 ): string =>
   error instanceof Error
-    ? RESERVATION_FORM_UI_COPY.SUBMIT_ERROR
+    ? submitErrorCopy
     : RESERVATION_FORM_UI_COPY.SUBMIT_UNEXPECTED_ERROR;
 
 const executeReservationAction = async (
   values: ReservationFormInput,
-  submission: ReservationSubmissionState
+  submission: ReservationSubmissionState,
+  options: ResolvedSubmissionOptions
 ): Promise<
   NullableUndefined<ReservationFormActionResult>
 > => {
   try {
-    return await createReservationAction(values);
+    return await options.submitAction(values);
   } catch (error: unknown) {
     submission.setSubmissionError(
-      resolveSafeSubmissionErrorCopy(error)
+      resolveSafeSubmissionErrorCopy(
+        error,
+        options.submitErrorCopy
+      )
     );
     return undefined;
   }
 };
 
 export const useReservationFormSubmitAction = (
-  submission: ReservationSubmissionState
+  submission: ReservationSubmissionState,
+  options: ResolvedSubmissionOptions
 ) => {
   const [isPending, startTransition] = useTransition();
 
   const submitReservation = (
     values: ReservationFormInput,
-    onUnitUnavailable: () => void
+    onUnitUnavailable: () => void,
+    onSuccess?: () => void
   ): void => {
     startTransition(async () => {
       const result = await executeReservationAction(
         values,
-        submission
+        submission,
+        options
       );
       if (!result) {
         submission.requestErrorFocus();
@@ -56,6 +67,8 @@ export const useReservationFormSubmitAction = (
         if (result.unitUnavailable) {
           onUnitUnavailable();
         }
+      } else {
+        onSuccess?.();
       }
       submission.applyResult(result);
     });

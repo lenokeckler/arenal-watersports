@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
@@ -9,9 +9,37 @@ import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.con
 import { RESERVATION_CATEGORY_CONFLICT_WARNING_TEST } from "./ReservationCategoryConflictWarning.constants";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 import { createReservationEquipmentPage } from "./ReservationFormEquipment.page";
+import { createReservationFormCustomerPage } from "./ReservationFormCustomer.page";
+import { createReservationTypeFieldPage } from "./ReservationTypeField.page";
 
 const getDurationOption = (label: string) =>
   screen.getByRole(ARIA_ROLE.BUTTON, { name: label });
+
+const getReservationTypeOption = (label: string) =>
+  screen.getByLabelText(label, { exact: false });
+
+const getSelectedCategoryOption = () =>
+  screen
+    .getByRole(ARIA_ROLE.GROUP, {
+      name: RESERVATION_FORM_UI_COPY.CATEGORY,
+    })
+    .querySelector("button[aria-pressed='true']");
+
+const getCategoryName = (categoryId: string): string => {
+  if (
+    categoryId ===
+    RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
+  ) {
+    return RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME;
+  }
+  if (
+    categoryId ===
+    RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_ID
+  ) {
+    return RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME;
+  }
+  return RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME;
+};
 
 const queryCustomDurationInput = (
   container: HTMLElement
@@ -80,6 +108,7 @@ const typeCustomDuration = async (
 const submit = async (
   user: ReturnType<typeof userEvent.setup>
 ): Promise<void> => {
+  await waitFor(() => getSubmitButton());
   await user.click(getSubmitButton());
 };
 
@@ -103,15 +132,74 @@ export const createReservationFormViewPage = (
   container: HTMLElement
 ) => {
   const user = userEvent.setup();
+  const reservationTypePage =
+    createReservationTypeFieldPage();
+  const reservationCustomerPage =
+    createReservationFormCustomerPage();
 
   return {
     ...createReservationEquipmentPage(user),
+    ...reservationTypePage,
+    ...reservationCustomerPage,
     getDurationOption,
+    getSelectedCategoryOption,
+    findUnitOption: () =>
+      screen.findByText(
+        RESERVATION_FORM_VIEW_TEST.UNIT_CODE
+      ),
+    getCategorySelect: () =>
+      screen.getByRole(ARIA_ROLE.GROUP, {
+        name: RESERVATION_FORM_UI_COPY.CATEGORY,
+      }),
+    queryCategoryOption: (categoryId: string) =>
+      screen.queryByRole(ARIA_ROLE.BUTTON, {
+        name: getCategoryName(categoryId),
+      }),
+    selectCategory: async (
+      categoryId: string
+    ): Promise<void> => {
+      await user.click(
+        screen.getByRole(ARIA_ROLE.BUTTON, {
+          name: getCategoryName(categoryId),
+        })
+      );
+    },
+    selectReservationType: async (
+      label: string
+    ): Promise<void> => {
+      await user.click(getReservationTypeOption(label));
+    },
+    isReservationTypeSelected: (label: string): boolean =>
+      (getReservationTypeOption(label) as HTMLInputElement)
+        .checked,
+    findReservationTypeSelectionReset: () =>
+      screen.findByText(
+        RESERVATION_FORM_UI_COPY.RESERVATION_TYPE_SELECTION_CLEARED
+      ),
     getBackButton,
     findDurationValidationError,
     findSubmissionError,
     findSuccessMessage,
     getFocusedElement: () => document.activeElement,
+    getCustomerNameInput: () =>
+      container.querySelector<HTMLInputElement>(
+        `#${RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}`
+      ),
+    setCustomerName: async (
+      value: string
+    ): Promise<void> => {
+      const input =
+        container.querySelector<HTMLInputElement>(
+          `#${RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}`
+        );
+      if (input === null) {
+        throw new Error(
+          "The customer name field is missing."
+        );
+      }
+      await user.clear(input);
+      await user.type(input, value);
+    },
     getSubmitButton,
     querySubmitButton,
     findCategoryConflictWarning: () =>

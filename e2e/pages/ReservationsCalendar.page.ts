@@ -14,6 +14,7 @@ import {
   E2E_RESERVATIONS_CALENDAR_COPY,
   E2E_RESERVATIONS_CALENDAR_SELECTORS,
 } from "../constants/E2eReservationsCalendar.constants";
+import { locateOriginBlock } from "../support/locateOriginBlock";
 import { getMainRegion } from "../support/mainRegion";
 
 export const createReservationsCalendarPage = (
@@ -40,6 +41,23 @@ export const createReservationsCalendarPage = (
     });
 
   return {
+    getBlock: (customerName: string): Locator =>
+      main.getByRole(ARIA_ROLE.GROUP, {
+        name: customerName,
+      }),
+    getModifyLink: (customerName: string): Locator =>
+      main.getByRole(ARIA_ROLE.LINK, {
+        name: `${RESERVATIONS_CALENDAR_COPY.MODIFY_RESERVATION_LABEL} ${customerName}`,
+      }),
+    getOriginBlock: (
+      customerName: string,
+      originCode: string
+    ): Locator =>
+      locateOriginBlock(main, customerName, originCode),
+    getSplitLink: (customerName: string): Locator =>
+      main.getByRole(ARIA_ROLE.LINK, {
+        name: `${RESERVATIONS_CALENDAR_COPY.SPLIT_RESERVATION_LABEL} ${customerName}`,
+      }),
     getHeading: (): Locator =>
       main.getByRole(ARIA_ROLE.HEADING, {
         name: E2E_RESERVATIONS_CALENDAR_COPY.HEADING,
@@ -68,6 +86,13 @@ export const createReservationsCalendarPage = (
       customerName: string
     ): Locator =>
       agenda.getByText(customerName, { exact: true }),
+    getReservationDetailLink: (
+      customerName: string
+    ): Locator =>
+      main.getByRole(ARIA_ROLE.LINK, {
+        name: `${RESERVATIONS_CALENDAR_COPY.OPEN_RESERVATION_DETAIL} ${customerName}`,
+        exact: true,
+      }),
     getPeriodMessage: (message: string): Locator =>
       main.getByText(message, { exact: true }),
     getRefreshStatus: (): Locator =>

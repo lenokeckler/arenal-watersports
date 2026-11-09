@@ -3,6 +3,15 @@ import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
 export const RESERVATION_CALENDAR_BLOCK_CLASS =
   "space-y-1 rounded-lg border border-outline-variant border-l-4 border-l-primary bg-surface-container-high/70 p-3 text-left shadow-lg backdrop-blur-xl";
 
+export const RESERVATION_CALENDAR_BLOCK_LINK_CLASS =
+  "block min-w-0 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary hover:brightness-105 active:brightness-95";
+
+export const RESERVATION_CALENDAR_BLOCK_ENTRY_CLASS =
+  "min-w-0 space-y-1";
+
+export const RESERVATION_CALENDAR_BLOCK_ACTIONS_CLASS =
+  "px-3";
+
 export const RESERVATION_CALENDAR_BLOCK_CONTENT_CLASS =
   "flex items-center gap-3";
 
@@ -29,6 +38,9 @@ export const RESERVATION_CALENDAR_BLOCK_TIME_CLASS =
 
 export const RESERVATION_CALENDAR_BLOCK_NAME_CLASS =
   "break-words text-base font-semibold leading-6 text-on-surface";
+
+export const RESERVATION_CALENDAR_BLOCK_ORIGIN_CLASS =
+  "inline-block self-start break-words rounded border border-outline-variant px-1.5 py-0.5 text-xs leading-4 text-on-surface-variant";
 
 export const RESERVATION_CALENDAR_BLOCK_EQUIPMENT_CLASS =
   "break-words text-sm leading-5 text-on-surface-variant";

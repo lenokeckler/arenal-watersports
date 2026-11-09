@@ -1,3 +1,4 @@
+import { PATHS } from "@/app/constants";
 import { E2E_SYSTEM_ROUTES } from "@/e2e/constants/E2eSessionBarPresence.constants";
 import { PRE_LOGIN_ROUTES } from "@/e2e/support/preLoginScreens";
 
@@ -16,10 +17,14 @@ export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
   "/administration/categories/[categoryId]/alerts",
   "/administration/categories/[categoryId]/behavior",
   "/administration/categories/[categoryId]/deposit",
+  "/administration/categories/[categoryId]/stock",
   "/administration/categories/[categoryId]/units",
   "/administration/categories/[categoryId]/units/[unitId]",
   "/administration/categories/[categoryId]/units/new",
   "/board/categories/[categoryId]",
+  `${PATHS.HISTORY.ROOT}${ROUTE_SEPARATOR}[reservationId]`,
+  "/reservations/[reservationId]/edit",
+  "/reservations/[reservationId]/split",
 ];
 
 export const CLASSIFIED_PAGE_ROUTES: readonly string[] = [

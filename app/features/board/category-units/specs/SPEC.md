@@ -22,7 +22,7 @@ Let any worker see the state of every unit of one category, and, for an occupied
 
 - Dispatching from this screen: it belongs to Operations (US-OPE-02).
 - Opening the reservation detail (pending, see below).
-- Live refresh (US-TAB-03), overdue marker, a connection-lost notice.
+- Live refresh (US-TAB-03), which will also refresh the overdue marker; a connection-lost notice.
 
 ## Requirements
 
@@ -59,6 +59,20 @@ con la finalidad de saber cuáles puedo ofrecer y cuándo vuelven las que están
 - A failed read reaches `error.tsx` and its retry button; it never renders as an empty or free list.
 - `page.tsx` awaits `ensureWorkModeChosen()` first, like the board.
 
+## Design notes
+
+- Occupied card: the unit code is the card title (semibold) with the status chip beside it. Under the divider the return time is the first and strongest line (`text-body-base`, bold, tertiary tone, never larger than the code); the customer and the reservation reference are secondary (`text-sm`, `on-surface-variant`).
+- A unit without extra info (available, maintenance, repair, damaged) is one compact row, code and chip only, with `min-h-14`; the grid uses `gap-2` and `items-start`, so occupied cards grow with their data without stretching the rest. One column on a phone, two from `md`. The order stays by unit code.
+- Group switch: on a phone the pills share the full width equally as a segmented control (`flex-1`, `min-h-11`), the current one with a solid `primary` fill and `on-primary` text, the others on the dark surface; from `md` they are only as wide as their content. They stay `nav` links with `aria-current="page"`.
+- Pagination of this screen is its own component (`CategoryUnitsPagination`): "Anterior", "{page} de {total}" and "Siguiente", previous and next at least 44 px (`min-h-11 min-w-11`), the text centered. The shared `ListPagination` of the admin lists is unchanged.
+- Loading skeleton: rows share the row class (same `min-h-14`, padding and header), and the first two carry placeholder detail lines so the page does not jump when the content arrives.
+
+## Overdue return
+
+- An occupied unit whose `returns_at` is strictly before the render time is overdue. The server decides it in `buildUnitOccupancy(row, now)` (`UnitOccupancy.isOverdue`), with `now` injected; there is no client timer and no polling. A return exactly at `now` is not overdue.
+- The status stays "Ocupada" (computed from the dispatches); an overdue unit never counts as free.
+- The row gets a soft amber treatment, not red: `border-warning/40 bg-linear-to-r from-warning/15 to-card-tint-neutral-bg`; the return line reads "Debía regresar a las 10:00" or "Debía regresar el 1 nov a las 15:30" in `text-warning`, and a "Retrasada" chip (`border-warning/40 text-warning`) sits next to the status chip. Both `warning` values (dark `#fb923c`, light `#c2410c`) are read on the card tint in either theme. "Dañada" keeps its red chip.
+
 ## Technical notes
 
 - Route: `app/(system)/board/categories/[categoryId]/` with `page.tsx`, `loading.tsx`, `error.tsx` and `not-found.tsx`; the URL comes from `resolveBoardCategoryPath` in `app/utils/board-paths`.
@@ -81,4 +95,5 @@ con la finalidad de saber cuáles puedo ofrecer y cuándo vuelven las que están
 - [ ] Reservas and Operaciones read the same screen and nothing on it dispatches.
 - [ ] The board cards link to this screen.
 - [ ] A category in a group of two or more shows the switch links with the current one marked; others show none.
+- [ ] An occupied unit whose return time has passed shows the late return line, the "Retrasada" chip and the amber row, and keeps the status Ocupada.
 - [ ] Pending in later pull requests: the latest-return rule end to end.

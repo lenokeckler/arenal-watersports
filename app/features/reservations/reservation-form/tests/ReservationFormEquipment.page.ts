@@ -28,6 +28,13 @@ export const createReservationEquipmentPage = (
       RESERVATION_FORM_UI_COPY.NO_CATEGORIES
     ),
   getCategoryChoice,
+  queryCategoryChoice: (categoryName: string) =>
+    within(getCategoryGroup()).queryByRole(
+      ARIA_ROLE.BUTTON,
+      {
+        name: categoryName,
+      }
+    ),
   getEquipmentImage: (imageAlt: string) =>
     screen.getAllByAltText(imageAlt)[0],
   selectCategoryChoice: async (
@@ -46,6 +53,10 @@ export const createReservationEquipmentPage = (
   findAvailableUnit: (unitCode: string) =>
     screen.findByText(unitCode),
   getUnitSelect,
+  findUnitError: () =>
+    screen.findByText(
+      RESERVATION_FORM_COPY[RESERVATION_FORM_FIELD.UNIT_ID]
+    ),
   getCategoryGroup,
   findUnitUnavailableError: () =>
     screen.findByText(

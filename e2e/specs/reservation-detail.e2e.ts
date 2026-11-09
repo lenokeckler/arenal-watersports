@@ -8,6 +8,12 @@ import {
 import { createReservationDetailPage } from "../pages/ReservationDetail.page";
 import { reservationDetailTest } from "../support/reservationDetailTest";
 import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
+import { test as activeWorkerTest } from "../support/activeWorkerTest";
+import { addOperationsArea } from "../support/addOperationsArea";
+import { addReservationsArea } from "../support/addReservationsArea";
+import { submitActiveWorkerSignIn } from "../support/submitActiveWorkerSignIn";
+import { E2E_OPERATIONS_AREA_LABEL } from "../constants/E2eWorkMode.constants";
+import { createWorkModePage } from "../pages/WorkMode.page";
 
 reservationDetailTest(
   "shows all reservation overview fields",
@@ -60,8 +66,28 @@ test("redirects a signed-in worker without Reservations access", async ({
   await signInAsSeededWorker(page);
   await page.goto(PATHS.RESERVATIONS.DETAIL(randomUUID()));
 
-  await expect(page).toHaveURL(PATHS.BOARD);
+  await expect(page).toHaveURL(PATHS.HOME);
 });
+
+activeWorkerTest(
+  "refuses direct detail access while Operations is active",
+  async ({ activeWorker, page }) => {
+    await addReservationsArea(activeWorker.id);
+    await addOperationsArea(activeWorker.id);
+    await submitActiveWorkerSignIn(page, activeWorker);
+    await expect(page).toHaveURL(PATHS.MODE);
+    await createWorkModePage(page)
+      .getCard(E2E_OPERATIONS_AREA_LABEL)
+      .click();
+    await expect(page).toHaveURL(PATHS.BOARD);
+
+    await page.goto(
+      PATHS.RESERVATIONS.DETAIL(randomUUID())
+    );
+
+    await expect(page).toHaveURL(PATHS.MODE);
+  }
+);
 
 reservationDetailTest(
   "shows not found for malformed and nonexistent reservation ids",
