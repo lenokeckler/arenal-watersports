@@ -31,7 +31,7 @@ select lives_ok(
   $$ insert into reservation_postponements
        (id, reservation_id, cause, was_dispatched, reason, previous_starts_at, new_starts_at)
      values ('eeeeeeee-0000-0000-0000-000000000001', 'dddddddd-0000-0000-0000-000000000001',
-             'storm', true, 'Tormenta electrica', '2026-09-05 10:00:00+00', '2026-09-06 10:00:00+00') $$,
+             'other', false, 'Tormenta electrica', '2026-09-05 10:00:00+00', '2026-09-06 10:00:00+00') $$,
   'reservas registra el motivo de una posposicion'
 );
 select is(

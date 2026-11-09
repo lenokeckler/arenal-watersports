@@ -1,5 +1,5 @@
 begin;
-select plan(8);
+select plan(11);
 
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local'),
@@ -82,6 +82,35 @@ select lives_ok(
      values ('dddddddd-0000-0000-0000-000000000001', 'storm', true,
              '2026-09-07 10:00:00+00', '2026-09-08 10:00:00+00') $$,
   'a dispatched reservation is postponed for a weather cause'
+);
+
+select throws_ok(
+  $$ insert into reservation_postponements
+       (reservation_id, cause, was_dispatched, reason, previous_starts_at, new_starts_at)
+     values ('dddddddd-0000-0000-0000-000000000001', 'storm', false, 'Lluvia',
+             '2026-09-08 10:00:00+00', '2026-09-09 10:00:00+00') $$,
+  '23514', null,
+  'a weather cause stores no reason'
+);
+
+select throws_ok(
+  $$ insert into reservation_postponements
+       (reservation_id, cause, was_dispatched, reason, previous_starts_at, new_starts_at)
+     values ('dddddddd-0000-0000-0000-000000000001', 'other', false, repeat('a', 301),
+             '2026-09-08 10:00:00+00', '2026-09-09 10:00:00+00') $$,
+  '23514', null,
+  'a reason is at most 300 characters'
+);
+
+select is(
+  (select count(*)::int from pg_constraint
+   where conrelid = 'reservation_postponements'::regclass
+     and conname in ('reservation_postponements_other_needs_reason',
+                     'reservation_postponements_weather_has_no_reason',
+                     'reservation_postponements_reason_length')
+     and not convalidated),
+  3,
+  'the reason checks leave legacy rows alone'
 );
 
 select * from finish();
