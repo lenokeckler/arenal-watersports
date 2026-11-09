@@ -132,4 +132,45 @@ describe("Reservations calendar year selection", () => {
     },
     RESERVATIONS_CALENDAR_TEST_TIMEOUT_MS.YEAR_VIEW
   );
+
+  it(
+    "scrolls again when the same month is selected twice",
+    async () => {
+      store.dispatch(
+        calendarActions.setAnchor(fixture.OCTOBER_DATE)
+      );
+      renderReservationsCalendar(fixture.SNAPSHOT);
+      const page = createReservationsCalendarPage();
+      await page.selectView(CALENDAR_VIEW.YEAR);
+      await page.selectMonth(fixture.OCTOBER_MONTH);
+      await page.selectMonth(fixture.OCTOBER_MONTH);
+
+      expect(getAgendaScrollMock()).toHaveBeenCalledTimes(
+        2
+      );
+    },
+    RESERVATIONS_CALENDAR_TEST_TIMEOUT_MS.YEAR_VIEW
+  );
+
+  it(
+    "scrolls again when another month is selected",
+    async () => {
+      store.dispatch(
+        calendarActions.setAnchor(fixture.OCTOBER_DATE)
+      );
+      renderReservationsCalendar(fixture.SNAPSHOT);
+      const page = createReservationsCalendarPage();
+      await page.selectView(CALENDAR_VIEW.YEAR);
+      await page.selectMonth(fixture.OCTOBER_MONTH);
+      await page.selectMonth({
+        ...fixture.OCTOBER_MONTH,
+        month: fixture.OCTOBER_MONTH.month + 1,
+      });
+
+      expect(getAgendaScrollMock()).toHaveBeenCalledTimes(
+        2
+      );
+    },
+    RESERVATIONS_CALENDAR_TEST_TIMEOUT_MS.YEAR_VIEW
+  );
 });

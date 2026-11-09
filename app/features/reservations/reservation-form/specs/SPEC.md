@@ -11,17 +11,16 @@ Allow a reservations worker to record a rental reservation with its customer nam
 - Persist only the customer name from customer identity/contact information.
 - Persist the creator from the authenticated session.
 - Persist one of two equipment commitments: an active, reservable, interchangeable category with positive quantity, or one concrete unit from an active, reservable, non-interchangeable category.
-- Treat every initial reservation created by this form as `rental`, as authorized for this story.
+- Let Reservations choose `rental`, `tour`, or `combo`; callers without a selected type continue to default to `rental`.
 - Interpret civil date and time in `America/Costa_Rica` regardless of server timezone.
 
 ## Out of scope
 
 - Criterion 5 remains dependent on integrating open calendar PR #101. This work must not fabricate a local calendar or substitute visibility behavior.
-- US-RES-08 reservation editing.
 - US-RES-15 availability and collision checking.
 - US-RES-16 collision warnings.
 - US-RES-17 live inventory updates and equipment-selection presentation are implemented by the follow-up UI unit in PR #155.
-- Tour, combo, customer email, or other contact fields.
+- Customer email or other contact fields.
 
 ## Requirements
 
@@ -86,6 +85,41 @@ The reservation form and mutation accept exactly one of these forms: an intercha
 - “Comprometer el equipo no es despacharlo: la unidad sigue en tierra hasta que operaciones la saque.”
 
 Unit 1 implements the atomic persistence and data-integrity boundary for both commitment shapes. Unit 2 exposes both commitment shapes within the reservation form: interchangeable equipment uses category plus quantity, and the Lancha uses an available concrete unit.
+
+## US-RES-08 reservation type data contract
+
+### Acceptance criteria
+
+- Existing callers without a reservation type default to `rental`.
+- The reservation type accepts only `rental`, `tour`, or `combo` and is persisted by the reservation RPC.
+- The category query exposes `guide_only`; guide-only categories and units can only be committed by `tour` reservations.
+- Direct scheduled-item inserts enforce the same guide-only rule.
+
+Guide assignment remains owned by US-RES-12. Combo composition and pricing remain owned by US-RES-09 and US-RES-10.
+The form lets Reservations choose rental, tour, or combo; guide-only equipment is available only for tours, and changing away from tour clears its category and unit selection.
+
+## US-RES-18 reservation editing
+
+A Reservations worker changes the people count, time, duration or equipment of a `scheduled` reservation from `/reservations/<id>/edit`. The customer name, the date, pricing and charges do not change here; the date belongs to US-RES-20. One `update_reservation` database transaction persists the change, and `reservations.updated_by` and `updated_at` record who made it.
+
+### Rules
+
+- Only a `scheduled` reservation can be modified.
+- The form sends the `updated_at` it loaded as an opaque string. A different or missing value refuses the save, so a colleague's change is never overwritten.
+- The date stays the reservation's current Costa Rica date.
+- A save that changes nothing writes nothing and keeps the last editor.
+- Equipment targets are the items with no extra and no dispatch. A change updates the same item row.
+- A combo's equipment cannot change, and neither can the equipment of a reservation with several targets. A people or schedule change on them is accepted when the payload carries a current target unchanged.
+- Changed equipment passes the same commitment validation as create, except a quantity decrease on the same category with no unit, which is accepted even with no stock left.
+- Changed equipment or a changed window re-checks every unit of the reservation: it must be reservable and free for the new window, ignoring the reservation itself. A people change alone does not, so a unit that went to maintenance after the booking keeps its reservation.
+
+### Acceptance criteria
+
+- “Se actualiza la información cuando cambian las condiciones del cliente.”
+- “El cambio queda registrado a nombre de quien lo hizo.”
+- “El equipo de un combo no se cambia al modificar la reserva: si el paquete cambió, se cancela y se crea una reserva nueva.”
+
+The data unit closes the first two criteria at database level and enforces the third. The screens close them for the user.
 
 ## US-RES-17 equipment eligibility data
 

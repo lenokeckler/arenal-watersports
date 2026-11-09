@@ -1,16 +1,22 @@
 import { spawn } from "node:child_process";
 import { E2E_UNIT_CONCURRENCY } from "../constants/E2eUnitConcurrency.constants";
+import { E2E_DOCKER } from "../constants/E2eSupabase.constants";
 import type { PsqlSessionResult } from "./models/PsqlSessionResult.interface";
+import type { PsqlSessionSpawnProcess } from "./models/PsqlSessionSpawnProcess.type";
+import { readLocalSupabaseEnvironment } from "./readLocalSupabaseEnvironment";
+import { resolveE2eDatabaseContainer } from "./resolveE2eDatabaseContainer";
 
-export const runPsqlSession = (
+const executePsqlSession = (
+  spawnProcess: PsqlSessionSpawnProcess,
+  databaseContainer: string,
   sql: string
 ): Promise<PsqlSessionResult> =>
-  new Promise((resolve) => {
+  new Promise((resolve, reject) => {
     const startedAt = Date.now();
-    const psql = spawn("docker", [
+    const psql = spawnProcess(E2E_DOCKER.EXECUTABLE, [
       "exec",
       "-i",
-      E2E_UNIT_CONCURRENCY.CONTAINER,
+      databaseContainer,
       "psql",
       "-U",
       E2E_UNIT_CONCURRENCY.DATABASE_USER,
@@ -22,21 +28,36 @@ export const runPsqlSession = (
       "-f",
       "-",
     ]);
-    let stdout = "";
-    let stderr = "";
+    const output = { stderr: "", stdout: "" };
     psql.stdout.on("data", (chunk: Buffer) => {
-      stdout += chunk.toString();
+      output.stdout += chunk.toString();
     });
     psql.stderr.on("data", (chunk: Buffer) => {
-      stderr += chunk.toString();
+      output.stderr += chunk.toString();
     });
-    psql.on("close", (code) => {
+    psql.on("error", reject);
+    psql.on("close", (code) =>
       resolve({
         durationMilliseconds: Date.now() - startedAt,
         exitCode: code ?? 1,
-        stderr,
-        stdout,
-      });
-    });
+        ...output,
+      })
+    );
     psql.stdin.end(sql);
   });
+
+export const createPsqlSessionRunner =
+  (spawnProcess: PsqlSessionSpawnProcess = spawn) =>
+  async (sql: string): Promise<PsqlSessionResult> => {
+    const { url } = readLocalSupabaseEnvironment();
+    const databaseContainer =
+      await resolveE2eDatabaseContainer(url);
+
+    return executePsqlSession(
+      spawnProcess,
+      databaseContainer,
+      sql
+    );
+  };
+
+export const runPsqlSession = createPsqlSessionRunner();

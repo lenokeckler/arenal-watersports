@@ -4,7 +4,7 @@ import Title from "@/app/components/title/Title";
 import { BUTTON, TitleVariant } from "@/app/constants";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
 import { RESERVATION_FORM_FIELD_ID } from "../constants/ReservationFormUi.constants";
-import type { ReservationFormValuesProps } from "../models/ReservationFormValuesProps.interface";
+import type { ReservationFormHeaderProps } from "../models/ReservationFormHeaderProps.interface";
 import {
   RESERVATION_FORM_BACK_CLASS,
   RESERVATION_FORM_DESCRIPTION_CLASS,
@@ -13,8 +13,9 @@ import {
 } from "../styles/ReservationFormView.styles";
 
 const ReservationFormHeader = ({
+  copy = RESERVATION_FORM_UI_COPY,
   viewModel,
-}: ReservationFormValuesProps): React.JSX.Element => (
+}: ReservationFormHeaderProps): React.JSX.Element => (
   <header className={RESERVATION_FORM_HEADER_CLASS}>
     <Button
       type="button"
@@ -27,11 +28,11 @@ const ReservationFormHeader = ({
     <Title
       id={RESERVATION_FORM_FIELD_ID.HEADING}
       variant={TitleVariant.PRIMARY}
-      text={RESERVATION_FORM_UI_COPY.TITLE}
+      text={copy.TITLE}
       className={RESERVATION_FORM_TITLE_CLASS}
     />
     <Text className={RESERVATION_FORM_DESCRIPTION_CLASS}>
-      {RESERVATION_FORM_UI_COPY.DESCRIPTION}
+      {copy.DESCRIPTION}
     </Text>
   </header>
 );

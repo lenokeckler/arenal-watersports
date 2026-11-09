@@ -1,6 +1,5 @@
 export const E2E_UNIT_CONCURRENCY = {
   CATEGORY_NAME: "E2E Fixture — Concurrencia de unidades",
-  CONTAINER: "supabase_db_arenal-watersports",
   DATABASE: "postgres",
   DATABASE_USER: "postgres",
   HOLD_SECONDS: 2,

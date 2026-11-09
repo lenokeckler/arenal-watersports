@@ -9,9 +9,8 @@ import {
   CARD_NOT_FOUND_MESSAGE,
   BAR_WIDTH_ATTRIBUTE,
   HEADING_LEVEL_TWO,
-  IMAGE_ELEMENT_SELECTOR,
-  IMAGE_SOURCE_ATTRIBUTE,
 } from "./EquipmentBoard.constants";
+import { createEquipmentBoardImagePage } from "./EquipmentBoardImage.page";
 
 export const createEquipmentBoardPage = () => {
   const user = userEvent.setup();
@@ -51,6 +50,19 @@ export const createEquipmentBoardPage = () => {
     return card;
   };
 
+  const getCardLink = (label: string) =>
+    screen.getByRole(ARIA_ROLE.LINK, { name: label });
+
+  const getCardLinks = () =>
+    within(getGrid()).getAllByRole(ARIA_ROLE.LINK);
+
+  const getLinksIn = (card: HTMLElement) =>
+    within(card).getAllByRole(ARIA_ROLE.LINK);
+
+  const tab = async () => {
+    await user.tab();
+  };
+
   const queryMemberList = (card: HTMLElement) =>
     within(card).queryByRole(ARIA_ROLE.LIST);
 
@@ -62,14 +74,6 @@ export const createEquipmentBoardPage = () => {
 
   const getCardText = (card: HTMLElement) =>
     card.textContent;
-
-  const hasImage = (card: HTMLElement) =>
-    card.querySelector(IMAGE_ELEMENT_SELECTOR) !== null;
-
-  const getImageSource = (card: HTMLElement) =>
-    card
-      .querySelector(IMAGE_ELEMENT_SELECTOR)
-      ?.getAttribute(IMAGE_SOURCE_ATTRIBUTE);
 
   const getBarWidth = (card: HTMLElement) =>
     card
@@ -108,15 +112,17 @@ export const createEquipmentBoardPage = () => {
   };
 
   return {
+    ...createEquipmentBoardImagePage(),
     getAlert,
     getBarWidth,
     getCard,
-    getImageSource,
+    getCardLink,
+    getCardLinks,
     getCardText,
     getCards,
     getGrid,
     getHeadings,
-    hasImage,
+    getLinksIn,
     getMain,
     getPageText,
     getRetryButton,
@@ -129,5 +135,6 @@ export const createEquipmentBoardPage = () => {
     queryMemberList,
     queryText,
     retry,
+    tab,
   };
 };
