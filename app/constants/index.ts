@@ -38,6 +38,7 @@ export {
   ICON_PATHS,
 } from "@/app/components/icons/constants";
 export { STRING } from "./strings/String.types";
+export { TYPE_OF } from "./strings/TypeOf.constants";
 export { FIELD_IDS } from "./fields/FieldIds.constants";
 export {
   BUTTON,

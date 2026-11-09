@@ -5,7 +5,10 @@ import {
   it,
   vi,
 } from "vitest";
-import { SUPABASE_RPC } from "@/app/constants";
+import {
+  POSTGRES_ERROR_CODE,
+  SUPABASE_RPC,
+} from "@/app/constants";
 import { requireInventoryAccess } from "@/app/services/operations/inventory/requireInventoryAccess";
 import {
   INVENTORY_STOCK_ADJUSTMENT_COPY,
@@ -101,7 +104,7 @@ describe("submitInventoryStockAdjustment", () => {
   it("turns active-mode authorization errors into a safe message", async () => {
     rpc.mockResolvedValue({
       error: {
-        code: "42501",
+        code: POSTGRES_ERROR_CODE.INSUFFICIENT_PRIVILEGE,
         message: "private database detail",
       },
     });
