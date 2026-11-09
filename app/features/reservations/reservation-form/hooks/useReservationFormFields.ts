@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 import { STRING } from "@/app/constants";
 import type { ReservationFormField } from "../models/ReservationFormField.constants";
 import type { ReservationFormFieldsOptions } from "../models/ReservationFormFieldsOptions.interface";
@@ -8,6 +8,7 @@ import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants
 import { createReservationTypeChangeHandler } from "../utils/createReservationTypeChangeHandler";
 import { createReservationFormNumericFieldHandlers } from "../utils/createReservationFormNumericFieldHandlers";
 import { useReservationFormValues } from "./useReservationFormValues";
+import { useReservationGuideSelection } from "./useReservationGuideSelection";
 
 const createBasicFieldHandlers = (
   updateValue: UpdateReservationFormValue,
@@ -67,6 +68,20 @@ export const useReservationFormFields = (
       updateValue,
       setHasReservationTypeSelectionReset
     );
+  const guideSelection = useReservationGuideSelection(
+    values,
+    updateValue
+  );
+  const reconcileLoadedGuides = useEffectEvent(() => {
+    if (options.guideOptions !== undefined) {
+      guideSelection.reconcileGuideSelection(
+        options.guideOptions.map((guide) => guide.id)
+      );
+    }
+  });
+  useEffect(() => {
+    reconcileLoadedGuides();
+  }, [options.guideOptions]);
   const clearUnitAfterScheduleChange = (): void => {
     if (!options.keepsUnitOnScheduleChange) {
       updateValue(
@@ -86,6 +101,7 @@ export const useReservationFormFields = (
       updateValue,
       clearUnitAfterScheduleChange
     ),
+    ...guideSelection,
     reset: () => {
       reset();
       setHasReservationTypeSelectionReset(false);
