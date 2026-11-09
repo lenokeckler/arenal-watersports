@@ -13,6 +13,7 @@ import { expect, test } from "../support/activeWorkerTest";
 import { openRouteWithCopiedCookies } from "../support/openRouteWithCopiedCookies";
 import { readAccessTokenExpiry } from "../support/readAccessTokenExpiry";
 import { readAuthCookies } from "../support/readAuthCookies";
+import { resolveSystemRoute } from "../support/resolveSystemRoute";
 
 const copiedCookieScenarios = [
   {
@@ -35,6 +36,8 @@ for (const { routes, title } of copiedCookieScenarios) {
         signedInPage: page,
       }, testInfo) => {
         const sessionBar = createSessionBarPage(page);
+        const concreteRoute =
+          await resolveSystemRoute(route);
         const copiedCookies =
           await readAuthCookies(context);
         expect(
@@ -50,7 +53,7 @@ for (const { routes, title } of copiedCookieScenarios) {
           browser,
           { ...testInfo.project.use, baseURL },
           copiedCookies,
-          route,
+          concreteRoute,
           async (copiedPage) => {
             await expect(copiedPage).toHaveURL(
               PATHS.ACCESS.LOGIN

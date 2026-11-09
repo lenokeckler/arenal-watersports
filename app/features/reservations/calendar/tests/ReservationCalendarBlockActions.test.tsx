@@ -1,56 +1,92 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import {
-  ARIA_ROLE,
-  RESERVATION_CALENDAR_ACTIVE_STATUS,
+  PATHS,
+  RESERVATION_CALENDAR_ACTIVE_STATUS as status,
   RESERVATIONS_CALENDAR_COPY as copy,
-  STRING,
 } from "@/app/constants";
 import { buildReservationCalendarBlock } from "@/app/components/reservation-calendar/utils/buildReservationCalendarBlock";
-import { resolveReservationSplitPath } from "@/app/utils/reservations/resolveReservationSplitPath";
-import { renderReservationCalendarBlockActions } from "../utils/renderReservationCalendarBlockActions";
+import { ReservationCalendarGroupList } from "../components/ReservationCalendarGroupList";
+import { createReservationCalendarBlockPage } from "./ReservationCalendarBlock.page";
 import { CALENDAR_BLOCK_ENTRY } from "./ReservationCalendarDisplay.constants";
 
-const HREF_ATTRIBUTE = "href";
-
-const buildBlock = (
-  status: typeof CALENDAR_BLOCK_ENTRY.status
-) =>
-  buildReservationCalendarBlock({
+const renderAgendaBlock = (
+  entryStatus: typeof CALENDAR_BLOCK_ENTRY.status
+) => {
+  const block = buildReservationCalendarBlock({
     ...CALENDAR_BLOCK_ENTRY,
-    status,
+    status: entryStatus,
+  });
+  render(
+    <ReservationCalendarGroupList
+      groups={[
+        {
+          blocks: [block],
+          date: { day: 14, month: 10, year: 2026 },
+          dateLabel: copy.TITLE,
+        },
+      ]}
+    />
+  );
+  return createReservationCalendarBlockPage(block);
+};
+
+describe("Reservation block modify link", () => {
+  it("links a scheduled block to its edit screen, named after the customer", () => {
+    const link = renderAgendaBlock(
+      status.SCHEDULED
+    ).getModifyLink();
+
+    expect(link).toHaveTextContent(copy.MODIFY_RESERVATION);
+    expect(link).toHaveAccessibleName(
+      `${copy.MODIFY_RESERVATION_LABEL} ${CALENDAR_BLOCK_ENTRY.customerName}`
+    );
+    expect(link?.getAttribute("href")).toBe(
+      `${PATHS.RESERVATIONS.ROOT}/${CALENDAR_BLOCK_ENTRY.id}/${PATHS.RESERVATIONS.EDIT_SEGMENT}`
+    );
   });
 
-describe("reservation calendar block actions", (): void => {
-  it("links a scheduled block to its split screen with the customer in the name", (): void => {
-    const block = buildBlock(
-      RESERVATION_CALENDAR_ACTIVE_STATUS.SCHEDULED
-    );
+  it("keeps the modify link outside the detail link", () => {
+    const page = renderAgendaBlock(status.SCHEDULED);
 
-    render(
-      <>{renderReservationCalendarBlockActions(block)}</>
-    );
-
-    expect(
-      screen.getByRole(ARIA_ROLE.LINK, {
-        name: [
-          copy.SPLIT_RESERVATION_LABEL,
-          block.customerName,
-        ].join(STRING.SPACE),
-      })
-    ).toHaveAttribute(
-      HREF_ATTRIBUTE,
-      resolveReservationSplitPath(block.id)
+    expect(page.getDetailLink()).not.toContainElement(
+      page.getModifyLink()
     );
   });
 
-  it("offers nothing on a dispatched block", (): void => {
-    const block = buildBlock(
-      RESERVATION_CALENDAR_ACTIVE_STATUS.DISPATCHED
-    );
-
+  it("offers no link on a dispatched block", () => {
     expect(
-      renderReservationCalendarBlockActions(block)
+      renderAgendaBlock(status.DISPATCHED).getModifyLink()
+    ).toBeNull();
+  });
+});
+
+describe("Reservation block split link", () => {
+  it("links a scheduled block to its split screen, named after the customer", () => {
+    const link = renderAgendaBlock(
+      status.SCHEDULED
+    ).getSplitLink();
+
+    expect(link).toHaveTextContent(copy.SPLIT_RESERVATION);
+    expect(link).toHaveAccessibleName(
+      `${copy.SPLIT_RESERVATION_LABEL} ${CALENDAR_BLOCK_ENTRY.customerName}`
+    );
+    expect(link?.getAttribute("href")).toBe(
+      `${PATHS.RESERVATIONS.ROOT}/${CALENDAR_BLOCK_ENTRY.id}/${PATHS.RESERVATIONS.SPLIT_SEGMENT}`
+    );
+  });
+
+  it("keeps the split link outside the detail link", () => {
+    const page = renderAgendaBlock(status.SCHEDULED);
+
+    expect(page.getDetailLink()).not.toContainElement(
+      page.getSplitLink()
+    );
+  });
+
+  it("offers no link on a dispatched block", () => {
+    expect(
+      renderAgendaBlock(status.DISPATCHED).getSplitLink()
     ).toBeNull();
   });
 });

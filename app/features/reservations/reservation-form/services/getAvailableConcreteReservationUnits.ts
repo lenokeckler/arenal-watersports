@@ -3,6 +3,7 @@ import type { Database } from "@/app/types";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { RESERVATION_AVAILABILITY } from "../constants/ReservationAvailability.constants";
 import { RESERVATION_EQUIPMENT_UNIT_STATUS } from "../constants/ReservationEquipmentUnitStatus.constants";
+import type { ReservationConcreteUnitsQuery } from "../models/ReservationConcreteUnitsQuery.interface";
 import type { ReservationUnitCommitment } from "../models/ReservationUnitCommitment.interface";
 import { getOccupiedReservationUnitIds } from "../utils/getOccupiedReservationUnitIds";
 
@@ -28,9 +29,10 @@ const loadUnits = async (
 
 const loadUnitCommitments = async (
   supabase: SupabaseClient<Database>,
-  unitIds: string[]
+  unitIds: string[],
+  excludeReservationId?: string
 ): Promise<ReservationUnitCommitment[]> => {
-  const { data: commitments, error } = await supabase
+  const commitmentsQuery = supabase
     .from("reservation_items")
     .select(
       "unit_id, reservation:reservations!inner(starts_at, ends_at), dispatch:reservation_dispatches(closed_at, dispatched_at)"
@@ -40,6 +42,13 @@ const loadUnitCommitments = async (
       "reservation.status",
       RESERVATION_AVAILABILITY.RESERVATION_STATUSES
     );
+  const { data: commitments, error } =
+    await (excludeReservationId
+      ? commitmentsQuery.neq(
+          RESERVATION_AVAILABILITY.EXCLUDED_RESERVATION_COLUMN,
+          excludeReservationId
+        )
+      : commitmentsQuery);
   throwIfSupabaseError(
     error,
     RESERVATION_AVAILABILITY.OPERATION.UNITS
@@ -49,22 +58,21 @@ const loadUnitCommitments = async (
 
 export const getAvailableConcreteReservationUnits = async (
   supabase: SupabaseClient<Database>,
-  categoryId: string,
-  startsAt: string,
-  endsAt: string
+  query: ReservationConcreteUnitsQuery
 ) => {
-  const units = await loadUnits(supabase, categoryId);
+  const units = await loadUnits(supabase, query.categoryId);
   if (!units.length) {
     return [];
   }
   const commitments = await loadUnitCommitments(
     supabase,
-    units.map((unit) => unit.id)
+    units.map((unit) => unit.id),
+    query.excludeReservationId
   );
   const occupiedUnitIds = getOccupiedReservationUnitIds(
     commitments,
-    startsAt,
-    endsAt
+    query.startsAt,
+    query.endsAt
   );
   return units.filter(
     (unit) => !occupiedUnitIds.has(unit.id)
