@@ -1,4 +1,5 @@
 import {
+  CALENDAR_VIEW,
   CALENDAR_TEXT,
   RESERVATIONS_CALENDAR_COPY,
 } from "@/app/constants";
@@ -32,6 +33,24 @@ export const E2E_RESERVATIONS_CALENDAR_YEAR_SCREENSHOT =
 
 export const E2E_RESERVATIONS_CALENDAR_MONTH_SELECTION_SCREENSHOT =
   "06-reservations-calendar-selected-month";
+
+export const E2E_RESERVATIONS_CALENDAR_FOCUS_SCREENSHOT =
+  "07-reservations-calendar-detail-link-focus";
+
+export const E2E_RESERVATIONS_CALENDAR_NAVIGATION_VIEWS = [
+  CALENDAR_VIEW.MONTH,
+  CALENDAR_VIEW.DAY,
+  CALENDAR_VIEW.WEEK,
+] as const;
+
+export const E2E_RESERVATIONS_CALENDAR_MAX_KEYBOARD_TABS = 50;
+
+export const E2E_RESERVATIONS_CALENDAR_MAX_DAY_PERIOD_ADVANCES = 31;
+
+export const E2E_RESERVATIONS_CALENDAR_KEYS = {
+  ENTER: "Enter",
+  TAB: "Tab",
+} as const;
 
 export const E2E_RESERVATIONS_CALENDAR_HEAT_FIXTURE = {
   DAY_OFFSETS_BY_PROJECT: {
@@ -74,18 +93,23 @@ export const E2E_RESERVATIONS_CALENDAR_HEAT_CLASSES = {
 } as const;
 
 export const E2E_RESERVATIONS_CALENDAR_SELECTORS = {
+  FOCUS_VISIBLE: ":focus-visible",
   WEEK_GRID: "div.grid-flow-col:has(> div)",
 } as const;
 
 export const E2E_RESERVATIONS_CALENDAR_ERRORS = {
   CREATE_OPERATION:
     "create Reservations calendar heat fixtures",
-  REMOVE_OPERATION:
-    "remove Reservations calendar heat fixtures",
   EMPTY_HEAT_FIXTURE:
     "The calendar heat fixture has no selected date.",
   EMPTY_RESERVATION_NAMES:
     "The calendar heat fixture has no reservation names.",
+  KEYBOARD_FOCUS_FAILED:
+    "Could not focus the reservation detail link with Tab.",
+  MISSING_DETAIL_LINK:
+    "The reservation detail link has no destination.",
+  REMOVE_OPERATION:
+    "remove Reservations calendar heat fixtures",
   UNKNOWN_PROJECT: (projectName: string): string =>
     `The calendar heat fixture does not support project ${projectName}.`,
 } as const;

@@ -1,17 +1,12 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
   PATHS,
   SUPABASE_WORK_AREA,
   WORK_AREA_LABEL,
 } from "@/app/constants";
-import { readWorkModeOverviewAsSignedIn } from "@/app/services/work-mode";
 import { WORK_MODE_COPY } from "../constants/WorkModeCopy.constants";
 import WorkModeSwitch from "../WorkModeSwitch";
-
-vi.mock("@/app/services/work-mode", () => ({
-  readWorkModeOverviewAsSignedIn: vi.fn(),
-}));
 
 const BOTH = [
   SUPABASE_WORK_AREA.RESERVATIONS,
@@ -19,16 +14,15 @@ const BOTH = [
 ];
 
 describe("WorkModeSwitch", () => {
-  it("shows the current mode and links to the selector", async () => {
-    vi.mocked(
-      readWorkModeOverviewAsSignedIn
-    ).mockResolvedValue({
-      areas: BOTH,
-      current: SUPABASE_WORK_AREA.RESERVATIONS,
-    });
-
-    const element = await WorkModeSwitch();
-    render(element ?? <></>);
+  it("shows the current mode and links to the selector", () => {
+    render(
+      <WorkModeSwitch
+        overview={{
+          areas: BOTH,
+          current: SUPABASE_WORK_AREA.RESERVATIONS,
+        }}
+      />
+    );
 
     expect(
       screen.getByText(
@@ -53,11 +47,11 @@ describe("WorkModeSwitch", () => {
     ],
     [{ areas: BOTH, current: null }],
     [null],
-  ])("shows nothing for %j", async (overview) => {
-    vi.mocked(
-      readWorkModeOverviewAsSignedIn
-    ).mockResolvedValue(overview);
+  ])("shows nothing for %j", (overview) => {
+    const { container } = render(
+      <WorkModeSwitch overview={overview} />
+    );
 
-    expect(await WorkModeSwitch()).toBeNull();
+    expect(container).toBeEmptyDOMElement();
   });
 });

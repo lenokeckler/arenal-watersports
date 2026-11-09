@@ -62,8 +62,13 @@ const useReservationCategoryConflictLookup = (
     SetStateAction<ReservationCategoryConflictLookupState>
   >
 ): void => {
-  const { categoryId, date, durationMinutes, time } =
-    request;
+  const {
+    categoryId,
+    date,
+    durationMinutes,
+    excludeReservationId,
+    time,
+  } = request;
 
   useEffect(() => {
     let isCurrentRequest = true;
@@ -71,6 +76,7 @@ const useReservationCategoryConflictLookup = (
       categoryId,
       date,
       durationMinutes,
+      excludeReservationId,
       time,
     };
     if (
@@ -100,6 +106,7 @@ const useReservationCategoryConflictLookup = (
     categoryId,
     date,
     durationMinutes,
+    excludeReservationId,
     time,
     refreshKey,
     retryRevision,

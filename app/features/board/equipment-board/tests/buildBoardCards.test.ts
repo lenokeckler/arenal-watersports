@@ -26,6 +26,7 @@ describe("buildBoardCards", () => {
         inUseCount: category.inUseCount,
         isGrouped: false,
         label: category.name,
+        targetCategoryId: category.id,
         totalCount: category.totalCount,
       },
     ]);
