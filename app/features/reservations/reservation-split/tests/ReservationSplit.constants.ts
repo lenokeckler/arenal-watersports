@@ -129,7 +129,9 @@ export const COSTA_RICA_MIDNIGHT_CASES = [
 ] as const;
 
 export const SPLIT_DRAFT_KEY = "draft-1";
+export const SPLIT_ORIGINAL_TIME = "14:30";
 export const SPLIT_DRAFT_TIME = "16:00";
+export const SPLIT_UNIT_ERROR = "Elija una salida.";
 
 export const SPLIT_UNIT_ITEM: ReservationSplitItem = {
   categoryName: SPLIT_BOAT_CATEGORY.name,
@@ -147,6 +149,14 @@ export const SPLIT_DRAFT: ReservationSplitDraft = {
 };
 
 export const SPLIT_DEPARTURE_NUMBER = 2;
+export const SPLIT_PEOPLE_ERROR =
+  "Cada salida necesita al menos 1 persona.";
+export const SPLIT_ITEMS_ERROR =
+  "Cada salida necesita al menos 1 equipo.";
+
+export const SPLIT_SECOND_DRAFT_KEY = "draft-2";
+export const SPLIT_SECOND_DEPARTURE_NUMBER = 3;
+export const SPLIT_SECOND_DRAFT_TIME = "17:00";
 
 export const SPLIT_DURATION_CASES = [
   [30, "30 min"],
@@ -155,3 +165,9 @@ export const SPLIT_DURATION_CASES = [
   [150, "2 h 30 min"],
   [1440, "24 horas"],
 ] as const;
+
+export const SPLIT_OTHER_UNIT_ITEM: ReservationSplitItem = {
+  ...SPLIT_UNIT_ITEM,
+  id: "e2900000-0000-4000-8000-000000000404",
+  label: "Lancha L-04",
+};

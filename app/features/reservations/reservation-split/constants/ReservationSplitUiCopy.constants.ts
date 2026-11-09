@@ -1,4 +1,8 @@
 export const RESERVATION_SPLIT_UI_COPY = {
+  CARRIES_UNITS: (units: string): string =>
+    `Lleva: ${units}.`,
+  DEPARTURE_HEADING: (departureNumber: number): string =>
+    `Salida ${departureNumber}`,
   DURATION_HOURS: (hours: number): string =>
     hours === 1 ? "1 hora" : `${hours} horas`,
   DURATION_HOURS_MINUTES: (
@@ -7,6 +11,9 @@ export const RESERVATION_SPLIT_UI_COPY = {
   ): string => `${hours} h ${minutes} min`,
   DURATION_MINUTES: (minutes: number): string =>
     `${minutes} min`,
+  DURATION_INHERITED: (duration: string): string =>
+    `Duración: ${duration}, igual que la reserva original.`,
+  EQUIPMENT_LEGEND: "Equipo de esta salida",
   LABEL_CUSTOMER: "Cliente",
   LABEL_DATE: "Fecha",
   LABEL_DURATION: "Duración",
@@ -16,13 +23,27 @@ export const RESERVATION_SPLIT_UI_COPY = {
   ORIGINAL_HEADING: "Salida original",
   ORIGINAL_STAYS: "Se quedan en esta salida.",
   ORIGINAL_TIME_HINT: "Esta salida conserva su hora.",
+  PEOPLE: "Cantidad de personas",
   REMAINING_OF: (
     remaining: number,
     total: number
   ): string => `${remaining} de ${total}`,
+  REMOVE_DEPARTURE: "Quitar salida",
+  REMOVE_DEPARTURE_ARIA: (
+    departureNumber: number
+  ): string => `Quitar la salida ${departureNumber}`,
+  SAME_DAY_HINT: "Mismo día que la reserva original.",
+  TIME_ZONE: "Hora de Costa Rica · UTC−06:00",
   UNIT_GOES_TO: (departureNumber: number): string =>
     `Va en la salida ${departureNumber}`,
   UNIT_STAYS: "Se queda",
+  UNIT_OPTION_DEPARTURE: (
+    departureNumber: number,
+    time: string
+  ): string => `Salida ${departureNumber} · ${time}`,
+  UNIT_OPTION_NO_TIME: "sin hora",
+  UNIT_OPTION_ORIGINAL: (time: string): string =>
+    `Salida original · ${time}`,
   STEPPER_ADD_ARIA: (
     label: string,
     departureNumber: number
