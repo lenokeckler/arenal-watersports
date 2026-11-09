@@ -3,7 +3,8 @@ import { DOCUMENT } from "@/app/constants";
 import type { NullableUndefined } from "@/app/types";
 
 export const useScrollToSelectedAgenda = (
-  agendaId: NullableUndefined<string>
+  agendaId: NullableUndefined<string>,
+  request: number
 ): void => {
   useEffect(() => {
     if (agendaId === undefined) {
@@ -13,5 +14,5 @@ export const useScrollToSelectedAgenda = (
       behavior: DOCUMENT.SMOOTH,
       block: "start",
     });
-  }, [agendaId]);
+  }, [agendaId, request]);
 };

@@ -59,6 +59,15 @@ export { PATHS } from "./strings/Paths.constants";
 export { UUID_PATTERN } from "./strings/UUIDPattern.constants";
 export { TYPE_OF } from "./strings/TypeOf.constants";
 export {
+  ISO_DATE_MIN,
+  ISO_DATE_PATTERN,
+  ISO_DATE_UTC_MIDNIGHT_SUFFIX,
+} from "./strings/IsoDatePattern.constants";
+export { RESERVATION_TYPE } from "./reservations/ReservationType.constants";
+export { RESERVATION_HISTORY_STATUS } from "./reservations/ReservationHistoryStatus.constants";
+export { RESERVATION_HISTORY_ERROR } from "./reservations/ReservationHistoryError.constants";
+export { RESERVATION_HISTORY_FILTER_PARAM } from "./reservations/ReservationHistoryFilterParam.constants";
+export {
   WORK_AREA,
   type WorkArea,
 } from "./strings/WorkArea.constants";
@@ -71,6 +80,10 @@ export { EVENT } from "./strings/Event.constants";
 export { LOGO } from "./strings/Logo.constants";
 export { DISPLAY_NAME } from "./strings/DisplayName.constants";
 export { APP_NAME } from "./strings/AppName.constants";
+export {
+  ARIA_CURRENT,
+  type AriaCurrentValue,
+} from "./strings/AriaCurrent.constants";
 export { ARIA_LABEL } from "./strings/AriaLabel.constants";
 export { ARIA_ROLE } from "./strings/AriaRole.constants";
 export type { UnorderedListVariant } from "@/app/components/list/UnorderedList.constants";
@@ -96,6 +109,7 @@ export {
 } from "./strings/Date.constants";
 export { MODAL } from "./strings/Modal.constants";
 export { LENGTH } from "./strings/Length.constants";
+export { POSTGRES_INTEGER_MAX } from "./strings/PostgresLimits.constants";
 export {
   AUTOCAPITALIZE,
   AUTOCOMPLETE,
@@ -170,13 +184,22 @@ export {
 } from "./access/BlockedReauthentication.constants";
 export { SUPABASE_TABLE } from "./supabase/SupabaseTable.constants";
 export {
+  BOARD_CATEGORY_DETAIL_OPERATION,
   BOARD_CATEGORY_OPERATION,
   BOARD_CATEGORY_QUERY,
 } from "./supabase/BoardCategoryQuery.constants";
 export {
+  BOARD_CATEGORY_UNITS_OPERATION,
+  BOARD_CATEGORY_UNITS_QUERY,
+} from "./supabase/BoardCategoryUnitsQuery.constants";
+export {
   RESERVATIONS_BY_WORKER_OPERATION,
   RESERVATIONS_BY_WORKER_QUERY,
 } from "./supabase/ReservationsByWorkerQuery.constants";
+export {
+  RESERVATION_HISTORY_OPERATION,
+  RESERVATION_HISTORY_QUERY,
+} from "./supabase/ReservationHistoryQuery.constants";
 export { SUPABASE_SIGN_OUT_SCOPE } from "./supabase/SupabaseSignOutScope.constants";
 export {
   SUPABASE_AUTH_COOKIE,
@@ -329,14 +352,17 @@ export {
 } from "./supabase/ReservationCalendarQuery.constants";
 export { RESERVATION_CALENDAR_QUERY_ERROR } from "./supabase/ReservationCalendarQueryError.constants";
 export { DEPOSIT_QUERY } from "./supabase/DepositQuery.constants";
+export { DEPOSIT_ROW_INCOMPLETE_ERROR_MESSAGE } from "./supabase/DepositsReadError.constants";
 export {
   CURRENCY_CODE,
   type CurrencyCode,
 } from "./money/CurrencyCode.constants";
 export {
   DEPOSIT_STATUS,
+  RETAINED_DEPOSIT_STATUSES,
   type DepositStatus,
 } from "./money/DepositStatus.constants";
+export { DEPOSIT_COPY } from "./money/DepositCopy.constants";
 export {
   MONEY_AMOUNT_ISSUE,
   type MoneyAmountIssue,
