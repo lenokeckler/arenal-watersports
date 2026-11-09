@@ -1,0 +1,8 @@
+export const RESERVATION_SPLIT_DRAFT = {
+  FIRST_ADDED_KEY: 1,
+  INITIAL_KEY: "initial",
+  MIN_DEPARTURES: 1,
+  MIN_PEOPLE: 1,
+  MIN_PIECES: 1,
+  NONE: 0,
+} as const;
