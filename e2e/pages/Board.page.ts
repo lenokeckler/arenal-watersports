@@ -44,6 +44,23 @@ export const createBoardPage = (page: Page) => {
       }),
     });
 
+  const getCardLinks = (): Locator =>
+    getGrid().getByRole(ARIA_ROLE.LINK);
+
+  const getLinksIn = (card: Locator): Locator =>
+    card.getByRole(ARIA_ROLE.LINK);
+
+  const clickCard = async (
+    label: string
+  ): Promise<void> => {
+    await getGrid()
+      .getByRole(ARIA_ROLE.LINK, {
+        exact: true,
+        name: label,
+      })
+      .click();
+  };
+
   const getCardText = (
     card: Locator,
     text: string
@@ -68,13 +85,16 @@ export const createBoardPage = (page: Page) => {
     }, E2E_BOARD_LAYOUT.ROW_TOLERANCE_PX);
 
   return {
+    clickCard,
     countCardsInFirstRow,
     getCard,
     getButtons,
+    getCardLinks,
     getCards,
     getCardText,
     getGrid,
     getHeading,
+    getLinksIn,
     getSubtitle,
     getTextInMain,
     goTo,
