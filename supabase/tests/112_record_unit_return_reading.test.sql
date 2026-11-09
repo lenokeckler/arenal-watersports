@@ -1,5 +1,5 @@
 begin;
-select plan(9);
+select plan(17);
 
 insert into auth.users (id, email) values
   ('e3100000-0000-4000-8000-000000000001', 'res20-admin@arenal.local'),
@@ -14,9 +14,9 @@ insert into workers (id, username, full_name, base_role) values
 
 insert into equipment_categories
   (id, name, status, tracking_mode, is_reservable, units_are_interchangeable, default_duration_minutes,
-   created_by, updated_by)
+   consumes_fuel, created_by, updated_by)
 values ('e3100000-0000-4000-8000-000000000101', 'RES20 Lancha', 'active', 'by_unit', true, false, 60,
-        'e3100000-0000-4000-8000-000000000001', 'e3100000-0000-4000-8000-000000000001');
+        true, 'e3100000-0000-4000-8000-000000000001', 'e3100000-0000-4000-8000-000000000001');
 
 insert into equipment_units (id, category_id, code, status, fuel_max, fuel_level, usage_total, created_by, updated_by)
 values ('e3100000-0000-4000-8000-000000000201', 'e3100000-0000-4000-8000-000000000101', 'RES20-LANCHA-1', 'available',
@@ -78,10 +78,60 @@ select throws_ok(
 );
 
 reset role;
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"e3100000-0000-4000-8000-000000000002","role":"authenticated"}';
+
+select throws_ok(
+  $$ select private.record_unit_return_reading('e3100000-0000-4000-8000-000000000201', 5, 130) $$,
+  '23514', null,
+  'a fuel level above the unit maximum is refused'
+);
+
+select throws_ok(
+  $$ select private.record_unit_return_reading('e3100000-0000-4000-8000-000000000201', -1, 130) $$,
+  '23514', null,
+  'a negative fuel level is refused'
+);
+
+select lives_ok(
+  $$ select private.record_unit_return_reading('e3100000-0000-4000-8000-000000000201', 0, 130) $$,
+  'an empty tank is a valid reading'
+);
+
+select is(
+  (select fuel_level from equipment_units where id = 'e3100000-0000-4000-8000-000000000201'),
+  0,
+  'zero fuel is stored and not treated as missing'
+);
+
+select lives_ok(
+  $$ select private.record_unit_return_reading('e3100000-0000-4000-8000-000000000201', null, null) $$,
+  'a call with both readings null is accepted'
+);
 
 select is(
   (select usage_total from equipment_units where id = 'e3100000-0000-4000-8000-000000000201'),
-  120::numeric,
+  130::numeric,
+  'a null usage total leaves the column untouched'
+);
+
+select throws_ok(
+  $$ select private.record_unit_return_reading('e3100000-0000-4000-8000-000000000201', 1, -5) $$,
+  'P0001', 'Unit usage reading cannot go backwards',
+  'a negative usage total is refused'
+);
+
+select throws_ok(
+  $$ select private.record_unit_return_reading('e3100000-0000-4000-8000-000000000201', 1, 50) $$,
+  'P0001', 'Unit usage reading cannot go backwards',
+  'a usage total below the unit current total is refused'
+);
+
+reset role;
+
+select is(
+  (select usage_total from equipment_units where id = 'e3100000-0000-4000-8000-000000000201'),
+  130::numeric,
   'a refused call leaves the unit untouched'
 );
 
