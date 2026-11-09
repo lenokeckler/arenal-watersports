@@ -19,6 +19,7 @@ import {
 import { validateReservationFormInput } from "../utils/validateReservationFormInput";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 
 describe("validateReservationFormInput", () => {
   it("trims the customer name and converts hours to whole minutes", () => {
@@ -31,6 +32,7 @@ describe("validateReservationFormInput", () => {
       date: VALID_RESERVATION_FORM_INPUT.date,
       durationMinutes: EXPECTED_DURATION_MINUTES,
       peopleCount: VALID_RESERVATION_FORM_INPUT.peopleCount,
+      reservationType: RESERVATION_TYPE.RENTAL,
       time: VALID_RESERVATION_FORM_INPUT.time,
       equipmentCommitment: {
         kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
@@ -39,6 +41,17 @@ describe("validateReservationFormInput", () => {
       },
     });
     expect(result.errors).toEqual({});
+  });
+
+  it("preserves the selected reservation type", () => {
+    const result = validateReservationFormInput({
+      ...VALID_RESERVATION_FORM_INPUT,
+      reservationType: RESERVATION_TYPE.TOUR,
+    });
+
+    expect(result.value?.reservationType).toBe(
+      RESERVATION_TYPE.TOUR
+    );
   });
 
   it("validates a concrete unit without requiring a category quantity", () => {

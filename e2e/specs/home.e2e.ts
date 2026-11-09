@@ -9,15 +9,17 @@ test.describe("Home", () => {
     await signInAsSeededWorker(page);
   });
 
-  test("lands on the equipment board", async ({ page }) => {
+  test("loads the equipment board at the entry route", async ({
+    page,
+  }) => {
     const homePage = createHomePage(page);
 
     await homePage.goTo();
 
-    await expect(page).toHaveURL(PATHS.BOARD);
+    await expect(page).toHaveURL(PATHS.HOME);
   });
 
-  test("shows the board heading inside the main landmark", async ({
+  test("shows the board heading inside the main landmark at entry", async ({
     page,
   }) => {
     const homePage = createHomePage(page);
@@ -29,7 +31,7 @@ test.describe("Home", () => {
     );
   });
 
-  test("sets the document title from the app metadata", async ({
+  test("sets the document title from the board metadata", async ({
     page,
   }) => {
     const homePage = createHomePage(page);

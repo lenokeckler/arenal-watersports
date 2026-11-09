@@ -100,6 +100,24 @@ test.describe("Equipment board", () => {
     }
   });
 
+  test("gives every card exactly one link, inside its list item", async ({
+    page,
+  }) => {
+    const boardPage = createBoardPage(page);
+    const cards = boardPage.getCards();
+    const cardCount = await cards.count();
+
+    await expect(boardPage.getCardLinks()).toHaveCount(
+      cardCount
+    );
+
+    for (let index = 0; index < cardCount; index += 1) {
+      await expect(
+        boardPage.getLinksIn(cards.nth(index))
+      ).toHaveCount(E2E_COUNT.ONE);
+    }
+  });
+
   test("places the cards of the project width side by side in the first row", async ({
     page,
   }, testInfo) => {

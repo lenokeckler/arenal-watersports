@@ -176,6 +176,9 @@ test.describe("Reservation form", () => {
       createReservationFormPage(page);
 
     await reservationFormPage.goTo();
+    await reservationFormPage.selectReservationType(
+      E2E_RESERVATION_FORM_COPY.RESERVATION_TYPE_TOUR
+    );
     await reservationFormPage.selectCategory(
       E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
     );
@@ -266,6 +269,9 @@ test.describe("Reservation form", () => {
       await expect(
         reservationFormPage.getCategorySelect()
       ).toBeEnabled();
+      await reservationFormPage.selectReservationType(
+        E2E_RESERVATION_FORM_COPY.RESERVATION_TYPE_TOUR
+      );
       await reservationFormPage.selectCategory(
         E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
       );

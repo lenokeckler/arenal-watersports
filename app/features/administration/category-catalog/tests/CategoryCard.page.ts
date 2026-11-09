@@ -47,6 +47,11 @@ export const createCategoryCardPage = () => {
       name: CATEGORY_CATALOG_COPY.UNITS_LINK,
     });
 
+  const getStockLink = () =>
+    screen.queryByRole(ARIA_ROLE.LINK, {
+      name: CATEGORY_CATALOG_COPY.STOCK_LINK,
+    });
+
   const getAlertsLink = () =>
     screen.queryByRole(ARIA_ROLE.LINK, {
       name: CATEGORY_CATALOG_COPY.ALERT_LINK,
@@ -127,6 +132,7 @@ export const createCategoryCardPage = () => {
     getBehaviorLink,
     getDepositLink,
     getAlertsLink,
+    getStockLink,
     getUnitsLink,
     getGroupPrefix,
     getDeleteButton,
