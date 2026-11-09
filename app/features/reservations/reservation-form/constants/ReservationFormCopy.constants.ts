@@ -5,6 +5,8 @@ export const RESERVATION_FORM_COPY = {
     "Seleccione el equipo que va a ocupar.",
   [RESERVATION_FORM_FIELD.CUSTOMER_NAME]:
     "Ingrese el nombre de la reserva.",
+  [RESERVATION_FORM_FIELD.GUIDE_IDS]:
+    "Seleccione guías válidos para el tour.",
   [RESERVATION_FORM_FIELD.DATE]:
     "Ingrese una fecha válida.",
   [RESERVATION_FORM_FIELD.DURATION_HOURS]:
