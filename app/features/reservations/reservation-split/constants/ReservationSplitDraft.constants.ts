@@ -6,6 +6,7 @@ export const RESERVATION_SPLIT_DRAFT = {
   MIN_PEOPLE: 1,
   MIN_PIECES: 1,
   NONE: 0,
+  ORIGINAL_DEPARTURES: 1,
   STEP_DOWN: -1,
   STEP_UP: 1,
 } as const;

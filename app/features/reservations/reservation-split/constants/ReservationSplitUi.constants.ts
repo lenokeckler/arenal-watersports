@@ -1,4 +1,5 @@
 export const RESERVATION_SPLIT_FIELD_ID = {
+  HEADING: "reservation-split-heading",
   HEADING_PREFIX: "reservation-split-heading-",
   ORIGINAL_HEADING: "reservation-split-heading-original",
   TIME_PREFIX: "reservation-split-time-",
