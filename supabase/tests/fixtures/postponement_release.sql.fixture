@@ -1,0 +1,70 @@
+insert into auth.users (id, email) values
+  ('e3300000-0000-4000-8000-000000000001', 'res20-r-admin@arenal.local'),
+  ('e3300000-0000-4000-8000-000000000002', 'res20-r-reservas@arenal.local'),
+  ('e3300000-0000-4000-8000-000000000003', 'res20-r-operaciones@arenal.local');
+
+insert into workers (id, username, full_name, personal_email, base_role) values
+  ('e3300000-0000-4000-8000-000000000001', 'res20-r-admin', 'RES20 Admin', 'res20-r-admin@correo.com', 'administracion');
+insert into workers (id, username, full_name, base_role) values
+  ('e3300000-0000-4000-8000-000000000002', 'res20-r-reservas', 'RES20 Reservas', 'reservas'),
+  ('e3300000-0000-4000-8000-000000000003', 'res20-r-operaciones', 'RES20 Operaciones', 'operaciones');
+
+insert into equipment_categories
+  (id, name, status, tracking_mode, is_reservable, units_are_interchangeable, default_duration_minutes,
+   consumes_fuel, has_motor, usage_metric, created_by, updated_by)
+values
+  ('e3300000-0000-4000-8000-000000000101', 'RES20 Lancha', 'active', 'by_unit', true, false, 60, true, true, 'engine_hours', 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000102', 'RES20 Kayak', 'active', 'by_unit', true, false, 60, false, false, null, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000103', 'RES20 Moto', 'active', 'by_unit', true, false, 60, true, true, 'kilometers', 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001');
+
+insert into equipment_units
+  (id, category_id, code, status, fuel_max, fuel_level, usage_total, created_by, updated_by)
+values
+  ('e3300000-0000-4000-8000-000000000201', 'e3300000-0000-4000-8000-000000000101', 'RES20-R-LANCHA-1', 'available', 4, 4, 10, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000202', 'e3300000-0000-4000-8000-000000000102', 'RES20-R-KAYAK-1', 'available', 4, null, 0, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000203', 'e3300000-0000-4000-8000-000000000103', 'RES20-R-MOTO-1', 'available', 4, 3, 9, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000204', 'e3300000-0000-4000-8000-000000000101', 'RES20-R-LANCHA-2', 'available', 4, 4, 20, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001');
+
+insert into reservations
+  (id, customer_name, people_count, type, starts_at, duration_minutes, status, created_by, updated_by)
+values
+  ('e3300000-0000-4000-8000-000000000301', 'RES20 Maria', 2, 'rental', '2035-04-12 15:00:00+00', 60, 'scheduled', 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000302', 'RES20 Pedro', 2, 'rental', '2035-04-12 17:00:00+00', 60, 'scheduled', 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001');
+
+insert into reservation_items
+  (id, reservation_id, unit_id, fuel_out, usage_out, created_by, updated_by)
+values
+  ('e3300000-0000-4000-8000-000000000501', 'e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000201', 4, 10, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000502', 'e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000202', null, null, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000503', 'e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000203', 4, 5, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000504', 'e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000204', 4, 18, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001');
+
+insert into reservation_dispatches
+  (id, reservation_id, category_id, dispatched_at, duration_minutes, created_by, updated_by)
+values
+  ('e3300000-0000-4000-8000-000000000601', 'e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000101', '2035-04-12 15:00:00+00', 60, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000602', 'e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000102', '2035-04-12 15:00:00+00', 60, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000603', 'e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000103', '2035-04-12 15:00:00+00', 60, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001');
+
+insert into reservation_postponements
+  (id, reservation_id, cause, was_dispatched, previous_starts_at, new_starts_at, created_by)
+values
+  ('e3300000-0000-4000-8000-000000000401', 'e3300000-0000-4000-8000-000000000301', 'storm', true, '2035-04-12 15:00:00+00', '2035-04-13 15:00:00+00', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000402', 'e3300000-0000-4000-8000-000000000302', 'storm', false, '2035-04-12 17:00:00+00', '2035-04-13 17:00:00+00', 'e3300000-0000-4000-8000-000000000001');
+
+create function pg_temp.reading(p_item integer, p_fuel jsonb default null, p_usage jsonb default null)
+returns jsonb language sql immutable as $$
+  select jsonb_strip_nulls(jsonb_build_object(
+    'item_id', 'e3300000-0000-4000-8000-000000000' || p_item, 'fuel_in', p_fuel, 'usage_in', p_usage))
+$$;
+
+create function pg_temp.record(p_readings jsonb, p_postponement uuid default 'e3300000-0000-4000-8000-000000000401')
+returns void language sql as $$
+  select private.record_postponement_readings('e3300000-0000-4000-8000-000000000301', p_postponement, p_readings)
+$$;
+
+create function pg_temp.release(p_reservation uuid default 'e3300000-0000-4000-8000-000000000301', p_readings jsonb default '[]',
+  p_postponement uuid default 'e3300000-0000-4000-8000-000000000401')
+returns void language sql as $$
+  select private.release_dispatched_reservation(p_reservation, p_postponement, p_readings)
+$$;

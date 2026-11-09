@@ -6,6 +6,11 @@ create function private.release_dispatched_reservation(
 language plpgsql security invoker set search_path = public
 as $$
 begin
+  perform 1 from reservations where id = p_reservation_id and status = 'scheduled' for update;
+  if not found then
+    raise exception 'Only scheduled reservations can be released';
+  end if;
+
   perform private.record_postponement_readings(p_reservation_id, p_postponement_id, p_readings);
 
   update reservation_dispatches
@@ -25,4 +30,4 @@ end;
 $$;
 
 revoke all on function private.release_dispatched_reservation(uuid, uuid, jsonb) from public, anon;
-grant execute on function private.release_dispatched_reservation(uuid, uuid, jsonb) to authenticated, service_role;
+grant execute on function private.release_dispatched_reservation(uuid, uuid, jsonb) to authenticated;
