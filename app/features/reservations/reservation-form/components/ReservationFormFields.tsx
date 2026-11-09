@@ -3,13 +3,22 @@ import { RESERVATION_FORM_GRID_CLASS } from "../styles/ReservationFormView.style
 import ReservationCustomerScheduleFields from "./ReservationCustomerScheduleFields";
 import ReservationEquipmentFields from "./ReservationEquipmentFields";
 import ReservationTypeField from "./ReservationTypeField";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
+import ReservationGuideAssignmentField from "./ReservationGuideAssignmentField";
 
 const ReservationFormFields = ({
   categories,
+  guideAssignmentViewModel,
   viewModel,
 }: ReservationFormFieldsProps): React.JSX.Element => (
   <div className={RESERVATION_FORM_GRID_CLASS}>
     <ReservationTypeField viewModel={viewModel} />
+    {viewModel.values.reservationType ===
+      RESERVATION_TYPE.TOUR && guideAssignmentViewModel ? (
+      <ReservationGuideAssignmentField
+        viewModel={guideAssignmentViewModel}
+      />
+    ) : null}
     <ReservationCustomerScheduleFields
       viewModel={viewModel}
     />
