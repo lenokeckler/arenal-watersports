@@ -33,6 +33,7 @@ export const RESERVATION_CALENDAR_QUERY = {
   },
   PROJECTION: `
     id,customer_name,starts_at,ends_at,status,
+    parent:parent_reservation_id(code),
     reservation_items!reservation_items_reservation_id_fkey(
       category_id,unit_id,quantity,extra_id,
       category:equipment_categories!reservation_items_category_id_fkey(id,name),

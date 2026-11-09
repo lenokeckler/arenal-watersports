@@ -14,6 +14,7 @@ export const CALENDAR_QUERY_ROW: ReservationCalendarQueryRow =
     customer_name: CALENDAR_RESERVATION.customer_name,
     ends_at: CALENDAR_RESERVATION.ends_at,
     id: CALENDAR_RESERVATION.id,
+    parent: null,
     reservation_dispatches: [
       {
         category: CALENDAR_CATEGORY,
