@@ -1902,8 +1902,36 @@ export type Database = {
             foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
             columns: ["unit_id"];
             isOneToOne: false;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
             referencedRelation: "equipment_units";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "maintenance_cost_by_unit";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_current_state";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
           },
         ];
       };
@@ -2951,6 +2979,20 @@ export type Database = {
         };
         Returns: undefined;
       };
+      assert_postponement_reason: {
+        Args: {
+          p_cause: Database["public"]["Enums"]["reservation_postponement_cause"];
+          p_reason: string;
+        };
+        Returns: undefined;
+      };
+      assert_postponement_start: {
+        Args: {
+          p_new_start: string;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
+        };
+        Returns: undefined;
+      };
       assert_reservable_equipment_category: {
         Args: { p_category_id: string };
         Returns: undefined;
@@ -2980,6 +3022,14 @@ export type Database = {
       };
       assert_reservation_modifiable: {
         Args: {
+          p_expected_updated_at: string;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
+        };
+        Returns: undefined;
+      };
+      assert_reservation_postponable: {
+        Args: {
+          p_cause: Database["public"]["Enums"]["reservation_postponement_cause"];
           p_expected_updated_at: string;
           p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
         };
