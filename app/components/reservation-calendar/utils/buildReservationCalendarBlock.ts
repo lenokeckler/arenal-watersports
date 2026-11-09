@@ -60,6 +60,9 @@ export const buildReservationCalendarBlock = (
     copy.SCHEDULED,
     scheduledRange,
   ].join(STRING.SPACE);
+  const originLabel = entry.parentCode
+    ? [copy.ORIGIN, entry.parentCode].join(STRING.SPACE)
+    : undefined;
   const actualLabels = entry.dispatches.map(
     describeDispatch
   );
@@ -71,6 +74,7 @@ export const buildReservationCalendarBlock = (
       scheduledLabel,
       ...actualLabels,
       [copy.EQUIPMENT, equipmentLabel].join(STRING.SPACE),
+      ...(originLabel ? [originLabel] : []),
     ].join(copy.DETAIL_SEPARATOR),
     actualLabels,
     customerName: entry.customerName,
@@ -78,6 +82,7 @@ export const buildReservationCalendarBlock = (
     equipmentCategoryName: entry.equipment[0]?.categoryName,
     guides: entry.guides,
     id: entry.id,
+    originLabel,
     scheduledLabel,
     status: entry.status,
   };

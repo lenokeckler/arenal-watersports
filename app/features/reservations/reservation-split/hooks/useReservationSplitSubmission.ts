@@ -65,6 +65,7 @@ export const useReservationSplitSubmission =
       input: ReservationSplitInput
     ): Promise<void> =>
       runLocked(async () => {
+        setFormError(STRING.Empty);
         try {
           const result =
             await splitReservationAction(input);

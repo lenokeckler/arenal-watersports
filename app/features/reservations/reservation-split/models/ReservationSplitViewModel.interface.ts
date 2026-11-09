@@ -3,6 +3,7 @@ import type { ReservationSplitDraftsApi } from "./ReservationSplitDraftsApi.inte
 import type { ReservationSplitErrors } from "./ReservationSplitErrors.interface";
 
 export interface ReservationSplitViewModel extends ReservationSplitDraftsApi {
+  announcement: string;
   createdDepartures: ReservationSplitCreatedDeparture[];
   errors: ReservationSplitErrors;
   formError: string;

@@ -1,6 +1,8 @@
 "use client";
 
 import { Text } from "@/app/components";
+import { ARIA_ROLE } from "@/app/constants";
+import { SCREEN_READER_ONLY_CLASS } from "@/app/styles/ScreenReader.styles";
 import ReservationSplitActions from "./components/ReservationSplitActions";
 import ReservationSplitDepartureCard from "./components/ReservationSplitDepartureCard";
 import ReservationSplitLayout from "./components/ReservationSplitLayout";
@@ -41,6 +43,12 @@ const ReservationSplitView = ({
         autoComplete="off"
         onSubmit={viewModel.handleSubmit}
       >
+        <Text
+          role={ARIA_ROLE.STATUS}
+          className={SCREEN_READER_ONLY_CLASS}
+        >
+          {viewModel.announcement}
+        </Text>
         <div className={RESERVATION_SPLIT_LAYOUT_CLASS}>
           <div className={RESERVATION_SPLIT_ASIDE_CLASS}>
             <ReservationSplitOriginalCard

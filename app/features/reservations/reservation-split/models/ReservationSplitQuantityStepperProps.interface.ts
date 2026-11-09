@@ -1,6 +1,7 @@
 export interface ReservationSplitQuantityStepperProps {
   canDecrease: boolean;
   canIncrease: boolean;
+  controlId?: string;
   departureNumber: number;
   error?: string;
   isFrozen?: boolean;

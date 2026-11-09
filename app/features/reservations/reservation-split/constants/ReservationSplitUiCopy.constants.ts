@@ -3,6 +3,10 @@ export const RESERVATION_SPLIT_UI_COPY = {
   ADD_DEPARTURE: "Agregar otra salida",
   ADD_DEPARTURE_BLOCKED:
     "No quedan personas ni equipos para otra salida.",
+  ANNOUNCE_ADDED: (departureNumber: number): string =>
+    `Salida ${departureNumber} agregada.`,
+  ANNOUNCE_REMOVED: (departureNumber: number): string =>
+    `Salida ${departureNumber} quitada.`,
   BACK_TO_CALENDAR: "Volver al calendario",
   CARRIES_UNITS: (units: string): string =>
     `Lleva: ${units}.`,

@@ -42,6 +42,10 @@ export const createReservationCalendarBlockPage = (
       screen.queryByRole(ARIA_ROLE.LINK, {
         name: `${RESERVATIONS_CALENDAR_COPY.MODIFY_RESERVATION_LABEL} ${block.customerName}`,
       }),
+    getSplitLink: (): NullableRef<HTMLElement> =>
+      screen.queryByRole(ARIA_ROLE.LINK, {
+        name: `${RESERVATIONS_CALENDAR_COPY.SPLIT_RESERVATION_LABEL} ${block.customerName}`,
+      }),
     getFocusableElements,
     getEquipmentImages: (): HTMLImageElement[] =>
       Array.from(getBlock().querySelectorAll("img")),

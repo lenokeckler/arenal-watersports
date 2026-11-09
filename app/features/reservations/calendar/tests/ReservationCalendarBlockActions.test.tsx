@@ -60,3 +60,33 @@ describe("Reservation block modify link", () => {
     ).toBeNull();
   });
 });
+
+describe("Reservation block split link", () => {
+  it("links a scheduled block to its split screen, named after the customer", () => {
+    const link = renderAgendaBlock(
+      status.SCHEDULED
+    ).getSplitLink();
+
+    expect(link).toHaveTextContent(copy.SPLIT_RESERVATION);
+    expect(link).toHaveAccessibleName(
+      `${copy.SPLIT_RESERVATION_LABEL} ${CALENDAR_BLOCK_ENTRY.customerName}`
+    );
+    expect(link?.getAttribute("href")).toBe(
+      `${PATHS.RESERVATIONS.ROOT}/${CALENDAR_BLOCK_ENTRY.id}/${PATHS.RESERVATIONS.SPLIT_SEGMENT}`
+    );
+  });
+
+  it("keeps the split link outside the detail link", () => {
+    const page = renderAgendaBlock(status.SCHEDULED);
+
+    expect(page.getDetailLink()).not.toContainElement(
+      page.getSplitLink()
+    );
+  });
+
+  it("offers no link on a dispatched block", () => {
+    expect(
+      renderAgendaBlock(status.DISPATCHED).getSplitLink()
+    ).toBeNull();
+  });
+});

@@ -23,6 +23,7 @@ import {
 const ReservationSplitQuantityStepper = ({
   canDecrease,
   canIncrease,
+  controlId,
   departureNumber,
   error,
   isFrozen = false,
@@ -96,6 +97,7 @@ const ReservationSplitQuantityStepper = ({
             )}
           </InlineText>
           <Button
+            id={controlId}
             variant={BUTTON.BASE}
             type="button"
             aria-label={RESERVATION_SPLIT_UI_COPY.STEPPER_ADD_ARIA(

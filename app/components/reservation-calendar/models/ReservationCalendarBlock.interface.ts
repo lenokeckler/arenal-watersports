@@ -10,6 +10,7 @@ export interface ReservationCalendarBlock {
   equipmentCategoryName?: string;
   guides: NullableUndefined<ReservationCalendarGuide[]>;
   id: string;
+  originLabel?: string;
   scheduledLabel: string;
   status: ReservationCalendarEntry["status"];
 }
