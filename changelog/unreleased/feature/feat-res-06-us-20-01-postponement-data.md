@@ -1,1 +1,1 @@
-RES-06.20.01: Postponement data — database function that postpones a scheduled reservation, or a dispatched one hit by weather, keeping its charge and deposit (US-RES-20 · AWS-103)
+RES-06.20.01: Postponement data — postponement cause, readings table and guards that let a reservation be postponed, a dispatched one only for weather (US-RES-20 · AWS-103)
