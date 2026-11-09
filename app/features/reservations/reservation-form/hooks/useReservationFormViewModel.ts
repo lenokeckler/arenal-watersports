@@ -42,7 +42,10 @@ export const useReservationFormViewModel = (
     initialDate,
     initialCategoryId,
     submission.clearFieldError,
-    { liveCategories: eligibleCategories }
+    {
+      guideOptions: options.guideOptions,
+      liveCategories: eligibleCategories,
+    }
   );
   const categoriesForReservationType =
     filterReservationCategoriesByType(

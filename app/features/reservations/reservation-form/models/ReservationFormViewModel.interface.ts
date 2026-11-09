@@ -30,6 +30,7 @@ export interface ReservationFormViewModel {
   handleCustomerNameChange: (value: string) => void;
   handleDateChange: (value: string) => void;
   handleDurationChange: (value: number) => void;
+  handleGuideToggle: (guideId: string) => void;
   handleCustomDurationChange: (value: string) => void;
   handleCustomDurationSelection: () => void;
   handlePeopleCountChange: (value: number) => void;
