@@ -40,6 +40,7 @@ export const mapReservationCalendarQueryRow = (
       mapReservationCalendarQueryGuide
     ),
     id: source.id,
+    parentCode: source.parent?.code,
     startsAt: source.starts_at,
     status: source.status,
   };

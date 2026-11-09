@@ -5,17 +5,23 @@ import {
   fetchRetainedDeposits,
 } from "@/app/services/deposits";
 import { isAdministratorSignedIn } from "@/app/services/worker-registration";
-import { LIST_PAGINATION } from "@/app/utils/list-pagination/constants/ListPagination.constants";
+import { resolveListPage } from "@/app/utils/list-pagination/resolveListPage";
 import DepositsView from "./DepositsView";
+import type { DepositsProps } from "./models/DepositsProps.interface";
 
-const Deposits = async (): Promise<React.JSX.Element> => {
+const Deposits = async ({
+  pendingPageParam,
+  retainedPageParam,
+}: DepositsProps): Promise<React.JSX.Element> => {
   if (!(await isAdministratorSignedIn())) {
     redirect(PATHS.HOME);
   }
 
   const [pendingPage, retainedPage] = await Promise.all([
-    fetchPendingDeposits(LIST_PAGINATION.FIRST_PAGE),
-    fetchRetainedDeposits(LIST_PAGINATION.FIRST_PAGE),
+    fetchPendingDeposits(resolveListPage(pendingPageParam)),
+    fetchRetainedDeposits(
+      resolveListPage(retainedPageParam)
+    ),
   ]);
 
   if (!retainedPage) {
@@ -24,8 +30,14 @@ const Deposits = async (): Promise<React.JSX.Element> => {
 
   return (
     <DepositsView
+      currentPages={{
+        pending: pendingPage.page,
+        retained: retainedPage.page,
+      }}
       pendingDeposits={pendingPage.items}
+      pendingPageCount={pendingPage.pageCount}
       retainedDeposits={retainedPage.items}
+      retainedPageCount={retainedPage.pageCount}
     />
   );
 };

@@ -3,4 +3,5 @@ export interface ListPaginationProps {
   currentPage: number;
   navLabel: string;
   pageCount: number;
+  pageHref?: (page: number) => string;
 }
