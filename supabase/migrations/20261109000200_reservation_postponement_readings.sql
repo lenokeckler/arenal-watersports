@@ -20,6 +20,34 @@ create table reservation_postponement_readings (
 create index postponement_readings_postponement_idx
   on reservation_postponement_readings (postponement_id);
 
+create function assert_postponement_reading_unit()
+returns trigger
+language plpgsql security invoker set search_path = public
+as $$
+declare
+  v_fuel_max integer;
+begin
+  if not exists (
+    select 1
+      from reservation_postponements p
+      join reservation_items i on i.reservation_id = p.reservation_id
+     where p.id = new.postponement_id
+       and i.unit_id = new.unit_id
+  ) then
+    raise exception 'Postponement reading unit is not on the reservation';
+  end if;
+  select fuel_max into v_fuel_max from equipment_units where id = new.unit_id;
+  if new.fuel_in > v_fuel_max or new.fuel_out > v_fuel_max then
+    raise exception 'Postponement fuel reading is out of range';
+  end if;
+  return new;
+end;
+$$;
+
+create trigger reservation_postponement_readings_assert_unit
+  before insert on reservation_postponement_readings
+  for each row execute function assert_postponement_reading_unit();
+
 create trigger reservation_postponement_readings_stamp_audit
   before insert or update on reservation_postponement_readings
   for each row execute function stamp_created_only();

@@ -1,5 +1,5 @@
 begin;
-select plan(8);
+select plan(12);
 
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local'),
@@ -31,6 +31,10 @@ insert into reservations
   (id, customer_name, people_count, type, starts_at, duration_minutes, status, created_by, updated_by)
 values ('dddddddd-0000-0000-0000-000000000001', 'Maria', 2, 'rental',
         '2026-09-05 10:00:00+00', 120, 'scheduled',
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+
+insert into reservation_items (reservation_id, unit_id, created_by, updated_by)
+values ('dddddddd-0000-0000-0000-000000000001', 'bbbbbbbb-0000-0000-0000-000000000001',
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 
 set local role authenticated;
@@ -75,6 +79,34 @@ select throws_ok(
      values ('eeeeeeee-0000-0000-0000-000000000009', 'bbbbbbbb-0000-0000-0000-000000000001', 100, 99) $$,
   '23514', null,
   'the usage reading cannot go below the dispatch reading'
+);
+
+update reservation_postponement_readings set fuel_in = 3;
+
+select is(
+  (select fuel_in from reservation_postponement_readings
+   where id = 'ffffffff-0000-0000-0000-000000000001'),
+  1,
+  'a recorded reading cannot be edited'
+);
+
+select throws_ok(
+  $$ delete from reservation_postponement_readings $$,
+  '42501', null,
+  'a recorded reading cannot be deleted'
+);
+
+select throws_ok(
+  $$ insert into reservation_postponement_readings (postponement_id, unit_id)
+     values ('eeeeeeee-0000-0000-0000-0000000000aa', 'bbbbbbbb-0000-0000-0000-000000000001') $$,
+  'P0001', 'Postponement reading unit is not on the reservation',
+  'a reading needs an existing postponement'
+);
+
+select throws_ok(
+  $$ delete from reservation_postponements where id = 'eeeeeeee-0000-0000-0000-000000000009' $$,
+  '42501', null,
+  'a postponement with readings cannot be deleted'
 );
 
 reset role;
