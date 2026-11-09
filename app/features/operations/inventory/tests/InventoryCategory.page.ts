@@ -1,4 +1,5 @@
 import { screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
 import {
   INVENTORY_COPY,
@@ -26,21 +27,67 @@ const getUnitStatus = (
   );
 };
 
-export const createInventoryCategoryPage = () => ({
-  getBackLink: () =>
-    screen.getByRole(ARIA_ROLE.LINK, {
-      name: INVENTORY_COPY.BACK_TO_INVENTORY,
-    }),
-  getCategoryHeading: (categoryName: string) =>
-    screen.getByRole(ARIA_ROLE.HEADING, {
-      level: 1,
-      name: categoryName,
-    }),
-  getCountValue: (count: number) =>
-    screen.getByText(String(count), { exact: true }),
-  getUnitCode: (unitCode: string) =>
-    screen.getByText(unitCode, { exact: true }),
-  getUnitStatus,
-  queryUnitListItem: () =>
-    screen.queryByRole(ARIA_ROLE.LISTITEM),
-});
+const queryUnitListItem = () => {
+  const unitSection = screen.queryByRole(ARIA_ROLE.REGION, {
+    name: INVENTORY_COPY.UNITS,
+  });
+
+  return unitSection
+    ? within(unitSection).queryByRole(ARIA_ROLE.LISTITEM)
+    : null;
+};
+
+export const createInventoryCategoryPage = () => {
+  const user = userEvent.setup();
+
+  return {
+    getBackLink: () =>
+      screen.getByRole(ARIA_ROLE.LINK, {
+        name: INVENTORY_COPY.BACK_TO_INVENTORY,
+      }),
+    getCategoryHeading: (categoryName: string) =>
+      screen.getByRole(ARIA_ROLE.HEADING, {
+        level: 1,
+        name: categoryName,
+      }),
+    getAdjustmentReason: () =>
+      screen.getByLabelText(
+        INVENTORY_COPY.ADJUSTMENT_REASON_LABEL,
+        { exact: false }
+      ),
+    getAvailableAdjustment: () =>
+      screen.getByLabelText(
+        INVENTORY_COPY.ADJUSTMENT_AVAILABLE,
+        { exact: false }
+      ),
+    setAvailableAdjustment: async (value: string) => {
+      const availableInput = screen.getByLabelText(
+        INVENTORY_COPY.ADJUSTMENT_AVAILABLE,
+        { exact: false }
+      );
+      await user.clear(availableInput);
+      await user.type(availableInput, value);
+    },
+    clickSaveAdjustment: () =>
+      user.click(
+        screen.getByRole(ARIA_ROLE.BUTTON, {
+          name: INVENTORY_COPY.ADJUSTMENT_SUBMIT,
+        })
+      ),
+    queryAdjustmentReason: () =>
+      screen.queryByLabelText(
+        INVENTORY_COPY.ADJUSTMENT_REASON_LABEL,
+        { exact: false }
+      ),
+    getRequiredReasonError: () =>
+      screen.getByText(
+        INVENTORY_COPY.ADJUSTMENT_REASON_REQUIRED
+      ),
+    getCountValue: (count: number) =>
+      screen.getByText(String(count), { exact: true }),
+    getUnitCode: (unitCode: string) =>
+      screen.getByText(unitCode, { exact: true }),
+    getUnitStatus,
+    queryUnitListItem,
+  };
+};

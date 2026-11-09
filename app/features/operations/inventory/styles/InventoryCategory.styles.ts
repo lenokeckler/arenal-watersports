@@ -33,6 +33,28 @@ export const INVENTORY_UNIT_ROW_CLASS =
 export const INVENTORY_UNIT_CODE_CLASS =
   "font-mono text-sm text-on-surface";
 
+export const INVENTORY_STOCK_FORM_CLASS =
+  "grid gap-4 rounded-lg border border-outline/60 bg-surface-container-low p-4 md:grid-cols-2";
+
+export const INVENTORY_STOCK_FORM_FIELD_CLASS =
+  "min-h-11 w-full rounded-lg border border-outline bg-surface px-3 text-body-md text-on-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+
+export const INVENTORY_STOCK_FORM_ACTION_CLASS =
+  "flex min-h-11 w-full items-center justify-center rounded-lg bg-primary px-4 text-button text-on-primary disabled:cursor-not-allowed disabled:opacity-60 md:col-span-2";
+
+export const INVENTORY_STOCK_NOTICE_CLASS =
+  "text-body-sm text-on-surface-variant";
+
+export const INVENTORY_STOCK_ERROR_CLASS =
+  "text-body-sm text-error";
+
+export const resolveInventoryStockMessageClassName = (
+  isSuccess: boolean
+): string =>
+  isSuccess
+    ? INVENTORY_STOCK_NOTICE_CLASS
+    : INVENTORY_STOCK_ERROR_CLASS;
+
 export const INVENTORY_UNIT_STATUS_CLASS: Record<
   ActiveInventoryUnitStatus,
   string
