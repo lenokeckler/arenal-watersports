@@ -1,0 +1,141 @@
+begin;
+select plan(11);
+
+insert into auth.users (id, email) values
+  ('e3300000-0000-4000-8000-000000000001', 'res20-r-admin@arenal.local'),
+  ('e3300000-0000-4000-8000-000000000002', 'res20-r-reservas@arenal.local');
+
+insert into workers (id, username, full_name, personal_email, base_role) values
+  ('e3300000-0000-4000-8000-000000000001', 'res20-r-admin', 'RES20 Admin', 'res20-r-admin@correo.com', 'administracion');
+insert into workers (id, username, full_name, base_role) values
+  ('e3300000-0000-4000-8000-000000000002', 'res20-r-reservas', 'RES20 Reservas', 'reservas');
+
+insert into equipment_categories
+  (id, name, status, tracking_mode, is_reservable, units_are_interchangeable, default_duration_minutes,
+   consumes_fuel, has_motor, usage_metric, created_by, updated_by)
+values
+  ('e3300000-0000-4000-8000-000000000101', 'RES20 Lancha', 'active', 'by_unit', true, false, 60, true, true, 'engine_hours',
+   'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000102', 'RES20 Kayak', 'active', 'by_unit', true, false, 60, false, false, null,
+   'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001');
+
+insert into equipment_units
+  (id, category_id, code, status, fuel_max, fuel_level, usage_total, created_by, updated_by)
+values
+  ('e3300000-0000-4000-8000-000000000201', 'e3300000-0000-4000-8000-000000000101', 'RES20-R-LANCHA-1', 'available', 4, 4, 10,
+   'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000202', 'e3300000-0000-4000-8000-000000000102', 'RES20-R-KAYAK-1', 'available', 4, null, 0,
+   'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001');
+
+insert into reservations
+  (id, customer_name, people_count, type, starts_at, duration_minutes, status, created_by, updated_by)
+values ('e3300000-0000-4000-8000-000000000301', 'RES20 Maria', 2, 'rental', '2035-04-12 15:00:00+00', 60, 'scheduled',
+        'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001');
+
+insert into reservation_items
+  (id, reservation_id, unit_id, fuel_out, usage_out, fuel_in, usage_in, created_by, updated_by)
+values
+  ('e3300000-0000-4000-8000-000000000501', 'e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000201',
+   4, 10, null, null, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000502', 'e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000202',
+   null, null, null, null, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001');
+
+insert into reservation_dispatches
+  (id, reservation_id, category_id, dispatched_at, duration_minutes, created_by, updated_by)
+values
+  ('e3300000-0000-4000-8000-000000000601', 'e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000101',
+   '2035-04-12 15:00:00+00', 60, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000602', 'e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000102',
+   '2035-04-12 15:00:00+00', 60, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001');
+
+update reservation_items set dispatch_id = 'e3300000-0000-4000-8000-000000000601' where id = 'e3300000-0000-4000-8000-000000000501';
+update reservation_items set dispatch_id = 'e3300000-0000-4000-8000-000000000602' where id = 'e3300000-0000-4000-8000-000000000502';
+update reservations set status = 'scheduled', dispatched_at = null where id = 'e3300000-0000-4000-8000-000000000301';
+
+insert into reservation_postponements
+  (id, reservation_id, cause, was_dispatched, previous_starts_at, new_starts_at, created_by)
+values ('e3300000-0000-4000-8000-000000000401', 'e3300000-0000-4000-8000-000000000301', 'storm', true,
+        '2035-04-12 15:00:00+00', '2035-04-13 15:00:00+00', 'e3300000-0000-4000-8000-000000000001');
+
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"e3300000-0000-4000-8000-000000000002","role":"authenticated"}';
+
+select throws_ok(
+  $$ select private.record_postponement_readings('e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000401', '[]'::jsonb) $$,
+  'P0001', 'Postponement readings are incomplete',
+  'an empty payload is incomplete'
+);
+
+select throws_ok(
+  $$ select private.record_postponement_readings('e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000401',
+       '[{"item_id":"e3300000-0000-4000-8000-000000000501","fuel_in":2,"usage_in":12}]'::jsonb) $$,
+  'P0001', 'Postponement readings are incomplete',
+  'an open item without an entry is incomplete'
+);
+
+select throws_ok(
+  $$ select private.record_postponement_readings('e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000401',
+       '[{"item_id":"e3300000-0000-4000-8000-000000000501","fuel_in":5,"usage_in":12},{"item_id":"e3300000-0000-4000-8000-000000000502"}]'::jsonb) $$,
+  'P0001', 'Postponement fuel reading is invalid',
+  'a fuel reading above the unit maximum is refused'
+);
+
+select throws_ok(
+  $$ select private.record_postponement_readings('e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000401',
+       '[{"item_id":"e3300000-0000-4000-8000-000000000501","fuel_in":-1,"usage_in":12},{"item_id":"e3300000-0000-4000-8000-000000000502"}]'::jsonb) $$,
+  'P0001', 'Postponement fuel reading is invalid',
+  'a negative fuel reading is refused'
+);
+
+select throws_ok(
+  $$ select private.record_postponement_readings('e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000401',
+       '[{"item_id":"e3300000-0000-4000-8000-000000000501","fuel_in":null,"usage_in":12},{"item_id":"e3300000-0000-4000-8000-000000000502"}]'::jsonb) $$,
+  'P0001', 'Postponement fuel reading is invalid',
+  'a missing fuel reading is refused'
+);
+
+select throws_ok(
+  $$ select private.record_postponement_readings('e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000401',
+       '[{"item_id":"e3300000-0000-4000-8000-000000000501","fuel_in":1.5,"usage_in":12},{"item_id":"e3300000-0000-4000-8000-000000000502"}]'::jsonb) $$,
+  'P0001', 'Postponement fuel reading is invalid',
+  'a fractional fuel reading is refused'
+);
+
+select throws_ok(
+  $$ select private.record_postponement_readings('e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000401',
+       '[{"item_id":"e3300000-0000-4000-8000-000000000501","fuel_in":2,"usage_in":9},{"item_id":"e3300000-0000-4000-8000-000000000502"}]'::jsonb) $$,
+  'P0001', 'Postponement usage reading cannot go below the dispatch reading',
+  'a usage reading below the dispatch reading is refused'
+);
+
+select throws_ok(
+  $$ select private.record_postponement_readings('e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000401',
+       '[{"item_id":"e3300000-0000-4000-8000-000000000501","fuel_in":2},{"item_id":"e3300000-0000-4000-8000-000000000502"}]'::jsonb) $$,
+  'P0001', 'Postponement usage reading cannot go below the dispatch reading',
+  'a missing usage reading is refused'
+);
+
+select throws_ok(
+  $$ select private.record_postponement_readings('e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000401',
+       '[{"item_id":"e3300000-0000-4000-8000-000000000501","fuel_in":2,"usage_in":12},{"item_id":"e3300000-0000-4000-8000-000000000502","fuel_in":1}]'::jsonb) $$,
+  'P0001', 'Postponement fuel reading is invalid',
+  'a fuel reading on a category without fuel is refused'
+);
+
+select throws_ok(
+  $$ select private.record_postponement_readings('e3300000-0000-4000-8000-000000000301', 'e3300000-0000-4000-8000-000000000401',
+       '[{"item_id":"e3300000-0000-4000-8000-000000000501","fuel_in":2,"usage_in":12},{"item_id":"e3300000-0000-4000-8000-000000000502","usage_in":1}]'::jsonb) $$,
+  'P0001', 'Postponement usage reading is invalid',
+  'a usage reading on a category without a meter is refused'
+);
+
+select is(
+  (select count(*) from reservation_postponement_readings where postponement_id = 'e3300000-0000-4000-8000-000000000401'),
+  0::bigint,
+  'refused calls leave no readings behind'
+);
+
+reset role;
+
+select * from finish();
+rollback;
