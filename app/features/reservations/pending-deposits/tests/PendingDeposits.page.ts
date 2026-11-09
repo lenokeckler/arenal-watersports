@@ -28,6 +28,12 @@ export const createPendingDepositsPage = () => {
   const getStatus = () =>
     screen.getByRole(ARIA_ROLE.STATUS);
 
+  const getNavigation = (name: string) =>
+    screen.getByRole(ARIA_ROLE.NAVIGATION, { name });
+
+  const queryNavigation = (name: string) =>
+    screen.queryByRole(ARIA_ROLE.NAVIGATION, { name });
+
   const getMain = () => screen.getByRole(ARIA_ROLE.MAIN);
 
   const getText = (text: string) => screen.getByText(text);
@@ -59,10 +65,12 @@ export const createPendingDepositsPage = () => {
     getLeafByExactText,
     getList,
     getMain,
+    getNavigation,
     getRows,
     getStatus,
     getText,
     queryList,
+    queryNavigation,
     queryText,
   };
 };

@@ -13,7 +13,7 @@ export const getReservationUnitCategories =
       await getAuthorizedReservationFormClient();
     const { data, error } = await supabase
       .from("equipment_categories")
-      .select("id, name")
+      .select("id, name, guide_only")
       .eq("status", RESERVATION_CATEGORY_STATUS.ACTIVE)
       .eq("is_reservable", true)
       .eq("tracking_mode", INVENTORY_TRACKING_MODE.BY_UNIT)
@@ -25,5 +25,9 @@ export const getReservationUnitCategories =
       RESERVATION_UNIT_CATEGORY_OPERATION
     );
 
-    return data ?? [];
+    return (data ?? []).map((category) => ({
+      id: category.id,
+      isGuideOnly: category.guide_only,
+      name: category.name,
+    }));
   };

@@ -4,6 +4,7 @@ import {
   RESERVATIONS_CALENDAR_COPY,
   STRING,
 } from "@/app/constants";
+import type { NullableRef } from "@/app/types";
 
 export const createReservationsCalendarBlocksPage = () => {
   const getReservationBlocks = () =>
@@ -12,10 +13,19 @@ export const createReservationsCalendarBlocksPage = () => {
         RESERVATIONS_CALENDAR_COPY.RESERVATION_NAME
       ),
     });
-  const getReservationBlockContainerClasses = () =>
-    getReservationBlocks().map(
-      (block) => block.parentElement?.className
-    );
+  const getReservationBlockContainerClasses = (
+    containerClass: string
+  ): NullableRef<string>[] =>
+    getReservationBlocks().map((block) => {
+      let ancestor = block.parentElement;
+      while (ancestor !== null) {
+        if (ancestor.className === containerClass) {
+          return ancestor.className;
+        }
+        ancestor = ancestor.parentElement;
+      }
+      return null;
+    });
   const getReservationBlockDetailsClassName = (
     customerName: string
   ): string =>

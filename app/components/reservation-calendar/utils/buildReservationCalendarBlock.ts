@@ -4,29 +4,11 @@ import {
   STRING,
 } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
-import { RESERVATION_CALENDAR_TIME } from "../constants/ReservationCalendarProjection.constants";
 import type { ReservationCalendarBlock } from "../models/ReservationCalendarBlock.interface";
 import type { ReservationCalendarDispatch } from "../models/ReservationCalendarDispatch.interface";
 import type { ReservationCalendarEntry } from "../models/ReservationCalendarEntry.interface";
-import type { ReservationCalendarEquipment } from "../models/ReservationCalendarEquipment.interface";
-import { formatReservationCalendarDateTime } from "./formatReservationCalendarDateTime";
-
-const describeEquipment = (
-  equipment: ReservationCalendarEquipment
-): string => {
-  if (equipment.unitCode !== null) {
-    return [
-      equipment.categoryName,
-      equipment.unitCode,
-    ].join(STRING.SPACE);
-  }
-  return [
-    equipment.quantity.toLocaleString(
-      RESERVATION_CALENDAR_TIME.LOCALE
-    ),
-    equipment.categoryName,
-  ].join(copy.QUANTITY_SEPARATOR);
-};
+import { describeReservationEquipment } from "./describeReservationEquipment";
+import { formatReservationCalendarTime } from "./formatReservationCalendarTime";
 
 const describeInstant = (
   label: string,
@@ -36,7 +18,7 @@ const describeInstant = (
   const value =
     instant === null
       ? unknownLabel
-      : formatReservationCalendarDateTime(instant);
+      : formatReservationCalendarTime(instant);
   return [label, value].join(STRING.SPACE);
 };
 
@@ -47,7 +29,7 @@ const describeDispatch = (
     dispatch.categoryName,
     [
       copy.ACTUAL_DEPARTURE,
-      formatReservationCalendarDateTime(dispatch.startsAt),
+      formatReservationCalendarTime(dispatch.startsAt),
     ].join(STRING.SPACE),
     describeInstant(
       copy.EXPECTED_RETURN,
@@ -68,11 +50,11 @@ export const buildReservationCalendarBlock = (
     entry.equipment.length === 0
       ? copy.MISSING_EQUIPMENT
       : entry.equipment
-          .map(describeEquipment)
+          .map(describeReservationEquipment)
           .join(STRING.COMMA_SPACE);
   const scheduledRange = [
-    formatReservationCalendarDateTime(entry.startsAt),
-    formatReservationCalendarDateTime(entry.endsAt),
+    formatReservationCalendarTime(entry.startsAt),
+    formatReservationCalendarTime(entry.endsAt),
   ].join(CALENDAR_PRESENTATION.PERIOD_SEPARATOR);
   const scheduledLabel = [
     copy.SCHEDULED,

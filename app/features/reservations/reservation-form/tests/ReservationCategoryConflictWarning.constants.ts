@@ -16,6 +16,7 @@ export const RESERVATION_CATEGORY_CONFLICT_WARNING_TEST = {
   } satisfies ReservationUnitAvailabilityInput,
   INTERVAL:
     "martes, 29 de febrero de 2028 · 09:00 a. m.–10:00 a. m.",
+  LOOKUP_FAILURE_MESSAGE: "Lookup unavailable",
   RPC_ROW: {
     code: "RES-2028-001",
     customer_name: "Ana Solís",
@@ -36,6 +37,7 @@ export const RESERVATION_CATEGORY_CONFLICT_WARNING_TEST = {
   INITIAL_REFRESH_KEY: number;
   NEXT_REFRESH_KEY: number;
   INTERVAL: string;
+  LOOKUP_FAILURE_MESSAGE: string;
   NEXT_CATEGORY_ID: string;
   NEXT_DATE: string;
   REQUEST: ReservationUnitAvailabilityInput;

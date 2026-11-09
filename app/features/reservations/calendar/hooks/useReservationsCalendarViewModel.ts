@@ -18,6 +18,7 @@ export const useReservationsCalendarViewModel = (
   const dayContent = useReservationCalendarDayContent(
     snapshotState.snapshot ?? undefined,
     {
+      enableDetailLinks: true,
       renderBlockActions:
         renderReservationCalendarBlockActions,
       reserveMobileFabSpace: true,

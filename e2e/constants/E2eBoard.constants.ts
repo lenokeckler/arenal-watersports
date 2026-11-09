@@ -1,3 +1,4 @@
+import { PATHS } from "@/app/constants";
 import { resolveFreeOfTotalText } from "@/app/features/board/equipment-board/utils/resolveFreeOfTotalText";
 import {
   E2E_CATEGORY_GROUP_LABEL,
@@ -56,3 +57,28 @@ export const E2E_BOARD_CARDS_PER_ROW: Record<
 export const resolveBoardChipText = (
   totalCount: number
 ): string => resolveFreeOfTotalText(totalCount, totalCount);
+
+export const E2E_ARIA_CURRENT_ATTRIBUTE = "aria-current";
+
+export const E2E_BOARD_CATEGORY_URL_PATTERN = new RegExp(
+  `${PATHS.BOARD_CATEGORIES}/[0-9a-f-]+$`
+);
+
+export const E2E_BOARD_CUADRACICLO = {
+  LABEL: "Cuadraciclo",
+  UNIT_CODES: [
+    "CUAD-01",
+    "CUAD-02",
+    "CUAD-03",
+    "CUAD-04",
+    "CUAD-05",
+    "CUAD-06",
+    "CUAD-07",
+    "CUAD-08",
+  ],
+} as const;
+
+export const E2E_BOARD_KAYAK_SWITCH = {
+  FIRST: { name: "Kayak doble", unitCode: "KD-01" },
+  SECOND: { name: "Kayak individual", unitCode: "KI-01" },
+} as const;
