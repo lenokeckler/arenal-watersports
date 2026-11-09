@@ -1,1 +1,1 @@
-﻿US-OPE-25: Let operations adjust inventory with an audit trail — US-OPE-25, AWS-141.
+OPE-04.25.01: Operations inventory adjustment backend — US-OPE-25 · AWS-141
