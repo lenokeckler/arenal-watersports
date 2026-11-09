@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { getMainRegion } from "../support/mainRegion";
 
 export const createReservationFormTypePage = (
@@ -9,6 +9,8 @@ export const createReservationFormTypePage = (
     mainRegion.getByRole("radio", { name: label });
 
   return {
+    getGuideCheckbox: (name: string): Locator =>
+      mainRegion.getByLabel(name, { exact: true }),
     getReservationTypeRadio,
     getReservationTypeDescription: (description: string) =>
       mainRegion.getByText(description, { exact: true }),
@@ -18,6 +20,11 @@ export const createReservationFormTypePage = (
       await getReservationTypeRadio(label).check({
         force: true,
       });
+    },
+    selectGuide: async (name: string): Promise<void> => {
+      await mainRegion
+        .getByLabel(name, { exact: true })
+        .check();
     },
   };
 };
