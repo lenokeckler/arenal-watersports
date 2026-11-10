@@ -103,7 +103,7 @@ activeWorkerTest.describe(
       async ({ signedInPage: page }) => {
         await createWorkerRegistrationPage(page).goTo();
 
-        await expect(page).toHaveURL(PATHS.BOARD);
+        await expect(page).toHaveURL(PATHS.HOME);
       }
     );
   }

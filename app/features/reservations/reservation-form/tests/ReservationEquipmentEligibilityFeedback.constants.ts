@@ -1,6 +1,7 @@
 import { STRING } from "@/app/constants";
 import { vi } from "vitest";
 import { RESERVATION_CATEGORY_AVAILABILITY_PANEL_STATE } from "../constants/ReservationCategoryAvailabilityPanelState.constants";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import type { ReservationFormViewModel } from "../models/ReservationFormViewModel.interface";
 
 export const RESERVATION_EQUIPMENT_FEEDBACK_VIEW_MODEL = {
@@ -33,24 +34,29 @@ export const RESERVATION_EQUIPMENT_FEEDBACK_VIEW_MODEL = {
     customerName: "",
     date: "2030-01-01",
     durationHours: 1,
+    guideIds: [],
     peopleCount: 1,
     quantity: 1,
+    reservationType: RESERVATION_TYPE.RENTAL,
     time: "09:00",
     unitId: "",
   },
   handleCustomerNameChange: vi.fn(),
   handleDateChange: vi.fn(),
   handleDurationChange: vi.fn(),
+  handleGuideToggle: vi.fn(),
   handleCustomDurationChange: vi.fn(),
   handleCustomDurationSelection: vi.fn(),
   handlePeopleCountChange: vi.fn(),
   handleQuantityChange: vi.fn(),
   handleCategoryChange: vi.fn(),
+  handleReservationTypeChange: vi.fn(),
   handleUnitChange: vi.fn(),
   retryUnitAvailability: vi.fn(),
   isEquipmentEligibilityLoading: false,
   hasEquipmentEligibilityError: false,
   hasEquipmentSelectionChanged: false,
+  hasReservationTypeSelectionReset: false,
   handleRetryEquipmentEligibility: vi.fn(),
   handleRetryCategoryAvailability: vi.fn(),
   handleTimeChange: vi.fn(),

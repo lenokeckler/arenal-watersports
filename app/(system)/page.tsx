@@ -1,6 +1,11 @@
-import { redirect } from "next/navigation";
-import { PATHS } from "@/app/constants";
+import type { Metadata } from "next";
+import EquipmentBoardEntry from "@/app/features/board/equipment-board/EquipmentBoardEntry";
+import { EQUIPMENT_BOARD_METADATA } from "@/app/features/board/equipment-board/constants/EquipmentBoardMetadata.constants";
 
-const HomePage = (): never => redirect(PATHS.BOARD);
+export const metadata: Metadata = EQUIPMENT_BOARD_METADATA;
+
+const HomePage = (): React.JSX.Element => (
+  <EquipmentBoardEntry />
+);
 
 export default HomePage;

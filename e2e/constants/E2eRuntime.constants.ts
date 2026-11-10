@@ -1,7 +1,7 @@
 export const E2E_SERVER = {
-  COMMAND: "npm run dev -- --port 3100",
+  COMMAND: "npm run dev -- --port 3000",
   HOST: "http://localhost",
-  PORT: 3100,
+  PORT: 3000,
   STARTUP_TIMEOUT_MS: 240_000,
 } as const;
 
@@ -18,6 +18,11 @@ export const E2E_TIMEOUT_MS = {
   NAVIGATION: 60_000,
   POST_SUBMIT: 90_000,
   TEST: 120_000,
+} as const;
+
+export const E2E_VIEWPORT = {
+  MOBILE: "mobile",
+  DESKTOP: "desktop",
 } as const;
 
 export const E2E_RETRY_COUNT = {
@@ -41,6 +46,11 @@ export const E2E_OUTPUT_DIR = {
 export const E2E_DEVICE_NAME = {
   DESKTOP: "Desktop Chrome",
   MOBILE: "Pixel 7",
+} as const;
+
+export const E2E_CSS_POSITION = {
+  STATIC: "static",
+  STICKY: "sticky",
 } as const;
 
 export const E2E_PROJECT = {

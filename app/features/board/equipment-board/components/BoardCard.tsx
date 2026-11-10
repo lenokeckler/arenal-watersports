@@ -9,9 +9,13 @@ import BoardCardMedia from "./BoardCardMedia";
 
 const BoardCard = ({
   card,
+  isPriorityImage,
 }: BoardCardProps): React.JSX.Element => (
   <div className={BOARD_CARD_INTERACTIVE_CLASS}>
-    <BoardCardMedia card={card} />
+    <BoardCardMedia
+      card={card}
+      isPriorityImage={isPriorityImage}
+    />
     <Link
       href={resolveBoardCategoryPath(card.targetCategoryId)}
       ariaLabel={card.label}

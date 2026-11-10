@@ -1,14 +1,9 @@
 import type { ReactElement } from "react";
 import { Section, Title } from "@/app/components";
-import {
-  PATHS,
-  RESERVATIONS_CALENDAR_COPY,
-  TitleVariant,
-} from "@/app/constants";
-import Link from "@/app/components/link/Link";
-import { RESERVATION_CALENDAR_BLOCK_LINK_CLASS } from "@/app/components/reservation-calendar/styles/ReservationCalendar.styles";
+import { TitleVariant } from "@/app/constants";
 import type { ReservationCalendarGroupListProps } from "../models/ReservationCalendarGroupListProps.interface";
-import { ReservationCalendarBlock } from "@/app/components/reservation-calendar/components/ReservationCalendarBlock";
+import { ReservationCalendarBlockEntry } from "@/app/components/reservation-calendar/components/ReservationCalendarBlockEntry";
+import { renderReservationCalendarBlockActions } from "../utils/renderReservationCalendarBlockActions";
 import {
   RESERVATION_CALENDAR_GROUPS_CLASS,
   RESERVATION_CALENDAR_GROUP_CLASS,
@@ -35,16 +30,14 @@ export const ReservationCalendarGroupList = ({
           }
         >
           {group.blocks.map((block) => (
-            <Link
+            <ReservationCalendarBlockEntry
               key={block.id}
-              href={PATHS.RESERVATIONS.DETAIL(block.id)}
-              ariaLabel={`${RESERVATIONS_CALENDAR_COPY.OPEN_RESERVATION_DETAIL} ${block.customerName}`}
-              className={
-                RESERVATION_CALENDAR_BLOCK_LINK_CLASS
-              }
-            >
-              <ReservationCalendarBlock block={block} />
-            </Link>
+              actions={renderReservationCalendarBlockActions(
+                block
+              )}
+              block={block}
+              enableDetailLink
+            />
           ))}
         </div>
       </Section>
