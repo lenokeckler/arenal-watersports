@@ -1,9 +1,13 @@
 import { DEPOSIT_ROW_CARD_CLASS } from "@/app/components/deposit-ledger/styles/DepositRow.styles";
 import { DEPOSIT_SKELETON_PULSE_CLASS } from "@/app/components/deposit-ledger/styles/DepositSkeleton.styles";
+import { LINK_ACTION_CLASS } from "@/app/components/link/styles/Link.styles";
 import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
 
 export const DEPOSITS_REPORT_STACK_CLASS =
   "flex flex-col gap-md";
+
+export const DEPOSITS_REPORT_WORKER_LINK_CLASS =
+  LINK_ACTION_CLASS;
 
 export const DEPOSITS_REPORT_RETRY_CLASS =
   "min-h-12 w-full sm:w-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background";

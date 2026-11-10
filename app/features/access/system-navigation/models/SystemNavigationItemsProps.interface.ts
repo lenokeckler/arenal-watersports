@@ -5,4 +5,5 @@ export interface SystemNavigationItemsProps {
   pathname: string;
   isMenuOpen: boolean;
   toggleMenu: () => void;
+  showMenuButton: boolean;
 }

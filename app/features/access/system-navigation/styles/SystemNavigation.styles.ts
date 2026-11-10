@@ -5,13 +5,13 @@ export const SYSTEM_NAVIGATION_CLASS =
 export const SYSTEM_NAVIGATION_LIST_CLASS =
   "mx-auto flex w-full max-w-screen-lg items-stretch";
 export const SYSTEM_NAVIGATION_ITEM_CLASS =
-  "flex min-h-12 flex-1 flex-col items-center justify-center gap-0.5 px-1 py-2 text-label-mono uppercase text-on-surface-variant transition-colors hover:text-primary focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-primary motion-reduce:transition-none";
+  "flex min-h-12 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-1 py-2 text-center text-label-mono uppercase text-on-surface-variant transition-colors hover:text-primary focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-primary motion-reduce:transition-none";
 export const SYSTEM_NAVIGATION_ACTIVE_CLASS =
   "text-primary";
 export const SYSTEM_NAVIGATION_ICON_CLASS =
   "text-headline-md";
 export const SYSTEM_NAVIGATION_LABEL_CLASS =
-  "text-label-mono leading-tight max-sm:text-xs max-sm:tracking-normal";
+  "break-words text-center text-label-mono leading-tight max-sm:text-xs max-sm:tracking-normal";
 export const SYSTEM_NAVIGATION_MENU_CLASS =
   "absolute bottom-full right-2 mb-2 flex min-w-48 flex-col rounded-xl border border-outline bg-surface-container p-2 shadow-xl";
 export const SYSTEM_NAVIGATION_MENU_HIDDEN_CLASS =

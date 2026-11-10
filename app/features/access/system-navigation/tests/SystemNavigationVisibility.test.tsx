@@ -25,7 +25,7 @@ describe("SystemNavigation visibility", () => {
     systemNavigationMocks.pathname = PATHS.BOARD;
   });
 
-  it("hides the navigation in Administration mode", () => {
+  it("shows the navigation in Administration mode", () => {
     render(
       <SystemNavigation
         overview={
@@ -36,7 +36,7 @@ describe("SystemNavigation visibility", () => {
 
     expect(
       createSystemNavigationPage().queryNavigation()
-    ).toBeNull();
+    ).not.toBeNull();
   });
 
   it("does not expose a mode missing from granted areas", () => {

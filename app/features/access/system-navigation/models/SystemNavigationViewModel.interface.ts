@@ -8,4 +8,5 @@ export interface SystemNavigationViewModel {
   closeMenu: () => void;
   canChangeMode: boolean;
   canShowNavigation: boolean;
+  showMenuButton: boolean;
 }
