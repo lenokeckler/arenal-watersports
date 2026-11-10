@@ -1,10 +1,5 @@
-import {
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
+import { refreshMock } from "./extraCardActions.harness";
+import { beforeEach, describe, expect, it } from "vitest";
 import { PATHS } from "@/app/constants";
 import { resolveListPageHref } from "@/app/utils/list-pagination/resolveListPageHref";
 import { EXTRA_STATUS } from "../constants/ExtraStatus.constants";
@@ -20,12 +15,6 @@ import {
 } from "./ExtraList.constants";
 import { createExtraListPage } from "./ExtraList.page";
 import { renderExtraListView } from "./renderExtraListView";
-
-const refreshMock = vi.hoisted(() => vi.fn());
-
-vi.mock("next/navigation", () => ({
-  useRouter: () => ({ refresh: refreshMock }),
-}));
 
 describe("ExtraListView", () => {
   beforeEach(() => {
