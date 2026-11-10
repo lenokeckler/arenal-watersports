@@ -18,7 +18,8 @@ begin
   perform (p_payload->>'date')::date, (p_payload->>'expected_updated_at')::timestamptz;
   return true;
 exception
-  when invalid_datetime_format or datetime_field_overflow or invalid_text_representation then
+  when invalid_datetime_format or datetime_field_overflow or invalid_text_representation
+    or invalid_time_zone_displacement_value or invalid_parameter_value then
     return false;
 end;
 $$;

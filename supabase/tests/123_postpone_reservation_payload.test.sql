@@ -1,5 +1,5 @@
 begin;
-select plan(15);
+select plan(17);
 
 \ir fixtures/postponement_release.sql.fixture
 \ir fixtures/postpone_call.sql.fixture
@@ -23,6 +23,8 @@ select throws_ok($$ select pg_temp.payload('{"date":"13/04/2035"}') $$, 'P0001',
 select throws_ok($$ select pg_temp.payload('{"time":"25:99"}') $$, 'P0001', 'Reservation payload is invalid', 'an impossible time is a domain error');
 select throws_ok($$ select pg_temp.payload('{"cause":"flood"}') $$, 'P0001', 'Reservation payload is invalid', 'an unknown cause is a domain error');
 select throws_ok($$ select pg_temp.payload('{"expected_updated_at":"not-a-date"}') $$, 'P0001', 'Reservation payload is invalid', 'a malformed token is a domain error');
+select throws_ok($$ select pg_temp.payload('{"expected_updated_at":"2035-01-01 00:00:00+99:99"}') $$, 'P0001', 'Reservation payload is invalid', 'an out-of-range time zone offset is a domain error');
+select throws_ok($$ select pg_temp.payload('{"expected_updated_at":"2035-01-01 00:00:00 Foo/Bar"}') $$, 'P0001', 'Reservation payload is invalid', 'an unknown time zone name is a domain error');
 select throws_ok($$ select pg_temp.payload('{"reason":["x"]}') $$, 'P0001', 'Reservation payload is invalid', 'a non-text reason is a domain error');
 select throws_ok(
   $$ select pg_temp.payload(jsonb_build_object('cause', 'other', 'reason', repeat('x', 301))) $$,
