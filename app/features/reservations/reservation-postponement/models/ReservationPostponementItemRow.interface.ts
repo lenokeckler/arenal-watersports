@@ -1,10 +1,10 @@
 import type { NullableRef } from "@/app/types";
-import type { ReservationPostponementCategoryRow } from "./ReservationPostponementCategoryRow.interface";
+import type { ReservationPostponementQuantityCategoryRow } from "./ReservationPostponementQuantityCategoryRow.interface";
 import type { ReservationPostponementDispatchRow } from "./ReservationPostponementDispatchRow.interface";
 import type { ReservationPostponementUnitRow } from "./ReservationPostponementUnitRow.interface";
 
 export interface ReservationPostponementItemRow {
-  category: NullableRef<ReservationPostponementCategoryRow>;
+  category: NullableRef<ReservationPostponementQuantityCategoryRow>;
   category_id: NullableRef<string>;
   dispatch: NullableRef<ReservationPostponementDispatchRow>;
   dispatch_id: NullableRef<string>;
