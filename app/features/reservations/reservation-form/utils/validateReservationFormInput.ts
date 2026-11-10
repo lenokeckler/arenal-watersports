@@ -5,6 +5,7 @@ import type { ReservationFormInput } from "../models/ReservationFormInput.interf
 import type { ReservationFormValidation } from "../models/ReservationFormValidation.interface";
 import type { ValidatedReservationFormInput } from "../models/ValidatedReservationFormInput.interface";
 import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import type { NullableRef } from "@/app/types";
 import {
   getReservationDurationMinutes,
@@ -22,7 +23,14 @@ const buildValidatedInput = (
   customerName: input.customerName.trim(),
   date: input.date,
   durationMinutes,
+  guideIds:
+    (input.reservationType ?? RESERVATION_TYPE.RENTAL) ===
+    RESERVATION_TYPE.TOUR
+      ? (input.guideIds ?? [])
+      : [],
   peopleCount: input.peopleCount,
+  reservationType:
+    input.reservationType ?? RESERVATION_TYPE.RENTAL,
   time: input.time,
   equipmentCommitment: input.unitId.trim()
     ? {

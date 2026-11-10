@@ -3,8 +3,10 @@ export const RESERVATION_FORM_FIELD = {
   CUSTOMER_NAME: "customerName",
   DATE: "date",
   DURATION_HOURS: "durationHours",
+  GUIDE_IDS: "guideIds",
   PEOPLE_COUNT: "peopleCount",
   QUANTITY: "quantity",
+  RESERVATION_TYPE: "reservationType",
   TIME: "time",
   UNIT_ID: "unitId",
 } as const;
