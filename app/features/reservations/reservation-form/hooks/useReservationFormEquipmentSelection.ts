@@ -1,44 +1,50 @@
-import {
-  startTransition,
-  useEffect,
-  useState,
-} from "react";
-import type { ReservationFormEquipmentSelection } from "../models/ReservationFormEquipmentSelection.interface";
-import type { ReservationFormEquipmentSelectionProps } from "../models/ReservationFormEquipmentSelectionProps.interface";
-import { createReservationEquipmentSelectionInvalidationHandler } from "../utils/createReservationEquipmentSelectionInvalidationHandler";
+import { useCallback, useState } from "react";
+import type { ReservationFormEquipmentSelectionOptions } from "../models/ReservationFormEquipmentSelectionOptions.interface";
+import { useReservationEquipmentSelectionReconciliation } from "./useReservationEquipmentSelectionReconciliation";
 
-export const useReservationFormEquipmentSelection = (
-  props: ReservationFormEquipmentSelectionProps
-): ReservationFormEquipmentSelection => {
-  const {
+export const useReservationFormEquipmentSelection = ({
+  availableUnits,
+  categories,
+  isAvailabilityResolved,
+  isEligibilityError,
+  isEligibilityLoading,
+  selectedCategoryId,
+  selectedUnitId,
+  onCategoryChange,
+  onUnitChange,
+}: ReservationFormEquipmentSelectionOptions) => {
+  const [hasChanged, setHasChanged] = useState(false);
+  const handleCategoryChange = useCallback(
+    (value: string): void => {
+      setHasChanged(false);
+      onCategoryChange(value);
+    },
+    [onCategoryChange]
+  );
+  const handleUnitChange = useCallback(
+    (value: string): void => {
+      setHasChanged(false);
+      onUnitChange(value);
+    },
+    [onUnitChange]
+  );
+
+  useReservationEquipmentSelectionReconciliation({
+    availableUnits,
+    categories,
     handleCategoryChange: onCategoryChange,
     handleUnitChange: onUnitChange,
-  } = props;
-  const [
-    hasEquipmentSelectionChanged,
-    setHasEquipmentSelectionChanged,
-  ] = useState(false);
-  const markEquipmentSelectionChanged = () =>
-    startTransition(() =>
-      setHasEquipmentSelectionChanged(true)
-    );
-  const handleInvalidation =
-    createReservationEquipmentSelectionInvalidationHandler(
-      props,
-      markEquipmentSelectionChanged
-    );
-  useEffect(handleInvalidation, [handleInvalidation]);
-  const handleCategoryChange = (value: string): void => {
-    setHasEquipmentSelectionChanged(false);
-    onCategoryChange(value);
-  };
-  const handleUnitChange = (value: string): void => {
-    setHasEquipmentSelectionChanged(false);
-    onUnitChange(value);
-  };
+    isAvailabilityResolved,
+    isEligibilityError,
+    isEligibilityLoading,
+    selectedCategoryId,
+    selectedUnitId,
+    setHasSelectionChanged: setHasChanged,
+  });
+
   return {
     handleCategoryChange,
     handleUnitChange,
-    hasEquipmentSelectionChanged,
+    hasChanged,
   };
 };

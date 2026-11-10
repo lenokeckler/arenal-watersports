@@ -1,0 +1,81 @@
+insert into auth.users (id, email) values
+  ('e3180000-0000-4000-8000-000000000001', 'res18-creator@arenal.local'),
+  ('e3180000-0000-4000-8000-000000000002', 'res18-editor@arenal.local'),
+  ('e3180000-0000-4000-8000-000000000003', 'res18-operations@arenal.local');
+
+insert into workers (id, username, full_name, personal_email, base_role) values
+  ('e3180000-0000-4000-8000-000000000001', 'res18-creator', 'RES18 Creator', 'res18-creator@correo.com', 'reservas'),
+  ('e3180000-0000-4000-8000-000000000002', 'res18-editor', 'RES18 Editor', 'res18-editor@correo.com', 'reservas'),
+  ('e3180000-0000-4000-8000-000000000003', 'res18-operations', 'RES18 Operations', 'res18-operations@correo.com', 'operaciones');
+
+insert into equipment_categories
+  (id, name, status, tracking_mode, is_reservable, units_are_interchangeable, default_duration_minutes, created_by, updated_by)
+select category.id::uuid, category.name, category.status::category_status, category.tracking_mode::tracking_mode, true,
+       category.interchangeable, 60, 'e3180000-0000-4000-8000-000000000001', 'e3180000-0000-4000-8000-000000000001'
+from (values
+  ('e3180000-0000-4000-8000-000000000101', 'RES18 Chaleco', 'active', 'by_quantity', true),
+  ('e3180000-0000-4000-8000-000000000102', 'RES18 Kayak', 'active', 'by_quantity', true),
+  ('e3180000-0000-4000-8000-000000000103', 'RES18 Lancha', 'active', 'by_unit', false),
+  ('e3180000-0000-4000-8000-000000000104', 'RES18 Tabla', 'inactive', 'by_quantity', true),
+  ('e3180000-0000-4000-8000-000000000105', 'RES18 Sin stock', 'active', 'by_quantity', true)
+) as category(id, name, status, tracking_mode, interchangeable);
+
+insert into equipment_stock (category_id, quantity_available, updated_by) values
+  ('e3180000-0000-4000-8000-000000000101', 10, 'e3180000-0000-4000-8000-000000000001'),
+  ('e3180000-0000-4000-8000-000000000102', 10, 'e3180000-0000-4000-8000-000000000001'),
+  ('e3180000-0000-4000-8000-000000000105', 0, 'e3180000-0000-4000-8000-000000000001');
+
+insert into equipment_units (id, category_id, code, status, created_by, updated_by)
+select unit.id::uuid, 'e3180000-0000-4000-8000-000000000103', unit.code, unit.status::unit_status,
+       'e3180000-0000-4000-8000-000000000001', 'e3180000-0000-4000-8000-000000000001'
+from (values
+  ('e3180000-0000-4000-8000-000000000201', 'RES18-LANCHA-1', 'available'),
+  ('e3180000-0000-4000-8000-000000000202', 'RES18-LANCHA-2', 'available'),
+  ('e3180000-0000-4000-8000-000000000203', 'RES18-LANCHA-3', 'in_maintenance')
+) as unit(id, code, status);
+
+create function pg_temp.seed_reservation(
+  p_id uuid,
+  p_starts_at timestamptz default '2035-04-12 15:00:00+00',
+  p_type reservation_type default 'rental',
+  p_status reservation_status default 'scheduled'
+) returns void
+language plpgsql as $$
+begin
+  alter table reservations disable trigger reservations_stamp_audit;
+  insert into reservations
+    (id, customer_name, people_count, type, starts_at, duration_minutes, status, cancellation_reason, created_by, updated_by, updated_at)
+  values
+    (p_id, 'RES18 Customer', 2, p_type, p_starts_at, 60, p_status,
+     case when p_status = 'cancelled' then 'RES18 reason' end,
+     'e3180000-0000-4000-8000-000000000001', 'e3180000-0000-4000-8000-000000000001',
+     '2030-01-01 12:00:00.123456+00');
+  alter table reservations enable trigger reservations_stamp_audit;
+end;
+$$;
+
+create function pg_temp.reservation_payload(
+  p_id uuid,
+  p_changes jsonb default '{}'
+) returns jsonb
+language sql stable as $$
+  select jsonb_build_object(
+    'reservation_id', reservation.id,
+    'people_count', reservation.people_count,
+    'time', to_char(reservation.starts_at at time zone 'America/Costa_Rica', 'HH24:MI'),
+    'duration_minutes', reservation.duration_minutes,
+    'expected_updated_at', reservation.updated_at,
+    'category_id', item.category_id,
+    'quantity', item.quantity,
+    'unit_id', item.unit_id
+  ) || p_changes
+  from reservations as reservation
+  left join lateral (
+    select target.category_id, target.quantity, target.unit_id
+    from reservation_items as target
+    where target.reservation_id = reservation.id
+      and target.extra_id is null and target.dispatch_id is null
+    order by target.id limit 1
+  ) as item on true
+  where reservation.id = p_id;
+$$;

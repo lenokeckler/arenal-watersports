@@ -13,13 +13,33 @@ export const RESERVATION_FORM_UI_COPY = {
   CUSTOM_DURATION: "Otra duración en horas",
   CUSTOM_DURATION_OPTION: "Otra duración",
   CATEGORY: "Equipo",
+  CATEGORY_UNAVAILABLE:
+    "La categoría seleccionada dejó de estar disponible. Elija otra categoría.",
   CATEGORY_PLACEHOLDER: "Seleccione una categoría",
   QUANTITY: "Cantidad de equipos",
+  QUANTITY_UNAVAILABLE:
+    "La cantidad solicitada supera los equipos disponibles para este horario.",
+  UNIT: "Unidad",
+  UNIT_PLACEHOLDER: "Seleccione una unidad disponible",
+  AVAILABILITY_LOADING: "Consultando disponibilidad…",
+  AVAILABILITY_ERROR:
+    "No fue posible consultar las unidades disponibles.",
+  NO_AVAILABLE_UNITS:
+    "No hay unidades disponibles para este horario.",
+  UNIT_UNAVAILABLE:
+    "La unidad seleccionada dejó de estar disponible. Elija otra unidad.",
+  UNIT_CONFLICT:
+    "La unidad seleccionada ya tiene una reserva en ese horario. Elija otra unidad o cambie el horario.",
+  RETRY_AVAILABILITY: "Volver a consultar",
   SUBMIT: "Registrar reserva",
   SUBMITTING: "Guardando reserva…",
   SUCCESS: "La reserva quedó registrada correctamente.",
   SUBMIT_ERROR:
-    "No fue posible registrar la reserva. Revise los datos e inténtelo de nuevo.",
+    "No fue posible guardar la reserva por un error del sistema. Sus datos se conservaron; inténtelo de nuevo. Si persiste, informe a Administración.",
+  SUBMIT_RESERVATION_ACCESS_ERROR:
+    "Su cuenta necesita el área de Reservas habilitada y activa para registrar esta reserva. Solicite a Administración que revise su acceso.",
+  SUBMIT_UNEXPECTED_ERROR:
+    "El sistema devolvió una respuesta inesperada. No se confirmó la reserva; verifique el calendario antes de intentarlo de nuevo.",
   NO_CATEGORIES:
     "No hay categorías de equipo disponibles para esta reserva.",
   RESERVATION_TYPE_SELECTION_CLEARED:
@@ -28,12 +48,6 @@ export const RESERVATION_FORM_UI_COPY = {
     "Los equipos intercambiables se reservan por cantidad; Operaciones asigna cada unidad al despachar.",
   EQUIPMENT_UNIT_NOTE:
     "La lancha se compromete por unidad concreta y permanece en tierra hasta que Operaciones la despache.",
-  NO_AVAILABLE_UNITS:
-    "No hay unidades disponibles para esta categoría.",
-  AVAILABILITY_ERROR:
-    "No fue posible verificar la disponibilidad. Inténtelo de nuevo.",
-  AVAILABILITY_LOADING:
-    "Verificando disponibilidad de la lancha…",
   CATEGORY_AVAILABILITY: "Disponibilidad en este horario",
   CATEGORY_AVAILABILITY_AVAILABLE: "Disponibles",
   CATEGORY_AVAILABILITY_CONTEXT:
@@ -55,23 +69,21 @@ export const RESERVATION_FORM_UI_COPY = {
     "Consultando reservas de esta categoría…",
   CATEGORY_CONFLICT_WARNING_ERROR:
     "No fue posible verificar los cruces de horario. Puede continuar con el registro.",
-  UNIT: "Unidad de lancha",
-  UNIT_PLACEHOLDER: "Seleccione una unidad disponible",
-  EQUIPMENT_ELIGIBILITY_ERROR:
-    "No fue posible actualizar el equipo disponible. Revise su conexión e intente de nuevo.",
   EQUIPMENT_ELIGIBILITY_LOADING:
-    "Actualizando el equipo disponible…",
+    "Actualizando las categorías disponibles…",
+  EQUIPMENT_ELIGIBILITY_ERROR:
+    "No fue posible actualizar las categorías disponibles.",
   RETRY_EQUIPMENT_ELIGIBILITY: "Reintentar actualización",
+  EQUIPMENT_SELECTION_CHANGED:
+    "La disponibilidad cambió. Seleccione otra categoría o unidad.",
   GUIDES: "Guías de la salida",
   GUIDES_DESCRIPTION:
     "Seleccione uno o varios trabajadores marcados como guía. La cantidad de personas no limita la asignación.",
-  GUIDES_SELECTED: "Guías seleccionados",
+  GUIDES_SELECTED: "Guías asignados",
   GUIDES_EMPTY:
     "No hay trabajadores marcados como guía disponibles.",
   GUIDES_LOADING: "Cargando guías…",
   GUIDES_ERROR:
     "No fue posible cargar los guías. Revise la conexión e inténtelo de nuevo.",
   GUIDES_RETRY: "Reintentar carga de guías",
-  EQUIPMENT_SELECTION_CHANGED:
-    "La disponibilidad cambió. Seleccione otra categoría o unidad para continuar.",
 } as const;

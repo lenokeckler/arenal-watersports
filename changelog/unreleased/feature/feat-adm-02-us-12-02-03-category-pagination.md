@@ -1,0 +1,1 @@
+ADM-02.12.02.03: Category pagination — the category read is paginated on the server, 20 per page, with a previous and next control and records looked up only for the page (RNF-027; US-ADM-12 · AWS-64)
