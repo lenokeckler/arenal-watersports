@@ -13,7 +13,7 @@ import {
   RESERVATION_FORM_FOCUS_TARGET,
   RESERVATION_FORM_FIELD_ID,
 } from "./constants/ReservationFormUi.constants";
-import { useReservationFormViewModel } from "./hooks/useReservationFormViewModel";
+import { useReservationFormGuideViewModel } from "./hooks/useReservationFormGuideViewModel";
 import type { ReservationFormViewProps } from "./models/ReservationFormViewProps.interface";
 import {
   RESERVATION_FORM_ACTIONS_CLASS,
@@ -32,6 +32,7 @@ import ReservationFormFields from "./components/ReservationFormFields";
 
 const ReservationFormView = ({
   categories,
+  guideLoadResult,
   initialDate,
   unitCategories,
 }: ReservationFormViewProps): React.JSX.Element => {
@@ -43,11 +44,14 @@ const ReservationFormView = ({
       ])
     ).values()
   );
-  const viewModel = useReservationFormViewModel({
-    categories: allCategories,
-    initialCategoryId: STRING.Empty,
-    initialDate,
-    unitCategories,
+  const viewModel = useReservationFormGuideViewModel({
+    guideLoadResult,
+    formOptions: {
+      categories: allCategories,
+      initialCategoryId: STRING.Empty,
+      initialDate,
+      unitCategories,
+    },
   });
   const submitLabel = viewModel.isPending
     ? RESERVATION_FORM_UI_COPY.SUBMITTING
@@ -85,6 +89,7 @@ const ReservationFormView = ({
           >
             <ReservationFormFields
               categories={viewModel.categories}
+              guideAssignmentViewModel={viewModel}
               viewModel={viewModel}
             />
             {allCategories.length === 0 && (

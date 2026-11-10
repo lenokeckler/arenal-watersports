@@ -2,6 +2,8 @@ import { render } from "@testing-library/react";
 import { vi } from "vitest";
 import ReservationFormView from "../ReservationFormView";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
+import type { ReservationGuideLoadResult } from "../models/ReservationGuideLoadResult.type";
+import { EMPTY_RESERVATION_GUIDE_LOAD_RESULT } from "../constants/ReservationGuideLoad.constants";
 import { createReservationFormViewPage } from "./ReservationFormView.page";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 
@@ -10,6 +12,7 @@ const { routerBack } = vi.hoisted(() => ({
 }));
 
 vi.mock("next/navigation", () => ({
+  unstable_rethrow: vi.fn(),
   useRouter: () => ({ back: routerBack }),
 }));
 
@@ -32,7 +35,9 @@ export const reservationRouterBack = routerBack;
 
 export const renderReservationForm = (
   hasCategories = true,
-  hasUnitCategory = false
+  hasUnitCategory = false,
+  hasGuideOnlyCategory = false,
+  guideLoadResult: ReservationGuideLoadResult = EMPTY_RESERVATION_GUIDE_LOAD_RESULT
 ) => {
   routerBack.mockClear();
   const { container } = render(
@@ -49,7 +54,7 @@ export const renderReservationForm = (
               {
                 id: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_ID,
                 isInterchangeable: true,
-                isGuideOnly: false,
+                isGuideOnly: hasGuideOnlyCategory,
                 name: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME,
               },
               ...(hasUnitCategory
@@ -57,7 +62,7 @@ export const renderReservationForm = (
                     {
                       id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
                       isInterchangeable: true,
-                      isGuideOnly: false,
+                      isGuideOnly: hasGuideOnlyCategory,
                       name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
                     },
                   ]
@@ -70,13 +75,14 @@ export const renderReservationForm = (
           ? [
               {
                 id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
-                isGuideOnly: false,
+                isGuideOnly: hasGuideOnlyCategory,
                 name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
               },
             ]
           : []
       }
       initialDate={RESERVATION_FORM_VIEW_TEST.DATE}
+      guideLoadResult={guideLoadResult}
     />
   );
   return createReservationFormViewPage(container);

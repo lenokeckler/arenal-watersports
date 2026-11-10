@@ -1,9 +1,11 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { render } from "@testing-library/react";
+import type { ImageProps } from "next/image";
 import EquipmentBoardContent from "../components/EquipmentBoardContent";
 import { EQUIPMENT_BOARD_COPY } from "../constants/EquipmentBoardCopy.constants";
 import {
   CARDS_WITH_UNKNOWN_CATEGORY,
+  CARDS_WITH_UNKNOWN_CATEGORY_FIRST,
   EDGE_CATEGORY_NAME,
 } from "./EquipmentBoardEdge.constants";
 import {
@@ -15,6 +17,26 @@ import {
   SAILING_ICON_TEXT,
 } from "./EquipmentBoard.constants";
 import { createEquipmentBoardPage } from "./EquipmentBoard.page";
+
+const MOCK_IMAGE_PRIORITY = vi.hoisted(() => ({
+  ATTRIBUTE: "data-priority",
+  AUTO: "auto",
+  HIGH: "high",
+}));
+
+vi.mock("next/image", async () => {
+  const React = await import("react");
+
+  return {
+    default: ({ priority, ...imageProps }: ImageProps) =>
+      React.createElement("img", {
+        ...imageProps,
+        [MOCK_IMAGE_PRIORITY.ATTRIBUTE]: priority
+          ? MOCK_IMAGE_PRIORITY.HIGH
+          : MOCK_IMAGE_PRIORITY.AUTO,
+      }),
+  };
+});
 
 describe("BoardCard media", () => {
   it("marks every card as tracked per unit", () => {
@@ -43,6 +65,18 @@ describe("BoardCard media", () => {
     ).toContain(KAYAK_IMAGE_FILE);
   });
 
+  it("prioritizes only the first card image", () => {
+    render(<EquipmentBoardContent cards={BOARD_CARDS} />);
+    const page = createEquipmentBoardPage();
+
+    expect(
+      page.getImagePriority(page.getCard(JET_SKI_LABEL))
+    ).toBe(MOCK_IMAGE_PRIORITY.HIGH);
+    expect(
+      page.getImagePriority(page.getCard(KAYAK_LABEL))
+    ).toBe(MOCK_IMAGE_PRIORITY.AUTO);
+  });
+
   it("shows a neutral placeholder instead of an image for a category with no known image", () => {
     render(
       <EquipmentBoardContent
@@ -56,5 +90,23 @@ describe("BoardCard media", () => {
     expect(
       page.getText(card, SAILING_ICON_TEXT)
     ).toBeInTheDocument();
+  });
+
+  it("prioritizes the first available image after a placeholder card", () => {
+    render(
+      <EquipmentBoardContent
+        cards={CARDS_WITH_UNKNOWN_CATEGORY_FIRST}
+      />
+    );
+    const page = createEquipmentBoardPage();
+
+    expect(
+      page.hasImage(
+        page.getCard(EDGE_CATEGORY_NAME.UNKNOWN)
+      )
+    ).toBe(false);
+    expect(
+      page.getImagePriority(page.getCard(JET_SKI_LABEL))
+    ).toBe(MOCK_IMAGE_PRIORITY.HIGH);
   });
 });

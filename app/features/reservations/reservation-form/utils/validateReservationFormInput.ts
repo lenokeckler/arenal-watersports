@@ -23,6 +23,11 @@ const buildValidatedInput = (
   customerName: input.customerName.trim(),
   date: input.date,
   durationMinutes,
+  guideIds:
+    (input.reservationType ?? RESERVATION_TYPE.RENTAL) ===
+    RESERVATION_TYPE.TOUR
+      ? (input.guideIds ?? [])
+      : [],
   peopleCount: input.peopleCount,
   reservationType:
     input.reservationType ?? RESERVATION_TYPE.RENTAL,

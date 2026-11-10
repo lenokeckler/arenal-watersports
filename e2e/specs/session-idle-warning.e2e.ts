@@ -67,7 +67,7 @@ test.describe("Warning before the night inactivity limit", () => {
 
     await touch;
     await expect(warning.getDialog()).toHaveCount(0);
-    await expect(page).toHaveURL(PATHS.BOARD);
+    await expect(page).toHaveURL(PATHS.HOME);
   });
 
   test("Cerrar sesión signs this device out and says so on the login", async ({
