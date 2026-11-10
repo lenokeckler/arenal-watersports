@@ -25,6 +25,12 @@ export const VALIDATED_UNIT_RESERVATION_INPUT = {
   },
 } satisfies ValidatedReservationFormInput;
 
+export const VALIDATED_TOUR_RESERVATION_INPUT = {
+  ...VALIDATED_RESERVATION_INPUT,
+  guideIds: ["e2400000-0000-4000-8000-000000000301"],
+  reservationType: RESERVATION_TYPE.TOUR,
+} satisfies ValidatedReservationFormInput;
+
 export const CREATED_RESERVATION_ID =
   "e2400000-0000-4000-8000-000000000201";
 export const CREATE_RESERVATION_RPC_URL = `${SUPABASE.URL}/rest/v1/rpc/create_rental_reservation`;

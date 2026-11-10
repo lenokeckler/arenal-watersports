@@ -5,6 +5,7 @@ import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOpt
 import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
 import type { ReservationCategoryAvailabilityPanelState } from "./ReservationCategoryAvailabilityPanelState.type";
 import type { ReservationCategoryConflictWarningViewModel } from "./ReservationCategoryConflictWarningViewModel.interface";
+import type { ReservationType } from "./ReservationType.type";
 
 export interface ReservationFormViewModel {
   categories: ReservationCategoryOption[];
@@ -29,16 +30,21 @@ export interface ReservationFormViewModel {
   handleCustomerNameChange: (value: string) => void;
   handleDateChange: (value: string) => void;
   handleDurationChange: (value: number) => void;
+  handleGuideToggle: (guideId: string) => void;
   handleCustomDurationChange: (value: string) => void;
   handleCustomDurationSelection: () => void;
   handlePeopleCountChange: (value: number) => void;
   handleQuantityChange: (value: number) => void;
   handleCategoryChange: (value: string) => void;
+  handleReservationTypeChange: (
+    value: ReservationType
+  ) => void;
   handleUnitChange: (value: string) => void;
   retryUnitAvailability: () => void;
   isEquipmentEligibilityLoading: boolean;
   hasEquipmentEligibilityError: boolean;
   hasEquipmentSelectionChanged: boolean;
+  hasReservationTypeSelectionReset: boolean;
   handleRetryEquipmentEligibility: () => void;
   handleTimeChange: (value: string) => void;
   handleBack: () => void;
