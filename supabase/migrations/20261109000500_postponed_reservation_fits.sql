@@ -11,7 +11,9 @@ begin
   for quantity_item in
     select item.id, item.category_id, item.quantity
     from reservation_items as item
-    where item.reservation_id = p_reservation_id and item.unit_id is null
+    where item.reservation_id = p_reservation_id
+      and item.unit_id is null
+      and item.category_id is not null
     order by item.id
   loop
     perform lock_reservable_category(quantity_item.category_id, null);
