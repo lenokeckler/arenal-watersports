@@ -39,4 +39,13 @@ describe("isReservationFormInput", () => {
       })
     ).toBe(true);
   });
+
+  it("rejects guide identifiers with invalid boundary types", () => {
+    expect(
+      isReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        guideIds: ["guide-id", 1],
+      })
+    ).toBe(false);
+  });
 });
