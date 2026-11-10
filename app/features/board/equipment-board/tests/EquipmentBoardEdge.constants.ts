@@ -70,3 +70,8 @@ export const CARDS_WITH_UNKNOWN_CATEGORY = buildBoardCards([
     name: EDGE_CATEGORY_NAME.UNKNOWN,
   }),
 ]);
+
+export const CARDS_WITH_UNKNOWN_CATEGORY_FIRST = [
+  ...CARDS_WITH_UNKNOWN_CATEGORY,
+  ...buildBoardCards([createBoardCategory()]),
+];

@@ -5,6 +5,7 @@ import { resolveListPageHref } from "@/app/utils/list-pagination/resolveListPage
 import { createListPaginationPage } from "./ListPagination.page";
 import {
   LIST_PAGINATION_BASE_PATH,
+  LIST_PAGINATION_CUSTOM_HREF,
   LIST_PAGINATION_NAV_LABEL,
 } from "./ListPagination.constants";
 
@@ -82,5 +83,31 @@ describe("ListPagination", () => {
       paginationPage.getPreviousLink()
     ).toBeInTheDocument();
     expect(paginationPage.getNextLink()).toBeNull();
+  });
+
+  it("builds both links with pageHref when one is given", () => {
+    render(
+      <ListPagination
+        currentPage={2}
+        basePath={LIST_PAGINATION_BASE_PATH}
+        navLabel={LIST_PAGINATION_NAV_LABEL}
+        pageCount={3}
+        pageHref={(page) =>
+          `${LIST_PAGINATION_CUSTOM_HREF}${page}`
+        }
+      />
+    );
+    const paginationPage = createListPaginationPage();
+
+    expect(
+      paginationPage.getPreviousLink()
+    ).toHaveAttribute(
+      "href",
+      `${LIST_PAGINATION_CUSTOM_HREF}1`
+    );
+    expect(paginationPage.getNextLink()).toHaveAttribute(
+      "href",
+      `${LIST_PAGINATION_CUSTOM_HREF}3`
+    );
   });
 });

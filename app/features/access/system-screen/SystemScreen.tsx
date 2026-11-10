@@ -1,10 +1,24 @@
+"use client";
+
 import type { SystemScreenProps } from "./models/SystemScreenProps.interface";
-import { SYSTEM_SCREEN_CLASS } from "./styles/SystemScreen.styles";
+import { useSystemScreenViewModel } from "./hooks/useSystemScreenViewModel";
+import { resolveSystemScreenClassName } from "./styles/SystemScreen.styles";
 
 const SystemScreen = ({
   children,
-}: SystemScreenProps): React.JSX.Element => (
-  <div className={SYSTEM_SCREEN_CLASS}>{children}</div>
-);
+  overview,
+}: SystemScreenProps): React.JSX.Element => {
+  const viewModel = useSystemScreenViewModel(overview);
+
+  return (
+    <div
+      className={resolveSystemScreenClassName(
+        viewModel.hasBottomNavigation
+      )}
+    >
+      {children}
+    </div>
+  );
+};
 
 export default SystemScreen;

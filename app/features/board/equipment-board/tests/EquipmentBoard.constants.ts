@@ -79,6 +79,7 @@ export const EXPECTED_BAR_WIDTHS = {
 export const EN_USO_TEXT = "en uso";
 
 export const IMAGE_ELEMENT_SELECTOR = "img";
+export const IMAGE_PRIORITY_ATTRIBUTE = "data-priority";
 export const IMAGE_SOURCE_ATTRIBUTE = "src";
 export const JET_SKI_IMAGE_FILE = "jet-ski.webp";
 export const KAYAK_IMAGE_FILE = "kayak-doble.webp";
