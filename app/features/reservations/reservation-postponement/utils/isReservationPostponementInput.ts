@@ -17,7 +17,12 @@ const isUuid = (value: unknown): value is string =>
 const isNullableNumber = (value: unknown): boolean =>
   value === null ||
   value === undefined ||
-  typeof value === TYPE_OF.NUMBER;
+  (typeof value === TYPE_OF.NUMBER &&
+    Number.isFinite(value));
+
+const isTimestamp = (value: unknown): value is string =>
+  typeof value === TYPE_OF.STRING &&
+  !Number.isNaN(Date.parse(`${value}`));
 
 const isReadingInput = (
   value: unknown
@@ -39,7 +44,7 @@ export const isReservationPostponementInput = (
   "date" in input &&
   typeof input.date === TYPE_OF.STRING &&
   "expectedUpdatedAt" in input &&
-  typeof input.expectedUpdatedAt === TYPE_OF.STRING &&
+  isTimestamp(input.expectedUpdatedAt) &&
   "readings" in input &&
   Array.isArray(input.readings) &&
   input.readings.every(isReadingInput) &&

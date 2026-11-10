@@ -64,6 +64,51 @@ export const MALFORMED_INPUT_CASES: [string, unknown][] = [
     },
   ],
   [
+    "a reading without a fuel key",
+    {
+      ...VALID_POSTPONEMENT_INPUT,
+      readings: [
+        { itemId: VALID_READING.itemId, usageIn: 1 },
+      ],
+    },
+  ],
+  [
+    "a reading without a usage key",
+    {
+      ...VALID_POSTPONEMENT_INPUT,
+      readings: [
+        { itemId: VALID_READING.itemId, fuelIn: 1 },
+      ],
+    },
+  ],
+  [
+    "a null reading",
+    { ...VALID_POSTPONEMENT_INPUT, readings: [null] },
+  ],
+  [
+    "a numeric reading item id",
+    {
+      ...VALID_POSTPONEMENT_INPUT,
+      readings: [{ ...VALID_READING, itemId: 7 }],
+    },
+  ],
+  [
+    "a missing date",
+    { ...VALID_POSTPONEMENT_INPUT, date: undefined },
+  ],
+  [
+    "a missing time",
+    { ...VALID_POSTPONEMENT_INPUT, time: undefined },
+  ],
+  [
+    "a missing reservation id",
+    {
+      ...VALID_POSTPONEMENT_INPUT,
+      reservationId: undefined,
+    },
+  ],
+  ["an array", [VALID_POSTPONEMENT_INPUT]],
+  [
     "a text fuel reading",
     {
       ...VALID_POSTPONEMENT_INPUT,
@@ -77,4 +122,35 @@ export const MALFORMED_INPUT_CASES: [string, unknown][] = [
       readings: [{ ...VALID_READING, usageIn: "1250" }],
     },
   ],
+  [
+    "a NaN fuel reading",
+    {
+      ...VALID_POSTPONEMENT_INPUT,
+      readings: [{ ...VALID_READING, fuelIn: NaN }],
+    },
+  ],
+  [
+    "an infinite usage reading",
+    {
+      ...VALID_POSTPONEMENT_INPUT,
+      readings: [{ ...VALID_READING, usageIn: Infinity }],
+    },
+  ],
+  [
+    "an empty token",
+    { ...VALID_POSTPONEMENT_INPUT, expectedUpdatedAt: "" },
+  ],
+  [
+    "a token that is not a timestamp",
+    {
+      ...VALID_POSTPONEMENT_INPUT,
+      expectedUpdatedAt: "nope",
+    },
+  ],
 ];
+
+export const UPPERCASE_RESERVATION_ID =
+  VALID_POSTPONEMENT_INPUT.reservationId.toUpperCase();
+export const UPPERCASE_ITEM_ID =
+  VALID_READING.itemId.toUpperCase();
+export const UNDECLARED_KEY = "isAdmin";
