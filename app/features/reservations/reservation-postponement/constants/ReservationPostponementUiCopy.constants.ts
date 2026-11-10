@@ -2,8 +2,6 @@ export const RESERVATION_POSTPONEMENT_UI_COPY = {
   BACK_TO_CALENDAR: "Volver al calendario",
   CURRENT_DATE_TIME: (date: string, time: string): string =>
     `${date}, ${time}`,
-  DESCRIPTION:
-    "Elija la nueva fecha y hora. Su reserva vuelve a quedar agendada.",
   LABEL_CURRENT_DATE_TIME: "Fecha y hora actual",
   LABEL_CUSTOMER: "Cliente",
   LABEL_EQUIPMENT: "Equipo",

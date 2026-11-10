@@ -1,4 +1,4 @@
-import { Link, Text, Title } from "@/app/components";
+import { Link, Title } from "@/app/components";
 import { PATHS, TitleVariant } from "@/app/constants";
 import { RESERVATION_POSTPONEMENT_FIELD_ID } from "../constants/ReservationPostponementUi.constants";
 import { RESERVATION_POSTPONEMENT_UI_COPY } from "../constants/ReservationPostponementUiCopy.constants";
@@ -6,7 +6,6 @@ import type { ReservationPostponementLayoutProps } from "../models/ReservationPo
 import {
   RESERVATION_POSTPONEMENT_BACK_CLASS,
   RESERVATION_POSTPONEMENT_CARD_CLASS,
-  RESERVATION_POSTPONEMENT_DESCRIPTION_CLASS,
   RESERVATION_POSTPONEMENT_HEADER_CLASS,
   RESERVATION_POSTPONEMENT_MAIN_CLASS,
   RESERVATION_POSTPONEMENT_PAGE_CLASS,
@@ -16,7 +15,12 @@ import {
 const ReservationPostponementLayout = ({
   children,
 }: ReservationPostponementLayoutProps): React.JSX.Element => (
-  <main className={RESERVATION_POSTPONEMENT_MAIN_CLASS}>
+  <main
+    aria-labelledby={
+      RESERVATION_POSTPONEMENT_FIELD_ID.HEADING
+    }
+    className={RESERVATION_POSTPONEMENT_MAIN_CLASS}
+  >
     <div className={RESERVATION_POSTPONEMENT_PAGE_CLASS}>
       <header
         className={RESERVATION_POSTPONEMENT_HEADER_CLASS}
@@ -35,13 +39,6 @@ const ReservationPostponementLayout = ({
           text={RESERVATION_POSTPONEMENT_UI_COPY.TITLE}
           className={RESERVATION_POSTPONEMENT_TITLE_CLASS}
         />
-        <Text
-          className={
-            RESERVATION_POSTPONEMENT_DESCRIPTION_CLASS
-          }
-        >
-          {RESERVATION_POSTPONEMENT_UI_COPY.DESCRIPTION}
-        </Text>
       </header>
       <div className={RESERVATION_POSTPONEMENT_CARD_CLASS}>
         {children}

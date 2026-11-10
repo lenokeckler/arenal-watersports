@@ -13,9 +13,6 @@ export const RESERVATION_POSTPONEMENT_BACK_CLASS =
 export const RESERVATION_POSTPONEMENT_TITLE_CLASS =
   "text-headline-lg-mobile text-on-surface md:text-headline-lg";
 
-export const RESERVATION_POSTPONEMENT_DESCRIPTION_CLASS =
-  "max-w-2xl text-on-surface-variant";
-
 export const RESERVATION_POSTPONEMENT_CARD_CLASS =
   "rounded-2xl border border-outline-variant/60 bg-surface-container/80 p-4 shadow-xl shadow-black/20 backdrop-blur md:rounded-3xl md:p-8";
 
