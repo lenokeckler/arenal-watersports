@@ -4,11 +4,18 @@ import type { ExtraSeedInput } from "../models/ExtraSeedInput.interface";
 export const E2E_EXTRA_LIST_SCREENSHOT_BASENAME =
   "us-adm-19-extra-list";
 
+export const E2E_EXTRA_REMOVAL_SCREENSHOT_BASENAME =
+  "us-adm-19-extra-removal";
+
 export const E2E_EXTRA_NAME_PREFIX = "e2e_";
 
 export const E2E_EXTRA_SCENARIO = {
   INACTIVE: "inactive",
   LINKS: "links",
+  REACTIVATE: "reactivate",
+  REMOVE_UNUSED: "remove_unused",
+  REMOVE_USED: "remove_used",
+  SCREENSHOT_REMOVAL: "screenshot_removal",
   SCREENSHOT_ACTIVE: "screenshot_active",
   SCREENSHOT_INACTIVE: "screenshot_inactive",
   STATUS_ACTIVE: "status_active",

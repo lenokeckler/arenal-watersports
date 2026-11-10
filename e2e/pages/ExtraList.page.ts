@@ -38,6 +38,28 @@ export const createExtraListPage = (page: Page) => {
       name: EXTRA_CATALOG_COPY.CREATE_CTA,
     });
 
+  const getRemoveButton = (extraName: string): Locator =>
+    getExtraCard(extraName).getByRole(ARIA_ROLE.BUTTON, {
+      name: EXTRA_CATALOG_COPY.REMOVE_BUTTON,
+    });
+
+  const getRemovalConfirmMessage = (
+    extraName: string
+  ): Locator =>
+    getExtraCard(extraName).getByText(
+      EXTRA_CATALOG_COPY.REMOVAL_CONFIRM_MESSAGE
+    );
+
+  const getReactivateButton = (
+    extraName: string
+  ): Locator =>
+    getExtraCard(extraName).getByRole(ARIA_ROLE.BUTTON, {
+      name: EXTRA_CATALOG_COPY.REACTIVATE_BUTTON,
+    });
+
+  const getToastMessage = (message: string): Locator =>
+    page.getByText(message, { exact: true });
+
   return {
     goTo,
     getHeading,
@@ -45,5 +67,9 @@ export const createExtraListPage = (page: Page) => {
     getExtraStatusChip,
     getExtraEditLink,
     getCreateLink,
+    getRemoveButton,
+    getRemovalConfirmMessage,
+    getReactivateButton,
+    getToastMessage,
   };
 };
