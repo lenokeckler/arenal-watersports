@@ -24,6 +24,7 @@ export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
   "/board/categories/[categoryId]",
   `${PATHS.HISTORY.ROOT}${ROUTE_SEPARATOR}[reservationId]`,
   "/reservations/[reservationId]/edit",
+  "/reservations/[reservationId]/postpone",
   "/reservations/[reservationId]/split",
 ];
 
