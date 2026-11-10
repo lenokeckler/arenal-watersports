@@ -1,5 +1,4 @@
 import { SUPABASE } from "@/app/constants";
-import { RESERVATION_POSTPONEMENT_ERROR } from "../constants/ReservationPostponementError.constants";
 import { RESERVATION_POSTPONEMENT_QUERY } from "../constants/ReservationPostponementQuery.constants";
 import { POSTPONEMENT_RESERVATION_ID } from "./ReservationPostponement.constants";
 import { VALID_POSTPONEMENT_INPUT } from "./ReservationPostponementInput.constants";
@@ -35,9 +34,20 @@ export const POSTPONE_NULL_READING_PAYLOAD = {
   usage_in: null,
 };
 
+export const POSTPONE_RPC_ERROR_MESSAGE =
+  "Reservation changed since the form was loaded";
+
 export const POSTPONE_RPC_ERROR_BODY = {
   code: "P0001",
   details: null,
   hint: null,
-  message: RESERVATION_POSTPONEMENT_ERROR.MESSAGE.STALE,
+  message: POSTPONE_RPC_ERROR_MESSAGE,
+};
+
+export const POSTPONE_PADDED_REASON = "  Cliente enfermo  ";
+
+export const POSTPONE_ZERO_READING_PAYLOAD = {
+  fuel_in: 0,
+  item_id: VALID_READING.itemId,
+  usage_in: 0,
 };
