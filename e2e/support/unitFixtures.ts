@@ -12,27 +12,30 @@ import {
   seedCategoryWithBehavior,
 } from "./categoryFixtures";
 
+const buildDecommissionColumns = (
+  isDecommissioned: boolean
+) => ({
+  decommission_reason: isDecommissioned
+    ? E2E_UNIT_DECOMMISSION_REASON
+    : null,
+  decommissioned_at: isDecommissioned
+    ? new Date().toISOString()
+    : null,
+});
+
 const buildUnitRow = (
   categoryId: string,
   unit: UnitFixtureSeed
-) => {
-  const isDecommissioned =
-    unit.status === UNIT_STATUS.DECOMMISSIONED;
-
-  return {
-    category_id: categoryId,
-    code: unit.code,
-    created_by: E2E_ADMIN_ACCOUNT.workerId,
-    decommission_reason: isDecommissioned
-      ? E2E_UNIT_DECOMMISSION_REASON
-      : null,
-    decommissioned_at: isDecommissioned
-      ? new Date().toISOString()
-      : null,
-    status: unit.status,
-    updated_by: E2E_ADMIN_ACCOUNT.workerId,
-  };
-};
+) => ({
+  ...buildDecommissionColumns(
+    unit.status === UNIT_STATUS.DECOMMISSIONED
+  ),
+  category_id: categoryId,
+  code: unit.code,
+  created_by: E2E_ADMIN_ACCOUNT.workerId,
+  status: unit.status,
+  updated_by: E2E_ADMIN_ACCOUNT.workerId,
+});
 
 export const removeCategoryWithUnits = async (
   categoryName: string
@@ -128,4 +131,18 @@ export const countUnitsOfCategory = async (
   throwIfSupabaseError(error, "countUnitsOfCategory");
 
   return safeNumber(count);
+};
+
+export const decommissionSeededUnit = async (
+  code: string
+): Promise<void> => {
+  const { error } = await createServiceRoleSupabaseClient()
+    .from("equipment_units")
+    .update({
+      ...buildDecommissionColumns(true),
+      status: UNIT_STATUS.DECOMMISSIONED,
+      updated_by: E2E_ADMIN_ACCOUNT.workerId,
+    })
+    .eq("code", code);
+  throwIfSupabaseError(error, "decommissionSeededUnit");
 };
