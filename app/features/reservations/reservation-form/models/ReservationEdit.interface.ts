@@ -7,6 +7,7 @@ export interface ReservationEdit {
   date: string;
   durationMinutes: number;
   equipment: NullableRef<ReservationEditEquipment>;
+  equipmentLabels: string[];
   equipmentLock: ReservationEquipmentLock;
   id: string;
   isEditable: boolean;

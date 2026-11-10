@@ -6,6 +6,7 @@ import { useReservationCalendarDayContent } from "@/app/components/reservation-c
 import { useReservationCalendarPeriodContent } from "./useReservationCalendarPeriodContent";
 import { useReservationCalendarSnapshot } from "./useReservationCalendarSnapshot";
 import { useReservationCalendarSelection } from "./useReservationCalendarSelection";
+import { renderReservationCalendarBlockActions } from "../utils/renderReservationCalendarBlockActions";
 
 export const useReservationsCalendarViewModel = (
   snapshot: NullableUndefined<ReservationCalendarSnapshot>,
@@ -18,6 +19,8 @@ export const useReservationsCalendarViewModel = (
     snapshotState.snapshot ?? undefined,
     {
       enableDetailLinks: true,
+      renderBlockActions:
+        renderReservationCalendarBlockActions,
       reserveMobileFabSpace: true,
     }
   );
