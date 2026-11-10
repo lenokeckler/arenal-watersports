@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
+import { RESERVATION_TYPE_COPY } from "../constants/ReservationTypeCopy.constants";
 import { renderReservationForm } from "./ReservationFormView.fixture";
 
 describe("ReservationTypeField descriptions", () => {
@@ -8,7 +8,7 @@ describe("ReservationTypeField descriptions", () => {
 
     expect(
       page.getReservationTypeDescription(
-        RESERVATION_FORM_VIEW_TEST.RENTAL_TYPE_DESCRIPTION
+        RESERVATION_TYPE_COPY.OPTIONS.RENTAL.description
       )
     ).toBeInTheDocument();
   });
@@ -18,7 +18,7 @@ describe("ReservationTypeField descriptions", () => {
 
     expect(
       page.getReservationTypeDescription(
-        RESERVATION_FORM_VIEW_TEST.TOUR_TYPE_DESCRIPTION
+        RESERVATION_TYPE_COPY.OPTIONS.TOUR.description
       )
     ).toBeInTheDocument();
   });
@@ -28,7 +28,7 @@ describe("ReservationTypeField descriptions", () => {
 
     expect(
       page.getReservationTypeDescription(
-        RESERVATION_FORM_VIEW_TEST.COMBO_TYPE_DESCRIPTION
+        RESERVATION_TYPE_COPY.OPTIONS.COMBO.description
       )
     ).toBeInTheDocument();
   });

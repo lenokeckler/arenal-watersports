@@ -1,19 +1,18 @@
 import type { ReservationType } from "./ReservationType.type";
+import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
 
 export interface ReservationFormFieldHandlers {
-  handleGuideToggle: (guideId: string) => void;
-  handleGuideIdsChange: (guideIds: string[]) => void;
-  reconcileGuideSelection: (
-    availableGuideIds: string[]
-  ) => void;
   handleCategoryChange: (value: string) => void;
   handleCustomerNameChange: (value: string) => void;
   handleDateChange: (value: string) => void;
   handleDurationChange: (value: number) => void;
+  handleGuideToggle: (guideId: string) => void;
+  handleGuideIdsChange: (guideIds: string[]) => void;
   handlePeopleCountChange: (value: number) => void;
   handleQuantityChange: (value: number) => void;
   handleReservationTypeChange: (
-    value: ReservationType
+    value: ReservationType,
+    categories?: ReservationCategoryOption[]
   ) => void;
   handleTimeChange: (value: string) => void;
   handleUnitChange: (value: string) => void;
