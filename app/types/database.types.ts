@@ -2996,6 +2996,10 @@ export type Database = {
         Args: { p_pin: string; p_username: string };
         Returns: string;
       };
+      create_custom_combo_reservation: {
+        Args: { p_payload: Json };
+        Returns: string;
+      };
       create_rental_reservation:
         | {
             Args: {
