@@ -2996,6 +2996,10 @@ export type Database = {
         Args: { p_pin: string; p_username: string };
         Returns: string;
       };
+      create_custom_combo_reservation: {
+        Args: { p_payload: Json };
+        Returns: string;
+      };
       create_rental_reservation:
         | {
             Args: {
@@ -3079,6 +3083,13 @@ export type Database = {
       grantable_worker_marks: {
         Args: Record<PropertyKey, never>;
         Returns: Database["public"]["Enums"]["worker_mark"][];
+      };
+      custom_combo_price: {
+        Args: { p_duration_minutes: number; p_items: Json };
+        Returns: {
+          list_amount_crc: number;
+          list_amount_usd: number;
+        }[];
       };
       has_area: {
         Args: {
@@ -3497,6 +3508,13 @@ export type Database = {
           p_unit_id: string;
         };
         Returns: string;
+      };
+      validate_reservation_guide_assignments: {
+        Args: {
+          p_payload: Json;
+          p_reservation_type: Database["public"]["Enums"]["reservation_type"];
+        };
+        Returns: string[];
       };
       validate_reservation_schedule: {
         Args: {
