@@ -33,6 +33,7 @@ export const WORKER_AREAS_COPY = {
     "No hay ningún trabajador con ese nombre de usuario.",
   REVOKE: "Quitar",
   REVOKING: "Quitando…",
+  REGISTER_WORKER: "Registrar un trabajador",
   RESERVATIONS_REPORT: "Ver reservas por trabajador",
   SEARCH: "Buscar",
   USERNAME_LABEL: "Nombre de usuario",

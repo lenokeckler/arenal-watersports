@@ -10,6 +10,7 @@ import { expect, test } from "../support/activeWorkerTest";
 import { addOperationsArea } from "../support/addOperationsArea";
 import { addReservationsArea } from "../support/addReservationsArea";
 import { submitActiveWorkerSignIn } from "../support/submitActiveWorkerSignIn";
+import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
 
 test("captures bottom navigation in both work modes", async ({
   activeWorker,
@@ -43,5 +44,19 @@ test("captures bottom navigation in both work modes", async ({
   ).toBeVisible();
   await navigationPage.capture(
     E2E_SYSTEM_NAVIGATION_MODES.RESERVATIONS
+  );
+});
+
+test("captures Administration bottom navigation", async ({
+  page,
+}) => {
+  const navigationPage = createSystemNavigationPage(page);
+  await signInAsSeededWorker(page);
+  await navigationPage.goTo();
+  await expect(
+    navigationPage.getNavigation()
+  ).toBeVisible();
+  await navigationPage.capture(
+    E2E_SYSTEM_NAVIGATION_MODES.ADMINISTRATION
   );
 });

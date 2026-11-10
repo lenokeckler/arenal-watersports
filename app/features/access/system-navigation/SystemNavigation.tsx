@@ -27,6 +27,7 @@ const SystemNavigation = ({
         pathname={viewModel.pathname}
         isMenuOpen={viewModel.isMenuOpen}
         toggleMenu={viewModel.toggleMenu}
+        showMenuButton={viewModel.showMenuButton}
       />
       <SystemNavigationMenu
         isOpen={viewModel.isMenuOpen}

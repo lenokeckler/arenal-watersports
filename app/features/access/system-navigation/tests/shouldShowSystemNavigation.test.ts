@@ -22,13 +22,13 @@ describe("shouldShowSystemNavigation", () => {
     ).toBe(false);
   });
 
-  it("hides navigation when the current area is Administration", () => {
+  it("shows navigation when the current area is Administration", () => {
     expect(
       shouldShowSystemNavigation(
         SYSTEM_NAVIGATION_TEST_OVERVIEW.ADMINISTRATION,
         PATHS.BOARD
       )
-    ).toBe(false);
+    ).toBe(true);
   });
 
   it("shows navigation for a granted Operations area outside mode selection", () => {

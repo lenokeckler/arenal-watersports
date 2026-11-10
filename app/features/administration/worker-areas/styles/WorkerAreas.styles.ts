@@ -1,3 +1,5 @@
+import { LINK_ACTION_CLASS } from "@/app/components/link/styles/Link.styles";
+
 export const WORKER_AREAS_STACK_CLASS =
   "flex flex-col gap-md";
 
@@ -41,8 +43,8 @@ export const WORKER_AREA_REVOKE_BUTTON_CLASS = `${WORKER_AREA_BUTTON_BASE_CLASS}
 export const WORKER_AREAS_MESSAGE_CLASS =
   "text-body-base text-on-surface-variant";
 
-export const WORKER_AREAS_REPORT_LINK_CLASS =
-  "inline-flex min-h-12 items-center justify-center rounded-lg border border-outline px-md text-button font-semibold text-primary hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+export const WORKER_AREAS_ACTION_LINK_CLASS =
+  LINK_ACTION_CLASS;
 
 export const WORKER_TEMPORARY_PASSWORD_FORM_CLASS =
   "flex flex-col gap-sm border-t border-outline/60 pt-sm";

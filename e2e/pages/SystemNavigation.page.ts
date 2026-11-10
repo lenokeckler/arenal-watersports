@@ -36,6 +36,28 @@ export const createSystemNavigationPage = (
       { name: label }
     );
 
+  const getLinks = (): Locator =>
+    getNavigation().getByRole(
+      E2E_SYSTEM_NAVIGATION_ARIA.LINK
+    );
+
+  const getLinkHrefs = (): Promise<string[]> =>
+    getLinks().evaluateAll((links) =>
+      links.map(
+        (link) =>
+          new URL(
+            link.getAttribute("href") ?? "",
+            window.location.href
+          ).pathname
+      )
+    );
+
+  const getMenuButton = (): Locator =>
+    getNavigation().getByRole(
+      E2E_SYSTEM_NAVIGATION_ARIA.BUTTON,
+      { name: SYSTEM_NAVIGATION_COPY.MENU }
+    );
+
   const getItemSpacingDifference =
     async (): Promise<number> => {
       const navigation = getNavigation();
@@ -100,6 +122,9 @@ export const createSystemNavigationPage = (
     capture,
     getItemSpacingDifference,
     getLink,
+    getLinkHrefs,
+    getLinks,
+    getMenuButton,
     getNavigation,
     goTo,
   };

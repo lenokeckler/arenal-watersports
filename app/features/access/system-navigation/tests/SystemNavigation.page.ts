@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
 import { SYSTEM_NAVIGATION_COPY } from "../constants/SystemNavigationCopy.constants";
@@ -14,6 +14,13 @@ const getLastNavigationLink = (label: string) =>
 const queryNavigationLink = (label: string) =>
   screen.queryByRole(ARIA_ROLE.LINK, { name: label });
 
+const getNavigationLinks = () =>
+  within(
+    screen.getByRole(ARIA_ROLE.NAVIGATION, {
+      name: SYSTEM_NAVIGATION_COPY.LABEL,
+    })
+  ).getAllByRole(ARIA_ROLE.LINK);
+
 const queryNavigation = () =>
   screen.queryByRole(ARIA_ROLE.NAVIGATION, {
     name: SYSTEM_NAVIGATION_COPY.LABEL,
@@ -21,6 +28,15 @@ const queryNavigation = () =>
 
 const getMenuButton = () =>
   screen.getByRole(ARIA_ROLE.BUTTON, {
+    name: SYSTEM_NAVIGATION_COPY.MENU,
+  });
+
+const queryMenuButton = () =>
+  within(
+    screen.getByRole(ARIA_ROLE.NAVIGATION, {
+      name: SYSTEM_NAVIGATION_COPY.LABEL,
+    })
+  ).queryByRole(ARIA_ROLE.BUTTON, {
     name: SYSTEM_NAVIGATION_COPY.MENU,
   });
 
@@ -40,8 +56,10 @@ export const createSystemNavigationPage = () => {
     getNavigationLink,
     getLastNavigationLink,
     queryNavigationLink,
+    getNavigationLinks,
     queryNavigation,
     getMenuButton,
+    queryMenuButton,
     getMenuRegion,
     getMenuLink,
     queryMenuLink,

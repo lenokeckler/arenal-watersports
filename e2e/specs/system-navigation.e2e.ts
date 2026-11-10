@@ -12,6 +12,7 @@ import { expect, test } from "../support/activeWorkerTest";
 import { addOperationsArea } from "../support/addOperationsArea";
 import { addReservationsArea } from "../support/addReservationsArea";
 import { submitActiveWorkerSignIn } from "../support/submitActiveWorkerSignIn";
+import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
 
 test("shows Operations links and supports keyboard navigation", async ({
   activeWorker,
@@ -115,4 +116,36 @@ test("shows Operations links and supports keyboard navigation", async ({
     "aria-current",
     E2E_SYSTEM_NAVIGATION_ARIA.CURRENT_PAGE
   );
+});
+
+test("shows the five Administration links in order without the account menu", async ({
+  page,
+}) => {
+  const navigationPage = createSystemNavigationPage(page);
+  await signInAsSeededWorker(page);
+  await navigationPage.goTo();
+
+  await expect(
+    navigationPage.getNavigation()
+  ).toBeVisible();
+  await expect(navigationPage.getLinks()).toHaveCount(
+    E2E_SYSTEM_NAVIGATION_EXPECTED_LINKS.ADMINISTRATION
+      .length
+  );
+  expect(await navigationPage.getLinkHrefs()).toEqual(
+    E2E_SYSTEM_NAVIGATION_EXPECTED_LINKS.ADMINISTRATION.map(
+      ({ href }) => href
+    )
+  );
+  await expect(navigationPage.getMenuButton()).toHaveCount(
+    0
+  );
+  for (const {
+    href,
+    label,
+  } of E2E_SYSTEM_NAVIGATION_EXPECTED_LINKS.ADMINISTRATION) {
+    await expect(
+      navigationPage.getLink(label)
+    ).toHaveAttribute("href", href);
+  }
 });

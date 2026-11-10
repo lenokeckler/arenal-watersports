@@ -12,6 +12,7 @@ export const shouldShowSystemNavigation = (
 
   const area = overview.current;
   const isSupportedArea =
+    area === SUPABASE_WORK_AREA.ADMINISTRATION ||
     area === SUPABASE_WORK_AREA.OPERATIONS ||
     area === SUPABASE_WORK_AREA.RESERVATIONS;
   const isCurrentAreaGranted =

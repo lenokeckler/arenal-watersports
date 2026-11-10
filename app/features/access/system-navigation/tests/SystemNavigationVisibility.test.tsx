@@ -25,7 +25,7 @@ describe("SystemNavigation visibility", () => {
     systemNavigationMocks.pathname = PATHS.BOARD;
   });
 
-  it("hides the navigation in Administration mode", () => {
+  it("shows the navigation in Administration mode", () => {
     render(
       <SystemNavigation
         overview={
@@ -36,6 +36,68 @@ describe("SystemNavigation visibility", () => {
 
     expect(
       createSystemNavigationPage().queryNavigation()
+    ).not.toBeNull();
+  });
+
+  it("shows the five Administration destinations in order", () => {
+    render(
+      <SystemNavigation
+        overview={
+          SYSTEM_NAVIGATION_TEST_OVERVIEW.ADMINISTRATION
+        }
+      />
+    );
+    const navigationPage = createSystemNavigationPage();
+    const navigationLinks =
+      navigationPage.getNavigationLinks();
+    const expectedDestinations = [
+      [
+        SYSTEM_NAVIGATION_COPY.INVENTORY,
+        PATHS.ADMINISTRATION.CATEGORIES,
+      ],
+      [
+        SYSTEM_NAVIGATION_COPY.EXTRAS,
+        PATHS.ADMINISTRATION.EXTRAS,
+      ],
+      [
+        SYSTEM_NAVIGATION_COPY.WORKERS,
+        PATHS.ADMINISTRATION.WORKER_AREAS,
+      ],
+      [
+        SYSTEM_NAVIGATION_COPY.INCOME,
+        PATHS.ADMINISTRATION.INCOME,
+      ],
+      [
+        SYSTEM_NAVIGATION_COPY.REPORTS,
+        PATHS.ADMINISTRATION.DEPOSITS,
+      ],
+    ] as const;
+
+    expect(navigationLinks).toHaveLength(
+      expectedDestinations.length
+    );
+    expectedDestinations.forEach(([label, href], index) => {
+      expect(navigationLinks[index]).toHaveAccessibleName(
+        label
+      );
+      expect(navigationLinks[index]).toHaveAttribute(
+        "href",
+        href
+      );
+    });
+  });
+
+  it("does not show the account Menu button in Administration mode", () => {
+    render(
+      <SystemNavigation
+        overview={
+          SYSTEM_NAVIGATION_TEST_OVERVIEW.ADMINISTRATION
+        }
+      />
+    );
+
+    expect(
+      createSystemNavigationPage().queryMenuButton()
     ).toBeNull();
   });
 
