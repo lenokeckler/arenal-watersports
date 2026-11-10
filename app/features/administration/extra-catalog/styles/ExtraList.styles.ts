@@ -7,7 +7,7 @@ import {
 import { BUTTON, SIZE } from "@/app/constants";
 
 export const EXTRA_LIST_CONTENT_CLASS =
-  "flex w-full flex-col gap-gutter";
+  "mx-auto flex w-full max-w-3xl flex-col gap-gutter px-margin-mobile py-md md:px-margin-desktop md:py-lg";
 
 export const EXTRA_LIST_CARDS_CLASS = "flex flex-col gap-3";
 

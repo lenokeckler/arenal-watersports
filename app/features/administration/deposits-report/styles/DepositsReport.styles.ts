@@ -4,7 +4,7 @@ import { LINK_ACTION_CLASS } from "@/app/components/link/styles/Link.styles";
 import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
 
 export const DEPOSITS_REPORT_STACK_CLASS =
-  "flex flex-col gap-md";
+  "mx-auto flex w-full max-w-3xl flex-col gap-md px-margin-mobile py-md md:px-margin-desktop md:py-lg";
 
 export const DEPOSITS_REPORT_WORKER_LINK_CLASS =
   LINK_ACTION_CLASS;
