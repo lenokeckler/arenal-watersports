@@ -1,6 +1,1 @@
-import type { Database } from "@/app/types";
-
-export type ReservationCalendarCategorySource = Pick<
-  Database["public"]["Tables"]["equipment_categories"]["Row"],
-  "id" | "name"
->;
+export type { ReservationCalendarCategorySource } from "@/app/services/reservations/models/ReservationCalendarCategorySource.type";

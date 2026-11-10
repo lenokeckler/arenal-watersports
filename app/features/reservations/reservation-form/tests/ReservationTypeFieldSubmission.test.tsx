@@ -16,7 +16,7 @@ describe("ReservationTypeField submission", () => {
       reservationId:
         RESERVATION_FORM_VIEW_TEST.CREATED_RESERVATION_ID,
     });
-    const page = renderReservationForm();
+    const page = renderReservationForm(true, true, true);
 
     await page.fillCustomerName(
       RESERVATION_FORM_VIEW_TEST.CUSTOMER_NAME

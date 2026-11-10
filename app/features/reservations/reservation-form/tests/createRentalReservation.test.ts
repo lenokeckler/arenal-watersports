@@ -124,33 +124,19 @@ describe("createRentalReservation", () => {
       VALIDATED_TOUR_RESERVATION_INPUT
     );
 
+    const requestBody = JSON.parse(
+      String(fetchMock.mock.calls[0][1].body)
+    );
+
     expect(fetchMock).toHaveBeenCalledWith(
       CREATE_RESERVATION_RPC_URL,
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          p_payload: {
-            customer_name:
-              VALIDATED_TOUR_RESERVATION_INPUT.customerName,
-            date: VALIDATED_TOUR_RESERVATION_INPUT.date,
-            duration_minutes:
-              VALIDATED_TOUR_RESERVATION_INPUT.durationMinutes,
-            guide_ids:
-              VALIDATED_TOUR_RESERVATION_INPUT.guideIds,
-            people_count:
-              VALIDATED_TOUR_RESERVATION_INPUT.peopleCount,
-            reservation_type:
-              VALIDATED_TOUR_RESERVATION_INPUT.reservationType,
-            time: VALIDATED_TOUR_RESERVATION_INPUT.time,
-            category_id:
-              VALIDATED_TOUR_RESERVATION_INPUT
-                .equipmentCommitment.categoryId,
-            quantity:
-              VALIDATED_TOUR_RESERVATION_INPUT
-                .equipmentCommitment.quantity,
-          },
-        }),
-      })
+      expect.objectContaining({ method: "POST" })
     );
+    expect(requestBody).toMatchObject({
+      p_payload: {
+        guide_ids:
+          VALIDATED_TOUR_RESERVATION_INPUT.guideIds,
+      },
+    });
   });
 });

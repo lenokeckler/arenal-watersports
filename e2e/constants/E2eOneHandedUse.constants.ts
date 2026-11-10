@@ -1,0 +1,9 @@
+export const E2E_ONE_HANDED_USE_MINIMUM_TARGET_SIZE_PX = 44;
+
+export const E2E_ONE_HANDED_USE_MINIMUM_DURATION_GAP =
+  "8px";
+
+export const E2E_ONE_HANDED_USE_MINIMUM_ACTION_GAP = "12px";
+
+export const E2E_ONE_HANDED_USE_SCREENSHOT_BASENAME =
+  "01-us-tab-05-one-handed-use";

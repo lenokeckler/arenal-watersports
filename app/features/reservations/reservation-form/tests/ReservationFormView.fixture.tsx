@@ -12,6 +12,7 @@ const { routerBack } = vi.hoisted(() => ({
 }));
 
 vi.mock("next/navigation", () => ({
+  unstable_rethrow: vi.fn(),
   useRouter: () => ({ back: routerBack }),
 }));
 
@@ -32,67 +33,66 @@ vi.mock(
 
 export const reservationRouterBack = routerBack;
 
-const RESERVATION_FORM_VIEW_CATEGORIES = [
-  {
-    id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
-    isGuideOnly: false,
-    isInterchangeable: true,
-    name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
-  },
-  {
-    id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
-    isGuideOnly: true,
-    isInterchangeable: false,
-    name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
-  },
-] satisfies ReservationCategoryOption[];
-
-const createReservationFormView = (
-  categories: ReservationCategoryOption[],
-  guideLoadResult: ReservationGuideLoadResult
-) => (
-  <ReservationFormView
-    categories={categories}
-    guideLoadResult={guideLoadResult}
-    initialDate={RESERVATION_FORM_VIEW_TEST.DATE}
-  />
-);
-
-const renderReservationFormContainer = (
-  categories: ReservationCategoryOption[],
-  guideLoadResult: ReservationGuideLoadResult
-) => {
-  routerBack.mockClear();
-  const { container, rerender } = render(
-    createReservationFormView(categories, guideLoadResult)
-  );
-  return {
-    container,
-    rerenderGuideLoadResult: (
-      nextGuideLoadResult: ReservationGuideLoadResult
-    ): void =>
-      rerender(
-        createReservationFormView(
-          categories,
-          nextGuideLoadResult
-        )
-      ),
-  };
-};
-
 export const renderReservationForm = (
-  categories: ReservationCategoryOption[] = RESERVATION_FORM_VIEW_CATEGORIES,
+  hasCategories = true,
+  hasUnitCategory = false,
+  hasGuideOnlyCategory = false,
   guideLoadResult: ReservationGuideLoadResult = EMPTY_RESERVATION_GUIDE_LOAD_RESULT
 ) => {
-  const renderedForm = renderReservationFormContainer(
-    categories,
-    guideLoadResult
+  routerBack.mockClear();
+  const props = {
+    categories: hasCategories
+      ? [
+          {
+            id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
+            isInterchangeable: true,
+            isGuideOnly: false,
+            name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
+          },
+          {
+            id: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_ID,
+            isInterchangeable: true,
+            isGuideOnly: hasGuideOnlyCategory,
+            name: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME,
+          },
+          ...(hasUnitCategory
+            ? [
+                {
+                  id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
+                  isInterchangeable: true,
+                  isGuideOnly: hasGuideOnlyCategory,
+                  name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
+                },
+              ]
+            : []),
+        ]
+      : [],
+    unitCategories: hasUnitCategory
+      ? [
+          {
+            id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
+            isGuideOnly: hasGuideOnlyCategory,
+            name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
+          },
+        ]
+      : [],
+    initialDate: RESERVATION_FORM_VIEW_TEST.DATE,
+    guideLoadResult,
+  };
+  const { container, rerender } = render(
+    <ReservationFormView {...props} />
   );
   return {
-    ...createReservationFormViewPage(
-      renderedForm.container
-    ),
-    rerenderGuideLoadResult:
-      renderedForm.rerenderGuideLoadResult,
+    ...createReservationFormViewPage(container),
+    rerenderGuideLoadResult: (
+      nextGuideLoadResult: ReservationGuideLoadResult
+    ): void => {
+      rerender(
+        <ReservationFormView
+          {...props}
+          guideLoadResult={nextGuideLoadResult}
+        />
+      );
+    },
   };
 };

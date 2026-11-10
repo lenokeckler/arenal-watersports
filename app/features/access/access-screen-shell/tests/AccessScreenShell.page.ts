@@ -13,5 +13,14 @@ export const createAccessScreenShellPage = () => {
   const getBackdrop = () =>
     screen.getByTestId(ACCESS_SHELL_BACKDROP_TEST_ID);
 
-  return { getCard, getChild, getBackdrop };
+  const getPage = () => getBackdrop().parentElement;
+  const getContent = () => getCard().parentElement;
+
+  return {
+    getCard,
+    getChild,
+    getBackdrop,
+    getPage,
+    getContent,
+  };
 };

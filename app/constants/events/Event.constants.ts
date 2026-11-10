@@ -1,11 +1,12 @@
 export const BROWSER_EVENTS = {
-  POPSTATE: "popstate",
   BEFORE_UNLOAD: "beforeunload",
-  PAGE_HIDDEN: "pagehide",
   CLICK: "click",
+  KEYPRESS: "keypress",
   MOUSEDOWN: "mousedown",
   MOUSEMOVE: "mousemove",
-  KEYPRESS: "keypress",
+  PAGE_HIDDEN: "pagehide",
+  POPSTATE: "popstate",
   SCROLL: "scroll",
+  STORAGE: "storage",
   TOUCHSTART: "touchstart",
-};
+} as const;
