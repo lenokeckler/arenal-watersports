@@ -1,6 +1,7 @@
 export const RESERVATION_SERVICE_OPERATION = {
   CATEGORY_UNAVAILABLE:
     "Equipment category is not available for reservation",
+  CREATE_CUSTOM_COMBO: "create custom combo reservation",
   CREATE_RENTAL: "create rental reservation",
   EQUIPMENT_RESERVATION_ACCESS_REQUIRED:
     "Equipment reservation access is required",
