@@ -35,7 +35,8 @@ begin
   if not private.postponement_payload_is_valid(p_payload) then
     raise exception 'Reservation payload is invalid';
   end if;
-  if char_length(btrim(coalesce(p_payload->>'reason', ''))) > 300 then
+  if p_payload->>'cause' = 'other'
+     and char_length(btrim(coalesce(p_payload->>'reason', ''))) > 300 then
     raise exception 'Postponement reason is too long';
   end if;
 end;

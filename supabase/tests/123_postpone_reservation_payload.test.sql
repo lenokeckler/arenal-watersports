@@ -1,5 +1,5 @@
 begin;
-select plan(17);
+select plan(18);
 
 \ir fixtures/postponement_release.sql.fixture
 \ir fixtures/postpone_call.sql.fixture
@@ -31,6 +31,10 @@ select throws_ok(
   'P0001', 'Postponement reason is too long', 'a reason over 300 characters is a domain error'
 );
 select is(pg_temp.cr_start('e3300000-0000-4000-8000-000000000302'), '2035-04-12 11:00:00', 'malformed payloads change nothing');
+select lives_ok(
+  $$ select pg_temp.postpone('e3300000-0000-4000-8000-000000000302', '2035-04-13', '09:30', 'storm', repeat('x', 301)) $$,
+  'a weather cause ignores the length of its reason'
+);
 
 reset role;
 set local role authenticated;
