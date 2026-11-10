@@ -6,6 +6,9 @@ import {
   resolveUnitFixtureCode,
 } from "../constants/E2eCategoryUnits.constants";
 import type { CategoryUnitsFixtures } from "../models/CategoryUnitsFixtures.interface";
+import type { UnitReservationFixtureHandle } from "../models/UnitReservationFixtureHandle.interface";
+import { E2E_UNIT_RESERVATION } from "../constants/E2eUnitReservationHistory.constants";
+import { createUnitReservationFixture } from "./createUnitReservationFixture";
 import { findCategoryId } from "./categoryFixtures";
 import { logInAsAdmin } from "./logInAsAdmin";
 import {
@@ -63,6 +66,37 @@ export const test = base.extend<CategoryUnitsFixtures>({
 
     for (const categoryName of seededNames) {
       await removeCategoryWithUnits(categoryName);
+    }
+  },
+  seedUnitReservations: async (
+    { seedUnitCategory: _seedUnitCategory },
+    provide
+  ) => {
+    const handles: UnitReservationFixtureHandle[] = [];
+
+    await provide(async (unitId, seeds) => {
+      const handle = await createUnitReservationFixture(
+        unitId,
+        seeds
+      );
+      handles.push(handle);
+
+      return handle.records;
+    });
+
+    const failures: unknown[] = [];
+    for (const handle of handles) {
+      try {
+        await handle.cleanup();
+      } catch (error) {
+        failures.push(error);
+      }
+    }
+    if (failures.length > 0) {
+      throw new AggregateError(
+        failures,
+        E2E_UNIT_RESERVATION.CLEANUP_FAILED
+      );
     }
   },
 });
