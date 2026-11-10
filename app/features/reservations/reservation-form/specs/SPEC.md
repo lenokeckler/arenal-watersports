@@ -11,7 +11,8 @@ Allow a reservations worker to record a rental reservation with its customer nam
 - Persist only the customer name from customer identity/contact information.
 - Persist the creator from the authenticated session.
 - Persist one of two equipment commitments: an active, reservable, interchangeable category with positive quantity, or one concrete unit from an active, reservable, non-interchangeable category.
-- Treat every initial reservation created by this form as `rental`, as authorized for this story.
+- Let Reservations choose `rental`, `tour`, or `combo`; callers without a selected type continue to default to `rental`.
+- Persist selected guide assignments transactionally for tours.
 - Interpret civil date and time in `America/Costa_Rica` regardless of server timezone.
 
 ## Out of scope
@@ -20,7 +21,7 @@ Allow a reservations worker to record a rental reservation with its customer nam
 - US-RES-15 availability and collision checking.
 - US-RES-16 collision warnings.
 - US-RES-17 live inventory updates and equipment-selection presentation are implemented by the follow-up UI unit in PR #155.
-- Tour, combo, customer email, or other contact fields.
+- Customer email or other contact fields.
 
 ## Requirements
 
@@ -96,6 +97,7 @@ Unit 1 implements the atomic persistence and data-integrity boundary for both co
 - Direct scheduled-item inserts enforce the same guide-only rule.
 
 Guide assignment remains owned by US-RES-12. Combo composition and pricing remain owned by US-RES-09 and US-RES-10.
+The form lets Reservations choose rental, tour, or combo; guide-only equipment is available only for tours, and changing away from tour clears its category and unit selection.
 
 ## US-RES-18 reservation editing
 

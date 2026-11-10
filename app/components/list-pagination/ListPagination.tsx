@@ -18,6 +18,7 @@ const ListPagination = ({
   currentPage,
   navLabel,
   pageCount,
+  pageHref = (page) => resolveListPageHref(basePath, page),
 }: ListPaginationProps): NullableRef<React.JSX.Element> => {
   if (pageCount <= LIST_PAGINATION.FIRST_PAGE) {
     return null;
@@ -30,10 +31,7 @@ const ListPagination = ({
     >
       {currentPage > LIST_PAGINATION.FIRST_PAGE && (
         <Link
-          href={resolveListPageHref(
-            basePath,
-            currentPage - 1
-          )}
+          href={pageHref(currentPage - 1)}
           className={LIST_PAGINATION_PREVIOUS_CLASS}
         >
           {LIST_PAGINATION_COPY.PREVIOUS}
@@ -49,10 +47,7 @@ const ListPagination = ({
       </Text>
       {currentPage < pageCount && (
         <Link
-          href={resolveListPageHref(
-            basePath,
-            currentPage + 1
-          )}
+          href={pageHref(currentPage + 1)}
           className={LIST_PAGINATION_NEXT_CLASS}
         >
           {LIST_PAGINATION_COPY.NEXT}
