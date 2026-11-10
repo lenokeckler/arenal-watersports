@@ -1,4 +1,9 @@
-import { E2E_DEPOSITS_REPORT_SCREENSHOT_BASENAME } from "../constants/E2eDepositsReport.constants";
+import { LIST_PAGINATION_COPY } from "@/app/components/list-pagination/constants/ListPaginationCopy.constants";
+import { ARIA_ROLE } from "@/app/constants";
+import {
+  E2E_DEPOSITS_REPORT_PAGING,
+  E2E_DEPOSITS_REPORT_SCREENSHOT_BASENAME,
+} from "../constants/E2eDepositsReport.constants";
 import { createDepositsReportPage } from "../pages/DepositsReport.page";
 import { captureFullPage } from "../support/captureFullPage";
 import {
@@ -48,6 +53,34 @@ test.describe("Deposits report screenshots", () => {
     await captureFullPage(
       page,
       E2E_DEPOSITS_REPORT_SCREENSHOT_BASENAME.BLANK_REASON,
+      testInfo.project.name
+    );
+  });
+
+  test("captures the retained list on its second page", async ({
+    administratorPage: page,
+    retainedPagingDeposits,
+  }, testInfo) => {
+    const reportPage = createDepositsReportPage(page);
+    const [oldest] = retainedPagingDeposits;
+
+    await reportPage.goTo();
+    await reportPage
+      .getRetainedPagination()
+      .getByRole(ARIA_ROLE.LINK, {
+        name: LIST_PAGINATION_COPY.NEXT,
+      })
+      .click();
+    await expect(page).toHaveURL(
+      E2E_DEPOSITS_REPORT_PAGING.SECOND_PAGE_URL
+    );
+    await expect(
+      reportPage.getRetainedRow(oldest.customerName)
+    ).toBeVisible();
+
+    await captureFullPage(
+      page,
+      E2E_DEPOSITS_REPORT_SCREENSHOT_BASENAME.RETAINED_PAGE_TWO,
       testInfo.project.name
     );
   });

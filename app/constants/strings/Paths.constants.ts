@@ -65,5 +65,6 @@ export const PATHS = {
     INCOME: "/reservations/income",
     NEW: "/reservations/new",
     ROOT: "/reservations",
+    SPLIT_SEGMENT: "split",
   },
 } as const;
