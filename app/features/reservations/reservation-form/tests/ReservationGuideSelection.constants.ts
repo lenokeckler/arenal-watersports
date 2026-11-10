@@ -12,3 +12,11 @@ export const RESERVATION_GUIDE_SELECTION_IDS = [
   "guide-b",
   "guide-c",
 ];
+
+const [firstGuideId, secondGuideId] =
+  RESERVATION_GUIDE_SELECTION_IDS;
+
+export const RESERVATION_GUIDE_SELECTION_TEST = {
+  FIRST_ID: firstGuideId,
+  SECOND_ID: secondGuideId,
+} as const;
