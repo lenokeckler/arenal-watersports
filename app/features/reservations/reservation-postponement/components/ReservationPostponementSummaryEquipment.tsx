@@ -1,42 +1,24 @@
-import { InlineText } from "@/app/components";
-import { RESERVATION_POSTPONEMENT_UI_COPY } from "../constants/ReservationPostponementUiCopy.constants";
+import { UnorderedList } from "@/app/components";
+import { UNORDERED_LIST } from "@/app/constants";
 import type { ReservationPostponementSummaryProps } from "../models/ReservationPostponementSummaryProps.interface";
-import {
-  RESERVATION_POSTPONEMENT_EQUIPMENT_LIST_CLASS,
-  RESERVATION_POSTPONEMENT_EQUIPMENT_QUANTITY_CLASS,
-  RESERVATION_POSTPONEMENT_EQUIPMENT_ROW_CLASS,
-} from "../styles/ReservationPostponementSummary.styles";
+import { RESERVATION_POSTPONEMENT_EQUIPMENT_LIST_CLASS } from "../styles/ReservationPostponementSummary.styles";
+import ReservationPostponementEquipmentRow from "./ReservationPostponementEquipmentRow";
 
 const ReservationPostponementSummaryEquipment = ({
   postponement,
 }: ReservationPostponementSummaryProps): React.JSX.Element => (
-  <ul
+  <UnorderedList
+    variant={UNORDERED_LIST.VARIANTS.PLAIN}
     className={
       RESERVATION_POSTPONEMENT_EQUIPMENT_LIST_CLASS
     }
-  >
-    {postponement.equipment.map((line) => (
-      <li
-        key={line.id}
-        className={
-          RESERVATION_POSTPONEMENT_EQUIPMENT_ROW_CLASS
-        }
-      >
-        <InlineText>{line.label}</InlineText>
-        {line.quantity !== null && (
-          <InlineText
-            className={
-              RESERVATION_POSTPONEMENT_EQUIPMENT_QUANTITY_CLASS
-            }
-          >
-            {RESERVATION_POSTPONEMENT_UI_COPY.QUANTITY_OF(
-              line.quantity
-            )}
-          </InlineText>
-        )}
-      </li>
-    ))}
-  </ul>
+    items={postponement.equipment.map((line) => ({
+      id: line.id,
+      text: (
+        <ReservationPostponementEquipmentRow line={line} />
+      ),
+    }))}
+  />
 );
 
 export default ReservationPostponementSummaryEquipment;

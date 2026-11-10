@@ -17,7 +17,7 @@ export const RESERVATION_POSTPONEMENT_DEFINITION_CLASS =
   "break-words text-base font-semibold tabular-nums text-on-surface";
 
 export const RESERVATION_POSTPONEMENT_EQUIPMENT_LIST_CLASS =
-  "mt-2 space-y-2";
+  "mt-2";
 
 export const RESERVATION_POSTPONEMENT_EQUIPMENT_ROW_CLASS =
   "flex items-baseline justify-between gap-3 break-words text-base text-on-surface";

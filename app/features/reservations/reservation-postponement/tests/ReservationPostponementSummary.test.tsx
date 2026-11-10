@@ -4,7 +4,9 @@ import ReservationPostponementSummary from "../components/ReservationPostponemen
 import { RESERVATION_POSTPONEMENT_UI_COPY } from "../constants/ReservationPostponementUiCopy.constants";
 import {
   EXPECTED_DATE_TIME_TEXT,
+  EXPECTED_QUANTITY_LINE_COUNT,
   EXPECTED_SCHEDULED,
+  EXPECTED_UNIT_LINE_LABEL,
   PLAIN_CATEGORY,
 } from "./ReservationPostponement.constants";
 import { createReservationPostponementPage } from "./ReservationPostponement.page";
@@ -46,12 +48,25 @@ describe("ReservationPostponementSummary", () => {
     expect(
       page.getText(
         RESERVATION_POSTPONEMENT_UI_COPY.QUANTITY_OF(
-          EXPECTED_SCHEDULED.equipment[0].quantity ?? 0
+          EXPECTED_QUANTITY_LINE_COUNT
         )
       )
     ).toBeInTheDocument();
     expect(page.getListItemTexts()).toHaveLength(
       EXPECTED_SCHEDULED.equipment.length
+    );
+  });
+
+  it("shows a line without a quantity as its label alone", () => {
+    render(
+      <ReservationPostponementSummary
+        postponement={EXPECTED_SCHEDULED}
+      />
+    );
+    const page = createReservationPostponementPage();
+
+    expect(page.getListItemTexts()).toContain(
+      EXPECTED_UNIT_LINE_LABEL
     );
   });
 });

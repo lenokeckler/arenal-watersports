@@ -245,6 +245,11 @@ export const DISPATCHED_ROW: ReservationPostponementRow = {
   status: "dispatched",
 };
 
+export const EXPECTED_QUANTITY_LINE_COUNT = 4;
+
+export const EXPECTED_UNIT_LINE_LABEL =
+  "Moto de agua JS-05";
+
 export const EXPECTED_SCHEDULED: ReservationPostponement = {
   block: RESERVATION_POSTPONEMENT_BLOCK.NONE,
   code: "R-000123",
@@ -255,11 +260,11 @@ export const EXPECTED_SCHEDULED: ReservationPostponement = {
     {
       id: QUANTITY_ITEM_ROW.id,
       label: PLAIN_CATEGORY.name,
-      quantity: 4,
+      quantity: EXPECTED_QUANTITY_LINE_COUNT,
     },
     {
       id: SCHEDULED_UNIT_ITEM_ROW.id,
-      label: "Moto de agua JS-05",
+      label: EXPECTED_UNIT_LINE_LABEL,
       quantity: null,
     },
   ],
@@ -316,3 +321,8 @@ export const NEXT_NOT_FOUND = "NEXT_NOT_FOUND";
 export const NEXT_REDIRECT = "NEXT_REDIRECT";
 export const POSTPONEMENT_CALENDAR_HREF =
   "/reservations/calendar";
+
+export const POSTPONEMENT_DATE_CASES = [
+  ["2026-11-02", "lunes, 2 de noviembre de 2026"],
+  ["2027-01-01", "viernes, 1 de enero de 2027"],
+] as const;
