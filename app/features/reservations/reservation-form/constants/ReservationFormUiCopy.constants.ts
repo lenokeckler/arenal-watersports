@@ -41,7 +41,9 @@ export const RESERVATION_FORM_UI_COPY = {
   SUBMIT_UNEXPECTED_ERROR:
     "El sistema devolvió una respuesta inesperada. No se confirmó la reserva; verifique el calendario antes de intentarlo de nuevo.",
   NO_CATEGORIES:
-    "No hay categorías de equipo disponibles para reservar.",
+    "No hay categorías de equipo disponibles para esta reserva.",
+  RESERVATION_TYPE_SELECTION_CLEARED:
+    "La categoría seleccionada solo está disponible para Tour y se borró al cambiar el tipo de salida. Seleccione otra categoría.",
   EQUIPMENT_QUANTITY_NOTE:
     "Los equipos intercambiables se reservan por cantidad; Operaciones asigna cada unidad al despachar.",
   EQUIPMENT_UNIT_NOTE:
@@ -74,4 +76,14 @@ export const RESERVATION_FORM_UI_COPY = {
   RETRY_EQUIPMENT_ELIGIBILITY: "Reintentar actualización",
   EQUIPMENT_SELECTION_CHANGED:
     "La disponibilidad cambió. Seleccione otra categoría o unidad.",
+  GUIDES: "Guías de la salida",
+  GUIDES_DESCRIPTION:
+    "Seleccione uno o varios trabajadores marcados como guía. La cantidad de personas no limita la asignación.",
+  GUIDES_SELECTED: "Guías asignados",
+  GUIDES_EMPTY:
+    "No hay trabajadores marcados como guía disponibles.",
+  GUIDES_LOADING: "Cargando guías…",
+  GUIDES_ERROR:
+    "No fue posible cargar los guías. Revise la conexión e inténtelo de nuevo.",
+  GUIDES_RETRY: "Reintentar carga de guías",
 } as const;

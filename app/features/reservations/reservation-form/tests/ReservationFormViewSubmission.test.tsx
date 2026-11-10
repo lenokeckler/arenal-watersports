@@ -36,7 +36,7 @@ describe("ReservationFormView submission", () => {
 
     const submitButton = page.querySubmitButton();
     if (submitButton !== null) {
-      expect(submitButton).toBeEnabled();
+      expect(submitButton).toBeDisabled();
     } else {
       expect(submitButton).not.toBeInTheDocument();
     }

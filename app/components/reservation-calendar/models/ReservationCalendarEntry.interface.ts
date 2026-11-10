@@ -11,6 +11,7 @@ export interface ReservationCalendarEntry {
   equipment: ReservationCalendarEquipment[];
   guides: NullableUndefined<ReservationCalendarGuide[]>;
   id: string;
+  parentCode?: NullableUndefined<string>;
   startsAt: string;
   status: Database["public"]["Enums"]["reservation_status"];
 }
