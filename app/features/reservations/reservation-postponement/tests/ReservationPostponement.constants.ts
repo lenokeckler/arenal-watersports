@@ -302,3 +302,17 @@ export const COSTA_RICA_MIDNIGHT_CASES = [
   ["2035-04-13T06:00:00+00:00", "2035-04-13", "00:00"],
   ["2035-04-13T05:59:00+00:00", "2035-04-12", "23:59"],
 ] as const;
+
+export const EXPECTED_CLOSED: ReservationPostponement = {
+  ...EXPECTED_SCHEDULED,
+  block: RESERVATION_POSTPONEMENT_BLOCK.NOT_POSTPONABLE,
+  status: "closed",
+};
+
+export const EXPECTED_DATE_TIME_TEXT =
+  "lunes, 2 de noviembre de 2026, 14:30";
+
+export const NEXT_NOT_FOUND = "NEXT_NOT_FOUND";
+export const NEXT_REDIRECT = "NEXT_REDIRECT";
+export const POSTPONEMENT_CALENDAR_HREF =
+  "/reservations/calendar";
