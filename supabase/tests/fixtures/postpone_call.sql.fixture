@@ -1,0 +1,14 @@
+create function pg_temp.postpone(
+  p_reservation uuid, p_date text, p_time text, p_cause text,
+  p_reason text default null, p_readings jsonb default null, p_expected text default null
+) returns uuid language sql as $$
+  select postpone_reservation(jsonb_strip_nulls(jsonb_build_object(
+    'reservation_id', p_reservation, 'date', p_date, 'time', p_time, 'cause', p_cause,
+    'reason', p_reason, 'readings', p_readings,
+    'expected_updated_at', coalesce(p_expected, (select updated_at::text from reservations where id = p_reservation))
+  )))
+$$;
+
+create function pg_temp.cr_start(p_reservation uuid) returns text language sql as $$
+  select (starts_at at time zone 'America/Costa_Rica')::text from reservations where id = p_reservation
+$$;
