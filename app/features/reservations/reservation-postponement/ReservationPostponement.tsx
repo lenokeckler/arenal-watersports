@@ -6,6 +6,7 @@ import ReservationPostponementUnavailable from "./components/ReservationPostpone
 import { RESERVATION_POSTPONEMENT_BLOCK } from "./constants/ReservationPostponementBlock.constants";
 import type { ReservationPostponementProps } from "./models/ReservationPostponementProps.interface";
 import { getReservationPostponement } from "./services/getReservationPostponement";
+import { isReservationPostponementBlockedStatus } from "./utils/isReservationPostponementBlockedStatus";
 
 const ReservationPostponement = async ({
   reservationId,
@@ -21,7 +22,10 @@ const ReservationPostponement = async ({
 
   if (
     postponement.block !==
-    RESERVATION_POSTPONEMENT_BLOCK.NONE
+      RESERVATION_POSTPONEMENT_BLOCK.NONE &&
+    isReservationPostponementBlockedStatus(
+      postponement.status
+    )
   ) {
     return (
       <ReservationPostponementUnavailable

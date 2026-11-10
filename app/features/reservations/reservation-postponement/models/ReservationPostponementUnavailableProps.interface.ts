@@ -1,5 +1,5 @@
-import type { ReservationPostponementStatus } from "./ReservationPostponementStatus.type";
+import type { ReservationPostponementBlockedStatus } from "./ReservationPostponementBlockedStatus.type";
 
 export interface ReservationPostponementUnavailableProps {
-  status: ReservationPostponementStatus;
+  status: ReservationPostponementBlockedStatus;
 }

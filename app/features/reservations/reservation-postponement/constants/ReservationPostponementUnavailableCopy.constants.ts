@@ -1,10 +1,14 @@
-import type { ReservationPostponementStatus } from "../models/ReservationPostponementStatus.type";
+import type { ReservationPostponementBlockedStatus } from "../models/ReservationPostponementBlockedStatus.type";
+import { RESERVATION_POSTPONEMENT_BLOCKED_STATUS } from "./ReservationPostponementBlockedStatus.constants";
 
-export const RESERVATION_POSTPONEMENT_UNAVAILABLE_STATUS_BODY: Partial<
-  Record<ReservationPostponementStatus, string>
+export const RESERVATION_POSTPONEMENT_UNAVAILABLE_STATUS_BODY: Record<
+  ReservationPostponementBlockedStatus,
+  string
 > = {
-  cancelled: "La reserva fue cancelada.",
-  closed: "La reserva ya está cerrada.",
+  [RESERVATION_POSTPONEMENT_BLOCKED_STATUS.CANCELLED]:
+    "La reserva fue cancelada.",
+  [RESERVATION_POSTPONEMENT_BLOCKED_STATUS.CLOSED]:
+    "La reserva ya está cerrada.",
 };
 
 export const RESERVATION_POSTPONEMENT_UNAVAILABLE_COPY = {
