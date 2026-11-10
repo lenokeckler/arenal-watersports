@@ -53,3 +53,13 @@ The administration worker keeps the list of extras that reservations can add to 
 | The edit route is the list path plus the encoded extra id                                           | `resolveExtraEditPath.test.ts`        |
 | A database row maps to an `Extra`                                                                   | `mapExtraRowToExtra.test.ts`          |
 | Every message and toast is non-empty Spanish addressed as usted                                     | `ExtraCatalogCopy.test.ts`            |
+
+## 19.03 Server reads and actions
+
+| Requirement                                                                                       | Test                        |
+| ------------------------------------------------------------------------------------------------- | --------------------------- |
+| The list is paginated 20 per page, counted first, and a page past the end reads no rows           | `listExtras.test.ts`        |
+| A page is read ordered by name and then id; the count is an exact head count                      | `extraListQueries.test.ts`  |
+| One extra is read by id; an unknown or malformed id gives null                                    | `getExtra.test.ts`          |
+| Create trims the name, rejects a blank or duplicate name as a name error, and refuses a non-admin | `createExtraAction.test.ts` |
+| Rename trims the name, maps a duplicate to a name error, and reports an extra deleted meanwhile   | `updateExtraAction.test.ts` |
