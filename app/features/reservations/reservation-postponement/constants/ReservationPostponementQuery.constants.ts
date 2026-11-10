@@ -14,5 +14,6 @@ export const RESERVATION_POSTPONEMENT_QUERY = {
       )
     )
   `,
+  RPC: "postpone_reservation",
   TABLE: "reservations",
 } as const;

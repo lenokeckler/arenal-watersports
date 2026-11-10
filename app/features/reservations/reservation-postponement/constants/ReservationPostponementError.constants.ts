@@ -36,6 +36,8 @@ export const RESERVATION_POSTPONEMENT_ERROR = {
       "Dispatched reservations can only be postponed for weather",
   },
   OPERATION: {
+    MISSING_RESERVATION:
+      "postpone reservation returned no reservation",
     POSTPONE: "postpone reservation",
     READ: "read reservation postponement",
   },
