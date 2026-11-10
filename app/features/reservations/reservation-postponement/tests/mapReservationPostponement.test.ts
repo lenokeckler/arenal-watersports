@@ -4,14 +4,20 @@ import { mapReservationPostponement } from "../utils/mapReservationPostponement"
 import {
   CLOSED_UNIT_ITEM_ROW,
   COSTA_RICA_MIDNIGHT_CASES,
+  DISPATCH_MISSING_UNIT_ITEM_ROW,
   DISPATCHED_ROW,
   EXPECTED_FUEL_READING_UNIT,
+  EXPECTED_PLAIN_READING_UNIT,
+  EXPECTED_UNREAD_FUEL_READING_UNIT,
   EXPECTED_KILOMETERS_READING_UNIT,
   EXPECTED_SCHEDULED,
+  FUEL_ONLY_UNIT_ITEM_ROW,
   NOT_POSTPONABLE_STATUS_CASES,
+  PLAIN_OPEN_UNIT_ITEM_ROW,
   POSTPONEMENT_UPDATED_AT,
   QUANTITY_ITEM_ROW,
   SCHEDULED_ROW,
+  UNREAD_FUEL_UNIT_ITEM_ROW,
 } from "./ReservationPostponement.constants";
 
 describe("mapReservationPostponement", () => {
@@ -76,6 +82,50 @@ describe("mapReservationPostponement", () => {
     expect(unit?.usageMetric).toBe(
       EXPECTED_KILOMETERS_READING_UNIT.usageMetric
     );
+  });
+
+  it("gives a unit with neither fuel nor meter no limits and no readings", () => {
+    const postponement = mapReservationPostponement({
+      ...DISPATCHED_ROW,
+      reservation_items: [PLAIN_OPEN_UNIT_ITEM_ROW],
+    });
+
+    expect(postponement.readingUnits).toEqual([
+      EXPECTED_PLAIN_READING_UNIT,
+    ]);
+  });
+
+  it("keeps null out readings as null instead of zero", () => {
+    const postponement = mapReservationPostponement({
+      ...DISPATCHED_ROW,
+      reservation_items: [UNREAD_FUEL_UNIT_ITEM_ROW],
+    });
+
+    expect(postponement.readingUnits).toEqual([
+      EXPECTED_UNREAD_FUEL_READING_UNIT,
+    ]);
+  });
+
+  it("reads no usage out for a fuel-only category even when one is stored", () => {
+    const postponement = mapReservationPostponement({
+      ...DISPATCHED_ROW,
+      reservation_items: [FUEL_ONLY_UNIT_ITEM_ROW],
+    });
+
+    expect(postponement.readingUnits).toHaveLength(1);
+    expect(postponement.readingUnits[0].fuelOut).toBe(3);
+    expect(
+      postponement.readingUnits[0].usageOut
+    ).toBeNull();
+  });
+
+  it("excludes a dispatched item whose dispatch was not loaded", () => {
+    const postponement = mapReservationPostponement({
+      ...DISPATCHED_ROW,
+      reservation_items: [DISPATCH_MISSING_UNIT_ITEM_ROW],
+    });
+
+    expect(postponement.readingUnits).toEqual([]);
   });
 
   it.each(NOT_POSTPONABLE_STATUS_CASES)(

@@ -12,10 +12,6 @@ export const POSTPONEMENT_UPDATED_AT =
 export const POSTPONEMENT_STARTS_AT =
   "2026-11-02T20:30:00+00:00";
 export const MALFORMED_RESERVATION_ID = "not-a-uuid";
-export const NEXT_NOT_FOUND = "NEXT_NOT_FOUND";
-export const NEXT_REDIRECT = "NEXT_REDIRECT";
-export const POSTPONEMENT_CALENDAR_HREF =
-  "/reservations/calendar";
 export const OPEN_DISPATCH = { closed_at: null };
 export const CLOSED_DISPATCH = {
   closed_at: "2026-11-02T22:00:00+00:00",
@@ -113,6 +109,93 @@ export const CLOSED_UNIT_ITEM_ROW = buildItemRow(
     unit_id: "e2000000-0000-4000-8000-000000000033",
   }
 );
+
+export const PLAIN_OPEN_UNIT_ITEM_ROW = buildItemRow(
+  "e2000000-0000-4000-8000-000000000027",
+  {
+    dispatch: OPEN_DISPATCH,
+    dispatch_id: "e2000000-0000-4000-8000-000000000054",
+    unit: {
+      category: PLAIN_CATEGORY,
+      code: "K-02",
+      fuel_max: 4,
+    },
+    unit_id: "e2000000-0000-4000-8000-000000000035",
+  }
+);
+
+export const UNREAD_FUEL_UNIT_ITEM_ROW = buildItemRow(
+  "e2000000-0000-4000-8000-000000000028",
+  {
+    dispatch: OPEN_DISPATCH,
+    dispatch_id: "e2000000-0000-4000-8000-000000000055",
+    unit: {
+      category: FUEL_CATEGORY,
+      code: "JS-06",
+      fuel_max: 8,
+    },
+    unit_id: "e2000000-0000-4000-8000-000000000036",
+  }
+);
+
+export const FUEL_ONLY_CATEGORY: ReservationPostponementCategoryRow =
+  {
+    consumes_fuel: true,
+    name: "Bote",
+    usage_metric: null,
+  };
+
+export const FUEL_ONLY_UNIT_ITEM_ROW = buildItemRow(
+  "e2000000-0000-4000-8000-000000000029",
+  {
+    dispatch: OPEN_DISPATCH,
+    dispatch_id: "e2000000-0000-4000-8000-000000000056",
+    fuel_out: 3,
+    unit: {
+      category: FUEL_ONLY_CATEGORY,
+      code: "B-01",
+      fuel_max: 5,
+    },
+    unit_id: "e2000000-0000-4000-8000-000000000037",
+    usage_out: 77,
+  }
+);
+
+export const DISPATCH_MISSING_UNIT_ITEM_ROW = buildItemRow(
+  "e2000000-0000-4000-8000-000000000030",
+  {
+    dispatch: null,
+    dispatch_id: "e2000000-0000-4000-8000-000000000057",
+    unit: {
+      category: FUEL_CATEGORY,
+      code: "JS-07",
+      fuel_max: 8,
+    },
+    unit_id: "e2000000-0000-4000-8000-000000000038",
+  }
+);
+
+export const EXPECTED_PLAIN_READING_UNIT: ReservationPostponementReadingUnit =
+  {
+    categoryName: PLAIN_CATEGORY.name,
+    fuelMax: null,
+    fuelOut: null,
+    itemId: PLAIN_OPEN_UNIT_ITEM_ROW.id,
+    unitCode: "K-02",
+    usageMetric: null,
+    usageOut: null,
+  };
+
+export const EXPECTED_UNREAD_FUEL_READING_UNIT: ReservationPostponementReadingUnit =
+  {
+    categoryName: FUEL_CATEGORY.name,
+    fuelMax: 8,
+    fuelOut: null,
+    itemId: UNREAD_FUEL_UNIT_ITEM_ROW.id,
+    unitCode: "JS-06",
+    usageMetric: "engine_hours",
+    usageOut: null,
+  };
 
 export const EXTRA_ITEM_ROW = buildItemRow(
   "e2000000-0000-4000-8000-000000000025",
