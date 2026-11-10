@@ -43,7 +43,13 @@ export const createSystemNavigationPage = (
 
   const getLinkHrefs = (): Promise<string[]> =>
     getLinks().evaluateAll((links) =>
-      links.map((link) => new URL(link.href).pathname)
+      links.map(
+        (link) =>
+          new URL(
+            link.getAttribute("href") ?? "",
+            window.location.href
+          ).pathname
+      )
     );
 
   const getMenuButton = (): Locator =>
