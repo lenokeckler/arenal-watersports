@@ -1,3 +1,4 @@
+import { render } from "@testing-library/react";
 import { notFound } from "next/navigation";
 import {
   beforeEach,
@@ -7,9 +8,8 @@ import {
   vi,
 } from "vitest";
 import { assertReservationCalendarAccess } from "@/app/services/reservations/assertReservationCalendarAccess";
-import ReservationPostponementLayout from "../components/ReservationPostponementLayout";
-import ReservationPostponementSummary from "../components/ReservationPostponementSummary";
-import ReservationPostponementUnavailable from "../components/ReservationPostponementUnavailable";
+import { RESERVATION_POSTPONEMENT_UI_COPY } from "../constants/ReservationPostponementUiCopy.constants";
+import { RESERVATION_POSTPONEMENT_UNAVAILABLE_STATUS_BODY } from "../constants/ReservationPostponementUnavailableCopy.constants";
 import ReservationPostponement from "../ReservationPostponement";
 import { getReservationPostponement } from "../services/getReservationPostponement";
 import {
@@ -19,6 +19,7 @@ import {
   NEXT_REDIRECT,
   POSTPONEMENT_RESERVATION_ID,
 } from "./ReservationPostponement.constants";
+import { createReservationPostponementPage } from "./ReservationPostponement.page";
 
 vi.mock("next/navigation", () => ({
   notFound: vi.fn(() => {
@@ -68,36 +69,34 @@ describe("ReservationPostponement", () => {
     expect(notFound).toHaveBeenCalledOnce();
   });
 
-  it("shows the unavailable state with the status when it cannot be postponed", async () => {
+  it("shows the unavailable state with the reason when it cannot be postponed", async () => {
     vi.mocked(getReservationPostponement).mockResolvedValue(
       EXPECTED_CLOSED
     );
 
-    const element = await renderEntry();
+    render(await renderEntry());
+    const page = createReservationPostponementPage();
 
-    expect(element.type).toBe(
-      ReservationPostponementUnavailable
+    expect(page.getStatusText()).toContain(
+      RESERVATION_POSTPONEMENT_UNAVAILABLE_STATUS_BODY.closed
     );
-    expect(element.props.status).toBe(
-      EXPECTED_CLOSED.status
-    );
+    expect(page.queryText(EXPECTED_CLOSED.code)).toBeNull();
   });
 
-  it("shows the reservation summary inside the layout when it can be postponed", async () => {
+  it("shows the reservation summary under the title when it can be postponed", async () => {
     vi.mocked(getReservationPostponement).mockResolvedValue(
       EXPECTED_SCHEDULED
     );
 
-    const element = await renderEntry();
+    render(await renderEntry());
+    const page = createReservationPostponementPage();
 
-    expect(element.type).toBe(
-      ReservationPostponementLayout
-    );
-    expect(element.props.children.type).toBe(
-      ReservationPostponementSummary
-    );
-    expect(element.props.children.props.postponement).toBe(
-      EXPECTED_SCHEDULED
-    );
+    expect(
+      page.getText(RESERVATION_POSTPONEMENT_UI_COPY.TITLE)
+    ).toBeInTheDocument();
+    expect(
+      page.getText(EXPECTED_SCHEDULED.code)
+    ).toBeInTheDocument();
+    expect(page.queryStatus()).toBeNull();
   });
 });

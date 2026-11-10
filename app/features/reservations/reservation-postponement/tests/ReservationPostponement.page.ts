@@ -8,6 +8,9 @@ export const createReservationPostponementPage = () => {
   const queryText = (text: string) =>
     screen.queryByText(text);
 
+  const queryStatus = () =>
+    screen.queryByRole(ARIA_ROLE.STATUS);
+
   const getText = (text: string) => screen.getByText(text);
 
   const getCalendarLinkTargets = () =>
@@ -30,6 +33,7 @@ export const createReservationPostponementPage = () => {
     getListItemTexts,
     getStatusText,
     getText,
+    queryStatus,
     queryText,
   };
 };
