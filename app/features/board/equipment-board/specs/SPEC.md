@@ -6,7 +6,7 @@ Let any worker see at a glance how much reservable equipment is free and how muc
 
 ## In scope
 
-- Read-only screen at `PATHS.BOARD`, rendered on the server, that becomes the entry screen.
+- Read-only screen at the entry route `PATHS.HOME` and at `PATHS.BOARD`, rendered on the server.
 - One card per active reservable category tracked by unit: its product image, a "Por unidad" chip, a "N / T libres" chip, its name and a bar with the free share.
 - Categories that administration grouped appear as one card with the summed totals and no member lines: the individual categories are not rendered on the board.
 - Two cards per row on a phone, three from `md`.
@@ -22,7 +22,7 @@ Let any worker see at a glance how much reservable equipment is free and how muc
 - The "actualizado en tiempo real" claim in the subtitle: it arrives with US-TAB-03.
 - Status chips on cards.
 - Choosing equipment for a reservation from a card: the cards only open the units screen.
-- Redirecting login and work-mode choice to the board; they keep `PATHS.HOME`.
+- Offline storage and synchronization after reconnecting.
 
 ## Requirements
 
@@ -49,6 +49,7 @@ con la finalidad de saber de un vistazo qué se puede alquilar en este momento.
 ## Design notes
 
 - The whole card is the photo: a square image area, `object-cover`, full-bleed and clipped by the card's rounded corners. Floating over it, the "Por unidad" chip top-left (at every width; below `md` its text shortens to "Unidad" and the chip tightens so both chips stay on one row), the "N / T libres" chip top-right ("libre" when exactly one is free) on a dark translucent blurred backdrop, and the category name bottom-left over a dark gradient, with the free bar drawn under the name at the very bottom (teal fill is free / total, so a card with everything free is full). A grouped card looks and behaves like every other card: one photo, the same chips (with the summed totals), the group name and the free bar. It has no button, chevron or member lines.
+- Both `/` and `/board` render the same guarded board entry. The root route renders the board directly to avoid a second navigation on startup; both routes pass through the session proxy and the work-mode gate.
 - The card link is an empty `Link` stretched over the whole card (`absolute inset-0`), placed inside the list item after the media, with `aria-label` equal to the card label. The list item keeps its `listitem` semantics and its box, so the cards-per-row layout is unchanged, and the heading level 2 with the label stays. Keyboard: the link is focusable and shows a `ring-2` focus ring (inset, because the card clips overflow). Hover and press scale the card slightly (`scale-102`, `scale-98`); with reduced motion the scale and the transition are off.
 - The "en uso" count was dropped from the cards on the product owner's request (Kendall and Leno's reference). The criterion "cuántas libres y cuántas en uso sobre el total" is carried by the free/total chip and the free-share bar: in use is the total minus the free.
 - Every photo is square, and the photo grows to fill the row height, so neighbouring cards end flush.
