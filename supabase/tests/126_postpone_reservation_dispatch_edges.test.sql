@@ -1,5 +1,5 @@
 begin;
-select plan(11);
+select plan(13);
 
 \ir fixtures/postponement_release.sql.fixture
 \ir fixtures/postpone_call.sql.fixture
@@ -25,10 +25,15 @@ values ('e3300000-0000-4000-8000-000000000105', 2, 'e3300000-0000-4000-8000-0000
 insert into reservation_items (id, reservation_id, category_id, quantity, created_by, updated_by)
 values ('e3300000-0000-4000-8000-000000000815', 'e3300000-0000-4000-8000-000000000707', 'e3300000-0000-4000-8000-000000000105', 2, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001');
 
+insert into reservations
+  (id, customer_name, people_count, type, starts_at, duration_minutes, status, created_by, updated_by)
+values ('e3300000-0000-4000-8000-000000000709', 'RES20 Taker', 2, 'rental', '2035-06-20 15:00:00+00', 60, 'scheduled', 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001');
+
 insert into reservation_items (id, reservation_id, unit_id, created_by, updated_by)
 values
   ('e3300000-0000-4000-8000-000000000813', 'e3300000-0000-4000-8000-000000000705', 'e3300000-0000-4000-8000-000000000205', 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
-  ('e3300000-0000-4000-8000-000000000814', 'e3300000-0000-4000-8000-000000000706', 'e3300000-0000-4000-8000-000000000205', 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001');
+  ('e3300000-0000-4000-8000-000000000814', 'e3300000-0000-4000-8000-000000000706', 'e3300000-0000-4000-8000-000000000205', 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
+  ('e3300000-0000-4000-8000-000000000816', 'e3300000-0000-4000-8000-000000000709', 'e3300000-0000-4000-8000-000000000201', 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001');
 
 update reservation_items set dispatch_id = 'e3300000-0000-4000-8000-000000000601' where id in ('e3300000-0000-4000-8000-000000000501', 'e3300000-0000-4000-8000-000000000504');
 update reservation_items set dispatch_id = 'e3300000-0000-4000-8000-000000000603', fuel_in = 1, usage_in = 8 where id = 'e3300000-0000-4000-8000-000000000503';
@@ -43,6 +48,27 @@ update reservation_items set dispatch_id = 'e3300000-0000-4000-8000-000000000621
 
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"e3300000-0000-4000-8000-000000000002","role":"authenticated"}';
+
+select throws_ok(
+  $$ select pg_temp.postpone('e3300000-0000-4000-8000-000000000301', '2035-06-20', '09:30', 'storm', null,
+       jsonb_build_array(
+         jsonb_build_object('item_id', 'e3300000-0000-4000-8000-000000000501', 'fuel_in', 2, 'usage_in', 12),
+         jsonb_build_object('item_id', 'e3300000-0000-4000-8000-000000000504', 'fuel_in', 4, 'usage_in', 20))) $$,
+  'P0001', 'Equipment unit conflicts with another reservation', 'a dispatched reservation whose new window is taken is refused'
+);
+select is(
+  (select concat_ws(' ',
+      (select status::text from reservations where id = 'e3300000-0000-4000-8000-000000000301'),
+      pg_temp.cr_start('e3300000-0000-4000-8000-000000000301'),
+      (select count(*) from reservation_dispatches where reservation_id = 'e3300000-0000-4000-8000-000000000301' and closed_at is null),
+      (select count(*) from reservation_dispatches where reservation_id = 'e3300000-0000-4000-8000-000000000301' and closed_at is not null),
+      (select count(*) from reservation_items where reservation_id = 'e3300000-0000-4000-8000-000000000301' and dispatch_id is not null),
+      (select count(*) from reservation_postponement_readings),
+      (select count(*) from reservation_postponements where reservation_id = 'e3300000-0000-4000-8000-000000000301'),
+      (select string_agg(concat_ws('/', fuel_level, usage_total), ',' order by id) from equipment_units where id in ('e3300000-0000-4000-8000-000000000201', 'e3300000-0000-4000-8000-000000000204')))),
+  'dispatched 2035-04-12 09:00:00 2 1 3 0 1 4/10.00,4/20.00',
+  'a failed fits check rolls back the release: readings, groups, items, unit values, status and date'
+);
 
 select throws_ok(
   $$ select pg_temp.postpone('e3300000-0000-4000-8000-000000000706', '2035-06-10', '10:00', 'storm') $$,
