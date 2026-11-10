@@ -4,29 +4,11 @@ import {
   STRING,
 } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
-import { RESERVATION_CALENDAR_TIME } from "../constants/ReservationCalendarProjection.constants";
 import type { ReservationCalendarBlock } from "../models/ReservationCalendarBlock.interface";
 import type { ReservationCalendarDispatch } from "../models/ReservationCalendarDispatch.interface";
 import type { ReservationCalendarEntry } from "../models/ReservationCalendarEntry.interface";
-import type { ReservationCalendarEquipment } from "../models/ReservationCalendarEquipment.interface";
+import { describeReservationEquipment } from "./describeReservationEquipment";
 import { formatReservationCalendarTime } from "./formatReservationCalendarTime";
-
-const describeEquipment = (
-  equipment: ReservationCalendarEquipment
-): string => {
-  if (equipment.unitCode !== null) {
-    return [
-      equipment.categoryName,
-      equipment.unitCode,
-    ].join(STRING.SPACE);
-  }
-  return [
-    equipment.quantity.toLocaleString(
-      RESERVATION_CALENDAR_TIME.LOCALE
-    ),
-    equipment.categoryName,
-  ].join(copy.QUANTITY_SEPARATOR);
-};
 
 const describeInstant = (
   label: string,
@@ -68,7 +50,7 @@ export const buildReservationCalendarBlock = (
     entry.equipment.length === 0
       ? copy.MISSING_EQUIPMENT
       : entry.equipment
-          .map(describeEquipment)
+          .map(describeReservationEquipment)
           .join(STRING.COMMA_SPACE);
   const scheduledRange = [
     formatReservationCalendarTime(entry.startsAt),
@@ -78,6 +60,9 @@ export const buildReservationCalendarBlock = (
     copy.SCHEDULED,
     scheduledRange,
   ].join(STRING.SPACE);
+  const originLabel = entry.parentCode
+    ? [copy.ORIGIN, entry.parentCode].join(STRING.SPACE)
+    : undefined;
   const actualLabels = entry.dispatches.map(
     describeDispatch
   );
@@ -89,6 +74,7 @@ export const buildReservationCalendarBlock = (
       scheduledLabel,
       ...actualLabels,
       [copy.EQUIPMENT, equipmentLabel].join(STRING.SPACE),
+      ...(originLabel ? [originLabel] : []),
     ].join(copy.DETAIL_SEPARATOR),
     actualLabels,
     customerName: entry.customerName,
@@ -96,6 +82,8 @@ export const buildReservationCalendarBlock = (
     equipmentCategoryName: entry.equipment[0]?.categoryName,
     guides: entry.guides,
     id: entry.id,
+    originLabel,
     scheduledLabel,
+    status: entry.status,
   };
 };

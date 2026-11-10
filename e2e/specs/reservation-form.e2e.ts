@@ -4,6 +4,7 @@ import {
   E2E_RESERVATION_DURATION_PRESET,
   E2E_RESERVATION_EQUIPMENT_STATUS,
   E2E_RESERVATION_FORM_COPY,
+  E2E_RESERVATION_TYPE_COPY,
 } from "../constants/E2eReservationForm.constants";
 import { createReservationFormPage } from "../pages/ReservationForm.page";
 import { createReservationEquipmentStatusFixture } from "../support/createReservationEquipmentStatusFixture";
@@ -26,6 +27,9 @@ test.describe("Reservation form", () => {
       createReservationFormPage(page);
 
     await reservationFormPage.goTo();
+    await reservationFormPage.selectReservationType(
+      E2E_RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
+    );
 
     await expect(
       reservationFormPage.getHeading()
@@ -176,6 +180,9 @@ test.describe("Reservation form", () => {
       createReservationFormPage(page);
 
     await reservationFormPage.goTo();
+    await reservationFormPage.selectReservationType(
+      E2E_RESERVATION_FORM_COPY.RESERVATION_TYPE_TOUR
+    );
     await reservationFormPage.selectCategory(
       E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
     );
@@ -266,6 +273,9 @@ test.describe("Reservation form", () => {
       await expect(
         reservationFormPage.getCategorySelect()
       ).toBeEnabled();
+      await reservationFormPage.selectReservationType(
+        E2E_RESERVATION_FORM_COPY.RESERVATION_TYPE_TOUR
+      );
       await reservationFormPage.selectCategory(
         E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION
       );

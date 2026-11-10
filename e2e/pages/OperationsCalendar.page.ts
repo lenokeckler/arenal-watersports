@@ -1,7 +1,12 @@
 import type { Locator, Page } from "@playwright/test";
-import { ARIA_ROLE, PATHS } from "@/app/constants";
+import {
+  ARIA_ROLE,
+  PATHS,
+  RESERVATIONS_CALENDAR_COPY,
+} from "@/app/constants";
 import type { CalendarView } from "@/app/types";
 import { E2E_OPERATIONS_CALENDAR_COPY } from "../constants/E2eOperationsCalendar.constants";
+import { locateOriginBlock } from "../support/locateOriginBlock";
 import { getMainRegion } from "../support/mainRegion";
 
 export const createOperationsCalendarPage = (
@@ -18,6 +23,15 @@ export const createOperationsCalendarPage = (
     getHeading: (): Locator =>
       main.getByRole(ARIA_ROLE.HEADING, {
         name: E2E_OPERATIONS_CALENDAR_COPY.HEADING,
+      }),
+    getOriginBlock: (
+      customerName: string,
+      originCode: string
+    ): Locator =>
+      locateOriginBlock(main, customerName, originCode),
+    getSplitLink: (customerName: string): Locator =>
+      main.getByRole(ARIA_ROLE.LINK, {
+        name: `${RESERVATIONS_CALENDAR_COPY.SPLIT_RESERVATION_LABEL} ${customerName}`,
       }),
     getView,
     goTo: async (): Promise<void> => {

@@ -16,6 +16,7 @@ import {
   CREATE_RESERVATION_RPC_URL,
   SUCCESS_STATUS,
   VALIDATED_RESERVATION_INPUT,
+  VALIDATED_TOUR_RESERVATION_INPUT,
   VALIDATED_UNIT_RESERVATION_INPUT,
 } from "./createRentalReservation.constants";
 
@@ -69,8 +70,11 @@ describe("createRentalReservation", () => {
             date: VALIDATED_RESERVATION_INPUT.date,
             duration_minutes:
               VALIDATED_RESERVATION_INPUT.durationMinutes,
+            guide_ids: [],
             people_count:
               VALIDATED_RESERVATION_INPUT.peopleCount,
+            reservation_type:
+              VALIDATED_RESERVATION_INPUT.reservationType,
             time: VALIDATED_RESERVATION_INPUT.time,
             category_id:
               VALIDATED_RESERVATION_INPUT
@@ -100,8 +104,11 @@ describe("createRentalReservation", () => {
             date: VALIDATED_UNIT_RESERVATION_INPUT.date,
             duration_minutes:
               VALIDATED_UNIT_RESERVATION_INPUT.durationMinutes,
+            guide_ids: [],
             people_count:
               VALIDATED_UNIT_RESERVATION_INPUT.peopleCount,
+            reservation_type:
+              VALIDATED_UNIT_RESERVATION_INPUT.reservationType,
             time: VALIDATED_UNIT_RESERVATION_INPUT.time,
             unit_id:
               VALIDATED_UNIT_RESERVATION_INPUT
@@ -110,5 +117,26 @@ describe("createRentalReservation", () => {
         }),
       })
     );
+  });
+
+  it("sends selected guide ids with the tour", async () => {
+    await createRentalReservation(
+      VALIDATED_TOUR_RESERVATION_INPUT
+    );
+
+    const requestBody = JSON.parse(
+      String(fetchMock.mock.calls[0][1].body)
+    );
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      CREATE_RESERVATION_RPC_URL,
+      expect.objectContaining({ method: "POST" })
+    );
+    expect(requestBody).toMatchObject({
+      p_payload: {
+        guide_ids:
+          VALIDATED_TOUR_RESERVATION_INPUT.guideIds,
+      },
+    });
   });
 });

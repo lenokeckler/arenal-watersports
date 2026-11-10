@@ -34,6 +34,18 @@ export const createDepositsReportPage = () => {
 
   const getAlert = () => screen.getByRole(ARIA_ROLE.ALERT);
 
+  const getNavigation = (name: string) =>
+    screen.getByRole(ARIA_ROLE.NAVIGATION, { name });
+
+  const queryNavigation = (name: string) =>
+    screen.queryByRole(ARIA_ROLE.NAVIGATION, { name });
+
+  const getLinkIn = (
+    container: HTMLElement,
+    name: string
+  ) =>
+    within(container).getByRole(ARIA_ROLE.LINK, { name });
+
   const getButton = (name: string) =>
     screen.getByRole(ARIA_ROLE.BUTTON, { name });
 
@@ -73,13 +85,16 @@ export const createDepositsReportPage = () => {
     getHeadings,
     getInRow,
     getLeafByExactText,
+    getLinkIn,
     getList,
+    getNavigation,
     getRows,
     getStatus,
     getText,
     queryAnyList,
     queryInRow,
     queryList,
+    queryNavigation,
     queryText,
     queryTextMatching,
   };

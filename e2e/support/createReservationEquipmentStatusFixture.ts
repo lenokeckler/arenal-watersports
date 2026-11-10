@@ -1,7 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { SUPABASE } from "@/app/constants";
 import type { Database, NullableRef } from "@/app/types";
-import { E2E_LOGIN_ACCOUNT } from "../constants/E2eLogin.constants";
 import {
   E2E_RESERVATION_EQUIPMENT_STATUS,
   E2E_RESERVATION_FORM_COPY,
@@ -12,7 +11,7 @@ export const createReservationEquipmentStatusFixture =
   () => {
     const supabase = createClient<Database>(
       SUPABASE.URL,
-      SUPABASE.ANON_KEY,
+      SUPABASE.SERVICE_ROLE_KEY,
       {
         auth: {
           autoRefreshToken: false,
@@ -52,15 +51,6 @@ export const createReservationEquipmentStatusFixture =
           ),
       prepare:
         async (): Promise<ReservationEquipmentStatus> => {
-          const { error: authenticationError } =
-            await supabase.auth.signInWithPassword({
-              email: E2E_LOGIN_ACCOUNT.EMAIL,
-              password: E2E_LOGIN_ACCOUNT.PASSWORD,
-            });
-          if (authenticationError) {
-            throw authenticationError;
-          }
-
           const { data, error } = await supabase
             .from("equipment_units")
             .select("id, status")
@@ -86,13 +76,8 @@ export const createReservationEquipmentStatusFixture =
             restorationError = error;
           }
         }
-        const { error: signOutError } =
-          await supabase.auth.signOut({ scope: "local" });
         if (restorationError) {
           throw restorationError;
-        }
-        if (signOutError) {
-          throw signOutError;
         }
       },
     };

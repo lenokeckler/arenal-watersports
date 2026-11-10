@@ -1,4 +1,5 @@
 import type { ReservationFormInput } from "../models/ReservationFormInput.interface";
+import { isReservationType } from "./isReservationType";
 
 export const isReservationFormInput = (
   input: unknown
@@ -16,10 +17,17 @@ export const isReservationFormInput = (
     typeof input.date === "string" &&
     "durationHours" in input &&
     typeof input.durationHours === "number" &&
+    (!("guideIds" in input) ||
+      (Array.isArray(input.guideIds) &&
+        input.guideIds.every(
+          (guideId) => typeof guideId === "string"
+        ))) &&
     "peopleCount" in input &&
     typeof input.peopleCount === "number" &&
     "quantity" in input &&
     typeof input.quantity === "number" &&
+    (!("reservationType" in input) ||
+      isReservationType(input.reservationType)) &&
     "time" in input &&
     typeof input.time === "string" &&
     "unitId" in input &&
