@@ -9,6 +9,7 @@ import { RESERVATION_POSTPONEMENT_LIMITS } from "../constants/ReservationPostpon
 import type { ReservationPostponementErrors } from "../models/ReservationPostponementErrors.interface";
 import type { ReservationPostponementFieldErrors } from "../models/ReservationPostponementFieldErrors.interface";
 import type { ReservationPostponementInput } from "../models/ReservationPostponementInput.interface";
+import { isReservationPostponementCalendarDate } from "./isReservationPostponementCalendarDate";
 
 const resolveDateError = (
   date: string
@@ -16,7 +17,8 @@ const resolveDateError = (
   if (date === STRING.Empty) {
     return RESERVATION_POSTPONEMENT_FEEDBACK_COPY.DATE_REQUIRED;
   }
-  return ISO_DATE_PATTERN.test(date)
+  return ISO_DATE_PATTERN.test(date) &&
+    isReservationPostponementCalendarDate(date)
     ? undefined
     : RESERVATION_POSTPONEMENT_FEEDBACK_COPY.SCHEDULE_INVALID;
 };
@@ -45,7 +47,7 @@ const resolveReasonError = ({
   if (trimmed === STRING.Empty) {
     return RESERVATION_POSTPONEMENT_FEEDBACK_COPY.REASON_REQUIRED;
   }
-  return trimmed.length >
+  return [...trimmed].length >
     RESERVATION_POSTPONEMENT_LIMITS.MAX_REASON_LENGTH
     ? RESERVATION_POSTPONEMENT_FEEDBACK_COPY.REASON_TOO_LONG
     : undefined;
