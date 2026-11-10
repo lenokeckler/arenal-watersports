@@ -40,50 +40,59 @@ export const renderReservationForm = (
   guideLoadResult: ReservationGuideLoadResult = EMPTY_RESERVATION_GUIDE_LOAD_RESULT
 ) => {
   routerBack.mockClear();
-  const { container } = render(
-    <ReservationFormView
-      categories={
-        hasCategories
-          ? [
-              {
-                id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
-                isInterchangeable: true,
-                isGuideOnly: false,
-                name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
-              },
-              {
-                id: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_ID,
-                isInterchangeable: true,
-                isGuideOnly: hasGuideOnlyCategory,
-                name: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME,
-              },
-              ...(hasUnitCategory
-                ? [
-                    {
-                      id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
-                      isInterchangeable: true,
-                      isGuideOnly: hasGuideOnlyCategory,
-                      name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
-                    },
-                  ]
-                : []),
-            ]
-          : []
-      }
-      unitCategories={
-        hasUnitCategory
-          ? [
-              {
-                id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
-                isGuideOnly: hasGuideOnlyCategory,
-                name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
-              },
-            ]
-          : []
-      }
-      initialDate={RESERVATION_FORM_VIEW_TEST.DATE}
-      guideLoadResult={guideLoadResult}
-    />
+  const props = {
+    categories: hasCategories
+      ? [
+          {
+            id: RESERVATION_FORM_VIEW_TEST.CATEGORY_ID,
+            isInterchangeable: true,
+            isGuideOnly: false,
+            name: RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME,
+          },
+          {
+            id: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_ID,
+            isInterchangeable: true,
+            isGuideOnly: hasGuideOnlyCategory,
+            name: RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME,
+          },
+          ...(hasUnitCategory
+            ? [
+                {
+                  id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
+                  isInterchangeable: true,
+                  isGuideOnly: hasGuideOnlyCategory,
+                  name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
+                },
+              ]
+            : []),
+        ]
+      : [],
+    unitCategories: hasUnitCategory
+      ? [
+          {
+            id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
+            isGuideOnly: hasGuideOnlyCategory,
+            name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
+          },
+        ]
+      : [],
+    initialDate: RESERVATION_FORM_VIEW_TEST.DATE,
+    guideLoadResult,
+  };
+  const { container, rerender } = render(
+    <ReservationFormView {...props} />
   );
-  return createReservationFormViewPage(container);
+  return {
+    ...createReservationFormViewPage(container),
+    rerenderGuideLoadResult: (
+      nextGuideLoadResult: ReservationGuideLoadResult
+    ): void => {
+      rerender(
+        <ReservationFormView
+          {...props}
+          guideLoadResult={nextGuideLoadResult}
+        />
+      );
+    },
+  };
 };
