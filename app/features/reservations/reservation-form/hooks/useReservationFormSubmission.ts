@@ -3,6 +3,7 @@ import type { ReservationFormSubmissionOptions } from "../models/ReservationForm
 import { useReservationFormErrorFocus } from "./useReservationFormErrorFocus";
 import { useReservationFormSubmitAction } from "./useReservationFormSubmitAction";
 import { useReservationSubmissionState } from "./useReservationSubmissionState";
+import { useCustomComboSubmitAction } from "./useCustomComboSubmitAction";
 
 export const useReservationFormSubmission = (
   options?: ReservationFormSubmissionOptions
@@ -15,6 +16,8 @@ export const useReservationFormSubmission = (
       ...options,
     }
   );
+  const customComboAction =
+    useCustomComboSubmitAction(submission);
   useReservationFormErrorFocus(submission);
 
   return {
@@ -22,9 +25,13 @@ export const useReservationFormSubmission = (
     clearFieldError: submission.clearFieldError,
     errors: submission.errors,
     formError: submission.formError,
-    isPending: action.isPending,
+    isPending:
+      action.isPending || customComboAction.isPending,
     isSubmitted: submission.isSubmitted,
     requestErrorFocus: submission.requestErrorFocus,
+    setFieldError: submission.setFieldError,
+    submitCustomComboReservation:
+      customComboAction.submitCustomComboReservation,
     submitReservation: action.submitReservation,
   };
 };

@@ -1,5 +1,6 @@
 import type { NullableRef } from "@/app/types";
-import type { ReservationFormField } from "./ReservationFormField.constants";
+import type { ReservationFormErrorField } from "./ReservationFormField.constants";
+import type { CustomComboFormViewModel } from "./CustomComboFormViewModel.interface";
 import type { ReservationFormInput } from "./ReservationFormInput.interface";
 import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOption.interface";
 import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
@@ -9,7 +10,10 @@ import type { ReservationType } from "./ReservationType.type";
 
 export interface ReservationFormViewModel {
   categories: ReservationCategoryOption[];
-  errors: Partial<Record<ReservationFormField, string>>;
+  errors: Partial<
+    Record<ReservationFormErrorField, string>
+  >;
+  customCombo?: CustomComboFormViewModel;
   formError: string;
   isPending: boolean;
   isSubmitted: boolean;

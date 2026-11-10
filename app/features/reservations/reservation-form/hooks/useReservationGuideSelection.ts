@@ -18,6 +18,11 @@ export const useReservationGuideSelection = (
       nextGuideIds
     );
   };
+  const handleGuideIdsChange = (
+    guideIds: string[]
+  ): void => {
+    updateValue(RESERVATION_FORM_FIELD.GUIDE_IDS, guideIds);
+  };
 
   const reconcileGuideSelection = (
     availableGuideIds: string[]
@@ -35,5 +40,9 @@ export const useReservationGuideSelection = (
     }
   };
 
-  return { handleGuideToggle, reconcileGuideSelection };
+  return {
+    handleGuideIdsChange,
+    handleGuideToggle,
+    reconcileGuideSelection,
+  };
 };
