@@ -3034,6 +3034,10 @@ export type Database = {
         Args: { event: Json };
         Returns: Json;
       };
+      delete_or_deactivate_extra: {
+        Args: { p_extra_id: string };
+        Returns: string;
+      };
       exchange_password_reset_pin: {
         Args: { p_pin: string; p_username: string };
         Returns: string;
@@ -3294,6 +3298,7 @@ export type Database = {
       reservable_equipment_categories: {
         Args: Record<PropertyKey, never>;
         Returns: {
+          guide_only: boolean;
           id: string;
           name: string;
           units_are_interchangeable: boolean;
