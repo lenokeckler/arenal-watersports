@@ -48,7 +48,6 @@ select lives_ok(
   'stock that is free in the new window is allowed'
 );
 
-reset role;
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"e3300000-0000-4000-8000-000000000003","role":"authenticated"}';
 

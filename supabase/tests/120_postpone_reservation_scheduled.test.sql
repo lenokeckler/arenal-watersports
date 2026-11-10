@@ -10,6 +10,9 @@ values
   ('e3300000-0000-4000-8000-000000000303', 'RES20 Closed', 2, 'rental', '2035-04-12 19:00:00+00', 60, 'closed', null, 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001'),
   ('e3300000-0000-4000-8000-000000000304', 'RES20 Cancelled', 2, 'rental', '2035-04-12 21:00:00+00', 60, 'cancelled', 'Cliente cancelo', 'e3300000-0000-4000-8000-000000000001', 'e3300000-0000-4000-8000-000000000001');
 
+create temp table baseline_postponements as select id from reservation_postponements;
+grant select on baseline_postponements to authenticated;
+
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"e3300000-0000-4000-8000-000000000002","role":"authenticated"}';
 
@@ -36,7 +39,7 @@ select lives_ok(
   'a storm postpones a scheduled reservation'
 );
 select is(
-  (select concat_ws('/', coalesce(reason, '-'), new_starts_at) from reservation_postponements where reservation_id = 'e3300000-0000-4000-8000-000000000302' and cause = 'storm' and not (id = 'e3300000-0000-4000-8000-000000000402')),
+  (select concat_ws('/', coalesce(reason, '-'), new_starts_at) from reservation_postponements where reservation_id = 'e3300000-0000-4000-8000-000000000302' and cause = 'storm' and id not in (select id from baseline_postponements)),
   '-/2035-04-14 14:00:00+00',
   'a weather cause stores no reason'
 );
@@ -81,7 +84,7 @@ select throws_ok(
   'P0001', 'New start must be later than the current start and now', 'the new start must be later than the current one'
 );
 select is(
-  (select count(*) from reservation_postponements where reservation_id = 'e3300000-0000-4000-8000-000000000302' and id <> 'e3300000-0000-4000-8000-000000000402'),
+  (select count(*) from reservation_postponements where reservation_id = 'e3300000-0000-4000-8000-000000000302' and id not in (select id from baseline_postponements)),
   3::bigint,
   'only the three successful postponements left a trace'
 );

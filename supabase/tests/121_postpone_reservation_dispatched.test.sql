@@ -25,6 +25,9 @@ create function pg_temp.state() returns text language sql as $$
     || ' ' || (select count(*) from reservation_postponements where reservation_id = 'e3300000-0000-4000-8000-000000000301')
 $$;
 
+create temp table baseline_postponements as select id from reservation_postponements;
+grant select on baseline_postponements to authenticated;
+
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"e3300000-0000-4000-8000-000000000002","role":"authenticated"}';
 
@@ -71,7 +74,7 @@ select is(
 );
 select is(
   (select concat_ws('/', cause, coalesce(reason, '-'), was_dispatched, previous_starts_at, new_starts_at, created_by)
-     from reservation_postponements where reservation_id = 'e3300000-0000-4000-8000-000000000301' and id <> 'e3300000-0000-4000-8000-000000000401'),
+     from reservation_postponements where reservation_id = 'e3300000-0000-4000-8000-000000000301' and id not in (select id from baseline_postponements)),
   'storm/-/t/2035-04-12 15:00:00+00/2035-04-13 16:00:00+00/e3300000-0000-4000-8000-000000000002',
   'the trace records the dispatched weather postponement'
 );
