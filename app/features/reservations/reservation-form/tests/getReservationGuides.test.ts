@@ -14,6 +14,7 @@ import { RESERVATION_GUIDE_QUERY } from "../constants/ReservationGuideQuery.cons
 import { getAuthorizedReservationFormClient } from "../services/getAuthorizedReservationFormClient";
 import { getReservationGuides } from "../services/getReservationGuides";
 import {
+  GUIDE_WORKER_RELATION,
   GUIDE_QUERY_FIXTURE,
   SERVER_ERROR_STATUS,
   SUCCESS_STATUS,
@@ -81,6 +82,9 @@ describe("getReservationGuides", () => {
     );
     expect(expirationFilter).toContain(
       `${RESERVATION_GUIDE_QUERY.EXPIRATION_COLUMN}.gt.`
+    );
+    expect(String(requestUrl)).toContain(
+      GUIDE_WORKER_RELATION
     );
   });
 
