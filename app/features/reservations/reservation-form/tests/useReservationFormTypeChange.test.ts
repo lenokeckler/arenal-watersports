@@ -27,7 +27,7 @@ describe("useReservationFormFields reservation type changes", () => {
         RESERVATION_FORM_TYPE_CHANGE_TEST.DATE,
         RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
         vi.fn(),
-        GUIDE_ONLY_CATEGORIES
+        { liveCategories: GUIDE_ONLY_CATEGORIES }
       )
     );
 

@@ -1,10 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 import { createReservationAction } from "../actions/createReservationAction";
-import { getAvailableReservationUnitsAction } from "../actions/getAvailableReservationUnitsAction";
 import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
-import { RESERVATION_TYPE_COPY } from "../constants/ReservationTypeCopy.constants";
+import { RESERVATION_FORM_FIELD_ID } from "../constants/ReservationFormUi.constants";
 import { renderReservationForm } from "./ReservationFormView.fixture";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 
@@ -12,14 +11,48 @@ vi.mock("../actions/createReservationAction", () => ({
   createReservationAction: vi.fn(),
 }));
 
-vi.mock(
-  "../actions/getAvailableReservationUnitsAction",
-  () => ({
-    getAvailableReservationUnitsAction: vi.fn(),
-  })
-);
-
 describe("ReservationFormView submission", () => {
+  it("resets values after a successful reservation", async () => {
+    vi.mocked(createReservationAction).mockResolvedValue({
+      ok: true,
+      reservationId:
+        RESERVATION_FORM_VIEW_TEST.CREATED_RESERVATION_ID,
+    });
+    const page = renderReservationForm();
+    await page.setCustomerName(
+      RESERVATION_FORM_VIEW_TEST.CUSTOMER_NAME
+    );
+    await page.setQuantity(
+      RESERVATION_FORM_VIEW_TEST.VALID_EQUIPMENT_QUANTITY
+    );
+    await page.selectCategoryChoice(
+      RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME
+    );
+
+    await page.submit();
+    expect(
+      await page.findSuccessMessage()
+    ).toBeInTheDocument();
+
+    const submitButton = page.querySubmitButton();
+    if (submitButton !== null) {
+      expect(submitButton).toBeDisabled();
+    } else {
+      expect(submitButton).not.toBeInTheDocument();
+    }
+
+    expect(createReservationAction).toHaveBeenCalledTimes(
+      1
+    );
+    expect(page.getCustomerNameInput()).toHaveValue("");
+    expect(page.queryQuantityInput()).toHaveValue(1);
+    expect(
+      page.getCategoryChoice(
+        RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME
+      )
+    ).toHaveAttribute("aria-pressed", "false");
+  });
+
   it("submits the custom duration as a number", async () => {
     vi.mocked(createReservationAction).mockResolvedValue({
       ok: true,
@@ -70,6 +103,33 @@ describe("ReservationFormView submission", () => {
     expect(
       await page.findDurationValidationError()
     ).toBeInTheDocument();
+    expect(page.getFocusedElement()).toHaveAttribute(
+      "id",
+      RESERVATION_FORM_FIELD_ID.DURATION_GROUP
+    );
+  });
+
+  it("focuses the duration group when a preset has a server error", async () => {
+    vi.mocked(createReservationAction).mockResolvedValue({
+      ok: false,
+      errors: {
+        [RESERVATION_FORM_FIELD.DURATION_HOURS]:
+          RESERVATION_FORM_COPY[
+            RESERVATION_FORM_FIELD.DURATION_HOURS
+          ],
+      },
+    });
+    const page = renderReservationForm();
+
+    await page.submit();
+
+    expect(
+      await page.findDurationValidationError()
+    ).toBeInTheDocument();
+    expect(page.getFocusedElement()).toHaveAttribute(
+      "id",
+      RESERVATION_FORM_FIELD_ID.DURATION_GROUP
+    );
   });
 
   it("shows a generic message when the server action rejects", async () => {
@@ -92,49 +152,51 @@ describe("ReservationFormView submission", () => {
     expect(submissionError).not.toHaveTextContent(
       RESERVATION_FORM_VIEW_TEST.SERVER_ACTION_FAILURE_MESSAGE
     );
+    expect(page.getFocusedElement()).toHaveAttribute(
+      "id",
+      RESERVATION_FORM_FIELD_ID.SUBMISSION_ERROR
+    );
   });
 
-  it("requires and submits a concrete unit for Lancha", async () => {
-    vi.mocked(
-      getAvailableReservationUnitsAction
-    ).mockResolvedValue([
-      {
-        code: RESERVATION_FORM_VIEW_TEST.UNIT_CODE,
-        id: RESERVATION_FORM_VIEW_TEST.UNIT_ID,
-      },
-    ]);
-    vi.mocked(createReservationAction).mockClear();
-    vi.mocked(createReservationAction).mockResolvedValue({
-      ok: true,
-      reservationId:
-        RESERVATION_FORM_VIEW_TEST.CREATED_RESERVATION_ID,
-    });
+  it("clears stale field errors when the server action rejects", async () => {
+    vi.mocked(createReservationAction)
+      .mockResolvedValueOnce({
+        ok: false,
+        errors: {
+          [RESERVATION_FORM_FIELD.CATEGORY_ID]:
+            RESERVATION_FORM_COPY[
+              RESERVATION_FORM_FIELD.CATEGORY_ID
+            ],
+        },
+      })
+      .mockRejectedValueOnce(
+        new Error(
+          RESERVATION_FORM_VIEW_TEST.SERVER_ACTION_FAILURE_MESSAGE
+        )
+      );
     const page = renderReservationForm();
+    await page.setCustomerName(
+      RESERVATION_FORM_VIEW_TEST.CUSTOMER_NAME
+    );
 
-    await page.selectReservationType(
-      RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
-    );
-    await page.selectCategory(
-      RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
-    );
-    await page.findUnitOption();
-    expect(page.getQuantityInput()).not.toBeInTheDocument();
+    await page.submit();
+    expect(
+      await page.findCategoryError()
+    ).toBeInTheDocument();
     await page.submit();
 
     expect(
-      await page.findUnitValidationError()
+      await page.findSubmissionError()
     ).toBeInTheDocument();
-    expect(createReservationAction).not.toHaveBeenCalled();
-
-    await page.selectUnit(
-      RESERVATION_FORM_VIEW_TEST.UNIT_ID
+    expect(
+      page.queryCategoryError()
+    ).not.toBeInTheDocument();
+    expect(page.getCustomerNameInput()).toHaveValue(
+      RESERVATION_FORM_VIEW_TEST.CUSTOMER_NAME
     );
-    await page.submit();
-
-    expect(createReservationAction).toHaveBeenCalledWith(
-      expect.objectContaining({
-        unitId: RESERVATION_FORM_VIEW_TEST.UNIT_ID,
-      })
+    expect(page.getFocusedElement()).toHaveAttribute(
+      "id",
+      RESERVATION_FORM_FIELD_ID.SUBMISSION_ERROR
     );
   });
 });

@@ -1,13 +1,13 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "../support/activeWorkerTest";
 import { STRING } from "@/app/constants";
 import { E2E_RESERVATION_TYPE_COPY } from "../constants/E2eReservationForm.constants";
 import { createReservationFormPage } from "../pages/ReservationForm.page";
 import { selectGuideOnlyReservationUnit } from "../support/selectGuideOnlyReservationUnit";
-import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
+import { signInToReservationsMode } from "../support/signInToReservationsMode";
 
 test.describe("Reservation form type reset", () => {
-  test.beforeEach(async ({ page }) => {
-    await signInAsSeededWorker(page);
+  test.beforeEach(async ({ activeWorker, page }) => {
+    await signInToReservationsMode(page, activeWorker);
   });
 
   test("clears guide-only equipment when switching to rental", async ({
@@ -27,18 +27,14 @@ test.describe("Reservation form type reset", () => {
     );
 
     await expect(
-      reservationFormPage.getCategorySelect()
-    ).toHaveValue(STRING.Empty);
+      reservationFormPage.getSelectedCategoryOption()
+    ).toHaveCount(0);
     await reservationFormPage.selectReservationType(
       E2E_RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
     );
-    await reservationFormPage
-      .getCategorySelect()
-      .selectOption({
-        label:
-          E2E_RESERVATION_TYPE_COPY.GUIDE_ONLY_CATEGORY
-            .BOAT,
-      });
+    await reservationFormPage.selectCategory(
+      E2E_RESERVATION_TYPE_COPY.GUIDE_ONLY_CATEGORY.BOAT
+    );
     await reservationFormPage.waitForUnitOption(
       E2E_RESERVATION_TYPE_COPY.GUIDE_ONLY_UNIT_OPTION
     );
@@ -64,18 +60,14 @@ test.describe("Reservation form type reset", () => {
     );
 
     await expect(
-      reservationFormPage.getCategorySelect()
-    ).toHaveValue(STRING.Empty);
+      reservationFormPage.getSelectedCategoryOption()
+    ).toHaveCount(0);
     await reservationFormPage.selectReservationType(
       E2E_RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
     );
-    await reservationFormPage
-      .getCategorySelect()
-      .selectOption({
-        label:
-          E2E_RESERVATION_TYPE_COPY.GUIDE_ONLY_CATEGORY
-            .BOAT,
-      });
+    await reservationFormPage.selectCategory(
+      E2E_RESERVATION_TYPE_COPY.GUIDE_ONLY_CATEGORY.BOAT
+    );
     await reservationFormPage.waitForUnitOption(
       E2E_RESERVATION_TYPE_COPY.GUIDE_ONLY_UNIT_OPTION
     );

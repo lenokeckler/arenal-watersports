@@ -28,6 +28,7 @@ export const getReservationEquipmentSelectionInvalidation =
       shouldClearUnit:
         selectedCategory.isInterchangeable === false &&
         input.unitId !== STRING.Empty &&
+        input.equipment.isAvailabilityResolved &&
         !input.equipment.isAvailabilityLoading &&
         !input.equipment.hasAvailabilityError &&
         !input.equipment.availableUnits.some(

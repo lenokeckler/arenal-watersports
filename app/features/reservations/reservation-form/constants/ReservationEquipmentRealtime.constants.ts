@@ -1,5 +1,5 @@
 export const RESERVATION_EQUIPMENT_REALTIME = {
-  CHANNEL_NAME: "reservation-equipment-eligibility",
+  CHANNEL_NAME_PREFIX: "reservation-equipment-eligibility-",
   DATABASE_EVENT: "postgres_changes",
   EVENT: "*",
   SCHEMA: "public",

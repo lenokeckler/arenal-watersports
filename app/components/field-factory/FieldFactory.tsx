@@ -52,6 +52,11 @@ const FieldFactory = forwardRef<
       accept,
       hasError = false,
       hasErrorText = false,
+      describedBy,
+      autoComplete,
+      inputMode,
+      autoCapitalize,
+      spellCheck,
     },
     ref
   ) => {
@@ -67,7 +72,8 @@ const FieldFactory = forwardRef<
     const ariaAttributes = resolveFieldAriaAttributes(
       id,
       hasError,
-      hasErrorText
+      hasErrorText,
+      describedBy
     );
 
     const toggleVisibility = () => {
@@ -86,6 +92,7 @@ const FieldFactory = forwardRef<
               baseClassName
             )}
             placeholder={placeholder}
+            autoComplete={autoComplete}
             {...ariaAttributes}
             readOnly={readOnly}
             disabled={disabled}
@@ -106,6 +113,7 @@ const FieldFactory = forwardRef<
               value === STRING.Empty,
               selectSizeClassName
             )}
+            autoComplete={autoComplete}
             {...ariaAttributes}
           >
             {placeholder && (
@@ -206,6 +214,7 @@ const FieldFactory = forwardRef<
               value === STRING.Empty,
               selectSizeClassName
             )}
+            autoComplete={autoComplete}
             {...ariaAttributes}
           >
             {placeholder && (
@@ -255,6 +264,10 @@ const FieldFactory = forwardRef<
                 baseClassName
               )}
               placeholder={placeholder}
+              autoComplete={autoComplete}
+              inputMode={inputMode}
+              autoCapitalize={autoCapitalize}
+              spellCheck={spellCheck}
               {...ariaAttributes}
               ref={reference ?? ref}
             />
@@ -296,6 +309,10 @@ const FieldFactory = forwardRef<
             disabled={disabled}
             className={baseClassName}
             placeholder={placeholder}
+            autoComplete={autoComplete}
+            inputMode={inputMode}
+            autoCapitalize={autoCapitalize}
+            spellCheck={spellCheck}
             {...ariaAttributes}
             ref={reference ?? ref}
           />

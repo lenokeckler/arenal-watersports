@@ -10,12 +10,6 @@ export const useReservationGuideLoadViewModel = (
     result: initialResult,
   });
   const [isLoading, setIsLoading] = useState(false);
-  if (localResultState.initialResult !== initialResult) {
-    setLocalResultState({
-      initialResult,
-      result: initialResult,
-    });
-  }
   const result =
     localResultState.initialResult === initialResult
       ? localResultState.result

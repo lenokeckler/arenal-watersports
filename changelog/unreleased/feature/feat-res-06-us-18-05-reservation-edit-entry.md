@@ -1,0 +1,1 @@
+RES-06.18.05: Reservation edit entry — scheduled blocks of the Reservas calendar link to the edit screen, combos show their equipment locked and other reservations a non-editable state (US-RES-18 · AWS-101)
