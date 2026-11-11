@@ -28,6 +28,14 @@ export const createExtraListPage = (page: Page) => {
       exact: true,
     });
 
+  const getExtraPrice = (
+    extraName: string,
+    priceLabel: string
+  ): Locator =>
+    getExtraCard(extraName).getByText(priceLabel, {
+      exact: true,
+    });
+
   const getExtraEditLink = (extraName: string): Locator =>
     getExtraCard(extraName).getByRole(ARIA_ROLE.LINK, {
       name: EXTRA_CATALOG_COPY.EDIT_LINK,
@@ -65,6 +73,7 @@ export const createExtraListPage = (page: Page) => {
     getHeading,
     getExtraCard,
     getExtraStatusChip,
+    getExtraPrice,
     getExtraEditLink,
     getCreateLink,
     getRemoveButton,

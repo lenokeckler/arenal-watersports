@@ -21,9 +21,16 @@ export const E2E_EXTRA_SCENARIO = {
   STATUS_ACTIVE: "status_active",
 } as const;
 
+export const E2E_EXTRA_SEED_PRICE = {
+  CRC: 10_000,
+  USD: 20,
+} as const;
+
 export const DEFAULT_EXTRA_SEED_INPUT: ExtraSeedInput = {
   scenario: E2E_EXTRA_SCENARIO.STATUS_ACTIVE,
   status: EXTRA_STATUS.ACTIVE,
+  priceUsd: E2E_EXTRA_SEED_PRICE.USD,
+  priceCrc: null,
 };
 
 export const resolveExtraFixtureName = (
