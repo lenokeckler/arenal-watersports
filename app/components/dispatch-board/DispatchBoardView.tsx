@@ -1,19 +1,13 @@
-import {
-  ARIA_ROLE,
-  FORMAT_DATE,
-  TitleVariant,
-} from "@/app/constants";
+import { ARIA_ROLE, TitleVariant } from "@/app/constants";
 import UnorderedList from "@/app/components/list/UnorderedList";
 import Link from "@/app/components/link/Link";
 import Section from "@/app/components/section/Section";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
-import { OFFSET_CR_MS } from "@/app/utils/generators/dateConversion";
 import {
   DISPATCH_BOARD_COPY,
   DISPATCH_BOARD_HEADING_ID,
   DISPATCH_BOARD_PAGINATION,
-  DISPATCH_BOARD_TIME_FORMAT,
 } from "./constants/DispatchBoard.constants";
 import type { DispatchBoardContentProps } from "./models/DispatchBoardContentProps.interface";
 import type { DispatchBoardPaginationProps } from "./models/DispatchBoardPaginationProps.interface";
@@ -33,23 +27,9 @@ import {
   DISPATCH_BOARD_RESERVATION_TIME_CLASS,
   DISPATCH_BOARD_SECTION_CLASS,
 } from "./styles/DispatchBoard.styles";
+import DispatchReservationAction from "./components/DispatchReservationAction";
+import { formatCostaRicaTime } from "./utils/formatCostaRicaTime";
 import { getDispatchPageHref } from "./utils/getDispatchPageHref";
-
-const formatReservationTime = (
-  startsAt: string
-): string => {
-  const costaRicaDate = new Date(
-    new Date(startsAt).getTime() - OFFSET_CR_MS
-  );
-  const hours = String(
-    costaRicaDate.getUTCHours()
-  ).padStart(FORMAT_DATE.PAD_LENGTH, FORMAT_DATE.PAD_CHAR);
-  const minutes = String(
-    costaRicaDate.getUTCMinutes()
-  ).padStart(FORMAT_DATE.PAD_LENGTH, FORMAT_DATE.PAD_CHAR);
-
-  return `${hours}${DISPATCH_BOARD_TIME_FORMAT.SEPARATOR}${minutes}`;
-};
 
 const ReservationRow = ({
   reservation,
@@ -61,8 +41,12 @@ const ReservationRow = ({
       className={DISPATCH_BOARD_RESERVATION_HEADING_CLASS}
     />
     <Text className={DISPATCH_BOARD_RESERVATION_TIME_CLASS}>
-      {formatReservationTime(reservation.starts_at)}
+      {formatCostaRicaTime(reservation.starts_at)}
     </Text>
+    <DispatchReservationAction
+      customerName={reservation.customer_name}
+      reservationId={reservation.id}
+    />
   </div>
 );
 
