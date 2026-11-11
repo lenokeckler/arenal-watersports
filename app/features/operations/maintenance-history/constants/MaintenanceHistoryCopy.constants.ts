@@ -11,6 +11,7 @@ export const MAINTENANCE_HISTORY_COPY = {
   PAGE_LABEL: "Paginación del historial",
   PART_SEPARATOR: " · ",
   PREVIOUS_PAGE: "Anterior",
+  TITLE_ID_PREFIX: "historial-trabajo-",
   UNIT_SEPARATOR: " · ",
   WORK_TYPES: {
     oil_change: "Cambio de aceite",
