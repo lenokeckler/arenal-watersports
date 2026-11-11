@@ -44,6 +44,7 @@ export const useReservationCancellationViewModel = (
       setFormError(STRING.Empty);
       try {
         const result = await cancelReservationAction({
+          cause: null,
           expectedUpdatedAt: cancellation.expectedUpdatedAt,
           reason: reason.trim(),
           reservationId: cancellation.id,

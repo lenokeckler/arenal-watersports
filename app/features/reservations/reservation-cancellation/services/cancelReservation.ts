@@ -12,6 +12,7 @@ export const cancelReservation = async (
     RESERVATION_CANCELLATION_QUERY.RPC,
     {
       p_payload: {
+        cause: input.cause,
         expected_updated_at: input.expectedUpdatedAt,
         reason: input.reason,
         reservation_id: input.reservationId,
