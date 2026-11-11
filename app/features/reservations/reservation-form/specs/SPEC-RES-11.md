@@ -6,8 +6,10 @@ Reservations can offer active extras compatible with the concrete boat selected 
 
 ## In scope
 
-- Load active extras associated with the selected equipment unit through `extra_compatibility`.
-- Return only the extra identity, name, and stored prices to the reservation form.
+- Load active extras compatible with the selected concrete boat through `extra_compatibility`.
+- Quote the boat's selected rental or tour hourly tariff multiplied by the reservation duration, plus each selected extra once.
+- Calculate USD and CRC independently without currency conversion.
+- Represent a missing boat tariff explicitly and return a null total when a required price is missing for that currency.
 - Reuse the authorized reservation-form Supabase client and row-level security.
 
 ## Out of scope
@@ -15,7 +17,6 @@ Reservations can offer active extras compatible with the concrete boat selected 
 - Persisting selected extras with a reservation.
 - Inventory availability or commitments for extras that occupy equipment.
 - Inventory changes for charge-only extras.
-- Reservation total calculation.
 - Administration catalog and compatibility management.
 - User interface and browser evidence.
 
@@ -23,10 +24,12 @@ Reservations can offer active extras compatible with the concrete boat selected 
 
 - The server action accepts a valid equipment-unit UUID and returns its active compatible extras.
 - The database filters by the selected unit and active extra status.
-- Client input contains only the equipment-unit identifier; prices and inventory metadata are read from the database.
-- The reservation total is the selected boat's rental or tour hourly tariff multiplied by duration, plus each selected extra's price once per outing.
+- The extras action receives only the equipment-unit identifier; selected extra prices, compatibility, and occupancy metadata are read from the database.
+- The reservation total is the selected boat's applicable rental or tour hourly tariff multiplied by duration, plus each selected extra's price once per outing.
 - USD and CRC totals are calculated independently from their catalog prices without currency conversion.
-- This unit exposes the stored USD/CRC extra prices for the later pricing flow; total calculation and persistence are outside this unit.
+- A missing boat tariff is reported as unavailable rather than treated as zero; each currency total is null if any required component lacks that currency's price.
+- Quote inputs contain only the selected unit, reservation type, duration, and extra identifiers; prices and compatibility are read from the database.
+- The database quote helper can be reused by the later reservation persistence RPC.
 - Supabase failures retain the operation context.
 
 ## Edge cases & errors
@@ -45,5 +48,6 @@ Reservations can offer active extras compatible with the concrete boat selected 
 ## Acceptance criteria
 
 - [x] Solo se ofrecen los extras que aplican a esa embarcación.
+- [ ] La tarifa de la lancha por duración y los precios únicos de extras se suman de forma independiente en USD y CRC. Implementado en .02; falta conectar el total a la reserva y su interfaz.
 - [ ] Los extras que ocupan equipo real del inventario lo descuentan de la disponibilidad. Pendiente de unidad posterior que integre selección y disponibilidad de inventario.
 - [ ] Los extras que son solamente un cobro adicional no tocan el inventario. Pendiente de unidad posterior que integre persistencia de extras.

@@ -3566,6 +3566,19 @@ export type Database = {
         };
         Returns: boolean;
       };
+      reservation_extras_price_quote: {
+        Args: {
+          p_duration_minutes: number;
+          p_extra_ids: string[];
+          p_reservation_type: Database["public"]["Enums"]["reservation_type"];
+          p_unit_id: string;
+        };
+        Returns: {
+          has_boat_tariff: boolean;
+          list_amount_crc: number;
+          list_amount_usd: number;
+        }[];
+      };
       reservation_history_equipment_names: {
         Args: { p_reservation_id: string };
         Returns: string[];
