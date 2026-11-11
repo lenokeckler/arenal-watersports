@@ -4,10 +4,12 @@ import ReservationCancellationForm from "./components/ReservationCancellationFor
 import ReservationCancellationLayout from "./components/ReservationCancellationLayout";
 import ReservationCancellationSuccess from "./components/ReservationCancellationSuccess";
 import ReservationCancellationSummary from "./components/ReservationCancellationSummary";
+import ReservationCancellationUnavailable from "./components/ReservationCancellationUnavailable";
 import { useReservationCancellationErrorFocus } from "./hooks/useReservationCancellationErrorFocus";
 import { useReservationCancellationViewModel } from "./hooks/useReservationCancellationViewModel";
 import type { ReservationCancellationViewProps } from "./models/ReservationCancellationViewProps.interface";
 import { RESERVATION_CANCELLATION_FORM_CLASS } from "./styles/ReservationCancellationForm.styles";
+import { isReservationCancellationBlockedStatus } from "./utils/isReservationCancellationBlockedStatus";
 
 const ReservationCancellationView = ({
   cancellation,
@@ -19,29 +21,45 @@ const ReservationCancellationView = ({
     viewModel.formError
   );
 
-  return (
-    <ReservationCancellationLayout>
-      {viewModel.isCancelled ? (
+  if (viewModel.isCancelled) {
+    return (
+      <ReservationCancellationLayout>
         <ReservationCancellationSuccess
           code={cancellation.code}
-          requiresCause={cancellation.requiresCause}
+          requiresCause={viewModel.confirmedRequiresCause}
         />
-      ) : (
-        <form
-          noValidate
-          autoComplete="off"
-          aria-busy={viewModel.isPending}
-          className={RESERVATION_CANCELLATION_FORM_CLASS}
-          onSubmit={viewModel.handleSubmit}
-        >
-          <ReservationCancellationSummary
-            cancellation={cancellation}
-          />
-          <ReservationCancellationForm
-            viewModel={viewModel}
-          />
-        </form>
-      )}
+      </ReservationCancellationLayout>
+    );
+  }
+
+  if (
+    isReservationCancellationBlockedStatus(
+      cancellation.status
+    )
+  ) {
+    return (
+      <ReservationCancellationUnavailable
+        status={cancellation.status}
+      />
+    );
+  }
+
+  return (
+    <ReservationCancellationLayout>
+      <form
+        noValidate
+        autoComplete="off"
+        aria-busy={viewModel.isPending}
+        className={RESERVATION_CANCELLATION_FORM_CLASS}
+        onSubmit={viewModel.handleSubmit}
+      >
+        <ReservationCancellationSummary
+          cancellation={cancellation}
+        />
+        <ReservationCancellationForm
+          viewModel={viewModel}
+        />
+      </form>
     </ReservationCancellationLayout>
   );
 };

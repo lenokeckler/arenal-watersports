@@ -2,6 +2,7 @@ import type { ReservationCancellationErrors } from "./ReservationCancellationErr
 
 export interface ReservationCancellationViewModel {
   cause: string;
+  confirmedRequiresCause: boolean;
   errors: ReservationCancellationErrors;
   formError: string;
   handleSubmit: (event?: React.FormEvent) => void;
