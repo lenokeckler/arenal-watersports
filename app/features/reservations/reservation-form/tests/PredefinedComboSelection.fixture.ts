@@ -1,7 +1,7 @@
 import type { ReservationPredefinedCombo } from "../models/ReservationPredefinedCombo.interface";
 import { PREDEFINED_COMBO_SELECTION_TEST } from "./PredefinedComboSelection.constants";
 import { createPredefinedComboSelectionPage } from "./PredefinedComboSelection.page";
-import { renderReservationForm } from "./ReservationFormView.fixture";
+import { renderReservationFormWithCombos } from "./ReservationFormView.fixture";
 
 const regularCombo: ReservationPredefinedCombo = {
   audience: "national",
@@ -44,7 +44,7 @@ export const selectPredefinedCombo = async (
 ): Promise<
   ReturnType<typeof createPredefinedComboSelectionPage>
 > => {
-  renderReservationForm(undefined, [combo]);
+  renderReservationFormWithCombos(undefined, [combo]);
   const page = createPredefinedComboSelectionPage(
     document.body
   );

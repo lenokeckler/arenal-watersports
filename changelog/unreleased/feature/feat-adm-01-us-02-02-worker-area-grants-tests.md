@@ -1,0 +1,1 @@
+ADM-01.02.02: Worker area grants tests — pgTAP proves only administration grants or removes, only reservas and operaciones, never to an external guide, never the base area, and that removing cuts the access at once (US-ADM-02 · AWS-54)

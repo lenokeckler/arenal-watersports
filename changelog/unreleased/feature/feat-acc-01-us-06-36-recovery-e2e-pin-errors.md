@@ -1,0 +1,1 @@
+ACC-01.06.36: Recovery E2E PIN errors and captures — the browser tests prove a wrong, an exhausted, a reused and an older PIN are all refused with the same message, the rules show before typing, and they take the PR captures of the recovery screens (US-ACC-06 · AWS-35)

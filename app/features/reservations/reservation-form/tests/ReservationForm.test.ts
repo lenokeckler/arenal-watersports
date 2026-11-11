@@ -7,6 +7,7 @@ import {
 } from "vitest";
 import { getPredefinedReservationCombos } from "../services/getPredefinedReservationCombos";
 import { getReservationCategories } from "../services/getReservationCategories";
+import { getReservationUnitCategories } from "../services/getReservationUnitCategories";
 import { loadReservationGuideDirectory } from "../services/loadReservationGuideDirectory";
 import { getCostaRicaDate } from "../utils/getCostaRicaDate";
 import ReservationForm from "../ReservationForm";
@@ -22,6 +23,10 @@ vi.mock(
 
 vi.mock("../services/getReservationCategories", () => ({
   getReservationCategories: vi.fn(),
+}));
+
+vi.mock("../services/getReservationUnitCategories", () => ({
+  getReservationUnitCategories: vi.fn(),
 }));
 
 vi.mock(
@@ -44,6 +49,9 @@ describe("ReservationForm", () => {
     vi.mocked(getReservationCategories).mockResolvedValue(
       []
     );
+    vi.mocked(
+      getReservationUnitCategories
+    ).mockResolvedValue([]);
     vi.mocked(
       loadReservationGuideDirectory
     ).mockResolvedValue(
