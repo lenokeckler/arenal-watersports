@@ -9,7 +9,9 @@ export const OUT_ON_WATER_ROW_FIXTURE = {
   customer_name: "Ana Mora",
   dispatch_id: "cccccccc-0000-0000-0000-000000000001",
   dispatched_at: "2026-09-07T15:10:00.000Z",
+  duration_minutes: 90,
   ends_at: "2026-09-07T16:40:00.000Z",
+  extended_minutes: 30,
   quantity: 2,
   reservation_id: "dddddddd-0000-0000-0000-000000000001",
   unit_codes: ["JS-1", "JS-2"],
@@ -40,7 +42,11 @@ export const OUT_ON_WATER_GROUP_FIXTURE = {
   customerName: OUT_ON_WATER_ROW_FIXTURE.customer_name,
   dispatchId: OUT_ON_WATER_ROW_FIXTURE.dispatch_id,
   dispatchedAt: OUT_ON_WATER_ROW_FIXTURE.dispatched_at,
+  durationMinutes:
+    OUT_ON_WATER_ROW_FIXTURE.duration_minutes,
   endsAt: OUT_ON_WATER_ROW_FIXTURE.ends_at,
+  extendedMinutes:
+    OUT_ON_WATER_ROW_FIXTURE.extended_minutes,
   quantity: OUT_ON_WATER_ROW_FIXTURE.quantity,
   reservationId: OUT_ON_WATER_ROW_FIXTURE.reservation_id,
   unitCodes: OUT_ON_WATER_ROW_FIXTURE.unit_codes,
@@ -56,3 +62,36 @@ export const OUT_ON_WATER_TEXT = {
   REMAINING_39: "Faltan 39 min",
   REMAINING_40: "Faltan 40 min",
 } as const;
+
+export const ADJUST_INPUT_FIXTURE = {
+  dispatchId: OUT_ON_WATER_ROW_FIXTURE.dispatch_id,
+  durationMinutes: 120,
+};
+
+export const INVALID_ADJUST_INPUTS = [
+  {
+    input: {
+      ...ADJUST_INPUT_FIXTURE,
+      dispatchId: "not-a-uuid",
+    },
+    name: "an id that is not a uuid",
+  },
+  {
+    input: { ...ADJUST_INPUT_FIXTURE, durationMinutes: 0 },
+    name: "a duration of zero",
+  },
+  {
+    input: {
+      ...ADJUST_INPUT_FIXTURE,
+      durationMinutes: 1441,
+    },
+    name: "a duration over a day",
+  },
+  {
+    input: {
+      ...ADJUST_INPUT_FIXTURE,
+      durationMinutes: 30.5,
+    },
+    name: "a duration that is not whole minutes",
+  },
+] as const;
