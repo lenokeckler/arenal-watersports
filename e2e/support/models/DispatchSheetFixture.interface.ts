@@ -4,6 +4,7 @@ export interface DispatchSheetFixture {
   customerName: string;
   makeMaintenanceNeeds: () => Promise<void>;
   makeDispatchLate: (minutesLate: number) => Promise<void>;
+  addMaintenanceJobs: () => Promise<void>;
   readMaintenanceJobs: () => Promise<MaintenanceJobsState>;
   readGroupClosing: () => Promise<GroupClosingState>;
   readDispatchDuration: () => Promise<DispatchDurationState>;
