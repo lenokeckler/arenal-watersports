@@ -55,7 +55,7 @@ describe("createCustomComboReservation", () => {
     vi.unstubAllGlobals();
   });
 
-  it("persists all selected categories, guides, and agreed prices in one RPC payload", async () => {
+  it("persists category and unit commitments with guides and agreed prices", async () => {
     await expect(
       createCustomComboReservation(
         VALIDATED_CUSTOM_COMBO_RESERVATION_INPUT
@@ -81,10 +81,9 @@ describe("createCustomComboReservation", () => {
                 quantity: 2,
               },
               {
-                category_id:
+                unit_id:
                   VALIDATED_CUSTOM_COMBO_RESERVATION_INPUT
-                    .items[1].categoryId,
-                quantity: 1,
+                    .items[1].unitId,
               },
             ],
             people_count: 3,

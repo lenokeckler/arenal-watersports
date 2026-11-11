@@ -1,7 +1,7 @@
 import React from "react";
 import { SpinnerProps } from "./models/SpinnerProps.interface";
 import { useSpinnerViewModel } from "./hooks/useSpinnerViewModel";
-import { SPINNER_SCREEN_READER_CLASS } from "./styles/Spinner.styles";
+import { SCREEN_READER_ONLY_CLASS } from "@/app/styles/ScreenReader.styles";
 
 const Spinner = (props: SpinnerProps) => {
   const {
@@ -19,7 +19,7 @@ const Spinner = (props: SpinnerProps) => {
         role={role}
         aria-label={ariaLabel}
       >
-        <span className={SPINNER_SCREEN_READER_CLASS}>
+        <span className={SCREEN_READER_ONLY_CLASS}>
           {screenReaderText}
         </span>
       </div>

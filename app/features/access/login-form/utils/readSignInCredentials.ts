@@ -1,17 +1,6 @@
-import { STRING } from "@/app/constants";
-import {
-  SIGN_IN_FIELD,
-  type SignInField,
-} from "@/app/constants/access/SignInError.constants";
+import { SIGN_IN_FIELD } from "@/app/constants/access/SignInError.constants";
+import { readTextField } from "@/app/utils/form-data/readTextField";
 import type { SignInCredentials } from "@/app/utils/sign-in/models/SignInCredentials.interface";
-
-const readTextField = (
-  formData: FormData,
-  field: SignInField
-): string => {
-  const value = formData.get(field);
-  return typeof value === "string" ? value : STRING.Empty;
-};
 
 export const readSignInCredentials = (
   formData: FormData

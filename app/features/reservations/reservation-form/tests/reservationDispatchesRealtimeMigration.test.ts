@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 
 const DISPATCH_REALTIME_MIGRATION = path.resolve(
   process.cwd(),
-  "supabase/migrations/20261018120300_reservation_dispatches_realtime.sql"
+  "supabase/migrations/20261029000400_reservation_dispatches_realtime.sql"
 );
 
 describe("reservation dispatches realtime migration", () => {

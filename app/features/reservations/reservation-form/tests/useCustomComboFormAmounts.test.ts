@@ -1,5 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import { useCustomComboForm } from "../hooks/useCustomComboForm";
 import { CUSTOM_COMBO_FORM_TEST } from "./useCustomComboForm.constants";
 
@@ -13,12 +14,14 @@ vi.mock("../actions/getCustomComboPricingAction", () => ({
 describe("custom combo agreed amounts", () => {
   it("clears invalid currency input without changing the other amount", () => {
     const { result } = renderHook(() =>
-      useCustomComboForm(
-        CUSTOM_COMBO_FORM_TEST.CATEGORIES,
-        CUSTOM_COMBO_FORM_TEST.INITIAL_DURATION_HOURS,
-        vi.fn(),
-        vi.fn()
-      )
+      useCustomComboForm({
+        categories: CUSTOM_COMBO_FORM_TEST.CATEGORIES,
+        clearFieldError: vi.fn(),
+        durationHours:
+          CUSTOM_COMBO_FORM_TEST.INITIAL_DURATION_HOURS,
+        onGuideIdsChange: vi.fn(),
+        reservationType: RESERVATION_TYPE.COMBO,
+      })
     );
 
     act(() => {

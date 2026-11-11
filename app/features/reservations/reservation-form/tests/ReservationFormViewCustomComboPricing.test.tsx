@@ -30,7 +30,7 @@ beforeEach(() => {
 });
 
 const createComboPricingPage = async () => {
-  renderReservationForm();
+  renderReservationForm(true, true, true);
   const page = createCustomComboPage(document.body);
   await page.selectComboWithCategory(
     RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME
