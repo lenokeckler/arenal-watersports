@@ -6,6 +6,7 @@ import {
   it,
   vi,
 } from "vitest";
+import { RESERVATION_STATUS } from "@/app/constants";
 import { cancelReservationAction } from "../actions/cancelReservationAction";
 import { RESERVATION_CANCELLATION_CAUSE } from "../constants/ReservationCancellationCause.constants";
 import { RESERVATION_CANCELLATION_CAUSE_COPY } from "../constants/ReservationCancellationCauseCopy.constants";
@@ -65,7 +66,7 @@ describe("ReservationCancellationView for a dispatched reservation", () => {
     expect(page.queryText(COPY.NOTE)).not.toBeNull();
   });
 
-  it("cancels with the chosen cause and confirms that operations still records the return", async () => {
+  it("cancels with the chosen cause and keeps confirming that operations still records the return after the refresh", async () => {
     vi.mocked(cancelReservationAction).mockResolvedValue({
       ok: true,
       reservationId: EXPECTED_DISPATCHED.id,
@@ -88,6 +89,14 @@ describe("ReservationCancellationView for a dispatched reservation", () => {
       reason: CANCELLATION_REASON,
       reservationId: EXPECTED_DISPATCHED.id,
     });
+    page.refresh({
+      ...EXPECTED_DISPATCHED,
+      requiresCause: false,
+      status: RESERVATION_STATUS.CANCELLED,
+    });
+    expect(page.getStatusText()).toBe(
+      COPY.SUCCESS_DISPATCHED(EXPECTED_DISPATCHED.code)
+    );
   });
 
   it("shows a cause refused by the server under the field", async () => {

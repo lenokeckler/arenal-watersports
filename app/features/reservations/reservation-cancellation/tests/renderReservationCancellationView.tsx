@@ -7,10 +7,16 @@ import { createReservationCancellationViewPage } from "./ReservationCancellation
 export const renderReservationCancellationView = (
   cancellation: ReservationCancellation = EXPECTED_DISPATCHED
 ) => {
-  render(
+  const { rerender } = render(
     <ReservationCancellationView
       cancellation={cancellation}
     />
   );
-  return createReservationCancellationViewPage();
+  return {
+    ...createReservationCancellationViewPage(),
+    refresh: (next: ReservationCancellation) =>
+      rerender(
+        <ReservationCancellationView cancellation={next} />
+      ),
+  };
 };
