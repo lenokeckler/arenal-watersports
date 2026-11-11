@@ -1,19 +1,26 @@
 export const EXTRA_CATALOG_COPY = {
   CANCEL_BUTTON: "Cancelar",
   CREATE_CTA: "Nuevo extra",
+  CREATE_SUCCESS_TOAST: "Extra agregado.",
   EDIT_LINK: "Editar",
   EMPTY_STATE_BODY: "Cada extra que agregue aparece aquí.",
   EMPTY_STATE_TITLE: "Todavía no hay extras.",
   FETCH_ERROR_MESSAGE: "No se pudieron cargar los extras.",
   FORBIDDEN_ERROR:
     "No tiene permiso para administrar los extras.",
+  FORM_PURPOSE:
+    "Escriba el nombre con el que el extra aparece en las reservas.",
+  FORM_TITLE_CREATE: "Agregar extra",
+  FORM_TITLE_EDIT: "Editar extra",
   GENERIC_MUTATION_ERROR:
     "No se pudo guardar el extra. Intente de nuevo.",
   LIST_TITLE: "Extras",
   LOADING_TEXT_DELETING: "Eliminando…",
+  LOADING_TEXT_SAVING: "Guardando…",
   LOADING_TEXT_UPDATING: "Actualizando…",
   NAME_DUPLICATE_ERROR:
     "Ya existe un extra con ese nombre.",
+  NAME_LABEL: "Nombre del extra",
   NAME_REQUIRED_ERROR: "Ingrese el nombre del extra.",
   NOT_FOUND_ERROR:
     "No se encontró el extra. Es posible que otra persona lo haya eliminado.",
@@ -30,4 +37,7 @@ export const EXTRA_CATALOG_COPY = {
   RETRY_BUTTON: "Reintentar",
   STATUS_LABEL_ACTIVE: "Activo",
   STATUS_LABEL_INACTIVE: "Inactivo",
+  SUBMIT_BUTTON_CREATE: "Agregar extra",
+  SUBMIT_BUTTON_EDIT: "Guardar cambios",
+  UPDATE_SUCCESS_TOAST: "Extra actualizado.",
 } as const;
