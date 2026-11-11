@@ -141,7 +141,7 @@ set local request.jwt.claims to '{"sub":"e4200000-0000-4000-8000-000000000001","
 select throws_ok($$ select create_predefined_combo_reservation(jsonb_build_object(
   'combo_id', 'e4200000-0000-4000-8000-000000000201',
   'customer_name', 'RES09 atomic failure', 'people_count', 2,
-  'date', '2035-10-08', 'time', '09:00', 'duration_minutes', 60,
+  'date', '2035-10-09', 'time', '09:00', 'duration_minutes', 60,
   'guide_ids', array['e4200000-0000-4000-8000-000000000002'])) $$,
   'P0001', 'Injected predefined combo pricing failure',
   'a late pricing failure aborts the complete reservation transaction');

@@ -3124,6 +3124,10 @@ export type Database = {
         Args: { p_payload: Json };
         Returns: string;
       };
+      create_predefined_combo_reservation: {
+        Args: { p_payload: Json };
+        Returns: string;
+      };
       create_rental_reservation:
         | {
             Args: {

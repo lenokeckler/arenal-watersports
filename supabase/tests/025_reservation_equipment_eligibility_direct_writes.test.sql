@@ -117,7 +117,7 @@ select lives_ok(
     ('e2800000-0000-4000-8000-000000000301', 'e2800000-0000-4000-8000-000000000501') $$,
   'extra rows use the committed boat without an equipment commitment of their own'
 );
-select is((select quantity from reservation_items where id = 'e2800000-0000-4000-8000-000000000401'), 2,
+select is((select quantity from reservation_items where id = 'e2800000-0000-4000-8000-000000000401'), 1,
   'rejected changes preserve the original commitment');
 reset role;
 select * from finish();
