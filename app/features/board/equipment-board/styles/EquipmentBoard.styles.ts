@@ -1,5 +1,5 @@
 export const EQUIPMENT_BOARD_PAGE_CLASS =
-  "mx-auto w-full max-w-7xl px-margin-mobile py-md md:px-margin-desktop md:py-lg";
+  "mx-auto w-full max-w-7xl px-margin-mobile py-md md:px-margin-desktop";
 
 export const EQUIPMENT_BOARD_HEADER_CLASS =
   "mb-md flex items-center gap-sm";

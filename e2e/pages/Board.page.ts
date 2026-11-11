@@ -1,11 +1,17 @@
 import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE, PATHS } from "@/app/constants";
+import { SYSTEM_NAVIGATION_COPY } from "@/app/features/access/system-navigation/constants/SystemNavigationCopy.constants";
 import { EQUIPMENT_BOARD_COPY } from "@/app/features/board/equipment-board/constants/EquipmentBoardCopy.constants";
 import {
   E2E_BOARD_CARD_SELECTOR,
   E2E_BOARD_LAYOUT,
 } from "../constants/E2eBoard.constants";
-import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
+import type { BoardRowMeasure } from "../models/BoardRowMeasure.interface";
+import type { BoardRowMeasureInput } from "../models/BoardRowMeasureInput.interface";
+import {
+  E2E_COUNT,
+  HEADING_LEVEL,
+} from "../constants/E2eRuntime.constants";
 import { getMainRegion } from "../support/mainRegion";
 
 export const createBoardPage = (page: Page) => {
@@ -84,9 +90,84 @@ export const createBoardPage = (page: Page) => {
       ).length;
     }, E2E_BOARD_LAYOUT.ROW_TOLERANCE_PX);
 
+  const resolveNavigationTop =
+    async (): Promise<number> => {
+      const navigation = page.getByRole(
+        ARIA_ROLE.NAVIGATION,
+        {
+          name: SYSTEM_NAVIGATION_COPY.LABEL,
+        }
+      );
+
+      if ((await navigation.count()) === E2E_COUNT.NONE) {
+        return Number.POSITIVE_INFINITY;
+      }
+
+      const navigationBox = await navigation.boundingBox();
+
+      return navigationBox === null
+        ? Number.POSITIVE_INFINITY
+        : navigationBox.y;
+    };
+
+  const measureCardRows =
+    async (): Promise<BoardRowMeasure> => {
+      const navigationTop = await resolveNavigationTop();
+
+      return getCards().evaluateAll(
+        (cards, input: BoardRowMeasureInput) => {
+          const rects = cards.map((card) =>
+            card.getBoundingClientRect()
+          );
+          const bottomLimit = Math.min(
+            window.innerHeight,
+            input.navigationTop
+          );
+          const rowTops: number[] = [];
+
+          rects.forEach((rect) => {
+            if (
+              !rowTops.some(
+                (top) =>
+                  Math.abs(top - rect.top) <=
+                  input.tolerance
+              )
+            ) {
+              rowTops.push(rect.top);
+            }
+          });
+
+          const fullyVisibleRows = rowTops.filter(
+            (rowTop) =>
+              rects
+                .filter(
+                  (rect) =>
+                    Math.abs(rect.top - rowTop) <=
+                    input.tolerance
+                )
+                .every(
+                  (rect) =>
+                    rect.top >= 0 &&
+                    rect.bottom <= bottomLimit
+                )
+          ).length;
+
+          return {
+            fullyVisibleRows,
+            totalRows: rowTops.length,
+          };
+        },
+        {
+          navigationTop,
+          tolerance: E2E_BOARD_LAYOUT.ROW_TOLERANCE_PX,
+        }
+      );
+    };
+
   return {
     clickCard,
     countCardsInFirstRow,
+    measureCardRows,
     getCard,
     getButtons,
     getCardLinks,
