@@ -10,6 +10,7 @@ export const MIDDLE_PAGE = 2;
 export const MIDDLE_PAGE_COUNT = 3;
 export const PAGE_PAST_THE_END = "9";
 export const REDIRECT_ERROR_MESSAGE = "NEXT_REDIRECT";
+export const NOT_FOUND_ERROR_MESSAGE = "NEXT_NOT_FOUND";
 export const SECOND_EXTRA_ID = "second-extra-id";
 export const SECOND_EXTRA_NAME = "Parrilla";
 
