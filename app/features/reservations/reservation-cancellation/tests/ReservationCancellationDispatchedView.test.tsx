@@ -7,7 +7,8 @@ import {
   vi,
 } from "vitest";
 import { cancelReservationAction } from "../actions/cancelReservationAction";
-import { RESERVATION_CANCELLATION_CAUSE_OPTIONS } from "../constants/ReservationCancellationCauseCopy.constants";
+import { RESERVATION_CANCELLATION_CAUSE } from "../constants/ReservationCancellationCause.constants";
+import { RESERVATION_CANCELLATION_CAUSE_COPY } from "../constants/ReservationCancellationCauseCopy.constants";
 import { RESERVATION_CANCELLATION_FEEDBACK_COPY as FEEDBACK } from "../constants/ReservationCancellationFeedbackCopy.constants";
 import { RESERVATION_CANCELLATION_FORM_COPY as COPY } from "../constants/ReservationCancellationFormCopy.constants";
 import {
@@ -22,8 +23,14 @@ vi.mock("../actions/cancelReservationAction", () => ({
   cancelReservationAction: vi.fn(),
 }));
 
-const [WEATHER_OPTION, TRIP_PROBLEM_OPTION] =
-  RESERVATION_CANCELLATION_CAUSE_OPTIONS;
+const WEATHER_OPTION =
+  RESERVATION_CANCELLATION_CAUSE_COPY[
+    RESERVATION_CANCELLATION_CAUSE.WEATHER
+  ];
+const TRIP_PROBLEM_OPTION =
+  RESERVATION_CANCELLATION_CAUSE_COPY[
+    RESERVATION_CANCELLATION_CAUSE.TRIP_PROBLEM
+  ];
 
 describe("ReservationCancellationView for a dispatched reservation", () => {
   beforeEach(() => {

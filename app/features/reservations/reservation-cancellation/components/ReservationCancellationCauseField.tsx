@@ -1,5 +1,6 @@
 import { Text } from "@/app/components";
-import { RESERVATION_CANCELLATION_CAUSE_OPTIONS } from "../constants/ReservationCancellationCauseCopy.constants";
+import { RESERVATION_CANCELLATION_CAUSE_COPY } from "../constants/ReservationCancellationCauseCopy.constants";
+import { RESERVATION_CANCELLATION_CAUSE_OPTIONS } from "../constants/ReservationCancellationCauseOptions.constants";
 import { RESERVATION_CANCELLATION_FORM_COPY as COPY } from "../constants/ReservationCancellationFormCopy.constants";
 import { RESERVATION_CANCELLATION_FIELD_ID as FIELD_ID } from "../constants/ReservationCancellationUi.constants";
 import type { ReservationCancellationCauseFieldProps } from "../models/ReservationCancellationCauseFieldProps.interface";
@@ -62,12 +63,20 @@ const ReservationCancellationCauseField = ({
           (option) => (
             <ReservationCancellationCauseOption
               key={option.value}
-              description={option.description}
+              description={
+                RESERVATION_CANCELLATION_CAUSE_COPY[
+                  option.value
+                ].description
+              }
               hasError={Boolean(error)}
               id={option.id}
               isDisabled={viewModel.isPending}
               isSelected={viewModel.cause === option.value}
-              label={option.label}
+              label={
+                RESERVATION_CANCELLATION_CAUSE_COPY[
+                  option.value
+                ].label
+              }
               onSelect={viewModel.setCause}
               value={option.value}
             />
