@@ -7,6 +7,7 @@ export const PHOTO_URL =
   "https://storage.test/unit-condition-photos/right_side?token=abc";
 
 export const PHOTOS_DATA: UnitPhotosData = {
+  canManage: false,
   slots: [
     { angle: "right_side", url: PHOTO_URL },
     { angle: "left_side", url: null },

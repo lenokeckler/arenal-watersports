@@ -1,6 +1,7 @@
 import Image from "@/app/components/image/Image";
 import Text from "@/app/components/text/Text";
 import { UNIT_PHOTOS_COPY } from "../constants/UnitPhotosCopy.constants";
+import UnitPhotoUpload from "./UnitPhotoUpload";
 import type { UnitPhotoCardProps } from "../models/UnitPhotoCardProps.interface";
 import {
   UNIT_PHOTO_ANGLE_CLASS,
@@ -12,7 +13,9 @@ import {
 import type { JSX } from "react";
 
 const UnitPhotoCard = ({
+  canManage,
   slot,
+  unitId,
 }: UnitPhotoCardProps): JSX.Element => {
   const angleLabel = UNIT_PHOTOS_COPY.ANGLE[slot.angle];
 
@@ -39,6 +42,12 @@ const UnitPhotoCard = ({
           </Text>
         )}
       </div>
+      {canManage && (
+        <UnitPhotoUpload
+          slot={slot}
+          unitId={unitId}
+        />
+      )}
     </div>
   );
 };
