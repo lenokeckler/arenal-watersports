@@ -3052,14 +3052,18 @@ export type Database = {
         };
         Returns: {
           code: string;
+          fuel_level: number;
+          fuel_max: number;
           is_assigned: boolean;
           unit_id: string;
+          usage_total: number;
         }[];
       };
       dispatch_reservation_group: {
         Args: {
           p_category_id: string;
           p_dispatched_at: string;
+          p_readings?: Json;
           p_reservation_id: string;
           p_returns_at: string;
           p_unit_ids?: string[];
@@ -3360,11 +3364,13 @@ export type Database = {
         Returns: {
           category_id: string;
           category_name: string;
+          consumes_fuel: boolean;
           duration_minutes: number;
           fixed_unit_ids: string[];
           has_motor: boolean;
           required_quantity: number;
           tracking_mode: Database["public"]["Enums"]["tracking_mode"];
+          usage_metric: Database["public"]["Enums"]["usage_metric"];
         }[];
       };
       reservation_equipment_differs: {
