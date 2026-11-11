@@ -34,7 +34,11 @@ describe("getDispatchedGroupsOut", () => {
         dispatchId: OUT_ON_WATER_ROW_FIXTURE.dispatch_id,
         dispatchedAt:
           OUT_ON_WATER_ROW_FIXTURE.dispatched_at,
+        durationMinutes:
+          OUT_ON_WATER_ROW_FIXTURE.duration_minutes,
         endsAt: OUT_ON_WATER_ROW_FIXTURE.ends_at,
+        extendedMinutes:
+          OUT_ON_WATER_ROW_FIXTURE.extended_minutes,
         quantity: OUT_ON_WATER_ROW_FIXTURE.quantity,
         reservationId:
           OUT_ON_WATER_ROW_FIXTURE.reservation_id,
