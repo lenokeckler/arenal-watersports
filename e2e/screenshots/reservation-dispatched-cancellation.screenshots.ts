@@ -1,6 +1,7 @@
 import { RESERVATION_CANCELLATION_CAUSE } from "@/app/features/reservations/reservation-cancellation/constants/ReservationCancellationCause.constants";
 import { RESERVATION_CANCELLATION_CAUSE_COPY as causeCopy } from "@/app/features/reservations/reservation-cancellation/constants/ReservationCancellationCauseCopy.constants";
 import { RESERVATION_CANCELLATION_FEEDBACK_COPY as feedback } from "@/app/features/reservations/reservation-cancellation/constants/ReservationCancellationFeedbackCopy.constants";
+import { RESERVATION_CANCELLATION_UNAVAILABLE_COPY as unavailable } from "@/app/features/reservations/reservation-cancellation/constants/ReservationCancellationUnavailableCopy.constants";
 import { E2E_RESERVATION_CANCELLATION as cancellation } from "../constants/E2eReservationCancellation.constants";
 import {
   E2E_RESERVATION_DISPATCHED_CANCELLATION as values,
@@ -75,6 +76,12 @@ test("captures every dispatched cancellation state", async ({
       timeout: E2E_TIMEOUT_MS.POST_SUBMIT,
     });
     await captureState(state.SUCCESS);
+
+    await form.goTo(reservation.id);
+    await expect(
+      form.getText(unavailable.TITLE)
+    ).toBeVisible();
+    await captureState(state.UNAVAILABLE);
 
     await switchToOperationsMode(page, activeWorker);
     await outOnWater.goTo();

@@ -1,8 +1,10 @@
 import {
   E2E_RESERVATION_DISPATCHED_CANCELLATION as values,
+  E2E_RESERVATION_DISPATCHED_CANCELLATION_ERROR as errors,
   E2E_RESERVATION_DISPATCHED_CANCELLATION_SQL as sql,
 } from "../constants/E2eReservationDispatchedCancellation.constants";
 import type { DispatchedCancellationState } from "./models/DispatchedCancellationState.interface";
+import { failE2eOperation } from "./failE2eOperation";
 import { runWorkerSql } from "./runWorkerSql";
 
 export const readDispatchedCancellationState = async (
@@ -15,9 +17,17 @@ export const readDispatchedCancellationState = async (
     workerId,
     { reservation: reservationId }
   );
+  const fields = row.split(values.FIELD_SEPARATOR);
+
+  if (fields.length <= values.FIXED_FIELD_COUNT) {
+    failE2eOperation(
+      values.READ_OPERATION,
+      errors.FIELD_COUNT(fields.length)
+    );
+  }
+
   const [
     status,
-    reason,
     cause,
     openGroups,
     closedGroups,
@@ -25,7 +35,8 @@ export const readDispatchedCancellationState = async (
     charges,
     fuelIn,
     usageIn,
-  ] = row.split(values.FIELD_SEPARATOR);
+    ...reasonParts
+  ] = fields;
 
   return {
     cause,
@@ -34,7 +45,7 @@ export const readDispatchedCancellationState = async (
     depositStatus,
     fuelIn,
     openGroups: Number(openGroups),
-    reason,
+    reason: reasonParts.join(values.FIELD_SEPARATOR),
     status,
     usageIn,
   };

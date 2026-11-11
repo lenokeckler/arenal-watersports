@@ -1,5 +1,6 @@
 export const E2E_RESERVATION_DISPATCHED_CANCELLATION = {
   FIELD_SEPARATOR: "|",
+  FIXED_FIELD_COUNT: 8,
   FIXTURE_OPERATION: "dispatch a reservation to cancel",
   FUEL_OUT: "4",
   READ_OPERATION: "read the dispatched cancellation",
@@ -11,6 +12,12 @@ export const E2E_RESERVATION_DISPATCHED_CANCELLATION = {
   USAGE_OUT: "10",
 } as const;
 
+export const E2E_RESERVATION_DISPATCHED_CANCELLATION_ERROR =
+  {
+    FIELD_COUNT: (received: number): string =>
+      `expected at least ${E2E_RESERVATION_DISPATCHED_CANCELLATION.FIXED_FIELD_COUNT + 1} fields, received ${received}`,
+  } as const;
+
 export const E2E_RESERVATION_DISPATCHED_CANCELLATION_SCREENSHOT_STATE =
   {
     CALENDAR: "calendar",
@@ -20,6 +27,7 @@ export const E2E_RESERVATION_DISPATCHED_CANCELLATION_SCREENSHOT_STATE =
     OUT_ON_WATER: "out-on-water",
     REASON_ERROR: "reason-error",
     SUCCESS: "success",
+    UNAVAILABLE: "unavailable",
   } as const;
 
 export const E2E_RESERVATION_DISPATCHED_CANCELLATION_SQL = {
@@ -40,14 +48,14 @@ commit;`,
   READ: `
 select concat_ws('|',
   reservation.status,
-  coalesce(reservation.cancellation_reason, ''),
   coalesce(reservation.cancellation_cause::text, ''),
   (select count(*) from reservation_dispatches dispatch where dispatch.reservation_id = reservation.id and dispatch.closed_at is null),
   (select count(*) from reservation_dispatches dispatch where dispatch.reservation_id = reservation.id and dispatch.closed_at is not null),
   coalesce((select deposit.status::text from deposits deposit where deposit.reservation_id = reservation.id), ''),
   (select count(*) from reservation_charges charge where charge.reservation_id = reservation.id),
   coalesce((select item.fuel_in::text from reservation_items item where item.reservation_id = reservation.id and item.unit_id is not null), ''),
-  coalesce((select item.usage_in::text from reservation_items item where item.reservation_id = reservation.id and item.unit_id is not null), '')
+  coalesce((select item.usage_in::text from reservation_items item where item.reservation_id = reservation.id and item.unit_id is not null), ''),
+  coalesce(reservation.cancellation_reason, '')
 )
 from reservations reservation
 where reservation.id = :'reservation';`,

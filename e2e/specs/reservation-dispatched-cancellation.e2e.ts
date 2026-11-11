@@ -14,18 +14,19 @@ import { createOutOnWaterPage } from "../pages/OutOnWater.page";
 import { createReservationCancellationPage } from "../pages/ReservationCancellation.page";
 import { createReservationsCalendarPage } from "../pages/ReservationsCalendar.page";
 import { expect, test } from "../support/activeWorkerTest";
+import { cancelDispatchedReservation } from "../support/cancelDispatchedReservation";
 import { closeDispatchedGroup } from "../support/closeDispatchedGroup";
 import { createDispatchedCancellationFixture } from "../support/createDispatchedCancellationFixture";
-import {
-  readDispatchedCancellationState,
-  readDispatchedUnitStatus,
-} from "../support/readDispatchedCancellationState";
+import { readDispatchedCancellationState } from "../support/readDispatchedCancellationState";
+import { expectDispatchedUnitStatus } from "../support/expectDispatchedUnitStatus";
 import { removeDispatchedCancellationFixtures } from "../support/removeDispatchedCancellationFixtures";
 import { signInToReservationsMode } from "../support/signInToReservationsMode";
 import { switchToOperationsMode } from "../support/switchToOperationsMode";
 
 const submitWait = { timeout: E2E_TIMEOUT_MS.POST_SUBMIT };
 const cause = RESERVATION_CANCELLATION_CAUSE.WEATHER;
+const returnedCause =
+  RESERVATION_CANCELLATION_CAUSE.TRIP_PROBLEM;
 
 test.describe("Dispatched reservation cancellation", () => {
   test.describe.configure({ mode: cancellation.TEST_MODE });
@@ -62,6 +63,9 @@ test.describe("Dispatched reservation cancellation", () => {
     ).toBeVisible();
 
     await form.selectCause(causeCopy[cause].label);
+    await expect(
+      form.getCause(causeCopy[cause].label)
+    ).toBeChecked();
     await form.submit();
     await expect(
       form.getText(feedback.REASON_REQUIRED)
@@ -88,12 +92,11 @@ test.describe("Dispatched reservation cancellation", () => {
       reason: cancellation.REASON,
       status: cancellation.CANCELLED_STATUS,
     });
-    expect(
-      await readDispatchedUnitStatus(
-        activeWorker.id,
-        reservation.unitCode
-      )
-    ).toBe(values.UNIT_OCCUPIED);
+    await expectDispatchedUnitStatus(
+      activeWorker.id,
+      reservation.unitCode,
+      values.UNIT_OCCUPIED
+    );
   });
 
   test("records the return of the cancelled group in operations and frees the unit", async ({
@@ -105,14 +108,13 @@ test.describe("Dispatched reservation cancellation", () => {
         activeWorker.id,
         testInfo.project.name
       );
-    const form = createReservationCancellationPage(page);
     const outOnWater = createOutOnWaterPage(page);
 
-    await form.goTo(reservation.id);
-    await form.selectCause(causeCopy[cause].label);
-    await form.fillReason(cancellation.REASON);
-    await form.submit();
-    await expect(form.getStatus()).toBeVisible(submitWait);
+    await cancelDispatchedReservation(
+      page,
+      reservation.id,
+      returnedCause
+    );
 
     await switchToOperationsMode(page, activeWorker);
     await outOnWater.goTo();
@@ -130,6 +132,7 @@ test.describe("Dispatched reservation cancellation", () => {
         reservation.id
       )
     ).toMatchObject({
+      cause: returnedCause,
       closedGroups: 1,
       depositStatus: DEPOSIT_STATUS.HELD,
       fuelIn: String(close.FIRST.FUEL),
@@ -137,11 +140,10 @@ test.describe("Dispatched reservation cancellation", () => {
       status: cancellation.CANCELLED_STATUS,
       usageIn: close.FIRST.USAGE.toFixed(2),
     });
-    expect(
-      await readDispatchedUnitStatus(
-        activeWorker.id,
-        reservation.unitCode
-      )
-    ).toBe(values.UNIT_AVAILABLE);
+    await expectDispatchedUnitStatus(
+      activeWorker.id,
+      reservation.unitCode,
+      values.UNIT_AVAILABLE
+    );
   });
 });
