@@ -75,6 +75,29 @@ describe("isReservationCancellationInput", () => {
       { ...VALID_CANCELLATION_INPUT, cause: undefined },
     ],
     [
+      "an empty cause",
+      { ...VALID_CANCELLATION_INPUT, cause: "" },
+    ],
+    [
+      "a cause with another casing",
+      { ...VALID_CANCELLATION_INPUT, cause: "WEATHER" },
+    ],
+    [
+      "a padded cause",
+      { ...VALID_CANCELLATION_INPUT, cause: " weather " },
+    ],
+    [
+      "a numeric cause",
+      { ...VALID_CANCELLATION_INPUT, cause: 1 },
+    ],
+    [
+      "an object cause",
+      {
+        ...VALID_CANCELLATION_INPUT,
+        cause: { value: CANCELLATION_CAUSE },
+      },
+    ],
+    [
       "a numeric reason",
       { ...VALID_CANCELLATION_INPUT, reason: 7 },
     ],
