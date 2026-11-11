@@ -59,7 +59,6 @@ export type { Position } from "./strings/Position.types";
 export { KEYBOARD } from "./strings/Keyboard.types";
 export { PATHS } from "./strings/Paths.constants";
 export { UUID_PATTERN } from "./strings/UUIDPattern.constants";
-export { TYPE_OF } from "./strings/TypeOf.constants";
 export {
   ISO_DATE_MIN,
   ISO_DATE_PATTERN,
