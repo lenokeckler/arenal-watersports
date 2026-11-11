@@ -1,3 +1,4 @@
+import Link from "@/app/components/link/Link";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
 import { TitleVariant } from "@/app/constants";
@@ -6,10 +7,12 @@ import type { MaintenanceUnitCardProps } from "../models/MaintenanceUnitCardProp
 import {
   MAINTENANCE_CARD_CLASS,
   MAINTENANCE_CARD_HEADING_CLASS,
+  MAINTENANCE_CARD_LINK_CLASS,
   MAINTENANCE_OIL_TEXT_CLASS,
 } from "../styles/Maintenance.styles";
 import { getOilChangeText } from "../utils/getOilChangeText";
 import { getOilState } from "../utils/getOilState";
+import { getUnitDamageReportsHref } from "../utils/getUnitDamageReportsHref";
 import type { JSX } from "react";
 
 const MaintenanceOilCard = ({
@@ -28,6 +31,12 @@ const MaintenanceOilCard = ({
     >
       {getOilChangeText(unit)}
     </Text>
+    <Link
+      href={getUnitDamageReportsHref(unit.unitId)}
+      className={MAINTENANCE_CARD_LINK_CLASS}
+    >
+      {MAINTENANCE_COPY.VIEW_DAMAGE_REPORTS}
+    </Link>
   </div>
 );
 

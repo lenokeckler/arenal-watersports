@@ -35,3 +35,6 @@ export const MAINTENANCE_STATUS_CLASS =
 
 export const MAINTENANCE_NEW_JOB_LINK_CLASS =
   "inline-flex min-h-12 items-center self-start rounded-xl border border-outline-variant bg-surface-container/80 px-4 text-on-surface transition-colors hover:bg-surface-container-high focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+
+export const MAINTENANCE_CARD_LINK_CLASS =
+  "inline-flex min-h-11 items-center self-start text-body-base font-semibold text-primary underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
