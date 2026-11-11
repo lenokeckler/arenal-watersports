@@ -1,3 +1,6 @@
+import type { MaintenanceOverview } from "../models/MaintenanceOverview.interface";
+import type { MaintenanceUnit } from "../models/MaintenanceUnit.interface";
+
 export const MAINTENANCE_ROWS = [
   {
     category_id: "aaaaaaaa-0000-0000-0000-000000000001",
@@ -55,3 +58,28 @@ export const OIL_TEXT_CASES = [
     text: "Acumulado: 5000 km · Cambio a las 5000 km · Llegó justo a su cambio de aceite.",
   },
 ] as const;
+
+const toUnit = (
+  row: (typeof MAINTENANCE_ROWS)[number]
+): MaintenanceUnit => ({
+  categoryId: row.category_id,
+  categoryName: row.category_name,
+  code: row.code,
+  nextOilChangeAt: row.next_oil_change_at,
+  oilOverage: row.oil_overage,
+  status: row.status as MaintenanceUnit["status"],
+  unitId: row.unit_id,
+  usageMetric:
+    row.usage_metric as MaintenanceUnit["usageMetric"],
+  usageTotal: row.usage_total,
+});
+
+export const MAINTENANCE_OVERVIEW_FIXTURE: MaintenanceOverview =
+  {
+    oilDue: MAINTENANCE_ROWS.filter(
+      (row) => row.oil_overage !== null
+    ).map(toUnit),
+    outOfService: MAINTENANCE_ROWS.filter(
+      (row) => row.status !== "available"
+    ).map(toUnit),
+  };
