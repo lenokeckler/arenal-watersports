@@ -1,51 +1,120 @@
-import { RESERVATION_FORM_MINIMUM_INPUT_VALUE } from "../constants/ReservationFormUi.constants";
+import { useEffect, useEffectEvent, useState } from "react";
+import { STRING } from "@/app/constants";
 import type { ReservationFormField } from "../models/ReservationFormField.constants";
+import type { ReservationFormFieldsOptions } from "../models/ReservationFormFieldsOptions.interface";
+import type { ReservationFormFieldsViewModel } from "../models/ReservationFormFieldsViewModel.interface";
+import type { UpdateReservationFormValue } from "../models/UpdateReservationFormValue.type";
+import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
+import { createReservationTypeChangeHandler } from "../utils/createReservationTypeChangeHandler";
+import { createReservationFormNumericFieldHandlers } from "../utils/createReservationFormNumericFieldHandlers";
 import { useReservationFormValues } from "./useReservationFormValues";
+import { useReservationGuideSelection } from "./useReservationGuideSelection";
+
+const createBasicFieldHandlers = (
+  updateValue: UpdateReservationFormValue,
+  clearSelectionResetNotice: () => void,
+  clearUnitAfterScheduleChange: () => void
+) => ({
+  handleCategoryChange: (value: string) => {
+    clearSelectionResetNotice();
+    updateValue(RESERVATION_FORM_FIELD.CATEGORY_ID, value);
+    updateValue(
+      RESERVATION_FORM_FIELD.UNIT_ID,
+      STRING.Empty
+    );
+  },
+  handleCustomerNameChange: (value: string) =>
+    updateValue(
+      RESERVATION_FORM_FIELD.CUSTOMER_NAME,
+      value
+    ),
+  handleDateChange: (value: string) => {
+    updateValue(RESERVATION_FORM_FIELD.DATE, value);
+    updateValue(
+      RESERVATION_FORM_FIELD.UNIT_ID,
+      STRING.Empty
+    );
+  },
+  handleTimeChange: (value: string) => {
+    updateValue(RESERVATION_FORM_FIELD.TIME, value);
+    clearUnitAfterScheduleChange();
+  },
+  handleUnitChange: (value: string) => {
+    clearSelectionResetNotice();
+    updateValue(RESERVATION_FORM_FIELD.UNIT_ID, value);
+  },
+});
 
 export const useReservationFormFields = (
   initialDate: string,
   initialCategoryId: string,
-  clearFieldError: (field: ReservationFormField) => void
-) => {
-  const { updateValue, values } = useReservationFormValues(
-    initialDate,
-    initialCategoryId,
-    clearFieldError
+  clearFieldError: (field: ReservationFormField) => void,
+  options: ReservationFormFieldsOptions = {}
+): ReservationFormFieldsViewModel => {
+  const { reset, updateValue, values } =
+    useReservationFormValues(
+      initialDate,
+      initialCategoryId,
+      clearFieldError,
+      options.initialValues
+    );
+  const [
+    hasReservationTypeSelectionReset,
+    setHasReservationTypeSelectionReset,
+  ] = useState(false);
+  const handleReservationTypeChange =
+    createReservationTypeChangeHandler(
+      values,
+      updateValue,
+      setHasReservationTypeSelectionReset
+    );
+  const guideSelection = useReservationGuideSelection(
+    values,
+    updateValue
   );
+  const reconcileLoadedGuides = useEffectEvent(() => {
+    if (options.guideOptions !== undefined) {
+      guideSelection.reconcileGuideSelection(
+        options.guideOptions.map((guide) => guide.id)
+      );
+    }
+  });
+  useEffect(() => {
+    reconcileLoadedGuides();
+  }, [options.guideOptions]);
+  const clearUnitAfterScheduleChange = (): void => {
+    if (!options.keepsUnitOnScheduleChange) {
+      updateValue(
+        RESERVATION_FORM_FIELD.UNIT_ID,
+        STRING.Empty
+      );
+    }
+  };
 
   return {
-    handleCategoryChange: (value: string) =>
-      updateValue("categoryId", value),
-    handleCustomerNameChange: (value: string) =>
-      updateValue("customerName", value),
-    handleDateChange: (value: string) =>
-      updateValue("date", value),
-    handleDurationChange: (value: number) => {
-      if (
-        Number.isFinite(value) &&
-        value >= RESERVATION_FORM_MINIMUM_INPUT_VALUE
-      ) {
-        updateValue("durationHours", value);
-      }
+    ...createBasicFieldHandlers(
+      updateValue,
+      () => setHasReservationTypeSelectionReset(false),
+      clearUnitAfterScheduleChange
+    ),
+    ...createReservationFormNumericFieldHandlers(
+      updateValue,
+      clearUnitAfterScheduleChange
+    ),
+    ...guideSelection,
+    reset: () => {
+      reset();
+      setHasReservationTypeSelectionReset(false);
     },
-    handlePeopleCountChange: (value: number) => {
-      if (
-        Number.isFinite(value) &&
-        value >= RESERVATION_FORM_MINIMUM_INPUT_VALUE
-      ) {
-        updateValue("peopleCount", value);
-      }
-    },
-    handleQuantityChange: (value: number) => {
-      if (
-        Number.isFinite(value) &&
-        value >= RESERVATION_FORM_MINIMUM_INPUT_VALUE
-      ) {
-        updateValue("quantity", value);
-      }
-    },
-    handleTimeChange: (value: string) =>
-      updateValue("time", value),
+    handleReservationTypeChange: (
+      value,
+      currentCategories
+    ) =>
+      handleReservationTypeChange(
+        value,
+        currentCategories ?? options.liveCategories ?? []
+      ),
+    hasReservationTypeSelectionReset,
     values,
   };
 };

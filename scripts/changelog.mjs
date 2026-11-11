@@ -24,6 +24,7 @@ const LIST_MARKER = "- ";
 const CHECK_FLAG = "--check";
 const RELEASE_BRANCH_PREFIX = "release/";
 const ADDED_STATUS = "A";
+const DEVELOP_BRANCH = "origin/develop";
 
 export const CHANGELOG_SECTION = {
   BUGFIX: { directory: "bugfix", heading: "## Bugfix" },
@@ -117,6 +118,7 @@ export const checkPullRequestFiles = (changes, headRef) => {
   const fragments = changes.filter(
     (change) =>
       change.status === ADDED_STATUS &&
+      !change.restored &&
       FRAGMENT_PATH_PATTERN.test(change.path)
   );
   if (fragments.length !== 1) {
@@ -175,6 +177,38 @@ const release = () => {
   );
 };
 
+const existedInHistory = (base, path) =>
+  execFileSync(
+    "git",
+    ["log", "-1", "--format=%H", base, "--", path],
+    { cwd: REPO_ROOT, encoding: "utf8" }
+  ).trim() !== "";
+
+const referenceExists = (reference) =>
+  execFileSync(
+    "git",
+    [
+      "for-each-ref",
+      "--format=%(refname)",
+      `refs/remotes/${reference}`,
+    ],
+    { cwd: REPO_ROOT, encoding: "utf8" }
+  ).trim() !== "";
+
+const existsInReference = (reference, path) =>
+  execFileSync(
+    "git",
+    ["ls-tree", "-r", "--name-only", reference, "--", path],
+    { cwd: REPO_ROOT, encoding: "utf8" }
+  ).trim() === path;
+
+const isRestoredFragment = (base, change) =>
+  change.status === ADDED_STATUS &&
+  FRAGMENT_PATH_PATTERN.test(change.path) &&
+  (existedInHistory(base, change.path) ||
+    (referenceExists(DEVELOP_BRANCH) &&
+      existsInReference(DEVELOP_BRANCH, change.path)));
+
 const readChanges = (base) =>
   execFileSync(
     "git",
@@ -191,7 +225,11 @@ const readChanges = (base) =>
     .map((line) => {
       const [status, path] = line.split("\t");
       return { path, status };
-    });
+    })
+    .map((change) => ({
+      ...change,
+      restored: isRestoredFragment(base, change),
+    }));
 
 const currentBranch = () =>
   process.env.GITHUB_HEAD_REF ||

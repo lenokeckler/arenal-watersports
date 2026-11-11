@@ -1,0 +1,1 @@
+ACC-02.10.08: Session activity tracker — every tap or key on an internal screen tells the server the worker is active, at most once a minute, and a session already closed goes to the login (US-ACC-10 · AWS-39)

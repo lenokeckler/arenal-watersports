@@ -1,0 +1,1 @@
+ADM-02.12.02: Category list screen — the read-only category list at /administration/categories, showing each category's tracking mode, group and whether it can be deleted or only marked inactive (US-ADM-12 · AWS-64)
