@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { assertReservationCalendarAccess } from "@/app/services/reservations/assertReservationCalendarAccess";
 import ReservationPostponementLayout from "./components/ReservationPostponementLayout";
-import ReservationPostponementSummary from "./components/ReservationPostponementSummary";
 import ReservationPostponementUnavailable from "./components/ReservationPostponementUnavailable";
+import ReservationPostponementView from "./ReservationPostponementView";
 import { RESERVATION_POSTPONEMENT_BLOCK } from "./constants/ReservationPostponementBlock.constants";
 import type { ReservationPostponementProps } from "./models/ReservationPostponementProps.interface";
 import { getReservationPostponement } from "./services/getReservationPostponement";
@@ -36,7 +36,7 @@ const ReservationPostponement = async ({
 
   return (
     <ReservationPostponementLayout>
-      <ReservationPostponementSummary
+      <ReservationPostponementView
         postponement={postponement}
       />
     </ReservationPostponementLayout>
