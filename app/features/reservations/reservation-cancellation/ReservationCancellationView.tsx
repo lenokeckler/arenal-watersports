@@ -24,6 +24,7 @@ const ReservationCancellationView = ({
       {viewModel.isCancelled ? (
         <ReservationCancellationSuccess
           code={cancellation.code}
+          requiresCause={cancellation.requiresCause}
         />
       ) : (
         <form

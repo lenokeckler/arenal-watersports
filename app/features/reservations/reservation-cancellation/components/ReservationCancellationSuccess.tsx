@@ -10,10 +10,15 @@ import {
 
 const ReservationCancellationSuccess = ({
   code,
+  requiresCause,
 }: ReservationCancellationSuccessProps): React.JSX.Element => (
   <div className={RESERVATION_CANCELLATION_STACK_CLASS}>
     <Text role={ARIA_ROLE.STATUS}>
-      {RESERVATION_CANCELLATION_FORM_COPY.SUCCESS(code)}
+      {requiresCause
+        ? RESERVATION_CANCELLATION_FORM_COPY.SUCCESS_DISPATCHED(
+            code
+          )
+        : RESERVATION_CANCELLATION_FORM_COPY.SUCCESS(code)}
     </Text>
     <Link
       href={PATHS.RESERVATIONS.CALENDAR}
