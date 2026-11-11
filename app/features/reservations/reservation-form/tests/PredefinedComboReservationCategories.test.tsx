@@ -3,7 +3,7 @@ import type { ReservationCategoryOption } from "../models/ReservationCategoryOpt
 import { RESERVATION_GUIDE_LOAD_RESULT_KIND } from "../constants/ReservationGuideLoad.constants";
 import { PREDEFINED_COMBO_SELECTION_FIXTURE } from "./PredefinedComboSelection.fixture";
 import { PREDEFINED_COMBO_SELECTION_TEST } from "./PredefinedComboSelection.constants";
-import { renderReservationForm } from "./ReservationFormView.fixture";
+import { renderReservationFormWithCombos } from "./ReservationFormView.fixture";
 import { RESERVATION_GUIDE_ASSIGNMENT_TEST } from "./ReservationGuideAssignment.constants";
 import { RESERVATION_GUIDE_SELECTION_TEST } from "./ReservationGuideSelection.constants";
 import { createPredefinedComboSelectionPage } from "./PredefinedComboSelection.page";
@@ -11,7 +11,7 @@ import { createPredefinedComboSelectionPage } from "./PredefinedComboSelection.p
 describe("predefined combo catalog without categories", () => {
   it("allows a selected saved combo when categories are empty", async () => {
     const categories: ReservationCategoryOption[] = [];
-    renderReservationForm(
+    renderReservationFormWithCombos(
       {
         kind: RESERVATION_GUIDE_LOAD_RESULT_KIND.SUCCESS,
         guides: [

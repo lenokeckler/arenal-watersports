@@ -14,8 +14,13 @@ export const createReservationGuideAssignmentPage = (
     form.getByRole(ARIA_ROLE.BUTTON, {
       name: RESERVATION_FORM_UI_COPY.GUIDES_RETRY,
     });
+  const getGuideError = () =>
+    form.getByRole(ARIA_ROLE.ALERT);
   return {
     getGuideCheckbox,
+    findGuideCheckbox: (name: string) =>
+      form.findByLabelText(name, { exact: true }),
+    getGuideError,
     queryGuideSelector: () =>
       form.queryByRole(ARIA_ROLE.GROUP, {
         name: RESERVATION_FORM_UI_COPY.GUIDES,

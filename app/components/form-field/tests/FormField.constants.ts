@@ -18,4 +18,10 @@ export const DEFAULT_INPUT_CLASSES = [
   "border-outline",
 ];
 export const GLASS_ONLY_CLASS = "min-h-14";
+export const AUTOFILL_TEXT_CLASS =
+  "autofill:[-webkit-text-fill-color:var(--color-on-surface)]";
+export const GLASS_AUTOFILL_BACKGROUND_CLASS =
+  "autofill:shadow-[inset_0_0_0_1000px_var(--color-surface-container)]";
+export const DEFAULT_AUTOFILL_BACKGROUND_CLASS =
+  "autofill:shadow-[inset_0_0_0_1000px_var(--color-surface-container-highest)]";
 export const TEXTBOX_ROLE = "textbox";

@@ -1,0 +1,54 @@
+"use client";
+
+import FormErrorBanner from "@/app/components/form-error-banner/FormErrorBanner";
+import FormSubmitButton from "@/app/components/form-submit-button/FormSubmitButton";
+import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
+import { PASSWORD_CHANGE_FIELD } from "@/app/constants/access/PasswordChangeError.constants";
+import PasswordChangeFormFields from "./components/PasswordChangeFormFields";
+import { usePasswordChangeFormViewModel } from "./hooks/usePasswordChangeFormViewModel";
+import type { PasswordChangeFormViewProps } from "./models/PasswordChangeFormViewProps.interface";
+import { FORM_STACK_CLASS } from "@/app/components/form-layout/styles/FormLayout.styles";
+
+const PasswordChangeFormView = ({
+  action,
+  beforeFields,
+  copy,
+  errorCopy,
+  footer,
+  heading,
+}: PasswordChangeFormViewProps): React.JSX.Element => {
+  const { formAction, onSubmit, ...fields } =
+    usePasswordChangeFormViewModel({ action, errorCopy });
+
+  return (
+    <>
+      {heading}
+      <FormErrorBanner
+        message={
+          fields.fieldErrors[PASSWORD_CHANGE_FIELD.FORM]
+        }
+      />
+      <form
+        noValidate
+        action={formAction}
+        onSubmit={onSubmit}
+        className={FORM_STACK_CLASS}
+      >
+        {beforeFields}
+        <PasswordChangeFormFields
+          {...fields}
+          copy={copy}
+        />
+        <FormSubmitButton
+          icon={MATERIAL_ICON_NAME.LOCK_RESET}
+          isPending={fields.isPending}
+          label={copy.SUBMIT}
+          pendingLabel={copy.SUBMITTING}
+        />
+        {footer}
+      </form>
+    </>
+  );
+};
+
+export default PasswordChangeFormView;

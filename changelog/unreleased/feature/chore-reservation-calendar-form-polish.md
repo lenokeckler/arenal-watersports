@@ -1,0 +1,1 @@
+chore - Reservation calendar and form polish — reservation selections scroll consistently, model validation and successful form reset are improved, and reservation cards show times without duplicate dates
