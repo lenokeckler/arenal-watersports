@@ -23,6 +23,7 @@ export const CLOSE_INPUT_FIXTURE = {
     {
       damage: null,
       fuel: 2,
+      maintenance: false,
       unitId: CLOSE_UNIT_ID,
       usage: 14.25,
     },
@@ -47,6 +48,7 @@ export const CLOSE_RPC_RETURNS = [
   {
     damage: null,
     fuel: 2,
+    maintenance: false,
     unit_id: CLOSE_UNIT_ID,
     usage: 14.25,
   },
@@ -60,6 +62,7 @@ export const CLOSE_RPC_RETURNS_WITH_DAMAGE = [
       impact_delta: 1,
     },
     fuel: 2,
+    maintenance: false,
     unit_id: CLOSE_UNIT_ID,
     usage: 14.25,
   },
@@ -120,6 +123,18 @@ export const INVALID_CLOSE_INPUTS = [
       ],
     },
     name: "a damage report without description",
+  },
+  {
+    input: {
+      ...CLOSE_INPUT_FIXTURE,
+      returns: [
+        {
+          ...CLOSE_INPUT_FIXTURE.returns[0],
+          maintenance: "yes",
+        },
+      ],
+    },
+    name: "a maintenance mark that is not true or false",
   },
   {
     input: {

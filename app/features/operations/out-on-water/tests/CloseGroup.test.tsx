@@ -131,12 +131,14 @@ describe("Group closing", () => {
         {
           damage: null,
           fuel: Number(CLOSE_FORM_TEXT.FUEL),
+          maintenance: false,
           unitId: CLOSE_RETURN_UNITS[0].unitId,
           usage: Number(CLOSE_FORM_TEXT.USAGE),
         },
         {
           damage: null,
           fuel: null,
+          maintenance: false,
           unitId: CLOSE_RETURN_UNITS[1].unitId,
           usage: null,
         },
@@ -233,5 +235,29 @@ describe("Group closing", () => {
     expect(
       await screen.findByText(CLOSE_GROUP_COPY.LOAD_ERROR)
     ).toBeInTheDocument();
+  });
+
+  it("sends a unit to maintenance when it is marked at the return", async () => {
+    submitMock.mockResolvedValue({
+      status: CLOSE_GROUP_STATUS.CLOSED,
+    });
+    await openSheet();
+    fillMotorReadings();
+
+    const [, plainMaintenance] = screen.getAllByLabelText(
+      CLOSE_GROUP_COPY.MAINTENANCE_LABEL
+    );
+    fireEvent.click(plainMaintenance);
+    fireEvent.click(getSubmit());
+
+    await waitFor(() =>
+      expect(submitMock).toHaveBeenCalled()
+    );
+    expect(
+      submitMock.mock.calls[0][0].returns.map(
+        (value: { maintenance: boolean }) =>
+          value.maintenance
+      )
+    ).toEqual([false, true]);
   });
 });

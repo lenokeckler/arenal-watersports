@@ -23,6 +23,7 @@ export const CLOSE_GROUP_COPY = {
   FUEL_OUT_NONE: "No hay lectura de gasolina de la salida.",
   IMPACT_INVALID: "Escriba un número entero de cero o más.",
   IMPACT_LABEL: "Aumento del conteo de golpes",
+  MAINTENANCE_LABEL: "Enviar a mantenimiento",
   LOADING: "Cargando las unidades del grupo…",
   LOAD_ERROR:
     "No se pudo cargar el grupo. Cierre la hoja e intente de nuevo.",
@@ -58,6 +59,7 @@ export const CLOSE_GROUP_FIELD_ID = {
   DESCRIPTION_PREFIX: "close-description-",
   FUEL_PREFIX: "close-fuel-",
   IMPACT_PREFIX: "close-impact-",
+  MAINTENANCE_PREFIX: "close-maintenance-",
   USAGE_PREFIX: "close-usage-",
 } as const;
 

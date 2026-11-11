@@ -25,6 +25,7 @@ const isValidDamage = (damage: CloseGroupDamage): boolean =>
 
 const isValidReturn = (value: CloseGroupReturn): boolean =>
   UUID_PATTERN.test(value.unitId) &&
+  typeof value.maintenance === "boolean" &&
   (value.fuel === null || isValidFuelLevel(value.fuel)) &&
   (value.usage === null ||
     isValidUsageReading(value.usage)) &&
