@@ -18,6 +18,7 @@ import {
 import { useDispatchSheetViewModel } from "../hooks/useDispatchSheetViewModel";
 import { DISPATCH_INPUT_FIXTURE } from "./DispatchSheetTest.constants";
 import {
+  DISPATCH_FIXTURE_UNKNOWN_CATEGORY,
   MOTOR_GROUP_FIXTURE,
   UNIT_GROUP_FIXTURE,
 } from "./DispatchSheetGroup.fixtures";
@@ -43,10 +44,11 @@ const SELECTION = {
   unitIds: [DISPATCH_INPUT_FIXTURE.UNIT_ID],
 };
 
-const renderSheet = async () => {
+const renderSheet = async (initialCategoryId?: string) => {
   const onDispatched = vi.fn();
   const view = renderHook(() =>
     useDispatchSheetViewModel({
+      initialCategoryId,
       onDispatched,
       reservationId: DISPATCH_INPUT_FIXTURE.RESERVATION_ID,
     })
@@ -97,6 +99,34 @@ describe("useDispatchSheetViewModel", () => {
     expect(view.result.current.selectedGroup).toEqual(
       MOTOR_GROUP_FIXTURE
     );
+  });
+
+  it("opens straight on the category chosen from the board", async () => {
+    loadDispatchSheetMock.mockResolvedValue([
+      UNIT_GROUP_FIXTURE,
+      MOTOR_GROUP_FIXTURE,
+    ]);
+
+    const { view } = await renderSheet(
+      MOTOR_GROUP_FIXTURE.categoryId
+    );
+
+    expect(view.result.current.selectedGroup).toEqual(
+      MOTOR_GROUP_FIXTURE
+    );
+  });
+
+  it("falls back to the chooser when the chosen category has nothing left", async () => {
+    loadDispatchSheetMock.mockResolvedValue([
+      UNIT_GROUP_FIXTURE,
+      MOTOR_GROUP_FIXTURE,
+    ]);
+
+    const { view } = await renderSheet(
+      DISPATCH_FIXTURE_UNKNOWN_CATEGORY
+    );
+
+    expect(view.result.current.selectedGroup).toBeNull();
   });
 
   it("closes the sheet when the last category is dispatched", async () => {

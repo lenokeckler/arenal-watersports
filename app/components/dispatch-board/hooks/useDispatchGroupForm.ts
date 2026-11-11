@@ -7,6 +7,7 @@ import type { DispatchGroupSelection } from "../models/DispatchGroupSelection.in
 import type { DispatchSheetGroup } from "../models/DispatchSheetGroup.interface";
 import { addMinutesToClockTime } from "../utils/addMinutesToClockTime";
 import { buildDispatchWindow } from "../utils/buildDispatchWindow";
+import { buildInitialUnitSelection } from "../utils/buildInitialUnitSelection";
 import { formatCostaRicaTime } from "../utils/formatCostaRicaTime";
 import { getClockSpanMinutes } from "../utils/getClockSpanMinutes";
 import { parseClockTime } from "../utils/parseClockTime";
@@ -15,7 +16,10 @@ import { useDispatchUnitReadings } from "./useDispatchUnitReadings";
 interface DispatchGroupFormInput {
   group: DispatchSheetGroup;
   onSubmit: (selection: DispatchGroupSelection) => void;
+  preselectedUnitIds?: string[];
 }
+
+const NO_PRESELECTED_UNITS: string[] = [];
 
 const buildInitialTimes = (durationMinutes: number) => {
   const departureTime = formatCostaRicaTime(new Date());
@@ -32,13 +36,16 @@ const buildInitialTimes = (durationMinutes: number) => {
 export const useDispatchGroupForm = ({
   group,
   onSubmit,
+  preselectedUnitIds = NO_PRESELECTED_UNITS,
 }: DispatchGroupFormInput): DispatchGroupFormViewModel => {
   const [times, setTimes] = useState(() =>
     buildInitialTimes(group.durationMinutes)
   );
   const [selectedUnitIds, setSelectedUnitIds] = useState<
     string[]
-  >(group.fixedUnitIds);
+  >(() =>
+    buildInitialUnitSelection(group, preselectedUnitIds)
+  );
 
   const readings = useDispatchUnitReadings({
     group,

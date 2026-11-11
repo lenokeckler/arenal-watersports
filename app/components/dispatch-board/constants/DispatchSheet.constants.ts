@@ -32,6 +32,8 @@ export const DISPATCH_READING_PATTERN = {
 export const DISPATCH_SHEET_ERROR = {
   DISPATCH_GROUP: "dispatch reservation group",
   INVALID_INPUT: "Invalid dispatch input",
+  LOAD_CATEGORY_RESERVATIONS:
+    "load the reservations of a category to dispatch",
   LOAD_GROUPS: "load dispatch groups",
   LOAD_UNITS: "load dispatch candidate units",
 } as const;

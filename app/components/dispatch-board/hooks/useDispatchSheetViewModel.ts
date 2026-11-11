@@ -10,18 +10,22 @@ import type { DispatchSheetViewModel } from "../models/DispatchSheetViewModel.in
 import { useDispatchSheetData } from "./useDispatchSheetData";
 
 interface DispatchSheetViewModelInput {
+  initialCategoryId?: string;
   onDispatched: () => void;
   reservationId: string;
 }
 
 export const useDispatchSheetViewModel = ({
+  initialCategoryId,
   onDispatched,
   reservationId,
 }: DispatchSheetViewModelInput): DispatchSheetViewModel => {
   const { groups, phase, reload } =
     useDispatchSheetData(reservationId);
   const [selectedCategoryId, setSelectedCategoryId] =
-    useState<NullableRef<string>>(null);
+    useState<NullableRef<string>>(
+      initialCategoryId ?? null
+    );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] =
     useState<NullableRef<string>>(null);
