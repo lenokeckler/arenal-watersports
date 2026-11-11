@@ -30,7 +30,9 @@ describe("ReservationsCalendar placement", () => {
 
       expect(page.getReservationBlocks()).toHaveLength(1);
       expect(
-        page.getReservationBlockContainerClasses()
+        page.getReservationBlockContainerClasses(
+          RESERVATION_BLOCK_CONTAINER_CLASS[view]
+        )
       ).toEqual([RESERVATION_BLOCK_CONTAINER_CLASS[view]]);
     }
   );

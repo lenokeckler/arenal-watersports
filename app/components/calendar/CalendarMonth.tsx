@@ -1,47 +1,35 @@
 import type { ReactElement } from "react";
-import { Text, Title } from "@/app/components";
-import {
-  CALENDAR_TEXT,
-  TitleVariant,
-} from "@/app/constants";
 import type { CalendarMonthProps } from "./models/CalendarMonthProps.interface";
-import {
-  CALENDAR_MONTH_CLASS,
-  CALENDAR_GRID_CLASS,
-  CALENDAR_WEEKDAY_CLASS,
-} from "./styles/Calendar.styles";
+import { CalendarMonthGrid } from "./CalendarMonthGrid";
+import { CalendarMonthTitle } from "./CalendarMonthTitle";
+import { resolveCalendarMonthClass } from "./styles/Calendar.styles";
+import { isSameCalendarDate } from "./utils/isSameCalendarDate";
 
 export const CalendarMonth = ({
   title,
+  date,
   cells,
   showTitle = true,
+  daySelection,
+  monthSelection,
 }: CalendarMonthProps): ReactElement => (
-  <div className={CALENDAR_MONTH_CLASS}>
+  <div
+    className={resolveCalendarMonthClass(
+      isSameCalendarDate(monthSelection?.selectedDate, date)
+    )}
+  >
     {showTitle && (
-      <Title
-        variant={TitleVariant.AUXILIAR}
-        text={title}
+      <CalendarMonthTitle
+        date={date}
+        monthSelection={monthSelection}
+        title={title}
       />
     )}
-    <div className={CALENDAR_GRID_CLASS}>
-      {CALENDAR_TEXT.WEEKDAYS.map((weekday) => (
-        <Text
-          key={weekday}
-          className={CALENDAR_WEEKDAY_CLASS}
-        >
-          {weekday}
-        </Text>
-      ))}
-      {cells.map((cell) => (
-        <Text
-          key={cell.key}
-          className={cell.className}
-          aria-label={cell.fullLabel}
-          aria-current={cell.current ?? undefined}
-        >
-          {cell.label}
-        </Text>
-      ))}
-    </div>
+    <CalendarMonthGrid
+      cells={cells}
+      date={date}
+      daySelection={daySelection}
+      monthSelection={monthSelection}
+    />
   </div>
 );

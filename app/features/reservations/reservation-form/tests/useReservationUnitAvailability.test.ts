@@ -13,6 +13,7 @@ import { getAvailableReservationUnitsAction } from "../actions/getAvailableReser
 import { useReservationUnitAvailability } from "../hooks/useReservationUnitAvailability";
 import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
 import { AVAILABLE_UNIT_TEST } from "./getAvailableReservationUnits.constants";
+import { RESERVATION_EDIT_TEST } from "./ReservationEdit.constants";
 
 vi.mock(
   "../actions/getAvailableReservationUnitsAction",
@@ -27,12 +28,15 @@ describe("useReservationUnitAvailability", () => {
   it("refreshes available units when the reservation interval changes", async () => {
     vi.mocked(
       getAvailableReservationUnitsAction
-    ).mockResolvedValue([
-      {
-        code: AVAILABLE_UNIT_TEST.UNIT_CODE,
-        id: AVAILABLE_UNIT_TEST.UNIT_ID,
-      },
-    ]);
+    ).mockResolvedValue({
+      availableQuantity: null,
+      availableUnits: [
+        {
+          code: AVAILABLE_UNIT_TEST.UNIT_CODE,
+          id: AVAILABLE_UNIT_TEST.UNIT_ID,
+        },
+      ],
+    });
     const initialRequest: ReservationUnitAvailabilityInput =
       {
         categoryId: AVAILABLE_UNIT_TEST.CATEGORY_ID,
@@ -43,14 +47,17 @@ describe("useReservationUnitAvailability", () => {
       };
     const { rerender, result } = renderHook(
       ({ request }) =>
-        useReservationUnitAvailability(
-          request,
-          AVAILABLE_UNIT_TEST.REFRESH_KEY
-        ),
+        useReservationUnitAvailability(request, 0),
       { initialProps: { request: initialRequest } }
+    );
+    expect(result.current.isResolvedForCurrentRequest).toBe(
+      false
     );
     await waitFor(() =>
       expect(result.current.availableUnits).toHaveLength(1)
+    );
+    expect(result.current.isResolvedForCurrentRequest).toBe(
+      true
     );
 
     const nextRequest = {
@@ -60,6 +67,9 @@ describe("useReservationUnitAvailability", () => {
       time: "10:30",
     };
     rerender({ request: nextRequest });
+    expect(result.current.isResolvedForCurrentRequest).toBe(
+      false
+    );
 
     await waitFor(() =>
       expect(
@@ -69,11 +79,47 @@ describe("useReservationUnitAvailability", () => {
     await waitFor(() =>
       expect(result.current.availableUnits).toHaveLength(1)
     );
+    expect(result.current.isResolvedForCurrentRequest).toBe(
+      true
+    );
     expect(result.current.availableUnits).toEqual([
       {
         code: AVAILABLE_UNIT_TEST.UNIT_CODE,
         id: AVAILABLE_UNIT_TEST.UNIT_ID,
       },
     ]);
+  });
+
+  it("re-fetches when the excluded reservation changes", async () => {
+    vi.mocked(
+      getAvailableReservationUnitsAction
+    ).mockResolvedValue({
+      availableQuantity: null,
+      availableUnits: [],
+    });
+    const request: ReservationUnitAvailabilityInput = {
+      categoryId: AVAILABLE_UNIT_TEST.CATEGORY_ID,
+      date: AVAILABLE_UNIT_TEST.DATE,
+      durationMinutes: AVAILABLE_UNIT_TEST.DURATION_MINUTES,
+      excludeReservationId:
+        RESERVATION_EDIT_TEST.RESERVATION_ID,
+      time: AVAILABLE_UNIT_TEST.TIME,
+    };
+    const { rerender } = renderHook(
+      (input) => useReservationUnitAvailability(input, 0),
+      { initialProps: request }
+    );
+    const nextRequest = {
+      ...request,
+      excludeReservationId: RESERVATION_EDIT_TEST.UNIT_ID,
+    };
+
+    rerender(nextRequest);
+
+    await waitFor(() =>
+      expect(
+        getAvailableReservationUnitsAction
+      ).toHaveBeenLastCalledWith(nextRequest)
+    );
   });
 });

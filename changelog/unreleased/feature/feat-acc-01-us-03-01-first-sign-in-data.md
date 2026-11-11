@@ -1,0 +1,1 @@
+ACC-01.03.01: First sign-in data — the session token says whether the worker must change the temporary password, only the server can clear it, and Supabase rejects passwords shorter than 8 characters or missing an uppercase letter, a lowercase letter, a number or a symbol (US-ACC-03 · AWS-32)

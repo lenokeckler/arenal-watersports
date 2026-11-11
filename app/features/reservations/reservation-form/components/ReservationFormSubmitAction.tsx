@@ -8,6 +8,7 @@ import {
 } from "../styles/ReservationFormView.styles";
 
 const ReservationFormSubmitAction = ({
+  copy = RESERVATION_FORM_UI_COPY,
   isDisabled,
   viewModel,
 }: ReservationFormSubmitActionProps): React.JSX.Element => (
@@ -22,9 +23,7 @@ const ReservationFormSubmitAction = ({
       className={RESERVATION_FORM_SUBMIT_CLASS}
       disabled={isDisabled}
     >
-      {viewModel.isPending
-        ? RESERVATION_FORM_UI_COPY.SUBMITTING
-        : RESERVATION_FORM_UI_COPY.SUBMIT}
+      {viewModel.isPending ? copy.SUBMITTING : copy.SUBMIT}
     </Button>
   </div>
 );

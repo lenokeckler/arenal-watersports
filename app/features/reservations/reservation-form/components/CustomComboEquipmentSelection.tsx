@@ -12,6 +12,9 @@ import CustomComboEquipmentCategoryList from "./CustomComboEquipmentCategoryList
 
 const CustomComboEquipmentSelection = ({
   categories,
+  date,
+  durationHours,
+  time,
   viewModel,
 }: CustomComboEquipmentSelectionProps): React.JSX.Element => (
   <Section
@@ -32,6 +35,9 @@ const CustomComboEquipmentSelection = ({
     ) : (
       <CustomComboEquipmentCategoryList
         categories={categories}
+        date={date}
+        durationHours={durationHours}
+        time={time}
         viewModel={viewModel}
       />
     )}
