@@ -1,26 +1,33 @@
 import { useState } from "react";
-import { STRING } from "@/app/constants";
-import { EMPTY_RESERVATION_FORM_ERRORS } from "../constants/ReservationSubmissionState.constants";
-import { createReservationSubmissionStateHandlers } from "../utils/createReservationSubmissionStateHandlers";
+import type { ReservationFormActionResult } from "../models/ReservationFormActionResult.type";
+import type { ReservationFormErrorField } from "../models/ReservationFormField.constants";
+import { useReservationErrorFocusRequest } from "./useReservationErrorFocusRequest";
+import { useReservationSubmissionErrors } from "./useReservationSubmissionErrors";
 
 export const useReservationSubmissionState = () => {
-  const [errors, setErrors] = useState(
-    EMPTY_RESERVATION_FORM_ERRORS
-  );
-  const [formError, setFormError] = useState<string>(
-    STRING.Empty
-  );
+  const submissionErrors = useReservationSubmissionErrors();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const errorFocus = useReservationErrorFocusRequest();
+
+  const clearFieldError = (
+    field: ReservationFormErrorField
+  ): void => {
+    submissionErrors.clearFieldError(field);
+    setIsSubmitted(false);
+  };
+  const applyResult = (
+    result: ReservationFormActionResult
+  ): void => {
+    submissionErrors.applyResult(result);
+    setIsSubmitted(result.ok);
+  };
 
   return {
-    ...createReservationSubmissionStateHandlers({
-      setErrors,
-      setFormError,
-      setIsSubmitted,
-    }),
-    errors,
-    formError,
+    ...submissionErrors,
+    applyResult,
+    clearFieldError,
+    errorFocusRequest: errorFocus.errorFocusRequest,
     isSubmitted,
-    setSubmissionError: setFormError,
+    requestErrorFocus: errorFocus.requestErrorFocus,
   };
 };

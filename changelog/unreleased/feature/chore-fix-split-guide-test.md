@@ -1,0 +1,1 @@
+chore - Fix two failing pgTAP fixtures — Makes the jet ski category of the operations money test non-interchangeable and the split equipment test use a tour reservation for its guide, so the whole database suite passes again.

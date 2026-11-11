@@ -13,7 +13,7 @@ import {
 
 describe("filterReservationCategoriesByType", () => {
   it.each(RESERVATION_TYPES)(
-    "filters guide-only categories for %s",
+    "returns the expected equipment categories for %s",
     (reservationType) => {
       const categories = filterReservationCategoriesByType(
         RESERVATION_CATEGORY_OPTIONS,

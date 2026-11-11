@@ -3,8 +3,15 @@ import {
   NextResponse,
   type NextRequest,
 } from "next/server";
-import { SUPABASE } from "@/app/constants";
+import {
+  SESSION_CLAIM,
+  SESSION_STATE,
+  SUPABASE,
+  SUPABASE_COOKIE_OPTIONS,
+  SUPABASE_SIGN_OUT_SCOPE,
+} from "@/app/constants";
 import type { Database } from "@/app/types";
+import { readSessionState } from "./readSessionState";
 import type { SessionRefresh } from "./models/SessionRefresh.interface";
 
 export const refreshSupabaseSession = async (
@@ -16,6 +23,7 @@ export const refreshSupabaseSession = async (
     SUPABASE.URL,
     SUPABASE.ANON_KEY,
     {
+      cookieOptions: SUPABASE_COOKIE_OPTIONS,
       cookies: {
         getAll: () => request.cookies.getAll(),
         setAll: (cookiesToSet) => {
@@ -36,8 +44,26 @@ export const refreshSupabaseSession = async (
   const { data, error } =
     await supabaseClient.auth.getClaims();
 
+  const claims = error ? null : data?.claims;
+
+  const sessionState = claims
+    ? await readSessionState(supabaseClient)
+    : SESSION_STATE.ENDED;
+  const isSessionLive = sessionState === SESSION_STATE.LIVE;
+  const isSessionIdle = sessionState === SESSION_STATE.IDLE;
+
+  if (isSessionIdle) {
+    await supabaseClient.auth.signOut({
+      scope: SUPABASE_SIGN_OUT_SCOPE.LOCAL,
+    });
+  }
+
   return {
-    hasSession: !error && Boolean(data?.claims),
+    hasSession: isSessionLive,
+    isSessionIdle,
+    mustChangePassword:
+      isSessionLive &&
+      claims?.[SESSION_CLAIM.MUST_CHANGE_PASSWORD] === true,
     response,
   };
 };
