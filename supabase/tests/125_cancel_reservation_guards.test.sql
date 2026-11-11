@@ -1,5 +1,5 @@
 begin;
-select plan(14);
+select plan(13);
 \ir fixtures/cancel_reservation.sql.fixture
 
 set local role authenticated;
@@ -15,17 +15,9 @@ select throws_ok(
 
 select throws_ok(
   $$ select cancel_reservation(jsonb_build_object(
-       'reservation_id', 'e2b10000-0000-4000-8000-000000000302', 'reason', 'Cliente enfermo',
-       'expected_updated_at', (select updated_at from reservations where id = 'e2b10000-0000-4000-8000-000000000302'))) $$,
-  'P0001', 'Only scheduled reservations can be cancelled',
-  'a dispatched reservation is left to the in-progress cancellation'
-);
-
-select throws_ok(
-  $$ select cancel_reservation(jsonb_build_object(
        'reservation_id', 'e2b10000-0000-4000-8000-000000000303', 'reason', 'Cliente enfermo',
        'expected_updated_at', (select updated_at from reservations where id = 'e2b10000-0000-4000-8000-000000000303'))) $$,
-  'P0001', 'Only scheduled reservations can be cancelled',
+  'P0001', 'Only scheduled or dispatched reservations can be cancelled',
   'a closed reservation cannot be cancelled'
 );
 
@@ -33,7 +25,7 @@ select throws_ok(
   $$ select cancel_reservation(jsonb_build_object(
        'reservation_id', 'e2b10000-0000-4000-8000-000000000304', 'reason', 'Cliente enfermo',
        'expected_updated_at', (select updated_at from reservations where id = 'e2b10000-0000-4000-8000-000000000304'))) $$,
-  'P0001', 'Only scheduled reservations can be cancelled',
+  'P0001', 'Only scheduled or dispatched reservations can be cancelled',
   'a cancelled reservation cannot be cancelled again'
 );
 
