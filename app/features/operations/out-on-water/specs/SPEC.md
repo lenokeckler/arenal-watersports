@@ -31,6 +31,7 @@ Let the operations worker see, in one screen, every dispatched group that has no
 - The reservation closes when its last group closes, and only if no equipment committed by unit is left undispatched.
 - A motor unit needs the fuel lines and the hours or kilometers it came back with; the hours cannot be lower than the ones it went out with, and the screen shows with which reading it went out.
 - A unit that came back damaged needs its cause and a description; closing raises the damage report in the name of who closed the group and changes the state of the unit to damaged.
+- A unit can be marked at the return to go to maintenance: it leaves the availability without being deleted and shows as out of service on the maintenance screen; the administration sheet of the unit returns it to service.
 - Operations never sees or touches the deposit: the damage report is what Reservations uses afterwards.
 - When everything came back in order nothing else is asked and the closing is the record.
 - The duration of a group is adjusted on its own, without touching the other groups of the same reservation.

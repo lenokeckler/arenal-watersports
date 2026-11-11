@@ -102,4 +102,39 @@ test.describe("Group closing screenshots", () => {
       testInfo.project.name
     );
   });
+
+  test("captures the closing sheet with a unit sent to maintenance", async ({
+    dispatchSheet,
+    signedInPage: page,
+  }, testInfo) => {
+    const board = createDispatchBoardPage(page);
+    const sheet = createDispatchSheetPage(page);
+    const outOnWater = createOutOnWaterPage(page);
+    const [first, second] = dispatchSheet.unitCodes;
+
+    await board.goTo();
+    await sheet
+      .getOpenButton(dispatchSheet.customerName)
+      .click();
+    await sheet.getUnit(first).check();
+    await sheet.getUnit(second).check();
+    await sheet.getSubmit().click();
+    await expect(sheet.getDialog()).toHaveCount(
+      E2E_COUNT.NONE
+    );
+
+    await outOnWater.goTo();
+    await outOnWater
+      .getCloseButton(dispatchSheet.customerName)
+      .click();
+    await outOnWater.getCloseMaintenance(first).check();
+    await expect(
+      outOnWater.getCloseConfirm()
+    ).toBeEnabled();
+    await captureFullPage(
+      page,
+      E2E_CLOSE_GROUP_SCREENSHOT_BASENAME.MAINTENANCE,
+      testInfo.project.name
+    );
+  });
 });

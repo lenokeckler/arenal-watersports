@@ -37,6 +37,13 @@ export const createOutOnWaterPage = (page: Page) => {
       dialog.getByRole(ARIA_ROLE.BUTTON, {
         name: CLOSE_GROUP_COPY.SUBMIT,
       }),
+    getCloseMaintenance: (code: string): Locator =>
+      dialog
+        .getByRole(ARIA_ROLE.GROUP, {
+          name: code,
+          exact: true,
+        })
+        .getByLabel(CLOSE_GROUP_COPY.MAINTENANCE_LABEL),
     getCloseDamage: (code: string): Locator =>
       dialog
         .getByRole(ARIA_ROLE.GROUP, {

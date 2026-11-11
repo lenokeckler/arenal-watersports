@@ -15,6 +15,7 @@ export const E2E_CLOSE_GROUP = {
     USAGE: 16.5,
   },
   UNIT_DAMAGED: "damaged",
+  UNIT_IN_MAINTENANCE: "in_maintenance",
   UNIT_AVAILABLE: "available",
   RESERVATION_CLOSED: "closed",
   RESERVATION_OPEN: "dispatched",
@@ -24,4 +25,5 @@ export const E2E_CLOSE_GROUP = {
 export const E2E_CLOSE_GROUP_SCREENSHOT_BASENAME = {
   SHEET: "15-close-group-sheet",
   DAMAGE: "16-close-group-damage",
+  MAINTENANCE: "18-close-group-maintenance",
 } as const;
