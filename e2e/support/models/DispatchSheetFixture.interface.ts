@@ -5,6 +5,8 @@ export interface DispatchSheetFixture {
   makeMaintenanceNeeds: () => Promise<void>;
   makeDispatchLate: (minutesLate: number) => Promise<void>;
   addMaintenanceJobs: () => Promise<void>;
+  addDamageReports: () => Promise<string>;
+  readUnitId: (code: string) => Promise<string>;
   readMaintenanceJobs: () => Promise<MaintenanceJobsState>;
   readGroupClosing: () => Promise<GroupClosingState>;
   readDispatchDuration: () => Promise<DispatchDurationState>;
