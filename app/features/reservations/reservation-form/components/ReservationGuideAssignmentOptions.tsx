@@ -1,8 +1,8 @@
-import InlineText from "@/app/components/text/InlineText";
-import Label from "@/app/components/text/Label";
+import { FormField } from "@/app/components";
+import { INPUT_TYPES } from "@/app/constants";
 import type { ReservationGuideAssignmentOptionsProps } from "../models/ReservationGuideAssignmentOptionsProps.interface";
+import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import {
-  RESERVATION_GUIDE_ASSIGNMENT_CHECKBOX_CLASS,
   RESERVATION_GUIDE_ASSIGNMENT_GRID_CLASS,
   RESERVATION_GUIDE_ASSIGNMENT_OPTION_CLASS,
 } from "../styles/ReservationGuideAssignmentField.styles";
@@ -14,23 +14,22 @@ const ReservationGuideAssignmentOptions = ({
 }: ReservationGuideAssignmentOptionsProps): React.JSX.Element => (
   <div className={RESERVATION_GUIDE_ASSIGNMENT_GRID_CLASS}>
     {guides.map((guide) => (
-      <Label
+      <div
         className={
           RESERVATION_GUIDE_ASSIGNMENT_OPTION_CLASS
         }
         key={guide.id}
       >
-        <input
+        <FormField
           checked={selectedGuideIds.includes(guide.id)}
-          className={
-            RESERVATION_GUIDE_ASSIGNMENT_CHECKBOX_CLASS
-          }
+          id={guide.id}
+          label={guide.name}
+          name={RESERVATION_FORM_FIELD.GUIDE_IDS}
           onChange={() => onToggle(guide.id)}
-          type="checkbox"
-          value={guide.id}
+          type={INPUT_TYPES.CHECKBOX}
+          value={guide.name}
         />
-        <InlineText>{guide.name}</InlineText>
-      </Label>
+      </div>
     ))}
   </div>
 );

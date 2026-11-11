@@ -24,7 +24,7 @@ describe("useCustomComboPricing", () => {
 
   it("skips empty selections and sends the exact input for a nullable quote", async () => {
     const { result, rerender } = renderHook(
-      ({ input }) => useCustomComboPricing(input),
+      ({ input }) => useCustomComboPricing(input, true),
       {
         initialProps: {
           input: CUSTOM_COMBO_PRICING_TEST.EMPTY_INPUT,
@@ -89,7 +89,7 @@ describe("useCustomComboPricing", () => {
         pricing: CUSTOM_COMBO_PRICING_TEST.PRICING,
       });
     const { result, rerender } = renderHook(
-      ({ input }) => useCustomComboPricing(input),
+      ({ input }) => useCustomComboPricing(input, true),
       {
         initialProps: {
           input: CUSTOM_COMBO_PRICING_TEST.FIRST_INPUT,
@@ -112,6 +112,31 @@ describe("useCustomComboPricing", () => {
     );
     expect(result.current.state.pricing).toEqual(
       CUSTOM_COMBO_PRICING_TEST.PRICING
+    );
+  });
+
+  it("sends concrete unit selections without category quantities", async () => {
+    vi.mocked(
+      getCustomComboPricingAction
+    ).mockResolvedValue({
+      ok: true,
+      pricing: CUSTOM_COMBO_PRICING_TEST.PRICING,
+    });
+    const { result } = renderHook(() =>
+      useCustomComboPricing(
+        CUSTOM_COMBO_PRICING_TEST.UNIT_INPUT,
+        true
+      )
+    );
+    await waitFor(() =>
+      expect(result.current.state.status).toBe(
+        CUSTOM_COMBO_PRICING_STATUS.READY
+      )
+    );
+    expect(
+      getCustomComboPricingAction
+    ).toHaveBeenCalledWith(
+      CUSTOM_COMBO_PRICING_TEST.UNIT_INPUT
     );
   });
 });

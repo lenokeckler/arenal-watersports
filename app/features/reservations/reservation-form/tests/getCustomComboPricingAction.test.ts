@@ -57,6 +57,24 @@ describe("getCustomComboPricingAction", () => {
     expect(getCustomComboPrice).not.toHaveBeenCalled();
   });
 
+  it("returns a duration field error for invalid durations", async () => {
+    await expect(
+      getCustomComboPricingAction(
+        CUSTOM_COMBO_PRICING_ACTION_TEST.INVALID_DURATION_INPUT
+      )
+    ).resolves.toEqual({
+      errors: {
+        [CUSTOM_COMBO_RESERVATION_FIELD.DURATION_HOURS]:
+          CUSTOM_COMBO_RESERVATION_COPY.INVALID_DURATION,
+      },
+      ok: false,
+    });
+    expect(
+      getAuthorizedReservationFormClient
+    ).not.toHaveBeenCalled();
+    expect(getCustomComboPrice).not.toHaveBeenCalled();
+  });
+
   it("authorizes and returns the proposed prices for a valid combo", async () => {
     vi.mocked(getCustomComboPrice).mockResolvedValue(
       CUSTOM_COMBO_PRICING_ACTION_TEST.PRICING
@@ -76,6 +94,22 @@ describe("getCustomComboPricingAction", () => {
     expect(getCustomComboPrice).toHaveBeenCalledWith(
       CUSTOM_COMBO_PRICING_ACTION_TEST.INPUT
     );
+  });
+
+  it("returns an empty price when no tariff matches", async () => {
+    vi.mocked(getCustomComboPrice).mockResolvedValue(null);
+
+    await expect(
+      getCustomComboPricingAction(
+        CUSTOM_COMBO_PRICING_ACTION_TEST.INPUT
+      )
+    ).resolves.toEqual({
+      ok: true,
+      pricing: null,
+    });
+    expect(
+      getAuthorizedReservationFormClient
+    ).toHaveBeenCalledOnce();
   });
 
   it("does not request pricing when authorization rejects", async () => {

@@ -9,11 +9,13 @@ import {
 import { createClient } from "@supabase/supabase-js";
 import { SUPABASE } from "@/app/constants";
 import type { Database } from "@/app/types";
+import { WORKER_STATUS } from "@/app/constants";
+import { RESERVATION_GUIDE_QUERY } from "../constants/ReservationGuideQuery.constants";
 import { getAuthorizedReservationFormClient } from "../services/getAuthorizedReservationFormClient";
 import { getReservationGuides } from "../services/getReservationGuides";
 import {
-  GUIDE_QUERY_FIXTURE,
   GUIDE_WORKER_RELATION,
+  GUIDE_QUERY_FIXTURE,
   SERVER_ERROR_STATUS,
   SUCCESS_STATUS,
 } from "./getReservationGuides.constants";
@@ -60,13 +62,30 @@ describe("getReservationGuides", () => {
       },
     ]);
     const [requestUrl] = fetchMock.mock.calls[0];
-    expect(String(requestUrl)).toContain(
-      "worker_marks.mark=eq.guia"
+    const query = new URL(String(requestUrl)).searchParams;
+    expect(
+      query.get(RESERVATION_GUIDE_QUERY.GUIDE_MARK_COLUMN)
+    ).toBe(`eq.${RESERVATION_GUIDE_QUERY.GUIDE_MARK}`);
+    expect(
+      query.get(
+        RESERVATION_GUIDE_QUERY.ACTIVE_STATUS_COLUMN
+      )
+    ).toBe(`eq.${WORKER_STATUS.ACTIVE}`);
+    expect(
+      query.get(RESERVATION_GUIDE_QUERY.DELETED_AT_COLUMN)
+    ).toBe("is.null");
+    const expirationFilter = query.get(
+      RESERVATION_GUIDE_QUERY.EXPIRATION_FILTER_COLUMN
+    );
+    expect(expirationFilter).toContain(
+      `${RESERVATION_GUIDE_QUERY.EXPIRATION_COLUMN}.is.null`
+    );
+    expect(expirationFilter).toContain(
+      `${RESERVATION_GUIDE_QUERY.EXPIRATION_COLUMN}.gt.`
     );
     expect(String(requestUrl)).toContain(
       GUIDE_WORKER_RELATION
     );
-    expect(String(requestUrl)).not.toContain("status=eq");
   });
 
   it("preserves operation context when the guide query fails", async () => {

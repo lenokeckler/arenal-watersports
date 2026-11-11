@@ -1,5 +1,5 @@
 begin;
-select plan(12);
+select plan(14);
 
 insert into auth.users (id, email) values
   ('e3500000-0000-4000-8000-000000000001', 'res12-guard-reservas@arenal.local'),
@@ -35,18 +35,29 @@ select lives_ok(
 select is((select count(*)::integer from reservation_guides
   where reservation_id = 'e3500000-0000-4000-8000-000000000101'), 1,
   'the valid direct assignment is persisted');
-select throws_ok(
+select lives_ok(
   $$ insert into reservation_guides (reservation_id, worker_id, assigned_by)
      values ('e3500000-0000-4000-8000-000000000101', 'e3500000-0000-4000-8000-000000000004',
              'e3500000-0000-4000-8000-000000000002') $$,
-  'P0001', 'Assignment author must match the authenticated worker',
+  'direct inserts always stamp the authenticated assignment author'
+);
+select is((select assigned_by from reservation_guides
+  where reservation_id = 'e3500000-0000-4000-8000-000000000101'
+    and worker_id = 'e3500000-0000-4000-8000-000000000004'),
+  'e3500000-0000-4000-8000-000000000001'::uuid,
   'direct inserts cannot spoof the assignment author'
 );
-select throws_ok(
+select lives_ok(
   $$ update reservation_guides set assigned_by = 'e3500000-0000-4000-8000-000000000002'
-     where reservation_id = 'e3500000-0000-4000-8000-000000000101' $$,
-  'P0001', 'Assignment author must match the authenticated worker',
-  'direct updates cannot spoof the assignment author'
+     where reservation_id = 'e3500000-0000-4000-8000-000000000101'
+       and worker_id = 'e3500000-0000-4000-8000-000000000002' $$,
+  'direct updates preserve the stamped assignment author'
+);
+select is((select assigned_by from reservation_guides
+  where reservation_id = 'e3500000-0000-4000-8000-000000000101'
+    and worker_id = 'e3500000-0000-4000-8000-000000000002'),
+  'e3500000-0000-4000-8000-000000000001'::uuid,
+  'direct updates cannot change the assignment author'
 );
 select throws_ok(
   $$ insert into reservation_guides (reservation_id, worker_id, assigned_by)
@@ -79,7 +90,7 @@ select throws_ok(
   'updates cannot move a guide assignment to a rental'
 );
 select is((select count(*)::integer from reservation_guides
-  where reservation_id = 'e3500000-0000-4000-8000-000000000101'), 1,
+  where reservation_id = 'e3500000-0000-4000-8000-000000000101'), 2,
   'a rejected reservation update preserves the valid assignment');
 
 reset role;
@@ -87,7 +98,7 @@ set local role service_role;
 set local request.jwt.claims to '{}';
 select lives_ok(
   $$ insert into reservation_guides (reservation_id, worker_id, assigned_by)
-     values ('e3500000-0000-4000-8000-000000000101', 'e3500000-0000-4000-8000-000000000004',
+     values ('e3500000-0000-4000-8000-000000000101', 'e3500000-0000-4000-8000-000000000003',
              'e3500000-0000-4000-8000-000000000001') $$,
   'service role maintenance can insert guide assignments without an auth claim'
 );

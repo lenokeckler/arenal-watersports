@@ -1,4 +1,6 @@
 export const CUSTOM_COMBO_RESERVATION_FIELD = {
+  AGREED_AMOUNT_CRC: "agreedAmountCrc",
+  AGREED_AMOUNT_USD: "agreedAmountUsd",
   CUSTOMER_NAME: "customerName",
   DATE: "date",
   DURATION_HOURS: "durationHours",

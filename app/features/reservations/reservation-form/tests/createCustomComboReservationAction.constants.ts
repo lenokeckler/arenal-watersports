@@ -1,5 +1,6 @@
 import type { CustomComboReservationInput } from "../models/CustomComboReservationInput.interface";
 import type { ValidatedCustomComboReservationInput } from "../models/ValidatedCustomComboReservationInput.interface";
+import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 
 export const CUSTOM_COMBO_RESERVATION_ACTION_TEST = {
   AUTHORIZATION_ERROR: new Error(
@@ -15,12 +16,14 @@ export const CUSTOM_COMBO_RESERVATION_ACTION_TEST = {
     durationHours: 1.5,
     items: [
       {
+        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
         categoryId: "e4800000-0000-4000-8000-000000000101",
         quantity: 2,
       },
       {
+        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
         categoryId: "e4800000-0000-4000-8000-000000000102",
-        quantity: 1,
+        unitId: "e4800000-0000-4000-8000-000000000301",
       },
     ],
     peopleCount: 3,
@@ -34,6 +37,7 @@ export const CUSTOM_COMBO_RESERVATION_ACTION_TEST = {
     durationHours: 0,
     items: [
       {
+        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
         categoryId: "e4800000-0000-4000-8000-000000000101",
         quantity: 2,
       },
@@ -54,12 +58,14 @@ export const CUSTOM_COMBO_RESERVATION_ACTION_TEST = {
     guideIds: [],
     items: [
       {
+        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
         categoryId: "e4800000-0000-4000-8000-000000000101",
         quantity: 2,
       },
       {
+        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
         categoryId: "e4800000-0000-4000-8000-000000000102",
-        quantity: 1,
+        unitId: "e4800000-0000-4000-8000-000000000301",
       },
     ],
     peopleCount: 3,

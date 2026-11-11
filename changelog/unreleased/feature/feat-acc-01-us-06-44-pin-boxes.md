@@ -1,0 +1,1 @@
+ACC-01.06.44: PIN boxes — the PIN shows as six boxes, and a separate box tells what to do when it does not arrive: check spam, check the username, ask for another PIN or ask administration (US-ACC-06 · AWS-35)
