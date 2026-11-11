@@ -58,17 +58,26 @@ describe("CategoryAlertsForm submit", () => {
     });
   });
 
-  it("describes the type and both fields with the hint", () => {
+  it("describes both number fields with the hint", () => {
     const alertsFormPage = renderCategoryAlertsForm();
 
-    [
-      alertsFormPage.getTypeSelect(),
-      ...alertsFormPage.getTextInputs(),
-    ].forEach((control) => {
+    alertsFormPage.getTextInputs().forEach((control) => {
       expect(control).toHaveAccessibleDescription(
         CATEGORY_CATALOG_COPY.ALERT_FORM_HINT
       );
     });
+  });
+
+  it("describes the type with the hint and its own explanation", () => {
+    const alertsFormPage = renderCategoryAlertsForm();
+
+    expect(
+      alertsFormPage.getTypeSelect()
+    ).toHaveAccessibleDescription(
+      expect.stringContaining(
+        CATEGORY_CATALOG_COPY.ALERT_FORM_HINT
+      )
+    );
   });
 
   it.each(ALERT_SUBMIT_CASES)(

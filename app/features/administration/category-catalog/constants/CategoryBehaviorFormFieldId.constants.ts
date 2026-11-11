@@ -3,6 +3,8 @@ export const CATEGORY_BEHAVIOR_FORM_FIELD_ID = {
   CONSUMES_FUEL: "category-behavior-consumes-fuel",
   DEFAULT_DURATION_MINUTES:
     "category-behavior-default-duration-minutes",
+  DEFAULT_DURATION_MINUTES_HINT:
+    "category-behavior-default-duration-minutes-hint",
   GUIDE_ONLY: "category-behavior-guide-only",
   HAS_CONDITION_PHOTOS:
     "category-behavior-has-condition-photos",
