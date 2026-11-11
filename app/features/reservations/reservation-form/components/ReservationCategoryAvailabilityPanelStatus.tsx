@@ -21,6 +21,10 @@ const ReservationCategoryAvailabilityPanelStatus = ({
   const isLoading =
     state ===
     RESERVATION_CATEGORY_AVAILABILITY_PANEL_STATE.LOADING;
+  const displayedFreeEquipmentCount =
+    freeEquipmentCount === null
+      ? null
+      : Math.max(0, freeEquipmentCount);
   const statusCopy =
     getReservationCategoryAvailabilityStatusCopy(state);
 
@@ -29,14 +33,15 @@ const ReservationCategoryAvailabilityPanelStatus = ({
       className={resolveAvailabilityPanelStatusClass(state)}
       role={isError ? ARIA_ROLE.ALERT : ARIA_ROLE.STATUS}
     >
-      {freeEquipmentCount !== null && !isLoading ? (
+      {displayedFreeEquipmentCount !== null &&
+      !isLoading ? (
         <Text
           bold
           className={
             RESERVATION_CATEGORY_AVAILABILITY_COUNT_CLASS
           }
         >
-          {freeEquipmentCount}{" "}
+          {displayedFreeEquipmentCount}{" "}
           {
             RESERVATION_FORM_UI_COPY.CATEGORY_AVAILABILITY_AVAILABLE
           }

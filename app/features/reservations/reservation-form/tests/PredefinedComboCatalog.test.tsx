@@ -6,11 +6,11 @@ import { createCustomComboPage } from "./CustomCombo.page";
 import { PREDEFINED_COMBO_SELECTION_TEST } from "./PredefinedComboSelection.constants";
 import { PREDEFINED_COMBO_SELECTION_FIXTURE } from "./PredefinedComboSelection.fixture";
 import { createPredefinedComboSelectionPage } from "./PredefinedComboSelection.page";
-import { renderReservationForm } from "./ReservationFormView.fixture";
+import { renderReservationFormWithCombos } from "./ReservationFormView.fixture";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 
 it("explains that no saved packages are available", async () => {
-  renderReservationForm();
+  renderReservationFormWithCombos();
   const page = createPredefinedComboSelectionPage(
     document.body
   );
@@ -24,7 +24,7 @@ it("explains that no saved packages are available", async () => {
 
 it("shows the package name and audience in the catalog option", async () => {
   const combo = PREDEFINED_COMBO_SELECTION_FIXTURE.COMBO;
-  renderReservationForm(undefined, [combo]);
+  renderReservationFormWithCombos(undefined, [combo]);
   const page = createPredefinedComboSelectionPage(
     document.body
   );
@@ -45,7 +45,7 @@ it("shows the package name and audience in the catalog option", async () => {
 });
 
 it("continues to offer custom equipment selection", async () => {
-  renderReservationForm();
+  renderReservationFormWithCombos();
   const predefinedComboPage =
     createPredefinedComboSelectionPage(document.body);
   await predefinedComboPage.selectComboReservation();

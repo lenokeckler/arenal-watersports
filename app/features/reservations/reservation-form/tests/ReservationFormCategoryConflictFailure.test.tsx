@@ -35,9 +35,10 @@ describe("ReservationFormView conflict lookup failure", () => {
     });
     vi.mocked(
       getReservationCategoryAvailabilityAction
-    ).mockResolvedValue(
-      RESERVATION_CATEGORY_AVAILABILITY_ROW
-    );
+    ).mockResolvedValue({
+      ...RESERVATION_CATEGORY_AVAILABILITY_ROW,
+      free: 2,
+    });
     vi.mocked(
       getReservationCategoryConflictsAction
     ).mockRejectedValue(
@@ -49,8 +50,8 @@ describe("ReservationFormView conflict lookup failure", () => {
     const conflictPage =
       createReservationCategoryConflictPage();
 
-    await page.selectCategory(
-      RESERVATION_FORM_VIEW_TEST.CATEGORY_ID
+    await page.selectCategoryChoice(
+      RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME
     );
     await conflictPage.findError();
 

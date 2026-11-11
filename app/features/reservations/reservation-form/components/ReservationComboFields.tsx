@@ -6,25 +6,40 @@ import PredefinedComboSelection from "./PredefinedComboSelection";
 
 const ReservationComboFields = ({
   categories,
+  guideAssignmentViewModel,
   viewModel,
-}: ReservationFormFieldsProps): React.JSX.Element => (
-  <>
-    <PredefinedComboSelection
-      viewModel={viewModel.predefinedCombo}
-    />
-    {viewModel.predefinedCombo.mode ===
-    PREDEFINED_COMBO_SELECTION_MODE.PREDEFINED ? (
-      <PredefinedComboFormFields
-        categories={categories}
-        viewModel={viewModel}
+}: ReservationFormFieldsProps): React.JSX.Element | null => {
+  const { predefinedCombo } = viewModel;
+
+  if (!predefinedCombo) {
+    return null;
+  }
+
+  return (
+    <>
+      <PredefinedComboSelection
+        viewModel={predefinedCombo}
       />
-    ) : (
-      <CustomComboFormFields
-        categories={categories}
-        viewModel={viewModel}
-      />
-    )}
-  </>
-);
+      {predefinedCombo.mode ===
+      PREDEFINED_COMBO_SELECTION_MODE.PREDEFINED ? (
+        <PredefinedComboFormFields
+          categories={categories}
+          guideAssignmentViewModel={
+            guideAssignmentViewModel
+          }
+          viewModel={viewModel}
+        />
+      ) : (
+        <CustomComboFormFields
+          categories={categories}
+          guideAssignmentViewModel={
+            guideAssignmentViewModel
+          }
+          viewModel={viewModel}
+        />
+      )}
+    </>
+  );
+};
 
 export default ReservationComboFields;
