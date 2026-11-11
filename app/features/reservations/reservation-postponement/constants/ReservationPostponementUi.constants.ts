@@ -1,7 +1,16 @@
 export const RESERVATION_POSTPONEMENT_FIELD_ID = {
+  ALERT: "reservation-postponement-alert",
+  CAUSE: "reservation-postponement-cause",
+  DATE: "reservation-postponement-date",
   HEADING: "reservation-postponement-heading",
+  REASON: "reservation-postponement-reason",
   SUMMARY_HEADING:
     "reservation-postponement-summary-heading",
+  TIME: "reservation-postponement-time",
+} as const;
+
+export const RESERVATION_POSTPONEMENT_FOCUS = {
+  TAB_INDEX: -1,
 } as const;
 
 export const RESERVATION_POSTPONEMENT_DATE_FORMAT = {
