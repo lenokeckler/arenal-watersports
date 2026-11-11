@@ -28,3 +28,14 @@ export const CLOSE_GROUP_LIMITS = {
   DESCRIPTION_MAX_LENGTH: 500,
   IMPACT_MAX: 9999,
 } as const;
+
+export const CLOSE_GROUP_ARRIVAL_TIME = {
+  MS_PER_MINUTE: 60_000,
+  TOLERANCE_MS: 60_000,
+} as const;
+
+export const CLOSE_GROUP_PHASE = {
+  FAILED: "failed",
+  LOADING: "loading",
+  READY: "ready",
+} as const;
