@@ -7,6 +7,14 @@ export interface DispatchSheetFixture {
   addMaintenanceJobs: () => Promise<void>;
   addDamageReports: () => Promise<string>;
   readUnitId: (code: string) => Promise<string>;
+  addUnitPhoto: (
+    code: string,
+    angle: string
+  ) => Promise<void>;
+  grantGeneralManagerMark: () => Promise<void>;
+  readUnitPhotos: (
+    code: string
+  ) => Promise<UnitPhotoRecord[]>;
   readUnitCorrection: (
     code: string
   ) => Promise<UnitCorrectionState>;
@@ -88,4 +96,10 @@ export interface UnitCorrectionState {
   impactCount: number;
   status: string;
   usageTotal: number;
+}
+
+export interface UnitPhotoRecord {
+  angle: string;
+  storagePath: string;
+  uploadedBy: string;
 }

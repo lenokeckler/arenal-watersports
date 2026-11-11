@@ -17,6 +17,13 @@ import { makeDispatchLate } from "./makeDispatchLate";
 import { addMaintenanceJobs } from "./addMaintenanceJobs";
 import { addDamageReports } from "./addDamageReports";
 import { readUnitCorrection } from "./readUnitCorrection";
+import { addUnitPhoto } from "./addUnitPhoto";
+import {
+  grantGeneralManagerMark,
+  removeGeneralManagerMark,
+} from "./grantGeneralManagerMark";
+import { readUnitPhotos } from "./readUnitPhotos";
+import { removeUnitPhotos } from "./removeUnitPhotos";
 import { removeUnitCorrections } from "./removeUnitCorrections";
 import { readUnitId } from "./readUnitId";
 import { removeDamageReports } from "./removeDamageReports";
@@ -63,6 +70,7 @@ export const createDispatchSheetFixture = async (
       .update({
         ...(hasMotor && {
           consumes_fuel: true,
+          has_condition_photos: true,
           has_motor: true,
           usage_metric: "engine_hours",
         }),
@@ -170,6 +178,12 @@ export const createDispatchSheetFixture = async (
     addDamageReports: () =>
       addDamageReports(supabase, unitCodes, workerId),
     readUnitId: (code) => readUnitId(supabase, code),
+    addUnitPhoto: (code, angle) =>
+      addUnitPhoto(supabase, code, angle, workerId),
+    grantGeneralManagerMark: () =>
+      grantGeneralManagerMark(supabase, workerId),
+    readUnitPhotos: (code) =>
+      readUnitPhotos(supabase, code),
     readUnitCorrection: (code) =>
       readUnitCorrection(supabase, code),
     readMaintenanceJobs: () =>
@@ -190,6 +204,8 @@ export const createDispatchSheetFixture = async (
       await removeMaintenanceJobs(supabase, unitCodes);
       await removeDamageReports(supabase, unitCodes);
       await removeUnitCorrections(supabase, unitCodes);
+      await removeUnitPhotos(supabase, unitCodes);
+      await removeGeneralManagerMark(supabase, workerId);
       await removeDispatchSheetFixture(
         supabase,
         reservationId
