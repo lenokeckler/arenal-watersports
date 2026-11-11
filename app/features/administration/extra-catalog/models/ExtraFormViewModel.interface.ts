@@ -8,6 +8,8 @@ export interface ExtraFormViewModel {
   errors: ExtraFormErrors;
   isSubmitting: boolean;
   onNameChange: ExtraFormFieldChangeHandler;
+  onPriceUsdChange: ExtraFormFieldChangeHandler;
+  onPriceCrcChange: ExtraFormFieldChangeHandler;
   onBack: () => void;
   onSubmit: (event: FormSubmitEvent) => Promise<void>;
 }

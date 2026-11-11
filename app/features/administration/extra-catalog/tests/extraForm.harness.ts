@@ -80,6 +80,28 @@ export const changeExtraName = (
   });
 };
 
+export const changeExtraPriceUsd = (
+  result: ReturnType<typeof renderExtraViewModel>["result"],
+  value: string
+): void => {
+  act(() => {
+    result.current.onPriceUsdChange(
+      buildExtraFormFieldChangeEvent({ value })
+    );
+  });
+};
+
+export const changeExtraPriceCrc = (
+  result: ReturnType<typeof renderExtraViewModel>["result"],
+  value: string
+): void => {
+  act(() => {
+    result.current.onPriceCrcChange(
+      buildExtraFormFieldChangeEvent({ value })
+    );
+  });
+};
+
 export const submitExtraViewModel = async (
   result: ReturnType<typeof renderExtraViewModel>["result"]
 ): Promise<void> => {

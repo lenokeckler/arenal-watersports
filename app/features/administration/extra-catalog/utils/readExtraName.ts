@@ -1,6 +1,5 @@
+import { EXTRA_INPUT_FIELD } from "../constants/ExtraInputField.constants";
+import { readExtraInputField } from "./readExtraInputField";
+
 export const readExtraName = (input: unknown): unknown =>
-  typeof input === "object" &&
-  input !== null &&
-  "name" in input
-    ? input.name
-    : undefined;
+  readExtraInputField(input, EXTRA_INPUT_FIELD.NAME);

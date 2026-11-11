@@ -7,8 +7,8 @@ import { EXTRA_MUTATION_STATUS } from "../constants/ExtraMutationStatus.constant
 import type { CreateExtraInput } from "../models/CreateExtraInput.interface";
 import type { ExtraMutationResult } from "../models/ExtraMutationResult.interface";
 import { mapExtraWriteErrorToResult } from "../utils/mapExtraWriteErrorToResult";
-import { readExtraName } from "../utils/readExtraName";
-import { validateExtraName } from "../utils/validateExtraName";
+import { mapExtraInputToPriceColumns } from "../utils/mapExtraInputToPriceColumns";
+import { resolveExtraValidationResult } from "../utils/resolveExtraValidationResult";
 
 export const createExtraAction = async (
   input: CreateExtraInput
@@ -16,16 +16,15 @@ export const createExtraAction = async (
   const supabase = await createServerSupabaseClient();
   const adminWorkerId = await assertIsAdminWorker(supabase);
 
-  const nameError = validateExtraName(readExtraName(input));
-  if (nameError) {
-    return {
-      status: EXTRA_MUTATION_STATUS.ERROR,
-      nameError,
-    };
+  const validationFailure =
+    resolveExtraValidationResult(input);
+  if (validationFailure) {
+    return validationFailure;
   }
 
   const { error } = await supabase.from("extras").insert({
     name: input.name.trim(),
+    ...mapExtraInputToPriceColumns(input),
     created_by: adminWorkerId,
     updated_by: adminWorkerId,
   });

@@ -12,7 +12,7 @@ export const getExtra = async (
 
   const { data: extraRow, error } = await supabase
     .from("extras")
-    .select("id, name, status")
+    .select("id, name, status, price_usd, price_crc")
     .eq("id", extraId)
     .maybeSingle();
   if (
