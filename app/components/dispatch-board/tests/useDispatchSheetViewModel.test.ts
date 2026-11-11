@@ -38,6 +38,7 @@ vi.mock("../actions/submitDispatchGroup", () => ({
 
 const SELECTION = {
   departureAt: DISPATCH_INPUT_FIXTURE.DEPARTURE_AT,
+  readings: [],
   returnsAt: DISPATCH_INPUT_FIXTURE.RETURNS_AT,
   unitIds: [DISPATCH_INPUT_FIXTURE.UNIT_ID],
 };
@@ -167,6 +168,27 @@ describe("useDispatchSheetViewModel", () => {
 
     expect(view.result.current.errorMessage).toBe(
       DISPATCH_SHEET_COPY.UNITS_UNAVAILABLE
+    );
+    expect(onDispatched).not.toHaveBeenCalled();
+  });
+
+  it("explains that a reading was refused", async () => {
+    loadDispatchSheetMock.mockResolvedValue([
+      UNIT_GROUP_FIXTURE,
+    ]);
+    submitDispatchGroupMock.mockResolvedValue({
+      status: DISPATCH_GROUP_STATUS.INVALID_READINGS,
+    });
+    const { onDispatched, view } = await renderSheet();
+
+    await act(async () => {
+      await view.result.current.handleSubmitGroup(
+        SELECTION
+      );
+    });
+
+    expect(view.result.current.errorMessage).toBe(
+      DISPATCH_SHEET_COPY.READINGS_INVALID
     );
     expect(onDispatched).not.toHaveBeenCalled();
   });

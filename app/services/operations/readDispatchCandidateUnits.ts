@@ -22,7 +22,10 @@ export const readDispatchCandidateUnits = async (
 
   return (data ?? []).map((unit) => ({
     code: unit.code,
+    fuelLevel: unit.fuel_level,
+    fuelMax: unit.fuel_max,
     isAssigned: unit.is_assigned,
     unitId: unit.unit_id,
+    usageTotal: unit.usage_total,
   }));
 };

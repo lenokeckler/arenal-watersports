@@ -43,11 +43,13 @@ export const getDispatchSheet = async (
           : [],
         categoryId: group.category_id,
         categoryName: group.category_name,
+        consumesFuel: group.consumes_fuel,
         durationMinutes: group.duration_minutes,
         fixedUnitIds: group.fixed_unit_ids,
         hasMotor: group.has_motor,
         isTrackedByUnit,
         requiredQuantity: group.required_quantity,
+        usageMetric: group.usage_metric,
       };
     })
   );

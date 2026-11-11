@@ -7,11 +7,15 @@ import {
   DISPATCH_SHEET_DATABASE_ERROR,
   DISPATCH_SHEET_ERROR,
 } from "../constants/DispatchSheet.constants";
-import { DISPATCH_INPUT_FIXTURE } from "./DispatchSheetTest.constants";
+import {
+  DISPATCH_INPUT_FIXTURE,
+  DISPATCH_READING_FIXTURE,
+} from "./DispatchSheetTest.constants";
 
 const INPUT = {
   categoryId: DISPATCH_INPUT_FIXTURE.CATEGORY_ID,
   departureAt: DISPATCH_INPUT_FIXTURE.DEPARTURE_AT,
+  readings: [],
   reservationId: DISPATCH_INPUT_FIXTURE.RESERVATION_ID,
   returnsAt: DISPATCH_INPUT_FIXTURE.RETURNS_AT,
   unitIds: [DISPATCH_INPUT_FIXTURE.UNIT_ID],
@@ -41,11 +45,55 @@ describe("dispatchReservationGroup", () => {
       {
         p_category_id: INPUT.categoryId,
         p_dispatched_at: INPUT.departureAt,
+        p_readings: [],
         p_reservation_id: INPUT.reservationId,
         p_returns_at: INPUT.returnsAt,
         p_unit_ids: INPUT.unitIds,
       }
     );
+  });
+
+  it("sends one reading per unit with the names the database expects", async () => {
+    const { rpc } = createOperationsClient(true, true);
+    answerDispatchWith(rpc, null);
+
+    await dispatchReservationGroup({
+      ...INPUT,
+      readings: [
+        {
+          fuel: DISPATCH_READING_FIXTURE.FUEL,
+          unitId: DISPATCH_INPUT_FIXTURE.UNIT_ID,
+          usage: DISPATCH_READING_FIXTURE.USAGE,
+        },
+      ],
+    });
+
+    expect(rpc).toHaveBeenLastCalledWith(
+      "dispatch_reservation_group",
+      expect.objectContaining({
+        p_readings: [
+          {
+            fuel: DISPATCH_READING_FIXTURE.FUEL,
+            unit_id: DISPATCH_INPUT_FIXTURE.UNIT_ID,
+            usage: DISPATCH_READING_FIXTURE.USAGE,
+          },
+        ],
+      })
+    );
+  });
+
+  it("reports readings the database refused", async () => {
+    const { rpc } = createOperationsClient(true, true);
+    answerDispatchWith(rpc, {
+      code: DISPATCH_SHEET_DATABASE_ERROR.INVALID_READINGS,
+      message: "readings",
+    });
+
+    await expect(
+      dispatchReservationGroup(INPUT)
+    ).resolves.toEqual({
+      status: DISPATCH_GROUP_STATUS.INVALID_READINGS,
+    });
   });
 
   it("reports a category that was already dispatched", async () => {

@@ -25,6 +25,11 @@ export const dispatchReservationGroup = async (
     {
       p_category_id: input.categoryId,
       p_dispatched_at: input.departureAt,
+      p_readings: input.readings.map((reading) => ({
+        fuel: reading.fuel,
+        unit_id: reading.unitId,
+        usage: reading.usage,
+      })),
       p_reservation_id: input.reservationId,
       p_returns_at: input.returnsAt,
       p_unit_ids: input.unitIds,
@@ -41,6 +46,15 @@ export const dispatchReservationGroup = async (
   ) {
     return {
       status: DISPATCH_GROUP_STATUS.ALREADY_DISPATCHED,
+    };
+  }
+
+  if (
+    error.code ===
+    DISPATCH_SHEET_DATABASE_ERROR.INVALID_READINGS
+  ) {
+    return {
+      status: DISPATCH_GROUP_STATUS.INVALID_READINGS,
     };
   }
 

@@ -10,6 +10,7 @@ import { buildDispatchWindow } from "../utils/buildDispatchWindow";
 import { formatCostaRicaTime } from "../utils/formatCostaRicaTime";
 import { getClockSpanMinutes } from "../utils/getClockSpanMinutes";
 import { parseClockTime } from "../utils/parseClockTime";
+import { useDispatchUnitReadings } from "./useDispatchUnitReadings";
 
 interface DispatchGroupFormInput {
   group: DispatchSheetGroup;
@@ -39,6 +40,10 @@ export const useDispatchGroupForm = ({
     string[]
   >(group.fixedUnitIds);
 
+  const readings = useDispatchUnitReadings({
+    group,
+    selectedUnitIds,
+  });
   const targetCount = group.isTrackedByUnit
     ? group.fixedUnitIds.length + group.requiredQuantity
     : 0;
@@ -51,7 +56,9 @@ export const useDispatchGroupForm = ({
   const isNextDay =
     hasValidTimes && returnMinutes <= departureMinutes;
   const canSubmit =
-    hasValidTimes && selectedUnitIds.length === targetCount;
+    hasValidTimes &&
+    selectedUnitIds.length === targetCount &&
+    readings.areReadingsComplete;
 
   const handleToggleUnit = (unitId: string): void => {
     if (group.fixedUnitIds.includes(unitId)) {
@@ -106,7 +113,11 @@ export const useDispatchGroupForm = ({
       return;
     }
 
-    onSubmit({ ...window, unitIds: selectedUnitIds });
+    onSubmit({
+      ...window,
+      readings: readings.buildReadings(),
+      unitIds: selectedUnitIds,
+    });
   };
 
   return {
@@ -117,6 +128,7 @@ export const useDispatchGroupForm = ({
     handleSubmit,
     handleToggleUnit,
     isNextDay,
+    readings,
     returnTime: times.returnTime,
     selectedUnitIds,
     targetCount,
