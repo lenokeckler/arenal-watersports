@@ -6,6 +6,7 @@ export const MAINTENANCE_COST_COPY = {
   JOBS_PREFIX: "Trabajos con costo: ",
   LAST_JOB_PREFIX: "Último trabajo: ",
   PART_SEPARATOR: " · ",
+  TITLE_ID_PREFIX: "costo-mantenimiento-",
   TOTAL_PREFIX: "Total: ",
   UNIT_SEPARATOR: " · ",
 } as const;
