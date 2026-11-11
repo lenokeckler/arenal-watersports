@@ -15,6 +15,7 @@ export const createReservationFormNumericFieldHandlers = (
         RESERVATION_FORM_FIELD.DURATION_HOURS,
         value
       );
+      updateValue(RESERVATION_FORM_FIELD.EXTRA_IDS, []);
       clearUnitAfterScheduleChange();
     }
   },

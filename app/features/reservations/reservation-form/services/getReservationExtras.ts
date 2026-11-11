@@ -15,7 +15,7 @@ export const getReservationExtras = async (
   const { data, error } = await supabase
     .from("extras")
     .select(
-      "id, name, price_crc, price_usd, extra_compatibility!inner(unit_id)"
+      "id, name, price_crc, price_usd, occupies_category_id, occupies_quantity, extra_compatibility!inner(unit_id)"
     )
     .eq("status", RESERVATION_CATEGORY_STATUS.ACTIVE)
     .eq("extra_compatibility.unit_id", input.unitId)
@@ -31,5 +31,7 @@ export const getReservationExtras = async (
     name: extra.name,
     priceCrc: extra.price_crc,
     priceUsd: extra.price_usd,
+    occupiesCategoryId: extra.occupies_category_id,
+    occupiesQuantity: extra.occupies_quantity,
   }));
 };

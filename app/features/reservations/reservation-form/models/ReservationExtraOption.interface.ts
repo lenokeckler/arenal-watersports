@@ -5,4 +5,6 @@ export interface ReservationExtraOption {
   name: string;
   priceCrc: NullableRef<number>;
   priceUsd: NullableRef<number>;
+  occupiesCategoryId: NullableRef<string>;
+  occupiesQuantity: NullableRef<number>;
 }

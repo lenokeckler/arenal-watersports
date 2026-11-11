@@ -6,6 +6,7 @@ export interface ReservationFormFieldHandlers {
   handleCustomerNameChange: (value: string) => void;
   handleDateChange: (value: string) => void;
   handleDurationChange: (value: number) => void;
+  handleExtraToggle: (extraId: string) => void;
   handleGuideToggle: (guideId: string) => void;
   handleGuideIdsChange: (guideIds: string[]) => void;
   handlePeopleCountChange: (value: number) => void;
