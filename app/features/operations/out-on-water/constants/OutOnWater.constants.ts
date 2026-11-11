@@ -7,8 +7,3 @@ export const OUT_ON_WATER_TIME = {
   MS_PER_MINUTE: 60_000,
   REFRESH_MS: 30_000,
 } as const;
-
-export const OUT_ON_WATER_STATE = {
-  ON_TIME: "ON_TIME",
-  OVERDUE: "OVERDUE",
-} as const;

@@ -22,7 +22,11 @@ export const OUT_ON_WATER_CARD_HEADING_CLASS =
 export const OUT_ON_WATER_CARD_DETAIL_CLASS =
   "text-body-base text-on-surface-variant";
 
-export const OUT_ON_WATER_REMAINING_CLASS = {
-  ON_TIME: "text-title-md font-semibold text-primary",
-  OVERDUE: "text-title-md font-semibold text-error",
-} as const;
+export const OUT_ON_WATER_REMAINING_CLASS =
+  "text-title-md font-semibold text-primary";
+
+export const OUT_ON_WATER_OVERDUE_BADGE_CLASS =
+  "flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-warning/40 bg-warning/10 px-3 py-2 text-title-md text-warning";
+
+export const OUT_ON_WATER_OVERDUE_DELAY_CLASS =
+  "text-body-base font-semibold text-warning";

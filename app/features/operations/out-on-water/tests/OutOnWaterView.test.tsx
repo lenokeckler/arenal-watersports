@@ -84,7 +84,7 @@ describe("OutOnWaterView", () => {
     expect(refreshMock).toHaveBeenCalledTimes(2);
   });
 
-  it("marks a group that is late", () => {
+  it("marks a group past its hour as waiting to return with the minutes late and keeps it listed", () => {
     renderView([OUT_ON_WATER_GROUP_FIXTURE]);
 
     act(() => {
@@ -94,8 +94,22 @@ describe("OutOnWaterView", () => {
     });
 
     expect(
+      screen.getByText(OUT_ON_WATER_TEXT.OVERDUE)
+    ).toBeInTheDocument();
+    expect(
       screen.getByText(OUT_ON_WATER_TEXT.LATE_5)
     ).toBeInTheDocument();
+    expect(
+      screen.getByText(OUT_ON_WATER_TEXT.CUSTOMER)
+    ).toBeInTheDocument();
+  });
+
+  it("does not mark a group that is still on time", () => {
+    renderView([OUT_ON_WATER_GROUP_FIXTURE]);
+
+    expect(
+      screen.queryByText(OUT_ON_WATER_TEXT.OVERDUE)
+    ).not.toBeInTheDocument();
   });
 
   it("says so when nothing is out", () => {

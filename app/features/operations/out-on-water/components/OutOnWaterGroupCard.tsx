@@ -13,7 +13,7 @@ import {
 import { formatRemainingTime } from "../utils/formatRemainingTime";
 import { getGroupEquipmentText } from "../utils/getGroupEquipmentText";
 import { getRemainingMinutes } from "../utils/getRemainingMinutes";
-import { getRemainingState } from "../utils/getRemainingState";
+import OutOnWaterOverdueBadge from "./OutOnWaterOverdueBadge";
 import type { JSX } from "react";
 
 const OutOnWaterGroupCard = ({
@@ -38,15 +38,15 @@ const OutOnWaterGroupCard = ({
       <Text className={OUT_ON_WATER_CARD_DETAIL_CLASS}>
         {`${OUT_ON_WATER_COPY.DEPARTED_AT}${formatCostaRicaTime(group.dispatchedAt)}${OUT_ON_WATER_COPY.TIMES_SEPARATOR}${OUT_ON_WATER_COPY.RETURNS_AT}${formatCostaRicaTime(group.endsAt)}`}
       </Text>
-      <Text
-        className={
-          OUT_ON_WATER_REMAINING_CLASS[
-            getRemainingState(remainingMinutes)
-          ]
-        }
-      >
-        {formatRemainingTime(remainingMinutes)}
-      </Text>
+      {remainingMinutes > 0 ? (
+        <Text className={OUT_ON_WATER_REMAINING_CLASS}>
+          {formatRemainingTime(remainingMinutes)}
+        </Text>
+      ) : (
+        <OutOnWaterOverdueBadge
+          delayMinutes={-remainingMinutes}
+        />
+      )}
     </div>
   );
 };
