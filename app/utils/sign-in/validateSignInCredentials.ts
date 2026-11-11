@@ -2,10 +2,9 @@ import {
   PASSWORD_LENGTH,
   SIGN_IN_ERROR_CODE,
   STRING,
-  USERNAME,
 } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
-import { normalizeUsername } from "@/app/utils/username/normalizeUsername";
+import { findUsernameErrorCode } from "@/app/utils/username/findUsernameErrorCode";
 import { createSignInError } from "./createSignInError";
 import type { SignInCredentials } from "./models/SignInCredentials.interface";
 import type { SignInError } from "./models/SignInError.interface";
@@ -14,21 +13,10 @@ export const validateSignInCredentials = ({
   password,
   username,
 }: SignInCredentials): NullableRef<SignInError> => {
-  const normalizedUsername = normalizeUsername(username);
+  const usernameErrorCode = findUsernameErrorCode(username);
 
-  if (normalizedUsername === STRING.Empty) {
-    return createSignInError(
-      SIGN_IN_ERROR_CODE.USERNAME_REQUIRED
-    );
-  }
-
-  if (
-    normalizedUsername.length < USERNAME.LENGTH.MIN ||
-    normalizedUsername.length > USERNAME.LENGTH.MAX
-  ) {
-    return createSignInError(
-      SIGN_IN_ERROR_CODE.USERNAME_LENGTH
-    );
+  if (usernameErrorCode !== null) {
+    return createSignInError(usernameErrorCode);
   }
 
   if (password === STRING.Empty) {

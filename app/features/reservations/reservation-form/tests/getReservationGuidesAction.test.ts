@@ -21,7 +21,7 @@ describe("getReservationGuidesAction", () => {
     vi.mocked(loadReservationGuideDirectory).mockReset();
   });
 
-  it("returns guides without recording an error", async () => {
+  it("returns guides from the directory loader", async () => {
     const guides = [
       {
         id: RESERVATION_GUIDE_SELECTION_TEST.FIRST_ID,

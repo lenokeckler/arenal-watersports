@@ -20,8 +20,8 @@ delete from worker_areas
  where worker_id = '44444444-4444-4444-4444-444444444444' and area = 'operaciones';
 
 insert into equipment_categories
-  (id, name, tracking_mode, is_reservable, default_duration_minutes, created_by, updated_by)
-values ('aaaaaaaa-0000-0000-0000-000000000001', 'Jet Ski', 'by_unit', true, 60,
+  (id, name, tracking_mode, is_reservable, units_are_interchangeable, default_duration_minutes, created_by, updated_by)
+values ('aaaaaaaa-0000-0000-0000-000000000001', 'Jet Ski', 'by_unit', true, false, 60,
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 insert into equipment_categories (id, name, tracking_mode, created_by, updated_by)
 values ('aaaaaaaa-0000-0000-0000-000000000002', 'Chaleco', 'by_quantity',

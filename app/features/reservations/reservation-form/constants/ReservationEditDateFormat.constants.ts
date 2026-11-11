@@ -1,0 +1,11 @@
+import { CALENDAR_PRESENTATION } from "@/app/constants";
+
+export const RESERVATION_EDIT_DATE_FORMAT = {
+  LOCALE: CALENDAR_PRESENTATION.LOCALE,
+  NOON_UTC_TIME: "T12:00:00Z",
+  OPTIONS: {
+    ...CALENDAR_PRESENTATION.DATE_OPTIONS,
+    timeZone: CALENDAR_PRESENTATION.TIME_ZONE,
+    weekday: "long",
+  },
+} as const;
