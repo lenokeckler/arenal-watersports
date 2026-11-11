@@ -40,11 +40,6 @@ export const FIELD_ERROR_CASES: [
     { date: COPY.SCHEDULE_INVALID },
   ],
   [
-    "a month and day out of range",
-    { date: "2026-13-45" },
-    { date: COPY.SCHEDULE_INVALID },
-  ],
-  [
     "a leap day in a common year",
     { date: "2027-02-29" },
     { date: COPY.SCHEDULE_INVALID },

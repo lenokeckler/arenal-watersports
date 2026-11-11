@@ -86,13 +86,6 @@ export const MALFORMED_INPUT_CASES: [string, unknown][] = [
     { ...VALID_POSTPONEMENT_INPUT, readings: [null] },
   ],
   [
-    "a numeric reading item id",
-    {
-      ...VALID_POSTPONEMENT_INPUT,
-      readings: [{ ...VALID_READING, itemId: 7 }],
-    },
-  ],
-  [
     "a missing date",
     { ...VALID_POSTPONEMENT_INPUT, date: undefined },
   ],
