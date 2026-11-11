@@ -3085,6 +3085,21 @@ export type Database = {
         };
         Returns: string;
       };
+      dispatched_groups_out: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          category_id: string;
+          category_name: string;
+          code: string;
+          customer_name: string;
+          dispatch_id: string;
+          dispatched_at: string;
+          ends_at: string;
+          quantity: number;
+          reservation_id: string;
+          unit_codes: string[];
+        }[];
+      };
       exchange_password_reset_pin: {
         Args: { p_pin: string; p_username: string };
         Returns: string;
