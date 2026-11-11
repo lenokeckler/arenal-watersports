@@ -3276,6 +3276,20 @@ export type Database = {
         Args: { p_unit_id: string };
         Returns: string;
       };
+      maintenance_units: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          category_id: string;
+          category_name: string;
+          code: string;
+          next_oil_change_at: number;
+          oil_overage: number;
+          status: Database["public"]["Enums"]["unit_status"];
+          unit_id: string;
+          usage_metric: Database["public"]["Enums"]["usage_metric"];
+          usage_total: number;
+        }[];
+      };
       mark_password_reset_pin_undelivered: {
         Args: { p_pin_id: string };
         Returns: undefined;
