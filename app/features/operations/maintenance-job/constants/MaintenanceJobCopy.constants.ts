@@ -9,6 +9,9 @@ export const MAINTENANCE_JOB_COPY = {
   },
   DATE_LABEL: "Fecha del trabajo",
   DESCRIPTION_LABEL: "Descripción",
+  ERROR_LOAD: "No se pudieron cargar las unidades.",
+  FORBIDDEN: "No tiene acceso a las operaciones.",
+  ACCUMULATED_PREFIX: " Acumulado: ",
   ERROR_COST:
     "Escriba un monto válido, con hasta dos decimales.",
   ERROR_CURRENCY: "Seleccione la moneda del costo.",

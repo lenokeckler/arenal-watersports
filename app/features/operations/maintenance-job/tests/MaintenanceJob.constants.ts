@@ -106,3 +106,12 @@ export const INVALID_JOB_INPUTS = [
     name: "a threshold on a work that is not an oil change",
   },
 ] as const;
+
+export const JOB_FORM_TEXT = {
+  COST: "35000",
+  CURRENCY: "CRC",
+  THRESHOLD: "150",
+  THRESHOLD_BELOW: "90",
+  THRESHOLD_BELOW_ERROR:
+    "Debe ser mayor que lo acumulado: 100.",
+} as const;
