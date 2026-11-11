@@ -19,10 +19,11 @@ const createBasicFieldHandlers = (
   clearUnitAfterScheduleChange: () => void
 ) => ({
   handleCategoryChange: (value: string) => {
-    clearSelectionResetNotice();
-    if (values.categoryId !== value) {
-      updateValue(RESERVATION_FORM_FIELD.EXTRA_IDS, []);
+    if (values.categoryId === value) {
+      return;
     }
+    clearSelectionResetNotice();
+    updateValue(RESERVATION_FORM_FIELD.EXTRA_IDS, []);
     updateValue(RESERVATION_FORM_FIELD.CATEGORY_ID, value);
     updateValue(
       RESERVATION_FORM_FIELD.UNIT_ID,
@@ -48,10 +49,11 @@ const createBasicFieldHandlers = (
     clearUnitAfterScheduleChange();
   },
   handleUnitChange: (value: string) => {
-    clearSelectionResetNotice();
-    if (values.unitId !== value) {
-      updateValue(RESERVATION_FORM_FIELD.EXTRA_IDS, []);
+    if (values.unitId === value) {
+      return;
     }
+    clearSelectionResetNotice();
+    updateValue(RESERVATION_FORM_FIELD.EXTRA_IDS, []);
     updateValue(RESERVATION_FORM_FIELD.UNIT_ID, value);
   },
 });
