@@ -51,6 +51,7 @@ export const PATHS = {
     INVENTORY_PAGE: (pageIndex: number) =>
       `${OPERATIONS_INVENTORY_PATH}?${PAGINATION.QUERY_PARAMS.PAGE}=${pageIndex}`,
     MAINTENANCE: "/operations/maintenance",
+    MAINTENANCE_NEW: "/operations/maintenance/new",
     OUT_ON_WATER: "/operations/out-on-water",
     PENDING_DISPATCHES: "/operations/dispatch",
   },

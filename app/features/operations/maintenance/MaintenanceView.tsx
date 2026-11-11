@@ -1,4 +1,9 @@
-import { ARIA_ROLE, TitleVariant } from "@/app/constants";
+import {
+  ARIA_ROLE,
+  PATHS,
+  TitleVariant,
+} from "@/app/constants";
+import Link from "@/app/components/link/Link";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
 import MaintenanceOilSection from "./components/MaintenanceOilSection";
@@ -12,6 +17,7 @@ import {
   MAINTENANCE_CLASS,
   MAINTENANCE_HEADING_CLASS,
   MAINTENANCE_MESSAGE_CLASS,
+  MAINTENANCE_NEW_JOB_LINK_CLASS,
 } from "./styles/Maintenance.styles";
 import type { JSX } from "react";
 
@@ -26,6 +32,12 @@ const MaintenanceView = ({
       text={MAINTENANCE_COPY.HEADING}
       className={MAINTENANCE_HEADING_CLASS}
     />
+    <Link
+      href={PATHS.OPERATIONS.MAINTENANCE_NEW}
+      className={MAINTENANCE_NEW_JOB_LINK_CLASS}
+    >
+      {MAINTENANCE_COPY.NEW_JOB}
+    </Link>
     {errorMessage ? (
       <Text
         className={MAINTENANCE_MESSAGE_CLASS}
