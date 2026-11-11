@@ -2304,6 +2304,83 @@ export type Database = {
           },
         ];
       };
+      unit_corrections: {
+        Row: {
+          corrected: NonNullable<Json>;
+          created_at: string;
+          created_by: string;
+          id: string;
+          previous: NonNullable<Json>;
+          unit_id: string;
+        };
+        Insert: {
+          corrected: NonNullable<Json>;
+          created_at?: string;
+          created_by: string;
+          id?: string;
+          previous: NonNullable<Json>;
+          unit_id: string;
+        };
+        Update: {
+          corrected?: NonNullable<Json>;
+          created_at?: string;
+          created_by?: string;
+          id?: string;
+          previous?: NonNullable<Json>;
+          unit_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "unit_corrections_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "unit_corrections_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_corrections_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "unit_corrections_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_units";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_corrections_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "maintenance_cost_by_unit";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "unit_corrections_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_current_state";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_corrections_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
+          },
+        ];
+      };
       worker_areas: {
         Row: {
           area: Database["public"]["Enums"]["work_area"];
@@ -3030,6 +3107,17 @@ export type Database = {
       };
       consume_password_reset_pin: {
         Args: { p_pin: string; p_username: string };
+        Returns: string;
+      };
+      correct_unit_readings: {
+        Args: {
+          p_fuel_level: number;
+          p_fuel_max: number;
+          p_impact_count: number;
+          p_status: Database["public"]["Enums"]["unit_status"];
+          p_unit_id: string;
+          p_usage_total: number;
+        };
         Returns: string;
       };
       create_custom_combo_reservation: {
