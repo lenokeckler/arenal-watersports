@@ -1,4 +1,3 @@
-import { STRING } from "@/app/constants";
 import { RESERVATION_TYPE } from "./ReservationType.constants";
 
 export const RESERVATION_TIME_ZONE = "America/Costa_Rica";
@@ -6,7 +5,6 @@ export const RESERVATION_TIME_ZONE = "America/Costa_Rica";
 export const RESERVATION_FORM_ACCESS = {
   AREA: "reservas",
   AREA_RPC: "has_area",
-  ADMIN_RPC: "is_admin",
 } as const;
 
 export const RESERVATION_DURATION_PRESETS = [
@@ -31,17 +29,46 @@ export const RESERVATION_FORM_DEFAULT_VALUES = {
   quantity: 1,
   reservationType: RESERVATION_TYPE.RENTAL,
   time: "09:00",
-  unitId: STRING.Empty,
+  unitId: "",
 } as const;
 
 export const RESERVATION_FORM_FIELD_ID = {
   CATEGORY: "reservation-category",
+  CATEGORY_ERROR: "reservation-category-error",
   CUSTOMER_NAME: "reservation-customer-name",
   DATE: "reservation-date",
   DURATION: "reservation-duration",
+  DURATION_ERROR: "reservation-duration-error",
+  DURATION_GROUP: "reservation-duration-group",
   HEADING: "reservation-form-heading",
   PEOPLE_COUNT: "reservation-people-count",
   QUANTITY: "reservation-quantity",
+  RESERVATION_TYPE: "reservation-type",
+  SUBMISSION_ERROR: "reservation-submission-error",
   TIME: "reservation-time",
-  UNIT: "reservation-equipment-unit",
+  UNIT: "reservation-unit",
+} as const;
+
+export const RESERVATION_FORM_FOCUS_TARGET = {
+  TAB_INDEX: -1,
+} as const;
+
+export const RESERVATION_FORM_ERROR_TARGET_ID = {
+  categoryId: RESERVATION_FORM_FIELD_ID.CATEGORY,
+  customerName: RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME,
+  date: RESERVATION_FORM_FIELD_ID.DATE,
+  durationHours: RESERVATION_FORM_FIELD_ID.DURATION_GROUP,
+  peopleCount: RESERVATION_FORM_FIELD_ID.PEOPLE_COUNT,
+  quantity: RESERVATION_FORM_FIELD_ID.QUANTITY,
+  time: RESERVATION_FORM_FIELD_ID.TIME,
+  unitId: RESERVATION_FORM_FIELD_ID.UNIT,
+} as const;
+
+export const RESERVATION_FORM_INPUT_TYPE = {
+  RADIO: "radio",
+} as const;
+
+export const RESERVATION_FORM_CATEGORY_IMAGE_SIZE = {
+  HEIGHT: 128,
+  WIDTH: 192,
 } as const;

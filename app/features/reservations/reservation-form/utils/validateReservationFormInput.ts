@@ -4,12 +4,12 @@ import type { ReservationFormField } from "../models/ReservationFormField.consta
 import type { ReservationFormInput } from "../models/ReservationFormInput.interface";
 import type { ReservationFormValidation } from "../models/ReservationFormValidation.interface";
 import type { ValidatedReservationFormInput } from "../models/ValidatedReservationFormInput.interface";
-import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
-import { RESERVATION_SCHEDULE } from "../constants/ReservationSchedule.constants";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
+import type { NullableRef } from "@/app/types";
 import {
+  getReservationDurationMinutes,
   isValidReservationDate,
-  isValidReservationDuration,
   isValidReservationTime,
 } from "./validateReservationSchedule";
 
@@ -17,15 +17,18 @@ const isPositiveInteger = (value: number): boolean =>
   Number.isInteger(value) && value > 0;
 
 const buildValidatedInput = (
-  input: ReservationFormInput
+  input: ReservationFormInput,
+  durationMinutes: number
 ): ValidatedReservationFormInput => ({
   customerName: input.customerName.trim(),
   date: input.date,
-  durationMinutes:
-    input.durationHours *
-    RESERVATION_SCHEDULE.MINUTES_PER_HOUR,
+  durationMinutes,
   extraIds: [],
-  guideIds: input.guideIds ?? [],
+  guideIds:
+    (input.reservationType ?? RESERVATION_TYPE.RENTAL) ===
+    RESERVATION_TYPE.TOUR
+      ? (input.guideIds ?? [])
+      : [],
   peopleCount: input.peopleCount,
   reservationType:
     input.reservationType ?? RESERVATION_TYPE.RENTAL,
@@ -71,7 +74,8 @@ const validateCustomerAndGroup = (
 };
 
 const validateSchedule = (
-  input: ReservationFormInput
+  input: ReservationFormInput,
+  durationMinutes: NullableRef<number>
 ): ReservationFormValidation["errors"] => {
   const errors: ReservationFormValidation["errors"] = {};
   addFieldError(
@@ -87,7 +91,7 @@ const validateSchedule = (
   addFieldError(
     errors,
     RESERVATION_FORM_FIELD.DURATION_HOURS,
-    isValidReservationDuration(input.durationHours)
+    durationMinutes !== null
   );
   return errors;
 };
@@ -112,22 +116,30 @@ const validateEquipment = (
 };
 
 const validateFields = (
-  input: ReservationFormInput
+  input: ReservationFormInput,
+  durationMinutes: NullableRef<number>
 ): ReservationFormValidation["errors"] => ({
   ...validateCustomerAndGroup(input),
-  ...validateSchedule(input),
+  ...validateSchedule(input, durationMinutes),
   ...validateEquipment(input),
 });
 
 export const validateReservationFormInput = (
   input: ReservationFormInput
 ): ReservationFormValidation => {
-  const errors = validateFields(input);
+  const durationMinutes = getReservationDurationMinutes(
+    input.durationHours
+  );
+  const errors = validateFields(input, durationMinutes);
 
-  const isValid = Object.keys(errors).length === 0;
+  const value =
+    Object.keys(errors).length === 0 &&
+    durationMinutes !== null
+      ? buildValidatedInput(input, durationMinutes)
+      : null;
 
   return {
     errors,
-    value: isValid ? buildValidatedInput(input) : null,
+    value,
   };
 };

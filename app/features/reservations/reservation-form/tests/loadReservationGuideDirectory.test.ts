@@ -1,83 +1,80 @@
-import {
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
+import { beforeEach, expect, it, vi } from "vitest";
 import { RESERVATION_GUIDE_LOAD_RESULT_KIND } from "../constants/ReservationGuideLoad.constants";
-import { getReservationGuides } from "../services/getReservationGuides";
 import { loadReservationGuideDirectory } from "../services/loadReservationGuideDirectory";
-import { recordReservationGuideLoadFailure } from "../utils/recordReservationGuideLoadFailure";
-import { RESERVATION_GUIDE_ASSIGNMENT_TEST } from "./ReservationGuideAssignment.constants";
-import { RESERVATION_GUIDE_SELECTION_TEST } from "./ReservationGuideSelection.constants";
+import { RESERVATION_GUIDE_SELECTION_OPTIONS } from "./ReservationGuideSelection.constants";
+import { RESERVATION_GUIDE_LOAD_TEST } from "./ReservationGuideLoad.constants";
+
+const { unstableRethrow, recordFailure, getGuides } =
+  vi.hoisted(() => ({
+    unstableRethrow: vi.fn(),
+    recordFailure: vi.fn(),
+    getGuides: vi.fn(),
+  }));
+
+vi.mock("next/navigation", () => ({
+  unstable_rethrow: unstableRethrow,
+}));
 
 vi.mock("../services/getReservationGuides", () => ({
-  getReservationGuides: vi.fn(),
+  getReservationGuides: getGuides,
 }));
 
 vi.mock(
   "../utils/recordReservationGuideLoadFailure",
   () => ({
-    recordReservationGuideLoadFailure: vi.fn(),
+    recordReservationGuideLoadFailure: recordFailure,
   })
 );
 
-describe("loadReservationGuideDirectory", () => {
-  beforeEach(() => {
-    vi.mocked(getReservationGuides).mockReset();
-    vi.mocked(
-      recordReservationGuideLoadFailure
-    ).mockReset();
+beforeEach(() => {
+  vi.clearAllMocks();
+});
+
+it("returns the eligible guide directory", async () => {
+  getGuides.mockResolvedValue(
+    RESERVATION_GUIDE_SELECTION_OPTIONS
+  );
+
+  await expect(
+    loadReservationGuideDirectory()
+  ).resolves.toEqual({
+    guides: RESERVATION_GUIDE_SELECTION_OPTIONS,
+    kind: RESERVATION_GUIDE_LOAD_RESULT_KIND.SUCCESS,
+  });
+});
+
+it("records a safe result when the directory query fails", async () => {
+  const error = Object.assign(
+    new Error(RESERVATION_GUIDE_LOAD_TEST.FAILURE_MESSAGE),
+    { code: RESERVATION_GUIDE_LOAD_TEST.FAILURE_CODE }
+  );
+  getGuides.mockRejectedValue(error);
+
+  await expect(
+    loadReservationGuideDirectory()
+  ).resolves.toEqual({
+    code: RESERVATION_GUIDE_LOAD_TEST.FAILURE_CODE,
+    kind: RESERVATION_GUIDE_LOAD_RESULT_KIND.FAILURE,
+  });
+  expect(recordFailure).toHaveBeenCalledWith(
+    error,
+    RESERVATION_GUIDE_LOAD_TEST.FAILURE_CODE
+  );
+});
+
+it("rethrows Next control-flow errors", async () => {
+  const controlFlowError = new Error(
+    RESERVATION_GUIDE_LOAD_TEST.CONTROL_FLOW_MESSAGE
+  );
+  getGuides.mockRejectedValue(controlFlowError);
+  unstableRethrow.mockImplementation(() => {
+    throw controlFlowError;
   });
 
-  it("returns the guide directory without logging", async () => {
-    const guides = [
-      {
-        id: RESERVATION_GUIDE_SELECTION_TEST.FIRST_ID,
-        name: RESERVATION_GUIDE_ASSIGNMENT_TEST.FIRST_NAME,
-      },
-    ];
-    vi.mocked(getReservationGuides).mockResolvedValue(
-      guides
-    );
-
-    await expect(
-      loadReservationGuideDirectory()
-    ).resolves.toEqual({
-      guides,
-      kind: RESERVATION_GUIDE_LOAD_RESULT_KIND.SUCCESS,
-    });
-    expect(
-      recordReservationGuideLoadFailure
-    ).not.toHaveBeenCalled();
-  });
-
-  it("preserves the safe failure code and logs once", async () => {
-    const cause = Object.assign(
-      new Error("Database detail"),
-      {
-        code: RESERVATION_GUIDE_ASSIGNMENT_TEST.LOAD_ERROR_CODE,
-      }
-    );
-    vi.mocked(getReservationGuides).mockRejectedValue(
-      cause
-    );
-
-    await expect(
-      loadReservationGuideDirectory()
-    ).resolves.toEqual({
-      code: RESERVATION_GUIDE_ASSIGNMENT_TEST.LOAD_ERROR_CODE,
-      kind: RESERVATION_GUIDE_LOAD_RESULT_KIND.FAILURE,
-    });
-    expect(
-      recordReservationGuideLoadFailure
-    ).toHaveBeenCalledOnce();
-    expect(
-      recordReservationGuideLoadFailure
-    ).toHaveBeenCalledWith(
-      cause,
-      RESERVATION_GUIDE_ASSIGNMENT_TEST.LOAD_ERROR_CODE
-    );
-  });
+  await expect(
+    loadReservationGuideDirectory()
+  ).rejects.toThrow(
+    RESERVATION_GUIDE_LOAD_TEST.CONTROL_FLOW_MESSAGE
+  );
+  expect(recordFailure).not.toHaveBeenCalled();
 });

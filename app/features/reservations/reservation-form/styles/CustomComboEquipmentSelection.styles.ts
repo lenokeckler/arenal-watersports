@@ -36,3 +36,9 @@ export const CUSTOM_COMBO_QUANTITY_CLASS =
 
 export const CUSTOM_COMBO_ADD_BUTTON_CLASS =
   "min-h-11 rounded-full border border-primary px-4 text-sm font-semibold text-primary hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+
+export const CUSTOM_COMBO_REMOVE_BUTTON_CLASS =
+  "min-h-11 self-end rounded-full px-4 text-sm font-semibold text-error hover:bg-error/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-error";
+
+export const CUSTOM_COMBO_UNIT_SELECTOR_LAYOUT_CLASS =
+  "flex w-full min-w-0 flex-col gap-3";

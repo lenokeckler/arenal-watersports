@@ -17,6 +17,8 @@ import {
   SUCCESS_STATUS,
   VALIDATED_RESERVATION_INPUT,
   VALIDATED_RESERVATION_WITH_EXTRAS_INPUT,
+  VALIDATED_TOUR_RESERVATION_INPUT,
+  VALIDATED_UNIT_RESERVATION_INPUT,
 } from "./createRentalReservation.constants";
 
 vi.mock("@/app/services/supabase", () => ({
@@ -88,6 +90,39 @@ describe("createRentalReservation", () => {
     );
   });
 
+  it("sends a concrete unit in one JSON payload", async () => {
+    await createRentalReservation(
+      VALIDATED_UNIT_RESERVATION_INPUT
+    );
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      CREATE_RESERVATION_RPC_URL,
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({
+          p_payload: {
+            customer_name:
+              VALIDATED_UNIT_RESERVATION_INPUT.customerName,
+            date: VALIDATED_UNIT_RESERVATION_INPUT.date,
+            duration_minutes:
+              VALIDATED_UNIT_RESERVATION_INPUT.durationMinutes,
+            extra_ids:
+              VALIDATED_UNIT_RESERVATION_INPUT.extraIds,
+            guide_ids: [],
+            people_count:
+              VALIDATED_UNIT_RESERVATION_INPUT.peopleCount,
+            reservation_type:
+              VALIDATED_UNIT_RESERVATION_INPUT.reservationType,
+            time: VALIDATED_UNIT_RESERVATION_INPUT.time,
+            unit_id:
+              VALIDATED_UNIT_RESERVATION_INPUT
+                .equipmentCommitment.unitId,
+          },
+        }),
+      })
+    );
+  });
+
   it("sends selected extra ids with the concrete boat commitment", async () => {
     await createRentalReservation(
       VALIDATED_RESERVATION_WITH_EXTRAS_INPUT
@@ -119,5 +154,26 @@ describe("createRentalReservation", () => {
         }),
       })
     );
+  });
+
+  it("sends selected guide ids with the tour", async () => {
+    await createRentalReservation(
+      VALIDATED_TOUR_RESERVATION_INPUT
+    );
+
+    const requestBody = JSON.parse(
+      String(fetchMock.mock.calls[0][1].body)
+    );
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      CREATE_RESERVATION_RPC_URL,
+      expect.objectContaining({ method: "POST" })
+    );
+    expect(requestBody).toMatchObject({
+      p_payload: {
+        guide_ids:
+          VALIDATED_TOUR_RESERVATION_INPUT.guideIds,
+      },
+    });
   });
 });

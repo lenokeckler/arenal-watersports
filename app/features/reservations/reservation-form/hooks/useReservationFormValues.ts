@@ -2,21 +2,31 @@ import { useState } from "react";
 import { RESERVATION_FORM_DEFAULT_VALUES } from "../constants/ReservationFormUi.constants";
 import type { ReservationFormField } from "../models/ReservationFormField.constants";
 import type { ReservationFormInput } from "../models/ReservationFormInput.interface";
-import type { ReservationFormValueField } from "../models/ReservationFormValueField.type";
 
 export const useReservationFormValues = (
   initialDate: string,
   initialCategoryId: string,
-  clearFieldError: (field: ReservationFormField) => void
+  clearFieldError: (field: ReservationFormField) => void,
+  initialValues?: ReservationFormInput
 ) => {
   const [values, setValues] =
     useState<ReservationFormInput>({
       ...RESERVATION_FORM_DEFAULT_VALUES,
       date: initialDate,
       categoryId: initialCategoryId,
+      ...initialValues,
     });
+  const reset = (): void => {
+    setValues({
+      ...RESERVATION_FORM_DEFAULT_VALUES,
+      date: initialDate,
+      categoryId: initialCategoryId,
+    });
+  };
 
-  const updateValue = <K extends ReservationFormValueField>(
+  const updateValue = <
+    K extends keyof ReservationFormInput,
+  >(
     field: K,
     value: ReservationFormInput[K]
   ): void => {
@@ -27,5 +37,5 @@ export const useReservationFormValues = (
     clearFieldError(field);
   };
 
-  return { updateValue, values };
+  return { reset, updateValue, values };
 };

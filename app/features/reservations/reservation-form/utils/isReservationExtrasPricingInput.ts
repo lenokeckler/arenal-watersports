@@ -5,7 +5,7 @@ import { RESERVATION_EXTRAS_PRICING } from "../constants/ReservationExtrasPricin
 import { TYPE_OF } from "@/app/constants";
 import type { ReservationExtrasPricingInput } from "../models/ReservationExtrasPricingInput.interface";
 import type { ReservationExtrasPricingType } from "../models/ReservationExtrasPricingType.type";
-import { isValidReservationDuration } from "./validateReservationSchedule";
+import { getReservationDurationMinutes } from "./validateReservationSchedule";
 
 const isRecord = (
   value: unknown
@@ -45,7 +45,7 @@ const isValidDuration = (
   durationHours: unknown
 ): durationHours is number =>
   isNumber(durationHours) &&
-  isValidReservationDuration(durationHours) &&
+  getReservationDurationMinutes(durationHours) !== null &&
   durationHours * RESERVATION_SCHEDULE.MINUTES_PER_HOUR <=
     CUSTOM_COMBO_PRICING_MAX_DURATION_MINUTES;
 

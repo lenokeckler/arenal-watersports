@@ -6,4 +6,5 @@ export interface TitleProps {
   text?: string;
   children?: React.ReactNode;
   className?: string;
+  tabIndex?: number;
 }
