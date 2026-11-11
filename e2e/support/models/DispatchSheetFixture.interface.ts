@@ -3,6 +3,7 @@ export interface DispatchSheetFixture {
   categoryName: string;
   customerName: string;
   makeDispatchLate: (minutesLate: number) => Promise<void>;
+  readDispatchDuration: () => Promise<DispatchDurationState>;
   readDispatchReadings: () => Promise<DispatchReadingsState>;
   readDispatchState: () => Promise<DispatchSheetState>;
   remove: () => Promise<void>;
@@ -28,3 +29,8 @@ export type DispatchReadingsState = Record<
   string,
   DispatchUnitReadingState
 >;
+
+export interface DispatchDurationState {
+  durationMinutes: number;
+  extendedMinutes: number;
+}

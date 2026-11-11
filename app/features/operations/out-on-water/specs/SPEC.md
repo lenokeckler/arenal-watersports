@@ -11,10 +11,11 @@ Let the operations worker see, in one screen, every dispatched group that has no
 - Counting down the time left until the return hour.
 - Marking a group past its return hour as «Por regresar», in the warning color, with the minutes it is late.
 - Keeping the count and the list up to date while the page stays open.
+- Adjusting the duration of one group, extending or cutting it, which recalculates its return hour.
+- Marking a group that was extended so Reservations can decide whether the extra hours are charged or courtesy.
 
 ## Out of scope
 
-- Adjusting the duration of a group (US-OPE-06).
 - Registering the arrival of a group (US-OPE-05).
 - Alerts when a group is about to return or is late.
 - Deciding or charging the extra time of a late group, which Reservations registers apart.
@@ -25,6 +26,12 @@ Let the operations worker see, in one screen, every dispatched group that has no
 - A reservation with several categories shows one entry per group, each with its own return hour.
 - A group that already came back is no longer listed.
 - Groups are ordered by return hour, the soonest first.
-- Only workers with the operations area can read the list.
+- Only workers with the operations area can read the list or adjust a duration.
+- The duration of a group is adjusted on its own, without touching the other groups of the same reservation.
+- A group that already came back cannot be adjusted.
+- A duration is a whole number of minutes between 1 and 1440.
+- A group extended over its planned duration keeps a mark with the minutes added; cutting it back to the plan or below clears the mark.
+- Operations only leaves the mark and decides nothing about money.
+- The adjustment is registered in the name of who made it.
 - A group never closes itself nor disappears from the screen: it stays listed until its equipment returns.
 - The time left is shown in hours and minutes; a group past its return hour is marked «Por regresar» with the minutes of delay.

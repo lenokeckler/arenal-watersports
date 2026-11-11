@@ -1,7 +1,10 @@
 import { OUT_ON_WATER_COPY } from "@/app/features/operations/out-on-water/constants/OutOnWaterCopy.constants";
 import { E2E_DISPATCH_LATE } from "../constants/E2eDispatchSheet.constants";
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
-import { E2E_OUT_ON_WATER_SCREENSHOT_BASENAME } from "../constants/E2eOutOnWater.constants";
+import {
+  E2E_OUT_ON_WATER_ADJUST,
+  E2E_OUT_ON_WATER_SCREENSHOT_BASENAME,
+} from "../constants/E2eOutOnWater.constants";
 import { createDispatchBoardPage } from "../pages/DispatchBoard.page";
 import { createDispatchSheetPage } from "../pages/DispatchSheet.page";
 import { createOutOnWaterPage } from "../pages/OutOnWater.page";
@@ -49,6 +52,19 @@ test.describe("Equipment out screenshots", () => {
     await captureFullPage(
       page,
       E2E_OUT_ON_WATER_SCREENSHOT_BASENAME.LATE,
+      testInfo.project.name
+    );
+
+    await outOnWater
+      .getAdjustButton(dispatchSheet.customerName)
+      .click();
+    await outOnWater
+      .getAdjustPreset(E2E_OUT_ON_WATER_ADJUST.ADD_PRESET)
+      .click();
+    await expect(outOnWater.getAdjustSave()).toBeEnabled();
+    await captureFullPage(
+      page,
+      E2E_OUT_ON_WATER_SCREENSHOT_BASENAME.ADJUST,
       testInfo.project.name
     );
   });
