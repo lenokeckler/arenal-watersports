@@ -7,7 +7,7 @@ alter table reservations add constraint reservations_cancellation_cause_only_whe
 
 create function normalize_cancellation_cause(p_cause text, p_status reservation_status)
 returns cancellation_cause
-language plpgsql immutable security invoker set search_path = public
+language plpgsql stable security invoker set search_path = public
 as $$
 declare
   v_cause text := btrim(coalesce(p_cause, ''));
