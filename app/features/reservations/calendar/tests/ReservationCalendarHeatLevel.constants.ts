@@ -1,0 +1,39 @@
+import { CALENDAR_HEAT_LEVEL } from "@/app/components/calendar/constants/CalendarHeatLevel.constants";
+import { RESERVATION_CALENDAR_HEAT_MAP } from "../constants/ReservationCalendarHeatMap.constants";
+
+const NO_RESERVATIONS = 0;
+const ONE_RESERVATION = 1;
+const FIRST_ORANGE_COUNT =
+  RESERVATION_CALENDAR_HEAT_MAP.MAX_GREEN_RESERVATIONS +
+  ONE_RESERVATION;
+const LAST_ORANGE_COUNT =
+  RESERVATION_CALENDAR_HEAT_MAP.MAX_ORANGE_RESERVATIONS;
+const FIRST_RED_COUNT = LAST_ORANGE_COUNT + ONE_RESERVATION;
+
+export const RESERVATION_CALENDAR_HEAT_LEVEL_CASES = [
+  {
+    count: NO_RESERVATIONS,
+    level: CALENDAR_HEAT_LEVEL.GREEN,
+  },
+  {
+    count: ONE_RESERVATION,
+    level: CALENDAR_HEAT_LEVEL.GREEN,
+  },
+  {
+    count:
+      RESERVATION_CALENDAR_HEAT_MAP.MAX_GREEN_RESERVATIONS,
+    level: CALENDAR_HEAT_LEVEL.GREEN,
+  },
+  {
+    count: FIRST_ORANGE_COUNT,
+    level: CALENDAR_HEAT_LEVEL.ORANGE,
+  },
+  {
+    count: LAST_ORANGE_COUNT,
+    level: CALENDAR_HEAT_LEVEL.ORANGE,
+  },
+  {
+    count: FIRST_RED_COUNT,
+    level: CALENDAR_HEAT_LEVEL.RED,
+  },
+] as const;
