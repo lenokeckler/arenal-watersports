@@ -87,7 +87,8 @@ export const useReservationFormViewModel = (
   const predefinedCombo = usePredefinedComboForm(
     predefinedCombos,
     isCustomCombo,
-    fields.handleGuideIdsChange
+    fields.handleGuideIdsChange,
+    () => submission.setSubmissionError(STRING.Empty)
   );
   const isQuantityUnavailable =
     isReservationQuantityUnavailable(
@@ -114,12 +115,11 @@ export const useReservationFormViewModel = (
     submission.isPending ||
     submission.isSubmitted ||
     (isCustomCombo
-      ? predefinedCombo.mode ===
-        PREDEFINED_COMBO_SELECTION_MODE.PREDEFINED
-        ? predefinedCombo.selectedCombo === null
-        : !hasValidCustomComboEquipmentSelections(
-            customCombo.draft.items
-          )
+      ? predefinedCombo.mode !==
+          PREDEFINED_COMBO_SELECTION_MODE.PREDEFINED &&
+        !hasValidCustomComboEquipmentSelections(
+          customCombo.draft.items
+        )
       : categoriesForReservationType.length === 0 ||
         (equipment.requiresConcreteUnit &&
           (equipment.isAvailabilityLoading ||
