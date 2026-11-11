@@ -12,10 +12,11 @@ import {
 } from "vitest";
 import { getAvailableReservationUnitsAction } from "../actions/getAvailableReservationUnitsAction";
 import { STRING } from "@/app/constants";
+import { EMPTY_RESERVATION_EQUIPMENT_AVAILABILITY } from "../constants/ReservationAvailability.constants";
 import CustomComboUnitAvailabilitySelector from "../components/CustomComboUnitAvailabilitySelector";
 import { CUSTOM_COMBO_UNIT_SELECTOR_TEST } from "./CustomComboUnitSelector.constants";
 import { AVAILABLE_UNIT_TEST } from "./getAvailableReservationUnits.constants";
-import type { ReservationCategoryUnitOption } from "../models/ReservationCategoryUnitOption.interface";
+import type { ReservationEquipmentAvailability } from "../models/ReservationEquipmentAvailability.interface";
 
 vi.mock(
   "../actions/getAvailableReservationUnitsAction",
@@ -30,12 +31,15 @@ describe("CustomComboUnitAvailabilitySelector", () => {
   it("loads units for the selected combo category and schedule", async () => {
     vi.mocked(
       getAvailableReservationUnitsAction
-    ).mockResolvedValue([
-      {
-        code: AVAILABLE_UNIT_TEST.UNIT_CODE,
-        id: AVAILABLE_UNIT_TEST.UNIT_ID,
-      },
-    ]);
+    ).mockResolvedValue({
+      ...EMPTY_RESERVATION_EQUIPMENT_AVAILABILITY,
+      availableUnits: [
+        {
+          code: AVAILABLE_UNIT_TEST.UNIT_CODE,
+          id: AVAILABLE_UNIT_TEST.UNIT_ID,
+        },
+      ],
+    });
     render(
       <CustomComboUnitAvailabilitySelector
         categoryId={AVAILABLE_UNIT_TEST.CATEGORY_ID}
@@ -74,7 +78,9 @@ describe("CustomComboUnitAvailabilitySelector", () => {
     const onChange = vi.fn();
     vi.mocked(
       getAvailableReservationUnitsAction
-    ).mockResolvedValue([]);
+    ).mockResolvedValue(
+      EMPTY_RESERVATION_EQUIPMENT_AVAILABILITY
+    );
     render(
       <CustomComboUnitAvailabilitySelector
         categoryId={AVAILABLE_UNIT_TEST.CATEGORY_ID}
@@ -99,13 +105,13 @@ describe("CustomComboUnitAvailabilitySelector", () => {
   it("clears a selected unit while rechecking its availability", async () => {
     const onChange = vi.fn();
     let resolveAvailability = (
-      _units: ReservationCategoryUnitOption[]
+      _availability: ReservationEquipmentAvailability
     ): void => undefined;
     vi.mocked(
       getAvailableReservationUnitsAction
     ).mockImplementation(
       () =>
-        new Promise<ReservationCategoryUnitOption[]>(
+        new Promise<ReservationEquipmentAvailability>(
           (resolve) => {
             resolveAvailability = resolve;
           }
@@ -130,6 +136,8 @@ describe("CustomComboUnitAvailabilitySelector", () => {
     await waitFor(() =>
       expect(onChange).toHaveBeenCalledWith(STRING.Empty)
     );
-    resolveAvailability([]);
+    resolveAvailability(
+      EMPTY_RESERVATION_EQUIPMENT_AVAILABILITY
+    );
   });
 });

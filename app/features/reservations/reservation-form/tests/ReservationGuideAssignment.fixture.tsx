@@ -3,7 +3,7 @@ import { RESERVATION_GUIDE_LOAD_RESULT_KIND } from "../constants/ReservationGuid
 import { createReservationGuideAssignmentPage } from "./ReservationGuideAssignment.page";
 import { renderReservationForm } from "./ReservationFormView.fixture";
 import { RESERVATION_GUIDE_ASSIGNMENT_TEST } from "./ReservationGuideAssignment.constants";
-import { RESERVATION_GUIDE_SELECTION_TEST } from "./ReservationGuideSelection.constants";
+import { RESERVATION_GUIDE_SELECTION_OPTIONS } from "./ReservationGuideSelection.constants";
 
 export const createFailedGuideLoadResult =
   (): ReservationGuideLoadResult => ({
@@ -13,21 +13,14 @@ export const createFailedGuideLoadResult =
 
 export const renderReservationGuideForm = (
   guideLoadResult: ReservationGuideLoadResult = {
-    guides: [
-      {
-        id: RESERVATION_GUIDE_SELECTION_TEST.FIRST_ID,
-        name: RESERVATION_GUIDE_ASSIGNMENT_TEST.FIRST_NAME,
-      },
-      {
-        id: RESERVATION_GUIDE_SELECTION_TEST.SECOND_ID,
-        name: RESERVATION_GUIDE_ASSIGNMENT_TEST.SECOND_NAME,
-      },
-    ],
+    guides: RESERVATION_GUIDE_SELECTION_OPTIONS,
     kind: RESERVATION_GUIDE_LOAD_RESULT_KIND.SUCCESS,
   }
 ) => {
   const page = renderReservationForm(
-    undefined,
+    true,
+    false,
+    false,
     guideLoadResult
   );
   return {

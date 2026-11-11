@@ -1,0 +1,136 @@
+import { describe, expect, it } from "vitest";
+import { STRING } from "@/app/constants";
+import { mapCategoryBehaviorFormValuesToInput } from "../utils/mapCategoryBehaviorFormValuesToInput";
+import {
+  ALL_FLAGS_OFF,
+  CATEGORY_BEHAVIOR_FLAG_FIELDS,
+} from "./CategoryBehaviorFlagFields.constants";
+import {
+  BLANK_DURATION_TEXT,
+  CUSTOM_DURATION_MINUTES,
+  CUSTOM_DURATION_TEXT,
+  UNKNOWN_USAGE_METRIC_TEXT,
+} from "./CategoryBehaviorFormRules.constants";
+import { VALID_CATEGORY_BEHAVIOR_FORM_VALUES } from "./CategoryBehaviorFormValues.constants";
+import {
+  DEFAULT_UPDATE_CATEGORY_BEHAVIOR_INPUT,
+  FAKE_DEFAULT_DURATION_MINUTES,
+  FAKE_UPDATE_CATEGORY_ID,
+} from "./UpdateCategoryBehaviorInput.constants";
+
+const OTHER_CATEGORY_ID = "fake-other-category-id";
+const INVALID_DURATION_TEXT = "abc";
+const PADDED_DURATION_TEXT = `  ${CUSTOM_DURATION_TEXT}  `;
+
+describe("mapCategoryBehaviorFormValuesToInput", () => {
+  it("maps the valid form values to the default input", () => {
+    const input = mapCategoryBehaviorFormValuesToInput(
+      FAKE_UPDATE_CATEGORY_ID,
+      VALID_CATEGORY_BEHAVIOR_FORM_VALUES
+    );
+
+    expect(input).toEqual(
+      DEFAULT_UPDATE_CATEGORY_BEHAVIOR_INPUT
+    );
+  });
+
+  it("passes the category id through", () => {
+    const input = mapCategoryBehaviorFormValuesToInput(
+      OTHER_CATEGORY_ID,
+      VALID_CATEGORY_BEHAVIOR_FORM_VALUES
+    );
+
+    expect(input.categoryId).toBe(OTHER_CATEGORY_ID);
+  });
+
+  it.each([STRING.Empty, UNKNOWN_USAGE_METRIC_TEXT])(
+    "maps the usage metric text %j to null",
+    (usageMetric) => {
+      const input = mapCategoryBehaviorFormValuesToInput(
+        FAKE_UPDATE_CATEGORY_ID,
+        {
+          ...VALID_CATEGORY_BEHAVIOR_FORM_VALUES,
+          usageMetric,
+        }
+      );
+
+      expect(input.usageMetric).toBeNull();
+    }
+  );
+
+  it.each([STRING.Empty, BLANK_DURATION_TEXT])(
+    "maps the blank duration %j to null",
+    (defaultDurationMinutes) => {
+      const input = mapCategoryBehaviorFormValuesToInput(
+        FAKE_UPDATE_CATEGORY_ID,
+        {
+          ...VALID_CATEGORY_BEHAVIOR_FORM_VALUES,
+          defaultDurationMinutes,
+        }
+      );
+
+      expect(input.defaultDurationMinutes).toBeNull();
+    }
+  );
+
+  it("trims and parses a padded duration", () => {
+    const input = mapCategoryBehaviorFormValuesToInput(
+      FAKE_UPDATE_CATEGORY_ID,
+      {
+        ...VALID_CATEGORY_BEHAVIOR_FORM_VALUES,
+        defaultDurationMinutes: PADDED_DURATION_TEXT,
+      }
+    );
+
+    expect(input.defaultDurationMinutes).toBe(
+      CUSTOM_DURATION_MINUTES
+    );
+  });
+
+  it("keeps a valid duration on a non-reservable category", () => {
+    const input = mapCategoryBehaviorFormValuesToInput(
+      FAKE_UPDATE_CATEGORY_ID,
+      {
+        ...VALID_CATEGORY_BEHAVIOR_FORM_VALUES,
+        isReservable: false,
+      }
+    );
+
+    expect(input.defaultDurationMinutes).toBe(
+      FAKE_DEFAULT_DURATION_MINUTES
+    );
+  });
+
+  it("maps an invalid duration on a non-reservable category to null", () => {
+    const input = mapCategoryBehaviorFormValuesToInput(
+      FAKE_UPDATE_CATEGORY_ID,
+      {
+        ...VALID_CATEGORY_BEHAVIOR_FORM_VALUES,
+        isReservable: false,
+        defaultDurationMinutes: INVALID_DURATION_TEXT,
+      }
+    );
+
+    expect(input.defaultDurationMinutes).toBeNull();
+  });
+
+  it.each(CATEGORY_BEHAVIOR_FLAG_FIELDS)(
+    "maps %s only to its own input field",
+    (flagField) => {
+      const input = mapCategoryBehaviorFormValuesToInput(
+        FAKE_UPDATE_CATEGORY_ID,
+        {
+          ...VALID_CATEGORY_BEHAVIOR_FORM_VALUES,
+          ...ALL_FLAGS_OFF,
+          [flagField]: true,
+        }
+      );
+
+      const enabledFields =
+        CATEGORY_BEHAVIOR_FLAG_FIELDS.filter(
+          (booleanField) => input[booleanField] === true
+        );
+      expect(enabledFields).toEqual([flagField]);
+    }
+  );
+});

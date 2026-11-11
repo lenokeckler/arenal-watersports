@@ -1,0 +1,1 @@
+ADM-01.02.01: Worker area grants — administration enables or removes a whole extra area (reservas or operaciones) on an account through two checked database functions; the base area stays (US-ADM-02 · AWS-54)

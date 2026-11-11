@@ -15,9 +15,8 @@ import {
   readCalendarPreference,
   writeCalendarPreference,
 } from "../services/calendarPreference";
-import calendarReducer, {
-  calendarActions,
-} from "@/app/store/slices/calendarSlice";
+import { calendarActions } from "@/app/store";
+import calendarReducer from "@/app/components/calendar/store/calendarSlice";
 import { CALENDAR_FIXTURE } from "./Calendar.constants";
 import {
   CALENDAR_STORAGE_METHOD,

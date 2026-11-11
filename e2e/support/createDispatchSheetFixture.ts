@@ -1,0 +1,117 @@
+import { randomUUID } from "node:crypto";
+import { INVENTORY_TRACKING_MODE } from "@/app/constants";
+import { getCostaRicaDayRange } from "@/app/components/dispatch-board/utils/getCostaRicaDayRange";
+import {
+  E2E_DISPATCH_SHEET_ERROR,
+  E2E_DISPATCH_SHEET_SEED,
+  E2E_DISPATCH_SHEET_TABLE,
+} from "../constants/E2eDispatchSheet.constants";
+import { buildE2eCustomerName } from "./buildE2eCustomerName";
+import { createInventoryCategoryFixture } from "./createInventoryCategoryFixture";
+import { createServiceRoleClient } from "./createServiceRoleClient";
+import { failE2eOperation } from "./failE2eOperation";
+import type { DispatchSheetFixture } from "./models/DispatchSheetFixture.interface";
+import { readDispatchSheetState } from "./readDispatchSheetState";
+import { removeDispatchSheetFixture } from "./removeDispatchSheetFixture";
+
+export const createDispatchSheetFixture = async (
+  workerId: string
+): Promise<DispatchSheetFixture> => {
+  const audit = {
+    created_by: workerId,
+    updated_by: workerId,
+  };
+  const supabase = createServiceRoleClient();
+  const category = await createInventoryCategoryFixture(
+    INVENTORY_TRACKING_MODE.BY_UNIT,
+    `${E2E_DISPATCH_SHEET_SEED.CATEGORY_NAME_PREFIX} ${randomUUID()}`
+  );
+  const suffix = randomUUID().slice(0, 8);
+  const unitCodes = Array.from(
+    { length: E2E_DISPATCH_SHEET_SEED.UNIT_COUNT },
+    (_, index) =>
+      `${E2E_DISPATCH_SHEET_SEED.UNIT_CODE_PREFIX}-${suffix}-${index + 1}`
+  );
+  const customerName = buildE2eCustomerName();
+
+  const units = await supabase
+    .from(E2E_DISPATCH_SHEET_TABLE.UNITS)
+    .insert(
+      unitCodes.map((code) => ({
+        ...audit,
+        category_id: category.id,
+        code,
+      }))
+    );
+
+  if (units.error) {
+    await category.cleanup();
+
+    return failE2eOperation(
+      E2E_DISPATCH_SHEET_ERROR.OPERATION_INSERT_UNITS,
+      units.error.message
+    );
+  }
+
+  const reservation = await supabase
+    .from(E2E_DISPATCH_SHEET_TABLE.RESERVATIONS)
+    .insert({
+      ...audit,
+      customer_name: customerName,
+      duration_minutes:
+        E2E_DISPATCH_SHEET_SEED.DURATION_MINUTES,
+      people_count: E2E_DISPATCH_SHEET_SEED.PEOPLE_COUNT,
+      starts_at: getCostaRicaDayRange(new Date()).startsAt,
+      type: E2E_DISPATCH_SHEET_SEED.TYPE,
+    })
+    .select("id")
+    .single();
+
+  if (reservation.error) {
+    await category.cleanup();
+
+    return failE2eOperation(
+      E2E_DISPATCH_SHEET_ERROR.OPERATION_INSERT_RESERVATION,
+      reservation.error.message
+    );
+  }
+
+  const reservationId = reservation.data.id;
+  const item = await supabase
+    .from(E2E_DISPATCH_SHEET_TABLE.ITEMS)
+    .insert({
+      ...audit,
+      category_id: category.id,
+      quantity: E2E_DISPATCH_SHEET_SEED.COMMITTED_QUANTITY,
+      reservation_id: reservationId,
+    });
+
+  if (item.error) {
+    await removeDispatchSheetFixture(
+      supabase,
+      reservationId
+    );
+    await category.cleanup();
+
+    return failE2eOperation(
+      E2E_DISPATCH_SHEET_ERROR.OPERATION_INSERT_ITEM,
+      item.error.message
+    );
+  }
+
+  return {
+    categoryName: category.name,
+    customerName,
+    readDispatchState: () =>
+      readDispatchSheetState(supabase, reservationId),
+    remove: async () => {
+      await removeDispatchSheetFixture(
+        supabase,
+        reservationId
+      );
+      await category.cleanup();
+    },
+    reservationId,
+    unitCodes,
+  };
+};

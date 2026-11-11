@@ -1,47 +1,52 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import type { MutableRefObject } from "react";
 import type { ReservationUnitAvailabilitySyncOptions } from "../models/ReservationUnitAvailabilitySyncOptions.interface";
+import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
 import { getAvailableReservationUnitsAction } from "../actions/getAvailableReservationUnitsAction";
 import { isReservationUnitAvailabilityInput } from "../utils/isReservationUnitAvailabilityInput";
 
-const resetAvailability = ({
-  setAvailableUnits,
-  setHasError,
-  setHasLoaded,
-  setIsLoading,
-}: ReservationUnitAvailabilitySyncOptions): void => {
-  setAvailableUnits([]);
-  setIsLoading(false);
-  setHasError(false);
-  setHasLoaded(false);
+const resetAvailability = (
+  options: ReservationUnitAvailabilitySyncOptions
+): void => {
+  options.setAvailableQuantity(null);
+  options.setAvailableUnits([]);
+  options.setIsLoading(false);
+  options.setHasError(false);
+  options.setResolvedRequestKey(null);
 };
 
-const startAvailabilityLookup = ({
-  request,
-  setAvailableUnits,
-  setHasError,
-  setHasLoaded,
-  setIsLoading,
-}: ReservationUnitAvailabilitySyncOptions): (() => void) => {
+const startAvailabilityLookup = (
+  request: ReservationUnitAvailabilityInput,
+  options: ReservationUnitAvailabilitySyncOptions,
+  preserveCurrentAvailability: boolean
+): (() => void) => {
   let isCurrentRequest = true;
-  setAvailableUnits([]);
-  setIsLoading(true);
-  setHasError(false);
-  setHasLoaded(false);
+  if (!preserveCurrentAvailability) {
+    options.setAvailableQuantity(null);
+    options.setAvailableUnits([]);
+  }
+  options.setIsLoading(true);
+  options.setHasError(false);
   getAvailableReservationUnitsAction(request)
-    .then((units) => {
+    .then((availability) => {
       if (isCurrentRequest) {
-        setAvailableUnits(units);
+        options.setAvailableQuantity(
+          availability.availableQuantity
+        );
+        options.setAvailableUnits(
+          availability.availableUnits
+        );
+        options.setResolvedRequestKey(options.requestKey);
       }
     })
     .catch(() => {
       if (isCurrentRequest) {
-        setHasError(true);
+        options.setHasError(true);
       }
     })
     .finally(() => {
       if (isCurrentRequest) {
-        setIsLoading(false);
-        setHasLoaded(true);
+        options.setIsLoading(false);
       }
     });
 
@@ -51,7 +56,8 @@ const startAvailabilityLookup = ({
 };
 
 const synchronizeAvailability = (
-  options: ReservationUnitAvailabilitySyncOptions
+  options: ReservationUnitAvailabilitySyncOptions,
+  previousRequestWindowKey: MutableRefObject<string | null>
 ): (() => void) | undefined => {
   if (
     !isReservationUnitAvailabilityInput(options.request)
@@ -59,47 +65,78 @@ const synchronizeAvailability = (
     resetAvailability(options);
     return undefined;
   }
-  return startAvailabilityLookup(options);
+  const preserveCurrentAvailability =
+    previousRequestWindowKey.current ===
+    options.requestWindowKey;
+  previousRequestWindowKey.current =
+    options.requestWindowKey;
+  return startAvailabilityLookup(
+    options.request,
+    options,
+    preserveCurrentAvailability
+  );
 };
 
 export const useSyncReservationUnitAvailability = (
   options: ReservationUnitAvailabilitySyncOptions
 ): void => {
   const {
-    request: { categoryId, date, durationMinutes, time },
+    request,
     refreshKey,
-  } = options;
-  const {
+    requestKey,
+    requestWindowKey,
+    setAvailableQuantity,
     setAvailableUnits,
     setHasError,
-    setHasLoaded,
     setIsLoading,
+    setResolvedRequestKey,
   } = options;
+  const {
+    categoryId,
+    date,
+    durationMinutes,
+    excludeReservationId,
+    time,
+  } = request;
+  const previousRequestWindowKey = useRef<string | null>(
+    null
+  );
   useEffect(
     () =>
-      synchronizeAvailability({
-        request: {
-          categoryId,
-          date,
-          durationMinutes,
-          time,
+      synchronizeAvailability(
+        {
+          request: {
+            categoryId,
+            date,
+            durationMinutes,
+            excludeReservationId,
+            time,
+          },
+          refreshKey,
+          requestKey,
+          requestWindowKey,
+          setAvailableQuantity,
+          setAvailableUnits,
+          setHasError,
+          setIsLoading,
+          setResolvedRequestKey,
         },
-        refreshKey,
-        setAvailableUnits,
-        setHasError,
-        setHasLoaded,
-        setIsLoading,
-      }),
+        previousRequestWindowKey
+      ),
     [
       categoryId,
       date,
       durationMinutes,
+      excludeReservationId,
       time,
+      refreshKey,
+      requestKey,
+      requestWindowKey,
+      setAvailableQuantity,
       setAvailableUnits,
       setHasError,
-      setHasLoaded,
       setIsLoading,
-      refreshKey,
+      setResolvedRequestKey,
     ]
   );
 };

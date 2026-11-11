@@ -1,9 +1,9 @@
-import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
+import { expect, test } from "../support/activeWorkerTest";
 import { RESERVATION_TYPE_COPY } from "@/app/features/reservations/reservation-form/constants/ReservationTypeCopy.constants";
 import { E2E_RESERVATION_FORM_COPY } from "../constants/E2eReservationForm.constants";
 import { createReservationFormPage } from "../pages/ReservationForm.page";
-import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
+import { signInToReservationsMode } from "../support/signInToReservationsMode";
 
 const selectConcreteComboUnit = async (
   page: Page
@@ -31,8 +31,8 @@ const selectConcreteComboUnit = async (
 };
 
 test.describe("Custom combo unit availability", () => {
-  test.beforeEach(async ({ page }) => {
-    await signInAsSeededWorker(page);
+  test.beforeEach(async ({ activeWorker, page }) => {
+    await signInToReservationsMode(page, activeWorker);
   });
 
   test("selects an available concrete Lancha unit", async ({

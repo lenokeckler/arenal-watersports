@@ -63,7 +63,7 @@ export const useCustomComboUnitAvailabilitySelectorViewModel =
       clearUnavailableUnit(
         availability.availableUnits,
         availability.isLoading,
-        availability.hasLoaded,
+        availability.isResolvedForCurrentRequest,
         availability.hasError,
         props.selectedUnitId,
         props.onChange
@@ -71,7 +71,7 @@ export const useCustomComboUnitAvailabilitySelectorViewModel =
     }, [
       availability.availableUnits,
       availability.hasError,
-      availability.hasLoaded,
+      availability.isResolvedForCurrentRequest,
       availability.isLoading,
       props.onChange,
       props.selectedUnitId,
