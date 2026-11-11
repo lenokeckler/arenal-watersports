@@ -3397,6 +3397,19 @@ export type Database = {
         Args: { p_token: string };
         Returns: string;
       };
+      register_maintenance_job: {
+        Args: {
+          p_cost_amount?: number;
+          p_cost_currency?: Database["public"]["Enums"]["currency_code"];
+          p_description?: string;
+          p_is_external?: boolean;
+          p_next_oil_change_at?: number;
+          p_performed_at: string;
+          p_unit_id: string;
+          p_work_type: string;
+        };
+        Returns: string;
+      };
       rehire_worker: {
         Args: { target_worker: string };
         Returns: string;
