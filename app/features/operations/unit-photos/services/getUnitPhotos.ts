@@ -6,6 +6,7 @@ import {
   UNIT_PHOTOS_SIGNED_URL_SECONDS,
 } from "../constants/UnitPhotos.constants";
 import type { UnitPhotosData } from "../models/UnitPhotosData.interface";
+import { canManageUnitPhotos } from "./canManageUnitPhotos";
 import { buildPhotoSlots } from "../utils/buildPhotoSlots";
 import type { NullableRef } from "@/app/types";
 
@@ -63,6 +64,7 @@ export const getUnitPhotos = async (
   }
 
   return {
+    canManage: await canManageUnitPhotos(supabase),
     slots: buildPhotoSlots(photoRows, urlByPath),
     unit: {
       categoryName: unit.category?.name ?? "",

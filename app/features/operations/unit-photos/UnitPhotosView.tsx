@@ -47,7 +47,13 @@ const UnitPhotosView = ({
           className={UNIT_PHOTOS_LIST_CLASS}
           items={data.slots.map((slot) => ({
             id: slot.angle,
-            text: <UnitPhotoCard slot={slot} />,
+            text: (
+              <UnitPhotoCard
+                canManage={data.canManage}
+                slot={slot}
+                unitId={data.unit.id}
+              />
+            ),
           }))}
         />
       </>
