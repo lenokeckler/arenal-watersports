@@ -52,6 +52,7 @@ export const PATHS = {
       `${OPERATIONS_INVENTORY_PATH}/${encodeURIComponent(categoryId)}?${PAGINATION.QUERY_PARAMS.PAGE}=${pageIndex}`,
     INVENTORY_PAGE: (pageIndex: number) =>
       `${OPERATIONS_INVENTORY_PATH}?${PAGINATION.QUERY_PARAMS.PAGE}=${pageIndex}`,
+    DAMAGE_REPORTS: "/operations/damage-reports",
     MAINTENANCE: "/operations/maintenance",
     MAINTENANCE_HISTORY: "/operations/maintenance/history",
     MAINTENANCE_NEW: "/operations/maintenance/new",
