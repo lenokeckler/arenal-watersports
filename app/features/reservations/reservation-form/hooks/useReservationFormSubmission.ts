@@ -1,41 +1,37 @@
-import { useTransition } from "react";
-import { createReservationAction } from "../actions/createReservationAction";
-import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
-import type { ReservationFormActionResult } from "../models/ReservationFormActionResult.type";
-import type { ReservationFormInput } from "../models/ReservationFormInput.interface";
+import { RESERVATION_FORM_SUBMISSION_DEFAULTS } from "../constants/ReservationFormSubmission.constants";
+import type { ReservationFormSubmissionOptions } from "../models/ReservationFormSubmissionOptions.interface";
+import { useReservationFormErrorFocus } from "./useReservationFormErrorFocus";
+import { useReservationFormSubmitAction } from "./useReservationFormSubmitAction";
 import { useReservationSubmissionState } from "./useReservationSubmissionState";
+import { useCustomComboSubmitAction } from "./useCustomComboSubmitAction";
 
-export const useReservationFormSubmission = () => {
+export const useReservationFormSubmission = (
+  options?: ReservationFormSubmissionOptions
+) => {
   const submission = useReservationSubmissionState();
-  const [isPending, startTransition] = useTransition();
-
-  const submit = async (
-    values: ReservationFormInput
-  ): Promise<void> => {
-    let result: ReservationFormActionResult;
-    try {
-      result = await createReservationAction(values);
-    } catch {
-      submission.setSubmissionError(
-        RESERVATION_FORM_UI_COPY.SUBMIT_ERROR
-      );
-      return;
+  const action = useReservationFormSubmitAction(
+    submission,
+    {
+      ...RESERVATION_FORM_SUBMISSION_DEFAULTS,
+      ...options,
     }
-    submission.applyResult(result);
-  };
-
-  const submitReservation = (
-    values: ReservationFormInput
-  ): void => {
-    startTransition(() => submit(values));
-  };
+  );
+  const customComboAction =
+    useCustomComboSubmitAction(submission);
+  useReservationFormErrorFocus(submission);
 
   return {
+    applyResult: submission.applyResult,
     clearFieldError: submission.clearFieldError,
     errors: submission.errors,
     formError: submission.formError,
-    isPending,
+    isPending:
+      action.isPending || customComboAction.isPending,
     isSubmitted: submission.isSubmitted,
-    submitReservation,
+    requestErrorFocus: submission.requestErrorFocus,
+    setFieldError: submission.setFieldError,
+    submitCustomComboReservation:
+      customComboAction.submitCustomComboReservation,
+    submitReservation: action.submitReservation,
   };
 };

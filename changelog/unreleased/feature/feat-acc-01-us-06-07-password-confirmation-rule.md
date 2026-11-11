@@ -1,0 +1,1 @@
+ACC-01.06.07: Shared password confirmation rule — the check that the repeated password is present and equal to the new one becomes its own rule, used by the password change and ready for the recovery screen, with no change in behaviour (US-ACC-06 · AWS-35)

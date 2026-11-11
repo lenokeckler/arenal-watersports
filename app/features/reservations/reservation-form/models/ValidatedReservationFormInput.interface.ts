@@ -1,9 +1,13 @@
+import type { ReservationEquipmentCommitment } from "./ReservationEquipmentCommitment.type";
+import type { ReservationType } from "./ReservationType.type";
+
 export interface ValidatedReservationFormInput {
-  categoryId: string;
   customerName: string;
   date: string;
   durationMinutes: number;
+  guideIds?: string[];
   peopleCount: number;
-  quantity: number;
+  reservationType: ReservationType;
   time: string;
+  equipmentCommitment: ReservationEquipmentCommitment;
 }

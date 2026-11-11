@@ -9,8 +9,11 @@ import Button from "@/app/components/button/Button";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
 import { RESERVATION_FORM_UI_COPY } from "./constants/ReservationFormUiCopy.constants";
-import { RESERVATION_FORM_FIELD_ID } from "./constants/ReservationFormUi.constants";
-import { useReservationFormViewModel } from "./hooks/useReservationFormViewModel";
+import {
+  RESERVATION_FORM_FOCUS_TARGET,
+  RESERVATION_FORM_FIELD_ID,
+} from "./constants/ReservationFormUi.constants";
+import { useReservationFormGuideViewModel } from "./hooks/useReservationFormGuideViewModel";
 import type { ReservationFormViewProps } from "./models/ReservationFormViewProps.interface";
 import {
   RESERVATION_FORM_ACTIONS_CLASS,
@@ -29,16 +32,27 @@ import ReservationFormFields from "./components/ReservationFormFields";
 
 const ReservationFormView = ({
   categories,
+  guideLoadResult,
   initialDate,
+  unitCategories,
 }: ReservationFormViewProps): React.JSX.Element => {
-  const viewModel = useReservationFormViewModel(
-    initialDate,
-    STRING.Empty
+  const allCategories = Array.from(
+    new Map(
+      [...categories, ...unitCategories].map((category) => [
+        category.id,
+        category,
+      ])
+    ).values()
   );
-  const isSubmitDisabled =
-    viewModel.isPending ||
-    viewModel.isSubmitted ||
-    categories.length === 0;
+  const viewModel = useReservationFormGuideViewModel({
+    guideLoadResult,
+    formOptions: {
+      categories: allCategories,
+      initialCategoryId: STRING.Empty,
+      initialDate,
+      unitCategories,
+    },
+  });
   const submitLabel = viewModel.isPending
     ? RESERVATION_FORM_UI_COPY.SUBMITTING
     : RESERVATION_FORM_UI_COPY.SUBMIT;
@@ -74,10 +88,11 @@ const ReservationFormView = ({
             onSubmit={viewModel.handleSubmit}
           >
             <ReservationFormFields
-              categories={categories}
+              categories={viewModel.categories}
+              guideAssignmentViewModel={viewModel}
               viewModel={viewModel}
             />
-            {categories.length === 0 && (
+            {allCategories.length === 0 && (
               <Text
                 role="status"
                 className={RESERVATION_FORM_ERROR_CLASS}
@@ -87,7 +102,13 @@ const ReservationFormView = ({
             )}
             {viewModel.formError && (
               <Text
+                id={
+                  RESERVATION_FORM_FIELD_ID.SUBMISSION_ERROR
+                }
                 role="alert"
+                tabIndex={
+                  RESERVATION_FORM_FOCUS_TARGET.TAB_INDEX
+                }
                 className={RESERVATION_FORM_ERROR_CLASS}
               >
                 {viewModel.formError}
@@ -110,7 +131,7 @@ const ReservationFormView = ({
                 type="submit"
                 variant={BUTTON.PRIMARY}
                 className={RESERVATION_FORM_SUBMIT_CLASS}
-                disabled={isSubmitDisabled}
+                disabled={viewModel.isSubmitDisabled}
               >
                 {submitLabel}
               </Button>
