@@ -4,10 +4,20 @@ import type { DispatchSheetFixture } from "./models/DispatchSheetFixture.interfa
 
 export const test = base.extend<{
   dispatchSheet: DispatchSheetFixture;
+  motorDispatchSheet: DispatchSheetFixture;
 }>({
   dispatchSheet: async ({ activeWorker }, provide) => {
     const fixture = await createDispatchSheetFixture(
       activeWorker.id
+    );
+
+    await provide(fixture);
+    await fixture.remove();
+  },
+  motorDispatchSheet: async ({ activeWorker }, provide) => {
+    const fixture = await createDispatchSheetFixture(
+      activeWorker.id,
+      { hasMotor: true }
     );
 
     await provide(fixture);

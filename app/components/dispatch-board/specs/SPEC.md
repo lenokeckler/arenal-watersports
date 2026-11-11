@@ -14,6 +14,7 @@ Operations workers need to see today's reservations that still require a group t
 - Choose the concrete units that leave, among the free units of the category.
 - Propose the real departure (now) and the return (departure plus duration), both adjustable.
 - Dispatch one category group at a time, atomically and safe to retry.
+- Record the departure fuel and usage reading of each chosen unit of a category that takes them (US-OPE-03).
 
 ## Out of scope
 
@@ -22,7 +23,6 @@ Operations workers need to see today's reservations that still require a group t
 - Financial information.
 - Changing the equipment of a reservation at the dock and recalculating its price.
 - Opening the dispatch from the category card of the board.
-- Fuel and engine-hour readings at dispatch (US-OPE-03).
 - Adjusting the duration of a running reservation (US-OPE-06).
 
 ## Requirements
@@ -39,6 +39,10 @@ Operations workers need to see today's reservations that still require a group t
 - A unit that is not `available`, belongs to another category or is out in an open dispatch cannot be chosen.
 - A return earlier than or equal to the departure means the next day.
 - Retrying a dispatch never commits a unit twice: a category already dispatched is refused.
+- A category takes a fuel reading when `consumes_fuel` is set and a usage reading (engine hours or kilometers) when it has a `usage_metric`; a category counted by quantity takes none.
+- Fuel is read in lines over the unit's own `fuel_max`, never as a percentage, with shortcuts for a quarter, a half, three quarters and full plus an exact numeric field.
+- The database validates every reading inside the dispatch: one per chosen unit that takes it, whole lines between 0 and `fuel_max`, usage never below the unit's `usage_total` and with at most two decimals, and no reading for a unit or a category that takes none.
+- The dispatch writes the reading on the reservation item (`fuel_out`, `usage_out`) and on the unit (`fuel_level`, `usage_total`) in the same transaction.
 
 ## Edge cases & errors
 
@@ -49,6 +53,9 @@ Operations workers need to see today's reservations that still require a group t
 - Access and query errors display safe user-facing messages.
 - A unit taken by another dispatch while the sheet is open shows a message and reloads the free units.
 - When one category is dispatched and others remain, the reservation stays in the list.
+- A unit without a previous reading shows that it has none; its fuel is never preselected.
+- Usage typed with a decimal comma is read as a decimal point.
+- A refused reading leaves the reservation, the units and the dispatch untouched and shows a message.
 
 ## Constraints
 
@@ -71,3 +78,7 @@ Operations workers need to see today's reservations that still require a group t
 - [x] Se escogen exactamente tantas unidades como las comprometidas.
 - [x] El despacho queda registrado a nombre de quien lo hizo.
 - [x] Si el despacho se reintenta, ninguna unidad queda comprometida dos veces.
+- [x] Aplica solo a las categorías que llevan motor.
+- [x] La gasolina se registra en rayas sobre el máximo del medidor de esa unidad, nunca en porcentaje.
+- [x] Hay botones de un cuarto, medio, tres cuartos y lleno, con el medidor dibujado, y también el campo numérico para el valor exacto.
+- [x] El despacho escribe la gasolina y las horas en la unidad, no solo en la reserva.
