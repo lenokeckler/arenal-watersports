@@ -38,6 +38,12 @@ const MaintenanceView = ({
     >
       {MAINTENANCE_COPY.NEW_JOB}
     </Link>
+    <Link
+      href={PATHS.OPERATIONS.MAINTENANCE_HISTORY}
+      className={MAINTENANCE_NEW_JOB_LINK_CLASS}
+    >
+      {MAINTENANCE_COPY.HISTORY}
+    </Link>
     {errorMessage ? (
       <Text
         className={MAINTENANCE_MESSAGE_CLASS}

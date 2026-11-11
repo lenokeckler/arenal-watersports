@@ -2,6 +2,7 @@ export const MAINTENANCE_COPY = {
   ERROR: "No se pudo cargar el estado de las máquinas.",
   FORBIDDEN: "No tiene acceso a las operaciones.",
   HEADING: "Mantenimiento",
+  HISTORY: "Historial de trabajos",
   NEW_JOB: "Registrar un trabajo",
   OIL_ACCUMULATED: "Acumulado: ",
   OIL_EMPTY:
