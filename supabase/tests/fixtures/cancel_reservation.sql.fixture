@@ -1,0 +1,49 @@
+insert into auth.users (id, email)
+values
+  ('e2b10000-0000-4000-8000-000000000001', 'res21-reservas@arenal.local'),
+  ('e2b10000-0000-4000-8000-000000000002', 'res21-operaciones@arenal.local');
+
+insert into workers (id, username, full_name, personal_email, base_role)
+values
+  ('e2b10000-0000-4000-8000-000000000001', 'res21-reservas', 'RES21 Reservas', 'res21-reservas@correo.com', 'reservas'),
+  ('e2b10000-0000-4000-8000-000000000002', 'res21-operaciones', 'RES21 Operaciones', 'res21-operaciones@correo.com', 'operaciones');
+
+insert into equipment_categories
+  (id, name, status, tracking_mode, is_reservable, units_are_interchangeable, default_duration_minutes, created_by, updated_by)
+values
+  ('e2b10000-0000-4000-8000-000000000101', 'RES21 Lancha', 'active', 'by_unit', true, false, 60,
+   'e2b10000-0000-4000-8000-000000000001', 'e2b10000-0000-4000-8000-000000000001');
+
+insert into equipment_units (id, category_id, code, status, created_by, updated_by)
+values ('e2b10000-0000-4000-8000-000000000201', 'e2b10000-0000-4000-8000-000000000101', 'RES21-LANCHA-1', 'available',
+        'e2b10000-0000-4000-8000-000000000001', 'e2b10000-0000-4000-8000-000000000001');
+
+insert into reservations
+  (id, customer_name, people_count, type, starts_at, duration_minutes, status, created_by, updated_by)
+values
+  ('e2b10000-0000-4000-8000-000000000301', 'RES21 Scheduled', 4, 'rental', '2035-05-12 15:00:00+00', 60, 'scheduled',
+   'e2b10000-0000-4000-8000-000000000001', 'e2b10000-0000-4000-8000-000000000001'),
+  ('e2b10000-0000-4000-8000-000000000302', 'RES21 Dispatched', 4, 'rental', '2035-05-13 15:00:00+00', 60, 'scheduled',
+   'e2b10000-0000-4000-8000-000000000001', 'e2b10000-0000-4000-8000-000000000001'),
+  ('e2b10000-0000-4000-8000-000000000303', 'RES21 Closed', 4, 'rental', '2035-05-14 15:00:00+00', 60, 'scheduled',
+   'e2b10000-0000-4000-8000-000000000001', 'e2b10000-0000-4000-8000-000000000001'),
+  ('e2b10000-0000-4000-8000-000000000304', 'RES21 Cancelled', 4, 'rental', '2035-05-15 15:00:00+00', 60, 'scheduled',
+   'e2b10000-0000-4000-8000-000000000001', 'e2b10000-0000-4000-8000-000000000001');
+
+insert into reservation_items (id, reservation_id, unit_id, created_by, updated_by)
+values ('e2b10000-0000-4000-8000-000000000401', 'e2b10000-0000-4000-8000-000000000301',
+        'e2b10000-0000-4000-8000-000000000201',
+        'e2b10000-0000-4000-8000-000000000001', 'e2b10000-0000-4000-8000-000000000001');
+
+insert into reservation_charges (id, reservation_id, kind, amount, currency, payment_method, created_by)
+values ('e2b10000-0000-4000-8000-000000000501', 'e2b10000-0000-4000-8000-000000000301', 'tariff', 25000, 'CRC',
+        'efectivo', 'e2b10000-0000-4000-8000-000000000001');
+
+insert into deposits (id, reservation_id, amount, currency, created_by)
+values ('e2b10000-0000-4000-8000-000000000601', 'e2b10000-0000-4000-8000-000000000301', 100000, 'CRC',
+        'e2b10000-0000-4000-8000-000000000001');
+
+update reservations set status = 'dispatched' where id = 'e2b10000-0000-4000-8000-000000000302';
+update reservations set status = 'closed' where id = 'e2b10000-0000-4000-8000-000000000303';
+update reservations set status = 'cancelled', cancellation_reason = 'RES21 earlier reason'
+where id = 'e2b10000-0000-4000-8000-000000000304';

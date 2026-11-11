@@ -2907,6 +2907,13 @@ export type Database = {
         };
         Returns: undefined;
       };
+      assert_reservation_cancellable: {
+        Args: {
+          p_expected_updated_at: string;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
+        };
+        Returns: undefined;
+      };
       assert_reservation_modifiable: {
         Args: {
           p_expected_updated_at: string;
@@ -2967,6 +2974,10 @@ export type Database = {
       };
       block_worker: {
         Args: { target_worker: string };
+        Returns: string;
+      };
+      cancel_reservation: {
+        Args: { p_payload: Json };
         Returns: string;
       };
       category_availability: {
@@ -3189,6 +3200,10 @@ export type Database = {
       mark_password_reset_pin_undelivered: {
         Args: { p_pin_id: string };
         Returns: undefined;
+      };
+      normalize_cancellation_reason: {
+        Args: { p_reason: string };
+        Returns: string;
       };
       next_reservation_code: {
         Args: Record<PropertyKey, never>;
