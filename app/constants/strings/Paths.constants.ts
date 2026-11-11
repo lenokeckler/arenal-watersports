@@ -50,6 +50,7 @@ export const PATHS = {
       `${OPERATIONS_INVENTORY_PATH}/${encodeURIComponent(categoryId)}?${PAGINATION.QUERY_PARAMS.PAGE}=${pageIndex}`,
     INVENTORY_PAGE: (pageIndex: number) =>
       `${OPERATIONS_INVENTORY_PATH}?${PAGINATION.QUERY_PARAMS.PAGE}=${pageIndex}`,
+    OUT_ON_WATER: "/operations/out-on-water",
     PENDING_DISPATCHES: "/operations/dispatch",
   },
   PROFILE: {

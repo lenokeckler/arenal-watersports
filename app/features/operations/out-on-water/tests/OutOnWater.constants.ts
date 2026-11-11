@@ -30,3 +30,26 @@ export const FORMAT_CASES = [
   { minutes: -5, text: "Atrasado 5 min" },
   { minutes: -90, text: "Atrasado 1 h 30 min" },
 ] as const;
+
+export const OUT_ON_WATER_GROUP_FIXTURE = {
+  categoryId: OUT_ON_WATER_ROW_FIXTURE.category_id,
+  categoryName: OUT_ON_WATER_ROW_FIXTURE.category_name,
+  code: OUT_ON_WATER_ROW_FIXTURE.code,
+  customerName: OUT_ON_WATER_ROW_FIXTURE.customer_name,
+  dispatchId: OUT_ON_WATER_ROW_FIXTURE.dispatch_id,
+  dispatchedAt: OUT_ON_WATER_ROW_FIXTURE.dispatched_at,
+  endsAt: OUT_ON_WATER_ROW_FIXTURE.ends_at,
+  quantity: OUT_ON_WATER_ROW_FIXTURE.quantity,
+  reservationId: OUT_ON_WATER_ROW_FIXTURE.reservation_id,
+  unitCodes: OUT_ON_WATER_ROW_FIXTURE.unit_codes,
+};
+
+export const OUT_ON_WATER_TEXT = {
+  CUSTOMER: "Ana Mora · RES-0001",
+  EQUIPMENT: "Jet ski · JS-1, JS-2",
+  HOURS: "Salió a las 09:10 · Regresa a las 10:40",
+  LATE_5: "Atrasado 5 min",
+  LATE_AFTER_MS: 45 * 60_000,
+  REMAINING_39: "Faltan 39 min",
+  REMAINING_40: "Faltan 40 min",
+} as const;

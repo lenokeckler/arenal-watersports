@@ -1,4 +1,5 @@
 export const OUT_ON_WATER_COPY = {
+  DEPARTED_AT: "Salió a las ",
   EMPTY: "No hay equipo afuera en este momento.",
   ERROR: "No se pudo cargar el equipo que está afuera.",
   FORBIDDEN: "No tiene acceso a las operaciones.",
@@ -7,13 +8,13 @@ export const OUT_ON_WATER_COPY = {
   MINUTES_SUFFIX: " min",
   OVERDUE_NOW: "Ya debe volver",
   OVERDUE_PREFIX: "Atrasado ",
-  REMAINING_PREFIX: "Faltan ",
-  RETURNS_AT: "Regresa a las ",
-  RESERVATION_SEPARATOR: " · ",
-  DEPARTED_AT: "Salió a las ",
-  UNITS_SEPARATOR: ", ",
-  QUANTITY_SUFFIX: " en total",
   PART_SEPARATOR: " ",
+  QUANTITY_LABEL: "Cantidad: ",
+  REMAINING_PREFIX: "Faltan ",
+  RESERVATION_SEPARATOR: " · ",
+  RETURNS_AT: "Regresa a las ",
+  TIMES_SEPARATOR: " · ",
+  UNITS_SEPARATOR: ", ",
 } as const;
 
 export const OUT_ON_WATER_HEADING_ID = "equipo-afuera";
