@@ -3,6 +3,8 @@ import type { PredefinedComboSelectionMode } from "./PredefinedComboSelectionMod
 import type { ReservationPredefinedCombo } from "./ReservationPredefinedCombo.interface";
 
 export interface PredefinedComboFormViewModel {
+  combos: ReservationPredefinedCombo[];
+  hasGuideOnlyItem: boolean;
   mode: PredefinedComboSelectionMode;
   selectedCombo: NullableRef<ReservationPredefinedCombo>;
   selectedComboId: NullableRef<string>;
