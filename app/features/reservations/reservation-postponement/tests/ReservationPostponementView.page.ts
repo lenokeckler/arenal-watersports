@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
 import { RESERVATION_POSTPONEMENT_FORM_COPY as COPY } from "../constants/ReservationPostponementFormCopy.constants";
@@ -30,7 +30,11 @@ export const createReservationPostponementViewPage = () => {
     });
 
   const getCauseNames = () =>
-    screen
+    within(
+      screen.getByRole(ARIA_ROLE.GROUP, {
+        name: COPY.LABEL_CAUSE,
+      })
+    )
       .getAllByRole(ARIA_ROLE.RADIO)
       .map((radio) => radio.getAttribute(VALUE_ATTRIBUTE));
 
