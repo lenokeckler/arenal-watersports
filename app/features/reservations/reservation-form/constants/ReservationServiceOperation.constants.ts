@@ -2,11 +2,15 @@ export const RESERVATION_SERVICE_OPERATION = {
   CATEGORY_UNAVAILABLE:
     "Equipment category is not available for reservation",
   CREATE_CUSTOM_COMBO: "create custom combo reservation",
+  CREATE_PREDEFINED_COMBO:
+    "create predefined combo reservation",
   CREATE_RENTAL: "create rental reservation",
   EQUIPMENT_RESERVATION_ACCESS_REQUIRED:
     "Equipment reservation access is required",
   LOAD_CUSTOM_COMBO_PRICE: "load custom combo price",
   LOAD_GUIDES: "load reservation guides",
+  LOAD_PREDEFINED_COMBOS:
+    "load predefined reservation combos",
   MISSING_CUSTOM_COMBO_PRICE:
     "Supabase returned no custom combo price",
   MISSING_CREATED_ID:

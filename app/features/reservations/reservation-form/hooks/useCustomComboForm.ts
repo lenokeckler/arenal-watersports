@@ -19,7 +19,6 @@ export const useCustomComboForm = ({
     durationHours,
     reservationType
   );
-
   return {
     ...draft,
     pricing: pricing.state,

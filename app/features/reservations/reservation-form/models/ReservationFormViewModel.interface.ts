@@ -1,6 +1,7 @@
 import type { NullableRef } from "@/app/types";
 import type { ReservationFormErrorField } from "./ReservationFormField.constants";
 import type { CustomComboFormViewModel } from "./CustomComboFormViewModel.interface";
+import type { PredefinedComboFormViewModel } from "./PredefinedComboFormViewModel.interface";
 import type { ReservationFormInput } from "./ReservationFormInput.interface";
 import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOption.interface";
 import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
@@ -14,6 +15,8 @@ export interface ReservationFormViewModel {
     Record<ReservationFormErrorField, string>
   >;
   customCombo?: CustomComboFormViewModel;
+  predefinedCombo?: PredefinedComboFormViewModel;
+  resolvedDurationHours?: number;
   formError: string;
   isPending: boolean;
   isSubmitted: boolean;

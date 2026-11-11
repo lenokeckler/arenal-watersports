@@ -1,6 +1,11 @@
 import { render } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { DISPATCH_BOARD_COPY } from "../constants/DispatchBoard.constants";
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ refresh: vi.fn() }),
+}));
+
 import { DispatchBoardView } from "../DispatchBoardView";
 import { createDispatchBoardPage } from "./DispatchBoard.page";
 import { PENDING_RESERVATION_FIXTURE } from "./DispatchBoardTest.constants";
