@@ -3016,6 +3016,14 @@ export type Database = {
         };
         Returns: string;
       };
+      close_dispatch_group: {
+        Args: {
+          p_arrived_at: string;
+          p_dispatch_id: string;
+          p_returns?: Json;
+        };
+        Returns: undefined;
+      };
       complete_first_password_change: {
         Args: { p_user_id: string };
         Returns: undefined;
@@ -3085,6 +3093,18 @@ export type Database = {
           is_assigned: boolean;
           unit_id: string;
           usage_total: number;
+        }[];
+      };
+      dispatch_group_return_units: {
+        Args: { p_dispatch_id: string };
+        Returns: {
+          code: string;
+          consumes_fuel: boolean;
+          fuel_max: number;
+          fuel_out: number;
+          unit_id: string;
+          usage_metric: Database["public"]["Enums"]["usage_metric"];
+          usage_out: number;
         }[];
       };
       dispatch_reservation_group: {
