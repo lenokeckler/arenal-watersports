@@ -23,6 +23,8 @@ export const E2E_RESERVATION_FORM_COPY = {
   CATEGORY: "Equipo",
   RESERVATION_TYPE_TOUR: "Tour",
   UNIT: "Unidad",
+  UNIT_PLACEHOLDER:
+    RESERVATION_FORM_UI_COPY.UNIT_PLACEHOLDER,
   UNIT_OPTION: "PONTOON",
   CATEGORY_OPTION: "Jet Ski",
   CATEGORY_AVAILABILITY_OPTION: "Kayak doble",
@@ -38,6 +40,7 @@ export const E2E_RESERVATION_FORM_COPY = {
   SUCCESS: "La reserva quedó registrada correctamente.",
   VALIDATION_ERROR: "Ingrese el nombre de la reserva.",
   SCREENSHOT_DATE: "2099-12-31",
+  INTERVAL_CHANGE_DATE: "2099-12-30",
 } as const;
 
 export const E2E_RESERVATION_EQUIPMENT_STATUS = {

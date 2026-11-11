@@ -78,6 +78,7 @@ export const renderReservationForm = (
       : [],
     initialDate: RESERVATION_FORM_VIEW_TEST.DATE,
     guideLoadResult,
+    predefinedCombos: [],
   };
   const { container, rerender } = render(
     <ReservationFormView {...props} />

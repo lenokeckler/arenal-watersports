@@ -96,6 +96,22 @@ describe("getCustomComboPricingAction", () => {
     );
   });
 
+  it("returns an empty price when no tariff matches", async () => {
+    vi.mocked(getCustomComboPrice).mockResolvedValue(null);
+
+    await expect(
+      getCustomComboPricingAction(
+        CUSTOM_COMBO_PRICING_ACTION_TEST.INPUT
+      )
+    ).resolves.toEqual({
+      ok: true,
+      pricing: null,
+    });
+    expect(
+      getAuthorizedReservationFormClient
+    ).toHaveBeenCalledOnce();
+  });
+
   it("does not request pricing when authorization rejects", async () => {
     vi.mocked(
       getAuthorizedReservationFormClient
