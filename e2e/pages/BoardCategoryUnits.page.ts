@@ -30,6 +30,36 @@ export const createBoardCategoryUnitsPage = (
       name: unitCode,
     });
 
+  const getSelectUnit = (unitCode: string): Locator =>
+    main.getByRole(ARIA_ROLE.CHECKBOX, {
+      name: CATEGORY_UNITS_COPY.DISPATCH_SELECT_UNIT(
+        unitCode
+      ),
+    });
+
+  const selectUnit = async (
+    unitCode: string
+  ): Promise<void> => {
+    await getUnitHeading(unitCode).click();
+  };
+
+  const getDispatchBar = (selectedCount: number): Locator =>
+    main.getByText(
+      CATEGORY_UNITS_COPY.DISPATCH_SELECTED(selectedCount)
+    );
+
+  const getDispatchAction = (): Locator =>
+    main.getByRole(ARIA_ROLE.BUTTON, {
+      name: CATEGORY_UNITS_COPY.DISPATCH_ACTION,
+    });
+
+  const getPickerAction = (customerName: string): Locator =>
+    page.getByRole(ARIA_ROLE.BUTTON, {
+      name: CATEGORY_UNITS_COPY.PICKER_DISPATCH(
+        customerName
+      ),
+    });
+
   const getBackLink = (): Locator =>
     main.getByRole(ARIA_ROLE.LINK, {
       name: CATEGORY_UNITS_COPY.BACK_TO_BOARD,
@@ -60,9 +90,14 @@ export const createBoardCategoryUnitsPage = (
   return {
     clickSwitchLink,
     getBackLink,
+    getDispatchAction,
+    getDispatchBar,
     getGroupSwitch,
     getHeading,
     getNotFoundTitle,
+    getPickerAction,
+    getSelectUnit,
+    selectUnit,
     getSwitchLink,
     getUnitHeading,
     goTo,

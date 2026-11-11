@@ -1,5 +1,6 @@
 import { createServerSupabaseClient } from "@/app/services/supabase";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+import type { NullableRef } from "@/app/types";
 import { RESERVATION_SERVICE_OPERATION } from "../constants/ReservationServiceOperation.constants";
 import type { CustomComboPricing } from "../models/CustomComboPricing.interface";
 import type { CustomComboPricingInput } from "../models/CustomComboPricingInput.interface";
@@ -8,7 +9,7 @@ import { RESERVATION_SCHEDULE } from "../constants/ReservationSchedule.constants
 
 export const getCustomComboPrice = async (
   input: CustomComboPricingInput
-): Promise<CustomComboPricing> => {
+): Promise<NullableRef<CustomComboPricing>> => {
   const supabase = await createServerSupabaseClient();
   const { data: pricingRows, error } = await supabase.rpc(
     "custom_combo_price",
@@ -28,9 +29,7 @@ export const getCustomComboPrice = async (
   const pricing = pricingRows?.[0];
 
   if (!pricing) {
-    throw new Error(
-      RESERVATION_SERVICE_OPERATION.MISSING_CUSTOM_COMBO_PRICE
-    );
+    return null;
   }
 
   return {
