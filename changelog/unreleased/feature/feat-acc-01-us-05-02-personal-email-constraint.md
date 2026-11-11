@@ -1,0 +1,1 @@
+ACC-01.05.02: Personal email constraint — the database refuses a personal email that is not lowercase, trimmed, at most 254 characters with a local part of 64, and a valid address (US-ACC-05 · AWS-34)

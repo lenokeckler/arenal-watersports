@@ -16,3 +16,8 @@ export const PREDEFINED_COMBO_STATUS = {
 export const PREDEFINED_COMBO_RESERVABILITY = {
   RESERVABLE: true,
 } as const;
+
+export const PREDEFINED_COMBO_INTERCHANGEABILITY = {
+  INTERCHANGEABLE: true,
+  NOT_INTERCHANGEABLE: false,
+} as const;

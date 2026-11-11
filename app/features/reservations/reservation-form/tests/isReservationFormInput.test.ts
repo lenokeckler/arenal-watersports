@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
+import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import {
   INVALID_QUANTITY_TYPE,
   VALID_RESERVATION_FORM_INPUT,
 } from "./reservationFormUtils.constants";
 import { isReservationFormInput } from "../utils/isReservationFormInput";
-import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 
 const VALID_EXTRA_ID =
   "f3200000-0000-4000-8000-000000000001";
@@ -27,7 +27,7 @@ describe("isReservationFormInput", () => {
     );
   });
 
-  it("rejects an unknown reservation type", () => {
+  it("rejects an unsupported reservation type", () => {
     const malformedInput = {
       ...VALID_RESERVATION_FORM_INPUT,
       reservationType: "unsupported",
@@ -42,6 +42,15 @@ describe("isReservationFormInput", () => {
         reservationType: RESERVATION_TYPE.TOUR,
       })
     ).toBe(true);
+  });
+
+  it("rejects guide identifiers with invalid boundary types", () => {
+    expect(
+      isReservationFormInput({
+        ...VALID_RESERVATION_FORM_INPUT,
+        guideIds: ["guide-id", 1],
+      })
+    ).toBe(false);
   });
 
   it.each([
