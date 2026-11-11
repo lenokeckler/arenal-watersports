@@ -9,6 +9,7 @@ import type { CustomComboReservationDraft } from "../models/CustomComboReservati
 import type { ReservationFormErrorField } from "../models/ReservationFormField.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { reduceCustomComboDraft } from "../utils/reduceCustomComboDraft";
+import { resolveCustomComboAgreedAmount } from "../utils/resolveCustomComboAgreedAmount";
 
 const createItemChangeHandler =
   (
@@ -125,7 +126,7 @@ const createAgreedAmountActions = (
   ): void => {
     dispatch({
       type: CUSTOM_COMBO_DRAFT_ACTION.AGREED_AMOUNT_CRC_CHANGE,
-      value,
+      value: resolveCustomComboAgreedAmount(value),
     });
     clearFieldError(
       CUSTOM_COMBO_RESERVATION_FIELD.AGREED_AMOUNT_CRC
@@ -136,7 +137,7 @@ const createAgreedAmountActions = (
   ): void => {
     dispatch({
       type: CUSTOM_COMBO_DRAFT_ACTION.AGREED_AMOUNT_USD_CHANGE,
-      value,
+      value: resolveCustomComboAgreedAmount(value),
     });
     clearFieldError(
       CUSTOM_COMBO_RESERVATION_FIELD.AGREED_AMOUNT_USD
