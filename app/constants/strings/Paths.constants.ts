@@ -57,6 +57,8 @@ export const PATHS = {
     MAINTENANCE_HISTORY: "/operations/maintenance/history",
     MAINTENANCE_NEW: "/operations/maintenance/new",
     OUT_ON_WATER: "/operations/out-on-water",
+    UNIT_PHOTOS: (unitId: string) =>
+      `/operations/unit-photos/${encodeURIComponent(unitId)}`,
     UNIT_READINGS: "/operations/unit-readings",
     UNIT_READING: (unitId: string) =>
       `/operations/unit-readings/${encodeURIComponent(unitId)}`,
