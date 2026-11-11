@@ -1,4 +1,5 @@
 import { RESERVATION_SCHEDULE } from "../constants/ReservationSchedule.constants";
+import type { NullableRef } from "@/app/types";
 
 export const isValidReservationDate = (
   date: string
@@ -55,11 +56,23 @@ export const isValidReservationTime = (
   );
 };
 
-export const isValidReservationDuration = (
+export const getReservationDurationMinutes = (
   hours: number
-): boolean =>
-  Number.isFinite(hours) &&
-  hours > 0 &&
-  Number.isInteger(
-    hours * RESERVATION_SCHEDULE.MINUTES_PER_HOUR
-  );
+): NullableRef<number> => {
+  if (!Number.isFinite(hours) || hours <= 0) {
+    return null;
+  }
+
+  const durationMinutes =
+    hours * RESERVATION_SCHEDULE.MINUTES_PER_HOUR;
+  const roundedDurationMinutes =
+    Math.round(durationMinutes);
+  const roundingTolerance =
+    Number.EPSILON * Math.max(1, Math.abs(durationMinutes));
+
+  return Math.abs(
+    durationMinutes - roundedDurationMinutes
+  ) <= roundingTolerance
+    ? roundedDurationMinutes
+    : null;
+};

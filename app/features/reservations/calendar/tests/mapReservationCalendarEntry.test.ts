@@ -7,6 +7,7 @@ import {
   CALENDAR_DISPATCH,
   CALENDAR_RESERVATION,
   EXTRA_COMMITMENT,
+  INVALID_CALENDAR_CUSTOMER_NAMES,
 } from "./ReservationCalendar.constants";
 
 describe("scheduled facts", (): void => {
@@ -38,6 +39,22 @@ describe("scheduled facts", (): void => {
       }).equipment
     ).toEqual([]);
   });
+});
+
+describe("customer name failures", (): void => {
+  it.each(INVALID_CALENDAR_CUSTOMER_NAMES)(
+    "rejects blank customer name %j",
+    (customerName): void => {
+      expect(() =>
+        mapReservationCalendarEntry({
+          ...CALENDAR_RESERVATION,
+          customer_name: customerName,
+        })
+      ).toThrow(
+        RESERVATION_CALENDAR_ERROR.INVALID_CUSTOMER_NAME
+      );
+    }
+  );
 });
 
 describe("actual groups", (): void => {

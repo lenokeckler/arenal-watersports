@@ -2,7 +2,7 @@ import { RESERVATION_GUIDE_LOAD_RESULT_KIND } from "../constants/ReservationGuid
 import { PREDEFINED_COMBO_SELECTION_FIXTURE } from "./PredefinedComboSelection.fixture";
 import { PREDEFINED_COMBO_SELECTION_TEST } from "./PredefinedComboSelection.constants";
 import { createPredefinedComboSelectionPage } from "./PredefinedComboSelection.page";
-import { renderReservationForm } from "./ReservationFormView.fixture";
+import { renderReservationFormWithCombos } from "./ReservationFormView.fixture";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 import { RESERVATION_GUIDE_ASSIGNMENT_TEST } from "./ReservationGuideAssignment.constants";
 import { RESERVATION_GUIDE_SELECTION_TEST } from "./ReservationGuideSelection.constants";
@@ -10,7 +10,7 @@ import { createCustomComboPage } from "./CustomCombo.page";
 
 export const prepareGuideAssignedPredefinedComboSubmission =
   async () => {
-    renderReservationForm(
+    renderReservationFormWithCombos(
       {
         kind: RESERVATION_GUIDE_LOAD_RESULT_KIND.SUCCESS,
         guides: [
