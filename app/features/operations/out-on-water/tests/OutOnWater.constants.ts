@@ -95,3 +95,22 @@ export const INVALID_ADJUST_INPUTS = [
     name: "a duration that is not whole minutes",
   },
 ] as const;
+
+export const ADJUST_TEXT = {
+  ADD_30: "+30 min",
+  BUTTON: "Ajustar duración",
+  CLOSED_ERROR:
+    "Este grupo ya regresó y no se puede ajustar.",
+  EXTENDED: "Se alargó 30 min.",
+  FIELD: "Duración en minutos",
+  FIELD_ERROR: "Escriba minutos enteros entre 1 y 1440.",
+  MINUS_15: "−15 min",
+  SAVE: "Guardar duración",
+} as const;
+
+export const ADJUST_MINUTES = {
+  AFTER_ADD_30: "120",
+  AFTER_MINUS_15: "90",
+  INVALID: "abc",
+  TOO_LONG: "1441",
+} as const;

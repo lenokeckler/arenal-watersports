@@ -30,3 +30,18 @@ export const OUT_ON_WATER_OVERDUE_BADGE_CLASS =
 
 export const OUT_ON_WATER_OVERDUE_DELAY_CLASS =
   "text-body-base font-semibold text-warning";
+
+export const OUT_ON_WATER_ADJUST_BUTTON_CLASS =
+  "mt-2 min-h-12 self-start";
+
+export const OUT_ON_WATER_EXTENDED_CLASS =
+  "text-body-sm text-on-surface-variant";
+
+export const DURATION_ADJUST_STACK_CLASS =
+  "flex flex-col gap-md";
+
+export const DURATION_ADJUST_PRESETS_CLASS =
+  "grid grid-cols-3 gap-sm";
+
+export const DURATION_ADJUST_ERROR_CLASS =
+  "rounded-xl border border-error/60 bg-error/10 px-4 py-3 text-body-base text-on-surface";

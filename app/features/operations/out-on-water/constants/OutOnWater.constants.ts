@@ -27,3 +27,9 @@ export const ADJUST_DURATION_STATUS = {
   ALREADY_CLOSED: "already_closed",
   INVALID: "invalid",
 } as const;
+
+export const DURATION_ADJUST_DELTAS = [
+  -15, 15, 30,
+] as const;
+
+export const DURATION_ADJUST_PATTERN = /^\d+$/;
