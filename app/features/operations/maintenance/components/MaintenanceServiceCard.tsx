@@ -1,3 +1,4 @@
+import Link from "@/app/components/link/Link";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
 import { TitleVariant } from "@/app/constants";
@@ -6,8 +7,10 @@ import type { MaintenanceUnitCardProps } from "../models/MaintenanceUnitCardProp
 import {
   MAINTENANCE_CARD_CLASS,
   MAINTENANCE_CARD_HEADING_CLASS,
+  MAINTENANCE_CARD_LINK_CLASS,
   MAINTENANCE_STATUS_CLASS,
 } from "../styles/Maintenance.styles";
+import { getUnitDamageReportsHref } from "../utils/getUnitDamageReportsHref";
 import type { JSX } from "react";
 
 const MaintenanceServiceCard = ({
@@ -22,6 +25,12 @@ const MaintenanceServiceCard = ({
     <Text className={MAINTENANCE_STATUS_CLASS}>
       {MAINTENANCE_COPY.STATUS[unit.status]}
     </Text>
+    <Link
+      href={getUnitDamageReportsHref(unit.unitId)}
+      className={MAINTENANCE_CARD_LINK_CLASS}
+    >
+      {MAINTENANCE_COPY.VIEW_DAMAGE_REPORTS}
+    </Link>
   </div>
 );
 

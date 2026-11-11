@@ -21,6 +21,7 @@ export const MAINTENANCE_COPY = {
     in_maintenance: "En mantenimiento",
     in_repair: "En reparación",
   },
+  VIEW_DAMAGE_REPORTS: "Ver reportes de daño",
   UNIT_SEPARATOR: " · ",
 } as const;
 
