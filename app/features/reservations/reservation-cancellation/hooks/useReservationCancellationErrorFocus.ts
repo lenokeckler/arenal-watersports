@@ -9,6 +9,14 @@ export const useReservationCancellationErrorFocus = (
   formError: string
 ): void => {
   const focusFirstProblem = useEffectEvent(() => {
+    if (errors.cause) {
+      document
+        .getElementById(
+          RESERVATION_CANCELLATION_FIELD_ID.CAUSE_FIRST_OPTION
+        )
+        ?.focus();
+      return;
+    }
     if (errors.reason) {
       document
         .getElementById(
