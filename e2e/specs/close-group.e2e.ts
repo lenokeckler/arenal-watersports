@@ -3,6 +3,7 @@ import { E2E_DISPATCH_READINGS } from "../constants/E2eDispatchSheet.constants";
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 import { createDispatchBoardPage } from "../pages/DispatchBoard.page";
 import { createDispatchSheetPage } from "../pages/DispatchSheet.page";
+import { createMaintenancePage } from "../pages/Maintenance.page";
 import { createOutOnWaterPage } from "../pages/OutOnWater.page";
 import { expect, test } from "../support/dispatchSheetTest";
 
@@ -212,5 +213,55 @@ test.describe("Group closing", () => {
     expect(closing.units[second].status).toBe(
       E2E_CLOSE_GROUP.UNIT_AVAILABLE
     );
+  });
+
+  test("sends a unit to maintenance when it is marked at the return and lists it as out of service", async ({
+    dispatchSheet,
+    signedInPage: page,
+  }) => {
+    const board = createDispatchBoardPage(page);
+    const sheet = createDispatchSheetPage(page);
+    const outOnWater = createOutOnWaterPage(page);
+    const maintenance = createMaintenancePage(page);
+    const [first, second] = dispatchSheet.unitCodes;
+
+    await board.goTo();
+    await sheet
+      .getOpenButton(dispatchSheet.customerName)
+      .click();
+    await sheet.getUnit(first).check();
+    await sheet.getUnit(second).check();
+    await sheet.getSubmit().click();
+    await expect(sheet.getDialog()).toHaveCount(
+      E2E_COUNT.NONE
+    );
+
+    await outOnWater.goTo();
+    await outOnWater
+      .getCloseButton(dispatchSheet.customerName)
+      .click();
+    await outOnWater.getCloseMaintenance(first).check();
+    await outOnWater.getCloseConfirm().click();
+    await expect(
+      outOnWater.getGroup(dispatchSheet.customerName)
+    ).toHaveCount(E2E_COUNT.NONE);
+
+    const closing = await dispatchSheet.readGroupClosing();
+
+    expect(closing.units[first].status).toBe(
+      E2E_CLOSE_GROUP.UNIT_IN_MAINTENANCE
+    );
+    expect(closing.units[second].status).toBe(
+      E2E_CLOSE_GROUP.UNIT_AVAILABLE
+    );
+    expect(closing.damageReports).toBe(E2E_COUNT.NONE);
+
+    await maintenance.goTo();
+    await expect(
+      maintenance
+        .getServiceSection()
+        .getByRole("listitem")
+        .filter({ hasText: first })
+    ).toBeVisible();
   });
 });
