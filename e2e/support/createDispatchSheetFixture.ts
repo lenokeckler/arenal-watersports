@@ -14,6 +14,8 @@ import { failE2eOperation } from "./failE2eOperation";
 import type { DispatchSheetFixture } from "./models/DispatchSheetFixture.interface";
 import { makeMaintenanceNeeds } from "./makeMaintenanceNeeds";
 import { makeDispatchLate } from "./makeDispatchLate";
+import { readMaintenanceJobs } from "./readMaintenanceJobs";
+import { removeMaintenanceJobs } from "./removeMaintenanceJobs";
 import { readGroupClosing } from "./readGroupClosing";
 import { readDispatchDuration } from "./readDispatchDuration";
 import { readDispatchReadings } from "./readDispatchReadings";
@@ -157,6 +159,8 @@ export const createDispatchSheetFixture = async (
         reservationId,
         minutesLate
       ),
+    readMaintenanceJobs: () =>
+      readMaintenanceJobs(supabase, unitCodes),
     readGroupClosing: () =>
       readGroupClosing(supabase, reservationId, unitCodes),
     readDispatchDuration: () =>
@@ -170,6 +174,7 @@ export const createDispatchSheetFixture = async (
     readDispatchState: () =>
       readDispatchSheetState(supabase, reservationId),
     remove: async () => {
+      await removeMaintenanceJobs(supabase, unitCodes);
       await removeDispatchSheetFixture(
         supabase,
         reservationId

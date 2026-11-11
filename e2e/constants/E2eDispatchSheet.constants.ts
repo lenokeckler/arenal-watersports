@@ -33,6 +33,7 @@ export const E2E_DISPATCH_SHEET_EXPECTED = {
 } as const;
 
 export const E2E_DISPATCH_SHEET_TABLE = {
+  MAINTENANCE_RECORDS: "maintenance_records",
   DAMAGE_REPORTS: "damage_reports",
   CATEGORIES: "equipment_categories",
   DISPATCHES: "reservation_dispatches",
@@ -51,6 +52,7 @@ export const E2E_DISPATCH_SHEET_ERROR = {
   OPERATION_READ_CLOSING: "read the E2E group closing",
   OPERATION_MAKE_MAINTENANCE:
     "mark the E2E units for maintenance",
+  OPERATION_READ_JOBS: "read the E2E maintenance jobs",
   OPERATION_MAKE_LATE:
     "move the E2E dispatch into the past",
   OPERATION_MARK_MOTOR:

@@ -4,6 +4,7 @@ export interface DispatchSheetFixture {
   customerName: string;
   makeMaintenanceNeeds: () => Promise<void>;
   makeDispatchLate: (minutesLate: number) => Promise<void>;
+  readMaintenanceJobs: () => Promise<MaintenanceJobsState>;
   readGroupClosing: () => Promise<GroupClosingState>;
   readDispatchDuration: () => Promise<DispatchDurationState>;
   readDispatchReadings: () => Promise<DispatchReadingsState>;
@@ -50,4 +51,20 @@ export interface GroupClosingState {
   damageReports: number;
   reservationStatus: string;
   units: Record<string, GroupClosingUnitState>;
+}
+
+export interface MaintenanceJobState {
+  costAmount: number | null;
+  costCurrency: string | null;
+  createdBy: string;
+  description: string | null;
+  isExternal: boolean;
+  performedAt: string;
+  unitCode: string;
+  workType: string;
+}
+
+export interface MaintenanceJobsState {
+  jobs: MaintenanceJobState[];
+  nextOilChangeAt: Record<string, number | null>;
 }
