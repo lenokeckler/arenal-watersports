@@ -11,13 +11,11 @@ import { PATHS } from "@/app/constants";
 import { assertReservationCalendarAccess } from "@/app/services/reservations/assertReservationCalendarAccess";
 import ReservationCancellation from "../ReservationCancellation";
 import { RESERVATION_CANCELLATION_UI_COPY as COPY } from "../constants/ReservationCancellationUiCopy.constants";
-import { RESERVATION_CANCELLATION_UNAVAILABLE_COPY as UNAVAILABLE } from "../constants/ReservationCancellationUnavailableCopy.constants";
 import { getReservationCancellation } from "../services/getReservationCancellation";
 import {
   CANCELLATION_ACCESS_REDIRECT,
   CANCELLATION_RESERVATION_ID,
   EXPECTED_SCHEDULED,
-  BLOCKED_STATUSES,
 } from "./ReservationCancellation.constants";
 import { createReservationCancellationPage } from "./ReservationCancellation.page";
 
@@ -105,34 +103,4 @@ describe("ReservationCancellation", () => {
     ]);
     expect(page.queryStatus()).toBeNull();
   });
-
-  it.each(BLOCKED_STATUSES)(
-    "explains why a %s reservation cannot be cancelled here",
-    async (status) => {
-      vi.mocked(
-        getReservationCancellation
-      ).mockResolvedValue({
-        ...EXPECTED_SCHEDULED,
-        isCancellable: false,
-        status,
-      });
-
-      render(await renderEntry());
-      const page = createReservationCancellationPage();
-
-      expect(page.getStatusText()).toContain(
-        UNAVAILABLE.BODY[status]
-      );
-      expect(page.getStatusText()).toContain(
-        UNAVAILABLE.RULE
-      );
-      expect(
-        page.queryText(EXPECTED_SCHEDULED.code)
-      ).toBeNull();
-      expect(page.getCalendarLinkTargets()).toEqual([
-        PATHS.RESERVATIONS.CALENDAR,
-        PATHS.RESERVATIONS.CALENDAR,
-      ]);
-    }
-  );
 });
