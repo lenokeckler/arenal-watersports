@@ -15,6 +15,9 @@ import type { DispatchSheetFixture } from "./models/DispatchSheetFixture.interfa
 import { makeMaintenanceNeeds } from "./makeMaintenanceNeeds";
 import { makeDispatchLate } from "./makeDispatchLate";
 import { addMaintenanceJobs } from "./addMaintenanceJobs";
+import { addDamageReports } from "./addDamageReports";
+import { readUnitId } from "./readUnitId";
+import { removeDamageReports } from "./removeDamageReports";
 import { readMaintenanceJobs } from "./readMaintenanceJobs";
 import { removeMaintenanceJobs } from "./removeMaintenanceJobs";
 import { readGroupClosing } from "./readGroupClosing";
@@ -162,6 +165,9 @@ export const createDispatchSheetFixture = async (
       ),
     addMaintenanceJobs: () =>
       addMaintenanceJobs(supabase, unitCodes, workerId),
+    addDamageReports: () =>
+      addDamageReports(supabase, unitCodes, workerId),
+    readUnitId: (code) => readUnitId(supabase, code),
     readMaintenanceJobs: () =>
       readMaintenanceJobs(supabase, unitCodes),
     readGroupClosing: () =>
@@ -178,6 +184,7 @@ export const createDispatchSheetFixture = async (
       readDispatchSheetState(supabase, reservationId),
     remove: async () => {
       await removeMaintenanceJobs(supabase, unitCodes);
+      await removeDamageReports(supabase, unitCodes);
       await removeDispatchSheetFixture(
         supabase,
         reservationId
