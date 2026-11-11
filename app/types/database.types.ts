@@ -1469,8 +1469,10 @@ export type Database = {
           dispatched_at: string;
           duration_minutes: number;
           ends_at: string | null;
+          extended_minutes: number | null;
           extra_time_minutes: number;
           id: string;
+          planned_duration_minutes: number | null;
           reservation_id: string;
           updated_at: string;
           updated_by: string;
@@ -1483,8 +1485,10 @@ export type Database = {
           dispatched_at: string;
           duration_minutes: number;
           ends_at?: never;
+          extended_minutes?: never;
           extra_time_minutes?: number;
           id?: string;
+          planned_duration_minutes?: number | null;
           reservation_id: string;
           updated_at?: string;
           updated_by: string;
@@ -1497,8 +1501,10 @@ export type Database = {
           dispatched_at?: string;
           duration_minutes?: number;
           ends_at?: never;
+          extended_minutes?: never;
           extra_time_minutes?: number;
           id?: string;
+          planned_duration_minutes?: number | null;
           reservation_id?: string;
           updated_at?: string;
           updated_by?: string;
@@ -2869,6 +2875,13 @@ export type Database = {
       };
     };
     Functions: {
+      adjust_dispatch_duration: {
+        Args: {
+          p_dispatch_id: string;
+          p_duration_minutes: number;
+        };
+        Returns: undefined;
+      };
       adjust_equipment_stock: {
         Args: {
           p_available: number;
@@ -3094,7 +3107,9 @@ export type Database = {
           customer_name: string;
           dispatch_id: string;
           dispatched_at: string;
+          duration_minutes: number;
           ends_at: string;
+          extended_minutes: number;
           quantity: number;
           reservation_id: string;
           unit_codes: string[];
