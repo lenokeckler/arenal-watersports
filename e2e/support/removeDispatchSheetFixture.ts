@@ -14,6 +14,10 @@ export const removeDispatchSheetFixture = async (
 ): Promise<void> => {
   const results = [
     await supabase
+      .from(E2E_DISPATCH_SHEET_TABLE.DAMAGE_REPORTS)
+      .delete()
+      .eq(RESERVATION_ID_COLUMN, reservationId),
+    await supabase
       .from(E2E_DISPATCH_SHEET_TABLE.ITEMS)
       .delete()
       .eq(RESERVATION_ID_COLUMN, reservationId),

@@ -3,6 +3,7 @@ export interface DispatchSheetFixture {
   categoryName: string;
   customerName: string;
   makeDispatchLate: (minutesLate: number) => Promise<void>;
+  readGroupClosing: () => Promise<GroupClosingState>;
   readDispatchDuration: () => Promise<DispatchDurationState>;
   readDispatchReadings: () => Promise<DispatchReadingsState>;
   readDispatchState: () => Promise<DispatchSheetState>;
@@ -33,4 +34,19 @@ export type DispatchReadingsState = Record<
 export interface DispatchDurationState {
   durationMinutes: number;
   extendedMinutes: number;
+}
+
+export interface GroupClosingUnitState {
+  fuelIn: number | null;
+  fuelLevel: number | null;
+  status: string;
+  usageIn: number | null;
+  usageTotal: number;
+}
+
+export interface GroupClosingState {
+  closedAt: string | null;
+  damageReports: number;
+  reservationStatus: string;
+  units: Record<string, GroupClosingUnitState>;
 }
