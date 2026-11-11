@@ -29,7 +29,7 @@ on conflict do nothing;
 
 insert into workers (id, username, full_name, personal_email, base_role, must_change_password)
 values ('00000000-0000-0000-0000-000000000001', 'admin', 'Administración',
-        'arenalwatersports@gmail.com', 'administracion', true)
+        'arenalwatersports@gmail.com', 'administracion', false)
 on conflict do nothing;
 
 insert into equipment_categories

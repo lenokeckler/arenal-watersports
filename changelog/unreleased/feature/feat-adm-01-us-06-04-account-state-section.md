@@ -1,0 +1,1 @@
+ADM-01.06.04: Account state section — the worker screen shows whether the account is active or blocked and why, with Bloquear or Desbloquear; the administration account offers neither (US-ADM-06 · AWS-58)

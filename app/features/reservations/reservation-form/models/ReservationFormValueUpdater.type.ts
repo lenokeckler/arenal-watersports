@@ -1,9 +1,8 @@
 import type { ReservationFormInput } from "./ReservationFormInput.interface";
-import type { ReservationFormValueField } from "./ReservationFormValueField.type";
 
 export type ReservationFormValueUpdater = <
-  Field extends ReservationFormValueField,
+  K extends keyof ReservationFormInput,
 >(
-  field: Field,
-  value: ReservationFormInput[Field]
+  field: K,
+  value: ReservationFormInput[K]
 ) => void;

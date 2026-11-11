@@ -3,7 +3,6 @@
 import { CUSTOM_COMBO_RESERVATION_COPY } from "../constants/CustomComboReservationCopy.constants";
 import { CUSTOM_COMBO_RESERVATION_FIELD } from "../models/CustomComboReservationField.constants";
 import type { CustomComboPricingActionResult } from "../models/CustomComboPricingActionResult.type";
-import type { CustomComboPricingInput } from "../models/CustomComboPricingInput.interface";
 import { getCustomComboPrice } from "../services/getCustomComboPrice";
 import { getAuthorizedReservationFormClient } from "../services/getAuthorizedReservationFormClient";
 import { hasValidCustomComboEquipmentSelections } from "../utils/hasValidCustomComboEquipmentSelections";
@@ -19,11 +18,14 @@ const invalidPricingResult =
     ok: false,
   });
 
-const isValidPricingInput = (
-  input: CustomComboPricingInput
-): boolean =>
-  isValidCustomComboPricingDuration(input.durationHours) &&
-  hasValidCustomComboEquipmentSelections(input.items);
+const invalidDurationResult =
+  (): CustomComboPricingActionResult => ({
+    errors: {
+      [CUSTOM_COMBO_RESERVATION_FIELD.DURATION_HOURS]:
+        CUSTOM_COMBO_RESERVATION_COPY.INVALID_DURATION,
+    },
+    ok: false,
+  });
 
 export const getCustomComboPricingAction = async (
   input: unknown
@@ -31,7 +33,14 @@ export const getCustomComboPricingAction = async (
   if (!isCustomComboPricingInput(input)) {
     return invalidPricingResult();
   }
-  if (!isValidPricingInput(input)) {
+  if (
+    !isValidCustomComboPricingDuration(input.durationHours)
+  ) {
+    return invalidDurationResult();
+  }
+  if (
+    !hasValidCustomComboEquipmentSelections(input.items)
+  ) {
     return invalidPricingResult();
   }
 

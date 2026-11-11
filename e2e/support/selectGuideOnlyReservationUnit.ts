@@ -18,12 +18,9 @@ export const selectGuideOnlyReservationUnit = async (
   await reservationFormPage.selectReservationType(
     E2E_RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
   );
-  await reservationFormPage
-    .getCategorySelect()
-    .selectOption({
-      label:
-        E2E_RESERVATION_TYPE_COPY.GUIDE_ONLY_CATEGORY.BOAT,
-    });
+  await reservationFormPage.selectCategory(
+    E2E_RESERVATION_TYPE_COPY.GUIDE_ONLY_CATEGORY.BOAT
+  );
   await reservationFormPage.waitForUnitOption(
     E2E_RESERVATION_TYPE_COPY.GUIDE_ONLY_UNIT_OPTION
   );
