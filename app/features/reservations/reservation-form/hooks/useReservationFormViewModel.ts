@@ -17,6 +17,7 @@ import { filterReservationCategoriesByType } from "../utils/filterReservationCat
 import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import { useCustomComboForm } from "./useCustomComboForm";
 import { usePredefinedComboForm } from "./usePredefinedComboForm";
+import { PREDEFINED_COMBO_SELECTION_MODE } from "../constants/PredefinedComboSelectionMode.constants";
 import { createReservationCreateSubmitHandler } from "../utils/createReservationCreateSubmitHandler";
 import { resolveReservationCategoryInterchangeability } from "../utils/resolveReservationCategoryInterchangeability";
 import { hasValidCustomComboEquipmentSelections } from "../utils/hasValidCustomComboEquipmentSelections";
@@ -113,9 +114,12 @@ export const useReservationFormViewModel = (
     submission.isPending ||
     submission.isSubmitted ||
     (isCustomCombo
-      ? !hasValidCustomComboEquipmentSelections(
-          customCombo.draft.items
-        )
+      ? predefinedCombo.mode ===
+        PREDEFINED_COMBO_SELECTION_MODE.PREDEFINED
+        ? predefinedCombo.selectedCombo === null
+        : !hasValidCustomComboEquipmentSelections(
+            customCombo.draft.items
+          )
       : categoriesForReservationType.length === 0 ||
         (equipment.requiresConcreteUnit &&
           (equipment.isAvailabilityLoading ||
@@ -132,13 +136,21 @@ export const useReservationFormViewModel = (
         equipment.retryUnitAvailability();
       },
       onSuccess: () => {
+        predefinedCombo.reset();
         fields.reset();
         duration.reset();
         equipment.retryUnitAvailability();
       },
+      predefinedCombo: {
+        mode: predefinedCombo.mode,
+        selectedComboId: predefinedCombo.selectedComboId,
+      },
       requestErrorFocus: submission.requestErrorFocus,
       requiresConcreteUnit: equipment.requiresConcreteUnit,
       setFieldError: submission.setFieldError,
+      setSubmissionError: submission.setSubmissionError,
+      submitPredefinedComboReservation:
+        submission.submitPredefinedComboReservation,
       submitCustomComboReservation:
         submission.submitCustomComboReservation,
       submitReservation: submission.submitReservation,
