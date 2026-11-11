@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import {
   PREDEFINED_COMBO_AUDIENCE,
   PREDEFINED_COMBO_CURRENCY,
-  PREDEFINED_COMBO_INTERCHANGEABILITY,
   PREDEFINED_COMBO_STATUS,
 } from "../constants/PredefinedCombo.constants";
 import { mapPredefinedComboRecords } from "../utils/mapPredefinedComboRecords";
@@ -26,6 +25,7 @@ describe("mapPredefinedComboRecords", () => {
           {
             categoryId: PREDEFINED_COMBO_TEST_IDS.CATEGORY,
             categoryName: "Jet Ski",
+            isGuideOnly: false,
             quantity: 2,
           },
         ],
@@ -40,6 +40,7 @@ describe("mapPredefinedComboRecords", () => {
           {
             categoryId: PREDEFINED_COMBO_TEST_IDS.CATEGORY,
             categoryName: "Jet Ski",
+            isGuideOnly: false,
             quantity: 1,
           },
         ],
@@ -81,36 +82,22 @@ describe("mapPredefinedComboRecords", () => {
           ...DEFAULT_PREDEFINED_COMBO_RECORDS.combos[0],
           id: PREDEFINED_COMBO_TEST_IDS.NON_RESERVABLE_COMBO,
         },
-        {
-          ...DEFAULT_PREDEFINED_COMBO_RECORDS.combos[0],
-          id: PREDEFINED_COMBO_TEST_IDS.NON_INTERCHANGEABLE_COMBO,
-        },
       ],
       categories: [
         ...DEFAULT_PREDEFINED_COMBO_RECORDS.categories,
         {
           id: PREDEFINED_COMBO_TEST_IDS.INACTIVE_CATEGORY,
+          guide_only: false,
           is_reservable: true,
           name: "Inactive category",
           status: PREDEFINED_COMBO_STATUS.INACTIVE,
-          units_are_interchangeable:
-            PREDEFINED_COMBO_INTERCHANGEABILITY.INTERCHANGEABLE,
         },
         {
           id: PREDEFINED_COMBO_TEST_IDS.NON_RESERVABLE_CATEGORY,
+          guide_only: false,
           is_reservable: false,
           name: "Non reservable category",
           status: PREDEFINED_COMBO_STATUS.ACTIVE,
-          units_are_interchangeable:
-            PREDEFINED_COMBO_INTERCHANGEABILITY.INTERCHANGEABLE,
-        },
-        {
-          id: PREDEFINED_COMBO_TEST_IDS.NON_INTERCHANGEABLE_CATEGORY,
-          is_reservable: true,
-          name: "Lancha",
-          status: PREDEFINED_COMBO_STATUS.ACTIVE,
-          units_are_interchangeable:
-            PREDEFINED_COMBO_INTERCHANGEABILITY.NOT_INTERCHANGEABLE,
         },
       ],
       comboItems: [
@@ -134,13 +121,6 @@ describe("mapPredefinedComboRecords", () => {
             PREDEFINED_COMBO_TEST_IDS.NON_RESERVABLE_COMBO,
           category_id:
             PREDEFINED_COMBO_TEST_IDS.NON_RESERVABLE_CATEGORY,
-        },
-        {
-          ...DEFAULT_PREDEFINED_COMBO_RECORDS.comboItems[0],
-          combo_id:
-            PREDEFINED_COMBO_TEST_IDS.NON_INTERCHANGEABLE_COMBO,
-          category_id:
-            PREDEFINED_COMBO_TEST_IDS.NON_INTERCHANGEABLE_CATEGORY,
         },
       ],
     };
@@ -194,5 +174,20 @@ describe("mapPredefinedComboRecords", () => {
         DEFAULT_PREDEFINED_COMBO_RECORDS
       )
     );
+  });
+
+  it("preserves the guide-only category marker on combo items", () => {
+    const recordsWithGuideCategory = {
+      ...DEFAULT_PREDEFINED_COMBO_RECORDS,
+      categories:
+        DEFAULT_PREDEFINED_COMBO_RECORDS.categories.map(
+          (category) => ({ ...category, guide_only: true })
+        ),
+    };
+
+    expect(
+      mapPredefinedComboRecords(recordsWithGuideCategory)[0]
+        ?.items[0]?.isGuideOnly
+    ).toBe(true);
   });
 });

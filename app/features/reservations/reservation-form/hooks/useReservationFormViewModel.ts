@@ -16,6 +16,7 @@ import { isReservationQuantityUnavailable } from "../utils/isReservationQuantity
 import { filterReservationCategoriesByType } from "../utils/filterReservationCategoriesByType";
 import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import { useCustomComboForm } from "./useCustomComboForm";
+import { usePredefinedComboForm } from "./usePredefinedComboForm";
 import { createReservationCreateSubmitHandler } from "../utils/createReservationCreateSubmitHandler";
 import { resolveReservationCategoryInterchangeability } from "../utils/resolveReservationCategoryInterchangeability";
 import { hasValidCustomComboEquipmentSelections } from "../utils/hasValidCustomComboEquipmentSelections";
@@ -27,6 +28,7 @@ export const useReservationFormViewModel = (
     categories,
     initialCategoryId,
     initialDate,
+    predefinedCombos = [],
     unitCategories,
   } = options;
   const router = useRouter();
@@ -81,6 +83,11 @@ export const useReservationFormViewModel = (
       fields.values.reservationType ??
       RESERVATION_TYPE.RENTAL,
   });
+  const predefinedCombo = usePredefinedComboForm(
+    predefinedCombos,
+    isCustomCombo,
+    fields.handleGuideIdsChange
+  );
   const isQuantityUnavailable =
     isReservationQuantityUnavailable(
       categoriesForReservationType.find(
@@ -141,13 +148,18 @@ export const useReservationFormViewModel = (
   return {
     categories: categoriesForReservationType,
     customCombo,
+    predefinedCombo,
     resolvedDurationHours,
     ...fields,
-    handleReservationTypeChange: (value) =>
+    handleReservationTypeChange: (value) => {
+      if (value !== RESERVATION_TYPE.COMBO) {
+        predefinedCombo.reset();
+      }
       fields.handleReservationTypeChange(
         value,
         eligibleCategories
-      ),
+      );
+    },
     ...submission,
     errors: isQuantityUnavailable
       ? {

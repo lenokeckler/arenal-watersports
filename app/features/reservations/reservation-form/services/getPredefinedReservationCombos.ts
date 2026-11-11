@@ -2,7 +2,6 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/app/types";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import {
-  PREDEFINED_COMBO_INTERCHANGEABILITY,
   PREDEFINED_COMBO_RESERVABILITY,
   PREDEFINED_COMBO_STATUS,
 } from "../constants/PredefinedCombo.constants";
@@ -37,18 +36,12 @@ const getActiveCategories = async (
 ): Promise<PredefinedComboCategoryRecord[]> => {
   const { data, error } = await supabase
     .from("equipment_categories")
-    .select(
-      "id, name, status, is_reservable, units_are_interchangeable"
-    )
+    .select("id, name, status, is_reservable, guide_only")
     .in("id", categoryIds)
     .eq("status", PREDEFINED_COMBO_STATUS.ACTIVE)
     .eq(
       "is_reservable",
       PREDEFINED_COMBO_RESERVABILITY.RESERVABLE
-    )
-    .eq(
-      "units_are_interchangeable",
-      PREDEFINED_COMBO_INTERCHANGEABILITY.INTERCHANGEABLE
     );
   throwIfSupabaseError(
     error,

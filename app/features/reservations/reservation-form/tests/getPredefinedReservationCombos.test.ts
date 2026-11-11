@@ -12,7 +12,6 @@ import type { Database } from "@/app/types";
 import { getAuthorizedReservationFormClient } from "../services/getAuthorizedReservationFormClient";
 import { getPredefinedReservationCombos } from "../services/getPredefinedReservationCombos";
 import {
-  PREDEFINED_COMBO_INTERCHANGEABILITY,
   PREDEFINED_COMBO_RESERVABILITY,
   PREDEFINED_COMBO_STATUS,
 } from "../constants/PredefinedCombo.constants";
@@ -51,6 +50,10 @@ describe("getPredefinedReservationCombos", () => {
   });
 
   it("loads active persisted combos and their category components", async () => {
+    const guideOnlyCategories =
+      DEFAULT_PREDEFINED_COMBO_RECORDS.categories.map(
+        (category) => ({ ...category, guide_only: true })
+      );
     fetchMock
       .mockResolvedValueOnce(
         new Response(
@@ -73,14 +76,9 @@ describe("getPredefinedReservationCombos", () => {
         )
       )
       .mockResolvedValueOnce(
-        new Response(
-          JSON.stringify(
-            DEFAULT_PREDEFINED_COMBO_RECORDS.categories
-          ),
-          {
-            status: PREDEFINED_COMBO_HTTP_STATUS.SUCCESS,
-          }
-        )
+        new Response(JSON.stringify(guideOnlyCategories), {
+          status: PREDEFINED_COMBO_HTTP_STATUS.SUCCESS,
+        })
       );
 
     const combos = await getPredefinedReservationCombos();
@@ -99,8 +97,9 @@ describe("getPredefinedReservationCombos", () => {
       `is_reservable=eq.${PREDEFINED_COMBO_RESERVABILITY.RESERVABLE}`
     );
     expect(String(fetchMock.mock.calls[2][0])).toContain(
-      `units_are_interchangeable=eq.${PREDEFINED_COMBO_INTERCHANGEABILITY.INTERCHANGEABLE}`
+      "guide_only"
     );
+    expect(combos[0]?.items[0]?.isGuideOnly).toBe(true);
   });
 
   it("returns empty when there are no active combos", async () => {

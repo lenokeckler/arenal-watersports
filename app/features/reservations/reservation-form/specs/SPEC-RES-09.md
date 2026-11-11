@@ -13,7 +13,7 @@ The returned application model contains the combo identity, audience, matching c
 
 ## Boundaries
 
-Administration combo CRUD, fabricated seed data, reservation form selection and client state are outside this unit. Invalid, inactive, incomplete, or incorrectly priced records are omitted. Authorized reads reuse the reservation form server access check and Supabase row-level security.
+Administration combo CRUD and fabricated seed data are outside this unit. Invalid, inactive, incomplete, or incorrectly priced records are omitted. Authorized reads reuse the reservation form server access check and Supabase row-level security. The reservation form receives this persisted catalog from its server entry point. Its selection state defaults to custom mode and holds only a selected persisted combo ID; the selected price and components are derived from the catalog. Switching to custom mode or leaving the combo reservation type clears the predefined selection. The next UI unit owns the visible mode and combo controls, package summary, submission routing, and browser coverage.
 
 ## Reservation persistence mapping
 

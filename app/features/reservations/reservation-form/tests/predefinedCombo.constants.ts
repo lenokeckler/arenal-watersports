@@ -2,7 +2,6 @@ import type { PredefinedComboQueryRecords } from "../models/PredefinedComboQuery
 import { HTTP_STATUS } from "@/app/constants";
 import {
   PREDEFINED_COMBO_AUDIENCE,
-  PREDEFINED_COMBO_INTERCHANGEABILITY,
   PREDEFINED_COMBO_STATUS,
 } from "../constants/PredefinedCombo.constants";
 
@@ -18,8 +17,6 @@ export const PREDEFINED_COMBO_TEST_IDS = {
   INVALID_QUANTITY_COMBO: "combo-invalid-quantity",
   NON_RESERVABLE_CATEGORY: "category-non-reservable",
   NON_RESERVABLE_COMBO: "combo-non-reservable",
-  NON_INTERCHANGEABLE_CATEGORY: "category-lancha",
-  NON_INTERCHANGEABLE_COMBO: "combo-lancha",
   ZERO_PRICE_COMBO: "combo-zero-price",
   NEGATIVE_PRICE_COMBO: "combo-negative-price",
 } as const;
@@ -34,11 +31,10 @@ export const DEFAULT_PREDEFINED_COMBO_RECORDS: PredefinedComboQueryRecords =
     categories: [
       {
         id: PREDEFINED_COMBO_TEST_IDS.CATEGORY,
+        guide_only: false,
         is_reservable: true,
         name: "Jet Ski",
         status: PREDEFINED_COMBO_STATUS.ACTIVE,
-        units_are_interchangeable:
-          PREDEFINED_COMBO_INTERCHANGEABILITY.INTERCHANGEABLE,
       },
     ],
     comboItems: [
