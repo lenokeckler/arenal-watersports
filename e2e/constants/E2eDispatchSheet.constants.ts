@@ -35,6 +35,7 @@ export const E2E_DISPATCH_SHEET_EXPECTED = {
 export const E2E_DISPATCH_SHEET_TABLE = {
   MAINTENANCE_RECORDS: "maintenance_records",
   DAMAGE_REPORTS: "damage_reports",
+  UNIT_CORRECTIONS: "unit_corrections",
   CATEGORIES: "equipment_categories",
   DISPATCHES: "reservation_dispatches",
   ITEMS: "reservation_items",
@@ -54,6 +55,7 @@ export const E2E_DISPATCH_SHEET_ERROR = {
     "mark the E2E units for maintenance",
   OPERATION_READ_JOBS: "read the E2E maintenance jobs",
   OPERATION_ADD_JOBS: "add the E2E maintenance jobs",
+  OPERATION_READ_CORRECTION: "read the E2E unit correction",
   OPERATION_READ_UNIT: "read the E2E unit id",
   OPERATION_ADD_REPORTS: "add the E2E damage reports",
   OPERATION_MAKE_LATE:

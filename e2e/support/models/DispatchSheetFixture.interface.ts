@@ -7,6 +7,9 @@ export interface DispatchSheetFixture {
   addMaintenanceJobs: () => Promise<void>;
   addDamageReports: () => Promise<string>;
   readUnitId: (code: string) => Promise<string>;
+  readUnitCorrection: (
+    code: string
+  ) => Promise<UnitCorrectionState>;
   readMaintenanceJobs: () => Promise<MaintenanceJobsState>;
   readGroupClosing: () => Promise<GroupClosingState>;
   readDispatchDuration: () => Promise<DispatchDurationState>;
@@ -70,4 +73,19 @@ export interface MaintenanceJobState {
 export interface MaintenanceJobsState {
   jobs: MaintenanceJobState[];
   nextOilChangeAt: Record<string, number | null>;
+}
+
+export interface UnitCorrectionRecord {
+  corrected: Record<string, unknown>;
+  createdBy: string;
+  previous: Record<string, unknown>;
+}
+
+export interface UnitCorrectionState {
+  corrections: UnitCorrectionRecord[];
+  fuelLevel: number | null;
+  fuelMax: number;
+  impactCount: number;
+  status: string;
+  usageTotal: number;
 }
