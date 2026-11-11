@@ -4,6 +4,7 @@ import { RESERVATION_CANCELLATION_LIMITS } from "../constants/ReservationCancell
 import { isReservationCancellationInput } from "../utils/isReservationCancellationInput";
 import { resolveReservationCancellationReasonError } from "../utils/resolveReservationCancellationReasonError";
 import {
+  CANCELLATION_CAUSE,
   MALFORMED_RESERVATION_ID,
   VALID_CANCELLATION_INPUT,
 } from "./ReservationCancellation.constants";
@@ -22,6 +23,26 @@ describe("isReservationCancellationInput", () => {
         VALID_CANCELLATION_INPUT
       )
     ).toBe(true);
+  });
+
+  it("accepts a valid cause", () => {
+    expect(
+      isReservationCancellationInput({
+        ...VALID_CANCELLATION_INPUT,
+        cause: CANCELLATION_CAUSE,
+      })
+    ).toBe(true);
+  });
+
+  it("refuses an input without the cause key", () => {
+    const withoutCause: Partial<
+      typeof VALID_CANCELLATION_INPUT
+    > = { ...VALID_CANCELLATION_INPUT };
+    delete withoutCause.cause;
+
+    expect(
+      isReservationCancellationInput(withoutCause)
+    ).toBe(false);
   });
 
   it.each([
@@ -44,6 +65,14 @@ describe("isReservationCancellationInput", () => {
     [
       "a missing reason",
       { ...VALID_CANCELLATION_INPUT, reason: undefined },
+    ],
+    [
+      "an unknown cause",
+      { ...VALID_CANCELLATION_INPUT, cause: "fire" },
+    ],
+    [
+      "a missing cause",
+      { ...VALID_CANCELLATION_INPUT, cause: undefined },
     ],
     [
       "a numeric reason",

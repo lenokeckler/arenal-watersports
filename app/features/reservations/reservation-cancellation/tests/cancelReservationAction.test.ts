@@ -14,6 +14,7 @@ import { RESERVATION_CANCELLATION_FEEDBACK_COPY as COPY } from "../constants/Res
 import { cancelReservation } from "../services/cancelReservation";
 import {
   CANCELLATION_ACCESS_REDIRECT,
+  CANCELLATION_CAUSE,
   CANCELLATION_RESERVATION_ID,
   CANCELLATION_UNEXPECTED_ERROR,
   VALID_CANCELLATION_INPUT,
@@ -48,6 +49,20 @@ describe("cancelReservationAction", () => {
     expect(revalidatePath).toHaveBeenCalledWith(
       PATHS.RESERVATIONS.CALENDAR
     );
+  });
+
+  it("passes the cause of a dispatched cancellation to the service", async () => {
+    vi.mocked(cancelReservation).mockResolvedValue(
+      CANCELLATION_RESERVATION_ID
+    );
+    const input = {
+      ...VALID_CANCELLATION_INPUT,
+      cause: CANCELLATION_CAUSE,
+    };
+
+    await cancelReservationAction(input);
+
+    expect(cancelReservation).toHaveBeenCalledWith(input);
   });
 
   it("refuses a malformed input before checking access", async () => {

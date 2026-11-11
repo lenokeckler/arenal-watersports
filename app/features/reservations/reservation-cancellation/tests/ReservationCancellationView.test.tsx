@@ -71,6 +71,7 @@ describe("ReservationCancellationView", () => {
       )
     );
     expect(cancelReservationAction).toHaveBeenCalledWith({
+      cause: null,
       expectedUpdatedAt:
         EXPECTED_SCHEDULED.expectedUpdatedAt,
       reason: CANCELLATION_REASON,

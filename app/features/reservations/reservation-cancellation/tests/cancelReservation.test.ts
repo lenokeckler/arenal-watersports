@@ -10,6 +10,7 @@ import { RESERVATION_CANCELLATION_ERROR } from "../constants/ReservationCancella
 import { RESERVATION_CANCELLATION_QUERY } from "../constants/ReservationCancellationQuery.constants";
 import { cancelReservation } from "../services/cancelReservation";
 import {
+  CANCELLATION_CAUSE,
   CANCELLATION_RESERVATION_ID,
   VALID_CANCELLATION_INPUT,
 } from "./ReservationCancellation.constants";
@@ -49,12 +50,34 @@ describe("cancelReservation", () => {
       RESERVATION_CANCELLATION_QUERY.RPC,
       {
         p_payload: {
+          cause: VALID_CANCELLATION_INPUT.cause,
           expected_updated_at:
             VALID_CANCELLATION_INPUT.expectedUpdatedAt,
           reason: VALID_CANCELLATION_INPUT.reason,
           reservation_id:
             VALID_CANCELLATION_INPUT.reservationId,
         },
+      }
+    );
+  });
+
+  it("sends the cause of a dispatched cancellation", async () => {
+    rpc.mockResolvedValue({
+      data: CANCELLATION_RESERVATION_ID,
+      error: null,
+    });
+
+    await cancelReservation({
+      ...VALID_CANCELLATION_INPUT,
+      cause: CANCELLATION_CAUSE,
+    });
+
+    expect(rpc).toHaveBeenCalledWith(
+      RESERVATION_CANCELLATION_QUERY.RPC,
+      {
+        p_payload: expect.objectContaining({
+          cause: CANCELLATION_CAUSE,
+        }),
       }
     );
   });
