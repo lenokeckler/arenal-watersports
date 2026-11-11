@@ -10,6 +10,7 @@ import type { OutOnWaterGroupCardProps } from "../models/OutOnWaterGroupCardProp
 import {
   OUT_ON_WATER_CARD_CLASS,
   OUT_ON_WATER_CARD_DETAIL_CLASS,
+  OUT_ON_WATER_ACTIONS_CLASS,
   OUT_ON_WATER_CARD_HEADING_CLASS,
   OUT_ON_WATER_EXTENDED_CLASS,
   OUT_ON_WATER_REMAINING_CLASS,
@@ -19,6 +20,7 @@ import { formatRemainingTime } from "../utils/formatRemainingTime";
 import { getGroupEquipmentText } from "../utils/getGroupEquipmentText";
 import { getRemainingMinutes } from "../utils/getRemainingMinutes";
 import OutOnWaterAdjustAction from "./OutOnWaterAdjustAction";
+import OutOnWaterCloseAction from "./OutOnWaterCloseAction";
 import OutOnWaterOverdueBadge from "./OutOnWaterOverdueBadge";
 import type { JSX } from "react";
 
@@ -58,7 +60,10 @@ const OutOnWaterGroupCard = ({
           {`${DURATION_ADJUST_COPY.EXTENDED_PREFIX}${formatDuration(group.extendedMinutes)}. ${DURATION_ADJUST_COPY.EXTENDED_NOTE}`}
         </Text>
       )}
-      <OutOnWaterAdjustAction group={group} />
+      <div className={OUT_ON_WATER_ACTIONS_CLASS}>
+        <OutOnWaterCloseAction group={group} />
+        <OutOnWaterAdjustAction group={group} />
+      </div>
     </div>
   );
 };

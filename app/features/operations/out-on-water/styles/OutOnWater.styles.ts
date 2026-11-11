@@ -45,3 +45,24 @@ export const DURATION_ADJUST_PRESETS_CLASS =
 
 export const DURATION_ADJUST_ERROR_CLASS =
   "rounded-xl border border-error/60 bg-error/10 px-4 py-3 text-body-base text-on-surface";
+
+export const CLOSE_GROUP_STACK_CLASS =
+  "flex flex-col gap-md";
+
+export const CLOSE_GROUP_CARD_CLASS =
+  "flex flex-col gap-md rounded-xl border border-outline-variant/60 bg-surface-container/80 px-4 py-3";
+
+export const CLOSE_GROUP_LEGEND_CLASS =
+  "px-1 text-title-md font-semibold text-on-surface";
+
+export const CLOSE_GROUP_BLOCK_CLASS =
+  "flex flex-col gap-sm";
+
+export const CLOSE_GROUP_LABEL_CLASS =
+  "text-label-md font-semibold text-on-surface";
+
+export const CLOSE_GROUP_DAMAGE_CLASS =
+  "flex flex-col gap-md rounded-xl border border-warning/40 bg-warning/10 px-3 py-3";
+
+export const OUT_ON_WATER_ACTIONS_CLASS =
+  "flex flex-wrap gap-3";
