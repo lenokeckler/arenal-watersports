@@ -58,3 +58,9 @@ export const E2E_DISPATCH_SHEET_SCREENSHOT_BASENAME = {
   READINGS: "08-dispatch-sheet-readings",
   READY_TO_CONFIRM: "07-dispatch-sheet-ready-to-confirm",
 } as const;
+
+export const E2E_BOARD_DISPATCH_SCREENSHOT_BASENAME = {
+  PICKER: "10-board-reservation-picker",
+  SELECTED_UNITS: "09-board-units-selected",
+  SHEET: "11-board-dispatch-sheet",
+} as const;

@@ -3,9 +3,32 @@ import { createDispatchSheetFixture } from "./createDispatchSheetFixture";
 import type { DispatchSheetFixture } from "./models/DispatchSheetFixture.interface";
 
 export const test = base.extend<{
+  boardDispatchSheet: DispatchSheetFixture;
+  boardMotorDispatchSheet: DispatchSheetFixture;
   dispatchSheet: DispatchSheetFixture;
   motorDispatchSheet: DispatchSheetFixture;
 }>({
+  boardDispatchSheet: async ({ activeWorker }, provide) => {
+    const fixture = await createDispatchSheetFixture(
+      activeWorker.id,
+      { isOnBoard: true }
+    );
+
+    await provide(fixture);
+    await fixture.remove();
+  },
+  boardMotorDispatchSheet: async (
+    { activeWorker },
+    provide
+  ) => {
+    const fixture = await createDispatchSheetFixture(
+      activeWorker.id,
+      { hasMotor: true, isOnBoard: true }
+    );
+
+    await provide(fixture);
+    await fixture.remove();
+  },
   dispatchSheet: async ({ activeWorker }, provide) => {
     const fixture = await createDispatchSheetFixture(
       activeWorker.id

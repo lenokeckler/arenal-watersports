@@ -9,7 +9,7 @@ Operations workers need to see today's reservations that still require a group t
 - Read and display today's pending reservations.
 - Exclude cancelled and closed reservations.
 - Exclude reservations whose committed categories have all been dispatched.
-- Open a dispatch sheet from each reservation of the list.
+- Open a dispatch sheet from each reservation of the list, or from the units tapped on the category screen of the board.
 - List the equipment committed in each category, with or without motor.
 - Choose the concrete units that leave, among the free units of the category.
 - Propose the real departure (now) and the return (departure plus duration), both adjustable.
@@ -22,7 +22,6 @@ Operations workers need to see today's reservations that still require a group t
 - Partial dispatches within one category.
 - Financial information.
 - Changing the equipment of a reservation at the dock and recalculating its price.
-- Opening the dispatch from the category card of the board.
 - Adjusting the duration of a running reservation (US-OPE-06).
 
 ## Requirements
@@ -69,7 +68,7 @@ Operations workers need to see today's reservations that still require a group t
 - [x] La lista se limita al día en curso.
 - [x] Las reservas canceladas no aparecen.
 - [x] La reserva ya existe y solo se selecciona: no se vuelven a escribir sus datos.
-- [x] El despacho se abre desde la lista del día.
+- [x] El despacho se abre desde la lista del día o desde la categoría en el tablero, sin dar la vuelta por otra pantalla.
 - [x] La hoja lista el equipo comprometido de la categoría, tenga motor o no.
 - [x] Operaciones escoge las unidades concretas entre las libres de la categoría.
 - [x] Cada categoría sale por su lado y la reserva sigue pendiente mientras falte un grupo.

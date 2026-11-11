@@ -1,4 +1,5 @@
 export interface DispatchSheetFixture {
+  categoryId: string;
   categoryName: string;
   customerName: string;
   readDispatchReadings: () => Promise<DispatchReadingsState>;
