@@ -28,6 +28,10 @@ export const useReservationCancellationViewModel = (
     STRING.Empty
   );
   const [isCancelled, setIsCancelled] = useState(false);
+  const [
+    confirmedRequiresCause,
+    setConfirmedRequiresCause,
+  ] = useState(false);
   const { requiresCause } = cancellation;
   const isStale = formError === FEEDBACK.STALE;
   const isSubmitDisabled =
@@ -64,6 +68,7 @@ export const useReservationCancellationViewModel = (
           reservationId: cancellation.id,
         });
         if (result.ok) {
+          setConfirmedRequiresCause(requiresCause);
           setIsCancelled(true);
           return;
         }
@@ -95,6 +100,7 @@ export const useReservationCancellationViewModel = (
 
   return {
     cause,
+    confirmedRequiresCause,
     errors,
     formError,
     handleSubmit,
