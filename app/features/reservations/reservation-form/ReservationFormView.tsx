@@ -94,14 +94,15 @@ const ReservationFormView = ({
               guideAssignmentViewModel={viewModel}
               viewModel={viewModel}
             />
-            {allCategories.length === 0 && (
-              <Text
-                role="status"
-                className={RESERVATION_FORM_ERROR_CLASS}
-              >
-                {RESERVATION_FORM_UI_COPY.NO_CATEGORIES}
-              </Text>
-            )}
+            {allCategories.length === 0 &&
+              !viewModel.predefinedCombo?.selectedCombo && (
+                <Text
+                  role="status"
+                  className={RESERVATION_FORM_ERROR_CLASS}
+                >
+                  {RESERVATION_FORM_UI_COPY.NO_CATEGORIES}
+                </Text>
+              )}
             {viewModel.formError && (
               <Text
                 id={
