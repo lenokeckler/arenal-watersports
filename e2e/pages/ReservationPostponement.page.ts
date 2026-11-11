@@ -12,6 +12,8 @@ import type { NullableRef } from "@/app/types";
 import { resolveReservationPostponePath } from "@/app/utils/reservations/resolveReservationPostponePath";
 import { getMainRegion } from "../support/mainRegion";
 
+const PARENT_LABEL = "xpath=..";
+
 export const createReservationPostponementPage = (
   page: Page
 ) => {
@@ -41,7 +43,8 @@ export const createReservationPostponementPage = (
         .getByRole(ARIA_ROLE.RADIO, {
           name: readings.FUEL_LEVEL_LABEL(level, max),
         })
-        .check({ force: true }),
+        .locator(PARENT_LABEL)
+        .click(),
     fillDate: (date: string): Promise<void> =>
       main.getByLabel(copy.LABEL_NEW_DATE).fill(date),
     fillReason: (reason: string): Promise<void> =>
