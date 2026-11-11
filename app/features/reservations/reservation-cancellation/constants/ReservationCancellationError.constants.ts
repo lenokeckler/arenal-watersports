@@ -1,8 +1,13 @@
 export const RESERVATION_CANCELLATION_ERROR = {
   MESSAGE: {
     ACCESS_REQUIRED: "Reservations access is required",
+    CAUSE_INVALID: "Cancellation cause is invalid",
+    CAUSE_NOT_APPLICABLE:
+      "A cancellation cause only applies to a dispatched reservation",
+    CAUSE_REQUIRED:
+      "A cancellation cause is required for a dispatched reservation",
     NOT_CANCELLABLE:
-      "Only scheduled reservations can be cancelled",
+      "Only scheduled or dispatched reservations can be cancelled",
     NOT_FOUND: "Reservation was not found",
     PAYLOAD_INVALID: "Reservation payload is invalid",
     PAYLOAD_NOT_OBJECT:
