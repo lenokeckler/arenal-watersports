@@ -2982,6 +2982,21 @@ export type Database = {
           usable: number;
         }[];
       };
+      category_dispatch_reservations: {
+        Args: {
+          p_category_id: string;
+          p_day_end: string;
+          p_day_start: string;
+        };
+        Returns: {
+          code: string;
+          customer_name: string;
+          people_count: number;
+          required_count: number;
+          reservation_id: string;
+          starts_at: string;
+        }[];
+      };
       choose_work_area: {
         Args: {
           target: Database["public"]["Enums"]["work_area"];
