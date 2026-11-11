@@ -1,4 +1,8 @@
 import type { PendingDispatchReservation } from "../models/PendingDispatchReservation.interface";
+import {
+  DISPATCH_BOARD_MAX_PAGE,
+  DISPATCH_BOARD_PAGINATION,
+} from "../constants/DispatchBoard.constants";
 
 export const COSTA_RICA_DATE_FIXTURE = {
   EXPECTED_PREVIOUS_DAY_END: "2026-09-05T06:00:00.000Z",
@@ -19,3 +23,12 @@ export const PENDING_RESERVATION_FIXTURE: PendingDispatchReservation =
     starts_at: "2026-09-05T15:00:00.000Z",
     status: "scheduled",
   };
+
+export const INVALID_PENDING_DISPATCH_PAGE_FIXTURES = {
+  BELOW_FIRST_PAGE:
+    DISPATCH_BOARD_PAGINATION.FIRST_PAGE - 1,
+  FRACTIONAL_PAGE:
+    DISPATCH_BOARD_PAGINATION.FIRST_PAGE + Number.EPSILON,
+  OFFSET_OUT_OF_RANGE: DISPATCH_BOARD_MAX_PAGE + 1,
+  UNSAFE_INTEGER: Number.MAX_SAFE_INTEGER + 1,
+} as const;

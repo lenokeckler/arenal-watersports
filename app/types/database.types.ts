@@ -3034,6 +3034,13 @@ export type Database = {
         Args: { event: Json };
         Returns: Json;
       };
+      custom_combo_price: {
+        Args: { p_duration_minutes: number; p_items: Json };
+        Returns: {
+          list_amount_crc: number;
+          list_amount_usd: number;
+        }[];
+      };
       delete_or_deactivate_extra: {
         Args: { p_extra_id: string };
         Returns: string;
@@ -3083,13 +3090,6 @@ export type Database = {
       grantable_worker_marks: {
         Args: Record<PropertyKey, never>;
         Returns: Database["public"]["Enums"]["worker_mark"][];
-      };
-      custom_combo_price: {
-        Args: { p_duration_minutes: number; p_items: Json };
-        Returns: {
-          list_amount_crc: number;
-          list_amount_usd: number;
-        }[];
       };
       has_area: {
         Args: {
@@ -3241,6 +3241,21 @@ export type Database = {
       password_reset_retention_hours: {
         Args: Record<PropertyKey, never>;
         Returns: number;
+      };
+      pending_dispatch_reservations: {
+        Args: {
+          p_ends_at: string;
+          p_limit?: number;
+          p_offset?: number;
+          p_starts_at: string;
+        };
+        Returns: {
+          code: string;
+          customer_name: string;
+          id: string;
+          starts_at: string;
+          status: Database["public"]["Enums"]["reservation_status"];
+        }[];
       };
       place_split_item: {
         Args: {
