@@ -41,6 +41,9 @@ export const DISPATCH_FIXTURE_UNIT = {
   },
 } as const;
 
+export const DISPATCH_FIXTURE_UNKNOWN_CATEGORY =
+  "aaaaaaaa-0000-4000-8000-000000000099";
+
 export const DISPATCH_FIXTURE_COUNT = {
   ONE: 1,
   TWO: 2,

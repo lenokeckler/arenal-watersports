@@ -53,6 +53,15 @@ export const DISPATCH_INPUT_FIXTURE = {
   UNIT_ID: "bbbbbbbb-0000-4000-8000-000000000001",
 } as const;
 
+export const CATEGORY_RESERVATION_ROW_FIXTURE = {
+  code: "R-000001",
+  customer_name: "Cliente uno",
+  people_count: 2,
+  required_count: 2,
+  reservation_id: "dddddddd-0000-4000-8000-000000000001",
+  starts_at: "2026-09-05T15:00:00.000Z",
+};
+
 export const DISPATCH_READING_FIXTURE = {
   FRACTION_FUEL: 2.5,
   FUEL: 3,

@@ -31,8 +31,13 @@ const DispatchGroupForm = ({
   group,
   isSubmitting,
   onSubmit,
+  preselectedUnitIds,
 }: DispatchGroupFormProps): React.JSX.Element => {
-  const form = useDispatchGroupForm({ group, onSubmit });
+  const form = useDispatchGroupForm({
+    group,
+    onSubmit,
+    preselectedUnitIds,
+  });
   const committedCount = group.isTrackedByUnit
     ? group.fixedUnitIds.length + group.requiredQuantity
     : group.requiredQuantity;
