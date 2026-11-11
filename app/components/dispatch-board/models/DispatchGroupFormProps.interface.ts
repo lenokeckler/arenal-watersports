@@ -5,4 +5,5 @@ export interface DispatchGroupFormProps {
   group: DispatchSheetGroup;
   isSubmitting: boolean;
   onSubmit: (selection: DispatchGroupSelection) => void;
+  preselectedUnitIds?: string[];
 }

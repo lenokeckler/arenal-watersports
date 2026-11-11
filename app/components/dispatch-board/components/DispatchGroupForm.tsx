@@ -25,13 +25,19 @@ import {
   DISPATCH_SHEET_UNIT_NOTE_CLASS,
 } from "../styles/DispatchSheet.styles";
 import DispatchUnitOptions from "./DispatchUnitOptions";
+import DispatchUnitReadings from "./DispatchUnitReadings";
 
 const DispatchGroupForm = ({
   group,
   isSubmitting,
   onSubmit,
+  preselectedUnitIds,
 }: DispatchGroupFormProps): React.JSX.Element => {
-  const form = useDispatchGroupForm({ group, onSubmit });
+  const form = useDispatchGroupForm({
+    group,
+    onSubmit,
+    preselectedUnitIds,
+  });
   const committedCount = group.isTrackedByUnit
     ? group.fixedUnitIds.length + group.requiredQuantity
     : group.requiredQuantity;
@@ -67,6 +73,10 @@ const DispatchGroupForm = ({
           {DISPATCH_SHEET_COPY.QUANTITY_NOTE}
         </Text>
       )}
+      <DispatchUnitReadings
+        group={group}
+        readings={form.readings}
+      />
       <div className={DISPATCH_SHEET_TIMES_CLASS}>
         <FormField
           id={DISPATCH_SHEET_FIELD_ID.DEPARTURE}

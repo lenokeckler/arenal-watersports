@@ -18,10 +18,12 @@ import DispatchGroupForm from "./DispatchGroupForm";
 import DispatchSheetGroupChooser from "./DispatchSheetGroupChooser";
 
 interface DispatchSheetBodyProps {
+  preselectedUnitIds?: string[];
   viewModel: DispatchSheetViewModel;
 }
 
 const DispatchSheetBody = ({
+  preselectedUnitIds,
   viewModel,
 }: DispatchSheetBodyProps): React.JSX.Element => {
   const {
@@ -79,6 +81,7 @@ const DispatchSheetBody = ({
         <DispatchGroupForm
           key={selectedGroup.categoryId}
           group={selectedGroup}
+          preselectedUnitIds={preselectedUnitIds}
           isSubmitting={isSubmitting}
           onSubmit={handleSubmitGroup}
         />

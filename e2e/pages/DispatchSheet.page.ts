@@ -16,6 +16,27 @@ export const createDispatchSheetPage = (page: Page) => {
       page.getByRole(ARIA_ROLE.BUTTON, {
         name: `${DISPATCH_SHEET_COPY.ACTION_LABEL_PREFIX}${customerName}`,
       }),
+    getFuelField: (code: string): Locator =>
+      dialog
+        .getByRole(ARIA_ROLE.GROUP, {
+          name: code,
+          exact: true,
+        })
+        .getByLabel(DISPATCH_SHEET_COPY.FUEL_FIELD_LABEL),
+    getFuelPreset: (code: string, name: string): Locator =>
+      dialog
+        .getByRole(ARIA_ROLE.GROUP, {
+          name: code,
+          exact: true,
+        })
+        .getByRole(ARIA_ROLE.BUTTON, { name }),
+    getUsageField: (code: string, label: string): Locator =>
+      dialog
+        .getByRole(ARIA_ROLE.GROUP, {
+          name: code,
+          exact: true,
+        })
+        .getByLabel(label),
     getSubmit: (): Locator =>
       dialog.getByRole(ARIA_ROLE.BUTTON, {
         name: DISPATCH_SHEET_COPY.SUBMIT,
