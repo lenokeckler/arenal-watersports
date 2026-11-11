@@ -2,7 +2,7 @@
 
 ## Intent
 
-Allow a reservations worker to record a reservation with its type, customer name, group size, Costa Rica date and time, duration, and one valid equipment commitment.
+Allow a reservations worker to record a rental reservation with its customer name, group size, Costa Rica date and time, duration, and one valid equipment commitment.
 
 ## In scope
 
@@ -10,25 +10,25 @@ Allow a reservations worker to record a reservation with its type, customer name
 - Unit 2: form screen, local form state, equipment commitment selection, and interactive validation presentation.
 - Persist only the customer name from customer identity/contact information.
 - Persist the creator from the authenticated session.
-- For rental and tour reservations, persist one equipment commitment: an active, reservable category with positive quantity or one concrete unit from an active, reservable, non-interchangeable category. Custom combos persist one category and quantity commitment per selected equipment item.
-- Default new forms to `rental` and persist the selected `rental`, `tour`, or `combo` type.
+- Persist one of two equipment commitments: an active, reservable, interchangeable category with positive quantity, or one concrete unit from an active, reservable, non-interchangeable category.
+- Let Reservations choose `rental`, `tour`, or `combo`; callers without a selected type continue to default to `rental`.
+- Persist selected guide assignments transactionally for tours.
 - Interpret civil date and time in `America/Costa_Rica` regardless of server timezone.
 
 ## Out of scope
 
 - Criterion 5 remains dependent on integrating open calendar PR #101. This work must not fabricate a local calendar or substitute visibility behavior.
-- Fixed package pricing for predefined combos.
 - US-RES-15 availability and collision checking.
 - US-RES-16 collision warnings.
-- US-RES-17 live inventory updates and equipment-selection presentation remain owned by its follow-up UI unit.
+- US-RES-17 live inventory updates and equipment-selection presentation are implemented by the follow-up UI unit in PR #155.
 - Customer email or other contact fields.
 
 ## Requirements
 
-- Validate a non-empty customer name, positive whole person count, valid civil date and time, and positive duration convertible to whole minutes. Rental and tour reservations require one selected category and positive whole quantity; custom combos require distinct selected categories and positive whole quantity per item.
+- Validate a non-empty customer name, positive whole person count, valid civil date and time, positive duration convertible to whole minutes, selected category, and positive whole category quantity.
 - Accept custom positive durations only when their value converts to a whole number of minutes; accepted custom precision beyond that constraint remains a product ambiguity.
 - Convert duration hours to integer minutes without rounding.
-- Persist each reservation and its equipment commitments in one invoker-security database transaction. Rental and tour reservations have one commitment; custom combos have one category/quantity commitment per selected item and never mix concrete units into the combo.
+- Persist the reservation and exactly one valid equipment commitment in one invoker-security database transaction.
 - Derive `created_by` and `updated_by` from `auth.uid()` in the database function.
 - Determine physical eligibility from tracking mode: unit-tracked categories require an available unit, and quantity-tracked categories require positive available stock. Determine commitment shape from interchangeability: interchangeable categories use a quantity commitment, while non-interchangeable categories use a concrete unit.
 - Show active, reservable interchangeable categories with a positive quantity field; do not ask Reservations to select an exact machine for these categories.
@@ -42,8 +42,8 @@ Allow a reservations worker to record a reservation with its type, customer name
 ## Edge cases & errors
 
 - Invalid dates, times, empty names, non-positive people/quantity/duration, and non-whole-minute durations are rejected before persistence.
-- Inactive, non-reservable, missing, or non-interchangeable categories are rejected for rental and tour category commitments. Custom combo items use active, reservable categories and quantities.
-- Missing, unavailable, or interchangeable-category units are rejected for unit commitments; category/quantity fields cannot be combined with a concrete unit.
+- Inactive, non-reservable, or missing categories are rejected for all commitment types. Custom combo items use category/quantity for interchangeable equipment and a concrete unit for non-interchangeable equipment.
+- Missing, unavailable, or interchangeable-category units are rejected for unit commitments; RPC unit items contain only `unit_id`, without category or quantity fields.
 - A non-interchangeable category without an available unit cannot be submitted from the form.
 - A concrete unit with an overlapping scheduled or dispatched reservation is rejected.
 - Missing authenticated identity is rejected.
@@ -52,8 +52,8 @@ Allow a reservations worker to record a reservation with its type, customer name
 
 ## Constraints
 
-- Each rental or tour reservation created by the standard form has either a category plus quantity item or one concrete unit item, never both. A custom combo has one category plus quantity item for each selected equipment and no concrete-unit items.
-- For standalone rental and tour reservations, the Lancha exception is a unit commitment at reservation time; interchangeable equipment remains quantity-committed for Operations to select during dispatch. Combo items remain category/quantity commitments.
+- Each rental or tour reservation created by the standard form has either a category plus quantity item or one concrete unit item, never both. Each custom combo component is either a category/quantity item or a unit-only item; a Lancha's concrete unit is selected during reservation.
+- For standalone rental and tour reservations, the Lancha exception is a unit commitment at reservation time; interchangeable equipment remains quantity-committed for Operations to select during dispatch. Custom combos also use a concrete unit for each non-interchangeable component while preserving their package-specific composition and pricing rules.
 - Criterion 5 cannot be fulfilled until calendar PR #101 is integrated.
 - The Unit 2 equipment selection stays within this form and follows existing Stitch styling and responsive form conventions.
 - Skills: code-standards, structure-standards, component-architecture, constants-standards, stack-rules, eslint-standards, prettier-standards, unit-testing-standards, pull-request-workflow.
@@ -91,69 +91,36 @@ Unit 1 implements the atomic persistence and data-integrity boundary for both co
 
 ### Acceptance criteria
 
-- Renta: el cliente se lleva el equipo por su cuenta.
-- Tour: la salida va acompañada por un guía.
-- Combo: junta varios equipos distintos en un solo paquete.
-- Hay equipo que solo puede salir en tour, como las lanchas y los cuadraciclos.
+- Existing callers without a reservation type default to `rental`.
+- The reservation type accepts only `rental`, `tour`, or `combo` and is persisted by the reservation RPC.
+- The category query exposes `guide_only`; guide-only categories and units can only be committed by `tour` reservations.
+- Direct scheduled-item inserts enforce the same guide-only rule.
 
-### Data unit scope
+Guide assignment remains owned by US-RES-12. Combo composition and pricing remain owned by US-RES-09 and US-RES-10.
+The form lets Reservations choose rental, tour, or combo; guide-only equipment is available only for tours, and changing away from tour clears its category and unit selection.
 
-- The validated reservation input carries `rental`, `tour`, or `combo` and the RPC persists the selected value.
-- Existing callers without a type remain `rental`; the form unit exposes type selection.
-- The category query exposes `guide_only`; the database rejects guide-only category and unit commitments unless the reservation type is `tour`, including direct scheduled-item inserts.
-- Criterion 1 data classification is supported; the form unit must expose the type choice and retain the existing rental flow.
-- Criterion 2 remains pending guide assignment in US-RES-12. This unit stores `tour` but does not assign a worker.
-- Criterion 3's combo type persistence belongs to this data unit; predefined combo behavior belongs to US-RES-09, and custom composition and individual-tariff pricing belong to US-RES-10.
-- Criterion 4 is enforced at the database boundary for category and unit commitments.
-- Tariff selection and payment behavior are not implemented in this unit.
+## US-RES-18 reservation editing
 
-## US-RES-08 reservation type form
+A Reservations worker changes the people count, time, duration or equipment of a `scheduled` reservation from `/reservations/<id>/edit`. The customer name, the date, pricing and charges do not change here; the date belongs to US-RES-20. One `update_reservation` database transaction persists the change, and `reservations.updated_by` and `updated_at` record who made it.
 
-### UI behavior
+### Rules
 
-- Present accessible, responsive choices for `rental`, `tour`, and `combo` before the customer and equipment fields.
-- Explain each choice using its story description and keep rental as the initial selection.
-- Show categories marked `guide_only` only when `tour` is selected.
-- Clear a selected guide-only category and its concrete unit when switching from `tour` to `rental` or `combo`.
-- Submit the selected reservation type through the existing reservation action.
-- This US-RES-08 unit does not implement combo composition or pricing, or assignment of a specific guide; those behaviors belong to US-RES-09/10 and US-RES-12 respectively.
+- Only a `scheduled` reservation can be modified.
+- The form sends the `updated_at` it loaded as an opaque string. A different or missing value refuses the save, so a colleague's change is never overwritten.
+- The date stays the reservation's current Costa Rica date.
+- A save that changes nothing writes nothing and keeps the last editor.
+- Equipment targets are the items with no extra and no dispatch. A change updates the same item row.
+- A combo's equipment cannot change, and neither can the equipment of a reservation with several targets. A people or schedule change on them is accepted when the payload carries a current target unchanged.
+- Changed equipment passes the same commitment validation as create, except a quantity decrease on the same category with no unit, which is accepted even with no stock left.
+- Changed equipment or a changed window re-checks every unit of the reservation: it must be reservable and free for the new window, ignoring the reservation itself. A people change alone does not, so a unit that went to maintenance after the booking keeps its reservation.
 
-### Acceptance criteria mapping
+### Acceptance criteria
 
-- Criterion 1 is represented by the rental selection and its description.
-- Criterion 2 is represented by the tour selection and its description; assigning a guide remains pending in US-RES-12.
-- Criterion 3 is represented here by selecting and persisting `combo`; predefined package behavior belongs to US-RES-09 and custom composition and pricing belong to US-RES-10.
-- Criterion 4 is enforced by the data unit and reinforced by filtering `guide_only` categories in the form.
+- “Se actualiza la información cuando cambian las condiciones del cliente.”
+- “El cambio queda registrado a nombre de quien lo hizo.”
+- “El equipo de un combo no se cambia al modificar la reserva: si el paquete cambió, se cancela y se crea una reserva nueva.”
 
-## US-RES-12 guide assignment data contract
-
-### Acceptance criteria — AWS-95
-
-- No hay máximo de personas por tour: se llena hasta que se agota el equipo.
-- Cuando el grupo es grande salen dos guías, por ejemplo un tour de ocho cuadraciclos.
-- Solo se listan los trabajadores marcados como guía.
-
-### Data behavior
-
-- The authorized guide directory returns workers marked as `guia` and no other workers.
-- A reservation may persist any number of distinct guide assignments; the data contract defines no automatic group-size threshold or maximum guide count.
-- Guide assignments are valid only for tours, and each selected worker must be marked as `guia`.
-- Direct guide assignment writes enforce the tour type and guide mark, and a reservation with assigned guides cannot change to a non-tour type.
-- Reservation, equipment item, and guide assignments are created in the same invoker-security RPC transaction.
-- `assigned_by` is the authenticated worker resolved by the existing reservation identity validation.
-- Application assignment writes require `assigned_by` to match `auth.uid()`; `postgres`, `supabase_admin`, and `service_role` retain database maintenance authority.
-- The existing reservation row and equipment commitment remain valid when `guide_ids` is omitted or empty; the form unit supplies selections when a user assigns guides.
-- Guide directory access continues to rely on the existing Reservations authorization and row-level policies.
-- The form loads only workers marked as guides, lets Reservations select any number of guides for tours, and submits the selected identifiers with the reservation.
-- Changing the reservation type away from tour clears selected guides; leaving the selection empty remains valid.
-- If the initial guide directory query fails, the tour form shows a recoverable error and retries through the existing server action.
-- This data contract does not cap people by equipment quantity because the story defines no occupancy ratio per equipment unit.
-
-### Ownership
-
-- Data unit: guide directory query, mutation payload, database validation and atomic persistence, and database tests.
-- Form unit: responsive guide selection and submission of zero or more selected guide identifiers.
-- Form unit: Stitch-aligned, mobile-first guide assignment in the existing route; there is no guide-count or group-size cap and no external-guide registration.
+The data unit closes the first two criteria at database level and enforces the third. The screens close them for the user.
 
 ## US-RES-17 equipment eligibility data
 
@@ -165,4 +132,4 @@ The invoker-security category query returns only active, reservable categories w
 
 Authenticated direct inserts or equipment-identity changes on scheduled reservation items enforce the same physical eligibility, including the exact selected unit when present. Existing Operations permissions, extra-only items, unchanged commitments, dispatched items and historical records retain their existing behavior. Trusted database maintenance roles retain their existing administrative authority. Failed commitments roll back the reservation transaction.
 
-The eligibility service and refresh action provide physically eligible categories for initial and subsequent reads. Realtime inventory updates and form option filtering remain in the subsequent UI unit.
+The eligibility service provides physically eligible categories for initial reads. The follow-up UI unit subscribes to authenticated Realtime changes, refreshes the server snapshot, keeps cached categories usable during connection failures, and reconciles selected categories and units only after current availability is resolved.

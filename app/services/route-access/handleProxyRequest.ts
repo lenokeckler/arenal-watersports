@@ -3,16 +3,17 @@ import {
   type NextRequest,
 } from "next/server";
 import { refreshSupabaseSession } from "@/app/services/supabase/refreshSession";
+import { canonicalizePathname } from "@/app/utils/pathname/canonicalizePathname";
 import { resolveProxyRedirect } from "./resolveProxyRedirect";
 
 export const handleProxyRequest = async (
   request: NextRequest
 ): Promise<NextResponse> => {
-  const { hasSession, response } =
+  const { response, ...sessionAccess } =
     await refreshSupabaseSession(request);
   const redirectPath = resolveProxyRedirect(
-    request.nextUrl.pathname,
-    hasSession
+    canonicalizePathname(request.nextUrl.pathname),
+    sessionAccess
   );
 
   if (redirectPath === null) {

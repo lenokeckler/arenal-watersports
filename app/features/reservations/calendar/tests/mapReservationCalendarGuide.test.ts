@@ -26,10 +26,12 @@ describe("reservation calendar guide mapping", (): void => {
     expect(entry.guides).toEqual([
       {
         fullName: CALENDAR_INTERNAL_GUIDE_NAME,
+        id: INTERNAL_CALENDAR_GUIDE.worker_id,
         type: RESERVATION_CALENDAR_GUIDE_TYPE.INTERNAL,
       },
       {
         fullName: CALENDAR_EXTERNAL_GUIDE_NAME,
+        id: EXTERNAL_CALENDAR_GUIDE.worker_id,
         type: RESERVATION_CALENDAR_GUIDE_TYPE.EXTERNAL,
       },
     ]);
@@ -43,18 +45,32 @@ describe("reservation calendar guide mapping", (): void => {
     ).toEqual([]);
   });
 
-  it("rejects an assignment without a worker relation", (): void => {
+  it("retains an assignment with an unreadable worker", (): void => {
     const guide = {
       ...INTERNAL_CALENDAR_GUIDE,
       workers: null,
     };
 
-    expect(() =>
+    expect(
       mapReservationCalendarEntry({
         ...CALENDAR_RESERVATION,
         reservation_guides: [guide],
-      })
-    ).toThrow(RESERVATION_CALENDAR_ERROR.INVALID_GUIDE);
+      }).guides
+    ).toEqual([
+      {
+        id: guide.worker_id,
+        type: RESERVATION_CALENDAR_GUIDE_TYPE.UNAVAILABLE,
+      },
+    ]);
+  });
+
+  it("preserves omitted guide assignment data as not loaded", (): void => {
+    const source = { ...CALENDAR_RESERVATION };
+    delete source.reservation_guides;
+
+    expect(
+      mapReservationCalendarEntry(source).guides
+    ).toBeUndefined();
   });
 
   it("rejects a guide without a full name", (): void => {

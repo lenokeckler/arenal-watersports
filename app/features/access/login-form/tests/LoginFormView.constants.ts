@@ -17,6 +17,10 @@ export const NETWORK_ERROR = createSignInError(
   SIGN_IN_ERROR_CODE.NETWORK
 );
 
+export const RECOVERY_REQUIRED_ERROR = createSignInError(
+  SIGN_IN_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED
+);
+
 export const EXTRA_USERNAME_TEXT = "x";
 export const MULTI_CHARACTER_USERNAME = "admin";
 export const KEYBOARD_TEXT = "abc";

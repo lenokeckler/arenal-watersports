@@ -1,37 +1,43 @@
 import FormField from "@/app/components/form-field/FormField";
 import { FORM_FIELD_VARIANT } from "@/app/components/form-field/constants/FormFieldVariant.constants";
-import { INPUT_TYPES, STRING } from "@/app/constants";
+import { INPUT_TYPES } from "@/app/constants";
 import type { CustomComboAgreedAmountFieldProps } from "../models/CustomComboAgreedAmountFieldProps.interface";
-import { formatCustomComboAmount } from "../utils/formatCustomComboAmount";
-import { parseCustomComboAmountInput } from "../utils/parseCustomComboAmountInput";
 import { CUSTOM_COMBO_PRICE_INPUT_CLASS } from "../styles/CustomComboPricingSummary.styles";
+import { useCustomComboAgreedAmountFieldViewModel } from "../hooks/useCustomComboAgreedAmountFieldViewModel";
 
 const CustomComboAgreedAmountField = ({
   amount,
   currency,
+  fieldError,
   id,
   label,
   onChange,
   suggestedAmount,
-}: CustomComboAgreedAmountFieldProps): React.JSX.Element => (
-  <FormField
-    classNameField={CUSTOM_COMBO_PRICE_INPUT_CLASS}
-    id={id}
-    label={label}
-    name={id}
-    onChange={(event) =>
-      onChange(
-        parseCustomComboAmountInput(event.target.value)
-      )
-    }
-    placeholder={formatCustomComboAmount(
+}: CustomComboAgreedAmountFieldProps): React.JSX.Element => {
+  const viewModel =
+    useCustomComboAgreedAmountFieldViewModel({
+      amount,
+      currency,
+      fieldError,
+      onChange,
       suggestedAmount,
-      currency
-    )}
-    type={INPUT_TYPES.NUMBER}
-    value={amount?.toString() ?? STRING.Empty}
-    variant={FORM_FIELD_VARIANT.GLASS}
-  />
-);
+    });
+
+  return (
+    <FormField
+      classNameField={CUSTOM_COMBO_PRICE_INPUT_CLASS}
+      error={viewModel.error}
+      id={id}
+      label={label}
+      name={id}
+      onChange={viewModel.handleChange}
+      placeholder={viewModel.placeholder}
+      showErrorText
+      type={INPUT_TYPES.NUMBER}
+      value={viewModel.value}
+      variant={FORM_FIELD_VARIANT.GLASS}
+    />
+  );
+};
 
 export default CustomComboAgreedAmountField;

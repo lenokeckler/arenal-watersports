@@ -1,0 +1,1 @@
+ACC-02.11.09: Work mode end to end — a worker with two areas chooses a mode on entering, switches without signing out and enters straight into the last mode; a single-area worker never sees the selector; captures (US-ACC-11 · AWS-40)

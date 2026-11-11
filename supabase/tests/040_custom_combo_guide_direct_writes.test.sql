@@ -1,12 +1,16 @@
 begin;
-select plan(6);
+select plan(7);
 
 insert into auth.users (id, email) values
   ('e4000000-0000-4000-8000-000000000001', 'res10-direct-reservas@arenal.local'),
-  ('e4000000-0000-4000-8000-000000000002', 'res10-direct-guide@arenal.local');
+  ('e4000000-0000-4000-8000-000000000002', 'res10-direct-guide@arenal.local'),
+  ('e4000000-0000-4000-8000-000000000003', 'res10-direct-admin@arenal.local');
 insert into workers (id, username, full_name, base_role) values
   ('e4000000-0000-4000-8000-000000000001', 'res10-direct-reservas', 'RES10 Direct Reservations', 'reservas'),
   ('e4000000-0000-4000-8000-000000000002', 'res10-direct-guide', 'RES10 Direct Guide', 'operaciones');
+insert into workers (id, username, full_name, personal_email, base_role)
+values ('e4000000-0000-4000-8000-000000000003', 'res10-direct-admin',
+  'RES10 Direct Admin', 'res10-direct-admin@correo.local', 'administracion');
 insert into worker_marks (worker_id, mark, granted_by)
 values ('e4000000-0000-4000-8000-000000000002', 'guia', 'e4000000-0000-4000-8000-000000000001');
 insert into equipment_categories
@@ -67,6 +71,10 @@ select throws_ok($$ insert into reservation_items
 select is((select count(*)::integer from reservation_guides
   where reservation_id = 'e4000000-0000-4000-8000-000000000202'), 1,
   'a rejected reservation type update preserves its guide assignment');
+set local request.jwt.claims to '{"sub":"e4000000-0000-4000-8000-000000000003","role":"authenticated"}';
+select is(private.has_custom_combo_tour_component(
+  'e4000000-0000-4000-8000-000000000202'), false,
+  'an administrator without Reservations cannot inspect combo tour components');
 
 select * from finish();
 rollback;

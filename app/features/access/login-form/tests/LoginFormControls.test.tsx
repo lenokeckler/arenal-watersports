@@ -1,35 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
-import LoginFormBanner from "../components/LoginFormBanner";
 import LoginFormSubmit from "../components/LoginFormSubmit";
 import {
-  LOGIN_FORM_SUBMIT_INTERACTIVE_CLASS,
-  LOGIN_FORM_SUBMIT_PENDING_CLASS,
-} from "../styles/LoginForm.styles";
+  FORM_SUBMIT_INTERACTIVE_CLASS,
+  FORM_SUBMIT_PENDING_CLASS,
+} from "@/app/components/form-submit-button/styles/FormSubmitButton.styles";
 import { createLoginFormControlsPage } from "./LoginFormControls.page";
 import {
   ARIA_DISABLED_ATTRIBUTE,
   ARIA_DISABLED_TRUE,
-  BANNER_MESSAGE,
 } from "./LoginFormControls.constants";
-
-describe("LoginFormBanner", () => {
-  it("renders nothing when there is no message", () => {
-    render(<LoginFormBanner message={null} />);
-
-    expect(
-      createLoginFormControlsPage().queryBanner()
-    ).not.toBeInTheDocument();
-  });
-
-  it("announces the message as an alert", () => {
-    render(<LoginFormBanner message={BANNER_MESSAGE} />);
-
-    expect(
-      createLoginFormControlsPage().queryBanner()
-    ).toHaveTextContent(BANNER_MESSAGE);
-  });
-});
 
 describe("LoginFormSubmit", () => {
   it("shows the login label and icon when idle", () => {
@@ -69,7 +49,7 @@ describe("LoginFormSubmit", () => {
         .className;
 
     expect(idleClasses).toContain(
-      LOGIN_FORM_SUBMIT_INTERACTIVE_CLASS
+      FORM_SUBMIT_INTERACTIVE_CLASS
     );
     expect(pendingClasses.split(" ")).not.toContain(
       "hover:brightness-110"
@@ -78,7 +58,7 @@ describe("LoginFormSubmit", () => {
       "active:scale-98"
     );
     expect(pendingClasses).toContain(
-      LOGIN_FORM_SUBMIT_PENDING_CLASS
+      FORM_SUBMIT_PENDING_CLASS
     );
   });
 });

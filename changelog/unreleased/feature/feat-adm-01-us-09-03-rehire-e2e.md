@@ -1,0 +1,1 @@
+ADM-01.09.03: Rehire end to end — a retired worker is rehired with the same account and enters with the new temporary password straight into the first password change; captures of the account states (US-ADM-09 · AWS-61)

@@ -1,5 +1,22 @@
+import type { ReservationGuideOption } from "../models/ReservationGuideOption.interface";
+
+export const RESERVATION_GUIDE_SELECTION_OPTIONS: ReservationGuideOption[] =
+  [
+    { id: "guide-a", name: "Guía A" },
+    { id: "guide-b", name: "Guía B" },
+    { id: "guide-c", name: "Guía C" },
+  ];
+
+export const RESERVATION_GUIDE_SELECTION_IDS = [
+  "guide-a",
+  "guide-b",
+  "guide-c",
+];
+
+const [firstGuideId, secondGuideId] =
+  RESERVATION_GUIDE_SELECTION_IDS;
+
 export const RESERVATION_GUIDE_SELECTION_TEST = {
-  FIRST_ID: "cccccccc-0000-0000-0000-000000000001",
-  SECOND_ID: "cccccccc-0000-0000-0000-000000000002",
-  THIRD_ID: "cccccccc-0000-0000-0000-000000000003",
+  FIRST_ID: firstGuideId,
+  SECOND_ID: secondGuideId,
 } as const;

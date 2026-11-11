@@ -1,0 +1,11 @@
+import type { ReservationFormInput } from "./ReservationFormInput.interface";
+import type { ReservationFormFieldHandlers } from "./ReservationFormFieldHandlers.interface";
+
+export interface ReservationFormFieldsViewModel extends ReservationFormFieldHandlers {
+  hasReservationTypeSelectionReset: boolean;
+  reconcileGuideSelection: (
+    availableGuideIds: string[]
+  ) => void;
+  reset: () => void;
+  values: ReservationFormInput;
+}

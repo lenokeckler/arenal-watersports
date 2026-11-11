@@ -3,6 +3,7 @@ import type { NullableRef } from "@/app/types";
 export interface CustomComboAgreedAmountFieldProps {
   amount: NullableRef<number>;
   currency: string;
+  fieldError: string;
   id: string;
   label: string;
   onChange: (amount: NullableRef<number>) => void;
