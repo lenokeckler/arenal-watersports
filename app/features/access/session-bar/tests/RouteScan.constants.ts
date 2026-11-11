@@ -23,6 +23,7 @@ export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
   "/administration/categories/[categoryId]/units/new",
   "/board/categories/[categoryId]",
   `${PATHS.HISTORY.ROOT}${ROUTE_SEPARATOR}[reservationId]`,
+  "/reservations/[reservationId]/cancel",
   "/reservations/[reservationId]/edit",
   "/reservations/[reservationId]/split",
 ];
