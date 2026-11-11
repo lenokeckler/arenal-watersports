@@ -18,7 +18,8 @@ delete from reservation_charges
 where reservation_id in (select id from e2e_postponement_ids);
 delete from deposits
 where reservation_id in (select id from e2e_postponement_ids);
-update equipment_units set fuel_level = null, usage_total = 0
+update equipment_units
+set fuel_level = null, usage_total = 0, updated_by = created_by
 where code = :'unit';
 commit;`,
   DISPATCH: `
