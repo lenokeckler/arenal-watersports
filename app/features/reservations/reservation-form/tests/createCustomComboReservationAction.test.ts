@@ -9,10 +9,11 @@ import { createClient } from "@supabase/supabase-js";
 import { SUPABASE } from "@/app/constants";
 import type { Database } from "@/app/types";
 import { createCustomComboReservationAction } from "../actions/createCustomComboReservationAction";
+import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { CUSTOM_COMBO_RESERVATION_FIELD } from "../models/CustomComboReservationField.constants";
 import { createCustomComboReservation } from "../services/createCustomComboReservation";
 import { getAuthorizedReservationFormClient } from "../services/getAuthorizedReservationFormClient";
-import { CUSTOM_COMBO_RESERVATION_FIELD } from "../models/CustomComboReservationField.constants";
 import { CUSTOM_COMBO_RESERVATION_ACTION_TEST } from "./createCustomComboReservationAction.constants";
 
 vi.mock("../services/createCustomComboReservation", () => ({
@@ -98,6 +99,35 @@ describe("createCustomComboReservationAction", () => {
     expect(
       getAuthorizedReservationFormClient
     ).not.toHaveBeenCalled();
+    expect(
+      createCustomComboReservation
+    ).not.toHaveBeenCalled();
+  });
+
+  it("rejects incomplete unit selections without persisting", async () => {
+    const inputWithIncompleteUnit = {
+      ...CUSTOM_COMBO_RESERVATION_ACTION_TEST.INPUT,
+      items: [
+        {
+          kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
+          categoryId:
+            "e4800000-0000-4000-8000-000000000102",
+          unitId: " ",
+        },
+      ],
+    };
+
+    await expect(
+      createCustomComboReservationAction(
+        inputWithIncompleteUnit
+      )
+    ).resolves.toMatchObject({
+      errors: {
+        [CUSTOM_COMBO_RESERVATION_FIELD.ITEMS]:
+          expect.any(String),
+      },
+      ok: false,
+    });
     expect(
       createCustomComboReservation
     ).not.toHaveBeenCalled();

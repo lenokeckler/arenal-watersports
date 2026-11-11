@@ -1,0 +1,1 @@
+ADM-02.12.09: Create category E2E coverage — Playwright specs and screenshots for the create-category form, including the group/tracking-mode conflict and case-insensitivity cases (US-ADM-12 · AWS-64)
