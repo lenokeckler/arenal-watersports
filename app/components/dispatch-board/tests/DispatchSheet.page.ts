@@ -1,6 +1,8 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { ARIA_ROLE } from "@/app/constants";
 import { DISPATCH_SHEET_COPY } from "../constants/DispatchSheetCopy.constants";
+
+const FUEL_FIELD = /^Rayas de gasolina/;
 
 export const createDispatchSheetPage = () => ({
   getAlert: () => screen.getByRole(ARIA_ROLE.ALERT),
@@ -16,6 +18,28 @@ export const createDispatchSheetPage = () => ({
     screen.getByRole(ARIA_ROLE.BUTTON, {
       name: new RegExp(categoryName),
     }),
+  getReadingCard: (code: string) =>
+    screen.getByRole(ARIA_ROLE.GROUP, {
+      name: new RegExp(`^${code}$`),
+    }),
+  getReadingFuelField: (code: string) =>
+    within(
+      screen.getByRole(ARIA_ROLE.GROUP, {
+        name: new RegExp(`^${code}$`),
+      })
+    ).getByLabelText(FUEL_FIELD),
+  getReadingPreset: (code: string, name: string) =>
+    within(
+      screen.getByRole(ARIA_ROLE.GROUP, {
+        name: new RegExp(`^${code}$`),
+      })
+    ).getByRole(ARIA_ROLE.BUTTON, { name }),
+  getReadingUsageField: (code: string, label: string) =>
+    within(
+      screen.getByRole(ARIA_ROLE.GROUP, {
+        name: new RegExp(`^${code}$`),
+      })
+    ).getByLabelText(label),
   getReturn: () =>
     screen.getByLabelText(DISPATCH_SHEET_COPY.RETURN_LABEL),
   getSubmit: () =>

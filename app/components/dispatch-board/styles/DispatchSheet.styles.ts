@@ -30,6 +30,21 @@ export const DISPATCH_SHEET_LEGEND_CLASS =
 export const DISPATCH_SHEET_UNIT_NOTE_CLASS =
   "text-body-sm text-on-surface-variant";
 
+export const DISPATCH_READINGS_CLASS =
+  "flex flex-col gap-sm border-0 p-0";
+
+export const DISPATCH_READING_CARD_CLASS =
+  "flex flex-col gap-md rounded-xl border border-outline-variant/60 bg-surface-container/80 px-4 py-3";
+
+export const DISPATCH_READING_BLOCK_CLASS =
+  "flex flex-col gap-sm";
+
+export const DISPATCH_READING_LEGEND_CLASS =
+  "px-1 text-title-md font-semibold text-on-surface";
+
+export const DISPATCH_READING_LABEL_CLASS =
+  "text-label-md font-semibold text-on-surface";
+
 export const DISPATCH_SHEET_TIMES_CLASS =
   "grid grid-cols-1 gap-md sm:grid-cols-2";
 
