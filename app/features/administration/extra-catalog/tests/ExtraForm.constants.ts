@@ -1,10 +1,17 @@
-import { STRING } from "@/app/constants";
+import {
+  CURRENCY_CODE,
+  MONEY_AMOUNT_ISSUE,
+  STRING,
+} from "@/app/constants";
+import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
+import { EXTRA_PRICE_ERROR_COPY } from "../constants/ExtraPriceErrorCopy.constants";
 import { EXTRA_FORM_MODE } from "../constants/ExtraFormMode.constants";
 import { EXTRA_MUTATION_STATUS } from "../constants/ExtraMutationStatus.constants";
 import type { ExtraFormSubmitOptions } from "../models/ExtraFormSubmitOptions.type";
 import type { ExtraFormValues } from "../models/ExtraFormValues.interface";
 import type { ExtraFormViewModelProps } from "../models/ExtraFormViewModelProps.type";
 import type { ExtraMutationResult } from "../models/ExtraMutationResult.interface";
+import type { ExtraInvalidPriceFieldCase } from "./models/ExtraInvalidPriceFieldCase.interface";
 import type { ExtraFormSeedCase } from "./models/ExtraFormSeedCase.interface";
 import type { ExtraFormSubmitOverrides } from "./models/ExtraFormSubmitOverrides.interface";
 import {
@@ -23,6 +30,30 @@ export const FAKE_ACTION_FAILURE_MESSAGE =
 export const FAKE_CONTROL_FLOW_SIGNAL_MESSAGE =
   "fake-extra-control-flow-signal";
 export const EDITED_EXTRA_PRICE_USD_TEXT = "30.5";
+export const INVALID_PRICE_FIELD_CASES: ExtraInvalidPriceFieldCase[] =
+  [
+    {
+      description: "a text amount",
+      currency: CURRENCY_CODE.USD,
+      text: "abc",
+      expectedError: EXTRA_CATALOG_COPY.PRICE_FORMAT_ERROR,
+    },
+    {
+      description: "a negative amount",
+      currency: CURRENCY_CODE.CRC,
+      text: "-5",
+      expectedError: EXTRA_CATALOG_COPY.PRICE_FORMAT_ERROR,
+    },
+    {
+      description: "three decimals",
+      currency: CURRENCY_CODE.USD,
+      text: "1.234",
+      expectedError:
+        EXTRA_PRICE_ERROR_COPY[CURRENCY_CODE.USD][
+          MONEY_AMOUNT_ISSUE.PRECISION
+        ],
+    },
+  ];
 export const SUBMISSIONS_AFTER_RELEASE = 2;
 export const SUBMISSIONS_WHILE_LOCKED = 1;
 

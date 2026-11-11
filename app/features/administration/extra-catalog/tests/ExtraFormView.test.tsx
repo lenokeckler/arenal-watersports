@@ -24,6 +24,7 @@ import { createDeferred } from "./createDeferred";
 import {
   FAKE_EXTRA_ID,
   FAKE_EXTRA_NAME,
+  FAKE_EXTRA_PRICE_CRC_TEXT,
   FAKE_EXTRA_PRICE_USD_TEXT,
 } from "./Extra.constants";
 import {
@@ -32,6 +33,7 @@ import {
   EDITED_EXTRA_NAME,
   EDITED_EXTRA_PRICE_USD_TEXT,
   EXTRA_FORM_SUCCESS_RESULT,
+  INVALID_PRICE_FIELD_CASES,
 } from "./ExtraForm.constants";
 import { renderExtraFormView } from "./renderExtraFormView";
 
@@ -75,6 +77,41 @@ describe("ExtraFormView", () => {
     ).toHaveValue(STRING.Empty);
   });
 
+  it("shows the prices required error under the price fields when no price is given", async () => {
+    const page = renderExtraFormView(CREATE_FORM_PROPS);
+    await page.typeName(FAKE_EXTRA_NAME);
+
+    await page.submit();
+
+    expect(
+      page.getError(
+        EXTRA_CATALOG_COPY.PRICES_REQUIRED_ERROR
+      )
+    ).toBeInTheDocument();
+    expect(createExtraMock).not.toHaveBeenCalled();
+  });
+
+  it.each(INVALID_PRICE_FIELD_CASES)(
+    "shows the error for $description on the $currency price field and creates nothing",
+    async ({ currency, text, expectedError }) => {
+      const page = renderExtraFormView(CREATE_FORM_PROPS);
+      await page.typeName(FAKE_EXTRA_NAME);
+      await page.typePrice(currency, text);
+
+      await page.submit();
+
+      expect(
+        page.getError(expectedError)
+      ).toBeInTheDocument();
+      expect(
+        page.getError(
+          EXTRA_CATALOG_COPY.PRICES_REQUIRED_ERROR
+        )
+      ).not.toBeInTheDocument();
+      expect(createExtraMock).not.toHaveBeenCalled();
+    }
+  );
+
   it("creates the extra with only a dollar price", async () => {
     const page = renderExtraFormView(CREATE_FORM_PROPS);
     await page.typeName(FAKE_EXTRA_NAME);
@@ -89,6 +126,27 @@ describe("ExtraFormView", () => {
       name: FAKE_EXTRA_NAME,
       priceUsd: FAKE_EXTRA_PRICE_USD_TEXT,
       priceCrc: STRING.Empty,
+    });
+  });
+
+  it("creates the extra with both prices", async () => {
+    const page = renderExtraFormView(CREATE_FORM_PROPS);
+    await page.typeName(FAKE_EXTRA_NAME);
+    await page.typePrice(
+      CURRENCY_CODE.USD,
+      FAKE_EXTRA_PRICE_USD_TEXT
+    );
+    await page.typePrice(
+      CURRENCY_CODE.CRC,
+      FAKE_EXTRA_PRICE_CRC_TEXT
+    );
+
+    await page.submit();
+
+    expect(createExtraMock).toHaveBeenCalledWith({
+      name: FAKE_EXTRA_NAME,
+      priceUsd: FAKE_EXTRA_PRICE_USD_TEXT,
+      priceCrc: FAKE_EXTRA_PRICE_CRC_TEXT,
     });
   });
 

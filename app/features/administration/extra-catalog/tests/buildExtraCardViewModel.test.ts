@@ -1,9 +1,15 @@
 import { describe, expect, it, vi } from "vitest";
+import { CURRENCY_CODE } from "@/app/constants";
+import { formatMoney } from "@/app/utils/money/formatMoney";
 import { EXTRA_CARD_ACTION_STATE } from "../constants/ExtraCardActionState.constants";
 import { EXTRA_STATUS } from "../constants/ExtraStatus.constants";
 import { buildExtraCardViewModel } from "../utils/buildExtraCardViewModel";
 import { resolveExtraEditPath } from "../utils/resolveExtraEditPath";
-import { DEFAULT_EXTRA } from "./Extra.constants";
+import {
+  DEFAULT_EXTRA,
+  FAKE_EXTRA_PRICE_CRC,
+  FAKE_EXTRA_PRICE_USD,
+} from "./Extra.constants";
 import { buildExtraCardActionsViewModel } from "./ExtraCardActions.constants";
 import { buildExtra } from "./ExtraList.constants";
 
@@ -20,6 +26,27 @@ describe("buildExtraCardViewModel", () => {
       name: DEFAULT_EXTRA.name,
       status: DEFAULT_EXTRA.status,
     });
+  });
+
+  it("carries the formatted prices of the extra", () => {
+    const card = buildExtraCardViewModel(
+      buildExtra({
+        priceUsd: FAKE_EXTRA_PRICE_USD,
+        priceCrc: FAKE_EXTRA_PRICE_CRC,
+      }),
+      buildExtraCardActionsViewModel()
+    );
+
+    expect(card.prices).toStrictEqual([
+      formatMoney({
+        amount: FAKE_EXTRA_PRICE_USD,
+        currency: CURRENCY_CODE.USD,
+      }),
+      formatMoney({
+        amount: FAKE_EXTRA_PRICE_CRC,
+        currency: CURRENCY_CODE.CRC,
+      }),
+    ]);
   });
 
   it("offers removal on an active extra that is not being confirmed", () => {

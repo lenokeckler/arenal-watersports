@@ -4,8 +4,17 @@ import type { ExtraStatus } from "../models/ExtraStatus.type";
 export const EXTRA_CARD_CONTAINER_CLASS =
   "flex flex-col gap-3 rounded-xl border border-outline-variant bg-surface-container/60 p-4 md:flex-row md:items-center";
 
+export const EXTRA_CARD_BODY_CLASS =
+  "flex flex-col gap-1 md:min-w-0 md:flex-1";
+
 export const EXTRA_CARD_HEADING_ROW_CLASS =
-  "flex items-center justify-between gap-3 md:min-w-0 md:flex-1";
+  "flex items-center justify-between gap-3";
+
+export const EXTRA_CARD_PRICES_CLASS =
+  "flex flex-wrap gap-x-4 gap-y-1";
+
+export const EXTRA_CARD_PRICE_CLASS =
+  "text-sm font-medium text-on-surface-variant";
 
 export const EXTRA_CARD_NAME_CLASS =
   "min-w-0 break-words text-title-md font-medium text-on-surface";
