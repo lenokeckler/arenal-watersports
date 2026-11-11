@@ -20,6 +20,10 @@ export const createOperationsCalendarPage = (
     });
 
   return {
+    getBlock: (customerName: string): Locator =>
+      main.getByRole(ARIA_ROLE.GROUP, {
+        name: customerName,
+      }),
     getHeading: (): Locator =>
       main.getByRole(ARIA_ROLE.HEADING, {
         name: E2E_OPERATIONS_CALENDAR_COPY.HEADING,
