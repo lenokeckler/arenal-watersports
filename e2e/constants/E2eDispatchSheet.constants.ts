@@ -53,6 +53,7 @@ export const E2E_DISPATCH_SHEET_ERROR = {
   OPERATION_MAKE_MAINTENANCE:
     "mark the E2E units for maintenance",
   OPERATION_READ_JOBS: "read the E2E maintenance jobs",
+  OPERATION_ADD_JOBS: "add the E2E maintenance jobs",
   OPERATION_MAKE_LATE:
     "move the E2E dispatch into the past",
   OPERATION_MARK_MOTOR:
