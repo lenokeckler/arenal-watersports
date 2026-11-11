@@ -1,4 +1,7 @@
-import { ARIA_ROLE } from "@/app/constants";
+import {
+  ARIA_ROLE,
+  INVENTORY_UNIT_STATUS,
+} from "@/app/constants";
 import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 import type { CategoryUnitsListProps } from "../models/CategoryUnitsListProps.interface";
 import {
@@ -6,9 +9,11 @@ import {
   CATEGORY_UNITS_LIST_ITEM_CLASS,
 } from "../styles/CategoryUnits.styles";
 import CategoryUnitRow from "./CategoryUnitRow";
+import CategoryUnitSelectRow from "./CategoryUnitSelectRow";
 
 const CategoryUnitsList = ({
   categoryName,
+  selection,
   units,
 }: CategoryUnitsListProps): React.JSX.Element => (
   <div
@@ -24,7 +29,18 @@ const CategoryUnitsList = ({
         role={ARIA_ROLE.LISTITEM}
         className={CATEGORY_UNITS_LIST_ITEM_CLASS}
       >
-        <CategoryUnitRow unit={unit} />
+        {selection &&
+        unit.status === INVENTORY_UNIT_STATUS.AVAILABLE ? (
+          <CategoryUnitSelectRow
+            isSelected={selection.selectedUnitIds.includes(
+              unit.id
+            )}
+            onToggle={selection.onToggle}
+            unit={unit}
+          />
+        ) : (
+          <CategoryUnitRow unit={unit} />
+        )}
       </div>
     ))}
   </div>
