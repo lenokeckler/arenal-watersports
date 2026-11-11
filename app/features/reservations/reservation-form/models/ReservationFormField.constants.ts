@@ -1,3 +1,5 @@
+import type { CustomComboReservationField } from "./CustomComboReservationField.constants";
+
 export const RESERVATION_FORM_FIELD = {
   CATEGORY_ID: "categoryId",
   CUSTOMER_NAME: "customerName",
@@ -12,5 +14,19 @@ export const RESERVATION_FORM_FIELD = {
   UNIT_ID: "unitId",
 } as const;
 
+export const RESERVATION_FORM_ERROR_FOCUS_ORDER = [
+  RESERVATION_FORM_FIELD.CUSTOMER_NAME,
+  RESERVATION_FORM_FIELD.PEOPLE_COUNT,
+  RESERVATION_FORM_FIELD.DATE,
+  RESERVATION_FORM_FIELD.TIME,
+  RESERVATION_FORM_FIELD.DURATION_HOURS,
+  RESERVATION_FORM_FIELD.CATEGORY_ID,
+  RESERVATION_FORM_FIELD.QUANTITY,
+  RESERVATION_FORM_FIELD.UNIT_ID,
+] as const;
+
 export type ReservationFormField =
   (typeof RESERVATION_FORM_FIELD)[keyof typeof RESERVATION_FORM_FIELD];
+
+export type ReservationFormErrorField =
+  ReservationFormField | CustomComboReservationField;

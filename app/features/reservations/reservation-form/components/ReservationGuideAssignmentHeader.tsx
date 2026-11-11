@@ -21,7 +21,6 @@ const ReservationGuideAssignmentHeader = ({
     <Text
       aria-live="polite"
       className={RESERVATION_GUIDE_ASSIGNMENT_SUMMARY_CLASS}
-      role="status"
     >
       {RESERVATION_FORM_UI_COPY.GUIDES_SELECTED}:{" "}
       {selectedGuideCount}

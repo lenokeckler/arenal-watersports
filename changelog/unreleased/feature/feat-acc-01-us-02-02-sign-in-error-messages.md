@@ -1,0 +1,1 @@
+ACC-01.02.02: Sign-in error messages — the copy for each sign-in rejection and the mapping of the Supabase token hook rejection to the blocked-by-attempts or blocked-by-administration message (US-ACC-02 · AWS-31)

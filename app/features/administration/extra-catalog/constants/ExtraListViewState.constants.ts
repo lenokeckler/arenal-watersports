@@ -1,0 +1,5 @@
+export const EXTRA_LIST_VIEW_STATE = {
+  EMPTY: "empty",
+  ERROR: "error",
+  READY: "ready",
+} as const;

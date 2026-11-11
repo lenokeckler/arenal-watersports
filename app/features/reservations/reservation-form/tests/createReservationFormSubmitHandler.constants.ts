@@ -1,4 +1,5 @@
 import type { ReservationFormSubmitOptions } from "../models/ReservationFormSubmitOptions.interface";
+import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 
 const GUIDE_IDS = ["guide-a"];
@@ -10,7 +11,13 @@ export const RESERVATION_SUBMIT_TEST = {
       draft: {
         agreedAmountCrc: 0,
         agreedAmountUsd: 25,
-        items: [{ categoryId: "category-a", quantity: 2 }],
+        items: [
+          {
+            kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
+            categoryId: "category-a",
+            unitId: "unit-a",
+          },
+        ],
       },
       hasGuideOnlyItem: true,
     },
@@ -39,7 +46,13 @@ export const RESERVATION_SUBMIT_TEST = {
     date: "2030-04-12",
     durationHours: 1.5,
     guideIds: GUIDE_IDS,
-    items: [{ categoryId: "category-a", quantity: 2 }],
+    items: [
+      {
+        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
+        categoryId: "category-a",
+        unitId: "unit-a",
+      },
+    ],
     peopleCount: 2,
     time: "09:00",
   },
