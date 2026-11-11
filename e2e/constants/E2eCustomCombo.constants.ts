@@ -7,12 +7,16 @@ import {
 } from "./E2eReservationForm.constants";
 
 export const E2E_CUSTOM_COMBO_FIXTURE = {
+  BOAT_CATEGORY_NAME:
+    E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION,
+  FIXTURE_FAILURE:
+    "Unable to prepare or restore local custom combo tariffs.",
+  GUIDE_NAME: E2E_RESERVATION_GUIDES.FIRST_NAME,
+  GUIDE_ONLY_CATEGORY_NAME:
+    E2E_RESERVATION_GUIDE_ONLY_CATEGORY.QUADRICYCLE,
   LOCAL_HOSTNAMES: ["localhost", "127.0.0.1", "::1"],
   REGULAR_CATEGORY_NAME:
     E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION,
-  GUIDE_ONLY_CATEGORY_NAME:
-    E2E_RESERVATION_GUIDE_ONLY_CATEGORY.QUADRICYCLE,
-  GUIDE_NAME: E2E_RESERVATION_GUIDES.FIRST_NAME,
   RENTAL_TARIFF: {
     amountCrc: 10_000,
     amountUsd: 20,
@@ -23,8 +27,6 @@ export const E2E_CUSTOM_COMBO_FIXTURE = {
     amountUsd: 10,
     type: RESERVATION_TYPE.TOUR,
   },
-  FIXTURE_FAILURE:
-    "Unable to prepare or restore local custom combo tariffs.",
 } as const;
 
 export const E2E_CUSTOM_COMBO = {
