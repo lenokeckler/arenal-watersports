@@ -28,6 +28,7 @@ export const createReservationCancellationViewPage = () => {
         name: COPY.LABEL_CAUSE,
       }),
     getReason,
+    pressKey: (key: string) => user.keyboard(key),
     queryCauseGroup: () =>
       screen.queryByRole(ARIA_ROLE.GROUP, {
         name: COPY.LABEL_CAUSE,
