@@ -1,12 +1,14 @@
 begin;
-select plan(11);
+select plan(13);
 
 insert into auth.users (id, email) values
   ('e3700000-0000-4000-8000-000000000001', 'res10-pricing@arenal.local'),
-  ('e3700000-0000-4000-8000-000000000002', 'res10-no-reservations@arenal.local');
-insert into workers (id, username, full_name, base_role) values
-  ('e3700000-0000-4000-8000-000000000001', 'res10-pricing', 'RES10 Pricing', 'reservas'),
-  ('e3700000-0000-4000-8000-000000000002', 'res10-no-reservations', 'RES10 Operations', 'operaciones');
+  ('e3700000-0000-4000-8000-000000000002', 'res10-no-reservations@arenal.local'),
+  ('e3700000-0000-4000-8000-000000000003', 'res10-admin@arenal.local');
+insert into workers (id, username, full_name, base_role, personal_email) values
+  ('e3700000-0000-4000-8000-000000000001', 'res10-pricing', 'RES10 Pricing', 'reservas', null),
+  ('e3700000-0000-4000-8000-000000000002', 'res10-no-reservations', 'RES10 Operations', 'operaciones', null),
+  ('e3700000-0000-4000-8000-000000000003', 'res10-admin', 'RES10 Admin', 'administracion', 'res10-admin@correo.local');
 insert into equipment_categories
   (id, name, tracking_mode, is_reservable, units_are_interchangeable,
    guide_only, default_duration_minutes, created_by, updated_by)
@@ -16,6 +18,8 @@ values
   ('e3700000-0000-4000-8000-000000000102', 'RES10 Tour', 'by_quantity', true, true,
    true, 60, 'e3700000-0000-4000-8000-000000000001', 'e3700000-0000-4000-8000-000000000001'),
   ('e3700000-0000-4000-8000-000000000103', 'RES10 Partial currency', 'by_quantity', true, true,
+   false, 60, 'e3700000-0000-4000-8000-000000000001', 'e3700000-0000-4000-8000-000000000001'),
+  ('e3700000-0000-4000-8000-000000000104', 'RES10 Unit', 'by_unit', true, false,
    false, 60, 'e3700000-0000-4000-8000-000000000001', 'e3700000-0000-4000-8000-000000000001');
 insert into equipment_stock (category_id, quantity_available, updated_by)
 values
@@ -40,6 +44,10 @@ set local request.jwt.claims to '{"sub":"e3700000-0000-4000-8000-000000000002","
 select throws_ok($$ select custom_combo_price('[]'::jsonb, 60) $$,
   'P0001', 'Reservation access is required',
   'an authenticated worker without Reservations or admin access cannot quote');
+set local request.jwt.claims to '{"sub":"e3700000-0000-4000-8000-000000000003","role":"authenticated"}';
+select throws_ok($$ select custom_combo_price('[]'::jsonb, 60) $$,
+  'P0001', 'Reservation access is required',
+  'an administrator without Reservations cannot quote');
 set local request.jwt.claims to '{"sub":"e3700000-0000-4000-8000-000000000001","role":"authenticated"}';
 select is((select list_amount_usd from custom_combo_price(jsonb_build_array(
   jsonb_build_object('category_id', 'e3700000-0000-4000-8000-000000000101', 'quantity', 2),
@@ -69,6 +77,10 @@ select throws_ok($$ select custom_combo_price(jsonb_build_array(
   jsonb_build_object('category_id', 'e3700000-0000-4000-8000-000000000101', 'quantity', 1.5)), 60) $$,
   'P0001', 'Custom combo equipment selections are invalid',
   'fractional quantities are rejected');
+select throws_ok($$ select custom_combo_price(jsonb_build_array(
+  jsonb_build_object('category_id', 'e3700000-0000-4000-8000-000000000104', 'quantity', 1)), 60) $$,
+  'P0001', 'Every custom combo category must be reservable',
+  'categories with non-interchangeable units are rejected');
 select throws_ok($$ select custom_combo_price('[]'::jsonb, 60) $$,
   'P0001', 'A custom combo requires equipment selections',
   'empty equipment selections are rejected');

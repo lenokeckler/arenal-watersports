@@ -40,6 +40,12 @@ export const FORM_FIELD_LABEL_SUFFIX_CLASS =
 export const FORM_FIELD_INPUT_BASE_CLASS =
   "bg-surface-container-highest placeholder:text-placeholder rounded-2xl w-full p-4 text-sm md:text-base border";
 
+export const FORM_FIELD_INPUT_AUTOFILL_CLASS =
+  "autofill:shadow-[inset_0_0_0_1000px_var(--color-surface-container-highest)] autofill:[-webkit-text-fill-color:var(--color-on-surface)]";
+
+export const FORM_FIELD_GLASS_INPUT_AUTOFILL_CLASS =
+  "autofill:shadow-[inset_0_0_0_1000px_var(--color-surface-container)] autofill:[-webkit-text-fill-color:var(--color-on-surface)]";
+
 export const FORM_FIELD_INPUT_ERROR_CLASS =
   "border-error text-error";
 
@@ -102,6 +108,7 @@ const resolveFormFieldGlassInputClassName = ({
   joinClassNames(
     classNameField,
     FORM_FIELD_GLASS_INPUT_BASE_CLASS,
+    FORM_FIELD_GLASS_INPUT_AUTOFILL_CLASS,
     hasError
       ? FORM_FIELD_GLASS_INPUT_ERROR_CLASS
       : FORM_FIELD_GLASS_INPUT_VALID_CLASS,
@@ -120,6 +127,7 @@ const resolveFormFieldDefaultInputClassName = ({
   joinClassNames(
     classNameField,
     FORM_FIELD_INPUT_BASE_CLASS,
+    FORM_FIELD_INPUT_AUTOFILL_CLASS,
     resolveFormFieldInputStateClassName(
       hasError,
       isPlaceholderValue
