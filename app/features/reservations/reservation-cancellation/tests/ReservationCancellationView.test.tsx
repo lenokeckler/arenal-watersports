@@ -6,10 +6,12 @@ import {
   it,
   vi,
 } from "vitest";
+import { RESERVATION_STATUS } from "@/app/constants";
 import ReservationCancellationView from "../ReservationCancellationView";
 import { cancelReservationAction } from "../actions/cancelReservationAction";
 import { RESERVATION_CANCELLATION_FEEDBACK_COPY as FEEDBACK } from "../constants/ReservationCancellationFeedbackCopy.constants";
 import { RESERVATION_CANCELLATION_FORM_COPY as COPY } from "../constants/ReservationCancellationFormCopy.constants";
+import { RESERVATION_CANCELLATION_UNAVAILABLE_COPY as UNAVAILABLE } from "../constants/ReservationCancellationUnavailableCopy.constants";
 import {
   CANCELLATION_REASON,
   EXPECTED_SCHEDULED,
@@ -20,13 +22,27 @@ vi.mock("../actions/cancelReservationAction", () => ({
   cancelReservationAction: vi.fn(),
 }));
 
+const CANCELLED_AFTER_REFRESH = {
+  ...EXPECTED_SCHEDULED,
+  isCancellable: false,
+  status: RESERVATION_STATUS.CANCELLED,
+};
+
 const renderView = () => {
-  render(
+  const { rerender } = render(
     <ReservationCancellationView
       cancellation={EXPECTED_SCHEDULED}
     />
   );
-  return createReservationCancellationViewPage();
+  return {
+    ...createReservationCancellationViewPage(),
+    refreshAsCancelled: () =>
+      rerender(
+        <ReservationCancellationView
+          cancellation={CANCELLED_AFTER_REFRESH}
+        />
+      ),
+  };
 };
 
 describe("ReservationCancellationView", () => {
@@ -77,6 +93,32 @@ describe("ReservationCancellationView", () => {
       reason: CANCELLATION_REASON,
       reservationId: EXPECTED_SCHEDULED.id,
     });
+  });
+
+  it("keeps the confirmation when the server refresh brings the cancelled reservation", async () => {
+    vi.mocked(cancelReservationAction).mockResolvedValue({
+      ok: true,
+      reservationId: EXPECTED_SCHEDULED.id,
+    });
+    const page = renderView();
+
+    await page.typeReason(CANCELLATION_REASON);
+    await page.submit();
+    await waitFor(() =>
+      expect(page.getStatusText()).toBe(
+        COPY.SUCCESS(EXPECTED_SCHEDULED.code)
+      )
+    );
+    page.refreshAsCancelled();
+
+    expect(page.getStatusText()).toBe(
+      COPY.SUCCESS(EXPECTED_SCHEDULED.code)
+    );
+    expect(
+      page.queryText(
+        UNAVAILABLE.BODY[RESERVATION_STATUS.CANCELLED]
+      )
+    ).toBeNull();
   });
 
   it("keeps the reason and disables the button when the reservation changed", async () => {
