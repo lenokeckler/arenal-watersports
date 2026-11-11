@@ -1,13 +1,17 @@
 import { createElement } from "react";
-import { RESERVATION_CALENDAR_ACTIVE_STATUS } from "@/app/constants";
 import type { ReservationCalendarBlockActionsRenderer } from "@/app/components/reservation-calendar/models/ReservationCalendarBlockActionsRenderer.type";
 import { ReservationCalendarBlockActions } from "../components/ReservationCalendarBlockActions";
+import { RESERVATION_CALENDAR_BLOCK_ACTION_LINKS } from "../constants/ReservationCalendarBlockActionLinks.constants";
 
 export const renderReservationCalendarBlockActions: ReservationCalendarBlockActionsRenderer =
-  (block) =>
-    block.status ===
-    RESERVATION_CALENDAR_ACTIVE_STATUS.SCHEDULED
+  (block) => {
+    const links =
+      RESERVATION_CALENDAR_BLOCK_ACTION_LINKS[block.status];
+
+    return links.length > 0
       ? createElement(ReservationCalendarBlockActions, {
           block,
+          links,
         })
       : null;
+  };
