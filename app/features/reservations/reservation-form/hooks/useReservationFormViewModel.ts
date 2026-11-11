@@ -141,6 +141,7 @@ export const useReservationFormViewModel = (
   return {
     categories: categoriesForReservationType,
     customCombo,
+    resolvedDurationHours,
     ...fields,
     handleReservationTypeChange: (value) =>
       fields.handleReservationTypeChange(

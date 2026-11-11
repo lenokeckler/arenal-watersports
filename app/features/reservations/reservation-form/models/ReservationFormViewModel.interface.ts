@@ -14,6 +14,7 @@ export interface ReservationFormViewModel {
     Record<ReservationFormErrorField, string>
   >;
   customCombo?: CustomComboFormViewModel;
+  resolvedDurationHours?: number;
   formError: string;
   isPending: boolean;
   isSubmitted: boolean;

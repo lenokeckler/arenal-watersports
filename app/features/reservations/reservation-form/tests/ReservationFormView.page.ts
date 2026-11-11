@@ -20,10 +20,10 @@ const getReservationTypeOption = (label: string) =>
 
 const getSelectedCategoryOption = () =>
   screen
-    .getByRole(ARIA_ROLE.GROUP, {
+    .queryByRole(ARIA_ROLE.GROUP, {
       name: RESERVATION_FORM_UI_COPY.CATEGORY,
     })
-    .querySelector("button[aria-pressed='true']");
+    ?.querySelector("button[aria-pressed='true']") ?? null;
 
 const getCategoryName = (categoryId: string): string => {
   if (
