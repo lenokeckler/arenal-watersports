@@ -4,6 +4,7 @@ import {
   RESERVATIONS_CALENDAR_COPY as copy,
   STRING,
 } from "@/app/constants";
+import { resolveReservationCancelPath } from "@/app/utils/reservations/resolveReservationCancelPath";
 import { resolveReservationEditPath } from "@/app/utils/reservations/resolveReservationEditPath";
 import { resolveReservationSplitPath } from "@/app/utils/reservations/resolveReservationSplitPath";
 import type { ReservationCalendarBlockActionsProps } from "../models/ReservationCalendarBlockActionsProps.interface";
@@ -41,6 +42,18 @@ export const ReservationCalendarBlockActions = ({
       href={resolveReservationSplitPath(block.id)}
     >
       {copy.SPLIT_RESERVATION}
+    </Link>
+    <Link
+      ariaLabel={[
+        copy.CANCEL_RESERVATION_LABEL,
+        block.customerName,
+      ].join(STRING.SPACE)}
+      className={
+        RESERVATION_CALENDAR_BLOCK_ACTION_LINK_CLASS
+      }
+      href={resolveReservationCancelPath(block.id)}
+    >
+      {copy.CANCEL_RESERVATION}
     </Link>
   </div>
 );

@@ -34,6 +34,10 @@ export const createReservationCalendarBlockPage = (
   };
   return {
     getBlock,
+    getCancelLink: (): NullableRef<HTMLElement> =>
+      screen.queryByRole(ARIA_ROLE.LINK, {
+        name: `${RESERVATIONS_CALENDAR_COPY.CANCEL_RESERVATION_LABEL} ${block.customerName}`,
+      }),
     getDetailLink: (): HTMLElement =>
       screen.getByRole(ARIA_ROLE.LINK, {
         name: `${RESERVATIONS_CALENDAR_COPY.OPEN_RESERVATION_DETAIL} ${block.customerName}`,
