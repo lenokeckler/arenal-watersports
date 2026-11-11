@@ -12,11 +12,11 @@ Let the operations worker see, in one screen, every dispatched group that has no
 - Marking a group past its return hour as «Por regresar», in the warning color, with the minutes it is late.
 - Keeping the count and the list up to date while the page stays open.
 - Adjusting the duration of one group, extending or cutting it, which recalculates its return hour.
+- Closing a group when its equipment comes back, with its real arrival hour, the fuel and the hours or kilometers it came back with, and a damage report for each unit that came back damaged.
 - Marking a group that was extended so Reservations can decide whether the extra hours are charged or courtesy.
 
 ## Out of scope
 
-- Registering the arrival of a group (US-OPE-05).
 - Alerts when a group is about to return or is late.
 - Deciding or charging the extra time of a late group, which Reservations registers apart.
 
@@ -26,7 +26,13 @@ Let the operations worker see, in one screen, every dispatched group that has no
 - A reservation with several categories shows one entry per group, each with its own return hour.
 - A group that already came back is no longer listed.
 - Groups are ordered by return hour, the soonest first.
-- Only workers with the operations area can read the list or adjust a duration.
+- Only workers with the operations area can read the list, adjust a duration or close a group.
+- Each group closes on its own with its real arrival hour; the arrival is proposed as the current hour and cannot be before the departure or in the future.
+- The reservation closes when its last group closes, and only if no equipment committed by unit is left undispatched.
+- A motor unit needs the fuel lines and the hours or kilometers it came back with; the hours cannot be lower than the ones it went out with, and the screen shows with which reading it went out.
+- A unit that came back damaged needs its cause and a description; closing raises the damage report in the name of who closed the group and changes the state of the unit to damaged.
+- Operations never sees or touches the deposit: the damage report is what Reservations uses afterwards.
+- When everything came back in order nothing else is asked and the closing is the record.
 - The duration of a group is adjusted on its own, without touching the other groups of the same reservation.
 - A group that already came back cannot be adjusted.
 - A duration is a whole number of minutes between 1 and 1440.

@@ -13,6 +13,7 @@ import { createServiceRoleClient } from "./createServiceRoleClient";
 import { failE2eOperation } from "./failE2eOperation";
 import type { DispatchSheetFixture } from "./models/DispatchSheetFixture.interface";
 import { makeDispatchLate } from "./makeDispatchLate";
+import { readGroupClosing } from "./readGroupClosing";
 import { readDispatchDuration } from "./readDispatchDuration";
 import { readDispatchReadings } from "./readDispatchReadings";
 import { readDispatchSheetState } from "./readDispatchSheetState";
@@ -153,6 +154,8 @@ export const createDispatchSheetFixture = async (
         reservationId,
         minutesLate
       ),
+    readGroupClosing: () =>
+      readGroupClosing(supabase, reservationId, unitCodes),
     readDispatchDuration: () =>
       readDispatchDuration(supabase, reservationId),
     readDispatchReadings: () =>

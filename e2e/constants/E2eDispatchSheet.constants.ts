@@ -33,6 +33,7 @@ export const E2E_DISPATCH_SHEET_EXPECTED = {
 } as const;
 
 export const E2E_DISPATCH_SHEET_TABLE = {
+  DAMAGE_REPORTS: "damage_reports",
   CATEGORIES: "equipment_categories",
   DISPATCHES: "reservation_dispatches",
   ITEMS: "reservation_items",
@@ -47,6 +48,7 @@ export const E2E_DISPATCH_SHEET_ERROR = {
     "insert the E2E dispatch reservation",
   OPERATION_INSERT_UNITS: "insert the E2E dispatch units",
   OPERATION_READ_DURATION: "read the E2E dispatch duration",
+  OPERATION_READ_CLOSING: "read the E2E group closing",
   OPERATION_MAKE_LATE:
     "move the E2E dispatch into the past",
   OPERATION_MARK_MOTOR:
