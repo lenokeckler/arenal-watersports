@@ -3045,6 +3045,27 @@ export type Database = {
         Args: { p_extra_id: string };
         Returns: string;
       };
+      dispatch_candidate_units: {
+        Args: {
+          p_category_id: string;
+          p_reservation_id: string;
+        };
+        Returns: {
+          code: string;
+          is_assigned: boolean;
+          unit_id: string;
+        }[];
+      };
+      dispatch_reservation_group: {
+        Args: {
+          p_category_id: string;
+          p_dispatched_at: string;
+          p_reservation_id: string;
+          p_returns_at: string;
+          p_unit_ids?: string[];
+        };
+        Returns: string;
+      };
       exchange_password_reset_pin: {
         Args: { p_pin: string; p_username: string };
         Returns: string;
@@ -3332,6 +3353,18 @@ export type Database = {
           ends_at: string;
           reservation_id: string;
           starts_at: string;
+        }[];
+      };
+      reservation_dispatch_groups: {
+        Args: { p_reservation_id: string };
+        Returns: {
+          category_id: string;
+          category_name: string;
+          duration_minutes: number;
+          fixed_unit_ids: string[];
+          has_motor: boolean;
+          required_quantity: number;
+          tracking_mode: Database["public"]["Enums"]["tracking_mode"];
         }[];
       };
       reservation_equipment_differs: {
