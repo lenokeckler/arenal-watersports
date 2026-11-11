@@ -14,7 +14,7 @@ const BLOCK_ACTIONS_BY_STATUS = {
 const isActiveStatus = (
   status: string
 ): status is keyof typeof BLOCK_ACTIONS_BY_STATUS =>
-  status in BLOCK_ACTIONS_BY_STATUS;
+  Object.hasOwn(BLOCK_ACTIONS_BY_STATUS, status);
 
 export const renderReservationCalendarBlockActions: ReservationCalendarBlockActionsRenderer =
   (block) =>
