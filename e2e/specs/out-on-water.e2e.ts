@@ -1,6 +1,10 @@
 import { OUT_ON_WATER_COPY } from "@/app/features/operations/out-on-water/constants/OutOnWaterCopy.constants";
+import { E2E_DISPATCH_LATE } from "../constants/E2eDispatchSheet.constants";
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
-import { E2E_OUT_ON_WATER_REMAINING_PATTERN } from "../constants/E2eOutOnWater.constants";
+import {
+  E2E_OUT_ON_WATER_LATE_PATTERN,
+  E2E_OUT_ON_WATER_REMAINING_PATTERN,
+} from "../constants/E2eOutOnWater.constants";
 import { createDispatchBoardPage } from "../pages/DispatchBoard.page";
 import { createDispatchSheetPage } from "../pages/DispatchSheet.page";
 import { createOutOnWaterPage } from "../pages/OutOnWater.page";
@@ -51,6 +55,42 @@ test.describe("Equipment out", () => {
     );
     await expect(group).toContainText(
       E2E_OUT_ON_WATER_REMAINING_PATTERN
+    );
+  });
+
+  test("keeps a group past its return hour listed and marked as waiting to return with the minutes late", async ({
+    dispatchSheet,
+    signedInPage: page,
+  }) => {
+    const board = createDispatchBoardPage(page);
+    const sheet = createDispatchSheetPage(page);
+    const outOnWater = createOutOnWaterPage(page);
+    const [first, second] = dispatchSheet.unitCodes;
+
+    await board.goTo();
+    await sheet
+      .getOpenButton(dispatchSheet.customerName)
+      .click();
+    await sheet.getUnit(first).check();
+    await sheet.getUnit(second).check();
+    await sheet.getSubmit().click();
+    await expect(sheet.getDialog()).toHaveCount(
+      E2E_COUNT.NONE
+    );
+    await dispatchSheet.makeDispatchLate(
+      E2E_DISPATCH_LATE.MINUTES_LATE
+    );
+
+    await outOnWater.goTo();
+    const group = outOnWater.getGroup(
+      dispatchSheet.customerName
+    );
+
+    await expect(group).toContainText(
+      OUT_ON_WATER_COPY.OVERDUE_LABEL
+    );
+    await expect(group).toContainText(
+      E2E_OUT_ON_WATER_LATE_PATTERN
     );
   });
 });

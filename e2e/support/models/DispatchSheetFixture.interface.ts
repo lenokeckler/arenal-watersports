@@ -2,6 +2,7 @@ export interface DispatchSheetFixture {
   categoryId: string;
   categoryName: string;
   customerName: string;
+  makeDispatchLate: (minutesLate: number) => Promise<void>;
   readDispatchReadings: () => Promise<DispatchReadingsState>;
   readDispatchState: () => Promise<DispatchSheetState>;
   remove: () => Promise<void>;

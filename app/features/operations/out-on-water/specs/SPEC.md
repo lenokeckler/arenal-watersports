@@ -8,7 +8,8 @@ Let the operations worker see, in one screen, every dispatched group that has no
 
 - Listing each dispatched group that is still out, with its customer, reservation code, category and units.
 - Showing the real departure hour and the return hour of the group.
-- Counting down the time left until the return hour, and marking a group that is late.
+- Counting down the time left until the return hour.
+- Marking a group past its return hour as «Por regresar», in the warning color, with the minutes it is late.
 - Keeping the count and the list up to date while the page stays open.
 
 ## Out of scope
@@ -16,6 +17,7 @@ Let the operations worker see, in one screen, every dispatched group that has no
 - Adjusting the duration of a group (US-OPE-06).
 - Registering the arrival of a group (US-OPE-05).
 - Alerts when a group is about to return or is late.
+- Deciding or charging the extra time of a late group, which Reservations registers apart.
 
 ## Requirements
 
@@ -24,4 +26,5 @@ Let the operations worker see, in one screen, every dispatched group that has no
 - A group that already came back is no longer listed.
 - Groups are ordered by return hour, the soonest first.
 - Only workers with the operations area can read the list.
-- The time left is shown in hours and minutes; a group past its return hour reads as late with the minutes it is late.
+- A group never closes itself nor disappears from the screen: it stays listed until its equipment returns.
+- The time left is shown in hours and minutes; a group past its return hour is marked «Por regresar» with the minutes of delay.
