@@ -1,4 +1,5 @@
 import type { ChangeEvent, FormEvent } from "react";
+import type { DispatchUnitReadingsViewModel } from "./DispatchUnitReadingsViewModel.interface";
 
 type DispatchFieldChangeEvent = ChangeEvent<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -16,6 +17,7 @@ export interface DispatchGroupFormViewModel {
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
   handleToggleUnit: (unitId: string) => void;
   isNextDay: boolean;
+  readings: DispatchUnitReadingsViewModel;
   returnTime: string;
   selectedUnitIds: string[];
   targetCount: number;

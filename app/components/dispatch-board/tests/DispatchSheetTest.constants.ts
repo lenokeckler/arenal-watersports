@@ -53,6 +53,17 @@ export const DISPATCH_INPUT_FIXTURE = {
   UNIT_ID: "bbbbbbbb-0000-4000-8000-000000000001",
 } as const;
 
+export const DISPATCH_READING_FIXTURE = {
+  FRACTION_FUEL: 2.5,
+  FUEL: 3,
+  FUEL_OVER_GAUGE: 21,
+  NEGATIVE_USAGE: -1,
+  OTHER_UNIT_ID: "bbbbbbbb-0000-4000-8000-000000000002",
+  THREE_DECIMALS_USAGE: 1.005,
+  TOO_BIG_USAGE: 100_000_000_000,
+  USAGE: 13.5,
+} as const;
+
 export const DISPATCH_TOO_MANY_UNITS = Array.from(
   { length: DISPATCH_SHEET_LIMITS.MAX_UNITS + 1 },
   () => DISPATCH_INPUT_FIXTURE.UNIT_ID
@@ -61,15 +72,20 @@ export const DISPATCH_TOO_MANY_UNITS = Array.from(
 export const DISPATCH_GROUP_ROW_FIXTURE = {
   category_id: DISPATCH_INPUT_FIXTURE.CATEGORY_ID,
   category_name: "Tablas",
+  consumes_fuel: false,
   duration_minutes: 60,
   fixed_unit_ids: [] as string[],
   has_motor: false,
   required_quantity: 2,
   tracking_mode: "by_unit",
+  usage_metric: null,
 };
 
 export const DISPATCH_UNIT_ROW_FIXTURE = {
   code: "T-1",
+  fuel_level: null,
+  fuel_max: 4,
   is_assigned: false,
   unit_id: DISPATCH_INPUT_FIXTURE.UNIT_ID,
+  usage_total: 0,
 };

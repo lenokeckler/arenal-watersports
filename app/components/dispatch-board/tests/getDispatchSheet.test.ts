@@ -43,13 +43,18 @@ describe("getDispatchSheet", () => {
         candidateUnits: [
           {
             code: DISPATCH_UNIT_ROW_FIXTURE.code,
+            fuelLevel: null,
+            fuelMax: DISPATCH_UNIT_ROW_FIXTURE.fuel_max,
             isAssigned: false,
             unitId: DISPATCH_UNIT_ROW_FIXTURE.unit_id,
+            usageTotal:
+              DISPATCH_UNIT_ROW_FIXTURE.usage_total,
           },
         ],
         categoryId: DISPATCH_GROUP_ROW_FIXTURE.category_id,
         categoryName:
           DISPATCH_GROUP_ROW_FIXTURE.category_name,
+        consumesFuel: false,
         durationMinutes:
           DISPATCH_GROUP_ROW_FIXTURE.duration_minutes,
         fixedUnitIds: [],
@@ -57,6 +62,7 @@ describe("getDispatchSheet", () => {
         isTrackedByUnit: true,
         requiredQuantity:
           DISPATCH_GROUP_ROW_FIXTURE.required_quantity,
+        usageMetric: null,
       },
     ]);
   });

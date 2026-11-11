@@ -63,6 +63,12 @@ export const useDispatchSheetViewModel = ({
         setErrorMessage(
           DISPATCH_SHEET_COPY.UNITS_UNAVAILABLE
         );
+      } else if (
+        status === DISPATCH_GROUP_STATUS.INVALID_READINGS
+      ) {
+        setErrorMessage(
+          DISPATCH_SHEET_COPY.READINGS_INVALID
+        );
       } else if (remaining.length === 0) {
         onDispatched();
       } else {
