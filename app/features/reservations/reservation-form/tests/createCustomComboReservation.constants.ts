@@ -1,4 +1,5 @@
 import { RESERVATION_RPC, SUPABASE } from "@/app/constants";
+import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 import { RESERVATION_SERVICE_OPERATION } from "../constants/ReservationServiceOperation.constants";
 import type { ValidatedCustomComboReservationInput } from "../models/ValidatedCustomComboReservationInput.interface";
 
@@ -11,12 +12,14 @@ export const VALIDATED_CUSTOM_COMBO_RESERVATION_INPUT = {
   guideIds: [],
   items: [
     {
+      kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
       categoryId: "e4800000-0000-4000-8000-000000000101",
       quantity: 2,
     },
     {
+      kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
       categoryId: "e4800000-0000-4000-8000-000000000102",
-      quantity: 1,
+      unitId: "e4800000-0000-4000-8000-000000000301",
     },
   ],
   peopleCount: 3,

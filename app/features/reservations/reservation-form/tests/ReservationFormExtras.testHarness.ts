@@ -7,13 +7,16 @@ import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 export const selectConcreteBoat = async () => {
   vi.mocked(
     getAvailableReservationUnitsAction
-  ).mockResolvedValue([
-    {
-      code: RESERVATION_FORM_VIEW_TEST.UNIT_CODE,
-      id: RESERVATION_FORM_VIEW_TEST.UNIT_ID,
-    },
-  ]);
-  const page = renderReservationForm();
+  ).mockResolvedValue({
+    availableQuantity: null,
+    availableUnits: [
+      {
+        code: RESERVATION_FORM_VIEW_TEST.UNIT_CODE,
+        id: RESERVATION_FORM_VIEW_TEST.UNIT_ID,
+      },
+    ],
+  });
+  const page = renderReservationForm(true, true, true);
   await page.selectReservationType(
     RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
   );

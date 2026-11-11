@@ -1,0 +1,1 @@
+export const LOGOUT_CONFIRM_RESET_MS = 5000;

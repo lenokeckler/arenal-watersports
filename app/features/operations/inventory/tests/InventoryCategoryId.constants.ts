@@ -1,0 +1,3 @@
+export const INVALID_INVENTORY_CATEGORY_ID = "not-a-uuid";
+export const VALID_INVENTORY_CATEGORY_ID =
+  "aaaaaaaa-0000-0000-0000-000000000001";

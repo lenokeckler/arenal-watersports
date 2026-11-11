@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "../support/activeWorkerTest";
 import {
   E2E_RESERVATION_GUIDES,
   E2E_RESERVATION_TYPE_COPY,
@@ -9,12 +9,13 @@ import {
 } from "../constants/E2eScreenshot.constants";
 import { createReservationFormPage } from "../pages/ReservationForm.page";
 import { captureViewport } from "../support/captureViewport";
-import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
+import { signInToReservationsMode } from "../support/signInToReservationsMode";
 
 test("captures a tour with multiple assigned guides", async ({
+  activeWorker,
   page,
 }, testInfo) => {
-  await signInAsSeededWorker(page);
+  await signInToReservationsMode(page, activeWorker);
   const reservationFormPage =
     createReservationFormPage(page);
   await reservationFormPage.goTo();
