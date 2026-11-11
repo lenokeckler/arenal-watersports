@@ -1,13 +1,20 @@
+import type { Page } from "@playwright/test";
 import { test as base } from "./activeWorkerTest";
 import { createDispatchSheetFixture } from "./createDispatchSheetFixture";
 import type { DispatchSheetFixture } from "./models/DispatchSheetFixture.interface";
+import { signInAsSeededWorker } from "./signInAsSeededWorker";
 
 export const test = base.extend<{
+  administratorPage: Page;
   boardDispatchSheet: DispatchSheetFixture;
   boardMotorDispatchSheet: DispatchSheetFixture;
   dispatchSheet: DispatchSheetFixture;
   motorDispatchSheet: DispatchSheetFixture;
 }>({
+  administratorPage: async ({ page }, provide) => {
+    await signInAsSeededWorker(page);
+    await provide(page);
+  },
   boardDispatchSheet: async ({ activeWorker }, provide) => {
     const fixture = await createDispatchSheetFixture(
       activeWorker.id,
