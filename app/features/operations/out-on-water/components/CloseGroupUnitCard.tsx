@@ -124,6 +124,20 @@ const CloseGroupUnitCard = ({
         })
       }
     />
+    <FormField
+      id={`${CLOSE_GROUP_FIELD_ID.MAINTENANCE_PREFIX}${row.unitId}`}
+      name={`${CLOSE_GROUP_FIELD_ID.MAINTENANCE_PREFIX}${row.unitId}`}
+      label={CLOSE_GROUP_COPY.MAINTENANCE_LABEL}
+      value={CLOSE_GROUP_COPY.MAINTENANCE_LABEL}
+      labelSuffix={STRING.Empty}
+      type={INPUT_TYPES.CHECKBOX}
+      checked={row.draft.maintenance}
+      onChange={() =>
+        onChange(row.unitId, {
+          maintenance: !row.draft.maintenance,
+        })
+      }
+    />
     {row.draft.hasDamage && (
       <div className={CLOSE_GROUP_DAMAGE_CLASS}>
         <FormField

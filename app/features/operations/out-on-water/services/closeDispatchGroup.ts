@@ -27,6 +27,7 @@ export const closeDispatchGroup = async (
           impact_delta: value.damage.impactDelta,
         },
         fuel: value.fuel,
+        maintenance: value.maintenance,
         unit_id: value.unitId,
         usage: value.usage,
       })),

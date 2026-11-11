@@ -4,5 +4,6 @@ export interface CloseGroupDraft {
   fuel: string;
   hasDamage: boolean;
   impact: string;
+  maintenance: boolean;
   usage: string;
 }

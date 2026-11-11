@@ -17,6 +17,7 @@ export const EMPTY_CLOSE_DRAFT: CloseGroupDraft = {
   fuel: "",
   hasDamage: false,
   impact: "",
+  maintenance: false,
   usage: "",
 };
 
