@@ -1,19 +1,31 @@
 import type { ReservationFormFieldsProps } from "../models/ReservationFormFieldsProps.interface";
-import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
-import { RESERVATION_FORM_EQUIPMENT_NOTE_CLASS } from "../styles/ReservationFormView.styles";
+import { ARIA_ROLE } from "@/app/constants";
 import Text from "@/app/components/text/Text";
-import ReservationCategoryField from "./ReservationCategoryField";
-import ReservationQuantityField from "./ReservationQuantityField";
-import ReservationUnitField from "./ReservationUnitField";
+import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { RESERVATION_FORM_FIELD_WIDE_CLASS } from "../styles/ReservationFormView.styles";
+import { RESERVATION_FORM_STATUS_CLASS } from "../styles/ReservationFormView.styles";
 import ReservationCategoryAvailabilityPanel from "./ReservationCategoryAvailabilityPanel";
 import ReservationCategoryConflictWarning from "./ReservationCategoryConflictWarning";
+import { ReservationEquipmentCategoryFields } from "./ReservationEquipmentCategoryFields";
+import ReservationQuantityField from "./ReservationQuantityField";
+import ReservationUnitField from "./ReservationUnitField";
 
 const ReservationEquipmentFields = ({
   categories,
   viewModel,
 }: ReservationFormFieldsProps): React.JSX.Element => (
-  <>
-    <ReservationCategoryField
+  <div className={RESERVATION_FORM_FIELD_WIDE_CLASS}>
+    {viewModel.hasReservationTypeSelectionReset && (
+      <Text
+        role={ARIA_ROLE.STATUS}
+        className={RESERVATION_FORM_STATUS_CLASS}
+      >
+        {
+          RESERVATION_FORM_UI_COPY.RESERVATION_TYPE_SELECTION_CLEARED
+        }
+      </Text>
+    )}
+    <ReservationEquipmentCategoryFields
       categories={categories}
       viewModel={viewModel}
     />
@@ -22,11 +34,6 @@ const ReservationEquipmentFields = ({
     ) : (
       <ReservationQuantityField viewModel={viewModel} />
     )}
-    <Text className={RESERVATION_FORM_EQUIPMENT_NOTE_CLASS}>
-      {viewModel.requiresConcreteUnit
-        ? RESERVATION_FORM_UI_COPY.EQUIPMENT_UNIT_NOTE
-        : RESERVATION_FORM_UI_COPY.EQUIPMENT_QUANTITY_NOTE}
-    </Text>
     <ReservationCategoryAvailabilityPanel
       categoryName={
         viewModel.categoryAvailabilityCategoryName
@@ -39,7 +46,7 @@ const ReservationEquipmentFields = ({
     <ReservationCategoryConflictWarning
       viewModel={viewModel.categoryConflictWarning}
     />
-  </>
+  </div>
 );
 
 export default ReservationEquipmentFields;

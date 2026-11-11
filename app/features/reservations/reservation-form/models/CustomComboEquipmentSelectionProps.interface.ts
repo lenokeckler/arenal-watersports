@@ -3,5 +3,8 @@ import type { ReservationCategoryOption } from "./ReservationCategoryOption.inte
 
 export interface CustomComboEquipmentSelectionProps {
   categories: ReservationCategoryOption[];
+  date: string;
+  durationHours: number;
+  time: string;
   viewModel: CustomComboFormViewModel;
 }

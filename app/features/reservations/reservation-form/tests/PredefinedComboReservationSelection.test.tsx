@@ -3,7 +3,7 @@ import { createPredefinedComboReservationAction } from "../actions/createPredefi
 import { PREDEFINED_COMBO_SELECTION_FIXTURE } from "./PredefinedComboSelection.fixture";
 import { PREDEFINED_COMBO_SELECTION_TEST } from "./PredefinedComboSelection.constants";
 import { createPredefinedComboSelectionPage } from "./PredefinedComboSelection.page";
-import { renderReservationForm } from "./ReservationFormView.fixture";
+import { renderReservationFormWithCombos } from "./ReservationFormView.fixture";
 
 vi.mock(
   "../actions/createPredefinedComboReservationAction",
@@ -14,7 +14,7 @@ vi.mock(
 
 describe("predefined combo selection validation", () => {
   it("shows and clears an error when a package is not selected", async () => {
-    renderReservationForm(undefined, [
+    renderReservationFormWithCombos(undefined, [
       PREDEFINED_COMBO_SELECTION_FIXTURE.COMBO,
     ]);
     const page = createPredefinedComboSelectionPage(

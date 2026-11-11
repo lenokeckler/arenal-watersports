@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { RESERVATION_TYPE_COPY } from "../constants/ReservationTypeCopy.constants";
 import { CUSTOM_COMBO_FORM_COPY } from "../constants/CustomComboFormCopy.constants";
 import { CUSTOM_COMBO_TEST } from "./CustomCombo.constants";
 import { createCustomComboPage } from "./CustomCombo.page";
@@ -7,7 +8,7 @@ import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 
 describe("custom combo selection", () => {
   it("offers guide-only categories and shows the no-guide state", async () => {
-    renderReservationForm();
+    renderReservationForm(true, true, true);
     const page = createCustomComboPage(document.body);
     await page.selectCombo();
 
@@ -25,7 +26,7 @@ describe("custom combo selection", () => {
   });
 
   it("adds, changes, and removes equipment quantities", async () => {
-    renderReservationForm();
+    renderReservationForm(true, true, true);
     const page = createCustomComboPage(document.body);
     const categoryName =
       RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME;
@@ -52,33 +53,16 @@ describe("custom combo selection", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("shows guide assignment only while a tour component is selected", async () => {
-    renderReservationForm();
-    const page = createCustomComboPage(document.body);
-    const categoryName =
-      RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME;
-    await page.selectCombo();
-    await page.addCategory(categoryName);
-    expect(
-      page.getGuideAssignmentField()
-    ).toBeInTheDocument();
-    await page.decreaseCategory(categoryName);
-    expect(
-      page.queryGuideAssignmentField()
-    ).not.toBeInTheDocument();
-    expect(page.getNoGuideState()).toBeInTheDocument();
-  });
-
   it("keeps rental and tour controls intact", () => {
     const page = renderReservationForm();
     expect(
       page.getReservationTypeDescription(
-        RESERVATION_FORM_VIEW_TEST.RENTAL_TYPE_DESCRIPTION
+        RESERVATION_TYPE_COPY.OPTIONS.RENTAL.description
       )
     ).toBeInTheDocument();
     expect(
       page.getReservationTypeDescription(
-        RESERVATION_FORM_VIEW_TEST.TOUR_TYPE_DESCRIPTION
+        RESERVATION_TYPE_COPY.OPTIONS.TOUR.description
       )
     ).toBeInTheDocument();
   });

@@ -1,0 +1,1 @@
+ACC-01.08.12: Old token opens no screen after sign-out end to end — a browser test proves that cookies copied before signing out no longer open any signed-in screen and that Back never returns to one (US-ACC-08 · AWS-37)

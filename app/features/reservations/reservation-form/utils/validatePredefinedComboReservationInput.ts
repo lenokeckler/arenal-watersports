@@ -12,7 +12,7 @@ import type { PredefinedComboReservationValidation } from "../models/PredefinedC
 import type { ValidatedPredefinedComboReservationInput } from "../models/ValidatedPredefinedComboReservationInput.interface";
 import {
   isValidReservationDate,
-  isValidReservationDuration,
+  getReservationDurationMinutes,
   isValidReservationTime,
 } from "./validateReservationSchedule";
 
@@ -81,7 +81,8 @@ const createScheduleErrors = (
   addError(
     errors,
     PREDEFINED_COMBO_RESERVATION_FIELD.DURATION_HOURS,
-    isValidReservationDuration(input.durationHours),
+    getReservationDurationMinutes(input.durationHours) !==
+      null,
     RESERVATION_FORM_COPY[
       RESERVATION_FORM_FIELD.DURATION_HOURS
     ]
