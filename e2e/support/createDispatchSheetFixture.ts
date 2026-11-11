@@ -18,11 +18,15 @@ import { removeDispatchSheetFixture } from "./removeDispatchSheetFixture";
 
 interface DispatchSheetFixtureOptions {
   hasMotor?: boolean;
+  isOnBoard?: boolean;
 }
 
 export const createDispatchSheetFixture = async (
   workerId: string,
-  { hasMotor = false }: DispatchSheetFixtureOptions = {}
+  {
+    hasMotor = false,
+    isOnBoard = false,
+  }: DispatchSheetFixtureOptions = {}
 ): Promise<DispatchSheetFixture> => {
   const audit = {
     created_by: workerId,
@@ -41,13 +45,20 @@ export const createDispatchSheetFixture = async (
   );
   const customerName = buildE2eCustomerName();
 
-  if (hasMotor) {
+  if (hasMotor || isOnBoard) {
     const motor = await supabase
       .from(E2E_DISPATCH_SHEET_TABLE.CATEGORIES)
       .update({
-        consumes_fuel: true,
-        has_motor: true,
-        usage_metric: "engine_hours",
+        ...(hasMotor && {
+          consumes_fuel: true,
+          has_motor: true,
+          usage_metric: "engine_hours",
+        }),
+        ...(isOnBoard && {
+          default_duration_minutes:
+            E2E_DISPATCH_SHEET_SEED.DURATION_MINUTES,
+          is_reservable: true,
+        }),
       })
       .eq("id", category.id);
 
@@ -131,6 +142,7 @@ export const createDispatchSheetFixture = async (
   }
 
   return {
+    categoryId: category.id,
     categoryName: category.name,
     customerName,
     readDispatchReadings: () =>
