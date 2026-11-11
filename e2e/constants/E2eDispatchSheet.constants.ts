@@ -46,6 +46,7 @@ export const E2E_DISPATCH_SHEET_ERROR = {
   OPERATION_INSERT_RESERVATION:
     "insert the E2E dispatch reservation",
   OPERATION_INSERT_UNITS: "insert the E2E dispatch units",
+  OPERATION_READ_DURATION: "read the E2E dispatch duration",
   OPERATION_MAKE_LATE:
     "move the E2E dispatch into the past",
   OPERATION_MARK_MOTOR:

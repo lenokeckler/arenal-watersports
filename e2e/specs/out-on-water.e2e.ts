@@ -1,7 +1,11 @@
-import { OUT_ON_WATER_COPY } from "@/app/features/operations/out-on-water/constants/OutOnWaterCopy.constants";
+import {
+  DURATION_ADJUST_COPY,
+  OUT_ON_WATER_COPY,
+} from "@/app/features/operations/out-on-water/constants/OutOnWaterCopy.constants";
 import { E2E_DISPATCH_LATE } from "../constants/E2eDispatchSheet.constants";
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 import {
+  E2E_OUT_ON_WATER_ADJUST,
   E2E_OUT_ON_WATER_LATE_PATTERN,
   E2E_OUT_ON_WATER_REMAINING_PATTERN,
 } from "../constants/E2eOutOnWater.constants";
@@ -92,5 +96,52 @@ test.describe("Equipment out", () => {
     await expect(group).toContainText(
       E2E_OUT_ON_WATER_LATE_PATTERN
     );
+  });
+
+  test("extends the duration of a group, moves its return hour and leaves the mark for Reservations", async ({
+    dispatchSheet,
+    signedInPage: page,
+  }) => {
+    const board = createDispatchBoardPage(page);
+    const sheet = createDispatchSheetPage(page);
+    const outOnWater = createOutOnWaterPage(page);
+    const [first, second] = dispatchSheet.unitCodes;
+
+    await board.goTo();
+    await sheet
+      .getOpenButton(dispatchSheet.customerName)
+      .click();
+    await sheet.getUnit(first).check();
+    await sheet.getUnit(second).check();
+    await sheet.getSubmit().click();
+    await expect(sheet.getDialog()).toHaveCount(
+      E2E_COUNT.NONE
+    );
+    await outOnWater.goTo();
+
+    await outOnWater
+      .getAdjustButton(dispatchSheet.customerName)
+      .click();
+    await expect(outOnWater.getAdjustSave()).toBeDisabled();
+    await outOnWater
+      .getAdjustPreset(E2E_OUT_ON_WATER_ADJUST.ADD_PRESET)
+      .click();
+    await outOnWater.getAdjustSave().click();
+
+    await expect(outOnWater.getAdjustDialog()).toHaveCount(
+      E2E_COUNT.NONE
+    );
+    await expect(
+      outOnWater.getGroup(dispatchSheet.customerName)
+    ).toContainText(DURATION_ADJUST_COPY.EXTENDED_PREFIX);
+    expect(
+      await dispatchSheet.readDispatchDuration()
+    ).toEqual({
+      durationMinutes:
+        E2E_OUT_ON_WATER_ADJUST.PLAN_MINUTES +
+        E2E_OUT_ON_WATER_ADJUST.ADDED_MINUTES,
+      extendedMinutes:
+        E2E_OUT_ON_WATER_ADJUST.ADDED_MINUTES,
+    });
   });
 });
