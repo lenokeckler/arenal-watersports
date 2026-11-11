@@ -1,3 +1,5 @@
+import { OUT_ON_WATER_COPY } from "@/app/features/operations/out-on-water/constants/OutOnWaterCopy.constants";
+import { E2E_DISPATCH_LATE } from "../constants/E2eDispatchSheet.constants";
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 import { E2E_OUT_ON_WATER_SCREENSHOT_BASENAME } from "../constants/E2eOutOnWater.constants";
 import { createDispatchBoardPage } from "../pages/DispatchBoard.page";
@@ -34,6 +36,19 @@ test.describe("Equipment out screenshots", () => {
     await captureFullPage(
       page,
       E2E_OUT_ON_WATER_SCREENSHOT_BASENAME.LIST,
+      testInfo.project.name
+    );
+
+    await dispatchSheet.makeDispatchLate(
+      E2E_DISPATCH_LATE.MINUTES_LATE
+    );
+    await outOnWater.goTo();
+    await expect(
+      outOnWater.getGroup(dispatchSheet.customerName)
+    ).toContainText(OUT_ON_WATER_COPY.OVERDUE_LABEL);
+    await captureFullPage(
+      page,
+      E2E_OUT_ON_WATER_SCREENSHOT_BASENAME.LATE,
       testInfo.project.name
     );
   });

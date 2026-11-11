@@ -12,6 +12,7 @@ import { createInventoryCategoryFixture } from "./createInventoryCategoryFixture
 import { createServiceRoleClient } from "./createServiceRoleClient";
 import { failE2eOperation } from "./failE2eOperation";
 import type { DispatchSheetFixture } from "./models/DispatchSheetFixture.interface";
+import { makeDispatchLate } from "./makeDispatchLate";
 import { readDispatchReadings } from "./readDispatchReadings";
 import { readDispatchSheetState } from "./readDispatchSheetState";
 import { removeDispatchSheetFixture } from "./removeDispatchSheetFixture";
@@ -145,6 +146,12 @@ export const createDispatchSheetFixture = async (
     categoryId: category.id,
     categoryName: category.name,
     customerName,
+    makeDispatchLate: (minutesLate) =>
+      makeDispatchLate(
+        supabase,
+        reservationId,
+        minutesLate
+      ),
     readDispatchReadings: () =>
       readDispatchReadings(
         supabase,

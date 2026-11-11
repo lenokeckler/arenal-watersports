@@ -46,6 +46,8 @@ export const E2E_DISPATCH_SHEET_ERROR = {
   OPERATION_INSERT_RESERVATION:
     "insert the E2E dispatch reservation",
   OPERATION_INSERT_UNITS: "insert the E2E dispatch units",
+  OPERATION_MAKE_LATE:
+    "move the E2E dispatch into the past",
   OPERATION_MARK_MOTOR:
     "mark the E2E dispatch category as motor",
   OPERATION_READ_READINGS: "read the E2E dispatch readings",
@@ -63,4 +65,9 @@ export const E2E_BOARD_DISPATCH_SCREENSHOT_BASENAME = {
   PICKER: "10-board-reservation-picker",
   SELECTED_UNITS: "09-board-units-selected",
   SHEET: "11-board-dispatch-sheet",
+} as const;
+
+export const E2E_DISPATCH_LATE = {
+  MINUTES_LATE: 25,
+  MS_PER_MINUTE: 60_000,
 } as const;
