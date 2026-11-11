@@ -34,6 +34,7 @@ const ReservationFormView = ({
   categories,
   guideLoadResult,
   initialDate,
+  predefinedCombos,
   unitCategories,
 }: ReservationFormViewProps): React.JSX.Element => {
   const allCategories = Array.from(
@@ -50,6 +51,7 @@ const ReservationFormView = ({
       categories: allCategories,
       initialCategoryId: STRING.Empty,
       initialDate,
+      predefinedCombos,
       unitCategories,
     },
   });

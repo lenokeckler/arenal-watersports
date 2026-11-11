@@ -1,6 +1,7 @@
 export const ARIA_ROLE = {
   ALERT: "alert",
   BUTTON: "button",
+  CHECKBOX: "checkbox",
   DIALOG: "dialog",
   GROUP: "group",
   REGION: "region",
