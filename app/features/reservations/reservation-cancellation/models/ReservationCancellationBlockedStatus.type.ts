@@ -2,5 +2,5 @@ import type { ReservationCancellationStatus } from "./ReservationCancellationSta
 
 export type ReservationCancellationBlockedStatus = Exclude<
   ReservationCancellationStatus,
-  "dispatched" | "scheduled"
+  "scheduled"
 >;

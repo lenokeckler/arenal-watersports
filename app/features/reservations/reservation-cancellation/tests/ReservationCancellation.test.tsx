@@ -17,7 +17,7 @@ import {
   CANCELLATION_ACCESS_REDIRECT,
   CANCELLATION_RESERVATION_ID,
   EXPECTED_SCHEDULED,
-  NOT_CANCELLABLE_STATUSES,
+  BLOCKED_STATUSES,
 } from "./ReservationCancellation.constants";
 import { createReservationCancellationPage } from "./ReservationCancellation.page";
 
@@ -106,7 +106,7 @@ describe("ReservationCancellation", () => {
     expect(page.queryStatus()).toBeNull();
   });
 
-  it.each(NOT_CANCELLABLE_STATUSES)(
+  it.each(BLOCKED_STATUSES)(
     "explains why a %s reservation cannot be cancelled here",
     async (status) => {
       vi.mocked(
