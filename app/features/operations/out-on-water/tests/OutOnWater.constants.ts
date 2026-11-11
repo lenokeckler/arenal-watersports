@@ -26,9 +26,11 @@ export const FORMAT_CASES = [
   { minutes: 65, text: "Faltan 1 h 5 min" },
   { minutes: 60, text: "Faltan 1 h" },
   { minutes: 12, text: "Faltan 12 min" },
-  { minutes: 0, text: "Ya debe volver" },
-  { minutes: -5, text: "Atrasado 5 min" },
-  { minutes: -90, text: "Atrasado 1 h 30 min" },
+] as const;
+
+export const DELAY_CASES = [
+  { minutes: 5, text: "5 min de retraso" },
+  { minutes: 90, text: "1 h 30 min de retraso" },
 ] as const;
 
 export const OUT_ON_WATER_GROUP_FIXTURE = {
@@ -48,7 +50,8 @@ export const OUT_ON_WATER_TEXT = {
   CUSTOMER: "Ana Mora · RES-0001",
   EQUIPMENT: "Jet ski · JS-1, JS-2",
   HOURS: "Salió a las 09:10 · Regresa a las 10:40",
-  LATE_5: "Atrasado 5 min",
+  LATE_5: "5 min de retraso",
+  OVERDUE: "Por regresar",
   LATE_AFTER_MS: 45 * 60_000,
   REMAINING_39: "Faltan 39 min",
   REMAINING_40: "Faltan 40 min",
