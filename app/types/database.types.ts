@@ -1988,6 +1988,9 @@ export type Database = {
       };
       reservations: {
         Row: {
+          cancellation_cause:
+            | Database["public"]["Enums"]["cancellation_cause"]
+            | null;
           cancellation_reason: string | null;
           closed_at: string | null;
           code: string;
@@ -2009,6 +2012,9 @@ export type Database = {
           updated_by: string;
         };
         Insert: {
+          cancellation_cause?:
+            | Database["public"]["Enums"]["cancellation_cause"]
+            | null;
           cancellation_reason?: string | null;
           closed_at?: string | null;
           code?: string;
@@ -2030,6 +2036,9 @@ export type Database = {
           updated_by: string;
         };
         Update: {
+          cancellation_cause?:
+            | Database["public"]["Enums"]["cancellation_cause"]
+            | null;
           cancellation_reason?: string | null;
           closed_at?: string | null;
           code?: string;
@@ -3397,6 +3406,13 @@ export type Database = {
         Args: { p_pin_id: string };
         Returns: undefined;
       };
+      normalize_cancellation_cause: {
+        Args: {
+          p_cause: string;
+          p_status: Database["public"]["Enums"]["reservation_status"];
+        };
+        Returns: Database["public"]["Enums"]["cancellation_cause"];
+      };
       normalize_cancellation_reason: {
         Args: { p_reason: string };
         Returns: string;
@@ -3802,6 +3818,7 @@ export type Database = {
       };
     };
     Enums: {
+      cancellation_cause: "weather" | "trip_problem";
       category_status: "active" | "inactive";
       charge_kind: "tariff" | "extra_time";
       combo_audience: "national" | "foreign";
@@ -3979,6 +3996,7 @@ export const Constants = {
   },
   public: {
     Enums: {
+      cancellation_cause: ["weather", "trip_problem"],
       category_status: ["active", "inactive"],
       charge_kind: ["tariff", "extra_time"],
       combo_audience: ["national", "foreign"],
