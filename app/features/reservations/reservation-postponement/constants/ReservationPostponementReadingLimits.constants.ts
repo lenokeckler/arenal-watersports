@@ -1,0 +1,4 @@
+export const RESERVATION_POSTPONEMENT_READING_LIMITS = {
+  EMPTY_FUEL: 0,
+  LOW_FUEL_RATIO: 0.25,
+} as const;

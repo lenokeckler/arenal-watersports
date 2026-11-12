@@ -8,6 +8,7 @@ import { mapSignInAuthError } from "../mapSignInAuthError";
 import {
   BLOCKED_BY_ADMINISTRATION_ERROR,
   BLOCKED_BY_ATTEMPTS_ERROR,
+  EXPIRED_ERROR,
   RECOVERY_REQUIRED_ERROR,
   TOKEN_WITH_WRONG_CODE_ERROR,
   TOKEN_WITH_WRONG_STATUS_ERROR,
@@ -77,6 +78,11 @@ describe("mapSignInAuthError", () => {
       "recovery required",
       RECOVERY_REQUIRED_ERROR,
       SIGN_IN_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED,
+    ],
+    [
+      "expired",
+      EXPIRED_ERROR,
+      SIGN_IN_ERROR_CODE.ACCOUNT_EXPIRED,
     ],
     [
       "unavailable",
