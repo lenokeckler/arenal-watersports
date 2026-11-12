@@ -1,6 +1,9 @@
 import { SUPABASE_WORKER_MARK } from "@/app/constants";
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 import {
+  E2E_EXTERNAL_GUIDE_REGISTRATION_LABEL,
+  E2E_EXTERNAL_GUIDE_REGISTRATION_PUT_NOTICE,
+  E2E_EXTERNAL_GUIDE_REGISTRATION_REMOVED_NOTICE,
   E2E_GENERAL_MANAGER_LABEL,
   E2E_GENERAL_MANAGER_PUT_NOTICE,
   E2E_GENERAL_MANAGER_REMOVED_NOTICE,
@@ -96,6 +99,48 @@ test.describe("Worker marks", () => {
       await countWorkerMark(
         activeWorker.id,
         SUPABASE_WORKER_MARK.GENERAL_MANAGER
+      )
+    ).toBe(E2E_COUNT.NONE);
+  });
+
+  test("administration puts the external guide registration mark on a worker and removes it", async ({
+    activeWorker,
+    page,
+  }) => {
+    const areasPage = createWorkerAreasPage(page);
+    await signInAsSeededWorker(page);
+    await areasPage.goTo();
+    await areasPage.search(activeWorker.username);
+
+    await areasPage.press(
+      E2E_EXTERNAL_GUIDE_REGISTRATION_LABEL,
+      E2E_WORKER_AREAS_COPY.MARK_GRANT
+    );
+    await expect(
+      areasPage.getNotice(
+        E2E_EXTERNAL_GUIDE_REGISTRATION_PUT_NOTICE
+      )
+    ).toBeVisible();
+    expect(
+      await countWorkerMark(
+        activeWorker.id,
+        SUPABASE_WORKER_MARK.EXTERNAL_GUIDE_REGISTRATION
+      )
+    ).toBe(E2E_COUNT.ONE);
+
+    await areasPage.press(
+      E2E_EXTERNAL_GUIDE_REGISTRATION_LABEL,
+      E2E_WORKER_AREAS_COPY.REVOKE
+    );
+    await expect(
+      areasPage.getNotice(
+        E2E_EXTERNAL_GUIDE_REGISTRATION_REMOVED_NOTICE
+      )
+    ).toBeVisible();
+    expect(
+      await countWorkerMark(
+        activeWorker.id,
+        SUPABASE_WORKER_MARK.EXTERNAL_GUIDE_REGISTRATION
       )
     ).toBe(E2E_COUNT.NONE);
   });
