@@ -958,6 +958,9 @@ export type Database = {
           system_quantity_available: number | null;
           system_quantity_damaged: number | null;
           system_quantity_in_repair: number | null;
+          system_status:
+            | Database["public"]["Enums"]["unit_status"]
+            | null;
           unit_id: string | null;
         };
         Insert: {
@@ -973,6 +976,9 @@ export type Database = {
           system_quantity_available?: number | null;
           system_quantity_damaged?: number | null;
           system_quantity_in_repair?: number | null;
+          system_status?:
+            | Database["public"]["Enums"]["unit_status"]
+            | null;
           unit_id?: string | null;
         };
         Update: {
@@ -988,6 +994,9 @@ export type Database = {
           system_quantity_available?: number | null;
           system_quantity_damaged?: number | null;
           system_quantity_in_repair?: number | null;
+          system_status?:
+            | Database["public"]["Enums"]["unit_status"]
+            | null;
           unit_id?: string | null;
         };
         Relationships: [
@@ -3512,6 +3521,13 @@ export type Database = {
       record_failed_sign_in: {
         Args: { p_username: string };
         Returns: undefined;
+      };
+      record_inventory_count: {
+        Args: { count_lines: Json; count_notes: string };
+        Returns: {
+          new_count_id: string;
+          outcome: string;
+        }[];
       };
       record_successful_sign_in: {
         Args: { p_user_id: string };
