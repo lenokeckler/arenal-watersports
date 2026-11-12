@@ -1,4 +1,6 @@
 export const INVENTORY_DOM_ID = {
+  EXPIRY_ALERTS: "inventory-expiry-alerts",
+  QUANTITY_ALERTS: "inventory-quantity-alerts",
   CATEGORIES: "inventory-categories",
   CATEGORY_UNITS: (categoryId: string) =>
     `${categoryId}-inventory-units`,
