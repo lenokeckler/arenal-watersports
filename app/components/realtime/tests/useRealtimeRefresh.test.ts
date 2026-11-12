@@ -102,6 +102,42 @@ describe("useRealtimeRefresh", () => {
     expect(firstName).not.toBe(secondName);
   });
 
+  it("refreshes on its own every fallback interval while the page is visible", () => {
+    createRealtimeHarness();
+    const onRefresh = vi.fn();
+    renderRealtimeRefresh(onRefresh);
+    act(() => {
+      vi.advanceTimersByTime(
+        REALTIME.FALLBACK_REFRESH_MS + REALTIME.COALESCE_MS
+      );
+    });
+    expect(onRefresh).toHaveBeenCalledOnce();
+  });
+
+  it("does not refresh on its own while the page is hidden, and refreshes when it is shown again", () => {
+    createRealtimeHarness();
+    const onRefresh = vi.fn();
+    const visibility = vi
+      .spyOn(document, "visibilityState", "get")
+      .mockReturnValue(REALTIME_REFRESH_TEST.HIDDEN_STATE);
+    renderRealtimeRefresh(onRefresh);
+    act(() => {
+      vi.advanceTimersByTime(
+        REALTIME.FALLBACK_REFRESH_MS + REALTIME.COALESCE_MS
+      );
+    });
+    expect(onRefresh).not.toHaveBeenCalled();
+    visibility.mockReturnValue(REALTIME.VISIBLE);
+    act(() => {
+      document.dispatchEvent(
+        new Event(REALTIME.VISIBILITY_CHANGE)
+      );
+      vi.advanceTimersByTime(REALTIME.COALESCE_MS);
+    });
+    expect(onRefresh).toHaveBeenCalledOnce();
+    visibility.mockRestore();
+  });
+
   it("removes the channel and drops pending refreshes on unmount", () => {
     const { channel, removeChannel, triggerChange } =
       createRealtimeHarness();
@@ -111,7 +147,9 @@ describe("useRealtimeRefresh", () => {
     unmount();
     act(() => {
       window.dispatchEvent(new Event(REALTIME.ONLINE));
-      vi.runAllTimers();
+      vi.advanceTimersByTime(
+        REALTIME.FALLBACK_REFRESH_MS + REALTIME.COALESCE_MS
+      );
     });
     expect(onRefresh).not.toHaveBeenCalled();
     expect(removeChannel).toHaveBeenCalledWith(channel);

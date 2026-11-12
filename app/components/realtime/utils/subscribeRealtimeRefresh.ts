@@ -4,6 +4,7 @@ import { REALTIME } from "../constants/Realtime.constants";
 import type { RealtimeSubscriptionOptions } from "../models/RealtimeSubscriptionOptions.interface";
 import { buildRealtimeChannelName } from "./buildRealtimeChannelName";
 import { createRealtimeRefreshScheduler } from "./createRealtimeRefreshScheduler";
+import { startRealtimeFallbackRefresh } from "./startRealtimeFallbackRefresh";
 import { subscribeRealtimeTables } from "./subscribeRealtimeTables";
 
 const isConnectionError = (status: string): boolean =>
@@ -51,8 +52,12 @@ export const subscribeRealtimeRefresh = (
     REALTIME.ONLINE,
     refreshWhenOnline
   );
+  const stopFallbackRefresh = startRealtimeFallbackRefresh(
+    scheduler.schedule
+  );
   return () => {
     scheduler.dispose();
+    stopFallbackRefresh();
     window.removeEventListener(
       REALTIME.ONLINE,
       refreshWhenOnline

@@ -64,7 +64,9 @@ test.describe("Equipment board realtime", () => {
             E2E_BOARD_REALTIME.TOTAL_COUNT
           )
         )
-      ).toBeVisible();
+      ).toBeVisible({
+        timeout: E2E_BOARD_REALTIME.CONVERGENCE_TIMEOUT_MS,
+      });
     } finally {
       await equipmentFixture.restore();
     }

@@ -12,4 +12,7 @@ export const REALTIME = {
   STATUS: REALTIME_SUBSCRIBE_STATES,
   ONLINE: "online",
   COALESCE_MS: 250,
+  FALLBACK_REFRESH_MS: 30_000,
+  VISIBILITY_CHANGE: "visibilitychange",
+  VISIBLE: "visible",
 } as const;
