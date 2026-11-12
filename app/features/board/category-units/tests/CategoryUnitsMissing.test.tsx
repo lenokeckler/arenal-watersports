@@ -26,6 +26,10 @@ const navigation = vi.hoisted(() => ({
 
 vi.mock("next/navigation", () => navigation);
 
+vi.mock("../CategoryUnitsRealtime", () => ({
+  default: () => null,
+}));
+
 vi.mock("@/app/services/board", () => ({
   readBoardCategory: vi.fn(),
   readBoardCategoryGroup: vi.fn().mockResolvedValue([]),

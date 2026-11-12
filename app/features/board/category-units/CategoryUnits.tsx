@@ -14,6 +14,7 @@ import CategoryUnitsEmpty from "./components/CategoryUnitsEmpty";
 import CategoryUnitsHeader from "./components/CategoryUnitsHeader";
 import CategoryUnitsPagination from "./components/CategoryUnitsPagination";
 import CategoryUnitsView from "./components/CategoryUnitsView";
+import CategoryUnitsRealtime from "./CategoryUnitsRealtime";
 import type { CategoryUnitsProps } from "./models/CategoryUnitsProps.interface";
 import { CATEGORY_UNITS_PAGE_CLASS } from "./styles/CategoryUnits.styles";
 import { readCategoryUnitsContent } from "./services/readCategoryUnitsContent";
@@ -54,6 +55,7 @@ const CategoryUnits = async ({
         categoryName={categoryName}
         unitCount={unitCount}
       />
+      <CategoryUnitsRealtime />
       <CategoryGroupSwitch
         currentCategoryId={categoryId}
         members={groupMembers}

@@ -16,6 +16,9 @@ export const CATEGORY_UNITS_STATE_BODY_CLASS =
 export const CATEGORY_UNITS_ERROR_CLASS =
   "flex items-start gap-sm rounded-xl bg-error-container p-md text-on-error-container";
 
+export const CATEGORY_UNITS_CONNECTION_NOTICE_CLASS =
+  "flex flex-col gap-xs rounded-xl bg-error-container p-md text-on-error-container";
+
 export const CATEGORY_UNITS_ERROR_ICON_CLASS =
   "shrink-0 text-2xl";
 

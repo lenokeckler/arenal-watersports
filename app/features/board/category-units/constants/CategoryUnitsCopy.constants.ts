@@ -27,6 +27,9 @@ export const CATEGORY_UNITS_COPY = {
     `Unidades de ${categoryName}`,
   LOADING_ANNOUNCEMENT:
     "Cargando las unidades de la categoría.",
+  LIVE_UPDATES_LOST_BODY:
+    "Las unidades pueden estar desactualizadas. Revise su conexión antes de ofrecer equipo.",
+  LIVE_UPDATES_LOST_TITLE: "Sin actualización en vivo",
   METADATA_TITLE: "Unidades — Arenal Water Sports",
   NOT_FOUND_BODY:
     "Es posible que la categoría ya no esté activa o que el enlace no sea correcto.",

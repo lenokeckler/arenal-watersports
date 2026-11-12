@@ -18,6 +18,10 @@ vi.mock("next/navigation", () => ({
   redirect: vi.fn(),
 }));
 
+vi.mock("../CategoryUnitsRealtime", () => ({
+  default: () => null,
+}));
+
 vi.mock("@/app/services/board", () => ({
   readBoardCategory: vi.fn(),
   readBoardCategoryGroup: vi.fn().mockResolvedValue([]),
