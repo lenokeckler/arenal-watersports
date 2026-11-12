@@ -39,4 +39,21 @@ describe("mapReservationChargeProposal", () => {
       EMPTY_PROPOSAL
     );
   });
+
+  it("ignores rows after the first one", () => {
+    expect(
+      mapReservationChargeProposal([
+        MIXED_PROPOSAL_ROW,
+        BOTH_PROPOSAL_ROW,
+      ])
+    ).toEqual(MIXED_PROPOSAL);
+  });
+
+  it("keeps a zero amount instead of treating it as missing", () => {
+    expect(
+      mapReservationChargeProposal([
+        { proposal_crc: 0, proposal_usd: 0 },
+      ])
+    ).toEqual({ CRC: 0, USD: 0 });
+  });
 });

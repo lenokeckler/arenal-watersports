@@ -1,7 +1,9 @@
+import { RESERVATION_STATUS } from "@/app/constants";
+
 export const CHARGEABLE_STATUSES = [
-  "scheduled",
-  "dispatched",
-  "closed",
+  RESERVATION_STATUS.SCHEDULED,
+  RESERVATION_STATUS.DISPATCHED,
+  RESERVATION_STATUS.CLOSED,
 ] as const;
 
 export const PARENT_RESERVATION_ID =

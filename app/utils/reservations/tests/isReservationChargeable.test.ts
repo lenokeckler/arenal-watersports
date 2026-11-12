@@ -1,3 +1,4 @@
+import { RESERVATION_STATUS } from "@/app/constants";
 import { describe, expect, it } from "vitest";
 import { isReservationChargeable } from "../isReservationChargeable";
 import {
@@ -22,7 +23,7 @@ describe("isReservationChargeable", () => {
     expect(
       isReservationChargeable({
         parentReservationId: null,
-        status: "cancelled",
+        status: RESERVATION_STATUS.CANCELLED,
       })
     ).toBe(false);
   });

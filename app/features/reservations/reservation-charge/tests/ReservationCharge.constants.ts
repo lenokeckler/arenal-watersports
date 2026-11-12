@@ -1,7 +1,8 @@
+import { RESERVATION_STATUS } from "@/app/constants";
 import type { ReservationCharge } from "../models/ReservationCharge.interface";
 import type { ReservationChargeProposal } from "../models/ReservationChargeProposal.type";
 import type { ReservationChargeProposalRow } from "../models/ReservationChargeProposalRow.interface";
-import type { ReservationChargeRow } from "../models/ReservationChargeRow.interface";
+import type { ReservationChargeRow } from "../models/ReservationChargeRow.type";
 
 export const CHARGE_RESERVATION_ID =
   "e2c20000-0000-4000-8000-000000000301";
@@ -50,7 +51,7 @@ export const SCHEDULED_ROW: ReservationChargeRow = {
   parent_reservation_id: null,
   people_count: 6,
   starts_at: "2026-11-02T20:30:00+00:00",
-  status: "scheduled",
+  status: RESERVATION_STATUS.SCHEDULED,
 };
 
 export const EXPECTED_SCHEDULED: ReservationCharge = {
@@ -62,13 +63,13 @@ export const EXPECTED_SCHEDULED: ReservationCharge = {
   parentReservationId: null,
   peopleCount: 6,
   proposal: BOTH_PROPOSAL,
-  status: "scheduled",
+  status: RESERVATION_STATUS.SCHEDULED,
   time: "14:30",
 };
 
 export const CANCELLED_ROW: ReservationChargeRow = {
   ...SCHEDULED_ROW,
-  status: "cancelled",
+  status: RESERVATION_STATUS.CANCELLED,
 };
 
 export const SPLIT_CHILD_ROW: ReservationChargeRow = {
@@ -81,4 +82,32 @@ export const CHARGE_READ_FAILURE = {
   details: "",
   hint: "",
   message: "permission denied",
+};
+
+export const EMPTY_RESERVATION_ID = "";
+export const UPPERCASE_RESERVATION_ID =
+  CHARGE_RESERVATION_ID.toUpperCase();
+export const TRAILING_NEWLINE_RESERVATION_ID =
+  CHARGE_RESERVATION_ID + String.fromCharCode(10);
+
+export const LAST_MINUTE_OF_COSTA_RICA_DAY_ROW: ReservationChargeRow =
+  {
+    ...SCHEDULED_ROW,
+    starts_at: "2026-11-03T05:59:00+00:00",
+  };
+
+export const FIRST_MINUTE_OF_COSTA_RICA_DAY_ROW: ReservationChargeRow =
+  {
+    ...SCHEDULED_ROW,
+    starts_at: "2026-11-03T06:00:00+00:00",
+  };
+
+export const UTC_MIDNIGHT_ROW: ReservationChargeRow = {
+  ...SCHEDULED_ROW,
+  starts_at: "2026-11-03T00:00:00+00:00",
+};
+
+export const UTC_NEW_YEAR_ROW: ReservationChargeRow = {
+  ...SCHEDULED_ROW,
+  starts_at: "2027-01-01T03:30:00+00:00",
 };
