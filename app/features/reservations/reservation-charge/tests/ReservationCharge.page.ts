@@ -16,6 +16,7 @@ export const createReservationChargePage = () => ({
     screen.getByRole(ARIA_ROLE.LINK, { name }),
   getRegion: (name: string) =>
     screen.getByRole(ARIA_ROLE.REGION, { name }),
+  getStatus: () => screen.getByRole(ARIA_ROLE.STATUS),
   getStatusText: () =>
     screen.getByRole(ARIA_ROLE.STATUS).textContent,
   queryStatus: () => screen.queryByRole(ARIA_ROLE.STATUS),

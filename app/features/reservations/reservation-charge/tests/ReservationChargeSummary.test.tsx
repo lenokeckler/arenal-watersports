@@ -18,7 +18,7 @@ import {
   NO_CATALOG_PROPOSAL_CHARGE,
   ZERO_PROPOSAL_CHARGE,
 } from "./ReservationChargeScreen.constants";
-import { renderReservationChargeView } from "./renderReservationChargeView";
+import { renderReservationChargeSummary } from "./renderReservationChargeSummary";
 
 const FIRST_LEVEL = 1;
 const SECOND_LEVEL = 2;
@@ -34,7 +34,7 @@ const proposalLine = (amount: string): string =>
 
 describe("ReservationChargeSummary", () => {
   it("names the reservation under the charge title", () => {
-    const page = renderReservationChargeView();
+    const page = renderReservationChargeSummary();
 
     expect(page.getHeading(COPY.TITLE)).toBeInTheDocument();
     expect(
@@ -55,7 +55,7 @@ describe("ReservationChargeSummary", () => {
   });
 
   it("shows the catalog proposal of each currency", () => {
-    const page = renderReservationChargeView();
+    const page = renderReservationChargeSummary();
 
     expect(
       page.queryText(proposalLine(EXPECTED_USD_PROPOSAL))
@@ -67,7 +67,7 @@ describe("ReservationChargeSummary", () => {
 
   it("says a currency has no catalog tariff when its proposal is null", () => {
     const page =
-      renderReservationChargeView(EXPECTED_MIXED);
+      renderReservationChargeSummary(EXPECTED_MIXED);
 
     expect(
       page.queryText(
@@ -80,7 +80,7 @@ describe("ReservationChargeSummary", () => {
   });
 
   it("states that the charge is per reservation and not per person", () => {
-    const page = renderReservationChargeView();
+    const page = renderReservationChargeSummary();
 
     expect(
       page.queryText(COPY.PER_RESERVATION_NOTE)
@@ -88,7 +88,7 @@ describe("ReservationChargeSummary", () => {
   });
 
   it("links back to the reservation detail", () => {
-    const page = renderReservationChargeView();
+    const page = renderReservationChargeSummary();
 
     expect(page.getBackLinkTargets()).toEqual([
       PATHS.RESERVATIONS.DETAIL(EXPECTED_SCHEDULED.id),
@@ -99,7 +99,7 @@ describe("ReservationChargeSummary", () => {
   });
 
   it("says there is no catalog tariff in both currencies when both proposals are null", () => {
-    const page = renderReservationChargeView(
+    const page = renderReservationChargeSummary(
       NO_CATALOG_PROPOSAL_CHARGE
     );
 
@@ -112,7 +112,7 @@ describe("ReservationChargeSummary", () => {
   });
 
   it("shows a zero proposal as an amount and not as a missing tariff", () => {
-    const page = renderReservationChargeView(
+    const page = renderReservationChargeSummary(
       ZERO_PROPOSAL_CHARGE
     );
 
@@ -130,7 +130,7 @@ describe("ReservationChargeSummary", () => {
   });
 
   it("keeps the colones proposal distinguishable by its colon symbol", () => {
-    const page = renderReservationChargeView();
+    const page = renderReservationChargeSummary();
 
     expect(
       page.queryText(proposalLine(EXPECTED_CRC_PROPOSAL))
@@ -144,7 +144,7 @@ describe("ReservationChargeSummary", () => {
   });
 
   it("exposes the summary as a named region with a second level heading under the page title", () => {
-    const page = renderReservationChargeView();
+    const page = renderReservationChargeSummary();
 
     expect(
       page.getHeading(COPY.SUMMARY_HEADING, SECOND_LEVEL)
