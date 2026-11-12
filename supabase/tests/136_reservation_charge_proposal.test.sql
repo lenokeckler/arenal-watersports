@@ -1,5 +1,5 @@
 begin;
-select plan(16);
+select plan(21);
 \ir fixtures/reservation_charge.sql.fixture
 
 set local role authenticated;
@@ -59,10 +59,16 @@ select results_eq(
   'a reservation without equipment items has no proposal'
 );
 
-select is(
-  (select proposal_usd from reservation_charge_proposal('e2c20000-0000-4000-8000-000000000301')),
-  (select amount_usd from tariffs where category_id = 'e2c20000-0000-4000-8000-000000000101' and type = 'rental'),
-  'six people on one boat propose the same amount as the tariff for one boat'
+select results_eq(
+  $$ select * from reservation_charge_proposal('e2c20000-0000-4000-8000-000000000310') $$,
+  $$ values (40::numeric, 20000::numeric) $$,
+  'a dispatched reservation still proposes the catalog amounts'
+);
+
+select results_eq(
+  $$ select * from reservation_charge_proposal('e2c20000-0000-4000-8000-000000000311') $$,
+  $$ values (40::numeric, 20000::numeric) $$,
+  'a closed reservation still proposes the catalog amounts'
 );
 
 select is(
@@ -88,6 +94,34 @@ select is(
   1::bigint,
   'the catalog helper always answers with exactly one row'
 );
+
+select results_eq(
+  $$ select * from reservation_charge_proposal('e2c20000-0000-4000-8000-000000000315') $$,
+  $$ values (11.11::numeric, 5555.92::numeric) $$,
+  'twenty minutes of an odd tariff round to cents on an inactive category'
+);
+
+select results_eq(
+  $$ select * from reservation_charge_proposal('e2c20000-0000-4000-8000-000000000316') $$,
+  $$ values (74.99::numeric, 37502.48::numeric) $$,
+  'forty five minutes of three units round the summed total once'
+);
+
+select results_eq(
+  $$ select * from reservation_charge_proposal('e2c20000-0000-4000-8000-000000000317') $$,
+  $$ values (40::numeric, 20000::numeric) $$,
+  'a pricing row with no amounts falls back to the catalog proposal'
+);
+
+set local request.jwt.claims to '{"sub":"e2c20000-0000-4000-8000-000000000003","role":"authenticated"}';
+
+select results_eq(
+  $$ select * from reservation_charge_proposal('e2c20000-0000-4000-8000-000000000301') $$,
+  $$ values (40::numeric, 20000::numeric) $$,
+  'an administrator in reservations mode reads the catalog proposal'
+);
+
+set local request.jwt.claims to '{"sub":"e2c20000-0000-4000-8000-000000000001","role":"authenticated"}';
 
 set local request.jwt.claims to '{"sub":"e2c20000-0000-4000-8000-000000000002","role":"authenticated"}';
 
