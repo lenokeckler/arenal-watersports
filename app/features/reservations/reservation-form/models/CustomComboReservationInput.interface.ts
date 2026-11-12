@@ -7,6 +7,8 @@ export interface CustomComboReservationInput {
   customerName: string;
   date: string;
   durationHours: number;
+  extraIds: string[];
+  extraUnitId: NullableRef<string>;
   guideIds?: string[];
   items: CustomComboEquipmentSelection[];
   peopleCount: number;

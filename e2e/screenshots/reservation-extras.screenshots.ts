@@ -34,7 +34,7 @@ test("captures compatible reservation extras and server quote states", async ({
     E2E_RESERVATION_FORM_COPY.UNIT_OPTION
   );
   await expect(
-    reservationForm.getExtraOption(
+    reservationForm.getExtraCheckbox(
       E2E_RESERVATION_FORM_COPY.EXTRA_PONTOON_OPTION
     )
   ).toBeVisible();
@@ -47,7 +47,7 @@ test("captures compatible reservation extras and server quote states", async ({
       indicators.forEach((indicator) => indicator.remove())
     );
   await reservationForm
-    .getExtraOption(
+    .getExtraOptionCard(
       E2E_RESERVATION_FORM_COPY.EXTRA_PONTOON_OPTION
     )
     .click();

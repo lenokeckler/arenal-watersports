@@ -1,6 +1,7 @@
 import type { NullableRef } from "@/app/types";
 import type { CustomComboReservationInput } from "../models/CustomComboReservationInput.interface";
 import { isCustomComboEquipmentSelection } from "./isCustomComboEquipmentSelection";
+import { isValidCustomComboExtraSelection } from "./isValidCustomComboExtraSelection";
 
 const isNullableNumber = (
   input: unknown
@@ -37,6 +38,13 @@ export const isCustomComboReservationInput = (
     Object.keys(input.items).length ===
       input.items.length &&
     input.items.every(isCustomComboEquipmentSelection) &&
+    "extraIds" in input &&
+    "extraUnitId" in input &&
+    isValidCustomComboExtraSelection(
+      input.extraIds,
+      input.extraUnitId,
+      input.items
+    ) &&
     "peopleCount" in input &&
     typeof input.peopleCount === "number" &&
     "time" in input &&

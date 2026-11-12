@@ -87,5 +87,8 @@ export const createCustomComboPage = (
     ...createComboCategoryActions(user, queries),
     ...createQuantityActions(user, queries),
     ...createPricingActions(user, queries),
+    submit: async (): Promise<void> => {
+      await user.click(queries.getSubmitButton());
+    },
   };
 };

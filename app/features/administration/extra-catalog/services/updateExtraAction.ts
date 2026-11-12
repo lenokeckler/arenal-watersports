@@ -8,8 +8,8 @@ import { EXTRA_MUTATION_STATUS } from "../constants/ExtraMutationStatus.constant
 import type { ExtraMutationResult } from "../models/ExtraMutationResult.interface";
 import type { UpdateExtraInput } from "../models/UpdateExtraInput.interface";
 import { mapExtraWriteErrorToResult } from "../utils/mapExtraWriteErrorToResult";
-import { readExtraName } from "../utils/readExtraName";
-import { validateExtraName } from "../utils/validateExtraName";
+import { mapExtraInputToPriceColumns } from "../utils/mapExtraInputToPriceColumns";
+import { resolveExtraValidationResult } from "../utils/resolveExtraValidationResult";
 
 export const updateExtraAction = async (
   input: UpdateExtraInput
@@ -17,18 +17,17 @@ export const updateExtraAction = async (
   const supabase = await createServerSupabaseClient();
   const adminWorkerId = await assertIsAdminWorker(supabase);
 
-  const nameError = validateExtraName(readExtraName(input));
-  if (nameError) {
-    return {
-      status: EXTRA_MUTATION_STATUS.ERROR,
-      nameError,
-    };
+  const validationFailure =
+    resolveExtraValidationResult(input);
+  if (validationFailure) {
+    return validationFailure;
   }
 
   const { data: updatedExtraRow, error } = await supabase
     .from("extras")
     .update({
       name: input.name.trim(),
+      ...mapExtraInputToPriceColumns(input),
       updated_by: adminWorkerId,
     })
     .eq("id", input.extraId)

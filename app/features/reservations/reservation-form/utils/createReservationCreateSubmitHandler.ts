@@ -57,6 +57,7 @@ export const createReservationCreateSubmitHandler =
         submitPredefinedComboDraft({
           durationHours: options.durationHours,
           predefinedCombo: options.predefinedCombo,
+          onSuccess: options.onSuccess,
           requestErrorFocus: options.requestErrorFocus,
           setSubmissionError: options.setSubmissionError,
           submitPredefinedComboReservation:
@@ -68,6 +69,7 @@ export const createReservationCreateSubmitHandler =
       submitCustomComboDraft({
         customCombo: options.customCombo,
         durationHours: options.durationHours,
+      onSuccess: options.onSuccess,
         requestErrorFocus: options.requestErrorFocus,
         setFieldError: options.setFieldError,
         submitCustomComboReservation:

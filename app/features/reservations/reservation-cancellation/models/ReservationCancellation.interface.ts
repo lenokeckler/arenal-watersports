@@ -9,6 +9,7 @@ export interface ReservationCancellation {
   expectedUpdatedAt: string;
   id: string;
   isCancellable: boolean;
+  requiresCause: boolean;
   status: ReservationCancellationStatus;
   time: string;
 }

@@ -48,6 +48,8 @@ export const RESERVATION_DETAIL_SOURCE_FIXTURE = {
       dispatch_id: RESERVATION_DETAIL_TEST.RESERVATION_ID,
       extra: null,
       extra_id: null,
+      extra_unit: null,
+      extra_unit_id: null,
       quantity: null,
       unit: {
         category: {
@@ -65,6 +67,8 @@ export const RESERVATION_DETAIL_SOURCE_FIXTURE = {
       dispatch_id: null,
       extra: null,
       extra_id: null,
+      extra_unit: null,
+      extra_unit_id: null,
       quantity: RESERVATION_DETAIL_TEST.QUANTITY,
       unit: null,
       unit_id: null,
@@ -77,6 +81,13 @@ export const RESERVATION_DETAIL_SOURCE_FIXTURE = {
       dispatch_id: null,
       extra: { name: RESERVATION_DETAIL_TEST.EXTRA_NAME },
       extra_id: RESERVATION_DETAIL_TEST.RESERVATION_ID,
+      extra_unit: {
+        category: {
+          name: RESERVATION_DETAIL_TEST.CATEGORY_NAME,
+        },
+        code: RESERVATION_DETAIL_TEST.UNIT_CODE,
+      },
+      extra_unit_id: RESERVATION_DETAIL_TEST.RESERVATION_ID,
       quantity: RESERVATION_DETAIL_TEST.QUANTITY,
       unit: null,
       unit_id: null,

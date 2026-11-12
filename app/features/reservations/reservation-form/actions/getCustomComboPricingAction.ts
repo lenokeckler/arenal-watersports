@@ -8,6 +8,7 @@ import { getAuthorizedReservationFormClient } from "../services/getAuthorizedRes
 import { hasValidCustomComboEquipmentSelections } from "../utils/hasValidCustomComboEquipmentSelections";
 import { isCustomComboPricingInput } from "../utils/isCustomComboPricingInput";
 import { isValidCustomComboPricingDuration } from "../utils/isValidCustomComboPricingDuration";
+import { isCustomComboMissingTariffError } from "../utils/mapCustomComboRpcError";
 
 const invalidPricingResult =
   (): CustomComboPricingActionResult => ({
@@ -46,10 +47,24 @@ export const getCustomComboPricingAction = async (
 
   await getAuthorizedReservationFormClient();
 
-  const pricing = await getCustomComboPrice({
-    durationHours: input.durationHours,
-    items: input.items,
-  });
+  try {
+    const pricing = await getCustomComboPrice({
+      durationHours: input.durationHours,
+      extraIds: input.extraIds,
+      extraUnitId: input.extraUnitId,
+      items: input.items,
+    });
 
-  return { ok: true, pricing };
+    return { ok: true, pricing };
+  } catch (error) {
+    return {
+      errors: isCustomComboMissingTariffError(error)
+        ? {
+            [CUSTOM_COMBO_RESERVATION_FIELD.ITEMS]:
+              CUSTOM_COMBO_RESERVATION_COPY.TARIFF_UNAVAILABLE,
+          }
+        : {},
+      ok: false,
+    };
+  }
 };

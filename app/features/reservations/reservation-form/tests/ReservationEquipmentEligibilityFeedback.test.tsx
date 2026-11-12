@@ -12,6 +12,7 @@ describe("ReservationEquipmentEligibilityFeedback", () => {
         categories={[]}
         viewModel={{
           ...RESERVATION_EQUIPMENT_FEEDBACK_VIEW_MODEL,
+          clearExtraSelection: vi.fn(),
           isEquipmentEligibilityLoading: true,
         }}
       />
@@ -32,6 +33,7 @@ describe("ReservationEquipmentEligibilityFeedback", () => {
         categories={[]}
         viewModel={{
           ...RESERVATION_EQUIPMENT_FEEDBACK_VIEW_MODEL,
+          clearExtraSelection: vi.fn(),
           hasEquipmentEligibilityError: true,
           handleRetryEquipmentEligibility: retry,
         }}

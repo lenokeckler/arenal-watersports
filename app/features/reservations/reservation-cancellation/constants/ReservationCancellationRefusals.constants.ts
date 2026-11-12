@@ -26,6 +26,18 @@ export const RESERVATION_CANCELLATION_REFUSALS: readonly ReservationCancellation
       formError: COPY.NOT_CANCELLABLE,
       message: MESSAGE.NOT_CANCELLABLE,
     },
+    {
+      errors: { cause: COPY.CAUSE_REQUIRED },
+      message: MESSAGE.CAUSE_REQUIRED,
+    },
+    {
+      formError: COPY.CAUSE_INVALID,
+      message: MESSAGE.CAUSE_INVALID,
+    },
+    {
+      formError: COPY.SUBMIT_ERROR,
+      message: MESSAGE.CAUSE_NOT_APPLICABLE,
+    },
     { formError: COPY.STALE, message: MESSAGE.STALE },
     {
       errors: { reason: COPY.REASON_REQUIRED },

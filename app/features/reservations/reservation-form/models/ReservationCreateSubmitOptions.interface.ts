@@ -24,10 +24,12 @@ export interface ReservationCreateSubmitOptions {
   ) => void;
   setSubmissionError: (message: string) => void;
   submitPredefinedComboReservation: (
-    input: PredefinedComboReservationInput
+    input: PredefinedComboReservationInput,
+    onSuccess?: () => void
   ) => void;
   submitCustomComboReservation: (
-    input: CustomComboReservationInput
+    input: CustomComboReservationInput,
+    onSuccess?: () => void
   ) => void;
   submitReservation: (
     input: ReservationFormInput,

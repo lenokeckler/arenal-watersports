@@ -5,10 +5,14 @@ import {
 } from "@supabase/supabase-js";
 
 export const REALTIME = {
+  CHANNEL_SEPARATOR: "-",
   CHANGE: REALTIME_LISTEN_TYPES.POSTGRES_CHANGES,
   EVENT: REALTIME_POSTGRES_CHANGES_LISTEN_EVENT.ALL,
   SCHEMA: "public",
   STATUS: REALTIME_SUBSCRIBE_STATES,
   ONLINE: "online",
   COALESCE_MS: 250,
+  FALLBACK_REFRESH_MS: 30_000,
+  VISIBILITY_CHANGE: "visibilitychange",
+  VISIBLE: "visible",
 } as const;

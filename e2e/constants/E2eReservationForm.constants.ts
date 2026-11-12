@@ -124,9 +124,11 @@ export const E2E_RESERVATION_GUIDE_ONLY_CATEGORY = {
 } as const;
 
 export const E2E_RESERVATION_GUIDES = {
+  ALIGNMENT_TOLERANCE_PX: 4,
   FIRST_NAME: "Guia de prueba uno",
   SECOND_NAME: "Guia de prueba dos",
   UNMARKED_WORKER_NAME: "Administración",
+  NO_SELECTION_WARNING_SUFFIX: "no-guide-warning",
   SCREENSHOT_BASENAME: "us-res-12-guide-assignment",
   MULTIPLE_GUIDES_SUFFIX: "multiple-guides",
 } as const;
