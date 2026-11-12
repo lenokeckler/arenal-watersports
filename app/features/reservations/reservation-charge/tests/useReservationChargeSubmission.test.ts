@@ -1,8 +1,4 @@
-import {
-  act,
-  renderHook,
-  type RenderHookResult,
-} from "@testing-library/react";
+import { act } from "@testing-library/react";
 import {
   beforeEach,
   describe,
@@ -12,36 +8,18 @@ import {
 } from "vitest";
 import { STRING } from "@/app/constants";
 import { recordReservationChargeAction } from "../actions/recordReservationChargeAction";
-import { RESERVATION_CHARGE_FEEDBACK_COPY as FEEDBACK } from "../constants/ReservationChargeFeedbackCopy.constants";
 import { RESERVATION_CHARGE_VALIDATION_COPY as VALIDATION } from "../constants/ReservationChargeValidationCopy.constants";
-import { useReservationChargeSubmission } from "../hooks/useReservationChargeSubmission";
 import type { ReservationChargeActionResult } from "../models/ReservationChargeActionResult.type";
-import type { ReservationChargeSubmission } from "../models/ReservationChargeSubmission.interface";
-import type { ReservationChargeValues } from "../models/ReservationChargeValues.interface";
-import { CHARGE_RESERVATION_ID } from "./ReservationCharge.constants";
-import {
-  CHARGE_RECORDED,
-  CHARGE_UNEXPECTED_ERROR,
-} from "./ReservationChargeAction.constants";
-import { NETWORK_FAILURE } from "./ReservationChargeForm.constants";
+import { CHARGE_RECORDED } from "./ReservationChargeAction.constants";
 import {
   VALID_CHARGE_INPUT,
   VALID_CHARGE_VALUES,
 } from "./ReservationChargeValues.constants";
+import { renderSubmission } from "./renderReservationChargeSubmission";
 
 vi.mock("../actions/recordReservationChargeAction", () => ({
   recordReservationChargeAction: vi.fn(),
 }));
-
-const renderSubmission = (
-  values: ReservationChargeValues = VALID_CHARGE_VALUES
-): RenderHookResult<ReservationChargeSubmission, unknown> =>
-  renderHook(() =>
-    useReservationChargeSubmission(
-      CHARGE_RESERVATION_ID,
-      values
-    )
-  );
 
 describe("useReservationChargeSubmission", () => {
   beforeEach(() => {
@@ -84,63 +62,6 @@ describe("useReservationChargeSubmission", () => {
       CHARGE_RECORDED
     );
   });
-
-  it("shows the field errors the action returns", async () => {
-    vi.mocked(
-      recordReservationChargeAction
-    ).mockResolvedValue({
-      errors: { paymentMethod: VALIDATION.METHOD_REQUIRED },
-      ok: false,
-    });
-    const { result } = renderSubmission();
-
-    await act(() =>
-      Promise.resolve(result.current.handleSubmit())
-    );
-
-    expect(result.current.errors).toEqual({
-      paymentMethod: VALIDATION.METHOD_REQUIRED,
-    });
-    expect(result.current.recorded).toBeNull();
-  });
-
-  it("shows the form error the action returns", async () => {
-    vi.mocked(
-      recordReservationChargeAction
-    ).mockResolvedValue({
-      errors: {},
-      formError: FEEDBACK.STATUS_CHANGED,
-      ok: false,
-    });
-    const { result } = renderSubmission();
-
-    await act(() =>
-      Promise.resolve(result.current.handleSubmit())
-    );
-
-    expect(result.current.formError).toBe(
-      FEEDBACK.STATUS_CHANGED
-    );
-  });
-
-  it.each([NETWORK_FAILURE, CHARGE_UNEXPECTED_ERROR])(
-    "shows the offline message when the action throws",
-    async (failure) => {
-      vi.mocked(
-        recordReservationChargeAction
-      ).mockRejectedValue(failure);
-      const { result } = renderSubmission();
-
-      await act(() =>
-        Promise.resolve(result.current.handleSubmit())
-      );
-
-      expect(result.current.formError).toBe(
-        FEEDBACK.OFFLINE
-      );
-      expect(result.current.isPending).toBe(false);
-    }
-  );
 
   it("ignores a second submit while one is pending", async () => {
     let resolveAction: (
