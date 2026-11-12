@@ -1,5 +1,9 @@
 import { beforeEach, expect, it, vi } from "vitest";
-import { PAGINATION } from "@/app/constants";
+import {
+  PAGINATION,
+  SUPABASE_RPC,
+  SUPABASE_WORK_AREA,
+} from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
 import { getInventoryCategoryDetails } from "../readInventory";
 import {
@@ -26,7 +30,15 @@ beforeEach(() => {
     data: { user: INVENTORY_SERVICE_USER },
     error: null,
   });
-  rpc.mockResolvedValue({ data: true, error: null });
+  rpc.mockImplementation((rpcName: string) =>
+    Promise.resolve({
+      data:
+        rpcName === SUPABASE_RPC.CURRENT_WORK_AREA
+          ? SUPABASE_WORK_AREA.OPERATIONS
+          : true,
+      error: null,
+    })
+  );
   supabaseMocks.createServerSupabaseClient.mockResolvedValue(
     {
       auth: { getUser },
