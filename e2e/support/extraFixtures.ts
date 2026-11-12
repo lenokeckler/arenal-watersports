@@ -6,7 +6,10 @@ import type { SeededExtra } from "../models/SeededExtra.interface";
 
 export const insertExtra = async (
   name: string,
-  input: Pick<ExtraSeedInput, "status">
+  input: Pick<
+    ExtraSeedInput,
+    "status" | "priceUsd" | "priceCrc"
+  >
 ): Promise<SeededExtra> => {
   const supabase = createServiceRoleSupabaseClient();
 
@@ -15,6 +18,8 @@ export const insertExtra = async (
     .insert({
       created_by: E2E_ADMIN_ACCOUNT.workerId,
       name,
+      price_crc: input.priceCrc,
+      price_usd: input.priceUsd,
       status: input.status,
       updated_by: E2E_ADMIN_ACCOUNT.workerId,
     })

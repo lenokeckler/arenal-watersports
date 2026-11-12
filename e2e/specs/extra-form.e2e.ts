@@ -1,5 +1,10 @@
 import { expect } from "@playwright/test";
-import { PATHS, STRING } from "@/app/constants";
+import {
+  CURRENCY_CODE,
+  CURRENCY_SYMBOL,
+  PATHS,
+  STRING,
+} from "@/app/constants";
 import { EXTRA_CATALOG_COPY } from "@/app/features/administration/extra-catalog/constants/ExtraCatalogCopy.constants";
 import { EXTRA_FORM_MODE } from "@/app/features/administration/extra-catalog/constants/ExtraFormMode.constants";
 import { EXTRA_FORM_TITLE } from "@/app/features/administration/extra-catalog/constants/ExtraFormModeCopy.constants";
@@ -10,17 +15,23 @@ import {
   E2E_BLANK_EXTRA_NAME,
   E2E_EXTRA_FORM_DUPLICATE_PADDING,
   E2E_EXTRA_FORM_SCENARIO,
+  E2E_EXTRA_PRICE_TEXT,
+  E2E_INVALID_EXTRA_PRICES,
   E2E_MALFORMED_EXTRA_ID,
   E2E_UNKNOWN_EXTRA_ID,
 } from "../constants/E2eExtraForm.constants";
-import { resolveExtraFixtureName } from "../constants/E2eExtraList.constants";
+import {
+  E2E_EXTRA_SEED_PRICE,
+  resolveExtraFixtureName,
+} from "../constants/E2eExtraList.constants";
 import { E2E_ONE_HANDED_USE_MINIMUM_TARGET_SIZE_PX } from "../constants/E2eOneHandedUse.constants";
 import { E2E_PROJECT } from "../constants/E2eRuntime.constants";
 import { countExtrasNamed } from "../support/extraFixtures";
+import { formatE2eExtraPrice } from "../support/formatE2eExtraPrice";
 import { test } from "../support/extraFormTest";
 
 test.describe("Extra form", () => {
-  test("creates an extra, shows the success toast and lists it", async ({
+  test("creates an extra with only a dollar price, shows the success toast and lists it with that price", async ({
     page,
     formPage,
     listPage,
@@ -34,6 +45,10 @@ test.describe("Extra form", () => {
     await formPage.goTo();
 
     await formPage.fillName(name);
+    await formPage.fillPrice(
+      CURRENCY_CODE.USD,
+      E2E_EXTRA_PRICE_TEXT.USD
+    );
     await formPage.submit(
       EXTRA_CATALOG_COPY.SUBMIT_BUTTON_CREATE
     );
@@ -47,7 +62,126 @@ test.describe("Extra form", () => {
       PATHS.ADMINISTRATION.EXTRAS
     );
     await expect(listPage.getExtraCard(name)).toBeVisible();
+    await expect(
+      listPage.getExtraPrice(
+        name,
+        formatE2eExtraPrice(
+          CURRENCY_CODE.USD,
+          E2E_EXTRA_PRICE_TEXT.USD
+        )
+      )
+    ).toBeVisible();
+    await expect(
+      listPage.getExtraCard(name)
+    ).not.toContainText(CURRENCY_SYMBOL[CURRENCY_CODE.CRC]);
   });
+
+  test("creates an extra with both prices and lists both on its card", async ({
+    page,
+    formPage,
+    listPage,
+    trackCreatedExtraName,
+  }, testInfo) => {
+    const name = resolveExtraFixtureName(
+      testInfo.project.name,
+      E2E_EXTRA_FORM_SCENARIO.CREATE_BOTH_PRICES
+    );
+    trackCreatedExtraName(name);
+    await formPage.goTo();
+
+    await formPage.fillName(name);
+    await formPage.fillPrice(
+      CURRENCY_CODE.USD,
+      E2E_EXTRA_PRICE_TEXT.USD
+    );
+    await formPage.fillPrice(
+      CURRENCY_CODE.CRC,
+      E2E_EXTRA_PRICE_TEXT.CRC
+    );
+    await formPage.submit(
+      EXTRA_CATALOG_COPY.SUBMIT_BUTTON_CREATE
+    );
+
+    await expect(page).toHaveURL(
+      PATHS.ADMINISTRATION.EXTRAS
+    );
+    await expect(
+      listPage.getExtraPrice(
+        name,
+        formatE2eExtraPrice(
+          CURRENCY_CODE.USD,
+          E2E_EXTRA_PRICE_TEXT.USD
+        )
+      )
+    ).toBeVisible();
+    await expect(
+      listPage.getExtraPrice(
+        name,
+        formatE2eExtraPrice(
+          CURRENCY_CODE.CRC,
+          E2E_EXTRA_PRICE_TEXT.CRC
+        )
+      )
+    ).toBeVisible();
+  });
+
+  test("shows the prices required error and creates nothing when no price is given", async ({
+    page,
+    formPage,
+    trackCreatedExtraName,
+  }, testInfo) => {
+    const name = resolveExtraFixtureName(
+      testInfo.project.name,
+      E2E_EXTRA_FORM_SCENARIO.CREATE_NO_PRICE
+    );
+    trackCreatedExtraName(name);
+    await formPage.goTo();
+
+    await formPage.fillName(name);
+    await formPage.submit(
+      EXTRA_CATALOG_COPY.SUBMIT_BUTTON_CREATE
+    );
+
+    await expect(
+      formPage.getPricesRequiredError()
+    ).toBeVisible();
+    await expect(page).toHaveURL(
+      PATHS.ADMINISTRATION.EXTRAS_NEW
+    );
+    expect(await countExtrasNamed(name)).toBe(0);
+  });
+
+  for (const invalidPrice of E2E_INVALID_EXTRA_PRICES) {
+    test(`shows the price error and creates nothing when the dollar price is ${invalidPrice.text}`, async ({
+      page,
+      formPage,
+      trackCreatedExtraName,
+    }, testInfo) => {
+      const name = resolveExtraFixtureName(
+        testInfo.project.name,
+        E2E_EXTRA_FORM_SCENARIO.CREATE_INVALID_PRICE
+      );
+      trackCreatedExtraName(name);
+      await formPage.goTo();
+
+      await formPage.fillName(name);
+      await formPage.fillPrice(
+        CURRENCY_CODE.USD,
+        invalidPrice.text
+      );
+      await formPage.submit(
+        EXTRA_CATALOG_COPY.SUBMIT_BUTTON_CREATE
+      );
+
+      await expect(
+        formPage.getPriceError(CURRENCY_CODE.USD)
+      ).toHaveText(invalidPrice.expectedError);
+      await expect(page).toHaveURL(
+        PATHS.ADMINISTRATION.EXTRAS_NEW
+      );
+      expect(await countExtrasNamed(name)).toBe(0);
+    });
+  }
 
   test("shows the required error and creates nothing when the name is empty", async ({
     page,
@@ -100,6 +234,10 @@ test.describe("Extra form", () => {
     await formPage.goTo();
 
     await formPage.fillName(duplicateName);
+    await formPage.fillPrice(
+      CURRENCY_CODE.USD,
+      E2E_EXTRA_PRICE_TEXT.USD
+    );
     await formPage.submit(
       EXTRA_CATALOG_COPY.SUBMIT_BUTTON_CREATE
     );
@@ -152,6 +290,53 @@ test.describe("Extra form", () => {
     await expect(listPage.getExtraCard(name)).toHaveCount(
       0
     );
+  });
+
+  test("preloads the prices of an extra, changes them and the list shows the new price", async ({
+    page,
+    formPage,
+    listPage,
+    seedExtra,
+  }) => {
+    const { id, name } = await seedExtra({
+      priceCrc: E2E_EXTRA_SEED_PRICE.CRC,
+      scenario: E2E_EXTRA_FORM_SCENARIO.EDIT_PRICE,
+    });
+    await formPage.goTo(resolveExtraEditPath(id));
+    await expect(
+      formPage.getPriceInput(CURRENCY_CODE.USD)
+    ).toHaveValue(`${E2E_EXTRA_SEED_PRICE.USD}`);
+    await expect(
+      formPage.getPriceInput(CURRENCY_CODE.CRC)
+    ).toHaveValue(`${E2E_EXTRA_SEED_PRICE.CRC}`);
+
+    await formPage.fillPrice(
+      CURRENCY_CODE.USD,
+      E2E_EXTRA_PRICE_TEXT.USD_EDITED
+    );
+    await formPage.fillPrice(
+      CURRENCY_CODE.CRC,
+      STRING.Empty
+    );
+    await formPage.submit(
+      EXTRA_CATALOG_COPY.SUBMIT_BUTTON_EDIT
+    );
+
+    await expect(page).toHaveURL(
+      PATHS.ADMINISTRATION.EXTRAS
+    );
+    await expect(
+      listPage.getExtraPrice(
+        name,
+        formatE2eExtraPrice(
+          CURRENCY_CODE.USD,
+          E2E_EXTRA_PRICE_TEXT.USD_EDITED
+        )
+      )
+    ).toBeVisible();
+    await expect(
+      listPage.getExtraCard(name)
+    ).not.toContainText(CURRENCY_SYMBOL[CURRENCY_CODE.CRC]);
   });
 
   test("returns to the list without changes when cancelling an edit", async ({
