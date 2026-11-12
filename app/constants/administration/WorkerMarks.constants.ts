@@ -6,6 +6,7 @@ import {
 export const GRANTABLE_WORKER_MARKS = [
   SUPABASE_WORKER_MARK.GUIDE,
   SUPABASE_WORKER_MARK.GENERAL_MANAGER,
+  SUPABASE_WORKER_MARK.EXTERNAL_GUIDE_REGISTRATION,
 ] as const satisfies readonly WorkerMark[];
 
 export type GrantableWorkerMark =

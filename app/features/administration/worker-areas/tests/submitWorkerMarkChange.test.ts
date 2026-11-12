@@ -17,6 +17,8 @@ import {
 import { changeWorkerMarkAsSignedIn } from "@/app/services/worker-areas";
 import { submitWorkerMarkChange } from "../actions/submitWorkerMarkChange";
 
+const UNKNOWN_MARK = "unknown_mark";
+
 vi.mock("next/navigation", () => ({
   redirect: vi.fn(() => {
     throw new Error("redirected");
@@ -90,8 +92,7 @@ describe("submitWorkerMarkChange", () => {
   it.each([
     [
       {
-        [WORKER_MARK_FIELD.MARK]:
-          SUPABASE_WORKER_MARK.EXTERNAL_GUIDE_REGISTRATION,
+        [WORKER_MARK_FIELD.MARK]: UNKNOWN_MARK,
       },
     ],
     [{ [WORKER_AREA_FIELD.INTENT]: "toggle" }],

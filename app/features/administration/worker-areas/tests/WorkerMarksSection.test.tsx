@@ -38,6 +38,8 @@ const OVERVIEW = {
 
 const GUIDE = SUPABASE_WORKER_MARK.GUIDE;
 
+const UNKNOWN_MARK = "unknown_mark";
+
 describe("resolveWorkerMarkStatus", () => {
   it("offers to put a missing mark", () => {
     expect(
@@ -79,8 +81,7 @@ describe("readWorkerAreasSearch for marks", () => {
   it("ignores a mark that is not offered here", () => {
     expect(
       readWorkerAreasSearch({
-        [WORKER_MARK_FIELD.MARK]:
-          SUPABASE_WORKER_MARK.EXTERNAL_GUIDE_REGISTRATION,
+        [WORKER_MARK_FIELD.MARK]: UNKNOWN_MARK,
       })
     ).toMatchObject({ mark: null });
   });
@@ -152,8 +153,41 @@ describe("WorkerMarksPanel with both marks", () => {
       })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", {
+      screen.getAllByRole("button", {
         name: WORKER_AREAS_COPY.MARK_GRANT,
+      })
+    ).toHaveLength(GRANTABLE_WORKER_MARKS.length - 1);
+  });
+
+  it("offers the external guide registration mark and says what it enables", () => {
+    render(
+      <WorkerMarksPanel
+        overview={{
+          ...OVERVIEW,
+          marks: [
+            SUPABASE_WORKER_MARK.EXTERNAL_GUIDE_REGISTRATION,
+          ],
+        }}
+      />
+    );
+
+    expect(
+      screen.getByText(
+        WORKER_MARK_LABEL[
+          SUPABASE_WORKER_MARK.EXTERNAL_GUIDE_REGISTRATION
+        ]
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        WORKER_MARK_DESCRIPTION[
+          SUPABASE_WORKER_MARK.EXTERNAL_GUIDE_REGISTRATION
+        ]
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: WORKER_AREAS_COPY.REVOKE,
       })
     ).toBeInTheDocument();
   });
