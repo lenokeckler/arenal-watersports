@@ -10,7 +10,7 @@ import CategoryListBody from "./components/CategoryListBody";
 import CategoryListHeader from "./components/CategoryListHeader";
 import { useCategoryListViewModel } from "./hooks/useCategoryListViewModel";
 import type { CategoryListViewProps } from "./models/CategoryListViewProps.interface";
-import { CATEGORY_LIST_CONTENT_CLASS } from "./styles/CategoryList.styles";
+import { CATEGORY_LIST_PAGE_CONTENT_CLASS } from "./styles/CategoryList.styles";
 
 const CategoryListView = ({
   categories,
@@ -24,7 +24,7 @@ const CategoryListView = ({
 
   return (
     <div
-      className={CATEGORY_LIST_CONTENT_CLASS}
+      className={CATEGORY_LIST_PAGE_CONTENT_CLASS}
       {...WIDE_LAYOUT_MARKER_PROPS}
     >
       <CategoryListHeader totalCount={totalCount} />

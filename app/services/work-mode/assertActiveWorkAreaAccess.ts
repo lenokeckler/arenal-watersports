@@ -1,8 +1,19 @@
 import { redirect } from "next/navigation";
 import { PATHS, SUPABASE_RPC } from "@/app/constants";
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
+import { isSignedInAdministrator } from "@/app/services/worker-registration/isSignedInAdministrator";
 import type { WorkArea } from "@/app/types";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+
+const redirectUnlessAdministrator = async (
+  supabase: ServerSupabaseClient
+): Promise<void> => {
+  if (await isSignedInAdministrator(supabase)) {
+    return;
+  }
+
+  redirect(PATHS.MODE);
+};
 
 export const assertActiveWorkAreaAccess = async (
   supabase: ServerSupabaseClient,
@@ -17,7 +28,8 @@ export const assertActiveWorkAreaAccess = async (
   );
 
   if (!currentArea || !allowedAreas.includes(currentArea)) {
-    redirect(PATHS.MODE);
+    await redirectUnlessAdministrator(supabase);
+    return;
   }
 
   const { data: hasActiveArea, error: activeAreaError } =
@@ -31,6 +43,6 @@ export const assertActiveWorkAreaAccess = async (
   );
 
   if (!hasActiveArea) {
-    redirect(PATHS.MODE);
+    await redirectUnlessAdministrator(supabase);
   }
 };

@@ -1,6 +1,12 @@
-import { RESERVATION_CALENDAR_ACTIVE_STATUS } from "@/app/constants";
+import {
+  RESERVATION_CALENDAR_ACTIVE_STATUS,
+  STRING,
+} from "@/app/constants";
+import { describeReservationEquipment } from "@/app/components/reservation-calendar/utils/describeReservationEquipment";
+import { formatReservationCalendarDateTime } from "@/app/components/reservation-calendar/utils/formatReservationCalendarDateTime";
 import { mapReservationCalendarQueryEquipment } from "@/app/services/reservations/utils/mapReservationCalendarQueryEquipment";
 import type { NullableRef } from "@/app/types";
+import { RESERVATION_EDIT_COPY } from "../constants/ReservationEditCopy.constants";
 import { RESERVATION_EDIT_QUERY } from "../constants/ReservationEditQuery.constants";
 import {
   RESERVATION_EQUIPMENT_LOCK,
@@ -13,17 +19,31 @@ import type { ReservationEditRowItem } from "../models/ReservationEditRowItem.ty
 import { getCostaRicaDate } from "./getCostaRicaDate";
 import { getCostaRicaTime } from "./getCostaRicaTime";
 
+const getItemsInIdOrder = (
+  row: ReservationEditRow
+): ReservationEditRowItem[] =>
+  [...row.reservation_items].sort((first, second) =>
+    first.id.localeCompare(second.id)
+  );
+
 const getEditableItems = (
   row: ReservationEditRow
 ): ReservationEditRowItem[] =>
-  row.reservation_items
-    .filter(
-      (item) =>
-        item.extra_id === null && item.dispatch_id === null
-    )
-    .sort((first, second) =>
-      first.id.localeCompare(second.id)
-    );
+  getItemsInIdOrder(row).filter(
+    (item) =>
+      item.extra_id === null && item.dispatch_id === null
+  );
+
+const buildEquipmentLabels = (
+  row: ReservationEditRow
+): string[] =>
+  getItemsInIdOrder(row).flatMap((item) => {
+    const equipment =
+      mapReservationCalendarQueryEquipment(item);
+    return equipment
+      ? [describeReservationEquipment(equipment)]
+      : [];
+  });
 
 const resolveEquipmentLock = (
   row: ReservationEditRow,
@@ -49,8 +69,21 @@ const mapEquipment = (
     : null;
 };
 
+const buildLastEditLabel = (
+  lastEditorName: string,
+  updatedAt: string
+): string =>
+  [
+    RESERVATION_EDIT_COPY.LAST_EDIT,
+    [
+      lastEditorName,
+      formatReservationCalendarDateTime(updatedAt),
+    ].join(RESERVATION_EDIT_COPY.LAST_EDIT_SEPARATOR),
+  ].join(STRING.SPACE);
+
 export const mapReservationEdit = (
-  row: ReservationEditRow
+  row: ReservationEditRow,
+  lastEditorName: string
 ): ReservationEdit => {
   const editableItems = getEditableItems(row);
   const startsAt = new Date(row.starts_at);
@@ -59,6 +92,7 @@ export const mapReservationEdit = (
     date: getCostaRicaDate(startsAt),
     durationMinutes: row.duration_minutes,
     equipment: mapEquipment(editableItems),
+    equipmentLabels: buildEquipmentLabels(row),
     equipmentLock: resolveEquipmentLock(
       row,
       editableItems.length
@@ -68,6 +102,10 @@ export const mapReservationEdit = (
       row.status ===
         RESERVATION_CALENDAR_ACTIVE_STATUS.SCHEDULED &&
       editableItems.length > 0,
+    lastEditLabel: buildLastEditLabel(
+      lastEditorName,
+      row.updated_at
+    ),
     lastEditedAt: row.updated_at,
     peopleCount: row.people_count,
     time: getCostaRicaTime(startsAt),

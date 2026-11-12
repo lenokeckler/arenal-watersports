@@ -8,11 +8,22 @@ export const VALID_RESERVATION_FORM_INPUT: ReservationFormInput =
     customerName: "Test Reservation",
     date: "2028-02-29",
     durationHours: 1.5,
+    extraIds: [],
     peopleCount: 3,
     quantity: 2,
     time: "09:30",
     unitId: "",
   };
+
+export const INVALID_EXTRA_ID = "invalid-extra-id";
+export const DUPLICATE_EXTRA_IDS = [
+  VALID_RESERVATION_FORM_INPUT.categoryId,
+  VALID_RESERVATION_FORM_INPUT.categoryId,
+];
+export const CASE_INSENSITIVE_DUPLICATE_EXTRA_IDS = [
+  VALID_RESERVATION_FORM_INPUT.categoryId,
+  VALID_RESERVATION_FORM_INPUT.categoryId.toUpperCase(),
+];
 
 export const CREATED_RESERVATION_ID =
   "e2400000-0000-4000-8000-000000000201";
