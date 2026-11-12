@@ -7,7 +7,7 @@ export const SUPABASE_WORKER_COLUMN = {
   MARK: "mark",
   USERNAME: "username",
   WORKER_AREAS_OVERVIEW:
-    "id, username, full_name, base_role, is_external_guide, status, blocked_reason, deleted_at, personal_email",
+    "id, username, full_name, base_role, is_external_guide, status, blocked_reason, deleted_at, personal_email, expires_at",
   WORKER_ID: "worker_id",
   PERSONAL_EMAIL: "personal_email",
   PERSONAL_EMAIL_STATE: "personal_email, base_role",
