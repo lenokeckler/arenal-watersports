@@ -25,14 +25,14 @@ export const BOARD_CATEGORY_NAME = {
   TOUR: "Tour",
 } as const;
 
-export const NULL_BOARD_CATEGORY_ROW: BoardCategoryRow = {
+export const NULL_BOARD_CATEGORY_ROW = {
   category_id: null,
   category_name: null,
   free_count: null,
   group_name: null,
   in_use_count: null,
   total_count: null,
-};
+} as unknown as BoardCategoryRow;
 
 export const FILLED_BOARD_CATEGORY_ROW: BoardCategoryRow = {
   category_id: "category-filled",

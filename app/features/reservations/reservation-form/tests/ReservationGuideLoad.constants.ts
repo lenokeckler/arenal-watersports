@@ -1,0 +1,5 @@
+export const RESERVATION_GUIDE_LOAD_TEST = {
+  CONTROL_FLOW_MESSAGE: "NEXT_REDIRECT",
+  FAILURE_CODE: "PGRST000",
+  FAILURE_MESSAGE: "Guide lookup failed",
+} as const;

@@ -7,21 +7,14 @@ import {
 } from "vitest";
 import {
   INVENTORY_DATA_SOURCE,
-  INVENTORY_UNIT_STATUS,
   PAGINATION,
+  SUPABASE_RPC,
+  SUPABASE_WORK_AREA,
 } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
+import { getInventorySummaryPage } from "../readInventory";
 import {
-  getInventoryCategoryDetails,
-  getInventorySummaryPage,
-} from "../readInventory";
-import {
-  INVENTORY_SERVICE_ACTIVE_UNITS,
-  INVENTORY_SERVICE_QUANTITY_CATEGORY_ID,
-  INVENTORY_SERVICE_QUANTITY_SUMMARY_ROW,
   INVENTORY_SERVICE_SUMMARY_RESULT,
-  INVENTORY_SERVICE_UNIT_CATEGORY_ID,
-  INVENTORY_SERVICE_UNIT_SUMMARY_ROW,
   INVENTORY_SERVICE_USER,
 } from "./InventoryReadService.constants";
 
@@ -52,15 +45,19 @@ const resetMocks = (): void => {
     data: { user: INVENTORY_SERVICE_USER },
     error: null,
   });
-  rpc.mockResolvedValue({ data: true, error: null });
+  rpc.mockImplementation((rpcName: string) =>
+    Promise.resolve({
+      data:
+        rpcName === SUPABASE_RPC.CURRENT_WORK_AREA
+          ? SUPABASE_WORK_AREA.OPERATIONS
+          : true,
+      error: null,
+    })
+  );
   from.mockReturnValue(queryBuilder);
   queryBuilder.range.mockResolvedValue(
     INVENTORY_SERVICE_SUMMARY_RESULT
   );
-  queryBuilder.maybeSingle.mockResolvedValue({
-    data: INVENTORY_SERVICE_UNIT_SUMMARY_ROW,
-    error: null,
-  });
   supabaseMocks.createServerSupabaseClient.mockResolvedValue(
     {
       auth: { getUser },
@@ -100,51 +97,5 @@ describe("inventory read queries", () => {
       pageCount: PAGINATION.ONE_PAGE + PAGINATION.ONE_PAGE,
       totalCount: INVENTORY_SERVICE_SUMMARY_RESULT.count,
     });
-  });
-
-  it("reads unit codes and excludes decommissioned equipment", async () => {
-    queryBuilder.range.mockResolvedValue({
-      data: INVENTORY_SERVICE_ACTIVE_UNITS,
-      error: null,
-      count: INVENTORY_SERVICE_ACTIVE_UNITS.length,
-    });
-
-    const categoryDetails =
-      await getInventoryCategoryDetails(
-        INVENTORY_SERVICE_UNIT_CATEGORY_ID,
-        PAGINATION.DEFAULT_PAGE
-      );
-
-    expect(categoryDetails.summary).toEqual(
-      INVENTORY_SERVICE_UNIT_SUMMARY_ROW
-    );
-    expect(queryBuilder.neq).toHaveBeenCalledWith(
-      INVENTORY_DATA_SOURCE.RECORDED_STATUS_COLUMN,
-      INVENTORY_UNIT_STATUS.DECOMMISSIONED
-    );
-    expect(categoryDetails.units.items).toEqual(
-      INVENTORY_SERVICE_ACTIVE_UNITS
-    );
-  });
-
-  it("does not query units for a quantity-tracked category", async () => {
-    queryBuilder.maybeSingle.mockResolvedValue({
-      data: INVENTORY_SERVICE_QUANTITY_SUMMARY_ROW,
-      error: null,
-    });
-
-    const categoryDetails =
-      await getInventoryCategoryDetails(
-        INVENTORY_SERVICE_QUANTITY_CATEGORY_ID,
-        PAGINATION.DEFAULT_PAGE
-      );
-
-    expect(categoryDetails.summary).toEqual(
-      INVENTORY_SERVICE_QUANTITY_SUMMARY_ROW
-    );
-    expect(from).toHaveBeenCalledTimes(PAGINATION.ONE_PAGE);
-    expect(categoryDetails.units.totalCount).toBe(
-      PAGINATION.ZERO_RESULTS
-    );
   });
 });

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { STRING } from "@/app/constants";
 import type { ReservationFormActionResult } from "../models/ReservationFormActionResult.type";
-import type { ReservationFormField } from "../models/ReservationFormField.constants";
+import type { ReservationFormErrorField } from "../models/ReservationFormField.constants";
 
 const EMPTY_ERRORS: Partial<
-  Record<ReservationFormField, string>
+  Record<ReservationFormErrorField, string>
 > = {};
 
 export const useReservationSubmissionErrors = () => {
@@ -13,7 +13,9 @@ export const useReservationSubmissionErrors = () => {
     STRING.Empty
   );
 
-  const clearFieldError = (field: ReservationFormField) => {
+  const clearFieldError = (
+    field: ReservationFormErrorField
+  ) => {
     setErrors((currentErrors) => ({
       ...currentErrors,
       [field]: undefined,
@@ -35,6 +37,16 @@ export const useReservationSubmissionErrors = () => {
     setErrors(EMPTY_ERRORS);
     setFormError(message);
   };
+  const setFieldError = (
+    field: ReservationFormErrorField,
+    message: string
+  ): void => {
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      [field]: message,
+    }));
+    setFormError(STRING.Empty);
+  };
 
   return {
     applyResult,
@@ -42,5 +54,6 @@ export const useReservationSubmissionErrors = () => {
     errors,
     formError,
     setSubmissionError,
+    setFieldError,
   };
 };

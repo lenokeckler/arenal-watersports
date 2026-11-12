@@ -5,9 +5,16 @@ import type { ReservationType } from "../models/ReservationType.type";
 export const filterReservationCategoriesByType = (
   categories: ReservationCategoryOption[],
   reservationType: ReservationType
-): ReservationCategoryOption[] =>
-  reservationType === RESERVATION_TYPE.TOUR
-    ? categories
-    : categories.filter(
-        (category) => !category.isGuideOnly
-      );
+): ReservationCategoryOption[] => {
+  if (reservationType === RESERVATION_TYPE.COMBO) {
+    return categories;
+  }
+
+  if (reservationType === RESERVATION_TYPE.TOUR) {
+    return categories;
+  }
+
+  return categories.filter(
+    (category) => !category.isGuideOnly
+  );
+};
