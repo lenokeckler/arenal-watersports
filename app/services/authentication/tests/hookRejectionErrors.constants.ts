@@ -28,6 +28,10 @@ export const RECOVERY_REQUIRED_ERROR =
     SIGN_IN_HOOK_REJECTION.RECOVERY_REQUIRED
   );
 
+export const EXPIRED_ERROR = createHookRejectionError(
+  SIGN_IN_HOOK_REJECTION.EXPIRED
+);
+
 export const UNAVAILABLE_ERROR = createHookRejectionError(
   SIGN_IN_HOOK_REJECTION.UNAVAILABLE
 );
