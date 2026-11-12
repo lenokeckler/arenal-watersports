@@ -1,5 +1,8 @@
 export const RESERVATION_CANCELLATION_FIELD_ID = {
   ALERT: "reservation-cancellation-alert",
+  CAUSE: "reservation-cancellation-cause",
+  CAUSE_ERROR: "reservation-cancellation-cause-error",
+  CAUSE_HELPER: "reservation-cancellation-cause-helper",
   HEADING: "reservation-cancellation-heading",
   REASON: "reservation-cancellation-reason",
   SUMMARY_HEADING:

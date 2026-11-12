@@ -4,6 +4,7 @@ import ReservationFormView from "../ReservationFormView";
 import type { ReservationCategoryOption } from "../models/ReservationCategoryOption.interface";
 import type { ReservationGuideLoadResult } from "../models/ReservationGuideLoadResult.type";
 import type { ReservationPredefinedCombo } from "../models/ReservationPredefinedCombo.interface";
+import type { ReservationUnitCategoryOption } from "../models/ReservationUnitCategoryOption.interface";
 import { EMPTY_RESERVATION_GUIDE_LOAD_RESULT } from "../constants/ReservationGuideLoad.constants";
 import { createReservationFormViewPage } from "./ReservationFormView.page";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
@@ -60,7 +61,7 @@ export const renderReservationForm = (
             ? [
                 {
                   id: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID,
-                  isInterchangeable: true,
+                  isInterchangeable: false,
                   isGuideOnly: hasGuideOnlyCategory,
                   name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
                 },
@@ -115,7 +116,8 @@ export const renderReservationFormWithCombos = (
       isInterchangeable: true,
       name: RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME,
     },
-  ]
+  ],
+  unitCategories: ReservationUnitCategoryOption[] = []
 ) => {
   routerBack.mockClear();
   const { container } = render(
@@ -124,7 +126,7 @@ export const renderReservationFormWithCombos = (
       guideLoadResult={guideLoadResult}
       initialDate={RESERVATION_FORM_VIEW_TEST.DATE}
       predefinedCombos={predefinedCombos}
-      unitCategories={[]}
+      unitCategories={unitCategories}
     />
   );
   return createReservationFormViewPage(container);

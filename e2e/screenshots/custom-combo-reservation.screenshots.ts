@@ -22,15 +22,31 @@ test("captures custom combo selection and pricing", async ({
   await reservationPage.goTo();
   await reservationPage.getHeading().waitFor();
   await reservationPage.selectCombo();
-  await reservationPage.scrollToNoGuideStatus();
+  await reservationPage.submit();
   await expect(
-    reservationPage.getNoGuideStatus()
+    reservationPage.getEquipmentSelectionError()
   ).toBeVisible();
+  await expect(
+    reservationPage.getEquipmentSelectionErrorCenterOffset()
+  ).resolves.toBeLessThanOrEqual(
+    E2E_CUSTOM_COMBO.ERROR_CENTER_TOLERANCE_PX
+  );
   await page
     .locator(E2E_NEXT_DEV_INDICATOR_SELECTOR)
     .evaluateAll((indicators) =>
       indicators.forEach((indicator) => indicator.remove())
     );
+  await captureViewport(
+    page,
+    resolveDeviceScreenshotFileName(
+      `${E2E_CUSTOM_COMBO.SCREENSHOT_BASENAME}-${E2E_CUSTOM_COMBO_SCREENSHOT.MISSING_EQUIPMENT_ERROR}`,
+      testInfo.project.name
+    )
+  );
+  await reservationPage.scrollToNoGuideStatus();
+  await expect(
+    reservationPage.getNoGuideStatus()
+  ).toBeVisible();
   await captureViewport(
     page,
     resolveDeviceScreenshotFileName(

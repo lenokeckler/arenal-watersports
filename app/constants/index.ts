@@ -185,6 +185,7 @@ export {
   BLOCKED_REAUTHENTICATION_NOTICE_REASON,
 } from "./access/BlockedReauthentication.constants";
 export { SUPABASE_TABLE } from "./supabase/SupabaseTable.constants";
+export { BOARD_REALTIME } from "./supabase/BoardRealtime.constants";
 export {
   BOARD_CATEGORY_DETAIL_OPERATION,
   BOARD_CATEGORY_OPERATION,
@@ -351,6 +352,10 @@ export {
   RESERVATION_STATUS,
   type ReservationStatus,
 } from "./supabase/ReservationStatus.constants";
+export {
+  RESERVATION_CHARGEABLE_STATUS,
+  type ReservationChargeableStatus,
+} from "./supabase/ReservationChargeableStatus.constants";
 export {
   RESERVATION_CALENDAR_ACTIVE_STATUS,
   RESERVATION_CALENDAR_QUERY,

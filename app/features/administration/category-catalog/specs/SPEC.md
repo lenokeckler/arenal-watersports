@@ -57,7 +57,7 @@ and a clear error state they can retry from.
   (`ACCESS_SHELL_WIDE_CARD_CLASS`, plus `items-start` on the embedded content): the card widens to
   `max-w-4xl` and drops its chrome only when that marker is inside. Every other administration screen
   renders exactly as before because none of them carries the marker.
-- Header: `Categorías del inventario`, the text `Inventario registrado: N categorías` (singular for one,
+- Header: `Inventario`, the text `Inventario registrado: N categorías` (singular for one,
   from the exact head count of the read) and the `+ Agregar categoría` link to
   `PATHS.ADMINISTRATION.CATEGORIES_NEW`.
 - Row: name (two lines at most), subtitle `Por cantidad · N unidades` or `Por unidad · N unidades`

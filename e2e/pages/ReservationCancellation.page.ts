@@ -28,6 +28,10 @@ export const createReservationCancellationPage = (
       main.getByText(text),
     goTo: (id: string): Promise<NullableRef<Response>> =>
       page.goto(resolveReservationCancelPath(id)),
+    getCause: (label: string): Locator =>
+      main.getByRole(ARIA_ROLE.RADIO, { name: label }),
+    selectCause: (label: string): Promise<void> =>
+      main.getByText(label, { exact: true }).click(),
     submit: (): Promise<void> => getSubmit().click(),
   };
 };

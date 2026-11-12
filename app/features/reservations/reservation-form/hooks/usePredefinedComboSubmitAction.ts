@@ -15,7 +15,8 @@ export const usePredefinedComboSubmitAction = (
   const [isPending, startTransition] = useTransition();
 
   const submitPredefinedComboReservation = (
-    input: PredefinedComboReservationInput
+    input: PredefinedComboReservationInput,
+    onSuccess?: () => void
   ): void => {
     startTransition(async () => {
       try {
@@ -27,6 +28,8 @@ export const usePredefinedComboSubmitAction = (
           mapPredefinedComboReservationResult(result);
         if (!mappedResult.ok) {
           submission.requestErrorFocus();
+        } else {
+          onSuccess?.();
         }
         submission.applyResult(mappedResult);
       } catch {
