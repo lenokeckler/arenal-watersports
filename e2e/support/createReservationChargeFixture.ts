@@ -32,6 +32,7 @@ export const createReservationChargeFixture = async (
       ...seed,
       customer: customerName,
       hour: slot.hour,
+      duration: values.DURATION_MINUTES,
       people: values.PEOPLE_COUNT,
       unit: slot.unit,
     }

@@ -13,8 +13,10 @@ export const E2E_RESERVATION_CHARGE = {
   MISSING_SLOT:
     "no charge slot is configured for the project",
   PAYMENT_METHOD: "Efectivo",
+  DURATION_MINUTES: "90",
   PEOPLE_COUNT: "6",
-  PROPOSAL_OPERATION: "read the catalog proposal",
+  MINUTES_PER_HOUR: 60,
+  TARIFF_OPERATION: "read the seeded category tariff",
   CANCELLATION_REASON: "El cliente no llegó al muelle",
   READ_OPERATION: "read the charged reservation",
   SCREENSHOT_BASENAME: "reservation-charge",

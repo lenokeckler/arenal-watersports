@@ -1,24 +1,47 @@
 import {
   CURRENCY_CODE,
   RESERVATION_STATUS,
-  STRING,
 } from "@/app/constants";
 import { RESERVATION_CHARGE_FORM_COPY as copy } from "@/app/features/reservations/reservation-charge/constants/ReservationChargeFormCopy.constants";
 import { formatMoney } from "@/app/utils/money/formatMoney";
 import { E2E_WORKER } from "../constants/E2eWorker.constants";
-import { E2E_RESERVATION_CHARGE as values } from "../constants/E2eReservationCharge.constants";
+import {
+  E2E_RESERVATION_CHARGE as values,
+  E2E_RESERVATION_CHARGE_SEED as seed,
+} from "../constants/E2eReservationCharge.constants";
 import { E2E_TIMEOUT_MS } from "../constants/E2eRuntime.constants";
 import { createReservationChargePage } from "../pages/ReservationCharge.page";
 import { createReservationDetailPage } from "../pages/ReservationDetail.page";
 import { createReservationDetailChargePage } from "../pages/ReservationDetailCharge.page";
 import { expect, test } from "../support/activeWorkerTest";
+import { calculateExpectedChargeProposal } from "../support/calculateExpectedChargeProposal";
 import { createReservationChargeFixture as seedCharge } from "../support/createReservationChargeFixture";
-import { readReservationChargeProposal } from "../support/readReservationChargeProposal";
 import { readReservationChargeState } from "../support/readReservationChargeState";
+import { readReservationChargeTariff } from "../support/readReservationChargeTariff";
 import { removeReservationChargeFixtures } from "../support/removeReservationChargeFixtures";
 import { signInToReservationsMode } from "../support/signInToReservationsMode";
 
 const submitWait = { timeout: E2E_TIMEOUT_MS.POST_SUBMIT };
+
+const readExpectedProposal = async (
+  workerId: string,
+  reservationId: string
+): Promise<number> => {
+  const tariff = await readReservationChargeTariff(
+    workerId,
+    reservationId
+  );
+  const peopleCount = Number(values.PEOPLE_COUNT);
+  const expected = calculateExpectedChargeProposal(
+    tariff.amountUsd
+  );
+  expect(tariff.amountUsd).toBe(Number(seed.tariff_usd));
+  expect(tariff.amountCrc).toBe(Number(seed.tariff_crc));
+  expect(expected).not.toBe(tariff.amountUsd * peopleCount);
+  expect(expected).not.toBe(tariff.amountUsd);
+
+  return expected;
+};
 
 test.describe("Reservation charge", () => {
   test.describe.configure({ mode: values.TEST_MODE });
@@ -39,7 +62,7 @@ test.describe("Reservation charge", () => {
       activeWorker.id,
       testInfo.project.name
     );
-    const proposal = await readReservationChargeProposal(
+    const proposal = await readExpectedProposal(
       activeWorker.id,
       reservation.id
     );
@@ -60,13 +83,8 @@ test.describe("Reservation charge", () => {
       copy.SUCCESS(reservation.code),
       submitWait
     );
-    const state = await readReservationChargeState(
-      activeWorker.id,
-      reservation.id
-    );
-    expect(state.recordedByName).not.toBe(STRING.Empty);
     await expect(
-      charge.getText(copy.RECORDED_BY(state.recordedByName))
+      charge.getText(copy.RECORDED_BY(E2E_WORKER.FULL_NAME))
     ).toBeVisible();
     await expect(
       charge.getText(
@@ -76,18 +94,25 @@ test.describe("Reservation charge", () => {
         })
       )
     ).toBeVisible();
-    expect(state).toEqual({
-      agreedAmountCrc: null,
-      agreedAmountUsd: null,
-      amount: proposal,
-      charges: 1,
-      currency: CURRENCY_CODE.USD,
-      isAuthor: true,
-      kind: values.CHARGE_KIND,
-      method: values.PAYMENT_METHOD,
-      pricingRows: 1,
-      recordedByName: E2E_WORKER.FULL_NAME,
-    });
+    await expect
+      .poll(() =>
+        readReservationChargeState(
+          activeWorker.id,
+          reservation.id
+        )
+      )
+      .toEqual({
+        agreedAmountCrc: null,
+        agreedAmountUsd: null,
+        amount: proposal,
+        charges: 1,
+        currency: CURRENCY_CODE.USD,
+        isAuthor: true,
+        kind: values.CHARGE_KIND,
+        method: values.PAYMENT_METHOD,
+        pricingRows: 1,
+        recordedByName: E2E_WORKER.FULL_NAME,
+      });
   });
 
   test("records an adjusted amount and keeps it as the agreed price", async ({
@@ -98,10 +123,18 @@ test.describe("Reservation charge", () => {
       activeWorker.id,
       testInfo.project.name
     );
+    const proposal = await readExpectedProposal(
+      activeWorker.id,
+      reservation.id
+    );
     const charge = createReservationChargePage(page);
     const adjusted = Number(values.ADJUSTED_AMOUNT);
 
+    expect(proposal).not.toBe(adjusted);
     await charge.goTo(reservation.id);
+    await expect(charge.getAmount()).toHaveValue(
+      String(proposal)
+    );
     await charge.fillAmount(values.ADJUSTED_AMOUNT);
     await charge.fillPaymentMethod(values.PAYMENT_METHOD);
     await charge.submit();
@@ -110,13 +143,20 @@ test.describe("Reservation charge", () => {
       copy.SUCCESS(reservation.code),
       submitWait
     );
-    const state = await readReservationChargeState(
-      activeWorker.id,
-      reservation.id
-    );
-    expect(state.amount).toBe(adjusted);
-    expect(state.agreedAmountUsd).toBe(adjusted);
-    expect(state.charges).toBe(1);
+    await expect
+      .poll(async () => {
+        const state = await readReservationChargeState(
+          activeWorker.id,
+          reservation.id
+        );
+
+        return [
+          state.amount,
+          state.agreedAmountUsd,
+          state.charges,
+        ];
+      })
+      .toEqual([adjusted, adjusted, 1]);
 
     await charge.getBackLink().click();
     await expect(
@@ -140,9 +180,18 @@ test.describe("Reservation charge", () => {
       testInfo.project.name,
       RESERVATION_STATUS.CLOSED
     );
+    const proposal = await readExpectedProposal(
+      activeWorker.id,
+      reservation.id
+    );
     const charge = createReservationChargePage(page);
 
-    await charge.goTo(reservation.id);
+    await createReservationDetailPage(page).goTo(
+      reservation.id
+    );
+    await createReservationDetailChargePage(page)
+      .getChargeLink(reservation.code)
+      .click();
     await charge.fillPaymentMethod(values.PAYMENT_METHOD);
     await charge.submit();
 
@@ -150,10 +199,15 @@ test.describe("Reservation charge", () => {
       copy.SUCCESS(reservation.code),
       submitWait
     );
-    const state = await readReservationChargeState(
-      activeWorker.id,
-      reservation.id
-    );
-    expect(state.charges).toBe(1);
+    await expect
+      .poll(async () => {
+        const state = await readReservationChargeState(
+          activeWorker.id,
+          reservation.id
+        );
+
+        return [state.amount, state.charges];
+      })
+      .toEqual([proposal, 1]);
   });
 });

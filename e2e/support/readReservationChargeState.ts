@@ -1,5 +1,4 @@
 import { STRING } from "@/app/constants";
-import type { CurrencyCode } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import { E2E_RESERVATION_CHARGE as values } from "../constants/E2eReservationCharge.constants";
 import { E2E_RESERVATION_CHARGE_SQL as sql } from "../constants/E2eReservationChargeSql.constants";
@@ -39,7 +38,7 @@ export const readReservationChargeState = async (
     agreedAmountUsd: toNullableNumber(agreedUsd),
     amount: Number(amount),
     charges: Number(charges),
-    currency: currency as CurrencyCode | "",
+    currency,
     isAuthor: isAuthor === STRING.TRUE,
     kind,
     method,
