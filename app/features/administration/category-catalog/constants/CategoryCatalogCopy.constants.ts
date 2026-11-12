@@ -26,6 +26,7 @@ export const CATEGORY_CATALOG_COPY = {
   ALERT_TYPE_QUANTITY_LABEL: "Por cantidad",
   ALERT_UPDATE_SUCCESS_TOAST:
     "Avisos de la categoría actualizados.",
+  BACK_TO_HOME: "Volver al inicio",
   BEHAVIOR_CATEGORY_NOT_FOUND_ERROR:
     "No se encontró la categoría. Es posible que otra persona la haya eliminado.",
   BEHAVIOR_FORM_TITLE: "Comportamiento de la categoría",
