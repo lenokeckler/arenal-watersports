@@ -10,6 +10,7 @@ export const MOVEMENT_REPORT_ERROR = {
 
 export const MOVEMENT_REPORT_LIMITS = {
   MONTHS_MAX: 120,
+  MONTHS_SHOWN: 24,
 } as const;
 
 export const MOVEMENT_REPORT_WEEKDAYS = [
