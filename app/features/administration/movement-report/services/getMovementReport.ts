@@ -5,6 +5,7 @@ import {
   MOVEMENT_REPORT_ERROR,
   MOVEMENT_REPORT_LIMITS,
 } from "../constants/MovementReport.constants";
+import { buildMovementCutoffMonth } from "../utils/buildMovementCutoffMonth";
 import type {
   MovementIncomeSeries,
   MovementReportData,
@@ -24,10 +25,14 @@ export const getMovementReport =
     }
 
     const supabase = await createServerSupabaseClient();
+    const cutoffMonth = buildMovementCutoffMonth(
+      new Date()
+    );
     const [months, weekdays, income] = await Promise.all([
       supabase
         .from("monthly_departures")
         .select("month, departures_count")
+        .gte("month", cutoffMonth)
         .order("month", { ascending: true })
         .limit(MOVEMENT_REPORT_LIMITS.MONTHS_MAX),
       supabase
@@ -36,6 +41,7 @@ export const getMovementReport =
       supabase
         .from("monthly_revenue_report")
         .select("month, currency, net_amount")
+        .gte("month", cutoffMonth)
         .order("month", { ascending: true })
         .limit(MOVEMENT_REPORT_LIMITS.MONTHS_MAX * 2),
     ]);

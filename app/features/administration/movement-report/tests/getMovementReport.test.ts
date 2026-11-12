@@ -28,6 +28,7 @@ const results: Record<
 const buildBuilder = (table: string) => {
   const builder: Record<string, unknown> = {};
   builder.select = () => builder;
+  builder.gte = () => builder;
   builder.order = () => builder;
   builder.limit = () => builder;
   builder.then = (resolve: (value: unknown) => unknown) =>
