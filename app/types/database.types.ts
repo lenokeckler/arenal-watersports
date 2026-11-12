@@ -3948,6 +3948,13 @@ export type Database = {
           starts_at: string;
         }[];
       };
+      reservation_charge_proposal: {
+        Args: { p_reservation_id: string };
+        Returns: {
+          proposal_crc: number;
+          proposal_usd: number;
+        }[];
+      };
       reservation_dispatch_groups: {
         Args: { p_reservation_id: string };
         Returns: {
