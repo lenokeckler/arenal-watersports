@@ -95,8 +95,8 @@ describe("createReservationCreateSubmitHandler predefined combos", () => {
     ).toHaveBeenCalledWith(
       expect.objectContaining({
         customerName:
-          RESERVATION_CREATE_SUBMIT_TEST.COMBO_OPTIONS.values
-            .customerName,
+          RESERVATION_CREATE_SUBMIT_TEST.COMBO_OPTIONS
+            .values.customerName,
       }),
       onSuccess
     );

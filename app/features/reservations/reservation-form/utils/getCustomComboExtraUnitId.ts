@@ -9,7 +9,8 @@ export const getCustomComboExtraUnitId = (
 ): string => {
   const selectedUnit = items.find((item) => {
     if (
-      item.kind !== RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT
+      item.kind !==
+      RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT
     ) {
       return false;
     }
