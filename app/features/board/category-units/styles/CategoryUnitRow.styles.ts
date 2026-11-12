@@ -12,12 +12,40 @@ export const CATEGORY_UNIT_ROW_CLASS = `${ROW_BASE_CLASS} border-outline-variant
 
 export const CATEGORY_UNIT_ROW_OVERDUE_CLASS = `${ROW_BASE_CLASS} border-warning/40 bg-linear-to-r from-warning/15 to-card-tint-neutral-bg`;
 
+export const CATEGORY_UNIT_ROW_SELECTED_CLASS = `${ROW_BASE_CLASS} border-primary bg-primary/10 ring-2 ring-primary`;
+
 export const resolveCategoryUnitRowClass = (
-  isOverdue: boolean
-): string =>
-  isOverdue
+  isOverdue: boolean,
+  isSelected = false
+): string => {
+  if (isSelected) {
+    return CATEGORY_UNIT_ROW_SELECTED_CLASS;
+  }
+
+  return isOverdue
     ? CATEGORY_UNIT_ROW_OVERDUE_CLASS
     : CATEGORY_UNIT_ROW_CLASS;
+};
+
+export const CATEGORY_UNIT_ROW_TITLE_CLASS =
+  "flex min-w-0 items-center gap-sm";
+
+const SELECT_MARK_BASE_CLASS =
+  "flex size-6 shrink-0 items-center justify-center rounded-md border-2";
+
+const SELECT_MARK_OFF_CLASS = `${SELECT_MARK_BASE_CLASS} border-outline text-transparent`;
+
+const SELECT_MARK_ON_CLASS = `${SELECT_MARK_BASE_CLASS} border-primary bg-primary text-on-primary`;
+
+export const resolveCategoryUnitSelectMarkClass = (
+  isSelected: boolean
+): string =>
+  isSelected ? SELECT_MARK_ON_CLASS : SELECT_MARK_OFF_CLASS;
+
+export const CATEGORY_UNIT_SELECT_LABEL_CLASS =
+  "relative flex w-full min-w-0 cursor-pointer rounded-xl focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary";
+
+export const CATEGORY_UNIT_SELECT_INPUT_CLASS = "sr-only";
 
 export const CATEGORY_UNIT_ROW_HEADER_CLASS =
   "flex flex-wrap items-center justify-between gap-sm";
