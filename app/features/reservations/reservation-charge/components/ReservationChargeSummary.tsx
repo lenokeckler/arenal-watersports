@@ -5,11 +5,12 @@ import {
   RESERVATION_CHARGE_FIELD_ID,
 } from "../constants/ReservationChargeUi.constants";
 import { RESERVATION_CHARGE_UI_COPY as COPY } from "../constants/ReservationChargeUiCopy.constants";
-import type { ReservationChargeViewProps } from "../models/ReservationChargeViewProps.interface";
+import type { ReservationChargeSummaryProps } from "../models/ReservationChargeSummaryProps.interface";
 import {
   RESERVATION_CHARGE_CODE_CLASS,
   RESERVATION_CHARGE_DETAILS_CLASS,
   RESERVATION_CHARGE_NOTE_CLASS,
+  RESERVATION_CHARGE_PROPOSAL_CLASS,
   RESERVATION_CHARGE_SUMMARY_CLASS,
   RESERVATION_CHARGE_SUMMARY_HEADING_CLASS,
 } from "../styles/ReservationCharge.styles";
@@ -20,7 +21,7 @@ import ReservationChargeSummaryRow from "./ReservationChargeSummaryRow";
 
 const ReservationChargeSummary = ({
   charge,
-}: ReservationChargeViewProps): React.JSX.Element => (
+}: ReservationChargeSummaryProps): React.JSX.Element => (
   <Section
     ariaLabel={RESERVATION_CHARGE_FIELD_ID.SUMMARY_HEADING}
     className={RESERVATION_CHARGE_SUMMARY_CLASS}
@@ -58,17 +59,18 @@ const ReservationChargeSummary = ({
         label={COPY.LABEL_PEOPLE}
         value={String(charge.peopleCount)}
       />
-      {RESERVATION_CHARGE_CURRENCY_ORDER.map((currency) => (
-        <ReservationChargeSummaryRow
-          key={currency}
-          label={COPY.PROPOSAL_LABEL[currency]}
-          value={formatReservationChargeProposal(
-            charge.proposal[currency],
-            currency
-          )}
-        />
-      ))}
     </dl>
+    {RESERVATION_CHARGE_CURRENCY_ORDER.map((currency) => (
+      <Text
+        key={currency}
+        className={RESERVATION_CHARGE_PROPOSAL_CLASS}
+      >
+        {formatReservationChargeProposal(
+          charge.proposal[currency],
+          currency
+        )}
+      </Text>
+    ))}
     <Text className={RESERVATION_CHARGE_NOTE_CLASS}>
       {COPY.PER_RESERVATION_NOTE}
     </Text>

@@ -34,6 +34,9 @@ export const RESERVATION_CHARGE_TERM_CLASS =
 export const RESERVATION_CHARGE_DEFINITION_CLASS =
   "break-words text-base font-semibold tabular-nums text-on-surface";
 
+export const RESERVATION_CHARGE_PROPOSAL_CLASS =
+  "text-base font-semibold tabular-nums text-on-surface";
+
 export const RESERVATION_CHARGE_NOTE_CLASS =
   "text-sm text-on-surface-variant";
 
@@ -45,6 +48,3 @@ export const RESERVATION_CHARGE_LOCKED_TITLE_CLASS =
 
 export const RESERVATION_CHARGE_STACK_CLASS =
   "space-y-4 text-on-surface";
-
-export const RESERVATION_CHARGE_DETAIL_LINK_CLASS =
-  "inline-flex min-h-12 w-full items-center justify-center rounded-full bg-primary px-6 font-semibold text-on-primary transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:w-auto md:min-w-56";

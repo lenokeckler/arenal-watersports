@@ -9,7 +9,6 @@ export const RESERVATION_CHARGE_UNAVAILABLE_COPY = {
     ReservationChargeUnavailableReason,
     string
   >,
-  LINK: "Volver a la reserva",
   RULE: "Los cobros se registran en las reservas agendadas, en curso o cerradas.",
   TITLE: "Esta reserva no admite cobros aquí",
 } as const;

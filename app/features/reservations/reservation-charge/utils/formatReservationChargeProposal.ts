@@ -8,5 +8,7 @@ export const formatReservationChargeProposal = (
   currency: CurrencyCode
 ): string =>
   amount === null
-    ? RESERVATION_CHARGE_UI_COPY.NO_PROPOSAL
-    : formatMoney({ amount, currency });
+    ? RESERVATION_CHARGE_UI_COPY.NO_PROPOSAL_LINE[currency]
+    : RESERVATION_CHARGE_UI_COPY.PROPOSAL_LINE(
+        formatMoney({ amount, currency })
+      );

@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import { assertReservationCalendarAccess } from "@/app/services/reservations/assertReservationCalendarAccess";
-import { isReservationChargeable } from "@/app/utils/reservations/isReservationChargeable";
 import ReservationChargeUnavailable from "./components/ReservationChargeUnavailable";
 import type { ReservationChargeProps } from "./models/ReservationChargeProps.interface";
 import ReservationChargeView from "./ReservationChargeView";
@@ -18,12 +17,13 @@ const ReservationCharge = async ({
     notFound();
   }
 
-  if (!isReservationChargeable(charge)) {
+  const unavailableReason =
+    resolveReservationChargeUnavailableReason(charge);
+
+  if (unavailableReason !== null) {
     return (
       <ReservationChargeUnavailable
-        reason={resolveReservationChargeUnavailableReason(
-          charge
-        )}
+        reason={unavailableReason}
         reservationId={charge.id}
       />
     );

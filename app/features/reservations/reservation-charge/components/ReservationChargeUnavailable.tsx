@@ -1,9 +1,8 @@
-import { Link, Text } from "@/app/components";
-import { ARIA_ROLE, PATHS } from "@/app/constants";
+import { Text } from "@/app/components";
+import { ARIA_ROLE } from "@/app/constants";
 import { RESERVATION_CHARGE_UNAVAILABLE_COPY as COPY } from "../constants/ReservationChargeUnavailableCopy.constants";
 import type { ReservationChargeUnavailableProps } from "../models/ReservationChargeUnavailableProps.interface";
 import {
-  RESERVATION_CHARGE_DETAIL_LINK_CLASS,
   RESERVATION_CHARGE_LOCKED_CLASS,
   RESERVATION_CHARGE_LOCKED_TITLE_CLASS,
   RESERVATION_CHARGE_STACK_CLASS,
@@ -28,12 +27,6 @@ const ReservationChargeUnavailable = ({
         <Text>{COPY.BODY[reason]}</Text>
         <Text>{COPY.RULE}</Text>
       </div>
-      <Link
-        href={PATHS.RESERVATIONS.DETAIL(reservationId)}
-        className={RESERVATION_CHARGE_DETAIL_LINK_CLASS}
-      >
-        {COPY.LINK}
-      </Link>
     </div>
   </ReservationChargeLayout>
 );

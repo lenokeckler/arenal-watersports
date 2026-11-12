@@ -11,13 +11,16 @@ export const RESERVATION_CHARGE_UI_COPY = {
   LABEL_DURATION: "Duración",
   LABEL_PEOPLE: "Personas",
   MINUTES_SUFFIX: "min",
-  NO_PROPOSAL: "Sin tarifa en el catálogo",
+  NO_PROPOSAL_LINE: {
+    [CURRENCY_CODE.CRC]:
+      "Sin tarifa del catálogo en colones",
+    [CURRENCY_CODE.USD]:
+      "Sin tarifa del catálogo en dólares",
+  } satisfies Record<CurrencyCode, string>,
   PER_RESERVATION_NOTE:
     "El cobro es por reserva, no por persona: si llegan menos personas de las agendadas, se cobra lo mismo.",
-  PROPOSAL_LABEL: {
-    [CURRENCY_CODE.CRC]: "Tarifa del catálogo en colones",
-    [CURRENCY_CODE.USD]: "Tarifa del catálogo en dólares",
-  } satisfies Record<CurrencyCode, string>,
+  PROPOSAL_LINE: (amount: string): string =>
+    `Tarifa del catálogo: ${amount}`,
   SUMMARY_HEADING: "Reserva",
   TITLE: "Registrar cobro",
 } as const;
