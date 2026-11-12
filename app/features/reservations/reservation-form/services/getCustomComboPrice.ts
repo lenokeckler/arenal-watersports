@@ -18,6 +18,8 @@ export const getCustomComboPrice = async (
       p_duration_minutes:
         input.durationHours *
         RESERVATION_SCHEDULE.MINUTES_PER_HOUR,
+      p_extra_ids: input.extraIds,
+      p_extra_unit_id: input.extraUnitId,
     }
   );
 

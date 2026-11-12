@@ -1,4 +1,5 @@
 export const RESERVATION_EXTRA = {
+  CARD_CONTROL_SELECTOR: "input, label",
   NO_OCCUPANCY: 0,
   SECTION_TITLE_ID: "reservation-extras-title",
   UUID_PATTERN:

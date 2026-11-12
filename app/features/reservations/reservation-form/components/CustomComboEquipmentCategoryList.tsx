@@ -26,6 +26,8 @@ const CustomComboEquipmentCategoryList = ({
           category={category}
           date={date}
           durationHours={durationHours}
+          extraIds={viewModel.draft.extraIds}
+          extraUnitId={viewModel.draft.extraUnitId}
           key={category.id}
           onRemove={() =>
             viewModel.handleItemRemoval(category.id)
@@ -49,6 +51,7 @@ const CustomComboEquipmentCategoryList = ({
               quantity + INDEX.FIRST
             )
           }
+          onExtraToggle={viewModel.handleExtraToggle}
           onUnitChange={(unitId) =>
             viewModel.handleItemUnitChange(
               category.id,

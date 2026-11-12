@@ -7,4 +7,6 @@ export const mapExtraRowToExtra = (
   id: extraRow.id,
   name: extraRow.name,
   status: extraRow.status,
+  priceUsd: extraRow.price_usd,
+  priceCrc: extraRow.price_crc,
 });

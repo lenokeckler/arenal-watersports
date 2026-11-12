@@ -4,6 +4,8 @@ import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationE
 
 const EMPTY_INPUT: CustomComboPricingInput = {
   durationHours: 1,
+  extraIds: [],
+  extraUnitId: null,
   items: [],
 };
 const PRICING: CustomComboPricing = {
@@ -20,6 +22,8 @@ export const CUSTOM_COMBO_PRICING_TEST = {
   ERROR_MESSAGE: "pricing request rejected",
   FIRST_INPUT: {
     durationHours: 1,
+    extraIds: [],
+    extraUnitId: null,
     items: [
       {
         categoryId: "category-a",
@@ -31,6 +35,8 @@ export const CUSTOM_COMBO_PRICING_TEST = {
   PRICING,
   SECOND_INPUT: {
     durationHours: 2,
+    extraIds: [],
+    extraUnitId: null,
     items: [
       {
         categoryId: "category-b",
@@ -42,6 +48,8 @@ export const CUSTOM_COMBO_PRICING_TEST = {
   STALE_PRICING,
   UNIT_INPUT: {
     durationHours: 1,
+    extraIds: [],
+    extraUnitId: null,
     items: [
       {
         categoryId: "category-lancha",

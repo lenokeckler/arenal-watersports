@@ -5,8 +5,10 @@ import type { CustomComboReservationDraft } from "./CustomComboReservationDraft.
 
 export interface CustomComboFormViewModel {
   draft: CustomComboReservationDraft;
+  extraUnitId: string;
   hasGuideOnlyItem: boolean;
   pricing: CustomComboPricingState;
+  reset: () => void;
   handleAgreedAmountCrcChange: (
     value: NullableRef<number>
   ) => void;
@@ -25,5 +27,9 @@ export interface CustomComboFormViewModel {
     unitId: string
   ) => void;
   handleItemRemoval: (categoryId: string) => void;
+  handleExtraToggle: (
+    unitId: string,
+    extraId: string
+  ) => void;
   handlePricingRetry: () => void;
 }

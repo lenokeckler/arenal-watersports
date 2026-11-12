@@ -13,6 +13,8 @@ export const RESERVATION_CREATE_SUBMIT_TEST = {
       draft: {
         agreedAmountCrc: 0,
         agreedAmountUsd: 25,
+        extraIds: [],
+        extraUnitId: null,
         items: [
           {
             kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,

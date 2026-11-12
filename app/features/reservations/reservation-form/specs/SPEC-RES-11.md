@@ -48,3 +48,9 @@ Reservations can offer active extras compatible with the concrete boat selected 
 - [x] Solo se ofrecen los extras que aplican a esa embarcación. La consulta de .01 filtra extras activos compatibles por unidad; .04 muestra sus opciones y permite seleccionarlas.
 - [x] Los extras que ocupan equipo real del inventario lo descuentan de la disponibilidad. .03 persiste categoría y cantidad del catálogo; `category_availability` los cuenta y la prueba 044 verifica la reducción.
 - [x] Los extras que son solamente un cobro adicional no tocan el inventario. .03 persiste el extra con categoría y cantidad nulas; la prueba 044 confirma que la disponibilidad no disminuye.
+
+## Reservation-form follow-up
+
+- A custom combo that includes a concrete unit with compatible active extras offers those extras for that unit.
+- The combo proposal adds each selected extra's catalog price once to the itemized equipment total. It does not add the concrete boat's tariff twice.
+- The custom-combo transaction validates unit membership, active status, compatibility, and inventory occupancy before persisting the extra and its originating unit.

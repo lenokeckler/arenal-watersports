@@ -31,5 +31,9 @@ export const DEPOSITS_REPORT_COPY = {
     "Páginas de depósitos retenidos",
   RETENTION_REASON_LABEL: "Motivo",
   RETRY: "Volver a intentar",
+  EQUIPMENT_HOURS: "Horas de uso por equipo",
+  MAINTENANCE_COST: "Costo de mantenimiento",
+  MOVEMENT: "Movimiento por día y por mes",
+  OTHER_REPORTS_LABEL: "Otros reportes",
   RESERVATIONS_BY_WORKER: "Ver reservas por trabajador",
 } as const;

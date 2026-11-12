@@ -1,3 +1,4 @@
+import { STRING } from "@/app/constants";
 import type { ReservationFormFieldsProps } from "../models/ReservationFormFieldsProps.interface";
 import CustomComboEquipmentSelection from "./CustomComboEquipmentSelection";
 import CustomComboNoGuideState from "./CustomComboNoGuideState";
@@ -21,6 +22,7 @@ const CustomComboFormFields = ({
         categories={categories}
         date={viewModel.values.date}
         durationHours={resolvedDurationHours}
+        error={viewModel.errors.items ?? STRING.Empty}
         time={viewModel.values.time}
         viewModel={customCombo}
       />

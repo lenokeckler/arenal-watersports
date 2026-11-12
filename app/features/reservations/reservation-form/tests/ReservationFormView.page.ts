@@ -182,7 +182,23 @@ export const createReservationFormViewPage = (
     findSuccessMessage,
     getFocusedElement: () => document.activeElement,
     getExtraCheckbox: (name: string) =>
-      screen.getByLabelText(name, { exact: false }),
+      screen.getByRole(ARIA_ROLE.CHECKBOX, {
+        name,
+      }),
+    clickExtraCardContent: async (
+      name: string
+    ): Promise<void> => {
+      const option = screen.getByRole(ARIA_ROLE.GROUP, {
+        name,
+      });
+      const content = option.children.item(1);
+      if (!(content instanceof HTMLElement)) {
+        throw new Error(
+          "The extra card content is missing."
+        );
+      }
+      await user.click(content);
+    },
     getExtrasQuote: () =>
       screen.getByText(
         RESERVATION_FORM_UI_COPY.QUOTE_TITLE
@@ -199,7 +215,9 @@ export const createReservationFormViewPage = (
       container.textContent ?? STRING.Empty,
     toggleExtra: async (name: string): Promise<void> => {
       await user.click(
-        screen.getByLabelText(name, { exact: false })
+        screen.getByRole(ARIA_ROLE.CHECKBOX, {
+          name,
+        })
       );
     },
     clickExtrasRetry: async (): Promise<void> => {

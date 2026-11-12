@@ -19,6 +19,12 @@ const ReservationDetailExtraRow = ({
       {extra.categoryName === null ? null : (
         <Text>{extra.categoryName}</Text>
       )}
+      {extra.unitCategoryName === null ? null : (
+        <Text>{extra.unitCategoryName}</Text>
+      )}
+      {extra.unitCode === null ? null : (
+        <Text>{extra.unitCode}</Text>
+      )}
     </div>
     {extra.quantity === null ? null : (
       <InlineText className={RESERVATION_DETAIL_CHIP_CLASS}>

@@ -27,6 +27,7 @@ export const submitCustomComboDraft = (
       hasGuideOnlyItem:
         options.customCombo.hasGuideOnlyItem,
       values: options.values,
-    })
+    }),
+    options.onSuccess
   );
 };

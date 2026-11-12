@@ -56,9 +56,12 @@ export const mapReservationCancellation = (
       .map(mapEquipmentLine),
     expectedUpdatedAt: row.updated_at,
     id: row.id,
-    isCancellable:
+    isCancellable: Object.values<string>(
+      RESERVATION_CALENDAR_ACTIVE_STATUS
+    ).includes(row.status),
+    requiresCause:
       row.status ===
-      RESERVATION_CALENDAR_ACTIVE_STATUS.SCHEDULED,
+      RESERVATION_CALENDAR_ACTIVE_STATUS.DISPATCHED,
     status: row.status,
     time: getCostaRicaTime(startsAt),
   };
