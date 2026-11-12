@@ -128,3 +128,33 @@ describe("Reservation block postpone link", () => {
     ).toBeNull();
   });
 });
+
+describe("Reservation block cancel link", () => {
+  it("links a scheduled block to its cancellation screen, named after the customer", () => {
+    const link = renderAgendaBlock(
+      status.SCHEDULED
+    ).getCancelLink();
+
+    expect(link).toHaveTextContent(copy.CANCEL_RESERVATION);
+    expect(link).toHaveAccessibleName(
+      `${copy.CANCEL_RESERVATION_LABEL} ${CALENDAR_BLOCK_ENTRY.customerName}`
+    );
+    expect(link?.getAttribute("href")).toBe(
+      `${PATHS.RESERVATIONS.ROOT}/${CALENDAR_BLOCK_ENTRY.id}/${PATHS.RESERVATIONS.CANCEL_SEGMENT}`
+    );
+  });
+
+  it("keeps the cancel link outside the detail link", () => {
+    const page = renderAgendaBlock(status.SCHEDULED);
+
+    expect(page.getDetailLink()).not.toContainElement(
+      page.getCancelLink()
+    );
+  });
+
+  it("offers no cancel link on a dispatched block", () => {
+    expect(
+      renderAgendaBlock(status.DISPATCHED).getCancelLink()
+    ).toBeNull();
+  });
+});

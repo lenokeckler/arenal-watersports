@@ -3,11 +3,19 @@ import {
   RESERVATION_HISTORY_STATUS,
   RESERVATIONS_CALENDAR_COPY as copy,
 } from "@/app/constants";
+import { resolveReservationCancelPath } from "@/app/utils/reservations/resolveReservationCancelPath";
 import { resolveReservationEditPath } from "@/app/utils/reservations/resolveReservationEditPath";
 import { resolveReservationPostponePath } from "@/app/utils/reservations/resolveReservationPostponePath";
 import { resolveReservationSplitPath } from "@/app/utils/reservations/resolveReservationSplitPath";
 import type { ReservationCalendarBlock } from "@/app/components/reservation-calendar/models/ReservationCalendarBlock.interface";
 import type { ReservationCalendarBlockActionLink } from "../models/ReservationCalendarBlockActionLink.interface";
+
+const CANCEL: ReservationCalendarBlockActionLink = {
+  ariaLabel: copy.CANCEL_RESERVATION_LABEL,
+  key: "cancel",
+  resolvePath: resolveReservationCancelPath,
+  text: copy.CANCEL_RESERVATION,
+};
 
 const MODIFY: ReservationCalendarBlockActionLink = {
   ariaLabel: copy.MODIFY_RESERVATION_LABEL,
@@ -43,5 +51,6 @@ export const RESERVATION_CALENDAR_BLOCK_ACTION_LINKS: Record<
     MODIFY,
     SPLIT,
     POSTPONE,
+    CANCEL,
   ],
 };
