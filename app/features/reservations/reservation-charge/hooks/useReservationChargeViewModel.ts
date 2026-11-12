@@ -2,6 +2,7 @@
 
 import type { ReservationCharge } from "../models/ReservationCharge.interface";
 import type { ReservationChargeViewModel } from "../models/ReservationChargeViewModel.interface";
+import { useReservationChargeEdit } from "./useReservationChargeEdit";
 import { useReservationChargeSubmission } from "./useReservationChargeSubmission";
 import { useReservationChargeValues } from "./useReservationChargeValues";
 
@@ -24,15 +25,10 @@ export const useReservationChargeViewModel = (
     recorded,
   } = useReservationChargeSubmission(charge.id, values);
 
-  const edit =
-    <Value>(apply: (next: Value) => void) =>
-    (next: Value): void => {
-      if (isPending) {
-        return;
-      }
-      apply(next);
-      clearErrors();
-    };
+  const edit = useReservationChargeEdit(
+    isPending,
+    clearErrors
+  );
 
   return {
     ...values,
