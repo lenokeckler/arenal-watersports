@@ -1,19 +1,18 @@
 import { ARIA_ROLE } from "@/app/constants";
 import { EQUIPMENT_BOARD_COPY } from "../constants/EquipmentBoardCopy.constants";
 import type { EquipmentBoardContentProps } from "../models/EquipmentBoardContentProps.interface";
-import { resolveReservationEquipmentImage } from "@/app/components/reservation-calendar/utils/resolveReservationEquipmentImage";
 import {
   EQUIPMENT_BOARD_GRID_CLASS,
   EQUIPMENT_BOARD_GRID_ITEM_CLASS,
 } from "../styles/EquipmentBoard.styles";
+import { resolveBoardCardImage } from "../utils/resolveBoardCardImage";
 import BoardCard from "./BoardCard";
 
 const EquipmentBoardContent = ({
   cards,
 }: EquipmentBoardContentProps): React.JSX.Element => {
   const firstCardWithImage = cards.find(
-    (card) =>
-      resolveReservationEquipmentImage(card.label) !== null
+    (card) => resolveBoardCardImage(card) !== null
   );
 
   return (

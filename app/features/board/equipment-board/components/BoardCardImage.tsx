@@ -1,6 +1,5 @@
 import { Image, MaterialIcon } from "@/app/components";
 import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
-import { resolveReservationEquipmentImage } from "@/app/components/reservation-calendar/utils/resolveReservationEquipmentImage";
 import { EQUIPMENT_BOARD_IMAGE } from "../constants/EquipmentBoard.constants";
 import type { BoardCardImageProps } from "../models/BoardCardImageProps.interface";
 import {
@@ -8,12 +7,13 @@ import {
   BOARD_CARD_PLACEHOLDER_CLASS,
   BOARD_CARD_PLACEHOLDER_ICON_CLASS,
 } from "../styles/BoardCard.styles";
+import { resolveBoardCardImage } from "../utils/resolveBoardCardImage";
 
 const BoardCardImage = ({
+  card,
   isPriorityImage,
-  label,
 }: BoardCardImageProps): React.JSX.Element => {
-  const image = resolveReservationEquipmentImage(label);
+  const image = resolveBoardCardImage(card);
 
   if (image === null) {
     return (
