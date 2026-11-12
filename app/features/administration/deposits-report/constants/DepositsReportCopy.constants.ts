@@ -18,6 +18,8 @@ export const DEPOSITS_REPORT_COPY = {
   PENDING_HELP:
     "Este dinero es de sus clientes. Sigue aquí hasta que se resuelva.",
   PENDING_LIST_ARIA_LABEL: "Lista de depósitos pendientes",
+  PENDING_PAGINATION_LABEL:
+    "Páginas de depósitos pendientes",
   RETAINED_EMPTY_BODY:
     "La empresa no ha retenido dinero de ningún cliente.",
   RETAINED_EMPTY_TITLE: "No hay depósitos retenidos",
@@ -25,6 +27,9 @@ export const DEPOSITS_REPORT_COPY = {
   RETAINED_HELP:
     "Dinero que la empresa se quedó por un daño. Cada uno muestra su motivo.",
   RETAINED_LIST_ARIA_LABEL: "Lista de depósitos retenidos",
+  RETAINED_PAGINATION_LABEL:
+    "Páginas de depósitos retenidos",
   RETENTION_REASON_LABEL: "Motivo",
   RETRY: "Volver a intentar",
+  RESERVATIONS_BY_WORKER: "Ver reservas por trabajador",
 } as const;

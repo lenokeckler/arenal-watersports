@@ -13,10 +13,13 @@ import {
 } from "./ReservationEdit.constants";
 
 const mapRow = (overrides: Partial<ReservationEditRow>) =>
-  mapReservationEdit({
-    ...RESERVATION_EDIT_ROW,
-    ...overrides,
-  });
+  mapReservationEdit(
+    {
+      ...RESERVATION_EDIT_ROW,
+      ...overrides,
+    },
+    test.EDITOR_NAME
+  );
 
 describe("mapReservationEdit", () => {
   it("maps a category item into the form starting values", () => {
@@ -29,6 +32,7 @@ describe("mapReservationEdit", () => {
       },
       equipmentLock: lock.NONE,
       isEditable: true,
+      lastEditLabel: test.EXPECTED_LAST_EDIT,
       lastEditedAt: test.MICROSECOND_INSTANT,
       time: test.EXPECTED_TIME,
     });
@@ -67,6 +71,21 @@ describe("mapReservationEdit", () => {
       );
     }
   );
+
+  it("describes every item but the extras, by id", () => {
+    const { equipmentLabels } = mapRow({
+      reservation_items: [
+        categoryItem,
+        extraItem,
+        unitItem,
+      ],
+    });
+
+    expect(equipmentLabels).toEqual([
+      test.UNIT_LABEL,
+      test.CATEGORY_LABEL,
+    ]);
+  });
 
   it.each<[Partial<ReservationEditRow>]>([
     [{ reservation_items: [extraItem] }],

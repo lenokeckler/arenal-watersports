@@ -12,6 +12,7 @@ Allow a reservations worker to record a rental reservation with its customer nam
 - Persist the creator from the authenticated session.
 - Persist one of two equipment commitments: an active, reservable, interchangeable category with positive quantity, or one concrete unit from an active, reservable, non-interchangeable category.
 - Let Reservations choose `rental`, `tour`, or `combo`; callers without a selected type continue to default to `rental`.
+- Persist selected guide assignments transactionally for tours.
 - Interpret civil date and time in `America/Costa_Rica` regardless of server timezone.
 
 ## Out of scope
@@ -41,8 +42,8 @@ Allow a reservations worker to record a rental reservation with its customer nam
 ## Edge cases & errors
 
 - Invalid dates, times, empty names, non-positive people/quantity/duration, and non-whole-minute durations are rejected before persistence.
-- Inactive, non-reservable, missing, or non-interchangeable categories are rejected for category commitments.
-- Missing, unavailable, or interchangeable-category units are rejected for unit commitments; category/quantity fields cannot be combined with a concrete unit.
+- Inactive, non-reservable, or missing categories are rejected for all commitment types. Custom combo items use category/quantity for interchangeable equipment and a concrete unit for non-interchangeable equipment.
+- Missing, unavailable, or interchangeable-category units are rejected for unit commitments; RPC unit items contain only `unit_id`, without category or quantity fields.
 - A non-interchangeable category without an available unit cannot be submitted from the form.
 - A concrete unit with an overlapping scheduled or dispatched reservation is rejected.
 - Missing authenticated identity is rejected.
@@ -51,8 +52,8 @@ Allow a reservations worker to record a rental reservation with its customer nam
 
 ## Constraints
 
-- Each reservation created by this form has either a category plus quantity item or one concrete unit item, never both.
-- The Lancha exception is a unit commitment at reservation time; interchangeable equipment remains quantity-committed for Operations to select during dispatch.
+- Each rental or tour reservation created by the standard form has either a category plus quantity item or one concrete unit item, never both. Each custom combo component is either a category/quantity item or a unit-only item; a Lancha's concrete unit is selected during reservation.
+- For standalone rental and tour reservations, the Lancha exception is a unit commitment at reservation time; interchangeable equipment remains quantity-committed for Operations to select during dispatch. Custom combos also use a concrete unit for each non-interchangeable component while preserving their package-specific composition and pricing rules.
 - Criterion 5 cannot be fulfilled until calendar PR #101 is integrated.
 - The Unit 2 equipment selection stays within this form and follows existing Stitch styling and responsive form conventions.
 - Skills: code-standards, structure-standards, component-architecture, constants-standards, stack-rules, eslint-standards, prettier-standards, unit-testing-standards, pull-request-workflow.
