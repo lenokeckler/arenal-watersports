@@ -23,6 +23,9 @@ export const createReservationTypeChangeHandler =
     if (value !== RESERVATION_TYPE.TOUR) {
       updateValue(RESERVATION_FORM_FIELD.GUIDE_IDS, []);
     }
+    if (value === RESERVATION_TYPE.COMBO) {
+      updateValue(RESERVATION_FORM_FIELD.EXTRA_IDS, []);
+    }
     const selectedCategory = categories.find(
       (category) => category.id === values.categoryId
     );

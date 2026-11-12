@@ -16,7 +16,10 @@ import { RESERVATION_SERVICE_OPERATION } from "../constants/ReservationServiceOp
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import {
+  CASE_INSENSITIVE_DUPLICATE_EXTRA_IDS,
   CREATED_RESERVATION_ID,
+  DUPLICATE_EXTRA_IDS,
+  INVALID_EXTRA_ID,
   RESERVATION_OPERATION_ERROR,
   RESERVATION_UNIT_ID,
   VALID_RESERVATION_FORM_INPUT,
@@ -137,4 +140,26 @@ describe("createReservationAction", () => {
       unitUnavailable: true,
     });
   });
+
+  it.each([
+    { extraIds: [INVALID_EXTRA_ID] },
+    { extraIds: DUPLICATE_EXTRA_IDS },
+    { extraIds: CASE_INSENSITIVE_DUPLICATE_EXTRA_IDS },
+  ])(
+    "rejects malformed or duplicate extra identifiers before authorization",
+    async ({ extraIds }) => {
+      const result = await createReservationAction({
+        ...VALID_RESERVATION_FORM_INPUT,
+        extraIds,
+      });
+
+      expect(result.ok).toBe(false);
+      expect(
+        getAuthorizedReservationFormClient
+      ).not.toHaveBeenCalled();
+      expect(
+        createRentalReservation
+      ).not.toHaveBeenCalled();
+    }
+  );
 });
