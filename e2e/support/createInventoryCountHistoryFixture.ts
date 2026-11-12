@@ -20,10 +20,11 @@ export const createInventoryCountHistoryFixture = async (
     .single();
 
   if (workerError || !worker || unitError || !unit) {
-    return failE2eOperation(
+    failE2eOperation(
       "find the worker and unit of the count",
       workerError?.message ?? unitError?.message ?? "no row"
     );
+    return;
   }
 
   const { data: count, error: countError } = await client
@@ -33,10 +34,11 @@ export const createInventoryCountHistoryFixture = async (
     .single();
 
   if (countError || !count) {
-    return failE2eOperation(
+    failE2eOperation(
       "create the inventory count",
       countError?.message ?? "no row"
     );
+    return;
   }
 
   const { error: lineError } = await client
