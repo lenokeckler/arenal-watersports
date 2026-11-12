@@ -2,16 +2,19 @@ import Title from "@/app/components/title/Title";
 import { ARIA_ROLE, TitleVariant } from "@/app/constants";
 import type { ExtraCardViewModel } from "../models/ExtraCardViewModel.interface";
 import {
+  EXTRA_CARD_BODY_CLASS,
   EXTRA_CARD_CONTAINER_CLASS,
   EXTRA_CARD_HEADING_ROW_CLASS,
   EXTRA_CARD_NAME_CLASS,
 } from "../styles/ExtraCard.styles";
 import ExtraCardActions from "./ExtraCardActions";
+import ExtraCardPrices from "./ExtraCardPrices";
 import ExtraCardStatusChip from "./ExtraCardStatusChip";
 
 const ExtraCard = ({
   name,
   status,
+  prices,
   ...actionProps
 }: ExtraCardViewModel): React.JSX.Element => (
   <div
@@ -19,13 +22,16 @@ const ExtraCard = ({
     aria-label={name}
     className={EXTRA_CARD_CONTAINER_CLASS}
   >
-    <div className={EXTRA_CARD_HEADING_ROW_CLASS}>
-      <Title
-        variant={TitleVariant.AUXILIAR}
-        text={name}
-        className={EXTRA_CARD_NAME_CLASS}
-      />
-      <ExtraCardStatusChip status={status} />
+    <div className={EXTRA_CARD_BODY_CLASS}>
+      <div className={EXTRA_CARD_HEADING_ROW_CLASS}>
+        <Title
+          variant={TitleVariant.AUXILIAR}
+          text={name}
+          className={EXTRA_CARD_NAME_CLASS}
+        />
+        <ExtraCardStatusChip status={status} />
+      </div>
+      <ExtraCardPrices prices={prices} />
     </div>
     <ExtraCardActions {...actionProps} />
   </div>

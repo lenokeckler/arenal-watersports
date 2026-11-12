@@ -34,12 +34,7 @@ describe("ReservationFormView submission", () => {
       await page.findSuccessMessage()
     ).toBeInTheDocument();
 
-    const submitButton = page.querySubmitButton();
-    if (submitButton !== null) {
-      expect(submitButton).toBeDisabled();
-    } else {
-      expect(submitButton).not.toBeInTheDocument();
-    }
+    expect(page.getSubmitButton()).toBeEnabled();
 
     expect(createReservationAction).toHaveBeenCalledTimes(
       1

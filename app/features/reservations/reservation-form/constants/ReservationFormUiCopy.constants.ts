@@ -64,7 +64,7 @@ export const RESERVATION_FORM_UI_COPY = {
   CATEGORY_CONFLICT_WARNING_TITLE:
     "Posible cruce de disponibilidad",
   CATEGORY_CONFLICT_WARNING_DESCRIPTION:
-    "El horario coincide con otras reservas de esta categoría. Puede continuar si la operación se acomoda sobre la marcha.",
+    "Coincide con una reserva existente. Puede continuar si la operación lo permite.",
   CATEGORY_CONFLICT_WARNING_LOADING:
     "Consultando reservas de esta categoría…",
   CATEGORY_CONFLICT_WARNING_ERROR:
@@ -79,6 +79,8 @@ export const RESERVATION_FORM_UI_COPY = {
   GUIDES: "Guías de la salida",
   GUIDES_DESCRIPTION:
     "Seleccione uno o varios trabajadores marcados como guía. La cantidad de personas no limita la asignación.",
+  GUIDES_NO_SELECTION_WARNING:
+    "No ha seleccionado ningún guía. Puede continuar con la reserva.",
   GUIDES_SELECTED: "Guías asignados",
   GUIDES_EMPTY:
     "No hay trabajadores marcados como guía disponibles.",
@@ -86,4 +88,23 @@ export const RESERVATION_FORM_UI_COPY = {
   GUIDES_ERROR:
     "No fue posible cargar los guías. Revise la conexión e inténtelo de nuevo.",
   GUIDES_RETRY: "Reintentar carga de guías",
+  EXTRAS_TITLE: "Extras de la salida",
+  EXTRAS_DESCRIPTION:
+    "Seleccione los servicios adicionales compatibles con esta lancha.",
+  EXTRAS_LOADING: "Cargando extras compatibles…",
+  EXTRAS_ERROR:
+    "No fue posible cargar los extras. Revise su conexión e inténtelo de nuevo.",
+  EXTRAS_EMPTY: "Esta lancha no tiene extras disponibles.",
+  EXTRAS_RETRY: "Reintentar carga de extras",
+  EXTRA_INVENTORY_NOTE: "Ocupa equipo del inventario",
+  QUOTE_TITLE: "Total estimado",
+  QUOTE_CURRENCY_NOTE:
+    "Montos calculados por separado con la tarifa de esta salida; no se convierte entre monedas.",
+  QUOTE_LOADING: "Calculando total…",
+  QUOTE_ERROR:
+    "No fue posible calcular el total. Revise su conexión e inténtelo de nuevo.",
+  QUOTE_RETRY: "Reintentar cálculo",
+  QUOTE_MISSING_TARIFF:
+    "No hay tarifa registrada para esta lancha y tipo de salida.",
+  QUOTE_MISSING_CURRENCY: "Tarifa no disponible",
 } as const;

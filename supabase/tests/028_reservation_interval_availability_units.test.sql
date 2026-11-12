@@ -16,9 +16,10 @@ from interval_fixture;
 select pg_temp.persist_interval_commitments();
 
 insert into reservation_dispatches
-  (reservation_id, category_id, dispatched_at, duration_minutes, created_by, updated_by)
+  (reservation_id, category_id, dispatched_at, duration_minutes, closed_at, created_by, updated_by)
 select reservation.id, fixture.unit_category,
-  fixture.starts_at + interval '1 day 2 hours', 60, fixture.worker_id, fixture.worker_id
+  fixture.starts_at + interval '1 day 2 hours', 60,
+  fixture.starts_at + interval '1 day 3 hours', fixture.worker_id, fixture.worker_id
 from reservations reservation cross join interval_fixture fixture
 where reservation.customer_name = 'Dispatch moved';
 insert into reservation_dispatches

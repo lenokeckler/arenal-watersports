@@ -8,7 +8,10 @@ import {
 } from "vitest";
 import { createReservationAction } from "../actions/createReservationAction";
 import { createCustomComboReservationAction } from "../actions/createCustomComboReservationAction";
+import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
+import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { RESERVATION_TYPE_COPY } from "../constants/ReservationTypeCopy.constants";
+import { createCustomComboPage } from "./CustomCombo.page";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 import { renderReservationForm } from "./ReservationFormView.fixture";
 import type { CustomComboEquipmentSelection } from "../models/CustomComboEquipmentSelection.interface";
@@ -47,25 +50,24 @@ describe("ReservationTypeField submission", () => {
     vi.clearAllMocks();
   });
 
-  it("persists the selected reservation type", async () => {
-    vi.mocked(createReservationAction).mockResolvedValue({
-      ok: true,
-      reservationId:
-        RESERVATION_FORM_VIEW_TEST.CREATED_RESERVATION_ID,
-    });
+  it("shows an equipment error instead of persisting an empty custom combo", async () => {
     const page = renderReservationForm(true, true, true);
 
-    await page.fillCustomerName(
-      RESERVATION_FORM_VIEW_TEST.CUSTOMER_NAME
-    );
-    await page.selectCategory(
-      RESERVATION_FORM_VIEW_TEST.CATEGORY_ID
-    );
     await page.selectReservationType(
       RESERVATION_TYPE_COPY.OPTIONS.COMBO.label
     );
-    expect(page.getSubmitButton()).toBeDisabled();
-    await page.submit();
+    expect(page.getSubmitButton()).toBeEnabled();
+
+    const customComboPage = createCustomComboPage(
+      document.body
+    );
+    await customComboPage.submit();
+
+    expect(
+      customComboPage.getEquipmentSelectionError()
+    ).toHaveTextContent(
+      RESERVATION_FORM_COPY[RESERVATION_FORM_FIELD.ITEMS]
+    );
 
     expect(createReservationAction).not.toHaveBeenCalled();
     expect(
