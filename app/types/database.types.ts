@@ -382,6 +382,7 @@ export type Database = {
           has_condition_photos: boolean;
           has_motor: boolean;
           id: string;
+          image_path: string | null;
           is_reservable: boolean;
           name: string;
           status: Database["public"]["Enums"]["category_status"];
@@ -408,6 +409,7 @@ export type Database = {
           has_condition_photos?: boolean;
           has_motor?: boolean;
           id?: string;
+          image_path?: string | null;
           is_reservable?: boolean;
           name: string;
           status?: Database["public"]["Enums"]["category_status"];
@@ -434,6 +436,7 @@ export type Database = {
           has_condition_photos?: boolean;
           has_motor?: boolean;
           id?: string;
+          image_path?: string | null;
           is_reservable?: boolean;
           name?: string;
           status?: Database["public"]["Enums"]["category_status"];
@@ -2871,6 +2874,7 @@ export type Database = {
           category_name: string | null;
           free_count: number | null;
           group_name: string | null;
+          image_path: string | null;
           in_use_count: number | null;
           total_count: number | null;
         };

@@ -22,6 +22,7 @@ export const DEFAULT_EQUIPMENT_CATEGORY_ROW: EquipmentCategoryRow =
     has_condition_photos: false,
     has_motor: false,
     id: FAKE_CATEGORY_ID,
+    image_path: null,
     is_reservable: true,
     name: "Kayak doble",
     status: CATEGORY_STATUS.ACTIVE,
