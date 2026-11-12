@@ -2,20 +2,22 @@ begin;
 select plan(34);
 
 insert into auth.users (id, email) values
+  ('77000000-0000-0000-0000-000000000009', 'tab0702-admin@arenal.local'),
   ('77000000-0000-0000-0000-000000000001', 'tab0702-operations@arenal.local'),
   ('77000000-0000-0000-0000-000000000002', 'tab0702-reservations@arenal.local'),
   ('77000000-0000-0000-0000-000000000003', 'tab0702-operations-no-mark@arenal.local');
 insert into public.workers (id, username, full_name, personal_email, base_role) values
+  ('77000000-0000-0000-0000-000000000009', 'tab0702_admin', 'Administrator', 'tab0702-admin@correo.com', 'administracion'),
   ('77000000-0000-0000-0000-000000000001', 'tab0702_operations', 'Operations with mark', null, 'operaciones'),
   ('77000000-0000-0000-0000-000000000002', 'tab0702_reservations', 'Reservations with mark', null, 'reservas'),
   ('77000000-0000-0000-0000-000000000003', 'tab0702_operations_no_mark', 'Operations without mark', null, 'operaciones');
 insert into public.worker_areas (worker_id, area, granted_by) values
-  ('77000000-0000-0000-0000-000000000001', 'reservas', '00000000-0000-0000-0000-000000000001'),
-  ('77000000-0000-0000-0000-000000000002', 'operaciones', '00000000-0000-0000-0000-000000000001'),
-  ('77000000-0000-0000-0000-000000000003', 'reservas', '00000000-0000-0000-0000-000000000001');
+  ('77000000-0000-0000-0000-000000000001', 'reservas', '77000000-0000-0000-0000-000000000009'),
+  ('77000000-0000-0000-0000-000000000002', 'operaciones', '77000000-0000-0000-0000-000000000009'),
+  ('77000000-0000-0000-0000-000000000003', 'reservas', '77000000-0000-0000-0000-000000000009');
 insert into public.worker_marks (worker_id, mark, granted_by) values
-  ('77000000-0000-0000-0000-000000000001', 'encargado_general', '00000000-0000-0000-0000-000000000001'),
-  ('77000000-0000-0000-0000-000000000002', 'encargado_general', '00000000-0000-0000-0000-000000000001');
+  ('77000000-0000-0000-0000-000000000001', 'encargado_general', '77000000-0000-0000-0000-000000000009'),
+  ('77000000-0000-0000-0000-000000000002', 'encargado_general', '77000000-0000-0000-0000-000000000009');
 insert into public.equipment_categories (id, name, tracking_mode, has_condition_photos, created_by, updated_by)
 values ('88000000-0000-0000-0000-000000000001', 'TAB-07-02 category', 'by_unit', true,
         '77000000-0000-0000-0000-000000000001', '77000000-0000-0000-0000-000000000001');
@@ -110,7 +112,7 @@ select throws_ok($$insert into storage.objects (bucket_id, name, owner) values (
 with changed as (update storage.objects set metadata = '{"size":4096}'::jsonb where bucket_id = 'unit-condition-photos' and name = 'tab-07-02/existing.webp' returning 1)
 select is((select count(*)::integer from changed), 0, 'operations without the mark cannot update condition photo objects');
 
-reset role; set local role authenticated; set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-000000000001","role":"authenticated"}';
+reset role; set local role authenticated; set local request.jwt.claims to '{"sub":"77000000-0000-0000-0000-000000000009","role":"authenticated"}';
 select ok(public.is_admin(), 'administrator retains active access');
 select is(array[
   (select count(*)::integer from public.equipment_stock_movements where id = '90000000-0000-0000-0000-000000000001'),
@@ -119,10 +121,10 @@ select is(array[
   (select count(*)::integer from public.inventory_counts where id = '93000000-0000-0000-0000-000000000001'),
   (select count(*)::integer from public.inventory_count_lines where id = '94000000-0000-0000-0000-000000000001')
 ], array[1, 1, 1, 1, 1], 'administrator reads the five inventory history tables');
-select lives_ok($$insert into public.unit_condition_photos (unit_id, angle, storage_path, uploaded_by) values ('89000000-0000-0000-0000-000000000001', 'bottom', 'tab-07-02/admin.webp', '00000000-0000-0000-0000-000000000001')$$, 'administrator inserts a condition photo row without the mark');
+select lives_ok($$insert into public.unit_condition_photos (unit_id, angle, storage_path, uploaded_by) values ('89000000-0000-0000-0000-000000000001', 'bottom', 'tab-07-02/admin.webp', '77000000-0000-0000-0000-000000000009')$$, 'administrator inserts a condition photo row without the mark');
 with changed as (update public.unit_condition_photos set storage_path = 'tab-07-02/admin-updated.webp' where unit_id = '89000000-0000-0000-0000-000000000001' and angle = 'right_side' returning 1)
 select is((select count(*)::integer from changed), 1, 'administrator updates a condition photo row without the mark');
-select lives_ok($$insert into storage.objects (bucket_id, name, owner) values ('unit-condition-photos', 'tab-07-02/admin.webp', '00000000-0000-0000-0000-000000000001')$$, 'administrator uploads a condition photo object without the mark');
+select lives_ok($$insert into storage.objects (bucket_id, name, owner) values ('unit-condition-photos', 'tab-07-02/admin.webp', '77000000-0000-0000-0000-000000000009')$$, 'administrator uploads a condition photo object without the mark');
 with changed as (update storage.objects set metadata = '{"size":8192}'::jsonb where bucket_id = 'unit-condition-photos' and name = 'tab-07-02/existing.webp' returning 1)
 select is((select count(*)::integer from changed), 1, 'administrator updates a condition photo object without the mark');
 
