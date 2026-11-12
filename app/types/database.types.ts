@@ -3244,6 +3244,13 @@ export type Database = {
         Args: { p_pin: string; p_username: string };
         Returns: string;
       };
+      extend_worker_expiry: {
+        Args: {
+          new_expires_at: string;
+          target_worker: string;
+        };
+        Returns: string;
+      };
       finish_password_recovery: {
         Args: { p_user_id: string };
         Returns: undefined;
@@ -3684,6 +3691,13 @@ export type Database = {
         Args: {
           signed_in_at: string;
           target_session: string;
+        };
+        Returns: string;
+      };
+      set_unit_condition: {
+        Args: {
+          new_status: Database["public"]["Enums"]["unit_status"];
+          target_unit: string;
         };
         Returns: string;
       };

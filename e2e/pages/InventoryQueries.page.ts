@@ -22,6 +22,11 @@ export const createInventoryQueries = (page: Page) => {
         name,
         exact: true,
       }),
+    getUnitConditionButton: (code: string, label: string) =>
+      main
+        .getByRole(ARIA_ROLE.LISTITEM)
+        .filter({ hasText: code })
+        .getByRole(ARIA_ROLE.BUTTON, { name: label }),
     getUnitStatus: (
       code: string,
       status: ActiveInventoryUnitStatus
