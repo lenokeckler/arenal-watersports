@@ -1,11 +1,8 @@
 import { notFound } from "next/navigation";
 import { assertReservationCalendarAccess } from "@/app/services/reservations/assertReservationCalendarAccess";
-import ReservationCancellationLayout from "./components/ReservationCancellationLayout";
-import ReservationCancellationSummary from "./components/ReservationCancellationSummary";
-import ReservationCancellationUnavailable from "./components/ReservationCancellationUnavailable";
 import type { ReservationCancellationProps } from "./models/ReservationCancellationProps.interface";
+import ReservationCancellationView from "./ReservationCancellationView";
 import { getReservationCancellation } from "./services/getReservationCancellation";
-import { isReservationCancellationBlockedStatus } from "./utils/isReservationCancellationBlockedStatus";
 
 const ReservationCancellation = async ({
   reservationId,
@@ -19,24 +16,10 @@ const ReservationCancellation = async ({
     notFound();
   }
 
-  if (
-    isReservationCancellationBlockedStatus(
-      cancellation.status
-    )
-  ) {
-    return (
-      <ReservationCancellationUnavailable
-        status={cancellation.status}
-      />
-    );
-  }
-
   return (
-    <ReservationCancellationLayout>
-      <ReservationCancellationSummary
-        cancellation={cancellation}
-      />
-    </ReservationCancellationLayout>
+    <ReservationCancellationView
+      cancellation={cancellation}
+    />
   );
 };
 
