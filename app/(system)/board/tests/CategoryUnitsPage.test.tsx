@@ -9,6 +9,7 @@ import {
 import { ensureWorkModeChosen } from "@/app/features/access/work-mode/ensureWorkModeChosen";
 import CategoryUnits from "@/app/features/board/category-units/CategoryUnits";
 import { CATEGORY_UNITS_METADATA } from "@/app/features/board/category-units/constants/CategoryUnitsMetadata.constants";
+import { hasOperationsArea } from "@/app/services/operations/hasOperationsArea";
 import CategoryUnitsPage, {
   metadata,
 } from "../categories/[categoryId]/page";
@@ -23,6 +24,13 @@ vi.mock(
   "@/app/features/access/work-mode/ensureWorkModeChosen",
   () => ({
     ensureWorkModeChosen: vi.fn(),
+  })
+);
+
+vi.mock(
+  "@/app/services/operations/hasOperationsArea",
+  () => ({
+    hasOperationsArea: vi.fn(),
   })
 );
 
@@ -44,6 +52,7 @@ describe("CategoryUnitsPage", () => {
 
   it("renders the units of the route category with the page param once the work mode check passes", async () => {
     vi.mocked(ensureWorkModeChosen).mockResolvedValue();
+    vi.mocked(hasOperationsArea).mockResolvedValue(false);
 
     const page = await CategoryUnitsPage(
       buildCategoryUnitsPageProps(PAGE_PARAM)
@@ -53,13 +62,26 @@ describe("CategoryUnitsPage", () => {
     expect(isValidElement(page)).toBe(true);
     expect(page.type).toBe(CategoryUnits);
     expect(page.props).toEqual({
+      canDispatch: false,
       categoryId: CATEGORY_ID,
       pageParam: PAGE_PARAM,
     });
   });
 
+  it("lets the screen dispatch when the worker has the operations area", async () => {
+    vi.mocked(ensureWorkModeChosen).mockResolvedValue();
+    vi.mocked(hasOperationsArea).mockResolvedValue(true);
+
+    const page = await CategoryUnitsPage(
+      buildCategoryUnitsPageProps()
+    );
+
+    expect(page.props.canDispatch).toBe(true);
+  });
+
   it("passes no page param when the url has none", async () => {
     vi.mocked(ensureWorkModeChosen).mockResolvedValue();
+    vi.mocked(hasOperationsArea).mockResolvedValue(false);
 
     const page = await CategoryUnitsPage(
       buildCategoryUnitsPageProps()

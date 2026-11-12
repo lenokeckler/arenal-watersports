@@ -1,25 +1,8 @@
 import { useRouter } from "next/navigation";
-import { LENGTH } from "@/app/constants";
-import { UNIT_LIST_VIEW_STATE } from "../constants/UnitListViewState.constants";
 import type { UnitListViewModel } from "../models/UnitListViewModel.interface";
 import type { UnitListViewModelProps } from "../models/UnitListViewModelProps.interface";
-import type { UnitListViewState } from "../models/UnitListViewState.type";
 import { buildUnitCardViewModel } from "../utils/buildUnitCardViewModel";
-
-const resolveUnitListViewState = (
-  fetchFailed: boolean,
-  unitCount: number
-): UnitListViewState => {
-  if (fetchFailed) {
-    return UNIT_LIST_VIEW_STATE.ERROR;
-  }
-
-  if (unitCount === LENGTH.ZERO) {
-    return UNIT_LIST_VIEW_STATE.EMPTY;
-  }
-
-  return UNIT_LIST_VIEW_STATE.READY;
-};
+import { resolveUnitListViewState } from "../utils/resolveUnitListViewState";
 
 export const useUnitListViewModel = ({
   category,

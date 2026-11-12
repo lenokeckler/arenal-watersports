@@ -48,6 +48,11 @@ export const E2E_DEVICE_NAME = {
   MOBILE: "Pixel 7",
 } as const;
 
+export const E2E_CSS_POSITION = {
+  STATIC: "static",
+  STICKY: "sticky",
+} as const;
+
 export const E2E_PROJECT = {
   ADMIN_RECOVERY: "chromium-mobile-admin-recovery",
   ADMIN_SCREENSHOTS: "chromium-desktop-admin-screenshots",
@@ -93,6 +98,9 @@ export const E2E_ARTIFACT_MODE = {
   SCREENSHOT_ON_FAILURE: "only-on-failure",
   TRACE_ON_FAILURE: "retain-on-failure",
 } as const;
+
+export const E2E_GLOBAL_SETUP =
+  "./e2e/support/customComboTariffsFixture.ts";
 
 export const HEADING_LEVEL = {
   CARD: 3,

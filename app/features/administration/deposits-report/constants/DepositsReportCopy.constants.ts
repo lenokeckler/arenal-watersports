@@ -31,4 +31,5 @@ export const DEPOSITS_REPORT_COPY = {
     "Páginas de depósitos retenidos",
   RETENTION_REASON_LABEL: "Motivo",
   RETRY: "Volver a intentar",
+  RESERVATIONS_BY_WORKER: "Ver reservas por trabajador",
 } as const;

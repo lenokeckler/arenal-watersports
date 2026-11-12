@@ -13,7 +13,7 @@ import {
   RESERVATION_FORM_FOCUS_TARGET,
   RESERVATION_FORM_FIELD_ID,
 } from "./constants/ReservationFormUi.constants";
-import { useReservationFormViewModel } from "./hooks/useReservationFormViewModel";
+import { useReservationFormGuideViewModel } from "./hooks/useReservationFormGuideViewModel";
 import type { ReservationFormViewProps } from "./models/ReservationFormViewProps.interface";
 import {
   RESERVATION_FORM_ACTIONS_CLASS,
@@ -29,10 +29,14 @@ import {
   RESERVATION_FORM_TITLE_CLASS,
 } from "./styles/ReservationFormView.styles";
 import ReservationFormFields from "./components/ReservationFormFields";
+import ReservationExtrasQuote from "./components/ReservationExtrasQuote";
+import { shouldShowReservationExtras } from "./utils/shouldShowReservationExtras";
 
 const ReservationFormView = ({
   categories,
+  guideLoadResult,
   initialDate,
+  predefinedCombos,
   unitCategories,
 }: ReservationFormViewProps): React.JSX.Element => {
   const allCategories = Array.from(
@@ -43,11 +47,15 @@ const ReservationFormView = ({
       ])
     ).values()
   );
-  const viewModel = useReservationFormViewModel({
-    categories: allCategories,
-    initialCategoryId: STRING.Empty,
-    initialDate,
-    unitCategories,
+  const viewModel = useReservationFormGuideViewModel({
+    guideLoadResult,
+    formOptions: {
+      categories: allCategories,
+      initialCategoryId: STRING.Empty,
+      initialDate,
+      predefinedCombos,
+      unitCategories,
+    },
   });
   const submitLabel = viewModel.isPending
     ? RESERVATION_FORM_UI_COPY.SUBMITTING
@@ -85,16 +93,18 @@ const ReservationFormView = ({
           >
             <ReservationFormFields
               categories={viewModel.categories}
+              guideAssignmentViewModel={viewModel}
               viewModel={viewModel}
             />
-            {allCategories.length === 0 && (
-              <Text
-                role="status"
-                className={RESERVATION_FORM_ERROR_CLASS}
-              >
-                {RESERVATION_FORM_UI_COPY.NO_CATEGORIES}
-              </Text>
-            )}
+            {allCategories.length === 0 &&
+              !viewModel.predefinedCombo?.selectedCombo && (
+                <Text
+                  role="status"
+                  className={RESERVATION_FORM_ERROR_CLASS}
+                >
+                  {RESERVATION_FORM_UI_COPY.NO_CATEGORIES}
+                </Text>
+              )}
             {viewModel.formError && (
               <Text
                 id={
@@ -122,6 +132,11 @@ const ReservationFormView = ({
               aria-label={RESERVATION_FORM_UI_COPY.ACTIONS}
               className={RESERVATION_FORM_ACTIONS_CLASS}
             >
+              {shouldShowReservationExtras(viewModel) ? (
+                <ReservationExtrasQuote
+                  viewModel={viewModel}
+                />
+              ) : null}
               <Button
                 type="submit"
                 variant={BUTTON.PRIMARY}
