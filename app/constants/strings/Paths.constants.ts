@@ -23,6 +23,7 @@ export const PATHS = {
     CATEGORY_ALERTS_SEGMENT: "alerts",
     CATEGORY_BEHAVIOR_SEGMENT: "behavior",
     CATEGORY_DEPOSIT_SEGMENT: "deposit",
+    CATEGORY_IMAGE_SEGMENT: "image",
     CATEGORY_STOCK_SEGMENT: "stock",
     CATEGORY_UNITS_SEGMENT: "units",
     DEPOSITS: "/administration/reports/deposits",
