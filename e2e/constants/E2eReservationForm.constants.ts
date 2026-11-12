@@ -38,9 +38,15 @@ export const E2E_RESERVATION_FORM_COPY = {
     "US-RES-04 E2E custom duration",
   SUBMIT: "Registrar reserva",
   SUCCESS: "La reserva quedó registrada correctamente.",
+  EXTRA_BENNINGTON_OPTION: "Tubing",
+  EXTRA_PONTOON_OPTION: "Parrilla",
   VALIDATION_ERROR: "Ingrese el nombre de la reserva.",
   SCREENSHOT_DATE: "2099-12-31",
   INTERVAL_CHANGE_DATE: "2099-12-30",
+} as const;
+
+export const E2E_RESERVATION_EXTRAS = {
+  EXPECTED_EXTRA_QUOTE_USD: "USD 35,00",
 } as const;
 
 export const E2E_RESERVATION_EQUIPMENT_STATUS = {
@@ -61,6 +67,9 @@ export const E2E_RESERVATION_FORM_EQUIPMENT_SCREENSHOT_SUFFIX =
 
 export const E2E_RESERVATION_FORM_UNIT_SCREENSHOT_SUFFIX =
   "lancha-unit-selected";
+
+export const E2E_RESERVATION_FORM_EXTRAS_SCREENSHOT_BASENAME =
+  "us-res-11-04-reservation-extras";
 
 export const E2E_RESERVATION_FORM_CUSTOM_DURATION_SCREENSHOT_SUFFIX =
   "custom-duration";
