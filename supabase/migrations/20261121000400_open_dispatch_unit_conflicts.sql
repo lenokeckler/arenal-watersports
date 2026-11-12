@@ -62,6 +62,7 @@ as $$
       case when item.unit_id is null then reservation.starts_at
         else coalesce(dispatch.dispatched_at, reservation.starts_at) end,
       case when item.unit_id is null then reservation.ends_at
+        when dispatch.id is not null and dispatch.closed_at is null then 'infinity'::timestamptz
         else coalesce(dispatch.ends_at, reservation.ends_at) end,
       '[)'
     ) && tstzrange(p_starts_at, p_ends_at, '[)')

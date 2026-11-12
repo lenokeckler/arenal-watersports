@@ -1,5 +1,5 @@
 begin;
-select plan(8);
+select plan(10);
 \ir fixtures/cancel_dispatched_reservation.sql.fixture
 
 set local role authenticated;
@@ -52,6 +52,20 @@ select is(
     '2035-05-12 15:10:00+00', '2035-05-12 15:50:00+00')),
   0,
   'the category does not count a cancelled reservation without a dispatch'
+);
+
+select is(
+  (select committed from category_availability('e2b10000-0000-4000-8000-000000000101',
+    '2035-06-01 15:00:00+00', '2035-06-01 16:00:00+00')),
+  1,
+  'the category keeps counting an overdue unit while the group is open'
+);
+
+select results_eq(
+  $$ select reservation_id from reservation_category_conflicts('e2b10000-0000-4000-8000-000000000101',
+       '2035-06-01 15:00:00+00', '2035-06-01 16:00:00+00') $$,
+  $$ values ('e2b10000-0000-4000-8000-000000000305'::uuid) $$,
+  'an overdue open dispatch is still a category conflict'
 );
 
 select results_eq(
