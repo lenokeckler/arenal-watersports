@@ -16,9 +16,14 @@ import {
   it,
   vi,
 } from "vitest";
-import { PATHS } from "@/app/constants";
+import {
+  CURRENCY_CODE,
+  MONEY_AMOUNT_ISSUE,
+  PATHS,
+} from "@/app/constants";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
 import { EXTRA_FORM_MODE } from "../constants/ExtraFormMode.constants";
+import { EXTRA_PRICE_ERROR_COPY } from "../constants/ExtraPriceErrorCopy.constants";
 import { EXTRA_MUTATION_STATUS } from "../constants/ExtraMutationStatus.constants";
 import {
   DEFAULT_EXTRA,
@@ -34,6 +39,8 @@ import {
   SEED_CASES,
   VALID_EXTRA_FORM_VALUES,
 } from "./ExtraForm.constants";
+
+const INVALID_PRICE_TEXT = "abc";
 
 describe("useExtraFormViewModel", () => {
   beforeEach(() => {
@@ -69,6 +76,38 @@ describe("useExtraFormViewModel", () => {
       prices: EXTRA_CATALOG_COPY.PRICES_REQUIRED_ERROR,
     });
     expect(createExtraMock).not.toHaveBeenCalled();
+  });
+
+  it("shows an error on the price field that is not a valid amount without calling the server", async () => {
+    const { result } = renderExtraViewModel({
+      mode: EXTRA_FORM_MODE.CREATE,
+    });
+    changeExtraName(result, FAKE_EXTRA_NAME);
+    changeExtraPriceUsd(result, INVALID_PRICE_TEXT);
+
+    await submitExtraViewModel(result);
+
+    expect(result.current.errors).toStrictEqual({
+      priceUsd:
+        EXTRA_PRICE_ERROR_COPY[CURRENCY_CODE.USD][
+          MONEY_AMOUNT_ISSUE.FORMAT
+        ],
+    });
+    expect(createExtraMock).not.toHaveBeenCalled();
+  });
+
+  it("clears the price errors when a price changes", async () => {
+    const { result } = renderExtraViewModel({
+      mode: EXTRA_FORM_MODE.CREATE,
+    });
+    await submitExtraViewModel(result);
+
+    changeExtraPriceCrc(result, FAKE_EXTRA_PRICE_CRC_TEXT);
+
+    expect(result.current.errors).toStrictEqual({});
+    expect(result.current.values.priceCrc).toBe(
+      FAKE_EXTRA_PRICE_CRC_TEXT
+    );
   });
 
   it("clears the name error when the name changes", async () => {

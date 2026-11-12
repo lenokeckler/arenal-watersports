@@ -1,11 +1,16 @@
 import { refreshMock } from "./extraCardActions.harness";
 import { beforeEach, describe, expect, it } from "vitest";
-import { PATHS } from "@/app/constants";
+import { CURRENCY_CODE, PATHS } from "@/app/constants";
+import { formatMoney } from "@/app/utils/money/formatMoney";
 import { resolveListPageHref } from "@/app/utils/list-pagination/resolveListPageHref";
 import { EXTRA_STATUS } from "../constants/ExtraStatus.constants";
 import { EXTRA_STATUS_LABEL } from "../constants/ExtraStatusLabel.constants";
 import { resolveExtraEditPath } from "../utils/resolveExtraEditPath";
-import { DEFAULT_EXTRA } from "./Extra.constants";
+import {
+  DEFAULT_EXTRA,
+  FAKE_EXTRA_PRICE_CRC,
+  FAKE_EXTRA_PRICE_USD,
+} from "./Extra.constants";
 import {
   buildExtra,
   MIDDLE_PAGE,
@@ -56,6 +61,68 @@ describe("ExtraListView", () => {
       "href",
       resolveExtraEditPath(SECOND_EXTRA_ID)
     );
+  });
+
+  it("shows the dollar and the colon price of an extra that has both", () => {
+    renderExtraListView({
+      extras: [
+        buildExtra({
+          priceUsd: FAKE_EXTRA_PRICE_USD,
+          priceCrc: FAKE_EXTRA_PRICE_CRC,
+        }),
+      ],
+    });
+    const extraListPage = createExtraListPage();
+
+    expect(
+      extraListPage.queryPrice(
+        DEFAULT_EXTRA.name,
+        formatMoney({
+          amount: FAKE_EXTRA_PRICE_USD,
+          currency: CURRENCY_CODE.USD,
+        })
+      )
+    ).toBeInTheDocument();
+    expect(
+      extraListPage.queryPrice(
+        DEFAULT_EXTRA.name,
+        formatMoney({
+          amount: FAKE_EXTRA_PRICE_CRC,
+          currency: CURRENCY_CODE.CRC,
+        })
+      )
+    ).toBeInTheDocument();
+  });
+
+  it("shows only the price the extra has", () => {
+    renderExtraListView({
+      extras: [
+        buildExtra({
+          priceUsd: null,
+          priceCrc: FAKE_EXTRA_PRICE_CRC,
+        }),
+      ],
+    });
+    const extraListPage = createExtraListPage();
+
+    expect(
+      extraListPage.queryPrice(
+        DEFAULT_EXTRA.name,
+        formatMoney({
+          amount: FAKE_EXTRA_PRICE_CRC,
+          currency: CURRENCY_CODE.CRC,
+        })
+      )
+    ).toBeInTheDocument();
+    expect(
+      extraListPage.queryPrice(
+        DEFAULT_EXTRA.name,
+        formatMoney({
+          amount: FAKE_EXTRA_PRICE_USD,
+          currency: CURRENCY_CODE.USD,
+        })
+      )
+    ).not.toBeInTheDocument();
   });
 
   it.each(Object.values(EXTRA_STATUS))(

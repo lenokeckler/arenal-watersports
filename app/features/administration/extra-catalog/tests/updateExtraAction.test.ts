@@ -29,6 +29,7 @@ import {
   EXTRA_ID_COLUMN,
   EXTRAS_TABLE,
   FAKE_EXTRA_ADMIN_WORKER_ID,
+  INVALID_PRICE_INPUT_CASES,
   PADDED_EXTRA_NAME,
   SERVER_ERROR_CODE,
 } from "./ExtraActions.constants";
@@ -136,6 +137,22 @@ describe("updateExtraAction", () => {
         priceErrors: {
           prices: EXTRA_CATALOG_COPY.PRICES_REQUIRED_ERROR,
         },
+      });
+      expect(mockUpdate).not.toHaveBeenCalled();
+    }
+  );
+
+  it.each(INVALID_PRICE_INPUT_CASES)(
+    "returns price errors without updating when $description",
+    async ({ values, expectedErrors }) => {
+      const result = await updateExtraAction({
+        ...UPDATE_INPUT,
+        ...values,
+      });
+
+      expect(result).toEqual({
+        status: EXTRA_MUTATION_STATUS.ERROR,
+        priceErrors: expectedErrors,
       });
       expect(mockUpdate).not.toHaveBeenCalled();
     }

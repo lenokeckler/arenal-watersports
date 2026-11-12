@@ -25,6 +25,8 @@ import {
   DECIMAL_POINT,
   EXTRAS_TABLE,
   FAKE_EXTRA_ADMIN_WORKER_ID,
+  INVALID_PRICE_INPUT_CASES,
+  NON_STRING_EXTRA_PRICES,
   PADDED_EXTRA_NAME,
   SERVER_ERROR_CODE,
   ZERO_PRICE_TEXT,
@@ -115,6 +117,37 @@ describe("createExtraAction", () => {
           prices: EXTRA_CATALOG_COPY.PRICES_REQUIRED_ERROR,
         },
       });
+      expect(mockInsert).not.toHaveBeenCalled();
+    }
+  );
+
+  it.each(INVALID_PRICE_INPUT_CASES)(
+    "returns price errors without inserting when $description",
+    async ({ values, expectedErrors }) => {
+      const result = await createExtraAction({
+        ...VALID_EXTRA_FORM_VALUES,
+        ...values,
+      });
+
+      expect(result).toEqual({
+        status: EXTRA_MUTATION_STATUS.ERROR,
+        priceErrors: expectedErrors,
+      });
+      expect(mockInsert).not.toHaveBeenCalled();
+    }
+  );
+
+  it.each(NON_STRING_EXTRA_PRICES)(
+    "returns a price format error without inserting when the dollar price is the non-string value %j",
+    async (priceUsd) => {
+      const result = await createExtraAction({
+        ...VALID_EXTRA_FORM_VALUES,
+        priceUsd: priceUsd as never,
+      });
+
+      expect(result.priceErrors?.priceUsd).toBe(
+        EXTRA_CATALOG_COPY.PRICE_FORMAT_ERROR
+      );
       expect(mockInsert).not.toHaveBeenCalled();
     }
   );
