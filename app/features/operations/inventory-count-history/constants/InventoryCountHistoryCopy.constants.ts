@@ -5,6 +5,17 @@ import {
 
 export const INVENTORY_COUNT_HISTORY_COPY = {
   BACK: "Volver al historial",
+  CARD_SUMMARY: (categories: number, units: number) =>
+    `${categories} ${categories === 1 ? "categoría" : "categorías"}, ${units} ${units === 1 ? "unidad" : "unidades"}`,
+  CATEGORY_SUMMARY: (differences: number) =>
+    differences === 0
+      ? "Todo coincide"
+      : `${differences} ${differences === 1 ? "diferencia" : "diferencias"}`,
+  CHANGED: "Cambió",
+  CONTENT_HEADING: "Todo lo contado",
+  SYSTEM_HAD: (status: string) => `Sistema: ${status}`,
+  SYSTEM_HAD_QUANTITY: (system: number) =>
+    `Sistema: ${system}`,
   COUNTED_BY: "Levantado por",
   DETAIL_EMPTY_DIFFERENCES:
     "Todo coincidía con lo que el sistema tenía registrado.",

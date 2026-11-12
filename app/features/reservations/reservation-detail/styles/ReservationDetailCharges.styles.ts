@@ -5,6 +5,8 @@ import {
 
 export const RESERVATION_DETAIL_CHARGE_BADGE_BASE_CLASS =
   "inline-flex min-h-11 w-fit items-center rounded-full border px-4 py-2 text-sm font-semibold";
+export const RESERVATION_DETAIL_CHARGE_ACTION_CLASS =
+  "inline-flex min-h-11 w-full items-center justify-center rounded-full border border-primary/40 px-5 text-sm font-semibold text-primary hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-fit";
 export const RESERVATION_DETAIL_MONEY_CLASS =
   "break-words font-mono text-sm font-medium tabular-nums text-on-surface";
 

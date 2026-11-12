@@ -1,13 +1,19 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type FormEvent,
+} from "react";
 import type { NullableRef } from "@/app/types";
 import { submitInventoryCount } from "../actions/submitInventoryCount";
 import {
   INVENTORY_COUNT_RESULT,
   type InventoryCountQuantityField,
   type InventoryCountResult,
+  type InventoryCountUnitStatus,
 } from "../constants/InventoryCount.constants";
 import type { InventoryCountChangeEvent } from "../models/InventoryCountChangeEvent.type";
 import type { InventoryCountDraft } from "../models/InventoryCountDraft.interface";
@@ -15,65 +21,86 @@ import type { InventoryCountForm } from "../models/InventoryCountForm.interface"
 import type { InventoryCountFormProps } from "../models/InventoryCountFormProps.interface";
 import { buildInventoryCountDraft } from "../utils/buildInventoryCountDraft";
 import { buildInventoryCountInput } from "../utils/buildInventoryCountInput";
+import {
+  clearInventoryCountDraft,
+  loadInventoryCountDraft,
+  saveInventoryCountDraft,
+} from "../utils/inventoryCountDraftStorage";
+import { resetCategoryToSystem } from "../utils/resetCategoryToSystem";
 
 export const useInventoryCountForm = ({
   categories,
 }: InventoryCountFormProps): InventoryCountForm => {
   const router = useRouter();
-  const [draft, setDraft] = useState<InventoryCountDraft>(
-    () => buildInventoryCountDraft(categories)
+  const [stored] = useState(() =>
+    loadInventoryCountDraft(categories)
   );
+  const [draft, setDraft] = useState<InventoryCountDraft>(
+    () =>
+      stored?.draft ?? buildInventoryCountDraft(categories)
+  );
+  const [reviewedIds, setReviewedIds] = useState<string[]>(
+    () => stored?.reviewedIds ?? []
+  );
+  const [selectedId, setSelectedId] =
+    useState<NullableRef<string>>(null);
   const [showErrors, setShowErrors] = useState(false);
-  const [stepIndex, setStepIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [result, setResult] =
     useState<NullableRef<InventoryCountResult>>(null);
+
+  useEffect(() => {
+    saveInventoryCountDraft({ draft, reviewedIds });
+  }, [draft, reviewedIds]);
 
   const build = useMemo(
     () => buildInventoryCountInput(categories, draft),
     [categories, draft]
   );
 
-  const currentCategory = categories[stepIndex] ?? null;
-  const isSummaryStep = currentCategory === null;
+  const activeCategory =
+    categories.find(
+      (category) => category.id === selectedId
+    ) ??
+    categories.find(
+      (category) => !reviewedIds.includes(category.id)
+    ) ??
+    null;
+  const pendingCount =
+    categories.length - reviewedIds.length;
 
-  const goToNextStep = (): void => {
-    if (
-      currentCategory !== null &&
-      build.invalidCategoryIds.has(currentCategory.id)
-    ) {
-      setShowErrors(true);
-
-      return;
-    }
-
-    setResult(null);
-    setStepIndex((current) =>
-      Math.min(current + 1, categories.length)
+  const markReviewed = (
+    categoryId: string,
+    nextDraft: InventoryCountDraft
+  ): void => {
+    const reviewed = reviewedIds.includes(categoryId)
+      ? reviewedIds
+      : [...reviewedIds, categoryId];
+    const nextPending = categories.find(
+      (category) => !reviewed.includes(category.id)
     );
+
+    setDraft(nextDraft);
+    setReviewedIds(reviewed);
+    setResult(null);
+    setSelectedId(nextPending?.id ?? null);
   };
 
-  const goToPreviousStep = (): void => {
+  const unreview = (categoryId: string): void => {
     setResult(null);
-    setStepIndex((current) => Math.max(current - 1, 0));
+    setReviewedIds((current) =>
+      current.filter((id) => id !== categoryId)
+    );
   };
 
   const submit = async (): Promise<void> => {
     if (build.input === null) {
       setShowErrors(true);
-      setStepIndex(
-        Math.max(
-          categories.findIndex((category) =>
-            build.invalidCategoryIds.has(category.id)
-          ),
-          0
-        )
-      );
 
       return;
     }
 
-    if (isSubmitting) {
+    if (isSubmitting || pendingCount > 0) {
       return;
     }
 
@@ -81,13 +108,14 @@ export const useInventoryCountForm = ({
     setResult(null);
 
     try {
-      const outcome = await submitInventoryCount(
-        build.input
-      );
+      const outcome = await submitInventoryCount({
+        ...build.input,
+        notes: draft.notes,
+      });
       setResult(outcome);
 
       if (outcome === INVENTORY_COUNT_RESULT.RECORDED) {
-        setShowErrors(false);
+        clearInventoryCountDraft();
         router.refresh();
       }
     } catch {
@@ -98,13 +126,22 @@ export const useInventoryCountForm = ({
   };
 
   return {
-    currentCategory,
+    canRegister: pendingCount === 0,
+    isPanelOpen: selectedId !== null,
+    closeCategory: () => setSelectedId(null),
+    confirmCategory: () => {
+      if (
+        activeCategory === null ||
+        build.invalidCategoryIds.has(activeCategory.id)
+      ) {
+        setShowErrors(true);
+
+        return;
+      }
+
+      markReviewed(activeCategory.id, draft);
+    },
     draft,
-    goToNextStep,
-    goToPreviousStep,
-    isSummaryStep,
-    stepCount: categories.length + 1,
-    stepIndex,
     handleNotesChange: (
       event: InventoryCountChangeEvent
     ): void => {
@@ -119,7 +156,7 @@ export const useInventoryCountForm = ({
         field: InventoryCountQuantityField
       ) =>
       (event: InventoryCountChangeEvent): void => {
-        setResult(null);
+        unreview(categoryId);
         setDraft((current) => ({
           ...current,
           quantities: {
@@ -137,22 +174,36 @@ export const useInventoryCountForm = ({
       event.preventDefault();
       void submit();
     },
-    handleUnitStatusChange:
-      (unitId: string) =>
-      (event: InventoryCountChangeEvent): void => {
-        setResult(null);
-        setDraft((current) => ({
-          ...current,
-          unitStatuses: {
-            ...current.unitStatuses,
-            [unitId]: event.target.value,
-          },
-        }));
-      },
     invalidCategoryIds: showErrors
       ? build.invalidCategoryIds
       : new Set<string>(),
     isSubmitting,
+    matchAll: () => {
+      if (activeCategory !== null) {
+        markReviewed(
+          activeCategory.id,
+          resetCategoryToSystem(draft, activeCategory)
+        );
+      }
+    },
+    openCategory: setSelectedId,
+    pendingCount,
     result,
+    reviewedIds: new Set(reviewedIds),
+    selectedCategory: activeCategory,
+    setUnitStatus: (
+      categoryId: string,
+      unitId: string,
+      status: InventoryCountUnitStatus
+    ): void => {
+      unreview(categoryId);
+      setDraft((current) => ({
+        ...current,
+        unitStatuses: {
+          ...current.unitStatuses,
+          [unitId]: status,
+        },
+      }));
+    },
   };
 };

@@ -29,3 +29,14 @@ Como la persona de reservas, necesito registrar un cobro sobre una reserva con e
 - The proposal is never multiplied by the number of people.
 - The agreed amount is stored only on the first tariff charge in a currency.
 - A currency without a proposal offers an empty amount; if none has one, both currencies are offered.
+
+## Charge form and confirmation (UI slice)
+
+- `ReservationChargeView` is the client view: summary and form while nothing is recorded, `ReservationChargeSuccess` once `recorded` is set. The form is replaced, never kept disabled, so a recorded charge cannot be submitted twice.
+- Copy lives in `ReservationChargeFormCopy.constants.ts`: `AMOUNT_LABEL` per currency, `AMOUNT_HELPER_PROPOSED`, `AMOUNT_HELPER_MANUAL`, `AMOUNT_PLACEHOLDER`, `CURRENCY_LEGEND`, `LABEL_METHOD`, `METHOD_PLACEHOLDER`, `METHOD_HELPER`, `SUBMIT`, `SUBMITTING`, `BACK`, `ACTIONS`, `SUCCESS(code)`, `RECORDED_BY(name)` and the receipt labels `LABEL_AMOUNT`, `LABEL_CURRENCY`, `LABEL_METHOD`.
+- Amount input is a text field with `inputMode` decimal; its label names the selected currency.
+- The currency group (radio cards, each showing the catalog proposal or "Sin tarifa del catálogo") is rendered only when more than one currency is offered.
+- Currency switch rule: the amount is replaced by the new currency's proposal only while it is empty or still the previous proposal; a typed amount is kept.
+- States: default, pending (`aria-busy`, every field and the submit disabled, submit reads "Registrando cobro…"), field errors under the field with focus on the first invalid one, form error in a `role=alert` box that takes focus, success.
+- Success shows the amount with `formatMoney`, the currency name, the payment method and "Registrado por <name>" (C5), takes focus on its `role=status` text and links back to the reservation.
+- The action bar is sticky on mobile with the page bottom padding restored for it, and static on desktop.
