@@ -33,7 +33,6 @@ export const SUPABASE_RPC = {
   RECORD_SUCCESSFUL_SIGN_IN: "record_successful_sign_in",
   REDEEM_PASSWORD_RESET_GRANT:
     "redeem_password_reset_grant",
-  EXTEND_WORKER_EXPIRY: "extend_worker_expiry",
   REHIRE_WORKER: "rehire_worker",
   RETIRE_WORKER: "retire_worker",
   REVOKE_WORKER_AREA: "revoke_worker_area",

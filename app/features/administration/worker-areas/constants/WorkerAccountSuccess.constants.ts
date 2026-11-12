@@ -18,7 +18,4 @@ export const WORKER_ACCOUNT_SUCCESS_BY_ACTION: Record<
 };
 
 export const WORKER_ACCOUNT_SUCCESSES: readonly WorkerAccountResult[] =
-  [
-    ...Object.values(WORKER_ACCOUNT_SUCCESS_BY_ACTION),
-    WORKER_ACCOUNT_RESULT.EXTENDED,
-  ];
+  Object.values(WORKER_ACCOUNT_SUCCESS_BY_ACTION);
