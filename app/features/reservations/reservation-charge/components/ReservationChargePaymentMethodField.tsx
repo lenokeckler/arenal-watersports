@@ -3,12 +3,15 @@ import { FORM_FIELD_VARIANT } from "@/app/components/form-field/constants/FormFi
 import { AUTOCOMPLETE, INPUT_TYPES } from "@/app/constants";
 import { RESERVATION_CHARGE_FORM_COPY as COPY } from "../constants/ReservationChargeFormCopy.constants";
 import { RESERVATION_CHARGE_FIELD_ID as FIELD_ID } from "../constants/ReservationChargeUi.constants";
-import type { ReservationChargeFieldProps } from "../models/ReservationChargeFieldProps.interface";
+import type { ReservationChargeFormProps } from "../models/ReservationChargeFormProps.interface";
 import { RESERVATION_CHARGE_HINT_CLASS } from "../styles/ReservationChargeForm.styles";
 
 const ReservationChargePaymentMethodField = ({
   viewModel,
-}: ReservationChargeFieldProps): React.JSX.Element => (
+}: Pick<
+  ReservationChargeFormProps,
+  "viewModel"
+>): React.JSX.Element => (
   <div>
     <FormField
       id={FIELD_ID.PAYMENT_METHOD}
