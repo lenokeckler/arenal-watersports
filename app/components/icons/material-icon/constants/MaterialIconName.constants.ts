@@ -3,6 +3,7 @@ export const MATERIAL_ICON_NAME = {
   ADMIN_PANEL_SETTINGS: "admin_panel_settings",
   ARROW_BACK: "arrow_back",
   CANCEL: "cancel",
+  CLOSE: "close",
   CHECK: "check",
   CHECK_CIRCLE: "check_circle",
   CHEVRON_RIGHT: "chevron_right",
