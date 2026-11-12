@@ -1,7 +1,7 @@
 import FormField from "@/app/components/form-field/FormField";
 import InlineText from "@/app/components/text/InlineText";
 import Text from "@/app/components/text/Text";
-import { INPUT_TYPES } from "@/app/constants";
+import { ARIA_ROLE, INPUT_TYPES } from "@/app/constants";
 import { CUSTOM_COMBO_FORM_CURRENCY } from "../constants/CustomComboFormCopy.constants";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
@@ -13,6 +13,7 @@ import {
   resolveReservationExtrasOptionClassName,
 } from "../styles/ReservationExtras.styles";
 import { formatCustomComboAmount } from "../utils/formatCustomComboAmount";
+import { shouldToggleReservationExtraCard } from "../utils/shouldToggleReservationExtraCard";
 
 const ReservationExtraPrices = ({
   priceCrc,
@@ -48,9 +49,15 @@ const ReservationExtraOption = (
   } = props;
   return (
     <div
+      aria-label={name}
       className={resolveReservationExtrasOptionClassName(
         isSelected
       )}
+      onClick={(event) =>
+        shouldToggleReservationExtraCard(event.target) &&
+        onToggle(extraId)
+      }
+      role={ARIA_ROLE.GROUP}
     >
       <FormField
         checked={isSelected}

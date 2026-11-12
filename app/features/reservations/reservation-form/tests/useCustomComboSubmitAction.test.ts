@@ -28,6 +28,10 @@ vi.mock(
 
 const createInput = (): CustomComboReservationInput => ({
   ...RESERVATION_SUBMIT_TEST.EXPECTED_CUSTOM_COMBO_INPUT,
+  extraIds: [
+    ...RESERVATION_SUBMIT_TEST.EXPECTED_CUSTOM_COMBO_INPUT
+      .extraIds,
+  ],
   guideIds: [
     ...RESERVATION_SUBMIT_TEST.EXPECTED_CUSTOM_COMBO_INPUT
       .guideIds,

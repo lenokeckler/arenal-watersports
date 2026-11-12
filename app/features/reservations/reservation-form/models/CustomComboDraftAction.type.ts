@@ -12,10 +12,18 @@ export type CustomComboDraftAction =
       value: NullableRef<number>;
     }
   | {
+      type: typeof CUSTOM_COMBO_DRAFT_ACTION.EXTRA_TOGGLE;
+      extraId: string;
+      unitId: string;
+    }
+  | {
       type: typeof CUSTOM_COMBO_DRAFT_ACTION.ITEM_CHANGE;
       selection: CustomComboEquipmentSelection;
     }
   | {
       type: typeof CUSTOM_COMBO_DRAFT_ACTION.ITEM_REMOVAL;
       categoryId: string;
+    }
+  | {
+      type: typeof CUSTOM_COMBO_DRAFT_ACTION.RESET;
     };

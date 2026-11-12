@@ -12,5 +12,5 @@ export const useReservationExtrasViewModel = (
   );
   const pricing = useReservationExtrasPricing(input);
 
-  return { ...options, ...pricing };
+  return { ...options, ...pricing, unitId: input.unitId };
 };

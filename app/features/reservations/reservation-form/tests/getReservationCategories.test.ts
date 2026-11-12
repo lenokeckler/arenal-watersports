@@ -31,12 +31,16 @@ describe("getReservationCategories", () => {
         {
           id: RESERVATION_CATEGORY_TEST.INTERCHANGEABLE_ID,
           guide_only: false,
+          has_compatible_extras: true,
+          has_individual_tariff: true,
           name: "Jet Ski",
           units_are_interchangeable: true,
         },
         {
           id: RESERVATION_CATEGORY_TEST.CONCRETE_ID,
           guide_only: true,
+          has_compatible_extras: false,
+          has_individual_tariff: false,
           name: "Lancha",
           units_are_interchangeable: false,
         },
@@ -61,12 +65,16 @@ describe("getReservationCategories", () => {
     ).resolves.toEqual([
       {
         id: RESERVATION_CATEGORY_TEST.INTERCHANGEABLE_ID,
+        hasCompatibleExtras: true,
+        hasIndividualTariff: true,
         isGuideOnly: false,
         isInterchangeable: true,
         name: "Jet Ski",
       },
       {
         id: RESERVATION_CATEGORY_TEST.CONCRETE_ID,
+        hasCompatibleExtras: false,
+        hasIndividualTariff: false,
         isGuideOnly: true,
         isInterchangeable: false,
         name: "Lancha",

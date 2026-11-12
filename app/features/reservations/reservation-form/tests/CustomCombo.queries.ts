@@ -2,7 +2,9 @@ import { waitFor, within } from "@testing-library/react";
 import { ARIA_ROLE } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import { CUSTOM_COMBO_FORM_COPY } from "../constants/CustomComboFormCopy.constants";
+import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { RESERVATION_TYPE_COPY } from "../constants/ReservationTypeCopy.constants";
 import { CUSTOM_COMBO_TEST } from "./CustomCombo.constants";
 import { createCustomComboSelectionQueries } from "./CustomComboSelection.queries";
@@ -32,6 +34,20 @@ const createPricingQueries = (
       }),
     getAgreedAmountInput: (label: string) =>
       form.getByLabelText(label, { exact: false }),
+    getEquipmentSelection: () =>
+      form.getByRole(ARIA_ROLE.REGION, {
+        name: CUSTOM_COMBO_FORM_COPY.TITLE,
+      }),
+    getEquipmentSelectionError: () =>
+      form.getByText(
+        RESERVATION_FORM_COPY[RESERVATION_FORM_FIELD.ITEMS]
+      ),
+    getSubmitButton: () =>
+      form.getByRole(ARIA_ROLE.BUTTON, {
+        name: RESERVATION_FORM_UI_COPY.SUBMIT,
+      }),
+    getFocusedElement: (): NullableRef<Element> =>
+      document.activeElement,
   };
 };
 

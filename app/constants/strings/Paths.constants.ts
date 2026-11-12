@@ -90,6 +90,7 @@ export const PATHS = {
       `/reservations/${encodeURIComponent(reservationId)}`,
     DEPOSITS: "/reservations/deposits",
     CANCEL_SEGMENT: "cancel",
+    CHARGE_SEGMENT: "charge",
     EDIT_SEGMENT: "edit",
     INCOME: "/reservations/income",
     NEW: "/reservations/new",

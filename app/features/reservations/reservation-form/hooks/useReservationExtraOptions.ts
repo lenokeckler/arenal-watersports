@@ -10,7 +10,8 @@ const isReservationExtrasUnit = (
   reservationType: NullableUndefined<ReservationType>
 ): boolean =>
   (reservationType === RESERVATION_TYPE.RENTAL ||
-    reservationType === RESERVATION_TYPE.TOUR) &&
+    reservationType === RESERVATION_TYPE.TOUR ||
+    reservationType === RESERVATION_TYPE.COMBO) &&
   RESERVATION_EXTRA.UUID_PATTERN.test(unitId);
 
 export const useReservationExtraOptions = (

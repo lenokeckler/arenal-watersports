@@ -83,6 +83,7 @@ Reservations workers answer customers using visible reservation times, committed
 - Calendar reads use server pagination (RNF-027), deterministic ordering and a total count; a capped page never represents the entire period.
 - Database windows are half-open intervals. Actual departure-group overlap is considered independently of parent scheduled times.
 - Closed and cancelled reservations are excluded from active calendar reads.
+- A scheduled block offers Modificar, Dividir and Cancelar; a dispatched block offers only Cancelar, which opens the cancellation screen.
 - Reservation, equipment-item and departure-group changes invalidate displayed information (RNF-025); a failed refresh exposes a stale state and retry.
 - Existing day, week, month and year selection and local preference persistence remain available (RNF-052).
 - A reservation without equipment remains visible with an explicit missing-equipment state.
