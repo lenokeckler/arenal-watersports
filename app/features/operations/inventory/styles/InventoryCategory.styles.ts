@@ -28,10 +28,52 @@ export const INVENTORY_UNIT_LIST_CLASS =
   "[&>ul]:list-none [&>ul]:space-y-2 [&>ul]:p-0";
 
 export const INVENTORY_UNIT_ROW_CLASS =
-  "flex min-h-11 items-center justify-between gap-3 rounded-lg border border-outline/60 bg-surface-container-low px-3 py-2";
+  "flex min-h-11 flex-wrap items-center justify-between gap-3 rounded-lg border border-outline/60 bg-surface-container-low px-3 py-2";
+
+export const INVENTORY_UNIT_CONDITION_ACTIONS_CLASS =
+  "flex w-full flex-wrap gap-2";
+
+export const INVENTORY_UNIT_CONDITION_BUTTON_CLASS =
+  "min-h-11 rounded-lg border border-outline px-3 text-body-md text-on-surface";
+
+export const INVENTORY_UNIT_CONDITION_MESSAGE_CLASS =
+  "w-full text-body-md text-on-surface-variant";
 
 export const INVENTORY_UNIT_CODE_CLASS =
   "font-mono text-sm text-on-surface";
+
+export const INVENTORY_STOCK_FORM_CLASS =
+  "grid gap-4 rounded-lg border border-outline/60 bg-surface-container-low p-4 md:grid-cols-2";
+
+export const INVENTORY_STOCK_FORM_FIELD_CLASS =
+  "min-h-11 w-full rounded-lg border border-outline bg-surface px-3 text-body-md text-on-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+
+export const INVENTORY_STOCK_FORM_ACTION_CLASS =
+  "flex min-h-11 w-full items-center justify-center rounded-lg bg-primary px-4 text-button text-on-primary disabled:cursor-not-allowed disabled:opacity-60 md:col-span-2";
+
+export const INVENTORY_STOCK_NOTICE_CLASS =
+  "text-body-sm text-on-surface-variant";
+
+export const INVENTORY_STOCK_ERROR_CLASS =
+  "text-body-sm text-error";
+
+export const resolveInventoryStockMessageClassName = (
+  isSuccess: boolean
+): string =>
+  isSuccess
+    ? INVENTORY_STOCK_NOTICE_CLASS
+    : INVENTORY_STOCK_ERROR_CLASS;
+
+export const INVENTORY_MOVEMENT_LIST_CLASS = "grid gap-3";
+
+export const INVENTORY_MOVEMENT_CARD_CLASS =
+  "grid gap-3 rounded-lg border border-outline/60 bg-surface-container-low p-4";
+
+export const INVENTORY_MOVEMENT_DETAILS_CLASS =
+  "grid gap-2 text-body-sm text-on-surface-variant sm:grid-cols-2";
+
+export const INVENTORY_MOVEMENT_CHANGE_CLASS =
+  "text-body-sm text-on-surface";
 
 export const INVENTORY_UNIT_STATUS_CLASS: Record<
   ActiveInventoryUnitStatus,
