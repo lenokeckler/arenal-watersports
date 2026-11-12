@@ -51,19 +51,18 @@ export const INVENTORY_SUMMARY_ROWS: InventorySummaryDatabaseRow[] =
     INVENTORY_BOAT_SUMMARY_ROW,
   ];
 
-export const INVALID_INVENTORY_SUMMARY_ROW: InventorySummaryDatabaseRow =
-  {
-    category_id: null,
-    category_name: null,
-    is_reservable: null,
-    quantity_available: null,
-    quantity_damaged: null,
-    quantity_in_maintenance: null,
-    quantity_in_use: null,
-    quantity_in_repair: null,
-    quantity_total: null,
-    tracking_mode: null,
-  };
+export const INVALID_INVENTORY_SUMMARY_ROW = {
+  category_id: null,
+  category_name: null,
+  is_reservable: null,
+  quantity_available: null,
+  quantity_damaged: null,
+  quantity_in_maintenance: null,
+  quantity_in_use: null,
+  quantity_in_repair: null,
+  quantity_total: null,
+  tracking_mode: null,
+} as unknown as InventorySummaryDatabaseRow;
 
 export const REQUIRED_INVENTORY_SUMMARY_FIELDS: (keyof InventorySummaryDatabaseRow)[] =
   [
