@@ -6,6 +6,7 @@ import {
   vi,
 } from "vitest";
 import { recordReservationChargeAction } from "../actions/recordReservationChargeAction";
+import { RESERVATION_CHARGE_FORM_COPY as COPY } from "../constants/ReservationChargeFormCopy.constants";
 import { RESERVATION_CHARGE_FEEDBACK_COPY as FEEDBACK } from "../constants/ReservationChargeFeedbackCopy.constants";
 import { RESERVATION_CHARGE_VALIDATION_COPY as VALIDATION } from "../constants/ReservationChargeValidationCopy.constants";
 import { EDITED_METHOD_TEXT } from "./ReservationChargeForm.constants";
@@ -57,6 +58,13 @@ describe("ReservationChargeView action errors", () => {
       await page.findText(VALIDATION.AMOUNT_REQUIRED)
     ).toBeInTheDocument();
     expect(page.getAmount()).toHaveFocus();
+    expect(page.getAmount()).toBeInvalid();
+    expect(page.getAmount()).toHaveAccessibleDescription(
+      expect.stringContaining(VALIDATION.AMOUNT_REQUIRED)
+    );
+    expect(page.getAmount()).toHaveAccessibleDescription(
+      expect.stringContaining(COPY.AMOUNT_HELPER_PROPOSED)
+    );
   });
 
   it("disables the fields while the charge is pending", async () => {
@@ -71,5 +79,16 @@ describe("ReservationChargeView action errors", () => {
     expect(page.getAmount()).toBeDisabled();
     expect(page.getPaymentMethod()).toBeDisabled();
     expect(page.getSubmit()).toBeDisabled();
+    expect(page.getSubmit()).toHaveAccessibleName(
+      expect.stringContaining(COPY.SUBMITTING)
+    );
+    expect(page.getBusy()).toBe("true");
+    expect(
+      page
+        .getCurrencyRadios()
+        .every(
+          (radio) => (radio as HTMLInputElement).disabled
+        )
+    ).toBe(true);
   });
 });

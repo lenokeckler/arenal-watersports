@@ -1,4 +1,3 @@
-import { waitFor } from "@testing-library/react";
 import {
   beforeEach,
   describe,
@@ -6,10 +5,14 @@ import {
   it,
   vi,
 } from "vitest";
-import { CURRENCY_NAME_COPY } from "@/app/constants";
+import {
+  CURRENCY_CODE,
+  CURRENCY_NAME_COPY,
+} from "@/app/constants";
 import { recordReservationChargeAction } from "../actions/recordReservationChargeAction";
 import { RESERVATION_CHARGE_FORM_COPY as COPY } from "../constants/ReservationChargeFormCopy.constants";
 import { RESERVATION_CHARGE_VALIDATION_COPY as VALIDATION } from "../constants/ReservationChargeValidationCopy.constants";
+import { EXPECTED_SCHEDULED } from "./ReservationCharge.constants";
 import { CHARGE_RECORDED } from "./ReservationChargeAction.constants";
 import {
   CRC_PROPOSAL_TEXT,
@@ -24,8 +27,6 @@ import { renderReservationChargeView } from "./renderReservationChargeView";
 vi.mock("../actions/recordReservationChargeAction", () => ({
   recordReservationChargeAction: vi.fn(),
 }));
-
-const SENT_CURRENCY = "USD";
 
 describe("ReservationChargeView form", () => {
   beforeEach(() => {
@@ -57,15 +58,15 @@ describe("ReservationChargeView form", () => {
     await page.typePaymentMethod(EDITED_METHOD_TEXT);
     await page.submit();
 
-    await waitFor(() =>
-      expect(page.getStatusText()).not.toBeNull()
+    expect(await page.findStatusText()).toBe(
+      COPY.SUCCESS(EXPECTED_SCHEDULED.code)
     );
     expect(
       recordReservationChargeAction
     ).toHaveBeenCalledWith(
       expect.objectContaining({
         amountText: EDITED_AMOUNT_TEXT,
-        currency: SENT_CURRENCY,
+        currency: CURRENCY_CODE.USD,
         paymentMethod: EDITED_METHOD_TEXT,
       })
     );
