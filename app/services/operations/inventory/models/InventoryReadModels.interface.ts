@@ -1,6 +1,7 @@
 import type { Database, NullableRef } from "@/app/types";
 import type { ActiveInventoryUnitStatus } from "@/app/constants";
 import type { createServerSupabaseClient } from "@/app/services/supabase";
+import type { InventoryStockMovementPage } from "./InventoryStockMovementPage.interface";
 
 export type InventorySummaryDatabaseRow =
   Database["public"]["Views"]["inventory_category_summary"]["Row"];
@@ -32,6 +33,7 @@ export interface InventoryDataPage<TItem> {
 }
 
 export interface InventoryCategoryDatabaseDetails {
+  movements: NullableRef<InventoryStockMovementPage>;
   summary: NullableRef<InventorySummaryDatabaseRow>;
   units: InventoryDataPage<InventoryUnitDatabaseRow>;
 }

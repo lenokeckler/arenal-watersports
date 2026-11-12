@@ -1,4 +1,7 @@
-import { INVENTORY_TRACKING_MODE } from "@/app/constants";
+import {
+  INVENTORY_TRACKING_MODE,
+  PAGINATION,
+} from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import type { InventoryCategoryDetails } from "../models/InventoryCategoryDetails.type";
 import type { InventoryPage } from "../models/InventoryPage.model";
@@ -39,6 +42,12 @@ export const mapInventoryCategoryDetails = (
     category: {
       ...category,
       trackingMode: INVENTORY_TRACKING_MODE.BY_QUANTITY,
+    },
+    movements: details.movements ?? {
+      items: [],
+      pageIndex: PAGINATION.DEFAULT_PAGE,
+      pageCount: PAGINATION.ONE_PAGE,
+      totalCount: PAGINATION.ZERO_RESULTS,
     },
   };
 };

@@ -12,9 +12,12 @@ select '5a0c0000-0000-0000-0000-000000000001', 'stock_admin', 'Stock admin', 'st
 where not exists (select 1 from workers where base_role = 'administracion');
 insert into workers (id, username, full_name, personal_email, base_role) values
   ('5a0c0000-0000-0000-0000-000000000002', 'stock_ops', 'Stock operations', 'stock-ops@arenal.local', 'operaciones');
-
 select set_config('stock.admin_id',
   (select id::text from workers where base_role = 'administracion' and status = 'active'), true);
+insert into worker_areas (worker_id, area, granted_by)
+values ('5a0c0000-0000-0000-0000-000000000002', 'reservas', current_setting('stock.admin_id')::uuid);
+update workers set last_work_area = 'reservas'
+where id = '5a0c0000-0000-0000-0000-000000000002';
 update workers set last_work_area = 'administracion'
 where id = current_setting('stock.admin_id')::uuid;
 
