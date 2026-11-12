@@ -152,9 +152,16 @@ describe("Reservation block cancel link", () => {
     );
   });
 
-  it("offers no cancel link on a dispatched block", () => {
-    expect(
-      renderAgendaBlock(status.DISPATCHED).getCancelLink()
-    ).toBeNull();
+  it("links a dispatched block to its cancellation screen", () => {
+    const link = renderAgendaBlock(
+      status.DISPATCHED
+    ).getCancelLink();
+
+    expect(link).toHaveAccessibleName(
+      `${copy.CANCEL_RESERVATION_LABEL} ${CALENDAR_BLOCK_ENTRY.customerName}`
+    );
+    expect(link?.getAttribute("href")).toBe(
+      `${PATHS.RESERVATIONS.ROOT}/${CALENDAR_BLOCK_ENTRY.id}/${PATHS.RESERVATIONS.CANCEL_SEGMENT}`
+    );
   });
 });

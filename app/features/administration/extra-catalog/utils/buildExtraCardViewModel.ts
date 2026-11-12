@@ -1,6 +1,7 @@
 import type { Extra } from "../models/Extra.interface";
 import type { ExtraCardActionsViewModel } from "../models/ExtraCardActionsViewModel.interface";
 import type { ExtraCardViewModel } from "../models/ExtraCardViewModel.interface";
+import { buildExtraPriceLabels } from "./buildExtraPriceLabels";
 import { resolveExtraCardActionState } from "./resolveExtraCardActionState";
 import { resolveExtraEditPath } from "./resolveExtraEditPath";
 
@@ -26,5 +27,6 @@ export const buildExtraCardViewModel = (
     extra.id
   ),
   onRemoveClick: cardActions.onRemoveClick(extra.id),
+  prices: buildExtraPriceLabels(extra),
   status: extra.status,
 });

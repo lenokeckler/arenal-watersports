@@ -14,10 +14,27 @@ export const createReservationCancellationViewPage = () => {
       name: COPY.SUBMIT,
     });
 
+  const getCause = (label: string) =>
+    screen.getByRole(ARIA_ROLE.RADIO, {
+      name: new RegExp(label),
+    });
+
   return {
     getAlertText: () =>
       screen.getByRole(ARIA_ROLE.ALERT).textContent,
+    getCause,
+    getCauseGroup: () =>
+      screen.getByRole(ARIA_ROLE.GROUP, {
+        name: COPY.LABEL_CAUSE,
+      }),
     getReason,
+    pressKey: (key: string) => user.keyboard(key),
+    queryCauseGroup: () =>
+      screen.queryByRole(ARIA_ROLE.GROUP, {
+        name: COPY.LABEL_CAUSE,
+      }),
+    selectCause: (label: string) =>
+      user.click(getCause(label)),
     getStatusText: () =>
       screen.getByRole(ARIA_ROLE.STATUS).textContent,
     getSubmit,

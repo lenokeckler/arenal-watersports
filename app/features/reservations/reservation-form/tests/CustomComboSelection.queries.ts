@@ -30,6 +30,15 @@ const createCategoryActionQueries = (
         name: CUSTOM_COMBO_FORM_COPY.ADD,
       }
     ),
+  queryAddCategoryButton: (categoryName: string) =>
+    within(getCategoryCard(categoryName)).queryByRole(
+      ARIA_ROLE.BUTTON,
+      { name: CUSTOM_COMBO_FORM_COPY.ADD }
+    ),
+  getMissingTariffStatus: (categoryName: string) =>
+    within(getCategoryCard(categoryName)).getByRole(
+      ARIA_ROLE.STATUS
+    ),
   getIncreaseCategoryButton: (categoryName: string) =>
     form.getByRole(ARIA_ROLE.BUTTON, {
       name: `${CUSTOM_COMBO_FORM_COPY.INCREASE} ${categoryName}`,

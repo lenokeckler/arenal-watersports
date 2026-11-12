@@ -37,20 +37,27 @@ const selectFeeExtraAndCheckQuote = async (
   form: ReservationFormPage
 ): Promise<void> => {
   await expect(
-    form.getExtraOption(
+    form.getExtraCheckbox(
       E2E_RESERVATION_FORM_COPY.EXTRA_PONTOON_OPTION
     )
   ).toBeVisible();
   await expect(
-    form.getExtraOption(
+    form.getExtraCheckbox(
       E2E_RESERVATION_FORM_COPY.EXTRA_BENNINGTON_OPTION
     )
   ).toHaveCount(0);
-  await form
-    .getExtraOption(
-      E2E_RESERVATION_FORM_COPY.EXTRA_PONTOON_OPTION
-    )
-    .check();
+  const extraCheckbox = form.getExtraCheckbox(
+    E2E_RESERVATION_FORM_COPY.EXTRA_PONTOON_OPTION
+  );
+  const extraCard = form.getExtraOptionCard(
+    E2E_RESERVATION_FORM_COPY.EXTRA_PONTOON_OPTION
+  );
+  await extraCard.click();
+  await expect(extraCheckbox).toBeChecked();
+  await extraCard.click();
+  await expect(extraCheckbox).not.toBeChecked();
+  await extraCard.click();
+  await expect(extraCheckbox).toBeChecked();
   await expect(
     form.getQuoteTitle().locator("..")
   ).toContainText(

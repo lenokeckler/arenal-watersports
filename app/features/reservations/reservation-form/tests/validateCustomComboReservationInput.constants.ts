@@ -10,6 +10,8 @@ export const VALID_CUSTOM_COMBO_RESERVATION_INPUT: CustomComboReservationInput =
     customerName: "  María López  ",
     date: "2028-02-29",
     durationHours: 1.5,
+    extraIds: [],
+    extraUnitId: null,
     guideIds: ["e2500000-0000-4000-8000-000000000301"],
     items: [
       {

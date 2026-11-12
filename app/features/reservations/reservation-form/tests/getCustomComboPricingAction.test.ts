@@ -129,7 +129,7 @@ describe("getCustomComboPricingAction", () => {
     expect(getCustomComboPrice).not.toHaveBeenCalled();
   });
 
-  it("propagates pricing service failures after authorization", async () => {
+  it("returns a generic result for unexpected pricing failures", async () => {
     vi.mocked(getCustomComboPrice).mockRejectedValue(
       CUSTOM_COMBO_PRICING_ACTION_TEST.PRICING_ERROR
     );
@@ -138,9 +138,7 @@ describe("getCustomComboPricingAction", () => {
       getCustomComboPricingAction(
         CUSTOM_COMBO_PRICING_ACTION_TEST.INPUT
       )
-    ).rejects.toBe(
-      CUSTOM_COMBO_PRICING_ACTION_TEST.PRICING_ERROR
-    );
+    ).resolves.toEqual({ ok: false, errors: {} });
     expect(
       getAuthorizedReservationFormClient
     ).toHaveBeenCalledOnce();

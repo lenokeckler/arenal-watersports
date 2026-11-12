@@ -90,11 +90,23 @@ describe("useReservationExtrasViewModel", () => {
     ).not.toHaveBeenCalled();
   });
 
-  it("skips requests without a supported type or valid unit", () => {
+  it("loads combo options without requesting the rental or tour quote", async () => {
+    vi.mocked(getReservationExtrasAction).mockResolvedValue(
+      [RESERVATION_EXTRAS_VIEW_MODEL_TEST.OPTION]
+    );
     renderHook(() =>
       useReservationExtrasViewModel(
         RESERVATION_EXTRAS_VIEW_MODEL_TEST.COMBO_INPUT
       )
+    );
+    await waitFor(() =>
+      expect(
+        getReservationExtrasAction
+      ).toHaveBeenCalledWith({
+        unitId:
+          RESERVATION_EXTRAS_VIEW_MODEL_TEST.COMBO_INPUT
+            .unitId,
+      })
     );
     renderHook(() =>
       useReservationExtrasViewModel(
@@ -103,7 +115,7 @@ describe("useReservationExtrasViewModel", () => {
     );
     expect(
       getReservationExtrasAction
-    ).not.toHaveBeenCalled();
+    ).toHaveBeenCalledTimes(1);
     expect(
       getReservationExtrasPricingAction
     ).not.toHaveBeenCalled();
