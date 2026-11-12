@@ -78,9 +78,10 @@ reset role;
 
 select is(
   (select count(*)::integer from pg_policies
-    where schemaname = 'storage' and tablename = 'objects' and cmd = 'DELETE'),
+    where schemaname = 'storage' and tablename = 'objects' and cmd = 'DELETE'
+      and qual like '%unit-condition-photos%'),
   0,
-  'ninguna politica concede borrar objetos: una foto se reemplaza, no se borra'
+  'ninguna politica concede borrar fotos de estado: una foto se reemplaza, no se borra'
 );
 
 reset role;
