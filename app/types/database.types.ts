@@ -3876,6 +3876,16 @@ export type Database = {
           outcome: string;
         }[];
       };
+      record_reservation_charge: {
+        Args: { p_payload: Json };
+        Returns: {
+          charge_id: string;
+          charged_amount: number;
+          charged_currency: Database["public"]["Enums"]["currency_code"];
+          charged_payment_method: string;
+          recorded_by_name: string;
+        }[];
+      };
       record_successful_sign_in: {
         Args: { p_user_id: string };
         Returns: undefined;
