@@ -6,8 +6,11 @@ import {
   RESERVATION_FORM_ACTIONS_CLASS,
   RESERVATION_FORM_SUBMIT_CLASS,
 } from "../styles/ReservationFormView.styles";
+import ReservationExtrasQuote from "./ReservationExtrasQuote";
+import { shouldShowReservationExtras } from "../utils/shouldShowReservationExtras";
 
 const ReservationFormSubmitAction = ({
+  copy = RESERVATION_FORM_UI_COPY,
   isDisabled,
   viewModel,
 }: ReservationFormSubmitActionProps): React.JSX.Element => (
@@ -16,15 +19,16 @@ const ReservationFormSubmitAction = ({
     aria-label={RESERVATION_FORM_UI_COPY.ACTIONS}
     className={RESERVATION_FORM_ACTIONS_CLASS}
   >
+    {shouldShowReservationExtras(viewModel) ? (
+      <ReservationExtrasQuote viewModel={viewModel} />
+    ) : null}
     <Button
       type="submit"
       variant={BUTTON.PRIMARY}
       className={RESERVATION_FORM_SUBMIT_CLASS}
       disabled={isDisabled}
     >
-      {viewModel.isPending
-        ? RESERVATION_FORM_UI_COPY.SUBMITTING
-        : RESERVATION_FORM_UI_COPY.SUBMIT}
+      {viewModel.isPending ? copy.SUBMITTING : copy.SUBMIT}
     </Button>
   </div>
 );

@@ -1,6 +1,6 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ARIA_ROLE } from "@/app/constants";
+import { ARIA_ROLE, STRING } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
 import { RESERVATION_FORM_FIELD_ID } from "../constants/ReservationFormUi.constants";
@@ -9,12 +9,37 @@ import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.con
 import { RESERVATION_CATEGORY_CONFLICT_WARNING_TEST } from "./ReservationCategoryConflictWarning.constants";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
 import { createReservationEquipmentPage } from "./ReservationFormEquipment.page";
+import { createReservationFormCustomerPage } from "./ReservationFormCustomer.page";
+import { createReservationTypeFieldPage } from "./ReservationTypeField.page";
 
 const getDurationOption = (label: string) =>
   screen.getByRole(ARIA_ROLE.BUTTON, { name: label });
 
 const getReservationTypeOption = (label: string) =>
   screen.getByLabelText(label, { exact: false });
+
+const getSelectedCategoryOption = () =>
+  screen
+    .queryByRole(ARIA_ROLE.GROUP, {
+      name: RESERVATION_FORM_UI_COPY.CATEGORY,
+    })
+    ?.querySelector("button[aria-pressed='true']") ?? null;
+
+const getCategoryName = (categoryId: string): string => {
+  if (
+    categoryId ===
+    RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_ID
+  ) {
+    return RESERVATION_FORM_VIEW_TEST.UNIT_CATEGORY_NAME;
+  }
+  if (
+    categoryId ===
+    RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_ID
+  ) {
+    return RESERVATION_FORM_VIEW_TEST.ALTERNATE_CATEGORY_NAME;
+  }
+  return RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME;
+};
 
 const queryCustomDurationInput = (
   container: HTMLElement
@@ -107,10 +132,38 @@ export const createReservationFormViewPage = (
   container: HTMLElement
 ) => {
   const user = userEvent.setup();
+  const reservationTypePage =
+    createReservationTypeFieldPage();
+  const reservationCustomerPage =
+    createReservationFormCustomerPage();
 
   return {
     ...createReservationEquipmentPage(user),
+    ...reservationTypePage,
+    ...reservationCustomerPage,
     getDurationOption,
+    getSelectedCategoryOption,
+    findUnitOption: () =>
+      screen.findByText(
+        RESERVATION_FORM_VIEW_TEST.UNIT_CODE
+      ),
+    getCategorySelect: () =>
+      screen.getByRole(ARIA_ROLE.GROUP, {
+        name: RESERVATION_FORM_UI_COPY.CATEGORY,
+      }),
+    queryCategoryOption: (categoryId: string) =>
+      screen.queryByRole(ARIA_ROLE.BUTTON, {
+        name: getCategoryName(categoryId),
+      }),
+    selectCategory: async (
+      categoryId: string
+    ): Promise<void> => {
+      await user.click(
+        screen.getByRole(ARIA_ROLE.BUTTON, {
+          name: getCategoryName(categoryId),
+        })
+      );
+    },
     selectReservationType: async (
       label: string
     ): Promise<void> => {
@@ -128,6 +181,41 @@ export const createReservationFormViewPage = (
     findSubmissionError,
     findSuccessMessage,
     getFocusedElement: () => document.activeElement,
+    getExtraCheckbox: (name: string) =>
+      screen.getByLabelText(name, { exact: false }),
+    getExtrasQuote: () =>
+      screen.getByText(
+        RESERVATION_FORM_UI_COPY.QUOTE_TITLE
+      ),
+    getExtrasRetryButton: () =>
+      screen.getByRole(ARIA_ROLE.BUTTON, {
+        name: RESERVATION_FORM_UI_COPY.EXTRAS_RETRY,
+      }),
+    getQuoteRetryButton: () =>
+      screen.getByRole(ARIA_ROLE.BUTTON, {
+        name: RESERVATION_FORM_UI_COPY.QUOTE_RETRY,
+      }),
+    getRenderedText: (): string =>
+      container.textContent ?? STRING.Empty,
+    toggleExtra: async (name: string): Promise<void> => {
+      await user.click(
+        screen.getByLabelText(name, { exact: false })
+      );
+    },
+    clickExtrasRetry: async (): Promise<void> => {
+      await user.click(
+        screen.getByRole(ARIA_ROLE.BUTTON, {
+          name: RESERVATION_FORM_UI_COPY.EXTRAS_RETRY,
+        })
+      );
+    },
+    clickQuoteRetry: async (): Promise<void> => {
+      await user.click(
+        screen.getByRole(ARIA_ROLE.BUTTON, {
+          name: RESERVATION_FORM_UI_COPY.QUOTE_RETRY,
+        })
+      );
+    },
     getCustomerNameInput: () =>
       container.querySelector<HTMLInputElement>(
         `#${RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME}`

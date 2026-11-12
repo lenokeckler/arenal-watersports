@@ -8,6 +8,7 @@ export const SUPABASE_RPC = {
     "current_session_seconds_left",
   CURRENT_SESSION_STATE: "current_session_state",
   CURRENT_WORK_AREA: "current_work_area",
+  DELETE_OR_DEACTIVATE_EXTRA: "delete_or_deactivate_extra",
   EXCHANGE_PASSWORD_RESET_PIN:
     "exchange_password_reset_pin",
   FINISH_PASSWORD_RECOVERY: "finish_password_recovery",
