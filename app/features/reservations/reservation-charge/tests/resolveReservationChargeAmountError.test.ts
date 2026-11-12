@@ -49,6 +49,34 @@ describe("resolveReservationChargeAmountError", () => {
       USD,
       COPY.AMOUNT.precision,
     ],
+    ["a trailing dot", "45.", USD, COPY.AMOUNT.format],
+    ["a leading dot", ".5", USD, COPY.AMOUNT.format],
+    ["an exponent", "1e5", USD, COPY.AMOUNT.format],
+    ["full-width digits", "４５", USD, COPY.AMOUNT.format],
+    [
+      "a European thousands separator",
+      "1.234,56",
+      CRC,
+      COPY.AMOUNT.format,
+    ],
+    [
+      "the dollar ceiling",
+      "10000000000",
+      USD,
+      COPY.AMOUNT.precision,
+    ],
+    [
+      "the colones ceiling",
+      "1000000000000",
+      CRC,
+      COPY.AMOUNT.precision,
+    ],
+    [
+      "zeros with leading zeros",
+      "000",
+      USD,
+      COPY.AMOUNT.not_positive,
+    ],
   ])("refuses %s", (_, amountText, currency, expected) => {
     expect(
       resolveReservationChargeAmountError(
@@ -65,6 +93,15 @@ describe("resolveReservationChargeAmountError", () => {
     ["12 integer digits in colones", "9".repeat(12), CRC],
     ["10 integer digits in dollars", "9".repeat(10), USD],
     ["the smallest cent", "0.01", USD],
+    ["the smallest comma cent", "0,01", USD],
+    ["leading zeros", "0045", USD],
+    [
+      "leading zeros beyond the digit limit",
+      `000${"9".repeat(10)}`,
+      USD,
+    ],
+    ["the largest dollar amount", "9999999999.99", USD],
+    ["the largest colones amount", "999999999999.99", CRC],
   ])("accepts %s", (_, amountText, currency) => {
     expect(
       resolveReservationChargeAmountError(

@@ -29,11 +29,14 @@ describe("resolveReservationChargePaymentMethodError", () => {
     "tar\njeta",
     "tar\tjeta",
     "tar\u007fjeta",
-  ])("refuses the control characters in %j", (method) => {
-    expect(
-      resolveReservationChargePaymentMethodError(method)
-    ).toBe(COPY.METHOD_CONTROL_CHARACTERS);
-  });
+  ])(
+    "refuses the disallowed characters in %j",
+    (method) => {
+      expect(
+        resolveReservationChargePaymentMethodError(method)
+      ).toBe(COPY.METHOD_DISALLOWED_CHARACTERS);
+    }
+  );
 
   it.each([
     ["a method at the limit", LIMIT_METHOD],
@@ -47,6 +50,14 @@ describe("resolveReservationChargePaymentMethodError", () => {
     expect(
       resolveReservationChargePaymentMethodError(method)
     ).toBeUndefined();
+  });
+
+  it("refuses an emoji method over the limit", () => {
+    expect(
+      resolveReservationChargePaymentMethodError(
+        `${EMOJI_LIMIT_METHOD}\u{1F600}`
+      )
+    ).toBe(COPY.METHOD_TOO_LONG);
   });
 
   it("refuses a method over the limit", () => {
