@@ -1,8 +1,8 @@
-import type { InventoryCountChangeEvent } from "./InventoryCountChangeEvent.type";
+import type { InventoryCountUnitStatus } from "../constants/InventoryCount.constants";
 import type { InventoryCountUnit } from "./InventoryCountUnit.interface";
 
 export interface InventoryCountUnitRowProps {
-  onChange: (event: InventoryCountChangeEvent) => void;
+  onSelect: (status: InventoryCountUnitStatus) => void;
   unit: InventoryCountUnit;
   value: string;
 }
