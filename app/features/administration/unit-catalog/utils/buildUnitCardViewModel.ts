@@ -15,6 +15,9 @@ export const buildUnitCardViewModel = (
   editHref: unit.decommissioned
     ? null
     : resolveUnitEditPath(category.id, unit.id),
+  historyHref: unit.decommissioned
+    ? resolveUnitEditPath(category.id, unit.id)
+    : null,
   isDimmed: unit.decommissioned,
   statusLabel: UNIT_STATUS_LABEL[unit.effectiveStatus],
 });

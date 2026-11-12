@@ -8,6 +8,7 @@ const SystemNavigationItems = ({
   pathname,
   isMenuOpen,
   toggleMenu,
+  showMenuButton,
 }: SystemNavigationItemsProps): React.JSX.Element => (
   <div className={SYSTEM_NAVIGATION_LIST_CLASS}>
     {items.map((item) => (
@@ -17,10 +18,12 @@ const SystemNavigationItems = ({
         pathname={pathname}
       />
     ))}
-    <SystemNavigationMenuButton
-      isOpen={isMenuOpen}
-      onToggle={toggleMenu}
-    />
+    {showMenuButton ? (
+      <SystemNavigationMenuButton
+        isOpen={isMenuOpen}
+        onToggle={toggleMenu}
+      />
+    ) : null}
   </div>
 );
 

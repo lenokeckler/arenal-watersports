@@ -37,3 +37,5 @@ export const SET_WORKER_PASSWORD_ALLOWED_PATH_PATTERN =
   /^services\/(authentication|password-recovery)\//;
 
 export const TEXT_ENCODING = "utf-8";
+
+export const SOURCE_SCAN_TEST_TIMEOUT_MS = 30_000;

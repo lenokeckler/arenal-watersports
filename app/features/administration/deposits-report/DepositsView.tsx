@@ -1,4 +1,5 @@
 import BackLink from "@/app/components/back-link/BackLink";
+import Link from "@/app/components/link/Link";
 import ListPagination from "@/app/components/list-pagination/ListPagination";
 import { PATHS } from "@/app/constants";
 import DepositsHeading from "./components/DepositsHeading";
@@ -8,7 +9,10 @@ import DepositsPendingList from "./components/DepositsPendingList";
 import DepositsRetainedList from "./components/DepositsRetainedList";
 import DepositsSection from "./components/DepositsSection";
 import type { DepositsViewProps } from "./models/DepositsViewProps.interface";
-import { DEPOSITS_REPORT_STACK_CLASS } from "./styles/DepositsReport.styles";
+import {
+  DEPOSITS_REPORT_STACK_CLASS,
+  DEPOSITS_REPORT_WORKER_LINK_CLASS,
+} from "./styles/DepositsReport.styles";
 import { buildDepositsReportHref } from "./utils/buildDepositsReportHref";
 
 const DepositsView = ({
@@ -20,6 +24,12 @@ const DepositsView = ({
 }: DepositsViewProps): React.JSX.Element => (
   <div className={DEPOSITS_REPORT_STACK_CLASS}>
     <DepositsHeading />
+    <Link
+      href={PATHS.ADMINISTRATION.RESERVATIONS_BY_WORKER}
+      className={DEPOSITS_REPORT_WORKER_LINK_CLASS}
+    >
+      {DEPOSITS_REPORT_COPY.RESERVATIONS_BY_WORKER}
+    </Link>
     <DepositsSection
       headingId={DEPOSITS_REPORT_DOM_ID.PENDING_HEADING}
       heading={DEPOSITS_REPORT_COPY.PENDING_HEADING}
