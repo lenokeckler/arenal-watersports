@@ -5,7 +5,10 @@ import {
   resolveBoardChipText,
 } from "../constants/E2eBoard.constants";
 import { E2E_RESERVATION_EQUIPMENT_STATUS } from "../constants/E2eReservationForm.constants";
-import { E2E_PROJECT } from "../constants/E2eRuntime.constants";
+import {
+  E2E_PROJECT,
+  E2E_SKIP_REASON,
+} from "../constants/E2eRuntime.constants";
 import { createBoardPage } from "../pages/Board.page";
 import { createReservationEquipmentStatusFixture } from "../support/createReservationEquipmentStatusFixture";
 import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
@@ -16,7 +19,7 @@ test.describe("Equipment board realtime", () => {
   }, testInfo) => {
     test.skip(
       testInfo.project.name !== E2E_PROJECT.DEFAULT,
-      "The inventory mutation runs once to avoid concurrent database writes."
+      E2E_SKIP_REASON.SINGLE_INVENTORY_WRITER
     );
     const equipmentFixture =
       createReservationEquipmentStatusFixture(
