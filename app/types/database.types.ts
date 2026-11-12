@@ -3352,6 +3352,16 @@ export type Database = {
           pin_id: string;
         }[];
       };
+      list_inventory_counts: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          count_id: string;
+          counted_at: string;
+          counted_by: string;
+          difference_count: number;
+          notes: string;
+        }[];
+      };
       list_operations_stock_movements: {
         Args: {
           p_category_id: string;
