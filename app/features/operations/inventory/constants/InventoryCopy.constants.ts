@@ -13,7 +13,6 @@ export const INVENTORY_COPY = {
   DESCRIPTION:
     "Consulte las categorías y el estado actual de los artículos.",
   IN_MAINTENANCE: "En mantenimiento",
-  NEW_COUNT: "Levantar conteo",
   IN_REPAIR: "En reparación",
   IN_USE: "En uso",
   INVENTORY_EMPTY:
