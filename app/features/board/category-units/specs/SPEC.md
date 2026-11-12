@@ -14,13 +14,12 @@ Let any worker see the state of every unit of one category, and, for an occupied
 - Occupied unit: return time, the customer who carries it, and the reservation reference (code and time window).
 - The return time is shown in Costa Rica time; the date is added when the return is not today.
 - The status is never conveyed by color alone: the chip carries the Spanish word and the dot is decorative.
-- Rows have no photo, no buttons and nothing interactive.
+- Rows have no photo and no buttons. For a worker with the operations area, the rows of the available units are tappable to dispatch (see Dispatch from the category); for everyone else nothing is interactive.
 - Reached from the board: every card links here (a grouped card opens its first member by name).
 - Group switch, a design decision of the product owner: when the category belongs to a group with more than one visible member, a `nav` under the header ("Categorías del mismo grupo") shows one pill link per member, by name, the current one with `aria-current="page"`, each linking to that member's units screen. A category without a group, or alone in it, shows nothing.
 
 ## Out of scope
 
-- Dispatching from this screen: it belongs to Operations (US-OPE-02).
 - Opening the reservation detail (pending, see below).
 - Live refresh (US-TAB-03), which will also refresh the overdue marker; a connection-lost notice.
 
@@ -40,6 +39,16 @@ con la finalidad de saber cuáles puedo ofrecer y cuándo vuelven las que están
 - El estado ocupada lo calcula el sistema a partir de los despachos, no se digita.
 - Reservas consulta esta pantalla para contestarle al cliente, pero no despacha desde aquí: despachar es de operaciones.
 - Si una unidad figura en más de un grupo abierto, se muestra la hora y la reserva del que regresa de último.
+
+## Dispatch from the category (US-OPE-02)
+
+- Only a worker with the operations area sees the rows of the available units as tappable; the page asks `has_area('operaciones')` and a failed answer reaches `error.tsx`, never a silently read-only board.
+- Tapping a unit marks it and shows a bar above the navigation with the count ("2 unidades seleccionadas"), "Cancelar" and "Despachar". An occupied, damaged or in-maintenance unit cannot be tapped.
+- "Despachar" opens a sheet with the reservations of today in Costa Rica that still have this category pending, by time, each with its committed count. A combo is never listed: it is dispatched from the list of the day.
+- A reservation that commits fewer units than were tapped says how many fit.
+- Choosing a reservation opens the dispatch sheet on this category with the tapped units already marked; the worker completes or unchecks them there, and confirming goes through `dispatch_reservation_group`.
+- Closing the sheet clears the selection and refreshes the board, so the units show as occupied.
+- Closing the picker keeps the selection.
 
 ## Edge cases & errors
 

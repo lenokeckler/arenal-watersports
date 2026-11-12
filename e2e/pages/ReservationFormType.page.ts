@@ -17,8 +17,8 @@ export const createReservationFormTypePage = (
     selectReservationType: async (
       label: string
     ): Promise<void> => {
-      await mainRegion
-        .getByText(label, { exact: true })
+      await getReservationTypeRadio(label)
+        .locator("..")
         .click();
     },
     selectGuide: async (name: string): Promise<void> => {
