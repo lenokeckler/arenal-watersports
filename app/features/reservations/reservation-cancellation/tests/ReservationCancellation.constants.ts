@@ -73,18 +73,38 @@ export const EXPECTED_SCHEDULED: ReservationCancellation = {
   expectedUpdatedAt: CANCELLATION_UPDATED_AT,
   id: CANCELLATION_RESERVATION_ID,
   isCancellable: true,
+  requiresCause: false,
   status: "scheduled",
   time: "14:30",
 };
 
+export const DISPATCHED_ROW: ReservationCancellationRow = {
+  ...SCHEDULED_ROW,
+  status: "dispatched",
+};
+
+export const EXPECTED_DISPATCHED: ReservationCancellation =
+  {
+    ...EXPECTED_SCHEDULED,
+    requiresCause: true,
+    status: "dispatched",
+  };
+
+export const CANCELLATION_CAUSE = "weather";
+
 export const NOT_CANCELLABLE_STATUSES = [
-  "dispatched",
   "closed",
   "cancelled",
 ] as const;
 
+export const BLOCKED_STATUSES = [
+  "dispatched",
+  ...NOT_CANCELLABLE_STATUSES,
+] as const;
+
 export const VALID_CANCELLATION_INPUT: ReservationCancellationInput =
   {
+    cause: null,
     expectedUpdatedAt: CANCELLATION_UPDATED_AT,
     reason: CANCELLATION_REASON,
     reservationId: CANCELLATION_RESERVATION_ID,
