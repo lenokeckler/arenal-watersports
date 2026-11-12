@@ -382,6 +382,18 @@ npm run changelog:check -- origin/<base>
 - **Say it when a PR touches sensitive ground.** A PR that changes `supabase/migrations/`,
   `.github/` or the skills and agents (`.agents/`, `.claude/`, `AGENTS.md`) says so in
   _Developer Notes_, so the reviewer reads it with extra care.
+- **A migration's version comes from the CLI, never from a hand.** Create every migration with
+  `npx supabase migration new <name>` and keep the version it generates: do not pick a number and
+  do not renumber the file afterwards. Before pushing, this prints nothing, because two migrations
+  with the same version break `db:reset` for the whole team and CI does not catch it:
+
+  ```bash
+  ls supabase/migrations | cut -d_ -f1 | sort | uniq -d
+  ```
+
+  If a teammate's migration lands with your version while your PR is open, delete yours and create
+  it again with the CLI.
+
 - `develop` reaches `main` only through a `release/*` PR.
 - After a review: fix **every** thread and every other occurrence of the same pattern in the PR,
   push new commits, reply in each thread saying what changed, and swap `Code Review Rejected` /

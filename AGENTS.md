@@ -107,6 +107,7 @@ Supabase is the only backend. Do not add Firebase or any second backend SDK: one
 - `createServiceRoleSupabaseClient()` only in server routes that must bypass RLS. Never reachable from the client.
 - Every `{ data, error }` read passes its `error` through `throwIfSupabaseError` before touching `data`.
 - The database types under `app/types/` are generated: `npm run db:types` writes them to the file its `package.json` script redirects to. Regenerate them after every migration; never hand-edit that file.
+- Create every migration with `npx supabase migration new <name>` and keep the version the CLI generates; never pick or renumber a version by hand (`.agents/skills/pull-request-workflow/SKILL.md` §9).
 
 ## Mandatory skill protocol
 
