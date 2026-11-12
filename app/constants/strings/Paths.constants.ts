@@ -91,6 +91,7 @@ export const PATHS = {
     EDIT_SEGMENT: "edit",
     INCOME: "/reservations/income",
     NEW: "/reservations/new",
+    POSTPONE_SEGMENT: "postpone",
     ROOT: "/reservations",
     SPLIT_SEGMENT: "split",
   },
