@@ -8,6 +8,7 @@ export const SIGN_IN_HOOK_REJECTION = {
     "account_blocked:administration",
   BLOCKED_BY_ATTEMPTS: "account_blocked:failed_attempts",
   RECOVERY_REQUIRED: "account_recovery_required",
+  EXPIRED: "account_expired",
   UNAVAILABLE: "account_unavailable",
 } as const;
 
@@ -24,6 +25,8 @@ export const SIGN_IN_HOOK_REJECTION_ERROR_CODE: Record<
     SIGN_IN_ERROR_CODE.ACCOUNT_BLOCKED_BY_ATTEMPTS,
   [SIGN_IN_HOOK_REJECTION.RECOVERY_REQUIRED]:
     SIGN_IN_ERROR_CODE.ACCOUNT_RECOVERY_REQUIRED,
+  [SIGN_IN_HOOK_REJECTION.EXPIRED]:
+    SIGN_IN_ERROR_CODE.ACCOUNT_EXPIRED,
   [SIGN_IN_HOOK_REJECTION.UNAVAILABLE]:
     SIGN_IN_ERROR_CODE.INVALID_CREDENTIALS,
 };
