@@ -1,4 +1,4 @@
-create function private.set_reservation_agreed_amount(
+create function private.record_reservation_charge_pricing(
   p_reservation_id uuid,
   p_currency currency_code,
   p_amount numeric,
@@ -19,9 +19,14 @@ begin
     case when p_currency = 'CRC' and v_differs then p_amount end
   )
   on conflict (reservation_id) do update
-  set agreed_amount_usd = case when p_currency = 'USD' then p_amount else reservation_pricing.agreed_amount_usd end,
-      agreed_amount_crc = case when p_currency = 'CRC' then p_amount else reservation_pricing.agreed_amount_crc end
-  where v_differs;
+  set list_amount_usd = case when p_currency = 'USD'
+        then coalesce(reservation_pricing.list_amount_usd, p_proposal) else reservation_pricing.list_amount_usd end,
+      list_amount_crc = case when p_currency = 'CRC'
+        then coalesce(reservation_pricing.list_amount_crc, p_proposal) else reservation_pricing.list_amount_crc end,
+      agreed_amount_usd = case when p_currency = 'USD' and v_differs
+        then p_amount else reservation_pricing.agreed_amount_usd end,
+      agreed_amount_crc = case when p_currency = 'CRC' and v_differs
+        then p_amount else reservation_pricing.agreed_amount_crc end;
 end;
 $$;
 
@@ -74,7 +79,7 @@ begin
   values (v_reservation.id, 'tariff', v_amount, v_currency, v_method, auth.uid())
   returning id into v_charge_id;
   if v_first_in_currency then
-    perform private.set_reservation_agreed_amount(v_reservation.id, v_currency, v_amount, v_proposal);
+    perform private.record_reservation_charge_pricing(v_reservation.id, v_currency, v_amount, v_proposal);
   end if;
   return query
   select v_charge_id, v_amount, v_currency, v_method,
@@ -82,7 +87,7 @@ begin
 end;
 $$;
 
-revoke all on function private.set_reservation_agreed_amount(uuid, currency_code, numeric, numeric) from public, anon;
-grant execute on function private.set_reservation_agreed_amount(uuid, currency_code, numeric, numeric) to authenticated;
+revoke all on function private.record_reservation_charge_pricing(uuid, currency_code, numeric, numeric) from public, anon;
+grant execute on function private.record_reservation_charge_pricing(uuid, currency_code, numeric, numeric) to authenticated;
 revoke all on function record_reservation_charge(jsonb) from public, anon;
 grant execute on function record_reservation_charge(jsonb) to authenticated;

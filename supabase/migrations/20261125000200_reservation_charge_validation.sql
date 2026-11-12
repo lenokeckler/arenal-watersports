@@ -15,12 +15,12 @@ returns numeric
 language plpgsql immutable security invoker set search_path = public
 as $$
 declare
-  c_max_decimal_places constant integer := 2;
+  c_decimal_places constant integer := 2;
   c_usd_ceiling constant numeric := 10000000000;
   c_crc_ceiling constant numeric := 1000000000000;
   v_ceiling numeric := case p_currency when 'USD' then c_usd_ceiling else c_crc_ceiling end;
 begin
-  if p_amount is null or p_amount <= 0 or scale(p_amount) > c_max_decimal_places or p_amount >= v_ceiling then
+  if p_amount is null or p_amount <= 0 or p_amount <> round(p_amount, c_decimal_places) or p_amount >= v_ceiling then
     raise exception 'Charge amount is invalid';
   end if;
   return p_amount;
@@ -33,10 +33,14 @@ language plpgsql immutable security invoker set search_path = public
 as $$
 declare
   c_max_length constant integer := 60;
-  v_method text := btrim(coalesce(p_method, ''));
+  c_edge_whitespace constant text := '^[[:space:]]+|[[:space:]]+$';
+  v_method text := regexp_replace(coalesce(p_method, ''), c_edge_whitespace, '', 'g');
 begin
   if v_method = '' then
     raise exception 'A payment method is required';
+  end if;
+  if v_method ~ '[[:cntrl:]]' then
+    raise exception 'Payment method is invalid';
   end if;
   if char_length(v_method) > c_max_length then
     raise exception 'Payment method is too long';
