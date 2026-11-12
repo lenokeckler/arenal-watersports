@@ -1,5 +1,6 @@
 "use client";
 
+import BackLink from "@/app/components/back-link/BackLink";
 import ListPagination from "@/app/components/list-pagination/ListPagination";
 import {
   PATHS,
@@ -40,6 +41,10 @@ const CategoryListView = ({
         }
         currentPage={currentPage}
         pageCount={pageCount}
+      />
+      <BackLink
+        href={PATHS.HOME}
+        label={CATEGORY_CATALOG_COPY.BACK_TO_HOME}
       />
     </div>
   );
