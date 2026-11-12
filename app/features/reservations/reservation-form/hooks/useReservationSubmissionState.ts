@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ReservationFormActionResult } from "../models/ReservationFormActionResult.type";
-import type { ReservationFormField } from "../models/ReservationFormField.constants";
+import type { ReservationFormErrorField } from "../models/ReservationFormField.constants";
 import { useReservationErrorFocusRequest } from "./useReservationErrorFocusRequest";
 import { useReservationSubmissionErrors } from "./useReservationSubmissionErrors";
 
@@ -10,7 +10,7 @@ export const useReservationSubmissionState = () => {
   const errorFocus = useReservationErrorFocusRequest();
 
   const clearFieldError = (
-    field: ReservationFormField
+    field: ReservationFormErrorField
   ): void => {
     submissionErrors.clearFieldError(field);
     setIsSubmitted(false);

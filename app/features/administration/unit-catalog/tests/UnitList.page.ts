@@ -17,6 +17,13 @@ export const createUnitListPage = () => {
       name: UNIT_LIST_COPY.EDIT_LINK,
     });
 
+  const getHistoryLink = (code: string) =>
+    within(
+      screen.getByRole(ARIA_ROLE.GROUP, { name: code })
+    ).queryByRole(ARIA_ROLE.LINK, {
+      name: UNIT_LIST_COPY.HISTORY_LINK,
+    });
+
   const getText = (text: string) =>
     screen.queryByText(text);
 
@@ -62,6 +69,7 @@ export const createUnitListPage = () => {
     getBackLink,
     getCard,
     getEditLink,
+    getHistoryLink,
     getNextLink,
     getPreviousLink,
     getEmptyStateTitle,
