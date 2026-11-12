@@ -1,0 +1,1 @@
+ADM-01.10: External guide expiry extension — Administration can extend or reactivate the expiry date of an external guide account from the worker areas screen, and the account can sign in again (US-ADM-10 · AWS-62)
