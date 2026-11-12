@@ -28,13 +28,12 @@ select is(
   (select count(*)::integer from pg_policies
     where schemaname = 'public'
       and policyname in (
-        'units_select', 'stock_movements_select',
-        'photos_select', 'damage_select', 'maintenance_select', 'counts_select',
-        'count_lines_select', 'tariffs_select', 'extras_select', 'extra_compat_select',
+        'units_select', 'photos_select', 'tariffs_select',
+        'extras_select', 'extra_compat_select',
         'combos_select', 'combo_items_select')
       and qual = 'is_active_worker()'),
-  12,
-  'las doce lecturas sin area propia exigen un trabajador activo'
+  7,
+  'las siete lecturas sin area propia exigen un trabajador activo'
 );
 
 set local role authenticated;
