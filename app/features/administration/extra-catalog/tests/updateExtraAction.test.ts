@@ -5,7 +5,10 @@ import {
   it,
   vi,
 } from "vitest";
-import { POSTGRES_ERROR_CODE } from "@/app/constants";
+import {
+  POSTGRES_ERROR_CODE,
+  STRING,
+} from "@/app/constants";
 import { NotAuthorizedError } from "@/app/services/authorization/NotAuthorizedError";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
@@ -15,20 +18,25 @@ import { updateExtraAction } from "../services/updateExtraAction";
 import {
   FAKE_EXTRA_ID,
   FAKE_EXTRA_NAME,
+  FAKE_EXTRA_PRICE_CRC,
+  FAKE_EXTRA_PRICE_CRC_TEXT,
+  FAKE_EXTRA_PRICE_USD,
 } from "./Extra.constants";
+import { VALID_EXTRA_FORM_VALUES } from "./ExtraForm.constants";
 import {
   BLANK_EXTRA_NAME,
   NON_STRING_EXTRA_NAMES,
   EXTRA_ID_COLUMN,
   EXTRAS_TABLE,
   FAKE_EXTRA_ADMIN_WORKER_ID,
+  INVALID_PRICE_INPUT_CASES,
   PADDED_EXTRA_NAME,
   SERVER_ERROR_CODE,
 } from "./ExtraActions.constants";
 
 const UPDATE_INPUT: UpdateExtraInput = {
+  ...VALID_EXTRA_FORM_VALUES,
   extraId: FAKE_EXTRA_ID,
-  name: FAKE_EXTRA_NAME,
 };
 
 const mockAssertIsAdminWorker = vi.fn();
@@ -126,12 +134,46 @@ describe("updateExtraAction", () => {
       expect(result).toEqual({
         status: EXTRA_MUTATION_STATUS.ERROR,
         nameError: EXTRA_CATALOG_COPY.NAME_REQUIRED_ERROR,
+        priceErrors: {
+          prices: EXTRA_CATALOG_COPY.PRICES_REQUIRED_ERROR,
+        },
       });
       expect(mockUpdate).not.toHaveBeenCalled();
     }
   );
 
-  it("renames the extra by id with the trimmed name stamped with the admin worker", async () => {
+  it.each(INVALID_PRICE_INPUT_CASES)(
+    "returns price errors without updating when $description",
+    async ({ values, expectedErrors }) => {
+      const result = await updateExtraAction({
+        ...UPDATE_INPUT,
+        ...values,
+      });
+
+      expect(result).toEqual({
+        status: EXTRA_MUTATION_STATUS.ERROR,
+        priceErrors: expectedErrors,
+      });
+      expect(mockUpdate).not.toHaveBeenCalled();
+    }
+  );
+
+  it("clears a price that is sent empty", async () => {
+    await updateExtraAction({
+      ...UPDATE_INPUT,
+      priceUsd: STRING.Empty,
+      priceCrc: FAKE_EXTRA_PRICE_CRC_TEXT,
+    });
+
+    expect(mockUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        price_usd: null,
+        price_crc: FAKE_EXTRA_PRICE_CRC,
+      })
+    );
+  });
+
+  it("updates the extra by id with the trimmed name and the prices stamped with the admin worker", async () => {
     const result = await updateExtraAction({
       ...UPDATE_INPUT,
       name: PADDED_EXTRA_NAME,
@@ -140,6 +182,8 @@ describe("updateExtraAction", () => {
     expect(mockFrom).toHaveBeenCalledWith(EXTRAS_TABLE);
     expect(mockUpdate).toHaveBeenCalledWith({
       name: FAKE_EXTRA_NAME,
+      price_usd: FAKE_EXTRA_PRICE_USD,
+      price_crc: null,
       updated_by: FAKE_EXTRA_ADMIN_WORKER_ID,
     });
     expect(mockEq).toHaveBeenCalledWith(

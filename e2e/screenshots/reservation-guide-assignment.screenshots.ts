@@ -22,6 +22,22 @@ test("captures a tour with multiple assigned guides", async ({
   await reservationFormPage.selectReservationType(
     E2E_RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
   );
+  await expect(
+    reservationFormPage.getGuideNoSelectionWarning()
+  ).toBeVisible();
+  await page
+    .locator(E2E_NEXT_DEV_INDICATOR_SELECTOR)
+    .evaluateAll((indicators) =>
+      indicators.forEach((indicator) => indicator.remove())
+    );
+  await reservationFormPage.scrollToGuideNoSelectionWarning();
+  await captureViewport(
+    page,
+    resolveDeviceScreenshotFileName(
+      `${E2E_RESERVATION_GUIDES.SCREENSHOT_BASENAME}-${E2E_RESERVATION_GUIDES.NO_SELECTION_WARNING_SUFFIX}`,
+      testInfo.project.name
+    )
+  );
   await reservationFormPage.selectGuide(
     E2E_RESERVATION_GUIDES.FIRST_NAME
   );
@@ -33,11 +49,6 @@ test("captures a tour with multiple assigned guides", async ({
       E2E_RESERVATION_GUIDES.SECOND_NAME
     )
   ).toBeChecked();
-  await page
-    .locator(E2E_NEXT_DEV_INDICATOR_SELECTOR)
-    .evaluateAll((indicators) =>
-      indicators.forEach((indicator) => indicator.remove())
-    );
   await reservationFormPage
     .getGuideCheckbox(E2E_RESERVATION_GUIDES.FIRST_NAME)
     .scrollIntoViewIfNeeded();

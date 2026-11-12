@@ -14,6 +14,9 @@ const mapExtraItem = (
             item.extra?.name ??
             RESERVATION_DETAIL_DATA_COPY.MISSING_RELATED_NAME,
           quantity: item.quantity,
+          unitCategoryName:
+            item.extra_unit?.category?.name ?? null,
+          unitCode: item.extra_unit?.code ?? null,
         },
       ];
 

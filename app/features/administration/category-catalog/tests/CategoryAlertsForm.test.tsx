@@ -7,6 +7,8 @@ import {
 } from "vitest";
 import { PATHS } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
+import { CATEGORY_ALERT_TYPE_DESCRIPTION } from "../constants/CategoryAlertTypeDescription.constants";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import type { CategoryMutationResult } from "../models/CategoryMutationResult.interface";
 import type { UpdateCategoryAlertsInput } from "../models/UpdateCategoryAlertsInput.interface";
 import { ALERT_TYPE_BY_STORED_VALUES } from "./CategoryAlertCases.constants";
@@ -92,6 +94,43 @@ describe("CategoryAlertsForm", () => {
       );
     }
   );
+
+  it.each(ALERT_FIELD_VISIBILITY_CASES)(
+    "explains only the $alertType type after choosing it",
+    async ({ alertType }) => {
+      const alertsFormPage = renderCategoryAlertsForm();
+
+      await alertsFormPage.selectType(alertType);
+
+      ALERT_FIELD_VISIBILITY_CASES.forEach((otherCase) => {
+        expectPresence(
+          alertsFormPage.queryTypeDescription(
+            otherCase.alertType
+          ),
+          otherCase.alertType === alertType
+        );
+      });
+      expect(
+        alertsFormPage.getTypeSelect()
+      ).toHaveAccessibleDescription(
+        expect.stringContaining(
+          CATEGORY_ALERT_TYPE_DESCRIPTION[alertType]
+        )
+      );
+    }
+  );
+
+  it("asks when the alert should fire", () => {
+    const alertsFormPage = renderCategoryAlertsForm();
+
+    expect(
+      alertsFormPage.getTypeSelect()
+    ).toHaveAccessibleName(
+      expect.stringContaining(
+        CATEGORY_CATALOG_COPY.ALERT_TYPE_FIELD_LABEL
+      )
+    );
+  });
 
   it.each(ALERT_FIELD_VISIBILITY_CASES)(
     "shows the quantity field $showsQuantity and the expiry field $showsExpiry after choosing $alertType",

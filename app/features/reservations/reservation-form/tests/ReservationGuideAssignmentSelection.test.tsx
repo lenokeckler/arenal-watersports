@@ -65,6 +65,25 @@ it("submits every selected guide identifier", async () => {
   );
 });
 
+it("shows a non-blocking warning when a tour is submitted without guides", async () => {
+  vi.mocked(createReservationAction).mockResolvedValue({
+    ok: true,
+    reservationId:
+      RESERVATION_FORM_VIEW_TEST.CREATED_RESERVATION_ID,
+  });
+  const page = renderReservationGuideForm();
+  await page.selectReservationType(
+    RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
+  );
+
+  expect(page.getNoGuideWarning()).toBeVisible();
+  await page.submit();
+
+  expect(createReservationAction).toHaveBeenCalledWith(
+    expect.objectContaining({ guideIds: [] })
+  );
+});
+
 it("clears selected guides when the reservation leaves tour type", async () => {
   const page = renderReservationGuideForm();
   await page.selectReservationType(
