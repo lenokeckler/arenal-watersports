@@ -12,14 +12,15 @@ import {
 import CategoryGroupSwitch from "./components/CategoryGroupSwitch";
 import CategoryUnitsEmpty from "./components/CategoryUnitsEmpty";
 import CategoryUnitsHeader from "./components/CategoryUnitsHeader";
-import CategoryUnitsList from "./components/CategoryUnitsList";
 import CategoryUnitsPagination from "./components/CategoryUnitsPagination";
+import CategoryUnitsView from "./components/CategoryUnitsView";
 import type { CategoryUnitsProps } from "./models/CategoryUnitsProps.interface";
 import { CATEGORY_UNITS_PAGE_CLASS } from "./styles/CategoryUnits.styles";
 import { readCategoryUnitsContent } from "./services/readCategoryUnitsContent";
 import { mapBoardCategoryUnitRow } from "./utils/mapBoardCategoryUnitRow";
 
 const CategoryUnits = async ({
+  canDispatch = false,
   categoryId,
   pageParam,
 }: CategoryUnitsProps): Promise<React.JSX.Element> => {
@@ -60,7 +61,9 @@ const CategoryUnits = async ({
       {rows.length === LENGTH.ZERO ? (
         <CategoryUnitsEmpty />
       ) : (
-        <CategoryUnitsList
+        <CategoryUnitsView
+          canDispatch={canDispatch}
+          categoryId={categoryId}
           categoryName={categoryName}
           units={rows.map((row) =>
             mapBoardCategoryUnitRow(row, now)

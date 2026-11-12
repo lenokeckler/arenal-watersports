@@ -103,4 +103,33 @@ describe("UnitListView cards", () => {
     );
     expect(unitListPage.getEditLink(UNIT_CODE)).toBeNull();
   });
+
+  it("links a decommissioned unit to its reservations", () => {
+    renderUnitListView({
+      units: [
+        buildUnitListItem({
+          effectiveStatus: UNIT_STATUS.DECOMMISSIONED,
+          decommissioned: true,
+        }),
+      ],
+    });
+
+    expect(
+      createUnitListPage().getHistoryLink(UNIT_CODE)
+    ).toHaveAttribute(
+      "href",
+      resolveUnitEditPath(
+        FAKE_CATEGORY_ID,
+        DEFAULT_UNIT_LIST_ITEM.id
+      )
+    );
+  });
+
+  it("offers no reservations link on an active unit", () => {
+    renderUnitListView();
+
+    expect(
+      createUnitListPage().getHistoryLink(UNIT_CODE)
+    ).toBeNull();
+  });
 });

@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 import { E2E_RESERVATION_TYPE_COPY } from "../constants/E2eReservationForm.constants";
+import { E2E_RESERVATION_FORM_COPY } from "../constants/E2eReservationForm.constants";
 import { E2E_RESERVATION_TYPE_SCREENSHOT } from "../constants/E2eReservationTypeScreenshot.constants";
 import {
   E2E_NEXT_DEV_INDICATOR_SELECTOR,
@@ -68,6 +69,26 @@ test("captures rental default and tour reservation types", async ({
   await captureReservationTypeState(
     page,
     E2E_RESERVATION_TYPE_SCREENSHOT.TOUR_SELECTED,
+    testInfo.project.name
+  );
+
+  await reservationFormPage.selectReservationType(
+    E2E_RESERVATION_TYPE_COPY.OPTIONS.COMBO.label
+  );
+  await reservationFormPage
+    .getDateInput()
+    .fill(E2E_RESERVATION_FORM_COPY.SCREENSHOT_DATE);
+  await reservationFormPage.waitForCustomComboUnitOption(
+    E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION,
+    E2E_RESERVATION_FORM_COPY.UNIT_OPTION
+  );
+  await reservationFormPage.selectCustomComboUnit(
+    E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION,
+    E2E_RESERVATION_FORM_COPY.UNIT_OPTION
+  );
+  await captureReservationTypeState(
+    page,
+    E2E_RESERVATION_TYPE_SCREENSHOT.COMBO_LANCHA_SELECTED,
     testInfo.project.name
   );
 });
