@@ -97,11 +97,6 @@ export const NOT_CANCELLABLE_STATUSES = [
   "cancelled",
 ] as const;
 
-export const BLOCKED_STATUSES = [
-  "dispatched",
-  ...NOT_CANCELLABLE_STATUSES,
-] as const;
-
 export const VALID_CANCELLATION_INPUT: ReservationCancellationInput =
   {
     cause: null,

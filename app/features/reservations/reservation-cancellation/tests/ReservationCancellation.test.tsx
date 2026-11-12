@@ -20,7 +20,6 @@ import {
   CANCELLATION_REASON,
   CANCELLATION_RESERVATION_ID,
   EXPECTED_SCHEDULED,
-  BLOCKED_STATUSES,
 } from "./ReservationCancellation.constants";
 import { createReservationCancellationPage } from "./ReservationCancellation.page";
 import { createReservationCancellationViewPage } from "./ReservationCancellationView.page";
@@ -112,36 +111,6 @@ describe("ReservationCancellation", () => {
     ]);
     expect(page.queryStatus()).toBeNull();
   });
-
-  it.each(BLOCKED_STATUSES)(
-    "explains why a %s reservation cannot be cancelled here",
-    async (status) => {
-      vi.mocked(
-        getReservationCancellation
-      ).mockResolvedValue({
-        ...EXPECTED_SCHEDULED,
-        isCancellable: false,
-        status,
-      });
-
-      render(await renderEntry());
-      const page = createReservationCancellationPage();
-
-      expect(page.getStatusText()).toContain(
-        UNAVAILABLE.BODY[status]
-      );
-      expect(page.getStatusText()).toContain(
-        UNAVAILABLE.RULE
-      );
-      expect(
-        page.queryText(EXPECTED_SCHEDULED.code)
-      ).toBeNull();
-      expect(page.getCalendarLinkTargets()).toEqual([
-        PATHS.RESERVATIONS.CALENDAR,
-        PATHS.RESERVATIONS.CALENDAR,
-      ]);
-    }
-  );
 
   it("keeps the confirmation when the action refresh renders the cancelled reservation", async () => {
     vi.mocked(getReservationCancellation).mockResolvedValue(

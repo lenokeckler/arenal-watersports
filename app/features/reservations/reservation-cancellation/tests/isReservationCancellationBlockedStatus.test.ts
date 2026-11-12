@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { isReservationCancellationBlockedStatus } from "../utils/isReservationCancellationBlockedStatus";
-import { BLOCKED_STATUSES } from "./ReservationCancellation.constants";
+import { NOT_CANCELLABLE_STATUSES } from "./ReservationCancellation.constants";
 
 describe("isReservationCancellationBlockedStatus", () => {
-  it.each(BLOCKED_STATUSES)(
+  it.each(NOT_CANCELLABLE_STATUSES)(
     "blocks a %s reservation",
     (status) => {
       expect(
@@ -12,7 +12,7 @@ describe("isReservationCancellationBlockedStatus", () => {
     }
   );
 
-  it.each(["scheduled"] as const)(
+  it.each(["scheduled", "dispatched"] as const)(
     "does not block a %s reservation",
     (status) => {
       expect(
