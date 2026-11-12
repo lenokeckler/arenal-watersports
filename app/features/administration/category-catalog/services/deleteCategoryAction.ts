@@ -7,12 +7,19 @@ import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import type { CategoryMutationResult } from "../models/CategoryMutationResult.interface";
+import { discardCategoryImageObject } from "./discardCategoryImageObject";
+import { readCategoryImagePath } from "./readCategoryImagePath";
 
 export const deleteCategoryAction = async (
   categoryId: string
 ): Promise<CategoryMutationResult> => {
   const supabase = await createServerSupabaseClient();
   await assertIsAdminWorker(supabase);
+
+  const previous = await readCategoryImagePath({
+    categoryId,
+    supabase,
+  });
 
   const { error } = await supabase
     .from("equipment_categories")
@@ -30,6 +37,11 @@ export const deleteCategoryAction = async (
     };
   }
   throwIfSupabaseError(error, "deleteCategoryAction");
+
+  await discardCategoryImageObject({
+    imagePath: previous?.image_path ?? null,
+    supabase,
+  });
 
   return { status: CATEGORY_MUTATION_STATUS.SUCCESS };
 };
