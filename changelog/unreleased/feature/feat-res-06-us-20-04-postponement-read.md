@@ -1,1 +1,0 @@
-RES-06.20.04: Postponement read — server read of a reservation to postpone: its current date and time in Costa Rica, its equipment and the units still on the water with the readings they left with (US-RES-20 · AWS-103)

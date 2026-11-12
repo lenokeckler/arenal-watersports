@@ -1,1 +1,0 @@
-ACC-01.06.31: Recovery username prefill — the PIN screen takes the username handed over in its address only when it passes the shared username rule, normalized; anything else leaves the field empty (US-ACC-06 · AWS-35)

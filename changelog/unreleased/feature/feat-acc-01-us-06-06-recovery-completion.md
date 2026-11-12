@@ -1,1 +1,0 @@
-ACC-01.06.06: Recovery completion — after a recovery the database ends every session of the worker, spends any PIN still live, sets the failed sign-in count back to zero and clears the pending password change, without unblocking anyone (US-ACC-06 · AWS-35)

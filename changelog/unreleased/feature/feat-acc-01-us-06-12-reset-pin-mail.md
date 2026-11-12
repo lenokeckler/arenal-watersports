@@ -1,1 +1,0 @@
-ACC-01.06.12: Reset PIN mail — the plain-text mail in Spanish that carries the recovery PIN, its life in minutes and the warning not to share it, with no link, no username and the PIN kept out of the subject (US-ACC-06 · AWS-35)

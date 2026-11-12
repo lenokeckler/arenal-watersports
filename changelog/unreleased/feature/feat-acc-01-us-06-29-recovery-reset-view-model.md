@@ -1,1 +1,0 @@
-ACC-01.06.29: Recovery reset view model — the focus and the view model of the form with the PIN and the new password: first field with an error in screen order, and the live password rules from the first paint (US-ACC-06 · AWS-35)

@@ -1,1 +1,0 @@
-ACC-01.06.20: Shared notice URL cleaner — the piece that removes a one-time notice from the address bar moves from the profile hub to the shared components and takes the path to keep, unchanged for the profile (US-ACC-06 · AWS-35)

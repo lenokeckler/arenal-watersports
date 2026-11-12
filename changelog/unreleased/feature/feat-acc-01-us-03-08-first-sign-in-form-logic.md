@@ -1,1 +1,0 @@
-ACC-01.03.08: First sign-in form logic — the first sign-in form sends its three passwords to a server action that works with or without JavaScript, and shows each error next to its field (US-ACC-03 · AWS-32)

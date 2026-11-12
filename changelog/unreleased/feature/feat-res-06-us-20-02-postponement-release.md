@@ -1,1 +1,0 @@
-RES-06.20.02: Release dispatched reservation — closes the dispatch groups of a postponed reservation, records the fuel and hours or kilometres each unit came back with and frees its items for the next dispatch (US-RES-20 · AWS-103)

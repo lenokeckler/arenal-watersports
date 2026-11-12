@@ -1,1 +1,0 @@
-ADM-01.07.01: Temporary password grant — administration can prepare a one-use temporary password for a worker without a personal email; it forces the change on entering and closes the old sessions (US-ADM-07 · AWS-59)

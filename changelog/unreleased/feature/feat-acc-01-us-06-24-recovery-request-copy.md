@@ -1,1 +1,0 @@
-ACC-01.06.24: Recovery request copy and errors — the Spanish texts of the screen that asks for a PIN and the mapping of each error to its field or the form banner, addressed as usted (US-ACC-06 · AWS-35)

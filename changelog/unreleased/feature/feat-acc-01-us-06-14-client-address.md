@@ -1,1 +1,0 @@
-ACC-01.06.14: Client address — the server reads the caller's address only from Vercel's own headers when it runs on Vercel, and normalizes it (port, brackets, zone, IPv4-mapped, IPv6 /64), so a forged header cannot pick its own limit (US-ACC-06 · AWS-35)

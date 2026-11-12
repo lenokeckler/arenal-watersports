@@ -1,1 +1,0 @@
-ACC-01.07.05: Refuse password sign-in until recovery — the access-token hook refuses a password sign-in of the administration account after ten failures until the PIN recovery resets the counter (US-ACC-07 · AWS-36)

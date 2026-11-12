@@ -1,1 +1,0 @@
-ACC-01.06.26: Recovery reset action — the server action behind saving the new password with the PIN: it reads the four fields, asks the reset service, signs the browser out and sends the worker to the sign-in screen with a one-time notice (US-ACC-06 · AWS-35)

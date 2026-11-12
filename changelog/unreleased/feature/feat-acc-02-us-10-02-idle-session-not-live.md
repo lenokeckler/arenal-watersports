@@ -1,1 +1,0 @@
-ACC-02.10.02: Idle session is not live — a session idle past the rule loses access everywhere Row Level Security checks it, and the proxy can tell an idle session from an ended one (US-ACC-10 · AWS-39)

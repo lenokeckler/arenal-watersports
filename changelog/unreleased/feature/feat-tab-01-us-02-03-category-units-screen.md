@@ -1,1 +1,0 @@
-TAB-01.02.03: Category units screen — the page of one category with its paginated units, their status, return time and reservation, and its loading, empty, error and not-found states (US-TAB-02 · AWS-42)

@@ -1,1 +1,0 @@
-OPE-04.24: Inventory count history screen — Operations opens Historial de conteos from the inventory, sees each count with who recorded it, and opens one to see how much was missing or extra (US-OPE-24 · AWS-140)

@@ -1,1 +1,0 @@
-chore - Sign-in error reporting — an unexpected sign-in failure and any error the Next.js server does not handle are reported through the server error reporter, while the worker still sees the same message

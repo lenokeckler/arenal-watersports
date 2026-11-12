@@ -1,1 +1,0 @@
-ACC-01.03.10: Shared form controls — form fields accept extra descriptions and autocomplete hints, and the form error banner and submit button are shared by every sign-in screen, the login included (US-ACC-03 · AWS-32)

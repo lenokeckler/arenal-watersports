@@ -1,1 +1,0 @@
-ACC-01.06.18: Recovery reset service — resetting the password checks every field first, spends the PIN, saves the new password, ends every session and mails the notice that the password changed (US-ACC-06 · AWS-35)

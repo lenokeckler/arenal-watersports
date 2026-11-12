@@ -1,1 +1,0 @@
-ACC-01.03.03: First password change validation — the first sign-in form checks the temporary password, the new one against the rules, that it differs from the temporary one and that the repetition matches (US-ACC-03 · AWS-32)

@@ -1,1 +1,0 @@
-ACC-01.06.02: Password reset PIN issue — the database issues a recovery PIN only for an active account with a personal email, within the cooldown, hourly and network limits, keeps it hashed with bcrypt, voids the previous one and answers the same way for every account it refuses (US-ACC-06 · AWS-35)

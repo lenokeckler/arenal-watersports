@@ -1,1 +1,0 @@
-RES-06.20.03: Postpone reservation function — postpone_reservation moves a scheduled or weather-hit dispatched reservation to a new date and time, records who and why, and keeps its charge and deposit (US-RES-20 · AWS-103)

@@ -1,1 +1,0 @@
-ACC-01.06.37: Recovery E2E reset — the browser tests walk the whole recovery and prove the new password works, the old one and every old session stop working, the failed count goes back to zero, the notice mail arrives, it works without JavaScript and two uses of one PIN let only one through (US-ACC-06 · AWS-35)
