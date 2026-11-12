@@ -82,3 +82,11 @@ export const E2E_BOARD_KAYAK_SWITCH = {
   FIRST: { name: "Kayak doble", unitCode: "KD-01" },
   SECOND: { name: "Kayak individual", unitCode: "KI-01" },
 } as const;
+
+export const E2E_BOARD_REALTIME = {
+  CATEGORY_LABEL: "Paddleboard",
+  CONVERGENCE_TIMEOUT_MS: 45_000,
+  FREE_AFTER_DAMAGE: 8,
+  TOTAL_COUNT: 9,
+  UNIT_CODE: "PB-09",
+} as const;
