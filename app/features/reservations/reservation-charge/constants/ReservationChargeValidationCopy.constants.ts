@@ -16,7 +16,7 @@ export const RESERVATION_CHARGE_VALIDATION_COPY = {
   AMOUNT_REQUIRED: "Escriba el monto cobrado.",
   AMOUNT_TOO_MANY_DECIMALS:
     "Use como máximo dos decimales.",
-  METHOD_CONTROL_CHARACTERS:
+  METHOD_DISALLOWED_CHARACTERS:
     "El método de pago tiene caracteres no permitidos.",
   METHOD_REQUIRED: "Escriba el método de pago.",
   METHOD_TOO_LONG: `Use como máximo ${RESERVATION_CHARGE_LIMITS.PAYMENT_METHOD_MAX_LENGTH} caracteres.`,

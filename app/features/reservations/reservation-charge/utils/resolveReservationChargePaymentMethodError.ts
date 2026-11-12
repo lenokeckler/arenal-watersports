@@ -2,7 +2,7 @@ import { STRING } from "@/app/constants";
 import type { NullableUndefined } from "@/app/types";
 import { RESERVATION_CHARGE_LIMITS } from "../constants/ReservationChargeLimits.constants";
 import {
-  RESERVATION_CHARGE_CONTROL_CHARACTER_PATTERN,
+  RESERVATION_CHARGE_DISALLOWED_CHARACTER_PATTERN,
   RESERVATION_CHARGE_EDGE_WHITESPACE_PATTERN,
 } from "../constants/ReservationChargePaymentMethodPatterns.constants";
 import { RESERVATION_CHARGE_VALIDATION_COPY as COPY } from "../constants/ReservationChargeValidationCopy.constants";
@@ -18,11 +18,11 @@ export const resolveReservationChargePaymentMethodError = (
     return COPY.METHOD_REQUIRED;
   }
   if (
-    RESERVATION_CHARGE_CONTROL_CHARACTER_PATTERN.test(
+    RESERVATION_CHARGE_DISALLOWED_CHARACTER_PATTERN.test(
       trimmed
     )
   ) {
-    return COPY.METHOD_CONTROL_CHARACTERS;
+    return COPY.METHOD_DISALLOWED_CHARACTERS;
   }
   return [...trimmed].length >
     RESERVATION_CHARGE_LIMITS.PAYMENT_METHOD_MAX_LENGTH
