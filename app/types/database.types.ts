@@ -3678,6 +3678,13 @@ export type Database = {
         };
         Returns: string;
       };
+      set_unit_condition: {
+        Args: {
+          new_status: Database["public"]["Enums"]["unit_status"];
+          target_unit: string;
+        };
+        Returns: string;
+      };
       sign_in_attempt_limit: {
         Args: Record<PropertyKey, never>;
         Returns: number;
