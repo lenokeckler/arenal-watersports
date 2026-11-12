@@ -76,6 +76,13 @@ export type Database = {
             foreignKeyName: "combo_items_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "combo_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -243,6 +250,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_units";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "damage_reports_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "damage_reports_unit_id_fkey";
@@ -516,6 +530,13 @@ export type Database = {
             foreignKeyName: "equipment_stock_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: true;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: true;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -610,6 +631,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_movements_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
           },
           {
             foreignKeyName: "equipment_stock_movements_category_id_fkey";
@@ -726,6 +754,13 @@ export type Database = {
             foreignKeyName: "equipment_units_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -807,6 +842,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_units";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "extra_compatibility_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "extra_compatibility_unit_id_fkey";
@@ -906,6 +948,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "extras_occupies_category_id_fkey";
+            columns: ["occupies_category_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
           },
           {
             foreignKeyName: "extras_occupies_category_id_fkey";
@@ -1025,6 +1074,13 @@ export type Database = {
             foreignKeyName: "inventory_count_lines_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "inventory_count_lines_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -1062,6 +1118,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_units";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "inventory_count_lines_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "inventory_count_lines_unit_id_fkey";
@@ -1202,6 +1265,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_units";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "maintenance_records_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "maintenance_records_unit_id_fkey";
@@ -1544,6 +1614,13 @@ export type Database = {
             foreignKeyName: "reservation_dispatches_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "reservation_dispatches_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -1747,6 +1824,13 @@ export type Database = {
             foreignKeyName: "reservation_items_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "reservation_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -1819,6 +1903,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_units";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_items_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "reservation_items_unit_id_fkey";
@@ -2189,6 +2280,13 @@ export type Database = {
             foreignKeyName: "tariffs_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "tariffs_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -2280,6 +2378,13 @@ export type Database = {
             foreignKeyName: "unit_condition_photos_unit_id_fkey";
             columns: ["unit_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photos_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
             referencedRelation: "maintenance_cost_by_unit";
             referencedColumns: ["unit_id"];
           },
@@ -2366,6 +2471,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_units";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_corrections_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "unit_corrections_unit_id_fkey";
@@ -2643,6 +2755,13 @@ export type Database = {
             foreignKeyName: "equipment_units_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -2686,6 +2805,18 @@ export type Database = {
           net_amount: number | null;
           refunds_amount: number | null;
           retained_amount: number | null;
+        };
+        Relationships: [];
+      };
+      equipment_usage_hours: {
+        Row: {
+          category_id: string | null;
+          category_name: string | null;
+          dispatch_count: number | null;
+          hours_used: number | null;
+          last_dispatched_at: string | null;
+          unit_code: string | null;
+          unit_id: string | null;
         };
         Relationships: [];
       };
@@ -2772,6 +2903,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
           },
           {
             foreignKeyName: "equipment_units_category_id_fkey";
@@ -2871,6 +3009,13 @@ export type Database = {
             foreignKeyName: "equipment_units_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -2942,6 +3087,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
           },
           {
             foreignKeyName: "equipment_units_category_id_fkey";
