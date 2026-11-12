@@ -3744,12 +3744,14 @@ export type Database = {
           page_offset?: number;
         };
         Returns: {
+          category_count: number;
           count_id: string;
           counted_at: string;
           counted_by: string;
           difference_count: number;
           notes: string;
           total_count: number;
+          unit_count: number;
         }[];
       };
       list_operations_stock_movements: {
