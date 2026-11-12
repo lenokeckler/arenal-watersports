@@ -6,6 +6,7 @@ import {
   vi,
 } from "vitest";
 import {
+  PAGINATION,
   SUPABASE_WORK_AREA,
   SUPABASE_WORKER_STATUS,
   WORKER_LIST_QUERY,
@@ -13,7 +14,10 @@ import {
 } from "@/app/constants";
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
 import type { WorkerListSearch } from "../models/WorkerListSearch.interface";
-import { buildWorkerQuery } from "../readWorkerRows";
+import {
+  buildWorkerQuery,
+  readWorkerRows,
+} from "../readWorkerRows";
 
 const AS_OF = "2026-10-29T18:00:00.000Z";
 const ROLE_FILTER: WorkerListSearch = {
@@ -42,7 +46,8 @@ const is = vi.fn();
 const or = vi.fn();
 const order = vi.fn();
 const select = vi.fn();
-const query = { eq, is, or, order, select };
+const range = vi.fn();
+const query = { eq, is, or, order, select, range };
 const supabase = {
   from: vi.fn(() => query),
 } as unknown as ServerSupabaseClient;
@@ -55,6 +60,11 @@ describe("buildWorkerQuery", () => {
     or.mockReturnValue(query);
     order.mockReturnValue(query);
     select.mockReturnValue(query);
+    range.mockResolvedValue({
+      count: 0,
+      data: [],
+      error: null,
+    });
   });
 
   it("filters by the selected base role", () => {
@@ -108,5 +118,21 @@ describe("buildWorkerQuery", () => {
       `${WORKER_LIST_QUERY.COLUMN.STATUS}.${WORKER_LIST_QUERY.OPERATOR.NOT_EQUAL}${SUPABASE_WORKER_STATUS.ACTIVE},${WORKER_LIST_QUERY.COLUMN.DELETED_AT}.${WORKER_LIST_QUERY.OPERATOR.IS_NOT_NULL},${WORKER_LIST_QUERY.COLUMN.EXPIRES_AT}.${WORKER_LIST_QUERY.OPERATOR.EXPIRES_AT_BEFORE_OR_ON}${AS_OF}`
     );
     expect(or).not.toHaveBeenCalled();
+  });
+
+  it("applies role and status filters before paginating rows", async () => {
+    await readWorkerRows(
+      supabase,
+      ROLE_AND_INACTIVE_FILTER,
+      PAGINATION.DEFAULT_PAGE,
+      AS_OF
+    );
+
+    expect(eq.mock.invocationCallOrder[0]).toBeLessThan(
+      range.mock.invocationCallOrder[0]
+    );
+    expect(or.mock.invocationCallOrder[0]).toBeLessThan(
+      range.mock.invocationCallOrder[0]
+    );
   });
 });

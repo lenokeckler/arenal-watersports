@@ -18,4 +18,6 @@ export const ARIA_ROLE = {
   OPTION: "option",
   RADIO: "radio",
   TEXTBOX: "textbox",
+  TABLE: "table",
+  COLUMNHEADER: "columnheader",
 } as const;

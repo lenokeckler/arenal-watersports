@@ -14,10 +14,18 @@ export const redirectToValidInventoryCategoryPage = (
   if (
     categoryDetails.category.trackingMode ===
       INVENTORY_TRACKING_MODE.BY_QUANTITY &&
-    pageIndex > PAGINATION.DEFAULT_PAGE
+    "movements" in categoryDetails &&
+    pageIndex >= categoryDetails.movements.pageCount
   ) {
     redirect(
-      PATHS.OPERATIONS.INVENTORY_CATEGORY(categoryId)
+      PATHS.OPERATIONS.INVENTORY_CATEGORY_PAGE(
+        categoryId,
+        Math.max(
+          PAGINATION.DEFAULT_PAGE,
+          categoryDetails.movements.pageCount -
+            PAGINATION.ONE_PAGE
+        )
+      )
     );
   }
 
