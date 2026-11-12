@@ -31,10 +31,12 @@ describe("assertActiveWorkAreaAccess", () => {
   });
 
   it("redirects when the active mode does not match the route", async () => {
-    rpc.mockResolvedValueOnce({
-      data: SUPABASE_WORK_AREA.RESERVATIONS,
-      error: null,
-    });
+    rpc
+      .mockResolvedValueOnce({
+        data: SUPABASE_WORK_AREA.RESERVATIONS,
+        error: null,
+      })
+      .mockResolvedValueOnce({ data: false, error: null });
 
     await expect(
       assertActiveWorkAreaAccess(
@@ -42,14 +44,16 @@ describe("assertActiveWorkAreaAccess", () => {
         WORK_MODE_ROUTE_ACCESS.OPERATIONS
       )
     ).rejects.toThrow(PATHS.MODE);
-    expect(rpc).toHaveBeenCalledTimes(1);
+    expect(rpc).toHaveBeenCalledTimes(2);
   });
 
-  it("does not bypass route restrictions for an active mode", async () => {
-    rpc.mockResolvedValueOnce({
-      data: SUPABASE_WORK_AREA.RESERVATIONS,
-      error: null,
-    });
+  it("does not bypass route restrictions for a non-administrator in an active mode", async () => {
+    rpc
+      .mockResolvedValueOnce({
+        data: SUPABASE_WORK_AREA.RESERVATIONS,
+        error: null,
+      })
+      .mockResolvedValueOnce({ data: false, error: null });
 
     await expect(
       assertActiveWorkAreaAccess(
@@ -57,7 +61,7 @@ describe("assertActiveWorkAreaAccess", () => {
         WORK_MODE_ROUTE_ACCESS.OPERATIONS
       )
     ).rejects.toThrow(PATHS.MODE);
-    expect(rpc).toHaveBeenCalledTimes(1);
+    expect(rpc).toHaveBeenCalledTimes(2);
     expect(redirect).toHaveBeenCalledWith(PATHS.MODE);
   });
 
@@ -105,6 +109,7 @@ describe("assertActiveWorkAreaAccess", () => {
         data: SUPABASE_WORK_AREA.OPERATIONS,
         error: null,
       })
+      .mockResolvedValueOnce({ data: false, error: null })
       .mockResolvedValueOnce({ data: false, error: null });
 
     await expect(

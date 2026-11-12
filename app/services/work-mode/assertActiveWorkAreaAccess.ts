@@ -5,6 +5,16 @@ import { isSignedInAdministrator } from "@/app/services/worker-registration/isSi
 import type { WorkArea } from "@/app/types";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
+const redirectUnlessAdministrator = async (
+  supabase: ServerSupabaseClient
+): Promise<void> => {
+  if (await isSignedInAdministrator(supabase)) {
+    return;
+  }
+
+  redirect(PATHS.MODE);
+};
+
 export const assertActiveWorkAreaAccess = async (
   supabase: ServerSupabaseClient,
   allowedAreas: readonly WorkArea[]
@@ -17,16 +27,9 @@ export const assertActiveWorkAreaAccess = async (
     SUPABASE_RPC.CURRENT_WORK_AREA
   );
 
-  if (!currentArea) {
-    if (await isSignedInAdministrator(supabase)) {
-      return;
-    }
-
-    redirect(PATHS.MODE);
-  }
-
-  if (!allowedAreas.includes(currentArea)) {
-    redirect(PATHS.MODE);
+  if (!currentArea || !allowedAreas.includes(currentArea)) {
+    await redirectUnlessAdministrator(supabase);
+    return;
   }
 
   const { data: hasActiveArea, error: activeAreaError } =
@@ -40,6 +43,6 @@ export const assertActiveWorkAreaAccess = async (
   );
 
   if (!hasActiveArea) {
-    redirect(PATHS.MODE);
+    await redirectUnlessAdministrator(supabase);
   }
 };
