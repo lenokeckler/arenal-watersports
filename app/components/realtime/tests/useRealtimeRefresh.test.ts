@@ -16,10 +16,6 @@ vi.mock("@/app/services/supabase/client", () => ({
   createBrowserSupabaseClient: vi.fn(),
 }));
 
-const CHANGE_HANDLER_ARGUMENT_INDEX = 2;
-const FIRST_CALL_INDEX = 0;
-const STATUS_HANDLER_ARGUMENT_INDEX = 0;
-
 describe("useRealtimeRefresh", () => {
   const renderRealtimeRefresh = (onRefresh: () => void) =>
     renderHook(() =>
@@ -39,40 +35,36 @@ describe("useRealtimeRefresh", () => {
   });
 
   it("subscribes to the given channel and every table", () => {
-    const { channel, createChannel } =
+    const { createChannel, on, subscribe } =
       createRealtimeHarness();
     renderRealtimeRefresh(vi.fn());
     expect(createChannel).toHaveBeenCalledWith(
       REALTIME_REFRESH_TEST.CHANNEL
     );
-    expect(channel.on).toHaveBeenCalledTimes(
+    expect(on).toHaveBeenCalledTimes(
       REALTIME_REFRESH_TEST.TABLES.length
     );
     REALTIME_REFRESH_TEST.TABLES.forEach((table, index) => {
-      expect(channel.on.mock.calls[index][1]).toEqual({
+      expect(on.mock.calls[index][1]).toEqual({
         event: REALTIME.EVENT,
         schema: REALTIME.SCHEMA,
         table,
       });
     });
-    expect(channel.subscribe).toHaveBeenCalledOnce();
+    expect(subscribe).toHaveBeenCalledOnce();
   });
 
   it("calls onRefresh once for a burst of changes", () => {
-    const { channel } = createRealtimeHarness();
+    const { triggerChange } = createRealtimeHarness();
     const onRefresh = vi.fn();
     renderRealtimeRefresh(onRefresh);
-    const change =
-      channel.on.mock.calls[FIRST_CALL_INDEX][
-        CHANGE_HANDLER_ARGUMENT_INDEX
-      ];
     act(() => {
       for (
         let count = 0;
         count < REALTIME_REFRESH_TEST.BURST_COUNT;
         count += 1
       ) {
-        change();
+        triggerChange();
       }
       vi.advanceTimersByTime(REALTIME.COALESCE_MS);
     });
@@ -80,23 +72,19 @@ describe("useRealtimeRefresh", () => {
   });
 
   it("reports the connection error and clears it when subscribed again", () => {
-    const { channel } = createRealtimeHarness();
+    const { emitStatus } = createRealtimeHarness();
     const onRefresh = vi.fn();
     const { result } = renderRealtimeRefresh(onRefresh);
-    const status =
-      channel.subscribe.mock.calls[FIRST_CALL_INDEX][
-        STATUS_HANDLER_ARGUMENT_INDEX
-      ];
     act(() =>
-      status(REALTIME_REFRESH_TEST.CONNECTING_STATUS)
+      emitStatus(REALTIME_REFRESH_TEST.CONNECTING_STATUS)
     );
     expect(result.current).toBe(false);
-    act(() => status(REALTIME.STATUS.CHANNEL_ERROR));
+    act(() => emitStatus(REALTIME.STATUS.CHANNEL_ERROR));
     expect(result.current).toBe(true);
-    act(() => status(REALTIME.STATUS.TIMED_OUT));
+    act(() => emitStatus(REALTIME.STATUS.TIMED_OUT));
     expect(result.current).toBe(true);
     act(() => {
-      status(REALTIME.STATUS.SUBSCRIBED);
+      emitStatus(REALTIME.STATUS.SUBSCRIBED);
       window.dispatchEvent(new Event(REALTIME.ONLINE));
       vi.advanceTimersByTime(REALTIME.COALESCE_MS);
     });
@@ -105,15 +93,11 @@ describe("useRealtimeRefresh", () => {
   });
 
   it("removes the channel and drops pending refreshes on unmount", () => {
-    const { channel, removeChannel } =
+    const { channel, removeChannel, triggerChange } =
       createRealtimeHarness();
     const onRefresh = vi.fn();
     const { unmount } = renderRealtimeRefresh(onRefresh);
-    act(() =>
-      channel.on.mock.calls[FIRST_CALL_INDEX][
-        CHANGE_HANDLER_ARGUMENT_INDEX
-      ]()
-    );
+    act(triggerChange);
     unmount();
     act(() => {
       window.dispatchEvent(new Event(REALTIME.ONLINE));
