@@ -17,6 +17,8 @@ import Deposits from "../Deposits";
 import { DEPOSITS_REPORT_COPY } from "../constants/DepositsReportCopy.constants";
 import {
   CRC_PARTIAL_DEPOSIT,
+  NO_PAGE_PARAMS,
+  PAGE_PARAMS,
   REDIRECT_MESSAGE,
   SERVICE_FAILURE_MESSAGE,
   USD_HELD_DEPOSIT,
@@ -63,7 +65,7 @@ describe("Deposits", () => {
       false
     );
 
-    await expect(Deposits()).rejects.toThrow(
+    await expect(Deposits(NO_PAGE_PARAMS)).rejects.toThrow(
       REDIRECT_MESSAGE
     );
 
@@ -77,7 +79,7 @@ describe("Deposits", () => {
       null
     );
 
-    await expect(Deposits()).rejects.toThrow(
+    await expect(Deposits(NO_PAGE_PARAMS)).rejects.toThrow(
       REDIRECT_MESSAGE
     );
 
@@ -85,7 +87,7 @@ describe("Deposits", () => {
   });
 
   it("renders the pending and the retained deposits for an administrator", async () => {
-    render(await Deposits());
+    render(await Deposits(NO_PAGE_PARAMS));
     const page = createDepositsReportPage();
 
     expect(redirect).not.toHaveBeenCalled();
@@ -101,12 +103,23 @@ describe("Deposits", () => {
     ).toHaveLength(2);
   });
 
+  it("reads the page of each list named in the URL", async () => {
+    render(await Deposits(PAGE_PARAMS));
+
+    expect(fetchPendingDeposits).toHaveBeenCalledWith(
+      Number(PAGE_PARAMS.pendingPageParam)
+    );
+    expect(fetchRetainedDeposits).toHaveBeenCalledWith(
+      Number(PAGE_PARAMS.retainedPageParam)
+    );
+  });
+
   it("rejects when the pending read fails so the route error boundary takes over", async () => {
     vi.mocked(fetchPendingDeposits).mockRejectedValue(
       new Error(SERVICE_FAILURE_MESSAGE)
     );
 
-    await expect(Deposits()).rejects.toThrow(
+    await expect(Deposits(NO_PAGE_PARAMS)).rejects.toThrow(
       SERVICE_FAILURE_MESSAGE
     );
   });
@@ -116,7 +129,7 @@ describe("Deposits", () => {
       new Error(SERVICE_FAILURE_MESSAGE)
     );
 
-    await expect(Deposits()).rejects.toThrow(
+    await expect(Deposits(NO_PAGE_PARAMS)).rejects.toThrow(
       SERVICE_FAILURE_MESSAGE
     );
   });

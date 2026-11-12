@@ -20,6 +20,7 @@ export const getReservationCategoryAvailability = async (
     {
       p_category_id: input.categoryId,
       p_ends_at: interval.endsAt,
+      p_exclude_reservation: input.excludeReservationId,
       p_starts_at: interval.startsAt,
     }
   );

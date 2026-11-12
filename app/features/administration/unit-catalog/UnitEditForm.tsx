@@ -7,9 +7,11 @@ import type { UnitEditFormProps } from "./models/UnitEditFormProps.interface";
 import { getUnit } from "./services/getUnit";
 import { getUnitCategory } from "./services/getUnitCategory";
 import UnitFormView from "./UnitFormView";
+import UnitReservationHistory from "./UnitReservationHistory";
 
 const UnitEditForm = async ({
   categoryId,
+  pageParam,
   unitId,
 }: UnitEditFormProps): Promise<React.JSX.Element> => {
   if (!(await isAdministratorSignedIn())) {
@@ -36,7 +38,13 @@ const UnitEditForm = async ({
       mode={UNIT_FORM_MODE.EDIT}
       category={category}
       unit={unit}
-    />
+    >
+      <UnitReservationHistory
+        categoryId={categoryId}
+        unitId={unitId}
+        pageParam={pageParam}
+      />
+    </UnitFormView>
   );
 };
 

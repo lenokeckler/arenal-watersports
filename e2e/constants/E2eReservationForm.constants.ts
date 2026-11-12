@@ -1,4 +1,5 @@
 import { RESERVATION_FORM_UI_COPY } from "@/app/features/reservations/reservation-form/constants/ReservationFormUiCopy.constants";
+import { RESERVATION_TYPE_COPY } from "@/app/features/reservations/reservation-form/constants/ReservationTypeCopy.constants";
 import { E2E_PROJECT } from "./E2eRuntime.constants";
 
 export const E2E_RESERVATION_FORM_COPY = {
@@ -22,6 +23,8 @@ export const E2E_RESERVATION_FORM_COPY = {
   CATEGORY: "Equipo",
   RESERVATION_TYPE_TOUR: "Tour",
   UNIT: "Unidad",
+  UNIT_PLACEHOLDER:
+    RESERVATION_FORM_UI_COPY.UNIT_PLACEHOLDER,
   UNIT_OPTION: "PONTOON",
   CATEGORY_OPTION: "Jet Ski",
   CATEGORY_AVAILABILITY_OPTION: "Kayak doble",
@@ -35,8 +38,15 @@ export const E2E_RESERVATION_FORM_COPY = {
     "US-RES-04 E2E custom duration",
   SUBMIT: "Registrar reserva",
   SUCCESS: "La reserva quedó registrada correctamente.",
+  EXTRA_BENNINGTON_OPTION: "Tubing",
+  EXTRA_PONTOON_OPTION: "Parrilla",
   VALIDATION_ERROR: "Ingrese el nombre de la reserva.",
   SCREENSHOT_DATE: "2099-12-31",
+  INTERVAL_CHANGE_DATE: "2099-12-30",
+} as const;
+
+export const E2E_RESERVATION_EXTRAS = {
+  EXPECTED_EXTRA_QUOTE_USD: "USD 35,00",
 } as const;
 
 export const E2E_RESERVATION_EQUIPMENT_STATUS = {
@@ -57,6 +67,9 @@ export const E2E_RESERVATION_FORM_EQUIPMENT_SCREENSHOT_SUFFIX =
 
 export const E2E_RESERVATION_FORM_UNIT_SCREENSHOT_SUFFIX =
   "lancha-unit-selected";
+
+export const E2E_RESERVATION_FORM_EXTRAS_SCREENSHOT_BASENAME =
+  "us-res-11-04-reservation-extras";
 
 export const E2E_RESERVATION_FORM_CUSTOM_DURATION_SCREENSHOT_SUFFIX =
   "custom-duration";
@@ -103,4 +116,28 @@ export const E2E_RESERVATION_CATEGORY_AVAILABILITY_COUNT_PATTERN =
 export const E2E_RESERVATION_DURATION_PRESET = {
   LABEL: "1 h 30",
   HOURS: "1.5",
+} as const;
+
+export const E2E_RESERVATION_GUIDE_ONLY_CATEGORY = {
+  BOAT: E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION,
+  QUADRICYCLE: "Cuadraciclo",
+} as const;
+
+export const E2E_RESERVATION_GUIDES = {
+  FIRST_NAME: "Guia de prueba uno",
+  SECOND_NAME: "Guia de prueba dos",
+  UNMARKED_WORKER_NAME: "Administración",
+  SCREENSHOT_BASENAME: "us-res-12-guide-assignment",
+  MULTIPLE_GUIDES_SUFFIX: "multiple-guides",
+} as const;
+
+export const E2E_RESERVATION_TYPE_COPY = {
+  LABEL: RESERVATION_TYPE_COPY.LABEL,
+  OPTIONS: RESERVATION_TYPE_COPY.OPTIONS,
+  GUIDE_ONLY_CATEGORY: E2E_RESERVATION_GUIDE_ONLY_CATEGORY,
+  GUIDE_ONLY_CATEGORY_OPTIONS: Object.values(
+    E2E_RESERVATION_GUIDE_ONLY_CATEGORY
+  ),
+  GUIDE_ONLY_UNIT_OPTION:
+    E2E_RESERVATION_FORM_COPY.UNIT_OPTION,
 } as const;

@@ -24,6 +24,10 @@ export const PATHS = {
     CATEGORY_STOCK_SEGMENT: "stock",
     CATEGORY_UNITS_SEGMENT: "units",
     DEPOSITS: "/administration/reports/deposits",
+    MAINTENANCE_COST:
+      "/administration/reports/maintenance-cost",
+    EXTRAS: "/administration/extras",
+    EXTRAS_NEW: "/administration/extras/new",
     INCOME: "/administration/income",
     RESERVATIONS_BY_WORKER:
       "/administration/reports/reservations-by-worker",
@@ -38,6 +42,7 @@ export const PATHS = {
   },
   OPERATIONS: {
     CALENDAR: "/operations/calendar",
+    DAMAGE_REPORT: "/operations/damage-report",
     INVENTORY: OPERATIONS_INVENTORY_PATH,
     INVENTORY_CATEGORY: (categoryId: string) =>
       `${OPERATIONS_INVENTORY_PATH}/${encodeURIComponent(categoryId)}`,
@@ -48,6 +53,17 @@ export const PATHS = {
       `${OPERATIONS_INVENTORY_PATH}/${encodeURIComponent(categoryId)}?${PAGINATION.QUERY_PARAMS.PAGE}=${pageIndex}`,
     INVENTORY_PAGE: (pageIndex: number) =>
       `${OPERATIONS_INVENTORY_PATH}?${PAGINATION.QUERY_PARAMS.PAGE}=${pageIndex}`,
+    DAMAGE_REPORTS: "/operations/damage-reports",
+    MAINTENANCE: "/operations/maintenance",
+    MAINTENANCE_HISTORY: "/operations/maintenance/history",
+    MAINTENANCE_NEW: "/operations/maintenance/new",
+    OUT_ON_WATER: "/operations/out-on-water",
+    UNIT_PHOTOS: (unitId: string) =>
+      `/operations/unit-photos/${encodeURIComponent(unitId)}`,
+    UNIT_READINGS: "/operations/unit-readings",
+    UNIT_READING: (unitId: string) =>
+      `/operations/unit-readings/${encodeURIComponent(unitId)}`,
+    PENDING_DISPATCHES: "/operations/dispatch",
   },
   PROFILE: {
     EMAIL: "/profile/email",
@@ -66,5 +82,6 @@ export const PATHS = {
     INCOME: "/reservations/income",
     NEW: "/reservations/new",
     ROOT: "/reservations",
+    SPLIT_SEGMENT: "split",
   },
 } as const;

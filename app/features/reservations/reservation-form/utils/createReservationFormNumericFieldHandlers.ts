@@ -1,10 +1,10 @@
 import { RESERVATION_FORM_MINIMUM_INPUT_VALUE } from "../constants/ReservationFormUi.constants";
-import { STRING } from "@/app/constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import type { UpdateReservationFormValue } from "../models/UpdateReservationFormValue.type";
 
 export const createReservationFormNumericFieldHandlers = (
-  updateValue: UpdateReservationFormValue
+  updateValue: UpdateReservationFormValue,
+  clearUnitAfterScheduleChange: () => void
 ) => ({
   handleDurationChange: (value: number) => {
     if (
@@ -15,10 +15,8 @@ export const createReservationFormNumericFieldHandlers = (
         RESERVATION_FORM_FIELD.DURATION_HOURS,
         value
       );
-      updateValue(
-        RESERVATION_FORM_FIELD.UNIT_ID,
-        STRING.Empty
-      );
+      updateValue(RESERVATION_FORM_FIELD.EXTRA_IDS, []);
+      clearUnitAfterScheduleChange();
     }
   },
   handlePeopleCountChange: (value: number) => {

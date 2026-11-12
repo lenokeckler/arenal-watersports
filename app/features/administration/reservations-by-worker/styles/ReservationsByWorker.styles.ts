@@ -1,3 +1,5 @@
+import { LINK_ACTION_CLASS } from "@/app/components/link/styles/Link.styles";
+
 export const RESERVATIONS_BY_WORKER_STACK_CLASS =
   "flex flex-col gap-md";
 
@@ -17,7 +19,7 @@ export const RESERVATIONS_BY_WORKER_PAGINATION_CLASS =
   "flex flex-wrap items-center justify-between gap-sm";
 
 export const RESERVATIONS_BY_WORKER_PAGE_LINK_CLASS =
-  "inline-flex min-h-12 items-center justify-center rounded-lg border border-outline px-md text-button font-semibold text-primary hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+  LINK_ACTION_CLASS;
 
 export const RESERVATIONS_BY_WORKER_DISABLED_PAGE_CLASS =
   "inline-flex min-h-12 items-center justify-center rounded-lg border border-outline/50 px-md text-button font-semibold text-on-surface-variant/60";
