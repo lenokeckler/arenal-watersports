@@ -107,4 +107,10 @@ export const EXPECTED_QUANTITY_INVENTORY_CATEGORY_DETAILS: InventoryCategoryDeta
       inRepair: 3,
       total: 15,
     },
+    movements: {
+      items: [INVENTORY_STOCK_MOVEMENT],
+      pageIndex: PAGINATION.DEFAULT_PAGE,
+      pageCount: PAGINATION.ONE_PAGE,
+      totalCount: 1,
+    },
   };

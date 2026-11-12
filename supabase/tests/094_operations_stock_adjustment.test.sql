@@ -1,5 +1,5 @@
 begin;
-select plan(9);
+select plan(10);
 
 insert into auth.users (id, email) values
   ('d7250000-0000-4000-8000-000000000001', 'ope25-stock-ops@arenal.local'),
@@ -17,8 +17,9 @@ where id = 'd7250000-0000-4000-8000-000000000002';
 insert into equipment_categories (id, name, tracking_mode, created_by, updated_by)
 values ('d7250001-0000-4000-8000-000000000001', 'OPE25 stock test', 'by_quantity',
         'd7250000-0000-4000-8000-000000000001', 'd7250000-0000-4000-8000-000000000001');
-insert into equipment_stock (category_id, quantity_available, updated_by)
-values ('d7250001-0000-4000-8000-000000000001', 5, 'd7250000-0000-4000-8000-000000000001');
+insert into equipment_stock (category_id, quantity_available, expiry_date, updated_by)
+values ('d7250001-0000-4000-8000-000000000001', 5, '2027-02-01',
+        'd7250000-0000-4000-8000-000000000001');
 insert into reservations (id, customer_name, people_count, type, starts_at, duration_minutes,
                          created_by, updated_by)
 values ('d7250002-0000-4000-8000-000000000001', 'OPE25 reservation', 1, 'rental',
@@ -34,6 +35,9 @@ set local request.jwt.claims to '{"sub":"d7250000-0000-4000-8000-000000000001","
 select lives_ok(
   $$select adjust_equipment_stock('d7250001-0000-4000-8000-000000000001', 4, 0, 0, 'count_correction', null)$$,
   'operations can adjust stock in active operations mode');
+select is(
+  (select expiry_date from equipment_stock where category_id = 'd7250001-0000-4000-8000-000000000001'),
+  '2027-02-01'::date, 'operations adjustments preserve the existing expiry date');
 select throws_ok(
   $$select adjust_equipment_stock('d7250001-0000-4000-8000-000000000001', 2, 0, 0, 'count_correction', null)$$,
   '22023', null, 'a reduction below peak reservation commitment is rejected');

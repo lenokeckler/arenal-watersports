@@ -114,7 +114,10 @@ begin
      set quantity_available = p_available,
          quantity_damaged = p_damaged,
          quantity_in_repair = p_in_repair,
-         expiry_date = p_expiry_date,
+         expiry_date = case
+           when public.is_admin() then p_expiry_date
+           else current_stock.expiry_date
+         end,
          updated_by = auth.uid(),
          updated_at = now()
    where category_id = p_category_id;
