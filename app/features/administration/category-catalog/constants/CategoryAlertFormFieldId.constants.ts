@@ -3,4 +3,5 @@ export const CATEGORY_ALERT_FORM_FIELD_ID = {
   HINT: "category-alert-hint",
   MIN_QUANTITY: "category-alert-min-quantity",
   TYPE: "category-alert-type",
+  TYPE_DESCRIPTION: "category-alert-type-description",
 } as const;

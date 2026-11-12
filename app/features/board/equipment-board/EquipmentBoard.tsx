@@ -1,3 +1,5 @@
+import { BOARD_REALTIME } from "@/app/constants";
+import BoardRealtime from "@/app/components/board-realtime/BoardRealtime";
 import { readBoardCategories } from "@/app/services/board";
 import EquipmentBoardContent from "./components/EquipmentBoardContent";
 import EquipmentBoardEmpty from "./components/EquipmentBoardEmpty";
@@ -16,6 +18,11 @@ const EquipmentBoard =
     return (
       <main className={EQUIPMENT_BOARD_PAGE_CLASS}>
         <EquipmentBoardHeader />
+        <BoardRealtime
+          channelName={
+            BOARD_REALTIME.CHANNEL.EQUIPMENT_BOARD
+          }
+        />
         {cards.length === 0 ? (
           <EquipmentBoardEmpty />
         ) : (

@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
+import { CATEGORY_ALERT_TYPE_DESCRIPTION } from "../constants/CategoryAlertTypeDescription.constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import type { CategoryAlertType } from "../constants/CategoryAlertType.constants";
 
@@ -19,6 +20,13 @@ export const createCategoryAlertsFormPage = () => {
     screen.getByLabelText(
       CATEGORY_CATALOG_COPY.ALERT_TYPE_FIELD_LABEL,
       { exact: false }
+    );
+
+  const queryTypeDescription = (
+    alertType: CategoryAlertType
+  ) =>
+    screen.queryByText(
+      CATEGORY_ALERT_TYPE_DESCRIPTION[alertType]
     );
 
   const getTypeOptionLabels = () =>
@@ -105,6 +113,7 @@ export const createCategoryAlertsFormPage = () => {
     getHeading,
     getHint,
     getTypeSelect,
+    queryTypeDescription,
     getTypeOptionLabels,
     queryMinQuantityInput,
     queryExpiryDaysInput,
