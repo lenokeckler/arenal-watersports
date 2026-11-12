@@ -76,6 +76,13 @@ export type Database = {
             foreignKeyName: "combo_items_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "combo_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -243,6 +250,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_units";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "damage_reports_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "damage_reports_unit_id_fkey";
@@ -516,6 +530,13 @@ export type Database = {
             foreignKeyName: "equipment_stock_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: true;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: true;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -610,6 +631,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_movements_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
           },
           {
             foreignKeyName: "equipment_stock_movements_category_id_fkey";
@@ -726,6 +754,13 @@ export type Database = {
             foreignKeyName: "equipment_units_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -807,6 +842,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_units";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "extra_compatibility_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "extra_compatibility_unit_id_fkey";
@@ -911,6 +953,13 @@ export type Database = {
             foreignKeyName: "extras_occupies_category_id_fkey";
             columns: ["occupies_category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "extras_occupies_category_id_fkey";
+            columns: ["occupies_category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -958,6 +1007,9 @@ export type Database = {
           system_quantity_available: number | null;
           system_quantity_damaged: number | null;
           system_quantity_in_repair: number | null;
+          system_status:
+            | Database["public"]["Enums"]["unit_status"]
+            | null;
           unit_id: string | null;
         };
         Insert: {
@@ -973,6 +1025,9 @@ export type Database = {
           system_quantity_available?: number | null;
           system_quantity_damaged?: number | null;
           system_quantity_in_repair?: number | null;
+          system_status?:
+            | Database["public"]["Enums"]["unit_status"]
+            | null;
           unit_id?: string | null;
         };
         Update: {
@@ -988,6 +1043,9 @@ export type Database = {
           system_quantity_available?: number | null;
           system_quantity_damaged?: number | null;
           system_quantity_in_repair?: number | null;
+          system_status?:
+            | Database["public"]["Enums"]["unit_status"]
+            | null;
           unit_id?: string | null;
         };
         Relationships: [
@@ -1011,6 +1069,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "inventory_count_lines_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
           },
           {
             foreignKeyName: "inventory_count_lines_category_id_fkey";
@@ -1053,6 +1118,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_units";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "inventory_count_lines_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "inventory_count_lines_unit_id_fkey";
@@ -1193,6 +1265,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_units";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "maintenance_records_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "maintenance_records_unit_id_fkey";
@@ -1535,6 +1614,13 @@ export type Database = {
             foreignKeyName: "reservation_dispatches_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "reservation_dispatches_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -1667,6 +1753,7 @@ export type Database = {
           created_by: string;
           dispatch_id: string | null;
           extra_id: string | null;
+          extra_unit_id: string | null;
           fuel_in: number | null;
           fuel_out: number | null;
           id: string;
@@ -1684,6 +1771,7 @@ export type Database = {
           created_by: string;
           dispatch_id?: string | null;
           extra_id?: string | null;
+          extra_unit_id?: string | null;
           fuel_in?: number | null;
           fuel_out?: number | null;
           id?: string;
@@ -1701,6 +1789,7 @@ export type Database = {
           created_by?: string;
           dispatch_id?: string | null;
           extra_id?: string | null;
+          extra_unit_id?: string | null;
           fuel_in?: number | null;
           fuel_out?: number | null;
           id?: string;
@@ -1733,6 +1822,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
           },
           {
             foreignKeyName: "reservation_items_category_id_fkey";
@@ -1784,6 +1880,48 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "reservation_items_extra_unit_id_fkey";
+            columns: ["extra_unit_id"];
+            isOneToOne: false;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_items_extra_unit_id_fkey";
+            columns: ["extra_unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_units";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_items_extra_unit_id_fkey";
+            columns: ["extra_unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_items_extra_unit_id_fkey";
+            columns: ["extra_unit_id"];
+            isOneToOne: false;
+            referencedRelation: "maintenance_cost_by_unit";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_items_extra_unit_id_fkey";
+            columns: ["extra_unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_current_state";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_items_extra_unit_id_fkey";
+            columns: ["extra_unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
+          },
+          {
             foreignKeyName: "reservation_items_reservation_id_fkey";
             columns: ["reservation_id"];
             isOneToOne: false;
@@ -1810,6 +1948,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_units";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_items_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "reservation_items_unit_id_fkey";
@@ -1848,33 +1993,139 @@ export type Database = {
           },
         ];
       };
+      reservation_postponement_readings: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          fuel_in: number | null;
+          fuel_out: number | null;
+          id: string;
+          postponement_id: string;
+          unit_id: string;
+          usage_in: number | null;
+          usage_out: number | null;
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          fuel_in?: number | null;
+          fuel_out?: number | null;
+          id?: string;
+          postponement_id: string;
+          unit_id: string;
+          usage_in?: number | null;
+          usage_out?: number | null;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          fuel_in?: number | null;
+          fuel_out?: number | null;
+          id?: string;
+          postponement_id?: string;
+          unit_id?: string;
+          usage_in?: number | null;
+          usage_out?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reservation_postponement_readings_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_postponement_id_fkey";
+            columns: ["postponement_id"];
+            isOneToOne: false;
+            referencedRelation: "reservation_postponements";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_units";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "maintenance_cost_by_unit";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_current_state";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
+          },
+        ];
+      };
       reservation_postponements: {
         Row: {
+          cause: Database["public"]["Enums"]["reservation_postponement_cause"];
           created_at: string;
           created_by: string;
           id: string;
           new_starts_at: string;
           previous_starts_at: string;
-          reason: string;
+          reason: string | null;
           reservation_id: string;
+          was_dispatched: boolean;
         };
         Insert: {
+          cause: Database["public"]["Enums"]["reservation_postponement_cause"];
           created_at?: string;
           created_by: string;
           id?: string;
           new_starts_at: string;
           previous_starts_at: string;
-          reason: string;
+          reason?: string | null;
           reservation_id: string;
+          was_dispatched: boolean;
         };
         Update: {
+          cause?: Database["public"]["Enums"]["reservation_postponement_cause"];
           created_at?: string;
           created_by?: string;
           id?: string;
           new_starts_at?: string;
           previous_starts_at?: string;
-          reason?: string;
+          reason?: string | null;
           reservation_id?: string;
+          was_dispatched?: boolean;
         };
         Relationships: [
           {
@@ -2189,6 +2440,13 @@ export type Database = {
             foreignKeyName: "tariffs_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "tariffs_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -2280,6 +2538,13 @@ export type Database = {
             foreignKeyName: "unit_condition_photos_unit_id_fkey";
             columns: ["unit_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photos_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
             referencedRelation: "maintenance_cost_by_unit";
             referencedColumns: ["unit_id"];
           },
@@ -2366,6 +2631,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_units";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_corrections_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "unit_corrections_unit_id_fkey";
@@ -2643,6 +2915,13 @@ export type Database = {
             foreignKeyName: "equipment_units_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -2686,6 +2965,18 @@ export type Database = {
           net_amount: number | null;
           refunds_amount: number | null;
           retained_amount: number | null;
+        };
+        Relationships: [];
+      };
+      equipment_usage_hours: {
+        Row: {
+          category_id: string | null;
+          category_name: string | null;
+          dispatch_count: number | null;
+          hours_used: number | null;
+          last_dispatched_at: string | null;
+          unit_code: string | null;
+          unit_id: string | null;
         };
         Relationships: [];
       };
@@ -2777,6 +3068,13 @@ export type Database = {
             foreignKeyName: "equipment_units_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -2795,6 +3093,13 @@ export type Database = {
             referencedColumns: ["category_id"];
           },
         ];
+      };
+      monthly_departures: {
+        Row: {
+          departures_count: number | null;
+          month: string | null;
+        };
+        Relationships: [];
       };
       monthly_reservation_counts: {
         Row: {
@@ -2859,6 +3164,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
           },
           {
             foreignKeyName: "equipment_units_category_id_fkey";
@@ -2940,6 +3252,13 @@ export type Database = {
             foreignKeyName: "equipment_units_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
             referencedRelation: "inventory_category_summary";
             referencedColumns: ["category_id"];
           },
@@ -2958,6 +3277,13 @@ export type Database = {
             referencedColumns: ["category_id"];
           },
         ];
+      };
+      weekday_departures: {
+        Row: {
+          departures_count: number | null;
+          weekday: number | null;
+        };
+        Relationships: [];
       };
     };
     Functions: {
@@ -2979,6 +3305,20 @@ export type Database = {
         };
         Returns: undefined;
       };
+      assert_postponement_reason: {
+        Args: {
+          p_cause: Database["public"]["Enums"]["reservation_postponement_cause"];
+          p_reason: string;
+        };
+        Returns: undefined;
+      };
+      assert_postponement_start: {
+        Args: {
+          p_new_start: string;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
+        };
+        Returns: undefined;
+      };
       assert_reservable_equipment_category: {
         Args: { p_category_id: string };
         Returns: undefined;
@@ -2987,6 +3327,13 @@ export type Database = {
         Args: {
           p_duration_minutes: number;
           p_quantity: number;
+        };
+        Returns: undefined;
+      };
+      assert_reservation_cancellable: {
+        Args: {
+          p_expected_updated_at: string;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
         };
         Returns: undefined;
       };
@@ -3006,15 +3353,16 @@ export type Database = {
         };
         Returns: undefined;
       };
-      assert_reservation_cancellable: {
+      assert_reservation_modifiable: {
         Args: {
           p_expected_updated_at: string;
           p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
         };
         Returns: undefined;
       };
-      assert_reservation_modifiable: {
+      assert_reservation_postponable: {
         Args: {
+          p_cause: Database["public"]["Enums"]["reservation_postponement_cause"];
           p_expected_updated_at: string;
           p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
         };
@@ -3074,6 +3422,10 @@ export type Database = {
       block_worker: {
         Args: { target_worker: string };
         Returns: string;
+      };
+      can_register_external_guide: {
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
       };
       cancel_reservation: {
         Args: { p_payload: Json };
@@ -3182,13 +3534,29 @@ export type Database = {
         Args: { event: Json };
         Returns: Json;
       };
-      custom_combo_price: {
-        Args: { p_duration_minutes: number; p_items: Json };
-        Returns: {
-          list_amount_crc: number;
-          list_amount_usd: number;
-        }[];
-      };
+      custom_combo_price:
+        | {
+            Args: {
+              p_duration_minutes: number;
+              p_items: Json;
+            };
+            Returns: {
+              list_amount_crc: number;
+              list_amount_usd: number;
+            }[];
+          }
+        | {
+            Args: {
+              p_duration_minutes: number;
+              p_extra_ids: string[];
+              p_extra_unit_id: string;
+              p_items: Json;
+            };
+            Returns: {
+              list_amount_crc: number;
+              list_amount_usd: number;
+            }[];
+          };
       delete_or_deactivate_extra: {
         Args: { p_extra_id: string };
         Returns: string;
@@ -3249,6 +3617,13 @@ export type Database = {
       };
       exchange_password_reset_pin: {
         Args: { p_pin: string; p_username: string };
+        Returns: string;
+      };
+      extend_worker_expiry: {
+        Args: {
+          new_expires_at: string;
+          target_worker: string;
+        };
         Returns: string;
       };
       finish_password_recovery: {
@@ -3312,6 +3687,9 @@ export type Database = {
           p_window: unknown;
         };
         Returns: {
+          cancellation_cause:
+            | Database["public"]["Enums"]["cancellation_cause"]
+            | null;
           cancellation_reason: string | null;
           closed_at: string | null;
           code: string;
@@ -3357,6 +3735,44 @@ export type Database = {
           lifetime_minutes: number;
           personal_email: string;
           pin_id: string;
+        }[];
+      };
+      list_inventory_counts: {
+        Args: {
+          only_count?: string;
+          page_limit?: number;
+          page_offset?: number;
+        };
+        Returns: {
+          category_count: number;
+          count_id: string;
+          counted_at: string;
+          counted_by: string;
+          difference_count: number;
+          notes: string;
+          total_count: number;
+          unit_count: number;
+        }[];
+      };
+      list_operations_stock_movements: {
+        Args: {
+          p_category_id: string;
+          p_page_index: number;
+          p_page_size: number;
+        };
+        Returns: {
+          actor_name: string;
+          from_available: number;
+          from_damaged: number;
+          from_in_repair: number;
+          moved_at: string;
+          movement_id: string;
+          page_index: number;
+          reason: string;
+          to_available: number;
+          to_damaged: number;
+          to_in_repair: number;
+          total_count: number;
         }[];
       };
       list_reservation_history: {
@@ -3406,6 +3822,10 @@ export type Database = {
         Args: { p_pin_id: string };
         Returns: undefined;
       };
+      next_reservation_code: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
+      };
       normalize_cancellation_cause: {
         Args: {
           p_cause: string;
@@ -3415,10 +3835,6 @@ export type Database = {
       };
       normalize_cancellation_reason: {
         Args: { p_reason: string };
-        Returns: string;
-      };
-      next_reservation_code: {
-        Args: Record<PropertyKey, never>;
         Returns: string;
       };
       password_reset_grant_is_open: {
@@ -3492,6 +3908,10 @@ export type Database = {
         };
         Returns: undefined;
       };
+      postpone_reservation: {
+        Args: { p_payload: Json };
+        Returns: string;
+      };
       prepare_worker_temporary_password: {
         Args: { target_worker: string };
         Returns: string;
@@ -3512,6 +3932,13 @@ export type Database = {
         Args: { p_username: string };
         Returns: undefined;
       };
+      record_inventory_count: {
+        Args: { count_lines: Json; count_notes: string };
+        Returns: {
+          new_count_id: string;
+          outcome: string;
+        }[];
+      };
       record_reservation_charge: {
         Args: { p_payload: Json };
         Returns: {
@@ -3528,6 +3955,16 @@ export type Database = {
       };
       redeem_password_reset_grant: {
         Args: { p_token: string };
+        Returns: string;
+      };
+      register_external_guide: {
+        Args: {
+          guide_expires_on: string;
+          guide_full_name: string;
+          guide_id: string;
+          guide_national_id: string;
+          guide_personal_email?: string;
+        };
         Returns: string;
       };
       register_maintenance_job: {
@@ -3564,6 +4001,8 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: {
           guide_only: boolean;
+          has_compatible_extras: boolean;
+          has_individual_tariff: boolean;
           id: string;
           name: string;
           units_are_interchangeable: boolean;
@@ -3613,6 +4052,19 @@ export type Database = {
           p_unit_id: string;
         };
         Returns: boolean;
+      };
+      reservation_extras_price_quote: {
+        Args: {
+          p_duration_minutes: number;
+          p_extra_ids: string[];
+          p_reservation_type: Database["public"]["Enums"]["reservation_type"];
+          p_unit_id: string;
+        };
+        Returns: {
+          has_boat_tariff: boolean;
+          list_amount_crc: number;
+          list_amount_usd: number;
+        }[];
       };
       reservation_history_equipment_names: {
         Args: { p_reservation_id: string };
@@ -3671,6 +4123,13 @@ export type Database = {
         };
         Returns: string;
       };
+      set_unit_condition: {
+        Args: {
+          new_status: Database["public"]["Enums"]["unit_status"];
+          target_unit: string;
+        };
+        Returns: string;
+      };
       sign_in_attempt_limit: {
         Args: Record<PropertyKey, never>;
         Returns: number;
@@ -3686,6 +4145,9 @@ export type Database = {
           p_original: Database["public"]["Tables"]["reservations"]["Row"];
         };
         Returns: {
+          cancellation_cause:
+            | Database["public"]["Enums"]["cancellation_cause"]
+            | null;
           cancellation_reason: string | null;
           closed_at: string | null;
           code: string;
@@ -3729,6 +4191,7 @@ export type Database = {
           created_by: string;
           dispatch_id: string | null;
           extra_id: string | null;
+          extra_unit_id: string | null;
           fuel_in: number | null;
           fuel_out: number | null;
           id: string;
@@ -3852,6 +4315,8 @@ export type Database = {
         | "partially_retained";
       photo_angle:
         "right_side" | "left_side" | "front" | "bottom";
+      reservation_postponement_cause:
+        "heavy_rain" | "storm" | "other";
       reservation_status:
         "scheduled" | "dispatched" | "closed" | "cancelled";
       reservation_type: "rental" | "tour" | "combo";
@@ -4035,6 +4500,11 @@ export const Constants = {
         "left_side",
         "front",
         "bottom",
+      ],
+      reservation_postponement_cause: [
+        "heavy_rain",
+        "storm",
+        "other",
       ],
       reservation_status: [
         "scheduled",

@@ -1,3 +1,6 @@
+import { CUSTOM_COMBO_FORM_INPUT_ID } from "./CustomComboFormCopy.constants";
+import { CUSTOM_COMBO_RESERVATION_FIELD } from "../models/CustomComboReservationField.constants";
+import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import { RESERVATION_TYPE } from "./ReservationType.constants";
 
 export const RESERVATION_TIME_ZONE = "America/Costa_Rica";
@@ -24,6 +27,7 @@ export const RESERVATION_FORM_DEFAULT_VALUES = {
   customerName: "",
   date: "",
   durationHours: 1,
+  extraIds: [] as string[],
   guideIds: [] as string[],
   peopleCount: 1,
   quantity: 1,
@@ -41,6 +45,7 @@ export const RESERVATION_FORM_FIELD_ID = {
   DURATION_ERROR: "reservation-duration-error",
   DURATION_GROUP: "reservation-duration-group",
   HEADING: "reservation-form-heading",
+  GUIDE_IDS_ERROR: "reservation-guide-ids-error",
   PEOPLE_COUNT: "reservation-people-count",
   QUANTITY: "reservation-quantity",
   RESERVATION_TYPE: "reservation-type",
@@ -54,6 +59,14 @@ export const RESERVATION_FORM_FOCUS_TARGET = {
 } as const;
 
 export const RESERVATION_FORM_ERROR_TARGET_ID = {
+  [RESERVATION_FORM_FIELD.ITEMS]:
+    CUSTOM_COMBO_FORM_INPUT_ID.EQUIPMENT_SELECTION_ERROR,
+  [CUSTOM_COMBO_RESERVATION_FIELD.AGREED_AMOUNT_CRC]:
+    CUSTOM_COMBO_FORM_INPUT_ID.CRC_AMOUNT,
+  [CUSTOM_COMBO_RESERVATION_FIELD.AGREED_AMOUNT_USD]:
+    CUSTOM_COMBO_FORM_INPUT_ID.USD_AMOUNT,
+  [RESERVATION_FORM_FIELD.GUIDE_IDS]:
+    RESERVATION_FORM_FIELD_ID.GUIDE_IDS_ERROR,
   categoryId: RESERVATION_FORM_FIELD_ID.CATEGORY,
   customerName: RESERVATION_FORM_FIELD_ID.CUSTOMER_NAME,
   date: RESERVATION_FORM_FIELD_ID.DATE,
@@ -62,6 +75,10 @@ export const RESERVATION_FORM_ERROR_TARGET_ID = {
   quantity: RESERVATION_FORM_FIELD_ID.QUANTITY,
   time: RESERVATION_FORM_FIELD_ID.TIME,
   unitId: RESERVATION_FORM_FIELD_ID.UNIT,
+} as const;
+
+export const RESERVATION_FORM_ERROR_SCROLL_OPTIONS = {
+  block: "center",
 } as const;
 
 export const RESERVATION_FORM_INPUT_TYPE = {

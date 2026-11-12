@@ -14,6 +14,8 @@ export const CUSTOM_COMBO_RESERVATION_ACTION_TEST = {
     customerName: "  Combo Customer  ",
     date: "2030-06-15",
     durationHours: 1.5,
+    extraIds: [],
+    extraUnitId: null,
     items: [
       {
         kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
@@ -35,6 +37,8 @@ export const CUSTOM_COMBO_RESERVATION_ACTION_TEST = {
     customerName: "Combo Customer",
     date: "2030-06-15",
     durationHours: 0,
+    extraIds: [],
+    extraUnitId: null,
     items: [
       {
         kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
@@ -55,6 +59,8 @@ export const CUSTOM_COMBO_RESERVATION_ACTION_TEST = {
     customerName: "Combo Customer",
     date: "2030-06-15",
     durationMinutes: 90,
+    extraIds: [],
+    extraUnitId: null,
     guideIds: [],
     items: [
       {

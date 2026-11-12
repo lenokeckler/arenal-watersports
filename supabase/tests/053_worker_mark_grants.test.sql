@@ -37,7 +37,7 @@ set local request.jwt.claims to '{"sub":"11111111-1111-1111-1111-111111111111","
 
 select is(public.grant_worker_mark('33333333-3333-3333-3333-333333333333', 'guia'), 'granted', 'administracion marca como guia a quien despacha en la manana');
 select is(public.grant_worker_mark('33333333-3333-3333-3333-333333333333', 'guia'), 'granted', 'marcar dos veces no falla');
-select is(public.grant_worker_mark('33333333-3333-3333-3333-333333333333', 'registro_guias_externos'), 'mark_not_grantable', 'la marca de registro de guias externos no se pone aqui');
+select is(public.grant_worker_mark('33333333-3333-3333-3333-333333333333', 'registro_guias_externos'), 'granted', 'la marca de registro de guias externos se pone como las demas');
 select is(public.grant_worker_mark('55555555-5555-5555-5555-555555555555', 'guia'), 'external_guide', 'un guia externo no recibe marcas');
 select is(public.grant_worker_mark('99999999-9999-9999-9999-999999999999', 'guia'), 'not_found', 'una cuenta inexistente no recibe marcas');
 

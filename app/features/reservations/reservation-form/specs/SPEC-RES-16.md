@@ -25,6 +25,7 @@ The binding story is US-RES-16 in `docs/proyecto/historias-de-usuario.md`, under
 - Order conflicts deterministically by scheduled start and reservation id.
 - Preserve existing row-level security visibility. Grant execution only to authenticated callers; do not use service-role access.
 - Display the warning inline in the existing reservation form in later UI units. It is informational and never blocks submission or asks for confirmation.
+- Present conflicts as a compact summary while retaining enough detail to identify each conflicting reservation.
 
 ## Out of scope
 

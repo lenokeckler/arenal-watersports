@@ -9,6 +9,7 @@ import { createClient } from "@supabase/supabase-js";
 import { SUPABASE } from "@/app/constants";
 import type { Database } from "@/app/types";
 import { createCustomComboReservationAction } from "../actions/createCustomComboReservationAction";
+import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
 import { createCustomComboReservation } from "../services/createCustomComboReservation";
 import { getAuthorizedReservationFormClient } from "../services/getAuthorizedReservationFormClient";
 import { CUSTOM_COMBO_RESERVATION_ACTION_TEST } from "./createCustomComboReservationAction.constants";
@@ -82,7 +83,7 @@ describe("createCustomComboReservationAction persistence", () => {
     ).not.toHaveBeenCalled();
   });
 
-  it("propagates reservation persistence failures", async () => {
+  it("returns safe feedback when reservation persistence fails", async () => {
     vi.mocked(
       createCustomComboReservation
     ).mockRejectedValue(
@@ -93,9 +94,11 @@ describe("createCustomComboReservationAction persistence", () => {
       createCustomComboReservationAction(
         CUSTOM_COMBO_RESERVATION_ACTION_TEST.INPUT
       )
-    ).rejects.toBe(
-      CUSTOM_COMBO_RESERVATION_ACTION_TEST.SERVICE_ERROR
-    );
+    ).resolves.toEqual({
+      errors: {},
+      formError: RESERVATION_FORM_UI_COPY.SUBMIT_ERROR,
+      ok: false,
+    });
     expect(
       createCustomComboReservation
     ).toHaveBeenCalledWith(
