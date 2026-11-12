@@ -14,9 +14,10 @@ const ReservationDetailChargeAction = ({
   }) ? (
     <Link
       href={resolveReservationChargePath(detail.id)}
+      ariaLabel={copy.RECORD_CHARGE_LABEL(detail.code)}
       className={RESERVATION_DETAIL_CHARGE_ACTION_CLASS}
     >
-      {copy.REGISTER_CHARGE}
+      {copy.RECORD_CHARGE}
     </Link>
   ) : null;
 
