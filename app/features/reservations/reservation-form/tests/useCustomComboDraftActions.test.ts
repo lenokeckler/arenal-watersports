@@ -1,5 +1,6 @@
 import { vi, describe, expect, it } from "vitest";
 import { CUSTOM_COMBO_RESERVATION_DRAFT_DEFAULTS } from "../constants/CustomComboReservationDraft.constants";
+import { CUSTOM_COMBO_DRAFT_ACTION } from "../constants/CustomComboDraftAction.constants";
 import { CUSTOM_COMBO_RESERVATION_FIELD } from "../models/CustomComboReservationField.constants";
 import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
@@ -46,5 +47,25 @@ describe("useCustomComboDraftActions", () => {
     expect(clearFieldError).not.toHaveBeenCalledWith(
       RESERVATION_FORM_FIELD.ITEMS
     );
+  });
+
+  it("stores a concrete unit as a combo item selection", () => {
+    const dispatch = vi.fn();
+    const actions = useCustomComboDraftActions(
+      CUSTOM_COMBO_RESERVATION_DRAFT_DEFAULTS,
+      dispatch,
+      vi.fn()
+    );
+
+    actions.handleItemUnitChange(
+      CUSTOM_COMBO_FORM_TEST.GUIDE_CATEGORY_ID,
+      CUSTOM_COMBO_FORM_TEST.GUIDE_UNIT_ID
+    );
+
+    expect(dispatch).toHaveBeenCalledWith({
+      selection:
+        CUSTOM_COMBO_FORM_TEST.GUIDE_UNIT_SELECTION,
+      type: CUSTOM_COMBO_DRAFT_ACTION.ITEM_CHANGE,
+    });
   });
 });
