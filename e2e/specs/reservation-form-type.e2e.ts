@@ -1,11 +1,11 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "../support/activeWorkerTest";
 import { E2E_RESERVATION_TYPE_COPY } from "../constants/E2eReservationForm.constants";
 import { createReservationFormPage } from "../pages/ReservationForm.page";
-import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
+import { signInToReservationsMode } from "../support/signInToReservationsMode";
 
 test.describe("Reservation form type", () => {
-  test.beforeEach(async ({ page }) => {
-    await signInAsSeededWorker(page);
+  test.beforeEach(async ({ activeWorker, page }) => {
+    await signInToReservationsMode(page, activeWorker);
   });
 
   test("defaults to rental and excludes guide-only categories", async ({

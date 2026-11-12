@@ -50,6 +50,7 @@ export const createUnitFormPage = (mode: UnitFormMode) => {
     getButton,
     getNotice: (prefix: string) =>
       screen.getByText(prefix, options),
+    queryText: (text: string) => screen.queryByText(text),
     queryControl: (label: string) =>
       screen.queryByLabelText(label, options),
     queryButton: (name: string) =>

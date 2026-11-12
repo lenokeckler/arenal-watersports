@@ -64,6 +64,11 @@ export const createCategoryUnitListPage = (page: Page) => {
       name: UNIT_LIST_COPY.EDIT_LINK,
     });
 
+  const getHistoryLink = (code: string): Locator =>
+    getUnitCard(code).getByRole(ARIA_ROLE.LINK, {
+      name: UNIT_LIST_COPY.HISTORY_LINK,
+    });
+
   const getNotFoundMessage = (): Locator =>
     page.getByText(E2E_NEXT_NOT_FOUND_MESSAGE);
 
@@ -77,6 +82,7 @@ export const createCategoryUnitListPage = (page: Page) => {
     getUnitCard,
     getUnitStatus,
     getEditLink,
+    getHistoryLink,
     getNotFoundMessage,
   };
 };

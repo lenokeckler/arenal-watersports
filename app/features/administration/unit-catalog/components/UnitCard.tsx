@@ -20,6 +20,7 @@ const UnitCard = ({
   code,
   editHref,
   fuelText,
+  historyHref,
   isDimmed,
   oilChangeText,
   statusLabel,
@@ -60,6 +61,16 @@ const UnitCard = ({
           className={UNIT_LIST_LINK_CLASS}
         >
           {UNIT_LIST_COPY.EDIT_LINK}
+        </Link>
+      </div>
+    )}
+    {historyHref && (
+      <div className={UNIT_CARD_ACTIONS_CLASS}>
+        <Link
+          href={historyHref}
+          className={UNIT_LIST_LINK_CLASS}
+        >
+          {UNIT_LIST_COPY.HISTORY_LINK}
         </Link>
       </div>
     )}
