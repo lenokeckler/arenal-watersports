@@ -9,6 +9,8 @@ import {
 import { PROFILE_COPY } from "./constants/ProfileCopy.constants";
 import type { ProfileHubProps } from "./models/ProfileHubProps.interface";
 import ProfileEntryList from "./ProfileEntryList";
+import ProfileIdentityCard from "./ProfileIdentityCard";
+import { readOwnProfileIdentity } from "./services/readOwnProfileIdentity";
 import { buildProfileEntries } from "./utils/buildProfileEntries";
 import { resolvePersonalEmailState } from "./utils/resolvePersonalEmailState";
 import { resolveProfileNoticeMessage } from "./utils/resolveProfileNoticeMessage";
@@ -17,6 +19,9 @@ const ProfileHub = async ({
   notice,
 }: ProfileHubProps): Promise<React.JSX.Element> => {
   const noticeMessage = resolveProfileNoticeMessage(notice);
+  const identity = await readOwnProfileIdentity().catch(
+    () => null
+  );
   const entries = buildProfileEntries({
     personalEmailState: await resolvePersonalEmailState(),
   });
@@ -29,6 +34,9 @@ const ProfileHub = async ({
         logoAlt={IMAGE_ALTS.COMPANY_LOGO}
       />
       <FormSuccessNotice message={noticeMessage} />
+      {identity && (
+        <ProfileIdentityCard identity={identity} />
+      )}
       <ProfileEntryList entries={entries} />
       {noticeMessage ? (
         <NoticeUrlCleaner cleanPath={PATHS.PROFILE.ROOT} />
