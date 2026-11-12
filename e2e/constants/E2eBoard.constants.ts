@@ -42,6 +42,10 @@ export const E2E_BOARD_HIDDEN_CATEGORY_NAMES = [
   "Extintor",
 ] as const;
 
+export const E2E_BOARD_CARD_IMAGE_SELECTOR = "img";
+
+export const E2E_BOARD_IMAGE_SOURCE_ATTRIBUTE = "src";
+
 export const E2E_BOARD_LAYOUT = {
   ROW_TOLERANCE_PX: 1,
 } as const;
