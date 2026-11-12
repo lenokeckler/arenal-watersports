@@ -1,0 +1,1 @@
+chore - Reservation form polish — improve reservation form validation, extras, guides and reservation details

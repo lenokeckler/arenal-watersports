@@ -4,6 +4,8 @@ import { LIST_PAGINATION_COPY } from "@/app/components/list-pagination/constants
 import { ARIA_ROLE } from "@/app/constants";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
 
+const keepTextAsIs = (text: string): string => text;
+
 export const createExtraListPage = () => {
   const user = userEvent.setup();
 
@@ -21,6 +23,11 @@ export const createExtraListPage = () => {
     within(
       screen.getByRole(ARIA_ROLE.GROUP, { name })
     ).queryByText(label);
+
+  const queryPrice = (name: string, price: string) =>
+    within(
+      screen.getByRole(ARIA_ROLE.GROUP, { name })
+    ).queryByText(price, { normalizer: keepTextAsIs });
 
   const queryCardButton = (
     name: string,
@@ -143,6 +150,7 @@ export const createExtraListPage = () => {
     getStatusLabel,
     getTitle,
     queryCancelButton,
+    queryPrice,
     queryReactivateButton,
     queryReactivatingButton,
     queryRemovalConfirmMessage,

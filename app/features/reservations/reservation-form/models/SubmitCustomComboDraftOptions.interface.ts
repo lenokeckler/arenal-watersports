@@ -12,7 +12,9 @@ export interface SubmitCustomComboDraftOptions {
     message: string
   ) => void;
   submitCustomComboReservation: (
-    input: CustomComboReservationInput
+    input: CustomComboReservationInput,
+    onSuccess?: () => void
   ) => void;
+  onSuccess?: () => void;
   values: ReservationFormInput;
 }

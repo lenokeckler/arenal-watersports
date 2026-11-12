@@ -30,14 +30,17 @@ export const E2E_CUSTOM_COMBO_FIXTURE = {
 } as const;
 
 export const E2E_CUSTOM_COMBO = {
+  AGREED_AMOUNT: {
+    CRC: "28000",
+    USD: "55",
+  },
+  COPY: CUSTOM_COMBO_FORM_COPY,
+  CUSTOMER_NAME: "US-RES-10 E2E custom combo",
+  ERROR_CENTER_TOLERANCE_PX: 64,
   SCREENSHOT_BASENAME: "us-res-10-06-custom-combo",
   QUANTITY: {
     INITIAL: "1",
     INCREMENTED: "2",
-  },
-  AGREED_AMOUNT: {
-    CRC: "28000",
-    USD: "55",
   },
   QUOTE: {
     SINGLE_CATEGORY_CRC: /20\s000,00/,
@@ -47,10 +50,10 @@ export const E2E_CUSTOM_COMBO = {
     DURATION_CRC: /37\s500,00/,
     DURATION_USD: /75,00/,
   },
-  COPY: CUSTOM_COMBO_FORM_COPY,
 } as const;
 
 export const E2E_CUSTOM_COMBO_SCREENSHOT = {
+  MISSING_EQUIPMENT_ERROR: "missing-equipment-error",
   NO_GUIDE: "no-guide",
   EQUIPMENT_SELECTION: "equipment-selection",
   PRICING_AND_GUIDE: "pricing-and-guide",

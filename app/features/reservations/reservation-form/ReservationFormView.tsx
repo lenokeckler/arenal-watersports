@@ -41,10 +41,20 @@ const ReservationFormView = ({
 }: ReservationFormViewProps): React.JSX.Element => {
   const allCategories = Array.from(
     new Map(
-      [...categories, ...unitCategories].map((category) => [
-        category.id,
-        category,
-      ])
+      [...categories, ...unitCategories].map((category) => {
+        const existingCategory = categories.find(
+          ({ id }) => id === category.id
+        );
+        return [
+          category.id,
+          {
+            ...existingCategory,
+            ...category,
+            hasIndividualTariff:
+              existingCategory?.hasIndividualTariff,
+          },
+        ];
+      })
     ).values()
   );
   const viewModel = useReservationFormGuideViewModel({

@@ -1,6 +1,7 @@
 import type { CustomComboFormOptions } from "../models/CustomComboFormOptions.interface";
 import { useCustomComboDraftViewModel } from "./useCustomComboDraftViewModel";
 import { useCustomComboPricingViewModel } from "./useCustomComboPricingViewModel";
+import { getCustomComboExtraUnitId } from "../utils/getCustomComboExtraUnitId";
 
 export const useCustomComboForm = ({
   categories,
@@ -12,7 +13,12 @@ export const useCustomComboForm = ({
   const draft = useCustomComboDraftViewModel(
     categories,
     onGuideIdsChange,
-    clearFieldError
+    clearFieldError,
+    reservationType
+  );
+  const extraUnitId = getCustomComboExtraUnitId(
+    draft.draft.items,
+    categories
   );
   const pricing = useCustomComboPricingViewModel(
     draft.draft,
@@ -21,6 +27,7 @@ export const useCustomComboForm = ({
   );
   return {
     ...draft,
+    extraUnitId,
     pricing: pricing.state,
     handlePricingRetry: pricing.retry,
   };
