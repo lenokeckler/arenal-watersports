@@ -1,0 +1,31 @@
+import {
+  SUPABASE_WORK_AREA,
+  WORKER_ACCOUNT_STATE,
+} from "@/app/constants";
+
+const DAY_MS = 86_400_000;
+
+export const WORKER_EXPIRY_TEST = {
+  EXPIRED_AT: "2026-11-01T05:59:59.000Z",
+  EXPIRING_AT: "2026-11-14T05:59:59.000Z",
+  NEW_DATE: "2026-12-05",
+  NEW_TIMESTAMP: "2026-12-05T23:59:59-06:00",
+  NOW: new Date("2026-11-10T12:00:00.000Z"),
+  VALID_AT: "2026-12-31T05:59:59.000Z",
+  USERNAME: "guia",
+  WORKER_ID: "55555555-5555-5555-5555-555555555555",
+  DAY_MS,
+} as const;
+
+export const EXTERNAL_GUIDE_OVERVIEW = {
+  accountState: WORKER_ACCOUNT_STATE.ACTIVE,
+  areas: [SUPABASE_WORK_AREA.OPERATIONS],
+  baseRole: SUPABASE_WORK_AREA.OPERATIONS,
+  expiresAt: WORKER_EXPIRY_TEST.EXPIRED_AT,
+  fullName: "Guia Externo",
+  hasPersonalEmail: false,
+  id: WORKER_EXPIRY_TEST.WORKER_ID,
+  isExternalGuide: true,
+  marks: [],
+  username: WORKER_EXPIRY_TEST.USERNAME,
+};

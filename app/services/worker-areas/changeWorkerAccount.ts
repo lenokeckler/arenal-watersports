@@ -6,6 +6,7 @@ import {
 } from "@/app/constants";
 import type { ServerSupabaseClient } from "@/app/services/supabase/models/ServerSupabaseClient.type";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+import { isWorkerAccountResult } from "./isWorkerAccountResult";
 import type { WorkerAccountChange } from "./models/WorkerAccountChange.interface";
 
 const WORKER_ACCOUNT_RPC = {
@@ -15,14 +16,6 @@ const WORKER_ACCOUNT_RPC = {
   [WORKER_ACCOUNT_ACTION.UNLOCK]:
     SUPABASE_RPC.UNLOCK_WORKER,
 } as const;
-
-const RESULTS: readonly unknown[] = Object.values(
-  WORKER_ACCOUNT_RESULT
-);
-
-const isWorkerAccountResult = (
-  value: unknown
-): value is WorkerAccountResult => RESULTS.includes(value);
 
 export const changeWorkerAccount = async (
   supabase: ServerSupabaseClient,

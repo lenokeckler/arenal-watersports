@@ -49,6 +49,9 @@ export const WORKER_AREAS_ACTION_LINK_CLASS =
 export const WORKER_TEMPORARY_PASSWORD_FORM_CLASS =
   "flex flex-col gap-sm border-t border-outline/60 pt-sm";
 
+export const WORKER_EXPIRY_PANEL_CLASS =
+  "flex flex-col gap-sm border-t border-outline/60 pt-sm";
+
 export const WORKER_ACCOUNT_ACTIONS_CLASS =
   "flex flex-wrap gap-sm";
 
