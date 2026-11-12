@@ -58,6 +58,8 @@ export const WORKER_ACCOUNT_NOTICE: Partial<
 > = {
   [WORKER_ACCOUNT_RESULT.BLOCKED]:
     "Se bloqueó la cuenta y se cerraron sus sesiones abiertas.",
+  [WORKER_ACCOUNT_RESULT.EXTENDED]:
+    "Se extendió la caducidad. La cuenta ya puede entrar.",
   [WORKER_ACCOUNT_RESULT.RETIRED]:
     "Se dio de baja la cuenta: sus sesiones se cerraron y sus PIN pendientes se anularon. Su historial se conserva.",
   [WORKER_ACCOUNT_RESULT.UNLOCKED]:
@@ -71,12 +73,17 @@ export const WORKER_ACCOUNT_ERROR: Record<
   [WORKER_ACCOUNT_RESULT.ADMIN_ACCOUNT]:
     "La cuenta de administración no se bloquea ni se da de baja.",
   [WORKER_ACCOUNT_RESULT.BLOCKED]: "",
+  [WORKER_ACCOUNT_RESULT.EXTENDED]: "",
   [WORKER_ACCOUNT_RESULT.FAILED]:
     "No se pudo cambiar la cuenta. Intente de nuevo.",
   [WORKER_ACCOUNT_RESULT.HAS_PERSONAL_EMAIL]:
     "Tiene correo personal: recupera su contraseña con el PIN.",
+  [WORKER_ACCOUNT_RESULT.INVALID_DATE]:
+    "Elija una fecha posterior a la caducidad actual.",
   [WORKER_ACCOUNT_RESULT.NOT_ALLOWED]:
     "Solo la cuenta de administración puede cambiar cuentas.",
+  [WORKER_ACCOUNT_RESULT.NOT_EXTERNAL_GUIDE]:
+    "Solo las cuentas de guía externo caducan.",
   [WORKER_ACCOUNT_RESULT.NOT_FOUND]:
     "Esa cuenta ya no existe.",
   [WORKER_ACCOUNT_RESULT.NOT_RETIRED]:

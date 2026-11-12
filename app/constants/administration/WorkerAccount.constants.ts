@@ -10,9 +10,12 @@ export type WorkerAccountAction =
 export const WORKER_ACCOUNT_RESULT = {
   ADMIN_ACCOUNT: "admin_account",
   BLOCKED: "blocked",
+  EXTENDED: "extended",
   FAILED: "failed",
+  INVALID_DATE: "invalid_date",
   NOT_ALLOWED: "not_allowed",
   HAS_PERSONAL_EMAIL: "has_personal_email",
+  NOT_EXTERNAL_GUIDE: "not_external_guide",
   NOT_FOUND: "not_found",
   NOT_RETIRED: "not_retired",
   READY: "ready",
@@ -26,6 +29,7 @@ export type WorkerAccountResult =
 export const WORKER_ACCOUNT_FIELD = {
   ACCOUNT_NOTICE: "accountNotice",
   ACTION: "action",
+  EXPIRES_ON: "expiresOn",
 } as const;
 
 export const WORKER_ACCOUNT_STATE = {

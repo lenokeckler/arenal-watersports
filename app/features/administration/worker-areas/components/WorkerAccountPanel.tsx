@@ -21,6 +21,7 @@ import {
 import WorkerAccountActionForm from "./WorkerAccountActionForm";
 import { submitWorkerRehire } from "../actions/submitWorkerRehire";
 import { submitWorkerTemporaryPassword } from "../actions/submitWorkerTemporaryPassword";
+import WorkerExpiryPanel from "./WorkerExpiryPanel";
 import WorkerTemporaryPasswordForm from "./WorkerTemporaryPasswordForm";
 
 const WorkerAccountPanel = ({
@@ -70,6 +71,7 @@ const WorkerAccountPanel = ({
           </div>
         )}
       </div>
+      <WorkerExpiryPanel overview={overview} />
       {canGetTemporaryPassword &&
         overview.hasPersonalEmail && (
           <Text className={WORKER_AREA_STATUS_CLASS}>
