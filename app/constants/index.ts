@@ -406,6 +406,7 @@ export { REFUNDS_TRUNCATED_ERROR_MESSAGE } from "./supabase/RefundsTruncatedErro
 export { WORKER_STATUS } from "./workers/WorkerStatus.constants";
 export {
   CATEGORY_IMAGE,
+  CATEGORY_IMAGE_COMPRESSION,
   CATEGORY_IMAGE_FILE_ISSUE,
   CATEGORY_IMAGE_MIME_TYPE,
   CATEGORY_IMAGE_REMOTE_PROTOCOL,

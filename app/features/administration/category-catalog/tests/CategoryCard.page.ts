@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
+import { CATEGORY_IMAGE_COPY } from "../constants/CategoryImageCopy.constants";
 import { CATEGORY_GROUP_PREFIX_LABEL } from "../constants/CategoryGroupPrefixLabel.constants";
 
 export const createCategoryCardPage = () => {
@@ -40,6 +41,11 @@ export const createCategoryCardPage = () => {
   const getDepositLink = () =>
     screen.queryByRole(ARIA_ROLE.LINK, {
       name: CATEGORY_CATALOG_COPY.DEPOSIT_LINK,
+    });
+
+  const getImageLink = () =>
+    screen.queryByRole(ARIA_ROLE.LINK, {
+      name: CATEGORY_IMAGE_COPY.IMAGE_LINK,
     });
 
   const getUnitsLink = () =>
@@ -131,6 +137,7 @@ export const createCategoryCardPage = () => {
     getGroupRow,
     getBehaviorLink,
     getDepositLink,
+    getImageLink,
     getAlertsLink,
     getStockLink,
     getUnitsLink,

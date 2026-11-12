@@ -39,6 +39,9 @@ export const INVENTORY_COUNT_QUANTITY_FIELD = {
 export type InventoryCountQuantityField =
   (typeof INVENTORY_COUNT_QUANTITY_FIELD)[keyof typeof INVENTORY_COUNT_QUANTITY_FIELD];
 
+export const INVENTORY_COUNT_STORAGE_KEY =
+  "arenal.inventory-count-draft";
+
 export const INVENTORY_COUNT_FIELD_ID = {
   NOTES: "inventory-count-notes",
   QUANTITY: (
