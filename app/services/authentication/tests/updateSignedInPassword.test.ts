@@ -12,8 +12,7 @@ import { updateSignedInPassword } from "../updateSignedInPassword";
 import { captureArguments } from "./captureArguments";
 import { SAME_PASSWORD_ERROR } from "./passwordUpdateErrors.constants";
 
-const NEW_PASSWORD =
-  DEFAULT_PASSWORD_CHANGE_INPUT.newPassword;
+const INPUT = DEFAULT_PASSWORD_CHANGE_INPUT;
 const updateUser = vi.fn();
 const supabase = {
   auth: { updateUser },
@@ -25,17 +24,22 @@ describe("updateSignedInPassword", () => {
     updateUser.mockResolvedValue({ error: null });
   });
 
-  it("updates the password of the signed-in user", async () => {
+  it("sends the current password with the new one so Supabase accepts the change", async () => {
     const argumentsOf = captureArguments(updateUser, [
       { error: null },
     ]);
 
     await expect(
-      updateSignedInPassword(supabase, NEW_PASSWORD)
+      updateSignedInPassword(supabase, INPUT)
     ).resolves.toBeNull();
 
     expect(argumentsOf()).toEqual([
-      [{ password: NEW_PASSWORD }],
+      [
+        {
+          current_password: INPUT.currentPassword,
+          password: INPUT.newPassword,
+        },
+      ],
     ]);
   });
 
@@ -46,7 +50,7 @@ describe("updateSignedInPassword", () => {
 
     const result = await updateSignedInPassword(
       supabase,
-      NEW_PASSWORD
+      INPUT
     );
 
     expect(result?.code).toBe(
