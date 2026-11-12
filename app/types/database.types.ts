@@ -3339,6 +3339,27 @@ export type Database = {
           pin_id: string;
         }[];
       };
+      list_operations_stock_movements: {
+        Args: {
+          p_category_id: string;
+          p_page_index: number;
+          p_page_size: number;
+        };
+        Returns: {
+          actor_name: string;
+          from_available: number;
+          from_damaged: number;
+          from_in_repair: number;
+          moved_at: string;
+          movement_id: string;
+          page_index: number;
+          reason: string;
+          to_available: number;
+          to_damaged: number;
+          to_in_repair: number;
+          total_count: number;
+        }[];
+      };
       list_reservation_history: {
         Args: {
           p_category_id?: string;

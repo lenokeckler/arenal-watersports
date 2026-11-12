@@ -50,15 +50,23 @@ const resetMocks = (): void => {
     data: { user: INVENTORY_SERVICE_USER },
     error: null,
   });
-  rpc.mockImplementation((rpcName: string) =>
-    Promise.resolve({
-      data:
-        rpcName === SUPABASE_RPC.CURRENT_WORK_AREA
-          ? SUPABASE_WORK_AREA.OPERATIONS
-          : true,
-      error: null,
-    })
-  );
+  rpc.mockImplementation((rpcName: string) => {
+    if (rpcName === SUPABASE_RPC.CURRENT_WORK_AREA) {
+      return Promise.resolve({
+        data: SUPABASE_WORK_AREA.OPERATIONS,
+        error: null,
+      });
+    }
+
+    if (
+      rpcName ===
+      SUPABASE_RPC.LIST_OPERATIONS_STOCK_MOVEMENTS
+    ) {
+      return Promise.resolve({ data: [], error: null });
+    }
+
+    return Promise.resolve({ data: true, error: null });
+  });
   from.mockReturnValue(queryBuilder);
   queryBuilder.range.mockResolvedValue({
     data: INVENTORY_SERVICE_ACTIVE_UNITS,
@@ -111,7 +119,7 @@ describe("inventory category read queries", () => {
     const categoryDetails =
       await getInventoryCategoryDetails(
         INVENTORY_SERVICE_QUANTITY_CATEGORY_ID,
-        PAGINATION.DEFAULT_PAGE
+        PAGINATION.DEFAULT_PAGE + PAGINATION.ONE_PAGE
       );
 
     expect(categoryDetails.summary).toEqual(
@@ -120,6 +128,10 @@ describe("inventory category read queries", () => {
     expect(from).toHaveBeenCalledTimes(PAGINATION.ONE_PAGE);
     expect(categoryDetails.units.totalCount).toBe(
       PAGINATION.ZERO_RESULTS
+    );
+    expect(categoryDetails.movements?.items).toEqual([]);
+    expect(categoryDetails.movements?.pageIndex).toBe(
+      PAGINATION.DEFAULT_PAGE
     );
   });
 });
