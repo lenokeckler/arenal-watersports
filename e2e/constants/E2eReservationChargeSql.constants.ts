@@ -18,7 +18,8 @@ select concat_ws('|',
   coalesce((select (charge.created_by = :'uid')::text from reservation_charges charge where charge.reservation_id = :'reservation' limit 1), 'false'),
   coalesce((select pricing.agreed_amount_usd::text from reservation_pricing pricing where pricing.reservation_id = :'reservation'), ''),
   coalesce((select pricing.agreed_amount_crc::text from reservation_pricing pricing where pricing.reservation_id = :'reservation'), ''),
-  (select count(*) from reservation_pricing pricing where pricing.reservation_id = :'reservation')
+  (select count(*) from reservation_pricing pricing where pricing.reservation_id = :'reservation'),
+  coalesce((select worker.full_name from reservation_charges charge join workers worker on worker.id = charge.created_by where charge.reservation_id = :'reservation' limit 1), '')
 );`,
   SEED: `
 with unit as (

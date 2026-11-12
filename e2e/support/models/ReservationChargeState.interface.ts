@@ -11,4 +11,5 @@ export interface ReservationChargeState {
   kind: string;
   method: string;
   pricingRows: number;
+  recordedByName: string;
 }

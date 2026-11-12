@@ -31,6 +31,7 @@ export const readReservationChargeState = async (
     agreedUsd,
     agreedCrc,
     pricingRows,
+    recordedByName,
   ] = row.split(values.FIELD_SEPARATOR);
 
   return {
@@ -43,5 +44,6 @@ export const readReservationChargeState = async (
     kind,
     method,
     pricingRows: Number(pricingRows),
+    recordedByName,
   };
 };

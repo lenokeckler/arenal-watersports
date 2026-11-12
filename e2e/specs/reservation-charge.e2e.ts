@@ -1,9 +1,11 @@
 import {
   CURRENCY_CODE,
   RESERVATION_STATUS,
+  STRING,
 } from "@/app/constants";
 import { RESERVATION_CHARGE_FORM_COPY as copy } from "@/app/features/reservations/reservation-charge/constants/ReservationChargeFormCopy.constants";
 import { formatMoney } from "@/app/utils/money/formatMoney";
+import { E2E_WORKER } from "../constants/E2eWorker.constants";
 import { E2E_RESERVATION_CHARGE as values } from "../constants/E2eReservationCharge.constants";
 import { E2E_TIMEOUT_MS } from "../constants/E2eRuntime.constants";
 import { createReservationChargePage } from "../pages/ReservationCharge.page";
@@ -17,7 +19,6 @@ import { removeReservationChargeFixtures } from "../support/removeReservationCha
 import { signInToReservationsMode } from "../support/signInToReservationsMode";
 
 const submitWait = { timeout: E2E_TIMEOUT_MS.POST_SUBMIT };
-const RECORDED_BY_PREFIX = copy.RECORDED_BY("");
 
 test.describe("Reservation charge", () => {
   test.describe.configure({ mode: values.TEST_MODE });
@@ -59,8 +60,13 @@ test.describe("Reservation charge", () => {
       copy.SUCCESS(reservation.code),
       submitWait
     );
+    const state = await readReservationChargeState(
+      activeWorker.id,
+      reservation.id
+    );
+    expect(state.recordedByName).not.toBe(STRING.Empty);
     await expect(
-      charge.getText(RECORDED_BY_PREFIX)
+      charge.getText(copy.RECORDED_BY(state.recordedByName))
     ).toBeVisible();
     await expect(
       charge.getText(
@@ -70,12 +76,7 @@ test.describe("Reservation charge", () => {
         })
       )
     ).toBeVisible();
-    expect(
-      await readReservationChargeState(
-        activeWorker.id,
-        reservation.id
-      )
-    ).toEqual({
+    expect(state).toEqual({
       agreedAmountCrc: null,
       agreedAmountUsd: null,
       amount: proposal,
@@ -85,6 +86,7 @@ test.describe("Reservation charge", () => {
       kind: values.CHARGE_KIND,
       method: values.PAYMENT_METHOD,
       pricingRows: 1,
+      recordedByName: E2E_WORKER.FULL_NAME,
     });
   });
 
