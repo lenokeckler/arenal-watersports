@@ -6,7 +6,8 @@ import { WORKER_EXPIRY_STATUS } from "../constants/WorkerExpiry.constants";
 import type { WorkerAreasPanelProps } from "../models/WorkerAreasPanelProps.interface";
 import {
   WORKER_AREA_STATUS_CLASS,
-  WORKER_EXPIRY_PANEL_CLASS,
+  WORKER_AREAS_PANEL_CLASS,
+  WORKER_AREAS_TITLE_CLASS,
 } from "../styles/WorkerAreas.styles";
 import { formatWorkerExpiryDate } from "../utils/formatWorkerExpiryDate";
 import { resolveWorkerExpiryStatus } from "../utils/resolveWorkerExpiryStatus";
@@ -33,7 +34,10 @@ const WorkerExpiryPanel = ({
     isExpired || status === WORKER_EXPIRY_STATUS.EXPIRING;
 
   return (
-    <div className={WORKER_EXPIRY_PANEL_CLASS}>
+    <section className={WORKER_AREAS_PANEL_CLASS}>
+      <Text className={WORKER_AREAS_TITLE_CLASS}>
+        {WORKER_EXPIRY_COPY.TITLE}
+      </Text>
       <Text className={WORKER_AREA_STATUS_CLASS}>
         {isExpired
           ? WORKER_EXPIRY_COPY.EXPIRED_ON(date)
@@ -45,7 +49,7 @@ const WorkerExpiryPanel = ({
           workerId={overview.id}
         />
       )}
-    </div>
+    </section>
   );
 };
 
