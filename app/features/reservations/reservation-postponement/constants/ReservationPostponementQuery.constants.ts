@@ -9,7 +9,7 @@ export const RESERVATION_POSTPONEMENT_QUERY = {
       category:equipment_categories!reservation_items_category_id_fkey(name),
       dispatch:reservation_dispatches!reservation_items_dispatch_id_fkey(closed_at),
       unit:equipment_units!reservation_items_unit_id_fkey(
-        code,fuel_max,
+        code,fuel_max,usage_total,
         category:equipment_categories!equipment_units_category_id_fkey(name,consumes_fuel,usage_metric)
       )
     )

@@ -67,6 +67,13 @@ const mapReadingUnit = (
     fuelOut: consumesFuel ? item.fuel_out : null,
     itemId: item.id,
     unitCode: safeString(item.unit?.code),
+    usageFloor:
+      usageMetric === null
+        ? null
+        : Math.max(
+            item.usage_out ?? 0,
+            item.unit?.usage_total ?? 0
+          ),
     usageMetric,
     usageOut: usageMetric === null ? null : item.usage_out,
   };

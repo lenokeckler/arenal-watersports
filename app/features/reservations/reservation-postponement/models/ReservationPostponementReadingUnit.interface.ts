@@ -7,6 +7,7 @@ export interface ReservationPostponementReadingUnit {
   fuelOut: NullableRef<number>;
   itemId: string;
   unitCode: string;
+  usageFloor: NullableRef<number>;
   usageMetric: NullableRef<ReservationPostponementUsageMetric>;
   usageOut: NullableRef<number>;
 }

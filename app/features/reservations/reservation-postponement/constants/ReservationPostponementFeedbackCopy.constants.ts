@@ -17,6 +17,7 @@ export const RESERVATION_POSTPONEMENT_FEEDBACK_COPY = {
   READING_USAGE_BELOW_DEPARTURE:
     "No puede ser menor que la lectura de salida. Revise el número.",
   READING_USAGE_INVALID: "Escriba un número válido.",
+  READING_USAGE_REQUIRED: "Escriba la lectura de regreso.",
   READINGS_REQUIRED:
     "Registre las lecturas de cada unidad e inténtelo de nuevo.",
   REASON_REQUIRED: "Escriba el motivo.",

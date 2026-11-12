@@ -75,6 +75,7 @@ export const FUEL_UNIT_ITEM_ROW = buildItemRow(
       category: FUEL_CATEGORY,
       code: "JS-04",
       fuel_max: 8,
+      usage_total: 1250,
     },
     unit_id: "e2000000-0000-4000-8000-000000000031",
     usage_out: 1245.2,
@@ -90,6 +91,7 @@ export const KILOMETERS_UNIT_ITEM_ROW = buildItemRow(
       category: KILOMETERS_CATEGORY,
       code: "L-03",
       fuel_max: 10,
+      usage_total: null,
     },
     unit_id: "e2000000-0000-4000-8000-000000000032",
     usage_out: 8120,
@@ -105,6 +107,7 @@ export const CLOSED_UNIT_ITEM_ROW = buildItemRow(
       category: PLAIN_CATEGORY,
       code: "K-01",
       fuel_max: 1,
+      usage_total: null,
     },
     unit_id: "e2000000-0000-4000-8000-000000000033",
   }
@@ -119,6 +122,7 @@ export const PLAIN_OPEN_UNIT_ITEM_ROW = buildItemRow(
       category: PLAIN_CATEGORY,
       code: "K-02",
       fuel_max: 4,
+      usage_total: null,
     },
     unit_id: "e2000000-0000-4000-8000-000000000035",
   }
@@ -133,6 +137,7 @@ export const UNREAD_FUEL_UNIT_ITEM_ROW = buildItemRow(
       category: FUEL_CATEGORY,
       code: "JS-06",
       fuel_max: 8,
+      usage_total: null,
     },
     unit_id: "e2000000-0000-4000-8000-000000000036",
   }
@@ -155,6 +160,7 @@ export const FUEL_ONLY_UNIT_ITEM_ROW = buildItemRow(
       category: FUEL_ONLY_CATEGORY,
       code: "B-01",
       fuel_max: 5,
+      usage_total: null,
     },
     unit_id: "e2000000-0000-4000-8000-000000000037",
     usage_out: 77,
@@ -170,6 +176,7 @@ export const DISPATCH_MISSING_UNIT_ITEM_ROW = buildItemRow(
       category: FUEL_CATEGORY,
       code: "JS-07",
       fuel_max: 8,
+      usage_total: null,
     },
     unit_id: "e2000000-0000-4000-8000-000000000038",
   }
@@ -182,6 +189,7 @@ export const EXPECTED_PLAIN_READING_UNIT: ReservationPostponementReadingUnit =
     fuelOut: null,
     itemId: PLAIN_OPEN_UNIT_ITEM_ROW.id,
     unitCode: "K-02",
+    usageFloor: null,
     usageMetric: null,
     usageOut: null,
   };
@@ -193,6 +201,7 @@ export const EXPECTED_UNREAD_FUEL_READING_UNIT: ReservationPostponementReadingUn
     fuelOut: null,
     itemId: UNREAD_FUEL_UNIT_ITEM_ROW.id,
     unitCode: "JS-06",
+    usageFloor: 0,
     usageMetric: "engine_hours",
     usageOut: null,
   };
@@ -214,6 +223,7 @@ export const SCHEDULED_UNIT_ITEM_ROW = buildItemRow(
       category: FUEL_CATEGORY,
       code: "JS-05",
       fuel_max: 8,
+      usage_total: null,
     },
     unit_id: "e2000000-0000-4000-8000-000000000034",
   }
@@ -288,6 +298,7 @@ export const EXPECTED_FUEL_READING_UNIT: ReservationPostponementReadingUnit =
     fuelOut: 6,
     itemId: FUEL_UNIT_ITEM_ROW.id,
     unitCode: "JS-04",
+    usageFloor: 1250,
     usageMetric: "engine_hours",
     usageOut: 1245.2,
   };
@@ -299,6 +310,7 @@ export const EXPECTED_KILOMETERS_READING_UNIT: ReservationPostponementReadingUni
     fuelOut: null,
     itemId: KILOMETERS_UNIT_ITEM_ROW.id,
     unitCode: "L-03",
+    usageFloor: 8120,
     usageMetric: "kilometers",
     usageOut: 8120,
   };

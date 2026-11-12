@@ -8,7 +8,7 @@ import { RESERVATION_POSTPONEMENT_FEEDBACK_COPY } from "../constants/Reservation
 import { RESERVATION_POSTPONEMENT_LIMITS } from "../constants/ReservationPostponementLimits.constants";
 import type { ReservationPostponementErrors } from "../models/ReservationPostponementErrors.interface";
 import type { ReservationPostponementFieldErrors } from "../models/ReservationPostponementFieldErrors.interface";
-import type { ReservationPostponementInput } from "../models/ReservationPostponementInput.interface";
+import type { ReservationPostponementScheduleFields } from "../models/ReservationPostponementScheduleFields.type";
 import { isReservationPostponementCalendarDate } from "./isReservationPostponementCalendarDate";
 
 const resolveDateError = (
@@ -39,7 +39,7 @@ const resolveTimeError = (
 const resolveReasonError = ({
   cause,
   reason,
-}: ReservationPostponementInput): NullableUndefined<string> => {
+}: ReservationPostponementScheduleFields): NullableUndefined<string> => {
   if (cause !== RESERVATION_POSTPONEMENT_CAUSE.OTHER) {
     return undefined;
   }
@@ -54,7 +54,7 @@ const resolveReasonError = ({
 };
 
 export const validateReservationPostponementInput = (
-  input: ReservationPostponementInput
+  input: ReservationPostponementScheduleFields
 ): NullableRef<ReservationPostponementErrors> => {
   const fieldErrors: ReservationPostponementFieldErrors = {
     date: resolveDateError(input.date),
