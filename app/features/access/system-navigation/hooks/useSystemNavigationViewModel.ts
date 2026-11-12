@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { SUPABASE_WORK_AREA } from "@/app/constants";
 import type { WorkModeOverview } from "@/app/services/work-mode/models/WorkModeOverview.interface";
 import { hasSeveralWorkAreas } from "@/app/utils/work-mode/hasSeveralWorkAreas";
 import { shouldShowSystemNavigation } from "@/app/utils/work-mode/shouldShowSystemNavigation";
@@ -30,8 +29,7 @@ export const useSystemNavigationViewModel = (
       overview,
       pathname
     ),
-    showMenuButton:
-      area !== SUPABASE_WORK_AREA.ADMINISTRATION,
+    showMenuButton: true,
   };
 
   return [viewModel, navigationRef];

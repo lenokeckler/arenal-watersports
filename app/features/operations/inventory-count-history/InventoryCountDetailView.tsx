@@ -1,10 +1,14 @@
-import { notFound } from "next/navigation";
+import {
+  notFound,
+  unstable_rethrow,
+} from "next/navigation";
 import { Link, Text, Title } from "@/app/components";
 import {
   ARIA_ROLE,
   PATHS,
   TitleVariant,
 } from "@/app/constants";
+import InventoryCountContentSection from "./components/InventoryCountContentSection";
 import InventoryCountDifferenceSections from "./components/InventoryCountDifferenceSections";
 import { INVENTORY_COUNT_HISTORY_COPY } from "./constants/InventoryCountHistoryCopy.constants";
 import type { InventoryCountDetail } from "./models/InventoryCountDetail.interface";
@@ -28,7 +32,8 @@ const InventoryCountDetailView = async ({
 
   try {
     detail = await getInventoryCountDetail(countId);
-  } catch {
+  } catch (error) {
+    unstable_rethrow(error);
     hasLoadError = true;
   }
 
@@ -79,6 +84,9 @@ const InventoryCountDetailView = async ({
               unitDifferences={detail.unitDifferences}
             />
           )}
+          <InventoryCountContentSection
+            categories={detail.categories}
+          />
         </>
       ) : (
         <Text
