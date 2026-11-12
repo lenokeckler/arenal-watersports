@@ -1,0 +1,1 @@
+OPE-04.24: Count history detail — the list says how many categories and units each count covered and the detail shows everything that was counted, with the differences highlighted (US-OPE-24 · AWS-140)
