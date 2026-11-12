@@ -29,9 +29,9 @@ set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","
 
 select lives_ok(
   $$ insert into reservation_postponements
-       (id, reservation_id, reason, previous_starts_at, new_starts_at)
+       (id, reservation_id, cause, was_dispatched, reason, previous_starts_at, new_starts_at)
      values ('eeeeeeee-0000-0000-0000-000000000001', 'dddddddd-0000-0000-0000-000000000001',
-             'Tormenta electrica', '2026-09-05 10:00:00+00', '2026-09-06 10:00:00+00') $$,
+             'other', false, 'Tormenta electrica', '2026-09-05 10:00:00+00', '2026-09-06 10:00:00+00') $$,
   'reservas registra el motivo de una posposicion'
 );
 select is(
@@ -48,9 +48,10 @@ select ok(
 
 select throws_ok(
   $$ insert into reservation_postponements
-       (reservation_id, previous_starts_at, new_starts_at)
-     values ('dddddddd-0000-0000-0000-000000000001', '2026-09-05 10:00:00+00', '2026-09-06 10:00:00+00') $$,
-  '23502', null,
+       (reservation_id, cause, was_dispatched, previous_starts_at, new_starts_at)
+     values ('dddddddd-0000-0000-0000-000000000001', 'other', false,
+             '2026-09-05 10:00:00+00', '2026-09-06 10:00:00+00') $$,
+  '23514', null,
   'una posposicion sin motivo no se guarda'
 );
 
@@ -65,8 +66,8 @@ select is(
 );
 select throws_ok(
   $$ insert into reservation_postponements
-       (reservation_id, reason, previous_starts_at, new_starts_at)
-     values ('dddddddd-0000-0000-0000-000000000001', 'Otro motivo',
+       (reservation_id, cause, was_dispatched, reason, previous_starts_at, new_starts_at)
+     values ('dddddddd-0000-0000-0000-000000000001', 'other', false, 'Otro motivo',
              '2026-09-06 10:00:00+00', '2026-09-07 10:00:00+00') $$,
   '42501', null,
   'operaciones no registra posposiciones: esa decision es de reservas'
