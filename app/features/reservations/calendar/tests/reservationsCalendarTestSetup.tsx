@@ -19,11 +19,13 @@ export const getAgendaScrollMock = () => agendaScrollMock;
 
 export const renderReservationsCalendar = (
   snapshot?: NullableUndefined<ReservationCalendarSnapshot>,
-  today?: NullableUndefined<CalendarDate>
+  today?: NullableUndefined<CalendarDate>,
+  canRegisterExternalGuide?: boolean
 ) =>
   render(
     <Provider store={store}>
       <ReservationsCalendar
+        canRegisterExternalGuide={canRegisterExternalGuide}
         snapshot={snapshot}
         today={today}
       />

@@ -43,8 +43,16 @@ export const E2E_BOARD_HIDDEN_CATEGORY_NAMES = [
 ] as const;
 
 export const E2E_BOARD_LAYOUT = {
+  MIN_VISIBLE_ROWS: 2,
   ROW_TOLERANCE_PX: 1,
 } as const;
+
+export const E2E_BOARD_LAYOUT_VIEWPORTS = [
+  { height: 844, name: "phone portrait", width: 390 },
+  { height: 768, name: "small laptop", width: 1024 },
+  { height: 768, name: "laptop", width: 1366 },
+  { height: 1080, name: "full HD desktop", width: 1920 },
+] as const;
 
 export const E2E_BOARD_CARDS_PER_ROW: Record<
   string,
@@ -81,4 +89,12 @@ export const E2E_BOARD_CUADRACICLO = {
 export const E2E_BOARD_KAYAK_SWITCH = {
   FIRST: { name: "Kayak doble", unitCode: "KD-01" },
   SECOND: { name: "Kayak individual", unitCode: "KI-01" },
+} as const;
+
+export const E2E_BOARD_REALTIME = {
+  CATEGORY_LABEL: "Paddleboard",
+  CONVERGENCE_TIMEOUT_MS: 45_000,
+  FREE_AFTER_DAMAGE: 8,
+  TOTAL_COUNT: 9,
+  UNIT_CODE: "PB-09",
 } as const;
