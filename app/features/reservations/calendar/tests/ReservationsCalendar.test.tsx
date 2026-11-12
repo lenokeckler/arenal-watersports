@@ -29,4 +29,23 @@ describe("ReservationsCalendar", () => {
       PATHS.RESERVATIONS.NEW
     );
   });
+
+  it("hides external guide registration without permission", () => {
+    renderReservationsCalendar();
+
+    expect(
+      createReservationsCalendarPage().queryExternalGuideRegistrationLink()
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows external guide registration with permission", () => {
+    renderReservationsCalendar(undefined, undefined, true);
+
+    expect(
+      createReservationsCalendarPage().queryExternalGuideRegistrationLink()
+    ).toHaveAttribute(
+      "href",
+      PATHS.RESERVATIONS.EXTERNAL_GUIDE_NEW
+    );
+  });
 });

@@ -79,8 +79,14 @@ export const EXPECTED_MAPPED_INVENTORY_UNITS: InventoryUnit[] =
 
 export const INVALID_INVENTORY_UNIT_ROWS: InventoryUnitDatabaseRow[] =
   [
-    { ...ACTIVE_INVENTORY_UNIT_ROWS[0], id: null },
-    { ...ACTIVE_INVENTORY_UNIT_ROWS[0], code: null },
+    {
+      ...ACTIVE_INVENTORY_UNIT_ROWS[0],
+      id: null,
+    } as unknown as InventoryUnitDatabaseRow,
+    {
+      ...ACTIVE_INVENTORY_UNIT_ROWS[0],
+      code: null,
+    } as unknown as InventoryUnitDatabaseRow,
     {
       ...ACTIVE_INVENTORY_UNIT_ROWS[0],
       effective_status: null,
