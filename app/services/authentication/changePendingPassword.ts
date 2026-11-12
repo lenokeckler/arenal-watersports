@@ -27,7 +27,7 @@ export const changePendingPassword = async (
   if (!verification.passwordAlreadyUpdated) {
     const updateError = await updateSignedInPassword(
       supabase,
-      input.newPassword
+      input
     );
 
     if (updateError) {

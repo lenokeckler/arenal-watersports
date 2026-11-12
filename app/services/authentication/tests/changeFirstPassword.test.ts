@@ -75,7 +75,7 @@ describe("changeFirstPassword", () => {
     expect(readArgumentsOf()).toHaveLength(1);
     expect(readArgumentsOf()[0][0]).toBe(SUPABASE_CLIENT);
     expect(updateArgumentsOf()).toEqual([
-      [SUPABASE_CLIENT, INPUT.newPassword],
+      [SUPABASE_CLIENT, INPUT],
     ]);
     expect(streakArgumentsOf()).toEqual([
       [FIRST_SIGN_IN_WORKER.id],
