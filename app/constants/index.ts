@@ -185,6 +185,7 @@ export {
   BLOCKED_REAUTHENTICATION_NOTICE_REASON,
 } from "./access/BlockedReauthentication.constants";
 export { SUPABASE_TABLE } from "./supabase/SupabaseTable.constants";
+export { BOARD_REALTIME } from "./supabase/BoardRealtime.constants";
 export {
   BOARD_CATEGORY_DETAIL_OPERATION,
   BOARD_CATEGORY_OPERATION,

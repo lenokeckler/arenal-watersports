@@ -1,0 +1,15 @@
+import { SUPABASE_TABLE } from "./SupabaseTable.constants";
+
+export const BOARD_REALTIME = {
+  CHANNEL: {
+    CATEGORY_UNITS: "category-units",
+    EQUIPMENT_BOARD: "equipment-board",
+  },
+  TABLES: [
+    SUPABASE_TABLE.EQUIPMENT_CATEGORIES,
+    SUPABASE_TABLE.EQUIPMENT_UNITS,
+    SUPABASE_TABLE.RESERVATION_DISPATCHES,
+    SUPABASE_TABLE.RESERVATION_ITEMS,
+    SUPABASE_TABLE.RESERVATIONS,
+  ],
+} as const;
