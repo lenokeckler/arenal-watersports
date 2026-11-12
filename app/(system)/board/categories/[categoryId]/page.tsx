@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ensureWorkModeChosen } from "@/app/features/access/work-mode/ensureWorkModeChosen";
 import CategoryUnits from "@/app/features/board/category-units/CategoryUnits";
 import { CATEGORY_UNITS_METADATA } from "@/app/features/board/category-units/constants/CategoryUnitsMetadata.constants";
+import { hasOperationsArea } from "@/app/services/operations/hasOperationsArea";
 
 export const metadata: Metadata = CATEGORY_UNITS_METADATA;
 
@@ -13,9 +14,11 @@ const CategoryUnitsPage = async ({
 
   const { categoryId } = await params;
   const { page } = await searchParams;
+  const canDispatch = await hasOperationsArea();
 
   return (
     <CategoryUnits
+      canDispatch={canDispatch}
       categoryId={categoryId}
       pageParam={page}
     />

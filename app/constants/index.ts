@@ -26,6 +26,7 @@ export {
   CALENDAR_DATE,
   CALENDAR_DATE_ERROR,
 } from "./calendar/CalendarDate.constants";
+export { WORK_MODE_ROUTE_ACCESS } from "./access/WorkModeRouteAccess.constants";
 export {
   IMAGE_SIZES,
   IMAGES_PATHS,
@@ -38,6 +39,7 @@ export {
   ICON_PATHS,
 } from "@/app/components/icons/constants";
 export { STRING } from "./strings/String.types";
+export { TYPE_OF } from "./strings/TypeOf.constants";
 export { FIELD_IDS } from "./fields/FieldIds.constants";
 export {
   BUTTON,
@@ -58,7 +60,6 @@ export type { Position } from "./strings/Position.types";
 export { KEYBOARD } from "./strings/Keyboard.types";
 export { PATHS } from "./strings/Paths.constants";
 export { UUID_PATTERN } from "./strings/UUIDPattern.constants";
-export { TYPE_OF } from "./strings/TypeOf.constants";
 export {
   ISO_DATE_MIN,
   ISO_DATE_PATTERN,
