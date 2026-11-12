@@ -3059,6 +3059,10 @@ export type Database = {
         Args: { target_worker: string };
         Returns: string;
       };
+      can_register_external_guide: {
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
       category_availability: {
         Args: {
           p_category_id: string;
@@ -3229,6 +3233,13 @@ export type Database = {
       };
       exchange_password_reset_pin: {
         Args: { p_pin: string; p_username: string };
+        Returns: string;
+      };
+      extend_worker_expiry: {
+        Args: {
+          new_expires_at: string;
+          target_worker: string;
+        };
         Returns: string;
       };
       finish_password_recovery: {
@@ -3508,6 +3519,16 @@ export type Database = {
       };
       redeem_password_reset_grant: {
         Args: { p_token: string };
+        Returns: string;
+      };
+      register_external_guide: {
+        Args: {
+          guide_expires_on: string;
+          guide_full_name: string;
+          guide_id: string;
+          guide_national_id: string;
+          guide_personal_email?: string;
+        };
         Returns: string;
       };
       register_maintenance_job: {
