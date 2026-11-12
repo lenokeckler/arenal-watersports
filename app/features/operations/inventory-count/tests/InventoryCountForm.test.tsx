@@ -1,4 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import {
+  render,
+  screen,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   beforeEach,
@@ -13,11 +17,13 @@ import {
   INVENTORY_COUNT_FIELD_ID,
   INVENTORY_COUNT_QUANTITY_FIELD,
   INVENTORY_COUNT_RESULT,
+  INVENTORY_COUNT_STORAGE_KEY,
 } from "../constants/InventoryCount.constants";
 import {
   INVENTORY_COUNT_COPY,
   INVENTORY_COUNT_MESSAGE,
   INVENTORY_COUNT_QUANTITY_ERROR,
+  INVENTORY_COUNT_UNIT_STATUS_COPY,
 } from "../constants/InventoryCountCopy.constants";
 import {
   INVENTORY_COUNT_CATEGORIES,
@@ -34,6 +40,13 @@ vi.mock("../actions/submitInventoryCount", () => ({
   submitInventoryCount: vi.fn(),
 }));
 
+const renderForm = () =>
+  render(
+    <InventoryCountForm
+      categories={INVENTORY_COUNT_CATEGORIES}
+    />
+  );
+
 const quantityField = (
   field: (typeof INVENTORY_COUNT_QUANTITY_FIELD)[keyof typeof INVENTORY_COUNT_QUANTITY_FIELD]
 ) =>
@@ -44,94 +57,144 @@ const quantityField = (
     )
   ) as HTMLInputElement;
 
-const click = (name: string): Promise<void> =>
-  userEvent
-    .setup()
-    .click(screen.getByRole("button", { name }));
+const button = (name: string | RegExp) =>
+  screen.getByRole("button", { name });
+
+const progress = (done: number) =>
+  INVENTORY_COUNT_COPY.PROGRESS(
+    done,
+    INVENTORY_COUNT_CATEGORIES.length
+  );
 
 describe("InventoryCountForm", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    render(
-      <InventoryCountForm
-        categories={INVENTORY_COUNT_CATEGORIES}
-      />
-    );
+    window.localStorage.clear();
   });
 
-  it("starts with the first category only, filled with what the system has registered", () => {
+  it("starts with every category pending, the first one open and the count not yet registrable", () => {
+    renderForm();
+
     expect(
-      screen.getByText(
-        INVENTORY_COUNT_COPY.STEP_PROGRESS(1, 2)
-      )
+      screen.getByText(progress(0))
     ).toBeInTheDocument();
-    expect(screen.getByLabelText("JET-01")).toHaveValue(
-      "available"
+    expect(
+      screen.getAllByText(
+        INVENTORY_COUNT_COPY.CATEGORY_PENDING
+      )
+    ).toHaveLength(INVENTORY_COUNT_CATEGORIES.length);
+    expect(
+      within(
+        screen.getByRole("group", { name: "JET-01" })
+      ).getByRole("button", {
+        name: INVENTORY_COUNT_UNIT_STATUS_COPY.available,
+        pressed: true,
+      })
+    ).toBeInTheDocument();
+    expect(
+      button(INVENTORY_COUNT_COPY.SUBMIT)
+    ).toBeDisabled();
+  });
+
+  it("confirms a whole category with one tap and moves to the next pending one", async () => {
+    const user = userEvent.setup();
+    renderForm();
+
+    await user.click(
+      button(INVENTORY_COUNT_COPY.MATCH_ALL)
     );
-    expect(screen.getByLabelText("JET-02")).toHaveValue(
-      "damaged"
-    );
-    expect(screen.queryByText("Chalecos")).toBeNull();
+
+    expect(
+      screen.getByText(progress(1))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(INVENTORY_COUNT_COPY.CATEGORY_DONE)
+    ).toBeInTheDocument();
+    expect(quantityField("available")).toHaveValue("8");
     expect(
       screen.queryByRole("button", {
-        name: INVENTORY_COUNT_COPY.SUBMIT,
+        name: INVENTORY_COUNT_COPY.MATCH_ALL,
       })
     ).toBeNull();
   });
 
-  it("moves through the categories one at a time and back", async () => {
-    await click(INVENTORY_COUNT_COPY.NEXT);
+  it("opens any category from the list, in any order", async () => {
+    const user = userEvent.setup();
+    renderForm();
 
-    expect(
-      screen.getByText(
-        INVENTORY_COUNT_COPY.STEP_PROGRESS(2, 2)
-      )
-    ).toBeInTheDocument();
-    expect(quantityField("available")).toHaveValue("8");
-    expect(screen.queryByLabelText("JET-01")).toBeNull();
+    await user.click(
+      within(
+        screen.getByRole("list", {
+          name: INVENTORY_COUNT_COPY.CATEGORIES_LABEL,
+        })
+      ).getByRole("button", { name: /Chalecos/ })
+    );
 
-    await click(INVENTORY_COUNT_COPY.PREVIOUS);
-
-    expect(
-      screen.getByLabelText("JET-01")
-    ).toBeInTheDocument();
+    expect(quantityField("damaged")).toHaveValue("1");
   });
 
-  it("does not move on while a quantity is wrong and points at it", async () => {
+  it("does not confirm a category with a wrong quantity and points at it", async () => {
     const user = userEvent.setup();
-    await click(INVENTORY_COUNT_COPY.NEXT);
+    renderForm();
+    await user.click(button(/Chalecos/));
     await user.clear(quantityField("damaged"));
     await user.type(quantityField("damaged"), "-2");
 
     await user.click(
-      screen.getByRole("button", {
-        name: INVENTORY_COUNT_COPY.NEXT,
-      })
+      button(INVENTORY_COUNT_COPY.CONFIRM_CATEGORY)
     );
 
     expect(
       screen.getAllByText(INVENTORY_COUNT_QUANTITY_ERROR)
         .length
     ).toBeGreaterThan(0);
-    expect(submitInventoryCount).not.toHaveBeenCalled();
+    expect(
+      screen.getByText(progress(0))
+    ).toBeInTheDocument();
   });
 
-  it("registers the count from the summary with the corrected state and says so", async () => {
+  it("puts a confirmed category back to pending when it is edited", async () => {
+    const user = userEvent.setup();
+    renderForm();
+    await user.click(
+      button(INVENTORY_COUNT_COPY.MATCH_ALL)
+    );
+    await user.click(button(/Jet skis/));
+
+    await user.click(
+      within(
+        screen.getByRole("group", { name: "JET-01" })
+      ).getByRole("button", {
+        name: INVENTORY_COUNT_UNIT_STATUS_COPY.damaged,
+      })
+    );
+
+    expect(
+      screen.getByText(progress(0))
+    ).toBeInTheDocument();
+  });
+
+  it("registers the count with the corrected state once every category is confirmed", async () => {
     vi.mocked(submitInventoryCount).mockResolvedValue(
       INVENTORY_COUNT_RESULT.RECORDED
     );
     const user = userEvent.setup();
+    renderForm();
 
-    await user.selectOptions(
-      screen.getByLabelText("JET-01"),
-      "in_repair"
+    await user.click(
+      within(
+        screen.getByRole("group", { name: "JET-01" })
+      ).getByRole("button", {
+        name: INVENTORY_COUNT_UNIT_STATUS_COPY.in_repair,
+      })
     );
-    await click(INVENTORY_COUNT_COPY.NEXT);
-    await click(INVENTORY_COUNT_COPY.NEXT);
-    expect(
-      screen.getByText(INVENTORY_COUNT_COPY.SUMMARY_TEXT(2))
-    ).toBeInTheDocument();
-    await click(INVENTORY_COUNT_COPY.SUBMIT);
+    await user.click(
+      button(INVENTORY_COUNT_COPY.CONFIRM_CATEGORY)
+    );
+    await user.click(
+      button(INVENTORY_COUNT_COPY.CONFIRM_CATEGORY)
+    );
+    await user.click(button(INVENTORY_COUNT_COPY.SUBMIT));
 
     expect(submitInventoryCount).toHaveBeenCalledOnce();
     expect(
@@ -149,15 +212,26 @@ describe("InventoryCountForm", () => {
       )
     ).toBeInTheDocument();
     expect(refresh).toHaveBeenCalledOnce();
+    expect(
+      window.localStorage.getItem(
+        INVENTORY_COUNT_STORAGE_KEY
+      )
+    ).toBeNull();
   });
 
-  it("shows the refusal and does not refresh", async () => {
+  it("shows the refusal of the database and does not refresh", async () => {
     vi.mocked(submitInventoryCount).mockResolvedValue(
       INVENTORY_COUNT_RESULT.INCOMPLETE
     );
-    await click(INVENTORY_COUNT_COPY.NEXT);
-    await click(INVENTORY_COUNT_COPY.NEXT);
-    await click(INVENTORY_COUNT_COPY.SUBMIT);
+    const user = userEvent.setup();
+    renderForm();
+    await user.click(
+      button(INVENTORY_COUNT_COPY.MATCH_ALL)
+    );
+    await user.click(
+      button(INVENTORY_COUNT_COPY.CONFIRM_CATEGORY)
+    );
+    await user.click(button(INVENTORY_COUNT_COPY.SUBMIT));
 
     expect(
       await screen.findByRole("alert")
@@ -173,9 +247,15 @@ describe("InventoryCountForm", () => {
     vi.mocked(submitInventoryCount).mockRejectedValue(
       new Error("network")
     );
-    await click(INVENTORY_COUNT_COPY.NEXT);
-    await click(INVENTORY_COUNT_COPY.NEXT);
-    await click(INVENTORY_COUNT_COPY.SUBMIT);
+    const user = userEvent.setup();
+    renderForm();
+    await user.click(
+      button(INVENTORY_COUNT_COPY.MATCH_ALL)
+    );
+    await user.click(
+      button(INVENTORY_COUNT_COPY.CONFIRM_CATEGORY)
+    );
+    await user.click(button(INVENTORY_COUNT_COPY.SUBMIT));
 
     expect(
       await screen.findByText(
@@ -183,6 +263,21 @@ describe("InventoryCountForm", () => {
           INVENTORY_COUNT_RESULT.FAILED
         ]
       )
+    ).toBeInTheDocument();
+  });
+
+  it("keeps the confirmed categories when the screen is opened again", async () => {
+    const user = userEvent.setup();
+    const first = renderForm();
+    await user.click(
+      button(INVENTORY_COUNT_COPY.MATCH_ALL)
+    );
+    first.unmount();
+
+    renderForm();
+
+    expect(
+      screen.getByText(progress(1))
     ).toBeInTheDocument();
   });
 });

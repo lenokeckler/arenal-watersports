@@ -9,32 +9,40 @@ import { useSystemNavigationViewModel } from "./hooks/useSystemNavigationViewMod
 import { SYSTEM_NAVIGATION_CLASS } from "./styles/SystemNavigation.styles";
 
 const SystemNavigation = ({
+  menuExtras,
+  menuIdentity,
   overview,
 }: SystemNavigationProps): NullableRef<React.JSX.Element> => {
   const [viewModel, navigationRef] =
     useSystemNavigationViewModel(overview);
+
   if (!viewModel.canShowNavigation) {
     return null;
   }
+
   return (
-    <nav
-      ref={navigationRef}
-      aria-label={SYSTEM_NAVIGATION_COPY.LABEL}
-      className={SYSTEM_NAVIGATION_CLASS}
-    >
-      <SystemNavigationItems
-        items={viewModel.items}
-        pathname={viewModel.pathname}
-        isMenuOpen={viewModel.isMenuOpen}
-        toggleMenu={viewModel.toggleMenu}
-        showMenuButton={viewModel.showMenuButton}
-      />
+    <div ref={navigationRef}>
+      <nav
+        aria-label={SYSTEM_NAVIGATION_COPY.LABEL}
+        className={SYSTEM_NAVIGATION_CLASS}
+      >
+        <SystemNavigationItems
+          items={viewModel.items}
+          pathname={viewModel.pathname}
+          isMenuOpen={viewModel.isMenuOpen}
+          toggleMenu={viewModel.toggleMenu}
+          showMenuButton={viewModel.showMenuButton}
+        />
+      </nav>
       <SystemNavigationMenu
+        extras={menuExtras}
+        identity={menuIdentity}
         isOpen={viewModel.isMenuOpen}
         canChangeMode={viewModel.canChangeMode}
         closeMenu={viewModel.closeMenu}
       />
-    </nav>
+    </div>
   );
 };
+
 export default SystemNavigation;

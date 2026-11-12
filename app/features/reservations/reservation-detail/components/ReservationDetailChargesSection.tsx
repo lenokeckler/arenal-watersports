@@ -12,6 +12,7 @@ import { resolveReservationDetailChargeBadgeClassName } from "../styles/Reservat
 import ReservationDetailPanel from "./ReservationDetailPanel";
 import ReservationDetailChargeRows from "./ReservationDetailChargeRows";
 import ReservationDetailOtherAmounts from "./ReservationDetailOtherAmounts";
+import ReservationDetailChargeAction from "./ReservationDetailChargeAction";
 
 const ReservationDetailChargesSection = ({
   detail,
@@ -39,6 +40,7 @@ const ReservationDetailChargesSection = ({
     ) : null}
     <ReservationDetailChargeRows charges={detail.charges} />
     <ReservationDetailOtherAmounts detail={detail} />
+    <ReservationDetailChargeAction detail={detail} />
   </ReservationDetailPanel>
 );
 

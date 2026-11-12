@@ -3,6 +3,7 @@ import { PATHS } from "@/app/constants";
 import { INVENTORY_COUNT_HISTORY_COPY } from "../constants/InventoryCountHistoryCopy.constants";
 import type { InventoryCountHistoryItemProps } from "../models/InventoryCountHistoryItemProps.interface";
 import {
+  INVENTORY_COUNT_HISTORY_CARD_SUMMARY_CLASS,
   INVENTORY_COUNT_HISTORY_DIFFERENCES_CLASS,
   INVENTORY_COUNT_HISTORY_ITEM_CLASS,
   INVENTORY_COUNT_HISTORY_ITEM_DATE_CLASS,
@@ -30,7 +31,21 @@ const InventoryCountHistoryItem = ({
       </Text>
       <Text
         className={
-          INVENTORY_COUNT_HISTORY_DIFFERENCES_CLASS
+          INVENTORY_COUNT_HISTORY_CARD_SUMMARY_CLASS
+        }
+      >
+        {INVENTORY_COUNT_HISTORY_COPY.CARD_SUMMARY(
+          count.categoryCount,
+          count.unitCount
+        )}
+      </Text>
+      <Text
+        className={
+          INVENTORY_COUNT_HISTORY_DIFFERENCES_CLASS[
+            count.differenceCount === 0
+              ? "clean"
+              : "different"
+          ]
         }
       >
         {INVENTORY_COUNT_HISTORY_COPY.DIFFERENCES(

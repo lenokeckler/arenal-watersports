@@ -1,3 +1,4 @@
+import { unstable_rethrow } from "next/navigation";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
 import { ARIA_ROLE, TitleVariant } from "@/app/constants";
@@ -19,7 +20,8 @@ const InventoryCount =
 
     try {
       categories = await getInventoryCountCategories();
-    } catch {
+    } catch (error) {
+      unstable_rethrow(error);
       hasLoadError = true;
     }
 

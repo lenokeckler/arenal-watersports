@@ -1,5 +1,5 @@
 begin;
-select plan(13);
+select plan(15);
 
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local'),
@@ -84,6 +84,16 @@ select is(
   (select difference_count from public.list_inventory_counts(0, 100) where count_id = 'cccccccc-0000-0000-0000-000000000004'),
   0,
   'un conteo sin foto del sistema no inventa diferencias'
+);
+select is(
+  (select category_count from public.list_inventory_counts(0, 100) where count_id = 'cccccccc-0000-0000-0000-000000000001'),
+  2,
+  'cada conteo dice cuantas categorias cubrio'
+);
+select is(
+  (select unit_count from public.list_inventory_counts(0, 100) where count_id = 'cccccccc-0000-0000-0000-000000000001'),
+  2,
+  'cada conteo dice cuantas unidades confirmo'
 );
 select is(
   (select counted_by from public.list_inventory_counts(0, 100) where count_id = 'cccccccc-0000-0000-0000-000000000002'),
