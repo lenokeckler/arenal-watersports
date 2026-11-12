@@ -20,8 +20,8 @@ const BoardCardMedia = ({
 }: BoardCardProps): React.JSX.Element => (
   <div className={BOARD_CARD_MEDIA_CLASS}>
     <BoardCardImage
+      card={card}
       isPriorityImage={isPriorityImage}
-      label={card.label}
     />
     <div className={BOARD_CARD_CHIPS_CLASS}>
       <BoardCardUnitChip />

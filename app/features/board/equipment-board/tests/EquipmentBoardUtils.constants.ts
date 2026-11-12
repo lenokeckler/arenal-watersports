@@ -6,6 +6,7 @@ export const DEFAULT_BOARD_CATEGORY: BoardCategory = {
   freeCount: 2,
   groupName: null,
   id: "category-default",
+  imagePath: null,
   inUseCount: 1,
   name: "Jet ski",
   totalCount: 4,
@@ -30,6 +31,7 @@ export const NULL_BOARD_CATEGORY_ROW = {
   category_name: null,
   free_count: null,
   group_name: null,
+  image_path: null,
   in_use_count: null,
   total_count: null,
 } as unknown as BoardCategoryRow;
@@ -39,6 +41,7 @@ export const FILLED_BOARD_CATEGORY_ROW: BoardCategoryRow = {
   category_name: BOARD_CATEGORY_NAME.KAYAK_DOUBLE,
   free_count: 3,
   group_name: BOARD_GROUP_NAME.KAYAK,
+  image_path: null,
   in_use_count: 2,
   total_count: 6,
 };

@@ -12,6 +12,7 @@ export const BOARD_SERVICE_ROW: BoardCategoryRow = {
   category_name: "Kayak doble",
   free_count: 2,
   group_name: "Kayak",
+  image_path: null,
   in_use_count: 1,
   total_count: 4,
 };
