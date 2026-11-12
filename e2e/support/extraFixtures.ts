@@ -57,3 +57,50 @@ export const removeExtras = async (
     );
   }
 };
+
+const normalizeExtraName = (name: string): string =>
+  name.trim().toLowerCase();
+
+export const countExtrasNamed = async (
+  name: string
+): Promise<number> => {
+  const supabase = createServiceRoleSupabaseClient();
+  const wanted = normalizeExtraName(name);
+
+  const { data, error } = await supabase
+    .from("extras")
+    .select("name");
+  throwIfSupabaseError(error, "countExtrasNamed");
+
+  return (data ?? []).filter(
+    (row) => normalizeExtraName(row.name) === wanted
+  ).length;
+};
+
+export const removeExtrasNamed = async (
+  names: string[]
+): Promise<void> => {
+  const supabase = createServiceRoleSupabaseClient();
+  const failures: Error[] = [];
+
+  for (const name of names) {
+    const { error } = await supabase
+      .from("extras")
+      .delete()
+      .eq("name", name);
+    if (error) {
+      failures.push(
+        new Error(`removeExtrasNamed: ${name}`, {
+          cause: error,
+        })
+      );
+    }
+  }
+
+  if (failures.length > 0) {
+    throw new AggregateError(
+      failures,
+      "removeExtrasNamed: some extras were not removed"
+    );
+  }
+};
