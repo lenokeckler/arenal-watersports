@@ -958,6 +958,9 @@ export type Database = {
           system_quantity_available: number | null;
           system_quantity_damaged: number | null;
           system_quantity_in_repair: number | null;
+          system_status:
+            | Database["public"]["Enums"]["unit_status"]
+            | null;
           unit_id: string | null;
         };
         Insert: {
@@ -973,6 +976,9 @@ export type Database = {
           system_quantity_available?: number | null;
           system_quantity_damaged?: number | null;
           system_quantity_in_repair?: number | null;
+          system_status?:
+            | Database["public"]["Enums"]["unit_status"]
+            | null;
           unit_id?: string | null;
         };
         Update: {
@@ -988,6 +994,9 @@ export type Database = {
           system_quantity_available?: number | null;
           system_quantity_damaged?: number | null;
           system_quantity_in_repair?: number | null;
+          system_status?:
+            | Database["public"]["Enums"]["unit_status"]
+            | null;
           unit_id?: string | null;
         };
         Relationships: [
@@ -3249,6 +3258,13 @@ export type Database = {
         Args: { p_pin: string; p_username: string };
         Returns: string;
       };
+      extend_worker_expiry: {
+        Args: {
+          new_expires_at: string;
+          target_worker: string;
+        };
+        Returns: string;
+      };
       finish_password_recovery: {
         Args: { p_user_id: string };
         Returns: undefined;
@@ -3355,6 +3371,21 @@ export type Database = {
           lifetime_minutes: number;
           personal_email: string;
           pin_id: string;
+        }[];
+      };
+      list_inventory_counts: {
+        Args: {
+          only_count?: string;
+          page_limit?: number;
+          page_offset?: number;
+        };
+        Returns: {
+          count_id: string;
+          counted_at: string;
+          counted_by: string;
+          difference_count: number;
+          notes: string;
+          total_count: number;
         }[];
       };
       list_operations_stock_movements: {
@@ -3520,6 +3551,13 @@ export type Database = {
         Args: { p_username: string };
         Returns: undefined;
       };
+      record_inventory_count: {
+        Args: { count_lines: Json; count_notes: string };
+        Returns: {
+          new_count_id: string;
+          outcome: string;
+        }[];
+      };
       record_successful_sign_in: {
         Args: { p_user_id: string };
         Returns: undefined;
@@ -3682,6 +3720,13 @@ export type Database = {
         Args: {
           signed_in_at: string;
           target_session: string;
+        };
+        Returns: string;
+      };
+      set_unit_condition: {
+        Args: {
+          new_status: Database["public"]["Enums"]["unit_status"];
+          target_unit: string;
         };
         Returns: string;
       };

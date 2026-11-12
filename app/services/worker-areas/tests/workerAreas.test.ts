@@ -21,6 +21,7 @@ import { readWorkerAreasOverview } from "../readWorkerAreasOverview";
 const WORKER_ROW = {
   blocked_reason: null,
   deleted_at: null,
+  expires_at: null,
   personal_email: null,
   base_role: SUPABASE_WORK_AREA.OPERATIONS,
   full_name: "Celso Rojas",
@@ -87,6 +88,7 @@ describe("readWorkerAreasOverview", () => {
       ],
       accountState: WORKER_ACCOUNT_STATE.ACTIVE,
       baseRole: WORKER_ROW.base_role,
+      expiresAt: WORKER_ROW.expires_at,
       fullName: WORKER_ROW.full_name,
       hasPersonalEmail: false,
       id: WORKER_ROW.id,
