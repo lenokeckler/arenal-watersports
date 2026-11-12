@@ -1,5 +1,5 @@
 begin;
-select plan(17);
+select plan(16);
 
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local'),
