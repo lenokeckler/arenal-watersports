@@ -26,6 +26,7 @@ export {
   CALENDAR_DATE,
   CALENDAR_DATE_ERROR,
 } from "./calendar/CalendarDate.constants";
+export { WORK_MODE_ROUTE_ACCESS } from "./access/WorkModeRouteAccess.constants";
 export {
   IMAGE_SIZES,
   IMAGES_PATHS,
