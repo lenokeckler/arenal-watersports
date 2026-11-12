@@ -46,14 +46,10 @@ begin
   end if;
   return query
   select
-    coalesce(pricing.agreed_amount_usd, pricing.list_amount_usd),
-    coalesce(pricing.agreed_amount_crc, pricing.list_amount_crc)
-  from reservation_pricing pricing
-  where pricing.reservation_id = p_reservation_id;
-  if found then
-    return;
-  end if;
-  return query select * from private.reservation_catalog_amounts(p_reservation_id);
+    coalesce(pricing.agreed_amount_usd, pricing.list_amount_usd, catalog.catalog_usd),
+    coalesce(pricing.agreed_amount_crc, pricing.list_amount_crc, catalog.catalog_crc)
+  from private.reservation_catalog_amounts(p_reservation_id) catalog
+  left join reservation_pricing pricing on pricing.reservation_id = p_reservation_id;
 end;
 $$;
 
