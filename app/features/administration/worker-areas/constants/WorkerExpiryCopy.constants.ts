@@ -5,5 +5,6 @@ export const WORKER_EXPIRY_COPY = {
   EXPIRES_ON: (date: string): string =>
     `Caduca el ${date}.`,
   EXTEND: "Extender caducidad",
+  TITLE: "Caducidad de la cuenta",
   EXTEND_PENDING: "Extendiendo…",
 } as const;
