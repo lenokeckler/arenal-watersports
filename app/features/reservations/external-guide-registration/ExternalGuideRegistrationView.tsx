@@ -6,7 +6,10 @@ import { EXTERNAL_GUIDE_REGISTRATION_COPY } from "./constants/ExternalGuideRegis
 import { EXTERNAL_GUIDE_REGISTRATION_ELEMENT } from "./constants/ExternalGuideRegistrationElement.constants";
 import ExternalGuideRegistrationForm from "./components/ExternalGuideRegistrationForm";
 import type { ExternalGuideRegistrationViewProps } from "./models/ExternalGuideRegistrationViewProps.interface";
-import { EXTERNAL_GUIDE_REGISTRATION_SCREEN_CLASS } from "./styles/ExternalGuideRegistration.styles";
+import {
+  EXTERNAL_GUIDE_REGISTRATION_CONTENT_CLASS,
+  EXTERNAL_GUIDE_REGISTRATION_SCREEN_CLASS,
+} from "./styles/ExternalGuideRegistration.styles";
 
 const ExternalGuideRegistrationView = ({
   action,
@@ -17,23 +20,29 @@ const ExternalGuideRegistrationView = ({
     <main
       className={EXTERNAL_GUIDE_REGISTRATION_SCREEN_CLASS}
     >
-      <ScreenHeading
-        title={EXTERNAL_GUIDE_REGISTRATION_COPY.HEADING}
-        titleId={
-          EXTERNAL_GUIDE_REGISTRATION_ELEMENT.TITLE_ID
+      <div
+        className={
+          EXTERNAL_GUIDE_REGISTRATION_CONTENT_CLASS
         }
-        hasLogo={false}
-        instruction={
-          EXTERNAL_GUIDE_REGISTRATION_COPY.INSTRUCTION
-        }
-      />
-      <ExternalGuideRegistrationForm
-        key={formRound}
-        action={action}
-        onRegisterAnother={() =>
-          setFormRound((round) => round + 1)
-        }
-      />
+      >
+        <ScreenHeading
+          title={EXTERNAL_GUIDE_REGISTRATION_COPY.HEADING}
+          titleId={
+            EXTERNAL_GUIDE_REGISTRATION_ELEMENT.TITLE_ID
+          }
+          hasLogo={false}
+          instruction={
+            EXTERNAL_GUIDE_REGISTRATION_COPY.INSTRUCTION
+          }
+        />
+        <ExternalGuideRegistrationForm
+          key={formRound}
+          action={action}
+          onRegisterAnother={() =>
+            setFormRound((round) => round + 1)
+          }
+        />
+      </div>
     </main>
   );
 };
