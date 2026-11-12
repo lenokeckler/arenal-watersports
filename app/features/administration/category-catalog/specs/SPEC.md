@@ -194,3 +194,54 @@ US-ADM-14, as written in `docs/proyecto/historias-de-usuario.md`:
 - [ ] El monto se puede modificar cuando la empresa lo decida. — `mapCategoryDepositToFormValues` prefills the stored amount and the update action saves it (14.02); the screen is 14.04.
 - [ ] Hay categorías sin depósito. Administración decide a cuáles ponerles, por ejemplo agregárselo también a los cuadraciclos. — a blank field is valid and parses as `null` (14.01); mapping it to the update input and persisting `null` is 14.02.
 - [ ] El monto que se le pide al cliente sale de la categoría del equipo que va a salir. — satisfied by the `deposit_usd` and `deposit_crc` columns of `equipment_categories`; the read at dispatch is left to US-RES-29.
+
+# Category image screen (US-ADM-12)
+
+## Intent
+
+Let the administration worker give a category an optional image, see how it will look, replace it and remove it, from a screen of its own opened with the Imagen option of the category card.
+
+## In scope
+
+- Its own page at `/administration/categories/[categoryId]/image`, administration only, with `loading.tsx`.
+- `CategoryImage` (server entry) reads the category with `getCategoryImage`; `CategoryImageForm` (client view) renders the preview, the picker and the actions through `useCategoryImageFormViewModel`.
+- The Imagen link in the options panel of every card, next to Comportamiento, Dep�sito and Avisos.
+- Choose, preview (4:3 frame), save, replace and remove with inline confirmation.
+
+## Out of scope
+
+- The image on the create form and on the board card: carried by their own pull requests.
+- Cropping or editing: the picked image is only scaled and re-encoded by `compressCategoryImage`.
+
+## Requirements
+
+- Choosing a file validates its type and emptiness only (`validateCategoryImagePick`); size is enforced after compression by `uploadCategoryImageObject`.
+- Save runs `saveCategoryImage`: offline check, compression, upload to Storage, `setCategoryImageAction`; the new object is discarded when linking fails.
+- Remove asks for confirmation inline, then calls `removeCategoryImageAction`.
+- A leftover object after replace or remove adds a warning toast; the operation still counts as done.
+- Every control is at least 44 px high; buttons are disabled while a request is in flight.
+
+## Edge cases & errors
+
+| Case                         | Observable result                              | Copy key                             |
+| ---------------------------- | ---------------------------------------------- | ------------------------------------ |
+| Category without image       | Frame shows "Sin imagen"; only choose and back | `PREVIEW_EMPTY`                      |
+| File is not JPG, PNG or WebP | Alert under the preview; nothing is picked     | `FILE_UNSUPPORTED_TYPE_ERROR`        |
+| Empty file                   | Alert; nothing is picked                       | `FILE_EMPTY_ERROR`                   |
+| No connection                | Error toast before any request                 | `OFFLINE_ERROR`                      |
+| Image cannot be decoded      | Error toast, nothing uploaded                  | `COMPRESS_ERROR`                     |
+| Upload or server call fails  | Error toast; the uploaded object is deleted    | `UPLOAD_ERROR` or the action message |
+| Old object could not be gone | Success toast plus warning toast               | `LEFTOVER_OBJECT_WARNING_TOAST`      |
+| Unknown category             | Not found                                      | none                                 |
+| Not administration           | Redirect to the home                           | none                                 |
+
+## Constraints
+
+- Reuse `Image`, `Button`, `Text`, `ScreenHeading`; classes live in `styles/CategoryImage.styles.ts`.
+- Skills that apply: component-architecture, component-standards, styles-standards, constants-standards, route-structure, unit-testing-standards.
+
+## Acceptance criteria
+
+- [ ] Una categor�a puede llevar una imagen opcional, que se agrega despu�s de crearla, se reemplaza y se quita. � `CategoryImageForm.test.tsx` "saves the chosen image...", "asks before removing..."; the create-form field is carried by a later pull request.
+- [ ] El enlace Imagen aparece en las opciones de cada categor�a. � `CategoryCardImageLink.test.tsx`.
+- [ ] Solo administraci�n abre la pantalla. � `CategoryImage.test.tsx`.

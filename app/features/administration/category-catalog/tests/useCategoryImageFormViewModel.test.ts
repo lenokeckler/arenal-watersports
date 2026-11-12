@@ -56,7 +56,7 @@ const renderViewModel = (image: CategoryImage) =>
 describe("useCategoryImageFormViewModel", () => {
   beforeEach(() => {
     vi.resetAllMocks();
-    vi.stubGlobal("URL", {
+    Object.assign(URL, {
       createObjectURL: () => PICKED_PREVIEW_URL,
       revokeObjectURL: vi.fn(),
     });
