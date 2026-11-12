@@ -2,7 +2,7 @@ export const BOARD_CATEGORY_QUERY = {
   CATEGORY_ID_COLUMN: "category_id",
   ORDER_BY: "category_name",
   PROJECTION:
-    "category_id,category_name,group_name,free_count,in_use_count,total_count",
+    "category_id,category_name,group_name,free_count,in_use_count,total_count,image_path",
   VIEW: "board_category_summary",
 } as const;
 

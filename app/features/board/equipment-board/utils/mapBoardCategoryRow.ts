@@ -11,6 +11,7 @@ export const mapBoardCategoryRow = (
   freeCount: safeNumber(row.free_count),
   groupName: row.group_name,
   id: safeString(row.category_id),
+  imagePath: row.image_path,
   inUseCount: safeNumber(row.in_use_count),
   name: safeString(row.category_name),
   totalCount: safeNumber(row.total_count),
