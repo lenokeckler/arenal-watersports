@@ -1,4 +1,5 @@
 export const INVENTORY_DOM_ID = {
+  QUANTITY_ALERTS: "inventory-quantity-alerts",
   CATEGORIES: "inventory-categories",
   CATEGORY_UNITS: (categoryId: string) =>
     `${categoryId}-inventory-units`,

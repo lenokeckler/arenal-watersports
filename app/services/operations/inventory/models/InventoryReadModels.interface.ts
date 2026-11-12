@@ -6,6 +6,9 @@ import type { InventoryStockMovementPage } from "./InventoryStockMovementPage.in
 export type InventorySummaryDatabaseRow =
   Database["public"]["Views"]["inventory_category_summary"]["Row"];
 
+export type InventoryQuantityAlertDatabaseRow =
+  Database["public"]["Views"]["inventory_quantity_alerts"]["Row"];
+
 export type InventoryUnitDatabaseRow = Pick<
   Database["public"]["Views"]["unit_current_state"]["Row"],
   "id" | "code" | "effective_status" | "recorded_status"
