@@ -6,6 +6,7 @@ export interface ReservationCalendarBlockPage {
   getDetailLink: () => HTMLElement;
   getFocusableElements: () => Element[];
   getModifyLink: () => NullableRef<HTMLElement>;
+  getPostponeLink: () => NullableRef<HTMLElement>;
   getSplitLink: () => NullableRef<HTMLElement>;
   getEquipmentImages: () => HTMLImageElement[];
   getText: (text: string) => HTMLElement;

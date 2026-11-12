@@ -4,5 +4,7 @@ export const CUSTOM_COMBO_RESERVATION_DRAFT_DEFAULTS: CustomComboReservationDraf
   {
     agreedAmountCrc: null,
     agreedAmountUsd: null,
+    extraIds: [],
+    extraUnitId: null,
     items: [],
   };

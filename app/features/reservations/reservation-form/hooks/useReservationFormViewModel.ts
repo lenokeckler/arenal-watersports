@@ -1,6 +1,8 @@
 "use client";
 
 import type { ReservationFormViewModel } from "../models/ReservationFormViewModel.interface";
+import { useMemo } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useReservationFormFields } from "./useReservationFormFields";
 import { useReservationFormSubmission } from "./useReservationFormSubmission";
@@ -17,9 +19,9 @@ import { filterReservationCategoriesByType } from "../utils/filterReservationCat
 import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import { useCustomComboForm } from "./useCustomComboForm";
 import { usePredefinedComboForm } from "./usePredefinedComboForm";
+import { useReservationExtrasViewModel } from "./useReservationExtrasViewModel";
 import { createReservationCreateSubmitHandler } from "../utils/createReservationCreateSubmitHandler";
 import { resolveReservationCategoryInterchangeability } from "../utils/resolveReservationCategoryInterchangeability";
-import { hasValidCustomComboEquipmentSelections } from "../utils/hasValidCustomComboEquipmentSelections";
 
 export const useReservationFormViewModel = (
   options: ReservationFormViewModelOptions
@@ -74,6 +76,11 @@ export const useReservationFormViewModel = (
   const isCustomCombo =
     fields.values.reservationType ===
     RESERVATION_TYPE.COMBO;
+  const { clearExtraSelection } = fields;
+  const extraIds = useMemo(
+    () => fields.values.extraIds ?? [],
+    [fields.values.extraIds]
+  );
   const customCombo = useCustomComboForm({
     categories: eligibleCategories,
     clearFieldError: submission.clearFieldError,
@@ -83,10 +90,36 @@ export const useReservationFormViewModel = (
       fields.values.reservationType ??
       RESERVATION_TYPE.RENTAL,
   });
+  const extraUnitId = isCustomCombo
+    ? customCombo.extraUnitId
+    : fields.values.unitId || null;
+  const previousExtraUnitId = useRef(extraUnitId);
+  useEffect(() => {
+    if (previousExtraUnitId.current === extraUnitId) {
+      return;
+    }
+    previousExtraUnitId.current = extraUnitId;
+    if (isCustomCombo || submission.isSubmitted) {
+      return;
+    }
+    clearExtraSelection();
+  }, [
+    clearExtraSelection,
+    extraUnitId,
+    isCustomCombo,
+    submission.isSubmitted,
+  ]);
+  const extras = useReservationExtrasViewModel({
+    durationHours: resolvedDurationHours,
+    extraIds,
+    reservationType: fields.values.reservationType,
+    unitId: extraUnitId ?? STRING.Empty,
+  });
   const predefinedCombo = usePredefinedComboForm(
     predefinedCombos,
     isCustomCombo,
-    fields.handleGuideIdsChange
+    fields.handleGuideIdsChange,
+    () => submission.setSubmissionError(STRING.Empty)
   );
   const isQuantityUnavailable =
     isReservationQuantityUnavailable(
@@ -111,16 +144,12 @@ export const useReservationFormViewModel = (
   });
   const isSubmitDisabled =
     submission.isPending ||
-    submission.isSubmitted ||
-    (isCustomCombo
-      ? !hasValidCustomComboEquipmentSelections(
-          customCombo.draft.items
-        )
-      : categoriesForReservationType.length === 0 ||
+    (!isCustomCombo &&
+      (categoriesForReservationType.length === 0 ||
         (equipment.requiresConcreteUnit &&
           (equipment.isAvailabilityLoading ||
             equipment.hasAvailabilityError)) ||
-        isQuantityUnavailable);
+        isQuantityUnavailable));
   const handleSubmit = createReservationCreateSubmitHandler(
     {
       applyResult: submission.applyResult,
@@ -132,13 +161,22 @@ export const useReservationFormViewModel = (
         equipment.retryUnitAvailability();
       },
       onSuccess: () => {
+        predefinedCombo.reset();
+        customCombo.reset();
         fields.reset();
         duration.reset();
         equipment.retryUnitAvailability();
       },
+      predefinedCombo: {
+        mode: predefinedCombo.mode,
+        selectedComboId: predefinedCombo.selectedComboId,
+      },
       requestErrorFocus: submission.requestErrorFocus,
       requiresConcreteUnit: equipment.requiresConcreteUnit,
       setFieldError: submission.setFieldError,
+      setSubmissionError: submission.setSubmissionError,
+      submitPredefinedComboReservation:
+        submission.submitPredefinedComboReservation,
       submitCustomComboReservation:
         submission.submitCustomComboReservation,
       submitReservation: submission.submitReservation,
@@ -148,6 +186,7 @@ export const useReservationFormViewModel = (
   return {
     categories: categoriesForReservationType,
     customCombo,
+    extras,
     predefinedCombo,
     resolvedDurationHours,
     ...fields,

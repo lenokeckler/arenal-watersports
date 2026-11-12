@@ -79,6 +79,43 @@ describe("getCustomComboPrice", () => {
     });
   });
 
+  it("sends selected extra identifiers and their concrete unit to the quote RPC", async () => {
+    fetchMock.mockResolvedValue(
+      new Response(
+        JSON.stringify([
+          CUSTOM_COMBO_PRICE_SERVICE_TEST.PRICING_ROW,
+        ]),
+        {
+          status:
+            CUSTOM_COMBO_PRICE_SERVICE_TEST.SUCCESS_STATUS,
+        }
+      )
+    );
+
+    await getCustomComboPrice(
+      CUSTOM_COMBO_PRICING_ACTION_TEST.WITH_EXTRAS_INPUT
+    );
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        body: expect.stringContaining(
+          CUSTOM_COMBO_PRICING_ACTION_TEST.WITH_EXTRAS_INPUT
+            .extraUnitId
+        ),
+      })
+    );
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        body: expect.stringContaining(
+          CUSTOM_COMBO_PRICING_ACTION_TEST.WITH_EXTRAS_INPUT
+            .extraIds[0]
+        ),
+      })
+    );
+  });
+
   it("preserves actual RPC failures as service errors", async () => {
     fetchMock.mockResolvedValue(
       new Response(

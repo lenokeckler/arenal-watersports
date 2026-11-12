@@ -16,6 +16,7 @@ import {
   CREATE_RESERVATION_RPC_URL,
   SUCCESS_STATUS,
   VALIDATED_RESERVATION_INPUT,
+  VALIDATED_RESERVATION_WITH_EXTRAS_INPUT,
   VALIDATED_TOUR_RESERVATION_INPUT,
   VALIDATED_UNIT_RESERVATION_INPUT,
 } from "./createRentalReservation.constants";
@@ -70,6 +71,7 @@ describe("createRentalReservation", () => {
             date: VALIDATED_RESERVATION_INPUT.date,
             duration_minutes:
               VALIDATED_RESERVATION_INPUT.durationMinutes,
+            extra_ids: VALIDATED_RESERVATION_INPUT.extraIds,
             guide_ids: [],
             people_count:
               VALIDATED_RESERVATION_INPUT.peopleCount,
@@ -104,6 +106,8 @@ describe("createRentalReservation", () => {
             date: VALIDATED_UNIT_RESERVATION_INPUT.date,
             duration_minutes:
               VALIDATED_UNIT_RESERVATION_INPUT.durationMinutes,
+            extra_ids:
+              VALIDATED_UNIT_RESERVATION_INPUT.extraIds,
             guide_ids: [],
             people_count:
               VALIDATED_UNIT_RESERVATION_INPUT.peopleCount,
@@ -112,6 +116,39 @@ describe("createRentalReservation", () => {
             time: VALIDATED_UNIT_RESERVATION_INPUT.time,
             unit_id:
               VALIDATED_UNIT_RESERVATION_INPUT
+                .equipmentCommitment.unitId,
+          },
+        }),
+      })
+    );
+  });
+
+  it("sends selected extra ids with the concrete boat commitment", async () => {
+    await createRentalReservation(
+      VALIDATED_RESERVATION_WITH_EXTRAS_INPUT
+    );
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      CREATE_RESERVATION_RPC_URL,
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({
+          p_payload: {
+            customer_name:
+              VALIDATED_RESERVATION_WITH_EXTRAS_INPUT.customerName,
+            date: VALIDATED_RESERVATION_WITH_EXTRAS_INPUT.date,
+            duration_minutes:
+              VALIDATED_RESERVATION_WITH_EXTRAS_INPUT.durationMinutes,
+            extra_ids:
+              VALIDATED_RESERVATION_WITH_EXTRAS_INPUT.extraIds,
+            guide_ids: [],
+            people_count:
+              VALIDATED_RESERVATION_WITH_EXTRAS_INPUT.peopleCount,
+            reservation_type:
+              VALIDATED_RESERVATION_WITH_EXTRAS_INPUT.reservationType,
+            time: VALIDATED_RESERVATION_WITH_EXTRAS_INPUT.time,
+            unit_id:
+              VALIDATED_RESERVATION_WITH_EXTRAS_INPUT
                 .equipmentCommitment.unitId,
           },
         }),

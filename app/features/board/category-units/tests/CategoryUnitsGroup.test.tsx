@@ -23,6 +23,13 @@ import {
 } from "./CategoryUnitsScreen.constants";
 import { renderCategoryUnits } from "./renderCategoryUnits";
 
+vi.mock(
+  "@/app/components/board-realtime/BoardRealtime",
+  () => ({
+    default: () => null,
+  })
+);
+
 vi.mock("@/app/services/board", () => ({
   readBoardCategory: vi.fn(),
   readBoardCategoryGroup: vi.fn(),

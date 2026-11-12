@@ -133,3 +133,8 @@ The invoker-security category query returns only active, reservable categories w
 Authenticated direct inserts or equipment-identity changes on scheduled reservation items enforce the same physical eligibility, including the exact selected unit when present. Existing Operations permissions, extra-only items, unchanged commitments, dispatched items and historical records retain their existing behavior. Trusted database maintenance roles retain their existing administrative authority. Failed commitments roll back the reservation transaction.
 
 The eligibility service provides physically eligible categories for initial reads. The follow-up UI unit subscribes to authenticated Realtime changes, refreshes the server snapshot, keeps cached categories usable during connection failures, and reconciles selected categories and units only after current availability is resolved.
+
+## New-reservation form follow-up
+
+- After a rental, tour, predefined combo, or custom combo is created successfully, clear every form value and draft so the worker can register another reservation. Keep the success acknowledgement visible and allow the next submission.
+- A failed submission preserves the current form values.

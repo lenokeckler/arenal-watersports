@@ -17,12 +17,14 @@ export const useCustomComboPricingViewModel = (
   const input = useMemo<CustomComboPricingInput>(
     () => ({
       durationHours,
+      extraIds: draft.extraIds,
+      extraUnitId: draft.extraUnitId,
       items:
         reservationType === RESERVATION_TYPE.COMBO
           ? draft.items
           : NO_CUSTOM_COMBO_ITEMS,
     }),
-    [draft.items, durationHours, reservationType]
+    [draft, durationHours, reservationType]
   );
   return useCustomComboPricing(
     input,
