@@ -62,3 +62,25 @@ export const buildCategoryImageRow = (
   name: "Kayak doble",
   ...overrides,
 });
+
+export const STORAGE_ERROR = { message: "storage failure" };
+
+export const FILE_NAME = "kayak.png";
+
+export const UPLOAD_OBJECT_ID =
+  "bbbbbbbb-0000-0000-0000-000000000001";
+
+export const EXPECTED_UPLOAD_PATH = `${IMAGE_CATEGORY_ID}/${UPLOAD_OBJECT_ID}.png`;
+
+export const buildImageFile = (
+  overrides: { size?: number; type?: string } = {}
+): File => {
+  const {
+    size = OBJECT_SIZE_BYTES,
+    type = CATEGORY_IMAGE_MIME_TYPE.PNG,
+  } = overrides;
+
+  return new File([new Uint8Array(size)], FILE_NAME, {
+    type,
+  });
+};
