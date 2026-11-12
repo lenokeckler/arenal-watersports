@@ -31,6 +31,23 @@ export const INVENTORY_COPY = {
   TOTAL: "Total",
   UNIT_TRACKING: "Control por unidad",
   UNITS: "Unidades",
+  ADJUSTMENT_TITLE: "Ajustar inventario",
+  ADJUSTMENT_DESCRIPTION:
+    "Registre las cantidades actuales y el motivo del cambio.",
+  ADJUSTMENT_REASON_LABEL: "Motivo del ajuste",
+  ADJUSTMENT_REASON_REQUIRED:
+    "Seleccione el motivo del ajuste.",
+  ADJUSTMENT_REASON_PLACEHOLDER: "Seleccione un motivo",
+  ADJUSTMENT_SUCCESS: "El ajuste quedó registrado.",
+  ADJUSTMENT_SUBMIT: "Guardar ajuste",
+  ADJUSTMENT_PENDING: "Guardando…",
+  ADJUSTMENT_AVAILABLE: "Cantidad disponible",
+  ADJUSTMENT_DAMAGED: "Cantidad dañada",
+  ADJUSTMENT_REPAIR: "Cantidad en reparación",
+  REASON_COUNT_CORRECTION: "Corrección de conteo",
+  REASON_DISCARDED: "Botado",
+  REASON_INITIAL_COUNT: "Conteo inicial",
+  REASON_LOST: "Perdido",
 } as const;
 
 export const INVENTORY_UNIT_STATUS_COPY: Record<
