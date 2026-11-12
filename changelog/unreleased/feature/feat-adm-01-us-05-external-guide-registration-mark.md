@@ -1,0 +1,1 @@
+ADM-01.05: External guide registration mark — Administration can put the external guide registration mark on a worker account and remove it at any time from the worker areas screen (US-ADM-05 · AWS-57)
