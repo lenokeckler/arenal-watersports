@@ -9,6 +9,7 @@ import type { WorkerAreasResultProps } from "../models/WorkerAreasResultProps.in
 import { WORKER_AREAS_MESSAGE_CLASS } from "../styles/WorkerAreas.styles";
 import WorkerAccountPanel from "./WorkerAccountPanel";
 import WorkerAreasPanel from "./WorkerAreasPanel";
+import WorkerExpiryPanel from "./WorkerExpiryPanel";
 import WorkerMarksPanel from "./WorkerMarksPanel";
 
 const WorkerAreasResult = ({
@@ -32,12 +33,15 @@ const WorkerAreasResult = ({
 
   if (overview.isExternalGuide) {
     return (
-      <Text
-        role={ARIA_ROLE.STATUS}
-        className={WORKER_AREAS_MESSAGE_CLASS}
-      >
-        {WORKER_AREAS_COPY.EXTERNAL_GUIDE}
-      </Text>
+      <>
+        <Text
+          role={ARIA_ROLE.STATUS}
+          className={WORKER_AREAS_MESSAGE_CLASS}
+        >
+          {WORKER_AREAS_COPY.EXTERNAL_GUIDE}
+        </Text>
+        <WorkerExpiryPanel overview={overview} />
+      </>
     );
   }
 
