@@ -6,6 +6,7 @@ export const INPUT_TYPES = {
   HIDDEN: "hidden",
   NUMBER: "number",
   PASSWORD: "password",
+  RADIO: "radio",
   SEARCH: "search",
   SELECT: "select",
   SELECT_SEARCH: "selectSearch",

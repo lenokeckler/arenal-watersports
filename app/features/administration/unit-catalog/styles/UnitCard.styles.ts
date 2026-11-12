@@ -19,8 +19,10 @@ export const UNIT_CARD_HEADING_ROW_CLASS =
 export const UNIT_CARD_CODE_CLASS =
   "text-title-md font-medium text-on-surface md:order-1";
 
-export const UNIT_CARD_STATUS_CHIP_CLASS =
-  "rounded-full border border-outline px-2 py-0.5 font-mono text-label-mono uppercase text-on-surface-variant md:order-2";
+export const UNIT_CARD_STATUS_CHIP_BASE_CLASS =
+  "rounded-full border border-outline px-2 py-0.5 font-mono text-label-mono uppercase text-on-surface-variant";
+
+export const UNIT_CARD_STATUS_CHIP_CLASS = `${UNIT_CARD_STATUS_CHIP_BASE_CLASS} md:order-2`;
 
 export const UNIT_CARD_DETAILS_CLASS =
   "flex flex-col gap-1 md:order-3";
