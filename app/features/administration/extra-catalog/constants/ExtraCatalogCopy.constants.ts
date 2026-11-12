@@ -9,7 +9,7 @@ export const EXTRA_CATALOG_COPY = {
   FORBIDDEN_ERROR:
     "No tiene permiso para administrar los extras.",
   FORM_PURPOSE:
-    "Escriba el nombre con el que el extra aparece en las reservas.",
+    "Escriba el nombre con el que el extra aparece en las reservas y al menos un precio, en dólares o en colones.",
   FORM_TITLE_CREATE: "Agregar extra",
   FORM_TITLE_EDIT: "Editar extra",
   GENERIC_MUTATION_ERROR:
@@ -25,6 +25,13 @@ export const EXTRA_CATALOG_COPY = {
   NOT_FOUND_ERROR:
     "No se encontró el extra. Es posible que otra persona lo haya eliminado.",
   PAGINATION_NAV_LABEL: "Paginación de extras",
+  PRICES_REQUIRED_ERROR:
+    "Ingrese al menos un precio, en dólares o en colones.",
+  PRICE_CRC_LABEL: "Precio en colones (CRC)",
+  PRICE_FIELD_PLACEHOLDER: "Sin precio",
+  PRICE_FORMAT_ERROR:
+    "Escriba un número que no sea negativo, con punto o coma para los decimales y sin separador de miles.",
+  PRICE_USD_LABEL: "Precio en dólares (USD)",
   REACTIVATE_BUTTON: "Reactivar",
   REACTIVATE_GENERIC_ERROR:
     "No se pudo reactivar el extra. Intente de nuevo.",

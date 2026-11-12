@@ -7,11 +7,12 @@ import { useSubmissionLock } from "@/app/utils/form-submit/hooks/useSubmissionLo
 import type { FormSubmitEvent } from "@/app/utils/form-submit/models/FormSubmitEvent.type";
 import type { ExtraFormSubmitOptions } from "../models/ExtraFormSubmitOptions.type";
 import type { ExtraFormSubmitViewModel } from "../models/ExtraFormSubmitViewModel.interface";
+import { hasExtraFormErrors } from "../utils/hasExtraFormErrors";
 import { submitExtraForm } from "../utils/submitExtraForm";
-import { validateExtraName } from "../utils/validateExtraName";
+import { validateExtraInput } from "../utils/validateExtraInput";
 
 export const useExtraFormSubmit = ({
-  setNameError,
+  showErrors,
   ...saveOptions
 }: ExtraFormSubmitOptions): ExtraFormSubmitViewModel => {
   const router = useRouter();
@@ -28,18 +29,16 @@ export const useExtraFormSubmit = ({
   ): Promise<void> => {
     event.preventDefault();
 
-    const nameError = validateExtraName(
-      saveOptions.values.name
-    );
-    if (nameError) {
-      setNameError(nameError);
+    const errors = validateExtraInput(saveOptions.values);
+    if (hasExtraFormErrors(errors)) {
+      showErrors(errors);
       return;
     }
 
     await runLocked(() =>
       submitExtraForm({
         ...saveOptions,
-        setNameError,
+        showErrors,
         showToast,
         onSaved,
       })

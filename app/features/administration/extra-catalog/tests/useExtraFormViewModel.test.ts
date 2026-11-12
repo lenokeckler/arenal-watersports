@@ -1,5 +1,7 @@
 import {
   changeExtraName,
+  changeExtraPriceCrc,
+  changeExtraPriceUsd,
   createExtraMock,
   pushMock,
   renderExtraViewModel,
@@ -22,11 +24,15 @@ import {
   DEFAULT_EXTRA,
   FAKE_EXTRA_ID,
   FAKE_EXTRA_NAME,
+  FAKE_EXTRA_PRICE_CRC_TEXT,
+  FAKE_EXTRA_PRICE_USD_TEXT,
 } from "./Extra.constants";
 import {
   EDITED_EXTRA_NAME,
+  EDITED_EXTRA_PRICE_USD_TEXT,
   EXTRA_FORM_SUCCESS_RESULT,
   SEED_CASES,
+  VALID_EXTRA_FORM_VALUES,
 } from "./ExtraForm.constants";
 
 describe("useExtraFormViewModel", () => {
@@ -51,16 +57,17 @@ describe("useExtraFormViewModel", () => {
     }
   );
 
-  it("shows the required name error on submit without calling the server", async () => {
+  it("shows the required name and prices errors on submit without calling the server", async () => {
     const { result } = renderExtraViewModel({
       mode: EXTRA_FORM_MODE.CREATE,
     });
 
     await submitExtraViewModel(result);
 
-    expect(result.current.errors.name).toBe(
-      EXTRA_CATALOG_COPY.NAME_REQUIRED_ERROR
-    );
+    expect(result.current.errors).toStrictEqual({
+      name: EXTRA_CATALOG_COPY.NAME_REQUIRED_ERROR,
+      prices: EXTRA_CATALOG_COPY.PRICES_REQUIRED_ERROR,
+    });
     expect(createExtraMock).not.toHaveBeenCalled();
   });
 
@@ -78,32 +85,42 @@ describe("useExtraFormViewModel", () => {
     );
   });
 
-  it("creates the extra with the typed name", async () => {
+  it("creates the extra with the typed name and prices", async () => {
     const { result } = renderExtraViewModel({
       mode: EXTRA_FORM_MODE.CREATE,
     });
     changeExtraName(result, FAKE_EXTRA_NAME);
+    changeExtraPriceUsd(result, FAKE_EXTRA_PRICE_USD_TEXT);
+    changeExtraPriceCrc(result, FAKE_EXTRA_PRICE_CRC_TEXT);
 
     await submitExtraViewModel(result);
 
     expect(createExtraMock).toHaveBeenCalledWith({
       name: FAKE_EXTRA_NAME,
+      priceUsd: FAKE_EXTRA_PRICE_USD_TEXT,
+      priceCrc: FAKE_EXTRA_PRICE_CRC_TEXT,
     });
     expect(updateExtraMock).not.toHaveBeenCalled();
   });
 
-  it("renames the extra with its id in edit mode", async () => {
+  it("updates the extra with its id, the new name and the new price in edit mode", async () => {
     const { result } = renderExtraViewModel({
       mode: EXTRA_FORM_MODE.EDIT,
       extra: DEFAULT_EXTRA,
     });
     changeExtraName(result, EDITED_EXTRA_NAME);
+    changeExtraPriceUsd(
+      result,
+      EDITED_EXTRA_PRICE_USD_TEXT
+    );
 
     await submitExtraViewModel(result);
 
     expect(updateExtraMock).toHaveBeenCalledWith({
+      ...VALID_EXTRA_FORM_VALUES,
       extraId: FAKE_EXTRA_ID,
       name: EDITED_EXTRA_NAME,
+      priceUsd: EDITED_EXTRA_PRICE_USD_TEXT,
     });
     expect(createExtraMock).not.toHaveBeenCalled();
   });
@@ -117,6 +134,7 @@ describe("useExtraFormViewModel", () => {
       mode: EXTRA_FORM_MODE.CREATE,
     });
     changeExtraName(result, FAKE_EXTRA_NAME);
+    changeExtraPriceUsd(result, FAKE_EXTRA_PRICE_USD_TEXT);
 
     await submitExtraViewModel(result);
 

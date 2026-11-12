@@ -20,6 +20,7 @@ import {
   FAKE_ACTION_FAILURE_MESSAGE,
   FAKE_CONTROL_FLOW_SIGNAL_MESSAGE,
   FAKE_NAME_ERROR,
+  FAKE_PRICE_ERROR,
   FAKE_SERVER_MESSAGE,
 } from "./ExtraForm.constants";
 
@@ -31,14 +32,14 @@ describe("useExtraFormSubmit outcomes", () => {
       status: EXTRA_MUTATION_STATUS.ERROR,
       nameError: EXTRA_CATALOG_COPY.NAME_DUPLICATE_ERROR,
     });
-    const setNameError = vi.fn();
-    const { result } = renderExtraSubmit({ setNameError });
+    const showErrors = vi.fn();
+    const { result } = renderExtraSubmit({ showErrors });
 
     await submitExtraFormEvent(result);
 
-    expect(setNameError).toHaveBeenCalledWith(
-      EXTRA_CATALOG_COPY.NAME_DUPLICATE_ERROR
-    );
+    expect(showErrors).toHaveBeenCalledWith({
+      name: EXTRA_CATALOG_COPY.NAME_DUPLICATE_ERROR,
+    });
     expect(showToastMock).not.toHaveBeenCalled();
     expect(pushMock).not.toHaveBeenCalled();
   });
@@ -48,14 +49,36 @@ describe("useExtraFormSubmit outcomes", () => {
       status: EXTRA_MUTATION_STATUS.ERROR,
       nameError: FAKE_NAME_ERROR,
     });
-    const setNameError = vi.fn();
-    const { result } = renderExtraSubmit({ setNameError });
+    const showErrors = vi.fn();
+    const { result } = renderExtraSubmit({ showErrors });
 
     await submitExtraFormEvent(result);
 
-    expect(setNameError).toHaveBeenCalledWith(
-      FAKE_NAME_ERROR
-    );
+    expect(showErrors).toHaveBeenCalledWith({
+      name: FAKE_NAME_ERROR,
+    });
+  });
+
+  it("shows the server price errors on the price fields", async () => {
+    createExtraMock.mockResolvedValue({
+      status: EXTRA_MUTATION_STATUS.ERROR,
+      priceErrors: {
+        priceUsd: FAKE_PRICE_ERROR,
+        prices: EXTRA_CATALOG_COPY.PRICES_REQUIRED_ERROR,
+      },
+    });
+    const showErrors = vi.fn();
+    const { result } = renderExtraSubmit({ showErrors });
+
+    await submitExtraFormEvent(result);
+
+    expect(showErrors).toHaveBeenCalledWith({
+      name: undefined,
+      priceUsd: FAKE_PRICE_ERROR,
+      prices: EXTRA_CATALOG_COPY.PRICES_REQUIRED_ERROR,
+    });
+    expect(showToastMock).not.toHaveBeenCalled();
+    expect(pushMock).not.toHaveBeenCalled();
   });
 
   it.each([
@@ -76,9 +99,9 @@ describe("useExtraFormSubmit outcomes", () => {
         status: EXTRA_MUTATION_STATUS.ERROR,
         message,
       });
-      const setNameError = vi.fn();
+      const showErrors = vi.fn();
       const { result } = renderExtraSubmit({
-        setNameError,
+        showErrors,
       });
 
       await submitExtraFormEvent(result);
@@ -87,7 +110,7 @@ describe("useExtraFormSubmit outcomes", () => {
         STATUS.ERROR,
         expected
       );
-      expect(setNameError).not.toHaveBeenCalled();
+      expect(showErrors).not.toHaveBeenCalled();
       expect(pushMock).not.toHaveBeenCalled();
     }
   );

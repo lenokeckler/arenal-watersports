@@ -11,14 +11,23 @@ import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
 import { EXTRA_MUTATION_STATUS } from "../constants/ExtraMutationStatus.constants";
 import { createExtraAction } from "../services/createExtraAction";
-import { FAKE_EXTRA_NAME } from "./Extra.constants";
+import {
+  FAKE_EXTRA_NAME,
+  FAKE_EXTRA_PRICE_CRC,
+  FAKE_EXTRA_PRICE_CRC_TEXT,
+  FAKE_EXTRA_PRICE_USD,
+} from "./Extra.constants";
+import { VALID_EXTRA_FORM_VALUES } from "./ExtraForm.constants";
 import {
   BLANK_EXTRA_NAME,
   NON_STRING_EXTRA_NAMES,
+  DECIMAL_COMMA,
+  DECIMAL_POINT,
   EXTRAS_TABLE,
   FAKE_EXTRA_ADMIN_WORKER_ID,
   PADDED_EXTRA_NAME,
   SERVER_ERROR_CODE,
+  ZERO_PRICE_TEXT,
 } from "./ExtraActions.constants";
 
 const mockAssertIsAdminWorker = vi.fn();
@@ -58,13 +67,14 @@ describe("createExtraAction", () => {
     );
 
     await expect(
-      createExtraAction({ name: FAKE_EXTRA_NAME })
+      createExtraAction(VALID_EXTRA_FORM_VALUES)
     ).rejects.toThrow(NotAuthorizedError);
     expect(mockInsert).not.toHaveBeenCalled();
   });
 
   it("returns a name error without inserting when the name is blank", async () => {
     const result = await createExtraAction({
+      ...VALID_EXTRA_FORM_VALUES,
       name: BLANK_EXTRA_NAME,
     });
 
@@ -79,6 +89,7 @@ describe("createExtraAction", () => {
     "returns a name error without writing when the name is the non-string value %j",
     async (name) => {
       const result = await createExtraAction({
+        ...VALID_EXTRA_FORM_VALUES,
         name: name as never,
       });
 
@@ -100,25 +111,49 @@ describe("createExtraAction", () => {
       expect(result).toEqual({
         status: EXTRA_MUTATION_STATUS.ERROR,
         nameError: EXTRA_CATALOG_COPY.NAME_REQUIRED_ERROR,
+        priceErrors: {
+          prices: EXTRA_CATALOG_COPY.PRICES_REQUIRED_ERROR,
+        },
       });
       expect(mockInsert).not.toHaveBeenCalled();
     }
   );
 
-  it("inserts the trimmed name stamped with the admin worker", async () => {
+  it("inserts the trimmed name stamped with the admin worker and the dollar price", async () => {
     const result = await createExtraAction({
+      ...VALID_EXTRA_FORM_VALUES,
       name: PADDED_EXTRA_NAME,
     });
 
     expect(mockFrom).toHaveBeenCalledWith(EXTRAS_TABLE);
     expect(mockInsert).toHaveBeenCalledWith({
       name: FAKE_EXTRA_NAME,
+      price_usd: FAKE_EXTRA_PRICE_USD,
+      price_crc: null,
       created_by: FAKE_EXTRA_ADMIN_WORKER_ID,
       updated_by: FAKE_EXTRA_ADMIN_WORKER_ID,
     });
     expect(result).toEqual({
       status: EXTRA_MUTATION_STATUS.SUCCESS,
     });
+  });
+
+  it("inserts a zero and a comma decimal as numbers", async () => {
+    await createExtraAction({
+      ...VALID_EXTRA_FORM_VALUES,
+      priceUsd: ZERO_PRICE_TEXT,
+      priceCrc: FAKE_EXTRA_PRICE_CRC_TEXT.replace(
+        DECIMAL_POINT,
+        DECIMAL_COMMA
+      ),
+    });
+
+    expect(mockInsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        price_usd: 0,
+        price_crc: FAKE_EXTRA_PRICE_CRC,
+      })
+    );
   });
 
   it("maps a unique violation to a name error", async () => {
@@ -129,9 +164,9 @@ describe("createExtraAction", () => {
       },
     });
 
-    const result = await createExtraAction({
-      name: FAKE_EXTRA_NAME,
-    });
+    const result = await createExtraAction(
+      VALID_EXTRA_FORM_VALUES
+    );
 
     expect(result).toEqual({
       status: EXTRA_MUTATION_STATUS.ERROR,
@@ -145,7 +180,7 @@ describe("createExtraAction", () => {
     });
 
     await expect(
-      createExtraAction({ name: FAKE_EXTRA_NAME })
+      createExtraAction(VALID_EXTRA_FORM_VALUES)
     ).rejects.toThrow(SupabaseQueryError);
   });
 });

@@ -7,7 +7,7 @@ import { saveExtra } from "./saveExtra";
 import { showExtraGenericErrorToast } from "./showExtraGenericErrorToast";
 
 export const submitExtraForm = async ({
-  setNameError,
+  showErrors,
   showToast,
   onSaved,
   ...saveOptions
@@ -15,8 +15,11 @@ export const submitExtraForm = async ({
   try {
     const result = await saveExtra(saveOptions);
 
-    if (result.nameError) {
-      setNameError(result.nameError);
+    if (result.nameError || result.priceErrors) {
+      showErrors({
+        name: result.nameError,
+        ...result.priceErrors,
+      });
       return;
     }
 

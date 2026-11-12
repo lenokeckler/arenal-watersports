@@ -20,6 +20,8 @@ const ExtraFormView = (
     errors,
     isSubmitting,
     onNameChange,
+    onPriceUsdChange,
+    onPriceCrcChange,
     onBack,
     onSubmit,
   } = useExtraFormViewModel(props);
@@ -37,6 +39,8 @@ const ExtraFormView = (
             errors={errors}
             isSubmitting={isSubmitting}
             onNameChange={onNameChange}
+            onPriceUsdChange={onPriceUsdChange}
+            onPriceCrcChange={onPriceCrcChange}
           />
           <ExtraFormActions
             mode={mode}
