@@ -30,3 +30,9 @@ export const CATEGORY_UNITS_SKELETON_INDEXES = Array.from(
   { length: CATEGORY_UNITS_SKELETON.ROW_COUNT },
   (_, index) => index
 );
+
+export const CATEGORY_UNITS_DISPATCH_STEP = {
+  BROWSING: "browsing",
+  DISPATCHING: "dispatching",
+  PICKING: "picking",
+} as const;

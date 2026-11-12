@@ -37,6 +37,10 @@ vi.mock("@/app/services/supabase", () => ({
     supabaseMocks.createServerSupabaseClient,
 }));
 
+vi.mock(
+  "@/app/services/work-mode/assertActiveWorkAreaAccess"
+);
+
 const getUser = vi.fn();
 const from = vi.fn();
 const queryBuilder = {

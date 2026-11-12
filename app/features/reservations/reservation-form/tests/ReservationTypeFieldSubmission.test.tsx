@@ -37,6 +37,9 @@ vi.mock("../hooks/useCustomComboForm", () => ({
     hasGuideOnlyItem: true,
   }),
 }));
+vi.mock("../components/CustomComboPricingSummary", () => ({
+  default: () => null,
+}));
 
 describe("ReservationTypeField submission", () => {
   beforeEach(() => {
