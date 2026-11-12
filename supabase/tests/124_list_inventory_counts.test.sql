@@ -1,5 +1,5 @@
 begin;
-select plan(10);
+select plan(13);
 
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local'),
@@ -43,57 +43,73 @@ insert into inventory_count_lines
   ('cccccccc-0000-0000-0000-000000000004', 'aaaaaaaa-0000-0000-0000-000000000002', null, null, null, 9, 9, 9, null, null, null);
 
 select ok(
-  not has_function_privilege('anon', 'public.list_inventory_counts()', 'execute'),
+  not has_function_privilege('anon', 'public.list_inventory_counts(integer, integer, uuid)', 'execute'),
   'anon no consulta los conteos'
 );
 
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated"}';
 select is(
-  (select count(*)::integer from public.list_inventory_counts()),
+  (select count(*)::integer from public.list_inventory_counts(0, 100)),
   0,
   'reservas no ve ningun conteo'
 );
 
 set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}';
 select is(
-  (select count(*)::integer from public.list_inventory_counts()),
+  (select count(*)::integer from public.list_inventory_counts(0, 100)),
   3,
   'operaciones ve los conteos del ultimo anio'
 );
 select is(
-  (select count_id from public.list_inventory_counts() limit 1),
+  (select count_id from public.list_inventory_counts(0, 100) limit 1),
   'cccccccc-0000-0000-0000-000000000001'::uuid,
   'el conteo mas reciente va primero'
 );
 select ok(
-  not exists (select 1 from public.list_inventory_counts() where count_id = 'cccccccc-0000-0000-0000-000000000003'),
+  not exists (select 1 from public.list_inventory_counts(0, 100) where count_id = 'cccccccc-0000-0000-0000-000000000003'),
   'un conteo de hace mas de un anio no aparece'
 );
 select is(
-  (select difference_count from public.list_inventory_counts() where count_id = 'cccccccc-0000-0000-0000-000000000001'),
+  (select difference_count from public.list_inventory_counts(0, 100) where count_id = 'cccccccc-0000-0000-0000-000000000001'),
   2,
   'cuenta la unidad con otro estado y la categoria con otras cantidades'
 );
 select is(
-  (select difference_count from public.list_inventory_counts() where count_id = 'cccccccc-0000-0000-0000-000000000002'),
+  (select difference_count from public.list_inventory_counts(0, 100) where count_id = 'cccccccc-0000-0000-0000-000000000002'),
   0,
   'un conteo igual al sistema no tiene diferencias'
 );
 select is(
-  (select difference_count from public.list_inventory_counts() where count_id = 'cccccccc-0000-0000-0000-000000000004'),
+  (select difference_count from public.list_inventory_counts(0, 100) where count_id = 'cccccccc-0000-0000-0000-000000000004'),
   0,
   'un conteo sin foto del sistema no inventa diferencias'
 );
 select is(
-  (select counted_by from public.list_inventory_counts() where count_id = 'cccccccc-0000-0000-0000-000000000002'),
+  (select counted_by from public.list_inventory_counts(0, 100) where count_id = 'cccccccc-0000-0000-0000-000000000002'),
   'Admin',
   'cada conteo muestra el nombre de quien lo levanto'
 );
 
+select is(
+  (select count_id from public.list_inventory_counts(1, 1)),
+  'cccccccc-0000-0000-0000-000000000002'::uuid,
+  'una pagina trae solo la porcion pedida'
+);
+select is(
+  (select total_count from public.list_inventory_counts(1, 1)),
+  3,
+  'cada fila dice cuantos conteos hay en total para armar las paginas'
+);
+select is(
+  (select count(*)::integer from public.list_inventory_counts(0, 100, 'cccccccc-0000-0000-0000-000000000004')),
+  1,
+  'un conteo se pide por su id'
+);
+
 set local request.jwt.claims to '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}';
 select is(
-  (select count(*)::integer from public.list_inventory_counts()),
+  (select count(*)::integer from public.list_inventory_counts(0, 100)),
   3,
   'administracion tambien consulta los conteos'
 );

@@ -1,10 +1,15 @@
-create function public.list_inventory_counts()
+create function public.list_inventory_counts(
+  page_offset integer default 0,
+  page_limit integer default 10,
+  only_count uuid default null
+)
 returns table (
   count_id uuid,
   counted_at timestamptz,
   notes text,
   counted_by text,
-  difference_count integer
+  difference_count integer,
+  total_count integer
 )
 language plpgsql stable security definer set search_path = public, pg_temp as $$
 begin
@@ -31,12 +36,16 @@ begin
                 and (l.quantity_available is distinct from l.system_quantity_available
                      or l.quantity_damaged is distinct from l.system_quantity_damaged
                      or l.quantity_in_repair is distinct from l.system_quantity_in_repair))
-             ))
+             )),
+         (count(*) over ())::integer
     from public.inventory_counts c
     join public.workers w on w.id = c.created_by
    where c.counted_at >= now() - interval '1 year'
-   order by c.counted_at desc;
+     and (only_count is null or c.id = only_count)
+   order by c.counted_at desc
+   limit greatest(least(page_limit, 100), 1)
+  offset greatest(page_offset, 0);
 end $$;
 
-revoke execute on function public.list_inventory_counts() from public, anon;
-grant execute on function public.list_inventory_counts() to authenticated;
+revoke execute on function public.list_inventory_counts(integer, integer, uuid) from public, anon;
+grant execute on function public.list_inventory_counts(integer, integer, uuid) to authenticated;

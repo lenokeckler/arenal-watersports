@@ -15,6 +15,10 @@ export const INVENTORY_COUNT_HISTORY_DATE_FORMAT = {
   options: Intl.DateTimeFormatOptions;
 };
 
+export const INVENTORY_COUNT_HISTORY_LIMITS = {
+  PAGE_SIZE: 10,
+} as const;
+
 export const INVENTORY_COUNT_QUANTITY_FIELD_KEY = {
   AVAILABLE: "available",
   DAMAGED: "damaged",

@@ -17,6 +17,7 @@ export const COUNT_SUMMARY_ROW: InventoryCountSummaryRow = {
   counted_by: "Ana Operaciones",
   difference_count: 2,
   notes: "Conteo de noviembre",
+  total_count: 25,
 };
 
 export const COUNT_SUMMARY: InventoryCountSummary = {

@@ -4,4 +4,5 @@ export interface InventoryCountSummaryRow {
   counted_by: string;
   difference_count: number;
   notes: string | null;
+  total_count: number;
 }

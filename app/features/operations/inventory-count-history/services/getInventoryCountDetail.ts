@@ -16,9 +16,13 @@ export const getInventoryCountDetail = async (
     return null;
   }
 
-  const summary = (await listInventoryCounts()).find(
-    (count) => count.id === countId
-  );
+  const [summary] = (
+    await listInventoryCounts({
+      limit: 1,
+      offset: 0,
+      onlyCount: countId,
+    })
+  ).counts;
 
   if (!summary) {
     return null;
