@@ -1,0 +1,9 @@
+import { SUPABASE_WORK_AREA } from "../supabase/SupabaseWorkArea.constants";
+
+export const WORK_MODE_ROUTE_ACCESS = {
+  BOARD: [
+    SUPABASE_WORK_AREA.OPERATIONS,
+    SUPABASE_WORK_AREA.RESERVATIONS,
+  ],
+  OPERATIONS: [SUPABASE_WORK_AREA.OPERATIONS],
+} as const;

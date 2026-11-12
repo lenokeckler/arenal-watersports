@@ -11,6 +11,14 @@ export const createWorkerAreasPage = (page: Page) => {
       main
         .getByText(areaLabel, { exact: true })
         .locator("xpath=../.."),
+    getExpiryDateInput: (label: string): Locator =>
+      main.getByLabel(label, { exact: true }),
+    getExtendButton: (label: string): Locator =>
+      main.getByRole(ARIA_ROLE.BUTTON, { name: label }),
+    getAlert: (message: string): Locator =>
+      main
+        .getByRole(ARIA_ROLE.ALERT)
+        .filter({ hasText: message }),
     getHeading: (): Locator =>
       main.getByRole(ARIA_ROLE.HEADING, {
         level: HEADING_LEVEL.PAGE,
