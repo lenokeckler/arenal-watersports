@@ -6,11 +6,14 @@ export const VALID_RESERVATION_FORM_INPUT: ReservationFormInput =
     customerName: "Lake group",
     date: "2028-02-29",
     durationHours: 1.5,
+    extraIds: [],
     peopleCount: 2,
     quantity: 1,
     time: "09:30",
     unitId: "",
   };
+
+export const INVALID_QUANTITY_TYPE = "3";
 
 export const COSTA_RICA_DATE_CASE = {
   INSTANT: "2028-01-01T05:30:00.000Z",

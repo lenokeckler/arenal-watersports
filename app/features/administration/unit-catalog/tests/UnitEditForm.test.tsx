@@ -12,6 +12,7 @@ import { getUnit } from "../services/getUnit";
 import { getUnitCategory } from "../services/getUnitCategory";
 import UnitEditForm from "../UnitEditForm";
 import UnitFormView from "../UnitFormView";
+import UnitReservationHistory from "../UnitReservationHistory";
 import {
   DEFAULT_UNIT,
   FAKE_CATEGORY_ID,
@@ -25,6 +26,7 @@ import { DEFAULT_UNIT_CATEGORY } from "./UnitList.constants";
 
 const redirectMock = vi.hoisted(() => vi.fn());
 const NOT_FOUND = "NEXT_NOT_FOUND";
+const PAGE_PARAM = "2";
 
 vi.mock("next/navigation", () => ({
   redirect: redirectMock,
@@ -43,6 +45,7 @@ vi.mock("../services/getUnit");
 const renderEntry = () =>
   UnitEditForm({
     categoryId: FAKE_CATEGORY_ID,
+    pageParam: PAGE_PARAM,
     unitId: FAKE_UNIT_ID,
   });
 
@@ -107,10 +110,23 @@ describe("UnitEditForm", () => {
     const element = await renderEntry();
 
     expect(element.type).toBe(UnitFormView);
-    expect(element.props).toEqual({
+    expect(element.props).toMatchObject({
       mode: UNIT_FORM_MODE.EDIT,
       category: DEFAULT_UNIT_CATEGORY,
       unit: DEFAULT_UNIT,
+    });
+  });
+
+  it("renders the reservation history of the unit under the form", async () => {
+    const element = await renderEntry();
+
+    expect(element.props.children.type).toBe(
+      UnitReservationHistory
+    );
+    expect(element.props.children.props).toEqual({
+      categoryId: FAKE_CATEGORY_ID,
+      pageParam: PAGE_PARAM,
+      unitId: FAKE_UNIT_ID,
     });
   });
 });

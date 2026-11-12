@@ -6,16 +6,12 @@ import {
   vi,
 } from "vitest";
 import {
-  INVENTORY_ACCESS_FUNCTION,
   PAGINATION,
-  PATHS,
-  WORK_AREA,
+  WORK_MODE_ROUTE_ACCESS,
 } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
-import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { getInventorySummaryPage } from "../readInventory";
 import {
-  INVENTORY_SERVICE_POSTGREST_ERROR,
   INVENTORY_SERVICE_REDIRECT_SIGNAL,
   INVENTORY_SERVICE_SUMMARY_RESULT,
   INVENTORY_SERVICE_USER,
@@ -24,6 +20,7 @@ import {
 const supabaseMocks = vi.hoisted(() => ({
   createServerSupabaseClient: vi.fn(),
   redirect: vi.fn(),
+  assertActiveWorkAreaAccess: vi.fn(),
 }));
 
 vi.mock("next/navigation", () => ({
@@ -34,6 +31,14 @@ vi.mock("@/app/services/supabase", () => ({
   createServerSupabaseClient:
     supabaseMocks.createServerSupabaseClient,
 }));
+
+vi.mock(
+  "@/app/services/work-mode/assertActiveWorkAreaAccess",
+  () => ({
+    assertActiveWorkAreaAccess:
+      supabaseMocks.assertActiveWorkAreaAccess,
+  })
+);
 
 const getUser = vi.fn();
 const rpc = vi.fn();
@@ -64,6 +69,9 @@ const resetMocks = (): void => {
   supabaseMocks.redirect.mockImplementation(() => {
     throw redirectSignal;
   });
+  supabaseMocks.assertActiveWorkAreaAccess.mockResolvedValue(
+    undefined
+  );
   supabaseMocks.createServerSupabaseClient.mockResolvedValue(
     {
       auth: { getUser },
@@ -78,49 +86,26 @@ const resetMocks = (): void => {
 describe("inventory read authorization", () => {
   beforeEach(resetMocks);
 
-  it("allows an administrator without the operations area", async () => {
-    rpc
-      .mockResolvedValueOnce({ data: false, error: null })
-      .mockResolvedValueOnce({ data: true, error: null });
-
+  it("requires the active operations mode before reading inventory", async () => {
     await getInventorySummaryPage(PAGINATION.DEFAULT_PAGE);
 
-    expect(rpc).toHaveBeenNthCalledWith(
-      PAGINATION.ONE_PAGE,
-      INVENTORY_ACCESS_FUNCTION.HAS_AREA,
-      { target: WORK_AREA.OPERATIONS }
-    );
-    expect(rpc).toHaveBeenNthCalledWith(
-      PAGINATION.ONE_PAGE + PAGINATION.ONE_PAGE,
-      INVENTORY_ACCESS_FUNCTION.IS_ADMIN
+    expect(
+      supabaseMocks.assertActiveWorkAreaAccess
+    ).toHaveBeenCalledWith(
+      expect.objectContaining({ rpc }),
+      WORK_MODE_ROUTE_ACCESS.OPERATIONS
     );
     expect(from).toHaveBeenCalled();
   });
 
-  it("redirects a worker without operations or administrator access", async () => {
-    rpc
-      .mockResolvedValueOnce({ data: false, error: null })
-      .mockResolvedValueOnce({ data: false, error: null });
+  it("does not read inventory when the active mode is not allowed", async () => {
+    supabaseMocks.assertActiveWorkAreaAccess.mockRejectedValue(
+      redirectSignal
+    );
 
     await expect(
       getInventorySummaryPage(PAGINATION.DEFAULT_PAGE)
     ).rejects.toThrow(redirectSignal);
-
-    expect(supabaseMocks.redirect).toHaveBeenCalledWith(
-      PATHS.HOME
-    );
-    expect(from).not.toHaveBeenCalled();
-  });
-
-  it("wraps permission failures with Supabase query context", async () => {
-    rpc.mockResolvedValue({
-      data: null,
-      error: INVENTORY_SERVICE_POSTGREST_ERROR,
-    });
-
-    await expect(
-      getInventorySummaryPage(PAGINATION.DEFAULT_PAGE)
-    ).rejects.toBeInstanceOf(SupabaseQueryError);
 
     expect(from).not.toHaveBeenCalled();
   });
