@@ -28,6 +28,19 @@ export const CATEGORY_IMAGE = {
   REMOTE_PATH_WILDCARD: "**",
 } as const;
 
+export const CATEGORY_IMAGE_COMPRESSION = {
+  ENCODE_FAILED_MESSAGE:
+    "The image could not be encoded in a supported format",
+  MAX_SIDE_PX: 1_200,
+  MIN_SIDE_PX: 1,
+  PREFERRED_MIME_TYPES: [
+    CATEGORY_IMAGE_MIME_TYPE.WEBP,
+    CATEGORY_IMAGE_MIME_TYPE.JPEG,
+  ],
+  QUALITY: 0.82,
+  UNSCALED_RATIO: 1,
+} as const;
+
 export const CATEGORY_IMAGE_FILE_ISSUE = {
   EMPTY: "empty",
   TOO_LARGE: "too_large",
