@@ -8,6 +8,7 @@ export const cleanupInventoryCategoryFixture = async (
   id: string
 ): Promise<void> => {
   for (const table of [
+    INVENTORY_DATA_SOURCE.EQUIPMENT_STOCK_MOVEMENTS_TABLE,
     INVENTORY_DATA_SOURCE.EQUIPMENT_UNITS_TABLE,
     INVENTORY_DATA_SOURCE.EQUIPMENT_STOCK_TABLE,
   ]) {

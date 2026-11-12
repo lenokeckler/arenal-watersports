@@ -1,0 +1,33 @@
+\ir cancel_reservation.sql.fixture
+
+insert into equipment_units (id, category_id, code, status, created_by, updated_by)
+values ('e2b10000-0000-4000-8000-000000000202', 'e2b10000-0000-4000-8000-000000000101', 'RES22-LANCHA-2', 'available',
+        'e2b10000-0000-4000-8000-000000000001', 'e2b10000-0000-4000-8000-000000000001');
+
+insert into reservations
+  (id, customer_name, people_count, type, starts_at, duration_minutes, status, created_by, updated_by)
+values
+  ('e2b10000-0000-4000-8000-000000000305', 'RES22 Out on water', 4, 'rental', '2035-05-16 15:00:00+00', 60, 'scheduled',
+   'e2b10000-0000-4000-8000-000000000001', 'e2b10000-0000-4000-8000-000000000001');
+
+insert into reservation_items (id, reservation_id, unit_id, created_by, updated_by)
+values ('e2b10000-0000-4000-8000-000000000402', 'e2b10000-0000-4000-8000-000000000305',
+        'e2b10000-0000-4000-8000-000000000202',
+        'e2b10000-0000-4000-8000-000000000001', 'e2b10000-0000-4000-8000-000000000001');
+
+insert into reservation_charges (id, reservation_id, kind, amount, currency, payment_method, created_by)
+values ('e2b10000-0000-4000-8000-000000000502', 'e2b10000-0000-4000-8000-000000000305', 'tariff', 30000, 'CRC',
+        'efectivo', 'e2b10000-0000-4000-8000-000000000001');
+
+insert into deposits (id, reservation_id, amount, currency, created_by)
+values ('e2b10000-0000-4000-8000-000000000602', 'e2b10000-0000-4000-8000-000000000305', 50000, 'CRC',
+        'e2b10000-0000-4000-8000-000000000001');
+
+insert into reservation_dispatches
+  (id, reservation_id, category_id, dispatched_at, duration_minutes, created_by, updated_by)
+values ('e2b10000-0000-4000-8000-000000000701', 'e2b10000-0000-4000-8000-000000000305',
+        'e2b10000-0000-4000-8000-000000000101', '2035-05-16 15:00:00+00', 60,
+        'e2b10000-0000-4000-8000-000000000001', 'e2b10000-0000-4000-8000-000000000001');
+
+update reservation_items set dispatch_id = 'e2b10000-0000-4000-8000-000000000701'
+where id = 'e2b10000-0000-4000-8000-000000000402';

@@ -15,6 +15,8 @@ export const E2E_SUPABASE_TABLE = {
   EQUIPMENT_CATEGORIES: "equipment_categories",
   EQUIPMENT_UNITS: "equipment_units",
   EXTRAS: "extras",
+  INVENTORY_COUNT_LINES: "inventory_count_lines",
+  INVENTORY_COUNTS: "inventory_counts",
   RESERVATION_GUIDES: "reservation_guides",
   RESERVATION_ITEMS: "reservation_items",
   RESERVATIONS: "reservations",

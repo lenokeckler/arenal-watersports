@@ -7,6 +7,7 @@ import {
   vi,
 } from "vitest";
 import CategoryBehaviorForm from "../CategoryBehaviorForm";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_TRACKING_MODE } from "../constants/CategoryTrackingMode.constants";
 import type { UpdateCategoryBehaviorInput } from "../models/UpdateCategoryBehaviorInput.interface";
 import { DEFAULT_CATEGORY_BEHAVIOR } from "./CategoryBehavior.constants";
@@ -40,6 +41,25 @@ describe("CategoryBehaviorForm fields", () => {
     mockRefresh.mockClear();
     mockShowToast.mockClear();
     mockUpdateCategoryBehaviorAction.mockReset();
+  });
+
+  it("explains the standard rental duration under the duration field", () => {
+    render(
+      <CategoryBehaviorForm
+        behavior={DEFAULT_CATEGORY_BEHAVIOR}
+      />
+    );
+    const categoryBehaviorFormPage =
+      createCategoryBehaviorFormPage();
+
+    expect(
+      categoryBehaviorFormPage.getDurationHint()
+    ).toBeInTheDocument();
+    expect(
+      categoryBehaviorFormPage.getDurationInput()
+    ).toHaveAccessibleDescription(
+      CATEGORY_CATALOG_COPY.DEFAULT_DURATION_MINUTES_FIELD_HINT
+    );
   });
 
   it("enables the usage metric while the category has a motor and disables it once the motor is cleared", async () => {
