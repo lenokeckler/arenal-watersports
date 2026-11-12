@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { SUPABASE } from "@/app/constants";
+import { SUPABASE, SUPABASE_TABLE } from "@/app/constants";
 import type { Database, NullableRef } from "@/app/types";
 import {
   E2E_RESERVATION_EQUIPMENT_STATUS,
@@ -33,7 +33,7 @@ export const createReservationEquipmentStatusFixture = (
       );
     }
     const { data, error } = await supabase
-      .from("equipment_units")
+      .from(SUPABASE_TABLE.EQUIPMENT_UNITS)
       .update({ status })
       .eq("id", equipmentUnitId)
       .select("status")
@@ -53,7 +53,7 @@ export const createReservationEquipmentStatusFixture = (
     prepare:
       async (): Promise<ReservationEquipmentStatus> => {
         const { data, error } = await supabase
-          .from("equipment_units")
+          .from(SUPABASE_TABLE.EQUIPMENT_UNITS)
           .select("id, status")
           .eq("code", unitCode)
           .single();
