@@ -29,6 +29,10 @@ export const createDepositsReportPage = (page: Page) => {
     getPendingSection,
     getRetainedRow: (customerName: string): Locator =>
       getRowIn(getRetainedSection(), customerName),
+    getRetainedPagination: (): Locator =>
+      main.getByRole(ARIA_ROLE.NAVIGATION, {
+        name: DEPOSITS_REPORT_COPY.RETAINED_PAGINATION_LABEL,
+      }),
     getRetainedSection,
     goTo: async (): Promise<void> => {
       await page.goto(PATHS.ADMINISTRATION.DEPOSITS);

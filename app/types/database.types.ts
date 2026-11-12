@@ -1469,8 +1469,10 @@ export type Database = {
           dispatched_at: string;
           duration_minutes: number;
           ends_at: string | null;
+          extended_minutes: number | null;
           extra_time_minutes: number;
           id: string;
+          planned_duration_minutes: number | null;
           reservation_id: string;
           updated_at: string;
           updated_by: string;
@@ -1483,8 +1485,10 @@ export type Database = {
           dispatched_at: string;
           duration_minutes: number;
           ends_at?: never;
+          extended_minutes?: never;
           extra_time_minutes?: number;
           id?: string;
+          planned_duration_minutes?: number | null;
           reservation_id: string;
           updated_at?: string;
           updated_by: string;
@@ -1497,8 +1501,10 @@ export type Database = {
           dispatched_at?: string;
           duration_minutes?: number;
           ends_at?: never;
+          extended_minutes?: never;
           extra_time_minutes?: number;
           id?: string;
+          planned_duration_minutes?: number | null;
           reservation_id?: string;
           updated_at?: string;
           updated_by?: string;
@@ -2298,6 +2304,83 @@ export type Database = {
           },
         ];
       };
+      unit_corrections: {
+        Row: {
+          corrected: NonNullable<Json>;
+          created_at: string;
+          created_by: string;
+          id: string;
+          previous: NonNullable<Json>;
+          unit_id: string;
+        };
+        Insert: {
+          corrected: NonNullable<Json>;
+          created_at?: string;
+          created_by: string;
+          id?: string;
+          previous: NonNullable<Json>;
+          unit_id: string;
+        };
+        Update: {
+          corrected?: NonNullable<Json>;
+          created_at?: string;
+          created_by?: string;
+          id?: string;
+          previous?: NonNullable<Json>;
+          unit_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "unit_corrections_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "unit_corrections_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_corrections_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "unit_corrections_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_units";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_corrections_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "maintenance_cost_by_unit";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "unit_corrections_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_current_state";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_corrections_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
+          },
+        ];
+      };
       worker_areas: {
         Row: {
           area: Database["public"]["Enums"]["work_area"];
@@ -2869,6 +2952,13 @@ export type Database = {
       };
     };
     Functions: {
+      adjust_dispatch_duration: {
+        Args: {
+          p_dispatch_id: string;
+          p_duration_minutes: number;
+        };
+        Returns: undefined;
+      };
       adjust_equipment_stock: {
         Args: {
           p_available: number;
@@ -2914,10 +3004,43 @@ export type Database = {
         };
         Returns: undefined;
       };
+      assert_reservation_splittable: {
+        Args: {
+          p_expected_updated_at: string;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
+        };
+        Returns: undefined;
+      };
       assert_reservation_units_available: {
         Args: {
           p_reservation_id: string;
           p_reservation_window: unknown;
+        };
+        Returns: undefined;
+      };
+      assert_split_allocations_valid: {
+        Args: {
+          p_departures: Json;
+          p_reservation_id: string;
+        };
+        Returns: undefined;
+      };
+      assert_split_departure_units_available: {
+        Args: {
+          p_items: Json;
+          p_reservation_id: string;
+          p_window: unknown;
+        };
+        Returns: undefined;
+      };
+      assert_split_departures_shape: {
+        Args: { p_departures: Json };
+        Returns: undefined;
+      };
+      assert_split_remainder: {
+        Args: {
+          p_departures: Json;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
         };
         Returns: undefined;
       };
@@ -2949,11 +3072,34 @@ export type Database = {
           usable: number;
         }[];
       };
+      category_dispatch_reservations: {
+        Args: {
+          p_category_id: string;
+          p_day_end: string;
+          p_day_start: string;
+        };
+        Returns: {
+          code: string;
+          customer_name: string;
+          people_count: number;
+          required_count: number;
+          reservation_id: string;
+          starts_at: string;
+        }[];
+      };
       choose_work_area: {
         Args: {
           target: Database["public"]["Enums"]["work_area"];
         };
         Returns: string;
+      };
+      close_dispatch_group: {
+        Args: {
+          p_arrived_at: string;
+          p_dispatch_id: string;
+          p_returns?: Json;
+        };
+        Returns: undefined;
       };
       complete_first_password_change: {
         Args: { p_user_id: string };
@@ -2961,6 +3107,25 @@ export type Database = {
       };
       consume_password_reset_pin: {
         Args: { p_pin: string; p_username: string };
+        Returns: string;
+      };
+      correct_unit_readings: {
+        Args: {
+          p_fuel_level: number;
+          p_fuel_max: number;
+          p_impact_count: number;
+          p_status: Database["public"]["Enums"]["unit_status"];
+          p_unit_id: string;
+          p_usage_total: number;
+        };
+        Returns: string;
+      };
+      create_custom_combo_reservation: {
+        Args: { p_payload: Json };
+        Returns: string;
+      };
+      create_predefined_combo_reservation: {
+        Args: { p_payload: Json };
         Returns: string;
       };
       create_rental_reservation:
@@ -2996,6 +3161,71 @@ export type Database = {
       custom_access_token_hook: {
         Args: { event: Json };
         Returns: Json;
+      };
+      custom_combo_price: {
+        Args: { p_duration_minutes: number; p_items: Json };
+        Returns: {
+          list_amount_crc: number;
+          list_amount_usd: number;
+        }[];
+      };
+      delete_or_deactivate_extra: {
+        Args: { p_extra_id: string };
+        Returns: string;
+      };
+      dispatch_candidate_units: {
+        Args: {
+          p_category_id: string;
+          p_reservation_id: string;
+        };
+        Returns: {
+          code: string;
+          fuel_level: number;
+          fuel_max: number;
+          is_assigned: boolean;
+          unit_id: string;
+          usage_total: number;
+        }[];
+      };
+      dispatch_group_return_units: {
+        Args: { p_dispatch_id: string };
+        Returns: {
+          code: string;
+          consumes_fuel: boolean;
+          fuel_max: number;
+          fuel_out: number;
+          unit_id: string;
+          usage_metric: Database["public"]["Enums"]["usage_metric"];
+          usage_out: number;
+        }[];
+      };
+      dispatch_reservation_group: {
+        Args: {
+          p_category_id: string;
+          p_dispatched_at: string;
+          p_readings?: Json;
+          p_reservation_id: string;
+          p_returns_at: string;
+          p_unit_ids?: string[];
+        };
+        Returns: string;
+      };
+      dispatched_groups_out: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          category_id: string;
+          category_name: string;
+          code: string;
+          customer_name: string;
+          dispatch_id: string;
+          dispatched_at: string;
+          duration_minutes: number;
+          ends_at: string;
+          extended_minutes: number;
+          quantity: number;
+          reservation_id: string;
+          unit_codes: string[];
+        }[];
       };
       exchange_password_reset_pin: {
         Args: { p_pin: string; p_username: string };
@@ -3054,6 +3284,40 @@ export type Database = {
           target: Database["public"]["Enums"]["worker_mark"];
         };
         Returns: boolean;
+      };
+      insert_split_departure: {
+        Args: {
+          p_departure: Json;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
+          p_window: unknown;
+        };
+        Returns: {
+          cancellation_reason: string | null;
+          closed_at: string | null;
+          code: string;
+          combo_id: string | null;
+          created_at: string;
+          created_by: string;
+          customer_name: string;
+          dispatched_at: string | null;
+          duration_minutes: number;
+          ends_at: string | null;
+          extra_time_minutes: number;
+          id: string;
+          parent_reservation_id: string | null;
+          people_count: number;
+          starts_at: string;
+          status: Database["public"]["Enums"]["reservation_status"];
+          type: Database["public"]["Enums"]["reservation_type"];
+          updated_at: string;
+          updated_by: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "reservations";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
       };
       is_active_worker: {
         Args: Record<PropertyKey, never>;
@@ -3125,6 +3389,20 @@ export type Database = {
         Args: { p_unit_id: string };
         Returns: string;
       };
+      maintenance_units: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          category_id: string;
+          category_name: string;
+          code: string;
+          next_oil_change_at: number;
+          oil_overage: number;
+          status: Database["public"]["Enums"]["unit_status"];
+          unit_id: string;
+          usage_metric: Database["public"]["Enums"]["usage_metric"];
+          usage_total: number;
+        }[];
+      };
       mark_password_reset_pin_undelivered: {
         Args: { p_pin_id: string };
         Returns: undefined;
@@ -3181,6 +3459,29 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: number;
       };
+      pending_dispatch_reservations: {
+        Args: {
+          p_ends_at: string;
+          p_limit?: number;
+          p_offset?: number;
+          p_starts_at: string;
+        };
+        Returns: {
+          code: string;
+          customer_name: string;
+          id: string;
+          starts_at: string;
+          status: Database["public"]["Enums"]["reservation_status"];
+        }[];
+      };
+      place_split_item: {
+        Args: {
+          p_departure_id: string;
+          p_item_id: string;
+          p_quantity: number;
+        };
+        Returns: undefined;
+      };
       prepare_worker_temporary_password: {
         Args: { target_worker: string };
         Returns: string;
@@ -3209,6 +3510,19 @@ export type Database = {
         Args: { p_token: string };
         Returns: string;
       };
+      register_maintenance_job: {
+        Args: {
+          p_cost_amount?: number;
+          p_cost_currency?: Database["public"]["Enums"]["currency_code"];
+          p_description?: string;
+          p_is_external?: boolean;
+          p_next_oil_change_at?: number;
+          p_performed_at: string;
+          p_unit_id: string;
+          p_work_type: string;
+        };
+        Returns: string;
+      };
       rehire_worker: {
         Args: { target_worker: string };
         Returns: string;
@@ -3229,6 +3543,7 @@ export type Database = {
       reservable_equipment_categories: {
         Args: Record<PropertyKey, never>;
         Returns: {
+          guide_only: boolean;
           id: string;
           name: string;
           units_are_interchangeable: boolean;
@@ -3238,6 +3553,7 @@ export type Database = {
         Args: {
           p_category_id: string;
           p_ends_at: string;
+          p_exclude_reservation?: string;
           p_starts_at: string;
         };
         Returns: {
@@ -3246,6 +3562,20 @@ export type Database = {
           ends_at: string;
           reservation_id: string;
           starts_at: string;
+        }[];
+      };
+      reservation_dispatch_groups: {
+        Args: { p_reservation_id: string };
+        Returns: {
+          category_id: string;
+          category_name: string;
+          consumes_fuel: boolean;
+          duration_minutes: number;
+          fixed_unit_ids: string[];
+          has_motor: boolean;
+          required_quantity: number;
+          tracking_mode: Database["public"]["Enums"]["tracking_mode"];
+          usage_metric: Database["public"]["Enums"]["usage_metric"];
         }[];
       };
       reservation_equipment_differs: {
@@ -3257,6 +3587,19 @@ export type Database = {
         };
         Returns: boolean;
       };
+      reservation_extras_price_quote: {
+        Args: {
+          p_duration_minutes: number;
+          p_extra_ids: string[];
+          p_reservation_type: Database["public"]["Enums"]["reservation_type"];
+          p_unit_id: string;
+        };
+        Returns: {
+          has_boat_tariff: boolean;
+          list_amount_crc: number;
+          list_amount_usd: number;
+        }[];
+      };
       reservation_history_equipment_names: {
         Args: { p_reservation_id: string };
         Returns: string[];
@@ -3264,6 +3607,10 @@ export type Database = {
       reservation_history_guide_names: {
         Args: { p_reservation_id: string };
         Returns: string[];
+      };
+      reservation_is_split_child: {
+        Args: { p_reservation_id: string };
+        Returns: boolean;
       };
       retire_worker: {
         Args: { target_worker: string };
@@ -3318,6 +3665,81 @@ export type Database = {
         Args: { p_user_id: string };
         Returns: boolean;
       };
+      split_departure_into_reservation: {
+        Args: {
+          p_date: string;
+          p_departure: Json;
+          p_original: Database["public"]["Tables"]["reservations"]["Row"];
+        };
+        Returns: {
+          cancellation_reason: string | null;
+          closed_at: string | null;
+          code: string;
+          combo_id: string | null;
+          created_at: string;
+          created_by: string;
+          customer_name: string;
+          dispatched_at: string | null;
+          duration_minutes: number;
+          ends_at: string | null;
+          extra_time_minutes: number;
+          id: string;
+          parent_reservation_id: string | null;
+          people_count: number;
+          starts_at: string;
+          status: Database["public"]["Enums"]["reservation_status"];
+          type: Database["public"]["Enums"]["reservation_type"];
+          updated_at: string;
+          updated_by: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "reservations";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
+      split_item_allocations: {
+        Args: { p_departures: Json };
+        Returns: {
+          departure_position: number;
+          item_id: string;
+          quantity: number;
+        }[];
+      };
+      split_movable_items: {
+        Args: { p_reservation_id: string };
+        Returns: {
+          category_id: string | null;
+          created_at: string;
+          created_by: string;
+          dispatch_id: string | null;
+          extra_id: string | null;
+          fuel_in: number | null;
+          fuel_out: number | null;
+          id: string;
+          quantity: number | null;
+          reservation_id: string;
+          unit_id: string | null;
+          updated_at: string;
+          updated_by: string;
+          usage_in: number | null;
+          usage_out: number | null;
+        }[];
+        SetofOptions: {
+          from: "*";
+          to: "reservation_items";
+          isOneToOne: false;
+          isSetofReturn: true;
+        };
+      };
+      split_reservation: {
+        Args: { p_payload: Json };
+        Returns: {
+          departure_code: string;
+          departure_id: string;
+        }[];
+      };
       touch_current_session_activity: {
         Args: Record<PropertyKey, never>;
         Returns: string;
@@ -3358,6 +3780,13 @@ export type Database = {
           p_unit_id: string;
         };
         Returns: string;
+      };
+      validate_reservation_guide_assignments: {
+        Args: {
+          p_payload: Json;
+          p_reservation_type: Database["public"]["Enums"]["reservation_type"];
+        };
+        Returns: string[];
       };
       validate_reservation_schedule: {
         Args: {

@@ -81,3 +81,34 @@ export const CRC_ORIGINAL_AMOUNT_TEXT = formatMoney({
   amount: CRC_HELD_DEPOSIT.amount,
   currency: CRC_HELD_DEPOSIT.currency,
 });
+
+export const ONE_PAGE_EACH = {
+  currentPages: { pending: 1, retained: 1 },
+  pendingPageCount: 1,
+  retainedPageCount: 1,
+} as const;
+
+export const MIDDLE_PAGES = {
+  currentPages: { pending: 2, retained: 3 },
+  pendingPageCount: 3,
+  retainedPageCount: 4,
+} as const;
+
+export const MIDDLE_PAGES_HREF = {
+  PENDING_NEXT:
+    "/administration/reports/deposits?pendingPage=3&retainedPage=3",
+  PENDING_PREVIOUS:
+    "/administration/reports/deposits?retainedPage=3",
+  RETAINED_NEXT:
+    "/administration/reports/deposits?pendingPage=2&retainedPage=4",
+} as const;
+
+export const NO_PAGE_PARAMS = {
+  pendingPageParam: undefined,
+  retainedPageParam: undefined,
+} as const;
+
+export const PAGE_PARAMS = {
+  pendingPageParam: "2",
+  retainedPageParam: "3",
+} as const;
