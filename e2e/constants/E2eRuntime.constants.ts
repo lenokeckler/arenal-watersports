@@ -99,6 +99,9 @@ export const E2E_ARTIFACT_MODE = {
   TRACE_ON_FAILURE: "retain-on-failure",
 } as const;
 
+export const E2E_GLOBAL_SETUP =
+  "./e2e/support/customComboTariffsFixture.ts";
+
 export const HEADING_LEVEL = {
   CARD: 3,
   PAGE: 1,
