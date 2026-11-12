@@ -1,9 +1,25 @@
 import { expect, test } from "@playwright/test";
+import { PATHS } from "@/app/constants";
 import { createHomePage } from "../pages/Home.page";
 import { E2E_HOME_COPY } from "../constants/E2eHome.constants";
+import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
 
 test.describe("Home", () => {
-  test("shows the page heading inside the main landmark", async ({
+  test.beforeEach(async ({ page }) => {
+    await signInAsSeededWorker(page);
+  });
+
+  test("loads the equipment board at the entry route", async ({
+    page,
+  }) => {
+    const homePage = createHomePage(page);
+
+    await homePage.goTo();
+
+    await expect(page).toHaveURL(PATHS.HOME);
+  });
+
+  test("shows the board heading inside the main landmark at entry", async ({
     page,
   }) => {
     const homePage = createHomePage(page);
@@ -15,7 +31,7 @@ test.describe("Home", () => {
     );
   });
 
-  test("sets the document title from the app metadata", async ({
+  test("sets the document title from the board metadata", async ({
     page,
   }) => {
     const homePage = createHomePage(page);

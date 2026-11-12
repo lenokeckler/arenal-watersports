@@ -49,13 +49,12 @@ con la finalidad de llegar a las pantallas que me corresponden según mi rol.
 
 **Descripción:**
 
-El trabajador abre la aplicación y encuentra el formulario de ingreso con su nombre de usuario y su contraseña. Las reglas que debe cumplir la contraseña se muestran desde antes de escribirla, y un ojito permite verla mientras se digita, porque en la playa se teclea con las manos mojadas y el error es fácil. Si algo falla, el mensaje aparece en rojo junto al campo que lo provoca.
+El trabajador abre la aplicación y encuentra el formulario de ingreso con su nombre de usuario y su contraseña. Un ojito permite ver la contraseña mientras se digita, porque en la playa se teclea con las manos mojadas y el error es fácil. Si algo falla, el mensaje aparece en rojo junto al campo que lo provoca.
 
 **Criterios de aceptación:**
 
 - Ingreso por nombre de usuario y contraseña.
 - Ojito para ver u ocultar la contraseña.
-- Las reglas de la contraseña se muestran desde antes de escribirla, no después de fallar.
 - Los errores se muestran en mensajes rojos junto al campo que los provoca.
 - Autenticación resuelta con Supabase.
 
@@ -110,6 +109,7 @@ Administración crea la cuenta con una contraseña temporal de un solo uso. La p
 - Se confirma la contraseña temporal, se escribe la nueva y se repite.
 - No se avanza a ninguna pantalla del sistema hasta completarlo.
 - La contraseña nueva cumple los requisitos de seguridad.
+- Las reglas de la contraseña se muestran desde antes de escribirla, no después de fallar.
 
 ---
 
@@ -133,6 +133,7 @@ Desde su perfil el trabajador confirma la contraseña actual, escribe la nueva y
 
 - Se confirma la actual, se escribe la nueva y se repite.
 - La contraseña nueva cumple los requisitos de seguridad.
+- Las reglas de la contraseña se muestran desde antes de escribirla, no después de fallar.
 
 ---
 
@@ -155,7 +156,7 @@ La empresa no le da correo institucional a nadie, así que cada trabajador regis
 **Criterios de aceptación:**
 
 - La empresa no da correo propio, así que cada trabajador registra el suyo.
-- Es el correo al que llega el enlace de recuperación.
+- Es el correo al que llega el PIN de recuperación.
 
 ---
 
@@ -179,6 +180,7 @@ El trabajador pide recuperar su contraseña y el sistema envía un PIN de un sol
 
 - El sistema envía un PIN al correo personal registrado en la cuenta.
 - Se escribe el PIN en pantalla, después la contraseña nueva, y se repite.
+- Las reglas de la contraseña se muestran desde antes de escribirla, no después de fallar.
 - El PIN es de un solo uso y vence a los pocos minutos.
 - Si la cuenta no tiene correo registrado, administración genera una contraseña temporal.
 - No hay inicio de sesión con Google ni con ningún otro proveedor: el ingreso es siempre por usuario y contraseña.
@@ -280,16 +282,18 @@ con la finalidad de que un teléfono olvidado en el muelle no quede abierto toda
 
 **Descripción:**
 
-De siete de la noche a siete de la mañana aplican treinta minutos de inactividad. El contador corre desde la última acción en pantalla y cada acción lo reinicia, de modo que quien esté trabajando de noche no se ve afectado. No hay aviso previo: la sesión se cierra y el motivo aparece en el login. La franja horaria se evalúa en el servidor, porque si se leyera del reloj del dispositivo bastaría con cambiarle la hora al teléfono para nunca salir.
+De siete de la noche a siete de la mañana aplican treinta minutos seguidos de inactividad. El contador corre desde la última acción en pantalla y cada acción lo reinicia, de modo que quien esté trabajando de noche no se ve afectado. De día el contador no corre: quien quedó quieto desde la tarde empieza a contar a las siete de la noche. Dos minutos antes del cierre aparece un aviso con la cuenta regresiva y dos botones, Seguir trabajando y Cerrar sesión; si nadie responde, la sesión se cierra y el motivo aparece en el login. La franja horaria y el tiempo que queda se calculan en el servidor, porque si se leyeran del reloj del dispositivo bastaría con cambiarle la hora al teléfono para nunca salir.
 
 **Criterios de aceptación:**
 
-- De 7:00 p. m. a 7:00 a. m. aplican treinta minutos sin actividad.
+- De 7:00 p. m. a 7:00 a. m. aplican treinta minutos seguidos sin actividad.
 - El contador corre desde la última acción en pantalla y cada acción lo reinicia.
-- No hay aviso previo: la sesión se cierra y el mensaje de inactividad aparece en el login.
-- Al llegar las 7:00 p. m. el sistema evalúa cuánto lleva la persona sin actividad, y si ya pasó de treinta minutos cierra la sesión de una.
+- A los veintiocho minutos aparece un aviso con la cuenta regresiva y dos botones: Seguir trabajando, que reinicia el contador, y Cerrar sesión.
+- Si nadie responde, a los treinta minutos la sesión se cierra y el mensaje de inactividad aparece en el login.
+- De día el contador no corre: quien lleva rato sin actividad al llegar las 7:00 p. m. empieza a contar desde esa hora, con el aviso a las 7:28 p. m. y el cierre a las 7:30 p. m.
+- Si antes de las 7:00 a. m. no se completan treinta minutos sin actividad, la sesión sigue abierta durante el día y la cuenta vuelve a empezar a las 7:00 p. m.
 - Quien esté trabajando de noche sigue dentro mientras siga usando la aplicación.
-- La franja horaria se evalúa en el servidor y no con el reloj del dispositivo.
+- La franja horaria y el tiempo que queda se calculan en el servidor y no con el reloj del dispositivo.
 
 ---
 
@@ -417,12 +421,15 @@ con la finalidad de llegar a cualquier sección con el pulgar y sin buscar menú
 
 **Descripción:**
 
-La barra queda fija abajo y da acceso al tablero, al calendario, al inventario y al historial. Las opciones que se muestran dependen del rol de la persona y del modo activo, de modo que nadie ve entradas que no le sirven.
+La barra queda fija abajo y sus opciones dependen del modo activo. En reservas y operaciones conserva los accesos propios de cada área. En administración muestra solo cinco accesos: inventario, extras, trabajadores, ingresos y reportes. Desde trabajadores se llega a la habilitación de áreas y al alta de una persona; desde reportes se llega a depósitos y reservas por trabajador.
 
 **Criterios de aceptación:**
 
 - Da acceso al tablero, al calendario, al inventario y al historial.
 - Las opciones que se muestran dependen del rol y del modo activo.
+- En modo Administración muestra únicamente Inventario, Extras, Trabajadores, Ingresos y Reportes, en ese orden.
+- Inventario abre las categorías; Extras abre el catálogo; Trabajadores abre la administración de áreas, desde donde se llega al alta de un trabajador; Ingresos abre los ingresos del día; Reportes abre los depósitos, desde donde se llega al reporte de reservas por trabajador.
+- En modo Reservas y en modo Operaciones muestra los accesos correspondientes a cada área.
 
 ---
 
@@ -923,6 +930,7 @@ Aquí entra todo lo que la empresa tiene: jet skis, lanchas, cuadraciclos, kayak
 - El equipo reservable no es un registro aparte: es la parte del inventario marcada como reservable.
 - La lista no queda cerrada de antemano, porque cada temporada aparece algo nuevo que hace falta contar. Si mañana compran drybags, se crea la categoría y se define su comportamiento sin tocar nada más.
 - Una categoría que nunca tuvo unidades ni artículos se elimina. Una que ya tuvo se marca inactiva, para no romper el historial.
+- Una categoría inactiva se puede reactivar: vuelve a la lista de categorías activas con todo su historial.
 - Una categoría puede llevar un grupo, opcional. Las que comparten grupo se muestran como una sola tarjeta en el tablero y como un solo bloque al reservar, pero se cuentan y se cobran por separado. Es el caso de los kayaks sencillos y los dobles, y el de los paddleboards cuando hay más de un tipo.
 - No se agrupa una categoría que se lleva por unidad con una que se lleva por cantidad: la tarjeta no podría sumar sus propios números.
 - Sin grupo, la categoría se muestra sola, que es el caso de la mayoría.
@@ -1041,6 +1049,11 @@ De un jet ski no da lo mismo cuál sale: cada uno tiene su gasolina, sus horas y
 - Cada unidad declara cuántas rayas tiene su medidor de gasolina, porque no toda la flota trae el mismo tablero: los cuadraciclos marcan seis y los jet skis y las lanchas cuatro. La lectura del día se guarda sobre ese máximo.
 - Una unidad sin lectura de gasolina todavía no es lo mismo que una unidad en cero.
 - Crear, consultar y modificar. Para sacarla del inventario se da de baja, no se elimina.
+- El código se recorta de espacios y distingue mayúsculas de minúsculas.
+- Una unidad dada de baja no se reactiva.
+- El máximo de rayas del medidor se puede cambiar aunque la unidad ya tenga lecturas.
+- La gasolina, las horas o el kilometraje y el cambio de aceite solo aplican a categorías con motor.
+- Solo administración gestiona las unidades.
 
 ---
 
@@ -2742,6 +2755,7 @@ El inventario cubre todo lo que la empresa tiene, incluidos los jet skis y las l
 - El inventario cubre todo lo que la empresa tiene, incluidos los jet skis y las lanchas.
 - Al entrar a una categoría identificada una por una se ven sus unidades con su código y su estado, por ejemplo los cuatro o cinco jet skis que haya.
 - Al entrar a una categoría llevada por cantidad se ve cuántos hay y cuántos están disponibles, dañados o en reparación.
+- En las categorías identificadas una por una se ve cuántas unidades están en uso, y los conteos por estado cuadran con el total.
 
 ---
 
@@ -2896,7 +2910,7 @@ Reglas que aplican a todo el sistema. Se listan aquí una sola vez en lugar de r
 | ID      | Requisito                                                                                                                                                                                               |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | RNF-001 | Autenticación resuelta con Supabase. Cada persona entra con su propio usuario y nadie digita la contraseña de otro.                                                                                     |
-| RNF-002 | La contraseña exige mayúscula, minúscula, número y símbolo, con largo mínimo y largo máximo. Las reglas se muestran desde antes de escribirla.                                                          |
+| RNF-002 | La contraseña exige mayúscula, minúscula, número y símbolo, con largo mínimo y largo máximo. Las reglas se muestran desde antes de escribirla donde se escoge una contraseña nueva.                     |
 | RNF-003 | La cuenta de un trabajador se bloquea al llegar a diez intentos fallidos seguidos y solo administración la desbloquea.                                                                                  |
 | RNF-004 | La recuperación de contraseña se hace con un PIN de un solo uso enviado al correo personal, para todos los roles. No hay inicio de sesión con Google ni con otro proveedor.                             |
 | RNF-005 | El sistema tiene una sola cuenta de administración. No se bloquea nunca: pasados los diez intentos entra al proceso de recuperación, que es su única salida.                                            |
@@ -3124,3 +3138,5 @@ Estas salieron de construir el sistema y de probarlo en un teléfono, no de las 
 - **Los combos se venden con precio nacional y precio extranjero.** Es la práctica de la empresa y no se resolvía con un solo precio de paquete.
 - **Administración agrupa categorías para el tablero.** Los kayaks sencillos y los dobles son dos categorías y se muestran como una sola tarjeta, sin fusionarse por dentro, porque en el muelle se pregunta cuántos kayaks hay.
 - **Operaciones consulta precios sin ver dinero de reservas.** Son dos cosas distintas: el catálogo de tarifas es información del negocio que se pregunta a diario en el muelle; los cobros, devoluciones y depósitos de una reserva no.
+- **Una categoría inactiva se puede reactivar.** Decisión de Kendall (responsable de la historia US-ADM-12): marcar inactiva una categoría con historial no debe ser permanente, porque en una operación de temporada el equipo sale de servicio y vuelve. La reactivación solo cambia el estado; el historial, las unidades y la configuración se conservan.
+- **Las unidades las gestiona solo administración, y una baja no se revierte.** Decisión de Kendall (responsable de la historia US-ADM-16): el código distingue mayúsculas, las rayas del medidor se pueden corregir aunque haya lecturas, los campos de motor solo existen en categorías con motor y una unidad dada de baja no se reactiva, porque su historial de mantenimiento y de reservas debe seguir cuadrando.

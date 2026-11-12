@@ -1,0 +1,4 @@
+export const CLIENT_RUNTIME = {
+  VERCEL_ENABLED_VALUE: "1",
+  VERCEL_ENVIRONMENT_NAME: "VERCEL",
+} as const;

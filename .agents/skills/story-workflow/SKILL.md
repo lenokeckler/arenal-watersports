@@ -9,7 +9,7 @@ This is the step-by-step sequence for building one of this project's 114 user
 stories. It never duplicates a rule that already has a home:
 
 - Everything about branches, commits, PR title/body/labels/reviewers, the
-  CHANGELOG line, the 1000-line rule and stacked PRs lives in
+  changelog fragment, the 1000-line rule and stacked PRs lives in
   `.agents/skills/pull-request-workflow/SKILL.md`. This skill agrees with it
   everywhere and points to it instead of repeating it.
 - Everything about running the actual implementation through the agent
@@ -132,15 +132,15 @@ UI).
 
 ### The whole loop runs, every time
 
-| Stage                             | When it is mandatory for a story in this repository                                         |
-| --------------------------------- | ------------------------------------------------------------------------------------------- |
-| `design-director`                 | Any story that renders or changes UI                                                        |
-| `code-architect`                  | Any story touching more than one module, introducing folders, or touching Supabase access   |
-| `implementer`                     | Always — it is the only role allowed to write the story's code                              |
-| `standards-auditor` ‖ `qa-tester` | **Always.** Run in parallel                                                                 |
-| Fix loop                          | Until zero critical and zero high findings, capped at 3 rounds                              |
-| `qa-tester` last                  | It closes every round, including the final one                                              |
-| Playwright E2E + screenshots      | Every story that renders or changes UI — `.agents/skills/pull-request-workflow/SKILL.md` §7 |
+| Stage                             | When it is mandatory for a story in this repository                                                                  |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `design-director`                 | Any story that renders or changes UI — handed the story's Stitch screen as the visual reference (`styles-standards`) |
+| `code-architect`                  | Any story touching more than one module, introducing folders, or touching Supabase access                            |
+| `implementer`                     | Always — it is the only role allowed to write the story's code                                                       |
+| `standards-auditor` ‖ `qa-tester` | **Always.** Run in parallel                                                                                          |
+| Fix loop                          | Until zero critical and zero high findings, capped at 3 rounds                                                       |
+| `qa-tester` last                  | It closes every round, including the final one                                                                       |
+| Playwright E2E + screenshots      | Every story that renders or changes UI — `.agents/skills/pull-request-workflow/SKILL.md` §7                          |
 
 - **Never skip the review round.** A story with passing checks and no audit is
   not done. Green `lint` + `build` is not a substitute for `standards-auditor`.
@@ -184,9 +184,10 @@ Run the pre-flight checks of `.agents/skills/pull-request-workflow/SKILL.md`
 3. Confirm the whole team minus the author is still requested.
 4. Stop here. Report the PR and what was done.
 
-**Nobody merges their own PR, and no AI tool merges anything.** The repository owner
-merges into `develop` by hand once a PR carries `QA Approved`, an `APPROVED` review,
-and a `develop` base — `.agents/skills/pull-request-workflow/SKILL.md` §9.
+**The author merges their own PR, and no AI tool merges anything.** Once a teammate
+has approved it with an `APPROVED` review and the `QA Approved` label, and its base is
+`develop`, the author merges it by hand with _Squash and merge_ and owns whatever it
+breaks — `.agents/skills/pull-request-workflow/SKILL.md` §9.
 
 **Work does not stop while a PR waits for review.** Start the next story; a
 different epic almost always has no dependency on the open one.

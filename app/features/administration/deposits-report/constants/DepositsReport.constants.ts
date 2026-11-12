@@ -1,0 +1,1 @@
+export const DEPOSITS_REPORT_SKELETON_ROW_COUNT = 2;

@@ -61,3 +61,12 @@ docs/proyecto/PROGRESO.md
 # Working artifacts for the agent pipeline (plans, scratch notes) never ship.
 .agents/tmp/*
 !.agents/tmp/.gitkeep
+
+docs/referencia/stitch/
+.mcp.json
+
+# Personal, ignored execution route for local calendar previews.
+/app/access/local-preview/
+/playwright-screenshots/local-calendar-preview/
+/debug.log
+/image.png

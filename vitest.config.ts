@@ -20,6 +20,7 @@ export default defineConfig({
     setupFiles: ["./vitest.setup.ts"],
     include: [
       "app/**/*.test.{ts,tsx}",
+      "e2e/support/**/*.test.ts",
       "scripts/**/*.test.mjs",
     ],
   },

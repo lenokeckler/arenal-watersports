@@ -1,0 +1,42 @@
+import { RESERVATION_EQUIPMENT_LOCK } from "./ReservationEquipmentLock.constants";
+
+export const RESERVATION_EDIT_COPY = {
+  BACK_TO_CALENDAR: "Volver al calendario",
+  CATEGORY_UNAVAILABLE:
+    "Esta categoría de equipo ya no está disponible para reservar. Elija otra.",
+  COMBO_LOCKED:
+    "El equipo de un combo no se cambia; si el paquete cambió, cancele esta reserva y cree una nueva.",
+  DESCRIPTION:
+    "Cambie la cantidad de personas, la hora, la duración o el equipo.",
+  LAST_EDIT: "Última modificación:",
+  LAST_EDIT_SEPARATOR: " · ",
+  LOCKED_EQUIPMENT_LABEL: "Equipo reservado",
+  MULTIPLE_ITEMS_LOCKED:
+    "El equipo de esta reserva no se cambia desde aquí. Si necesita otro, cancele la reserva y cree una nueva.",
+  NOT_FOUND:
+    "No se encontró esta reserva. Vuelva al calendario.",
+  NOT_MODIFIABLE:
+    "Esta reserva ya no está agendada y no se puede modificar. Recargue la página.",
+  QUANTITY_UNAVAILABLE:
+    "La cantidad solicitada supera los equipos disponibles para este horario.",
+  STALE:
+    "Esta reserva cambió mientras usted la editaba. Vuelva al calendario y ábrala de nuevo para ver la versión actual.",
+  SUBMIT: "Guardar cambios",
+  SUBMIT_ERROR:
+    "No fue posible guardar los cambios. Revise los datos e inténtelo de nuevo.",
+  SUBMITTING: "Guardando cambios…",
+  SUCCESS: "Los cambios quedaron guardados correctamente.",
+  TITLE: "Modificar reserva",
+  UNAVAILABLE_DESCRIPTION:
+    "Solo se modifican las reservas agendadas que tienen equipo asignado.",
+  UNAVAILABLE_TITLE: "Esta reserva no se puede modificar",
+  UNIT_UNAVAILABLE:
+    "Una unidad de esta reserva no está disponible para el horario elegido.",
+} as const;
+
+export const RESERVATION_EDIT_LOCK_COPY = {
+  [RESERVATION_EQUIPMENT_LOCK.COMBO]:
+    RESERVATION_EDIT_COPY.COMBO_LOCKED,
+  [RESERVATION_EQUIPMENT_LOCK.MULTIPLE_ITEMS]:
+    RESERVATION_EDIT_COPY.MULTIPLE_ITEMS_LOCKED,
+} as const;

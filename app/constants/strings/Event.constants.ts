@@ -1,12 +1,13 @@
 export const EVENT = {
-  MOUSEDOWN: "mousedown",
+  CHANGE: "change",
   CLICK: "click",
   KEYDOWN: "keydown",
   KEYUP: "keyup",
-  SUBMIT: "submit",
-  CHANGE: "change",
-  SCROLL: "scroll",
+  MOUSEDOWN: "mousedown",
   MOUSEMOVE: "mousemove",
+  POINTERDOWN: "pointerdown",
+  SCROLL: "scroll",
+  SUBMIT: "submit",
   TOUCHSTART: "touchstart",
   WHEEL: "wheel",
 } as const;

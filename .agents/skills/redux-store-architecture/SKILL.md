@@ -10,7 +10,7 @@ Every feature that needs shared state uses Redux Toolkit. There is no Context AP
 ## File structure for a new slice
 
 ```
-app/components/<feature-name>/
+app/features/<module>/<feature-name>/
   store/
     <featureName>Slice.ts           ← slice definition + exported actions
     <FeatureName>State.interface.ts ← state shape interface
@@ -33,7 +33,7 @@ export const STORE_SLICES = {
 
 ### 2. Create the state interface
 
-`app/components/my-feature/store/MyFeatureState.interface.ts`:
+`app/features/<module>/my-feature/store/MyFeatureState.interface.ts`:
 
 ```ts
 export interface MyFeatureState {
@@ -45,7 +45,7 @@ export interface MyFeatureState {
 
 ### 3. Create the slice
 
-`app/components/my-feature/store/myFeatureSlice.ts`:
+`app/features/<module>/my-feature/store/myFeatureSlice.ts`:
 
 ```ts
 import {
@@ -93,7 +93,7 @@ export default myFeatureSlice.reducer;
 
 ```ts
 // 1. Import
-import myFeatureReducer from "@/app/components/my-feature/store/myFeatureSlice";
+import myFeatureReducer from "@/app/features/<module>/my-feature/store/myFeatureSlice";
 
 // 2. Add to configureStore reducer map
 export const store = configureStore({
@@ -106,7 +106,7 @@ export const store = configureStore({
 ### 5. Re-export the actions from the store index
 
 ```ts
-export { myFeatureActions } from "@/app/components/my-feature/store/myFeatureSlice";
+export { myFeatureActions } from "@/app/features/<module>/my-feature/store/myFeatureSlice";
 ```
 
 ## Consuming the slice

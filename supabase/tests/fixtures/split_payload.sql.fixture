@@ -1,0 +1,9 @@
+alter table reservations disable trigger reservations_stamp_audit;
+update reservations set updated_at = '2020-01-01 00:00:00+00' where id::text like 'e2900000%';
+alter table reservations enable trigger reservations_stamp_audit;
+
+create function pg_temp.split_payload(p_departures jsonb, p_reservation_id uuid default 'e2900000-0000-4000-8000-000000000301')
+returns jsonb language sql stable as $$
+  select jsonb_build_object('reservation_id', r.id, 'expected_updated_at', r.updated_at, 'departures', p_departures)
+  from reservations r where r.id = p_reservation_id;
+$$;

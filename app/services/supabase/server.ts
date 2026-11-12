@@ -1,6 +1,9 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import { SUPABASE } from "@/app/constants";
+import {
+  SUPABASE,
+  SUPABASE_COOKIE_OPTIONS,
+} from "@/app/constants";
 import type { Database } from "@/app/types";
 
 const ignoreCookieWriteFromServerComponent = (): void =>
@@ -13,6 +16,7 @@ export const createClient = async () => {
     SUPABASE.URL,
     SUPABASE.ANON_KEY,
     {
+      cookieOptions: SUPABASE_COOKIE_OPTIONS,
       cookies: {
         getAll: () => cookieStore.getAll(),
         setAll: (cookiesToSet) => {

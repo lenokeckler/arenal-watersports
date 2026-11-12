@@ -29,7 +29,7 @@ on conflict do nothing;
 
 insert into workers (id, username, full_name, personal_email, base_role, must_change_password)
 values ('00000000-0000-0000-0000-000000000001', 'admin', 'Administración',
-        'arenalwatersports@gmail.com', 'administracion', true)
+        'arenalwatersports@gmail.com', 'administracion', false)
 on conflict do nothing;
 
 insert into equipment_categories
@@ -75,6 +75,27 @@ values
 
   ('Tabla de wake', 'by_quantity', false, null, null, null,
    '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001');
+
+insert into tariffs
+  (category_id, type, amount_usd, amount_crc, created_by, updated_by)
+select category.id, fixture.type::reservation_type,
+       fixture.amount_usd, fixture.amount_crc,
+       '00000000-0000-0000-0000-000000000001',
+       '00000000-0000-0000-0000-000000000001'
+from equipment_categories as category
+join (values
+  ('Jet Ski', 'rental', 20::numeric, 10000::numeric),
+  ('Lancha', 'tour', 10::numeric, 5000::numeric),
+  ('Cuadraciclo', 'tour', 10::numeric, 5000::numeric),
+  ('Kayak doble', 'rental', 20::numeric, 10000::numeric),
+  ('Kayak individual', 'rental', 20::numeric, 10000::numeric),
+  ('Paddleboard', 'rental', 20::numeric, 10000::numeric)
+) as fixture(category_name, type, amount_usd, amount_crc)
+  on fixture.category_name = category.name
+on conflict (category_id, type) do update
+set amount_usd = excluded.amount_usd,
+    amount_crc = excluded.amount_crc,
+    updated_by = excluded.updated_by;
 
 insert into equipment_units (category_id, code, created_by, updated_by)
 select c.id, 'JET-0' || n,

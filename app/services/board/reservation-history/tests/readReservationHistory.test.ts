@@ -1,0 +1,134 @@
+import {
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
+import {
+  RESERVATION_HISTORY_OPERATION,
+  SUPABASE_RPC,
+} from "@/app/constants";
+import { assertActiveWorkModeAccess } from "@/app/services/work-mode/assertActiveWorkModeAccess";
+import { readReservationHistory } from "../readReservationHistory";
+import {
+  HISTORY_READ_ACCESS_REFUSED,
+  HISTORY_READ_DATABASE_ERROR,
+  HISTORY_READ_EMPTY_RESPONSE,
+  HISTORY_READ_EXPECTED_ARGUMENTS,
+  HISTORY_READ_EXPECTED_EMPTY_PAGE,
+  HISTORY_READ_EXPECTED_PAGE,
+  HISTORY_READ_ERROR_RESPONSE,
+  HISTORY_READ_INVERTED_QUERY,
+  HISTORY_READ_LIST_RESPONSE,
+  HISTORY_READ_QUERY,
+  HISTORY_READ_SUPABASE_ERROR_NAME,
+} from "./ReservationHistoryRead.constants";
+
+const supabaseMocks = vi.hoisted(() => ({
+  createServerSupabaseClient: vi.fn(),
+}));
+
+vi.mock("@/app/services/supabase", () => ({
+  createServerSupabaseClient:
+    supabaseMocks.createServerSupabaseClient,
+}));
+vi.mock(
+  "@/app/services/work-mode/assertActiveWorkModeAccess",
+  () => ({ assertActiveWorkModeAccess: vi.fn() })
+);
+
+const rpc = vi.fn();
+
+describe("readReservationHistory", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    rpc.mockResolvedValue(HISTORY_READ_LIST_RESPONSE);
+    supabaseMocks.createServerSupabaseClient.mockResolvedValue(
+      { rpc }
+    );
+  });
+
+  it("asserts access before any database call", async () => {
+    await readReservationHistory(HISTORY_READ_QUERY);
+
+    expect(
+      vi.mocked(assertActiveWorkModeAccess).mock
+        .invocationCallOrder[0]
+    ).toBeLessThan(
+      supabaseMocks.createServerSupabaseClient.mock
+        .invocationCallOrder[0]
+    );
+  });
+
+  it("calls the list function with the built arguments", async () => {
+    const page = await readReservationHistory(
+      HISTORY_READ_QUERY
+    );
+
+    expect(rpc).toHaveBeenCalledWith(
+      SUPABASE_RPC.LIST_RESERVATION_HISTORY,
+      HISTORY_READ_EXPECTED_ARGUMENTS
+    );
+    expect(page).toStrictEqual(HISTORY_READ_EXPECTED_PAGE);
+  });
+
+  it("returns the empty page without a call for an inverted range", async () => {
+    const page = await readReservationHistory(
+      HISTORY_READ_INVERTED_QUERY
+    );
+
+    expect(rpc).not.toHaveBeenCalled();
+    expect(page).toStrictEqual(
+      HISTORY_READ_EXPECTED_EMPTY_PAGE
+    );
+  });
+
+  it("returns the empty page when nothing matches", async () => {
+    rpc.mockResolvedValue(HISTORY_READ_EMPTY_RESPONSE);
+
+    await expect(
+      readReservationHistory(HISTORY_READ_QUERY)
+    ).resolves.toStrictEqual(
+      HISTORY_READ_EXPECTED_EMPTY_PAGE
+    );
+  });
+
+  it("throws the database error with the list operation", async () => {
+    rpc.mockResolvedValue(HISTORY_READ_ERROR_RESPONSE);
+
+    await expect(
+      readReservationHistory(HISTORY_READ_QUERY)
+    ).rejects.toMatchObject({
+      cause: HISTORY_READ_DATABASE_ERROR,
+      message: expect.stringContaining(
+        RESERVATION_HISTORY_OPERATION.LIST
+      ),
+      name: HISTORY_READ_SUPABASE_ERROR_NAME,
+    });
+  });
+
+  it("stops before the database when access is refused", async () => {
+    vi.mocked(
+      assertActiveWorkModeAccess
+    ).mockRejectedValueOnce(HISTORY_READ_ACCESS_REFUSED);
+
+    await expect(
+      readReservationHistory(HISTORY_READ_QUERY)
+    ).rejects.toBe(HISTORY_READ_ACCESS_REFUSED);
+    expect(
+      supabaseMocks.createServerSupabaseClient
+    ).not.toHaveBeenCalled();
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it("refuses an inverted range without answering it", async () => {
+    vi.mocked(
+      assertActiveWorkModeAccess
+    ).mockRejectedValueOnce(HISTORY_READ_ACCESS_REFUSED);
+
+    await expect(
+      readReservationHistory(HISTORY_READ_INVERTED_QUERY)
+    ).rejects.toBe(HISTORY_READ_ACCESS_REFUSED);
+  });
+});

@@ -1,7 +1,7 @@
 export const E2E_SERVER = {
-  COMMAND: "npm run dev -- --port 3100",
+  COMMAND: "npm run dev -- --port 3000",
   HOST: "http://localhost",
-  PORT: 3100,
+  PORT: 3000,
   STARTUP_TIMEOUT_MS: 240_000,
 } as const;
 
@@ -16,7 +16,13 @@ export const E2E_TIMEOUT_MS = {
   ACTION: 20_000,
   EXPECT: 20_000,
   NAVIGATION: 60_000,
+  POST_SUBMIT: 90_000,
   TEST: 120_000,
+} as const;
+
+export const E2E_VIEWPORT = {
+  MOBILE: "mobile",
+  DESKTOP: "desktop",
 } as const;
 
 export const E2E_RETRY_COUNT = {
@@ -25,7 +31,10 @@ export const E2E_RETRY_COUNT = {
 } as const;
 
 export const E2E_WORKER_COUNT = {
+  ADMIN_RECOVERY: 1,
+  ADMIN_SCREENSHOTS: 1,
   CI: 1,
+  LOCAL: 1,
 } as const;
 
 export const E2E_OUTPUT_DIR = {
@@ -39,19 +48,44 @@ export const E2E_DEVICE_NAME = {
   MOBILE: "Pixel 7",
 } as const;
 
+export const E2E_CSS_POSITION = {
+  STATIC: "static",
+  STICKY: "sticky",
+} as const;
+
 export const E2E_PROJECT = {
+  ADMIN_RECOVERY: "chromium-mobile-admin-recovery",
+  ADMIN_SCREENSHOTS: "chromium-desktop-admin-screenshots",
+  ADMIN_SCREENSHOTS_MOBILE:
+    "chromium-mobile-admin-screenshots",
+  AUTH_SETUP: "auth-setup",
   DEFAULT: "chromium-desktop",
+  DESKTOP_AUTH_SETUP: "desktop-auth-setup",
   MOBILE: "chromium-mobile",
   SCREENSHOTS: "chromium-desktop-screenshots",
+  SCREENSHOTS_DESKTOP_AUTH_SETUP:
+    "screenshots-desktop-auth-setup",
   SCREENSHOTS_MOBILE: "chromium-mobile-screenshots",
 } as const;
 
 export const E2E_TEST_MATCH = {
+  ADMIN_RECOVERY: "**/specs/*.admin.e2e.ts",
+  ADMIN_SCREENSHOTS:
+    "**/screenshots/*.admin.screenshots.ts",
+  AUTH_SETUP: "**/setup/*.setup.ts",
   DEFAULT: "**/specs/*.e2e.ts",
   SCREENSHOTS: "**/screenshots/*.screenshots.ts",
 } as const;
 
 export const E2E_TEST_DIR = "./e2e";
+
+export const E2E_AUTH_STORAGE_PATH =
+  "playwright-artifacts/admin-storage-state.json";
+
+export const E2E_SIGNED_OUT_STORAGE_STATE = {
+  cookies: [],
+  origins: [],
+};
 
 export const E2E_REPORTER = {
   HTML: "html",
@@ -65,6 +99,33 @@ export const E2E_ARTIFACT_MODE = {
   TRACE_ON_FAILURE: "retain-on-failure",
 } as const;
 
+export const E2E_GLOBAL_SETUP =
+  "./e2e/support/customComboTariffsFixture.ts";
+
 export const HEADING_LEVEL = {
+  CARD: 3,
   PAGE: 1,
+  SCREEN: 2,
+} as const;
+
+export const E2E_LOAD_STATE = {
+  LOAD: "load",
+  NETWORK_IDLE: "networkidle",
+} as const;
+
+export const E2E_CONTROLS_SELECTOR = (id: string): string =>
+  `[aria-controls="${id}"]`;
+
+export const E2E_COUNT = {
+  NONE: 0,
+  ONE: 1,
+} as const;
+
+export const E2E_PAGE_EVENT = {
+  REQUEST: "request",
+} as const;
+
+export const E2E_SKIP_REASON = {
+  SINGLE_INVENTORY_WRITER:
+    "The inventory mutation runs once to avoid concurrent database writes.",
 } as const;

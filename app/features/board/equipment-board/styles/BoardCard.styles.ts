@@ -1,0 +1,61 @@
+import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
+
+export const BOARD_CARD_CLASS =
+  "flex w-full min-w-0 flex-col overflow-hidden rounded-xl border border-outline-variant bg-card-tint-neutral-bg shadow-lg backdrop-blur-md";
+
+export const BOARD_CARD_INTERACTIVE_CLASS = joinClassNames(
+  BOARD_CARD_CLASS,
+  "relative transition-transform duration-200 hover:scale-102 active:scale-98 motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100"
+);
+
+export const BOARD_CARD_LINK_CLASS =
+  "absolute inset-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary";
+
+export const BOARD_CARD_MEDIA_ASPECT_CLASS =
+  "aspect-4/3 w-full shrink-0 grow lg:aspect-video";
+
+export const BOARD_CARD_MEDIA_CLASS = joinClassNames(
+  BOARD_CARD_MEDIA_ASPECT_CLASS,
+  "relative overflow-hidden"
+);
+
+export const BOARD_CARD_IMAGE_CLASS =
+  "absolute inset-0 h-full w-full object-cover";
+
+export const BOARD_CARD_PLACEHOLDER_CLASS =
+  "absolute inset-0 flex items-center justify-center bg-surface-container-high";
+
+export const BOARD_CARD_PLACEHOLDER_ICON_CLASS =
+  "text-6xl text-on-surface-variant/40";
+
+export const BOARD_CARD_CHIPS_CLASS =
+  "absolute inset-x-0 top-0 flex items-start justify-between gap-1 p-2 md:gap-xs md:p-sm";
+
+export const BOARD_CARD_CHIP_CLASS =
+  "whitespace-nowrap rounded-full border border-primary/30 bg-background/70 px-1.5 py-0.5 font-mono text-label-mono tracking-normal uppercase text-primary backdrop-blur-md";
+
+export const BOARD_CARD_UNIT_CHIP_CLASS = joinClassNames(
+  BOARD_CARD_CHIP_CLASS,
+  "min-w-0 truncate md:px-2"
+);
+
+export const BOARD_CARD_UNIT_CHIP_SHORT_CLASS = "md:hidden";
+
+export const BOARD_CARD_UNIT_CHIP_LONG_CLASS =
+  "hidden md:inline";
+
+export const BOARD_CARD_FREE_CHIP_CLASS = joinClassNames(
+  BOARD_CARD_CHIP_CLASS,
+  "shrink-0 tabular-nums md:px-2"
+);
+
+export const BOARD_CARD_NAME_CLASS =
+  "absolute inset-x-0 bottom-0 flex flex-col gap-xs bg-linear-to-t from-background/95 via-background/60 to-transparent px-sm pb-sm pt-md md:gap-sm";
+
+export const BOARD_CARD_LABEL_CLASS =
+  "break-words text-body-base font-semibold text-on-surface md:text-title-md";
+
+export const BOARD_CARD_BAR_TRACK_CLASS =
+  "block h-2 w-full shrink-0 overflow-hidden rounded-full bg-on-surface/25";
+
+export const BOARD_CARD_BAR_FILL_CLASS = "fill-primary";

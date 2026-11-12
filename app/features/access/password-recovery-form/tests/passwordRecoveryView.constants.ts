@@ -1,0 +1,13 @@
+export const LABEL_SEPARATOR = "|";
+export const FORM_SELECTOR = "form";
+export const ARIA_DISABLED_ATTRIBUTE = "aria-disabled";
+export const NO_VALIDATE_PROPERTY = "noValidate";
+export const TRUE_VALUE = "true";
+export const NO_ALERTS = 0;
+export const SINGLE_ALERT = 1;
+export const SINGLE_SPINNER = 1;
+export const PROGRESS_ICON_NAME = "progress_activity";
+export const PRESET_USERNAME = "ana.perez";
+export const ENTRY_TEST_ID = "password-recovery-entry";
+export const PREFILL_ATTRIBUTE = "data-username";
+export const SCRIPT_SELECTOR = "script";

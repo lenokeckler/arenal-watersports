@@ -9,6 +9,7 @@ const Title = ({
   text,
   children,
   className,
+  tabIndex,
 }: TitleProps) => {
   const slugifiedText = useSlugify(safeString(text));
   const finalID = id ?? slugifiedText;
@@ -18,6 +19,7 @@ const Title = ({
         <h1
           id={finalID}
           className={className}
+          tabIndex={tabIndex}
         >
           {children ?? text}
         </h1>
@@ -27,6 +29,7 @@ const Title = ({
         <h2
           id={finalID}
           className={className}
+          tabIndex={tabIndex}
         >
           {children ?? text}
         </h2>
@@ -36,6 +39,7 @@ const Title = ({
         <h3
           id={finalID}
           className={className}
+          tabIndex={tabIndex}
         >
           {children ?? text}
         </h3>

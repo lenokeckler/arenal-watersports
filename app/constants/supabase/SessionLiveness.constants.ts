@@ -1,0 +1,4 @@
+export const SESSION_LIVENESS = {
+  TIMEOUT_MS: 3000,
+  FIRST_SERVER_ERROR_STATUS: 500,
+} as const;

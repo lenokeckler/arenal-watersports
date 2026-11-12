@@ -1,6 +1,6 @@
 ---
 name: structure-standards
-description: The structural rules every reviewer on this team enforces — no comments, types declared once in models/, the Nullable family, one defaults object, no nested ternaries, reuse before writing, enum-like constants for closed sets, base components for text and structure, goTo in page objects, no magic numbers in tests, and answering every review comment; use when writing or reviewing any TS/TSX, including tests and E2E.
+description: The structural rules every reviewer on this team enforces — no comments, types declared once in models/, the Nullable family, one defaults object, no nested ternaries, reuse before writing, enum-like constants for closed sets, base components for text and structure, goTo in page objects, no magic numbers in tests, answering every review comment, and naming a shared piece after its concept; use when writing or reviewing any TS/TSX, including tests and E2E.
 ---
 
 # Structure standards
@@ -26,7 +26,7 @@ Never written by hand at each call site, never declared in the file that execute
 // ❌ the same event shape in the hook, the ViewModel and two components
 onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
 
-// ✅ app/components/charge-form/models/ChargeFormFieldChangeHandler.type.ts
+// ✅ app/features/reservations/charge-form/models/ChargeFormFieldChangeHandler.type.ts
 export type ChargeFormFieldChangeEvent = React.ChangeEvent<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 >;
@@ -35,6 +35,8 @@ export type ChargeFormFieldChangeHandler = (
 ) => void;
 ```
 
+- The props of a `page.tsx` or a `layout.tsx` are not declared at all: they use the route types
+  Next.js generates, `PageProps<"/route">` and `LayoutProps<"/route">` (`route-structure` §3).
 - Declare **both** the event and the handler when a test builds a fake event: the test needs the
   event type, the ViewModel needs the handler.
 - The union must match what it is passed to. A handler bound to the shared `FormField` accepts
@@ -66,7 +68,7 @@ const buildDailyBoard = (
   closures: DayClosure[]
 ) => …
 
-// ✅ app/components/daily-board/models/DailyBoardSources.interface.ts
+// ✅ app/features/board/daily-board/models/DailyBoardSources.interface.ts
 export interface DailyBoardSources {
   closures: DayClosure[];
   dispatches: ReservationDispatch[];
@@ -127,7 +129,7 @@ Test and E2E helpers that fill a form take their defaults from **one** typed obj
 overrides are spread over it. Never a `??` per field with a literal glued to the call site.
 
 ```ts
-// ❌ app/components/login-form/tests/LoginForm.page.ts
+// ❌ app/features/access/login-form/tests/LoginForm.page.ts
 await user.type(
   getUsernameInput(),
   overrides.username ?? "operaciones1"
@@ -137,7 +139,7 @@ await user.type(
   overrides.password ?? "local-test-password"
 );
 
-// ✅ app/components/login-form/tests/LoginForm.constants.ts
+// ✅ app/features/access/login-form/tests/LoginForm.constants.ts
 export const DEFAULT_LOGIN_FORM_INPUT: LoginFormValues = {
   password: "local-test-password",
   username: "operaciones1",
@@ -240,7 +242,7 @@ type ChargeListState = "loading" | "ready" | "empty";
 if (state === "empty") { … }
 interface ContactButtonProps { channel: "phone" | "whatsapp"; }
 
-// ✅ app/components/charge-list/constants/ChargeListState.constants.ts
+// ✅ app/features/reservations/charge-list/constants/ChargeListState.constants.ts
 export const CHARGE_LIST_STATE = {
   EMPTY: "empty",
   LOADING: "loading",
@@ -323,7 +325,7 @@ const goTo = async (): Promise<void> => {
 
 // ❌
 const openLoginPage = async () =>
-  page.goto("/acceso/ingreso");
+  page.goto("/access/login");
 ```
 
 ## 10. Search the repository for an existing type or constant before declaring one
@@ -351,7 +353,7 @@ the lint selectors — is in `styles-standards`.
 ## 12. No magic numbers — tests, doubles and E2E included
 
 `constants-standards` owns magic numbers in application code. The same rule reaches **test
-doubles, page objects, Storybook stories, E2E specs and capture scripts**: a number whose
+doubles, page objects, E2E specs and capture scripts**: a number whose
 meaning is not the number itself — a timeout, an index into a result, a count, a retry, a
 viewport — gets a named constant.
 
@@ -469,6 +471,34 @@ one thing, and its name says what: with no comments allowed, file names are the 
 Why: a reviewer reads one small file with one purpose quickly; a change touches one file instead
 of rewriting a large one, which keeps stacked PRs from colliding; each test aims at one unit.
 
+## 16. Name a shared piece after its concept, not after the first story that uses it
+
+Before naming a type, a constant, a util, a service or a feature folder, list the stories that
+will use it. The backlog already says which ones do: when two or more stories need the piece, its
+name is the concept they share. Only what a single story does carries that story's name.
+
+```bash
+npm run story -- --list
+git grep -n -i "contraseña nueva" -- docs/proyecto/historias-de-usuario.md
+```
+
+The first lists every story; the second finds the siblings of a concept by the words their
+criteria use. Run the second with the concept of the piece being named.
+
+```
+✅ utils/password-change/validatePasswordChange.ts     US-ACC-03, US-ACC-04 and US-ACC-06 choose a new password
+✅ services/authentication/changeFirstPassword.ts      only US-ACC-03 flips the first sign-in flag
+❌ utils/first-sign-in/validateFirstPasswordChange.ts  US-ACC-04 reuses it under a name that is not its own
+```
+
+The plan of a change (`code-architect`) lists each new shared piece with the stories that use it
+and the name that follows, so the name is settled before the first file exists.
+
+Why: a piece named after its first story is renamed when the second story arrives, and that
+rename touches every file that imports it. Renaming the pieces of this repository's first
+password story, measured as pull requests of their own, came to more than two thousand changed
+lines.
+
 ## Pre-flight, before a PR leaves draft
 
 Run over the files of the PR, not the whole repository. Every hit is either fixed or named in
@@ -524,3 +554,4 @@ grep -nE "^\s*(//|/\*|\*|--|#)|\{/\*|TODO" <files> | grep -vE "\.md:|#!|\"use (c
 - [ ] Every review thread fixed everywhere and answered
 - [ ] No comments or docstrings, SQL and tests included
 - [ ] One responsibility per file; view without hooks; one type per file in `models/`
+- [ ] Every shared piece is named after its concept, with its sibling stories listed first

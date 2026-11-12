@@ -1,0 +1,3 @@
+export const FAKE_RESERVATION_ID =
+  "e2400000-0000-4000-8000-000000000201";
+export const EXPECTED_SPLIT_PATH = `/reservations/${FAKE_RESERVATION_ID}/split`;

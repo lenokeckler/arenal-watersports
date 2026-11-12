@@ -11,12 +11,59 @@ This skill is the **single source of truth** for how UI features are structured:
 
 ## 1. Always Use Feature-Based Component Architecture
 
-Every UI feature lives in its **own folder** under `app/components/<feature-name>/`. Colocate that feature’s components, hooks, models, constants, store, and feature-only sub-UI there. Do **not** scatter a feature across unrelated shared folders or invent a parallel global layout.
+Every UI feature lives in its **own folder** under `app/features/<module>/<feature-name>/`. Colocate that feature’s components, hooks, models, constants, store, and feature-only sub-UI there. Do **not** scatter a feature across unrelated shared folders or invent a parallel global layout.
+
+### Where a folder goes: features versus shared
+
+`app/` keeps screens and shared pieces apart, so a teammate sees at once what belongs to one module and what everyone uses:
+
+```
+app/
+├── access/              route root before signing in (route-structure)
+├── (system)/            route root after signing in (route-structure)
+│
+├── features/            one folder per story module
+│   ├── access/          ACC
+│   ├── board/           TAB
+│   ├── administration/  ADM
+│   ├── reservations/    RES
+│   └── operations/      OPE
+│
+├── components/          shared bases only: button, input, modals, spinner, text…
+├── services/
+├── store/
+└── constants/
+```
+
+| Folder                             | Holds                                                            |
+| ---------------------------------- | ---------------------------------------------------------------- |
+| `app/features/<module>/<feature>/` | One screen or one module-only piece, with everything it needs    |
+| `app/components/<base>/`           | A piece two or more modules use, with no knowledge of any module |
+
+The module folder comes from the story's module: `ACC` → `access`, `TAB` → `board`, `ADM` → `administration`, `RES` → `reservations`, `OPE` → `operations` (`route-structure` §1). A piece used by several stories of one module stays in that module; it moves to `app/components/` only when a second module needs it.
+
+```
+✅ app/features/reservations/charges/                    RES-23..33, one module
+✅ app/features/access/login-form/                       ACC-01, ACC-02
+✅ app/components/calendar/                              used by reservations and operations
+❌ app/components/charges/                               a screen of one module parked with the shared bases
+❌ app/features/charges/                                 no module folder: nobody knows who owns it
+```
+
+### Imports flow one way
+
+```
+app/access/, app/(system)/   ──▶   app/features/   ──▶   app/components/, services/, store/, constants/, utils/
+```
+
+- A route imports the feature it renders.
+- A feature imports shared folders and its own files. It never imports another feature: whatever two features need moves down to a shared folder.
+- A shared folder never imports a feature. The one exception is `app/store/index.ts`, which registers each feature's slice (`redux-store-architecture`).
 
 ### Required layout
 
 ```
-app/components/<feature-name>/
+app/features/<module>/<feature-name>/
   FeatureName.tsx                 ← entry / thin composition return
   FeatureNameInner.tsx            ← optional main body composition
   FeatureNameModals.tsx           ← optional feature modal shell
@@ -52,13 +99,13 @@ Use **kebab-case** folder names (`reservation-form`, `dispatch-board`, `form-fie
 - **Colocate by default.** Feature hooks, models, and slices belong inside that folder — not in a global `hooks/` dumping ground.
 - **Compose shared primitives** from `component-standards` (`Button`, `Modal`, `FormField`, …). Feature folders **consume** shared bases; they do not re-implement them.
 - **Shared / cross-feature utilities** only go under `app/utils` (or true shared components) when reused by multiple features. Prefer extracting upward only after a second consumer exists.
-- **Pages/routes** live in `app/(roles)/<area>/…` or `app/acceso/…` (`route-structure`). A `page.tsx` is a shell that renders one feature view; the feature UI and its logic live under `app/components/<feature-name>/`.
-- **Do not** create orphan components at `app/components/SomeLooseFile.tsx` without a feature folder when the UI has logic, models, or multiple files.
+- **Pages/routes** live in `app/(system)/…` or `app/access/…` (`route-structure`). A `page.tsx` is a shell that renders one feature view; the feature UI and its logic live under `app/features/<module>/<feature-name>/`.
+- **Do not** create orphan components at `app/components/SomeLooseFile.tsx` or `app/features/<module>/SomeLooseFile.tsx` without a folder of their own.
 
 ### Incorrect
 
 ```
-app/components/
+app/features/reservations/
   ReservationForm.tsx
   useReservationLogic.ts          ← loose files, no feature folder
 app/hooks/
@@ -70,7 +117,7 @@ app/store/
 ### Correct
 
 ```
-app/components/reservation-form/
+app/features/reservations/reservation-form/
   ReservationForm.tsx
   ReservationFormInner.tsx
   specs/
@@ -150,7 +197,7 @@ Who is this for and what outcome should they get?
 
 - Do not start non-trivial implementation until a spec exists (or the user explicitly provided equivalent acceptance criteria in the prompt — then persist them into `specs/SPEC.md` when creating/updating the feature).
 - Implement and review **against the spec**, not against guessed requirements.
-- Keep specs colocated with the feature (`app/components/<feature>/specs/`). Page-only work may use `app/(roles)/<area>/<resource>/specs/` when there is no feature folder yet — prefer promoting UI into a feature folder.
+- Keep specs colocated with the feature (`app/features/<module>/<feature>/specs/`). Route folders never hold specs (`route-structure` §1).
 
 ## 3. Always Apply SOLID and Proper Design Patterns
 
@@ -248,11 +295,11 @@ The primary `.tsx` return must stay **short and scannable** — a composition ou
 | Situation                       | Placement                                                                                                    |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | One or two extractions regions  | Colocate next to the parent: `FeatureNameHeader.tsx`, `FeatureNameModals.tsx`                                |
-| Several feature-only pieces     | `app/components/<feature>/components/*.tsx`                                                                  |
+| Several feature-only pieces     | `app/features/<module>/<feature>/components/*.tsx`                                                           |
 | Modal steps / multi-step panels | `modals/` (existing project pattern)                                                                         |
 | Already a shared primitive      | Reuse from `component-standards` — do **not** invent a local duplicate of `Button`, `Modal`, `Section`, etc. |
 
-Local minis are **feature-private** presentation. Promote to shared `app/components/` only when a second feature needs the same UI (reuse rule).
+Local minis are **feature-private** presentation. Promote to shared `app/components/` only when a second module needs the same UI (reuse rule).
 
 ### What to extract
 
@@ -445,7 +492,9 @@ export const useReservationFormViewModel = ({
 
 - [ ] Non-trivial work has `specs/SPEC.md` (or equivalent acceptance criteria persisted) and was validated against it
 - [ ] Design applies SOLID and an intentional pattern (ViewModel, composition, facade, Redux, …) — no god components / anti-patterns
-- [ ] Feature lives under `app/components/<kebab-feature>/` with colocated `hooks/`, `models/`, `specs/`, and `store/` / `constants/` as needed
+- [ ] Feature lives under `app/features/<module>/<kebab-feature>/` with colocated `hooks/`, `models/`, `specs/`, and `store/` / `constants/` as needed
+- [ ] `app/components/` gained only pieces two or more modules use
+- [ ] No import from one feature into another, and none from a shared folder into a feature (except `app/store/index.ts`)
 - [ ] Main `.tsx` return is a short composition of local minis / shared primitives — not a long monolith JSX block
 - [ ] No feature logic scattered into global dumps or orphan `.tsx` files
 - [ ] No `useState` / `useEffect` / fetch / non-trivial handlers left in the `.tsx`

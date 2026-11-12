@@ -312,6 +312,40 @@ resolver) imported from a `styles/*.styles.ts` file. The four selectors live in
 <p className={resolveTextClassName(isBold, className)}>
 ```
 
+`no-restricted-imports` guards the one-way imports of `component-architecture` §1, with two
+blocks in `eslint.config.mjs`:
+
+- **Shared folders** (`app/components`, `constants`, `providers`, `services`, `store`, `styles`,
+  `types`, `utils`) never import `@/app/features/...`. The one exception is `app/store/index.ts`,
+  which registers each feature's slice.
+- **A feature** never imports `@/app/features/...`: another feature is off limits, and its own
+  files are imported with relative paths. A relative path never climbs out of the feature folder
+  either; the rule cannot see that, so review catches it.
+
+Routes (`app/access/`, `app/(system)/`) are the only place that imports features.
+
+**Incorrect:**
+
+```ts
+// app/components/button/Button.tsx
+import { LOGIN_FORM_COPY } from "@/app/features/access/login-form/constants/LoginFormCopy.constants";
+
+// app/features/access/login-form/LoginForm.tsx
+import AccessScreen from "@/app/features/access/access-screen-shell/AccessScreen";
+```
+
+**Correct:**
+
+```ts
+// app/access/layout.tsx — a route composes features
+import AccessScreen from "@/app/features/access/access-screen-shell/AccessScreen";
+
+// app/features/access/login-form/LoginForm.tsx — own files, relative
+import { useLoginFormViewModel } from "./hooks/useLoginFormViewModel";
+```
+
+What two features need moves down to a shared folder; fix the import, never the rule.
+
 Switch `case`s that fall through need an explicit `break` / `return` / `throw` (or a valid `// falls through` comment only if ESLint accepts it — prefer no fallthrough).
 
 ---
@@ -331,5 +365,6 @@ Before finishing any JS/TS change:
 - [ ] `async` only when `await` is used
 - [ ] Hooks at top level with complete dependency arrays
 - [ ] No literal, template or ternary inside `className` (`styles-standards`)
+- [ ] No `@/app/features/...` import outside a route; a feature imports only its own files
 - [ ] `npx eslint <touched-files>` (or `npm run lint`) is clean
 - [ ] Formatted per `prettier-standards` (`npx prettier --write` on touched files)

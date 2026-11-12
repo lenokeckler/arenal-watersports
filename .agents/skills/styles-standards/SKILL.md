@@ -28,12 +28,12 @@ component — that is still a violation of this skill.
 
 ## Where
 
-| Scope                                                       | Path                                                    |
-| ----------------------------------------------------------- | ------------------------------------------------------- |
-| Feature component                                           | `app/components/<feature>/styles/<Component>.styles.ts` |
-| Shared base component                                       | `app/components/<base>/styles/<Base>.styles.ts`         |
-| Route files (`page.tsx`, `layout.tsx`) and app-level chrome | `app/styles/<Screen>.styles.ts`                         |
-| Cross-feature primitives (card, bottom sheet, field error)  | `app/styles/<Primitive>.styles.ts`                      |
+| Scope                                                       | Path                                                           |
+| ----------------------------------------------------------- | -------------------------------------------------------------- |
+| Feature component                                           | `app/features/<module>/<feature>/styles/<Component>.styles.ts` |
+| Shared base component                                       | `app/components/<base>/styles/<Base>.styles.ts`                |
+| Route files (`page.tsx`, `layout.tsx`) and app-level chrome | `app/styles/<Screen>.styles.ts`                                |
+| Cross-feature primitives (card, bottom sheet, field error)  | `app/styles/<Primitive>.styles.ts`                             |
 
 One `.styles.ts` per component, or per small group that always renders together (a form and its
 fields). `constants/` never holds class strings — it holds copy, ids, routes, limits and enums
@@ -46,7 +46,7 @@ moved to the matching `styles/` file.
 one object with keys:
 
 ```ts
-// ✅ app/components/reservation-list/styles/ReservationList.styles.ts
+// ✅ app/features/reservations/reservation-list/styles/ReservationList.styles.ts
 export const RESERVATION_LIST_WRAPPER_CLASS =
   "flex flex-col gap-2 px-4 py-3 md:px-8";
 
@@ -143,6 +143,23 @@ sizes (`h-[58px]`) only when matching a base component that already uses them.
 **Never interpolate a value into a class name.** Tailwind generates classes by scanning source
 text, so `` `bg-[${COLOR.LAKE}]` `` or `` `rounded-${radius}` `` never produces CSS. Write every
 class out in full inside the styles file and pick among them with a map.
+
+## Visual reference — Stitch
+
+The Stitch screens in `docs/referencia/stitch/` (local to each machine, ignored by git) are the
+**reference for the look of the app, not a blueprint to copy**. Every screen keeps their palette,
+style and design language, so the whole app reads as one product:
+
+- **Must match:** the color roles of `@theme`, the glass cards and surfaces, rounded corners,
+  shadows and background glows, the type scale and spacing, and the look of buttons, chips,
+  segmented controls and cards. A screen that looks like it belongs to another app — flat boxes
+  where Stitch uses cards, a solid fill where Stitch uses a translucent pill, a color outside the
+  palette — is a review finding.
+- **Free to adapt:** adding or removing elements (a footer, a subtitle, a link the story does not
+  ask for), the copy and its order, and exact sizes that do not change the overall feel. The
+  story decides what is on the screen; Stitch decides how it looks.
+
+A deliberate departure that changes the look is named in the PR's _Developer Notes_.
 
 ## Mobile first
 

@@ -1,8 +1,10 @@
 import { BUTTON } from "../constants/Button.types";
 import { SIZE } from "../constants/Size.types";
 
-export const BUTTON_BASE_CLASS =
-  "font-semibold transition-colors duration-200 focus:outline-none text-center inline-flex items-center justify-center w-auto max-w-full";
+export const BUTTON_TOUCH_TARGET_CLASS =
+  "min-h-11 min-w-11";
+
+export const BUTTON_BASE_CLASS = `${BUTTON_TOUCH_TARGET_CLASS} font-semibold transition-colors duration-200 focus:outline-none text-center inline-flex items-center justify-center w-auto max-w-full`;
 
 export const BUTTON_PRIMARY_CLASS =
   "bg-primary text-on-primary border-3 border-primary hover:bg-primary-container hover:text-on-primary-container hover:border-primary-container";

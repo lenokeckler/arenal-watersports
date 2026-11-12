@@ -1,6 +1,6 @@
 ---
 name: constants-standards
-description: Single source of truth for replacing hard-coded strings and magic numbers with @/app/constants, and for creating, naming, and organizing those constant files; defers Tailwind class strings to styles-standards.
+description: Single source of truth for replacing hard-coded strings and magic numbers with @/app/constants, for creating, naming, and organizing those constant files, and for user-facing copy (Spanish, addressed as usted); defers Tailwind class strings to styles-standards.
 ---
 
 # Constants Standards and Rules
@@ -9,6 +9,7 @@ This skill is the **single source of truth** for:
 
 1. Replacing hard-coded string literals and magic numbers in application code with `@/app/constants`
 2. Creating, naming, structuring, typing, and exporting constant files under `app/constants/`
+3. Writing user-facing copy — Spanish, addressed as **usted** (§9)
 
 Tailwind class strings are **not** constants: they never go in `app/constants/` or a feature's `constants/` folder. They live in `styles/*.styles.ts` files — follow `styles-standards`.
 
@@ -18,7 +19,7 @@ Tailwind class strings are **not** constants: they never go in `app/constants/` 
 
 ## 1. Replace Hard-Coded Literals With Constants
 
-Never use raw string or unexplained numeric literals in components, hooks, stories, or business logic when a constant exists — or should exist — under `@/app/constants`.
+Never use raw string or unexplained numeric literals in components, hooks, or business logic when a constant exists — or should exist — under `@/app/constants`.
 
 ### Strings
 
@@ -26,7 +27,6 @@ Never use raw literal strings (e.g., `"centered"`, `"ArrowRight"`, `"region"`, `
 
 Common catalogs:
 
-- **Storybook layouts**: `STORYBOOK_LAYOUT.CENTERED`, `STORYBOOK_LAYOUT.FULLSCREEN`, …
 - **Keyboard keys**: `KEYBOARD.ARROW_RIGHT`, `KEYBOARD.ENTER`, …
 - **ARIA roles / labels**: `ARIA_ROLE.REGION`, `ARIA_ROLE.BUTTON`, …
 - **Generic strings / fallbacks**: `STRING.Empty` instead of `""` (utilities like `safeString` are fine for fallbacks)
@@ -402,4 +402,25 @@ Derive types from the object when consumers need a union of allowed values (same
 ```ts
 export type ImageIconSize =
   (typeof IMAGE_SIZES.ICON)[keyof typeof IMAGE_SIZES.ICON];
+```
+
+## 9. User-Facing Copy — Spanish, Addressed as "Usted"
+
+Every text a worker reads — titles, labels, buttons, placeholders, empty states, toasts, errors, `aria-label`s and alt text — is Spanish and lives in a `*Copy.constants.ts` file (`AGENTS.md`, language convention), never inline and never in a plain `*.constants.ts` next to ids or limits.
+
+The app always addresses the worker as **usted**: verbs, possessives and pronouns in the formal form. Never tú (`tienes`, `tu`, `ingresa`) and never vos (`tenés`, `ingresá`).
+
+| ❌ Incorrect                            | ✅ Correct                             |
+| --------------------------------------- | -------------------------------------- |
+| `"No tienes acceso a las operaciones."` | `"No tiene acceso a las operaciones."` |
+| `"No pudimos guardar tu vista."`        | `"No pudimos guardar su vista."`       |
+| `"Ingresa tu usuario"`                  | `"Ingrese su usuario"`                 |
+| `"Intenta de nuevo"`                    | `"Intente de nuevo"`                   |
+
+Impersonal or neutral wording is fine when it reads naturally (`"No se pudo cargar la lista."`, `"Contraseña"`).
+
+**Guard** over the touched copy files — every hit is fixed or is not addressed to the worker:
+
+```bash
+grep -rnwE "tienes|puedes|quieres|debes|tu|tus|te|ti|contigo|ingresa|intenta|selecciona|escribe|revisa|vuelve" <touched *Copy.constants.ts files>
 ```

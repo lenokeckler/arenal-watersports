@@ -1,0 +1,115 @@
+import {
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
+import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
+import { updateCategoryAlertsAction } from "../services/updateCategoryAlertsAction";
+import {
+  ALERT_ROW_COLUMNS,
+  buildUpdateCategoryAlertsInput,
+  CATEGORY_ALERT_ID,
+  DEFAULT_UPDATE_CATEGORY_ALERTS_INPUT,
+  FAKE_ALERT_ADMIN_WORKER_ID,
+} from "./CategoryAlerts.constants";
+
+const ID_COLUMN = "id";
+
+const mockAssertIsAdminWorker = vi.fn();
+const mockMaybeSingle = vi.fn();
+const mockSelect = vi.fn(() => ({
+  maybeSingle: mockMaybeSingle,
+}));
+const mockUpdateEq = vi.fn(() => ({ select: mockSelect }));
+const mockUpdate = vi.fn((_row: object) => ({
+  eq: mockUpdateEq,
+}));
+
+vi.mock(
+  "@/app/services/authorization/assertIsAdminWorker",
+  () => ({
+    assertIsAdminWorker: (...args: unknown[]): unknown =>
+      mockAssertIsAdminWorker(...args),
+  })
+);
+
+vi.mock("@/app/services/supabase", () => ({
+  createServerSupabaseClient: vi.fn().mockResolvedValue({
+    from: vi.fn(() => ({ update: mockUpdate })),
+  }),
+}));
+
+describe("updateCategoryAlertsAction", () => {
+  beforeEach(() => {
+    mockAssertIsAdminWorker.mockReset();
+    mockUpdate.mockClear();
+    mockUpdateEq.mockClear();
+    mockSelect.mockClear();
+    mockMaybeSingle.mockReset();
+    mockAssertIsAdminWorker.mockResolvedValue(
+      FAKE_ALERT_ADMIN_WORKER_ID
+    );
+    mockMaybeSingle.mockResolvedValue({
+      data: { id: CATEGORY_ALERT_ID },
+      error: null,
+    });
+  });
+
+  it("sends only the two alert keys and the signer, filtered by category id", async () => {
+    await updateCategoryAlertsAction(
+      DEFAULT_UPDATE_CATEGORY_ALERTS_INPUT
+    );
+
+    const [payload] = mockUpdate.mock.calls[0];
+    expect(Object.keys(payload).sort()).toEqual(
+      ALERT_ROW_COLUMNS
+    );
+    expect(mockUpdateEq).toHaveBeenCalledWith(
+      ID_COLUMN,
+      CATEGORY_ALERT_ID
+    );
+  });
+
+  it("sends explicit nulls when the alerts are cleared", async () => {
+    await updateCategoryAlertsAction(
+      buildUpdateCategoryAlertsInput({
+        alertMinQuantity: null,
+        alertExpiryDays: null,
+      })
+    );
+
+    expect(mockUpdate).toHaveBeenCalledWith({
+      alert_min_quantity: null,
+      alert_expiry_days: null,
+      updated_by: FAKE_ALERT_ADMIN_WORKER_ID,
+    });
+  });
+
+  it("returns success when the update matched a row", async () => {
+    expect(
+      await updateCategoryAlertsAction(
+        DEFAULT_UPDATE_CATEGORY_ALERTS_INPUT
+      )
+    ).toEqual({ status: CATEGORY_MUTATION_STATUS.SUCCESS });
+  });
+
+  it("returns the not-found error when the update matched no row", async () => {
+    mockMaybeSingle.mockResolvedValue({
+      data: null,
+      error: null,
+    });
+
+    expect(
+      await updateCategoryAlertsAction(
+        DEFAULT_UPDATE_CATEGORY_ALERTS_INPUT
+      )
+    ).toEqual({
+      status: CATEGORY_MUTATION_STATUS.ERROR,
+      message:
+        CATEGORY_CATALOG_COPY.ALERT_CATEGORY_NOT_FOUND_ERROR,
+    });
+  });
+});

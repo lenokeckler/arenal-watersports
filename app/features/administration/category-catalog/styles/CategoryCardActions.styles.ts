@@ -1,0 +1,22 @@
+import {
+  CATEGORY_CARD_DANGER_OPTION_CLASS,
+  CATEGORY_CARD_OPTION_CLASS,
+} from "./CategoryCardOption.styles";
+
+export const CATEGORY_CARD_ACTIONS_BUTTON_CLASS =
+  CATEGORY_CARD_OPTION_CLASS;
+
+export const CATEGORY_CARD_ACTIONS_DELETE_BUTTON_CLASS =
+  CATEGORY_CARD_DANGER_OPTION_CLASS;
+
+export const CATEGORY_CARD_ACTIONS_CONFIRM_CLASS =
+  "flex w-full flex-col gap-3";
+
+export const CATEGORY_CARD_ACTIONS_CONFIRM_MESSAGE_CLASS =
+  "text-body-base text-on-surface";
+
+export const CATEGORY_CARD_ACTIONS_CONFIRM_BUTTON_ROW_CLASS =
+  "grid grid-cols-2 gap-3";
+
+export const CATEGORY_CARD_ACTIONS_CONFIRM_BUTTON_CLASS =
+  "min-h-11";

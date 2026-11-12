@@ -1,0 +1,50 @@
+export const SUPABASE_RPC = {
+  CAN_REGISTER_EXTERNAL_GUIDE:
+    "can_register_external_guide",
+  BLOCK_WORKER: "block_worker",
+  CHOOSE_WORK_AREA: "choose_work_area",
+  COMPLETE_FIRST_PASSWORD_CHANGE:
+    "complete_first_password_change",
+  CONSUME_PASSWORD_RESET_PIN: "consume_password_reset_pin",
+  CURRENT_SESSION_SECONDS_LEFT:
+    "current_session_seconds_left",
+  CURRENT_SESSION_STATE: "current_session_state",
+  CURRENT_WORK_AREA: "current_work_area",
+  DELETE_OR_DEACTIVATE_EXTRA: "delete_or_deactivate_extra",
+  EXCHANGE_PASSWORD_RESET_PIN:
+    "exchange_password_reset_pin",
+  FINISH_PASSWORD_RECOVERY: "finish_password_recovery",
+  GET_RESERVATION_HISTORY_RECORD:
+    "get_reservation_history_record",
+  ADJUST_EQUIPMENT_STOCK: "adjust_equipment_stock",
+  LIST_INVENTORY_COUNTS: "list_inventory_counts",
+  RECORD_INVENTORY_COUNT: "record_inventory_count",
+  SET_UNIT_CONDITION: "set_unit_condition",
+  LIST_OPERATIONS_STOCK_MOVEMENTS:
+    "list_operations_stock_movements",
+  GRANT_WORKER_AREA: "grant_worker_area",
+  GRANT_WORKER_MARK: "grant_worker_mark",
+  HAS_AREA: "has_area",
+  IS_ADMIN: "is_admin",
+  ISSUE_PASSWORD_RESET_PIN: "issue_password_reset_pin",
+  LIST_RESERVATION_HISTORY: "list_reservation_history",
+  PREPARE_WORKER_TEMPORARY_PASSWORD:
+    "prepare_worker_temporary_password",
+  PASSWORD_RESET_GRANT_IS_OPEN:
+    "password_reset_grant_is_open",
+  MARK_PASSWORD_RESET_PIN_UNDELIVERED:
+    "mark_password_reset_pin_undelivered",
+  RECORD_FAILED_SIGN_IN: "record_failed_sign_in",
+  RECORD_SUCCESSFUL_SIGN_IN: "record_successful_sign_in",
+  REGISTER_EXTERNAL_GUIDE: "register_external_guide",
+  REDEEM_PASSWORD_RESET_GRANT:
+    "redeem_password_reset_grant",
+  EXTEND_WORKER_EXPIRY: "extend_worker_expiry",
+  REHIRE_WORKER: "rehire_worker",
+  RETIRE_WORKER: "retire_worker",
+  REVOKE_WORKER_AREA: "revoke_worker_area",
+  REVOKE_WORKER_MARK: "revoke_worker_mark",
+  UNLOCK_WORKER: "unlock_worker",
+  TOUCH_CURRENT_SESSION_ACTIVITY:
+    "touch_current_session_activity",
+} as const;

@@ -1,6 +1,12 @@
 import { INPUT_TYPES } from "@/app/constants";
+import type {
+  Autocapitalize,
+  Autocomplete,
+  InputMode,
+} from "../constants/InputTypes.constants";
 import { Nullable, NullableRef } from "@/app/types";
 import { RefObject } from "react";
+import type { FormFieldVariant } from "./FormFieldVariant.type";
 
 export interface FormFieldProps {
   id: string;
@@ -43,4 +49,10 @@ export interface FormFieldProps {
   onSearch?: (_value: string) => void;
   reference?: RefObject<NullableRef<HTMLInputElement>>;
   isSearch?: boolean;
+  variant?: FormFieldVariant;
+  describedBy?: string;
+  autoComplete?: Autocomplete;
+  inputMode?: InputMode;
+  autoCapitalize?: Autocapitalize;
+  spellCheck?: boolean;
 }

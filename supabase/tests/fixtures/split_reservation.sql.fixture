@@ -1,0 +1,71 @@
+insert into auth.users (id, email)
+values ('e2900000-0000-4000-8000-000000000001', 'res19-reservas@arenal.local');
+
+insert into workers (id, username, full_name, personal_email, base_role)
+values ('e2900000-0000-4000-8000-000000000001', 'res19-reservas', 'RES19 Reservas', 'res19-reservas@correo.com', 'reservas');
+
+insert into equipment_categories
+  (id, name, status, tracking_mode, is_reservable, units_are_interchangeable, default_duration_minutes, created_by, updated_by)
+values
+  ('e2900000-0000-4000-8000-000000000101', 'RES19 Lancha', 'active', 'by_unit', true, false, 60,
+   'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001'),
+  ('e2900000-0000-4000-8000-000000000102', 'RES19 Chaleco', 'active', 'by_quantity', true, true, 60,
+   'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001');
+
+insert into equipment_stock (category_id, quantity_available, updated_by)
+values ('e2900000-0000-4000-8000-000000000102', 10, 'e2900000-0000-4000-8000-000000000001');
+
+insert into equipment_units (id, category_id, code, status, created_by, updated_by)
+values ('e2900000-0000-4000-8000-000000000201', 'e2900000-0000-4000-8000-000000000101', 'RES19-LANCHA-1', 'available',
+        'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001');
+
+insert into extras (id, name, created_by, updated_by)
+values ('e2900000-0000-4000-8000-000000000501', 'RES19 Extra',
+        'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001');
+
+insert into reservations
+  (id, customer_name, people_count, type, starts_at, duration_minutes, status, parent_reservation_id, created_by, updated_by)
+values
+  ('e2900000-0000-4000-8000-000000000301', 'RES19 Original', 4, 'rental', '2035-04-12 15:00:00+00', 60, 'scheduled', null,
+   'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001'),
+  ('e2900000-0000-4000-8000-000000000302', 'RES19 Departure', 3, 'rental', '2035-04-12 17:00:00+00', 60, 'scheduled',
+   'e2900000-0000-4000-8000-000000000301',
+   'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001'),
+  ('e2900000-0000-4000-8000-000000000303', 'RES19 Dispatched', 4, 'rental', '2035-04-13 15:00:00+00', 60, 'scheduled', null,
+   'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001'),
+  ('e2900000-0000-4000-8000-000000000304', 'RES19 Closed', 4, 'rental', '2035-04-14 15:00:00+00', 60, 'scheduled', null,
+   'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001'),
+  ('e2900000-0000-4000-8000-000000000305', 'RES19 Cancelled', 4, 'rental', '2035-04-15 15:00:00+00', 60, 'scheduled', null,
+   'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001'),
+  ('e2900000-0000-4000-8000-000000000306', 'RES19 Dispatched item', 4, 'rental', '2035-04-16 15:00:00+00', 60, 'scheduled', null,
+   'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001');
+
+insert into reservation_items (id, reservation_id, unit_id, category_id, quantity, extra_id, created_by, updated_by)
+values
+  ('e2900000-0000-4000-8000-000000000401', 'e2900000-0000-4000-8000-000000000301',
+   'e2900000-0000-4000-8000-000000000201', null, null, null,
+   'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001'),
+  ('e2900000-0000-4000-8000-000000000402', 'e2900000-0000-4000-8000-000000000301',
+   null, 'e2900000-0000-4000-8000-000000000102', 3, null,
+   'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001'),
+  ('e2900000-0000-4000-8000-000000000403', 'e2900000-0000-4000-8000-000000000301',
+   null, null, null, 'e2900000-0000-4000-8000-000000000501',
+   'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001'),
+  ('e2900000-0000-4000-8000-000000000404', 'e2900000-0000-4000-8000-000000000306',
+   null, 'e2900000-0000-4000-8000-000000000102', 1, null,
+   'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001');
+
+insert into reservation_dispatches
+  (id, reservation_id, category_id, dispatched_at, duration_minutes, created_by, updated_by)
+values ('e2900000-0000-4000-8000-000000000601', 'e2900000-0000-4000-8000-000000000306',
+        'e2900000-0000-4000-8000-000000000102', '2035-04-16 15:00:00+00', 60,
+        'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001');
+
+update reservation_items
+set dispatch_id = 'e2900000-0000-4000-8000-000000000601'
+where id = 'e2900000-0000-4000-8000-000000000404';
+
+update reservations set status = 'dispatched' where id = 'e2900000-0000-4000-8000-000000000303';
+update reservations set status = 'closed' where id = 'e2900000-0000-4000-8000-000000000304';
+update reservations set status = 'cancelled', cancellation_reason = 'RES19 reason' where id = 'e2900000-0000-4000-8000-000000000305';
+update reservations set status = 'scheduled', dispatched_at = null where id = 'e2900000-0000-4000-8000-000000000306';

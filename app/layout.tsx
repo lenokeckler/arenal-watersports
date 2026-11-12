@@ -1,30 +1,19 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import {
+  hankenGrotesk,
+  jetbrainsMono,
+  materialSymbolsOutlined,
+} from "./fonts/AppFonts";
 import "./globals.css";
 import { resolveRootLayoutBodyClassName } from "./styles/RootLayout.styles";
 import {
   APP_NAME,
   DOCUMENT_LANGUAGE,
 } from "@/app/constants";
+import { ToastContainer } from "@/app/components";
+import { CheckDeviceWidth_Provider } from "@/app/components/check-device-width";
+import { ReduxProvider } from "@/app/providers";
 import { buildThemeInitScript } from "@/app/utils/theme/Theme";
-
-const hankenGrotesk = localFont({
-  src: "./fonts/HankenGrotesk-latin-wght.woff2",
-  variable: "--font-hanken-grotesk",
-  weight: "100 900",
-});
-
-const jetbrainsMono = localFont({
-  src: "./fonts/JetBrainsMono-latin-wght.woff2",
-  variable: "--font-jetbrains-mono",
-  weight: "100 800",
-});
-
-const materialSymbolsOutlined = localFont({
-  display: "block",
-  src: "./fonts/MaterialSymbolsOutlined-static.woff2",
-  variable: "--font-material-symbols",
-});
 
 export const metadata: Metadata = {
   title: APP_NAME.LABEL,
@@ -33,9 +22,7 @@ export const metadata: Metadata = {
 
 const RootLayout = ({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>): React.JSX.Element => (
+}: LayoutProps<"/">): React.JSX.Element => (
   <html
     lang={DOCUMENT_LANGUAGE}
     suppressHydrationWarning
@@ -54,7 +41,12 @@ const RootLayout = ({
         materialSymbolsOutlined.variable
       )}
     >
-      {children}
+      <ReduxProvider>
+        <CheckDeviceWidth_Provider>
+          {children}
+          <ToastContainer />
+        </CheckDeviceWidth_Provider>
+      </ReduxProvider>
     </body>
   </html>
 );

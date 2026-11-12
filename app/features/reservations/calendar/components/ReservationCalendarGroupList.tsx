@@ -1,0 +1,46 @@
+import type { ReactElement } from "react";
+import { Section, Title } from "@/app/components";
+import { TitleVariant } from "@/app/constants";
+import type { ReservationCalendarGroupListProps } from "../models/ReservationCalendarGroupListProps.interface";
+import { ReservationCalendarBlockEntry } from "@/app/components/reservation-calendar/components/ReservationCalendarBlockEntry";
+import { renderReservationCalendarBlockActions } from "../utils/renderReservationCalendarBlockActions";
+import {
+  RESERVATION_CALENDAR_GROUPS_CLASS,
+  RESERVATION_CALENDAR_GROUP_CLASS,
+  RESERVATION_CALENDAR_GROUP_BLOCKS_CLASS,
+} from "../styles/ReservationCalendarGroups.styles";
+
+export const ReservationCalendarGroupList = ({
+  groups,
+}: ReservationCalendarGroupListProps): ReactElement => (
+  <div className={RESERVATION_CALENDAR_GROUPS_CLASS}>
+    {groups.map((group) => (
+      <Section
+        key={group.dateLabel}
+        aria-label={group.dateLabel}
+        className={RESERVATION_CALENDAR_GROUP_CLASS}
+      >
+        <Title
+          variant={TitleVariant.AUXILIAR}
+          text={group.dateLabel}
+        />
+        <div
+          className={
+            RESERVATION_CALENDAR_GROUP_BLOCKS_CLASS
+          }
+        >
+          {group.blocks.map((block) => (
+            <ReservationCalendarBlockEntry
+              key={block.id}
+              actions={renderReservationCalendarBlockActions(
+                block
+              )}
+              block={block}
+              enableDetailLink
+            />
+          ))}
+        </div>
+      </Section>
+    ))}
+  </div>
+);

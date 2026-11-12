@@ -1,6 +1,6 @@
 ---
 name: pull-request-workflow
-description: The team's branch, commit, pull request, review and merge workflow — GitFlow, branch and commit naming, PR title/body/labels/reviewers, the CHANGELOG line, the 1000-line rule and stacked PRs; use before cutting a branch, committing, opening or updating a PR, or answering a review.
+description: The team's branch, commit, pull request, review and merge workflow — GitFlow, branch and commit naming, PR title/body/labels/reviewers, the changelog fragment, the 1000-line rule and stacked PRs; use before cutting a branch, committing, opening or updating a PR, or answering a review.
 ---
 
 # Pull request workflow
@@ -18,7 +18,7 @@ in Spanish. User-facing copy inside the app is Spanish (`AGENTS.md`).
 | Integration     | `develop` (protected)                                                    |
 | Production      | `main` (protected)                                                       |
 | Merge method    | Squash only; the head branch is deleted on merge                         |
-| Who merges      | The repository owner merges into `develop`; nobody else                  |
+| Who merges      | The author, once a teammate approved and labelled it `QA Approved`       |
 | Stories         | `docs/proyecto/historias-de-usuario.md` — `US-ACC-01`, epics `EP-ACC-01` |
 | Jira            | `https://arenal-watersports.atlassian.net/browse/AWS-<n>`                |
 | Package manager | npm                                                                      |
@@ -92,7 +92,7 @@ One short English sentence in the imperative, capitalised, no prefix, no trailin
 body, no trailers. The branch and the PR title already say which epic and story the work belongs
 to, so the commit only says what was done.
 
-- **The PR's first commit** is `Start <topic>` and carries the PR's CHANGELOG line (§5), so it is
+- **The PR's first commit** is `Start <topic>` and adds the PR's changelog fragment (§5), so it is
   never empty.
 - **Small, focused commits**: each one does one thing a reviewer can read on its own.
 - **Fixes after a review are new commits** on the same branch. Never amend or rebase commits a
@@ -162,7 +162,7 @@ type:
 ```
 
 Changing a title is free (it touches nothing else); renaming the branch is not (§2). When the
-title changes, update the PR's CHANGELOG line too.
+title changes, update the PR's changelog fragment too.
 
 ### Body
 
@@ -208,37 +208,42 @@ gh pr ready <n>
 gh pr edit <n> --remove-label "In Progress" --add-label "Waiting for QA"
 ```
 
-A PR leaves draft only when its CI is green and its diff shows its own CHANGELOG line (§5).
+A PR leaves draft only when its CI is green and its diff adds its own changelog fragment (§5).
 
-## 5. CHANGELOG — one line per PR, in its own diff
+## 5. CHANGELOG — one fragment per PR, in its own diff
 
-`CHANGELOG.md` at the root keeps `# UNRELEASED` with `## Feature` and `## Bugfix`. Every PR adds
-**exactly one line of its own**, in its starter commit: the PR title, an em dash, what changed,
-and the story plus its Jira key.
+Every PR writes **exactly one changelog line in a file of its own**, a fragment, in its starter
+commit. Two PRs never edit the same file, so a merge never leaves the next PR with a changelog
+conflict, and no approval is lost to one.
 
-```markdown
-# UNRELEASED
+- **Where:** `changelog/unreleased/feature/` for stories and chores, `changelog/unreleased/bugfix/`
+  for fixes.
+- **Name:** the branch with every `/` turned into `-`, plus `.md` — `feat/acc-01/us-01-login-form`
+  writes `changelog/unreleased/feature/feat-acc-01-us-01-login-form.md`.
+- **Content:** one line, without the leading `- `: the PR title, an em dash, what changed, and the
+  story plus its Jira key.
 
-## Feature
+```text
+changelog/unreleased/feature/feat-acc-01-us-01-login-form.md
+ACC-01.01: Login form — username and password login screen at /access/login (US-ACC-01 · AWS-30)
 
-- ACC-01.01: Login form — username and password login screen at /acceso/ingreso (US-ACC-01 · AWS-30)
-- chore - Playwright tooling — Playwright configuration and capture helper
+changelog/unreleased/feature/chore-playwright-tooling.md
+chore - Playwright tooling — Playwright configuration and capture helper
 
-## Bugfix
-
-- ACC-01.02: fix - Blocked account message reveals the username — the message no longer shows it (US-ACC-02 · AWS-31)
+changelog/unreleased/bugfix/fix-acc-01-us-02-blocked-message.md
+ACC-01.02: fix - Blocked account message reveals the username — the message no longer shows it (US-ACC-02 · AWS-31)
 ```
 
-- Stories and chores go under `## Feature`; fixes under `## Bugfix`.
-- A line inherited from a lower PR of a stack **does not count**: a reviewer reads each diff
-  alone. Never move a line from one PR to another.
-- Check before leaving draft — `null` means the PR is not ready:
+- **`CHANGELOG.md` is not edited in a feature PR.** Only the `release/*` PR changes it: there,
+  `npm run changelog` moves every fragment into its `# UNRELEASED` sections and deletes the files.
+- A fragment inherited from a lower PR of a stack **does not count**: a reviewer reads each diff
+  alone. Never move a fragment from one PR to another.
+- **CI checks it** on every pull request (`npm run changelog:check -- origin/<base>`): exactly one
+  new fragment, one line, and `CHANGELOG.md` untouched. Run it locally before leaving draft.
 
 ```bash
-gh pr view <n> --json files --jq '[.files[].path] | index("CHANGELOG.md")'
+npm run changelog:check -- origin/develop
 ```
-
-When `develop` moves and `CHANGELOG.md` conflicts, keep both sides, in merge order.
 
 ## 6. Size: the 1000-line rule, and stacked PRs
 
@@ -299,26 +304,30 @@ it.
 - **Merge bottom-up only.** Nothing in the middle goes first.
 - When the bottom PR merges, the repository deletes its branch and GitHub **retargets the next PR
   to `develop` on its own**. Never delete or rename a branch that has an open PR.
+- A retarget alone does not start CI. The next PR already ran CI against its old base; when
+  `develop` is merged into it, that push runs CI against `develop` before it merges.
 - A lower branch that must change after review propagates up with `git merge`, never with rebase
   plus force-push: `git switch feat/res-07/us-28-refunds && git merge feat/res-07/us-26-charges --no-edit`.
 
 ### The squash false conflict
 
 Squash-merging the bottom PR makes the next one show a conflict that is not real: its lower
-commits are already on `develop`, flattened into one. Prove it and clear it with an ours-merge —
-no force-push, the tree does not change:
+commits are already on `develop`, flattened into one. Clear it with `merge:after-squash` — no
+force-push, the tree does not change:
 
 ```bash
 git switch <child-branch> && git pull --ff-only
-git diff --quiet <merged-parent-head-sha> origin/develop && echo "same tree"   # must print
-git merge -s ours origin/develop -m "Merge develop after squash of <parent PR title>"
-git diff --quiet origin/<child-branch> HEAD && echo "tree unchanged"          # must print
+npm run merge:after-squash -- <parent PR number>
 git push origin HEAD
 ```
 
-The parent head SHA comes from `gh pr view <parent> --json headRefOid` (the branch is gone). If
-`same tree` does not print, someone else landed on `develop` in between: stop and resolve by hand
-— usually only `CHANGELOG.md`, keeping both lines.
+The command proves the conflict is false before it clears it: the parent PR is merged, this
+branch holds the parent's final head, and that head has the same tree as `origin/develop`. When
+any proof fails it stops without touching the branch, because clearing the conflict then would
+throw away what `develop` gained: someone else merged in between, or the parent changed after this
+branch took it. Run a real `git merge origin/develop` and resolve each conflict by hand keeping
+both sides — a fragment never conflicts, so look for a real code overlap. **Never type
+`git merge -s ours` yourself**: an unproven ours-merge is how #17 and #146 erased `develop`.
 
 ## 7. UI stories ship end-to-end coverage
 
@@ -345,23 +354,34 @@ npm run build
 npm run test:e2e          # every UI story
 ```
 
-CI runs the first five on every PR to `develop`; a red PR does not leave draft.
+CI runs the first five, plus the changelog check, on every pull request — whatever its base, so a stacked PR is checked from its first push — and again on every push to `develop` and `main`. A newer push to the same PR cancels the run it replaces. A red PR does not leave draft.
 
 Then run the review guards over the PR's own files — the pre-flight greps of
-`structure-standards` and the `className` guard of `styles-standards` — and confirm the diff
-shows this PR's CHANGELOG line (§5). Every hit is fixed or named in _Developer Notes_ with the
-reason it stays; a rule a reviewer has to point out costs a full review round.
+`structure-standards`, the `className` guard of `styles-standards` and the usted guard of
+`constants-standards` §9 — and confirm the diff adds this PR's changelog fragment (§5). A PR that
+renders a screen is also compared with its Stitch screen for palette and style
+(`styles-standards`, _Visual reference — Stitch_). Every hit is fixed or named in _Developer
+Notes_ with the reason it stays; a rule a reviewer has to point out costs a full review round.
 
 ```bash
 git diff --name-only origin/<base>...HEAD
-gh pr view <n> --json files --jq '[.files[].path] | index("CHANGELOG.md")'
+npm run changelog:check -- origin/<base>
 ```
 
 ## 9. Review and merge
 
-- **Nobody merges their own PR.** The repository owner merges into `develop`, by hand, when the PR has
-  `QA Approved`, an `APPROVED` review, and base `develop`. A PR stacked on an unmerged parent
-  waits whatever its labels say. AI tools never merge anything.
+- **Every teammate is a reviewer.** Each PR requests the whole team minus the author; one review is
+  enough. A reviewer usually comes from a neighbouring area — reservations with charges,
+  dispatch with catalogue, app structure with access — but anyone may take it.
+- **The reviewer approves and labels.** An `APPROVED` review plus the `QA Approved` label, together.
+  The author never approves or labels their own PR; `develop` and `main` require one approval.
+- **The author merges their own PR** into `develop`, by hand, with _Squash and merge_, once it has
+  `QA Approved`, an `APPROVED` review and base `develop`. Whatever the merge breaks, the author
+  fixes in a new PR. A PR stacked on an unmerged parent waits whatever its labels say.
+- **AI tools never merge anything.** The merge button is always pressed by a person.
+- **Say it when a PR touches sensitive ground.** A PR that changes `supabase/migrations/`,
+  `.github/` or the skills and agents (`.agents/`, `.claude/`, `AGENTS.md`) says so in
+  _Developer Notes_, so the reviewer reads it with extra care.
 - `develop` reaches `main` only through a `release/*` PR.
 - After a review: fix **every** thread and every other occurrence of the same pattern in the PR,
   push new commits, reply in each thread saying what changed, and swap `Code Review Rejected` /
@@ -375,7 +395,7 @@ gh pr view <n> --json files --jq '[.files[].path] | index("CHANGELOG.md")'
 
 - [ ] Branch cut from a fresh `develop` (or the branch it truly depends on), named `feat/<mod>-<NN>/us-<NN>-<slug>`, one story
 - [ ] `git diff --shortstat origin/<base>...HEAD` measured before adding work; under 1000
-- [ ] Starter commit `Start <topic>` with this PR's CHANGELOG line
+- [ ] Starter commit `Start <topic>` with this PR's changelog fragment (`npm run changelog:check` passes)
 - [ ] Draft PR, correct title, five headings, every story linked to its `AWS-` issue
 - [ ] Whole team minus the author as reviewers; `In Progress` + `Enhancement`
 - [ ] Small commits, one short English imperative sentence each, no prefix
@@ -384,4 +404,5 @@ gh pr view <n> --json files --jq '[.files[].path] | index("CHANGELOG.md")'
 - [ ] Prettier, lint, typecheck, unit tests, build and E2E green
 - [ ] `structure-standards` pre-flight and `styles-standards` guard clean over the PR's files
 - [ ] Ready: `gh pr ready`, `In Progress` → `Waiting for QA`
-- [ ] Review fixes as new commits, every thread answered; nobody merges their own PR
+- [ ] Review fixes as new commits, every thread answered
+- [ ] Merged by the author only after an `APPROVED` review and `QA Approved` from a teammate

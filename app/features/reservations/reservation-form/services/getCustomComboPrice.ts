@@ -1,0 +1,41 @@
+import { createServerSupabaseClient } from "@/app/services/supabase";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+import type { NullableRef } from "@/app/types";
+import { RESERVATION_SERVICE_OPERATION } from "../constants/ReservationServiceOperation.constants";
+import type { CustomComboPricing } from "../models/CustomComboPricing.interface";
+import type { CustomComboPricingInput } from "../models/CustomComboPricingInput.interface";
+import { mapCustomComboRpcItems } from "../utils/mapCustomComboRpcItems";
+import { RESERVATION_SCHEDULE } from "../constants/ReservationSchedule.constants";
+
+export const getCustomComboPrice = async (
+  input: CustomComboPricingInput
+): Promise<NullableRef<CustomComboPricing>> => {
+  const supabase = await createServerSupabaseClient();
+  const { data: pricingRows, error } = await supabase.rpc(
+    "custom_combo_price",
+    {
+      p_items: mapCustomComboRpcItems(input.items),
+      p_duration_minutes:
+        input.durationHours *
+        RESERVATION_SCHEDULE.MINUTES_PER_HOUR,
+      p_extra_ids: input.extraIds,
+      p_extra_unit_id: input.extraUnitId,
+    }
+  );
+
+  throwIfSupabaseError(
+    error,
+    RESERVATION_SERVICE_OPERATION.LOAD_CUSTOM_COMBO_PRICE
+  );
+
+  const pricing = pricingRows?.[0];
+
+  if (!pricing) {
+    return null;
+  }
+
+  return {
+    listAmountCrc: pricing.list_amount_crc,
+    listAmountUsd: pricing.list_amount_usd,
+  };
+};

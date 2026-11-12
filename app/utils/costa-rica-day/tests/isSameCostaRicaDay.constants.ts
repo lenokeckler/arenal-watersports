@@ -1,0 +1,18 @@
+export const MORNING_IN_COSTA_RICA = new Date(
+  "2026-11-02T14:00:00.000Z"
+);
+
+export const EVENING_IN_COSTA_RICA_AFTER_UTC_MIDNIGHT =
+  new Date("2026-11-03T05:59:59.999Z");
+
+export const FIRST_INSTANT_OF_NEXT_DAY = new Date(
+  "2026-11-03T06:00:00.000Z"
+);
+
+export const LAST_INSTANT_OF_PREVIOUS_DAY = new Date(
+  "2026-11-02T05:59:59.999Z"
+);
+
+export const FIRST_INSTANT_OF_SAME_DAY = new Date(
+  "2026-11-02T06:00:00.000Z"
+);
