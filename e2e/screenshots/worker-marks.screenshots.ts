@@ -1,4 +1,6 @@
 import {
+  E2E_EXTERNAL_GUIDE_REGISTRATION_LABEL,
+  E2E_EXTERNAL_GUIDE_REGISTRATION_PUT_NOTICE,
   E2E_GENERAL_MANAGER_LABEL,
   E2E_GENERAL_MANAGER_PUT_NOTICE,
   E2E_GUIDE_LABEL,
@@ -12,7 +14,7 @@ import { captureFullPage } from "../support/captureFullPage";
 import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
 
 test.describe("Worker marks screenshots", () => {
-  test("captures a worker without marks and then with both marks", async ({
+  test("captures a worker without marks, with two marks and with all three", async ({
     activeWorker,
     page,
   }, testInfo) => {
@@ -48,6 +50,20 @@ test.describe("Worker marks screenshots", () => {
     await captureFullPage(
       page,
       E2E_WORKER_MARKS_SCREENSHOT_BASENAME.BOTH_MARKS,
+      testInfo.project.name
+    );
+    await areasPage.press(
+      E2E_EXTERNAL_GUIDE_REGISTRATION_LABEL,
+      E2E_WORKER_AREAS_COPY.MARK_GRANT
+    );
+    await expect(
+      areasPage.getNotice(
+        E2E_EXTERNAL_GUIDE_REGISTRATION_PUT_NOTICE
+      )
+    ).toBeVisible();
+    await captureFullPage(
+      page,
+      E2E_WORKER_MARKS_SCREENSHOT_BASENAME.ALL_MARKS,
       testInfo.project.name
     );
   });

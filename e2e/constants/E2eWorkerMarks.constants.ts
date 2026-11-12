@@ -61,4 +61,5 @@ export const E2E_EXTERNAL_GUIDE_REGISTRATION_REMOVED_NOTICE =
 export const E2E_WORKER_MARKS_SCREENSHOT_BASENAME = {
   NO_MARKS: "04-worker-marks-none",
   BOTH_MARKS: "05-worker-marks-guide-and-general-manager",
+  ALL_MARKS: "06-worker-marks-all-three",
 } as const;
