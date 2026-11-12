@@ -33,6 +33,7 @@ export const WORKER_AREAS_COPY = {
     "No hay ningún trabajador con ese nombre de usuario.",
   REVOKE: "Quitar",
   REVOKING: "Quitando…",
+  REGISTER_WORKER: "Registrar un trabajador",
   RESERVATIONS_REPORT: "Ver reservas por trabajador",
   SEARCH: "Buscar",
   USERNAME_LABEL: "Nombre de usuario",
@@ -91,6 +92,8 @@ export const WORKER_MARK_LABEL: Record<
   GrantableWorkerMark,
   string
 > = {
+  [SUPABASE_WORKER_MARK.EXTERNAL_GUIDE_REGISTRATION]:
+    "Registro de guías externos",
   [SUPABASE_WORKER_MARK.GENERAL_MANAGER]:
     "Encargado general",
   [SUPABASE_WORKER_MARK.GUIDE]: "Guía",
@@ -100,6 +103,8 @@ export const WORKER_MARK_DESCRIPTION: Record<
   GrantableWorkerMark,
   string
 > = {
+  [SUPABASE_WORKER_MARK.EXTERNAL_GUIDE_REGISTRATION]:
+    "Crea cuentas temporales de guía externo desde reservas.",
   [SUPABASE_WORKER_MARK.GENERAL_MANAGER]:
     "Sube y reemplaza las fotos de estado de las máquinas.",
   [SUPABASE_WORKER_MARK.GUIDE]:

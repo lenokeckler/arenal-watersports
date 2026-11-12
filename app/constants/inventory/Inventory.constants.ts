@@ -33,8 +33,12 @@ export const INVENTORY_DATA_SOURCE = {
   CATEGORY_ID_COLUMN: "category_id",
   CATEGORY_NAME_COLUMN: "category_name",
   CATEGORY_SUMMARY_VIEW: "inventory_category_summary",
+  EXPIRY_ALERTS_VIEW: "inventory_expiry_alerts",
+  QUANTITY_ALERTS_VIEW: "inventory_quantity_alerts",
   EQUIPMENT_CATEGORIES_TABLE: "equipment_categories",
   EQUIPMENT_STOCK_TABLE: "equipment_stock",
+  EQUIPMENT_STOCK_MOVEMENTS_TABLE:
+    "equipment_stock_movements",
   EQUIPMENT_UNITS_TABLE: "equipment_units",
   RECORDED_STATUS_COLUMN: "recorded_status",
   RESERVATION_DISPATCHES_TABLE: "reservation_dispatches",

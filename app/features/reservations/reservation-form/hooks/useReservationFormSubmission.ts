@@ -3,6 +3,8 @@ import type { ReservationFormSubmissionOptions } from "../models/ReservationForm
 import { useReservationFormErrorFocus } from "./useReservationFormErrorFocus";
 import { useReservationFormSubmitAction } from "./useReservationFormSubmitAction";
 import { useReservationSubmissionState } from "./useReservationSubmissionState";
+import { useCustomComboSubmitAction } from "./useCustomComboSubmitAction";
+import { usePredefinedComboSubmitAction } from "./usePredefinedComboSubmitAction";
 
 export const useReservationFormSubmission = (
   options?: ReservationFormSubmissionOptions
@@ -15,6 +17,10 @@ export const useReservationFormSubmission = (
       ...options,
     }
   );
+  const customComboAction =
+    useCustomComboSubmitAction(submission);
+  const predefinedComboAction =
+    usePredefinedComboSubmitAction(submission);
   useReservationFormErrorFocus(submission);
 
   return {
@@ -22,9 +28,18 @@ export const useReservationFormSubmission = (
     clearFieldError: submission.clearFieldError,
     errors: submission.errors,
     formError: submission.formError,
-    isPending: action.isPending,
+    isPending:
+      action.isPending ||
+      customComboAction.isPending ||
+      predefinedComboAction.isPending,
     isSubmitted: submission.isSubmitted,
     requestErrorFocus: submission.requestErrorFocus,
+    setFieldError: submission.setFieldError,
+    setSubmissionError: submission.setSubmissionError,
+    submitCustomComboReservation:
+      customComboAction.submitCustomComboReservation,
+    submitPredefinedComboReservation:
+      predefinedComboAction.submitPredefinedComboReservation,
     submitReservation: action.submitReservation,
   };
 };
