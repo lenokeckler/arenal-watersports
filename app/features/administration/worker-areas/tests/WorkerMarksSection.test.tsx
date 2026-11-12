@@ -31,6 +31,7 @@ const OVERVIEW = {
   baseRole: SUPABASE_WORK_AREA.OPERATIONS,
   fullName: "Celso Rojas",
   id: "33333333-3333-3333-3333-333333333333",
+  expiresAt: null,
   isExternalGuide: false,
   marks: [],
   username: "celso",
