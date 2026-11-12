@@ -4,53 +4,17 @@ import ReservationCustomerScheduleFields from "./ReservationCustomerScheduleFiel
 import ReservationEquipmentFields from "./ReservationEquipmentFields";
 import ReservationTypeField from "./ReservationTypeField";
 import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
+import ReservationComboFields from "./ReservationComboFields";
 import ReservationGuideAssignmentField from "./ReservationGuideAssignmentField";
-import CustomComboEquipmentSelection from "./CustomComboEquipmentSelection";
-import CustomComboPricingSummary from "./CustomComboPricingSummary";
-import CustomComboNoGuideState from "./CustomComboNoGuideState";
-
-const CustomComboFields = ({
-  categories,
-  guideAssignmentViewModel,
-  viewModel,
-}: ReservationFormFieldsProps): React.JSX.Element | null => {
-  const { customCombo, resolvedDurationHours } = viewModel;
-
-  if (!customCombo || resolvedDurationHours === undefined) {
-    return null;
-  }
-
-  return (
-    <>
-      <CustomComboEquipmentSelection
-        categories={categories}
-        date={viewModel.values.date}
-        durationHours={resolvedDurationHours}
-        time={viewModel.values.time}
-        viewModel={customCombo}
-      />
-      {customCombo.hasGuideOnlyItem &&
-      guideAssignmentViewModel ? (
-        <ReservationGuideAssignmentField
-          viewModel={guideAssignmentViewModel}
-        />
-      ) : (
-        <CustomComboNoGuideState />
-      )}
-      <CustomComboPricingSummary
-        errors={viewModel.errors}
-        viewModel={customCombo}
-      />
-    </>
-  );
-};
+import ReservationExtrasField from "./ReservationExtrasField";
+import { shouldShowReservationExtras } from "../utils/shouldShowReservationExtras";
 
 const ReservationFormFields = ({
   categories,
   guideAssignmentViewModel,
   viewModel,
 }: ReservationFormFieldsProps): React.JSX.Element => {
-  const isCustomCombo =
+  const isCombo =
     viewModel.values.reservationType ===
       RESERVATION_TYPE.COMBO &&
     viewModel.customCombo !== undefined;
@@ -58,8 +22,8 @@ const ReservationFormFields = ({
   return (
     <div className={RESERVATION_FORM_GRID_CLASS}>
       <ReservationTypeField viewModel={viewModel} />
-      {isCustomCombo ? (
-        <CustomComboFields
+      {isCombo ? (
+        <ReservationComboFields
           categories={categories}
           guideAssignmentViewModel={
             guideAssignmentViewModel
@@ -77,12 +41,15 @@ const ReservationFormFields = ({
       <ReservationCustomerScheduleFields
         viewModel={viewModel}
       />
-      {isCustomCombo ? null : (
+      {isCombo ? null : (
         <ReservationEquipmentFields
           categories={categories}
           viewModel={viewModel}
         />
       )}
+      {shouldShowReservationExtras(viewModel) ? (
+        <ReservationExtrasField viewModel={viewModel} />
+      ) : null}
     </div>
   );
 };

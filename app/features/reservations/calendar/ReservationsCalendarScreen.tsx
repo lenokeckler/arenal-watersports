@@ -4,6 +4,7 @@ import { getCalendarToday } from "@/app/components/calendar/utils";
 import { ReduxProvider } from "@/app/providers";
 import { ReservationsCalendar } from "./ReservationsCalendar";
 import { readReservationCalendarSnapshot } from "./readReservationCalendarSnapshot";
+import { isExternalGuideRegistrarSignedIn } from "@/app/services/external-guide-registration";
 
 const ReservationsCalendarScreen =
   async (): Promise<ReactElement> => {
@@ -12,10 +13,15 @@ const ReservationsCalendarScreen =
       anchor: today,
       view: CALENDAR_VIEW.DAY,
     });
+    const canRegisterExternalGuide =
+      await isExternalGuideRegistrarSignedIn();
     return (
       <ReduxProvider>
         <main>
           <ReservationsCalendar
+            canRegisterExternalGuide={
+              canRegisterExternalGuide
+            }
             snapshot={snapshot}
             today={today}
           />

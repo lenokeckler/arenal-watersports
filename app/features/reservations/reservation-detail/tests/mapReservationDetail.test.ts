@@ -49,6 +49,8 @@ describe("mapReservationDetail", () => {
         categoryName: test.CATEGORY_NAME,
         name: test.EXTRA_NAME,
         quantity: test.QUANTITY,
+        unitCategoryName: test.CATEGORY_NAME,
+        unitCode: test.UNIT_CODE,
       },
     ]);
     expect(detail.guides).toEqual([
@@ -80,6 +82,8 @@ describe("mapReservationDetail", () => {
         categoryName: test.CATEGORY_NAME,
         name: test.MISSING_RELATED_NAME,
         quantity: test.QUANTITY,
+        unitCategoryName: test.CATEGORY_NAME,
+        unitCode: test.UNIT_CODE,
       },
     ]);
   });

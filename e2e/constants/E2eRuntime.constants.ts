@@ -124,3 +124,8 @@ export const E2E_COUNT = {
 export const E2E_PAGE_EVENT = {
   REQUEST: "request",
 } as const;
+
+export const E2E_SKIP_REASON = {
+  SINGLE_INVENTORY_WRITER:
+    "The inventory mutation runs once to avoid concurrent database writes.",
+} as const;

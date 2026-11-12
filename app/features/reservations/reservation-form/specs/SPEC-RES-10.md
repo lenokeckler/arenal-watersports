@@ -24,6 +24,12 @@
 - The mobile-first layout follows the existing theme tokens and the Stitch combo and reservation form references. Equipment, pricing, guide state, and submission controls remain usable at narrow widths.
 - One focused regression test for category filtering remains in .05; component tests are assigned to .06, while Playwright coverage and screenshot evidence are assigned to .07.
 
+## Reservation-form follow-up
+
+- A custom-combo category without the individual tariff required by its reservation type is shown as unavailable and cannot be added. The UI distinguishes a missing tariff from a failed catalog request, and the database remains the final validator.
+- When the custom combo includes a concrete Lancha unit, Reservations can select active extras compatible with that unit. The combo quote adds each extra once without adding the Lancha tariff a second time. The reservation, extra rows, inventory commitments, and pricing persist atomically, with each extra linked to its originating unit.
+- Provisional rental tariffs for Kayak doble, Kayak individual, and Paddleboard match the current Jet Ski rental tariff in local seed data. These catalog values may be changed later through the normal tariff maintenance flow.
+
 ## UI-to-criterion mapping
 
 | Acceptance criterion                                            | UI and verification                                                                                                                         |

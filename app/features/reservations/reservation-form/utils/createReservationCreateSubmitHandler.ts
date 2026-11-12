@@ -4,7 +4,9 @@ import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import { RESERVATION_FORM_FIELD } from "../models/ReservationFormField.constants";
 import type { ReservationFormViewModel } from "../models/ReservationFormViewModel.interface";
 import type { ReservationCreateSubmitOptions } from "../models/ReservationCreateSubmitOptions.interface";
+import { PREDEFINED_COMBO_SELECTION_MODE } from "../constants/PredefinedComboSelectionMode.constants";
 import { submitCustomComboDraft } from "./submitCustomComboDraft";
+import { submitPredefinedComboDraft } from "./submitPredefinedComboDraft";
 
 const submitRentalReservation = (
   options: ReservationCreateSubmitOptions
@@ -48,9 +50,26 @@ export const createReservationCreateSubmitHandler =
       options.values.reservationType ===
       RESERVATION_TYPE.COMBO
     ) {
+      if (
+        options.predefinedCombo.mode ===
+        PREDEFINED_COMBO_SELECTION_MODE.PREDEFINED
+      ) {
+        submitPredefinedComboDraft({
+          durationHours: options.durationHours,
+          predefinedCombo: options.predefinedCombo,
+          onSuccess: options.onSuccess,
+          requestErrorFocus: options.requestErrorFocus,
+          setSubmissionError: options.setSubmissionError,
+          submitPredefinedComboReservation:
+            options.submitPredefinedComboReservation,
+          values: options.values,
+        });
+        return;
+      }
       submitCustomComboDraft({
         customCombo: options.customCombo,
         durationHours: options.durationHours,
+      onSuccess: options.onSuccess,
         requestErrorFocus: options.requestErrorFocus,
         setFieldError: options.setFieldError,
         submitCustomComboReservation:

@@ -11,6 +11,9 @@ describe("reservation detail operational collections", (): void => {
       page.getEquipmentText(test.UNIT_CODE)
     ).toBeVisible();
     expect(page.getText(test.EXTRA_NAME)).toBeVisible();
+    expect(
+      page.getExtrasText(test.UNIT_CODE)
+    ).toBeVisible();
     expect(page.getText(test.GUIDE_NAME)).toBeVisible();
     expect(
       page.getTexts(`${copy.QUANTITY}: ${test.QUANTITY}`)
