@@ -106,4 +106,76 @@ describe("useReservationChargeValues", () => {
       EDITED_METHOD_TEXT
     );
   });
+
+  it("restores each untouched proposal when switching back and forth", () => {
+    const { result } = renderHook(() =>
+      useReservationChargeValues(BOTH_PROPOSAL)
+    );
+
+    act(() =>
+      result.current.setCurrency(CURRENCY_CODE.CRC)
+    );
+    act(() =>
+      result.current.setCurrency(CURRENCY_CODE.USD)
+    );
+
+    expect(result.current.values.currency).toBe(
+      CURRENCY_CODE.USD
+    );
+    expect(result.current.values.amountText).toBe(
+      USD_PROPOSAL_TEXT
+    );
+  });
+
+  it("keeps the edited amount through a round trip of currencies", () => {
+    const { result } = renderHook(() =>
+      useReservationChargeValues(BOTH_PROPOSAL)
+    );
+
+    act(() =>
+      result.current.setAmountText(EDITED_AMOUNT_TEXT)
+    );
+    act(() =>
+      result.current.setCurrency(CURRENCY_CODE.CRC)
+    );
+    act(() =>
+      result.current.setCurrency(CURRENCY_CODE.USD)
+    );
+
+    expect(result.current.values.amountText).toBe(
+      EDITED_AMOUNT_TEXT
+    );
+  });
+
+  it("refills the proposal after the worker clears the amount and switches", () => {
+    const { result } = renderHook(() =>
+      useReservationChargeValues(BOTH_PROPOSAL)
+    );
+
+    act(() => result.current.setAmountText(STRING.Empty));
+    act(() =>
+      result.current.setCurrency(CURRENCY_CODE.CRC)
+    );
+
+    expect(result.current.values.amountText).toBe(
+      CRC_PROPOSAL_TEXT
+    );
+  });
+
+  it("keeps the payment method when the currency changes", () => {
+    const { result } = renderHook(() =>
+      useReservationChargeValues(BOTH_PROPOSAL)
+    );
+
+    act(() =>
+      result.current.setPaymentMethod(EDITED_METHOD_TEXT)
+    );
+    act(() =>
+      result.current.setCurrency(CURRENCY_CODE.CRC)
+    );
+
+    expect(result.current.values.paymentMethod).toBe(
+      EDITED_METHOD_TEXT
+    );
+  });
 });
