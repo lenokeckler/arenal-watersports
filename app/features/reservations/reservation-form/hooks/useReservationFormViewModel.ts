@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReservationFormViewModel } from "../models/ReservationFormViewModel.interface";
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useReservationFormFields } from "./useReservationFormFields";
 import { useReservationFormSubmission } from "./useReservationFormSubmission";
@@ -17,6 +18,8 @@ import { filterReservationCategoriesByType } from "../utils/filterReservationCat
 import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
 import { useCustomComboForm } from "./useCustomComboForm";
 import { usePredefinedComboForm } from "./usePredefinedComboForm";
+import { useReservationExtrasViewModel } from "./useReservationExtrasViewModel";
+import { PREDEFINED_COMBO_SELECTION_MODE } from "../constants/PredefinedComboSelectionMode.constants";
 import { createReservationCreateSubmitHandler } from "../utils/createReservationCreateSubmitHandler";
 import { resolveReservationCategoryInterchangeability } from "../utils/resolveReservationCategoryInterchangeability";
 import { hasValidCustomComboEquipmentSelections } from "../utils/hasValidCustomComboEquipmentSelections";
@@ -83,10 +86,21 @@ export const useReservationFormViewModel = (
       fields.values.reservationType ??
       RESERVATION_TYPE.RENTAL,
   });
+  const extraIds = useMemo(
+    () => fields.values.extraIds ?? [],
+    [fields.values.extraIds]
+  );
+  const extras = useReservationExtrasViewModel({
+    durationHours: resolvedDurationHours,
+    extraIds,
+    reservationType: fields.values.reservationType,
+    unitId: fields.values.unitId,
+  });
   const predefinedCombo = usePredefinedComboForm(
     predefinedCombos,
     isCustomCombo,
-    fields.handleGuideIdsChange
+    fields.handleGuideIdsChange,
+    () => submission.setSubmissionError(STRING.Empty)
   );
   const isQuantityUnavailable =
     isReservationQuantityUnavailable(
@@ -113,7 +127,9 @@ export const useReservationFormViewModel = (
     submission.isPending ||
     submission.isSubmitted ||
     (isCustomCombo
-      ? !hasValidCustomComboEquipmentSelections(
+      ? predefinedCombo.mode !==
+          PREDEFINED_COMBO_SELECTION_MODE.PREDEFINED &&
+        !hasValidCustomComboEquipmentSelections(
           customCombo.draft.items
         )
       : categoriesForReservationType.length === 0 ||
@@ -132,13 +148,21 @@ export const useReservationFormViewModel = (
         equipment.retryUnitAvailability();
       },
       onSuccess: () => {
+        predefinedCombo.reset();
         fields.reset();
         duration.reset();
         equipment.retryUnitAvailability();
       },
+      predefinedCombo: {
+        mode: predefinedCombo.mode,
+        selectedComboId: predefinedCombo.selectedComboId,
+      },
       requestErrorFocus: submission.requestErrorFocus,
       requiresConcreteUnit: equipment.requiresConcreteUnit,
       setFieldError: submission.setFieldError,
+      setSubmissionError: submission.setSubmissionError,
+      submitPredefinedComboReservation:
+        submission.submitPredefinedComboReservation,
       submitCustomComboReservation:
         submission.submitCustomComboReservation,
       submitReservation: submission.submitReservation,
@@ -148,6 +172,7 @@ export const useReservationFormViewModel = (
   return {
     categories: categoriesForReservationType,
     customCombo,
+    extras,
     predefinedCombo,
     resolvedDurationHours,
     ...fields,

@@ -16,8 +16,9 @@ export const E2E_SCREENSHOT_CAPTURE_STYLE =
 export const E2E_SCREENSHOT_EXTENSION = ".png";
 
 export const resolveScreenshotPath = (
-  fileName: string
-): string => `${E2E_OUTPUT_DIR.SCREENSHOTS}/${fileName}`;
+  fileName: string,
+  outputDirectory: string = E2E_OUTPUT_DIR.SCREENSHOTS
+): string => `${outputDirectory}/${fileName}`;
 
 export const resolveDeviceScreenshotFileName = (
   baseName: string,
