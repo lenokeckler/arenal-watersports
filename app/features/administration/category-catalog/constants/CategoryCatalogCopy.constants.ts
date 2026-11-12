@@ -11,10 +11,18 @@ export const CATEGORY_CATALOG_COPY = {
   ALERT_MIN_QUANTITY_FIELD_LABEL: "Cantidad mínima",
   ALERT_MIN_QUANTITY_PLACEHOLDER: "Ejemplo: 5",
   ALERT_SUBMIT_BUTTON: "Guardar avisos",
+  ALERT_TYPE_BOTH_DESCRIPTION:
+    "Avisa por cualquiera de los dos motivos.",
   ALERT_TYPE_BOTH_LABEL: "Por cantidad y vencimiento",
+  ALERT_TYPE_EXPIRY_DESCRIPTION:
+    "Avisa cuando algo está por vencer. Usted define cuántos días antes.",
   ALERT_TYPE_EXPIRY_LABEL: "Por vencimiento",
-  ALERT_TYPE_FIELD_LABEL: "Tipo de aviso",
+  ALERT_TYPE_FIELD_LABEL: "¿Cuándo debe avisar?",
+  ALERT_TYPE_NONE_DESCRIPTION:
+    "No se genera ninguna alerta para esta categoría.",
   ALERT_TYPE_NONE_LABEL: "Sin aviso",
+  ALERT_TYPE_QUANTITY_DESCRIPTION:
+    "Avisa cuando quedan pocas unidades. Usted define la cantidad mínima.",
   ALERT_TYPE_QUANTITY_LABEL: "Por cantidad",
   ALERT_UPDATE_SUCCESS_TOAST:
     "Avisos de la categoría actualizados.",
@@ -38,11 +46,13 @@ export const CATEGORY_CATALOG_COPY = {
     "Indique cómo se llama y cómo se cuenta en el inventario.",
   CREATE_FORM_TITLE: "Nueva categoría",
   CREATE_SUCCESS_TOAST: "Categoría creada.",
+  DEFAULT_DURATION_MINUTES_FIELD_HINT:
+    "Tiempo que normalmente dura un alquiler de esta categoría. Se puede cambiar en cada reserva.",
   DEFAULT_DURATION_MINUTES_FIELD_LABEL:
-    "Duración predeterminada (minutos)",
+    "Duración estándar del alquiler (minutos)",
   DEFAULT_DURATION_MINUTES_FIELD_PLACEHOLDER: "Ej. 60",
   DEFAULT_DURATION_MINUTES_REQUIRED_WHEN_RESERVABLE_ERROR:
-    "Ingrese la duración predeterminada en minutos para una categoría reservable.",
+    "Ingrese la duración estándar del alquiler en minutos para una categoría reservable.",
   DELETE_BUTTON: "Eliminar",
   DELETE_CATEGORY_BUTTON: "Eliminar categoría",
   DELETE_CONFIRM_MESSAGE:
@@ -79,7 +89,7 @@ export const CATEGORY_CATALOG_COPY = {
   HAS_MOTOR_FIELD_LABEL: "Tiene motor",
   INVENTORY_COUNT_PREFIX: "Inventario registrado:",
   IS_RESERVABLE_FIELD_LABEL: "Es reservable",
-  LIST_TITLE: "Categorías del inventario",
+  LIST_TITLE: "Inventario",
   LOADING_TEXT_CREATING: "Guardando…",
   LOADING_TEXT_DELETING: "Eliminando…",
   LOADING_TEXT_UPDATING: "Actualizando…",
