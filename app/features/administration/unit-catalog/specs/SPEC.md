@@ -66,3 +66,19 @@ Component tests come in 16.11.
 | "Dar de baja" opens an inline panel with a required reason (at most 300); "Cancelar" closes it and clears the reason                                                                                                      | 16.11                                          |
 | "Confirmar baja" calls `decommissionUnitAction`; success toasts and returns to the unit list; an error result (for example occupied) toasts its message; a thrown error toasts a generic message after `unstable_rethrow` | 16.11                                          |
 | The panel and the buttons are disabled while the request is in flight                                                                                                                                                     | 16.11                                          |
+
+## 18.01 Reservations of a unit (US-ADM-18)
+
+Closes criterion 4 of US-ADM-18: "Su registro se conserva para que las reservas viejas, sus reportes de daño y su historial de mantenimiento sigan cuadrando". Damage reports and maintenance history are carried by US-OPE-13, 14, 17, 18, 19 and US-ADM-30.
+
+| Requirement                                                                                                                   | Test                                                                                |
+| ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| The unit screen lists the reservations that include the unit, active or decommissioned, with code, customer, start and status | `UnitReservationHistoryView.test.tsx`, `category-units-reservations.e2e.ts`         |
+| Most recent start first, ties broken by id; each reservation appears once even when it holds several items of the unit        | `unitReservationQueries.test.ts`                                                    |
+| Read with the session client under the existing Row Level Security policies; no migration                                     | `unitReservationQueries.test.ts`                                                    |
+| Twenty reservations per page, counted before the page is read; a page past the end redirects to the last page                 | `listUnitReservations.test.ts`, `UnitReservationHistory.test.tsx`                   |
+| Status label: Agendada, En curso, Finalizada, Cancelada; cancelled reservations are listed too                                | `buildUnitReservationRowViewModel.test.ts`                                          |
+| Start shown in Costa Rica time                                                                                                | `buildUnitReservationRowViewModel.test.ts`                                          |
+| Loading is the route spinner; empty says the unit has no reservations; a failed read shows an error with "Reintentar"         | `useUnitReservationHistoryViewModel.test.ts`, `UnitReservationHistoryView.test.tsx` |
+| Rows are plain text: the reservation detail opens only in Reservas mode, so there is no link to it                            | `UnitReservationHistoryView.test.tsx`                                               |
+| A decommissioned unit card offers "Ver reservas" to its screen; an active unit keeps "Editar" only                            | `UnitListViewCards.test.tsx`, `category-units-reservations.e2e.ts`                  |

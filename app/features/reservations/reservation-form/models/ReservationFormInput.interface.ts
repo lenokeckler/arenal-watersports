@@ -5,6 +5,8 @@ export interface ReservationFormInput {
   customerName: string;
   date: string;
   durationHours: number;
+  extraIds?: string[];
+  guideIds?: string[];
   peopleCount: number;
   quantity: number;
   reservationType?: ReservationType;

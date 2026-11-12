@@ -2,6 +2,7 @@ begin;
 select plan(14);
 \ir fixtures/split_reservation.sql.fixture
 
+update reservations set type = 'tour' where id = 'e2900000-0000-4000-8000-000000000301';
 insert into reservation_guides (reservation_id, worker_id, assigned_by)
 values ('e2900000-0000-4000-8000-000000000301', 'e2900000-0000-4000-8000-000000000001', 'e2900000-0000-4000-8000-000000000001');
 insert into reservations

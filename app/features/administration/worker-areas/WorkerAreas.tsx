@@ -13,7 +13,7 @@ import WorkerLookupForm from "./components/WorkerLookupForm";
 import { WORKER_AREAS_COPY } from "./constants/WorkerAreasCopy.constants";
 import type { WorkerAreasProps } from "./models/WorkerAreasProps.interface";
 import {
-  WORKER_AREAS_REPORT_LINK_CLASS,
+  WORKER_AREAS_ACTION_LINK_CLASS,
   WORKER_AREAS_STACK_CLASS,
 } from "./styles/WorkerAreas.styles";
 import { readWorkerAreasSearch } from "./utils/readWorkerAreasSearch";
@@ -47,8 +47,14 @@ const WorkerAreas = async ({
         username={search.username}
       />
       <Link
+        href={PATHS.ADMINISTRATION.WORKERS_NEW}
+        className={WORKER_AREAS_ACTION_LINK_CLASS}
+      >
+        {WORKER_AREAS_COPY.REGISTER_WORKER}
+      </Link>
+      <Link
         href={PATHS.ADMINISTRATION.RESERVATIONS_BY_WORKER}
-        className={WORKER_AREAS_REPORT_LINK_CLASS}
+        className={WORKER_AREAS_ACTION_LINK_CLASS}
       >
         {WORKER_AREAS_COPY.RESERVATIONS_REPORT}
       </Link>

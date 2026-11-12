@@ -275,6 +275,11 @@ export const EXPECTED_SCHEDULED: ReservationPostponement = {
     {
       id: SCHEDULED_UNIT_ITEM_ROW.id,
       label: EXPECTED_UNIT_LINE_LABEL,
+      quantity: 4,
+    },
+    {
+      id: SCHEDULED_UNIT_ITEM_ROW.id,
+      label: "Moto de agua JS-05",
       quantity: null,
     },
   ],
