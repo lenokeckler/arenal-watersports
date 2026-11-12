@@ -16,3 +16,9 @@ export const VALID_CHARGE_INPUT: ReservationChargeInput = {
 };
 
 export const NON_BREAKING_SPACE = "\u00a0";
+
+export const ZERO_WIDTH_SPACE = "\u200b";
+
+export const MONGOLIAN_VOWEL_SEPARATOR = "\u180e";
+
+export const BYTE_ORDER_MARK = "\ufeff";
