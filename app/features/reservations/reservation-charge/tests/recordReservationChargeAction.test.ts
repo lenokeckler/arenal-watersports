@@ -33,7 +33,7 @@ vi.mock("../services/recordReservationCharge", () => ({
 
 describe("recordReservationChargeAction", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it("records the charge and revalidates detail and income", async () => {
@@ -47,6 +47,9 @@ describe("recordReservationChargeAction", () => {
       ok: true,
       recorded: CHARGE_RECORDED,
     });
+    expect(
+      assertReservationCalendarAccess
+    ).toHaveBeenCalledOnce();
     expect(recordReservationCharge).toHaveBeenCalledWith(
       VALID_CHARGE_COMMAND
     );
@@ -88,6 +91,9 @@ describe("recordReservationChargeAction", () => {
           RESERVATION_CHARGE_VALIDATION_COPY.METHOD_REQUIRED,
       },
     });
+    expect(
+      assertReservationCalendarAccess
+    ).toHaveBeenCalledOnce();
     expect(recordReservationCharge).not.toHaveBeenCalled();
   });
 
@@ -127,5 +133,50 @@ describe("recordReservationChargeAction", () => {
       recordReservationChargeAction(VALID_CHARGE_INPUT)
     ).rejects.toBe(CHARGE_ACCESS_REDIRECT);
     expect(recordReservationCharge).not.toHaveBeenCalled();
+  });
+
+  it("sends the trimmed method and numeric amount from a comma decimal", async () => {
+    vi.mocked(recordReservationCharge).mockResolvedValue(
+      CHARGE_RECORDED
+    );
+
+    await recordReservationChargeAction({
+      ...VALID_CHARGE_INPUT,
+      amountText: " 45,5 ",
+      paymentMethod: "  Efectivo 	",
+    });
+
+    expect(recordReservationCharge).toHaveBeenCalledWith(
+      VALID_CHARGE_COMMAND
+    );
+  });
+
+  it.each(["0,005", "1.234,56", "99999999999999", "0"])(
+    "stops the amount %s before the database",
+    async (amountText) => {
+      const result = await recordReservationChargeAction({
+        ...VALID_CHARGE_INPUT,
+        amountText,
+      });
+
+      expect(result).toMatchObject({ ok: false });
+      expect(
+        recordReservationCharge
+      ).not.toHaveBeenCalled();
+      expect(revalidatePath).not.toHaveBeenCalled();
+    }
+  );
+
+  it("does not read the amount when access is refused", async () => {
+    vi.mocked(
+      assertReservationCalendarAccess
+    ).mockRejectedValue(CHARGE_ACCESS_REDIRECT);
+
+    await expect(
+      recordReservationChargeAction({
+        ...VALID_CHARGE_INPUT,
+        amountText: "abc",
+      })
+    ).rejects.toBe(CHARGE_ACCESS_REDIRECT);
   });
 });

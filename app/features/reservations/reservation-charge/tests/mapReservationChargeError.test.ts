@@ -46,4 +46,14 @@ describe("mapReservationChargeError", () => {
       mapReservationChargeError(CHARGE_POSTGRES_PREFIX)
     ).toThrow();
   });
+
+  it("maps a refusal wrapped by the supabase error", () => {
+    const wrapped = new Error(
+      `Supabase query failed: record reservation charge � ${RESERVATION_CHARGE_ERROR.MESSAGE.NOT_FOUND} (P0001)`
+    );
+
+    expect(
+      mapReservationChargeError(wrapped)
+    ).toMatchObject({ ok: false });
+  });
 });
