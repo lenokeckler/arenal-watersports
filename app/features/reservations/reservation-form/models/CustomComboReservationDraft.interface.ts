@@ -4,5 +4,7 @@ import type { CustomComboEquipmentSelection } from "./CustomComboEquipmentSelect
 export interface CustomComboReservationDraft {
   agreedAmountCrc: NullableRef<number>;
   agreedAmountUsd: NullableRef<number>;
+  extraIds: string[];
+  extraUnitId: NullableRef<string>;
   items: CustomComboEquipmentSelection[];
 }

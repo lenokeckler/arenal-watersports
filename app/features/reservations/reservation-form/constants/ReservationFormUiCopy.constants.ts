@@ -64,7 +64,7 @@ export const RESERVATION_FORM_UI_COPY = {
   CATEGORY_CONFLICT_WARNING_TITLE:
     "Posible cruce de disponibilidad",
   CATEGORY_CONFLICT_WARNING_DESCRIPTION:
-    "El horario coincide con otras reservas de esta categoría. Puede continuar si la operación se acomoda sobre la marcha.",
+    "Coincide con una reserva existente. Puede continuar si la operación lo permite.",
   CATEGORY_CONFLICT_WARNING_LOADING:
     "Consultando reservas de esta categoría…",
   CATEGORY_CONFLICT_WARNING_ERROR:
@@ -79,6 +79,8 @@ export const RESERVATION_FORM_UI_COPY = {
   GUIDES: "Guías de la salida",
   GUIDES_DESCRIPTION:
     "Seleccione uno o varios trabajadores marcados como guía. La cantidad de personas no limita la asignación.",
+  GUIDES_NO_SELECTION_WARNING:
+    "No ha seleccionado ningún guía. Puede continuar con la reserva.",
   GUIDES_SELECTED: "Guías asignados",
   GUIDES_EMPTY:
     "No hay trabajadores marcados como guía disponibles.",

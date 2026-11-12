@@ -1,6 +1,7 @@
 "use server";
 
 import { RESERVATION_FORM_UI_COPY } from "../constants/ReservationFormUiCopy.constants";
+import { mapCustomComboRpcError } from "../utils/mapCustomComboRpcError";
 import type { CustomComboReservationActionResult } from "../models/CustomComboReservationActionResult.type";
 import { createCustomComboReservation } from "../services/createCustomComboReservation";
 import { getAuthorizedReservationFormClient } from "../services/getAuthorizedReservationFormClient";
@@ -27,9 +28,24 @@ export const createCustomComboReservationAction = async (
     return { ok: false, errors: validation.errors };
   }
 
-  const reservationId = await createCustomComboReservation(
-    validation.value
-  );
+  try {
+    const reservationId =
+      await createCustomComboReservation(validation.value);
 
-  return { ok: true, reservationId };
+    return { ok: true, reservationId };
+  } catch (error) {
+    const fieldError = mapCustomComboRpcError(error);
+    if (fieldError) {
+      return {
+        ok: false,
+        errors: { [fieldError.field]: fieldError.message },
+      };
+    }
+
+    return {
+      ok: false,
+      errors: {},
+      formError: RESERVATION_FORM_UI_COPY.SUBMIT_ERROR,
+    };
+  }
 };

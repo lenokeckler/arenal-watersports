@@ -59,6 +59,20 @@ describe("Reservation form extra selection", () => {
     );
   });
 
+  it("toggles an extra when its card content is clicked", async () => {
+    const page = await selectConcreteBoat();
+    const extraName =
+      RESERVATION_FORM_VIEW_TEST.EXTRA_EQUIPMENT_NAME;
+
+    await page.clickExtraCardContent(extraName);
+
+    expect(page.getExtraCheckbox(extraName)).toBeChecked();
+    await page.toggleExtra(extraName);
+    expect(
+      page.getExtraCheckbox(extraName)
+    ).not.toBeChecked();
+  });
+
   it("shows server totals and hides extras for combo reservations", async () => {
     const page = await selectConcreteBoat();
     expect(page.getExtrasQuote()).toBeInTheDocument();

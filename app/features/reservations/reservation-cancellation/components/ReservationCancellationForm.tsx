@@ -2,12 +2,10 @@ import {
   Button,
   FormField,
   Link,
-  MaterialIcon,
   Text,
 } from "@/app/components";
 import { BUTTON } from "@/app/components/button/constants";
 import { FORM_FIELD_VARIANT } from "@/app/components/form-field/constants/FormFieldVariant.constants";
-import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
 import {
   ARIA_ROLE,
   INPUT_TYPES,
@@ -23,11 +21,11 @@ import {
   RESERVATION_CANCELLATION_ACTIONS_CLASS,
   RESERVATION_CANCELLATION_ALERT_CLASS,
   RESERVATION_CANCELLATION_HINT_CLASS,
-  RESERVATION_CANCELLATION_NOTE_CLASS,
-  RESERVATION_CANCELLATION_NOTE_ICON_CLASS,
   RESERVATION_CANCELLATION_SECONDARY_LINK_CLASS,
   RESERVATION_CANCELLATION_SUBMIT_CLASS,
 } from "../styles/ReservationCancellationForm.styles";
+import ReservationCancellationCauseField from "./ReservationCancellationCauseField";
+import ReservationCancellationNote from "./ReservationCancellationNote";
 
 const HELPER_ID = `${RESERVATION_CANCELLATION_FIELD_ID.REASON}-helper`;
 
@@ -35,20 +33,25 @@ const ReservationCancellationForm = ({
   viewModel,
 }: ReservationCancellationFormProps): React.JSX.Element => (
   <>
-    <Text className={RESERVATION_CANCELLATION_NOTE_CLASS}>
-      <MaterialIcon
-        name={MATERIAL_ICON_NAME.ERROR}
-        className={RESERVATION_CANCELLATION_NOTE_ICON_CLASS}
+    <ReservationCancellationNote
+      requiresCause={viewModel.requiresCause}
+    />
+    {viewModel.requiresCause && (
+      <ReservationCancellationCauseField
+        viewModel={viewModel}
       />
-      {COPY.NOTE}
-    </Text>
+    )}
     <div>
       <FormField
         id={RESERVATION_CANCELLATION_FIELD_ID.REASON}
         name={RESERVATION_CANCELLATION_FIELD_ID.REASON}
         label={COPY.LABEL_REASON}
         type={INPUT_TYPES.TEXTAREA}
-        placeholder={COPY.REASON_PLACEHOLDER}
+        placeholder={
+          viewModel.requiresCause
+            ? COPY.REASON_PLACEHOLDER_DISPATCHED
+            : COPY.REASON_PLACEHOLDER
+        }
         value={viewModel.reason}
         disabled={viewModel.isPending}
         describedBy={HELPER_ID}
@@ -63,7 +66,9 @@ const ReservationCancellationForm = ({
         id={HELPER_ID}
         className={RESERVATION_CANCELLATION_HINT_CLASS}
       >
-        {COPY.REASON_HELPER}
+        {viewModel.requiresCause
+          ? COPY.REASON_HELPER_DISPATCHED
+          : COPY.REASON_HELPER}
       </Text>
     </div>
     {viewModel.formError && (
