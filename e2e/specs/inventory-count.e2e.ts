@@ -14,6 +14,7 @@ test("operations records an inventory count with notes from the inventory", asyn
   await countPage.open();
 
   try {
+    await countPage.goToSummary();
     await countPage.writeNotes(E2E_INVENTORY_COUNT.NOTES);
     await countPage.submit();
 
