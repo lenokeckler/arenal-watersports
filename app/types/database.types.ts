@@ -2796,6 +2796,13 @@ export type Database = {
           },
         ];
       };
+      monthly_departures: {
+        Row: {
+          departures_count: number | null;
+          month: string | null;
+        };
+        Relationships: [];
+      };
       monthly_reservation_counts: {
         Row: {
           month: string | null;
@@ -2958,6 +2965,13 @@ export type Database = {
             referencedColumns: ["category_id"];
           },
         ];
+      };
+      weekday_departures: {
+        Row: {
+          departures_count: number | null;
+          weekday: number | null;
+        };
+        Relationships: [];
       };
     };
     Functions: {
