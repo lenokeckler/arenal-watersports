@@ -11,6 +11,7 @@ import { UNIT_FORM_CARD_CLASS } from "./styles/UnitForm.styles";
 import { UNIT_LIST_CONTENT_CLASS } from "./styles/UnitList.styles";
 
 const UnitFormView = ({
+  children,
   mode,
   category,
   unit,
@@ -56,6 +57,7 @@ const UnitFormView = ({
           unitId={unit.id}
         />
       )}
+      {children}
     </div>
   );
 };

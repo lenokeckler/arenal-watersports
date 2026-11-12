@@ -19,6 +19,35 @@ export const CATEGORY_UNITS_LIST_CLASS =
 export const CATEGORY_UNITS_LIST_ITEM_CLASS =
   "flex min-w-0";
 
+export const CATEGORY_UNITS_DISPATCH_BAR_CLASS =
+  "fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-30 flex items-center justify-between gap-sm border-t border-outline-variant bg-surface-container-high/95 px-margin-mobile py-sm backdrop-blur-xl";
+
+export const CATEGORY_UNITS_DISPATCH_BAR_COUNT_CLASS =
+  "text-title-md font-semibold text-on-surface";
+
+export const CATEGORY_UNITS_DISPATCH_BAR_ACTIONS_CLASS =
+  "flex items-center gap-sm";
+
+export const CATEGORY_UNITS_DISPATCH_SPACER_CLASS = "h-20";
+
+export const CATEGORY_UNITS_PICKER_LIST_CLASS =
+  "flex flex-col gap-sm";
+
+export const CATEGORY_UNITS_PICKER_OPTION_CLASS =
+  "flex flex-col gap-1 rounded-xl border border-outline-variant/60 bg-surface-container/80 px-4 py-3";
+
+export const CATEGORY_UNITS_PICKER_TITLE_CLASS =
+  "text-title-md font-semibold text-on-surface";
+
+export const CATEGORY_UNITS_PICKER_NOTE_CLASS =
+  "text-body-sm text-on-surface-variant";
+
+export const CATEGORY_UNITS_PICKER_ALERT_CLASS =
+  "rounded-xl border border-error/60 bg-error/10 px-4 py-3 text-body-base text-on-surface";
+
+export const CATEGORY_UNITS_PICKER_ACTION_CLASS =
+  "mt-2 self-start";
+
 export const CATEGORY_UNITS_PAGINATION_CLASS =
   "grid grid-cols-[1fr_auto_1fr] items-center gap-sm";
 
