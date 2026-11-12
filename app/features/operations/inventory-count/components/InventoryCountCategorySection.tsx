@@ -5,6 +5,7 @@ import {
   STRING,
   TitleVariant,
 } from "@/app/constants";
+import { INVENTORY_COUNT_COPY } from "../constants/InventoryCountCopy.constants";
 import type { InventoryCountCategorySectionProps } from "../models/InventoryCountCategorySectionProps.interface";
 import {
   INVENTORY_COUNT_NOTE_CLASS,
@@ -39,7 +40,11 @@ const InventoryCountCategorySection = ({
     ) : (
       <>
         <Text className={INVENTORY_COUNT_NOTE_CLASS}>
-          {`${category.system.available} / ${category.system.damaged} / ${category.system.inRepair}`}
+          {INVENTORY_COUNT_COPY.SYSTEM_SUMMARY(
+            category.system.available,
+            category.system.damaged,
+            category.system.inRepair
+          )}
         </Text>
         <InventoryCountQuantityFields
           categoryId={category.id}

@@ -17,10 +17,14 @@ export const INVENTORY_COUNT_COPY = {
   INTRO:
     "Confirme cada unidad y su estado, y anote cuántos hay de cada estado en lo que se lleva por cantidad. Ya viene lleno con lo que el sistema tiene registrado.",
   NOTES_LABEL: "Notas del conteo",
-  QUANTITY_UNIT_SUFFIX: "unidades",
   SUBMIT: "Registrar conteo",
   SUBMITTING: "Registrando conteo",
-  SYSTEM_PREFIX: "El sistema tiene",
+  SYSTEM_SUMMARY: (
+    available: number,
+    damaged: number,
+    inRepair: number
+  ) =>
+    `El sistema tiene ${available} disponibles, ${damaged} dañadas y ${inRepair} en reparación.`,
 } as const;
 
 export const INVENTORY_COUNT_UNIT_STATUS_COPY: Record<
