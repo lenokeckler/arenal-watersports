@@ -2022,6 +2022,13 @@ export type Database = {
             foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
             columns: ["unit_id"];
             isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
             referencedRelation: "maintenance_cost_by_unit";
             referencedColumns: ["unit_id"];
           },
@@ -3269,6 +3276,13 @@ export type Database = {
         };
         Returns: undefined;
       };
+      assert_reservation_cancellable: {
+        Args: {
+          p_expected_updated_at: string;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
+        };
+        Returns: undefined;
+      };
       assert_reservation_equipment_editable: {
         Args: {
           p_reservation_id: string;
@@ -3358,6 +3372,10 @@ export type Database = {
       can_register_external_guide: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
+      };
+      cancel_reservation: {
+        Args: { p_payload: Json };
+        Returns: string;
       };
       category_availability: {
         Args: {
@@ -3731,6 +3749,10 @@ export type Database = {
       };
       next_reservation_code: {
         Args: Record<PropertyKey, never>;
+        Returns: string;
+      };
+      normalize_cancellation_reason: {
+        Args: { p_reason: string };
         Returns: string;
       };
       password_reset_grant_is_open: {
