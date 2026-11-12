@@ -24,12 +24,6 @@ const InventoryOverviewHeader = (): React.JSX.Element => (
     >
       {INVENTORY_COPY.NEW_COUNT}
     </Link>
-    <Link
-      href={PATHS.OPERATIONS.INVENTORY_COUNTS}
-      className={INVENTORY_OVERVIEW_COUNT_LINK_CLASS}
-    >
-      {INVENTORY_COPY.COUNT_HISTORY}
-    </Link>
   </header>
 );
 
