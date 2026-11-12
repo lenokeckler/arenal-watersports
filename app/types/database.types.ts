@@ -3804,6 +3804,10 @@ export type Database = {
         };
         Returns: undefined;
       };
+      postpone_reservation: {
+        Args: { p_payload: Json };
+        Returns: string;
+      };
       prepare_worker_temporary_password: {
         Args: { target_worker: string };
         Returns: string;
