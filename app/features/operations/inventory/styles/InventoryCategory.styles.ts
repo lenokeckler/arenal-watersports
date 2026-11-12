@@ -28,7 +28,16 @@ export const INVENTORY_UNIT_LIST_CLASS =
   "[&>ul]:list-none [&>ul]:space-y-2 [&>ul]:p-0";
 
 export const INVENTORY_UNIT_ROW_CLASS =
-  "flex min-h-11 items-center justify-between gap-3 rounded-lg border border-outline/60 bg-surface-container-low px-3 py-2";
+  "flex min-h-11 flex-wrap items-center justify-between gap-3 rounded-lg border border-outline/60 bg-surface-container-low px-3 py-2";
+
+export const INVENTORY_UNIT_CONDITION_ACTIONS_CLASS =
+  "flex w-full flex-wrap gap-2";
+
+export const INVENTORY_UNIT_CONDITION_BUTTON_CLASS =
+  "min-h-11 rounded-lg border border-outline px-3 text-body-md text-on-surface";
+
+export const INVENTORY_UNIT_CONDITION_MESSAGE_CLASS =
+  "w-full text-body-md text-on-surface-variant";
 
 export const INVENTORY_UNIT_CODE_CLASS =
   "font-mono text-sm text-on-surface";
