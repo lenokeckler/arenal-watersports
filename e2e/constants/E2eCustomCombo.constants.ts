@@ -7,12 +7,16 @@ import {
 } from "./E2eReservationForm.constants";
 
 export const E2E_CUSTOM_COMBO_FIXTURE = {
+  BOAT_CATEGORY_NAME:
+    E2E_RESERVATION_FORM_COPY.CONCRETE_CATEGORY_OPTION,
+  FIXTURE_FAILURE:
+    "Unable to prepare or restore local custom combo tariffs.",
+  GUIDE_NAME: E2E_RESERVATION_GUIDES.FIRST_NAME,
+  GUIDE_ONLY_CATEGORY_NAME:
+    E2E_RESERVATION_GUIDE_ONLY_CATEGORY.QUADRICYCLE,
   LOCAL_HOSTNAMES: ["localhost", "127.0.0.1", "::1"],
   REGULAR_CATEGORY_NAME:
     E2E_RESERVATION_FORM_COPY.CATEGORY_OPTION,
-  GUIDE_ONLY_CATEGORY_NAME:
-    E2E_RESERVATION_GUIDE_ONLY_CATEGORY.QUADRICYCLE,
-  GUIDE_NAME: E2E_RESERVATION_GUIDES.FIRST_NAME,
   RENTAL_TARIFF: {
     amountCrc: 10_000,
     amountUsd: 20,
@@ -23,19 +27,20 @@ export const E2E_CUSTOM_COMBO_FIXTURE = {
     amountUsd: 10,
     type: RESERVATION_TYPE.TOUR,
   },
-  FIXTURE_FAILURE:
-    "Unable to prepare or restore local custom combo tariffs.",
 } as const;
 
 export const E2E_CUSTOM_COMBO = {
+  AGREED_AMOUNT: {
+    CRC: "28000",
+    USD: "55",
+  },
+  COPY: CUSTOM_COMBO_FORM_COPY,
+  CUSTOMER_NAME: "US-RES-10 E2E custom combo",
+  ERROR_CENTER_TOLERANCE_PX: 64,
   SCREENSHOT_BASENAME: "us-res-10-06-custom-combo",
   QUANTITY: {
     INITIAL: "1",
     INCREMENTED: "2",
-  },
-  AGREED_AMOUNT: {
-    CRC: "28000",
-    USD: "55",
   },
   QUOTE: {
     SINGLE_CATEGORY_CRC: /20\s000,00/,
@@ -45,10 +50,10 @@ export const E2E_CUSTOM_COMBO = {
     DURATION_CRC: /37\s500,00/,
     DURATION_USD: /75,00/,
   },
-  COPY: CUSTOM_COMBO_FORM_COPY,
 } as const;
 
 export const E2E_CUSTOM_COMBO_SCREENSHOT = {
+  MISSING_EQUIPMENT_ERROR: "missing-equipment-error",
   NO_GUIDE: "no-guide",
   EQUIPMENT_SELECTION: "equipment-selection",
   PRICING_AND_GUIDE: "pricing-and-guide",

@@ -4,12 +4,14 @@ import ListPagination from "@/app/components/list-pagination/ListPagination";
 import { PATHS } from "@/app/constants";
 import DepositsHeading from "./components/DepositsHeading";
 import { DEPOSITS_REPORT_COPY } from "./constants/DepositsReportCopy.constants";
+import { DEPOSITS_REPORT_LINKS } from "./constants/DepositsReportLinks.constants";
 import { DEPOSITS_REPORT_DOM_ID } from "./constants/DepositsReportDomId.constants";
 import DepositsPendingList from "./components/DepositsPendingList";
 import DepositsRetainedList from "./components/DepositsRetainedList";
 import DepositsSection from "./components/DepositsSection";
 import type { DepositsViewProps } from "./models/DepositsViewProps.interface";
 import {
+  DEPOSITS_REPORT_LINKS_CLASS,
   DEPOSITS_REPORT_STACK_CLASS,
   DEPOSITS_REPORT_WORKER_LINK_CLASS,
 } from "./styles/DepositsReport.styles";
@@ -24,12 +26,20 @@ const DepositsView = ({
 }: DepositsViewProps): React.JSX.Element => (
   <div className={DEPOSITS_REPORT_STACK_CLASS}>
     <DepositsHeading />
-    <Link
-      href={PATHS.ADMINISTRATION.RESERVATIONS_BY_WORKER}
-      className={DEPOSITS_REPORT_WORKER_LINK_CLASS}
+    <nav
+      aria-label={DEPOSITS_REPORT_COPY.OTHER_REPORTS_LABEL}
+      className={DEPOSITS_REPORT_LINKS_CLASS}
     >
-      {DEPOSITS_REPORT_COPY.RESERVATIONS_BY_WORKER}
-    </Link>
+      {DEPOSITS_REPORT_LINKS.map((link) => (
+        <Link
+          key={link.key}
+          href={link.href}
+          className={DEPOSITS_REPORT_WORKER_LINK_CLASS}
+        >
+          {link.text}
+        </Link>
+      ))}
+    </nav>
     <DepositsSection
       headingId={DEPOSITS_REPORT_DOM_ID.PENDING_HEADING}
       heading={DEPOSITS_REPORT_COPY.PENDING_HEADING}

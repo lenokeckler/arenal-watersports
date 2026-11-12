@@ -48,6 +48,7 @@ export const readWorkerAreasOverview = async (
     accountState: resolveWorkerAccountState(worker),
     areas: (areas ?? []).map(({ area }) => area),
     baseRole: worker.base_role,
+    expiresAt: worker.expires_at,
     fullName: worker.full_name,
     hasPersonalEmail: worker.personal_email !== null,
     id: worker.id,

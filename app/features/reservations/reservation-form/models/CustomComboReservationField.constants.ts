@@ -4,6 +4,7 @@ export const CUSTOM_COMBO_RESERVATION_FIELD = {
   CUSTOMER_NAME: "customerName",
   DATE: "date",
   DURATION_HOURS: "durationHours",
+  GUIDE_IDS: "guideIds",
   ITEMS: "items",
   PEOPLE_COUNT: "peopleCount",
   TIME: "time",

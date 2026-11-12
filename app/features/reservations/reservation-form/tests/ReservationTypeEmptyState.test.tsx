@@ -12,7 +12,9 @@ describe("ReservationForm empty state", () => {
       RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
     );
 
-    const statusMessage = await page.findStatusMessage();
+    const statusMessage = await page.findStatusMessage(
+      RESERVATION_FORM_UI_COPY.NO_CATEGORIES
+    );
 
     expect(statusMessage).toHaveTextContent(
       RESERVATION_FORM_UI_COPY.NO_CATEGORIES

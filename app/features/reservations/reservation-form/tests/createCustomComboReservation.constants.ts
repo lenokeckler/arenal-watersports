@@ -9,6 +9,8 @@ export const VALIDATED_CUSTOM_COMBO_RESERVATION_INPUT = {
   customerName: "Combo Customer",
   date: "2030-06-15",
   durationMinutes: 90,
+  extraIds: [],
+  extraUnitId: null,
   guideIds: [],
   items: [
     {

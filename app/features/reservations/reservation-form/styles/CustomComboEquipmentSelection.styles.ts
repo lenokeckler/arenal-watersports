@@ -7,6 +7,9 @@ export const CUSTOM_COMBO_HEADING_CLASS =
 export const CUSTOM_COMBO_DESCRIPTION_CLASS =
   "text-sm text-on-surface-variant";
 
+export const CUSTOM_COMBO_SELECTION_ERROR_CLASS =
+  "rounded-xl border border-error/50 bg-error-container/30 px-3 py-3 text-sm text-error";
+
 export const CUSTOM_COMBO_CATEGORY_GRID_CLASS =
   "grid grid-cols-1 gap-3 sm:grid-cols-2";
 
@@ -24,6 +27,9 @@ export const CUSTOM_COMBO_CATEGORY_BADGE_CLASS =
 
 export const CUSTOM_COMBO_CATEGORY_ACTIONS_CLASS =
   "flex min-h-11 items-center justify-end gap-3";
+
+export const CUSTOM_COMBO_TARIFF_UNAVAILABLE_CLASS =
+  "mr-auto rounded-lg border border-warning/30 bg-warning/10 px-3 py-2 text-sm text-on-surface";
 
 export const CUSTOM_COMBO_QUANTITY_CONTROL_CLASS =
   "flex min-h-11 items-center gap-2 rounded-full border border-outline-variant px-2";
