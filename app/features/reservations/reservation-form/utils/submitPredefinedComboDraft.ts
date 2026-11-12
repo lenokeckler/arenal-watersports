@@ -19,6 +19,7 @@ export const submitPredefinedComboDraft = (
       comboId,
       durationHours: options.durationHours,
       values: options.values,
-    })
+    }),
+    options.onSuccess
   );
 };

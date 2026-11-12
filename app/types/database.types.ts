@@ -1753,6 +1753,7 @@ export type Database = {
           created_by: string;
           dispatch_id: string | null;
           extra_id: string | null;
+          extra_unit_id: string | null;
           fuel_in: number | null;
           fuel_out: number | null;
           id: string;
@@ -1770,6 +1771,7 @@ export type Database = {
           created_by: string;
           dispatch_id?: string | null;
           extra_id?: string | null;
+          extra_unit_id?: string | null;
           fuel_in?: number | null;
           fuel_out?: number | null;
           id?: string;
@@ -1787,6 +1789,7 @@ export type Database = {
           created_by?: string;
           dispatch_id?: string | null;
           extra_id?: string | null;
+          extra_unit_id?: string | null;
           fuel_in?: number | null;
           fuel_out?: number | null;
           id?: string;
@@ -1875,6 +1878,48 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "extras";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_items_extra_unit_id_fkey";
+            columns: ["extra_unit_id"];
+            isOneToOne: false;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_items_extra_unit_id_fkey";
+            columns: ["extra_unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_units";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_items_extra_unit_id_fkey";
+            columns: ["extra_unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_items_extra_unit_id_fkey";
+            columns: ["extra_unit_id"];
+            isOneToOne: false;
+            referencedRelation: "maintenance_cost_by_unit";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_items_extra_unit_id_fkey";
+            columns: ["extra_unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_current_state";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_items_extra_unit_id_fkey";
+            columns: ["extra_unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "reservation_items_reservation_id_fkey";
@@ -3489,13 +3534,29 @@ export type Database = {
         Args: { event: Json };
         Returns: Json;
       };
-      custom_combo_price: {
-        Args: { p_duration_minutes: number; p_items: Json };
-        Returns: {
-          list_amount_crc: number;
-          list_amount_usd: number;
-        }[];
-      };
+      custom_combo_price:
+        | {
+            Args: {
+              p_duration_minutes: number;
+              p_items: Json;
+            };
+            Returns: {
+              list_amount_crc: number;
+              list_amount_usd: number;
+            }[];
+          }
+        | {
+            Args: {
+              p_duration_minutes: number;
+              p_extra_ids: string[];
+              p_extra_unit_id: string;
+              p_items: Json;
+            };
+            Returns: {
+              list_amount_crc: number;
+              list_amount_usd: number;
+            }[];
+          };
       delete_or_deactivate_extra: {
         Args: { p_extra_id: string };
         Returns: string;
@@ -3938,6 +3999,8 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: {
           guide_only: boolean;
+          has_compatible_extras: boolean;
+          has_individual_tariff: boolean;
           id: string;
           name: string;
           units_are_interchangeable: boolean;
@@ -4126,6 +4189,7 @@ export type Database = {
           created_by: string;
           dispatch_id: string | null;
           extra_id: string | null;
+          extra_unit_id: string | null;
           fuel_in: number | null;
           fuel_out: number | null;
           id: string;

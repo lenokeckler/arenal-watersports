@@ -9,6 +9,7 @@ export interface ReservationExtrasViewModel {
   pricing: NullableRef<ReservationExtrasPricing>;
   pricingError: NullableRef<string>;
   isPricingLoading: boolean;
+  unitId: string;
   retry: () => void;
   retryPricing: () => void;
 }

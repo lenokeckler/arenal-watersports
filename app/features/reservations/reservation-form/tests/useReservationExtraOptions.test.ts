@@ -74,12 +74,14 @@ describe("useReservationExtraOptions", () => {
     );
   });
 
-  it("reports loading errors and skips invalid unit or combo requests", async () => {
-    vi.mocked(
-      getReservationExtrasAction
-    ).mockRejectedValueOnce(
-      RESERVATION_EXTRA_OPTIONS_TEST.ERROR
-    );
+  it("reports errors, loads combo options, and skips invalid units", async () => {
+    vi.mocked(getReservationExtrasAction)
+      .mockRejectedValueOnce(
+        RESERVATION_EXTRA_OPTIONS_TEST.ERROR
+      )
+      .mockResolvedValueOnce([
+        RESERVATION_EXTRA_OPTIONS_TEST.OPTION,
+      ]);
     const { result } = renderHook(() =>
       useReservationExtraOptions(
         RESERVATION_EXTRA_OPTIONS_TEST.FIRST_UNIT_ID,
@@ -95,14 +97,19 @@ describe("useReservationExtraOptions", () => {
     renderHook(() =>
       useReservationExtraOptions("", "rental")
     );
-    renderHook(() =>
+    const combo = renderHook(() =>
       useReservationExtraOptions(
         RESERVATION_EXTRA_OPTIONS_TEST.FIRST_UNIT_ID,
         "combo"
       )
     );
+    await waitFor(() =>
+      expect(combo.result.current.options).toEqual([
+        RESERVATION_EXTRA_OPTIONS_TEST.OPTION,
+      ])
+    );
     expect(
       getReservationExtrasAction
-    ).toHaveBeenCalledTimes(1);
+    ).toHaveBeenCalledTimes(2);
   });
 });

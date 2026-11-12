@@ -11,6 +11,8 @@ export const RESERVATION_SUBMIT_TEST = {
       draft: {
         agreedAmountCrc: 0,
         agreedAmountUsd: 25,
+        extraIds: [],
+        extraUnitId: null,
         items: [
           {
             kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
@@ -45,6 +47,8 @@ export const RESERVATION_SUBMIT_TEST = {
     customerName: "Customer",
     date: "2030-04-12",
     durationHours: 1.5,
+    extraIds: [],
+    extraUnitId: null,
     guideIds: GUIDE_IDS,
     items: [
       {
