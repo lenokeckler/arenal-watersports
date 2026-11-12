@@ -34,6 +34,15 @@ export const INVENTORY_COPY = {
   ADJUSTMENT_TITLE: "Ajustar inventario",
   ADJUSTMENT_DESCRIPTION:
     "Registre las cantidades actuales y el motivo del cambio.",
+  MOVEMENT_HISTORY_TITLE: "Historial de ajustes",
+  MOVEMENT_HISTORY_EMPTY:
+    "Esta categoría todavía no tiene ajustes registrados.",
+  MOVEMENT_DATE: "Fecha",
+  MOVEMENT_REASON: "Motivo",
+  MOVEMENT_AUTHOR: "Registrado por",
+  MOVEMENT_AVAILABLE: "Disponibles",
+  MOVEMENT_DAMAGED: "Dañados",
+  MOVEMENT_REPAIR: "En reparación",
   ADJUSTMENT_REASON_LABEL: "Motivo del ajuste",
   ADJUSTMENT_REASON_REQUIRED:
     "Seleccione el motivo del ajuste.",

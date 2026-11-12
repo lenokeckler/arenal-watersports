@@ -22,10 +22,10 @@ const InventoryCategoryView = ({
         inventoryPage={categoryDetails.units}
       />
     ) : null}
-    {categoryDetails.category.trackingMode ===
-    INVENTORY_TRACKING_MODE.BY_QUANTITY ? (
+    {"movements" in categoryDetails ? (
       <InventoryStockManagementSection
         category={categoryDetails.category}
+        movementPage={categoryDetails.movements}
       />
     ) : null}
   </main>

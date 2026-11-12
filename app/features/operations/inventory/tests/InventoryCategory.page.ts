@@ -5,6 +5,7 @@ import {
   INVENTORY_COPY,
   INVENTORY_UNIT_STATUS_COPY,
 } from "../constants/InventoryCopy.constants";
+import { INVENTORY_STOCK_ADJUSTMENT_REASON_LABELS } from "../constants/InventoryStockAdjustmentOptions.constants";
 import { EXPECTED_INVENTORY_UNIT_ROW_ERROR } from "./InventoryCategoryDetails.constants";
 import type { ActiveInventoryUnitStatus } from "@/app/constants";
 
@@ -79,9 +80,32 @@ export const createInventoryCategoryPage = () => {
         INVENTORY_COPY.ADJUSTMENT_REASON_LABEL,
         { exact: false }
       ),
+    getMovementHistoryHeading: () =>
+      screen.getByRole(ARIA_ROLE.HEADING, {
+        level: 2,
+        name: INVENTORY_COPY.MOVEMENT_HISTORY_TITLE,
+      }),
     getRequiredReasonError: () =>
       screen.getByText(
         INVENTORY_COPY.ADJUSTMENT_REASON_REQUIRED
+      ),
+    getMovementAuthor: (actorName: string) =>
+      screen.getByText(
+        `${INVENTORY_COPY.MOVEMENT_AUTHOR}: ${actorName}`
+      ),
+    getMovementDate: () =>
+      screen.getByText((content) =>
+        content.startsWith(
+          `${INVENTORY_COPY.MOVEMENT_DATE}:`
+        )
+      ),
+    getNextMovementPage: () =>
+      screen.getByRole(ARIA_ROLE.LINK, {
+        name: INVENTORY_COPY.NEXT_PAGE,
+      }),
+    getMovementReason: (reason: string) =>
+      screen.getByText(
+        `${INVENTORY_COPY.MOVEMENT_REASON}: ${INVENTORY_STOCK_ADJUSTMENT_REASON_LABELS[reason]}`
       ),
     getCountValue: (count: number) =>
       screen.getByText(String(count), { exact: true }),

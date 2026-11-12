@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
 import { expect } from "vitest";
+import { PAGINATION } from "@/app/constants";
 import InventoryCategoryView from "../InventoryCategoryView";
 import { mapInventoryCategoryDetails } from "../utils/mapInventoryCategoryDetails";
 import {
@@ -41,6 +42,11 @@ export const renderQuantityCategory = () => {
     throw new Error(
       EXPECTED_QUANTITY_CATEGORY_DETAILS_ERROR
     );
+  }
+
+  if ("movements" in categoryDetails) {
+    categoryDetails.movements.pageCount =
+      PAGINATION.ONE_PAGE + PAGINATION.ONE_PAGE;
   }
 
   const { rerender } = render(

@@ -1,5 +1,5 @@
 import { expect, it, vi } from "vitest";
-import { PATHS } from "@/app/constants";
+import { PAGINATION, PATHS } from "@/app/constants";
 import InventoryCategoryView from "../InventoryCategoryView";
 import { EXPECTED_QUANTITY_CATEGORY_DETAILS_ERROR } from "./InventoryCategoryDetails.constants";
 import {
@@ -69,6 +69,31 @@ it("shows quantity counts without a unit list", () => {
   expect(
     inventoryCategoryPage.getAdjustmentReason()
   ).toBeVisible();
+  expect(
+    inventoryCategoryPage.getMovementHistoryHeading()
+  ).toBeVisible();
+  expect(
+    inventoryCategoryPage.getMovementAuthor(
+      "Operations User"
+    )
+  ).toBeVisible();
+  expect(
+    inventoryCategoryPage.getMovementDate()
+  ).toHaveTextContent("7 nov 2026");
+  expect(
+    inventoryCategoryPage.getMovementReason(
+      "count_correction"
+    )
+  ).toBeVisible();
+  expect(
+    inventoryCategoryPage.getNextMovementPage()
+  ).toHaveAttribute(
+    "href",
+    PATHS.OPERATIONS.INVENTORY_CATEGORY_PAGE(
+      categoryDetails.category.id,
+      PAGINATION.ONE_PAGE
+    )
+  );
 });
 
 it("requires a reason before submitting an adjustment", async () => {
