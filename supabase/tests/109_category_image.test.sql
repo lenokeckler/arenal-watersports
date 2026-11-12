@@ -94,7 +94,8 @@ select throws_ok(
 
 select is(
   (select count(*)::integer from storage.objects
-    where bucket_id = 'category-images'),
+    where bucket_id = 'category-images'
+      and name like 'c1000001-0000-0000-0000-000000000001/%'),
   1,
   'operaciones lee las imagenes de categoria'
 );
