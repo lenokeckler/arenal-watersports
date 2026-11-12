@@ -46,9 +46,8 @@ describe("scaleCategoryImageDimensions", () => {
   });
 
   it("keeps the shorter side at the minimum side", () => {
-    const scaled = scaleCategoryImageDimensions(
-      THIN_DIMENSIONS
-    );
+    const scaled =
+      scaleCategoryImageDimensions(THIN_DIMENSIONS);
 
     expect(scaled.height).toBe(
       CATEGORY_IMAGE_COMPRESSION.MIN_SIDE_PX

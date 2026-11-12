@@ -18,3 +18,9 @@ export const THIN_DIMENSIONS: CategoryImageDimensions = {
   height: 2,
   width: MAX_SIDE * 10,
 };
+
+export const SOURCE_FILE_NAME = "boat.photo.png";
+
+export const NAME_WITHOUT_EXTENSION = "boat";
+
+export const HIDDEN_FILE_NAME = ".boat";
