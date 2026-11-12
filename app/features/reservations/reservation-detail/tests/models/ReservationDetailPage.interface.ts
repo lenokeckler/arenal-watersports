@@ -4,6 +4,7 @@ export interface ReservationDetailPage {
   clickRetry: (user: UserEvent) => Promise<void>;
   getDispatchGroups: () => HTMLElement[];
   getEquipmentText: (text: string) => HTMLElement;
+  getExtrasText: (text: string) => HTMLElement;
   getHeading: (name: string) => HTMLElement;
   getText: (text: string) => HTMLElement;
   getTexts: (text: string) => HTMLElement[];

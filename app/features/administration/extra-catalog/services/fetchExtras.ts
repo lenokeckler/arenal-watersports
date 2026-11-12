@@ -9,7 +9,7 @@ export const fetchExtras = async (
 ): Promise<ExtraRow[]> => {
   const { data: extraRows, error } = await supabase
     .from("extras")
-    .select("id, name, status")
+    .select("id, name, status, price_usd, price_crc")
     .order("name", { ascending: true })
     .order("id", { ascending: true })
     .range(range.from, range.to);

@@ -87,7 +87,7 @@ describe("SystemNavigation visibility", () => {
     });
   });
 
-  it("does not show the account Menu button in Administration mode", () => {
+  it("shows the account Menu button in Administration mode", () => {
     render(
       <SystemNavigation
         overview={
@@ -98,7 +98,7 @@ describe("SystemNavigation visibility", () => {
 
     expect(
       createSystemNavigationPage().queryMenuButton()
-    ).toBeNull();
+    ).not.toBeNull();
   });
 
   it("does not expose a mode missing from granted areas", () => {

@@ -7,6 +7,8 @@ export interface ValidatedCustomComboReservationInput {
   customerName: string;
   date: string;
   durationMinutes: number;
+  extraIds: string[];
+  extraUnitId: NullableRef<string>;
   guideIds: string[];
   items: CustomComboEquipmentSelection[];
   peopleCount: number;

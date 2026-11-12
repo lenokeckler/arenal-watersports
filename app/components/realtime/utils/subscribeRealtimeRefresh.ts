@@ -2,7 +2,9 @@ import type { RealtimeChannel } from "@supabase/supabase-js";
 import { createBrowserSupabaseClient } from "@/app/services/supabase/client";
 import { REALTIME } from "../constants/Realtime.constants";
 import type { RealtimeSubscriptionOptions } from "../models/RealtimeSubscriptionOptions.interface";
+import { buildRealtimeChannelName } from "./buildRealtimeChannelName";
 import { createRealtimeRefreshScheduler } from "./createRealtimeRefreshScheduler";
+import { startRealtimeFallbackRefresh } from "./startRealtimeFallbackRefresh";
 import { subscribeRealtimeTables } from "./subscribeRealtimeTables";
 
 const isConnectionError = (status: string): boolean =>
@@ -21,7 +23,9 @@ export const subscribeRealtimeRefresh = (
   const scheduler = createRealtimeRefreshScheduler(
     options.onRefresh
   );
-  const channel = supabase.channel(options.channelName);
+  const channel = supabase.channel(
+    buildRealtimeChannelName(options.channelName)
+  );
   subscribeRealtimeTables(
     channel,
     options.schema,
@@ -48,8 +52,12 @@ export const subscribeRealtimeRefresh = (
     REALTIME.ONLINE,
     refreshWhenOnline
   );
+  const stopFallbackRefresh = startRealtimeFallbackRefresh(
+    scheduler.schedule
+  );
   return () => {
     scheduler.dispose();
+    stopFallbackRefresh();
     window.removeEventListener(
       REALTIME.ONLINE,
       refreshWhenOnline

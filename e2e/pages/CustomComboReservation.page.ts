@@ -1,8 +1,10 @@
 import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE } from "@/app/constants";
 import { CUSTOM_COMBO_FORM_COPY } from "@/app/features/reservations/reservation-form/constants/CustomComboFormCopy.constants";
+import { RESERVATION_FORM_COPY } from "@/app/features/reservations/reservation-form/constants/ReservationFormCopy.constants";
 import { E2E_CUSTOM_COMBO } from "../constants/E2eCustomCombo.constants";
 import { RESERVATION_FORM_UI_COPY } from "@/app/features/reservations/reservation-form/constants/ReservationFormUiCopy.constants";
+import { RESERVATION_FORM_FIELD } from "@/app/features/reservations/reservation-form/models/ReservationFormField.constants";
 import { RESERVATION_TYPE_COPY } from "@/app/features/reservations/reservation-form/constants/ReservationTypeCopy.constants";
 import { createReservationFormPage } from "./ReservationForm.page";
 import { getMainRegion } from "../support/mainRegion";
@@ -57,6 +59,29 @@ export const createCustomComboReservationPage = (
       main.getByRole(ARIA_ROLE.REGION, {
         name: CUSTOM_COMBO_FORM_COPY.TITLE,
       }),
+    getEquipmentSelectionError: (): Locator =>
+      main.getByText(
+        RESERVATION_FORM_COPY[RESERVATION_FORM_FIELD.ITEMS],
+        { exact: true }
+      ),
+    getEquipmentSelectionErrorCenterOffset:
+      async (): Promise<number> =>
+        await main
+          .getByText(
+            RESERVATION_FORM_COPY[
+              RESERVATION_FORM_FIELD.ITEMS
+            ],
+            { exact: true }
+          )
+          .evaluate((error) => {
+            const bounds = error.getBoundingClientRect();
+            const errorCenter =
+              bounds.top + bounds.height / 2;
+
+            return Math.abs(
+              errorCenter - window.innerHeight / 2
+            );
+          }),
     getGuideAssignmentField: (): Locator =>
       main.getByRole(ARIA_ROLE.GROUP, {
         name: RESERVATION_FORM_UI_COPY.GUIDES,
