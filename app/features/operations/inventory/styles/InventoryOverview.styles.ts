@@ -10,6 +10,9 @@ export const INVENTORY_OVERVIEW_TITLE_CLASS =
 export const INVENTORY_OVERVIEW_DESCRIPTION_CLASS =
   "max-w-2xl text-body-base text-on-surface-variant";
 
+export const INVENTORY_OVERVIEW_COUNT_LINK_CLASS =
+  "inline-flex min-h-11 w-fit items-center rounded-lg border border-outline px-4 text-body-md text-on-surface";
+
 export const INVENTORY_OVERVIEW_SECTION_CLASS =
   "flex flex-col gap-4";
 
