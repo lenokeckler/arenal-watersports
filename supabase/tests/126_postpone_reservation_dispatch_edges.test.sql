@@ -102,13 +102,13 @@ select is(
 );
 select is(
   (select committed from category_availability('e3300000-0000-4000-8000-000000000101', '2035-04-12 15:00:00+00', '2035-04-12 16:00:00+00')),
-  0,
-  'the old window no longer counts the released units'
+  1,
+  'the old window no longer counts the released units, only the unit on the other reservation open dispatch'
 );
 select is(
   (select committed from category_availability('e3300000-0000-4000-8000-000000000101', '2035-04-13 16:00:00+00', '2035-04-13 17:00:00+00')),
-  2,
-  'the new window counts the released units'
+  3,
+  'the new window counts the released units and the unit on the other reservation open dispatch'
 );
 
 reset role;

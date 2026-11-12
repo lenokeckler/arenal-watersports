@@ -9,6 +9,7 @@ export const RESERVATION_CHARGE_QUERY = {
   },
   RPC: {
     PROPOSAL: "reservation_charge_proposal",
+    RECORD: "record_reservation_charge",
   },
   TABLE: "reservations",
 } as const;
