@@ -41,6 +41,7 @@ export const createInventoryWorkerFixture = async (
   return {
     cleanup: () =>
       cleanupInventoryWorkerFixture(client, id),
+    id,
     username,
   };
 };
