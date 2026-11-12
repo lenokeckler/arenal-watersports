@@ -1,6 +1,8 @@
 ﻿import { PAGINATION } from "./Pagination.constant";
 
 const OPERATIONS_INVENTORY_PATH = "/operations/inventory";
+const OPERATIONS_INVENTORY_COUNTS_PATH =
+  "/operations/inventory-counts";
 
 export const PATHS = {
   BOARD: "/board",
@@ -24,6 +26,9 @@ export const PATHS = {
     CATEGORY_STOCK_SEGMENT: "stock",
     CATEGORY_UNITS_SEGMENT: "units",
     DEPOSITS: "/administration/reports/deposits",
+    EQUIPMENT_HOURS:
+      "/administration/reports/equipment-hours",
+    MOVEMENT: "/administration/reports/movement",
     MAINTENANCE_COST:
       "/administration/reports/maintenance-cost",
     EXTRAS: "/administration/extras",
@@ -44,6 +49,10 @@ export const PATHS = {
     CALENDAR: "/operations/calendar",
     DAMAGE_REPORT: "/operations/damage-report",
     INVENTORY: OPERATIONS_INVENTORY_PATH,
+    INVENTORY_COUNT: (countId: string) =>
+      `${OPERATIONS_INVENTORY_COUNTS_PATH}/${encodeURIComponent(countId)}`,
+    INVENTORY_COUNT_NEW: `${OPERATIONS_INVENTORY_COUNTS_PATH}/new`,
+    INVENTORY_COUNTS: OPERATIONS_INVENTORY_COUNTS_PATH,
     INVENTORY_CATEGORY: (categoryId: string) =>
       `${OPERATIONS_INVENTORY_PATH}/${encodeURIComponent(categoryId)}`,
     INVENTORY_CATEGORY_PAGE: (
@@ -79,9 +88,11 @@ export const PATHS = {
     DETAIL: (reservationId: string): string =>
       `/reservations/${encodeURIComponent(reservationId)}`,
     DEPOSITS: "/reservations/deposits",
+    CANCEL_SEGMENT: "cancel",
     EDIT_SEGMENT: "edit",
     INCOME: "/reservations/income",
     NEW: "/reservations/new",
+    POSTPONE_SEGMENT: "postpone",
     ROOT: "/reservations",
     SPLIT_SEGMENT: "split",
   },

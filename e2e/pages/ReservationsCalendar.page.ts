@@ -45,6 +45,10 @@ export const createReservationsCalendarPage = (
       main.getByRole(ARIA_ROLE.GROUP, {
         name: customerName,
       }),
+    getCancelLink: (customerName: string): Locator =>
+      main.getByRole(ARIA_ROLE.LINK, {
+        name: `${RESERVATIONS_CALENDAR_COPY.CANCEL_RESERVATION_LABEL} ${customerName}`,
+      }),
     getModifyLink: (customerName: string): Locator =>
       main.getByRole(ARIA_ROLE.LINK, {
         name: `${RESERVATIONS_CALENDAR_COPY.MODIFY_RESERVATION_LABEL} ${customerName}`,
@@ -54,6 +58,10 @@ export const createReservationsCalendarPage = (
       originCode: string
     ): Locator =>
       locateOriginBlock(main, customerName, originCode),
+    getPostponeLink: (customerName: string): Locator =>
+      main.getByRole(ARIA_ROLE.LINK, {
+        name: `${RESERVATIONS_CALENDAR_COPY.POSTPONE_RESERVATION_LABEL} ${customerName}`,
+      }),
     getSplitLink: (customerName: string): Locator =>
       main.getByRole(ARIA_ROLE.LINK, {
         name: `${RESERVATIONS_CALENDAR_COPY.SPLIT_RESERVATION_LABEL} ${customerName}`,

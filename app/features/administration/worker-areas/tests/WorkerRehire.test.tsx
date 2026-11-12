@@ -27,6 +27,7 @@ const RETIRED = {
   fullName: "Celso Rojas",
   hasPersonalEmail: false,
   id: "33333333-3333-3333-3333-333333333333",
+  expiresAt: null,
   isExternalGuide: false,
   marks: [],
   username: "celso",
