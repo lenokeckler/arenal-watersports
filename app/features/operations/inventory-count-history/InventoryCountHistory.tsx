@@ -1,4 +1,7 @@
-import { redirect } from "next/navigation";
+import {
+  redirect,
+  unstable_rethrow,
+} from "next/navigation";
 import ListPagination from "@/app/components/list-pagination/ListPagination";
 import { Link, Text, Title } from "@/app/components";
 import {
@@ -41,7 +44,8 @@ const InventoryCountHistory = async ({
       limit: INVENTORY_COUNT_HISTORY_LIMITS.PAGE_SIZE,
       offset: from,
     });
-  } catch {
+  } catch (error) {
+    unstable_rethrow(error);
     hasLoadError = true;
   }
 

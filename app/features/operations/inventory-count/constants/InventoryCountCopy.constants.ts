@@ -8,6 +8,14 @@ import {
 } from "./InventoryCount.constants";
 
 export const INVENTORY_COUNT_COPY = {
+  BACK: "Volver a las categorías",
+  CATEGORIES_LABEL: "Categorías del conteo",
+  CATEGORY_DONE: "Confirmada",
+  CATEGORY_PENDING: "Pendiente",
+  CATEGORY_QUANTITY: "Por cantidad",
+  CATEGORY_UNITS: (total: number) =>
+    `${total} ${total === 1 ? "unidad" : "unidades"}`,
+  CONFIRM_CATEGORY: "Confirmar categoría",
   EMPTY: "No hay inventario para contar.",
   ERROR_LOAD:
     "No se pudo cargar el inventario. Intente de nuevo.",
@@ -15,17 +23,17 @@ export const INVENTORY_COUNT_COPY = {
     "Solo operaciones o administración levantan un conteo.",
   HEADING: "Levantar conteo",
   INTRO:
-    "Confirme cada unidad y su estado, y anote cuántos hay de cada estado en lo que se lleva por cantidad. Ya viene lleno con lo que el sistema tiene registrado.",
+    "Revise cada categoría. Si todo coincide con el sistema, confírmela con un toque; si no, corrija lo que haga falta.",
+  MATCH_ALL: "Todo coincide",
   NOTES_LABEL: "Notas del conteo",
-  NEXT: "Siguiente",
-  PREVIOUS: "Anterior",
-  STEP_PROGRESS: (current: number, total: number) =>
-    `Categoría ${current} de ${total}`,
+  PENDING_HINT: (pending: number) =>
+    `Faltan ${pending} ${pending === 1 ? "categoría" : "categorías"} por confirmar.`,
+  PROGRESS: (done: number, total: number) =>
+    `${done} de ${total} categorías confirmadas`,
+  READY_HINT: "Todas las categorías están confirmadas.",
   SUBMIT: "Registrar conteo",
-  SUMMARY_HEADING: "Resumen del conteo",
-  SUMMARY_TEXT: (total: number) =>
-    `Revisó ${total} categorías. Agregue notas si hace falta y registre el conteo.`,
   SUBMITTING: "Registrando conteo",
+  SYSTEM_STATUS: (status: string) => `Sistema: ${status}`,
   SYSTEM_SUMMARY: (
     available: number,
     damaged: number,

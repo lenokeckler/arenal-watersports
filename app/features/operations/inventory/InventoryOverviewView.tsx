@@ -8,6 +8,7 @@ import { INVENTORY_OVERVIEW_WRAPPER_CLASS } from "./styles/InventoryOverview.sty
 
 const InventoryOverviewView = ({
   expiryAlerts,
+  filters,
   inventoryPage,
   quantityAlerts,
 }: InventoryOverviewContentProps): React.JSX.Element => (
@@ -17,6 +18,7 @@ const InventoryOverviewView = ({
     <InventoryQuantityAlerts alerts={quantityAlerts} />
     <InventoryExpiryAlerts alerts={expiryAlerts} />
     <InventoryCategoryListSection
+      filters={filters}
       inventoryPage={inventoryPage}
     />
   </main>

@@ -20,6 +20,8 @@ import {
 const notFound = vi.fn();
 
 vi.mock("next/navigation", () => ({
+  unstable_rethrow: vi.fn(),
+  redirect: vi.fn(),
   notFound: () => {
     notFound();
     throw new Error("NEXT_NOT_FOUND");
@@ -115,6 +117,7 @@ describe("InventoryCountDetailView", () => {
 
   it("shows how much was missing or extra on that date", async () => {
     vi.mocked(getInventoryCountDetail).mockResolvedValue({
+      categories: [],
       quantityDifferences: [
         {
           categoryName: "Chalecos",
@@ -166,6 +169,7 @@ describe("InventoryCountDetailView", () => {
 
   it("says everything matched when there are no differences", async () => {
     vi.mocked(getInventoryCountDetail).mockResolvedValue({
+      categories: [],
       quantityDifferences: [],
       summary: {
         ...COUNT_SUMMARY,
