@@ -6,6 +6,9 @@ import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
 export const DEPOSITS_REPORT_STACK_CLASS =
   "mx-auto flex w-full max-w-3xl flex-col gap-md px-margin-mobile py-md md:px-margin-desktop md:py-lg";
 
+export const DEPOSITS_REPORT_LINKS_CLASS =
+  "flex flex-wrap gap-3";
+
 export const DEPOSITS_REPORT_WORKER_LINK_CLASS =
   LINK_ACTION_CLASS;
 

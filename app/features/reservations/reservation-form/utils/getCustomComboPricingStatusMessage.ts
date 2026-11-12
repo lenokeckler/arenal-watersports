@@ -12,7 +12,10 @@ export const getCustomComboPricingStatusMessage = (
     case CUSTOM_COMBO_PRICING_STATUS.LOADING:
       return CUSTOM_COMBO_FORM_COPY.PRICING_LOADING;
     case CUSTOM_COMBO_PRICING_STATUS.ERROR:
-      return CUSTOM_COMBO_FORM_COPY.PRICING_ERROR;
+      return (
+        state.message ??
+        CUSTOM_COMBO_FORM_COPY.PRICING_ERROR
+      );
     case CUSTOM_COMBO_PRICING_STATUS.READY:
       if (!state.pricing) {
         return CUSTOM_COMBO_FORM_COPY.PRICING_READY_EMPTY;

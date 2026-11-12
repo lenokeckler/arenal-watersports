@@ -12,7 +12,7 @@ export const BOARD_CARD_LINK_CLASS =
   "absolute inset-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary";
 
 export const BOARD_CARD_MEDIA_ASPECT_CLASS =
-  "aspect-square w-full shrink-0 grow";
+  "aspect-4/3 w-full shrink-0 grow lg:aspect-video";
 
 export const BOARD_CARD_MEDIA_CLASS = joinClassNames(
   BOARD_CARD_MEDIA_ASPECT_CLASS,
@@ -50,7 +50,7 @@ export const BOARD_CARD_FREE_CHIP_CLASS = joinClassNames(
 );
 
 export const BOARD_CARD_NAME_CLASS =
-  "absolute inset-x-0 bottom-0 flex flex-col gap-xs bg-linear-to-t from-background/95 via-background/60 to-transparent px-sm pb-sm pt-lg md:gap-sm";
+  "absolute inset-x-0 bottom-0 flex flex-col gap-xs bg-linear-to-t from-background/95 via-background/60 to-transparent px-sm pb-sm pt-md md:gap-sm";
 
 export const BOARD_CARD_LABEL_CLASS =
   "break-words text-body-base font-semibold text-on-surface md:text-title-md";

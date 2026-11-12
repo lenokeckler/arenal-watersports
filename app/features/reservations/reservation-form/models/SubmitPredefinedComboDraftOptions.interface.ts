@@ -8,7 +8,9 @@ export interface SubmitPredefinedComboDraftOptions {
   requestErrorFocus: () => void;
   setSubmissionError: (message: string) => void;
   submitPredefinedComboReservation: (
-    input: PredefinedComboReservationInput
+    input: PredefinedComboReservationInput,
+    onSuccess?: () => void
   ) => void;
+  onSuccess?: () => void;
   values: ReservationFormInput;
 }

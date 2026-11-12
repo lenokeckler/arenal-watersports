@@ -1,4 +1,5 @@
 import { TYPE_OF, UUID_PATTERN } from "@/app/constants";
+import { isReservationCancellationCause } from "./isReservationCancellationCause";
 import type { ReservationCancellationInput } from "../models/ReservationCancellationInput.interface";
 
 const isObject = (value: unknown): value is object =>
@@ -18,4 +19,7 @@ export const isReservationCancellationInput = (
   isString(input.expectedUpdatedAt) &&
   !Number.isNaN(Date.parse(input.expectedUpdatedAt)) &&
   "reason" in input &&
-  isString(input.reason);
+  isString(input.reason) &&
+  "cause" in input &&
+  (input.cause === null ||
+    isReservationCancellationCause(input.cause));

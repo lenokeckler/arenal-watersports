@@ -39,5 +39,6 @@ export const createReservationExtrasViewModel = (
   isPricingLoading: false,
   retry: () => undefined,
   retryPricing: () => undefined,
+  unitId: RESERVATION_FORM_VIEW_TEST.UNIT_ID,
   ...overrides,
 });

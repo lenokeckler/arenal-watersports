@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import type { NullableRef } from "@/app/types";
 import {
+  RESERVATION_FORM_ERROR_SCROLL_OPTIONS,
   RESERVATION_FORM_ERROR_TARGET_ID,
   RESERVATION_FORM_FIELD_ID,
 } from "../constants/ReservationFormUi.constants";
@@ -19,8 +20,11 @@ const resolveErrorTargetId = (
   }
 
   const firstFieldWithError =
-    RESERVATION_FORM_ERROR_FOCUS_ORDER.find((field) =>
-      Boolean(submission.errors[field])
+    RESERVATION_FORM_ERROR_FOCUS_ORDER.find(
+      (
+        field
+      ): field is keyof typeof RESERVATION_FORM_ERROR_TARGET_ID =>
+        Boolean(submission.errors[field])
     );
 
   return firstFieldWithError
@@ -34,8 +38,15 @@ export const useReservationFormErrorFocus = (
   const errorTargetId = resolveErrorTargetId(submission);
 
   useEffect(() => {
-    if (errorTargetId) {
-      document.getElementById(errorTargetId)?.focus();
+    const errorTarget = errorTargetId
+      ? document.getElementById(errorTargetId)
+      : null;
+
+    if (errorTarget) {
+      errorTarget.scrollIntoView?.(
+        RESERVATION_FORM_ERROR_SCROLL_OPTIONS
+      );
+      errorTarget.focus({ preventScroll: true });
     }
   }, [errorTargetId, submission.errorFocusRequest]);
 };
