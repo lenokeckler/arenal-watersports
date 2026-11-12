@@ -10,7 +10,7 @@ select is(
      ('private.parse_reservation_charge_amount(numeric, currency_code)'),
      ('private.normalize_reservation_charge_payment_method(text)'),
      ('private.assert_reservation_chargeable(reservations)'),
-     ('private.set_reservation_agreed_amount(uuid, currency_code, numeric, numeric)')
+     ('private.record_reservation_charge_pricing(uuid, currency_code, numeric, numeric)')
    ) as fns(signature)
    where has_function_privilege('anon', fns.signature, 'execute')),
   0::bigint,
@@ -26,7 +26,7 @@ select is(
      ('private.parse_reservation_charge_amount(numeric, currency_code)'),
      ('private.normalize_reservation_charge_payment_method(text)'),
      ('private.assert_reservation_chargeable(reservations)'),
-     ('private.set_reservation_agreed_amount(uuid, currency_code, numeric, numeric)')
+     ('private.record_reservation_charge_pricing(uuid, currency_code, numeric, numeric)')
    ) as fns(signature)
    where has_function_privilege('authenticated', fns.signature, 'execute')),
   8::bigint,
@@ -40,7 +40,7 @@ select is(
      and proc.proname in (
        'reservation_catalog_amounts', 'parse_reservation_charge_currency',
        'parse_reservation_charge_amount', 'normalize_reservation_charge_payment_method',
-       'assert_reservation_chargeable', 'set_reservation_agreed_amount')),
+       'assert_reservation_chargeable', 'record_reservation_charge_pricing')),
   0::bigint,
   'the helpers live in the private schema only'
 );
