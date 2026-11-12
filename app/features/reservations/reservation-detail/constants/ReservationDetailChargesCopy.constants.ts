@@ -13,6 +13,9 @@ export const RESERVATION_DETAIL_CHARGES_COPY = {
   PARENT: "Cobro en reserva original",
   PARTIAL: "Pago parcial",
   PENDING: "Pendiente de pago",
+  RECORD_CHARGE: "Registrar cobro",
+  RECORD_CHARGE_LABEL: (code: string): string =>
+    `Registrar cobro de la reserva ${code}`,
   REFUNDS: "Reembolsos registrados",
   UNPRICED: "Sin tarifa configurada",
 } as const;

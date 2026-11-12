@@ -21,7 +21,7 @@ test("captures the inventory count form and the recorded count", async ({
   );
 
   try {
-    await countPage.goToSummary();
+    await countPage.confirmAllCategories();
     await countPage.writeNotes(E2E_INVENTORY_COUNT.NOTES);
     await countPage.submit();
     await expect(

@@ -6,6 +6,7 @@ import {
   INVENTORY_COUNT_LINES_SELECT,
 } from "../constants/InventoryCountHistory.constants";
 import type { InventoryCountDetail } from "../models/InventoryCountDetail.interface";
+import { buildInventoryCountContent } from "../utils/buildInventoryCountContent";
 import { buildInventoryCountDifferences } from "../utils/buildInventoryCountDifferences";
 import { listInventoryCounts } from "./listInventoryCounts";
 
@@ -41,6 +42,7 @@ export const getInventoryCountDetail = async (
 
   return {
     ...buildInventoryCountDifferences(data ?? []),
+    categories: buildInventoryCountContent(data ?? []),
     summary,
   };
 };

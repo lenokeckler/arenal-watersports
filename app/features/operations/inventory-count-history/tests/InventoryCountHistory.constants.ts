@@ -13,19 +13,23 @@ export const INVENTORY_COUNT_HISTORY_TEST = {
 
 export const COUNT_SUMMARY_ROW: InventoryCountSummaryRow = {
   count_id: INVENTORY_COUNT_HISTORY_TEST.COUNT_ID,
+  category_count: 3,
   counted_at: "2026-11-10T15:30:00+00:00",
   counted_by: "Ana Operaciones",
   difference_count: 2,
   notes: "Conteo de noviembre",
   total_count: 25,
+  unit_count: 12,
 };
 
 export const COUNT_SUMMARY: InventoryCountSummary = {
+  categoryCount: 3,
   countedAt: "2026-11-10T15:30:00+00:00",
   countedBy: "Ana Operaciones",
   differenceCount: 2,
   id: INVENTORY_COUNT_HISTORY_TEST.COUNT_ID,
   notes: "Conteo de noviembre",
+  unitCount: 12,
 };
 
 const EMPTY_LINE: InventoryCountLineRow = {

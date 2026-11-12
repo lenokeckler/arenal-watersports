@@ -17,10 +17,11 @@ export const createInventoryOverviewPage = () => {
     categoryName: string,
     metricValue: number
   ) =>
-    within(getCategoryLink(categoryName)).getByText(
-      String(metricValue),
-      { exact: true }
-    );
+    within(
+      screen.getByRole("row", {
+        name: new RegExp(categoryName),
+      })
+    ).getAllByText(String(metricValue), { exact: true })[0];
 
   return {
     getCategoryMetricValue,
