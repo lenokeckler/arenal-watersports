@@ -5,6 +5,7 @@ export interface ValidatedReservationFormInput {
   customerName: string;
   date: string;
   durationMinutes: number;
+  extraIds: string[];
   guideIds?: string[];
   peopleCount: number;
   reservationType: ReservationType;
