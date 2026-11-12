@@ -13,9 +13,6 @@ export const EQUIPMENT_BOARD_COPY = {
     freeLabel: string
   ): string => `${free} / ${total} ${freeLabel}`,
   GRID_LABEL: "Categorías de equipo reservable",
-  LIVE_UPDATES_LOST_BODY:
-    "El tablero puede estar desactualizado. Revise su conexión antes de ofrecer equipo.",
-  LIVE_UPDATES_LOST_TITLE: "Sin actualización en vivo",
   LOADING_ANNOUNCEMENT: "Cargando el tablero de equipo.",
   METADATA_TITLE: "Tablero — Arenal Water Sports",
   PAGE_DESCRIPTION:

@@ -18,9 +18,12 @@ vi.mock("next/navigation", () => ({
   redirect: vi.fn(),
 }));
 
-vi.mock("../CategoryUnitsRealtime", () => ({
-  default: () => null,
-}));
+vi.mock(
+  "@/app/components/board-realtime/BoardRealtime",
+  () => ({
+    default: () => null,
+  })
+);
 
 vi.mock("@/app/services/board", () => ({
   readBoardCategory: vi.fn(),

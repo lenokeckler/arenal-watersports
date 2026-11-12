@@ -1,5 +1,6 @@
 import { notFound, redirect } from "next/navigation";
-import { LENGTH } from "@/app/constants";
+import { BOARD_REALTIME, LENGTH } from "@/app/constants";
+import BoardRealtime from "@/app/components/board-realtime/BoardRealtime";
 import { readBoardCategory } from "@/app/services/board";
 import { resolveBoardCategoryPath } from "@/app/utils/board-paths/resolveBoardCategoryPath";
 import { resolveListPage } from "@/app/utils/list-pagination/resolveListPage";
@@ -14,7 +15,6 @@ import CategoryUnitsEmpty from "./components/CategoryUnitsEmpty";
 import CategoryUnitsHeader from "./components/CategoryUnitsHeader";
 import CategoryUnitsPagination from "./components/CategoryUnitsPagination";
 import CategoryUnitsView from "./components/CategoryUnitsView";
-import CategoryUnitsRealtime from "./CategoryUnitsRealtime";
 import type { CategoryUnitsProps } from "./models/CategoryUnitsProps.interface";
 import { CATEGORY_UNITS_PAGE_CLASS } from "./styles/CategoryUnits.styles";
 import { readCategoryUnitsContent } from "./services/readCategoryUnitsContent";
@@ -55,7 +55,9 @@ const CategoryUnits = async ({
         categoryName={categoryName}
         unitCount={unitCount}
       />
-      <CategoryUnitsRealtime />
+      <BoardRealtime
+        channelName={BOARD_REALTIME.CHANNEL.CATEGORY_UNITS}
+      />
       <CategoryGroupSwitch
         currentCategoryId={categoryId}
         members={groupMembers}

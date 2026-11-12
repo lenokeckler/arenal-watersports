@@ -10,7 +10,7 @@ import {
 import { REALTIME } from "@/app/components/realtime/constants/Realtime.constants";
 import { createRealtimeHarness } from "@/app/components/realtime/tests/RealtimeHarness";
 import { BOARD_REALTIME } from "@/app/constants";
-import { useEquipmentBoardRealtimeViewModel } from "../hooks/useEquipmentBoardRealtimeViewModel";
+import { useBoardRealtimeViewModel } from "../hooks/useBoardRealtimeViewModel";
 
 const refresh = vi.fn();
 
@@ -22,11 +22,9 @@ vi.mock("@/app/services/supabase/client", () => ({
   createBrowserSupabaseClient: vi.fn(),
 }));
 
-const CHANGE_HANDLER_ARGUMENT_INDEX = 2;
-const FIRST_CALL_INDEX = 0;
-const STATUS_HANDLER_ARGUMENT_INDEX = 0;
+const CHANNEL_NAME = BOARD_REALTIME.CHANNEL.EQUIPMENT_BOARD;
 
-describe("useEquipmentBoardRealtimeViewModel", () => {
+describe("useBoardRealtimeViewModel", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.useFakeTimers();
@@ -35,31 +33,28 @@ describe("useEquipmentBoardRealtimeViewModel", () => {
     vi.useRealTimers();
   });
 
-  it("listens to the board channel on every table that decides its numbers", () => {
-    const { channel, createChannel } =
-      createRealtimeHarness();
-    renderHook(() => useEquipmentBoardRealtimeViewModel());
+  it("listens to the given channel on every table that decides the board numbers", () => {
+    const { createChannel, on } = createRealtimeHarness();
+    renderHook(() =>
+      useBoardRealtimeViewModel(CHANNEL_NAME)
+    );
 
     expect(createChannel).toHaveBeenCalledWith(
-      BOARD_REALTIME.CHANNEL.EQUIPMENT_BOARD
+      CHANNEL_NAME
     );
     expect(
-      channel.on.mock.calls.map(
-        ([, filter]) => filter.table
-      )
+      on.mock.calls.map(([, filter]) => filter.table)
     ).toEqual([...BOARD_REALTIME.TABLES]);
   });
 
   it("refreshes the server render once after a burst of changes", () => {
-    const { channel } = createRealtimeHarness();
-    renderHook(() => useEquipmentBoardRealtimeViewModel());
-    const change =
-      channel.on.mock.calls[FIRST_CALL_INDEX][
-        CHANGE_HANDLER_ARGUMENT_INDEX
-      ];
+    const { triggerChange } = createRealtimeHarness();
+    renderHook(() =>
+      useBoardRealtimeViewModel(CHANNEL_NAME)
+    );
     act(() => {
-      change();
-      change();
+      triggerChange();
+      triggerChange();
       vi.advanceTimersByTime(REALTIME.COALESCE_MS);
     });
 
@@ -67,17 +62,13 @@ describe("useEquipmentBoardRealtimeViewModel", () => {
   });
 
   it("flags a lost connection and clears it once subscribed", () => {
-    const { channel } = createRealtimeHarness();
+    const { emitStatus } = createRealtimeHarness();
     const { result } = renderHook(() =>
-      useEquipmentBoardRealtimeViewModel()
+      useBoardRealtimeViewModel(CHANNEL_NAME)
     );
-    const status =
-      channel.subscribe.mock.calls[FIRST_CALL_INDEX][
-        STATUS_HANDLER_ARGUMENT_INDEX
-      ];
-    act(() => status(REALTIME.STATUS.CHANNEL_ERROR));
+    act(() => emitStatus(REALTIME.STATUS.CHANNEL_ERROR));
     expect(result.current.hasConnectionError).toBe(true);
-    act(() => status(REALTIME.STATUS.SUBSCRIBED));
+    act(() => emitStatus(REALTIME.STATUS.SUBSCRIBED));
     expect(result.current.hasConnectionError).toBe(false);
   });
 });
