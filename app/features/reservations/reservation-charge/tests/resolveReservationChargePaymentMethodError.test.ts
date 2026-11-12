@@ -2,7 +2,12 @@ import { describe, expect, it } from "vitest";
 import { RESERVATION_CHARGE_LIMITS } from "../constants/ReservationChargeLimits.constants";
 import { RESERVATION_CHARGE_VALIDATION_COPY as COPY } from "../constants/ReservationChargeValidationCopy.constants";
 import { resolveReservationChargePaymentMethodError } from "../utils/resolveReservationChargePaymentMethodError";
-import { NON_BREAKING_SPACE } from "./ReservationChargeValues.constants";
+import {
+  BYTE_ORDER_MARK,
+  MONGOLIAN_VOWEL_SEPARATOR,
+  NON_BREAKING_SPACE,
+  ZERO_WIDTH_SPACE,
+} from "./ReservationChargeValues.constants";
 
 const LIMIT_METHOD = "a".repeat(
   RESERVATION_CHARGE_LIMITS.PAYMENT_METHOD_MAX_LENGTH
@@ -29,6 +34,10 @@ describe("resolveReservationChargePaymentMethodError", () => {
     "tar\njeta",
     "tar\tjeta",
     "tar\u007fjeta",
+    ZERO_WIDTH_SPACE,
+    MONGOLIAN_VOWEL_SEPARATOR,
+    `tar${ZERO_WIDTH_SPACE}jeta`,
+    `tar${BYTE_ORDER_MARK}jeta`,
   ])(
     "refuses the disallowed characters in %j",
     (method) => {
