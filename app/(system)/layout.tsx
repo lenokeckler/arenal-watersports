@@ -1,4 +1,6 @@
 import SessionActivityTracker from "@/app/features/access/session-activity/SessionActivityTracker";
+import { readOwnProfileIdentity } from "@/app/features/access/profile-hub/services/readOwnProfileIdentity";
+import SessionControls from "@/app/features/access/session-bar/SessionControls";
 import SessionBar from "@/app/features/access/session-bar/SessionBar";
 import SystemScreen from "@/app/features/access/system-screen/SystemScreen";
 import SystemNavigation from "@/app/features/access/system-navigation/SystemNavigation";
@@ -9,15 +11,22 @@ const SystemLayout = async ({
   children,
 }: LayoutProps<"/">): Promise<React.JSX.Element> => {
   const overview = await readWorkModeOverviewAsSignedIn();
+  const identity = await readOwnProfileIdentity().catch(
+    () => null
+  );
 
   return (
     <SystemScreen overview={overview}>
       <SessionActivityTracker />
-      <SessionBar />
+      {overview?.current ? null : <SessionBar />}
       <WorkModeSwitch overview={overview} />
       {children}
       {overview?.current ? (
-        <SystemNavigation overview={overview} />
+        <SystemNavigation
+          overview={overview}
+          menuExtras={<SessionControls />}
+          menuIdentity={identity}
+        />
       ) : null}
     </SystemScreen>
   );

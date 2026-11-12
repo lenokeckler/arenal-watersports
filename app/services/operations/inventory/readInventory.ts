@@ -11,6 +11,8 @@ import type {
   InventorySummaryDatabaseRow,
 } from "./models/InventoryReadModels.interface";
 import { requireInventoryAccess } from "./requireInventoryAccess";
+import type { InventorySummaryFilters } from "./models/InventorySummaryFilters.interface";
+import { escapeInventorySearch } from "./utils/escapeInventorySearch";
 import { readInventoryUnitPage } from "./readInventoryUnits";
 import { listInventoryStockMovements } from "./listInventoryStockMovements";
 import { resolveInventoryQueryPage } from "./utils/resolveInventoryQueryPage";
@@ -21,7 +23,8 @@ import {
 } from "./utils/inventoryPagination";
 
 export const getInventorySummaryPage = async (
-  pageIndex: number
+  pageIndex: number,
+  filters: InventorySummaryFilters = {}
 ): Promise<
   InventoryDataPage<InventorySummaryDatabaseRow>
 > => {
@@ -33,11 +36,27 @@ export const getInventorySummaryPage = async (
       requestedPageIndex
     );
 
-    return supabase
+    let query = supabase
       .from(INVENTORY_DATA_SOURCE.CATEGORY_SUMMARY_VIEW)
       .select(INVENTORY_DATA_SOURCE.ALL_COLUMNS_SELECT, {
         count: "exact",
-      })
+      });
+
+    if (filters.query) {
+      query = query.ilike(
+        INVENTORY_DATA_SOURCE.CATEGORY_NAME_COLUMN,
+        `%${escapeInventorySearch(filters.query)}%`
+      );
+    }
+
+    if (
+      filters.mode === INVENTORY_TRACKING_MODE.BY_UNIT ||
+      filters.mode === INVENTORY_TRACKING_MODE.BY_QUANTITY
+    ) {
+      query = query.eq("tracking_mode", filters.mode);
+    }
+
+    return query
       .order(INVENTORY_DATA_SOURCE.CATEGORY_NAME_COLUMN, {
         ascending: true,
       })

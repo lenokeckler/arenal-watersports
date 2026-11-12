@@ -17,11 +17,12 @@ their active work area.
 - Route Inventory, Extras, Income, and Reports to their existing administration screens.
 - Route Workers to the existing worker-areas screen, which links to worker registration.
 - Route Reports to the existing deposits screen, which links to reservations by worker.
-- Hide the account Menu button in Administration mode so the navigation contains only its five items.
+- Show the account Menu button in every work mode, Administration included.
 - Preserve the existing Operations and Reservations items, including their account Menu button.
 - Link the board and active area's calendar using existing `PATHS` entries.
 - Show Inventory in Operations and History in both supported work areas as active destinations.
-- Provide a small Menu panel with existing Profile and work-mode selector destinations.
+- Provide a Menu panel that slides in from the left with the person (name, username and area), the Profile and work-mode selector destinations, the theme choice and Log out.
+- From the `md` width up, show the navigation as a left sidebar instead of the bottom bar.
 - Keep navigation visibility separate from authorization; server-side route checks remain
   authoritative.
 - Reserve content clearance and the device safe area below the fixed navigation.
