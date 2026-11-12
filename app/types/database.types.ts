@@ -3235,6 +3235,13 @@ export type Database = {
         Args: { p_pin: string; p_username: string };
         Returns: string;
       };
+      extend_worker_expiry: {
+        Args: {
+          new_expires_at: string;
+          target_worker: string;
+        };
+        Returns: string;
+      };
       finish_password_recovery: {
         Args: { p_user_id: string };
         Returns: undefined;
