@@ -399,3 +399,11 @@ export { CHARGES_TRUNCATED_ERROR_MESSAGE } from "./supabase/ChargesTruncatedErro
 export { REFUND_QUERY } from "./supabase/RefundQuery.constants";
 export { REFUNDS_TRUNCATED_ERROR_MESSAGE } from "./supabase/RefundsTruncatedError.constants";
 export { WORKER_STATUS } from "./workers/WorkerStatus.constants";
+export {
+  CATEGORY_IMAGE,
+  CATEGORY_IMAGE_FILE_ISSUE,
+  CATEGORY_IMAGE_MIME_TYPE,
+  CATEGORY_IMAGE_REMOTE_PROTOCOL,
+  type CategoryImageFileIssue,
+  type CategoryImageMimeType,
+} from "./storage/CategoryImage.constants";
