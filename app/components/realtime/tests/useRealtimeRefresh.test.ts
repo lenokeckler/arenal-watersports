@@ -39,7 +39,7 @@ describe("useRealtimeRefresh", () => {
       createRealtimeHarness();
     renderRealtimeRefresh(vi.fn());
     expect(createChannel).toHaveBeenCalledWith(
-      REALTIME_REFRESH_TEST.CHANNEL
+      expect.stringContaining(REALTIME_REFRESH_TEST.CHANNEL)
     );
     expect(on).toHaveBeenCalledTimes(
       REALTIME_REFRESH_TEST.TABLES.length
@@ -90,6 +90,16 @@ describe("useRealtimeRefresh", () => {
     });
     expect(result.current).toBe(false);
     expect(onRefresh).toHaveBeenCalledOnce();
+  });
+
+  it("joins a channel with a new name every time it subscribes, so a late leave cannot close the new one", () => {
+    const { createChannel } = createRealtimeHarness();
+    const first = renderRealtimeRefresh(vi.fn());
+    first.unmount();
+    renderRealtimeRefresh(vi.fn());
+    const [firstName, secondName] =
+      createChannel.mock.calls.map(([name]) => name);
+    expect(firstName).not.toBe(secondName);
   });
 
   it("removes the channel and drops pending refreshes on unmount", () => {

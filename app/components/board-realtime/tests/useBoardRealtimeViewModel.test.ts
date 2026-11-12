@@ -40,7 +40,7 @@ describe("useBoardRealtimeViewModel", () => {
     );
 
     expect(createChannel).toHaveBeenCalledWith(
-      CHANNEL_NAME
+      expect.stringContaining(CHANNEL_NAME)
     );
     expect(
       on.mock.calls.map(([, filter]) => filter.table)
