@@ -9,14 +9,15 @@ import {
 export const captureViewport = async (
   page: Page,
   fileName: string,
-  fullPage = !E2E_SCREENSHOT_VIEWPORT_ONLY
+  fullPage = !E2E_SCREENSHOT_VIEWPORT_ONLY,
+  outputDirectory?: string
 ): Promise<void> => {
   await page.addStyleTag({
     content: E2E_DEV_INDICATOR_HIDING_STYLE,
   });
   await page.screenshot({
     fullPage,
-    path: resolveScreenshotPath(fileName),
+    path: resolveScreenshotPath(fileName, outputDirectory),
     style: E2E_SCREENSHOT_CAPTURE_STYLE,
   });
 };

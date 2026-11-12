@@ -12,6 +12,21 @@ import {
   INVENTORY_UNIT_SUMMARY_ROW,
 } from "./InventorySummaryMapper.constants";
 import type { InventoryCategoryDetails } from "../models/InventoryCategoryDetails.type";
+import type { InventoryStockMovement } from "@/app/services/operations/inventory/models/InventoryStockMovement.interface";
+
+export const INVENTORY_STOCK_MOVEMENT: InventoryStockMovement =
+  {
+    actorName: "Operations User",
+    availableFrom: 12,
+    availableTo: 10,
+    createdAt: "2026-11-07T15:00:00.000Z",
+    damagedFrom: 1,
+    damagedTo: 2,
+    id: "bbbbbbbb-0000-4000-8000-000000000001",
+    inRepairFrom: 0,
+    inRepairTo: 0,
+    reason: "count_correction",
+  };
 
 const EMPTY_INVENTORY_UNITS = {
   items: [],
@@ -22,6 +37,7 @@ const EMPTY_INVENTORY_UNITS = {
 
 export const UNIT_INVENTORY_CATEGORY_DETAILS: InventoryCategoryDatabaseDetails =
   {
+    movements: null,
     summary: INVENTORY_UNIT_SUMMARY_ROW,
     units: {
       items: ACTIVE_INVENTORY_UNIT_ROWS,
@@ -33,12 +49,19 @@ export const UNIT_INVENTORY_CATEGORY_DETAILS: InventoryCategoryDatabaseDetails =
 
 export const QUANTITY_INVENTORY_CATEGORY_DETAILS: InventoryCategoryDatabaseDetails =
   {
+    movements: {
+      items: [INVENTORY_STOCK_MOVEMENT],
+      pageIndex: PAGINATION.DEFAULT_PAGE,
+      pageCount: PAGINATION.ONE_PAGE,
+      totalCount: 1,
+    },
     summary: INVENTORY_QUANTITY_SUMMARY_ROW,
     units: EMPTY_INVENTORY_UNITS,
   };
 
 export const MISSING_INVENTORY_CATEGORY_DETAILS: InventoryCategoryDatabaseDetails =
   {
+    movements: null,
     summary: null,
     units: EMPTY_INVENTORY_UNITS,
   };
@@ -83,5 +106,11 @@ export const EXPECTED_QUANTITY_INVENTORY_CATEGORY_DETAILS: InventoryCategoryDeta
       inMaintenance: 0,
       inRepair: 3,
       total: 15,
+    },
+    movements: {
+      items: [INVENTORY_STOCK_MOVEMENT],
+      pageIndex: PAGINATION.DEFAULT_PAGE,
+      pageCount: PAGINATION.ONE_PAGE,
+      totalCount: 1,
     },
   };

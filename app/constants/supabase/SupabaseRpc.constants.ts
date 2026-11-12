@@ -16,6 +16,9 @@ export const SUPABASE_RPC = {
   FINISH_PASSWORD_RECOVERY: "finish_password_recovery",
   GET_RESERVATION_HISTORY_RECORD:
     "get_reservation_history_record",
+  ADJUST_EQUIPMENT_STOCK: "adjust_equipment_stock",
+  LIST_OPERATIONS_STOCK_MOVEMENTS:
+    "list_operations_stock_movements",
   GRANT_WORKER_AREA: "grant_worker_area",
   GRANT_WORKER_MARK: "grant_worker_mark",
   HAS_AREA: "has_area",
