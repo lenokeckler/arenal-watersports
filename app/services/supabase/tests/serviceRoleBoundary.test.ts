@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { listProductionSources } from "./listProductionSources";
 import {
   APP_DIRECTORY,
@@ -11,6 +11,7 @@ import {
   SERVICE_ROLE_REFERENCE_PATTERN,
   SET_WORKER_PASSWORD_ALLOWED_PATH_PATTERN,
   SET_WORKER_PASSWORD_PATTERN,
+  SOURCE_SCAN_TEST_TIMEOUT_MS,
   SERVICES_BARREL_IMPORT_PATTERN,
   SERVICES_PATH_PATTERN,
   TEXT_ENCODING,
@@ -21,6 +22,8 @@ const readSource = (file: string): string =>
     path.join(APP_DIRECTORY, file),
     TEXT_ENCODING
   );
+
+vi.setConfig({ testTimeout: SOURCE_SCAN_TEST_TIMEOUT_MS });
 
 describe("service role boundary", () => {
   it("references the service role client only from app/services", () => {

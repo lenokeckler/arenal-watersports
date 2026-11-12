@@ -3,6 +3,7 @@ import {
   E2E_RESERVATION_FORM_COPY,
   E2E_RESERVATION_FORM_SCREENSHOT_BASENAME,
   E2E_RESERVATION_FORM_UNIT_SCREENSHOT_SUFFIX,
+  E2E_RESERVATION_TYPE_COPY,
 } from "../constants/E2eReservationForm.constants";
 import {
   E2E_NEXT_DEV_INDICATOR_SELECTOR,
@@ -18,6 +19,9 @@ test("captures concrete Lancha unit selection", async ({
   await signInAsSeededWorker(page);
   const reservationForm = createReservationFormPage(page);
   await reservationForm.goTo();
+  await reservationForm.selectReservationType(
+    E2E_RESERVATION_TYPE_COPY.OPTIONS.TOUR.label
+  );
   await reservationForm
     .getDateInput()
     .fill(E2E_RESERVATION_FORM_COPY.SCREENSHOT_DATE);

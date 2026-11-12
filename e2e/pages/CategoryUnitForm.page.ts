@@ -2,6 +2,7 @@ import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE } from "@/app/constants";
 import { FIELD_ERROR_ID_SUFFIX } from "@/app/components/field-factory/constants/FieldFactory.constants";
 import { UNIT_DECOMMISSION_COPY } from "@/app/features/administration/unit-catalog/constants/UnitDecommissionCopy.constants";
+import { UNIT_RESERVATION_HISTORY_COPY } from "@/app/features/administration/unit-catalog/constants/UnitReservationHistoryCopy.constants";
 import { UNIT_FORM_COPY } from "@/app/features/administration/unit-catalog/constants/UnitFormCopy.constants";
 import type { UnitFormMode } from "@/app/features/administration/unit-catalog/constants/UnitFormMode.constants";
 import { UNIT_FORM_SUBMIT_LABEL } from "@/app/features/administration/unit-catalog/constants/UnitFormModeCopy.constants";
@@ -67,6 +68,19 @@ export const createCategoryUnitFormPage = (page: Page) => {
     page.getByText(
       UNIT_DECOMMISSION_COPY.DECOMMISSIONED_NOTICE_PREFIX
     );
+
+  const getReservationHistory = (): Locator =>
+    page.getByRole(ARIA_ROLE.REGION, {
+      name: UNIT_RESERVATION_HISTORY_COPY.TITLE,
+    });
+
+  const getReservationRows = (): Locator =>
+    getReservationHistory().getByRole(ARIA_ROLE.LISTITEM);
+
+  const getReservationHistoryEmptyState = (): Locator =>
+    getReservationHistory().getByRole(ARIA_ROLE.HEADING, {
+      name: UNIT_RESERVATION_HISTORY_COPY.EMPTY_STATE_TITLE,
+    });
 
   const getToastMessage = (message: string): Locator =>
     page.getByText(message);
@@ -135,6 +149,9 @@ export const createCategoryUnitFormPage = (page: Page) => {
     getReasonInput,
     getFieldError,
     getDecommissionedNotice,
+    getReservationHistory,
+    getReservationRows,
+    getReservationHistoryEmptyState,
     getToastMessage,
     getNotFoundMessage,
     fill,

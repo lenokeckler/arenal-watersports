@@ -1,0 +1,4 @@
+export const CUSTOM_COMBO_AGREED_AMOUNT_MAX = {
+  CRC: 999_999_999_999.99,
+  USD: 9_999_999_999.99,
+} as const;

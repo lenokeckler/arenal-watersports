@@ -9,16 +9,41 @@ import type { SystemNavigationMode } from "../models/SystemNavigationMode.type";
 import { E2E_VIEWPORT } from "./E2eRuntime.constants";
 
 export const E2E_SYSTEM_NAVIGATION_SCREENSHOT_BASENAME = {
+  administration:
+    "us-tab-04-bottom-navigation-administration",
   operations: "us-tab-04-bottom-navigation-operations",
   reservations: "us-tab-04-bottom-navigation-reservations",
 } as const;
 
 export const E2E_SYSTEM_NAVIGATION_MODES = {
+  ADMINISTRATION: "administration",
   OPERATIONS: "operations",
   RESERVATIONS: "reservations",
 } as const;
 
 export const E2E_SYSTEM_NAVIGATION_EXPECTED_LINKS = {
+  ADMINISTRATION: [
+    {
+      href: PATHS.ADMINISTRATION.CATEGORIES,
+      label: SYSTEM_NAVIGATION_COPY.INVENTORY,
+    },
+    {
+      href: PATHS.ADMINISTRATION.EXTRAS,
+      label: SYSTEM_NAVIGATION_COPY.EXTRAS,
+    },
+    {
+      href: PATHS.ADMINISTRATION.WORKER_AREAS,
+      label: SYSTEM_NAVIGATION_COPY.WORKERS,
+    },
+    {
+      href: PATHS.ADMINISTRATION.INCOME,
+      label: SYSTEM_NAVIGATION_COPY.INCOME,
+    },
+    {
+      href: PATHS.ADMINISTRATION.DEPOSITS,
+      label: SYSTEM_NAVIGATION_COPY.REPORTS,
+    },
+  ],
   BOARD_LABEL: SYSTEM_NAVIGATION_COPY.BOARD,
   CALENDAR_LABEL: SYSTEM_NAVIGATION_COPY.CALENDAR,
   BOARD: PATHS.BOARD,
