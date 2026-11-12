@@ -1,5 +1,5 @@
 import { expect, test as base } from "@playwright/test";
-import { PATHS } from "@/app/constants";
+import { ARIA_ROLE, PATHS } from "@/app/constants";
 import {
   E2E_EXTERNAL_GUIDE,
   E2E_EXTERNAL_GUIDE_SCREENSHOT_BASENAME,
@@ -50,6 +50,17 @@ test("captures the registration form and temporary password result", async ({
   await loginPage.submit();
   await page.waitForURL(PATHS.HOME);
   await registrationPage.goTo();
+  const registrationMain = await page
+    .getByRole(ARIA_ROLE.MAIN)
+    .last()
+    .boundingBox();
+  expect(registrationMain?.width).toBeGreaterThan(300);
+  const registrationContent = await page
+    .getByRole(ARIA_ROLE.MAIN)
+    .last()
+    .locator(":scope > div")
+    .boundingBox();
+  expect(registrationContent?.width).toBeGreaterThan(300);
   await expect(
     registrationPage.getSubmitButton()
   ).toBeVisible();
