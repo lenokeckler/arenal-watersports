@@ -1,12 +1,11 @@
 import {
-  MONEY_AMOUNT_DECIMAL_SEPARATOR,
   MONEY_AMOUNT_ISSUE,
   STRING,
   type CurrencyCode,
 } from "@/app/constants";
 import type { NullableUndefined } from "@/app/types";
+import { countMoneyAmountDecimals } from "@/app/utils/money/countMoneyAmountDecimals";
 import { findMoneyAmountIssue } from "@/app/utils/money/findMoneyAmountIssue";
-import { normalizeMoneyAmountText } from "@/app/utils/money/normalizeMoneyAmountText";
 import { RESERVATION_CHARGE_LIMITS } from "../constants/ReservationChargeLimits.constants";
 import { RESERVATION_CHARGE_VALIDATION_COPY as COPY } from "../constants/ReservationChargeValidationCopy.constants";
 
@@ -23,12 +22,8 @@ export const resolveReservationChargeAmountError = (
   if (issue === null) {
     return undefined;
   }
-  const [, decimalDigits = STRING.Empty] =
-    normalizeMoneyAmountText(trimmed).split(
-      MONEY_AMOUNT_DECIMAL_SEPARATOR
-    );
   return issue === MONEY_AMOUNT_ISSUE.PRECISION &&
-    decimalDigits.length > limits.decimalPlaces
+    countMoneyAmountDecimals(trimmed) > limits.decimalPlaces
     ? COPY.AMOUNT_TOO_MANY_DECIMALS
     : COPY.AMOUNT[issue];
 };
