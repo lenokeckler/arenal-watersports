@@ -14,3 +14,6 @@ from public.reservations
 where status <> 'cancelled'
   and starts_at >= now() - interval '12 months'
 group by extract(isodow from starts_at at time zone 'America/Costa_Rica');
+
+revoke all on public.monthly_departures from anon;
+revoke all on public.weekday_departures from anon;
