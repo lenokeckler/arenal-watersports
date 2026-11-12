@@ -46,7 +46,10 @@ export const PATHS = {
     CALENDAR: "/operations/calendar",
     DAMAGE_REPORT: "/operations/damage-report",
     INVENTORY: OPERATIONS_INVENTORY_PATH,
+    INVENTORY_COUNT: (countId: string) =>
+      `${OPERATIONS_INVENTORY_COUNTS_PATH}/${encodeURIComponent(countId)}`,
     INVENTORY_COUNT_NEW: `${OPERATIONS_INVENTORY_COUNTS_PATH}/new`,
+    INVENTORY_COUNTS: OPERATIONS_INVENTORY_COUNTS_PATH,
     INVENTORY_CATEGORY: (categoryId: string) =>
       `${OPERATIONS_INVENTORY_PATH}/${encodeURIComponent(categoryId)}`,
     INVENTORY_CATEGORY_PAGE: (
