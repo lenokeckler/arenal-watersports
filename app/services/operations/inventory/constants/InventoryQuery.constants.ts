@@ -4,5 +4,6 @@ export const INVENTORY_QUERY = {
   CATEGORY_DETAILS: "read inventory category details",
   CATEGORY_SUMMARIES: "read inventory category summaries",
   OPERATIONS_ACCESS: "check inventory operations access",
+  QUANTITY_ALERTS: "read inventory quantity alerts",
   UNITS: "read inventory category units",
 } as const;

@@ -13,6 +13,13 @@ export const INVENTORY_COPY = {
   DESCRIPTION:
     "Consulte las categorías y el estado actual de los artículos.",
   IN_MAINTENANCE: "En mantenimiento",
+  QUANTITY_ALERT: (
+    available: number,
+    minimum: number,
+    missing: number
+  ) =>
+    `Hay ${available} y el mínimo es ${minimum}. Faltan ${missing} para llegar al mínimo.`,
+  QUANTITY_ALERTS_TITLE: "Avisos por cantidad mínima",
   COUNT_HISTORY: "Historial de conteos",
   NEW_COUNT: "Levantar conteo",
   IN_REPAIR: "En reparación",

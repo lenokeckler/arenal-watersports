@@ -29,6 +29,7 @@ const renderInventoryOverview = () => {
   render(
     <InventoryOverviewView
       inventoryPage={INVENTORY_OVERVIEW_PAGE}
+      quantityAlerts={[]}
     />
   );
 

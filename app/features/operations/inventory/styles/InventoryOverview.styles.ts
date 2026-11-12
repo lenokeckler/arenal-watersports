@@ -10,6 +10,17 @@ export const INVENTORY_OVERVIEW_TITLE_CLASS =
 export const INVENTORY_OVERVIEW_DESCRIPTION_CLASS =
   "max-w-2xl text-body-base text-on-surface-variant";
 
+export const INVENTORY_ALERT_LIST_CLASS =
+  "m-0 flex list-none flex-col gap-3 p-0";
+
+export const INVENTORY_ALERT_LINK_CLASS =
+  "flex min-h-11 flex-col gap-1 rounded-xl border border-error/60 bg-error/10 p-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+
+export const INVENTORY_ALERT_NAME_CLASS =
+  "text-title-md text-on-surface";
+
+export const INVENTORY_ALERT_DETAIL_CLASS =
+  "text-body-md text-on-surface";
 export const INVENTORY_OVERVIEW_COUNT_LINK_CLASS =
   "inline-flex min-h-11 w-fit items-center rounded-lg border border-outline px-4 text-body-md text-on-surface";
 
