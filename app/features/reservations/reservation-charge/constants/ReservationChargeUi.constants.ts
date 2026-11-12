@@ -2,8 +2,15 @@ import type { CurrencyCode } from "@/app/constants";
 import { CURRENCY_CODE } from "@/app/constants";
 
 export const RESERVATION_CHARGE_FIELD_ID = {
+  ALERT: "reservation-charge-alert",
+  AMOUNT: "reservation-charge-amount",
   HEADING: "reservation-charge-heading",
+  PAYMENT_METHOD: "reservation-charge-payment-method",
   SUMMARY_HEADING: "reservation-charge-summary-heading",
+} as const;
+
+export const RESERVATION_CHARGE_FOCUS = {
+  TAB_INDEX: -1,
 } as const;
 
 export const RESERVATION_CHARGE_CURRENCY_ORDER: readonly CurrencyCode[] =
