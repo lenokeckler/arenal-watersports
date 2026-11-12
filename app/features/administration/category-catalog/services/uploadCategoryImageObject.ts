@@ -2,7 +2,7 @@ import {
   CATEGORY_IMAGE,
   CATEGORY_IMAGE_FILE_ISSUE,
 } from "@/app/constants";
-import { createBrowserSupabaseClient } from "@/app/services/supabase";
+import { createBrowserSupabaseClient } from "@/app/services/supabase/client";
 import { buildCategoryImagePath } from "@/app/utils/category-image/buildCategoryImagePath";
 import { isCategoryImageMimeType } from "@/app/utils/category-image/isCategoryImageMimeType";
 import { validateCategoryImageFile } from "@/app/utils/category-image/validateCategoryImageFile";

@@ -27,7 +27,7 @@ import {
   resetStorageMocks,
 } from "./CategoryImageStorage.harness";
 
-vi.mock("@/app/services/supabase", () => ({
+vi.mock("@/app/services/supabase/client", () => ({
   createBrowserSupabaseClient: () => FAKE_STORAGE_HOST,
 }));
 
