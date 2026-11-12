@@ -23,8 +23,6 @@ insert into reservations
 values
   ('e2b10000-0000-4000-8000-000000000301', 'RES21 Scheduled', 4, 'rental', '2035-05-12 15:00:00+00', 60, 'scheduled',
    'e2b10000-0000-4000-8000-000000000001', 'e2b10000-0000-4000-8000-000000000001'),
-  ('e2b10000-0000-4000-8000-000000000302', 'RES21 Dispatched', 4, 'rental', '2035-05-13 15:00:00+00', 60, 'scheduled',
-   'e2b10000-0000-4000-8000-000000000001', 'e2b10000-0000-4000-8000-000000000001'),
   ('e2b10000-0000-4000-8000-000000000303', 'RES21 Closed', 4, 'rental', '2035-05-14 15:00:00+00', 60, 'scheduled',
    'e2b10000-0000-4000-8000-000000000001', 'e2b10000-0000-4000-8000-000000000001'),
   ('e2b10000-0000-4000-8000-000000000304', 'RES21 Cancelled', 4, 'rental', '2035-05-15 15:00:00+00', 60, 'scheduled',
@@ -43,7 +41,6 @@ insert into deposits (id, reservation_id, amount, currency, created_by)
 values ('e2b10000-0000-4000-8000-000000000601', 'e2b10000-0000-4000-8000-000000000301', 100000, 'CRC',
         'e2b10000-0000-4000-8000-000000000001');
 
-update reservations set status = 'dispatched' where id = 'e2b10000-0000-4000-8000-000000000302';
 update reservations set status = 'closed' where id = 'e2b10000-0000-4000-8000-000000000303';
 update reservations set status = 'cancelled', cancellation_reason = 'RES21 earlier reason'
 where id = 'e2b10000-0000-4000-8000-000000000304';
