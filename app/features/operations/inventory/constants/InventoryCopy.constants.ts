@@ -19,6 +19,16 @@ export const INVENTORY_COPY = {
     missing: number
   ) =>
     `Hay ${available} y el mínimo es ${minimum}. Faltan ${missing} para llegar al mínimo.`,
+  EXPIRY_ALERT: (
+    expiryDate: string,
+    daysToExpiry: number,
+    isExpired: boolean,
+    anticipationDays: number
+  ) =>
+    isExpired
+      ? `Venció el ${expiryDate}. Hay que reponerlo.`
+      : `Vence el ${expiryDate}, en ${daysToExpiry} ${daysToExpiry === 1 ? "día" : "días"}. Se avisa ${anticipationDays} días antes.`,
+  EXPIRY_ALERTS_TITLE: "Avisos por vencimiento",
   QUANTITY_ALERTS_TITLE: "Avisos por cantidad mínima",
   COUNT_HISTORY: "Historial de conteos",
   NEW_COUNT: "Levantar conteo",
