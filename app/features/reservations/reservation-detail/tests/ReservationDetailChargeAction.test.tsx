@@ -1,11 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { RESERVATION_STATUS } from "@/app/constants";
+import { resolveReservationChargePath } from "@/app/utils/reservations/resolveReservationChargePath";
 import { RESERVATION_DETAIL_SOURCE_FIXTURE } from "./ReservationDetailSourceFixture.constants";
 import { RESERVATION_DETAIL_TEST } from "./ReservationDetailTest.constants";
 import { renderReservationDetail } from "./ReservationDetailTestRenderer";
 import { createReservationDetailChargesPage } from "./ReservationDetailCharges.page";
 
-const CHARGE_HREF = `/reservations/${RESERVATION_DETAIL_TEST.RESERVATION_ID}/charge`;
+const CHARGE_HREF = resolveReservationChargePath(
+  RESERVATION_DETAIL_TEST.RESERVATION_ID
+);
 
 describe("reservation detail charge link", (): void => {
   it.each([
@@ -42,6 +45,19 @@ describe("reservation detail charge link", (): void => {
       ...RESERVATION_DETAIL_SOURCE_FIXTURE,
       parent_reservation_id:
         RESERVATION_DETAIL_TEST.PARENT_RESERVATION_ID,
+    });
+
+    expect(
+      createReservationDetailChargesPage().queryChargeLink()
+    ).toBeNull();
+  });
+
+  it("hides the link when the reservation is a cancelled split child", (): void => {
+    renderReservationDetail({
+      ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+      parent_reservation_id:
+        RESERVATION_DETAIL_TEST.PARENT_RESERVATION_ID,
+      status: RESERVATION_STATUS.CANCELLED,
     });
 
     expect(
