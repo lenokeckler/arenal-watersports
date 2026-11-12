@@ -421,12 +421,15 @@ con la finalidad de llegar a cualquier sección con el pulgar y sin buscar menú
 
 **Descripción:**
 
-La barra queda fija abajo y da acceso al tablero, al calendario, al inventario y al historial. Las opciones que se muestran dependen del rol de la persona y del modo activo, de modo que nadie ve entradas que no le sirven.
+La barra queda fija abajo y sus opciones dependen del modo activo. En reservas y operaciones conserva los accesos propios de cada área. En administración muestra solo cinco accesos: inventario, extras, trabajadores, ingresos y reportes. Desde trabajadores se llega a la habilitación de áreas y al alta de una persona; desde reportes se llega a depósitos y reservas por trabajador.
 
 **Criterios de aceptación:**
 
 - Da acceso al tablero, al calendario, al inventario y al historial.
 - Las opciones que se muestran dependen del rol y del modo activo.
+- En modo Administración muestra únicamente Inventario, Extras, Trabajadores, Ingresos y Reportes, en ese orden.
+- Inventario abre las categorías; Extras abre el catálogo; Trabajadores abre la administración de áreas, desde donde se llega al alta de un trabajador; Ingresos abre los ingresos del día; Reportes abre los depósitos, desde donde se llega al reporte de reservas por trabajador.
+- En modo Reservas y en modo Operaciones muestra los accesos correspondientes a cada área.
 
 ---
 

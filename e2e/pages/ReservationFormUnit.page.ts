@@ -8,8 +8,9 @@ export const createReservationFormUnitPage = (
 ) => {
   const getUnitSelect = (): Locator =>
     getMainRegion(page).getByLabel(
-      E2E_RESERVATION_FORM_COPY.UNIT,
-      { exact: false }
+      new RegExp(
+        `^${E2E_RESERVATION_FORM_COPY.UNIT}\\s+\\*$`
+      )
     );
 
   return {

@@ -1,5 +1,8 @@
 import type { NullableRef } from "@/app/types";
-import type { ReservationFormField } from "./ReservationFormField.constants";
+import type { ReservationFormErrorField } from "./ReservationFormField.constants";
+import type { CustomComboFormViewModel } from "./CustomComboFormViewModel.interface";
+import type { PredefinedComboFormViewModel } from "./PredefinedComboFormViewModel.interface";
+import type { ReservationExtrasViewModel } from "./ReservationExtrasViewModel.interface";
 import type { ReservationFormInput } from "./ReservationFormInput.interface";
 import type { ReservationCategoryUnitOption } from "./ReservationCategoryUnitOption.interface";
 import type { ReservationCategoryOption } from "./ReservationCategoryOption.interface";
@@ -9,7 +12,13 @@ import type { ReservationType } from "./ReservationType.type";
 
 export interface ReservationFormViewModel {
   categories: ReservationCategoryOption[];
-  errors: Partial<Record<ReservationFormField, string>>;
+  errors: Partial<
+    Record<ReservationFormErrorField, string>
+  >;
+  customCombo?: CustomComboFormViewModel;
+  predefinedCombo?: PredefinedComboFormViewModel;
+  extras?: ReservationExtrasViewModel;
+  resolvedDurationHours?: number;
   formError: string;
   isPending: boolean;
   isSubmitted: boolean;
@@ -30,6 +39,7 @@ export interface ReservationFormViewModel {
   handleCustomerNameChange: (value: string) => void;
   handleDateChange: (value: string) => void;
   handleDurationChange: (value: number) => void;
+  handleGuideToggle: (guideId: string) => void;
   handleCustomDurationChange: (value: string) => void;
   handleCustomDurationSelection: () => void;
   handlePeopleCountChange: (value: number) => void;
@@ -38,6 +48,7 @@ export interface ReservationFormViewModel {
   handleReservationTypeChange: (
     value: ReservationType
   ) => void;
+  handleExtraToggle: (extraId: string) => void;
   handleUnitChange: (value: string) => void;
   retryUnitAvailability: () => void;
   isEquipmentEligibilityLoading: boolean;

@@ -11,6 +11,7 @@ import { useReservationsCalendarViewModel } from "./hooks/useReservationsCalenda
 import { ReservationsCalendarRefreshStatus } from "./components/ReservationsCalendarRefreshStatus";
 import { ReservationCalendarCreateLink } from "./components/ReservationCalendarCreateLink";
 import {
+  RESERVATIONS_CALENDAR_CREATE_WRAPPER_CLASS,
   RESERVATIONS_CALENDAR_STATUS_WRAPPER_CLASS,
   RESERVATIONS_CALENDAR_VIEW_CLASS,
 } from "./styles/ReservationsCalendarView.styles";
@@ -25,7 +26,13 @@ export const ReservationsCalendarView = ({
   );
   return (
     <div className={RESERVATIONS_CALENDAR_VIEW_CLASS}>
-      <ReservationCalendarCreateLink />
+      <div
+        className={
+          RESERVATIONS_CALENDAR_CREATE_WRAPPER_CLASS
+        }
+      >
+        <ReservationCalendarCreateLink />
+      </div>
       <CalendarView
         heading={RESERVATIONS_CALENDAR_COPY.TITLE}
         today={today}

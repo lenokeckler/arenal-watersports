@@ -17,6 +17,8 @@ export const CALENDAR_DAY_GUIDE_TEST = {
   TYPE_LABEL: RESERVATION_CALENDAR_GUIDE_COPY.ACCOUNT,
 } as const;
 
+export const CALENDAR_DAY_ACTION = "Acción del bloque";
+
 export const CALENDAR_DAY_ENTRY: ReservationCalendarEntry =
   {
     customerName: "Shared calendar customer",

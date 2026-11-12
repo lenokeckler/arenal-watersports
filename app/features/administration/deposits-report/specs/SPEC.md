@@ -41,7 +41,7 @@ Los depósitos pendientes son plata de otra persona que la empresa tiene en la m
 ## Edge cases & errors
 
 - A failed read shows one error block in place of both sections, says an empty list must not be assumed, and offers "Volver a intentar"; it is never rendered as an empty list.
-- Each list reads one server page of 20 (`range`, RNF-027), so the report keeps working past the PostgREST `max_rows` limit; the page controls land in ADM-06.31.05.
+- Each list reads one server page of 20 (`range`, RNF-027), so the report keeps working past the PostgREST `max_rows` limit. Each list has its own "Anterior" / "Siguiente" controls (`?pendingPage=` and `?retainedPage=`); moving one list keeps the page of the other, and a page past the end shows the last page.
 - Zero held deposits shows the pending empty state; zero retained deposits shows the retained empty state.
 - A retained reason that is empty or only whitespace shows "Sin motivo registrado"; a real reason is shown unchanged, with its line breaks.
 - USD and CRC deposits sit in the same list, each printed in its own currency; no figure combines them.
