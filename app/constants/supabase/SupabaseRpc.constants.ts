@@ -17,6 +17,7 @@ export const SUPABASE_RPC = {
   GET_RESERVATION_HISTORY_RECORD:
     "get_reservation_history_record",
   ADJUST_EQUIPMENT_STOCK: "adjust_equipment_stock",
+  LIST_INVENTORY_COUNTS: "list_inventory_counts",
   RECORD_INVENTORY_COUNT: "record_inventory_count",
   SET_UNIT_CONDITION: "set_unit_condition",
   LIST_OPERATIONS_STOCK_MOVEMENTS:
