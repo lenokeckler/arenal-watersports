@@ -3,7 +3,7 @@ import type { NullableRef } from "@/app/types";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { RESERVATION_CHARGE_ERROR } from "../constants/ReservationChargeError.constants";
 import { RESERVATION_CHARGE_QUERY } from "../constants/ReservationChargeQuery.constants";
-import type { ReservationChargeRow } from "../models/ReservationChargeRow.interface";
+import type { ReservationChargeRow } from "../models/ReservationChargeRow.type";
 
 export const readReservationChargeRow = async (
   supabase: ServerSupabaseClient,

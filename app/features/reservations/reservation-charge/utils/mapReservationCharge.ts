@@ -2,7 +2,7 @@ import { getCostaRicaDayRange } from "@/app/utils/costa-rica-day/getCostaRicaDay
 import { getCostaRicaTime } from "@/app/utils/costa-rica-day/getCostaRicaTime";
 import type { ReservationCharge } from "../models/ReservationCharge.interface";
 import type { ReservationChargeProposal } from "../models/ReservationChargeProposal.type";
-import type { ReservationChargeRow } from "../models/ReservationChargeRow.interface";
+import type { ReservationChargeRow } from "../models/ReservationChargeRow.type";
 
 export const mapReservationCharge = (
   row: ReservationChargeRow,
