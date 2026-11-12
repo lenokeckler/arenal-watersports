@@ -1,5 +1,6 @@
 import type { CustomComboPricing } from "./CustomComboPricing.interface";
 import type { CustomComboReservationField } from "./CustomComboReservationField.constants";
+import type { NullableRef } from "@/app/types";
 
 export type CustomComboPricingActionResult =
   | {
@@ -10,5 +11,5 @@ export type CustomComboPricingActionResult =
     }
   | {
       ok: true;
-      pricing: CustomComboPricing;
+      pricing: NullableRef<CustomComboPricing>;
     };

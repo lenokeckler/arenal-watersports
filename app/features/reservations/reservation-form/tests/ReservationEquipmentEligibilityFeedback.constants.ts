@@ -44,6 +44,7 @@ export const RESERVATION_EQUIPMENT_FEEDBACK_VIEW_MODEL = {
   handleCustomerNameChange: vi.fn(),
   handleDateChange: vi.fn(),
   handleDurationChange: vi.fn(),
+  handleExtraToggle: vi.fn(),
   handleGuideToggle: vi.fn(),
   handleCustomDurationChange: vi.fn(),
   handleCustomDurationSelection: vi.fn(),
