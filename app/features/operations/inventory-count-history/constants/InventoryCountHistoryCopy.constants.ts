@@ -18,6 +18,7 @@ export const INVENTORY_COUNT_HISTORY_COPY = {
   INTRO:
     "Los conteos del último año, con su fecha, quién los levantó y cuánto faltaba o sobraba.",
   NEW_COUNT: "Levantar conteo",
+  PAGINATION_LABEL: "Paginación del historial de conteos",
   NO_DIFFERENCES: "Sin diferencias",
   NOTES: "Notas",
   NO_NOTES: "Sin notas",

@@ -38,11 +38,12 @@ describe("InventoryCountHistory", () => {
   });
 
   it("lists each count with who recorded it, its differences and a link to the detail", async () => {
-    vi.mocked(listInventoryCounts).mockResolvedValue([
-      COUNT_SUMMARY,
-    ]);
+    vi.mocked(listInventoryCounts).mockResolvedValue({
+      counts: [COUNT_SUMMARY],
+      totalCount: 1,
+    });
 
-    render(await InventoryCountHistory());
+    render(await InventoryCountHistory({ page: 1 }));
 
     expect(
       screen.getByText(/Ana Operaciones/)
@@ -66,10 +67,28 @@ describe("InventoryCountHistory", () => {
     );
   });
 
-  it("says there are no counts yet", async () => {
-    vi.mocked(listInventoryCounts).mockResolvedValue([]);
+  it("offers the other pages when there are more counts than fit in one", async () => {
+    vi.mocked(listInventoryCounts).mockResolvedValue({
+      counts: [COUNT_SUMMARY],
+      totalCount: 25,
+    });
 
-    render(await InventoryCountHistory());
+    render(await InventoryCountHistory({ page: 1 }));
+
+    expect(
+      screen.getByRole("navigation", {
+        name: INVENTORY_COUNT_HISTORY_COPY.PAGINATION_LABEL,
+      })
+    ).toBeInTheDocument();
+  });
+
+  it("says there are no counts yet", async () => {
+    vi.mocked(listInventoryCounts).mockResolvedValue({
+      counts: [],
+      totalCount: 0,
+    });
+
+    render(await InventoryCountHistory({ page: 1 }));
 
     expect(
       screen.getByText(INVENTORY_COUNT_HISTORY_COPY.EMPTY)
@@ -81,7 +100,7 @@ describe("InventoryCountHistory", () => {
       new Error("down")
     );
 
-    render(await InventoryCountHistory());
+    render(await InventoryCountHistory({ page: 1 }));
 
     expect(screen.getByRole("alert")).toHaveTextContent(
       INVENTORY_COUNT_HISTORY_COPY.ERROR_LOAD
