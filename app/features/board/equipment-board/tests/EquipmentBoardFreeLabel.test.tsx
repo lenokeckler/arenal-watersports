@@ -21,6 +21,10 @@ import {
 } from "./EquipmentBoard.constants";
 import { createEquipmentBoardPage } from "./EquipmentBoard.page";
 
+vi.mock("../EquipmentBoardRealtime", () => ({
+  default: () => null,
+}));
+
 vi.mock("@/app/services/board", () => ({
   readBoardCategories: vi.fn(),
 }));
