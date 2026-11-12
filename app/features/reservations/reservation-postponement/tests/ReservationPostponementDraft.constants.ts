@@ -21,6 +21,7 @@ export const KILOMETERS_ITEM_ID =
 
 export const NEW_DATE = "2035-04-14";
 export const NEW_TIME = "09:30";
+export const NEW_DATE_TEXT = "14 de abril";
 export const OTHER_REASON = "Cliente enfermo";
 
 export const COMPLETE_SCHEDULED_DRAFT: ReservationPostponementDraft =

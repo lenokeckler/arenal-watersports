@@ -13,6 +13,9 @@ export const createReservationPostponementPage = () => {
 
   const getText = (text: string) => screen.getByText(text);
 
+  const getHeading = (name: string) =>
+    screen.getByRole(ARIA_ROLE.HEADING, { name });
+
   const getCalendarLinkTargets = () =>
     screen
       .getAllByRole(ARIA_ROLE.LINK, {
@@ -30,6 +33,7 @@ export const createReservationPostponementPage = () => {
 
   return {
     getCalendarLinkTargets,
+    getHeading,
     getListItemTexts,
     getStatusText,
     getText,

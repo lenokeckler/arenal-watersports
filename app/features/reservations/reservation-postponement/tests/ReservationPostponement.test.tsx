@@ -92,7 +92,9 @@ describe("ReservationPostponement", () => {
     const page = createReservationPostponementPage();
 
     expect(
-      page.getText(RESERVATION_POSTPONEMENT_UI_COPY.TITLE)
+      page.getHeading(
+        RESERVATION_POSTPONEMENT_UI_COPY.TITLE
+      )
     ).toBeInTheDocument();
     expect(
       page.getText(EXPECTED_SCHEDULED.code)
