@@ -3,6 +3,8 @@ export const RESERVATION_POSTPONEMENT_FIELD_ID = {
   CAUSE: "reservation-postponement-cause",
   DATE: "reservation-postponement-date",
   HEADING: "reservation-postponement-heading",
+  READING_HEADING_SUFFIX: "-heading",
+  READING_PREFIX: "reservation-postponement-reading-",
   REASON: "reservation-postponement-reason",
   SUMMARY_HEADING:
     "reservation-postponement-summary-heading",

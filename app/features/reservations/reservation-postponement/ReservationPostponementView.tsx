@@ -3,6 +3,7 @@
 import ReservationPostponementActions from "./components/ReservationPostponementActions";
 import ReservationPostponementCauseChoice from "./components/ReservationPostponementCauseChoice";
 import ReservationPostponementNotes from "./components/ReservationPostponementNotes";
+import ReservationPostponementReadings from "./components/ReservationPostponementReadings";
 import ReservationPostponementSchedule from "./components/ReservationPostponementSchedule";
 import ReservationPostponementSuccess from "./components/ReservationPostponementSuccess";
 import ReservationPostponementSummary from "./components/ReservationPostponementSummary";
@@ -48,6 +49,10 @@ const ReservationPostponementView = ({
         viewModel={viewModel}
       />
       <ReservationPostponementCauseChoice
+        viewModel={viewModel}
+      />
+      <ReservationPostponementReadings
+        units={postponement.readingUnits}
         viewModel={viewModel}
       />
       <ReservationPostponementActions
