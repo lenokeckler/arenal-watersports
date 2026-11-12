@@ -9,8 +9,10 @@ import {
   BOARD_CATEGORY_OPERATION,
   BOARD_CATEGORY_QUERY,
   PATHS,
+  WORK_MODE_ROUTE_ACCESS,
 } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
+import { assertActiveWorkAreaAccess } from "@/app/services/work-mode/assertActiveWorkAreaAccess";
 import { readBoardCategories } from "../readBoardCategories";
 import {
   BOARD_SERVICE_EMPTY_RESULT,
@@ -34,6 +36,13 @@ vi.mock("@/app/services/supabase", () => ({
   createServerSupabaseClient:
     supabaseMocks.createServerSupabaseClient,
 }));
+
+vi.mock(
+  "@/app/services/work-mode/assertActiveWorkAreaAccess",
+  () => ({
+    assertActiveWorkAreaAccess: vi.fn(),
+  })
+);
 
 const getUser = vi.fn();
 const from = vi.fn();
@@ -74,6 +83,10 @@ describe("readBoardCategories", () => {
   it("reads the board view ordered by category name ascending", async () => {
     const rows = await readBoardCategories();
 
+    expect(assertActiveWorkAreaAccess).toHaveBeenCalledWith(
+      expect.any(Object),
+      WORK_MODE_ROUTE_ACCESS.BOARD
+    );
     expect(from).toHaveBeenCalledWith(
       BOARD_CATEGORY_QUERY.VIEW
     );

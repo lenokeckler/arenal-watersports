@@ -9,6 +9,7 @@ export const UNIT_LIST_COPY = {
   FUEL_LABEL: "Combustible:",
   FUEL_LEVEL_OF: "de",
   FUEL_NO_READING: "Sin lectura",
+  HISTORY_LINK: "Ver reservas",
   LIST_METADATA_TITLE: "Unidades del inventario",
   LIST_PURPOSE:
     "Cada unidad con su estado, su combustible y su uso.",

@@ -1,8 +1,9 @@
 import type { Database } from "@/app/types";
+import { RESERVATION_STATUS } from "./ReservationStatus.constants";
 
 export const RESERVATION_CALENDAR_ACTIVE_STATUS = {
-  DISPATCHED: "dispatched",
-  SCHEDULED: "scheduled",
+  DISPATCHED: RESERVATION_STATUS.DISPATCHED,
+  SCHEDULED: RESERVATION_STATUS.SCHEDULED,
 } as const satisfies Record<
   string,
   Database["public"]["Enums"]["reservation_status"]

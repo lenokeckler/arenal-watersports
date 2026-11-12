@@ -7,6 +7,14 @@ export const CATEGORY_UNITS_COPY = {
   BACK_TO_BOARD: "Volver al tablero",
   CUSTOMER_LINE: (customerName: string): string =>
     `La lleva ${customerName}`,
+  DISPATCH_ACTION: "Despachar",
+  DISPATCH_CANCEL: "Cancelar",
+  DISPATCH_SELECT_UNIT: (code: string): string =>
+    `Seleccionar ${code} para despachar`,
+  DISPATCH_SELECTED: (count: number): string =>
+    count === 1
+      ? "1 unidad seleccionada"
+      : `${count} unidades seleccionadas`,
   EMPTY_BODY:
     "Cuando administración registre unidades en esta categoría, aparecerán aquí con su estado.",
   EMPTY_TITLE: "Esta categoría todavía no tiene unidades",
@@ -30,6 +38,19 @@ export const CATEGORY_UNITS_COPY = {
     date: string,
     time: string
   ): string => `Debía regresar el ${date} a las ${time}`,
+  PICKER_COMMITTED: (count: number): string =>
+    `Comprometidas: ${count}`,
+  PICKER_DISPATCH: (customerName: string): string =>
+    `Despachar la reserva de ${customerName}`,
+  PICKER_EMPTY:
+    "Hoy no hay reservas pendientes con equipo de esta categoría. Un combo se despacha desde la lista del día.",
+  PICKER_ERROR:
+    "No se pudieron cargar las reservas. Cierre la hoja e intente de nuevo.",
+  PICKER_FITS: (fits: number, picked: number): string =>
+    `Caben ${fits} de las ${picked} unidades escogidas.`,
+  PICKER_LIST_LABEL: "Reservas de hoy con esta categoría",
+  PICKER_LOADING: "Buscando las reservas de hoy…",
+  PICKER_TITLE: "Escoja la reserva que sale",
   PAGINATION_NAV_LABEL: "Paginación de unidades",
   PAGINATION_NEXT: "Siguiente",
   PAGINATION_PAGE_OF: (

@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReservationFormViewModel } from "../models/ReservationFormViewModel.interface";
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useReservationFormFields } from "./useReservationFormFields";
 import { useReservationFormSubmission } from "./useReservationFormSubmission";
@@ -13,9 +14,15 @@ import type { ReservationFormViewModelOptions } from "../models/ReservationFormV
 import { useReservationEquipmentEligibility } from "./useReservationEquipmentEligibility";
 import { useReservationFormEquipmentSelection } from "./useReservationFormEquipmentSelection";
 import { isReservationQuantityUnavailable } from "../utils/isReservationQuantityUnavailable";
-import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
 import { filterReservationCategoriesByType } from "../utils/filterReservationCategoriesByType";
 import { RESERVATION_TYPE } from "../constants/ReservationType.constants";
+import { useCustomComboForm } from "./useCustomComboForm";
+import { usePredefinedComboForm } from "./usePredefinedComboForm";
+import { useReservationExtrasViewModel } from "./useReservationExtrasViewModel";
+import { PREDEFINED_COMBO_SELECTION_MODE } from "../constants/PredefinedComboSelectionMode.constants";
+import { createReservationCreateSubmitHandler } from "../utils/createReservationCreateSubmitHandler";
+import { resolveReservationCategoryInterchangeability } from "../utils/resolveReservationCategoryInterchangeability";
+import { hasValidCustomComboEquipmentSelections } from "../utils/hasValidCustomComboEquipmentSelections";
 
 export const useReservationFormViewModel = (
   options: ReservationFormViewModelOptions
@@ -24,25 +31,26 @@ export const useReservationFormViewModel = (
     categories,
     initialCategoryId,
     initialDate,
+    predefinedCombos = [],
     unitCategories,
   } = options;
   const router = useRouter();
   const submission = useReservationFormSubmission();
   const eligibility =
     useReservationEquipmentEligibility(categories);
-  const eligibleCategories = eligibility.categories.map(
-    (category) =>
-      unitCategories.some(
-        (unitCategory) => unitCategory.id === category.id
-      )
-        ? { ...category, isInterchangeable: false }
-        : category
-  );
+  const eligibleCategories =
+    resolveReservationCategoryInterchangeability(
+      eligibility.categories,
+      unitCategories
+    );
   const fields = useReservationFormFields(
     initialDate,
     initialCategoryId,
     submission.clearFieldError,
-    { liveCategories: eligibleCategories }
+    {
+      guideOptions: options.guideOptions,
+      liveCategories: eligibleCategories,
+    }
   );
   const categoriesForReservationType =
     filterReservationCategoriesByType(
@@ -61,6 +69,38 @@ export const useReservationFormViewModel = (
       fields.values.durationHours
     ),
     eligibility.refreshKey
+  );
+  const resolvedDurationHours =
+    duration.resolveDurationHours(
+      fields.values.durationHours
+    );
+  const isCustomCombo =
+    fields.values.reservationType ===
+    RESERVATION_TYPE.COMBO;
+  const customCombo = useCustomComboForm({
+    categories: eligibleCategories,
+    clearFieldError: submission.clearFieldError,
+    durationHours: resolvedDurationHours,
+    onGuideIdsChange: fields.handleGuideIdsChange,
+    reservationType:
+      fields.values.reservationType ??
+      RESERVATION_TYPE.RENTAL,
+  });
+  const extraIds = useMemo(
+    () => fields.values.extraIds ?? [],
+    [fields.values.extraIds]
+  );
+  const extras = useReservationExtrasViewModel({
+    durationHours: resolvedDurationHours,
+    extraIds,
+    reservationType: fields.values.reservationType,
+    unitId: fields.values.unitId,
+  });
+  const predefinedCombo = usePredefinedComboForm(
+    predefinedCombos,
+    isCustomCombo,
+    fields.handleGuideIdsChange,
+    () => submission.setSubmissionError(STRING.Empty)
   );
   const isQuantityUnavailable =
     isReservationQuantityUnavailable(
@@ -86,59 +126,65 @@ export const useReservationFormViewModel = (
   const isSubmitDisabled =
     submission.isPending ||
     submission.isSubmitted ||
-    categoriesForReservationType.length === 0 ||
-    (equipment.requiresConcreteUnit &&
-      (equipment.isAvailabilityLoading ||
-        equipment.hasAvailabilityError)) ||
-    isQuantityUnavailable;
-  const handleSubmit: ReservationFormViewModel["handleSubmit"] =
-    (event) => {
-      event.preventDefault();
-      if (
-        equipment.requiresConcreteUnit &&
-        fields.values.unitId === STRING.Empty
-      ) {
-        submission.applyResult({
-          ok: false,
-          errors: {
-            [RESERVATION_FORM_FIELD.UNIT_ID]:
-              RESERVATION_FORM_COPY[
-                RESERVATION_FORM_FIELD.UNIT_ID
-              ],
-          },
-        });
-        submission.requestErrorFocus();
-        return;
-      }
-      if (isQuantityUnavailable) {
-        return;
-      }
-      submission.submitReservation(
-        {
-          ...fields.values,
-          durationHours: duration.resolveDurationHours(
-            fields.values.durationHours
-          ),
-        },
-        () => {
-          fields.handleUnitChange(STRING.Empty);
-          equipment.retryUnitAvailability();
-        },
-        () => {
-          fields.reset();
-          duration.reset();
-          equipment.retryUnitAvailability();
-        }
-      );
-    };
+    (isCustomCombo
+      ? predefinedCombo.mode !==
+          PREDEFINED_COMBO_SELECTION_MODE.PREDEFINED &&
+        !hasValidCustomComboEquipmentSelections(
+          customCombo.draft.items
+        )
+      : categoriesForReservationType.length === 0 ||
+        (equipment.requiresConcreteUnit &&
+          (equipment.isAvailabilityLoading ||
+            equipment.hasAvailabilityError)) ||
+        isQuantityUnavailable);
+  const handleSubmit = createReservationCreateSubmitHandler(
+    {
+      applyResult: submission.applyResult,
+      customCombo,
+      durationHours: resolvedDurationHours,
+      isQuantityUnavailable,
+      onUnitUnavailable: () => {
+        fields.handleUnitChange(STRING.Empty);
+        equipment.retryUnitAvailability();
+      },
+      onSuccess: () => {
+        predefinedCombo.reset();
+        fields.reset();
+        duration.reset();
+        equipment.retryUnitAvailability();
+      },
+      predefinedCombo: {
+        mode: predefinedCombo.mode,
+        selectedComboId: predefinedCombo.selectedComboId,
+      },
+      requestErrorFocus: submission.requestErrorFocus,
+      requiresConcreteUnit: equipment.requiresConcreteUnit,
+      setFieldError: submission.setFieldError,
+      setSubmissionError: submission.setSubmissionError,
+      submitPredefinedComboReservation:
+        submission.submitPredefinedComboReservation,
+      submitCustomComboReservation:
+        submission.submitCustomComboReservation,
+      submitReservation: submission.submitReservation,
+      values: fields.values,
+    }
+  );
   return {
     categories: categoriesForReservationType,
+    customCombo,
+    extras,
+    predefinedCombo,
+    resolvedDurationHours,
     ...fields,
-    handleReservationTypeChange: (value) =>
+    handleReservationTypeChange: (value) => {
+      if (value !== RESERVATION_TYPE.COMBO) {
+        predefinedCombo.reset();
+      }
       fields.handleReservationTypeChange(
         value,
         eligibleCategories
-      ),
+      );
+    },
     ...submission,
     errors: isQuantityUnavailable
       ? {
