@@ -1948,33 +1948,132 @@ export type Database = {
           },
         ];
       };
+      reservation_postponement_readings: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          fuel_in: number | null;
+          fuel_out: number | null;
+          id: string;
+          postponement_id: string;
+          unit_id: string;
+          usage_in: number | null;
+          usage_out: number | null;
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          fuel_in?: number | null;
+          fuel_out?: number | null;
+          id?: string;
+          postponement_id: string;
+          unit_id: string;
+          usage_in?: number | null;
+          usage_out?: number | null;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          fuel_in?: number | null;
+          fuel_out?: number | null;
+          id?: string;
+          postponement_id?: string;
+          unit_id?: string;
+          usage_in?: number | null;
+          usage_out?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reservation_postponement_readings_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_postponement_id_fkey";
+            columns: ["postponement_id"];
+            isOneToOne: false;
+            referencedRelation: "reservation_postponements";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_units";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "maintenance_cost_by_unit";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_current_state";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_postponement_readings_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
+          },
+        ];
+      };
       reservation_postponements: {
         Row: {
+          cause: Database["public"]["Enums"]["reservation_postponement_cause"];
           created_at: string;
           created_by: string;
           id: string;
           new_starts_at: string;
           previous_starts_at: string;
-          reason: string;
+          reason: string | null;
           reservation_id: string;
+          was_dispatched: boolean;
         };
         Insert: {
+          cause: Database["public"]["Enums"]["reservation_postponement_cause"];
           created_at?: string;
           created_by: string;
           id?: string;
           new_starts_at: string;
           previous_starts_at: string;
-          reason: string;
+          reason?: string | null;
           reservation_id: string;
+          was_dispatched: boolean;
         };
         Update: {
+          cause?: Database["public"]["Enums"]["reservation_postponement_cause"];
           created_at?: string;
           created_by?: string;
           id?: string;
           new_starts_at?: string;
           previous_starts_at?: string;
-          reason?: string;
+          reason?: string | null;
           reservation_id?: string;
+          was_dispatched?: boolean;
         };
         Relationships: [
           {
@@ -3145,6 +3244,20 @@ export type Database = {
         };
         Returns: undefined;
       };
+      assert_postponement_reason: {
+        Args: {
+          p_cause: Database["public"]["Enums"]["reservation_postponement_cause"];
+          p_reason: string;
+        };
+        Returns: undefined;
+      };
+      assert_postponement_start: {
+        Args: {
+          p_new_start: string;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
+        };
+        Returns: undefined;
+      };
       assert_reservable_equipment_category: {
         Args: { p_category_id: string };
         Returns: undefined;
@@ -3174,6 +3287,14 @@ export type Database = {
       };
       assert_reservation_modifiable: {
         Args: {
+          p_expected_updated_at: string;
+          p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
+        };
+        Returns: undefined;
+      };
+      assert_reservation_postponable: {
+        Args: {
+          p_cause: Database["public"]["Enums"]["reservation_postponement_cause"];
           p_expected_updated_at: string;
           p_reservation: Database["public"]["Tables"]["reservations"]["Row"];
         };
@@ -4062,6 +4183,8 @@ export type Database = {
         | "partially_retained";
       photo_angle:
         "right_side" | "left_side" | "front" | "bottom";
+      reservation_postponement_cause:
+        "heavy_rain" | "storm" | "other";
       reservation_status:
         "scheduled" | "dispatched" | "closed" | "cancelled";
       reservation_type: "rental" | "tour" | "combo";
@@ -4244,6 +4367,11 @@ export const Constants = {
         "left_side",
         "front",
         "bottom",
+      ],
+      reservation_postponement_cause: [
+        "heavy_rain",
+        "storm",
+        "other",
       ],
       reservation_status: [
         "scheduled",
