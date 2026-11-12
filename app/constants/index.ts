@@ -353,6 +353,10 @@ export {
   type ReservationStatus,
 } from "./supabase/ReservationStatus.constants";
 export {
+  RESERVATION_CHARGEABLE_STATUS,
+  type ReservationChargeableStatus,
+} from "./supabase/ReservationChargeableStatus.constants";
+export {
   RESERVATION_CALENDAR_ACTIVE_STATUS,
   RESERVATION_CALENDAR_QUERY,
   RESERVATION_CALENDAR_WINDOW_FORMAT,
