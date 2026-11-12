@@ -1,4 +1,6 @@
 export const SUPABASE_RPC = {
+  CAN_REGISTER_EXTERNAL_GUIDE:
+    "can_register_external_guide",
   BLOCK_WORKER: "block_worker",
   CHOOSE_WORK_AREA: "choose_work_area",
   COMPLETE_FIRST_PASSWORD_CHANGE:
@@ -31,6 +33,7 @@ export const SUPABASE_RPC = {
     "mark_password_reset_pin_undelivered",
   RECORD_FAILED_SIGN_IN: "record_failed_sign_in",
   RECORD_SUCCESSFUL_SIGN_IN: "record_successful_sign_in",
+  REGISTER_EXTERNAL_GUIDE: "register_external_guide",
   REDEEM_PASSWORD_RESET_GRANT:
     "redeem_password_reset_grant",
   REHIRE_WORKER: "rehire_worker",
