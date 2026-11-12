@@ -106,5 +106,6 @@ export const createWorkerListFilterFixtureWorker = async (
   return {
     fullName,
     remove: () => removeE2eWorker(supabase, workerId),
+    username,
   };
 };

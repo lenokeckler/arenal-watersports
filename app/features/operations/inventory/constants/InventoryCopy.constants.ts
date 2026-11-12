@@ -30,6 +30,8 @@ export const INVENTORY_COPY = {
       : `Vence el ${expiryDate}, en ${daysToExpiry} ${daysToExpiry === 1 ? "día" : "días"}. Se avisa ${anticipationDays} días antes.`,
   EXPIRY_ALERTS_TITLE: "Avisos por vencimiento",
   QUANTITY_ALERTS_TITLE: "Avisos por cantidad mínima",
+  COUNT_HISTORY: "Historial de conteos",
+  NEW_COUNT: "Levantar conteo",
   IN_REPAIR: "En reparación",
   IN_USE: "En uso",
   INVENTORY_EMPTY:
