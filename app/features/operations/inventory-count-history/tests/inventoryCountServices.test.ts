@@ -41,11 +41,16 @@ describe("inventory count services", () => {
       error: null,
     });
 
-    expect(await listInventoryCounts()).toEqual([
-      COUNT_SUMMARY,
-    ]);
+    expect(
+      await listInventoryCounts({ limit: 10, offset: 10 })
+    ).toEqual({ counts: [COUNT_SUMMARY], totalCount: 25 });
     expect(rpc).toHaveBeenCalledWith(
-      SUPABASE_RPC.LIST_INVENTORY_COUNTS
+      SUPABASE_RPC.LIST_INVENTORY_COUNTS,
+      {
+        only_count: undefined,
+        page_limit: 10,
+        page_offset: 10,
+      }
     );
   });
 
@@ -55,7 +60,9 @@ describe("inventory count services", () => {
       error: INVENTORY_COUNT_HISTORY_TEST.DATABASE_ERROR,
     });
 
-    await expect(listInventoryCounts()).rejects.toThrow();
+    await expect(
+      listInventoryCounts({ limit: 10, offset: 0 })
+    ).rejects.toThrow();
   });
 
   it("builds the detail of a count from its lines", async () => {
@@ -88,16 +95,20 @@ describe("inventory count services", () => {
   });
 
   it("answers null for a count that is not in the last year", async () => {
-    rpc.mockResolvedValue({
-      data: [COUNT_SUMMARY_ROW],
-      error: null,
-    });
+    rpc.mockResolvedValue({ data: [], error: null });
 
     expect(
       await getInventoryCountDetail(
         INVENTORY_COUNT_HISTORY_TEST.OTHER_COUNT_ID
       )
     ).toBeNull();
+    expect(rpc).toHaveBeenCalledWith(
+      SUPABASE_RPC.LIST_INVENTORY_COUNTS,
+      expect.objectContaining({
+        only_count:
+          INVENTORY_COUNT_HISTORY_TEST.OTHER_COUNT_ID,
+      })
+    );
     expect(from).not.toHaveBeenCalled();
   });
 });

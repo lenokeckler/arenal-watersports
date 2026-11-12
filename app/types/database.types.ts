@@ -3353,13 +3353,18 @@ export type Database = {
         }[];
       };
       list_inventory_counts: {
-        Args: Record<PropertyKey, never>;
+        Args: {
+          only_count?: string;
+          page_limit?: number;
+          page_offset?: number;
+        };
         Returns: {
           count_id: string;
           counted_at: string;
           counted_by: string;
           difference_count: number;
           notes: string;
+          total_count: number;
         }[];
       };
       list_operations_stock_movements: {
