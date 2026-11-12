@@ -17,7 +17,14 @@ export const INVENTORY_COUNT_COPY = {
   INTRO:
     "Confirme cada unidad y su estado, y anote cuántos hay de cada estado en lo que se lleva por cantidad. Ya viene lleno con lo que el sistema tiene registrado.",
   NOTES_LABEL: "Notas del conteo",
+  NEXT: "Siguiente",
+  PREVIOUS: "Anterior",
+  STEP_PROGRESS: (current: number, total: number) =>
+    `Categoría ${current} de ${total}`,
   SUBMIT: "Registrar conteo",
+  SUMMARY_HEADING: "Resumen del conteo",
+  SUMMARY_TEXT: (total: number) =>
+    `Revisó ${total} categorías. Agregue notas si hace falta y registre el conteo.`,
   SUBMITTING: "Registrando conteo",
   SYSTEM_SUMMARY: (
     available: number,

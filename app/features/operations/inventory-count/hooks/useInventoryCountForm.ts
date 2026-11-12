@@ -24,6 +24,7 @@ export const useInventoryCountForm = ({
     () => buildInventoryCountDraft(categories)
   );
   const [showErrors, setShowErrors] = useState(false);
+  const [stepIndex, setStepIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [result, setResult] =
     useState<NullableRef<InventoryCountResult>>(null);
@@ -33,10 +34,46 @@ export const useInventoryCountForm = ({
     [categories, draft]
   );
 
-  const submit = async (): Promise<void> => {
-    setShowErrors(true);
+  const currentCategory = categories[stepIndex] ?? null;
+  const isSummaryStep = currentCategory === null;
 
-    if (build.input === null || isSubmitting) {
+  const goToNextStep = (): void => {
+    if (
+      currentCategory !== null &&
+      build.invalidCategoryIds.has(currentCategory.id)
+    ) {
+      setShowErrors(true);
+
+      return;
+    }
+
+    setResult(null);
+    setStepIndex((current) =>
+      Math.min(current + 1, categories.length)
+    );
+  };
+
+  const goToPreviousStep = (): void => {
+    setResult(null);
+    setStepIndex((current) => Math.max(current - 1, 0));
+  };
+
+  const submit = async (): Promise<void> => {
+    if (build.input === null) {
+      setShowErrors(true);
+      setStepIndex(
+        Math.max(
+          categories.findIndex((category) =>
+            build.invalidCategoryIds.has(category.id)
+          ),
+          0
+        )
+      );
+
+      return;
+    }
+
+    if (isSubmitting) {
       return;
     }
 
@@ -61,7 +98,13 @@ export const useInventoryCountForm = ({
   };
 
   return {
+    currentCategory,
     draft,
+    goToNextStep,
+    goToPreviousStep,
+    isSummaryStep,
+    stepCount: categories.length + 1,
+    stepIndex,
     handleNotesChange: (
       event: InventoryCountChangeEvent
     ): void => {

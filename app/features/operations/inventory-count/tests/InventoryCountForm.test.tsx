@@ -34,10 +34,20 @@ vi.mock("../actions/submitInventoryCount", () => ({
   submitInventoryCount: vi.fn(),
 }));
 
-const submitButton = () =>
-  screen.getByRole("button", {
-    name: INVENTORY_COUNT_COPY.SUBMIT,
-  });
+const quantityField = (
+  field: (typeof INVENTORY_COUNT_QUANTITY_FIELD)[keyof typeof INVENTORY_COUNT_QUANTITY_FIELD]
+) =>
+  document.getElementById(
+    INVENTORY_COUNT_FIELD_ID.QUANTITY(
+      INVENTORY_COUNT_TEST.CATEGORY_QUANTITY_ID,
+      field
+    )
+  ) as HTMLInputElement;
+
+const click = (name: string): Promise<void> =>
+  userEvent
+    .setup()
+    .click(screen.getByRole("button", { name }));
 
 describe("InventoryCountForm", () => {
   beforeEach(() => {
@@ -49,24 +59,64 @@ describe("InventoryCountForm", () => {
     );
   });
 
-  it("starts with what the system has registered", () => {
+  it("starts with the first category only, filled with what the system has registered", () => {
+    expect(
+      screen.getByText(
+        INVENTORY_COUNT_COPY.STEP_PROGRESS(1, 2)
+      )
+    ).toBeInTheDocument();
     expect(screen.getByLabelText("JET-01")).toHaveValue(
       "available"
     );
     expect(screen.getByLabelText("JET-02")).toHaveValue(
       "damaged"
     );
+    expect(screen.queryByText("Chalecos")).toBeNull();
     expect(
-      document.getElementById(
-        INVENTORY_COUNT_FIELD_ID.QUANTITY(
-          INVENTORY_COUNT_TEST.CATEGORY_QUANTITY_ID,
-          INVENTORY_COUNT_QUANTITY_FIELD.AVAILABLE
-        )
-      )
-    ).toHaveValue("8");
+      screen.queryByRole("button", {
+        name: INVENTORY_COUNT_COPY.SUBMIT,
+      })
+    ).toBeNull();
   });
 
-  it("registers the count with the corrected state and says so", async () => {
+  it("moves through the categories one at a time and back", async () => {
+    await click(INVENTORY_COUNT_COPY.NEXT);
+
+    expect(
+      screen.getByText(
+        INVENTORY_COUNT_COPY.STEP_PROGRESS(2, 2)
+      )
+    ).toBeInTheDocument();
+    expect(quantityField("available")).toHaveValue("8");
+    expect(screen.queryByLabelText("JET-01")).toBeNull();
+
+    await click(INVENTORY_COUNT_COPY.PREVIOUS);
+
+    expect(
+      screen.getByLabelText("JET-01")
+    ).toBeInTheDocument();
+  });
+
+  it("does not move on while a quantity is wrong and points at it", async () => {
+    const user = userEvent.setup();
+    await click(INVENTORY_COUNT_COPY.NEXT);
+    await user.clear(quantityField("damaged"));
+    await user.type(quantityField("damaged"), "-2");
+
+    await user.click(
+      screen.getByRole("button", {
+        name: INVENTORY_COUNT_COPY.NEXT,
+      })
+    );
+
+    expect(
+      screen.getAllByText(INVENTORY_COUNT_QUANTITY_ERROR)
+        .length
+    ).toBeGreaterThan(0);
+    expect(submitInventoryCount).not.toHaveBeenCalled();
+  });
+
+  it("registers the count from the summary with the corrected state and says so", async () => {
     vi.mocked(submitInventoryCount).mockResolvedValue(
       INVENTORY_COUNT_RESULT.RECORDED
     );
@@ -76,7 +126,12 @@ describe("InventoryCountForm", () => {
       screen.getByLabelText("JET-01"),
       "in_repair"
     );
-    await user.click(submitButton());
+    await click(INVENTORY_COUNT_COPY.NEXT);
+    await click(INVENTORY_COUNT_COPY.NEXT);
+    expect(
+      screen.getByText(INVENTORY_COUNT_COPY.SUMMARY_TEXT(2))
+    ).toBeInTheDocument();
+    await click(INVENTORY_COUNT_COPY.SUBMIT);
 
     expect(submitInventoryCount).toHaveBeenCalledOnce();
     expect(
@@ -96,33 +151,13 @@ describe("InventoryCountForm", () => {
     expect(refresh).toHaveBeenCalledOnce();
   });
 
-  it("does not send a count with a wrong quantity and points at it", async () => {
-    const user = userEvent.setup();
-    const field = document.getElementById(
-      INVENTORY_COUNT_FIELD_ID.QUANTITY(
-        INVENTORY_COUNT_TEST.CATEGORY_QUANTITY_ID,
-        INVENTORY_COUNT_QUANTITY_FIELD.DAMAGED
-      )
-    ) as HTMLInputElement;
-
-    await user.clear(field);
-    await user.type(field, "-2");
-    await user.click(submitButton());
-
-    expect(submitInventoryCount).not.toHaveBeenCalled();
-    expect(
-      screen.getAllByText(INVENTORY_COUNT_QUANTITY_ERROR)
-        .length
-    ).toBeGreaterThan(0);
-  });
-
   it("shows the refusal and does not refresh", async () => {
     vi.mocked(submitInventoryCount).mockResolvedValue(
       INVENTORY_COUNT_RESULT.INCOMPLETE
     );
-    const user = userEvent.setup();
-
-    await user.click(submitButton());
+    await click(INVENTORY_COUNT_COPY.NEXT);
+    await click(INVENTORY_COUNT_COPY.NEXT);
+    await click(INVENTORY_COUNT_COPY.SUBMIT);
 
     expect(
       await screen.findByRole("alert")
@@ -138,9 +173,9 @@ describe("InventoryCountForm", () => {
     vi.mocked(submitInventoryCount).mockRejectedValue(
       new Error("network")
     );
-    const user = userEvent.setup();
-
-    await user.click(submitButton());
+    await click(INVENTORY_COUNT_COPY.NEXT);
+    await click(INVENTORY_COUNT_COPY.NEXT);
+    await click(INVENTORY_COUNT_COPY.SUBMIT);
 
     expect(
       await screen.findByText(
