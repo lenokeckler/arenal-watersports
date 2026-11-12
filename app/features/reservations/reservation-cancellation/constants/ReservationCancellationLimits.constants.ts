@@ -1,0 +1,3 @@
+export const RESERVATION_CANCELLATION_LIMITS = {
+  MAX_REASON_LENGTH: 300,
+} as const;
