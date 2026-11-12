@@ -31,6 +31,7 @@ describe("createReservationCreateSubmitHandler predefined combos", () => {
   it("submits a predefined combo using its saved catalog ID", () => {
     const submitPredefinedComboReservation = vi.fn();
     const submitCustomComboReservation = vi.fn();
+    const onSuccess = vi.fn();
     submitReservationForm({
       ...RESERVATION_CREATE_SUBMIT_TEST.COMBO_OPTIONS,
       predefinedCombo: {
@@ -38,6 +39,7 @@ describe("createReservationCreateSubmitHandler predefined combos", () => {
         selectedComboId:
           RESERVATION_CREATE_SUBMIT_TEST.PREDEFINED_COMBO_ID,
       },
+      onSuccess,
       submitCustomComboReservation,
       submitPredefinedComboReservation,
     });
@@ -45,7 +47,8 @@ describe("createReservationCreateSubmitHandler predefined combos", () => {
     expect(
       submitPredefinedComboReservation
     ).toHaveBeenCalledWith(
-      RESERVATION_CREATE_SUBMIT_TEST.EXPECTED_PREDEFINED_COMBO_INPUT
+      RESERVATION_CREATE_SUBMIT_TEST.EXPECTED_PREDEFINED_COMBO_INPUT,
+      onSuccess
     );
     expect(
       submitCustomComboReservation
@@ -79,15 +82,24 @@ describe("createReservationCreateSubmitHandler predefined combos", () => {
   it("keeps submitting the custom combo when the custom mode is chosen", () => {
     const submitCustomComboReservation = vi.fn();
     const submitPredefinedComboReservation = vi.fn();
+    const onSuccess = vi.fn();
     submitReservationForm({
       ...RESERVATION_CREATE_SUBMIT_TEST.COMBO_OPTIONS,
       submitCustomComboReservation,
       submitPredefinedComboReservation,
+      onSuccess,
     });
 
     expect(
       submitCustomComboReservation
-    ).toHaveBeenCalledOnce();
+    ).toHaveBeenCalledWith(
+      expect.objectContaining({
+        customerName:
+          RESERVATION_CREATE_SUBMIT_TEST.COMBO_OPTIONS.values
+            .customerName,
+      }),
+      onSuccess
+    );
     expect(
       submitPredefinedComboReservation
     ).not.toHaveBeenCalled();

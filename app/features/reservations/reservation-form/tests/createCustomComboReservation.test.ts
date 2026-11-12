@@ -72,6 +72,8 @@ describe("createCustomComboReservation", () => {
             customer_name: "Combo Customer",
             date: "2030-06-15",
             duration_minutes: 90,
+            extra_ids: [],
+            extra_unit_id: null,
             guide_ids: [],
             items: [
               {

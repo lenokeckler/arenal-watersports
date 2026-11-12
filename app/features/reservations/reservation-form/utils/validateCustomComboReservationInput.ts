@@ -14,6 +14,7 @@ import { isValidCustomComboPricingDuration } from "./isValidCustomComboPricingDu
 import { hasValidCustomComboEquipmentSelections } from "./hasValidCustomComboEquipmentSelections";
 import { addCustomComboReservationError } from "./addCustomComboReservationError";
 import { validateCustomComboAgreedAmounts } from "./validateCustomComboAgreedAmounts";
+import { isValidCustomComboExtraSelection } from "./isValidCustomComboExtraSelection";
 
 const isPositiveInteger = (value: number): boolean =>
   Number.isInteger(value) && value > 0;
@@ -28,6 +29,8 @@ const buildValidatedInput = (
   durationMinutes:
     input.durationHours *
     RESERVATION_SCHEDULE.MINUTES_PER_HOUR,
+  extraIds: input.extraIds,
+  extraUnitId: input.extraUnitId,
   guideIds: input.guideIds ?? [],
   items: input.items.map((selection) =>
     selection.kind ===
@@ -97,7 +100,12 @@ const validateSelectionFields = (
   addCustomComboReservationError(
     errors,
     CUSTOM_COMBO_RESERVATION_FIELD.ITEMS,
-    hasValidCustomComboEquipmentSelections(input.items),
+    hasValidCustomComboEquipmentSelections(input.items) &&
+      isValidCustomComboExtraSelection(
+        input.extraIds,
+        input.extraUnitId,
+        input.items
+      ),
     CUSTOM_COMBO_RESERVATION_COPY.ITEM_SELECTION
   );
   addCustomComboReservationError(

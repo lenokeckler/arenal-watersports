@@ -49,6 +49,7 @@ export interface ReservationFormViewModel {
     value: ReservationType
   ) => void;
   handleExtraToggle: (extraId: string) => void;
+  clearExtraSelection: () => void;
   handleUnitChange: (value: string) => void;
   retryUnitAvailability: () => void;
   isEquipmentEligibilityLoading: boolean;

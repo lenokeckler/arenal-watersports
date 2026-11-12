@@ -145,6 +145,21 @@ const createAgreedAmountActions = (
   },
 });
 
+const createExtraActions = (
+  dispatch: Dispatch<CustomComboDraftAction>
+) => ({
+  handleExtraToggle: (
+    unitId: string,
+    extraId: string
+  ): void => {
+    dispatch({
+      type: CUSTOM_COMBO_DRAFT_ACTION.EXTRA_TOGGLE,
+      extraId,
+      unitId,
+    });
+  },
+});
+
 export const useCustomComboDraftActions = (
   draft: CustomComboReservationDraft,
   dispatch: Dispatch<CustomComboDraftAction>,
@@ -161,5 +176,10 @@ export const useCustomComboDraftActions = (
     dispatch,
     clearFieldError
   );
-  return { ...agreedAmountActions, ...itemActions };
+  const extraActions = createExtraActions(dispatch);
+  return {
+    ...agreedAmountActions,
+    ...extraActions,
+    ...itemActions,
+  };
 };
