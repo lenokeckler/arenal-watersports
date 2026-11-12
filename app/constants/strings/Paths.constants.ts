@@ -75,6 +75,7 @@ export const PATHS = {
   },
   RESERVATIONS: {
     CALENDAR: "/reservations/calendar",
+    EXTERNAL_GUIDE_NEW: "/reservations/guides/new",
     DETAIL: (reservationId: string): string =>
       `/reservations/${encodeURIComponent(reservationId)}`,
     DEPOSITS: "/reservations/deposits",
