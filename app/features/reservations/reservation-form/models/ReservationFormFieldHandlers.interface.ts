@@ -3,9 +3,11 @@ import type { ReservationCategoryOption } from "./ReservationCategoryOption.inte
 
 export interface ReservationFormFieldHandlers {
   handleCategoryChange: (value: string) => void;
+  clearExtraSelection: () => void;
   handleCustomerNameChange: (value: string) => void;
   handleDateChange: (value: string) => void;
   handleDurationChange: (value: number) => void;
+  handleExtraToggle: (extraId: string) => void;
   handleGuideToggle: (guideId: string) => void;
   handleGuideIdsChange: (guideIds: string[]) => void;
   handlePeopleCountChange: (value: number) => void;

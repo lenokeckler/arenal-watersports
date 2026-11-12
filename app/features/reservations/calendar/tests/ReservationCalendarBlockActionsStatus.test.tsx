@@ -55,7 +55,7 @@ describe.each(INACTIVE_STATUSES)(
 );
 
 describe("Reservation block actions on a dispatched block", () => {
-  it("renders the cancel link only, alongside the detail link", () => {
+  it("renders the postpone and cancel links alongside the detail link", () => {
     renderBlocks([
       {
         ...CALENDAR_BLOCK_ENTRY,
@@ -65,7 +65,7 @@ describe("Reservation block actions on a dispatched block", () => {
 
     expect(
       screen.getAllByRole(ARIA_ROLE.LINK)
-    ).toHaveLength(2);
+    ).toHaveLength(3);
   });
 });
 

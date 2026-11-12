@@ -62,6 +62,11 @@ export const createCategoryBehaviorFormPage = () => {
       CATEGORY_CATALOG_COPY.DEFAULT_DURATION_MINUTES_FIELD_LABEL
     );
 
+  const getDurationHint = () =>
+    screen.getByText(
+      CATEGORY_CATALOG_COPY.DEFAULT_DURATION_MINUTES_FIELD_HINT
+    );
+
   const getAllControls = () => [
     getIsReservableCheckbox(),
     getUnitsAreInterchangeableCheckbox(),
@@ -118,6 +123,7 @@ export const createCategoryBehaviorFormPage = () => {
     getUsageMetricSelect,
     getHasConditionPhotosCheckbox,
     getDurationInput,
+    getDurationHint,
     getDurationError,
     getCancelButton,
     getSubmitButton,

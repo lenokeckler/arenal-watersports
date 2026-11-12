@@ -9,6 +9,8 @@ export const createCustomComboReservationInput = (
   customerName: options.values.customerName,
   date: options.values.date,
   durationHours: options.durationHours,
+  extraIds: options.draft.extraIds,
+  extraUnitId: options.draft.extraUnitId,
   guideIds: options.hasGuideOnlyItem
     ? (options.values.guideIds ?? [])
     : [],

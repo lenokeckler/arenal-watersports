@@ -62,6 +62,9 @@ describe("getReservationDetail", () => {
     expect(supabase.query.select).toHaveBeenCalledWith(
       RESERVATION_DETAIL_QUERY.SELECT
     );
+    expect(RESERVATION_DETAIL_QUERY.SELECT).toContain(
+      "extra_unit_id"
+    );
     expect(supabase.query.eq).toHaveBeenCalledWith(
       "id",
       RESERVATION_DETAIL_TEST.RESERVATION_ID

@@ -18,6 +18,8 @@ export const createCustomComboReservation = async (
         customer_name: input.customerName,
         date: input.date,
         duration_minutes: input.durationMinutes,
+        extra_ids: input.extraIds,
+        extra_unit_id: input.extraUnitId,
         guide_ids: input.guideIds,
         items: mapCustomComboRpcItems(input.items),
         people_count: input.peopleCount,

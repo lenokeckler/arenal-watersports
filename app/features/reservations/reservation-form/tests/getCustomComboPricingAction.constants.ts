@@ -8,6 +8,8 @@ export const CUSTOM_COMBO_PRICING_ACTION_TEST = {
   ),
   INPUT: {
     durationHours: 1.5,
+    extraIds: [],
+    extraUnitId: null,
     items: [
       {
         kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
@@ -23,6 +25,8 @@ export const CUSTOM_COMBO_PRICING_ACTION_TEST = {
   } satisfies CustomComboPricingInput,
   INVALID_DURATION_INPUT: {
     durationHours: 0,
+    extraIds: [],
+    extraUnitId: null,
     items: [
       {
         kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
@@ -33,6 +37,8 @@ export const CUSTOM_COMBO_PRICING_ACTION_TEST = {
   },
   INVALID_INPUT: {
     durationHours: 1.5,
+    extraIds: [],
+    extraUnitId: null,
     items: [
       {
         kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
@@ -46,4 +52,16 @@ export const CUSTOM_COMBO_PRICING_ACTION_TEST = {
     listAmountUsd: 36,
   } satisfies CustomComboPricing,
   PRICING_ERROR: new Error("Pricing service failed"),
+  WITH_EXTRAS_INPUT: {
+    durationHours: 1.5,
+    extraIds: ["e5300000-0000-4000-8000-000000000101"],
+    extraUnitId: "e5300000-0000-4000-8000-000000000201",
+    items: [
+      {
+        categoryId: "e5300000-0000-4000-8000-000000000102",
+        kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.UNIT,
+        unitId: "e5300000-0000-4000-8000-000000000201",
+      },
+    ],
+  } satisfies CustomComboPricingInput,
 } as const;
