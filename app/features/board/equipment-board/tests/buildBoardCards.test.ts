@@ -23,6 +23,7 @@ describe("buildBoardCards", () => {
         categories: [category],
         freeCount: category.freeCount,
         id: category.id,
+        imagePath: category.imagePath,
         inUseCount: category.inUseCount,
         isGrouped: false,
         label: category.name,

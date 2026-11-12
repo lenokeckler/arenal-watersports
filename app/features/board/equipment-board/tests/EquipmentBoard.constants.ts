@@ -16,6 +16,7 @@ export const DEFAULT_BOARD_ROW: BoardCategoryRow = {
   category_name: "Jet ski",
   free_count: 2,
   group_name: null,
+  image_path: null,
   in_use_count: 1,
   total_count: 4,
 };
@@ -25,6 +26,7 @@ export const KAYAK_DOUBLE_ROW: BoardCategoryRow = {
   category_name: BOARD_CATEGORY_NAME.KAYAK_DOUBLE,
   free_count: 2,
   group_name: BOARD_GROUP_NAME.KAYAK,
+  image_path: null,
   in_use_count: 1,
   total_count: 4,
 };
@@ -34,6 +36,7 @@ export const KAYAK_INDIVIDUAL_ROW: BoardCategoryRow = {
   category_name: BOARD_CATEGORY_NAME.KAYAK_INDIVIDUAL,
   free_count: 3,
   group_name: BOARD_GROUP_NAME.KAYAK_LOWER,
+  image_path: null,
   in_use_count: 2,
   total_count: 6,
 };
@@ -43,6 +46,7 @@ export const PADDLE_BOARD_ROW: BoardCategoryRow = {
   category_name: BOARD_CATEGORY_NAME.PADDLE_BOARD,
   free_count: 4,
   group_name: BOARD_GROUP_NAME.PADDLE,
+  image_path: null,
   in_use_count: 0,
   total_count: 4,
 };

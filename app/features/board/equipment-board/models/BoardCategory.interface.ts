@@ -4,6 +4,7 @@ export interface BoardCategory {
   freeCount: number;
   groupName: NullableRef<string>;
   id: string;
+  imagePath: NullableRef<string>;
   inUseCount: number;
   name: string;
   totalCount: number;

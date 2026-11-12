@@ -3,6 +3,7 @@ import { ARIA_ROLE, PATHS } from "@/app/constants";
 import { SYSTEM_NAVIGATION_COPY } from "@/app/features/access/system-navigation/constants/SystemNavigationCopy.constants";
 import { EQUIPMENT_BOARD_COPY } from "@/app/features/board/equipment-board/constants/EquipmentBoardCopy.constants";
 import {
+  E2E_BOARD_CARD_IMAGE_SELECTOR,
   E2E_BOARD_CARD_SELECTOR,
   E2E_BOARD_LAYOUT,
 } from "../constants/E2eBoard.constants";
@@ -49,6 +50,20 @@ export const createBoardPage = (page: Page) => {
         name: label,
       }),
     });
+
+  const getCardImage = (card: Locator): Locator =>
+    card.locator(E2E_BOARD_CARD_IMAGE_SELECTOR);
+
+  const isCardImageLoaded = async (
+    card: Locator
+  ): Promise<boolean> => {
+    await card.scrollIntoViewIfNeeded();
+
+    return getCardImage(card).evaluate(
+      (image: HTMLImageElement) =>
+        image.complete && image.naturalWidth > 0
+    );
+  };
 
   const getCardLinks = (): Locator =>
     getGrid().getByRole(ARIA_ROLE.LINK);
@@ -169,6 +184,7 @@ export const createBoardPage = (page: Page) => {
     countCardsInFirstRow,
     measureCardRows,
     getCard,
+    getCardImage,
     getButtons,
     getCardLinks,
     getCards,
@@ -179,5 +195,6 @@ export const createBoardPage = (page: Page) => {
     getSubtitle,
     getTextInMain,
     goTo,
+    isCardImageLoaded,
   };
 };

@@ -1,5 +1,6 @@
 import { compareBoardCategories } from "@/app/utils/board-categories/compareBoardCategories";
 import { resolveBoardGroupKey } from "@/app/utils/board-categories/resolveBoardGroupKey";
+import type { NullableRef } from "@/app/types";
 import { safeString } from "@/app/utils/safe-value/SafeValue";
 import type { BoardCard } from "../models/BoardCard.interface";
 import type { BoardCategory } from "../models/BoardCategory.interface";
@@ -18,6 +19,14 @@ const resolveTargetCategoryId = (
 ): string =>
   [...members].sort(compareBoardCategories)[0].id;
 
+const resolveImagePath = (
+  members: BoardCategory[]
+): NullableRef<string> =>
+  [...members]
+    .sort(compareBoardCategories)
+    .find((member) => member.imagePath !== null)
+    ?.imagePath ?? null;
+
 export const buildBoardCard = (
   members: BoardCategory[]
 ): BoardCard => {
@@ -34,6 +43,7 @@ export const buildBoardCard = (
       (member) => member.freeCount
     ),
     id: isGrouped && groupKey ? groupKey : firstMember.id,
+    imagePath: resolveImagePath(members),
     inUseCount: sumCounts(
       members,
       (member) => member.inUseCount
