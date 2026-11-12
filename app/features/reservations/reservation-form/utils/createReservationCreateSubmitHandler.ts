@@ -69,7 +69,7 @@ export const createReservationCreateSubmitHandler =
       submitCustomComboDraft({
         customCombo: options.customCombo,
         durationHours: options.durationHours,
-      onSuccess: options.onSuccess,
+        onSuccess: options.onSuccess,
         requestErrorFocus: options.requestErrorFocus,
         setFieldError: options.setFieldError,
         submitCustomComboReservation:
