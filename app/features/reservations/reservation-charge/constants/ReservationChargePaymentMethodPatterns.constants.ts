@@ -1,0 +1,5 @@
+export const RESERVATION_CHARGE_EDGE_WHITESPACE_PATTERN =
+  /^\s+|\s+$/g;
+
+export const RESERVATION_CHARGE_DISALLOWED_CHARACTER_PATTERN =
+  /[\p{Cc}\p{Cf}]/u;

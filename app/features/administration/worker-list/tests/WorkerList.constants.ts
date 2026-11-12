@@ -40,6 +40,13 @@ export const WORKER_LIST_TEST_SEARCH: WorkerListSearch = {
   status: WORKER_LIST_STATUS.ACTIVE,
 };
 
+export const WORKER_LIST_TEST_UNFILTERED_SEARCH: WorkerListSearch =
+  {
+    baseRole: undefined,
+    pageIndex: PAGINATION.DEFAULT_PAGE,
+    status: undefined,
+  };
+
 export const WORKER_LIST_TEST_ROW: WorkerListRow = {
   accountStatus: WORKER_LIST_STATUS.ACTIVE,
   additionalAreas: [SUPABASE_WORK_AREA.RESERVATIONS],

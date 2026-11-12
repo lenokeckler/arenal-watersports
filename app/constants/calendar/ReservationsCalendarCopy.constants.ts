@@ -12,6 +12,8 @@ export const RESERVATIONS_CALENDAR_COPY = {
   MISSING_EQUIPMENT: "Equipo pendiente de registrar",
   MISSING_SNAPSHOT:
     "Aún no se ha cargado información de reservas.",
+  CANCEL_RESERVATION: "Cancelar",
+  CANCEL_RESERVATION_LABEL: "Cancelar la reserva de",
   MODIFY_RESERVATION: "Modificar",
   MODIFY_RESERVATION_LABEL: "Modificar la reserva de",
   OPEN_RESERVATION_DETAIL:
@@ -40,6 +42,8 @@ export const RESERVATIONS_CALENDAR_COPY = {
   QUANTITY_SEPARATOR: " × ",
   RESERVATION_NAME: "Reserva a nombre de",
   SCHEDULED: "Horario agendado:",
+  POSTPONE_RESERVATION: "Posponer",
+  POSTPONE_RESERVATION_LABEL: "Posponer la reserva de",
   SPLIT_RESERVATION: "Dividir",
   SPLIT_RESERVATION_LABEL: "Dividir reserva de",
   TITLE: "Calendario de reservas",
