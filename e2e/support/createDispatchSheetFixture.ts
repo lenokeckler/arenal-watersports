@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { INVENTORY_TRACKING_MODE } from "@/app/constants";
 import { getCostaRicaDayRange } from "@/app/components/dispatch-board/utils/getCostaRicaDayRange";
 import {
+  E2E_DISPATCH_READINGS,
   E2E_DISPATCH_SHEET_ERROR,
   E2E_DISPATCH_SHEET_SEED,
   E2E_DISPATCH_SHEET_TABLE,
@@ -11,11 +12,40 @@ import { createInventoryCategoryFixture } from "./createInventoryCategoryFixture
 import { createServiceRoleClient } from "./createServiceRoleClient";
 import { failE2eOperation } from "./failE2eOperation";
 import type { DispatchSheetFixture } from "./models/DispatchSheetFixture.interface";
+import { makeMaintenanceNeeds } from "./makeMaintenanceNeeds";
+import { makeDispatchLate } from "./makeDispatchLate";
+import { addMaintenanceJobs } from "./addMaintenanceJobs";
+import { addDamageReports } from "./addDamageReports";
+import { readUnitCorrection } from "./readUnitCorrection";
+import { addUnitPhoto } from "./addUnitPhoto";
+import {
+  grantGeneralManagerMark,
+  removeGeneralManagerMark,
+} from "./grantGeneralManagerMark";
+import { readUnitPhotos } from "./readUnitPhotos";
+import { removeUnitPhotos } from "./removeUnitPhotos";
+import { removeUnitCorrections } from "./removeUnitCorrections";
+import { readUnitId } from "./readUnitId";
+import { removeDamageReports } from "./removeDamageReports";
+import { readMaintenanceJobs } from "./readMaintenanceJobs";
+import { removeMaintenanceJobs } from "./removeMaintenanceJobs";
+import { readGroupClosing } from "./readGroupClosing";
+import { readDispatchDuration } from "./readDispatchDuration";
+import { readDispatchReadings } from "./readDispatchReadings";
 import { readDispatchSheetState } from "./readDispatchSheetState";
 import { removeDispatchSheetFixture } from "./removeDispatchSheetFixture";
 
+interface DispatchSheetFixtureOptions {
+  hasMotor?: boolean;
+  isOnBoard?: boolean;
+}
+
 export const createDispatchSheetFixture = async (
-  workerId: string
+  workerId: string,
+  {
+    hasMotor = false,
+    isOnBoard = false,
+  }: DispatchSheetFixtureOptions = {}
 ): Promise<DispatchSheetFixture> => {
   const audit = {
     created_by: workerId,
@@ -34,6 +64,34 @@ export const createDispatchSheetFixture = async (
   );
   const customerName = buildE2eCustomerName();
 
+  if (hasMotor || isOnBoard) {
+    const motor = await supabase
+      .from(E2E_DISPATCH_SHEET_TABLE.CATEGORIES)
+      .update({
+        ...(hasMotor && {
+          consumes_fuel: true,
+          has_condition_photos: true,
+          has_motor: true,
+          usage_metric: "engine_hours",
+        }),
+        ...(isOnBoard && {
+          default_duration_minutes:
+            E2E_DISPATCH_SHEET_SEED.DURATION_MINUTES,
+          is_reservable: true,
+        }),
+      })
+      .eq("id", category.id);
+
+    if (motor.error) {
+      await category.cleanup();
+
+      return failE2eOperation(
+        E2E_DISPATCH_SHEET_ERROR.OPERATION_MARK_MOTOR,
+        motor.error.message
+      );
+    }
+  }
+
   const units = await supabase
     .from(E2E_DISPATCH_SHEET_TABLE.UNITS)
     .insert(
@@ -41,6 +99,10 @@ export const createDispatchSheetFixture = async (
         ...audit,
         category_id: category.id,
         code,
+        ...(hasMotor && {
+          fuel_level: E2E_DISPATCH_READINGS.LAST_FUEL,
+          usage_total: E2E_DISPATCH_READINGS.LAST_USAGE,
+        }),
       }))
     );
 
@@ -100,11 +162,50 @@ export const createDispatchSheetFixture = async (
   }
 
   return {
+    categoryId: category.id,
     categoryName: category.name,
     customerName,
+    makeMaintenanceNeeds: () =>
+      makeMaintenanceNeeds(supabase, unitCodes),
+    makeDispatchLate: (minutesLate) =>
+      makeDispatchLate(
+        supabase,
+        reservationId,
+        minutesLate
+      ),
+    addMaintenanceJobs: () =>
+      addMaintenanceJobs(supabase, unitCodes, workerId),
+    addDamageReports: () =>
+      addDamageReports(supabase, unitCodes, workerId),
+    readUnitId: (code) => readUnitId(supabase, code),
+    addUnitPhoto: (code, angle) =>
+      addUnitPhoto(supabase, code, angle, workerId),
+    grantGeneralManagerMark: () =>
+      grantGeneralManagerMark(supabase, workerId),
+    readUnitPhotos: (code) =>
+      readUnitPhotos(supabase, code),
+    readUnitCorrection: (code) =>
+      readUnitCorrection(supabase, code),
+    readMaintenanceJobs: () =>
+      readMaintenanceJobs(supabase, unitCodes),
+    readGroupClosing: () =>
+      readGroupClosing(supabase, reservationId, unitCodes),
+    readDispatchDuration: () =>
+      readDispatchDuration(supabase, reservationId),
+    readDispatchReadings: () =>
+      readDispatchReadings(
+        supabase,
+        reservationId,
+        unitCodes
+      ),
     readDispatchState: () =>
       readDispatchSheetState(supabase, reservationId),
     remove: async () => {
+      await removeMaintenanceJobs(supabase, unitCodes);
+      await removeDamageReports(supabase, unitCodes);
+      await removeUnitCorrections(supabase, unitCodes);
+      await removeUnitPhotos(supabase, unitCodes);
+      await removeGeneralManagerMark(supabase, workerId);
       await removeDispatchSheetFixture(
         supabase,
         reservationId

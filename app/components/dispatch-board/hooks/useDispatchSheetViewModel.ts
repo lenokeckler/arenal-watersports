@@ -10,18 +10,22 @@ import type { DispatchSheetViewModel } from "../models/DispatchSheetViewModel.in
 import { useDispatchSheetData } from "./useDispatchSheetData";
 
 interface DispatchSheetViewModelInput {
+  initialCategoryId?: string;
   onDispatched: () => void;
   reservationId: string;
 }
 
 export const useDispatchSheetViewModel = ({
+  initialCategoryId,
   onDispatched,
   reservationId,
 }: DispatchSheetViewModelInput): DispatchSheetViewModel => {
   const { groups, phase, reload } =
     useDispatchSheetData(reservationId);
   const [selectedCategoryId, setSelectedCategoryId] =
-    useState<NullableRef<string>>(null);
+    useState<NullableRef<string>>(
+      initialCategoryId ?? null
+    );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] =
     useState<NullableRef<string>>(null);
@@ -62,6 +66,12 @@ export const useDispatchSheetViewModel = ({
       if (status === DISPATCH_GROUP_STATUS.UNAVAILABLE) {
         setErrorMessage(
           DISPATCH_SHEET_COPY.UNITS_UNAVAILABLE
+        );
+      } else if (
+        status === DISPATCH_GROUP_STATUS.INVALID_READINGS
+      ) {
+        setErrorMessage(
+          DISPATCH_SHEET_COPY.READINGS_INVALID
         );
       } else if (remaining.length === 0) {
         onDispatched();

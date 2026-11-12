@@ -24,6 +24,8 @@ export const PATHS = {
     CATEGORY_STOCK_SEGMENT: "stock",
     CATEGORY_UNITS_SEGMENT: "units",
     DEPOSITS: "/administration/reports/deposits",
+    MAINTENANCE_COST:
+      "/administration/reports/maintenance-cost",
     EXTRAS: "/administration/extras",
     EXTRAS_NEW: "/administration/extras/new",
     INCOME: "/administration/income",
@@ -32,6 +34,7 @@ export const PATHS = {
     ROOT: "/administration",
     UNITS_NEW_SEGMENT: "new",
     WORKER_AREAS: "/administration/workers/areas",
+    WORKERS: "/administration/workers",
     WORKERS_NEW: "/administration/workers/new",
   },
   HISTORY: {
@@ -50,6 +53,16 @@ export const PATHS = {
       `${OPERATIONS_INVENTORY_PATH}/${encodeURIComponent(categoryId)}?${PAGINATION.QUERY_PARAMS.PAGE}=${pageIndex}`,
     INVENTORY_PAGE: (pageIndex: number) =>
       `${OPERATIONS_INVENTORY_PATH}?${PAGINATION.QUERY_PARAMS.PAGE}=${pageIndex}`,
+    DAMAGE_REPORTS: "/operations/damage-reports",
+    MAINTENANCE: "/operations/maintenance",
+    MAINTENANCE_HISTORY: "/operations/maintenance/history",
+    MAINTENANCE_NEW: "/operations/maintenance/new",
+    OUT_ON_WATER: "/operations/out-on-water",
+    UNIT_PHOTOS: (unitId: string) =>
+      `/operations/unit-photos/${encodeURIComponent(unitId)}`,
+    UNIT_READINGS: "/operations/unit-readings",
+    UNIT_READING: (unitId: string) =>
+      `/operations/unit-readings/${encodeURIComponent(unitId)}`,
     PENDING_DISPATCHES: "/operations/dispatch",
   },
   PROFILE: {

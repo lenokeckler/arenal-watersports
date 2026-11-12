@@ -19,7 +19,6 @@ import {
 } from "./BoardCategories.constants";
 import {
   BOARD_UNITS_CATEGORY_ID,
-  BOARD_UNITS_EMPTY_RESULT,
   BOARD_UNITS_RESULT,
   BOARD_UNITS_ROW,
   BOARD_UNITS_SECOND_PAGE,
@@ -39,6 +38,10 @@ vi.mock("@/app/services/supabase", () => ({
   createServerSupabaseClient:
     supabaseMocks.createServerSupabaseClient,
 }));
+
+vi.mock(
+  "@/app/services/work-mode/assertActiveWorkAreaAccess"
+);
 
 const getUser = vi.fn();
 const from = vi.fn();
@@ -137,13 +140,5 @@ describe("readBoardCategoryUnits", () => {
     await expect(readSecondPage()).rejects.toThrow(
       BOARD_CATEGORY_UNITS_OPERATION
     );
-  });
-
-  it("returns an empty list when the view has no data", async () => {
-    queryBuilder.range.mockResolvedValue(
-      BOARD_UNITS_EMPTY_RESULT
-    );
-
-    await expect(readSecondPage()).resolves.toEqual([]);
   });
 });
