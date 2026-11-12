@@ -66,3 +66,27 @@ export const CHARGEABLE_CHARGES = [
   EXPECTED_DISPATCHED,
   EXPECTED_CLOSED,
 ] as const;
+
+export const NO_CATALOG_PROPOSAL_CHARGE: ReservationCharge =
+  {
+    ...EXPECTED_SCHEDULED,
+    proposal: EMPTY_PROPOSAL,
+  };
+
+export const ZERO_PROPOSAL_CHARGE: ReservationCharge = {
+  ...EXPECTED_SCHEDULED,
+  proposal: { CRC: 0, USD: 0 },
+};
+
+export const EXPECTED_ZERO_USD_PROPOSAL = `${CURRENCY_SYMBOL.USD}${CURRENCY_SYMBOL_SEPARATOR}0.00`;
+
+export const DURATION_CASES: readonly (readonly [
+  number,
+  string,
+])[] = [
+  [30, "30min"],
+  [60, "1h"],
+  [90, "1h 30min"],
+  [125, "2h 5min"],
+  [1, "1min"],
+];

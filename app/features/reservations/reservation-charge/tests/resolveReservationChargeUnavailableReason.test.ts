@@ -14,6 +14,22 @@ describe("resolveReservationChargeUnavailableReason", () => {
     ).toBe(REASON.CANCELLED);
   });
 
+  it.each([
+    RESERVATION_STATUS.SCHEDULED,
+    RESERVATION_STATUS.DISPATCHED,
+    RESERVATION_STATUS.CLOSED,
+  ])(
+    "returns no reason for a chargeable %s reservation",
+    (status) => {
+      expect(
+        resolveReservationChargeUnavailableReason({
+          parentReservationId: null,
+          status,
+        })
+      ).toBeNull();
+    }
+  );
+
   it("names a split child that is still open", () => {
     expect(
       resolveReservationChargeUnavailableReason({

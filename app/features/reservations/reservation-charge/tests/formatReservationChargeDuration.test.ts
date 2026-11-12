@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { formatReservationChargeDuration } from "../utils/formatReservationChargeDuration";
 import { EXPECTED_SCHEDULED } from "./ReservationCharge.constants";
 import {
+  DURATION_CASES,
   EXPECTED_DURATION,
   EXPECTED_ONLY_MINUTES,
   EXPECTED_WHOLE_HOURS,
@@ -19,4 +20,13 @@ describe("formatReservationChargeDuration", () => {
       expected
     );
   });
+
+  it.each(DURATION_CASES)(
+    "formats %i minutes as %s",
+    (minutes, expected) => {
+      expect(formatReservationChargeDuration(minutes)).toBe(
+        expected
+      );
+    }
+  );
 });

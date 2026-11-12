@@ -8,6 +8,7 @@ import { RESERVATION_CHARGE_UNAVAILABLE_REASON } from "../constants/ReservationC
 import { CHARGE_RESERVATION_ID } from "./ReservationCharge.constants";
 import { createReservationChargePage } from "./ReservationCharge.page";
 
+const HREF_ATTRIBUTE = "href";
 const DETAIL_PATH = PATHS.RESERVATIONS.DETAIL(
   CHARGE_RESERVATION_ID
 );
@@ -33,10 +34,13 @@ describe("ReservationChargeUnavailable", () => {
       expect(
         page.getHeading(RESERVATION_CHARGE_UI_COPY.TITLE)
       ).toBeInTheDocument();
-      expect(page.getBackLinkTargets()).toEqual([
-        DETAIL_PATH,
-        DETAIL_PATH,
-      ]);
+      expect(
+        page
+          .getLink(
+            RESERVATION_CHARGE_UI_COPY.BACK_TO_RESERVATION
+          )
+          .getAttribute(HREF_ATTRIBUTE)
+      ).toBe(DETAIL_PATH);
     }
   );
 });
