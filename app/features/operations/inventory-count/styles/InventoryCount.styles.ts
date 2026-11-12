@@ -24,6 +24,15 @@ export const INVENTORY_COUNT_SECTION_TITLE_CLASS =
 export const INVENTORY_COUNT_QUANTITY_GRID_CLASS =
   "grid grid-cols-1 gap-md sm:grid-cols-3";
 
+export const INVENTORY_COUNT_STEP_PROGRESS_CLASS =
+  "text-body-md text-on-surface-variant";
+
+export const INVENTORY_COUNT_STEP_NAV_CLASS =
+  "flex flex-wrap gap-3";
+
+export const INVENTORY_COUNT_STEP_BUTTON_CLASS =
+  "min-h-11 flex-1 rounded-lg border border-outline px-4 text-body-md text-on-surface";
+
 export const INVENTORY_COUNT_ERROR_CLASS =
   "rounded-xl border border-error/60 bg-error/10 px-4 py-3 text-body-base text-on-surface";
 

@@ -23,6 +23,9 @@ import type { InventoryCountFormProps } from "../models/InventoryCountFormProps.
 import {
   INVENTORY_COUNT_FORM_CLASS,
   INVENTORY_COUNT_RESULT_CLASS,
+  INVENTORY_COUNT_STEP_BUTTON_CLASS,
+  INVENTORY_COUNT_STEP_NAV_CLASS,
+  INVENTORY_COUNT_STEP_PROGRESS_CLASS,
 } from "../styles/InventoryCount.styles";
 import InventoryCountCategorySection from "./InventoryCountCategorySection";
 
@@ -38,22 +41,41 @@ const InventoryCountForm = (
       className={INVENTORY_COUNT_FORM_CLASS}
       onSubmit={form.handleSubmit}
     >
-      {props.categories.map((category) => (
+      <Text className={INVENTORY_COUNT_STEP_PROGRESS_CLASS}>
+        {INVENTORY_COUNT_COPY.STEP_PROGRESS(
+          Math.min(
+            form.stepIndex + 1,
+            props.categories.length
+          ),
+          props.categories.length
+        )}
+      </Text>
+      {form.currentCategory ? (
         <InventoryCountCategorySection
-          key={category.id}
-          category={category}
+          key={form.currentCategory.id}
+          category={form.currentCategory}
           form={form}
         />
-      ))}
-      <FormField
-        id={INVENTORY_COUNT_FIELD_ID.NOTES}
-        name={INVENTORY_COUNT_FIELD_ID.NOTES}
-        label={INVENTORY_COUNT_COPY.NOTES_LABEL}
-        labelSuffix={STRING.Empty}
-        type={INPUT_TYPES.TEXTAREA}
-        value={form.draft.notes}
-        onChange={form.handleNotesChange}
-      />
+      ) : (
+        <>
+          <Text
+            className={INVENTORY_COUNT_STEP_PROGRESS_CLASS}
+          >
+            {INVENTORY_COUNT_COPY.SUMMARY_TEXT(
+              props.categories.length
+            )}
+          </Text>
+          <FormField
+            id={INVENTORY_COUNT_FIELD_ID.NOTES}
+            name={INVENTORY_COUNT_FIELD_ID.NOTES}
+            label={INVENTORY_COUNT_COPY.NOTES_LABEL}
+            labelSuffix={STRING.Empty}
+            type={INPUT_TYPES.TEXTAREA}
+            value={form.draft.notes}
+            onChange={form.handleNotesChange}
+          />
+        </>
+      )}
       {form.result && (
         <Text
           className={
@@ -66,14 +88,36 @@ const InventoryCountForm = (
           {INVENTORY_COUNT_MESSAGE[form.result]}
         </Text>
       )}
-      <Button
-        type={BUTTON_TYPES.SUBMIT}
-        variant={BUTTON.PRIMARY}
-        isLoading={form.isSubmitting}
-        loadingText={INVENTORY_COUNT_COPY.SUBMITTING}
-      >
-        {INVENTORY_COUNT_COPY.SUBMIT}
-      </Button>
+      <div className={INVENTORY_COUNT_STEP_NAV_CLASS}>
+        {form.stepIndex > 0 && (
+          <Button
+            type={BUTTON_TYPES.BUTTON}
+            variant={BUTTON.BASE}
+            className={INVENTORY_COUNT_STEP_BUTTON_CLASS}
+            onClick={form.goToPreviousStep}
+          >
+            {INVENTORY_COUNT_COPY.PREVIOUS}
+          </Button>
+        )}
+        {form.isSummaryStep ? (
+          <Button
+            type={BUTTON_TYPES.SUBMIT}
+            variant={BUTTON.PRIMARY}
+            isLoading={form.isSubmitting}
+            loadingText={INVENTORY_COUNT_COPY.SUBMITTING}
+          >
+            {INVENTORY_COUNT_COPY.SUBMIT}
+          </Button>
+        ) : (
+          <Button
+            type={BUTTON_TYPES.BUTTON}
+            variant={BUTTON.PRIMARY}
+            onClick={form.goToNextStep}
+          >
+            {INVENTORY_COUNT_COPY.NEXT}
+          </Button>
+        )}
+      </div>
     </form>
   );
 };
