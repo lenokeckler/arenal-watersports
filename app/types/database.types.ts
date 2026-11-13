@@ -2784,6 +2784,7 @@ export type Database = {
           must_change_password: boolean;
           national_id: string | null;
           personal_email: string | null;
+          reservation_calendar_page_size: number;
           status: Database["public"]["Enums"]["worker_status"];
           updated_at: string;
           updated_by: string | null;
@@ -2807,6 +2808,7 @@ export type Database = {
           must_change_password?: boolean;
           national_id?: string | null;
           personal_email?: string | null;
+          reservation_calendar_page_size?: number;
           status?: Database["public"]["Enums"]["worker_status"];
           updated_at?: string;
           updated_by?: string | null;
@@ -2830,6 +2832,7 @@ export type Database = {
           must_change_password?: boolean;
           national_id?: string | null;
           personal_email?: string | null;
+          reservation_calendar_page_size?: number;
           status?: Database["public"]["Enums"]["worker_status"];
           updated_at?: string;
           updated_by?: string | null;

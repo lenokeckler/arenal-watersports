@@ -138,3 +138,4 @@ The eligibility service provides physically eligible categories for initial read
 
 - After a rental, tour, predefined combo, or custom combo is created successfully, clear every form value and draft so the worker can register another reservation. Keep the success acknowledgement visible and allow the next submission.
 - A failed submission preserves the current form values.
+- When creating a custom combo, selecting equipment categories displays an informational warning about reservations whose schedules overlap the selected interval. It updates when categories, date, time, or duration changes and never blocks submission.

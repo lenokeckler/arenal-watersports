@@ -5,42 +5,30 @@ import {
   PATHS,
   RESERVATIONS_CALENDAR_COPY,
 } from "@/app/constants";
-import type {
-  CalendarDate,
-  CalendarView,
-} from "@/app/types";
-import { formatCalendarDate } from "@/app/components/calendar/utils/formatCalendarPresentation";
+import type { CalendarView } from "@/app/types";
 import {
   E2E_RESERVATIONS_CALENDAR_COPY,
   E2E_RESERVATIONS_CALENDAR_SELECTORS,
 } from "../constants/E2eReservationsCalendar.constants";
 import { locateOriginBlock } from "../support/locateOriginBlock";
 import { getMainRegion } from "../support/mainRegion";
+import { createReservationsCalendarListPage } from "./ReservationsCalendarList.page";
+import { createReservationsCalendarDatePage } from "./ReservationsCalendarDate.page";
 
 export const createReservationsCalendarPage = (
   page: Page
 ) => {
   const main = getMainRegion(page);
+  const reservationList =
+    createReservationsCalendarListPage(page);
+  const datePage = createReservationsCalendarDatePage(page);
   const getView = (view: CalendarView): Locator =>
     main.getByRole(ARIA_ROLE.BUTTON, {
       name: E2E_RESERVATIONS_CALENDAR_COPY.VIEWS[view],
       exact: true,
     });
-  const getDaySelection = (
-    date: CalendarDate,
-    count: number
-  ): Locator =>
-    main.getByRole(ARIA_ROLE.BUTTON, {
-      name: `${formatCalendarDate(date)}${RESERVATIONS_CALENDAR_COPY.RESERVATION_COUNT_SEPARATOR}${RESERVATIONS_CALENDAR_COPY.RESERVATION_COUNT_LABEL(count)}`,
-      exact: true,
-    });
-  const getMonthSelection = (date: CalendarDate): Locator =>
-    main.getByRole(ARIA_ROLE.BUTTON, {
-      name: formatCalendarDate(date, true),
-      exact: true,
-    });
-
   return {
+    ...datePage,
     getBlock: (customerName: string): Locator =>
       main.getByRole(ARIA_ROLE.GROUP, {
         name: customerName,
@@ -70,21 +58,12 @@ export const createReservationsCalendarPage = (
       main.getByRole(ARIA_ROLE.HEADING, {
         name: E2E_RESERVATIONS_CALENDAR_COPY.HEADING,
       }),
+    ...reservationList,
     getCreateReservationLink: (): Locator =>
       main.getByRole(ARIA_ROLE.LINK, {
         name: RESERVATIONS_CALENDAR_COPY.CREATE_RESERVATION,
         exact: true,
       }),
-    getDaySelection,
-    getDayReservationCount: (
-      date: CalendarDate,
-      count: number
-    ): Locator =>
-      getDaySelection(date, count).getByText(
-        count.toString(),
-        { exact: true }
-      ),
-    getMonthSelection,
     getPeriodAgenda: (): Locator =>
       main.getByRole(ARIA_ROLE.REGION, {
         name: RESERVATIONS_CALENDAR_COPY.PERIOD_AGENDA,
@@ -127,17 +106,6 @@ export const createReservationsCalendarPage = (
       view: CalendarView
     ): Promise<void> => {
       await getView(view).click();
-    },
-    selectDay: async (
-      date: CalendarDate,
-      count: number
-    ): Promise<void> => {
-      await getDaySelection(date, count).click();
-    },
-    selectMonth: async (
-      date: CalendarDate
-    ): Promise<void> => {
-      await getMonthSelection(date).click();
     },
     getPeriodContent: (): Locator =>
       main.getByRole(ARIA_ROLE.GROUP, {
