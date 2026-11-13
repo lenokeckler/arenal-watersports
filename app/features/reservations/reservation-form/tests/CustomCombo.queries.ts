@@ -42,6 +42,10 @@ const createPricingQueries = (
       form.getByText(
         RESERVATION_FORM_COPY[RESERVATION_FORM_FIELD.ITEMS]
       ),
+    findConflictWarningDescription: () =>
+      form.findByText(
+        RESERVATION_FORM_UI_COPY.CATEGORY_CONFLICT_WARNING_DESCRIPTION
+      ),
     getSubmitButton: () =>
       form.getByRole(ARIA_ROLE.BUTTON, {
         name: RESERVATION_FORM_UI_COPY.SUBMIT,

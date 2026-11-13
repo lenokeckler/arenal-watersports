@@ -37,6 +37,12 @@ vi.mock("../hooks/useCustomComboForm", () => ({
         .draft,
       items: comboDraft.items,
     },
+    conflictWarning: {
+      hasError: false,
+      isLoading: false,
+      items: [],
+      retry: vi.fn(),
+    },
     hasGuideOnlyItem: true,
   }),
 }));

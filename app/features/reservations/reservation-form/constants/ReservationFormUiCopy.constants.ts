@@ -64,9 +64,9 @@ export const RESERVATION_FORM_UI_COPY = {
   CATEGORY_CONFLICT_WARNING_TITLE:
     "Posible cruce de disponibilidad",
   CATEGORY_CONFLICT_WARNING_DESCRIPTION:
-    "Coincide con una reserva existente. Puede continuar si la operación lo permite.",
+    "Uno o más equipos coinciden con reservas existentes. Puede continuar si la operación lo permite.",
   CATEGORY_CONFLICT_WARNING_LOADING:
-    "Consultando reservas de esta categoría…",
+    "Consultando reservas de los equipos seleccionados…",
   CATEGORY_CONFLICT_WARNING_ERROR:
     "No fue posible verificar los cruces de horario. Puede continuar con el registro.",
   EQUIPMENT_ELIGIBILITY_LOADING:
