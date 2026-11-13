@@ -4,8 +4,10 @@ import type { CalendarPeriodChangeHandler } from "@/app/components/calendar/mode
 import type { ReservationCalendarSnapshot } from "@/app/components/reservation-calendar/models/ReservationCalendarSnapshot.interface";
 import type { NullableRef } from "@/app/types";
 import type { CalendarViewSelection } from "@/app/components/calendar/models/CalendarViewSelection.interface";
+import type { ReservationCalendarAgendaPagination } from "./ReservationCalendarAgendaPagination.interface";
 
 export interface ReservationsCalendarViewModel {
+  agendaPagination: ReservationCalendarAgendaPagination;
   dayContent: CalendarDayContent;
   hasRefreshError: boolean;
   isRefreshing: boolean;

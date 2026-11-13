@@ -1,18 +1,13 @@
 import type { ReactElement } from "react";
 import { RESERVATIONS_CALENDAR_COPY } from "@/app/constants";
-import type { ReservationCalendarAgendaContent } from "../models/ReservationCalendarAgendaContent.interface";
+import type { ReservationCalendarAgendaListProps } from "../models/ReservationCalendarAgendaListProps.interface";
 import { ReservationCalendarAgenda } from "./ReservationCalendarAgenda";
-
-interface ReservationCalendarAgendaListProps {
-  periodAgenda: ReservationCalendarAgendaContent;
-  selectedDayAgenda?: ReservationCalendarAgendaContent;
-  selectedMonthAgenda?: ReservationCalendarAgendaContent;
-  showPeriodAgenda: boolean;
-  showPeriodStatus: boolean;
-}
+import { ReservationCalendarAgendaPagination } from "./ReservationCalendarAgendaPagination";
 
 export const ReservationCalendarAgendaList = ({
   periodAgenda,
+  periodPage,
+  pagination,
   selectedDayAgenda,
   selectedMonthAgenda,
   showPeriodAgenda,
@@ -38,11 +33,23 @@ export const ReservationCalendarAgendaList = ({
       />
     )}
     {showPeriodStatus && (
-      <ReservationCalendarAgenda
-        agenda={periodAgenda}
-        label={RESERVATIONS_CALENDAR_COPY.PERIOD_AGENDA}
-        showGroups={showPeriodAgenda}
-      />
+      <>
+        <ReservationCalendarAgenda
+          agenda={periodAgenda}
+          label={RESERVATIONS_CALENDAR_COPY.PERIOD_AGENDA}
+          showGroups={showPeriodAgenda}
+        />
+        {showPeriodAgenda && periodPage.totalCount > 0 && (
+          <ReservationCalendarAgendaPagination
+            onPageChange={pagination.onPageChange}
+            pageCount={periodPage.pageCount}
+            pagination={{
+              ...pagination,
+              page: periodPage.page,
+            }}
+          />
+        )}
+      </>
     )}
   </>
 );

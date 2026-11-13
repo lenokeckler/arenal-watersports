@@ -2,6 +2,7 @@ export const ARIA_ROLE = {
   ALERT: "alert",
   BUTTON: "button",
   CHECKBOX: "checkbox",
+  COMBOBOX: "combobox",
   DIALOG: "dialog",
   GROUP: "group",
   REGION: "region",
