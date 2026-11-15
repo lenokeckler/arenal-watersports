@@ -24,5 +24,7 @@ export const createReservationChargePage = () => ({
   getStatusText: () =>
     screen.getByRole(ARIA_ROLE.STATUS).textContent,
   queryStatus: () => screen.queryByRole(ARIA_ROLE.STATUS),
+  queryAllText: (text: string) =>
+    screen.queryAllByText(text),
   queryText: (text: string) => screen.queryByText(text),
 });

@@ -4,7 +4,7 @@ import { ARIA_ROLE } from "@/app/constants";
 import { RESERVATION_CHARGE_FORM_COPY as COPY } from "../constants/ReservationChargeFormCopy.constants";
 
 const BUSY_ATTRIBUTE = "aria-busy";
-const AMOUNT_NAME = /^Monto cobrado/;
+const AMOUNT_NAME = /^Monto acordado/;
 const SUBMIT_NAME = new RegExp(
   `^(${COPY.SUBMIT}|${COPY.SUBMITTING})`
 );
