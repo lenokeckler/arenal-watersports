@@ -16,13 +16,12 @@ const ReservationChargePrice = ({
 
   return (
     <div className={RESERVATION_CHARGE_PRICE_BLOCK_CLASS}>
-      {!viewModel.isMixed &&
-        viewModel.currencyOptions.length > 1 && (
-          <ReservationChargeCurrencyField
-            charge={charge}
-            viewModel={viewModel}
-          />
-        )}
+      {!viewModel.isMixed && (
+        <ReservationChargeCurrencyField
+          charge={charge}
+          viewModel={viewModel}
+        />
+      )}
       <div
         id={FIELD_ID.PRICE_BLOCK}
         role={ARIA_ROLE.GROUP}

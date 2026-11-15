@@ -11,7 +11,6 @@ export const useReservationChargeViewModel = (
   charge: ReservationCharge
 ): ReservationChargeViewModel => {
   const {
-    currencyOptions,
     setAmountText,
     setCurrency,
     setPaymentMethod,
@@ -35,7 +34,6 @@ export const useReservationChargeViewModel = (
 
   return {
     ...values,
-    currencyOptions,
     errors,
     formError,
     handleSubmit,

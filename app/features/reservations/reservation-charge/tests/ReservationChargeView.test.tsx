@@ -97,12 +97,23 @@ describe("ReservationChargeView form", () => {
     ).not.toBeNull();
   });
 
-  it("offers only the proposal currency without the group and names it in the label", () => {
+  it("offers both currencies when only one has a proposal and names the proposed one in the label", () => {
     const page = renderReservationChargeView(MIXED_CHARGE);
 
-    expect(page.queryCurrencyRadios()).toHaveLength(0);
+    expect(page.getCurrencyRadios()).toHaveLength(2);
     expect(
       page.queryText(COPY.AMOUNT_LABEL.USD)
+    ).not.toBeNull();
+  });
+
+  it("charges in a currency without a proposal with an empty amount", async () => {
+    const page = renderReservationChargeView(MIXED_CHARGE);
+
+    await page.selectCurrency(CURRENCY_NAME_COPY.CRC);
+
+    expect(page.getAmount()).toHaveValue("");
+    expect(
+      page.queryText(COPY.AMOUNT_LABEL.CRC)
     ).not.toBeNull();
   });
 
