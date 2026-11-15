@@ -6,7 +6,7 @@ import {
 export const RESERVATION_DETAIL_MOVEMENTS_BLOCK_CLASS =
   "flex min-w-0 flex-col gap-2";
 export const RESERVATION_DETAIL_MOVEMENTS_TOGGLE_CLASS =
-  "w-full justify-between gap-2 rounded-full border border-primary/40 px-5 text-sm font-semibold text-primary hover:bg-primary/10 active:bg-primary/20 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface sm:w-fit sm:justify-center";
+  "flex w-full items-center justify-between gap-2 rounded-full border border-primary/40 px-5 text-sm font-semibold text-primary hover:bg-primary/10 active:bg-primary/20 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface sm:w-fit sm:justify-center";
 export const RESERVATION_DETAIL_MOVEMENTS_CHEVRON_CLASS =
   "shrink-0 transition-transform duration-200 motion-reduce:transition-none";
 export const RESERVATION_DETAIL_MOVEMENTS_CHEVRON_OPEN_CLASS =
