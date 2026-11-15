@@ -10,6 +10,10 @@ export const createReservationChargePage = () => ({
       .map((link) => link.getAttribute(HREF_ATTRIBUTE)),
   getDefinitionValue: (label: string) =>
     screen.getByText(label).nextElementSibling?.textContent,
+  getTermLabels: () =>
+    Array.from(document.querySelectorAll("dt")).map(
+      (term) => term.textContent
+    ),
   getHeading: (name: string, level?: number) =>
     screen.getByRole(ARIA_ROLE.HEADING, { name, level }),
   getLink: (name: string) =>
