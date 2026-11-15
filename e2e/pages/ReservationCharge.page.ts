@@ -26,6 +26,10 @@ export const createReservationChargePage = (page: Page) => {
         .fill(amount),
     fillPaymentMethod: (method: string): Promise<void> =>
       main.getByLabel(copy.LABEL_METHOD).fill(method),
+    getAddSecondAmount: (currency: CurrencyCode): Locator =>
+      main.getByRole(ARIA_ROLE.BUTTON, {
+        name: copy.ADD_CURRENCY[currency],
+      }),
     getAlert: (): Locator =>
       main.getByRole(ARIA_ROLE.ALERT),
     getAmount: (
@@ -38,9 +42,20 @@ export const createReservationChargePage = (page: Page) => {
           name: ui.BACK_TO_RESERVATION,
         })
         .last(),
+    getRemoveSecondAmount: (
+      currency: CurrencyCode
+    ): Locator =>
+      main.getByRole(ARIA_ROLE.BUTTON, {
+        name: copy.REMOVE_CURRENCY[currency],
+      }),
     getStatus: (): Locator =>
       main.getByRole(ARIA_ROLE.STATUS),
     getSubmit,
+    getSummary: (): Locator =>
+      main.getByRole(ARIA_ROLE.REGION, {
+        name: ui.SUMMARY_HEADING,
+        exact: true,
+      }),
     getText: (text: string): Locator =>
       main.getByText(text),
     goTo: (id: string): Promise<NullableRef<Response>> =>
