@@ -3,7 +3,8 @@ import type {
   Page,
   Response,
 } from "@playwright/test";
-import { ARIA_ROLE } from "@/app/constants";
+import { ARIA_ROLE, CURRENCY_CODE } from "@/app/constants";
+import type { CurrencyCode } from "@/app/constants";
 import { RESERVATION_CHARGE_FORM_COPY as copy } from "@/app/features/reservations/reservation-charge/constants/ReservationChargeFormCopy.constants";
 import { RESERVATION_CHARGE_UI_COPY as ui } from "@/app/features/reservations/reservation-charge/constants/ReservationChargeUiCopy.constants";
 import type { NullableRef } from "@/app/types";
@@ -16,14 +17,21 @@ export const createReservationChargePage = (page: Page) => {
     main.getByRole(ARIA_ROLE.BUTTON, { name: copy.SUBMIT });
 
   return {
-    fillAmount: (amount: string): Promise<void> =>
-      main.getByLabel(copy.LABEL_AMOUNT).fill(amount),
+    fillAmount: (
+      amount: string,
+      currency: CurrencyCode = CURRENCY_CODE.USD
+    ): Promise<void> =>
+      main
+        .getByLabel(copy.AMOUNT_LABEL[currency])
+        .fill(amount),
     fillPaymentMethod: (method: string): Promise<void> =>
       main.getByLabel(copy.LABEL_METHOD).fill(method),
     getAlert: (): Locator =>
       main.getByRole(ARIA_ROLE.ALERT),
-    getAmount: (): Locator =>
-      main.getByLabel(copy.LABEL_AMOUNT),
+    getAmount: (
+      currency: CurrencyCode = CURRENCY_CODE.USD
+    ): Locator =>
+      main.getByLabel(copy.AMOUNT_LABEL[currency]),
     getBackLink: (): Locator =>
       main
         .getByRole(ARIA_ROLE.LINK, {
