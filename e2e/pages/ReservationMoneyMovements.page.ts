@@ -1,15 +1,17 @@
 import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE } from "@/app/constants";
 import { E2E_RESERVATION_MONEY_MOVEMENTS_COPY as copy } from "../constants/E2eReservationMoneyMovements.constants";
+import type { ReservationMoneyMovementsPage } from "../models/ReservationMoneyMovementsPage.interface";
 import { createReservationDetailPage } from "./ReservationDetail.page";
 
 export const createReservationMoneyMovementsPage = (
   page: Page
-) => {
+): ReservationMoneyMovementsPage => {
   const detailPage = createReservationDetailPage(page);
   const section = detailPage.getChargeSection();
   const panel = section.locator(`#${copy.PANEL_ID}`);
   return {
+    detailPage,
     getEmpty: (): Locator =>
       section.getByText(copy.MOVEMENTS_EMPTY, {
         exact: true,
@@ -22,7 +24,5 @@ export const createReservationMoneyMovementsPage = (
         exact: true,
         name,
       }),
-    hasHorizontalOverflow: (): Promise<boolean> =>
-      detailPage.hasHorizontalOverflow(),
   };
 };

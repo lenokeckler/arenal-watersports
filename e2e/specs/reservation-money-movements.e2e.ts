@@ -88,9 +88,9 @@ reservationDetailTest(
       fixture.CASH,
       formatReservationCalendarDateTime(createdAt.tariff),
     ]);
-    expect(await movements.hasHorizontalOverflow()).toBe(
-      false
-    );
+    expect(
+      await movements.detailPage.hasHorizontalOverflow()
+    ).toBe(false);
 
     await hideToggle.click();
     await expect(

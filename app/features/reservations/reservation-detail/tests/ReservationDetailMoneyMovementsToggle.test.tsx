@@ -25,7 +25,7 @@ describe("ReservationDetailMoneyMovementsToggle", () => {
     expect(page.queryChild()).toBeNull();
     expect(page.getToggle()).toHaveAttribute(
       TEST.ARIA_EXPANDED,
-      "false"
+      TEST.EXPANDED_FALSE
     );
     expect(page.getToggle()).not.toHaveAttribute(
       TEST.ARIA_CONTROLS
@@ -46,7 +46,7 @@ describe("ReservationDetailMoneyMovementsToggle", () => {
     expect(page.queryChild()).toBeVisible();
     expect(page.getToggle()).toHaveAttribute(
       TEST.ARIA_EXPANDED,
-      "true"
+      TEST.EXPANDED_TRUE
     );
     expect(page.getToggle()).toHaveAttribute(
       TEST.ARIA_CONTROLS,
@@ -72,7 +72,7 @@ describe("ReservationDetailMoneyMovementsToggle", () => {
     expect(page.queryChild()).toBeNull();
     expect(page.getToggle()).toHaveAttribute(
       TEST.ARIA_EXPANDED,
-      "false"
+      TEST.EXPANDED_FALSE
     );
     expect(page.getToggle()).toHaveTextContent(
       RESERVATION_DETAIL_MOVEMENTS_COPY.MOVEMENTS_SHOW

@@ -9,25 +9,23 @@ import { RESERVATION_DETAIL_SECTIONS_COPY } from "../constants/ReservationDetail
 import type { ReservationDetailWorkerName } from "../models/ReservationDetailWorkerName.interface";
 import { formatReservationDetailAmount } from "../utils/formatReservationDetailAmount";
 import { mapReservationDetailMoneyMovements } from "../utils/mapReservationDetailMoneyMovements";
+import type { ReservationDetailMoneyMovementsPage } from "./models/ReservationDetailMoneyMovementsPage.interface";
 import { createReservationDetailMoneyMovementsPage } from "./ReservationDetailMoneyMovements.page";
-import { RESERVATION_DETAIL_MOVEMENTS_TEST as movement } from "./ReservationDetailMoneyMovementsTest.constants";
+import { RESERVATION_DETAIL_MOVEMENTS_TEST as MOVEMENTS_TEST } from "./ReservationDetailMoneyMovementsTest.constants";
 import { RESERVATION_DETAIL_SOURCE_FIXTURE } from "./ReservationDetailSourceFixture.constants";
 import { createReservationDetailChargeSource } from "./createReservationDetailChargeSource";
 import { createReservationDetailRefundSource } from "./createReservationDetailRefundSource";
 
-const WHITESPACE = /\s+/g;
-const SINGLE_SPACE = " ";
-
 const WORKER_NAMES: ReservationDetailWorkerName[] = [
   {
-    full_name: movement.CHARGE_WORKER_NAME,
-    worker_id: movement.CHARGE_WORKER_ID,
+    full_name: MOVEMENTS_TEST.CHARGE_WORKER_NAME,
+    worker_id: MOVEMENTS_TEST.CHARGE_WORKER_ID,
   },
 ];
 
 const renderMovements = (
   workerNames: ReservationDetailWorkerName[]
-) => {
+): ReservationDetailMoneyMovementsPage => {
   render(
     <ReservationDetailMoneyMovements
       movements={mapReservationDetailMoneyMovements(
@@ -62,37 +60,43 @@ describe("ReservationDetailMoneyMovements", () => {
 
     [
       formatReservationDetailAmount(
-        movement.REFUND_AMOUNT,
+        MOVEMENTS_TEST.REFUND_AMOUNT,
         RESERVATION_DETAIL_CURRENCY.CRC
       ),
       RESERVATION_DETAIL_CURRENCY.CRC,
       copy.TYPE_REFUND,
-      movement.REFUND_REASON,
+      MOVEMENTS_TEST.REFUND_REASON,
       copy.METHOD_NOT_APPLICABLE,
       formatReservationCalendarDateTime(
-        movement.REFUND_TIMESTAMP
+        MOVEMENTS_TEST.REFUND_TIMESTAMP
       ),
       RESERVATION_DETAIL_SECTIONS_COPY.MISSING_NAME,
     ].forEach((text) =>
       expect(refundRow).toHaveTextContent(
-        text.replace(WHITESPACE, SINGLE_SPACE)
+        text.replace(
+          MOVEMENTS_TEST.WHITESPACE,
+          MOVEMENTS_TEST.SINGLE_SPACE
+        )
       )
     );
     [
       formatReservationDetailAmount(
-        movement.CHARGE_AMOUNT,
+        MOVEMENTS_TEST.CHARGE_AMOUNT,
         RESERVATION_DETAIL_CURRENCY.CRC
       ),
       copy.TYPE_CHARGE,
       copy.TARIFF_CONCEPT,
-      movement.CHARGE_METHOD,
+      MOVEMENTS_TEST.CHARGE_METHOD,
       formatReservationCalendarDateTime(
-        movement.CHARGE_TIMESTAMP
+        MOVEMENTS_TEST.CHARGE_TIMESTAMP
       ),
-      movement.CHARGE_WORKER_NAME,
+      MOVEMENTS_TEST.CHARGE_WORKER_NAME,
     ].forEach((text) =>
       expect(chargeRow).toHaveTextContent(
-        text.replace(WHITESPACE, SINGLE_SPACE)
+        text.replace(
+          MOVEMENTS_TEST.WHITESPACE,
+          MOVEMENTS_TEST.SINGLE_SPACE
+        )
       )
     );
   });
