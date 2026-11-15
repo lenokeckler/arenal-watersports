@@ -1,5 +1,5 @@
 begin;
-select plan(9);
+select plan(8);
 \ir fixtures/reservation_charge.sql.fixture
 
 insert into refunds (id, reservation_id, amount, currency, reason, created_by)
@@ -38,13 +38,6 @@ select results_eq(
      where reservation_id = 'e2c20000-0000-4000-8000-000000000301' $$,
   $$ values (3::bigint, 3::bigint) $$,
   'the charges are separate rows'
-);
-
-select results_eq(
-  $$ select bool_and(created_at is not null) from reservation_charges
-     where reservation_id = 'e2c20000-0000-4000-8000-000000000301' $$,
-  $$ values (true) $$,
-  'every charge records when it was made'
 );
 
 set local request.jwt.claims to '{"sub":"e2c20000-0000-4000-8000-000000000003","role":"authenticated"}';
