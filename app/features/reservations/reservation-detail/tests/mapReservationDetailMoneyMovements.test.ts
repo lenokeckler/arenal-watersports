@@ -1,0 +1,170 @@
+import { describe, expect, it } from "vitest";
+import {
+  RESERVATION_DETAIL_CHARGE_KIND,
+  RESERVATION_DETAIL_CURRENCY,
+  RESERVATION_DETAIL_MOVEMENT_TYPE,
+} from "../constants/ReservationDetail.constants";
+import { RESERVATION_DETAIL_CHARGES_COPY } from "../constants/ReservationDetailChargesCopy.constants";
+import { mapReservationDetailMoneyMovements } from "../utils/mapReservationDetailMoneyMovements";
+import { RESERVATION_DETAIL_MOVEMENTS_TEST as movement } from "./ReservationDetailMoneyMovementsTest.constants";
+import { RESERVATION_DETAIL_SOURCE_FIXTURE } from "./ReservationDetailSourceFixture.constants";
+import {
+  createChargeSource,
+  createRefundSource,
+} from "./createReservationDetailMoneyMovementSource";
+
+const WORKER_NAMES = [
+  {
+    full_name: movement.CHARGE_WORKER_NAME,
+    worker_id: movement.CHARGE_WORKER_ID,
+  },
+  {
+    full_name: movement.REFUND_WORKER_NAME,
+    worker_id: movement.REFUND_WORKER_ID,
+  },
+];
+
+describe("mapReservationDetailMoneyMovements", () => {
+  it("maps a charge with its kind concept and payment method", () => {
+    const movements = mapReservationDetailMoneyMovements(
+      {
+        ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+        refunds: [],
+        reservation_charges: [createChargeSource()],
+      },
+      WORKER_NAMES
+    );
+
+    expect(movements).toEqual([
+      {
+        amount: movement.CHARGE_AMOUNT,
+        concept:
+          RESERVATION_DETAIL_CHARGES_COPY.AMOUNT_TARGET,
+        createdAt: movement.CHARGE_TIMESTAMP,
+        currency: RESERVATION_DETAIL_CURRENCY.CRC,
+        id: movement.CHARGE_ID,
+        paymentMethod: movement.CHARGE_METHOD,
+        recordedByName: movement.CHARGE_WORKER_NAME,
+        type: RESERVATION_DETAIL_MOVEMENT_TYPE.CHARGE,
+      },
+    ]);
+  });
+
+  it("uses the extra time copy for extra time charges", () => {
+    const [charge] = mapReservationDetailMoneyMovements(
+      {
+        ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+        refunds: [],
+        reservation_charges: [
+          createChargeSource({
+            kind: RESERVATION_DETAIL_CHARGE_KIND.EXTRA_TIME,
+          }),
+        ],
+      },
+      WORKER_NAMES
+    );
+
+    expect(charge.concept).toBe(
+      RESERVATION_DETAIL_CHARGES_COPY.EXTRA_TIME_CHARGES
+    );
+  });
+
+  it("maps a refund with its reason and no payment method", () => {
+    const [refund] = mapReservationDetailMoneyMovements(
+      {
+        ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+        refunds: [createRefundSource()],
+        reservation_charges: [],
+      },
+      WORKER_NAMES
+    );
+
+    expect(refund).toEqual({
+      amount: movement.REFUND_AMOUNT,
+      concept: movement.REFUND_REASON,
+      createdAt: movement.REFUND_TIMESTAMP,
+      currency: RESERVATION_DETAIL_CURRENCY.CRC,
+      id: movement.REFUND_ID,
+      paymentMethod: null,
+      recordedByName: movement.REFUND_WORKER_NAME,
+      type: RESERVATION_DETAIL_MOVEMENT_TYPE.REFUND,
+    });
+  });
+
+  it("merges charges and refunds newest first", () => {
+    const movements = mapReservationDetailMoneyMovements(
+      {
+        ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+        refunds: [createRefundSource()],
+        reservation_charges: [createChargeSource()],
+      },
+      WORKER_NAMES
+    );
+
+    expect(movements.map(({ id }) => id)).toEqual([
+      movement.REFUND_ID,
+      movement.CHARGE_ID,
+    ]);
+  });
+
+  it("keeps each movement in its own currency and amount", () => {
+    const movements = mapReservationDetailMoneyMovements(
+      {
+        ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+        refunds: [
+          createRefundSource({
+            currency: RESERVATION_DETAIL_CURRENCY.USD,
+          }),
+        ],
+        reservation_charges: [createChargeSource()],
+      },
+      WORKER_NAMES
+    );
+
+    expect(
+      movements.map(({ amount, currency }) => [
+        amount,
+        currency,
+      ])
+    ).toEqual([
+      [
+        movement.REFUND_AMOUNT,
+        RESERVATION_DETAIL_CURRENCY.USD,
+      ],
+      [
+        movement.CHARGE_AMOUNT,
+        RESERVATION_DETAIL_CURRENCY.CRC,
+      ],
+    ]);
+  });
+
+  it("leaves the recorder empty when the worker name is unknown", () => {
+    const [charge] = mapReservationDetailMoneyMovements(
+      {
+        ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+        refunds: [],
+        reservation_charges: [
+          createChargeSource({
+            created_by: movement.UNKNOWN_WORKER_ID,
+          }),
+        ],
+      },
+      WORKER_NAMES
+    );
+
+    expect(charge.recordedByName).toBeNull();
+  });
+
+  it("returns an empty list without charges or refunds", () => {
+    expect(
+      mapReservationDetailMoneyMovements(
+        {
+          ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+          refunds: [],
+          reservation_charges: [],
+        },
+        WORKER_NAMES
+      )
+    ).toEqual([]);
+  });
+});

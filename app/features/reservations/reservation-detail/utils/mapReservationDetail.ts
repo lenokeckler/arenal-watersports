@@ -8,6 +8,7 @@ import { mapReservationDetailDispatches } from "./mapReservationDetailDispatches
 import { mapReservationDetailEquipment } from "./mapReservationDetailEquipment";
 import { mapReservationDetailExtras } from "./mapReservationDetailExtras";
 import { mapReservationDetailGuides } from "./mapReservationDetailGuides";
+import { mapReservationDetailMoneyMovements } from "./mapReservationDetailMoneyMovements";
 
 const getReservationDetailChargeSummary = (
   source: ReservationDetailReservationSource
@@ -48,6 +49,7 @@ const mapReservationDetailBase = (
   | "extraTimeCharges"
   | "extras"
   | "guides"
+  | "moneyMovements"
   | "refunds"
   | "updatedByName"
 > => ({
@@ -86,6 +88,10 @@ export const mapReservationDetail = (
     extraTimeCharges: chargeSummary.extraTimeCharges,
     extras: mapReservationDetailExtras(source),
     guides: mapReservationDetailGuides(source, workerNames),
+    moneyMovements: mapReservationDetailMoneyMovements(
+      source,
+      workerNames
+    ),
     refunds: chargeSummary.refunds,
   };
 };
