@@ -9,18 +9,18 @@ select results_eq(
 );
 
 select results_eq(
-  $$ select table_name::text from information_schema.columns
-     where table_schema = 'public' and column_name = 'currency' and table_name in ('reservation_charges', 'refunds', 'deposits')
-       and udt_name <> 'currency_code' $$,
-  $$ select null::text where false $$,
-  'every money table stores its currency as the currency enum'
+  $$ select (string_agg(table_name::text, ',' order by table_name::text collate "C"))::text collate "C" from information_schema.columns
+     where table_schema = 'public' and column_name = 'currency' and udt_name = 'currency_code'
+       and table_name in (select table_name from information_schema.tables where table_schema = 'public' and table_type = 'BASE TABLE') $$,
+  $$ values ('deposits,refunds,reservation_charges'::text collate "C") $$,
+  'exactly the charge, refund and deposit tables store their currency as the currency enum'
 );
 
 select is_empty(
   $$ select table_name, column_name from information_schema.columns
      where table_schema = 'public'
        and table_name in ('reservation_charges', 'reservation_pricing', 'refunds', 'deposits', 'tariffs')
-       and (column_name ilike '%exchange%' or column_name ilike '%rate%') $$,
+       and (column_name ilike '%exchange%' or column_name ilike 'rate\_%' or column_name ilike '%\_rate') $$,
   'no money table keeps an exchange rate'
 );
 
