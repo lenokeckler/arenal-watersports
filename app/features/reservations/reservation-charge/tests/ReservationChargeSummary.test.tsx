@@ -76,18 +76,18 @@ describe("ReservationChargeSummary", () => {
     ).toHaveLength(1);
   });
 
-  it("shows no proposal line when only one currency is offered", () => {
+  it("lists the missing proposal only on its currency option when one currency has none", () => {
     const page =
       renderReservationChargeSummary(EXPECTED_MIXED);
 
     expect(
-      page.queryText(
+      page.queryAllText(
         proposalLine(EXPECTED_MIXED_USD_PROPOSAL)
       )
-    ).toBeNull();
+    ).toHaveLength(1);
     expect(
-      page.queryText(COPY.NO_PROPOSAL_LINE.CRC)
-    ).toBeNull();
+      page.queryAllText(COPY.NO_PROPOSAL_LINE.CRC)
+    ).toHaveLength(1);
   });
 
   it("states that the charge is per reservation and not per person", () => {

@@ -36,24 +36,24 @@ describe("ReservationChargePrice", () => {
     );
   });
 
-  it("offers the currency group when more than one currency is offered", () => {
+  it("offers the currency group with a proposal in both currencies", () => {
     const page = renderSummary();
 
     expect(page.getCurrencyRadios()).toHaveLength(2);
   });
 
-  it("omits the currency group when one currency is offered", () => {
+  it("offers both currencies when only one has a proposal", () => {
     const page = renderSummary(MIXED_CHARGE);
 
-    expect(page.queryCurrencyRadios()).toHaveLength(0);
+    expect(page.getCurrencyRadios()).toHaveLength(2);
     expect(page.getAmount()).toBeInTheDocument();
   });
 
-  it("does not repeat the catalog proposal as static lines", () => {
+  it("shows the missing proposal only on its currency option", () => {
     const page = renderSummary(MIXED_CHARGE);
 
     expect(
-      page.queryText(UI_COPY.NO_PROPOSAL_LINE.CRC)
-    ).toBeNull();
+      page.queryAllText(UI_COPY.NO_PROPOSAL_LINE.CRC)
+    ).toHaveLength(1);
   });
 });

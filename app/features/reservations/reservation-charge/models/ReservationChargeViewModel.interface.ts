@@ -6,7 +6,6 @@ import type { ReservationChargeRecorded } from "./ReservationChargeRecorded.inte
 export interface ReservationChargeViewModel {
   amountText: string;
   currency: CurrencyCode;
-  currencyOptions: readonly CurrencyCode[];
   errors: ReservationChargeErrors;
   formError: string;
   handleSubmit: (event?: React.FormEvent) => void;

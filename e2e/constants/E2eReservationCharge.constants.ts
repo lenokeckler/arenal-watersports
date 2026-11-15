@@ -51,6 +51,7 @@ export const E2E_RESERVATION_CHARGE_SEED = {
 } as const;
 
 export const E2E_RESERVATION_CHARGE_SCREENSHOT_STATE = {
+  CURRENCY: "currency",
   DETAIL: "detail",
   ERROR: "error",
   FORM: "form",

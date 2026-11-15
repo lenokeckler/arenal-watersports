@@ -28,7 +28,6 @@ Como la persona de reservas, necesito registrar un cobro sobre una reserva con e
 
 - The proposal is never multiplied by the number of people.
 - The agreed amount is stored only on the first tariff charge in a currency.
-- A currency without a proposal offers an empty amount; if none has one, both currencies are offered.
 
 ## Charge form and confirmation (UI slice)
 
@@ -36,7 +35,6 @@ Como la persona de reservas, necesito registrar un cobro sobre una reserva con e
 - Copy lives in `ReservationChargeFormCopy.constants.ts`: `AMOUNT_LABEL` per currency, `AMOUNT_HELPER_PROPOSED`, `AMOUNT_HELPER_MANUAL`, `AMOUNT_PLACEHOLDER`, `CURRENCY_LEGEND`, `LABEL_METHOD`, `METHOD_PLACEHOLDER`, `METHOD_HELPER`, `SUBMIT`, `SUBMITTING`, `BACK`, `ACTIONS`, `SUCCESS(code)`, `RECORDED_BY(name)` and the receipt labels `LABEL_AMOUNT`, `LABEL_CURRENCY`, `LABEL_METHOD`.
 - The price is edited inside the summary section (`ReservationChargePrice`), not in a section of its own: the currency group and the amount field sit under the reservation details, and the form below keeps the payment method, the alert and the actions.
 - Amount input is a text field with `inputMode` decimal; its label names the agreed amount in the selected currency (`Monto acordado en <moneda>`), and its helper names the catalog proposal and invites adjusting it freely when the agreed price was another.
-- The currency group (radio cards, each showing the catalog proposal or "Sin tarifa del catálogo") is rendered only when more than one currency is offered.
 - Currency switch rule: the amount is replaced by the new currency's proposal only while it is empty or still the previous proposal; a typed amount is kept.
 - States: default, pending (`aria-busy`, every field and the submit disabled, submit reads "Registrando cobro…"), field errors under the field with focus on the first invalid one, form error in a `role=alert` box that takes focus, success.
 - Success shows the amount with `formatMoney`, the currency name, the payment method and "Registrado por <name>" (C5), takes focus on its `role=status` text and links back to the reservation.
@@ -56,7 +54,7 @@ Como la persona de reservas, necesito registrar un cobro sobre una reserva con e
 
 ### Mixed charge form state (US-RES-24)
 
-- `useReservationChargeValues` exposes `setSecondAmountText` and `toggleSecondAmount`: the toggle turns `null` into an empty string (first amount untouched) and any string back into `null`. It works for either currency, whether or not the catalog proposes the other one; `currencyOptions` still governs only the single-mode radio group.
+- `useReservationChargeValues` exposes `setSecondAmountText` and `toggleSecondAmount`: the toggle turns `null` into an empty string (first amount untouched) and any string back into `null`. It works for either currency, whether or not the catalog proposes the other one.
 - `useReservationChargeViewModel` adds `isMixed` and `secondCurrency` (the currency not selected) and wraps both new setters in the shared edit guard: ignored while pending, errors cleared.
 - `useReservationChargeErrorFocus` focuses `RESERVATION_CHARGE_FIELD_ID.SECOND_AMOUNT` after the first amount and before the payment method. `ADD_CURRENCY` and `SECOND_AMOUNT_HELPER` ids are reserved for the UI slice.
 
@@ -65,3 +63,10 @@ Como la persona de reservas, necesito registrar un cobro sobre una reserva con e
 - `ReservationChargeSecondAmountToggle` is always rendered under the price fields, disabled while pending, and names the other currency of the selected one: `Agregar monto en <moneda>` in single mode, `Quitar monto en <moneda>` in mixed mode. It carries `aria-expanded` and `aria-controls` pointing at the price group (`PRICE_BLOCK`).
 - Mixed mode shows a second `ReservationChargeAmountField` (empty on entry, own error, helper plus the `MIXED_SECOND_HELPER` note in `aria-describedby`) in the same group; the fields stack below `sm` and sit side by side from `sm`. The currency radio group is hidden while mixed.
 - `useReservationChargeSecondAmountFocus` moves focus to the second input when mixed mode starts and back to the toggle when it ends, and does nothing on first render.
+
+### Charge in either currency (US-RES-25)
+
+- Dollars and colones are always both offered in single mode: `ReservationChargeCurrencyField` renders `RESERVATION_CHARGE_CURRENCY_ORDER` whenever the form is not mixed, each card showing the catalog proposal or "Sin tarifa del catálogo". A currency without a proposal starts with an empty amount.
+- `resolveReservationChargeInitialCurrency` picks the first currency of the order that has a proposal, else the first of the order; the viewmodel and the values state no longer expose `currencyOptions`.
+- Nothing converts one currency into the other and no exchange rate is read or stored; the amount is recorded in the currency it was entered in.
+- Amounts accumulate per currency in the reservation detail and are never summed across currencies (C3, RNF-035).

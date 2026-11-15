@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { CURRENCY_CODE } from "@/app/constants";
-import { resolveReservationChargeCurrencyOptions } from "../utils/resolveReservationChargeCurrencyOptions";
+import { resolveReservationChargeInitialCurrency } from "../utils/resolveReservationChargeInitialCurrency";
 import {
   BOTH_PROPOSAL,
   EMPTY_PROPOSAL,
@@ -8,34 +8,34 @@ import {
 } from "./ReservationCharge.constants";
 import { CRC_ONLY_PROPOSAL } from "./ReservationChargeForm.constants";
 
-describe("resolveReservationChargeCurrencyOptions", () => {
+describe("resolveReservationChargeInitialCurrency", () => {
   it.each([
     {
-      expected: [CURRENCY_CODE.USD, CURRENCY_CODE.CRC],
+      expected: CURRENCY_CODE.USD,
       name: "both currencies have a proposal",
       proposal: BOTH_PROPOSAL,
     },
     {
-      expected: [CURRENCY_CODE.USD],
+      expected: CURRENCY_CODE.USD,
       name: "only USD has a proposal",
       proposal: MIXED_PROPOSAL,
     },
     {
-      expected: [CURRENCY_CODE.CRC],
+      expected: CURRENCY_CODE.CRC,
       name: "only CRC has a proposal",
       proposal: CRC_ONLY_PROPOSAL,
     },
     {
-      expected: [CURRENCY_CODE.USD, CURRENCY_CODE.CRC],
+      expected: CURRENCY_CODE.USD,
       name: "no currency has a proposal",
       proposal: EMPTY_PROPOSAL,
     },
   ])(
-    "lists the right currencies when $name",
+    "starts on $expected when $name",
     ({ expected, proposal }) => {
       expect(
-        resolveReservationChargeCurrencyOptions(proposal)
-      ).toEqual(expected);
+        resolveReservationChargeInitialCurrency(proposal)
+      ).toBe(expected);
     }
   );
 });
