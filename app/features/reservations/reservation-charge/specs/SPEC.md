@@ -40,3 +40,11 @@ Como la persona de reservas, necesito registrar un cobro sobre una reserva con e
 - States: default, pending (`aria-busy`, every field and the submit disabled, submit reads "Registrando cobro…"), field errors under the field with focus on the first invalid one, form error in a `role=alert` box that takes focus, success.
 - Success shows the amount with `formatMoney`, the currency name, the payment method and "Registrado por <name>" (C5), takes focus on its `role=status` text and links back to the reservation.
 - The action bar is sticky on mobile with the page bottom padding restored for it, and static on desktop.
+
+### Mixed charge input (US-RES-24)
+
+- `ReservationChargeValues` carries `secondAmountText`: `null` is single mode, a string (possibly empty) is mixed mode and holds the amount of the other currency, resolved by `resolveReservationChargeSecondCurrency`.
+- `resolveReservationChargeErrors` validates the second amount with the second currency's limits and reports it as `secondAmount`; there is no business cap on either amount.
+- `ReservationChargeCommand` carries `parts` (one or two `{ amount, currency }`) plus the shared method; the service always sends `parts` to `record_reservation_charge`, which still accepts the legacy single shape.
+- `Charge parts are invalid` maps to the generic form error: it is reachable only by a forged payload.
+- The service still returns the first recorded row until the receipt slice maps every part.

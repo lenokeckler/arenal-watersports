@@ -1,5 +1,6 @@
 import { TYPE_OF, UUID_PATTERN } from "@/app/constants";
 import { isCurrencyCode } from "@/app/utils/money/isCurrencyCode";
+import type { NullableRef } from "@/app/types";
 import type { ReservationChargeInput } from "../models/ReservationChargeInput.interface";
 
 const isObject = (value: unknown): value is object =>
@@ -7,6 +8,11 @@ const isObject = (value: unknown): value is object =>
 
 const isString = (value: unknown): value is string =>
   typeof value === TYPE_OF.STRING;
+
+const isNullableString = (
+  value: unknown
+): value is NullableRef<string> =>
+  value === null || isString(value);
 
 export const isReservationChargeInput = (
   input: unknown
@@ -20,4 +26,6 @@ export const isReservationChargeInput = (
   "currency" in input &&
   isCurrencyCode(input.currency) &&
   "paymentMethod" in input &&
-  isString(input.paymentMethod);
+  isString(input.paymentMethod) &&
+  "secondAmountText" in input &&
+  isNullableString(input.secondAmountText);
