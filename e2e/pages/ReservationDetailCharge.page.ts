@@ -5,9 +5,8 @@ import {
 } from "@/app/constants";
 import type { CurrencyCode } from "@/app/constants";
 import { RESERVATION_DETAIL_CHARGES_COPY as copy } from "@/app/features/reservations/reservation-detail/constants/ReservationDetailChargesCopy.constants";
+import { E2E_RESERVATION_CHARGE_CURRENCY as currencyValues } from "../constants/E2eReservationChargeCurrency.constants";
 import { getMainRegion } from "../support/mainRegion";
-
-const SIBLING_AMOUNT = "xpath=following-sibling::*[1]";
 
 export const createReservationDetailChargePage = (
   page: Page
@@ -29,7 +28,7 @@ export const createReservationDetailChargePage = (
         .getByText(copy.AMOUNT_CHARGED_GROSS, {
           exact: true,
         })
-        .locator(SIBLING_AMOUNT),
+        .locator(currencyValues.SIBLING_AMOUNT_XPATH),
     getChargeLine,
     getChargeLink: (code: string): Locator =>
       main.getByRole(ARIA_ROLE.LINK, {

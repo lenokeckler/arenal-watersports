@@ -1,10 +1,12 @@
 export const E2E_RESERVATION_CHARGE_CURRENCY = {
   CATEGORY_PREFIX: "E2E Moneda ",
+  CATEGORY_SWEEP_PATTERN: "E2E Moneda %",
   CRC_AMOUNT: "7000",
   CRC_EXTRA_AMOUNT: "500",
   CRC_TOTAL: 7500,
   FIXTURE_OPERATION:
     "seed a reservation whose catalog proposes only dollars",
+  SIBLING_AMOUNT_XPATH: "xpath=following-sibling::*[1]",
   REMOVE_OPERATION:
     "remove the dollars-only category and its tariff",
   TOKEN_LENGTH: 8,
@@ -17,10 +19,13 @@ export const E2E_RESERVATION_CHARGE_CURRENCY_SQL = {
   REMOVE: `
 begin;
 delete from tariffs
-where category_id in (select id from equipment_categories where name = :'category');
-delete from equipment_units
-where category_id in (select id from equipment_categories where name = :'category');
-delete from equipment_categories where name = :'category';
+where category_id in (select id from equipment_categories where name like :'category');
+delete from equipment_units unit
+where unit.category_id in (select id from equipment_categories where name like :'category')
+  and not exists (select 1 from reservation_items item where item.unit_id = unit.id);
+delete from equipment_categories category
+where category.name like :'category'
+  and not exists (select 1 from equipment_units unit where unit.category_id = category.id);
 commit;`,
   SEED: `
 with category as (

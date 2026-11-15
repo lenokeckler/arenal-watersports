@@ -11,6 +11,7 @@ import { expect, test } from "../support/activeWorkerTest";
 import { createUsdOnlyChargeFixture } from "../support/createUsdOnlyChargeFixture";
 import { readReservationChargeParts } from "../support/readReservationChargeParts";
 import { recordChargeInCurrency } from "../support/recordChargeInCurrency";
+import { removeUsdOnlyCategories } from "../support/removeUsdOnlyCategories";
 import { removeUsdOnlyChargeFixture } from "../support/removeUsdOnlyChargeFixture";
 import { signInToReservationsMode } from "../support/signInToReservationsMode";
 
@@ -21,6 +22,10 @@ test.describe("Reservation charge in the entered currency", () => {
 
   test.beforeEach(async ({ activeWorker, page }) => {
     categoryName = null;
+    await removeUsdOnlyCategories(
+      activeWorker.id,
+      currencyValues.CATEGORY_SWEEP_PATTERN
+    );
     await signInToReservationsMode(page, activeWorker);
   });
 
