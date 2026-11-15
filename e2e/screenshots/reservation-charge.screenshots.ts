@@ -1,7 +1,4 @@
-import {
-  CURRENCY_CODE,
-  RESERVATION_STATUS,
-} from "@/app/constants";
+import { RESERVATION_STATUS } from "@/app/constants";
 import { RESERVATION_CHARGE_FORM_COPY as copy } from "@/app/features/reservations/reservation-charge/constants/ReservationChargeFormCopy.constants";
 import { RESERVATION_CHARGE_UNAVAILABLE_COPY as unavailable } from "@/app/features/reservations/reservation-charge/constants/ReservationChargeUnavailableCopy.constants";
 import { RESERVATION_CHARGE_VALIDATION_COPY as validation } from "@/app/features/reservations/reservation-charge/constants/ReservationChargeValidationCopy.constants";
@@ -16,6 +13,7 @@ import { createReservationDetailChargePage } from "../pages/ReservationDetailCha
 import { expect, test } from "../support/activeWorkerTest";
 import { captureFullPage } from "../support/captureFullPage";
 import { createReservationChargeFixture as seedCharge } from "../support/createReservationChargeFixture";
+import { openSeededCharge } from "../support/openSeededCharge";
 import { removeReservationChargeFixtures } from "../support/removeReservationChargeFixtures";
 import { signInToReservationsMode } from "../support/signInToReservationsMode";
 
@@ -79,27 +77,23 @@ test("captures every reservation charge state", async ({
     ).toBeVisible();
     await captureState(state.UNAVAILABLE);
 
-    const mixed = await seedCharge(
-      activeWorker.id,
-      project
-    );
-    await charge.goTo(mixed.id);
-    await charge
-      .getAddSecondAmount(CURRENCY_CODE.CRC)
-      .click();
-    await charge.fillAmount(
+    const { charge: mixedCharge, reservation: mixed } =
+      await openSeededCharge(
+        page,
+        activeWorker.id,
+        project
+      );
+    await mixedCharge.fillMixedAmounts(
       values.MIXED_AMOUNT_USD,
-      CURRENCY_CODE.USD
-    );
-    await charge.fillAmount(
-      values.MIXED_AMOUNT_CRC,
-      CURRENCY_CODE.CRC
+      values.MIXED_AMOUNT_CRC
     );
     await captureState(state.MIXED);
 
-    await charge.fillPaymentMethod(values.PAYMENT_METHOD);
-    await charge.submit();
-    await expect(charge.getStatus()).toHaveText(
+    await mixedCharge.fillPaymentMethod(
+      values.PAYMENT_METHOD
+    );
+    await mixedCharge.submit();
+    await expect(mixedCharge.getStatus()).toHaveText(
       copy.SUCCESS(mixed.code),
       { timeout: E2E_TIMEOUT_MS.POST_SUBMIT }
     );

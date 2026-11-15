@@ -10,6 +10,7 @@ export const E2E_RESERVATION_CHARGE = {
   FIELD_SEPARATOR: "|",
   FIXTURE_OPERATION: "seed a reservation to charge",
   HIGH_AMOUNT: "99999",
+  HIGH_AMOUNT_FACTOR: 10,
   ID_CODE_SEPARATOR: ",",
   MISSING_SLOT:
     "no charge slot is configured for the project",
