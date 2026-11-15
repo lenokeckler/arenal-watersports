@@ -28,6 +28,13 @@ export const createReservationChargeViewPage = () => {
       name: new RegExp(label),
     });
 
+  const getAmountByLabel = (label: string) =>
+    screen.getByRole(ARIA_ROLE.TEXTBOX, {
+      name: new RegExp(label),
+    });
+  const getToggle = (label: string) =>
+    screen.getByRole(ARIA_ROLE.BUTTON, { name: label });
+
   return {
     clearAmount: () => user.clear(getAmount()),
     findAlertText: async () =>
@@ -41,6 +48,7 @@ export const createReservationChargeViewPage = () => {
     getAlertText: () =>
       screen.getByRole(ARIA_ROLE.ALERT).textContent,
     getAmount,
+    getAmountByLabel,
     getAmountForm: () => getAmount().closest("form"),
     getSubmitForm: () => getSubmit().closest("form"),
     getCurrencyRadios: () =>
@@ -54,6 +62,15 @@ export const createReservationChargeViewPage = () => {
     getStatusText: () =>
       screen.getByRole(ARIA_ROLE.STATUS).textContent,
     getSubmit,
+    getToggle,
+    queryAmountByLabel: (label: string) =>
+      screen.queryByRole(ARIA_ROLE.TEXTBOX, {
+        name: label,
+      }),
+    clickToggle: (label: string) =>
+      user.click(getToggle(label)),
+    typeAmountByLabel: (label: string, amount: string) =>
+      user.type(getAmountByLabel(label), amount),
     queryCurrencyRadios: () =>
       screen.queryAllByRole(ARIA_ROLE.RADIO),
     queryText: (text: string) => screen.queryByText(text),
