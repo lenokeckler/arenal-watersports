@@ -53,3 +53,9 @@ export const E2E_RESERVATION_MONEY_MOVEMENTS_COPY = {
   ...RESERVATION_DETAIL_MOVEMENTS_COPY,
   PANEL_ID: RESERVATION_DETAIL_MOVEMENTS_PANEL_ID,
 } as const;
+
+export const E2E_RESERVATION_MONEY_MOVEMENTS_SCREENSHOT = {
+  EMPTY_BASENAME: "reservation-money-movements-empty",
+  FOLDED_BASENAME: "reservation-money-movements-folded",
+  OPEN_BASENAME: "reservation-money-movements-open",
+} as const;
