@@ -10,9 +10,8 @@ import {
 import { createReservationMoneyMovementsPage } from "../pages/ReservationMoneyMovements.page";
 import { captureViewport } from "../support/captureViewport";
 import { createReservationDetailFixture } from "../support/createReservationDetailFixture";
-import { insertReservationMoneyMovements } from "../support/insertReservationMoneyMovements";
+import { seedReservationMoneyMovements } from "../support/seedReservationMoneyMovements";
 import { signInWithCredentials } from "../support/signInWithCredentials";
-import { createServiceRoleSupabaseClient } from "@/app/services/supabase";
 
 test("captures the money movements states", async ({
   page,
@@ -43,15 +42,9 @@ test("captures the money movements states", async ({
       reservationFixture.workerPassword
     );
     await reservationFixture.clearDetails();
-    const supabase = createServiceRoleSupabaseClient();
-    try {
-      await insertReservationMoneyMovements(
-        supabase,
-        reservationFixture.id
-      );
-    } finally {
-      await supabase.removeAllChannels();
-    }
+    await seedReservationMoneyMovements(
+      reservationFixture.id
+    );
     await movements.detailPage.goTo(reservationFixture.id);
     const showToggle = movements.getToggle(
       copy.MOVEMENTS_SHOW

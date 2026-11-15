@@ -1,6 +1,5 @@
 import { expect, type Locator } from "@playwright/test";
 import { formatReservationCalendarDateTime } from "@/app/components/reservation-calendar/utils/formatReservationCalendarDateTime";
-import { createServiceRoleSupabaseClient } from "@/app/services/supabase";
 import { E2E_RESERVATION_DETAIL_FIXTURE } from "../constants/E2eReservationDetail.constants";
 import {
   E2E_RESERVATION_MONEY_MOVEMENTS_ARIA as aria,
@@ -8,10 +7,9 @@ import {
   E2E_RESERVATION_MONEY_MOVEMENTS_FIXTURE as fixture,
   E2E_RESERVATION_MONEY_MOVEMENTS_VALUES as values,
 } from "../constants/E2eReservationMoneyMovements.constants";
-import type { ReservationMoneyMovementsCreatedAt } from "../models/ReservationMoneyMovementsCreatedAt.interface";
 import { createReservationMoneyMovementsPage } from "../pages/ReservationMoneyMovements.page";
-import { insertReservationMoneyMovements } from "../support/insertReservationMoneyMovements";
 import { reservationDetailTest } from "../support/reservationDetailTest";
+import { seedReservationMoneyMovements } from "../support/seedReservationMoneyMovements";
 
 const expectRowContains = async (
   row: Locator,
@@ -29,17 +27,10 @@ const expectRowContains = async (
 reservationDetailTest(
   "lists charges and refunds folded and opens them with the button",
   async ({ page, reservationFixture }) => {
-    const supabase = createServiceRoleSupabaseClient();
-    let createdAt: ReservationMoneyMovementsCreatedAt;
-    try {
-      await reservationFixture.clearDetails();
-      createdAt = await insertReservationMoneyMovements(
-        supabase,
-        reservationFixture.id
-      );
-    } finally {
-      await supabase.removeAllChannels();
-    }
+    await reservationFixture.clearDetails();
+    const createdAt = await seedReservationMoneyMovements(
+      reservationFixture.id
+    );
     await page.reload();
     const movements =
       createReservationMoneyMovementsPage(page);
