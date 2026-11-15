@@ -78,4 +78,24 @@ describe("ReservationDetailMoneyMovementsToggle", () => {
       RESERVATION_DETAIL_MOVEMENTS_COPY.MOVEMENTS_SHOW
     );
   });
+
+  it.each([["{Enter}"], [" "]])(
+    "toggles the list from the keyboard with %j",
+    async (key: string): Promise<void> => {
+      const user = userEvent.setup();
+      renderToggle();
+      const page =
+        createReservationDetailMoneyMovementsTogglePage();
+
+      await user.tab();
+      await user.keyboard(key);
+
+      expect(page.getToggle()).toHaveFocus();
+      expect(page.queryChild()).toBeVisible();
+
+      await user.keyboard(key);
+
+      expect(page.queryChild()).toBeNull();
+    }
+  );
 });
