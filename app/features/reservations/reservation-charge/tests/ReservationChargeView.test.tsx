@@ -115,4 +115,35 @@ describe("ReservationChargeView form", () => {
       page.queryText(COPY.AMOUNT_HELPER_MANUAL)
     ).not.toBeNull();
   });
+
+  it("keeps the amount field in the same form as the submit button", () => {
+    const page = renderReservationChargeView();
+
+    expect(page.getAmountForm()).not.toBeNull();
+    expect(page.getAmountForm()).toBe(page.getSubmitForm());
+  });
+
+  it("keeps a typed amount when the currency changes", async () => {
+    const page = renderReservationChargeView();
+
+    await page.clearAmount();
+    await page.typeAmount(EDITED_AMOUNT_TEXT);
+    await page.selectCurrency(CURRENCY_NAME_COPY.CRC);
+
+    expect(page.getAmount()).toHaveValue(
+      EDITED_AMOUNT_TEXT
+    );
+  });
+
+  it("disables the amount field while the charge is being recorded", async () => {
+    vi.mocked(
+      recordReservationChargeAction
+    ).mockReturnValue(new Promise(() => undefined));
+    const page = renderReservationChargeView();
+
+    await page.typePaymentMethod(EDITED_METHOD_TEXT);
+    await page.submit();
+
+    expect(page.getAmount()).toBeDisabled();
+  });
 });

@@ -41,6 +41,8 @@ export const createReservationChargeViewPage = () => {
     getAlertText: () =>
       screen.getByRole(ARIA_ROLE.ALERT).textContent,
     getAmount,
+    getAmountForm: () => getAmount().closest("form"),
+    getSubmitForm: () => getSubmit().closest("form"),
     getCurrencyRadios: () =>
       screen.getAllByRole(ARIA_ROLE.RADIO),
     getBusy: () =>
