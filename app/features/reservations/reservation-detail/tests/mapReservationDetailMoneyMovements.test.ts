@@ -4,7 +4,7 @@ import {
   RESERVATION_DETAIL_CURRENCY,
   RESERVATION_DETAIL_MOVEMENT_TYPE,
 } from "../constants/ReservationDetail.constants";
-import { RESERVATION_DETAIL_CHARGES_COPY } from "../constants/ReservationDetailChargesCopy.constants";
+import { RESERVATION_DETAIL_MOVEMENTS_COPY } from "../constants/ReservationDetailMovementsCopy.constants";
 import { mapReservationDetailMoneyMovements } from "../utils/mapReservationDetailMoneyMovements";
 import { RESERVATION_DETAIL_MOVEMENTS_TEST as movement } from "./ReservationDetailMoneyMovementsTest.constants";
 import { RESERVATION_DETAIL_SOURCE_FIXTURE } from "./ReservationDetailSourceFixture.constants";
@@ -39,7 +39,7 @@ describe("mapReservationDetailMoneyMovements", () => {
       {
         amount: movement.CHARGE_AMOUNT,
         concept:
-          RESERVATION_DETAIL_CHARGES_COPY.AMOUNT_TARGET,
+          RESERVATION_DETAIL_MOVEMENTS_COPY.TARIFF_CONCEPT,
         createdAt: movement.CHARGE_TIMESTAMP,
         currency: RESERVATION_DETAIL_CURRENCY.CRC,
         id: movement.CHARGE_ID,
@@ -65,7 +65,7 @@ describe("mapReservationDetailMoneyMovements", () => {
     );
 
     expect(charge.concept).toBe(
-      RESERVATION_DETAIL_CHARGES_COPY.EXTRA_TIME_CHARGES
+      RESERVATION_DETAIL_MOVEMENTS_COPY.EXTRA_TIME_CONCEPT
     );
   });
 
