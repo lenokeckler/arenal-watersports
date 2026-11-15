@@ -32,6 +32,8 @@ export const E2E_RESERVATION_MONEY_MOVEMENTS_FIXTURE = {
   ),
   TARIFF_AMOUNT_USD,
   MOVEMENT_COUNT: 3,
+  CREATED_AT_FAILURE:
+    "Reservation money movements E2E fixture row was not returned",
   CREATED_BY_FAILURE:
     "Reservation money movements E2E fixture has no creator",
 } as const;

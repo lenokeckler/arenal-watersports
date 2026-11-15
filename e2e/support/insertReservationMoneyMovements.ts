@@ -26,6 +26,15 @@ const loadCreatedById = async (
   return data.created_by;
 };
 
+const requireCreatedAt = (
+  row: { created_at: string } | null
+): string => {
+  if (!row) {
+    throw new Error(fixture.CREATED_AT_FAILURE);
+  }
+  return row.created_at;
+};
+
 const insertCharge = async (
   supabase: SupabaseClient<Database>,
   charge: ChargeInsert
@@ -36,7 +45,7 @@ const insertCharge = async (
     .select("created_at")
     .single();
   ensureReservationDetailFixtureWrite(error);
-  return data?.created_at ?? "";
+  return requireCreatedAt(data);
 };
 
 export const insertReservationMoneyMovements = async (
@@ -77,7 +86,7 @@ export const insertReservationMoneyMovements = async (
   ensureReservationDetailFixtureWrite(error);
   return {
     extraTime,
-    refund: data?.created_at ?? "",
+    refund: requireCreatedAt(data),
     tariff,
   };
 };
