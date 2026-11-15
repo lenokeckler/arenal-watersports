@@ -17,6 +17,10 @@ export const RESERVATION_CHARGE_FORM_COPY = {
   LABEL_AMOUNT: "Monto",
   LABEL_CURRENCY: "Moneda",
   LABEL_METHOD: "Método de pago",
+  LABEL_PART: {
+    [CURRENCY_CODE.CRC]: "Monto en colones",
+    [CURRENCY_CODE.USD]: "Monto en dólares",
+  } satisfies Record<CurrencyCode, string>,
   METHOD_HELPER:
     "Escriba cómo pagó el cliente. Queda registrado junto con su nombre.",
   METHOD_PLACEHOLDER:
