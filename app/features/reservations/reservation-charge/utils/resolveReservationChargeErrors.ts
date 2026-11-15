@@ -2,7 +2,7 @@ import type { ReservationChargeErrors } from "../models/ReservationChargeErrors.
 import type { ReservationChargeValues } from "../models/ReservationChargeValues.interface";
 import { resolveReservationChargeAmountError } from "./resolveReservationChargeAmountError";
 import { resolveReservationChargePaymentMethodError } from "./resolveReservationChargePaymentMethodError";
-import { resolveReservationChargeSecondCurrency } from "./resolveReservationChargeSecondCurrency";
+import { resolveReservationChargeSecondAmountError } from "./resolveReservationChargeSecondAmountError";
 
 export const resolveReservationChargeErrors = (
   values: ReservationChargeValues
@@ -12,14 +12,7 @@ export const resolveReservationChargeErrors = (
     values.currency
   );
   const secondAmount =
-    values.secondAmountText === null
-      ? undefined
-      : resolveReservationChargeAmountError(
-          values.secondAmountText,
-          resolveReservationChargeSecondCurrency(
-            values.currency
-          )
-        );
+    resolveReservationChargeSecondAmountError(values);
   const paymentMethod =
     resolveReservationChargePaymentMethodError(
       values.paymentMethod

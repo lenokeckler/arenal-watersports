@@ -8,7 +8,7 @@ import {
 import {
   PADDED_SECOND_AMOUNT_TEXT,
   PARSED_SECOND_AMOUNT,
-} from "./ReservationChargeMixed.constants";
+} from "./ReservationChargeSecondAmount.constants";
 import {
   MIXED_CHARGE_INPUT,
   NON_BREAKING_SPACE,

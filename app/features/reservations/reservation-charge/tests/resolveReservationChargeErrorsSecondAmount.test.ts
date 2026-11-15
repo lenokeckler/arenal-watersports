@@ -3,9 +3,10 @@ import { CURRENCY_CODE } from "@/app/constants";
 import { RESERVATION_CHARGE_VALIDATION_COPY as COPY } from "../constants/ReservationChargeValidationCopy.constants";
 import { resolveReservationChargeErrors } from "../utils/resolveReservationChargeErrors";
 import {
+  EXPECTED_ERROR_KEYS,
   SECOND_AMOUNT_TEXT_CASES as CASES,
   WHITESPACE_ONLY_SECOND_AMOUNT,
-} from "./ReservationChargeMixed.constants";
+} from "./ReservationChargeSecondAmount.constants";
 import {
   MIXED_CHARGE_VALUES,
   VALID_CHARGE_VALUES,
@@ -93,10 +94,8 @@ describe("resolveReservationChargeErrors second amount", () => {
       secondAmountText: CASES.EMPTY,
     });
 
-    expect(Object.keys(errors)).toEqual([
-      "amount",
-      "secondAmount",
-      "paymentMethod",
-    ]);
+    expect(Object.keys(errors)).toEqual(
+      EXPECTED_ERROR_KEYS
+    );
   });
 });

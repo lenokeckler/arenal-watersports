@@ -6,8 +6,8 @@ import { mapReservationChargeError } from "../utils/mapReservationChargeError";
 import {
   CHARGE_POSTGRES_PREFIX,
   CHARGE_UNEXPECTED_ERROR,
+  PARTS_INVALID_POSTGRES_MESSAGE,
 } from "./ReservationChargeAction.constants";
-import { PARTS_INVALID_POSTGRES_MESSAGE } from "./ReservationChargeMixed.constants";
 
 describe("mapReservationChargeError", () => {
   it.each(RESERVATION_CHARGE_REFUSALS)(

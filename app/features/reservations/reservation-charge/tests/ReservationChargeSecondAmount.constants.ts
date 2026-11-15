@@ -1,4 +1,5 @@
 import { STRING } from "@/app/constants";
+import type { ReservationChargeErrors } from "../models/ReservationChargeErrors.interface";
 
 export const SECOND_AMOUNT_TEXT_CASES = {
   CRC_TOO_LARGE: "1000000000000",
@@ -14,9 +15,13 @@ export const SECOND_AMOUNT_TEXT_CASES = {
 export const NUMERIC_SECOND_AMOUNT = 12000;
 export const OBJECT_SECOND_AMOUNT = { text: "12000" };
 export const MISSING_SECOND_AMOUNT_KEY = "secondAmountText";
-export const PARTS_INVALID_POSTGRES_MESSAGE =
-  "P0001: Charge parts are invalid";
 export const PADDED_SECOND_AMOUNT_TEXT = " 12000,5 ";
 export const PARSED_SECOND_AMOUNT = 12000.5;
 export const WHITESPACE_ONLY_SECOND_AMOUNT = "   ";
 export const EXTRA_INPUT_KEYS = { injected: "value" };
+
+export const EXPECTED_ERROR_KEYS = [
+  "amount",
+  "secondAmount",
+  "paymentMethod",
+] as const satisfies readonly (keyof ReservationChargeErrors)[];

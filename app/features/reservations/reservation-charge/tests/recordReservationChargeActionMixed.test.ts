@@ -15,7 +15,7 @@ import {
   CHARGE_RECORDED,
   MIXED_CHARGE_COMMAND,
 } from "./ReservationChargeAction.constants";
-import { SECOND_AMOUNT_TEXT_CASES } from "./ReservationChargeMixed.constants";
+import { SECOND_AMOUNT_TEXT_CASES } from "./ReservationChargeSecondAmount.constants";
 import { MIXED_CHARGE_INPUT } from "./ReservationChargeValues.constants";
 
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));

@@ -5,7 +5,7 @@ import {
   MISSING_SECOND_AMOUNT_KEY,
   NUMERIC_SECOND_AMOUNT,
   OBJECT_SECOND_AMOUNT,
-} from "./ReservationChargeMixed.constants";
+} from "./ReservationChargeSecondAmount.constants";
 import {
   MIXED_CHARGE_INPUT,
   VALID_CHARGE_INPUT,
