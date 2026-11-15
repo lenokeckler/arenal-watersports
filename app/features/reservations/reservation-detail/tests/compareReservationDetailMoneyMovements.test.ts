@@ -69,4 +69,53 @@ describe("compareReservationDetailMoneyMovements", () => {
       )
     ).toEqual([later, earlier]);
   });
+
+  it("orders movements that differ only in microseconds", () => {
+    const earlier = createMovement({
+      createdAt: movement.MICROSECOND_EARLIER_TIMESTAMP,
+      id: movement.HIGHER_ID,
+    });
+    const later = createMovement({
+      createdAt: movement.MICROSECOND_LATER_TIMESTAMP,
+      id: movement.LOWER_ID,
+    });
+
+    expect(
+      [earlier, later].sort(
+        compareReservationDetailMoneyMovements
+      )
+    ).toEqual([later, earlier]);
+  });
+
+  it("treats a missing fraction as zero", () => {
+    const withoutFraction = createMovement({
+      createdAt: movement.NO_FRACTION_TIMESTAMP,
+    });
+    const withFraction = createMovement({
+      createdAt: movement.SHORT_FRACTION_TIMESTAMP,
+    });
+
+    expect(
+      [withoutFraction, withFraction].sort(
+        compareReservationDetailMoneyMovements
+      )
+    ).toEqual([withFraction, withoutFraction]);
+  });
+
+  it("ties equal instants written with different fraction lengths and offsets", () => {
+    const lower = createMovement({
+      createdAt: movement.SHORT_FRACTION_TIMESTAMP,
+      id: movement.LOWER_ID,
+    });
+    const higher = createMovement({
+      createdAt: movement.SHORT_FRACTION_OFFSET_TIMESTAMP,
+      id: movement.HIGHER_ID,
+    });
+
+    expect(
+      [lower, higher].sort(
+        compareReservationDetailMoneyMovements
+      )
+    ).toEqual([higher, lower]);
+  });
 });
