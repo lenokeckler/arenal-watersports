@@ -1,5 +1,5 @@
 begin;
-select plan(3);
+select plan(4);
 \ir fixtures/reservation_charge.sql.fixture
 
 create function public.refuse_colon_charge() returns trigger language plpgsql as $$
@@ -20,11 +20,15 @@ set local request.jwt.claims to '{"sub":"e2c20000-0000-4000-8000-000000000001","
 select throws_ok(
   $$ select record_reservation_charge(jsonb_build_object(
        'reservation_id', 'e2c20000-0000-4000-8000-000000000309', 'payment_method', 'Efectivo',
-       'parts', '[{"currency":"USD","amount":50},{"currency":"CRC","amount":20000}]'::jsonb)),
-     record_reservation_charge(jsonb_build_object(
+       'parts', '[{"currency":"USD","amount":50},{"currency":"CRC","amount":20000}]'::jsonb)) $$,
+  'P0001', 'Colon charge refused', 'a later part that fails after the first is written is not swallowed'
+);
+
+select throws_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
        'reservation_id', 'e2c20000-0000-4000-8000-000000000305', 'payment_method', 'Efectivo',
        'parts', '[{"currency":"USD","amount":70},{"currency":"CRC","amount":20000}]'::jsonb)) $$,
-  'P0001', 'Colon charge refused', 'a second part that fails after the first is written raises'
+  'P0001', 'Colon charge refused', 'a later part failing on a priced reservation is not swallowed either'
 );
 
 reset role;
