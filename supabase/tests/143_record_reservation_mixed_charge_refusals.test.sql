@@ -1,5 +1,5 @@
 begin;
-select plan(16);
+select plan(24);
 \ir fixtures/reservation_charge.sql.fixture
 
 set local role authenticated;
@@ -51,6 +51,37 @@ select throws_ok(
   'P0001', 'A payment method is required', 'valid parts without a payment method are refused'
 );
 
+select throws_ok(
+  format(
+    $$ select record_reservation_charge(jsonb_build_object(
+         'reservation_id', 'e2c20000-0000-4000-8000-000000000309', 'payment_method', 'Efectivo', 'parts', %L::jsonb)) $$,
+    v.parts
+  ),
+  'P0001', v.message, 'parts with ' || v.label || ' are refused'
+)
+from (values
+  ('a lowercase currency', '[{"currency":"usd","amount":1}]', 'Charge currency is invalid'),
+  ('a lowercase repeat of a currency', '[{"currency":"USD","amount":1},{"currency":"usd","amount":1}]',
+   'Charge currency is invalid'),
+  ('a null amount', '[{"currency":"USD","amount":null},{"currency":"CRC","amount":1}]', 'Charge amount is invalid'),
+  ('a missing amount', '[{"currency":"USD"}]', 'Charge amount is invalid'),
+  ('three decimals', '[{"currency":"CRC","amount":1.555}]', 'Charge amount is invalid')
+) as v(label, parts, message);
+
+select throws_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000312', 'payment_method', 'Efectivo',
+       'parts', '[{"currency":"USD","amount":1},{"currency":"CRC","amount":1}]'::jsonb)) $$,
+  'P0001', 'Only scheduled, dispatched or closed reservations can be charged', 'a cancelled reservation is refused'
+);
+
+select throws_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000314', 'payment_method', 'Efectivo',
+       'parts', '[{"currency":"USD","amount":1},{"currency":"CRC","amount":1}]'::jsonb)) $$,
+  'P0001', 'A split reservation is charged on the original reservation', 'a split child is refused'
+);
+
 select results_eq(
   $$ select (select count(*) from reservation_charges where reservation_id = 'e2c20000-0000-4000-8000-000000000309'),
             (select count(*) from reservation_pricing where reservation_id = 'e2c20000-0000-4000-8000-000000000309') $$,
@@ -84,6 +115,13 @@ select results_eq(
   $$ select count(*) from reservation_pricing where reservation_id = 'e2c20000-0000-4000-8000-000000000301' $$,
   $$ values (0::bigint) $$,
   'operations cannot read the pricing written by a mixed charge'
+);
+
+select throws_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000304', 'payment_method', 'Efectivo',
+       'parts', '[{"currency":"USD","amount":1},{"currency":"CRC","amount":1}]'::jsonb)) $$,
+  'P0001', 'Reservations access is required', 'operations cannot record a mixed charge'
 );
 
 select * from finish();

@@ -1,5 +1,5 @@
 begin;
-select plan(13);
+select plan(15);
 \ir fixtures/reservation_charge.sql.fixture
 
 set local role authenticated;
@@ -118,6 +118,25 @@ select results_eq(
        'payment_method', 'Efectivo')) $$,
   $$ values (1::bigint) $$,
   'the single-currency shape without parts still returns exactly one row'
+);
+
+select results_eq(
+  $$ select charged_amount, charged_currency::text
+     from record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000316', 'payment_method', 'Efectivo',
+       'parts', '[{"currency":"USD","amount":"12.50"},{"currency":"CRC","amount":"7000"}]'::jsonb)) $$,
+  $$ values (12.50::numeric, 'USD'), (7000::numeric, 'CRC') $$,
+  'part amounts given as JSON strings are recorded like numbers'
+);
+
+select results_eq(
+  $$ select charged_amount, charged_currency::text
+     from record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000315', 'payment_method', 'Efectivo',
+       'currency', 'EUR', 'amount', -5,
+       'parts', '[{"currency":"CRC","amount":9000}]'::jsonb)) $$,
+  $$ values (9000::numeric, 'CRC') $$,
+  'a top-level currency and amount are ignored when parts exist'
 );
 
 select * from finish();
