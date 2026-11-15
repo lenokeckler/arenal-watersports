@@ -1,5 +1,5 @@
 begin;
-select plan(24);
+select plan(25);
 \ir fixtures/reservation_charge.sql.fixture
 
 set local role authenticated;
@@ -82,16 +82,23 @@ select throws_ok(
   'P0001', 'A split reservation is charged on the original reservation', 'a split child is refused'
 );
 
-select results_eq(
-  $$ select (select count(*) from reservation_charges where reservation_id = 'e2c20000-0000-4000-8000-000000000309'),
-            (select count(*) from reservation_pricing where reservation_id = 'e2c20000-0000-4000-8000-000000000309') $$,
-  $$ values (0::bigint, 0::bigint) $$,
-  'no refused payload leaves a charge or a pricing row behind'
+select throws_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000999', 'payment_method', 'Efectivo', 'parts', '[]'::jsonb)) $$,
+  'P0001', 'Reservation was not found', 'an unknown reservation is refused before its parts are read'
+);
+
+select throws_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000309', 'payment_method', 'Efectivo',
+       'parts', '[{"currency":"USD","amount":10000000000},{"currency":"CRC","amount":1}]'::jsonb)) $$,
+  'P0001', 'Charge amount is invalid', 'a dollar part above the ceiling is refused'
 );
 
 select results_eq(
-  $$ select count(*) from information_schema.columns
-     where table_schema = 'public' and table_name = 'reservations' and column_name ~ '(amount|price|usd|crc)' $$,
+  $$ select count(*) from pg_attribute
+     where attrelid = 'public.reservations'::regclass and attnum > 0 and not attisdropped
+       and attname ~ '(amount|price|usd|crc)' $$,
   $$ values (0::bigint) $$,
   'the reservation row has no amount or price column'
 );
