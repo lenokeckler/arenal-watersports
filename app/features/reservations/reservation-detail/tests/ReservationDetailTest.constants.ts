@@ -2,7 +2,7 @@ import type { ReservationDetailChargeSource } from "../models/ReservationDetailC
 import type { ReservationDetailPricingSource } from "../models/ReservationDetailPricingSource.interface";
 import { RESERVATION_DETAIL_CURRENCY } from "../constants/ReservationDetail.constants";
 import type { ReservationDetailRefundSource } from "../models/ReservationDetailRefundSource.interface";
-import { createChargeSource } from "./createReservationDetailMoneyMovementSource";
+import { createReservationDetailChargeSource } from "./createReservationDetailChargeSource";
 
 export const RESERVATION_DETAIL_TEST = {
   ACTUAL_ARRIVAL: "2026-10-21T12:00:00.000Z",
@@ -68,11 +68,11 @@ export const RESERVATION_DETAIL_MONEY_FIXTURE: {
   refunds: ReservationDetailRefundSource[];
 } = {
   charges: [
-    createChargeSource({
+    createReservationDetailChargeSource({
       amount: RESERVATION_DETAIL_TEST.CHARGE_CRC,
       currency: RESERVATION_DETAIL_CURRENCY.CRC,
     }),
-    createChargeSource({
+    createReservationDetailChargeSource({
       amount: RESERVATION_DETAIL_TEST.CHARGE_USD,
       currency: RESERVATION_DETAIL_CURRENCY.USD,
     }),

@@ -8,10 +8,8 @@ import { RESERVATION_DETAIL_MOVEMENTS_COPY } from "../constants/ReservationDetai
 import { mapReservationDetailMoneyMovements } from "../utils/mapReservationDetailMoneyMovements";
 import { RESERVATION_DETAIL_MOVEMENTS_TEST as movement } from "./ReservationDetailMoneyMovementsTest.constants";
 import { RESERVATION_DETAIL_SOURCE_FIXTURE } from "./ReservationDetailSourceFixture.constants";
-import {
-  createChargeSource,
-  createRefundSource,
-} from "./createReservationDetailMoneyMovementSource";
+import { createReservationDetailChargeSource } from "./createReservationDetailChargeSource";
+import { createReservationDetailRefundSource } from "./createReservationDetailRefundSource";
 
 const WORKER_NAMES = [
   {
@@ -30,7 +28,9 @@ describe("mapReservationDetailMoneyMovements", () => {
       {
         ...RESERVATION_DETAIL_SOURCE_FIXTURE,
         refunds: [],
-        reservation_charges: [createChargeSource()],
+        reservation_charges: [
+          createReservationDetailChargeSource(),
+        ],
       },
       WORKER_NAMES
     );
@@ -56,7 +56,7 @@ describe("mapReservationDetailMoneyMovements", () => {
         ...RESERVATION_DETAIL_SOURCE_FIXTURE,
         refunds: [],
         reservation_charges: [
-          createChargeSource({
+          createReservationDetailChargeSource({
             kind: RESERVATION_DETAIL_CHARGE_KIND.EXTRA_TIME,
           }),
         ],
@@ -73,7 +73,7 @@ describe("mapReservationDetailMoneyMovements", () => {
     const [refund] = mapReservationDetailMoneyMovements(
       {
         ...RESERVATION_DETAIL_SOURCE_FIXTURE,
-        refunds: [createRefundSource()],
+        refunds: [createReservationDetailRefundSource()],
         reservation_charges: [],
       },
       WORKER_NAMES
@@ -95,8 +95,10 @@ describe("mapReservationDetailMoneyMovements", () => {
     const movements = mapReservationDetailMoneyMovements(
       {
         ...RESERVATION_DETAIL_SOURCE_FIXTURE,
-        refunds: [createRefundSource()],
-        reservation_charges: [createChargeSource()],
+        refunds: [createReservationDetailRefundSource()],
+        reservation_charges: [
+          createReservationDetailChargeSource(),
+        ],
       },
       WORKER_NAMES
     );
@@ -112,11 +114,13 @@ describe("mapReservationDetailMoneyMovements", () => {
       {
         ...RESERVATION_DETAIL_SOURCE_FIXTURE,
         refunds: [
-          createRefundSource({
+          createReservationDetailRefundSource({
             currency: RESERVATION_DETAIL_CURRENCY.USD,
           }),
         ],
-        reservation_charges: [createChargeSource()],
+        reservation_charges: [
+          createReservationDetailChargeSource(),
+        ],
       },
       WORKER_NAMES
     );
@@ -144,7 +148,7 @@ describe("mapReservationDetailMoneyMovements", () => {
         ...RESERVATION_DETAIL_SOURCE_FIXTURE,
         refunds: [],
         reservation_charges: [
-          createChargeSource({
+          createReservationDetailChargeSource({
             created_by: movement.UNKNOWN_WORKER_ID,
           }),
         ],
@@ -172,7 +176,7 @@ describe("mapReservationDetailMoneyMovements", () => {
     const movements = mapReservationDetailMoneyMovements(
       {
         ...RESERVATION_DETAIL_SOURCE_FIXTURE,
-        refunds: [createRefundSource()],
+        refunds: [createReservationDetailRefundSource()],
         reservation_charges: [],
       },
       []
@@ -188,13 +192,15 @@ describe("mapReservationDetailMoneyMovements", () => {
       {
         ...RESERVATION_DETAIL_SOURCE_FIXTURE,
         refunds: [
-          createRefundSource({
+          createReservationDetailRefundSource({
             created_at: movement.CHARGE_TIMESTAMP,
             id: movement.LOWER_ID,
           }),
         ],
         reservation_charges: [
-          createChargeSource({ id: movement.HIGHER_ID }),
+          createReservationDetailChargeSource({
+            id: movement.HIGHER_ID,
+          }),
         ],
       },
       WORKER_NAMES
@@ -211,12 +217,12 @@ describe("mapReservationDetailMoneyMovements", () => {
       {
         ...RESERVATION_DETAIL_SOURCE_FIXTURE,
         refunds: [
-          createRefundSource({
+          createReservationDetailRefundSource({
             created_at: movement.OFFSET_EARLIER_TIMESTAMP,
           }),
         ],
         reservation_charges: [
-          createChargeSource({
+          createReservationDetailChargeSource({
             created_at: movement.OFFSET_LATER_TIMESTAMP,
           }),
         ],
@@ -234,7 +240,7 @@ describe("mapReservationDetailMoneyMovements", () => {
     const charges = Array.from(
       { length: movement.LARGE_LIST_SIZE },
       (_, index) =>
-        createChargeSource({
+        createReservationDetailChargeSource({
           created_at: new Date(
             Date.parse(movement.EARLIER_TIMESTAMP) +
               index * 1000

@@ -6,10 +6,8 @@ import {
 } from "./ReservationDetailTest.constants";
 import { RESERVATION_DETAIL_SOURCE_FIXTURE } from "./ReservationDetailSourceFixture.constants";
 import { RESERVATION_DETAIL_MOVEMENTS_TEST as movement } from "./ReservationDetailMoneyMovementsTest.constants";
-import {
-  createChargeSource,
-  createRefundSource,
-} from "./createReservationDetailMoneyMovementSource";
+import { createReservationDetailChargeSource } from "./createReservationDetailChargeSource";
+import { createReservationDetailRefundSource } from "./createReservationDetailRefundSource";
 
 describe("mapReservationDetail", () => {
   it("maps unit codes to their dispatched group", () => {
@@ -178,8 +176,10 @@ describe("mapReservationDetail", () => {
     const detail = mapReservationDetail(
       {
         ...RESERVATION_DETAIL_SOURCE_FIXTURE,
-        refunds: [createRefundSource()],
-        reservation_charges: [createChargeSource()],
+        refunds: [createReservationDetailRefundSource()],
+        reservation_charges: [
+          createReservationDetailChargeSource(),
+        ],
       },
       [
         {

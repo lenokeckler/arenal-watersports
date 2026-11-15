@@ -3,16 +3,14 @@ import { collectReservationDetailWorkerIds } from "../utils/collectReservationDe
 import { RESERVATION_DETAIL_MOVEMENTS_TEST as movement } from "./ReservationDetailMoneyMovementsTest.constants";
 import { RESERVATION_DETAIL_SOURCE_FIXTURE } from "./ReservationDetailSourceFixture.constants";
 import { RESERVATION_DETAIL_TEST } from "./ReservationDetailTest.constants";
-import {
-  createChargeSource,
-  createRefundSource,
-} from "./createReservationDetailMoneyMovementSource";
+import { createReservationDetailChargeSource } from "./createReservationDetailChargeSource";
+import { createReservationDetailRefundSource } from "./createReservationDetailRefundSource";
 
 describe("collectReservationDetailWorkerIds", () => {
   it("lists reservation, guide, charge and refund creators in order", () => {
     const workerIds = collectReservationDetailWorkerIds({
       ...RESERVATION_DETAIL_SOURCE_FIXTURE,
-      refunds: [createRefundSource()],
+      refunds: [createReservationDetailRefundSource()],
     });
 
     expect(workerIds).toEqual([
@@ -28,17 +26,17 @@ describe("collectReservationDetailWorkerIds", () => {
     const workerIds = collectReservationDetailWorkerIds({
       ...RESERVATION_DETAIL_SOURCE_FIXTURE,
       refunds: [
-        createRefundSource({
+        createReservationDetailRefundSource({
           created_by:
             RESERVATION_DETAIL_TEST.CREATED_WORKER_ID,
         }),
       ],
       reservation_charges: [
-        createChargeSource({
+        createReservationDetailChargeSource({
           created_by:
             RESERVATION_DETAIL_TEST.CREATED_WORKER_ID,
         }),
-        createChargeSource({
+        createReservationDetailChargeSource({
           created_by:
             RESERVATION_DETAIL_TEST.CREATED_WORKER_ID,
         }),
