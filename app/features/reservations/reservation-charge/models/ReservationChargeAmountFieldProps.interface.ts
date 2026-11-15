@@ -6,6 +6,8 @@ export interface ReservationChargeAmountFieldProps {
   error?: string;
   helperId: string;
   id: string;
+  note?: string;
+  noteId?: string;
   isDisabled: boolean;
   onChange: (text: string) => void;
   proposal: NullableRef<number>;
