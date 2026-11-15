@@ -18,3 +18,5 @@ export const PARTS_INVALID_POSTGRES_MESSAGE =
   "P0001: Charge parts are invalid";
 export const PADDED_SECOND_AMOUNT_TEXT = " 12000,5 ";
 export const PARSED_SECOND_AMOUNT = 12000.5;
+export const WHITESPACE_ONLY_SECOND_AMOUNT = "   ";
+export const EXTRA_INPUT_KEYS = { injected: "value" };

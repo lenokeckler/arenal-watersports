@@ -2,7 +2,10 @@ import { describe, expect, it } from "vitest";
 import { CURRENCY_CODE } from "@/app/constants";
 import { RESERVATION_CHARGE_VALIDATION_COPY as COPY } from "../constants/ReservationChargeValidationCopy.constants";
 import { resolveReservationChargeErrors } from "../utils/resolveReservationChargeErrors";
-import { SECOND_AMOUNT_TEXT_CASES as CASES } from "./ReservationChargeMixed.constants";
+import {
+  SECOND_AMOUNT_TEXT_CASES as CASES,
+  WHITESPACE_ONLY_SECOND_AMOUNT,
+} from "./ReservationChargeMixed.constants";
 import {
   MIXED_CHARGE_VALUES,
   VALID_CHARGE_VALUES,
@@ -47,6 +50,14 @@ describe("resolveReservationChargeErrors second amount", () => {
       ).toEqual({ secondAmount: message });
     }
   );
+
+  it("reports a whitespace-only second amount as required", () => {
+    expect(
+      resolveReservationChargeErrors(
+        withSecond(WHITESPACE_ONLY_SECOND_AMOUNT)
+      )
+    ).toEqual({ secondAmount: COPY.AMOUNT_REQUIRED });
+  });
 
   it("applies the CRC ceiling when the first currency is USD", () => {
     expect(

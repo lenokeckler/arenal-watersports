@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { isReservationChargeInput } from "../utils/isReservationChargeInput";
 import {
+  EXTRA_INPUT_KEYS,
   MISSING_SECOND_AMOUNT_KEY,
   NUMERIC_SECOND_AMOUNT,
   OBJECT_SECOND_AMOUNT,
@@ -40,5 +41,14 @@ describe("isReservationChargeInput second amount", () => {
     expect(isReservationChargeInput(withoutKey)).toBe(
       false
     );
+  });
+
+  it("accepts an input carrying extra keys", () => {
+    expect(
+      isReservationChargeInput({
+        ...MIXED_CHARGE_INPUT,
+        ...EXTRA_INPUT_KEYS,
+      })
+    ).toBe(true);
   });
 });
