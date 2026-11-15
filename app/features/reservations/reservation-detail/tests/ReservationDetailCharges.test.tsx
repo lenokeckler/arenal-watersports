@@ -10,6 +10,10 @@ import type { ReservationDetailReservationSource } from "../models/ReservationDe
 import { RESERVATION_DETAIL_SOURCE_FIXTURE } from "./ReservationDetailSourceFixture.constants";
 import { RESERVATION_DETAIL_CHARGES_TEST as test } from "./ReservationDetailChargesTest.constants";
 import { renderReservationDetail } from "./ReservationDetailTestRenderer";
+import {
+  createChargeSource,
+  createRefundSource,
+} from "./createReservationDetailMoneyMovementSource";
 import { createReservationDetailChargesPage } from "./ReservationDetailCharges.page";
 
 const renderCharges = (
@@ -24,11 +28,10 @@ const renderChargesWithAdditionalTariff = (): HTMLElement =>
     ...RESERVATION_DETAIL_SOURCE_FIXTURE,
     reservation_charges: [
       ...RESERVATION_DETAIL_SOURCE_FIXTURE.reservation_charges,
-      {
+      createChargeSource({
         amount: test.ADDITIONAL_CHARGE_CRC,
         currency: RESERVATION_DETAIL_CURRENCY.CRC,
-        kind: RESERVATION_DETAIL_CHARGE_KIND.TARIFF,
-      },
+      }),
     ],
   });
 
@@ -37,27 +40,27 @@ const renderChargesWithExtraTimeAndRefunds =
     renderCharges({
       ...RESERVATION_DETAIL_SOURCE_FIXTURE,
       refunds: [
-        {
+        createRefundSource({
           amount: test.REFUND_CRC,
           currency: RESERVATION_DETAIL_CURRENCY.CRC,
-        },
-        {
+        }),
+        createRefundSource({
           amount: test.SECOND_REFUND_CRC,
           currency: RESERVATION_DETAIL_CURRENCY.CRC,
-        },
+        }),
       ],
       reservation_charges: [
         ...RESERVATION_DETAIL_SOURCE_FIXTURE.reservation_charges,
-        {
+        createChargeSource({
           amount: test.EXTRA_TIME_CRC,
           currency: RESERVATION_DETAIL_CURRENCY.CRC,
           kind: RESERVATION_DETAIL_CHARGE_KIND.EXTRA_TIME,
-        },
-        {
+        }),
+        createChargeSource({
           amount: test.SECOND_EXTRA_TIME_CRC,
           currency: RESERVATION_DETAIL_CURRENCY.CRC,
           kind: RESERVATION_DETAIL_CHARGE_KIND.EXTRA_TIME,
-        },
+        }),
       ],
     });
 
@@ -109,10 +112,10 @@ describe("reservation detail charge totals", (): void => {
     const source = {
       ...RESERVATION_DETAIL_SOURCE_FIXTURE,
       refunds: [
-        {
+        createRefundSource({
           amount: test.REFUND_CRC,
           currency: RESERVATION_DETAIL_CURRENCY.CRC,
-        },
+        }),
       ],
       reservation_pricing: {
         ...RESERVATION_DETAIL_SOURCE_FIXTURE.reservation_pricing,
