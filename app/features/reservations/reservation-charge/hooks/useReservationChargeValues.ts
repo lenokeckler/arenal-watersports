@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { STRING } from "@/app/constants";
 import type { ReservationChargeProposal } from "../models/ReservationChargeProposal.type";
 import type { ReservationChargeValuesState } from "../models/ReservationChargeValuesState.interface";
 import { resolveReservationChargeCurrencyOptions } from "../utils/resolveReservationChargeCurrencyOptions";
@@ -34,6 +35,19 @@ export const useReservationChargeValues = (
       setValues((current) => ({
         ...current,
         paymentMethod,
+      })),
+    setSecondAmountText: (secondAmountText) =>
+      setValues((current) => ({
+        ...current,
+        secondAmountText,
+      })),
+    toggleSecondAmount: () =>
+      setValues((current) => ({
+        ...current,
+        secondAmountText:
+          current.secondAmountText === null
+            ? STRING.Empty
+            : null,
       })),
     values,
   };
