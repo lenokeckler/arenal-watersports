@@ -52,3 +52,9 @@ Como la persona de reservas, necesito registrar un cobro sobre una reserva con e
 
 - `ReservationChargeRecorded` carries `parts` (one `{ amount, chargeId, currency }` per returned row), the shared `paymentMethod` and `recordedByName`; `recordReservationCharge` maps every row and throws `MISSING_CHARGE` when none returns.
 - A one-part receipt keeps the `Monto`, `Moneda` and `M�todo de pago` rows; a two-part receipt shows `Monto en d�lares` and `Monto en colones` in `RESERVATION_CHARGE_CURRENCY_ORDER`, then one `M�todo de pago` row and `Registrado por <name>`.
+
+### Mixed charge form state (US-RES-24)
+
+- `useReservationChargeValues` exposes `setSecondAmountText` and `toggleSecondAmount`: the toggle turns `null` into an empty string (first amount untouched) and any string back into `null`. It works for either currency, whether or not the catalog proposes the other one; `currencyOptions` still governs only the single-mode radio group.
+- `useReservationChargeViewModel` adds `isMixed` and `secondCurrency` (the currency not selected) and wraps both new setters in the shared edit guard: ignored while pending, errors cleared.
+- `useReservationChargeErrorFocus` focuses `RESERVATION_CHARGE_FIELD_ID.SECOND_AMOUNT` after the first amount and before the payment method. `ADD_CURRENCY` and `SECOND_AMOUNT_HELPER` ids are reserved for the UI slice.
