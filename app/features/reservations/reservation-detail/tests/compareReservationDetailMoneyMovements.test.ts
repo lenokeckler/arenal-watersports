@@ -54,4 +54,19 @@ describe("compareReservationDetailMoneyMovements", () => {
       )
     ).toEqual([higher, lower]);
   });
+
+  it("compares instants across different UTC offsets", () => {
+    const earlier = createMovement({
+      createdAt: movement.OFFSET_EARLIER_TIMESTAMP,
+    });
+    const later = createMovement({
+      createdAt: movement.OFFSET_LATER_TIMESTAMP,
+    });
+
+    expect(
+      [earlier, later].sort(
+        compareReservationDetailMoneyMovements
+      )
+    ).toEqual([later, earlier]);
+  });
 });
