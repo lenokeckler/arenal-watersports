@@ -32,8 +32,17 @@ export const CHARGE_RECORDED: ReservationChargeRecorded = {
 
 export const VALID_CHARGE_COMMAND: ReservationChargeCommand =
   {
-    amount: 45.5,
-    currency: CURRENCY_CODE.USD,
+    parts: [{ amount: 45.5, currency: CURRENCY_CODE.USD }],
+    paymentMethod: "Efectivo",
+    reservationId: CHARGE_RESERVATION_ID,
+  };
+
+export const MIXED_CHARGE_COMMAND: ReservationChargeCommand =
+  {
+    parts: [
+      { amount: 45.5, currency: CURRENCY_CODE.USD },
+      { amount: 12000, currency: CURRENCY_CODE.CRC },
+    ],
     paymentMethod: "Efectivo",
     reservationId: CHARGE_RESERVATION_ID,
   };

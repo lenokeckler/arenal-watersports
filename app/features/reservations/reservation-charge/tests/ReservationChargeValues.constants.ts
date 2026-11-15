@@ -8,10 +8,22 @@ export const VALID_CHARGE_VALUES: ReservationChargeValues =
     amountText: "45.50",
     currency: CURRENCY_CODE.USD,
     paymentMethod: "Efectivo",
+    secondAmountText: null,
+  };
+
+export const MIXED_CHARGE_VALUES: ReservationChargeValues =
+  {
+    ...VALID_CHARGE_VALUES,
+    secondAmountText: "12000",
   };
 
 export const VALID_CHARGE_INPUT: ReservationChargeInput = {
   ...VALID_CHARGE_VALUES,
+  reservationId: CHARGE_RESERVATION_ID,
+};
+
+export const MIXED_CHARGE_INPUT: ReservationChargeInput = {
+  ...MIXED_CHARGE_VALUES,
   reservationId: CHARGE_RESERVATION_ID,
 };
 
