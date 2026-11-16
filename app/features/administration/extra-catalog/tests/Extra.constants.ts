@@ -1,6 +1,7 @@
 import { EXTRA_STATUS } from "../constants/ExtraStatus.constants";
 import type { Extra } from "../models/Extra.interface";
 import type { ExtraDetail } from "../models/ExtraDetail.interface";
+import type { ExtraOccupiableCategory } from "../models/ExtraOccupiableCategory.interface";
 import type { ExtraRow } from "../models/ExtraRow.type";
 
 export const FAKE_EXTRA_ID = "fake-extra-id";
@@ -15,6 +16,13 @@ export const FAKE_OCCUPIED_CATEGORY_ID =
 export const FAKE_OCCUPIED_CATEGORY_NAME = "Tabla de wake";
 export const FAKE_OCCUPIED_QUANTITY = 2;
 export const FAKE_OCCUPIED_QUANTITY_TEXT = "2";
+export const OCCUPIABLE_CATEGORIES: ExtraOccupiableCategory[] =
+  [
+    {
+      id: FAKE_OCCUPIED_CATEGORY_ID,
+      name: FAKE_OCCUPIED_CATEGORY_NAME,
+    },
+  ];
 export const LONG_EXTRA_NAME_REPEATS = 100;
 export const UNKNOWN_REMOVAL_OUTCOME = "archived";
 export const UNSAFE_EXTRA_ID = "a/b c?d";

@@ -6,6 +6,7 @@ import {
   STRING,
   type CurrencyCode,
 } from "@/app/constants";
+import { EXTRA_OCCUPANCY_COPY } from "../constants/ExtraOccupancyCopy.constants";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
 import type { ExtraFormMode } from "../constants/ExtraFormMode.constants";
 import {
@@ -62,7 +63,57 @@ export const createExtraFormPage = (
     getNameField().getAttribute(ARIA_INVALID_ATTRIBUTE) ===
     ARIA_INVALID_TRUE;
 
+  const getOccupancyToggle = () =>
+    screen.getByRole(ARIA_ROLE.CHECKBOX, {
+      name: EXTRA_OCCUPANCY_COPY.TOGGLE_LABEL,
+    });
+
+  const queryCategorySelect = () =>
+    screen.queryByLabelText(
+      EXTRA_OCCUPANCY_COPY.CATEGORY_LABEL,
+      { exact: false }
+    );
+
+  const queryQuantityField = () =>
+    screen.queryByLabelText(
+      EXTRA_OCCUPANCY_COPY.QUANTITY_LABEL,
+      { exact: false }
+    );
+
+  const getCategorySelect = () =>
+    screen.getByLabelText(
+      EXTRA_OCCUPANCY_COPY.CATEGORY_LABEL,
+      { exact: false }
+    );
+
+  const getQuantityField = () =>
+    screen.getByLabelText(
+      EXTRA_OCCUPANCY_COPY.QUANTITY_LABEL,
+      { exact: false }
+    );
+
+  const toggleOccupancy = (): Promise<void> =>
+    user.click(getOccupancyToggle());
+
+  const chooseCategory = (name: string): Promise<void> =>
+    user.selectOptions(getCategorySelect(), name);
+
+  const typeQuantity = async (
+    text: string
+  ): Promise<void> => {
+    await user.clear(getQuantityField());
+    await user.type(getQuantityField(), text);
+  };
+
   return {
+    getOccupancyToggle,
+    queryCategorySelect,
+    queryQuantityField,
+    getCategorySelect,
+    getQuantityField,
+    toggleOccupancy,
+    chooseCategory,
+    typeQuantity,
     getNameField,
     getPriceField,
     getNameDescribedByIds,
