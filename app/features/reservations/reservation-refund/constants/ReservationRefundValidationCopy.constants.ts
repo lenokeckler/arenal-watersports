@@ -13,8 +13,8 @@ export const RESERVATION_REFUND_VALIDATION_COPY = {
     [MONEY_AMOUNT_ISSUE.PRECISION]:
       "El monto es demasiado grande.",
   } satisfies Record<MoneyAmountIssue, string>,
-  AMOUNT_ABOVE_AVAILABLE:
-    "El monto supera lo disponible para devolver en esta moneda.",
+  AMOUNT_ABOVE_AVAILABLE: (max: string) =>
+    `El monto no puede superar lo disponible para devolver: ${max}.`,
   AMOUNT_REQUIRED: "Escriba el monto devuelto.",
   AMOUNT_TOO_MANY_DECIMALS:
     "Use como máximo dos decimales.",

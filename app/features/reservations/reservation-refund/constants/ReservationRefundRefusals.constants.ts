@@ -42,9 +42,7 @@ export const RESERVATION_REFUND_REFUSALS: readonly ReservationRefundRefusal[] =
       message: MESSAGE.AMOUNT_INVALID,
     },
     {
-      errors: {
-        amount: VALIDATION_COPY.AMOUNT_ABOVE_AVAILABLE,
-      },
+      formError: COPY.ABOVE_AVAILABLE,
       message: MESSAGE.EXCEEDS_NET,
     },
     {
