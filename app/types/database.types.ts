@@ -281,6 +281,53 @@ export type Database = {
           },
         ];
       };
+      deposit_declinations: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          reservation_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          reservation_id: string;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          reservation_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "deposit_declinations_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "deposit_declinations_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "deposit_declinations_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["reservation_id"];
+          },
+          {
+            foreignKeyName: "deposit_declinations_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "reservations";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       deposits: {
         Row: {
           amount: number;
@@ -3953,6 +4000,16 @@ export type Database = {
           recorded_by_name: string;
         }[];
       };
+      record_reservation_deposit: {
+        Args: { p_payload: Json };
+        Returns: {
+          recorded_amount: number;
+          recorded_by_name: string;
+          recorded_currency: Database["public"]["Enums"]["currency_code"];
+          recorded_deposit_id: string;
+          recorded_has_deposit: boolean;
+        }[];
+      };
       record_reservation_refund: {
         Args: { p_payload: Json };
         Returns: {
@@ -4039,6 +4096,13 @@ export type Database = {
         }[];
       };
       reservation_charge_proposal: {
+        Args: { p_reservation_id: string };
+        Returns: {
+          proposal_crc: number;
+          proposal_usd: number;
+        }[];
+      };
+      reservation_deposit_proposal: {
         Args: { p_reservation_id: string };
         Returns: {
           proposal_crc: number;
