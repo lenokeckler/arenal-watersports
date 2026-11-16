@@ -1,5 +1,5 @@
 begin;
-select plan(30);
+select plan(32);
 \ir fixtures/reservation_charge.sql.fixture
 
 insert into reservation_charges (reservation_id, kind, amount, currency, payment_method, created_by)
@@ -20,6 +20,10 @@ values ('e2c20000-0000-4000-8000-000000000301', 20, 'USD', 'RES28 earlier refund
 
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"e2c20000-0000-4000-8000-000000000001","role":"authenticated"}';
+
+create temporary table report_baseline as
+select refunds_amount, net_amount from daily_revenue_report
+where day = (now() at time zone 'UTC')::date and currency = 'USD';
 
 select results_eq(
   $$ select currency::text, charged_amount, refunded_amount, refundable_amount
@@ -227,10 +231,23 @@ select throws_ok(
 set local request.jwt.claims to '{"sub":"e2c20000-0000-4000-8000-000000000001","role":"authenticated"}';
 
 select results_eq(
-  $$ select refunds_amount, net_amount from daily_revenue_report
-     where day = (now() at time zone 'UTC')::date and currency = 'USD' $$,
-  $$ values (558::numeric, 139::numeric) $$,
-  'the daily report reflects the refunds in their currency'
+  $$ select report.refunds_amount - baseline.refunds_amount, report.net_amount - baseline.net_amount
+     from daily_revenue_report report, report_baseline baseline
+     where report.day = (now() at time zone 'UTC')::date and report.currency = 'USD' $$,
+  $$ values (538::numeric, -538::numeric) $$,
+  'the daily report moves by the refunds of the day in their currency'
+);
+
+set local request.jwt.claims to '{"role":"authenticated"}';
+
+select throws_ok(
+  $$ select record_reservation_refund(jsonb_build_object('reservation_id', 'e2c20000-0000-4000-8000-000000000301', 'currency', 'USD', 'amount', 1, 'reason', 'Rain cut')) $$,
+  'P0001', 'Authenticated worker is required', 'an unauthenticated caller cannot record a refund'
+);
+
+select throws_ok(
+  $$ select * from reservation_refundable_net('e2c20000-0000-4000-8000-000000000301') $$,
+  'P0001', 'Authenticated worker is required', 'an unauthenticated caller cannot read the refundable net'
 );
 
 select * from finish();
