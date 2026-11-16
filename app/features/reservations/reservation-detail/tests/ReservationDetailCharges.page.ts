@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react";
 import { ARIA_ROLE } from "@/app/constants";
+import type { NullableRef } from "@/app/types/Nullable";
 import { RESERVATION_DETAIL_CHARGES_COPY } from "../constants/ReservationDetailChargesCopy.constants";
 import { RESERVATION_DETAIL_TEST } from "./ReservationDetailTest.constants";
 import type { ReservationDetailChargesPage } from "./models/ReservationDetailChargesPage.interface";
@@ -26,8 +27,8 @@ export const createReservationDetailChargesPage =
       screen.getByRole(ARIA_ROLE.REGION, {
         name: RESERVATION_DETAIL_CHARGES_COPY.CHARGE_STATUS,
       }),
-    queryChargeLink: (): HTMLElement | null =>
+    queryChargeLink: (): NullableRef<HTMLElement> =>
       screen.queryByRole(ARIA_ROLE.LINK, CHARGE_LINK_QUERY),
-    queryRefundLink: (): HTMLElement | null =>
+    queryRefundLink: (): NullableRef<HTMLElement> =>
       screen.queryByRole(ARIA_ROLE.LINK, REFUND_LINK_QUERY),
   });

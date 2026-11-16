@@ -1,4 +1,5 @@
 import Link from "@/app/components/link/Link";
+import type { Nullable } from "@/app/types/Nullable";
 import { hasReservationRefundable } from "@/app/utils/reservations/hasReservationRefundable";
 import { resolveReservationRefundPath } from "@/app/utils/reservations/resolveReservationRefundPath";
 import { RESERVATION_DETAIL_CHARGES_COPY as copy } from "../constants/ReservationDetailChargesCopy.constants";
@@ -7,7 +8,7 @@ import { RESERVATION_DETAIL_REFUND_ACTION_CLASS } from "../styles/ReservationDet
 
 const ReservationDetailRefundAction = ({
   detail,
-}: ReservationDetailProps): React.JSX.Element | null =>
+}: ReservationDetailProps): Nullable<React.JSX.Element> =>
   hasReservationRefundable(detail.refundable) ? (
     <Link
       href={resolveReservationRefundPath(detail.id)}

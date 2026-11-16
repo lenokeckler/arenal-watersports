@@ -55,7 +55,7 @@ Como la persona de reservas, necesito registrar la devolución de dinero al clie
 ## Daily account (C5)
 
 - Recording the refund row is what reflects it: `financial_movements`, `daily_revenue_report` and the administration income screen subtract refunds on the day they were created. Nothing extra is built for C5.
-- The reservas screen `/reservations/income` lists what was collected per payment method; it does not subtract refunds. The E2E case for C5 therefore reads the net of today through the same summary the administration report uses.
+- The reservas screen `/reservations/income` lists what was collected per payment method; it does not subtract refunds. The E2E case for C5 therefore reads the net of today through the same summary the administration report uses, filtered to the rows of the reservation under test. The `daily_revenue_report` view itself is proven by pgTAP `148_record_reservation_refund.test.sql`; the E2E proves the administration income summary.
 
 ## Copy
 

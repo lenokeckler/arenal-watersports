@@ -13,6 +13,8 @@ import { createReservationDetailChargesPage } from "./ReservationDetailCharges.p
 import { createReservationDetailChargeSource } from "./createReservationDetailChargeSource";
 import { createReservationDetailRefundSource } from "./createReservationDetailRefundSource";
 
+const REFUND_TEXT_ES = "Registrar devolución";
+
 const REFUND_HREF = resolveReservationRefundPath(
   RESERVATION_DETAIL_TEST.RESERVATION_ID
 );
@@ -34,6 +36,10 @@ describe("reservation detail refund link", (): void => {
     );
     expect(link).toHaveTextContent(
       RESERVATION_DETAIL_CHARGES_COPY.RECORD_REFUND
+    );
+    expect(link).toHaveTextContent(REFUND_TEXT_ES);
+    expect(link.getAttribute("aria-label")).toContain(
+      REFUND_TEXT_ES
     );
   });
 
@@ -61,6 +67,22 @@ describe("reservation detail refund link", (): void => {
     expect(
       createReservationDetailChargesPage().queryRefundLink()
     ).toBeNull();
+  });
+
+  it("keeps the link when one currency is fully refunded and the other still has a net", (): void => {
+    renderReservationDetail({
+      ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+      refunds: [
+        createReservationDetailRefundSource({
+          amount: RESERVATION_DETAIL_TEST.CHARGE_USD,
+          currency: RESERVATION_DETAIL_CURRENCY.USD,
+        }),
+      ],
+    });
+
+    expect(
+      createReservationDetailChargesPage().getRefundLink()
+    ).toHaveAttribute("href", REFUND_HREF);
   });
 
   it("hides the link when everything charged was refunded", (): void => {
