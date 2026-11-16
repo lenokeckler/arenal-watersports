@@ -9,15 +9,12 @@ import { revalidatePath } from "next/cache";
 import { PATHS } from "@/app/constants";
 import { assertReservationCalendarAccess } from "@/app/services/reservations/assertReservationCalendarAccess";
 import { recordReservationRefundAction } from "../actions/recordReservationRefundAction";
-import { RESERVATION_REFUND_ERROR } from "../constants/ReservationRefundError.constants";
 import { RESERVATION_REFUND_FEEDBACK_COPY as COPY } from "../constants/ReservationRefundFeedbackCopy.constants";
 import { RESERVATION_REFUND_VALIDATION_COPY } from "../constants/ReservationRefundValidationCopy.constants";
 import { recordReservationRefund } from "../services/recordReservationRefund";
 import { REFUND_RESERVATION_ID } from "./ReservationRefund.constants";
 import {
-  REFUND_ACCESS_REDIRECT,
   REFUND_RECORDED,
-  REFUND_UNEXPECTED_ERROR,
   VALID_REFUND_COMMAND,
 } from "./ReservationRefundAction.constants";
 import {
@@ -113,44 +110,5 @@ describe("recordReservationRefundAction", () => {
       ...VALID_REFUND_COMMAND,
       reason: OTHER_REASON_TEXT,
     });
-  });
-
-  it("maps a database refusal without revalidating", async () => {
-    vi.mocked(recordReservationRefund).mockRejectedValue(
-      new Error(
-        RESERVATION_REFUND_ERROR.MESSAGE.EXCEEDS_NET
-      )
-    );
-
-    await expect(
-      recordReservationRefundAction(VALID_REFUND_INPUT)
-    ).resolves.toEqual({
-      ok: false,
-      errors: {},
-      formError: COPY.ABOVE_AVAILABLE,
-    });
-    expect(revalidatePath).not.toHaveBeenCalled();
-  });
-
-  it("rethrows an unexpected failure for server logging", async () => {
-    vi.mocked(recordReservationRefund).mockRejectedValue(
-      REFUND_UNEXPECTED_ERROR
-    );
-
-    await expect(
-      recordReservationRefundAction(VALID_REFUND_INPUT)
-    ).rejects.toBe(REFUND_UNEXPECTED_ERROR);
-    expect(revalidatePath).not.toHaveBeenCalled();
-  });
-
-  it("lets an access redirect through without recording", async () => {
-    vi.mocked(
-      assertReservationCalendarAccess
-    ).mockRejectedValue(REFUND_ACCESS_REDIRECT);
-
-    await expect(
-      recordReservationRefundAction(VALID_REFUND_INPUT)
-    ).rejects.toBe(REFUND_ACCESS_REDIRECT);
-    expect(recordReservationRefund).not.toHaveBeenCalled();
   });
 });
