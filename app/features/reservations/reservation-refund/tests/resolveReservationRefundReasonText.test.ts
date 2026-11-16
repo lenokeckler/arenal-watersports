@@ -28,7 +28,7 @@ describe("resolveReservationRefundReasonText", () => {
     expect(
       resolveReservationRefundReasonText({
         ...OTHER_REFUND_VALUES,
-        otherReasonText: `${NON_BREAKING_SPACE} ${OTHER_REASON_TEXT} \t`,
+        otherReasonText: `${NON_BREAKING_SPACE} ${OTHER_REASON_TEXT}${ZERO_WIDTH_SPACE} \t`,
       })
     ).toBe(OTHER_REASON_TEXT);
   });

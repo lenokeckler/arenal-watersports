@@ -46,7 +46,13 @@ describe("resolveReservationRefundReasonError", () => {
     ).toEqual({});
   });
 
-  it.each(["", "   ", `${NON_BREAKING_SPACE} \t`])(
+  it.each([
+    "",
+    "   ",
+    `${NON_BREAKING_SPACE} \t`,
+    ZERO_WIDTH_SPACE,
+    SOFT_HYPHEN,
+  ])(
     "requires text for the other reason when it is blank",
     (otherReasonText) => {
       expect(
