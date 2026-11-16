@@ -1,7 +1,9 @@
+import type { NullableRef } from "@/app/types/Nullable";
+
 export interface ReservationDetailChargesPage {
   getChargeLink: () => HTMLElement;
   getRefundLink: () => HTMLElement;
   getRegion: () => HTMLElement;
-  queryChargeLink: () => HTMLElement | null;
-  queryRefundLink: () => HTMLElement | null;
+  queryChargeLink: () => NullableRef<HTMLElement>;
+  queryRefundLink: () => NullableRef<HTMLElement>;
 }
