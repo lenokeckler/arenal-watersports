@@ -38,3 +38,15 @@ export const EXCEEDS_NET_FAILURE = {
   hint: "",
   message: RESERVATION_REFUND_ERROR.MESSAGE.EXCEEDS_NET,
 };
+
+export const REFUND_POSTGRES_PREFIX = "P0001: ";
+
+export const REFUND_UNEXPECTED_ERROR = new Error(
+  "Unexpected refund failure"
+);
+
+export const REFUND_ACCESS_REDIRECT = new Error(
+  "NEXT_REDIRECT"
+);
+
+export const REFUND_CONNECTION_HINT = "conexión";

@@ -13,15 +13,15 @@ export const RESERVATION_REFUND_REFUSALS: readonly ReservationRefundRefusal[] =
       message: MESSAGE.ACCESS_REQUIRED,
     },
     {
-      formError: COPY.GENERIC,
+      formError: COPY.REQUEST_REJECTED,
       message: MESSAGE.AUTHENTICATION_REQUIRED,
     },
     {
-      formError: COPY.GENERIC,
+      formError: COPY.REQUEST_REJECTED,
       message: MESSAGE.PAYLOAD_NOT_OBJECT,
     },
     {
-      formError: COPY.GENERIC,
+      formError: COPY.REQUEST_REJECTED,
       message: MESSAGE.PAYLOAD_INVALID,
     },
     {
@@ -58,6 +58,29 @@ export const RESERVATION_REFUND_REFUSALS: readonly ReservationRefundRefusal[] =
     },
     {
       errors: { reason: VALIDATION_COPY.REASON_TOO_LONG },
+      message: MESSAGE.REASON_TOO_LONG,
+    },
+  ];
+
+export const RESERVATION_REFUND_OTHER_REASON_REFUSALS: readonly ReservationRefundRefusal[] =
+  [
+    {
+      errors: {
+        otherReason: VALIDATION_COPY.OTHER_REQUIRED,
+      },
+      message: MESSAGE.REASON_REQUIRED,
+    },
+    {
+      errors: {
+        otherReason:
+          VALIDATION_COPY.REASON_DISALLOWED_CHARACTERS,
+      },
+      message: MESSAGE.REASON_INVALID,
+    },
+    {
+      errors: {
+        otherReason: VALIDATION_COPY.REASON_TOO_LONG,
+      },
       message: MESSAGE.REASON_TOO_LONG,
     },
   ];
