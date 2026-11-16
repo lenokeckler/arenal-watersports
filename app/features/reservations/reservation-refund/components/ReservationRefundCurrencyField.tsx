@@ -2,7 +2,7 @@ import { CURRENCY_NAME_COPY } from "@/app/constants";
 import { formatMoney } from "@/app/utils/money/formatMoney";
 import { RESERVATION_REFUND_FORM_COPY as COPY } from "../constants/ReservationRefundFormCopy.constants";
 import { RESERVATION_REFUND_CURRENCY_OPTION_ID } from "../constants/ReservationRefundUi.constants";
-import type { ReservationRefundFormProps } from "../models/ReservationRefundFormProps.interface";
+import type { ReservationRefundCurrencyFieldProps } from "../models/ReservationRefundCurrencyFieldProps.interface";
 import {
   RESERVATION_REFUND_CURRENCY_FIELDSET_CLASS,
   RESERVATION_REFUND_CURRENCY_GRID_CLASS,
@@ -12,9 +12,12 @@ import { resolveReservationRefundAvailable } from "../utils/resolveReservationRe
 import ReservationRefundCurrencyOption from "./ReservationRefundCurrencyOption";
 
 const ReservationRefundCurrencyField = ({
-  refund,
-  viewModel,
-}: ReservationRefundFormProps): React.JSX.Element => (
+  currency: selectedCurrency,
+  currencyOptions,
+  isPending,
+  onSelect,
+  refundable,
+}: ReservationRefundCurrencyFieldProps): React.JSX.Element => (
   <fieldset
     className={RESERVATION_REFUND_CURRENCY_FIELDSET_CLASS}
   >
@@ -24,13 +27,13 @@ const ReservationRefundCurrencyField = ({
       {COPY.CURRENCY_LEGEND}
     </legend>
     <div className={RESERVATION_REFUND_CURRENCY_GRID_CLASS}>
-      {viewModel.currencyOptions.map((currency) => (
+      {currencyOptions.map((currency) => (
         <ReservationRefundCurrencyOption
           key={currency}
           description={COPY.CURRENCY_OPTION_DESCRIPTION(
             formatMoney({
               amount: resolveReservationRefundAvailable(
-                refund.refundable,
+                refundable,
                 currency
               ),
               currency,
@@ -39,10 +42,10 @@ const ReservationRefundCurrencyField = ({
           id={RESERVATION_REFUND_CURRENCY_OPTION_ID(
             currency
           )}
-          isDisabled={viewModel.isPending}
-          isSelected={viewModel.currency === currency}
+          isDisabled={isPending}
+          isSelected={selectedCurrency === currency}
           label={CURRENCY_NAME_COPY[currency]}
-          onSelect={viewModel.setCurrency}
+          onSelect={onSelect}
           value={currency}
         />
       ))}

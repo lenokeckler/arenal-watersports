@@ -1,4 +1,3 @@
-import { ARIA_ROLE } from "@/app/constants";
 import { Text } from "@/app/components";
 import { RESERVATION_REFUND_FORM_COPY as COPY } from "../constants/ReservationRefundFormCopy.constants";
 import { RESERVATION_REFUND_REASON_OPTIONS } from "../constants/ReservationRefundReason.constants";
@@ -17,11 +16,14 @@ import {
 import ReservationRefundReasonOption from "./ReservationRefundReasonOption";
 
 const ReservationRefundReasonField = ({
-  viewModel,
+  error,
+  isPending,
+  onSelect,
+  reason: selectedReason,
 }: ReservationRefundReasonFieldProps): React.JSX.Element => (
   <fieldset
     aria-describedby={
-      viewModel.errors.reason
+      error
         ? RESERVATION_REFUND_FIELD_ID.REASON_ERROR
         : undefined
     }
@@ -37,21 +39,21 @@ const ReservationRefundReasonField = ({
         <ReservationRefundReasonOption
           key={reason}
           id={RESERVATION_REFUND_REASON_OPTION_ID(reason)}
-          isDisabled={viewModel.isPending}
-          isSelected={viewModel.reason === reason}
+          isDisabled={isPending}
+          isInvalid={Boolean(error)}
+          isSelected={selectedReason === reason}
           label={RESERVATION_REFUND_REASON_COPY[reason]}
-          onSelect={viewModel.setReason}
+          onSelect={onSelect}
           value={reason}
         />
       ))}
     </div>
-    {viewModel.errors.reason && (
+    {error && (
       <Text
         id={RESERVATION_REFUND_FIELD_ID.REASON_ERROR}
-        role={ARIA_ROLE.ALERT}
         className={RESERVATION_REFUND_FIELD_ERROR_CLASS}
       >
-        {viewModel.errors.reason}
+        {error}
       </Text>
     )}
   </fieldset>
