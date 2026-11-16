@@ -42,3 +42,19 @@ export const RESERVATION_REFUND_FOCUS = {
 
 export const RESERVATION_REFUND_CURRENCY_ORDER: readonly CurrencyCode[] =
   [CURRENCY_CODE.USD, CURRENCY_CODE.CRC];
+
+export const RESERVATION_REFUND_DATE_FORMAT = {
+  LOCALE: "es-CR",
+  NOON_UTC_TIME: "T12:00:00Z",
+  OPTIONS: {
+    day: "numeric",
+    month: "long",
+    timeZone: "UTC",
+    weekday: "long",
+    year: "numeric",
+  },
+} as const satisfies {
+  LOCALE: string;
+  NOON_UTC_TIME: string;
+  OPTIONS: Intl.DateTimeFormatOptions;
+};
