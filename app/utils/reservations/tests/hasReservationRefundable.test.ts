@@ -4,6 +4,8 @@ import {
   CRC_EMPTY,
   CRC_REFUNDABLE,
   USD_EMPTY,
+  USD_NEGATIVE,
+  USD_ONE_CENT,
   USD_REFUNDABLE,
 } from "./hasReservationRefundable.constants";
 
@@ -31,5 +33,17 @@ describe("hasReservationRefundable", () => {
 
   it("is false when there are no amounts", () => {
     expect(hasReservationRefundable([])).toBe(false);
+  });
+
+  it("is false when the only amount is negative", () => {
+    expect(
+      hasReservationRefundable([USD_NEGATIVE, CRC_EMPTY])
+    ).toBe(false);
+  });
+
+  it("is true for a single cent", () => {
+    expect(hasReservationRefundable([USD_ONE_CENT])).toBe(
+      true
+    );
   });
 });

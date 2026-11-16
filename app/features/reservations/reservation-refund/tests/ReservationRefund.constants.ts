@@ -50,3 +50,37 @@ export const REFUND_READ_FAILURE = {
   hint: "",
   message: "database unavailable",
 };
+
+export const SPLIT_PARENT_ID =
+  "e2c20000-0000-4000-8000-000000000802";
+
+export const SPLIT_CHILD_ROW: ReservationRefundRow = {
+  ...SCHEDULED_ROW,
+  parent_reservation_id: SPLIT_PARENT_ID,
+};
+
+export const BEFORE_COSTA_RICA_MIDNIGHT_ROW: ReservationRefundRow =
+  {
+    ...SCHEDULED_ROW,
+    starts_at: "2026-11-03T03:30:00+00:00",
+  };
+
+export const EXPECTED_PREVIOUS_DAY = {
+  date: "2026-11-02",
+  time: "21:30",
+};
+
+export const CRC_FIRST_NET_ROWS: ReservationRefundNetRow[] =
+  [
+    {
+      currency: CURRENCY_CODE.CRC,
+      refundable_amount: 15000,
+    },
+    { currency: CURRENCY_CODE.USD, refundable_amount: 30 },
+  ];
+
+export const EXPECTED_CRC_FIRST: ReservationRefundableAmount[] =
+  [
+    { amount: 15000, currency: CURRENCY_CODE.CRC },
+    { amount: 30, currency: CURRENCY_CODE.USD },
+  ];

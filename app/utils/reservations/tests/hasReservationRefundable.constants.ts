@@ -20,3 +20,13 @@ export const CRC_EMPTY: ReservationRefundableAmount = {
   amount: 0,
   currency: CURRENCY_CODE.CRC,
 };
+
+export const USD_NEGATIVE: ReservationRefundableAmount = {
+  amount: -5,
+  currency: CURRENCY_CODE.USD,
+};
+
+export const USD_ONE_CENT: ReservationRefundableAmount = {
+  amount: 0.01,
+  currency: CURRENCY_CODE.USD,
+};
