@@ -7,6 +7,7 @@ import {
   BOTH_REFUNDABLE,
   CRC_ONLY_REFUNDABLE,
   EDITED_AMOUNT_TEXT,
+  NOTHING_REFUNDABLE,
 } from "./ReservationRefundForm.constants";
 import {
   AVAILABLE_CRC,
@@ -93,5 +94,30 @@ describe("useReservationRefundValues", () => {
       otherReasonText: STRING.Empty,
       reason: RESERVATION_REFUND_REASON.CANCELLED_TRIP,
     });
+  });
+
+  it("keeps the selected currency and recomputes the available amount when the refundable prop changes", () => {
+    const { result, rerender } = renderHook(
+      ({ refundable }) =>
+        useReservationRefundValues({ refundable }),
+      { initialProps: { refundable: BOTH_REFUNDABLE } }
+    );
+    act(() =>
+      result.current.setCurrency(CURRENCY_CODE.CRC)
+    );
+
+    rerender({ refundable: CRC_ONLY_REFUNDABLE });
+
+    expect(result.current.values.currency).toBe(
+      CURRENCY_CODE.CRC
+    );
+    expect(result.current.available).toBe(AVAILABLE_CRC);
+    expect(result.current.currencyOptions).toEqual([
+      CURRENCY_CODE.CRC,
+    ]);
+
+    rerender({ refundable: NOTHING_REFUNDABLE });
+
+    expect(result.current.available).toBe(0);
   });
 });
