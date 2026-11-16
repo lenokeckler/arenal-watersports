@@ -156,3 +156,13 @@ The administration worker keeps the list of extras that reservations can add to 
 - [x] On success the worker sees a toast and returns to the categories screen with the counts refreshed.
 - [x] Offline or failed saves show a clear Spanish message and keep the selection.
 - [ ] Offering only the matching extras when building a reservation is carried by a later US-ADM-20 PR.
+
+## 20.05 Extra compatibility E2E (US-ADM-20)
+
+| Requirement                                                                                                                                | Test                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------- |
+| From the extras list, Embarcaciones opens the categories; a unit is checked and saved; the toast, the new count and the card label show it | `e2e/specs/extra-compatibility.e2e.ts` |
+| Reopening the category shows the saved units checked                                                                                       | `e2e/specs/extra-compatibility.e2e.ts` |
+| Saving one category keeps the links of another category                                                                                    | `e2e/specs/extra-compatibility.e2e.ts` |
+| Quitar todas and Guardar clear the links and the card says Sin embarcaciones; Marcar todas links every unit; Cancelar saves nothing        | `e2e/specs/extra-compatibility.e2e.ts` |
+| Every category card, unit row and helper button is at least 44 px tall, on mobile and desktop                                              | `e2e/specs/extra-compatibility.e2e.ts` |
