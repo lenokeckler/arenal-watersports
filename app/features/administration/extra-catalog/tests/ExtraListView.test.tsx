@@ -1,13 +1,20 @@
 import { refreshMock } from "./extraCardActions.harness";
 import { beforeEach, describe, expect, it } from "vitest";
-import { CURRENCY_CODE, PATHS } from "@/app/constants";
+import {
+  CURRENCY_CODE,
+  LENGTH,
+  PATHS,
+} from "@/app/constants";
 import { formatMoney } from "@/app/utils/money/formatMoney";
 import { resolveListPageHref } from "@/app/utils/list-pagination/resolveListPageHref";
 import { EXTRA_STATUS } from "../constants/ExtraStatus.constants";
 import { EXTRA_STATUS_LABEL } from "../constants/ExtraStatusLabel.constants";
+import { buildExtraCompatibilityLabel } from "../utils/buildExtraCompatibilityLabel";
+import { resolveExtraCompatibilityPath } from "../utils/resolveExtraCompatibilityPath";
 import { resolveExtraEditPath } from "../utils/resolveExtraEditPath";
 import {
   DEFAULT_EXTRA,
+  FAKE_EXTRA_COMPATIBLE_UNIT_COUNT,
   FAKE_EXTRA_PRICE_CRC,
   FAKE_EXTRA_PRICE_USD,
 } from "./Extra.constants";
@@ -62,6 +69,48 @@ describe("ExtraListView", () => {
       resolveExtraEditPath(SECOND_EXTRA_ID)
     );
   });
+
+  it("links each card to the compatibility screen of its extra", () => {
+    renderExtraListView({
+      extras: [
+        DEFAULT_EXTRA,
+        buildExtra({
+          id: SECOND_EXTRA_ID,
+          name: SECOND_EXTRA_NAME,
+        }),
+      ],
+    });
+    const extraListPage = createExtraListPage();
+
+    expect(
+      extraListPage.getCompatibilityLink(DEFAULT_EXTRA.name)
+    ).toHaveAttribute(
+      "href",
+      resolveExtraCompatibilityPath(DEFAULT_EXTRA.id)
+    );
+    expect(
+      extraListPage.getCompatibilityLink(SECOND_EXTRA_NAME)
+    ).toHaveAttribute(
+      "href",
+      resolveExtraCompatibilityPath(SECOND_EXTRA_ID)
+    );
+  });
+
+  it.each([0, 1, FAKE_EXTRA_COMPATIBLE_UNIT_COUNT])(
+    "shows how many units an extra with %i linked units applies to",
+    (compatibleUnitCount) => {
+      renderExtraListView({
+        extras: [buildExtra({ compatibleUnitCount })],
+      });
+
+      expect(
+        createExtraListPage().queryCompatibilityLabel(
+          DEFAULT_EXTRA.name,
+          buildExtraCompatibilityLabel(compatibleUnitCount)
+        )
+      ).toBeInTheDocument();
+    }
+  );
 
   it("shows the dollar and the colon price of an extra that has both", () => {
     renderExtraListView({

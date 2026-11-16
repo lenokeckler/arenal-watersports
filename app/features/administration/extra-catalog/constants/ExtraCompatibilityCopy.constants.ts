@@ -10,6 +10,7 @@ export const EXTRA_COMPATIBILITY_COPY = {
     "La solicitud no es válida. Recargue la pantalla e intente de nuevo.",
   INVALID_SELECTION_ERROR:
     "La selección incluye una embarcación que no pertenece a esta categoría.",
+  LINK: "Embarcaciones",
   NOT_FOUND_ERROR:
     "No se encontró el extra o una de las embarcaciones. Es posible que otra persona la haya eliminado.",
   NO_UNITS: "Sin embarcaciones",

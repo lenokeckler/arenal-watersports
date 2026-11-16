@@ -16,6 +16,9 @@ export const EXTRA_CARD_PRICES_CLASS =
 export const EXTRA_CARD_PRICE_CLASS =
   "text-sm font-medium text-on-surface-variant";
 
+export const EXTRA_CARD_COMPATIBILITY_LABEL_CLASS =
+  "text-sm font-medium text-on-surface-variant";
+
 export const EXTRA_CARD_NAME_CLASS =
   "min-w-0 break-words text-title-md font-medium text-on-surface";
 
