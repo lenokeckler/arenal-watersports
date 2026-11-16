@@ -12,6 +12,10 @@ values
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"e2c20000-0000-4000-8000-000000000001","role":"authenticated"}';
 
+create temporary table report_baseline as
+select refunds_amount, net_amount from daily_revenue_report
+where day = (now() at time zone 'UTC')::date and currency = 'CRC';
+
 select throws_ok(
   $$ select record_reservation_refund('[]'::jsonb) $$,
   'P0001', 'Reservation payload must be an object', 'an array payload is refused'
@@ -169,10 +173,11 @@ select throws_ok(
 );
 
 select results_eq(
-  $$ select refunds_amount, net_amount from daily_revenue_report
-     where day = (now() at time zone 'UTC')::date and currency = 'CRC' $$,
-  $$ values (1000::numeric, 2500.50::numeric) $$,
-  'the daily report reflects the CRC refunds apart from USD'
+  $$ select report.refunds_amount - baseline.refunds_amount, report.net_amount - baseline.net_amount
+     from daily_revenue_report report, report_baseline baseline
+     where report.day = (now() at time zone 'UTC')::date and report.currency = 'CRC' $$,
+  $$ values (1000::numeric, -1000::numeric) $$,
+  'the daily report moves by the CRC refunds apart from USD'
 );
 
 set local request.jwt.claims to '{"sub":"e2c20000-0000-4000-8000-000000000002","role":"authenticated"}';
