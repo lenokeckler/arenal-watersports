@@ -10,14 +10,24 @@ const CHARGE_LINK_QUERY = {
   ),
 };
 
+const REFUND_LINK_QUERY = {
+  name: RESERVATION_DETAIL_CHARGES_COPY.RECORD_REFUND_LABEL(
+    RESERVATION_DETAIL_TEST.RESERVATION_CODE
+  ),
+};
+
 export const createReservationDetailChargesPage =
   (): ReservationDetailChargesPage => ({
     getChargeLink: (): HTMLElement =>
       screen.getByRole(ARIA_ROLE.LINK, CHARGE_LINK_QUERY),
+    getRefundLink: (): HTMLElement =>
+      screen.getByRole(ARIA_ROLE.LINK, REFUND_LINK_QUERY),
     getRegion: (): HTMLElement =>
       screen.getByRole(ARIA_ROLE.REGION, {
         name: RESERVATION_DETAIL_CHARGES_COPY.CHARGE_STATUS,
       }),
     queryChargeLink: (): HTMLElement | null =>
       screen.queryByRole(ARIA_ROLE.LINK, CHARGE_LINK_QUERY),
+    queryRefundLink: (): HTMLElement | null =>
+      screen.queryByRole(ARIA_ROLE.LINK, REFUND_LINK_QUERY),
   });
