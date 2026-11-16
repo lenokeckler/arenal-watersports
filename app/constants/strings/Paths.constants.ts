@@ -32,6 +32,7 @@ export const PATHS = {
     MOVEMENT: "/administration/reports/movement",
     MAINTENANCE_COST:
       "/administration/reports/maintenance-cost",
+    EXTRA_COMPATIBILITY_SEGMENT: "compatibility",
     EXTRAS: "/administration/extras",
     EXTRAS_NEW: "/administration/extras/new",
     INCOME: "/administration/income",
