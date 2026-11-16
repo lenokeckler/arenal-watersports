@@ -22,7 +22,7 @@ export const useReservationRefundSend = (
   const send = (): Promise<void> =>
     runLocked(async () => {
       showErrors(RESERVATION_REFUND_NO_ERRORS);
-      const result = await submitReservationRefund({
+      const { result } = await submitReservationRefund({
         ...values,
         reservationId,
       });

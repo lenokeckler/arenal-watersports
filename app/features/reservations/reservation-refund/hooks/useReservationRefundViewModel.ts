@@ -2,7 +2,7 @@
 
 import type { ReservationRefund } from "../models/ReservationRefund.interface";
 import type { ReservationRefundViewModel } from "../models/ReservationRefundViewModel.interface";
-import { useReservationRefundEdit } from "./useReservationRefundEdit";
+import { createReservationRefundEdit } from "../utils/createReservationRefundEdit";
 import { useReservationRefundSubmission } from "./useReservationRefundSubmission";
 import { useReservationRefundValues } from "./useReservationRefundValues";
 
@@ -31,7 +31,7 @@ export const useReservationRefundViewModel = (
     available
   );
 
-  const edit = useReservationRefundEdit(
+  const edit = createReservationRefundEdit(
     isPending,
     clearErrors
   );
