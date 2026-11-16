@@ -7,6 +7,10 @@ export const RESERVATION_REFUND_FEEDBACK_COPY = {
     "No se pudo registrar la devolución. Revise su conexión e intente de nuevo.",
   NOT_FOUND:
     "No encontramos la reserva. Vuelva al calendario y ábrala de nuevo.",
+  OFFLINE:
+    "No hay conexión. La devolución no se registró; inténtelo de nuevo cuando tenga señal.",
   REQUEST_REJECTED:
     "No se pudo registrar la devolución. Vuelva a abrir la devolución e intente de nuevo.",
+  UNCONFIRMED:
+    "No pudimos confirmar la devolución. Revise las devoluciones de la reserva antes de volver a intentarlo.",
 } as const;
