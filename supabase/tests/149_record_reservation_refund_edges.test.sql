@@ -1,5 +1,5 @@
 begin;
-select plan(32);
+select plan(34);
 \ir fixtures/reservation_charge.sql.fixture
 
 insert into reservation_charges (reservation_id, kind, amount, currency, payment_method, created_by)
@@ -116,6 +116,20 @@ select results_eq(
        'reservation_id', 'e2c20000-0000-4000-8000-000000000302', 'currency', 'USD', 'amount', 1, 'reason', chr(160) || chr(8203) || 'Rain cut' || chr(160))) $$,
   $$ values ('Rain cut') $$,
   'invisible characters around a reason are trimmed'
+);
+
+select results_eq(
+  $$ select refunded_reason from record_reservation_refund(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000302', 'currency', 'USD', 'amount', 1, 'reason', 'Lluvia cortó la salida: añadió ñandú, pingüino y café')) $$,
+  $$ values ('Lluvia cortó la salida: añadió ñandú, pingüino y café') $$,
+  'accented Spanish letters in a reason are kept unchanged'
+);
+
+select results_eq(
+  $$ select refunded_reason from record_reservation_refund(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000302', 'currency', 'USD', 'amount', 1, 'reason', ' ' || chr(127783) || ' Lluvia ' || chr(127783) || ' ')) $$,
+  $$ values (chr(127783) || ' Lluvia ' || chr(127783)) $$,
+  'emoji at the edges of a reason are kept and only the spaces are trimmed'
 );
 
 select throws_ok(
