@@ -1,7 +1,7 @@
 import { RESERVATION_REFUND_REASON } from "../constants/ReservationRefundReason.constants";
 import {
-  RESERVATION_REFUND_OTHER_REASON_REFUSALS,
   RESERVATION_REFUND_REFUSALS,
+  RESERVATION_REFUND_REFUSALS_FOR_OTHER_REASON,
 } from "../constants/ReservationRefundRefusals.constants";
 import type { ReservationRefundActionResult } from "../models/ReservationRefundActionResult.type";
 import type { ReservationRefundValues } from "../models/ReservationRefundValues.interface";
@@ -16,10 +16,7 @@ export const mapReservationRefundError = (
 
   const refusals =
     reason === RESERVATION_REFUND_REASON.OTHER
-      ? [
-          ...RESERVATION_REFUND_OTHER_REASON_REFUSALS,
-          ...RESERVATION_REFUND_REFUSALS,
-        ]
+      ? RESERVATION_REFUND_REFUSALS_FOR_OTHER_REASON
       : RESERVATION_REFUND_REFUSALS;
 
   const refusal = refusals.find(({ message }) =>

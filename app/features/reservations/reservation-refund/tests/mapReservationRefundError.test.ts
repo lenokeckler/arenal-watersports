@@ -2,26 +2,18 @@ import { describe, expect, it } from "vitest";
 import { RESERVATION_REFUND_ERROR } from "../constants/ReservationRefundError.constants";
 import { RESERVATION_REFUND_FEEDBACK_COPY as FEEDBACK } from "../constants/ReservationRefundFeedbackCopy.constants";
 import { RESERVATION_REFUND_REASON } from "../constants/ReservationRefundReason.constants";
-import {
-  RESERVATION_REFUND_OTHER_REASON_REFUSALS,
-  RESERVATION_REFUND_REFUSALS,
-} from "../constants/ReservationRefundRefusals.constants";
-import { RESERVATION_REFUND_VALIDATION_COPY as VALIDATION } from "../constants/ReservationRefundValidationCopy.constants";
+import { RESERVATION_REFUND_REFUSALS } from "../constants/ReservationRefundRefusals.constants";
 import { mapReservationRefundError } from "../utils/mapReservationRefundError";
 import {
-  REFUND_CONNECTION_HINT,
+  REFUND_NON_ERROR_THROWN,
   REFUND_POSTGRES_PREFIX,
+  REFUND_SUPABASE_WRAP_PREFIX,
+  REFUND_SUPABASE_WRAP_SUFFIX,
   REFUND_UNEXPECTED_ERROR,
 } from "./ReservationRefundAction.constants";
 
 const { MESSAGE } = RESERVATION_REFUND_ERROR;
-const { CANCELLED_TRIP, OTHER } = RESERVATION_REFUND_REASON;
-
-const REASON_MESSAGES = [
-  MESSAGE.REASON_INVALID,
-  MESSAGE.REASON_REQUIRED,
-  MESSAGE.REASON_TOO_LONG,
-];
+const { CANCELLED_TRIP } = RESERVATION_REFUND_REASON;
 
 describe("mapReservationRefundError", () => {
   it.each(RESERVATION_REFUND_REFUSALS)(
@@ -53,75 +45,6 @@ describe("mapReservationRefundError", () => {
     );
   });
 
-  it.each(REASON_MESSAGES)(
-    "puts %s under the free text when the reason is other",
-    (message) => {
-      const result = mapReservationRefundError(
-        new Error(message),
-        OTHER
-      );
-
-      expect(result).toMatchObject({ ok: false });
-      expect(result).toHaveProperty(
-        "errors.otherReason",
-        expect.any(String)
-      );
-      expect(result).not.toHaveProperty("errors.reason");
-    }
-  );
-
-  it.each(REASON_MESSAGES)(
-    "keeps %s under the reason when a preset is chosen",
-    (message) => {
-      const result = mapReservationRefundError(
-        new Error(message),
-        CANCELLED_TRIP
-      );
-
-      expect(result).toHaveProperty(
-        "errors.reason",
-        expect.any(String)
-      );
-      expect(result).not.toHaveProperty(
-        "errors.otherReason"
-      );
-    }
-  );
-
-  it("asks for the text, not for a choice, when the other text is required", () => {
-    expect(
-      mapReservationRefundError(
-        new Error(MESSAGE.REASON_REQUIRED),
-        OTHER
-      )
-    ).toEqual({
-      ok: false,
-      errors: { otherReason: VALIDATION.OTHER_REQUIRED },
-      formError: undefined,
-    });
-  });
-
-  it("defines a free text row for each reason refusal", () => {
-    expect(
-      RESERVATION_REFUND_OTHER_REASON_REFUSALS.map(
-        ({ message }) => message
-      ).toSorted()
-    ).toEqual(REASON_MESSAGES.toSorted());
-  });
-
-  it("leaves the other refusals untouched when the reason is other", () => {
-    expect(
-      mapReservationRefundError(
-        new Error(MESSAGE.EXCEEDS_NET),
-        OTHER
-      )
-    ).toEqual({
-      ok: false,
-      errors: {},
-      formError: FEEDBACK.ABOVE_AVAILABLE,
-    });
-  });
-
   it.each([
     MESSAGE.AUTHENTICATION_REQUIRED,
     MESSAGE.PAYLOAD_NOT_OBJECT,
@@ -137,9 +60,9 @@ describe("mapReservationRefundError", () => {
       expect(result).toMatchObject({
         formError: FEEDBACK.REQUEST_REJECTED,
       });
-      expect(FEEDBACK.REQUEST_REJECTED).not.toContain(
-        REFUND_CONNECTION_HINT
-      );
+      expect(result).not.toMatchObject({
+        formError: FEEDBACK.GENERIC,
+      });
     }
   );
 
@@ -155,15 +78,15 @@ describe("mapReservationRefundError", () => {
   it("rethrows what is not an error", () => {
     expect(() =>
       mapReservationRefundError(
-        REFUND_POSTGRES_PREFIX,
+        REFUND_NON_ERROR_THROWN,
         CANCELLED_TRIP
       )
-    ).toThrow();
+    ).toThrow(REFUND_NON_ERROR_THROWN);
   });
 
   it("maps a refusal wrapped by the supabase error", () => {
     const wrapped = new Error(
-      `Supabase query failed: record reservation refund: ${MESSAGE.NOT_FOUND} (P0001)`
+      `${REFUND_SUPABASE_WRAP_PREFIX}${RESERVATION_REFUND_ERROR.OPERATION.RECORD}: ${MESSAGE.NOT_FOUND}${REFUND_SUPABASE_WRAP_SUFFIX}`
     );
 
     expect(

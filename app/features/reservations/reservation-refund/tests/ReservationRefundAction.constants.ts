@@ -41,6 +41,20 @@ export const EXCEEDS_NET_FAILURE = {
 
 export const REFUND_POSTGRES_PREFIX = "P0001: ";
 
+export const REFUND_NON_ERROR_THROWN =
+  "Unexpected refund value";
+
+export const REFUND_SUPABASE_WRAP_PREFIX =
+  "Supabase query failed: ";
+
+export const REFUND_SUPABASE_WRAP_SUFFIX = " (P0001)";
+
+export const REFUND_REASON_MESSAGES = [
+  RESERVATION_REFUND_ERROR.MESSAGE.REASON_INVALID,
+  RESERVATION_REFUND_ERROR.MESSAGE.REASON_REQUIRED,
+  RESERVATION_REFUND_ERROR.MESSAGE.REASON_TOO_LONG,
+];
+
 export const REFUND_UNEXPECTED_ERROR = new Error(
   "Unexpected refund failure"
 );

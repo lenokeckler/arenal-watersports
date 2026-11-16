@@ -84,3 +84,9 @@ export const RESERVATION_REFUND_OTHER_REASON_REFUSALS: readonly ReservationRefun
       message: MESSAGE.REASON_TOO_LONG,
     },
   ];
+
+export const RESERVATION_REFUND_REFUSALS_FOR_OTHER_REASON: readonly ReservationRefundRefusal[] =
+  [
+    ...RESERVATION_REFUND_OTHER_REASON_REFUSALS,
+    ...RESERVATION_REFUND_REFUSALS,
+  ];
