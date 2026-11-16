@@ -1,5 +1,7 @@
 import { CURRENCY_CODE } from "@/app/constants";
 import type { ReservationRefundableAmount } from "@/app/utils/reservations/models/ReservationRefundableAmount.interface";
+import type { ReservationRefund } from "../models/ReservationRefund.interface";
+import { EXPECTED_SCHEDULED } from "./ReservationRefund.constants";
 import {
   AVAILABLE_CRC,
   AVAILABLE_USD,
@@ -30,3 +32,12 @@ export const NOTHING_REFUNDABLE: ReservationRefundableAmount[] =
   ];
 
 export const NETWORK_FAILURE = new Error("Failed to fetch");
+
+export const BOTH_REFUND: ReservationRefund = {
+  ...EXPECTED_SCHEDULED,
+  refundable: BOTH_REFUNDABLE,
+};
+
+export const EDITED_AMOUNT_TEXT = "10.00";
+
+export const ABOVE_USD_AMOUNT_TEXT = "30.01";
