@@ -7,5 +7,6 @@ export interface ReservationRefundViewModel
     ReservationRefundValues,
     Omit<ReservationRefundSubmission, "clearErrors">,
     Omit<ReservationRefundValuesState, "values"> {
+  hasCurrencyChoice: boolean;
   isSubmitDisabled: boolean;
 }

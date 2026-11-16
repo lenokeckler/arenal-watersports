@@ -1,5 +1,6 @@
 "use client";
 
+import { RESERVATION_REFUND_SINGLE_CURRENCY_COUNT } from "../constants/ReservationRefundUi.constants";
 import type { ReservationRefund } from "../models/ReservationRefund.interface";
 import type { ReservationRefundViewModel } from "../models/ReservationRefundViewModel.interface";
 import { createReservationRefundEdit } from "../utils/createReservationRefundEdit";
@@ -44,6 +45,9 @@ export const useReservationRefundViewModel = (
     errors,
     formError,
     handleSubmit,
+    hasCurrencyChoice:
+      currencyOptions.length >
+      RESERVATION_REFUND_SINGLE_CURRENCY_COUNT,
     isPending,
     isSubmitDisabled:
       isPending || mayBeRecorded || recorded !== null,
