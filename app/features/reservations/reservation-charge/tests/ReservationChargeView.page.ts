@@ -73,6 +73,11 @@ export const createReservationChargeViewPage = () => {
     getCurrency,
     getOtherMethod,
     getPaymentChoice,
+    getPaymentGroup: () =>
+      screen.getByRole(ARIA_ROLE.GROUP, {
+        name: COPY.LABEL_METHOD,
+      }),
+    queryAlert: () => screen.queryByRole(ARIA_ROLE.ALERT),
     getPaymentChoices: () =>
       screen
         .getAllByRole<HTMLInputElement>(ARIA_ROLE.RADIO)

@@ -41,12 +41,6 @@ export const createReservationChargePage = (page: Page) => {
       exact: true,
     });
 
-  const getMethodOption = (label: string): Locator =>
-    main.getByRole(ARIA_ROLE.RADIO, {
-      name: label,
-      exact: true,
-    });
-
   const selectMethod = (label: string): Promise<void> =>
     main.getByText(label, { exact: true }).click();
 
@@ -92,7 +86,6 @@ export const createReservationChargePage = (page: Page) => {
       main.getByRole(ARIA_ROLE.BUTTON, {
         name: copy.ADD_CURRENCY[currency],
       }),
-    getMethodOption,
     selectMethod,
     getAlert: (): Locator =>
       main.getByRole(ARIA_ROLE.ALERT),

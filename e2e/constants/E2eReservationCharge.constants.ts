@@ -54,10 +54,10 @@ export const E2E_RESERVATION_CHARGE_SCREENSHOT_STATE = {
   CURRENCY: "currency",
   DETAIL: "detail",
   ERROR: "error",
-  OTHER: "other",
   FORM: "form",
   MIXED: "mixed",
   MIXED_SUCCESS: "mixed-success",
+  OTHER: "other",
   SUCCESS: "success",
   UNAVAILABLE: "unavailable",
 } as const;
