@@ -24,6 +24,7 @@ export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
   "/administration/categories/[categoryId]/units/[unitId]",
   "/administration/categories/[categoryId]/units/new",
   "/administration/extras/[extraId]",
+  "/administration/extras/[extraId]/compatibility",
   "/board/categories/[categoryId]",
   "/operations/unit-photos/[unitId]",
   "/operations/unit-readings/[unitId]",

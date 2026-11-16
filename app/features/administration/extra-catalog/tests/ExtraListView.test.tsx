@@ -96,7 +96,11 @@ describe("ExtraListView", () => {
     );
   });
 
-  it.each([0, 1, FAKE_EXTRA_COMPATIBLE_UNIT_COUNT])(
+  it.each([
+    LENGTH.ZERO,
+    LENGTH.ONE,
+    FAKE_EXTRA_COMPATIBLE_UNIT_COUNT,
+  ])(
     "shows how many units an extra with %i linked units applies to",
     (compatibleUnitCount) => {
       renderExtraListView({
