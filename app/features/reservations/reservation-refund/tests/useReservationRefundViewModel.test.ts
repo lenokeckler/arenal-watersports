@@ -8,14 +8,17 @@ import {
 } from "vitest";
 import { CURRENCY_CODE, STRING } from "@/app/constants";
 import { recordReservationRefundAction } from "../actions/recordReservationRefundAction";
+import { RESERVATION_REFUND_FEEDBACK_COPY as FEEDBACK } from "../constants/ReservationRefundFeedbackCopy.constants";
 import { RESERVATION_REFUND_REASON } from "../constants/ReservationRefundReason.constants";
 import { RESERVATION_REFUND_VALIDATION_COPY as VALIDATION } from "../constants/ReservationRefundValidationCopy.constants";
 import { useReservationRefundViewModel } from "../hooks/useReservationRefundViewModel";
 import type { ReservationRefundActionResult } from "../models/ReservationRefundActionResult.type";
 import { REFUND_RECORDED } from "./ReservationRefundAction.constants";
 import {
+  CRC_ONLY_AMOUNT_TEXT,
   BOTH_REFUND,
   EDITED_AMOUNT_TEXT,
+  NETWORK_FAILURE,
 } from "./ReservationRefundForm.constants";
 import { AVAILABLE_CRC } from "./ReservationRefundValues.constants";
 
@@ -139,5 +142,65 @@ describe("useReservationRefundViewModel", () => {
       REFUND_RECORDED
     );
     expect(result.current.isSubmitDisabled).toBe(true);
+  });
+
+  it("refuses a typed amount above the available of the new currency", async () => {
+    const { result } = renderViewModel();
+    act(() =>
+      result.current.setCurrency(CURRENCY_CODE.CRC)
+    );
+    act(() =>
+      result.current.setAmountText(CRC_ONLY_AMOUNT_TEXT)
+    );
+    act(() =>
+      result.current.setReason(
+        RESERVATION_REFUND_REASON.CANCELLED_TRIP
+      )
+    );
+    act(() =>
+      result.current.setCurrency(CURRENCY_CODE.USD)
+    );
+
+    await act(() =>
+      Promise.resolve(result.current.handleSubmit())
+    );
+
+    expect(result.current.errors.amount).toBeDefined();
+    expect(
+      recordReservationRefundAction
+    ).not.toHaveBeenCalled();
+  });
+
+  it("locks submit and keeps the alert after an unconfirmed failure", async () => {
+    vi.mocked(
+      recordReservationRefundAction
+    ).mockRejectedValue(NETWORK_FAILURE);
+    const { result } = renderViewModel();
+    act(() =>
+      result.current.setAmountText(EDITED_AMOUNT_TEXT)
+    );
+    act(() =>
+      result.current.setReason(
+        RESERVATION_REFUND_REASON.CANCELLED_TRIP
+      )
+    );
+    await act(() =>
+      Promise.resolve(result.current.handleSubmit())
+    );
+
+    act(() =>
+      result.current.setAmountText(EDITED_AMOUNT_TEXT)
+    );
+    await act(() =>
+      Promise.resolve(result.current.handleSubmit())
+    );
+
+    expect(result.current.isSubmitDisabled).toBe(true);
+    expect(result.current.formError).toBe(
+      FEEDBACK.UNCONFIRMED
+    );
+    expect(
+      recordReservationRefundAction
+    ).toHaveBeenCalledTimes(1);
   });
 });
