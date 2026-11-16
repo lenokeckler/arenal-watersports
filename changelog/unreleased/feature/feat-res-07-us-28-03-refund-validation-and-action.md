@@ -1,1 +1,1 @@
-RES-07.28.03: Refund validation and action — the refund input is validated and recorded through a server action that maps every refusal to Spanish copy (US-RES-28 · AWS-111)
+RES-07.28.03: Refund validation — the refund amount and reason are validated like the database does, and every refusal maps to Spanish copy (US-RES-28 · AWS-111)
