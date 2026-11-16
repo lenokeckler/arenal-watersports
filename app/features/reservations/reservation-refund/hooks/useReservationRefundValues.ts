@@ -5,7 +5,6 @@ import type { ReservationRefund } from "../models/ReservationRefund.interface";
 import type { ReservationRefundValuesState } from "../models/ReservationRefundValuesState.interface";
 import { resolveReservationRefundAvailable } from "../utils/resolveReservationRefundAvailable";
 import { resolveReservationRefundCurrencyOptions } from "../utils/resolveReservationRefundCurrencyOptions";
-import { resolveReservationRefundCurrencySwitch } from "../utils/resolveReservationRefundCurrencySwitch";
 import { resolveReservationRefundInitialValues } from "../utils/resolveReservationRefundInitialValues";
 import { resolveReservationRefundReasonSwitch } from "../utils/resolveReservationRefundReasonSwitch";
 
@@ -33,12 +32,7 @@ export const useReservationRefundValues = ({
     setAmountText: (amountText) =>
       setValues((current) => ({ ...current, amountText })),
     setCurrency: (currency) =>
-      setValues((current) =>
-        resolveReservationRefundCurrencySwitch(
-          current,
-          currency
-        )
-      ),
+      setValues((current) => ({ ...current, currency })),
     setOtherReasonText: (otherReasonText) =>
       setValues((current) => ({
         ...current,

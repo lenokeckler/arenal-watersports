@@ -1,15 +1,15 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { PATHS } from "@/app/constants";
 import { assertReservationCalendarAccess } from "@/app/services/reservations/assertReservationCalendarAccess";
 import { RESERVATION_REFUND_FEEDBACK_COPY } from "../constants/ReservationRefundFeedbackCopy.constants";
 import type { ReservationRefundActionResult } from "../models/ReservationRefundActionResult.type";
+import type { ReservationRefundRecorded } from "../models/ReservationRefundRecorded.interface";
 import { recordReservationRefund } from "../services/recordReservationRefund";
 import { buildReservationRefundCommand } from "../utils/buildReservationRefundCommand";
 import { isReservationRefundInput } from "../utils/isReservationRefundInput";
 import { mapReservationRefundError } from "../utils/mapReservationRefundError";
 import { resolveReservationRefundErrors } from "../utils/resolveReservationRefundErrors";
+import { revalidateReservationRefundPaths } from "../utils/revalidateReservationRefundPaths";
 
 export const recordReservationRefundAction = async (
   input: unknown
@@ -31,16 +31,16 @@ export const recordReservationRefundAction = async (
     return { ok: false, errors };
   }
 
+  let recorded: ReservationRefundRecorded;
+
   try {
-    const recorded = await recordReservationRefund(
+    recorded = await recordReservationRefund(
       buildReservationRefundCommand(input)
     );
-    revalidatePath(
-      PATHS.RESERVATIONS.DETAIL(input.reservationId)
-    );
-    revalidatePath(PATHS.RESERVATIONS.INCOME);
-    return { ok: true, recorded };
   } catch (error) {
     return mapReservationRefundError(error, input.reason);
   }
+
+  revalidateReservationRefundPaths(input.reservationId);
+  return { ok: true, recorded };
 };

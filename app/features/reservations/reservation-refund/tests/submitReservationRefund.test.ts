@@ -37,7 +37,7 @@ describe("submitReservationRefund", () => {
 
     await expect(
       submitReservationRefund(VALID_REFUND_INPUT)
-    ).resolves.toBe(result);
+    ).resolves.toEqual({ mayBeRecorded: false, result });
   });
 
   it("answers offline without calling the action", async () => {
@@ -46,16 +46,19 @@ describe("submitReservationRefund", () => {
     await expect(
       submitReservationRefund(VALID_REFUND_INPUT)
     ).resolves.toEqual({
-      errors: {},
-      formError: FEEDBACK.OFFLINE,
-      ok: false,
+      mayBeRecorded: false,
+      result: {
+        errors: {},
+        formError: FEEDBACK.OFFLINE,
+        ok: false,
+      },
     });
     expect(
       recordReservationRefundAction
     ).not.toHaveBeenCalled();
   });
 
-  it("reports an unconfirmed refund when the action throws", async () => {
+  it("flags a refund that may be recorded when the action throws", async () => {
     vi.mocked(
       recordReservationRefundAction
     ).mockRejectedValue(NETWORK_FAILURE);
@@ -63,9 +66,12 @@ describe("submitReservationRefund", () => {
     await expect(
       submitReservationRefund(VALID_REFUND_INPUT)
     ).resolves.toEqual({
-      errors: {},
-      formError: FEEDBACK.UNCONFIRMED,
-      ok: false,
+      mayBeRecorded: true,
+      result: {
+        errors: {},
+        formError: FEEDBACK.UNCONFIRMED,
+        ok: false,
+      },
     });
   });
 });
