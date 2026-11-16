@@ -108,39 +108,7 @@ describe("useReservationChargeValues", () => {
     );
   });
 
-  it("stores the chosen chip", () => {
-    const { result } = renderHook(() =>
-      useReservationChargeValues(BOTH_PROPOSAL)
-    );
-
-    act(() =>
-      result.current.setPaymentChoice(
-        RESERVATION_CHARGE_PAYMENT_CHOICE.PAYPAL
-      )
-    );
-
-    expect(result.current.values.paymentChoice).toBe(
-      RESERVATION_CHARGE_PAYMENT_CHOICE.PAYPAL
-    );
-  });
-
-  it("stores the other method text", () => {
-    const { result } = renderHook(() =>
-      useReservationChargeValues(BOTH_PROPOSAL)
-    );
-
-    act(() =>
-      result.current.setOtherPaymentMethod(
-        OTHER_METHOD_TEXT
-      )
-    );
-
-    expect(result.current.values.otherPaymentMethod).toBe(
-      OTHER_METHOD_TEXT
-    );
-  });
-
-  it("keeps the other text when another chip is chosen and Otro is chosen again", () => {
+  it("stores the chip and keeps the other text through another chip and back", () => {
     const { result } = renderHook(() =>
       useReservationChargeValues(BOTH_PROPOSAL)
     );
@@ -166,6 +134,9 @@ describe("useReservationChargeValues", () => {
       )
     );
 
+    expect(result.current.values.paymentChoice).toBe(
+      RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER
+    );
     expect(result.current.values.otherPaymentMethod).toBe(
       OTHER_METHOD_TEXT
     );

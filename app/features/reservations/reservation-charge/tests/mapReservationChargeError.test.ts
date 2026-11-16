@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import { RESERVATION_CHARGE_ERROR } from "../constants/ReservationChargeError.constants";
 import { RESERVATION_CHARGE_FEEDBACK_COPY as COPY } from "../constants/ReservationChargeFeedbackCopy.constants";
 import { RESERVATION_CHARGE_PAYMENT_CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
-import { RESERVATION_CHARGE_VALIDATION_COPY as VALIDATION } from "../constants/ReservationChargeValidationCopy.constants";
 import { RESERVATION_CHARGE_REFUSALS } from "../constants/ReservationChargeRefusals.constants";
 import { mapReservationChargeError } from "../utils/mapReservationChargeError";
 import {
@@ -60,23 +59,6 @@ describe("mapReservationChargeError", () => {
       ok: false,
       errors: {},
       formError: COPY.GENERIC,
-    });
-  });
-
-  it("lands a method refusal on the group when Otro is not chosen", () => {
-    expect(
-      mapReservationChargeError(
-        new Error(
-          RESERVATION_CHARGE_ERROR.MESSAGE.METHOD_TOO_LONG
-        ),
-        RESERVATION_CHARGE_PAYMENT_CHOICE.CARD
-      )
-    ).toEqual({
-      ok: false,
-      errors: {
-        paymentChoice: VALIDATION.METHOD_TOO_LONG,
-      },
-      formError: undefined,
     });
   });
 

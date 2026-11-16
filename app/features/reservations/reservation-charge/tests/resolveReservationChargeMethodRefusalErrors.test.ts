@@ -1,36 +1,35 @@
 import { describe, expect, it } from "vitest";
-import { RESERVATION_CHARGE_PAYMENT_CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
+import { RESERVATION_CHARGE_PAYMENT_CHOICE as CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
 import { RESERVATION_CHARGE_VALIDATION_COPY as COPY } from "../constants/ReservationChargeValidationCopy.constants";
 import { resolveReservationChargeMethodRefusalErrors } from "../utils/resolveReservationChargeMethodRefusalErrors";
 
 describe("resolveReservationChargeMethodRefusalErrors", () => {
-  it("lands on the other field when Otro is chosen", () => {
-    expect(
-      resolveReservationChargeMethodRefusalErrors(
-        COPY.OTHER_REQUIRED,
-        RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER
-      )
-    ).toEqual({ otherPaymentMethod: COPY.OTHER_REQUIRED });
-  });
-
-  it.each([RESERVATION_CHARGE_PAYMENT_CHOICE.CASH, null])(
-    "lands on the group when the choice is %s",
-    (choice) => {
+  it.each([
+    [
+      COPY.OTHER_REQUIRED,
+      CHOICE.OTHER,
+      { otherPaymentMethod: COPY.OTHER_REQUIRED },
+    ],
+    [
+      COPY.METHOD_TOO_LONG,
+      CHOICE.CASH,
+      { paymentChoice: COPY.METHOD_TOO_LONG },
+    ],
+    [
+      COPY.METHOD_TOO_LONG,
+      null,
+      { paymentChoice: COPY.METHOD_TOO_LONG },
+    ],
+    [undefined, CHOICE.OTHER, {}],
+  ])(
+    "maps %s with choice %s",
+    (message, choice, expected) => {
       expect(
         resolveReservationChargeMethodRefusalErrors(
-          COPY.METHOD_TOO_LONG,
+          message,
           choice
         )
-      ).toEqual({ paymentChoice: COPY.METHOD_TOO_LONG });
+      ).toEqual(expected);
     }
   );
-
-  it("adds nothing when the refusal is not about the method", () => {
-    expect(
-      resolveReservationChargeMethodRefusalErrors(
-        undefined,
-        RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER
-      )
-    ).toEqual({});
-  });
 });

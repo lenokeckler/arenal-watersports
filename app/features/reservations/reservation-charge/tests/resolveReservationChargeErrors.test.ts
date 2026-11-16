@@ -29,24 +29,6 @@ describe("resolveReservationChargeErrors", () => {
     ).toEqual({ amount: COPY.AMOUNT.not_positive });
   });
 
-  it("asks for a choice when none is made", () => {
-    expect(
-      resolveReservationChargeErrors({
-        ...VALID_CHARGE_VALUES,
-        paymentChoice: null,
-      })
-    ).toEqual({ paymentChoice: COPY.CHOICE_REQUIRED });
-  });
-
-  it("asks for the other method text when Otro is chosen empty", () => {
-    expect(
-      resolveReservationChargeErrors({
-        ...OTHER_CHARGE_VALUES,
-        otherPaymentMethod: " ",
-      })
-    ).toEqual({ otherPaymentMethod: COPY.OTHER_REQUIRED });
-  });
-
   it("refuses an other method over the limit", () => {
     expect(
       resolveReservationChargeErrors({

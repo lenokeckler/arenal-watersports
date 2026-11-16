@@ -1,9 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { STRING } from "@/app/constants";
 import {
-  RESERVATION_CHARGE_PAYMENT_CHOICE,
+  RESERVATION_CHARGE_PAYMENT_CHOICE as CHOICE,
   RESERVATION_CHARGE_PAYMENT_CHOICE_LABEL,
-  RESERVATION_CHARGE_PAYMENT_CHOICE_ORDER,
 } from "../constants/ReservationChargePaymentChoice.constants";
 import { resolveReservationChargePaymentMethod } from "../utils/resolveReservationChargePaymentMethod";
 import {
@@ -11,54 +10,49 @@ import {
   OTHER_METHOD_TEXT,
 } from "./ReservationChargeValues.constants";
 
-const LABELLED_CHOICES =
-  RESERVATION_CHARGE_PAYMENT_CHOICE_ORDER.filter(
-    (choice) =>
-      choice !== RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER
-  );
-
 describe("resolveReservationChargePaymentMethod", () => {
-  it.each(LABELLED_CHOICES)(
-    "stores the label of the %s chip",
-    (choice) => {
+  it.each([
+    [CHOICE.CASH, "Efectivo"],
+    [CHOICE.CARD, "Tarjeta"],
+    [CHOICE.PAYPAL, "PayPal"],
+    [CHOICE.SINPE, "SINPE"],
+  ])(
+    "stores the exact label of the %s chip",
+    (choice, label) => {
+      expect(
+        RESERVATION_CHARGE_PAYMENT_CHOICE_LABEL[choice]
+      ).toBe(label);
       expect(
         resolveReservationChargePaymentMethod({
           otherPaymentMethod: OTHER_METHOD_TEXT,
           paymentChoice: choice,
         })
-      ).toBe(
-        RESERVATION_CHARGE_PAYMENT_CHOICE_LABEL[choice]
-      );
+      ).toBe(label);
     }
   );
 
-  it("stores the trimmed other text, never the word Otro", () => {
-    expect(
-      resolveReservationChargePaymentMethod({
-        otherPaymentMethod: `${NON_BREAKING_SPACE} ${OTHER_METHOD_TEXT} ${NON_BREAKING_SPACE}`,
-        paymentChoice:
-          RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER,
-      })
-    ).toBe(OTHER_METHOD_TEXT);
-  });
-
-  it("returns an empty text with no choice", () => {
-    expect(
-      resolveReservationChargePaymentMethod({
-        otherPaymentMethod: OTHER_METHOD_TEXT,
-        paymentChoice: null,
-      })
-    ).toBe(STRING.Empty);
-  });
-
-  it("stores the four labels exactly", () => {
-    expect(
-      LABELLED_CHOICES.map((choice) =>
+  it.each([
+    [
+      "stores the trimmed other text, never the word Otro",
+      CHOICE.OTHER,
+      `${NON_BREAKING_SPACE} ${OTHER_METHOD_TEXT} ${NON_BREAKING_SPACE}`,
+      OTHER_METHOD_TEXT,
+    ],
+    [
+      "returns an empty text with no choice",
+      null,
+      OTHER_METHOD_TEXT,
+      STRING.Empty,
+    ],
+  ])(
+    "%s",
+    (_, paymentChoice, otherPaymentMethod, expected) => {
+      expect(
         resolveReservationChargePaymentMethod({
-          otherPaymentMethod: STRING.Empty,
-          paymentChoice: choice,
+          otherPaymentMethod,
+          paymentChoice,
         })
-      )
-    ).toEqual(["Efectivo", "Tarjeta", "PayPal", "SINPE"]);
-  });
+      ).toBe(expected);
+    }
+  );
 });
