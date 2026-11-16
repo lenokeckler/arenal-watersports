@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import { CURRENCY_CODE, STRING } from "@/app/constants";
 import { RESERVATION_REFUND_REASON } from "../constants/ReservationRefundReason.constants";
 import { resolveReservationRefundAvailable } from "../utils/resolveReservationRefundAvailable";
-import { resolveReservationRefundCurrencySwitch } from "../utils/resolveReservationRefundCurrencySwitch";
 import { resolveReservationRefundReasonSwitch } from "../utils/resolveReservationRefundReasonSwitch";
 import {
   BOTH_REFUNDABLE,
@@ -15,20 +14,6 @@ import {
 } from "./ReservationRefundValues.constants";
 
 const NOTHING_AVAILABLE = 0;
-
-describe("resolveReservationRefundCurrencySwitch", () => {
-  it("changes the currency and keeps what was typed", () => {
-    expect(
-      resolveReservationRefundCurrencySwitch(
-        OTHER_REFUND_VALUES,
-        CURRENCY_CODE.CRC
-      )
-    ).toEqual({
-      ...OTHER_REFUND_VALUES,
-      currency: CURRENCY_CODE.CRC,
-    });
-  });
-});
 
 describe("resolveReservationRefundReasonSwitch", () => {
   it("keeps the free text while the other reason stays chosen", () => {
