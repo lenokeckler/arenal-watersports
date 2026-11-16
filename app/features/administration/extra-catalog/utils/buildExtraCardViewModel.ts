@@ -2,6 +2,7 @@ import type { Extra } from "../models/Extra.interface";
 import type { ExtraCardActionsViewModel } from "../models/ExtraCardActionsViewModel.interface";
 import type { ExtraCardViewModel } from "../models/ExtraCardViewModel.interface";
 import { buildExtraCompatibilityLabel } from "./buildExtraCompatibilityLabel";
+import { buildExtraOccupancyLabel } from "./buildExtraOccupancyLabel";
 import { buildExtraPriceLabels } from "./buildExtraPriceLabels";
 import { resolveExtraCardActionState } from "./resolveExtraCardActionState";
 import { resolveExtraCompatibilityPath } from "./resolveExtraCompatibilityPath";
@@ -35,6 +36,7 @@ export const buildExtraCardViewModel = (
     extra.id
   ),
   onRemoveClick: cardActions.onRemoveClick(extra.id),
+  occupancyLabel: buildExtraOccupancyLabel(extra),
   prices: buildExtraPriceLabels(extra),
   status: extra.status,
 });
