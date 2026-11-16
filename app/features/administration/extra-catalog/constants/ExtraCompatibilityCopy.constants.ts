@@ -6,6 +6,8 @@ export const EXTRA_COMPATIBILITY_COPY = {
     "No se encontró la categoría. Es posible que otra persona la haya eliminado.",
   FORBIDDEN_ERROR:
     "No tiene permiso para definir las embarcaciones de un extra.",
+  INVALID_INPUT_ERROR:
+    "La solicitud no es válida. Recargue la pantalla e intente de nuevo.",
   INVALID_SELECTION_ERROR:
     "La selección incluye una embarcación que no pertenece a esta categoría.",
   NOT_FOUND_ERROR:
