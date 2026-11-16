@@ -12,6 +12,7 @@ export const EXTRA_COMPATIBILITY_COPY = {
   CATEGORIES_TITLE: "Embarcaciones del extra",
   CATEGORY_NOT_FOUND_ERROR:
     "No se encontró la categoría. Es posible que otra persona la haya eliminado.",
+  CLEAR_ALL_BUTTON: "Quitar todas",
   FORBIDDEN_ERROR:
     "No tiene permiso para definir las embarcaciones de un extra.",
   INVALID_INPUT_ERROR:
@@ -28,4 +29,19 @@ export const EXTRA_COMPATIBILITY_COPY = {
   NOT_FOUND_ERROR:
     "No se encontró el extra o una de las embarcaciones. Es posible que otra persona la haya eliminado.",
   NO_UNITS: "Sin embarcaciones",
+  OFFLINE_ERROR:
+    "Sin conexión. Los cambios no se guardaron; conéctese a internet e intente de nuevo.",
+  SAVE_BUTTON: "Guardar",
+  SAVE_ERROR:
+    "No se pudieron guardar las embarcaciones. Revise la conexión e intente de nuevo.",
+  SAVE_SUCCESS_TOAST: "Embarcaciones del extra guardadas.",
+  SELECT_ALL_BUTTON: "Marcar todas",
+  UNITS_EMPTY:
+    "Esta categoría no tiene embarcaciones activas.",
+  UNITS_INSTRUCTION: (
+    extraName: string,
+    categoryName: string
+  ): string =>
+    `Marque las embarcaciones de ${categoryName} en las que aplica "${extraName}" y guarde.`,
+  UNITS_TITLE: "Embarcaciones aplicables",
 } as const;

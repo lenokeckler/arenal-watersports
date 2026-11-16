@@ -7,6 +7,7 @@ import {
   EXTRA_FORM_SUCCESS_TOAST,
   EXTRA_FORM_TITLE,
 } from "../constants/ExtraFormModeCopy.constants";
+import { EXTRA_COMPATIBILITY_UNIT_STATUS_COPY } from "../constants/ExtraCompatibilityUnitStatusCopy.constants";
 import { EXTRA_PRICE_ERROR_COPY } from "../constants/ExtraPriceErrorCopy.constants";
 import { EXTRA_REMOVAL_OUTCOME_COPY } from "../constants/ExtraRemovalOutcomeCopy.constants";
 import { NON_USTED_WORDS_PATTERN } from "./Extra.constants";
@@ -17,6 +18,7 @@ describe("extra catalog copy", () => {
     ...Object.entries(EXTRA_COMPATIBILITY_COPY).filter(
       ([, text]) => typeof text === TYPE_OF.STRING
     ),
+    ...Object.entries(EXTRA_COMPATIBILITY_UNIT_STATUS_COPY),
     ...Object.entries(EXTRA_REMOVAL_OUTCOME_COPY),
     ...Object.entries(EXTRA_FORM_TITLE),
     ...Object.entries(EXTRA_FORM_SUBMIT_LABEL),
