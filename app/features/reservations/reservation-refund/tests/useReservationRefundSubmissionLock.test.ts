@@ -9,6 +9,7 @@ import {
 import { recordReservationRefundAction } from "../actions/recordReservationRefundAction";
 import type { ReservationRefundActionResult } from "../models/ReservationRefundActionResult.type";
 import { REFUND_RECORDED } from "./ReservationRefundAction.constants";
+import { NETWORK_FAILURE } from "./ReservationRefundForm.constants";
 import { renderSubmission } from "./renderReservationRefundSubmission";
 
 vi.mock("../actions/recordReservationRefundAction", () => ({
@@ -70,5 +71,18 @@ describe("useReservationRefundSubmission locking", () => {
     expect(
       recordReservationRefundAction
     ).toHaveBeenCalledTimes(1);
+  });
+
+  it("unlocks after the action rejects", async () => {
+    vi.mocked(
+      recordReservationRefundAction
+    ).mockRejectedValue(NETWORK_FAILURE);
+    const { result } = renderSubmission();
+
+    await act(() =>
+      Promise.resolve(result.current.handleSubmit())
+    );
+
+    expect(result.current.isPending).toBe(false);
   });
 });
