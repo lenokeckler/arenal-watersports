@@ -1,5 +1,5 @@
 begin;
-select plan(27);
+select plan(32);
 \ir fixtures/reservation_charge.sql.fixture
 
 insert into reservation_charges (reservation_id, kind, amount, currency, payment_method, created_by)
@@ -85,6 +85,33 @@ select throws_ok(
 select throws_ok(
   $$ select record_reservation_refund(jsonb_build_object('reservation_id', 'e2c20000-0000-4000-8000-000000000301', 'currency', 'USD', 'amount', 1, 'reason', to_jsonb(true))) $$,
   'P0001', 'Refund reason is invalid', 'a reason sent as a boolean is refused'
+);
+
+select throws_ok(
+  $$ select record_reservation_refund(jsonb_build_object('reservation_id', 'e2c20000-0000-4000-8000-000000000301', 'currency', 'USD', 'amount', 1, 'reason', chr(160))) $$,
+  'P0001', 'A refund reason is required', 'a reason of a non-breaking space only is refused'
+);
+
+select throws_ok(
+  $$ select record_reservation_refund(jsonb_build_object('reservation_id', 'e2c20000-0000-4000-8000-000000000301', 'currency', 'USD', 'amount', 1, 'reason', chr(8203))) $$,
+  'P0001', 'A refund reason is required', 'a reason of a zero-width space only is refused'
+);
+
+select throws_ok(
+  $$ select record_reservation_refund(jsonb_build_object('reservation_id', 'e2c20000-0000-4000-8000-000000000301', 'currency', 'USD', 'amount', 1, 'reason', chr(65279))) $$,
+  'P0001', 'A refund reason is required', 'a reason of a byte order mark only is refused'
+);
+
+select throws_ok(
+  $$ select record_reservation_refund(jsonb_build_object('reservation_id', 'e2c20000-0000-4000-8000-000000000301', 'currency', 'USD', 'amount', 1, 'reason', chr(160) || chr(8203) || ' ' || chr(12288))) $$,
+  'P0001', 'A refund reason is required', 'a reason of a mix of invisible characters only is refused'
+);
+
+select results_eq(
+  $$ select refunded_reason from record_reservation_refund(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000302', 'currency', 'USD', 'amount', 1, 'reason', chr(160) || chr(8203) || 'Rain cut' || chr(160))) $$,
+  $$ values ('Rain cut') $$,
+  'invisible characters around a reason are trimmed'
 );
 
 select throws_ok(

@@ -4,13 +4,17 @@ language plpgsql immutable security invoker set search_path = public
 as $$
 declare
   c_max_length constant integer := 200;
-  c_edge_whitespace constant text := '^[[:space:]]+|[[:space:]]+$';
+  c_invisible_characters constant text :=
+    '[:space:]\u00a0\u00ad\u061c\u1680\u180e\u2000-\u200f\u2028-\u202f\u205f-\u206f\u3000\ufeff';
+  c_edge_whitespace constant text :=
+    '^[' || c_invisible_characters || ']+|[' || c_invisible_characters || ']+$';
+  c_control_characters constant text := '[[:cntrl:]]';
   v_reason text := regexp_replace(coalesce(p_reason, ''), c_edge_whitespace, '', 'g');
 begin
   if v_reason = '' then
     raise exception 'A refund reason is required';
   end if;
-  if v_reason ~ '[[:cntrl:]]' then
+  if v_reason ~ c_control_characters then
     raise exception 'Refund reason is invalid';
   end if;
   if char_length(v_reason) > c_max_length then
