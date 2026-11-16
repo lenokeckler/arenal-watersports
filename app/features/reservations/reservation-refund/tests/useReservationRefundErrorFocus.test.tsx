@@ -105,4 +105,24 @@ describe("useReservationRefundErrorFocus", () => {
       RESERVATION_REFUND_FIELD_ID.REASON
     );
   });
+
+  it("focuses the amount again when an equal but new errors object arrives", () => {
+    mountFocusables();
+    const { rerender } = renderFocus({
+      errors: { amount: VALIDATION.AMOUNT_REQUIRED },
+      formError: STRING.Empty,
+    });
+    document
+      .getElementById(RESERVATION_REFUND_FIELD_ID.AMOUNT)
+      ?.blur();
+
+    rerender({
+      errors: { amount: VALIDATION.AMOUNT_REQUIRED },
+      formError: STRING.Empty,
+    });
+
+    expect(document.activeElement?.id).toBe(
+      RESERVATION_REFUND_FIELD_ID.AMOUNT
+    );
+  });
 });
