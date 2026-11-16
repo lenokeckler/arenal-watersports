@@ -32,6 +32,8 @@ returns table (
 language plpgsql security invoker set search_path = public, private
 as $$
 declare
+  c_reason_key constant text := 'reason';
+  c_reason_json_types constant text[] := array['string', 'null'];
   v_input record;
   v_reservation reservations;
   v_currency currency_code;
@@ -43,6 +45,9 @@ begin
   perform require_reservations_access();
   if jsonb_typeof(p_payload) is distinct from 'object' then
     raise exception 'Reservation payload must be an object';
+  end if;
+  if jsonb_typeof(p_payload -> c_reason_key) <> all (c_reason_json_types) then
+    raise exception 'Refund reason is invalid';
   end if;
   begin
     select * into v_input from jsonb_to_record(p_payload) as payload(

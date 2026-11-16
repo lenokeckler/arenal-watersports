@@ -1,5 +1,5 @@
 begin;
-select plan(23);
+select plan(27);
 \ir fixtures/reservation_charge.sql.fixture
 
 insert into reservation_charges (reservation_id, kind, amount, currency, payment_method, created_by)
@@ -65,6 +65,26 @@ select throws_ok(
 select throws_ok(
   $$ select record_reservation_refund(jsonb_build_object('reservation_id', 'e2c20000-0000-4000-8000-000000000301', 'currency', 'USD', 'amount', 1, 'reason', E'\t ')) $$,
   'P0001', 'A refund reason is required', 'a tab only reason is refused'
+);
+
+select throws_ok(
+  $$ select record_reservation_refund(jsonb_build_object('reservation_id', 'e2c20000-0000-4000-8000-000000000301', 'currency', 'USD', 'amount', 1, 'reason', jsonb_build_object('a', 1))) $$,
+  'P0001', 'Refund reason is invalid', 'a reason sent as an object is refused'
+);
+
+select throws_ok(
+  $$ select record_reservation_refund(jsonb_build_object('reservation_id', 'e2c20000-0000-4000-8000-000000000301', 'currency', 'USD', 'amount', 1, 'reason', jsonb_build_array(1, 2))) $$,
+  'P0001', 'Refund reason is invalid', 'a reason sent as an array is refused'
+);
+
+select throws_ok(
+  $$ select record_reservation_refund(jsonb_build_object('reservation_id', 'e2c20000-0000-4000-8000-000000000301', 'currency', 'USD', 'amount', 1, 'reason', to_jsonb(5))) $$,
+  'P0001', 'Refund reason is invalid', 'a reason sent as a number is refused'
+);
+
+select throws_ok(
+  $$ select record_reservation_refund(jsonb_build_object('reservation_id', 'e2c20000-0000-4000-8000-000000000301', 'currency', 'USD', 'amount', 1, 'reason', to_jsonb(true))) $$,
+  'P0001', 'Refund reason is invalid', 'a reason sent as a boolean is refused'
 );
 
 select throws_ok(
