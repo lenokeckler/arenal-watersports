@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useEffectEvent } from "react";
-import { RESERVATION_CHARGE_FIELD_ID } from "../constants/ReservationChargeUi.constants";
+import { RESERVATION_CHARGE_FIRST_PAYMENT_CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
+import {
+  RESERVATION_CHARGE_FIELD_ID,
+  RESERVATION_CHARGE_PAYMENT_CHOICE_OPTION_ID,
+} from "../constants/ReservationChargeUi.constants";
 import type { ReservationChargeErrors } from "../models/ReservationChargeErrors.interface";
 
 const focusById = (id: string): void => {
@@ -21,8 +25,18 @@ export const useReservationChargeErrorFocus = (
       focusById(RESERVATION_CHARGE_FIELD_ID.SECOND_AMOUNT);
       return;
     }
-    if (errors.paymentMethod) {
-      focusById(RESERVATION_CHARGE_FIELD_ID.PAYMENT_METHOD);
+    if (errors.paymentChoice) {
+      focusById(
+        RESERVATION_CHARGE_PAYMENT_CHOICE_OPTION_ID(
+          RESERVATION_CHARGE_FIRST_PAYMENT_CHOICE
+        )
+      );
+      return;
+    }
+    if (errors.otherPaymentMethod) {
+      focusById(
+        RESERVATION_CHARGE_FIELD_ID.OTHER_PAYMENT_METHOD
+      );
       return;
     }
     if (formError) {

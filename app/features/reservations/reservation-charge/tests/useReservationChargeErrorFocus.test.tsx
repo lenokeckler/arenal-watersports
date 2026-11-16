@@ -2,30 +2,44 @@ import { renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { STRING } from "@/app/constants";
 import { RESERVATION_CHARGE_FEEDBACK_COPY as FEEDBACK } from "../constants/ReservationChargeFeedbackCopy.constants";
-import { RESERVATION_CHARGE_FIELD_ID } from "../constants/ReservationChargeUi.constants";
+import { RESERVATION_CHARGE_FIRST_PAYMENT_CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
+import {
+  RESERVATION_CHARGE_FIELD_ID,
+  RESERVATION_CHARGE_PAYMENT_CHOICE_OPTION_ID,
+} from "../constants/ReservationChargeUi.constants";
 import { RESERVATION_CHARGE_VALIDATION_COPY as VALIDATION } from "../constants/ReservationChargeValidationCopy.constants";
 import { useReservationChargeErrorFocus } from "../hooks/useReservationChargeErrorFocus";
 import type { ReservationChargeErrors } from "../models/ReservationChargeErrors.interface";
 
+const FIRST_CHIP_ID =
+  RESERVATION_CHARGE_PAYMENT_CHOICE_OPTION_ID(
+    RESERVATION_CHARGE_FIRST_PAYMENT_CHOICE
+  );
+
 const FOCUSABLE_IDS = [
   RESERVATION_CHARGE_FIELD_ID.AMOUNT,
   RESERVATION_CHARGE_FIELD_ID.SECOND_AMOUNT,
-  RESERVATION_CHARGE_FIELD_ID.PAYMENT_METHOD,
+  FIRST_CHIP_ID,
+  RESERVATION_CHARGE_FIELD_ID.OTHER_PAYMENT_METHOD,
   RESERVATION_CHARGE_FIELD_ID.ALERT,
 ];
 
 const SECOND_AND_METHOD_ERRORS: ReservationChargeErrors = {
-  paymentMethod: VALIDATION.METHOD_REQUIRED,
+  paymentChoice: VALIDATION.CHOICE_REQUIRED,
   secondAmount: VALIDATION.AMOUNT_REQUIRED,
 };
 
 const BOTH_FIELD_ERRORS: ReservationChargeErrors = {
   amount: VALIDATION.AMOUNT_REQUIRED,
-  paymentMethod: VALIDATION.METHOD_REQUIRED,
+  paymentChoice: VALIDATION.CHOICE_REQUIRED,
 };
 
 const METHOD_ERROR: ReservationChargeErrors = {
-  paymentMethod: VALIDATION.METHOD_REQUIRED,
+  paymentChoice: VALIDATION.CHOICE_REQUIRED,
+};
+
+const OTHER_METHOD_ERROR: ReservationChargeErrors = {
+  otherPaymentMethod: VALIDATION.OTHER_REQUIRED,
 };
 
 interface FocusProps {
@@ -74,9 +88,17 @@ describe("useReservationChargeErrorFocus", () => {
       },
     },
     {
-      expected: RESERVATION_CHARGE_FIELD_ID.PAYMENT_METHOD,
+      expected: FIRST_CHIP_ID,
       props: {
         errors: METHOD_ERROR,
+        formError: FEEDBACK.GENERIC,
+      },
+    },
+    {
+      expected:
+        RESERVATION_CHARGE_FIELD_ID.OTHER_PAYMENT_METHOD,
+      props: {
+        errors: OTHER_METHOD_ERROR,
         formError: FEEDBACK.GENERIC,
       },
     },
@@ -109,8 +131,6 @@ describe("useReservationChargeErrorFocus", () => {
       formError: STRING.Empty,
     });
 
-    expect(document.activeElement?.id).toBe(
-      RESERVATION_CHARGE_FIELD_ID.PAYMENT_METHOD
-    );
+    expect(document.activeElement?.id).toBe(FIRST_CHIP_ID);
   });
 });

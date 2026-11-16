@@ -15,7 +15,8 @@ export const resolveReservationChargeInitialValues = (
       currency
     ),
     currency,
-    paymentMethod: STRING.Empty,
+    otherPaymentMethod: STRING.Empty,
+    paymentChoice: null,
     secondAmountText: null,
   };
 };
