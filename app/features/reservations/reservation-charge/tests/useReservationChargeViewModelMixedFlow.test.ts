@@ -6,16 +6,15 @@ import {
   it,
   vi,
 } from "vitest";
-import { CURRENCY_CODE } from "@/app/constants";
+import { CURRENCY_CODE, STRING } from "@/app/constants";
 import { recordReservationChargeAction } from "../actions/recordReservationChargeAction";
 import { RESERVATION_CHARGE_VALIDATION_COPY as VALIDATION } from "../constants/ReservationChargeValidationCopy.constants";
+import { RESERVATION_CHARGE_PAYMENT_CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
 import { useReservationChargeViewModel } from "../hooks/useReservationChargeViewModel";
 import type { ReservationChargeActionResult } from "../models/ReservationChargeActionResult.type";
-import { CHARGE_PAYMENT_METHOD } from "./ReservationChargeAction.constants";
 import {
   BOTH_CHARGE,
   EDITED_AMOUNT_TEXT,
-  EDITED_METHOD_TEXT,
 } from "./ReservationChargeForm.constants";
 import { MIXED_RECORDED } from "./ReservationChargeRecordedParts.constants";
 import { SECOND_AMOUNT_TEXT_CASES } from "./ReservationChargeSecondAmount.constants";
@@ -36,8 +35,8 @@ const renderMixed = () => {
     )
   );
   act(() =>
-    view.result.current.setPaymentMethod(
-      CHARGE_PAYMENT_METHOD
+    view.result.current.setPaymentChoice(
+      RESERVATION_CHARGE_PAYMENT_CHOICE.CASH
     )
   );
   return view;
@@ -62,7 +61,9 @@ describe("useReservationChargeViewModel mixed flow", () => {
     );
     act(() => result.current.toggleSecondAmount());
     act(() =>
-      result.current.setPaymentMethod(EDITED_METHOD_TEXT)
+      result.current.setPaymentChoice(
+        RESERVATION_CHARGE_PAYMENT_CHOICE.SINPE
+      )
     );
     act(() => result.current.handleSubmit());
     expect(result.current.errors.secondAmount).toBe(
@@ -98,7 +99,9 @@ describe("useReservationChargeViewModel mixed flow", () => {
       result.current.setSecondAmountText(
         SECOND_AMOUNT_TEXT_CASES.FORMAT
       );
-      result.current.setPaymentMethod(EDITED_METHOD_TEXT);
+      result.current.setPaymentChoice(
+        RESERVATION_CHARGE_PAYMENT_CHOICE.SINPE
+      );
       result.current.setCurrency(CURRENCY_CODE.CRC);
       result.current.toggleSecondAmount();
     });
@@ -110,8 +113,8 @@ describe("useReservationChargeViewModel mixed flow", () => {
     expect(result.current.secondAmountText).toBe(
       SECOND_AMOUNT_TEXT_CASES.VALID
     );
-    expect(result.current.paymentMethod).toBe(
-      CHARGE_PAYMENT_METHOD
+    expect(result.current.paymentChoice).toBe(
+      RESERVATION_CHARGE_PAYMENT_CHOICE.CASH
     );
     expect(result.current.currency).toBe(before.currency);
   });
@@ -134,7 +137,8 @@ describe("useReservationChargeViewModel mixed flow", () => {
     ).toHaveBeenCalledWith({
       amountText: result.current.amountText,
       currency: result.current.currency,
-      paymentMethod: CHARGE_PAYMENT_METHOD,
+      otherPaymentMethod: STRING.Empty,
+      paymentChoice: RESERVATION_CHARGE_PAYMENT_CHOICE.CASH,
       reservationId: CHARGE_RESERVATION_ID,
       secondAmountText: SECOND_AMOUNT_TEXT_CASES.VALID,
     });

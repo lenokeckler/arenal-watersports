@@ -64,7 +64,7 @@ test("captures every reservation charge state", async ({
 
     await charge.submit();
     await expect(
-      charge.getText(validation.METHOD_REQUIRED)
+      charge.getText(validation.CHOICE_REQUIRED)
     ).toBeVisible();
     await captureState(state.ERROR);
 

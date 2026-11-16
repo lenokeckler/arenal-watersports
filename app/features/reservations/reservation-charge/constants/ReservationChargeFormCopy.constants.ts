@@ -26,11 +26,11 @@ export const RESERVATION_CHARGE_FORM_COPY = {
     [CURRENCY_CODE.USD]: "Monto en dólares",
   } satisfies Record<CurrencyCode, string>,
   METHOD_HELPER:
-    "Escriba cómo pagó el cliente. Queda registrado junto con su nombre.",
+    "Solo queda anotado: el sistema no cobra ni valida tarjetas.",
   MIXED_SECOND_HELPER:
     "Este monto se suma al primero: el cliente paga una parte en cada moneda. Si no lo necesita, quítelo.",
-  METHOD_PLACEHOLDER:
-    "Por ejemplo: efectivo, tarjeta o SINPE",
+  OTHER_METHOD_LABEL: "¿Cuál método?",
+  OTHER_METHOD_PLACEHOLDER: "Por ejemplo: transferencia",
   PRICE_GROUP_LABEL: "Precio acordado",
   RECORDED_BY: (name: string): string =>
     `Registrado por ${name}`,

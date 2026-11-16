@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { CURRENCY_CODE } from "@/app/constants";
+import { RESERVATION_CHARGE_PAYMENT_CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
 import { buildReservationChargeCommand } from "../utils/buildReservationChargeCommand";
 import {
   MIXED_CHARGE_COMMAND,
@@ -12,6 +13,7 @@ import {
 import {
   MIXED_CHARGE_INPUT,
   NON_BREAKING_SPACE,
+  OTHER_METHOD_TEXT,
   VALID_CHARGE_INPUT,
 } from "./ReservationChargeValues.constants";
 
@@ -50,8 +52,10 @@ describe("buildReservationChargeCommand mixed", () => {
     expect(
       buildReservationChargeCommand({
         ...MIXED_CHARGE_INPUT,
-        paymentMethod: `${NON_BREAKING_SPACE}${MIXED_CHARGE_INPUT.paymentMethod}${NON_BREAKING_SPACE}`,
+        otherPaymentMethod: `${NON_BREAKING_SPACE}${OTHER_METHOD_TEXT}${NON_BREAKING_SPACE}`,
+        paymentChoice:
+          RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER,
       }).paymentMethod
-    ).toBe(MIXED_CHARGE_INPUT.paymentMethod);
+    ).toBe(OTHER_METHOD_TEXT);
   });
 });

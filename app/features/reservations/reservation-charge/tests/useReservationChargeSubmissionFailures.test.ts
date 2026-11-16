@@ -36,7 +36,7 @@ describe("useReservationChargeSubmission failures", () => {
     vi.mocked(
       recordReservationChargeAction
     ).mockResolvedValue({
-      errors: { paymentMethod: VALIDATION.METHOD_REQUIRED },
+      errors: { paymentChoice: VALIDATION.CHOICE_REQUIRED },
       ok: false,
     });
     const { result } = renderSubmission();
@@ -44,7 +44,7 @@ describe("useReservationChargeSubmission failures", () => {
     await submit(result.current.handleSubmit);
 
     expect(result.current.errors).toEqual({
-      paymentMethod: VALIDATION.METHOD_REQUIRED,
+      paymentChoice: VALIDATION.CHOICE_REQUIRED,
     });
     expect(result.current.recorded).toBeNull();
   });

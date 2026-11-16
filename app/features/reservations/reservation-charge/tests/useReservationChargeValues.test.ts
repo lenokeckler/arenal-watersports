@@ -1,6 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { CURRENCY_CODE, STRING } from "@/app/constants";
+import { RESERVATION_CHARGE_PAYMENT_CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
 import { useReservationChargeValues } from "../hooks/useReservationChargeValues";
 import {
   BOTH_PROPOSAL,
@@ -10,10 +11,10 @@ import {
 import {
   CRC_PROPOSAL_TEXT,
   EDITED_AMOUNT_TEXT,
-  EDITED_METHOD_TEXT,
   MIXED_USD_PROPOSAL_TEXT,
   USD_PROPOSAL_TEXT,
 } from "./ReservationChargeForm.constants";
+import { OTHER_METHOD_TEXT } from "./ReservationChargeValues.constants";
 
 describe("useReservationChargeValues", () => {
   it("starts on USD with the catalog amount", () => {
@@ -24,7 +25,8 @@ describe("useReservationChargeValues", () => {
     expect(result.current.values).toEqual({
       amountText: USD_PROPOSAL_TEXT,
       currency: CURRENCY_CODE.USD,
-      paymentMethod: STRING.Empty,
+      otherPaymentMethod: STRING.Empty,
+      paymentChoice: null,
       secondAmountText: null,
     });
   });
@@ -106,17 +108,66 @@ describe("useReservationChargeValues", () => {
     );
   });
 
-  it("stores the edited method", () => {
+  it("stores the chosen chip", () => {
     const { result } = renderHook(() =>
       useReservationChargeValues(BOTH_PROPOSAL)
     );
 
     act(() =>
-      result.current.setPaymentMethod(EDITED_METHOD_TEXT)
+      result.current.setPaymentChoice(
+        RESERVATION_CHARGE_PAYMENT_CHOICE.PAYPAL
+      )
     );
 
-    expect(result.current.values.paymentMethod).toBe(
-      EDITED_METHOD_TEXT
+    expect(result.current.values.paymentChoice).toBe(
+      RESERVATION_CHARGE_PAYMENT_CHOICE.PAYPAL
+    );
+  });
+
+  it("stores the other method text", () => {
+    const { result } = renderHook(() =>
+      useReservationChargeValues(BOTH_PROPOSAL)
+    );
+
+    act(() =>
+      result.current.setOtherPaymentMethod(
+        OTHER_METHOD_TEXT
+      )
+    );
+
+    expect(result.current.values.otherPaymentMethod).toBe(
+      OTHER_METHOD_TEXT
+    );
+  });
+
+  it("keeps the other text when another chip is chosen and Otro is chosen again", () => {
+    const { result } = renderHook(() =>
+      useReservationChargeValues(BOTH_PROPOSAL)
+    );
+
+    act(() =>
+      result.current.setPaymentChoice(
+        RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER
+      )
+    );
+    act(() =>
+      result.current.setOtherPaymentMethod(
+        OTHER_METHOD_TEXT
+      )
+    );
+    act(() =>
+      result.current.setPaymentChoice(
+        RESERVATION_CHARGE_PAYMENT_CHOICE.CASH
+      )
+    );
+    act(() =>
+      result.current.setPaymentChoice(
+        RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER
+      )
+    );
+
+    expect(result.current.values.otherPaymentMethod).toBe(
+      OTHER_METHOD_TEXT
     );
   });
 
@@ -181,14 +232,16 @@ describe("useReservationChargeValues", () => {
     );
 
     act(() =>
-      result.current.setPaymentMethod(EDITED_METHOD_TEXT)
+      result.current.setPaymentChoice(
+        RESERVATION_CHARGE_PAYMENT_CHOICE.SINPE
+      )
     );
     act(() =>
       result.current.setCurrency(CURRENCY_CODE.CRC)
     );
 
-    expect(result.current.values.paymentMethod).toBe(
-      EDITED_METHOD_TEXT
+    expect(result.current.values.paymentChoice).toBe(
+      RESERVATION_CHARGE_PAYMENT_CHOICE.SINPE
     );
   });
 });

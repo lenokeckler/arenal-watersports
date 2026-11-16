@@ -9,6 +9,7 @@ import {
 import { CURRENCY_CODE, STRING } from "@/app/constants";
 import { recordReservationChargeAction } from "../actions/recordReservationChargeAction";
 import { RESERVATION_CHARGE_VALIDATION_COPY as VALIDATION } from "../constants/ReservationChargeValidationCopy.constants";
+import { RESERVATION_CHARGE_PAYMENT_CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
 import { useReservationChargeViewModel } from "../hooks/useReservationChargeViewModel";
 import type { ReservationChargeActionResult } from "../models/ReservationChargeActionResult.type";
 import { CHARGE_RECORDED } from "./ReservationChargeAction.constants";
@@ -16,7 +17,6 @@ import {
   BOTH_CHARGE,
   CRC_PROPOSAL_TEXT,
   EDITED_AMOUNT_TEXT,
-  EDITED_METHOD_TEXT,
   USD_PROPOSAL_TEXT,
 } from "./ReservationChargeForm.constants";
 
@@ -41,7 +41,8 @@ describe("useReservationChargeViewModel", () => {
       formError: STRING.Empty,
       isPending: false,
       isSubmitDisabled: false,
-      paymentMethod: STRING.Empty,
+      otherPaymentMethod: STRING.Empty,
+      paymentChoice: null,
       recorded: null,
     });
   });
@@ -93,7 +94,9 @@ describe("useReservationChargeViewModel", () => {
       useReservationChargeViewModel(BOTH_CHARGE)
     );
     act(() =>
-      result.current.setPaymentMethod(EDITED_METHOD_TEXT)
+      result.current.setPaymentChoice(
+        RESERVATION_CHARGE_PAYMENT_CHOICE.SINPE
+      )
     );
 
     act(() => result.current.handleSubmit());
@@ -128,7 +131,9 @@ describe("useReservationChargeViewModel", () => {
       useReservationChargeViewModel(BOTH_CHARGE)
     );
     act(() =>
-      result.current.setPaymentMethod(EDITED_METHOD_TEXT)
+      result.current.setPaymentChoice(
+        RESERVATION_CHARGE_PAYMENT_CHOICE.SINPE
+      )
     );
 
     await act(() =>

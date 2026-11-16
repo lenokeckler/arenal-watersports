@@ -1,9 +1,9 @@
 import type { CurrencyCode } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
+import type { ReservationChargePaymentFields } from "./ReservationChargePaymentFields.interface";
 
-export interface ReservationChargeValues {
+export interface ReservationChargeValues extends ReservationChargePaymentFields {
   amountText: string;
   currency: CurrencyCode;
-  paymentMethod: string;
   secondAmountText: NullableRef<string>;
 }

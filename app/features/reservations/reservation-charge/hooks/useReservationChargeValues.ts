@@ -25,10 +25,15 @@ export const useReservationChargeValues = (
           currency
         )
       ),
-    setPaymentMethod: (paymentMethod) =>
+    setOtherPaymentMethod: (otherPaymentMethod) =>
       setValues((current) => ({
         ...current,
-        paymentMethod,
+        otherPaymentMethod,
+      })),
+    setPaymentChoice: (paymentChoice) =>
+      setValues((current) => ({
+        ...current,
+        paymentChoice,
       })),
     setSecondAmountText: (secondAmountText) =>
       setValues((current) => ({

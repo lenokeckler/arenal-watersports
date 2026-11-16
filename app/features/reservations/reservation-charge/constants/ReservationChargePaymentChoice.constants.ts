@@ -1,0 +1,29 @@
+import type { ReservationChargePaymentChoice } from "../models/ReservationChargePaymentChoice.type";
+
+export const RESERVATION_CHARGE_PAYMENT_CHOICE = {
+  CASH: "cash",
+  CARD: "card",
+  PAYPAL: "paypal",
+  SINPE: "sinpe",
+  OTHER: "other",
+} as const;
+
+export const RESERVATION_CHARGE_PAYMENT_CHOICE_ORDER: readonly ReservationChargePaymentChoice[] =
+  [
+    RESERVATION_CHARGE_PAYMENT_CHOICE.CASH,
+    RESERVATION_CHARGE_PAYMENT_CHOICE.CARD,
+    RESERVATION_CHARGE_PAYMENT_CHOICE.PAYPAL,
+    RESERVATION_CHARGE_PAYMENT_CHOICE.SINPE,
+    RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER,
+  ];
+
+export const RESERVATION_CHARGE_PAYMENT_CHOICE_LABEL: Record<
+  ReservationChargePaymentChoice,
+  string
+> = {
+  [RESERVATION_CHARGE_PAYMENT_CHOICE.CASH]: "Efectivo",
+  [RESERVATION_CHARGE_PAYMENT_CHOICE.CARD]: "Tarjeta",
+  [RESERVATION_CHARGE_PAYMENT_CHOICE.PAYPAL]: "PayPal",
+  [RESERVATION_CHARGE_PAYMENT_CHOICE.SINPE]: "SINPE",
+  [RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER]: "Otro",
+};

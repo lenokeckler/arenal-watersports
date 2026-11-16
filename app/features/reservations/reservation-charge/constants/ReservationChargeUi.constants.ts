@@ -1,5 +1,6 @@
 import type { CurrencyCode } from "@/app/constants";
 import { CURRENCY_CODE } from "@/app/constants";
+import type { ReservationChargePaymentChoice } from "../models/ReservationChargePaymentChoice.type";
 
 export const RESERVATION_CHARGE_FIELD_ID = {
   ADD_CURRENCY: "reservation-charge-add-currency",
@@ -10,6 +11,10 @@ export const RESERVATION_CHARGE_FIELD_ID = {
   HEADING: "reservation-charge-heading",
   MIXED_HELPER: "reservation-charge-mixed-helper",
   PAYMENT_METHOD: "reservation-charge-payment-method",
+  OTHER_PAYMENT_METHOD:
+    "reservation-charge-other-payment-method",
+  PAYMENT_METHOD_ERROR:
+    "reservation-charge-payment-method-error",
   PAYMENT_METHOD_HELPER:
     "reservation-charge-payment-method-helper",
   PRICE_BLOCK: "reservation-charge-price-block",
@@ -24,6 +29,13 @@ export const RESERVATION_CHARGE_CURRENCY_OPTION_ID = (
   currency: CurrencyCode
 ): string =>
   `${RESERVATION_CHARGE_FIELD_ID.CURRENCY}-${currency.toLowerCase()}`;
+
+export const RESERVATION_CHARGE_PAYMENT_CHOICE_OPTION_ID = (
+  choice: ReservationChargePaymentChoice
+): string =>
+  `${RESERVATION_CHARGE_FIELD_ID.PAYMENT_METHOD}-${choice}`;
+
+export const RESERVATION_CHARGE_FIRST_CHIP_INDEX = 0;
 
 export const RESERVATION_CHARGE_FOCUS = {
   TAB_INDEX: -1,

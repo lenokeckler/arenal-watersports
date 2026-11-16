@@ -40,7 +40,7 @@ describe("ReservationChargeView mixed mode", () => {
       SECOND_LABEL,
       SECOND_AMOUNT_TEXT
     );
-    await page.typePaymentMethod(EDITED_METHOD_TEXT);
+    await page.selectPaymentMethod(EDITED_METHOD_TEXT);
     await page.submit();
 
     expect(await page.findStatusText()).toBe(
@@ -62,7 +62,7 @@ describe("ReservationChargeView mixed mode", () => {
     const page = renderReservationChargeView();
 
     await page.clickToggle(COPY.ADD_CURRENCY.CRC);
-    await page.typePaymentMethod(EDITED_METHOD_TEXT);
+    await page.selectPaymentMethod(EDITED_METHOD_TEXT);
     await page.submit();
 
     expect(
@@ -87,7 +87,7 @@ describe("ReservationChargeView mixed mode", () => {
 
     await page.clickToggle(COPY.ADD_CURRENCY.CRC);
     await page.clickToggle(COPY.REMOVE_CURRENCY.CRC);
-    await page.typePaymentMethod(EDITED_METHOD_TEXT);
+    await page.selectPaymentMethod(EDITED_METHOD_TEXT);
     await page.submit();
 
     await page.findStatusText();

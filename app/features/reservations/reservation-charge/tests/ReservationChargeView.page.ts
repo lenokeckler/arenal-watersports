@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
 import { RESERVATION_CHARGE_FORM_COPY as COPY } from "../constants/ReservationChargeFormCopy.constants";
@@ -15,10 +15,8 @@ export const createReservationChargeViewPage = () => {
     screen.getByRole(ARIA_ROLE.TEXTBOX, {
       name: AMOUNT_NAME,
     });
-  const getPaymentMethod = () =>
-    screen.getByRole(ARIA_ROLE.TEXTBOX, {
-      name: new RegExp(COPY.LABEL_METHOD),
-    });
+  const getPaymentChoice = (label: string) =>
+    screen.getByRole(ARIA_ROLE.RADIO, { name: label });
   const getSubmit = () =>
     screen.getByRole(ARIA_ROLE.BUTTON, {
       name: SUBMIT_NAME,
@@ -26,6 +24,11 @@ export const createReservationChargeViewPage = () => {
   const getCurrency = (label: string) =>
     screen.getByRole(ARIA_ROLE.RADIO, {
       name: new RegExp(label),
+    });
+
+  const getCurrencyGroup = () =>
+    screen.getByRole(ARIA_ROLE.GROUP, {
+      name: COPY.CURRENCY_LEGEND,
     });
 
   const getAmountByLabel = (label: string) =>
@@ -52,13 +55,15 @@ export const createReservationChargeViewPage = () => {
     getAmountForm: () => getAmount().closest("form"),
     getSubmitForm: () => getSubmit().closest("form"),
     getCurrencyRadios: () =>
-      screen.getAllByRole(ARIA_ROLE.RADIO),
+      within(getCurrencyGroup()).getAllByRole(
+        ARIA_ROLE.RADIO
+      ),
     getBusy: () =>
       getSubmit()
         .closest("form")
         ?.getAttribute(BUSY_ATTRIBUTE),
     getCurrency,
-    getPaymentMethod,
+    getPaymentChoice,
     getStatusText: () =>
       screen.getByRole(ARIA_ROLE.STATUS).textContent,
     getSubmit,
@@ -72,14 +77,20 @@ export const createReservationChargeViewPage = () => {
     typeAmountByLabel: (label: string, amount: string) =>
       user.type(getAmountByLabel(label), amount),
     queryCurrencyRadios: () =>
-      screen.queryAllByRole(ARIA_ROLE.RADIO),
+      screen
+        .queryAllByRole(ARIA_ROLE.GROUP, {
+          name: COPY.CURRENCY_LEGEND,
+        })
+        .flatMap((group) =>
+          within(group).queryAllByRole(ARIA_ROLE.RADIO)
+        ),
     queryText: (text: string) => screen.queryByText(text),
     selectCurrency: (label: string) =>
       user.click(getCurrency(label)),
     submit: () => user.click(getSubmit()),
     typeAmount: (amount: string) =>
       user.type(getAmount(), amount),
-    typePaymentMethod: (method: string) =>
-      user.type(getPaymentMethod(), method),
+    selectPaymentMethod: (label: string) =>
+      user.click(getPaymentChoice(label)),
   };
 };

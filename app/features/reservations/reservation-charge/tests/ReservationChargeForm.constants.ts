@@ -1,3 +1,8 @@
+import { STRING } from "@/app/constants";
+import {
+  RESERVATION_CHARGE_PAYMENT_CHOICE,
+  RESERVATION_CHARGE_PAYMENT_CHOICE_LABEL,
+} from "../constants/ReservationChargePaymentChoice.constants";
 import type { ReservationCharge } from "../models/ReservationCharge.interface";
 import type { ReservationChargeProposal } from "../models/ReservationChargeProposal.type";
 import {
@@ -37,7 +42,15 @@ export const CRC_ONLY_PROPOSAL_TEXT = String(
 export const CRC_ENTERED_AMOUNT_TEXT = "15000";
 
 export const EDITED_AMOUNT_TEXT = "37.5";
-export const EDITED_METHOD_TEXT = "SINPE";
+export const EDITED_METHOD_TEXT =
+  RESERVATION_CHARGE_PAYMENT_CHOICE_LABEL[
+    RESERVATION_CHARGE_PAYMENT_CHOICE.SINPE
+  ];
+
+export const EDITED_METHOD_FIELDS = {
+  otherPaymentMethod: STRING.Empty,
+  paymentChoice: RESERVATION_CHARGE_PAYMENT_CHOICE.SINPE,
+} as const;
 
 export const USD_PROPOSAL_TEXT = String(BOTH_PROPOSAL.USD);
 export const CRC_PROPOSAL_TEXT = String(BOTH_PROPOSAL.CRC);
