@@ -11,6 +11,7 @@ import {
 const ReservationRefundReasonOption = ({
   id,
   isDisabled,
+  isInvalid,
   isSelected,
   label,
   onSelect,
@@ -23,6 +24,7 @@ const ReservationRefundReasonOption = ({
     htmlFor={id}
   >
     <input
+      aria-invalid={isInvalid}
       checked={isSelected}
       className={RESERVATION_REFUND_REASON_RADIO_CLASS}
       disabled={isDisabled}

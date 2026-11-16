@@ -2,14 +2,18 @@ import { renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { STRING } from "@/app/constants";
 import { RESERVATION_REFUND_FEEDBACK_COPY as FEEDBACK } from "../constants/ReservationRefundFeedbackCopy.constants";
-import { RESERVATION_REFUND_FIELD_ID } from "../constants/ReservationRefundUi.constants";
+import {
+  RESERVATION_REFUND_FIELD_ID,
+  RESERVATION_REFUND_REASON_FOCUS_ID,
+} from "../constants/ReservationRefundUi.constants";
 import { RESERVATION_REFUND_VALIDATION_COPY as VALIDATION } from "../constants/ReservationRefundValidationCopy.constants";
 import { useReservationRefundErrorFocus } from "../hooks/useReservationRefundErrorFocus";
 import type { ReservationRefundErrors } from "../models/ReservationRefundErrors.interface";
 
-const FOCUSABLE_IDS = Object.values(
-  RESERVATION_REFUND_FIELD_ID
-);
+const FOCUSABLE_IDS = [
+  ...Object.values(RESERVATION_REFUND_FIELD_ID),
+  RESERVATION_REFUND_REASON_FOCUS_ID,
+];
 
 const ALL_FIELD_ERRORS: ReservationRefundErrors = {
   amount: VALIDATION.AMOUNT_REQUIRED,
@@ -56,7 +60,7 @@ describe("useReservationRefundErrorFocus", () => {
       },
     },
     {
-      expected: RESERVATION_REFUND_FIELD_ID.REASON,
+      expected: RESERVATION_REFUND_REASON_FOCUS_ID,
       props: {
         errors: {
           otherReason: VALIDATION.OTHER_REQUIRED,
@@ -102,7 +106,7 @@ describe("useReservationRefundErrorFocus", () => {
     });
 
     expect(document.activeElement?.id).toBe(
-      RESERVATION_REFUND_FIELD_ID.REASON
+      RESERVATION_REFUND_REASON_FOCUS_ID
     );
   });
 

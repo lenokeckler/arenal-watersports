@@ -8,7 +8,7 @@ export const RESERVATION_REFUND_HEADER_CLASS =
   "flex flex-col gap-3";
 
 export const RESERVATION_REFUND_BACK_CLASS =
-  "-ml-3 inline-flex min-h-11 items-center justify-start px-3 text-primary";
+  "-ml-3 inline-flex min-h-12 items-center justify-start px-3 text-primary";
 
 export const RESERVATION_REFUND_TITLE_CLASS =
   "text-headline-lg-mobile text-on-surface md:text-headline-lg";
