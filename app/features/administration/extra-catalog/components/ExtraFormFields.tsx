@@ -4,6 +4,7 @@ import { AUTOCOMPLETE } from "@/app/constants";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
 import { EXTRA_FORM_FIELD_ID } from "../constants/ExtraFormFieldId.constants";
 import type { ExtraFormFieldsProps } from "../models/ExtraFormFieldsProps.type";
+import ExtraOccupancySection from "./ExtraOccupancySection";
 import ExtraPriceField from "./ExtraPriceField";
 
 const ExtraFormFields = ({
@@ -12,7 +13,15 @@ const ExtraFormFields = ({
   isSubmitting,
   onNameChange,
   onPriceUsdChange,
+  isOccupancyEnabled,
+  isOccupancyDisabled,
+  isOccupancyLocked,
+  hasOccupiableCategories,
+  occupancyCategoryOptions,
   onPriceCrcChange,
+  onOccupancyToggle,
+  onOccupiesCategoryChange,
+  onOccupiesQuantityChange,
 }: ExtraFormFieldsProps): React.JSX.Element => (
   <>
     <FormField
@@ -44,6 +53,18 @@ const ExtraFormFields = ({
       onChange={onPriceCrcChange}
     />
     <FormErrorBanner message={errors.prices} />
+    <ExtraOccupancySection
+      values={values}
+      errors={errors}
+      isOccupancyEnabled={isOccupancyEnabled}
+      isOccupancyDisabled={isOccupancyDisabled}
+      isOccupancyLocked={isOccupancyLocked}
+      hasOccupiableCategories={hasOccupiableCategories}
+      occupancyCategoryOptions={occupancyCategoryOptions}
+      onOccupancyToggle={onOccupancyToggle}
+      onOccupiesCategoryChange={onOccupiesCategoryChange}
+      onOccupiesQuantityChange={onOccupiesQuantityChange}
+    />
   </>
 );
 
