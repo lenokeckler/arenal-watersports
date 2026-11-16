@@ -37,7 +37,7 @@ begin
     ), 0),
     private.reservation_refundable_amount(p_reservation_id, currencies.code)
   from unnest(enum_range(null::currency_code)) as currencies(code)
-  order by currencies.code desc;
+  order by currencies.code;
 end;
 $$;
 
