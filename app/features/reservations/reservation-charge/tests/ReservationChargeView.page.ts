@@ -1,10 +1,14 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
+import { RESERVATION_CHARGE_FIELD_ID as FIELD_ID } from "../constants/ReservationChargeUi.constants";
 import { RESERVATION_CHARGE_FORM_COPY as COPY } from "../constants/ReservationChargeFormCopy.constants";
 
 const BUSY_ATTRIBUTE = "aria-busy";
 const AMOUNT_NAME = /^Monto acordado/;
+const OTHER_METHOD_NAME = new RegExp(
+  `^${COPY.OTHER_METHOD_LABEL}`
+);
 const SUBMIT_NAME = new RegExp(
   `^(${COPY.SUBMIT}|${COPY.SUBMITTING})`
 );
@@ -17,6 +21,10 @@ export const createReservationChargeViewPage = () => {
     });
   const getPaymentChoice = (label: string) =>
     screen.getByRole(ARIA_ROLE.RADIO, { name: label });
+  const getOtherMethod = () =>
+    screen.getByRole(ARIA_ROLE.TEXTBOX, {
+      name: OTHER_METHOD_NAME,
+    });
   const getSubmit = () =>
     screen.getByRole(ARIA_ROLE.BUTTON, {
       name: SUBMIT_NAME,
@@ -63,7 +71,21 @@ export const createReservationChargeViewPage = () => {
         .closest("form")
         ?.getAttribute(BUSY_ATTRIBUTE),
     getCurrency,
+    getOtherMethod,
     getPaymentChoice,
+    getPaymentChoices: () =>
+      screen
+        .getAllByRole<HTMLInputElement>(ARIA_ROLE.RADIO)
+        .filter(
+          ({ name }) => name === FIELD_ID.PAYMENT_METHOD
+        ),
+    pressKey: (keys: string) => user.keyboard(keys),
+    queryOtherMethod: () =>
+      screen.queryByRole(ARIA_ROLE.TEXTBOX, {
+        name: OTHER_METHOD_NAME,
+      }),
+    typeOtherMethod: (method: string) =>
+      user.type(getOtherMethod(), method),
     getStatusText: () =>
       screen.getByRole(ARIA_ROLE.STATUS).textContent,
     getSubmit,
