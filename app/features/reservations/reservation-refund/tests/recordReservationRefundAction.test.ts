@@ -74,6 +74,7 @@ describe("recordReservationRefundAction", () => {
     expect(
       assertReservationCalendarAccess
     ).not.toHaveBeenCalled();
+    expect(revalidatePath).not.toHaveBeenCalled();
   });
 
   it("returns the field errors without calling the service", async () => {
@@ -93,6 +94,7 @@ describe("recordReservationRefundAction", () => {
       },
     });
     expect(recordReservationRefund).not.toHaveBeenCalled();
+    expect(revalidatePath).not.toHaveBeenCalled();
   });
 
   it("sends the trimmed free-text reason", async () => {
