@@ -8,6 +8,7 @@ import {
   EXTRA_FORM_TITLE,
 } from "../constants/ExtraFormModeCopy.constants";
 import { EXTRA_COMPATIBILITY_UNIT_STATUS_COPY } from "../constants/ExtraCompatibilityUnitStatusCopy.constants";
+import { EXTRA_OCCUPANCY_COPY } from "../constants/ExtraOccupancyCopy.constants";
 import { EXTRA_PRICE_ERROR_COPY } from "../constants/ExtraPriceErrorCopy.constants";
 import { EXTRA_REMOVAL_OUTCOME_COPY } from "../constants/ExtraRemovalOutcomeCopy.constants";
 import { NON_USTED_WORDS_PATTERN } from "./Extra.constants";
@@ -15,6 +16,9 @@ import { NON_USTED_WORDS_PATTERN } from "./Extra.constants";
 describe("extra catalog copy", () => {
   it.each([
     ...Object.entries(EXTRA_CATALOG_COPY),
+    ...Object.entries(EXTRA_OCCUPANCY_COPY).filter(
+      ([, text]) => typeof text === TYPE_OF.STRING
+    ),
     ...Object.entries(EXTRA_COMPATIBILITY_COPY).filter(
       ([, text]) => typeof text === TYPE_OF.STRING
     ),
