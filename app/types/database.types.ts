@@ -3953,6 +3953,17 @@ export type Database = {
           recorded_by_name: string;
         }[];
       };
+      record_reservation_refund: {
+        Args: { p_payload: Json };
+        Returns: {
+          recorded_by_name: string;
+          refund_id: string;
+          refunded_amount: number;
+          refunded_currency: Database["public"]["Enums"]["currency_code"];
+          refunded_reason: string;
+          remaining_amount: number;
+        }[];
+      };
       record_successful_sign_in: {
         Args: { p_user_id: string };
         Returns: undefined;
@@ -4081,6 +4092,15 @@ export type Database = {
       reservation_is_split_child: {
         Args: { p_reservation_id: string };
         Returns: boolean;
+      };
+      reservation_refundable_net: {
+        Args: { p_reservation_id: string };
+        Returns: {
+          charged_amount: number;
+          currency: Database["public"]["Enums"]["currency_code"];
+          refundable_amount: number;
+          refunded_amount: number;
+        }[];
       };
       retire_worker: {
         Args: { target_worker: string };
