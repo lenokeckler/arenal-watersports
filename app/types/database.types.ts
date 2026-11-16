@@ -4127,6 +4127,10 @@ export type Database = {
         };
         Returns: string;
       };
+      set_extra_compatibility: {
+        Args: { p_extra_id: string; p_unit_ids: string[] };
+        Returns: number;
+      };
       set_unit_condition: {
         Args: {
           new_status: Database["public"]["Enums"]["unit_status"];
