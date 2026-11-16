@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useEffectEvent } from "react";
-import { RESERVATION_REFUND_FIELD_ID } from "../constants/ReservationRefundUi.constants";
+import {
+  RESERVATION_REFUND_FIELD_ID,
+  RESERVATION_REFUND_REASON_FOCUS_ID,
+} from "../constants/ReservationRefundUi.constants";
 import type { ReservationRefundErrors } from "../models/ReservationRefundErrors.interface";
 
 const focusById = (id: string): void => {
@@ -18,7 +21,7 @@ export const useReservationRefundErrorFocus = (
       return;
     }
     if (errors.reason) {
-      focusById(RESERVATION_REFUND_FIELD_ID.REASON);
+      focusById(RESERVATION_REFUND_REASON_FOCUS_ID);
       return;
     }
     if (errors.otherReason) {
