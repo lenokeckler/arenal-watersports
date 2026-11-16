@@ -116,11 +116,9 @@ select results_eq(
   'refused refunds leave no row behind'
 );
 
-select results_eq(
-  $$ select currency::text, charged_amount, refunded_amount, refundable_amount
-     from reservation_refundable_net('e2c20000-0000-4000-8000-000000000999') $$,
-  $$ values ('USD', 0::numeric, 0::numeric, 0::numeric), ('CRC', 0::numeric, 0::numeric, 0::numeric) $$,
-  'the net of an unknown reservation is zero in both currencies'
+select throws_ok(
+  $$ select * from reservation_refundable_net('e2c20000-0000-4000-8000-000000000999') $$,
+  'P0001', 'Reservation was not found', 'the net of an unknown reservation is refused'
 );
 
 select results_eq(

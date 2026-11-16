@@ -33,6 +33,9 @@ language plpgsql stable security invoker set search_path = public, private
 as $$
 begin
   perform require_reservations_access();
+  if not exists (select 1 from reservations where reservations.id = p_reservation_id) then
+    raise exception 'Reservation was not found';
+  end if;
   return query
   select totals.code, totals.charged, totals.refunded, totals.charged - totals.refunded
   from (
