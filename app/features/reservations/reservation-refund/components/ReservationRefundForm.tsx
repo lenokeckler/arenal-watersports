@@ -1,6 +1,10 @@
 import { Button, Link, Text } from "@/app/components";
 import { BUTTON } from "@/app/components/button/constants";
-import { ARIA_ROLE, PATHS } from "@/app/constants";
+import {
+  ARIA_ROLE,
+  BUTTON_TYPES,
+  PATHS,
+} from "@/app/constants";
 import { RESERVATION_REFUND_FORM_COPY as COPY } from "../constants/ReservationRefundFormCopy.constants";
 import { RESERVATION_REFUND_REASON } from "../constants/ReservationRefundReason.constants";
 import {
@@ -24,18 +28,36 @@ const ReservationRefundForm = ({
   viewModel,
 }: ReservationRefundFormProps): React.JSX.Element => (
   <>
-    {viewModel.currencyOptions.length > 1 && (
+    {viewModel.hasCurrencyChoice && (
       <ReservationRefundCurrencyField
-        refund={refund}
-        viewModel={viewModel}
+        currency={viewModel.currency}
+        currencyOptions={viewModel.currencyOptions}
+        isPending={viewModel.isPending}
+        onSelect={viewModel.setCurrency}
+        refundable={refund.refundable}
       />
     )}
-    <ReservationRefundAmountField viewModel={viewModel} />
-    <ReservationRefundReasonField viewModel={viewModel} />
+    <ReservationRefundAmountField
+      amountText={viewModel.amountText}
+      available={viewModel.available}
+      currency={viewModel.currency}
+      error={viewModel.errors.amount}
+      isPending={viewModel.isPending}
+      onChange={viewModel.setAmountText}
+    />
+    <ReservationRefundReasonField
+      error={viewModel.errors.reason}
+      isPending={viewModel.isPending}
+      onSelect={viewModel.setReason}
+      reason={viewModel.reason}
+    />
     {viewModel.reason ===
       RESERVATION_REFUND_REASON.OTHER && (
       <ReservationRefundOtherReasonField
-        viewModel={viewModel}
+        error={viewModel.errors.otherReason}
+        isPending={viewModel.isPending}
+        onChange={viewModel.setOtherReasonText}
+        text={viewModel.otherReasonText}
       />
     )}
     {viewModel.formError && (
@@ -54,7 +76,7 @@ const ReservationRefundForm = ({
       className={RESERVATION_REFUND_ACTIONS_CLASS}
     >
       <Button
-        type="submit"
+        type={BUTTON_TYPES.SUBMIT}
         variant={BUTTON.PRIMARY}
         className={RESERVATION_REFUND_SUBMIT_CLASS}
         disabled={viewModel.isSubmitDisabled}

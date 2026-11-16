@@ -1,5 +1,6 @@
 "use client";
 
+import { AUTOCOMPLETE } from "@/app/constants";
 import { hasReservationRefundable } from "@/app/utils/reservations/hasReservationRefundable";
 import ReservationRefundAvailable from "./components/ReservationRefundAvailable";
 import ReservationRefundForm from "./components/ReservationRefundForm";
@@ -23,7 +24,8 @@ const ReservationRefundView = ({
 
   if (
     !hasReservationRefundable(refund.refundable) &&
-    viewModel.recorded === null
+    viewModel.recorded === null &&
+    !viewModel.mayBeRecorded
   ) {
     return (
       <ReservationRefundUnavailable
@@ -43,7 +45,7 @@ const ReservationRefundView = ({
       ) : (
         <form
           noValidate
-          autoComplete="off"
+          autoComplete={AUTOCOMPLETE.OFF}
           aria-busy={viewModel.isPending}
           className={RESERVATION_REFUND_FORM_CLASS}
           onSubmit={viewModel.handleSubmit}
