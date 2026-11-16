@@ -1,26 +1,31 @@
 import { isBrowserOffline } from "@/app/utils/network/isBrowserOffline";
 import { recordReservationRefundAction } from "../actions/recordReservationRefundAction";
 import { RESERVATION_REFUND_FEEDBACK_COPY as FEEDBACK } from "../constants/ReservationRefundFeedbackCopy.constants";
-import type { ReservationRefundActionResult } from "../models/ReservationRefundActionResult.type";
 import type { ReservationRefundInput } from "../models/ReservationRefundInput.interface";
+import type { ReservationRefundSubmitOutcome } from "../models/ReservationRefundSubmitOutcome.interface";
 
-const failure = (
+const unsent = (
   formError: string
-): ReservationRefundActionResult => ({
-  errors: {},
-  formError,
-  ok: false,
+): ReservationRefundSubmitOutcome => ({
+  mayBeRecorded: false,
+  result: { errors: {}, formError, ok: false },
 });
 
 export const submitReservationRefund = async (
   input: ReservationRefundInput
-): Promise<ReservationRefundActionResult> => {
+): Promise<ReservationRefundSubmitOutcome> => {
   if (isBrowserOffline()) {
-    return failure(FEEDBACK.OFFLINE);
+    return unsent(FEEDBACK.OFFLINE);
   }
   try {
-    return await recordReservationRefundAction(input);
+    return {
+      mayBeRecorded: false,
+      result: await recordReservationRefundAction(input),
+    };
   } catch {
-    return failure(FEEDBACK.UNCONFIRMED);
+    return {
+      ...unsent(FEEDBACK.UNCONFIRMED),
+      mayBeRecorded: true,
+    };
   }
 };
