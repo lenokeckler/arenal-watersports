@@ -1,8 +1,6 @@
 import { STRING } from "@/app/constants";
-import {
-  RESERVATION_CHARGE_PAYMENT_CHOICE,
-  RESERVATION_CHARGE_PAYMENT_CHOICE_LABEL,
-} from "../constants/ReservationChargePaymentChoice.constants";
+import { RESERVATION_CHARGE_FORM_COPY } from "../constants/ReservationChargeFormCopy.constants";
+import { RESERVATION_CHARGE_PAYMENT_CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
 import { RESERVATION_CHARGE_EDGE_WHITESPACE_PATTERN } from "../constants/ReservationChargePaymentMethodPatterns.constants";
 import type { ReservationChargePaymentFields } from "../models/ReservationChargePaymentFields.interface";
 
@@ -22,7 +20,7 @@ export const resolveReservationChargePaymentMethod = ({
       STRING.Empty
     );
   }
-  return RESERVATION_CHARGE_PAYMENT_CHOICE_LABEL[
+  return RESERVATION_CHARGE_FORM_COPY.PAYMENT_CHOICE_LABEL[
     paymentChoice
   ];
 };

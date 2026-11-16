@@ -1,8 +1,6 @@
 import { STRING } from "@/app/constants";
-import {
-  RESERVATION_CHARGE_PAYMENT_CHOICE,
-  RESERVATION_CHARGE_PAYMENT_CHOICE_LABEL,
-} from "../constants/ReservationChargePaymentChoice.constants";
+import { RESERVATION_CHARGE_FORM_COPY } from "../constants/ReservationChargeFormCopy.constants";
+import { RESERVATION_CHARGE_PAYMENT_CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
 import type { ReservationCharge } from "../models/ReservationCharge.interface";
 import type { ReservationChargeProposal } from "../models/ReservationChargeProposal.type";
 import {
@@ -43,7 +41,7 @@ export const CRC_ENTERED_AMOUNT_TEXT = "15000";
 
 export const EDITED_AMOUNT_TEXT = "37.5";
 export const EDITED_METHOD_TEXT =
-  RESERVATION_CHARGE_PAYMENT_CHOICE_LABEL[
+  RESERVATION_CHARGE_FORM_COPY.PAYMENT_CHOICE_LABEL[
     RESERVATION_CHARGE_PAYMENT_CHOICE.SINPE
   ];
 

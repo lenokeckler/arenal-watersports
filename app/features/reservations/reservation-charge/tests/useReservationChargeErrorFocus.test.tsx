@@ -2,10 +2,9 @@ import { renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { STRING } from "@/app/constants";
 import { RESERVATION_CHARGE_FEEDBACK_COPY as FEEDBACK } from "../constants/ReservationChargeFeedbackCopy.constants";
-import { RESERVATION_CHARGE_PAYMENT_CHOICE_ORDER } from "../constants/ReservationChargePaymentChoice.constants";
+import { RESERVATION_CHARGE_FIRST_PAYMENT_CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
 import {
   RESERVATION_CHARGE_FIELD_ID,
-  RESERVATION_CHARGE_FIRST_CHIP_INDEX,
   RESERVATION_CHARGE_PAYMENT_CHOICE_OPTION_ID,
 } from "../constants/ReservationChargeUi.constants";
 import { RESERVATION_CHARGE_VALIDATION_COPY as VALIDATION } from "../constants/ReservationChargeValidationCopy.constants";
@@ -14,9 +13,7 @@ import type { ReservationChargeErrors } from "../models/ReservationChargeErrors.
 
 const FIRST_CHIP_ID =
   RESERVATION_CHARGE_PAYMENT_CHOICE_OPTION_ID(
-    RESERVATION_CHARGE_PAYMENT_CHOICE_ORDER[
-      RESERVATION_CHARGE_FIRST_CHIP_INDEX
-    ]
+    RESERVATION_CHARGE_FIRST_PAYMENT_CHOICE
   );
 
 const FOCUSABLE_IDS = [

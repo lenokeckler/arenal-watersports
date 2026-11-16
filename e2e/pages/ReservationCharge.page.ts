@@ -9,18 +9,15 @@ import {
   CURRENCY_NAME_COPY,
 } from "@/app/constants";
 import type { CurrencyCode } from "@/app/constants";
-import {
-  RESERVATION_CHARGE_PAYMENT_CHOICE,
-  RESERVATION_CHARGE_PAYMENT_CHOICE_LABEL,
-} from "@/app/features/reservations/reservation-charge/constants/ReservationChargePaymentChoice.constants";
 import { RESERVATION_CHARGE_FORM_COPY as copy } from "@/app/features/reservations/reservation-charge/constants/ReservationChargeFormCopy.constants";
+import { RESERVATION_CHARGE_PAYMENT_CHOICE } from "@/app/features/reservations/reservation-charge/constants/ReservationChargePaymentChoice.constants";
 import { RESERVATION_CHARGE_UI_COPY as ui } from "@/app/features/reservations/reservation-charge/constants/ReservationChargeUiCopy.constants";
 import type { NullableRef } from "@/app/types";
 import { resolveReservationChargePath } from "@/app/utils/reservations/resolveReservationChargePath";
 import { getMainRegion } from "../support/mainRegion";
 
 const OTHER_LABEL =
-  RESERVATION_CHARGE_PAYMENT_CHOICE_LABEL[
+  copy.PAYMENT_CHOICE_LABEL[
     RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER
   ];
 
@@ -30,10 +27,7 @@ const STORED_METHOD_LABELS: readonly string[] =
       (choice) =>
         choice !== RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER
     )
-    .map(
-      (choice) =>
-        RESERVATION_CHARGE_PAYMENT_CHOICE_LABEL[choice]
-    );
+    .map((choice) => copy.PAYMENT_CHOICE_LABEL[choice]);
 
 export const createReservationChargePage = (page: Page) => {
   const main = getMainRegion(page);

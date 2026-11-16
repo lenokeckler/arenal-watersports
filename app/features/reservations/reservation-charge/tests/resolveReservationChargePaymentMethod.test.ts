@@ -1,9 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { STRING } from "@/app/constants";
-import {
-  RESERVATION_CHARGE_PAYMENT_CHOICE as CHOICE,
-  RESERVATION_CHARGE_PAYMENT_CHOICE_LABEL,
-} from "../constants/ReservationChargePaymentChoice.constants";
+import { RESERVATION_CHARGE_FORM_COPY } from "../constants/ReservationChargeFormCopy.constants";
+import { RESERVATION_CHARGE_PAYMENT_CHOICE as CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
 import { resolveReservationChargePaymentMethod } from "../utils/resolveReservationChargePaymentMethod";
 import {
   NON_BREAKING_SPACE,
@@ -20,7 +18,9 @@ describe("resolveReservationChargePaymentMethod", () => {
     "stores the exact label of the %s chip",
     (choice, label) => {
       expect(
-        RESERVATION_CHARGE_PAYMENT_CHOICE_LABEL[choice]
+        RESERVATION_CHARGE_FORM_COPY.PAYMENT_CHOICE_LABEL[
+          choice
+        ]
       ).toBe(label);
       expect(
         resolveReservationChargePaymentMethod({

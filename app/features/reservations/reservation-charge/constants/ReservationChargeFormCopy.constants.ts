@@ -1,5 +1,7 @@
 import { CURRENCY_CODE } from "@/app/constants";
 import type { CurrencyCode } from "@/app/constants";
+import type { ReservationChargePaymentChoice } from "../models/ReservationChargePaymentChoice.type";
+import { RESERVATION_CHARGE_PAYMENT_CHOICE as CHOICE } from "./ReservationChargePaymentChoice.constants";
 
 export const RESERVATION_CHARGE_FORM_COPY = {
   ACTIONS: "Acciones del cobro",
@@ -31,6 +33,16 @@ export const RESERVATION_CHARGE_FORM_COPY = {
     "Este monto se suma al primero: el cliente paga una parte en cada moneda. Si no lo necesita, quítelo.",
   OTHER_METHOD_LABEL: "¿Cuál método?",
   OTHER_METHOD_PLACEHOLDER: "Por ejemplo: transferencia",
+  PAYMENT_CHOICE_LABEL: {
+    [CHOICE.CASH]: "Efectivo",
+    [CHOICE.CARD]: "Tarjeta",
+    [CHOICE.PAYPAL]: "PayPal",
+    [CHOICE.SINPE]: "SINPE",
+    [CHOICE.OTHER]: "Otro",
+  } satisfies Record<
+    ReservationChargePaymentChoice,
+    string
+  >,
   PRICE_GROUP_LABEL: "Precio acordado",
   RECORDED_BY: (name: string): string =>
     `Registrado por ${name}`,

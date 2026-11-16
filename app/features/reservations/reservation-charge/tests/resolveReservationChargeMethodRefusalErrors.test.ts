@@ -16,9 +16,9 @@ describe("resolveReservationChargeMethodRefusalErrors", () => {
       { paymentChoice: COPY.METHOD_TOO_LONG },
     ],
     [
-      COPY.METHOD_TOO_LONG,
+      COPY.OTHER_REQUIRED,
       null,
-      { paymentChoice: COPY.METHOD_TOO_LONG },
+      { paymentChoice: COPY.CHOICE_REQUIRED },
     ],
     [undefined, CHOICE.OTHER, {}],
   ])(

@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useEffectEvent } from "react";
-import { RESERVATION_CHARGE_PAYMENT_CHOICE_ORDER } from "../constants/ReservationChargePaymentChoice.constants";
+import { RESERVATION_CHARGE_FIRST_PAYMENT_CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
 import {
   RESERVATION_CHARGE_FIELD_ID,
-  RESERVATION_CHARGE_FIRST_CHIP_INDEX,
   RESERVATION_CHARGE_PAYMENT_CHOICE_OPTION_ID,
 } from "../constants/ReservationChargeUi.constants";
 import type { ReservationChargeErrors } from "../models/ReservationChargeErrors.interface";
@@ -29,9 +28,7 @@ export const useReservationChargeErrorFocus = (
     if (errors.paymentChoice) {
       focusById(
         RESERVATION_CHARGE_PAYMENT_CHOICE_OPTION_ID(
-          RESERVATION_CHARGE_PAYMENT_CHOICE_ORDER[
-            RESERVATION_CHARGE_FIRST_CHIP_INDEX
-          ]
+          RESERVATION_CHARGE_FIRST_PAYMENT_CHOICE
         )
       );
       return;
