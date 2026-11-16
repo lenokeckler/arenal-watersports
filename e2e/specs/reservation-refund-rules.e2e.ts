@@ -19,9 +19,16 @@ import {
   expect,
   test,
 } from "../support/reservationRefundTest";
-import { readTodayNetAmount } from "../support/readTodayNetAmount";
+import { readReservationNetAmount } from "../support/readReservationNetAmount";
 
 const submitWait = { timeout: E2E_TIMEOUT_MS.POST_SUBMIT };
+const readUsdNet = (
+  reservationId: string
+): Promise<number> =>
+  readReservationNetAmount(
+    reservationId,
+    CURRENCY_CODE.USD
+  );
 
 test.describe("Reservation refund rules", () => {
   test.describe.configure({ mode: values.TEST_MODE });
@@ -72,7 +79,7 @@ test.describe("Reservation refund rules", () => {
     });
   }
 
-  test("lowers the net of the day by the refunded amount", async ({
+  test("lowers the net of its reservation by the refunded amount", async ({
     activeWorker,
     reservationsPage: page,
   }, testInfo) => {
@@ -82,9 +89,7 @@ test.describe("Reservation refund rules", () => {
       [charges.USD]
     );
     const refund = createReservationRefundPage(page);
-    const netBefore = await readTodayNetAmount(
-      CURRENCY_CODE.USD
-    );
+    const netBefore = await readUsdNet(reservation.id);
 
     await refund.goTo(reservation.id);
     await refund.fillRefund(
@@ -97,9 +102,7 @@ test.describe("Reservation refund rules", () => {
       submitWait
     );
 
-    expect(
-      await readTodayNetAmount(CURRENCY_CODE.USD)
-    ).toBeCloseTo(
+    expect(await readUsdNet(reservation.id)).toBeCloseTo(
       netBefore - values.PARTIAL_AMOUNT_VALUE,
       2
     );
