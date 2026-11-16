@@ -32,6 +32,7 @@ export const useExtraFormViewModel = (
   const { isSubmitting, onSubmit } = useExtraFormSubmit({
     ...props,
     values,
+    isOccupancyEnabled,
     showErrors: setErrors,
   });
 

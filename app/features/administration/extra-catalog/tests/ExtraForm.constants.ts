@@ -116,6 +116,7 @@ export const buildExtraFormSubmitOptions = (
   ...props,
   values: VALID_EXTRA_FORM_VALUES,
   showErrors: () => undefined,
+  isOccupancyEnabled: false,
   ...overrides,
 });
 

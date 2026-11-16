@@ -102,6 +102,23 @@ describe("ExtraOccupancySection", () => {
     expect(createExtraMock).not.toHaveBeenCalled();
   });
 
+  it("blocks the submit and shows the group error when the switch is on and both fields are blank", async () => {
+    const page = renderExtraFormView(CREATE_FORM_PROPS);
+
+    await page.typeName(VALID_EXTRA_FORM_VALUES.name);
+    await page.typePrice(
+      CURRENCY_CODE.USD,
+      VALID_EXTRA_FORM_VALUES.priceUsd
+    );
+    await page.toggleOccupancy();
+    await page.submit();
+
+    expect(
+      page.getError(EXTRA_OCCUPANCY_COPY.INCOMPLETE_ERROR)
+    ).toBeInTheDocument();
+    expect(createExtraMock).not.toHaveBeenCalled();
+  });
+
   it("shows the error the server returns for the occupancy", async () => {
     updateExtraMock.mockResolvedValue({
       status: EXTRA_MUTATION_STATUS.ERROR,
