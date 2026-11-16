@@ -16,6 +16,7 @@ import {
 } from "../constants/E2eExtraOccupancy.constants";
 import { resolveExtraFixtureName } from "../constants/E2eExtraList.constants";
 import { E2E_ONE_HANDED_USE_MINIMUM_TARGET_SIZE_PX } from "../constants/E2eOneHandedUse.constants";
+import { countExtrasNamed } from "../support/extraFixtures";
 import { tryChangeExtraOccupiedQuantity } from "../support/extraOccupancyFixtures";
 import { test } from "../support/extraOccupancyTest";
 
@@ -172,6 +173,37 @@ test.describe("Extra occupancy", () => {
         )
       )
     ).toBeVisible();
+  });
+
+  test("blocks the save and shows the occupancy error when the switch is on and left blank", async ({
+    page,
+    formPage,
+    trackCreatedExtraName,
+  }, testInfo) => {
+    const name = resolveExtraFixtureName(
+      testInfo.project.name,
+      E2E_EXTRA_OCCUPANCY_SCENARIO.BLANK
+    );
+    trackCreatedExtraName(name);
+    await formPage.goTo();
+
+    await formPage.fillName(name);
+    await formPage.fillPrice(
+      CURRENCY_CODE.USD,
+      E2E_EXTRA_PRICE_TEXT.USD
+    );
+    await formPage.enableOccupancy();
+    await formPage.submit(
+      EXTRA_CATALOG_COPY.SUBMIT_BUTTON_CREATE
+    );
+
+    await expect(
+      formPage.getOccupancyError()
+    ).toBeVisible();
+    await expect(page).toHaveURL(
+      PATHS.ADMINISTRATION.EXTRAS_NEW
+    );
+    expect(await countExtrasNamed(name)).toBe(0);
   });
 
   test("keeps the occupancy controls at least as tall as the one handed use minimum", async ({

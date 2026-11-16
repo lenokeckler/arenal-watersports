@@ -1,6 +1,7 @@
 export const E2E_OCCUPIED_CATEGORY_NAME = "Tabla de wake";
 
 export const E2E_EXTRA_OCCUPANCY_SCENARIO = {
+  BLANK: "occupancy_blank",
   CHARGE_ONLY: "occupancy_charge_only",
   CREATE: "occupancy_create",
   EDIT: "occupancy_edit",

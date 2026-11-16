@@ -64,6 +64,9 @@ export const createExtraFormPage = (page: Page) => {
       `#${EXTRA_FORM_FIELD_ID.OCCUPIES_QUANTITY}`
     );
 
+  const getOccupancyError = (): Locator =>
+    page.getByText(EXTRA_OCCUPANCY_COPY.INCOMPLETE_ERROR);
+
   const getLockedNote = (): Locator =>
     page.getByText(EXTRA_OCCUPANCY_COPY.LOCKED_NOTE);
 
@@ -131,6 +134,7 @@ export const createExtraFormPage = (page: Page) => {
     getCategorySelect,
     getQuantityInput,
     getLockedNote,
+    getOccupancyError,
     getSubmitButton,
     getCancelButton,
     getToastMessage,
