@@ -97,3 +97,14 @@ The administration worker keeps the list of extras that reservations can add to 
 - [x] The server re-validates exactly the same rules before writing.
 - [x] Editing preloads the current prices and saves the changed ones.
 - [x] The card lists the prices the extra has with the project money format.
+
+## 20.01 Extra compatibility reads (US-ADM-20)
+
+| Requirement                                                                                                                           | Test                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Every extra carries `compatibleUnitCount`, read with the `extra_compatibility(count)` embed; no aggregate row means 0                 | `readCompatibleUnitCount.test.ts`, `mapExtraRowToExtra.test.ts`, `getExtra.test.ts`    |
+| The label says "Sin embarcaciones", "Aplica a 1 unidad" or "Aplica a N unidades"                                                      | `buildExtraCompatibilityLabel.test.ts`                                                 |
+| `getExtraCompatibilityCategories(extraId)` returns the extra and the active by-unit categories with their unit count and linked count | `getExtraCompatibilityCategories.test.ts`, `buildExtraCompatibilityCategories.test.ts` |
+| `getExtraCompatibilityUnits(extraId, categoryId)` returns the extra, the category and its units, each with `isLinked`                 | `getExtraCompatibilityUnits.test.ts`, `buildExtraCompatibilityUnits.test.ts`           |
+| Decommissioned units are never counted or listed; a category left with no units is not offered                                        | `buildExtraCompatibilityCategories.test.ts`, `buildExtraCompatibilityUnits.test.ts`    |
+| An unknown or malformed extra id, an unknown category or a by-quantity category gives `null`; any other read error throws             | `extraCompatibilityQueries.test.ts`, `getExtraCompatibilityUnits.test.ts`              |
