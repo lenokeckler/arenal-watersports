@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { LIST_PAGINATION_COPY } from "@/app/components/list-pagination/constants/ListPaginationCopy.constants";
 import { ARIA_ROLE } from "@/app/constants";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
+import { EXTRA_COMPATIBILITY_COPY } from "../constants/ExtraCompatibilityCopy.constants";
 
 const keepTextAsIs = (text: string): string => text;
 
@@ -18,6 +19,21 @@ export const createExtraListPage = () => {
     ).queryByRole(ARIA_ROLE.LINK, {
       name: EXTRA_CATALOG_COPY.EDIT_LINK,
     });
+
+  const getCompatibilityLink = (name: string) =>
+    within(
+      screen.getByRole(ARIA_ROLE.GROUP, { name })
+    ).queryByRole(ARIA_ROLE.LINK, {
+      name: EXTRA_COMPATIBILITY_COPY.LINK,
+    });
+
+  const queryCompatibilityLabel = (
+    name: string,
+    label: string
+  ) =>
+    within(
+      screen.getByRole(ARIA_ROLE.GROUP, { name })
+    ).queryByText(label);
 
   const getStatusLabel = (name: string, label: string) =>
     within(
@@ -140,6 +156,7 @@ export const createExtraListPage = () => {
     clickRemove,
     clickRetry,
     getCard,
+    getCompatibilityLink,
     getCreateLink,
     getEditLink,
     getEmptyStateTitle,
@@ -150,6 +167,7 @@ export const createExtraListPage = () => {
     getStatusLabel,
     getTitle,
     queryCancelButton,
+    queryCompatibilityLabel,
     queryPrice,
     queryReactivateButton,
     queryReactivatingButton,

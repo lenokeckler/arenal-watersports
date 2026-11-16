@@ -14,6 +14,8 @@ const EXTRA_CARD_ACTION_SIZE_CLASS =
 
 export const EXTRA_CARD_EDIT_LINK_CLASS = `${BUTTON_BASE_CLASS} ${BUTTON_VARIANT_CLASS[BUTTON.SECONDARY]} ${BUTTON_SIZE_CLASS[SIZE.FULL]} ${BUTTON_ENABLED_CLASS} ${EXTRA_CARD_ACTION_SIZE_CLASS}`;
 
+export const EXTRA_CARD_COMPATIBILITY_LINK_CLASS = `${EXTRA_CARD_EDIT_LINK_CLASS} col-span-2 md:col-span-1`;
+
 const EXTRA_CARD_ACTION_SHAPE_CLASS = `inline-flex w-full items-center justify-center border px-4 text-body-base transition-colors ${EXTRA_CARD_ACTION_SIZE_CLASS}`;
 
 export const EXTRA_CARD_REACTIVATE_BUTTON_CLASS = `${EXTRA_CARD_ACTION_SHAPE_CLASS} border-outline-variant text-on-surface hover:bg-surface-container-high`;
