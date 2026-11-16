@@ -30,3 +30,8 @@ export const NON_BREAKING_SPACE = "\u00a0";
 
 export const AVAILABLE_USD = 30;
 export const AVAILABLE_CRC = 15000;
+
+export const ZERO_WIDTH_SPACE = "​";
+export const SOFT_HYPHEN = "­";
+export const BELL_CHARACTER = "";
+export const TAB_CHARACTER = "	";

@@ -2,6 +2,7 @@ import { STRING } from "@/app/constants";
 import { RESERVATION_REFUND_REASON } from "../constants/ReservationRefundReason.constants";
 import { RESERVATION_REFUND_REASON_COPY } from "../constants/ReservationRefundReasonCopy.constants";
 import type { ReservationRefundValues } from "../models/ReservationRefundValues.interface";
+import { trimReservationRefundReason } from "./trimReservationRefundReason";
 
 export const resolveReservationRefundReasonText = ({
   otherReasonText,
@@ -14,6 +15,6 @@ export const resolveReservationRefundReasonText = ({
     return STRING.Empty;
   }
   return reason === RESERVATION_REFUND_REASON.OTHER
-    ? otherReasonText.trim()
+    ? trimReservationRefundReason(otherReasonText)
     : RESERVATION_REFUND_REASON_COPY[reason];
 };
