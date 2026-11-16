@@ -3,6 +3,7 @@ import type { ReservationRefundRecorded } from "./ReservationRefundRecorded.inte
 
 export interface ReservationRefundSend {
   isSubmitting: boolean;
+  mayBeRecorded: boolean;
   recorded: NullableRef<ReservationRefundRecorded>;
   send: () => Promise<void>;
 }

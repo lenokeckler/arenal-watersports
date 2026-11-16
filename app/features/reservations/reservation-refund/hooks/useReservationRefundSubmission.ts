@@ -13,17 +13,27 @@ export const useReservationRefundSubmission = (
 ): ReservationRefundSubmission => {
   const { clearErrors, errors, formError, showErrors } =
     useReservationRefundErrors();
-  const { isSubmitting, recorded, send } =
+  const { isSubmitting, mayBeRecorded, recorded, send } =
     useReservationRefundSend(
       reservationId,
       values,
       showErrors
     );
 
+  const keepErrorsWhileUnconfirmed = (): void => {
+    if (!mayBeRecorded) {
+      clearErrors();
+    }
+  };
+
   const handleSubmit: ReservationRefundSubmission["handleSubmit"] =
     (event) => {
       event?.preventDefault();
-      if (isSubmitting || recorded !== null) {
+      if (
+        isSubmitting ||
+        mayBeRecorded ||
+        recorded !== null
+      ) {
         return;
       }
       const nextErrors = resolveReservationRefundErrors(
@@ -38,11 +48,12 @@ export const useReservationRefundSubmission = (
     };
 
   return {
-    clearErrors,
+    clearErrors: keepErrorsWhileUnconfirmed,
     errors,
     formError,
     handleSubmit,
     isPending: isSubmitting,
+    mayBeRecorded,
     recorded,
   };
 };

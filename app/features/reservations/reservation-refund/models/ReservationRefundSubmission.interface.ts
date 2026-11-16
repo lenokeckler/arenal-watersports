@@ -8,5 +8,6 @@ export interface ReservationRefundSubmission {
   formError: string;
   handleSubmit: (event?: React.FormEvent) => void;
   isPending: boolean;
+  mayBeRecorded: boolean;
   recorded: NullableRef<ReservationRefundRecorded>;
 }

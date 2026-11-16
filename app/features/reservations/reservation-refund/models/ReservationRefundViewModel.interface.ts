@@ -14,6 +14,7 @@ export interface ReservationRefundViewModel {
   handleSubmit: (event?: React.FormEvent) => void;
   isPending: boolean;
   isSubmitDisabled: boolean;
+  mayBeRecorded: boolean;
   otherReasonText: string;
   reason: NullableRef<ReservationRefundReason>;
   recorded: NullableRef<ReservationRefundRecorded>;

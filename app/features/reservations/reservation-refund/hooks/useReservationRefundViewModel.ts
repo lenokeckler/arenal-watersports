@@ -24,6 +24,7 @@ export const useReservationRefundViewModel = (
     formError,
     handleSubmit,
     isPending,
+    mayBeRecorded,
     recorded,
   } = useReservationRefundSubmission(
     refund.id,
@@ -44,7 +45,9 @@ export const useReservationRefundViewModel = (
     formError,
     handleSubmit,
     isPending,
-    isSubmitDisabled: isPending || recorded !== null,
+    isSubmitDisabled:
+      isPending || mayBeRecorded || recorded !== null,
+    mayBeRecorded,
     recorded,
     setAmountText: edit(setAmountText),
     setCurrency: edit(setCurrency),

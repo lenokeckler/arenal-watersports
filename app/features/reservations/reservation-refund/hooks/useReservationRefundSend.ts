@@ -16,16 +16,21 @@ export const useReservationRefundSend = (
   showErrors: ReservationRefundErrorsState["showErrors"]
 ): ReservationRefundSend => {
   const { isSubmitting, runLocked } = useSubmissionLock();
+  const [mayBeRecorded, setMayBeRecorded] = useState(false);
   const [recorded, setRecorded] =
     useState<NullableRef<ReservationRefundRecorded>>(null);
 
   const send = (): Promise<void> =>
     runLocked(async () => {
       showErrors(RESERVATION_REFUND_NO_ERRORS);
-      const { result } = await submitReservationRefund({
-        ...values,
-        reservationId,
-      });
+      const { mayBeRecorded: unconfirmed, result } =
+        await submitReservationRefund({
+          ...values,
+          reservationId,
+        });
+      if (unconfirmed) {
+        setMayBeRecorded(true);
+      }
       if (result.ok) {
         setRecorded(result.recorded);
         return;
@@ -33,5 +38,5 @@ export const useReservationRefundSend = (
       showErrors(result.errors, result.formError);
     });
 
-  return { isSubmitting, recorded, send };
+  return { isSubmitting, mayBeRecorded, recorded, send };
 };

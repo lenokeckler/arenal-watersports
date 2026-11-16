@@ -6,12 +6,17 @@ import {
   it,
   vi,
 } from "vitest";
+import { isBrowserOffline } from "@/app/utils/network/isBrowserOffline";
 import { recordReservationRefundAction } from "../actions/recordReservationRefundAction";
 import { RESERVATION_REFUND_FEEDBACK_COPY as FEEDBACK } from "../constants/ReservationRefundFeedbackCopy.constants";
 import { RESERVATION_REFUND_VALIDATION_COPY as VALIDATION } from "../constants/ReservationRefundValidationCopy.constants";
+import { REFUND_RECORDED } from "./ReservationRefundAction.constants";
 import { NETWORK_FAILURE } from "./ReservationRefundForm.constants";
 import { renderSubmission } from "./renderReservationRefundSubmission";
 
+vi.mock("@/app/utils/network/isBrowserOffline", () => ({
+  isBrowserOffline: vi.fn(),
+}));
 vi.mock("../actions/recordReservationRefundAction", () => ({
   recordReservationRefundAction: vi.fn(),
 }));
@@ -75,5 +80,47 @@ describe("useReservationRefundSubmission failures", () => {
     );
     expect(result.current.recorded).toBeNull();
     expect(result.current.isPending).toBe(false);
+  });
+
+  it("locks the form after an unconfirmed failure", async () => {
+    vi.mocked(
+      recordReservationRefundAction
+    ).mockRejectedValue(NETWORK_FAILURE);
+    const { result } = renderSubmission();
+    await submit(result.current.handleSubmit);
+
+    await submit(result.current.handleSubmit);
+    act(() => result.current.clearErrors());
+
+    expect(result.current.mayBeRecorded).toBe(true);
+    expect(
+      recordReservationRefundAction
+    ).toHaveBeenCalledTimes(1);
+    expect(result.current.formError).toBe(
+      FEEDBACK.UNCONFIRMED
+    );
+  });
+
+  it("sends once more after an offline failure", async () => {
+    vi.mocked(isBrowserOffline).mockReturnValueOnce(true);
+    vi.mocked(
+      recordReservationRefundAction
+    ).mockResolvedValue({
+      ok: true,
+      recorded: REFUND_RECORDED,
+    });
+    const { result } = renderSubmission();
+    await submit(result.current.handleSubmit);
+    expect(result.current.formError).toBe(FEEDBACK.OFFLINE);
+    expect(result.current.mayBeRecorded).toBe(false);
+
+    await submit(result.current.handleSubmit);
+
+    expect(
+      recordReservationRefundAction
+    ).toHaveBeenCalledTimes(1);
+    expect(result.current.recorded).toEqual(
+      REFUND_RECORDED
+    );
   });
 });
