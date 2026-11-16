@@ -1,3 +1,4 @@
+import Label from "@/app/components/text/Label";
 import InlineText from "@/app/components/text/InlineText";
 import { INPUT_TYPES } from "@/app/constants";
 import type { ExtraCompatibilityUnitCheckboxRowProps } from "../models/ExtraCompatibilityUnitCheckboxRowProps.interface";
@@ -14,7 +15,7 @@ const ExtraCompatibilityUnitCheckboxRow = ({
   onToggleUnit,
   option,
 }: ExtraCompatibilityUnitCheckboxRowProps): React.JSX.Element => (
-  <label
+  <Label
     className={resolveExtraCompatibilityUnitRowClass(
       option.isChecked
     )}
@@ -38,7 +39,7 @@ const ExtraCompatibilityUnitCheckboxRow = ({
         {option.statusLabel}
       </InlineText>
     </div>
-  </label>
+  </Label>
 );
 
 export default ExtraCompatibilityUnitCheckboxRow;
