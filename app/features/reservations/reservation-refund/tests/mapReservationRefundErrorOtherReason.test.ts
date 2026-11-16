@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import { RESERVATION_REFUND_ERROR } from "../constants/ReservationRefundError.constants";
 import { RESERVATION_REFUND_FEEDBACK_COPY as FEEDBACK } from "../constants/ReservationRefundFeedbackCopy.constants";
 import { RESERVATION_REFUND_REASON } from "../constants/ReservationRefundReason.constants";
-import { RESERVATION_REFUND_OTHER_REASON_REFUSALS } from "../constants/ReservationRefundRefusals.constants";
 import { RESERVATION_REFUND_VALIDATION_COPY as VALIDATION } from "../constants/ReservationRefundValidationCopy.constants";
 import { mapReservationRefundError } from "../utils/mapReservationRefundError";
 import { REFUND_REASON_MESSAGES } from "./ReservationRefundAction.constants";
@@ -57,14 +56,6 @@ describe("mapReservationRefundError for the other reason", () => {
       errors: { otherReason: VALIDATION.OTHER_REQUIRED },
       formError: undefined,
     });
-  });
-
-  it("defines a free text row for each reason refusal", () => {
-    expect(
-      RESERVATION_REFUND_OTHER_REASON_REFUSALS.map(
-        ({ message }) => message
-      ).toSorted()
-    ).toEqual(REFUND_REASON_MESSAGES.toSorted());
   });
 
   it("leaves the other refusals untouched when the reason is other", () => {

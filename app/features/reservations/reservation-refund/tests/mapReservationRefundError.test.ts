@@ -37,9 +37,6 @@ describe("mapReservationRefundError", () => {
       ({ message }) => message
     );
 
-    Object.values(MESSAGE).forEach((message) => {
-      expect(mapped).toContain(message);
-    });
     expect(mapped.toSorted()).toEqual(
       Object.values(MESSAGE).toSorted()
     );

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CURRENCY_CODE } from "@/app/constants";
 import { formatMoney } from "@/app/utils/money/formatMoney";
+import { RESERVATION_REFUND_LIMITS } from "../constants/ReservationRefundLimits.constants";
 import { RESERVATION_REFUND_VALIDATION_COPY as COPY } from "../constants/ReservationRefundValidationCopy.constants";
 import { resolveReservationRefundAmountError } from "../utils/resolveReservationRefundAmountError";
 import {
@@ -9,6 +10,7 @@ import {
 } from "./ReservationRefundValues.constants";
 
 const { CRC, USD } = CURRENCY_CODE;
+const { AMOUNT } = RESERVATION_REFUND_LIMITS;
 
 describe("resolveReservationRefundAmountError", () => {
   it.each([
@@ -25,14 +27,14 @@ describe("resolveReservationRefundAmountError", () => {
       COPY.AMOUNT_TOO_MANY_DECIMALS,
     ],
     [
-      "13 integer digits in colones",
-      "1".repeat(13),
+      "too many integer digits in colones",
+      "1".repeat(AMOUNT[CRC].maxIntegerDigits + 1),
       CRC,
       COPY.AMOUNT.precision,
     ],
     [
-      "11 integer digits in dollars",
-      "1".repeat(11),
+      "too many integer digits in dollars",
+      "1".repeat(AMOUNT[USD].maxIntegerDigits + 1),
       USD,
       COPY.AMOUNT.precision,
     ],

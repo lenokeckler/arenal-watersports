@@ -62,5 +62,3 @@ export const REFUND_UNEXPECTED_ERROR = new Error(
 export const REFUND_ACCESS_REDIRECT = new Error(
   "NEXT_REDIRECT"
 );
-
-export const REFUND_CONNECTION_HINT = "conexión";
