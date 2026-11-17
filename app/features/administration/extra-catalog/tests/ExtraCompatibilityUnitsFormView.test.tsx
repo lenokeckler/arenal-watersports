@@ -147,14 +147,14 @@ describe("ExtraCompatibilityUnitsFormView", () => {
     });
   });
 
-  it("goes back to the categories screen with Cancelar without saving", async () => {
+  it("goes back to the categories screen with Regresar without saving", async () => {
     renderView();
     const unitsPage = createExtraCompatibilityUnitsPage();
 
     await unitsPage.toggleUnit(
       FREE_COMPATIBILITY_UNIT.code
     );
-    await unitsPage.cancel();
+    await unitsPage.back();
 
     expect(pushMock).toHaveBeenCalledWith(
       resolveExtraCompatibilityPath(COMPATIBILITY_EXTRA_ID)
