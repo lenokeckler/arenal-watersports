@@ -250,7 +250,7 @@ test.describe("Extra compatibility", () => {
     ).toBeVisible();
   });
 
-  test("goes back with Cancelar without saving the changes", async ({
+  test("goes back with Regresar without saving the changes", async ({
     categoriesPage,
     seedCompatibleExtra,
     seedUnitCategory,
@@ -274,7 +274,7 @@ test.describe("Extra compatibility", () => {
         category.codes[E2E_COMPATIBILITY_UNIT_INDEX.FIRST]
       )
       .check();
-    await unitsPage.getCancelButton().click();
+    await unitsPage.getBackButton().click();
 
     await expect(
       categoriesPage.getCategoryProgress(
@@ -314,7 +314,7 @@ test.describe("Extra compatibility", () => {
     const helperBoxes = await Promise.all([
       unitsPage.getSelectAllButton().boundingBox(),
       unitsPage.getClearAllButton().boundingBox(),
-      unitsPage.getCancelButton().boundingBox(),
+      unitsPage.getBackButton().boundingBox(),
     ]);
 
     [categoryBox, ...unitBoxes, ...helperBoxes].forEach(
