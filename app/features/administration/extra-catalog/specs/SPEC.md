@@ -152,7 +152,7 @@ The administration worker keeps the list of extras that reservations can add to 
 ### Acceptance criteria
 
 - [x] The units screen lists all active units of the category as a checklist with code and status word; linked units are checked.
-- [x] Marcar todas, Quitar todas, Guardar and Cancelar work; Guardar saves only the units of that category.
+- [x] Marcar todas, Quitar todas, Guardar and Regresar work; Guardar saves only the units of that category.
 - [x] On success the worker sees a toast and returns to the categories screen with the counts refreshed.
 - [x] Offline or failed saves show a clear Spanish message and keep the selection.
 - [ ] Offering only the matching extras when building a reservation is carried by a later US-ADM-20 PR.
