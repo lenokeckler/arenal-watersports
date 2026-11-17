@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
-import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
 import { EXTRA_COMPATIBILITY_COPY } from "../constants/ExtraCompatibilityCopy.constants";
 
 export const createExtraCompatibilityUnitsPage = () => {
@@ -53,9 +52,9 @@ export const createExtraCompatibilityUnitsPage = () => {
       ),
     });
 
-  const getCancelButton = () =>
+  const getBackButton = () =>
     screen.getByRole(ARIA_ROLE.BUTTON, {
-      name: EXTRA_CATALOG_COPY.CANCEL_BUTTON,
+      name: EXTRA_COMPATIBILITY_COPY.BACK_BUTTON,
     });
 
   const queryEmptyMessage = () =>
@@ -81,12 +80,12 @@ export const createExtraCompatibilityUnitsPage = () => {
     await user.click(getSaveButton());
   };
 
-  const cancel = async (): Promise<void> => {
-    await user.click(getCancelButton());
+  const back = async (): Promise<void> => {
+    await user.click(getBackButton());
   };
 
   return {
-    cancel,
+    back,
     clearAll,
     getInstruction,
     getSaveButton,

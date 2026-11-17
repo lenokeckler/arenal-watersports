@@ -23,7 +23,7 @@ const ExtraCompatibilityUnitsActions = ({
         EXTRA_COMPATIBILITY_UNITS_ACTION_BUTTON_CLASS
       }
     >
-      {EXTRA_CATALOG_COPY.CANCEL_BUTTON}
+      {EXTRA_COMPATIBILITY_COPY.BACK_BUTTON}
     </Button>
     <Button
       variant={BUTTON.PRIMARY}
