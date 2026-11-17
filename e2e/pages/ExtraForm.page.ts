@@ -6,6 +6,7 @@ import {
   type CurrencyCode,
 } from "@/app/constants";
 import { EXTRA_CATALOG_COPY } from "@/app/features/administration/extra-catalog/constants/ExtraCatalogCopy.constants";
+import { EXTRA_OCCUPANCY_COPY } from "@/app/features/administration/extra-catalog/constants/ExtraOccupancyCopy.constants";
 import { EXTRA_FORM_FIELD_ID } from "@/app/features/administration/extra-catalog/constants/ExtraFormFieldId.constants";
 import { FIELD_ERROR_ID_SUFFIX } from "@/app/components/field-factory/constants/FieldFactory.constants";
 import { E2E_NEXT_NOT_FOUND_MESSAGE } from "../constants/E2eCategoryBehavior.constants";
@@ -48,6 +49,27 @@ export const createExtraFormPage = (page: Page) => {
       EXTRA_CATALOG_COPY.PRICES_REQUIRED_ERROR
     );
 
+  const getOccupancyToggle = (): Locator =>
+    page.locator(
+      `#${EXTRA_FORM_FIELD_ID.OCCUPANCY_TOGGLE}`
+    );
+
+  const getCategorySelect = (): Locator =>
+    page.locator(
+      `#${EXTRA_FORM_FIELD_ID.OCCUPIES_CATEGORY}`
+    );
+
+  const getQuantityInput = (): Locator =>
+    page.locator(
+      `#${EXTRA_FORM_FIELD_ID.OCCUPIES_QUANTITY}`
+    );
+
+  const getOccupancyError = (): Locator =>
+    page.getByText(EXTRA_OCCUPANCY_COPY.INCOMPLETE_ERROR);
+
+  const getLockedNote = (): Locator =>
+    page.getByText(EXTRA_OCCUPANCY_COPY.LOCKED_NOTE);
+
   const getSubmitButton = (label: string): Locator =>
     page.getByRole(ARIA_ROLE.BUTTON, {
       name: label,
@@ -76,6 +98,22 @@ export const createExtraFormPage = (page: Page) => {
     await getPriceInput(currency).fill(value);
   };
 
+  const enableOccupancy = async (): Promise<void> => {
+    await getOccupancyToggle().check();
+  };
+
+  const chooseCategory = async (
+    categoryId: string
+  ): Promise<void> => {
+    await getCategorySelect().selectOption(categoryId);
+  };
+
+  const fillQuantity = async (
+    value: string
+  ): Promise<void> => {
+    await getQuantityInput().fill(value);
+  };
+
   const submit = async (label: string): Promise<void> => {
     await getSubmitButton(label).click();
   };
@@ -92,12 +130,20 @@ export const createExtraFormPage = (page: Page) => {
     getPriceInput,
     getPriceError,
     getPricesRequiredError,
+    getOccupancyToggle,
+    getCategorySelect,
+    getQuantityInput,
+    getLockedNote,
+    getOccupancyError,
     getSubmitButton,
     getCancelButton,
     getToastMessage,
     getNotFoundMessage,
     fillName,
     fillPrice,
+    enableOccupancy,
+    chooseCategory,
+    fillQuantity,
     submit,
     cancel,
   };
