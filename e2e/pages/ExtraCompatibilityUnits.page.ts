@@ -1,6 +1,5 @@
 import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE } from "@/app/constants";
-import { EXTRA_CATALOG_COPY } from "@/app/features/administration/extra-catalog/constants/ExtraCatalogCopy.constants";
 import { EXTRA_COMPATIBILITY_COPY } from "@/app/features/administration/extra-catalog/constants/ExtraCompatibilityCopy.constants";
 import { resolveExtraCompatibilityCategoryPath } from "@/app/features/administration/extra-catalog/utils/resolveExtraCompatibilityCategoryPath";
 import { E2E_COMPATIBILITY_SELECTOR } from "../constants/E2eExtraCompatibility.constants";
@@ -62,9 +61,9 @@ export const createExtraCompatibilityUnitsPage = (
       name: EXTRA_COMPATIBILITY_COPY.SAVE_BUTTON,
     });
 
-  const getCancelButton = (): Locator =>
+  const getBackButton = (): Locator =>
     page.getByRole(ARIA_ROLE.BUTTON, {
-      name: EXTRA_CATALOG_COPY.CANCEL_BUTTON,
+      name: EXTRA_COMPATIBILITY_COPY.BACK_BUTTON,
     });
 
   const getToastMessage = (message: string): Locator =>
@@ -72,7 +71,7 @@ export const createExtraCompatibilityUnitsPage = (
 
   return {
     goTo,
-    getCancelButton,
+    getBackButton,
     getClearAllButton,
     getHeading,
     getInstruction,
