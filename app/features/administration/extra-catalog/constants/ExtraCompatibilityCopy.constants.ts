@@ -2,6 +2,7 @@ export const EXTRA_COMPATIBILITY_COPY = {
   APPLIES_TO_ONE_UNIT: "Aplica a 1 unidad",
   APPLIES_TO_UNITS: (unitCount: number): string =>
     `Aplica a ${unitCount} unidades`,
+  BACK_BUTTON: "Regresar",
   BACK_TO_EXTRAS_LINK: "Volver a extras",
   CATEGORIES_EMPTY_BODY:
     "Agregue embarcaciones a una categoría por unidad para poder asignarles este extra.",
