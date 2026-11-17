@@ -8,8 +8,11 @@ import { EXTRA_MUTATION_STATUS } from "../constants/ExtraMutationStatus.constant
 import type { ExtraMutationResult } from "../models/ExtraMutationResult.interface";
 import type { UpdateExtraInput } from "../models/UpdateExtraInput.interface";
 import { mapExtraWriteErrorToResult } from "../utils/mapExtraWriteErrorToResult";
+import { mapExtraInputToOccupancyColumns } from "../utils/mapExtraInputToOccupancyColumns";
 import { mapExtraInputToPriceColumns } from "../utils/mapExtraInputToPriceColumns";
 import { resolveExtraValidationResult } from "../utils/resolveExtraValidationResult";
+import { resolveExtraCategoryFailure } from "./resolveExtraCategoryFailure";
+import { resolveExtraOccupancyLockFailure } from "./resolveExtraOccupancyLockFailure";
 
 export const updateExtraAction = async (
   input: UpdateExtraInput
@@ -23,11 +26,31 @@ export const updateExtraAction = async (
     return validationFailure;
   }
 
+  const occupancyColumns =
+    mapExtraInputToOccupancyColumns(input);
+  const categoryFailure = await resolveExtraCategoryFailure(
+    supabase,
+    occupancyColumns
+  );
+  if (categoryFailure) {
+    return categoryFailure;
+  }
+  const lockFailure =
+    await resolveExtraOccupancyLockFailure(
+      supabase,
+      input.extraId,
+      occupancyColumns
+    );
+  if (lockFailure) {
+    return lockFailure;
+  }
+
   const { data: updatedExtraRow, error } = await supabase
     .from("extras")
     .update({
       name: input.name.trim(),
       ...mapExtraInputToPriceColumns(input),
+      ...occupancyColumns,
       updated_by: adminWorkerId,
     })
     .eq("id", input.extraId)
