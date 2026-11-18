@@ -5,8 +5,18 @@ import { DEFAULT_UNIT_OCCUPANCY } from "./CategoryUnits.constants";
 export const DEFAULT_BOARD_UNIT_ROW: BoardCategoryUnitRow =
   {
     category_id: "category-01",
+    consumes_fuel: false,
     customer_name: null,
+    dispatch_id: null,
+    dispatched_at: null,
     effective_status: INVENTORY_UNIT_STATUS.AVAILABLE,
+    fuel_level: null,
+    fuel_max: 4,
+    has_motor: false,
+    impact_count: 0,
+    low_fuel_lines: 1,
+    people_count: null,
+    radio_channel: null,
     reservation_code: null,
     reservation_ends_at: null,
     reservation_id: null,
@@ -14,6 +24,8 @@ export const DEFAULT_BOARD_UNIT_ROW: BoardCategoryUnitRow =
     returns_at: null,
     unit_code: "JS-01",
     unit_id: "unit-01",
+    usage_metric: null,
+    usage_total: 0,
   };
 
 export const OCCUPIED_BOARD_UNIT_ROW: BoardCategoryUnitRow =
