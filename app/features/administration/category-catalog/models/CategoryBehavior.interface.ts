@@ -9,6 +9,7 @@ export interface CategoryBehavior {
   hasMotor: boolean;
   usageMetric: Nullable<UsageMetric>;
   consumesFuel: boolean;
+  lowFuelLines: number;
   canBeDamaged: boolean;
   hasConditionPhotos: boolean;
   guideOnly: boolean;
