@@ -2,25 +2,63 @@
 
 import DispatchSheet from "@/app/components/dispatch-board/components/DispatchSheet";
 import { CATEGORY_UNITS_DISPATCH_STEP } from "../constants/CategoryUnits.constants";
+import { useCategoryUnitsBoard } from "../hooks/useCategoryUnitsBoard";
 import { useCategoryUnitsDispatch } from "../hooks/useCategoryUnitsDispatch";
 import type { CategoryUnitsDispatchProps } from "../models/CategoryUnitsDispatchProps.interface";
 import { CATEGORY_UNITS_DISPATCH_SPACER_CLASS } from "../styles/CategoryUnits.styles";
 import CategoryDispatchReservationPicker from "./CategoryDispatchReservationPicker";
+import CategoryUnitInfoSheet from "./CategoryUnitInfoSheet";
+import CategoryUnitModifySheet from "./CategoryUnitModifySheet";
 import CategoryUnitsDispatchBar from "./CategoryUnitsDispatchBar";
+import CategoryUnitsEditToggle from "./CategoryUnitsEditToggle";
+import CategoryUnitsHeader from "./CategoryUnitsHeader";
 import CategoryUnitsList from "./CategoryUnitsList";
 
 const CategoryUnitsDispatch = ({
+  afterHeader,
   categoryId,
   categoryName,
+  image,
+  unitCount,
   units,
 }: CategoryUnitsDispatchProps): React.JSX.Element => {
   const dispatch = useCategoryUnitsDispatch();
+  const board = useCategoryUnitsBoard({
+    onEditingChange: dispatch.handleCancel,
+  });
   const selectedCount = dispatch.selectedUnitIds.length;
+  const hasEditableUnits = units.some(
+    (unit) => unit.readings !== null
+  );
+  const infoUnit = units.find(
+    (unit) => unit.id === board.infoUnitId
+  );
+  const modifyUnit = units.find(
+    (unit) => unit.id === board.modifyUnitId
+  );
 
   return (
     <>
+      <CategoryUnitsHeader
+        categoryName={categoryName}
+        unitCount={unitCount}
+      >
+        {hasEditableUnits && (
+          <CategoryUnitsEditToggle
+            isEditing={board.isEditing}
+            onToggle={board.handleToggleEditing}
+          />
+        )}
+      </CategoryUnitsHeader>
+      {afterHeader}
       <CategoryUnitsList
         categoryName={categoryName}
+        image={image}
+        interaction={{
+          isEditing: board.isEditing,
+          onOpenInfo: board.handleOpenInfo,
+          onOpenModify: board.handleOpenModify,
+        }}
         selection={{
           onToggle: dispatch.handleToggleUnit,
           selectedUnitIds: dispatch.selectedUnitIds,
@@ -65,6 +103,20 @@ const CategoryUnitsDispatch = ({
             }
           />
         )}
+      {infoUnit?.occupancy && (
+        <CategoryUnitInfoSheet
+          occupancy={infoUnit.occupancy}
+          onClose={board.handleCloseInfo}
+          unit={infoUnit}
+        />
+      )}
+      {modifyUnit?.readings && (
+        <CategoryUnitModifySheet
+          onClose={board.handleCloseModify}
+          readings={modifyUnit.readings}
+          unit={modifyUnit}
+        />
+      )}
     </>
   );
 };

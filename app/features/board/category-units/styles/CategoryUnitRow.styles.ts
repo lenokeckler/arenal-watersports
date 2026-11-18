@@ -6,15 +6,36 @@ import {
 export const CATEGORY_UNIT_ROW_MIN_HEIGHT_CLASS =
   "min-h-14";
 
-const ROW_BASE_CLASS = `${CATEGORY_UNIT_ROW_MIN_HEIGHT_CLASS} flex w-full min-w-0 flex-col justify-center gap-sm rounded-xl border px-sm py-sm backdrop-blur-md md:px-md`;
+const ROW_BASE_CLASS = `${CATEGORY_UNIT_ROW_MIN_HEIGHT_CLASS} relative flex w-full min-w-0 flex-col overflow-hidden rounded-xl border-2 shadow-sm backdrop-blur-md`;
 
 export const CATEGORY_UNIT_ROW_CLASS = `${ROW_BASE_CLASS} border-outline-variant bg-card-tint-neutral-bg`;
 
-export const CATEGORY_UNIT_ROW_OVERDUE_CLASS = `${ROW_BASE_CLASS} border-warning/40 bg-linear-to-r from-warning/15 to-card-tint-neutral-bg`;
+const ROW_AVAILABLE_CLASS = `${ROW_BASE_CLASS} border-primary/40 bg-card-tint-neutral-bg`;
+
+const ROW_OCCUPIED_CLASS = `${ROW_BASE_CLASS} border-tertiary/40 bg-linear-to-b from-tertiary/10 to-card-tint-neutral-bg`;
+
+const ROW_INACTIVE_CLASS = `${ROW_BASE_CLASS} border-outline-variant bg-card-tint-neutral-bg opacity-80`;
+
+const ROW_DAMAGED_CLASS = `${ROW_BASE_CLASS} border-error/40 bg-card-tint-neutral-bg`;
+
+export const CATEGORY_UNIT_ROW_OVERDUE_CLASS = `${ROW_BASE_CLASS} border-warning/60 bg-linear-to-b from-warning/15 to-card-tint-neutral-bg`;
 
 export const CATEGORY_UNIT_ROW_SELECTED_CLASS = `${ROW_BASE_CLASS} border-primary bg-primary/10 ring-2 ring-primary`;
 
+const CATEGORY_UNIT_ROW_STATUS_CLASS: Record<
+  ActiveInventoryUnitStatus,
+  string
+> = {
+  [INVENTORY_UNIT_STATUS.AVAILABLE]: ROW_AVAILABLE_CLASS,
+  [INVENTORY_UNIT_STATUS.DAMAGED]: ROW_DAMAGED_CLASS,
+  [INVENTORY_UNIT_STATUS.IN_MAINTENANCE]:
+    ROW_INACTIVE_CLASS,
+  [INVENTORY_UNIT_STATUS.IN_REPAIR]: ROW_INACTIVE_CLASS,
+  [INVENTORY_UNIT_STATUS.OCCUPIED]: ROW_OCCUPIED_CLASS,
+};
+
 export const resolveCategoryUnitRowClass = (
+  status: ActiveInventoryUnitStatus,
   isOverdue: boolean,
   isSelected = false
 ): string => {
@@ -24,14 +45,35 @@ export const resolveCategoryUnitRowClass = (
 
   return isOverdue
     ? CATEGORY_UNIT_ROW_OVERDUE_CLASS
-    : CATEGORY_UNIT_ROW_CLASS;
+    : CATEGORY_UNIT_ROW_STATUS_CLASS[status];
 };
+
+export const CATEGORY_UNIT_ROW_MEDIA_CLASS =
+  "relative aspect-4/3 w-full overflow-hidden bg-linear-to-b from-surface-container-high to-surface-container";
+
+export const CATEGORY_UNIT_ROW_IMAGE_CLASS =
+  "absolute inset-0 h-full w-full object-cover";
+
+export const CATEGORY_UNIT_ROW_PLACEHOLDER_CLASS =
+  "absolute inset-0 flex items-center justify-center";
+
+export const CATEGORY_UNIT_ROW_PLACEHOLDER_ICON_CLASS =
+  "text-6xl text-on-surface-variant/40";
+
+export const CATEGORY_UNIT_ROW_BODY_CLASS =
+  "flex min-w-0 flex-col gap-sm p-sm";
+
+export const CATEGORY_UNIT_ROW_READINGS_CLASS =
+  "flex flex-col gap-xs";
+
+export const CATEGORY_UNIT_ROW_USAGE_CLASS =
+  "text-body-sm tabular-nums text-on-surface-variant";
 
 export const CATEGORY_UNIT_ROW_TITLE_CLASS =
   "flex min-w-0 items-center gap-sm";
 
 const SELECT_MARK_BASE_CLASS =
-  "flex size-6 shrink-0 items-center justify-center rounded-md border-2";
+  "pointer-events-none absolute right-2 top-2 z-10 flex size-8 items-center justify-center rounded-full border-2 bg-background/70";
 
 const SELECT_MARK_OFF_CLASS = `${SELECT_MARK_BASE_CLASS} border-outline text-transparent`;
 
@@ -51,10 +93,10 @@ export const CATEGORY_UNIT_ROW_HEADER_CLASS =
   "flex flex-wrap items-center justify-between gap-sm";
 
 export const CATEGORY_UNIT_ROW_CODE_CLASS =
-  "break-words text-title-md font-semibold text-on-surface";
+  "break-words text-title-md font-bold text-on-surface";
 
 export const CATEGORY_UNIT_DETAIL_CLASS =
-  "flex flex-col gap-1 border-t border-outline-variant pt-sm";
+  "flex flex-col gap-1 border-t border-outline-variant/60 pt-sm";
 
 export const CATEGORY_UNIT_RETURN_CLASS =
   "text-body-base font-bold text-tertiary";
