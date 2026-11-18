@@ -25,3 +25,9 @@ export const FUEL_GAUGE_TIER = {
   MEDIUM: "medium",
   MEDIUM_FRACTION: 0.5,
 } as const;
+
+export const FUEL_GAUGE_TONE = {
+  EMPTY: "empty",
+  LOW: "low",
+  OK: "ok",
+} as const;

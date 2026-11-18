@@ -63,3 +63,7 @@ export const resolveFuelLineClassName = (
 
   return `${shapeClass} ${resolveColorClassName(input)}`;
 };
+
+export const FUEL_PRESET_BUTTON_CLASS = "min-h-12 px-0";
+
+export const FUEL_PRESETS_CLASS = "grid grid-cols-4 gap-2";
