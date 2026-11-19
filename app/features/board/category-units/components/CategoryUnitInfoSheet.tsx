@@ -5,20 +5,17 @@ import Button from "@/app/components/button/Button";
 import { BUTTON } from "@/app/components/button/constants";
 import DispatchRadioField from "@/app/components/dispatch-board/components/DispatchRadioField";
 import DispatchTimesStep from "@/app/components/dispatch-board/components/DispatchTimesStep";
-import Link from "@/app/components/link/Link";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
 import Text from "@/app/components/text/Text";
 import {
   ARIA_ROLE,
   BUTTON_TYPES,
   MATERIAL_ICON_NAME,
-  PATHS,
 } from "@/app/constants";
 import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 import { useCategoryUnitInfo } from "../hooks/useCategoryUnitInfo";
 import type { CategoryUnitInfoSheetProps } from "../models/CategoryUnitInfoSheetProps.interface";
 import {
-  CATEGORY_UNIT_RECEIVE_LINK_CLASS,
   CATEGORY_UNIT_SHEET_ACTIONS_CLASS,
   CATEGORY_UNIT_SHEET_ALERT_CLASS,
   CATEGORY_UNIT_SHEET_STACK_CLASS,
@@ -30,6 +27,7 @@ import CategoryUnitInfoDetails from "./CategoryUnitInfoDetails";
 const CategoryUnitInfoSheet = ({
   occupancy,
   onClose,
+  onReceive,
   unit,
 }: CategoryUnitInfoSheetProps): React.JSX.Element => {
   const info = useCategoryUnitInfo(occupancy);
@@ -87,12 +85,13 @@ const CategoryUnitInfoSheet = ({
           </Text>
         )}
         <div className={CATEGORY_UNIT_SHEET_ACTIONS_CLASS}>
-          <Link
-            href={PATHS.OPERATIONS.OUT_ON_WATER}
-            className={CATEGORY_UNIT_RECEIVE_LINK_CLASS}
+          <Button
+            type={BUTTON_TYPES.BUTTON}
+            variant={BUTTON.PRIMARY}
+            onClick={onReceive}
           >
             {CATEGORY_UNITS_COPY.RECEIVE}
-          </Link>
+          </Button>
         </div>
       </div>
     </ActionSheet>

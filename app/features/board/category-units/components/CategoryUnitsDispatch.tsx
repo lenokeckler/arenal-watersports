@@ -9,6 +9,7 @@ import { CATEGORY_UNITS_DISPATCH_SPACER_CLASS } from "../styles/CategoryUnits.st
 import CategoryDispatchReservationPicker from "./CategoryDispatchReservationPicker";
 import CategoryUnitInfoSheet from "./CategoryUnitInfoSheet";
 import CategoryUnitModifySheet from "./CategoryUnitModifySheet";
+import CategoryUnitReceiveSheet from "./CategoryUnitReceiveSheet";
 import CategoryUnitsDispatchBar from "./CategoryUnitsDispatchBar";
 import CategoryUnitsEditToggle from "./CategoryUnitsEditToggle";
 import CategoryUnitsHeader from "./CategoryUnitsHeader";
@@ -27,14 +28,17 @@ const CategoryUnitsDispatch = ({
     onEditingChange: dispatch.handleCancel,
   });
   const selectedCount = dispatch.selectedUnitIds.length;
-  const hasEditableUnits = units.some(
-    (unit) => unit.readings !== null
-  );
   const infoUnit = units.find(
     (unit) => unit.id === board.infoUnitId
   );
   const modifyUnit = units.find(
     (unit) => unit.id === board.modifyUnitId
+  );
+  const hasEditableUnits = units.some(
+    (unit) => unit.readings !== null
+  );
+  const receiveUnit = units.find(
+    (unit) => unit.id === board.receiveUnitId
   );
 
   return (
@@ -107,7 +111,18 @@ const CategoryUnitsDispatch = ({
         <CategoryUnitInfoSheet
           occupancy={infoUnit.occupancy}
           onClose={board.handleCloseInfo}
+          onReceive={() =>
+            board.handleOpenReceive(infoUnit.id)
+          }
           unit={infoUnit}
+        />
+      )}
+      {receiveUnit?.occupancy && receiveUnit.readings && (
+        <CategoryUnitReceiveSheet
+          occupancy={receiveUnit.occupancy}
+          onClose={board.handleCloseReceive}
+          readings={receiveUnit.readings}
+          unit={receiveUnit}
         />
       )}
       {modifyUnit?.readings && (
