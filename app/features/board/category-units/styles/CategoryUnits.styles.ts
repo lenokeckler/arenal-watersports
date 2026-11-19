@@ -20,7 +20,7 @@ export const CATEGORY_UNITS_LIST_ITEM_CLASS =
   "flex min-w-0";
 
 export const CATEGORY_UNITS_DISPATCH_BAR_CLASS =
-  "fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-30 flex items-center justify-between gap-sm border-t border-outline-variant bg-surface-container-high/95 px-margin-mobile py-sm backdrop-blur-xl";
+  "fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-30 md:bottom-0 md:left-64 flex items-center justify-between gap-sm border-t border-outline-variant bg-surface-container-high/95 px-margin-mobile py-sm backdrop-blur-xl";
 
 export const CATEGORY_UNITS_DISPATCH_BAR_COUNT_CLASS =
   "text-title-md font-semibold text-on-surface";
