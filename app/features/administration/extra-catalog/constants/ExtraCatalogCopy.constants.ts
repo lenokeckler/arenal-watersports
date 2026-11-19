@@ -1,4 +1,5 @@
 export const EXTRA_CATALOG_COPY = {
+  BACK_BUTTON: "Regresar",
   CANCEL_BUTTON: "Cancelar",
   CREATE_CTA: "Nuevo extra",
   CREATE_SUCCESS_TOAST: "Extra agregado.",
