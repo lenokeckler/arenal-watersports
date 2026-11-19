@@ -1,5 +1,6 @@
 import type { UnitOccupancy } from "./UnitOccupancy.interface";
 
-export interface CategoryUnitReservationProps {
+export interface CategoryUnitInfoDetailsProps {
+  isReadOnly: boolean;
   occupancy: UnitOccupancy;
 }

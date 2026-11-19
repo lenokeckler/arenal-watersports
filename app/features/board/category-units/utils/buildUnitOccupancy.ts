@@ -9,6 +9,10 @@ export const buildUnitOccupancy = (
 ): UnitOccupancy => {
   const {
     customer_name: customerName,
+    dispatch_id: dispatchId,
+    dispatched_at: dispatchedAt,
+    people_count: peopleCount,
+    radio_channel: radioChannel,
     reservation_code: reservationCode,
     reservation_ends_at: reservationEndsAt,
     reservation_id: reservationId,
@@ -18,6 +22,9 @@ export const buildUnitOccupancy = (
 
   if (
     !customerName ||
+    !dispatchId ||
+    !dispatchedAt ||
+    peopleCount === null ||
     !reservationCode ||
     !reservationEndsAt ||
     !reservationId ||
@@ -32,9 +39,13 @@ export const buildUnitOccupancy = (
 
   return {
     customerName,
+    dispatchId,
+    dispatchedAt,
     isOverdue:
       parseReservationCalendarInstant(returnsAt) <
       now.getTime(),
+    peopleCount,
+    radioChannel,
     reservationCode,
     reservationEndsAt,
     reservationId,
