@@ -2670,13 +2670,14 @@ con la finalidad de sacarla de la disponibilidad para que nadie la agende mientr
 
 **Descripción:**
 
-La unidad sale de la disponibilidad sin borrarse y deja de aparecer en el tablero. Se puede marcar en el momento de recibir el equipo, cuando se detecta el problema.
+La unidad sale de la disponibilidad sin borrarse y se queda visible en el tablero, en gris y con la etiqueta «En mantenimiento». Se puede marcar en el momento de recibir el equipo, cuando se detecta el problema.
 
 **Criterios de aceptación:**
 
 - La unidad sale de la disponibilidad sin borrarse.
+- En el tablero la unidad sigue visible, en gris y con la etiqueta «En mantenimiento».
 - Se puede marcar al momento de recibir el equipo.
-- Desde la ficha de la máquina se devuelve la unidad a servicio y vuelve a aparecer en el tablero.
+- Desde la ficha de la máquina se devuelve la unidad a servicio y vuelve a mostrarse como disponible en el tablero.
 
 ---
 
