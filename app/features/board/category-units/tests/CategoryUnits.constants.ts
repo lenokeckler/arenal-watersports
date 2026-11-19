@@ -121,7 +121,7 @@ export const UNMAPPABLE_STATUSES = [
 
 export const DECORATIVE_SELECTOR = "[aria-hidden='true']";
 
-export const RETURN_TEXT_PATTERN = /^Regresa/;
+export const RETURN_TEXT_PATTERN = /^Fin:/;
 
 export const HEADING_LEVEL_TWO = 2;
 
