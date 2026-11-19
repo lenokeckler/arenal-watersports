@@ -7,6 +7,7 @@ export interface UpdateCategoryBehaviorInput {
   hasMotor: boolean;
   usageMetric: Nullable<UsageMetric>;
   consumesFuel: boolean;
+  lowFuelLines: number;
   canBeDamaged: boolean;
   hasConditionPhotos: boolean;
   guideOnly: boolean;
