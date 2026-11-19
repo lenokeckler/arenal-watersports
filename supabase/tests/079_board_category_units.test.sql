@@ -45,9 +45,15 @@ select columns_are(
     'usage_total',
     'has_motor',
     'consumes_fuel',
-    'usage_metric'
+    'usage_metric',
+    'impact_count',
+    'low_fuel_lines',
+    'people_count',
+    'dispatch_id',
+    'dispatched_at',
+    'radio_channel'
   ],
-  'la vista expone solo las dieciseis columnas acordadas'
+  'la vista expone solo las veintidos columnas acordadas'
 );
 select ok(
   (select coalesce(reloptions @> array['security_invoker=true'], false) from pg_class where oid = 'public.board_category_units'::regclass),
