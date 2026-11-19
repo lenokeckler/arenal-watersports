@@ -63,12 +63,26 @@ describe("resolveCategoryUnitRowKind", () => {
     ).toBe(CATEGORY_UNIT_ROW_KIND.MODIFY);
   });
 
-  it("leaves a unit without a motor alone while editing", () => {
+  it("lets a free unit without a motor be edited to mark maintenance", () => {
     expect(
       resolveCategoryUnitRowKind({
         hasSelection: true,
         interaction: EDITING,
         unit: PLAIN_UNIT,
+      })
+    ).toBe(CATEGORY_UNIT_ROW_KIND.MODIFY);
+  });
+
+  it("leaves an occupied unit without a motor alone while editing", () => {
+    expect(
+      resolveCategoryUnitRowKind({
+        hasSelection: true,
+        interaction: EDITING,
+        unit: {
+          ...PLAIN_UNIT,
+          occupancy: MOTOR_OCCUPIED_UNIT.occupancy,
+          status: INVENTORY_UNIT_STATUS.OCCUPIED,
+        },
       })
     ).toBe(CATEGORY_UNIT_ROW_KIND.PLAIN);
   });

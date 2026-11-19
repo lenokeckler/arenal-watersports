@@ -17,6 +17,7 @@ import {
   INVENTORY_UNIT_STATUS,
 } from "@/app/constants";
 import { submitBoardUnitCorrection } from "../actions/submitBoardUnitCorrection";
+import { submitBoardUnitMaintenance } from "../actions/submitBoardUnitMaintenance";
 import CategoryUnitModifySheet from "../components/CategoryUnitModifySheet";
 import { CATEGORY_UNIT_UPDATE_STATUS } from "../constants/CategoryUnits.constants";
 import {
@@ -24,11 +25,13 @@ import {
   CATEGORY_UNITS_COPY,
 } from "../constants/CategoryUnitsCopy.constants";
 import type { CategoryUnit } from "../models/CategoryUnit.interface";
+import type { CategoryUnitReadings } from "../models/CategoryUnitReadings.interface";
 import {
   EXPECTED_MODIFY,
   MOTOR_AVAILABLE_UNIT,
   MOTOR_OCCUPIED_UNIT,
   MOTOR_READINGS,
+  PLAIN_UNIT,
 } from "./CategoryUnitsBoard.constants";
 
 const refreshMock = vi.fn();
@@ -42,12 +45,16 @@ vi.mock("../actions/submitBoardUnitCorrection", () => ({
   submitBoardUnitCorrection: vi.fn(),
 }));
 
+vi.mock("../actions/submitBoardUnitMaintenance", () => ({
+  submitBoardUnitMaintenance: vi.fn(),
+}));
+
 const USAGE_LABEL =
   CATEGORY_UNIT_MODIFY_USAGE_LABEL.engine_hours;
 
 const renderSheet = (
   unit: CategoryUnit = MOTOR_AVAILABLE_UNIT,
-  readings = MOTOR_READINGS
+  readings: CategoryUnitReadings | null = MOTOR_READINGS
 ) => {
   render(
     <CategoryUnitModifySheet
@@ -69,6 +76,11 @@ describe("CategoryUnitModifySheet", () => {
     vi.mocked(submitBoardUnitCorrection).mockResolvedValue({
       status: CATEGORY_UNIT_UPDATE_STATUS.UPDATED,
     });
+    vi.mocked(submitBoardUnitMaintenance).mockResolvedValue(
+      {
+        status: CATEGORY_UNIT_UPDATE_STATUS.UPDATED,
+      }
+    );
   });
 
   it("starts with what the unit has now", () => {
@@ -250,5 +262,135 @@ describe("CategoryUnitModifySheet", () => {
     expect(
       await screen.findByRole(ARIA_ROLE.ALERT)
     ).toHaveTextContent(CATEGORY_UNITS_COPY.MODIFY_ERROR);
+  });
+
+  it("offers the maintenance choice for a free unit and not for one out on the water", () => {
+    renderSheet();
+
+    expect(
+      screen.getByRole(ARIA_ROLE.BUTTON, {
+        name: CATEGORY_UNITS_COPY.MAINTENANCE_IN_WORKSHOP,
+      })
+    ).toBeInTheDocument();
+  });
+
+  it("hides the maintenance choice for a unit out on the water", () => {
+    renderSheet(MOTOR_OCCUPIED_UNIT);
+
+    expect(
+      screen.queryByRole(ARIA_ROLE.BUTTON, {
+        name: CATEGORY_UNITS_COPY.MAINTENANCE_IN_WORKSHOP,
+      })
+    ).not.toBeInTheDocument();
+  });
+
+  it("puts the unit in maintenance and keeps that status in the correction", async () => {
+    renderSheet();
+
+    await userEvent.click(
+      screen.getByRole(ARIA_ROLE.BUTTON, {
+        name: CATEGORY_UNITS_COPY.MAINTENANCE_IN_WORKSHOP,
+      })
+    );
+    fireEvent.click(getSave());
+
+    await waitFor(() =>
+      expect(
+        submitBoardUnitMaintenance
+      ).toHaveBeenCalledWith({
+        inMaintenance: true,
+        unitId: MOTOR_AVAILABLE_UNIT.id,
+      })
+    );
+    await waitFor(() =>
+      expect(
+        submitBoardUnitCorrection
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          status: INVENTORY_UNIT_STATUS.IN_MAINTENANCE,
+        })
+      )
+    );
+    await waitFor(() => expect(onClose).toHaveBeenCalled());
+  });
+
+  it("returns a unit in maintenance to service", async () => {
+    renderSheet({
+      ...MOTOR_AVAILABLE_UNIT,
+      status: INVENTORY_UNIT_STATUS.IN_MAINTENANCE,
+    });
+
+    await userEvent.click(
+      screen.getByRole(ARIA_ROLE.BUTTON, {
+        name: CATEGORY_UNITS_COPY.MAINTENANCE_IN_SERVICE,
+      })
+    );
+    fireEvent.click(getSave());
+
+    await waitFor(() =>
+      expect(
+        submitBoardUnitMaintenance
+      ).toHaveBeenCalledWith({
+        inMaintenance: false,
+        unitId: MOTOR_AVAILABLE_UNIT.id,
+      })
+    );
+    await waitFor(() =>
+      expect(
+        submitBoardUnitCorrection
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          status: INVENTORY_UNIT_STATUS.AVAILABLE,
+        })
+      )
+    );
+  });
+
+  it("lets a unit without a motor go to maintenance and only then lets it save", async () => {
+    renderSheet(PLAIN_UNIT, null);
+
+    expect(getSave()).toBeDisabled();
+
+    await userEvent.click(
+      screen.getByRole(ARIA_ROLE.BUTTON, {
+        name: CATEGORY_UNITS_COPY.MAINTENANCE_IN_WORKSHOP,
+      })
+    );
+    fireEvent.click(getSave());
+
+    await waitFor(() =>
+      expect(
+        submitBoardUnitMaintenance
+      ).toHaveBeenCalledWith({
+        inMaintenance: true,
+        unitId: PLAIN_UNIT.id,
+      })
+    );
+    expect(
+      submitBoardUnitCorrection
+    ).not.toHaveBeenCalled();
+  });
+
+  it("explains that a unit out on the water must be received first", async () => {
+    vi.mocked(submitBoardUnitMaintenance).mockResolvedValue(
+      {
+        status: CATEGORY_UNIT_UPDATE_STATUS.OCCUPIED,
+      }
+    );
+    renderSheet(PLAIN_UNIT, null);
+
+    await userEvent.click(
+      screen.getByRole(ARIA_ROLE.BUTTON, {
+        name: CATEGORY_UNITS_COPY.MAINTENANCE_IN_WORKSHOP,
+      })
+    );
+    fireEvent.click(getSave());
+
+    expect(
+      await screen.findByText(
+        CATEGORY_UNITS_COPY.MAINTENANCE_OCCUPIED
+      )
+    ).toBeInTheDocument();
+    expect(onClose).not.toHaveBeenCalled();
   });
 });
