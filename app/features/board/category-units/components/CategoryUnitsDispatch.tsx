@@ -34,9 +34,6 @@ const CategoryUnitsDispatch = ({
   const modifyUnit = units.find(
     (unit) => unit.id === board.modifyUnitId
   );
-  const hasEditableUnits = units.some(
-    (unit) => unit.readings !== null
-  );
   const receiveUnit = units.find(
     (unit) => unit.id === board.receiveUnitId
   );
@@ -47,7 +44,7 @@ const CategoryUnitsDispatch = ({
         categoryName={categoryName}
         unitCount={unitCount}
       >
-        {hasEditableUnits && (
+        {units.length > 0 && (
           <CategoryUnitsEditToggle
             isEditing={board.isEditing}
             onToggle={board.handleToggleEditing}
@@ -125,7 +122,7 @@ const CategoryUnitsDispatch = ({
           unit={receiveUnit}
         />
       )}
-      {modifyUnit?.readings && (
+      {modifyUnit && (
         <CategoryUnitModifySheet
           onClose={board.handleCloseModify}
           readings={modifyUnit.readings}

@@ -60,6 +60,7 @@ export const CATEGORY_UNIT_UPDATE_STATUS = {
   ALREADY_CLOSED: "already_closed",
   INVALID: "invalid",
   NOT_CORRECTABLE: "not_correctable",
+  OCCUPIED: "occupied",
   UNCHANGED: "unchanged",
   UPDATED: "updated",
 } as const;
@@ -74,6 +75,7 @@ export const CATEGORY_UNIT_UPDATE_ERROR = {
   CORRECT_UNIT: "correct a board unit",
   INVALID_INPUT: "The board unit update is not valid",
   RECEIVE_UNIT: "receive a board unit",
+  SET_MAINTENANCE: "set the maintenance of a board unit",
   UPDATE_DISPATCH: "update an open dispatch",
 } as const;
 
@@ -94,6 +96,15 @@ export const CATEGORY_UNIT_RECORDED_STATUS = {
 export const CATEGORY_UNIT_FIELD_ID = {
   DAMAGE: "category-unit-damage",
   USAGE: "category-unit-usage",
+} as const;
+
+export const CATEGORY_UNIT_MAINTENANCE = {
+  RESULT: {
+    CHANGED: "changed",
+    NO_CHANGE: "no_change",
+    OCCUPIED: "occupied",
+  },
+  RPC: "set_unit_maintenance",
 } as const;
 
 export const CATEGORY_UNIT_RECEIVE = {

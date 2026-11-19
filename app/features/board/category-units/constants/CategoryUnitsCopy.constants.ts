@@ -23,6 +23,11 @@ export const CATEGORY_UNITS_COPY = {
   INFO_RETURNS: "Fin",
   INFO_UNIT: (code: string): string =>
     `Ver quién lleva ${code}`,
+  MAINTENANCE_IN_SERVICE: "Disponible",
+  MAINTENANCE_IN_WORKSHOP: "En mantenimiento",
+  MAINTENANCE_LABEL: "Estado de la unidad",
+  MAINTENANCE_OCCUPIED:
+    "Esta unidad está en el agua. Recíbala antes de ponerla en mantenimiento.",
   MODIFY_ERROR:
     "No se pudo guardar el cambio. Intente de nuevo.",
   MODIFY_FUEL: "Gasolina",

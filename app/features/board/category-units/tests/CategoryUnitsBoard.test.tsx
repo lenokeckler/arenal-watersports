@@ -88,10 +88,10 @@ describe("CategoryUnitsDispatch edit mode", () => {
     ).toBeInTheDocument();
   });
 
-  it("offers no edit button when no unit has a motor", () => {
+  it("offers the edit button even when no unit has a motor, to mark maintenance", () => {
     const { board } = renderBoard([PLAIN_UNIT]);
 
-    expect(board.queryEditToggle()).not.toBeInTheDocument();
+    expect(board.getEditToggle()).toBeInTheDocument();
   });
 
   it("keeps the cards free of edit controls while the mode is off", () => {
@@ -126,7 +126,7 @@ describe("CategoryUnitsDispatch edit mode", () => {
     ).toBeInTheDocument();
   });
 
-  it("makes the motor cards open their edit panel and takes selection away while the mode is on", async () => {
+  it("makes every card open its edit panel and takes selection away while the mode is on", async () => {
     const { board, dispatch } = renderBoard();
 
     await userEvent.click(board.getEditToggle());
@@ -143,8 +143,8 @@ describe("CategoryUnitsDispatch edit mode", () => {
       board.getModifyAction(MOTOR_OCCUPIED_UNIT.code)
     ).toBeInTheDocument();
     expect(
-      board.queryModifyAction(PLAIN_UNIT.code)
-    ).not.toBeInTheDocument();
+      board.getModifyAction(PLAIN_UNIT.code)
+    ).toBeInTheDocument();
   });
 
   it("opens the edit panel of any part of a motor card", async () => {

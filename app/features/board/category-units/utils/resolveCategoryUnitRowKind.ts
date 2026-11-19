@@ -18,7 +18,7 @@ export const resolveCategoryUnitRowKind = ({
   unit,
 }: CategoryUnitRowKindInput): CategoryUnitRowKind => {
   if (interaction?.isEditing) {
-    return unit.readings
+    return unit.readings || !unit.occupancy
       ? CATEGORY_UNIT_ROW_KIND.MODIFY
       : CATEGORY_UNIT_ROW_KIND.PLAIN;
   }
