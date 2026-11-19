@@ -6,7 +6,7 @@ import {
 export const CATEGORY_UNIT_ROW_MIN_HEIGHT_CLASS =
   "min-h-14";
 
-const ROW_BASE_CLASS = `${CATEGORY_UNIT_ROW_MIN_HEIGHT_CLASS} relative flex w-full min-w-0 flex-col overflow-hidden rounded-xl border-2 shadow-sm backdrop-blur-md`;
+const ROW_BASE_CLASS = `${CATEGORY_UNIT_ROW_MIN_HEIGHT_CLASS} relative flex h-full w-full min-w-0 flex-col overflow-hidden rounded-xl border-2 shadow-sm backdrop-blur-md`;
 
 export const CATEGORY_UNIT_ROW_CLASS = `${ROW_BASE_CLASS} border-outline-variant bg-card-tint-neutral-bg`;
 
@@ -61,10 +61,10 @@ export const CATEGORY_UNIT_ROW_PLACEHOLDER_ICON_CLASS =
   "text-6xl text-on-surface-variant/40";
 
 export const CATEGORY_UNIT_ROW_BODY_CLASS =
-  "flex min-w-0 flex-col gap-sm p-sm";
+  "flex min-w-0 flex-1 flex-col gap-sm p-sm";
 
 export const CATEGORY_UNIT_ROW_READINGS_CLASS =
-  "flex flex-col gap-xs";
+  "mt-auto flex flex-col gap-xs";
 
 export const CATEGORY_UNIT_ROW_USAGE_CLASS =
   "text-body-sm tabular-nums text-on-surface-variant";
@@ -85,12 +85,12 @@ export const resolveCategoryUnitSelectMarkClass = (
   isSelected ? SELECT_MARK_ON_CLASS : SELECT_MARK_OFF_CLASS;
 
 export const CATEGORY_UNIT_SELECT_LABEL_CLASS =
-  "relative flex w-full min-w-0 cursor-pointer rounded-xl focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary";
+  "relative flex h-full w-full min-w-0 cursor-pointer rounded-xl focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary";
 
 export const CATEGORY_UNIT_SELECT_INPUT_CLASS = "sr-only";
 
 export const CATEGORY_UNIT_ROW_HEADER_CLASS =
-  "flex flex-wrap items-center justify-between gap-sm";
+  "flex flex-col items-start gap-xs";
 
 export const CATEGORY_UNIT_ROW_CODE_CLASS =
   "break-words text-title-md font-bold text-on-surface";
@@ -112,7 +112,7 @@ export const resolveCategoryUnitReturnClass = (
     : CATEGORY_UNIT_RETURN_CLASS;
 
 export const CATEGORY_UNIT_ROW_BADGES_CLASS =
-  "flex flex-wrap items-center justify-end gap-2";
+  "flex flex-wrap items-center justify-start gap-2";
 
 export const CATEGORY_UNIT_CUSTOMER_CLASS =
   "break-words text-sm text-on-surface-variant";
