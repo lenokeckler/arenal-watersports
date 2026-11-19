@@ -8,3 +8,9 @@ export const FUEL_GAUGE_TONE = {
   LOW: "low",
   OK: "ok",
 } as const;
+
+export const FUEL_GAUGE_TONE = {
+  EMPTY: "empty",
+  LOW: "low",
+  OK: "ok",
+} as const;
