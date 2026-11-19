@@ -14,13 +14,13 @@ export const CATEGORY_UNITS_COPY = {
   IMPACT_COUNT_SPOKEN: (count: number): string =>
     `Golpes: ${count}`,
   INFO_CUSTOMER: "Cliente",
-  INFO_DEPARTED: "Salió",
+  INFO_DEPARTED: "Inicio",
   INFO_PEOPLE: "Personas",
   INFO_RADIO: "Radio",
   INFO_RADIO_CHANNEL: (channel: number): string =>
     `Canal ${channel}`,
   INFO_RADIO_NONE: "Sin canal",
-  INFO_RETURNS: "Regresa",
+  INFO_RETURNS: "Fin",
   INFO_UNIT: (code: string): string =>
     `Ver quién lleva ${code}`,
   MODIFY_ERROR:
@@ -35,6 +35,7 @@ export const CATEGORY_UNITS_COPY = {
     `Modificar · ${code}`,
   MODIFY_USAGE_INVALID:
     "Escriba una lectura válida, con hasta dos decimales.",
+  RETURN_BADGE: (time: string): string => `Fin: ${time}`,
   RECEIVE: "Recibir unidad",
   UPDATE_ALREADY_CLOSED: "Este grupo ya regresó.",
   UPDATE_ERROR:
@@ -99,7 +100,7 @@ export const CATEGORY_UNIT_STATUS_LABEL: Record<
   damaged: "Dañada",
   in_maintenance: "En mantenimiento",
   in_repair: "En reparación",
-  occupied: "Ocupada",
+  occupied: "Por regresar",
 };
 
 export const CATEGORY_UNIT_USAGE_COPY: Record<

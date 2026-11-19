@@ -12,13 +12,13 @@ export const CATEGORY_UNIT_ROW_CLASS = `${ROW_BASE_CLASS} border-outline-variant
 
 const ROW_AVAILABLE_CLASS = `${ROW_BASE_CLASS} border-primary/40 bg-card-tint-neutral-bg`;
 
-const ROW_OCCUPIED_CLASS = `${ROW_BASE_CLASS} border-tertiary/40 bg-linear-to-b from-tertiary/10 to-card-tint-neutral-bg`;
+const ROW_OCCUPIED_CLASS = `${ROW_BASE_CLASS} border-warning/70 bg-card-tint-neutral-bg [box-shadow:0_0_16px_-2px_color-mix(in_oklab,var(--color-warning)_45%,transparent)]`;
 
-const ROW_INACTIVE_CLASS = `${ROW_BASE_CLASS} border-outline-variant bg-card-tint-neutral-bg opacity-80`;
+const ROW_INACTIVE_CLASS = `${ROW_BASE_CLASS} border-on-surface-variant/50 bg-on-surface-variant/15`;
 
 const ROW_DAMAGED_CLASS = `${ROW_BASE_CLASS} border-error/40 bg-card-tint-neutral-bg`;
 
-export const CATEGORY_UNIT_ROW_OVERDUE_CLASS = `${ROW_BASE_CLASS} border-warning/60 bg-linear-to-b from-warning/15 to-card-tint-neutral-bg`;
+export const CATEGORY_UNIT_ROW_OVERDUE_CLASS = `${ROW_BASE_CLASS} border-warning bg-card-tint-neutral-bg [box-shadow:0_0_22px_0_color-mix(in_oklab,var(--color-warning)_60%,transparent)]`;
 
 export const CATEGORY_UNIT_ROW_SELECTED_CLASS = `${ROW_BASE_CLASS} border-primary bg-primary/10 ring-2 ring-primary`;
 
@@ -126,15 +126,14 @@ const CHIP_BASE_CLASS =
 const DOT_BASE_CLASS = "block size-2 rounded-full";
 
 const CHIP_AVAILABLE_CLASS = `${CHIP_BASE_CLASS} border-primary/30 text-primary`;
-const CHIP_OCCUPIED_CLASS = `${CHIP_BASE_CLASS} border-tertiary/30 text-tertiary`;
-const CHIP_MAINTENANCE_CLASS = `${CHIP_BASE_CLASS} border-outline/30 text-outline`;
-export const CATEGORY_UNIT_OVERDUE_CHIP_CLASS = `${CHIP_BASE_CLASS} border-warning/40 text-warning`;
+const CHIP_OCCUPIED_CLASS = `${CHIP_BASE_CLASS} border-warning/40 text-warning`;
+const CHIP_MAINTENANCE_CLASS = `${CHIP_BASE_CLASS} border-on-surface-variant/50 text-on-surface-variant`;
 
 const CHIP_DAMAGED_CLASS = `${CHIP_BASE_CLASS} border-error/30 text-error`;
 
 const DOT_AVAILABLE_CLASS = `${DOT_BASE_CLASS} bg-primary`;
-const DOT_OCCUPIED_CLASS = `${DOT_BASE_CLASS} bg-tertiary`;
-const DOT_MAINTENANCE_CLASS = `${DOT_BASE_CLASS} bg-outline`;
+const DOT_OCCUPIED_CLASS = `${DOT_BASE_CLASS} bg-warning`;
+const DOT_MAINTENANCE_CLASS = `${DOT_BASE_CLASS} bg-on-surface-variant`;
 const DOT_DAMAGED_CLASS = `${DOT_BASE_CLASS} bg-error`;
 
 export const CATEGORY_UNIT_STATUS_CHIP_CLASS: Record<
@@ -160,3 +159,35 @@ export const CATEGORY_UNIT_STATUS_DOT_CLASS: Record<
   [INVENTORY_UNIT_STATUS.IN_REPAIR]: DOT_MAINTENANCE_CLASS,
   [INVENTORY_UNIT_STATUS.OCCUPIED]: DOT_OCCUPIED_CLASS,
 };
+
+const CATEGORY_UNIT_ROW_IMAGE_DIMMED_CLASS = `${CATEGORY_UNIT_ROW_IMAGE_CLASS} opacity-70`;
+
+const CATEGORY_UNIT_ROW_IMAGE_MUTED_CLASS = `${CATEGORY_UNIT_ROW_IMAGE_CLASS} opacity-60 grayscale`;
+
+export const resolveCategoryUnitImageClass = (
+  isDimmed: boolean,
+  isMuted: boolean
+): string => {
+  if (isMuted) {
+    return CATEGORY_UNIT_ROW_IMAGE_MUTED_CLASS;
+  }
+
+  return isDimmed
+    ? CATEGORY_UNIT_ROW_IMAGE_DIMMED_CLASS
+    : CATEGORY_UNIT_ROW_IMAGE_CLASS;
+};
+
+const OVERLAY_BADGE_BASE_CLASS =
+  "inline-flex items-center rounded-full border px-3 py-1 text-label-mono uppercase backdrop-blur-sm";
+
+export const CATEGORY_UNIT_OVERDUE_CHIP_CLASS = `${OVERLAY_BADGE_BASE_CLASS} border-error-container bg-error-container text-on-error-container`;
+
+export const resolveCategoryUnitReturnBadgeClass = (
+  isOverdue: boolean
+): string =>
+  isOverdue
+    ? `${OVERLAY_BADGE_BASE_CLASS} border-warning bg-background/80 text-warning`
+    : `${OVERLAY_BADGE_BASE_CLASS} border-warning/60 bg-background/80 text-warning`;
+
+export const CATEGORY_UNIT_ROW_OVERLAY_CLASS =
+  "absolute inset-x-2 bottom-2 z-10 flex items-center justify-between gap-xs";
