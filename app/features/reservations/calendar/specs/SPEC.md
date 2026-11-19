@@ -127,3 +127,7 @@ This develop chore improves the existing calendar presentation and interaction q
 - Month and year views retain their period agenda when a day or month is selected and show the selected agenda first.
 - Month and year overview cells show a subtle daily reservation-load treatment: green through two reservations, orange for three or four, and red for five or more. The reservation count is also available as a visible and accessible non-color cue.
 - Reservation and Operations calendar changes continue to follow the current develop behavior and shared calendar components.
+- The Reservations period agenda paginates its scheduled and dispatched reservations within the currently selected calendar period, preserving date groups and reservation actions.
+- Compact page-size and previous/next controls appear immediately after the period agenda without a separate title or description.
+- The page size offers 10, 25 and 50 and persists in the signed-in worker profile, so the preference synchronizes across devices.
+- Operations remains unchanged; a failed preference read falls back to 10 for the session without saving implicitly.

@@ -19,13 +19,17 @@ import {
 
 export const ReservationsCalendarView = ({
   canRegisterExternalGuide,
+  initialPageSize,
+  pageSizeReadError = false,
   snapshot,
   today,
 }: ReservationsCalendarViewProps): ReactElement => {
-  const calendar = useReservationsCalendarViewModel(
+  const calendar = useReservationsCalendarViewModel({
+    initialPageSize,
+    pageSizeReadError,
     snapshot,
-    today
-  );
+    today,
+  });
   return (
     <div className={RESERVATIONS_CALENDAR_VIEW_CLASS}>
       <div

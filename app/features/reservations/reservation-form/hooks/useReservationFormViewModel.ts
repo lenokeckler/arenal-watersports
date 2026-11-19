@@ -85,10 +85,12 @@ export const useReservationFormViewModel = (
     categories: eligibleCategories,
     clearFieldError: submission.clearFieldError,
     durationHours: resolvedDurationHours,
+    date: fields.values.date,
     onGuideIdsChange: fields.handleGuideIdsChange,
     reservationType:
       fields.values.reservationType ??
       RESERVATION_TYPE.RENTAL,
+    time: fields.values.time,
   });
   const extraUnitId = isCustomCombo
     ? customCombo.extraUnitId

@@ -1,12 +1,25 @@
 import type { ReservationCategoryConflict } from "../models/ReservationCategoryConflict.type";
 import type { ReservationUnitAvailabilityInput } from "../models/ReservationUnitAvailabilityInput.interface";
+import type { CustomComboEquipmentSelection } from "../models/CustomComboEquipmentSelection.interface";
+import { RESERVATION_EQUIPMENT_COMMITMENT_TYPE } from "../constants/ReservationEquipmentCommitmentType.constants";
 
 export const RESERVATION_CATEGORY_CONFLICT_WARNING_TEST = {
   CODE: "RES-2028-001",
+  DURATION_HOURS: 2,
+  FIRST_SELECTION: {
+    categoryId: "category-1",
+    kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
+    quantity: 1,
+  } satisfies CustomComboEquipmentSelection,
   CUSTOMER_NAME: "Ana Solís",
   INITIAL_REFRESH_KEY: 0,
   NEXT_REFRESH_KEY: 1,
   NEXT_CATEGORY_ID: "category-2",
+  NEXT_SELECTION: {
+    categoryId: "category-2",
+    kind: RESERVATION_EQUIPMENT_COMMITMENT_TYPE.CATEGORY,
+    quantity: 1,
+  } satisfies CustomComboEquipmentSelection,
   NEXT_DATE: "2028-03-01",
   REQUEST: {
     categoryId: "category-1",
@@ -14,6 +27,7 @@ export const RESERVATION_CATEGORY_CONFLICT_WARNING_TEST = {
     durationMinutes: 120,
     time: "10:00",
   } satisfies ReservationUnitAvailabilityInput,
+  TIME: "10:00",
   INTERVAL:
     "martes, 29 de febrero de 2028 · 09:00 a. m.–10:00 a. m.",
   LOOKUP_FAILURE_MESSAGE: "Lookup unavailable",
@@ -33,14 +47,18 @@ export const RESERVATION_CATEGORY_CONFLICT_WARNING_TEST = {
   } satisfies ReservationCategoryConflict,
 } satisfies {
   CODE: string;
+  DURATION_HOURS: number;
+  FIRST_SELECTION: CustomComboEquipmentSelection;
   CUSTOMER_NAME: string;
   INITIAL_REFRESH_KEY: number;
   NEXT_REFRESH_KEY: number;
   INTERVAL: string;
   LOOKUP_FAILURE_MESSAGE: string;
   NEXT_CATEGORY_ID: string;
+  NEXT_SELECTION: CustomComboEquipmentSelection;
   NEXT_DATE: string;
   REQUEST: ReservationUnitAvailabilityInput;
+  TIME: string;
   RPC_ROW: ReservationCategoryConflict;
   REFRESHED_RPC_ROW: ReservationCategoryConflict;
 };

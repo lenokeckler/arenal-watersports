@@ -15,6 +15,7 @@ import {
   CUSTOM_COMBO_SECTION_CLASS,
 } from "../styles/CustomComboEquipmentSelection.styles";
 import CustomComboEquipmentCategoryList from "./CustomComboEquipmentCategoryList";
+import ReservationCategoryConflictWarning from "./ReservationCategoryConflictWarning";
 
 const CustomComboEquipmentSelection = ({
   categories,
@@ -48,13 +49,18 @@ const CustomComboEquipmentSelection = ({
     {categories.length === 0 ? (
       <Text>{CUSTOM_COMBO_FORM_COPY.NO_CATEGORIES}</Text>
     ) : (
-      <CustomComboEquipmentCategoryList
-        categories={categories}
-        date={date}
-        durationHours={durationHours}
-        time={time}
-        viewModel={viewModel}
-      />
+      <>
+        <CustomComboEquipmentCategoryList
+          categories={categories}
+          date={date}
+          durationHours={durationHours}
+          time={time}
+          viewModel={viewModel}
+        />
+        <ReservationCategoryConflictWarning
+          viewModel={viewModel.conflictWarning}
+        />
+      </>
     )}
     {error ? (
       <Text

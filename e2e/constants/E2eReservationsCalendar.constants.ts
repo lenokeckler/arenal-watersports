@@ -10,9 +10,22 @@ import {
   CALENDAR_HEAT_RED_CLASS,
 } from "@/app/components/calendar/styles/Calendar.styles";
 import { E2E_PROJECT } from "./E2eRuntime.constants";
+import { RESERVATION_CALENDAR_LIST } from "@/app/components/reservation-calendar/constants/ReservationCalendarList.constants";
+import { RESERVATION_CALENDAR_AGENDA_PAGINATION_COPY } from "@/app/features/reservations/calendar/constants/ReservationCalendarAgendaPaginationCopy.constants";
 
 export const E2E_RESERVATIONS_CALENDAR_COPY = {
   HEADING: RESERVATIONS_CALENDAR_COPY.TITLE,
+  PERIOD_AGENDA: RESERVATIONS_CALENDAR_COPY.PERIOD_AGENDA,
+  PAGE_SIZE_LABEL:
+    RESERVATION_CALENDAR_AGENDA_PAGINATION_COPY.PAGE_SIZE_LABEL,
+  NEXT_PAGE:
+    RESERVATION_CALENDAR_AGENDA_PAGINATION_COPY.NEXT,
+  PREVIOUS_PAGE:
+    RESERVATION_CALENDAR_AGENDA_PAGINATION_COPY.PREVIOUS,
+  DEFAULT_PAGE_SIZE:
+    RESERVATION_CALENDAR_LIST.DEFAULT_PAGE_SIZE.toString(),
+  PREFERENCE_PAGE_SIZE:
+    RESERVATION_CALENDAR_LIST.PAGE_SIZE_OPTIONS[1].toString(),
   VIEWS: CALENDAR_TEXT.LABELS,
 } as const;
 
