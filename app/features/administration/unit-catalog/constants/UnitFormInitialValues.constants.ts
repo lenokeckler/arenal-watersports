@@ -8,6 +8,7 @@ export const UNIT_FORM_INITIAL_VALUES: UnitFormValues = {
   status: UNIT_STATUS.AVAILABLE,
   fuelMax: UNIT_FORM_LIMITS.FUEL_MAX_DEFAULT.toString(),
   fuelLevel: STRING.Empty,
+  lowFuelLines: STRING.Empty,
   usageTotal: STRING.Empty,
   nextOilChangeAt: STRING.Empty,
 };
