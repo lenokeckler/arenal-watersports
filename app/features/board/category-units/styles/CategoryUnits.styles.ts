@@ -14,7 +14,7 @@ export const CATEGORY_UNITS_SUBTITLE_CLASS =
   "max-w-prose text-body-base text-on-surface-variant";
 
 export const CATEGORY_UNITS_LIST_CLASS =
-  "grid grid-cols-2 items-start gap-sm md:grid-cols-3 xl:grid-cols-4";
+  "grid grid-cols-2 gap-sm md:grid-cols-3 xl:grid-cols-4";
 
 export const CATEGORY_UNITS_LIST_ITEM_CLASS =
   "flex min-w-0";

@@ -11,7 +11,7 @@ export const CATEGORY_UNITS_EDIT_TOGGLE_CLASS =
   "min-h-11 gap-xs px-md";
 
 export const CATEGORY_UNIT_ACTION_ROW_CLASS =
-  "relative flex w-full min-w-0 cursor-pointer rounded-xl text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+  "relative flex h-full w-full min-w-0 cursor-pointer rounded-xl text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 
 export const CATEGORY_UNIT_EDIT_MARK_CLASS =
   "pointer-events-none absolute left-2 top-2 z-10 flex size-9 items-center justify-center rounded-full border border-outline bg-background/80 text-on-surface";
