@@ -4,5 +4,6 @@ import type { UnitOccupancy } from "./UnitOccupancy.interface";
 export interface CategoryUnitInfoSheetProps {
   occupancy: UnitOccupancy;
   onClose: () => void;
+  onReceive: () => void;
   unit: CategoryUnit;
 }

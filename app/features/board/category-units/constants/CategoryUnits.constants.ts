@@ -73,6 +73,7 @@ export const CATEGORY_UNIT_DATABASE_ERROR = {
 export const CATEGORY_UNIT_UPDATE_ERROR = {
   CORRECT_UNIT: "correct a board unit",
   INVALID_INPUT: "The board unit update is not valid",
+  RECEIVE_UNIT: "receive a board unit",
   UPDATE_DISPATCH: "update an open dispatch",
 } as const;
 
@@ -91,7 +92,14 @@ export const CATEGORY_UNIT_RECORDED_STATUS = {
 } as const;
 
 export const CATEGORY_UNIT_FIELD_ID = {
+  DAMAGE: "category-unit-damage",
   USAGE: "category-unit-usage",
+} as const;
+
+export const CATEGORY_UNIT_RECEIVE = {
+  DAMAGE_CAUSE: "other",
+  DAMAGE_MAX_LENGTH: 300,
+  RPC: "receive_dispatch_unit",
 } as const;
 
 export const CATEGORY_UNIT_ROW_KIND = {

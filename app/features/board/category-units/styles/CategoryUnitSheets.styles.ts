@@ -43,5 +43,14 @@ export const CATEGORY_UNIT_SHEET_ALERT_CLASS =
 export const CATEGORY_UNIT_SHEET_ACTIONS_CLASS =
   "flex flex-col gap-sm";
 
-export const CATEGORY_UNIT_RECEIVE_LINK_CLASS =
-  "inline-flex min-h-14 items-center justify-center rounded-xl bg-primary px-6 text-button font-semibold text-on-primary transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+export const CATEGORY_UNIT_RECEIVE_HINT_CLASS =
+  "text-body-base text-on-surface-variant";
+
+export const CATEGORY_UNIT_RECEIVE_ORDER_CLASS =
+  "flex flex-col gap-sm";
+
+export const CATEGORY_UNIT_RECEIVE_CHOICE_CLASS =
+  "grid grid-cols-2 gap-sm";
+
+export const CATEGORY_UNIT_RECEIVE_CHOICE_BUTTON_CLASS =
+  "min-h-14";

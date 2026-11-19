@@ -14,7 +14,7 @@ import {
   vi,
 } from "vitest";
 import { DISPATCH_SHEET_COPY } from "@/app/components/dispatch-board/constants/DispatchSheetCopy.constants";
-import { ARIA_ROLE, PATHS } from "@/app/constants";
+import { ARIA_ROLE } from "@/app/constants";
 import { submitOpenDispatchUpdate } from "../actions/submitOpenDispatchUpdate";
 import CategoryUnitInfoSheet from "../components/CategoryUnitInfoSheet";
 import { CATEGORY_UNIT_UPDATE_STATUS } from "../constants/CategoryUnits.constants";
@@ -36,6 +36,7 @@ vi.mock("../actions/submitOpenDispatchUpdate", () => ({
 }));
 
 const occupancy = MOTOR_OCCUPIED_UNIT.occupancy;
+const onReceive = vi.fn();
 
 const renderSheet = () => {
   if (!occupancy) {
@@ -46,6 +47,7 @@ const renderSheet = () => {
     <CategoryUnitInfoSheet
       occupancy={occupancy}
       onClose={vi.fn()}
+      onReceive={onReceive}
       unit={MOTOR_OCCUPIED_UNIT}
     />
   );
@@ -113,17 +115,16 @@ describe("CategoryUnitInfoSheet", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("links to the screen where the unit is received", () => {
+  it("opens the receive sheet of the unit", async () => {
     renderSheet();
 
-    expect(
-      screen.getByRole(ARIA_ROLE.LINK, {
+    await userEvent.click(
+      screen.getByRole(ARIA_ROLE.BUTTON, {
         name: CATEGORY_UNITS_COPY.RECEIVE,
       })
-    ).toHaveAttribute(
-      "href",
-      PATHS.OPERATIONS.OUT_ON_WATER
     );
+
+    expect(onReceive).toHaveBeenCalledTimes(1);
   });
 
   it("turns the times and the radio channel editable, the times first", async () => {
