@@ -37,6 +37,24 @@ export const CATEGORY_UNITS_COPY = {
     "Escriba una lectura válida, con hasta dos decimales.",
   RETURN_BADGE: (time: string): string => `Fin: ${time}`,
   RECEIVE: "Recibir unidad",
+  RECEIVE_DAMAGE_LABEL: "Qué se dañó",
+  RECEIVE_DUE: (
+    customerName: string,
+    time: string
+  ): string => `${customerName} · Fin: ${time}`,
+  RECEIVE_ERROR:
+    "No se pudo recibir la unidad. Intente de nuevo.",
+  RECEIVE_FUEL: "Gasolina que quedó",
+  RECEIVE_INVALID: "Revise los datos e intente de nuevo.",
+  RECEIVE_NOT_OUT: "Esta unidad ya no está en el agua.",
+  RECEIVE_ORDER: "¿Todo en orden?",
+  RECEIVE_ORDER_DAMAGED: "Hay daños",
+  RECEIVE_ORDER_OK: "Sí, todo bien",
+  RECEIVE_PREVIOUS: (value: string): string =>
+    `Antes: ${value}`,
+  RECEIVE_SAVING: "Recibiendo…",
+  RECEIVE_TITLE: (code: string): string =>
+    `Recibir · ${code}`,
   UPDATE_ALREADY_CLOSED: "Este grupo ya regresó.",
   UPDATE_ERROR:
     "No se pudo guardar el cambio. Intente de nuevo.",
@@ -109,6 +127,14 @@ export const CATEGORY_UNIT_USAGE_COPY: Record<
 > = {
   engine_hours: (value) => `${value} h`,
   kilometers: (value) => `${value} km`,
+};
+
+export const CATEGORY_UNIT_RECEIVE_USAGE_LABEL: Record<
+  DispatchUsageMetric,
+  string
+> = {
+  engine_hours: "Horas de motor al terminar",
+  kilometers: "Kilómetros al terminar",
 };
 
 export const CATEGORY_UNIT_MODIFY_USAGE_LABEL: Record<
