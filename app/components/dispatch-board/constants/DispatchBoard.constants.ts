@@ -3,7 +3,7 @@ export const OPERATIONS_AREA = "operaciones";
 export const DISPATCH_BOARD_PAGINATION = {
   FIRST_PAGE: 1,
   MAX_OFFSET: 2_147_483_647,
-  PAGE_SIZE: 50,
+  PAGE_SIZE: 10,
   QUERY_KEY: "pagina",
 } as const;
 
