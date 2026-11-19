@@ -1,4 +1,5 @@
 export const FUEL_GAUGE_FIXTURE = {
+  EMPTY: 0,
   FOUR_LINES: 4,
   ONE_LINE: 1,
   SIX_LINES: 6,
