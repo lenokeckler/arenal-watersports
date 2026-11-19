@@ -192,7 +192,7 @@ Never drop, translate or reorder a heading: an empty one says `N/A` and why.
   hotfix branch).
 - **Leaving draft**: `gh pr ready`, and swap `In Progress` for `Waiting for QA` in the same step.
   The two never sit together.
-- **`QA Approved`** and **`Code Review Rejected`** are set by the reviewer, never by the author.
+- **`QA Approved`** and **`Code Review Rejected`** are set by the reviewer, never by the author. The one exception is a merge run the author authorized in chat (§9), where an AI tool sets `QA Approved` on the PRs named.
 - **`OnHold`** means the PR cannot be run, reviewed or merged on its own yet — it needs a PR from
   another stack or code not yet on `develop`. It is not for a story with criteria deliberately
   left to a later PR. `OnHold` and `Waiting for QA` never sit together.
@@ -378,7 +378,7 @@ npm run changelog:check -- origin/<base>
 - **The author merges their own PR** into `develop`, by hand, with _Squash and merge_, once it has
   `QA Approved`, an `APPROVED` review and base `develop`. Whatever the merge breaks, the author
   fixes in a new PR. A PR stacked on an unmerged parent waits whatever its labels say.
-- **AI tools never merge anything.** The merge button is always pressed by a person.
+- **AI tools merge only with the author's explicit permission in chat**, for the PRs the author names or the stack they describe. In that run the tool goes bottom-up, one PR at a time: it swaps `Waiting for QA` for `QA Approved`, merges with _Squash and merge_ (`--admin` when the approval is still missing), clears the squash false conflict of the next PR with `merge:after-squash` (§6), checks that the next PR now targets `develop`, and goes on. It never closes a PR as superseded, never merges a PR the author did not name, and stops at the first failure to report it. The permission ends with that run and never carries over to later PRs. Without it, the merge button is pressed by a person.
 - **Say it when a PR touches sensitive ground.** A PR that changes `supabase/migrations/`,
   `.github/` or the skills and agents (`.agents/`, `.claude/`, `AGENTS.md`) says so in
   _Developer Notes_, so the reviewer reads it with extra care.
