@@ -4248,6 +4248,13 @@ export type Database = {
         };
         Returns: string;
       };
+      set_unit_maintenance: {
+        Args: {
+          in_maintenance: boolean;
+          target_unit: string;
+        };
+        Returns: string;
+      };
       sign_in_attempt_limit: {
         Args: Record<PropertyKey, never>;
         Returns: number;
