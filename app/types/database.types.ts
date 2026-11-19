@@ -4031,6 +4031,14 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: undefined;
       };
+      receive_dispatch_unit: {
+        Args: {
+          p_arrived_at: string;
+          p_return: Json;
+          p_unit_id: string;
+        };
+        Returns: undefined;
+      };
       record_failed_sign_in: {
         Args: { p_username: string };
         Returns: undefined;
