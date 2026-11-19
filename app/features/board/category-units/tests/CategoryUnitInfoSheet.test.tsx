@@ -139,7 +139,9 @@ describe("CategoryUnitInfoSheet", () => {
       DISPATCH_SHEET_COPY.RADIO_FIELD_LABEL
     );
 
-    expect(departure.value).toBe(EXPECTED_INFO.DEPARTED);
+    expect(departure.value).toBe(
+      EXPECTED_INFO.DEPARTED_INPUT
+    );
     expect(radio.value).toBe(
       String(occupancy?.radioChannel)
     );

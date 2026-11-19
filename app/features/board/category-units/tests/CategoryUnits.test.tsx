@@ -14,6 +14,7 @@ import {
 import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 import {
   CATEGORY_NAME,
+  DEFAULT_UNIT_OCCUPANCY,
   FAKE_TIMER_OPTIONS,
   UNIT_CODE,
 } from "./CategoryUnits.constants";
@@ -107,14 +108,21 @@ describe("CategoryUnits", () => {
     );
   });
 
-  it("lists the units of the page without writing the customer on any card", async () => {
+  it("lists the units of the page with the return time of the occupied one and no customer on any card", async () => {
     const page = await renderCategoryUnits();
+    const occupied = page.getUnit(UNIT_CODE.OCCUPIED);
 
     expect(page.getUnits()).toHaveLength(
       TOTAL_COUNT.TWO_UNITS
     );
     expect(
-      page.queryReturnText(page.getUnit(UNIT_CODE.OCCUPIED))
+      page.getReturnText(occupied)
+    ).toBeInTheDocument();
+    expect(
+      page.queryText(
+        occupied,
+        DEFAULT_UNIT_OCCUPANCY.customerName
+      )
     ).not.toBeInTheDocument();
   });
 

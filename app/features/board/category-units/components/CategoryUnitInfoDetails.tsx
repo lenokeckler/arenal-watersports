@@ -1,4 +1,4 @@
-import { formatCostaRicaTime } from "@/app/components/dispatch-board/utils/formatCostaRicaTime";
+import { formatCostaRicaTimeTwelveHour } from "@/app/components/dispatch-board/utils/formatCostaRicaTimeTwelveHour";
 import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 import type { CategoryUnitInfoDetailsProps } from "../models/CategoryUnitInfoDetailsProps.interface";
 import {
@@ -30,13 +30,17 @@ const CategoryUnitInfoDetails = ({
           {CATEGORY_UNITS_COPY.INFO_DEPARTED}
         </dt>
         <dd className={CATEGORY_UNIT_INFO_VALUE_CLASS}>
-          {formatCostaRicaTime(occupancy.dispatchedAt)}
+          {formatCostaRicaTimeTwelveHour(
+            occupancy.dispatchedAt
+          )}
         </dd>
         <dt className={CATEGORY_UNIT_INFO_TERM_CLASS}>
           {CATEGORY_UNITS_COPY.INFO_RETURNS}
         </dt>
         <dd className={CATEGORY_UNIT_INFO_VALUE_CLASS}>
-          {formatCostaRicaTime(occupancy.returnsAt)}
+          {formatCostaRicaTimeTwelveHour(
+            occupancy.returnsAt
+          )}
         </dd>
         <dt className={CATEGORY_UNIT_INFO_TERM_CLASS}>
           {CATEGORY_UNITS_COPY.INFO_RADIO}

@@ -42,6 +42,9 @@ export const DISPATCH_BOARD_HEADING_ID =
   "reservas-pendientes-de-despachar";
 
 export const DISPATCH_BOARD_TIME_FORMAT = {
+  AM: "AM",
+  HALF_DAY_HOURS: 12,
+  PM: "PM",
   SEPARATOR: ":",
 } as const;
 
