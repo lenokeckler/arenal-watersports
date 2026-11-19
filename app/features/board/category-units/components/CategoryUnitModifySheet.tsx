@@ -28,6 +28,7 @@ import {
   CATEGORY_UNIT_SHEET_ALERT_CLASS,
   CATEGORY_UNIT_SHEET_STACK_CLASS,
 } from "../styles/CategoryUnitSheets.styles";
+import CategoryUnitMaintenanceChoice from "./CategoryUnitMaintenanceChoice";
 
 const CategoryUnitModifySheet = ({
   onClose,
@@ -46,7 +47,7 @@ const CategoryUnitModifySheet = ({
       onClose={onClose}
     >
       <div className={CATEGORY_UNIT_SHEET_STACK_CLASS}>
-        {readings.hasFuelGauge && (
+        {readings?.hasFuelGauge && (
           <FuelGauge
             level={modify.fuelLevel}
             lowLines={readings.lowFuelLines}
@@ -54,7 +55,7 @@ const CategoryUnitModifySheet = ({
             onSelectLevel={modify.handleFuelLevelChange}
           />
         )}
-        {readings.usageMetric !== null && (
+        {readings && readings.usageMetric !== null && (
           <FormField
             id={CATEGORY_UNIT_FIELD_ID.USAGE}
             name={CATEGORY_UNIT_FIELD_ID.USAGE}
@@ -72,15 +73,27 @@ const CategoryUnitModifySheet = ({
             onChange={modify.handleUsageChange}
           />
         )}
-        <CountStepper
-          label={CATEGORY_UNITS_COPY.IMPACT_COUNT_LABEL}
-          lessLabel={CATEGORY_UNITS_COPY.IMPACT_COUNT_LESS}
-          max={CATEGORY_UNIT_LIMITS.IMPACT_COUNT_MAX}
-          min={CATEGORY_UNIT_LIMITS.IMPACT_COUNT_MIN}
-          moreLabel={CATEGORY_UNITS_COPY.IMPACT_COUNT_MORE}
-          onChange={modify.handleImpactCountChange}
-          value={modify.impactCount}
-        />
+        {readings && (
+          <CountStepper
+            label={CATEGORY_UNITS_COPY.IMPACT_COUNT_LABEL}
+            lessLabel={
+              CATEGORY_UNITS_COPY.IMPACT_COUNT_LESS
+            }
+            max={CATEGORY_UNIT_LIMITS.IMPACT_COUNT_MAX}
+            min={CATEGORY_UNIT_LIMITS.IMPACT_COUNT_MIN}
+            moreLabel={
+              CATEGORY_UNITS_COPY.IMPACT_COUNT_MORE
+            }
+            onChange={modify.handleImpactCountChange}
+            value={modify.impactCount}
+          />
+        )}
+        {modify.canChangeMaintenance && (
+          <CategoryUnitMaintenanceChoice
+            inMaintenance={modify.inMaintenance}
+            onChange={modify.handleMaintenanceChange}
+          />
+        )}
         {modify.errorMessage && (
           <Text
             role={ARIA_ROLE.ALERT}
