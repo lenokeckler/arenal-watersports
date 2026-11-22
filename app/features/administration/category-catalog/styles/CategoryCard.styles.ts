@@ -61,3 +61,9 @@ export const CATEGORY_CARD_GROUP_ROW_CLASS =
 
 export const CATEGORY_CARD_GROUP_PREFIX_CLASS =
   CATEGORY_CARD_MICRO_LABEL_CLASS;
+
+export const CATEGORY_CARD_STATUS_NOTES_CLASS =
+  "col-span-2 row-start-4 flex flex-col gap-1";
+
+export const CATEGORY_CARD_STATUS_NOTE_CLASS =
+  "text-sm font-medium text-warning";

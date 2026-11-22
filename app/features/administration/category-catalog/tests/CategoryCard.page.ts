@@ -17,6 +17,9 @@ export const createCategoryCardPage = () => {
   const getSubtitle = (subtitle: string) =>
     screen.queryByText(subtitle);
 
+  const getStatusNote = (statusNote: string) =>
+    screen.queryByText(statusNote);
+
   const getEditButton = () =>
     screen.queryByRole(ARIA_ROLE.BUTTON, {
       name: CATEGORY_CATALOG_COPY.EDIT_BUTTON,
@@ -132,6 +135,7 @@ export const createCategoryCardPage = () => {
     getNameHeading,
     getStatusChip,
     getSubtitle,
+    getStatusNote,
     getEditButton,
     clickEditButton,
     getGroupRow,

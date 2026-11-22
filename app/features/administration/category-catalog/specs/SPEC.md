@@ -36,6 +36,7 @@ and a clear error state they can retry from.
   is set, a group row made of `GROUP_PREFIX_LABEL` and the group name.
 - Every row shows a status chip with the word of its status (`STATUS_LABEL_ACTIVE` or
   `STATUS_LABEL_INACTIVE`), never colour alone; an inactive row also dims its name block.
+- Each row also lists, under the group row, the notes `buildCategoryStatusNotes` returns, as plain text and never colour alone: an inactive category shows only `STATUS_NOTE_INACTIVE`; an active one that is not reservable shows `STATUS_NOTE_NOT_RESERVABLE`; a reservable one without an uploaded image shows `STATUS_NOTE_NO_IMAGE`. `CategoryListItem.isReservable` and `hasImage` come from `is_reservable` and `image_path`.
 - Retry calls `router.refresh()`, which re-runs the server read.
 
 ## Edge cases & errors

@@ -1,6 +1,7 @@
 import { ARIA_ROLE } from "@/app/constants";
 import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
 import type { CategoryCardViewModel } from "../models/CategoryCardViewModel.interface";
+import { buildCategoryStatusNotes } from "../utils/buildCategoryStatusNotes";
 import {
   CATEGORY_CARD_ACTIONS_ROW_CLASS,
   CATEGORY_CARD_ROW_CLASS,
@@ -33,6 +34,7 @@ const CategoryCard = ({
         name={category.name}
         subtitle={subtitle}
         groupName={category.groupName}
+        statusNotes={buildCategoryStatusNotes(category)}
         isInactive={isInactive}
       />
       <div className={CATEGORY_CARD_ACTIONS_ROW_CLASS}>
