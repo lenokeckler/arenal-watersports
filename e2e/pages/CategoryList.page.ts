@@ -118,6 +118,12 @@ export const createCategoryListPage = (page: Page) => {
       CATEGORY_CATALOG_COPY.STATUS_LABEL_INACTIVE
     );
 
+  const getCategoryStatusNote = (
+    categoryName: string,
+    statusNote: string
+  ): Locator =>
+    getCategoryCard(categoryName).getByText(statusNote);
+
   const getCategoryCancelButton = (
     categoryName: string
   ): Locator =>
@@ -194,6 +200,7 @@ export const createCategoryListPage = (page: Page) => {
     getCategoryMarkInactiveButton,
     getCategoryStatusChip,
     getCategoryInactiveChip,
+    getCategoryStatusNote,
     getCategoryCancelButton,
     getCategoryConfirmDeleteButton,
     getCategoryConfirmDeleteMessage,
