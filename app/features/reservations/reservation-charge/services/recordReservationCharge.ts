@@ -31,13 +31,13 @@ export const recordReservationCharge = async (
     RESERVATION_CHARGE_ERROR.OPERATION.RECORD
   );
 
-  const [row] = data ?? [];
+  const [first, ...others] = data ?? [];
 
-  if (!row) {
+  if (!first) {
     throw new Error(
       RESERVATION_CHARGE_ERROR.OPERATION.MISSING_CHARGE
     );
   }
 
-  return mapReservationChargeRecorded(row);
+  return mapReservationChargeRecorded([first, ...others]);
 };

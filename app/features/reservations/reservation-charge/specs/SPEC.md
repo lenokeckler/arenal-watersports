@@ -47,4 +47,8 @@ Como la persona de reservas, necesito registrar un cobro sobre una reserva con e
 - `resolveReservationChargeErrors` validates the second amount with the second currency's limits and reports it as `secondAmount`; there is no business cap on either amount.
 - `ReservationChargeCommand` carries `parts` (one or two `{ amount, currency }`) plus the shared method; the service always sends `parts` to `record_reservation_charge`, which still accepts the legacy single shape.
 - `Charge parts are invalid` maps to the generic form error: it is reachable only by a forged payload.
-- The service still returns the first recorded row until the receipt slice maps every part.
+
+### Mixed charge receipt (US-RES-24)
+
+- `ReservationChargeRecorded` carries `parts` (one `{ amount, chargeId, currency }` per returned row), the shared `paymentMethod` and `recordedByName`; `recordReservationCharge` maps every row and throws `MISSING_CHARGE` when none returns.
+- A one-part receipt keeps the `Monto`, `Moneda` and `M�todo de pago` rows; a two-part receipt shows `Monto en d�lares` and `Monto en colones` in `RESERVATION_CHARGE_CURRENCY_ORDER`, then one `M�todo de pago` row and `Registrado por <name>`.

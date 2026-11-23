@@ -27,9 +27,13 @@ export const CHARGE_RECORD_ROW: ReservationChargeRecordRow =
   };
 
 export const CHARGE_RECORDED: ReservationChargeRecorded = {
-  amount: 45.5,
-  chargeId: "e2c20000-0000-4000-8000-000000000601",
-  currency: CURRENCY_CODE.USD,
+  parts: [
+    {
+      amount: 45.5,
+      chargeId: "e2c20000-0000-4000-8000-000000000601",
+      currency: CURRENCY_CODE.USD,
+    },
+  ],
   paymentMethod: CHARGE_PAYMENT_METHOD,
   recordedByName: "Ana Mora",
 };
