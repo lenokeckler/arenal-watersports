@@ -37,7 +37,7 @@ describe("useReservationDepositValues", () => {
     });
   });
 
-  it("keeps a typed amount when the currency changes", () => {
+  it("drops a typed amount when the currency changes", () => {
     const { result } = renderValues();
     act(() =>
       result.current.setAmountText(EDITED_AMOUNT_TEXT)
@@ -48,7 +48,7 @@ describe("useReservationDepositValues", () => {
     );
 
     expect(result.current.values.amountText).toBe(
-      EDITED_AMOUNT_TEXT
+      CRC_PROPOSAL_TEXT
     );
   });
 
