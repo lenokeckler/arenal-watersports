@@ -14,6 +14,7 @@ import {
   seedCategoryWithBehavior,
 } from "../support/categoryFixtures";
 import {
+  E2E_ALERT_EXPIRY_DAYS_TEXT,
   E2E_ALERT_QUANTITY_TEXT,
   E2E_DEPOSIT_USD_TEXT,
   E2E_PICKED_DURATION_MINUTES,
@@ -27,10 +28,11 @@ const {
   HAS_MOTOR_FIELD_LABEL,
 } = CATEGORY_CATALOG_COPY;
 const {
+  ALERTS_EXPIRY_FIELD_LABEL,
   ALERTS_QUANTITY_FIELD_LABEL,
   DELETE_CONFIRM,
   SECTION_PHOTO,
-  ALERTS_TYPE_QUANTITY,
+  ALERTS_TYPE_BOTH,
   SECTION_ALERTS,
   SECTION_DEPOSIT,
   SECTION_TRAITS,
@@ -197,16 +199,22 @@ test.describe("Category configure screen", () => {
           categoryName
         );
       await configurePage.toggleSection(SECTION_ALERTS);
-      await configurePage
-        .getChip(ALERTS_TYPE_QUANTITY)
-        .click();
+      await configurePage.getChip(ALERTS_TYPE_BOTH).click();
       await configurePage
         .getField(ALERTS_QUANTITY_FIELD_LABEL)
         .fill(E2E_ALERT_QUANTITY_TEXT);
+      await configurePage
+        .getField(ALERTS_EXPIRY_FIELD_LABEL)
+        .fill(E2E_ALERT_EXPIRY_DAYS_TEXT);
 
-      await expect(
-        configurePage.getSectionButton(SECTION_ALERTS)
-      ).toContainText(E2E_ALERT_QUANTITY_TEXT);
+      const alertsSection =
+        configurePage.getSectionButton(SECTION_ALERTS);
+      await expect(alertsSection).toContainText(
+        E2E_ALERT_QUANTITY_TEXT
+      );
+      await expect(alertsSection).toContainText(
+        E2E_ALERT_EXPIRY_DAYS_TEXT
+      );
     } finally {
       await removeDeletableCategory(categoryName);
     }
