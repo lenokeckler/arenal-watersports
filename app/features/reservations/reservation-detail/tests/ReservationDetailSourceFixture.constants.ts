@@ -94,6 +94,7 @@ export const RESERVATION_DETAIL_SOURCE_FIXTURE = {
       unit_id: null,
     },
   ],
+  reservation_extra_time_resolutions: null,
   reservation_pricing: RESERVATION_DETAIL_PRICING_FIXTURE,
   starts_at: RESERVATION_DETAIL_TEST.RESERVATION_START,
   status: RESERVATION_DETAIL_TEST.RESERVATION_STATUS,

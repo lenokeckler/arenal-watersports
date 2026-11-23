@@ -6,6 +6,8 @@ import { resolveReservationDetailChargeSummary } from "./resolveReservationDetai
 import { getReservationDetailWorkerName } from "./getReservationDetailWorkerName";
 import { mapReservationDetailDispatches } from "./mapReservationDetailDispatches";
 import { mapReservationDetailEquipment } from "./mapReservationDetailEquipment";
+import { RESERVATION_DETAIL_NO_EXTRA_MINUTES } from "../constants/ReservationDetail.constants";
+import { mapReservationDetailExtraTime } from "./mapReservationDetailExtraTime";
 import { mapReservationDetailExtras } from "./mapReservationDetailExtras";
 import { mapReservationDetailGuides } from "./mapReservationDetailGuides";
 import { mapReservationDetailMoneyMovements } from "./mapReservationDetailMoneyMovements";
@@ -46,6 +48,7 @@ const mapReservationDetailBase = (
   | "createdByName"
   | "dispatches"
   | "equipment"
+  | "extraTime"
   | "extraTimeCharges"
   | "extras"
   | "guides"
@@ -75,7 +78,8 @@ const mapReservationDetailBase = (
 
 export const mapReservationDetail = (
   source: ReservationDetailReservationSource,
-  workerNames: ReservationDetailWorkerName[]
+  workerNames: ReservationDetailWorkerName[],
+  pendingExtraMinutes: number = RESERVATION_DETAIL_NO_EXTRA_MINUTES
 ): ReservationDetail => {
   const chargeSummary =
     getReservationDetailChargeSummary(source);
@@ -87,6 +91,10 @@ export const mapReservationDetail = (
     charges: chargeSummary.charges,
     dispatches: mapReservationDetailDispatches(source),
     equipment: mapReservationDetailEquipment(source),
+    extraTime: mapReservationDetailExtraTime(
+      source.reservation_extra_time_resolutions,
+      pendingExtraMinutes
+    ),
     extraTimeCharges: chargeSummary.extraTimeCharges,
     extras: mapReservationDetailExtras(source),
     guides: mapReservationDetailGuides(source, workerNames),

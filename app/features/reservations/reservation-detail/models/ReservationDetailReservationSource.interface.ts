@@ -58,5 +58,11 @@ export interface ReservationDetailReservationSource extends Pick<
   reservation_dock_notices: NullableRef<{
     notified_at: string;
   }>;
+  reservation_extra_time_resolutions: NullableRef<
+    Pick<
+      Database["public"]["Tables"]["reservation_extra_time_resolutions"]["Row"],
+      "extra_minutes" | "outcome"
+    >
+  >;
   reservation_pricing: NullableRef<ReservationDetailPricingSource>;
 }

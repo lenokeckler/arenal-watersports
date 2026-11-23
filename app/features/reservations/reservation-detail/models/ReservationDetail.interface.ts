@@ -2,6 +2,7 @@ import type { Database, NullableRef } from "@/app/types";
 import type { ReservationDetailCharge } from "./ReservationDetailCharge.interface";
 import type { ReservationDetailDispatch } from "./ReservationDetailDispatch.interface";
 import type { ReservationDetailEquipment } from "./ReservationDetailEquipment.interface";
+import type { ReservationDetailExtraTime } from "./ReservationDetailExtraTime.interface";
 import type { ReservationDetailExtraTimeCharge } from "./ReservationDetailExtraTimeCharge.interface";
 import type { ReservationDetailRefund } from "./ReservationDetailRefund.interface";
 import type { ReservationDetailExtra } from "./ReservationDetailExtra.interface";
@@ -34,6 +35,7 @@ export interface ReservationDetail extends Pick<
   dispatches: ReservationDetailDispatch[];
   dockNotifiedAt: NullableRef<string>;
   equipment: ReservationDetailEquipment[];
+  extraTime: NullableRef<ReservationDetailExtraTime>;
   extraTimeCharges: ReservationDetailExtraTimeCharge[];
   refunds: ReservationDetailRefund[];
   extras: ReservationDetailExtra[];
