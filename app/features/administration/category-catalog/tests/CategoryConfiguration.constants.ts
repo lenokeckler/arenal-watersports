@@ -44,6 +44,7 @@ export const DEFAULT_CATEGORY_CONFIGURATION: CategoryConfiguration =
       imagePath: FAKE_CONFIGURATION_IMAGE_PATH,
       imageUrl: null,
     },
+    hasRecords: false,
   };
 
 export const buildCategoryConfiguration = (
