@@ -1,9 +1,11 @@
 import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE } from "@/app/constants";
+import { CATEGORY_IMAGE_COPY } from "@/app/features/administration/category-catalog/constants/CategoryImageCopy.constants";
 import { CATEGORY_CONFIGURE_COPY } from "@/app/features/administration/category-catalog/constants/CategoryConfigureCopy.constants";
 import { resolveCategoryConfigurePath } from "@/app/features/administration/category-catalog/utils/resolveCategoryConfigurePath";
 import { E2E_NEXT_NOT_FOUND_MESSAGE } from "../constants/E2eCategoryBehavior.constants";
 import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
+import type { E2eCategoryImageFile } from "../models/E2eCategoryImageFile.interface";
 
 export const createCategoryConfigurePage = (page: Page) => {
   const goTo = async (
@@ -58,6 +60,22 @@ export const createCategoryConfigurePage = (page: Page) => {
   const getNotFoundMessage = (): Locator =>
     page.getByText(E2E_NEXT_NOT_FOUND_MESSAGE);
 
+  const getButton = (name: string): Locator =>
+    page.getByRole(ARIA_ROLE.BUTTON, { name });
+
+  const getPhotoPreview = (): Locator =>
+    page.getByRole(ARIA_ROLE.IMG, {
+      name: CATEGORY_IMAGE_COPY.PREVIEW_ALT_PICKED,
+    });
+
+  const choosePhoto = async (
+    file: E2eCategoryImageFile
+  ): Promise<void> => {
+    await page
+      .getByLabel(CATEGORY_IMAGE_COPY.FILE_INPUT_LABEL)
+      .setInputFiles(file);
+  };
+
   const toggleSection = async (
     title: string
   ): Promise<void> => {
@@ -76,6 +94,9 @@ export const createCategoryConfigurePage = (page: Page) => {
     getDurationField,
     getField,
     getNotFoundMessage,
+    getButton,
+    getPhotoPreview,
+    choosePhoto,
     toggleSection,
   };
 };
