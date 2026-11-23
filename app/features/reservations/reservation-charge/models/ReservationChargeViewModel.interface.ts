@@ -6,15 +6,19 @@ import type { ReservationChargeRecorded } from "./ReservationChargeRecorded.inte
 export interface ReservationChargeViewModel {
   amountText: string;
   currency: CurrencyCode;
-  currencyOptions: readonly CurrencyCode[];
   errors: ReservationChargeErrors;
   formError: string;
   handleSubmit: (event?: React.FormEvent) => void;
   isPending: boolean;
+  isMixed: boolean;
   isSubmitDisabled: boolean;
   paymentMethod: string;
   recorded: NullableRef<ReservationChargeRecorded>;
   setAmountText: (text: string) => void;
   setCurrency: (currency: CurrencyCode) => void;
+  secondAmountText: NullableRef<string>;
+  secondCurrency: CurrencyCode;
   setPaymentMethod: (method: string) => void;
+  setSecondAmountText: (text: string) => void;
+  toggleSecondAmount: () => void;
 }

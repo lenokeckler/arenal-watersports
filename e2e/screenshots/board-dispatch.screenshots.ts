@@ -40,7 +40,7 @@ test.describe("Dispatch from the board screenshots", () => {
     await units
       .getPickerAction(dispatchSheet.customerName)
       .click();
-    await expect(sheet.getUnit(first)).toBeChecked();
+    await expect(sheet.getSubmit()).toBeEnabled();
     await captureFullPage(
       page,
       E2E_BOARD_DISPATCH_SCREENSHOT_BASENAME.SHEET,

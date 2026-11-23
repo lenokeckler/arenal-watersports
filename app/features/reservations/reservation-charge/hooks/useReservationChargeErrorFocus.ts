@@ -17,6 +17,10 @@ export const useReservationChargeErrorFocus = (
       focusById(RESERVATION_CHARGE_FIELD_ID.AMOUNT);
       return;
     }
+    if (errors.secondAmount) {
+      focusById(RESERVATION_CHARGE_FIELD_ID.SECOND_AMOUNT);
+      return;
+    }
     if (errors.paymentMethod) {
       focusById(RESERVATION_CHARGE_FIELD_ID.PAYMENT_METHOD);
       return;
