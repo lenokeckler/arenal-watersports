@@ -13,6 +13,8 @@ import {
 import {
   DEFAULT_BOARD_UNIT_ROW,
   INCOMPLETE_OCCUPIED_ROW_OVERRIDES,
+  KILOMETERS_BOARD_UNIT_ROW,
+  MOTOR_BOARD_UNIT_ROW,
   OCCUPIED_BOARD_UNIT_ROW,
 } from "./CategoryUnitRows.constants";
 
@@ -21,6 +23,45 @@ describe("mapBoardCategoryUnitRow", () => {
     expect(
       mapBoardCategoryUnitRow(DEFAULT_BOARD_UNIT_ROW, NOW)
     ).toEqual(DEFAULT_CATEGORY_UNIT);
+  });
+
+  it("carries no readings for a category without motor", () => {
+    expect(
+      mapBoardCategoryUnitRow(DEFAULT_BOARD_UNIT_ROW, NOW)
+        .readings
+    ).toBeNull();
+  });
+
+  it("carries the fuel gauge and the engine hours of a motor unit", () => {
+    expect(
+      mapBoardCategoryUnitRow(MOTOR_BOARD_UNIT_ROW, NOW)
+        .readings
+    ).toEqual({
+      fuelLevel: 3,
+      fuelMax: 4,
+      hasFuelGauge: true,
+      impactCount: 0,
+      lowFuelLines: 1,
+      usageMetric: "engine_hours",
+      usageTotal: 97.5,
+    });
+  });
+
+  it("carries the kilometers of a unit that burns no fuel in the gauge", () => {
+    expect(
+      mapBoardCategoryUnitRow(
+        KILOMETERS_BOARD_UNIT_ROW,
+        NOW
+      ).readings
+    ).toEqual({
+      fuelLevel: null,
+      fuelMax: 6,
+      hasFuelGauge: false,
+      impactCount: 0,
+      lowFuelLines: 1,
+      usageMetric: "kilometers",
+      usageTotal: 1250,
+    });
   });
 
   it("maps an occupied row with its occupancy, keeping the reservation id", () => {

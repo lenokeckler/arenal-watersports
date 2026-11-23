@@ -17,6 +17,7 @@ export const EMPTY_CLOSE_DRAFT: CloseGroupDraft = {
   fuel: "",
   hasDamage: false,
   impact: "",
+  impactCount: null,
   maintenance: false,
   usage: "",
 };
@@ -26,9 +27,12 @@ export const MOTOR_UNIT: GroupReturnUnit = {
   consumesFuel: true,
   fuelMax: 4,
   fuelOut: 3,
+  impactCount: 2,
+  lowFuelLines: 1,
   unitId: "bbbbbbbb-0000-0000-0000-000000000001",
   usageMetric: "engine_hours",
   usageOut: 13,
+  usageTotal: 13,
 };
 
 export const PLAIN_UNIT: GroupReturnUnit = {
@@ -36,7 +40,10 @@ export const PLAIN_UNIT: GroupReturnUnit = {
   consumesFuel: false,
   fuelMax: 4,
   fuelOut: null,
+  impactCount: 0,
+  lowFuelLines: 1,
   unitId: "bbbbbbbb-0000-0000-0000-000000000002",
   usageMetric: null,
   usageOut: null,
+  usageTotal: 0,
 };

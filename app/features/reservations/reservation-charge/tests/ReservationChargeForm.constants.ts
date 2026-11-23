@@ -26,6 +26,16 @@ export const CRC_ONLY_PROPOSAL: ReservationChargeProposal =
     USD: null,
   };
 
+export const CRC_ONLY_CHARGE: ReservationCharge = {
+  ...EXPECTED_SCHEDULED,
+  proposal: CRC_ONLY_PROPOSAL,
+};
+
+export const CRC_ONLY_PROPOSAL_TEXT = String(
+  CRC_ONLY_PROPOSAL.CRC
+);
+export const CRC_ENTERED_AMOUNT_TEXT = "15000";
+
 export const EDITED_AMOUNT_TEXT = "37.5";
 export const EDITED_METHOD_TEXT = "SINPE";
 

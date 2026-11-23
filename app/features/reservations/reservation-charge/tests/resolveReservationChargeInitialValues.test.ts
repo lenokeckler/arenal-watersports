@@ -19,6 +19,7 @@ describe("resolveReservationChargeInitialValues", () => {
       amountText: USD_PROPOSAL_TEXT,
       currency: CURRENCY_CODE.USD,
       paymentMethod: STRING.Empty,
+      secondAmountText: null,
     });
   });
 
@@ -31,6 +32,7 @@ describe("resolveReservationChargeInitialValues", () => {
       amountText: CRC_PROPOSAL_TEXT,
       currency: CURRENCY_CODE.CRC,
       paymentMethod: STRING.Empty,
+      secondAmountText: null,
     });
   });
 
@@ -41,6 +43,7 @@ describe("resolveReservationChargeInitialValues", () => {
       amountText: STRING.Empty,
       currency: CURRENCY_CODE.USD,
       paymentMethod: STRING.Empty,
+      secondAmountText: null,
     });
   });
 });

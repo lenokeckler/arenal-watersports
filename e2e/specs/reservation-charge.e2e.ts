@@ -5,43 +5,19 @@ import {
 import { RESERVATION_CHARGE_FORM_COPY as copy } from "@/app/features/reservations/reservation-charge/constants/ReservationChargeFormCopy.constants";
 import { formatMoney } from "@/app/utils/money/formatMoney";
 import { E2E_WORKER } from "../constants/E2eWorker.constants";
-import {
-  E2E_RESERVATION_CHARGE as values,
-  E2E_RESERVATION_CHARGE_SEED as seed,
-} from "../constants/E2eReservationCharge.constants";
+import { E2E_RESERVATION_CHARGE as values } from "../constants/E2eReservationCharge.constants";
 import { E2E_TIMEOUT_MS } from "../constants/E2eRuntime.constants";
 import { createReservationChargePage } from "../pages/ReservationCharge.page";
 import { createReservationDetailPage } from "../pages/ReservationDetail.page";
 import { createReservationDetailChargePage } from "../pages/ReservationDetailCharge.page";
 import { expect, test } from "../support/activeWorkerTest";
-import { calculateExpectedChargeProposal } from "../support/calculateExpectedChargeProposal";
 import { createReservationChargeFixture as seedCharge } from "../support/createReservationChargeFixture";
+import { readExpectedChargeProposal } from "../support/readExpectedChargeProposal";
 import { readReservationChargeState } from "../support/readReservationChargeState";
-import { readReservationChargeTariff } from "../support/readReservationChargeTariff";
 import { removeReservationChargeFixtures } from "../support/removeReservationChargeFixtures";
 import { signInToReservationsMode } from "../support/signInToReservationsMode";
 
 const submitWait = { timeout: E2E_TIMEOUT_MS.POST_SUBMIT };
-
-const readExpectedProposal = async (
-  workerId: string,
-  reservationId: string
-): Promise<number> => {
-  const tariff = await readReservationChargeTariff(
-    workerId,
-    reservationId
-  );
-  const peopleCount = Number(values.PEOPLE_COUNT);
-  const expected = calculateExpectedChargeProposal(
-    tariff.amountUsd
-  );
-  expect(tariff.amountUsd).toBe(Number(seed.tariff_usd));
-  expect(tariff.amountCrc).toBe(Number(seed.tariff_crc));
-  expect(expected).not.toBe(tariff.amountUsd * peopleCount);
-  expect(expected).not.toBe(tariff.amountUsd);
-
-  return expected;
-};
 
 test.describe("Reservation charge", () => {
   test.describe.configure({ mode: values.TEST_MODE });
@@ -62,7 +38,7 @@ test.describe("Reservation charge", () => {
       activeWorker.id,
       testInfo.project.name
     );
-    const proposal = await readExpectedProposal(
+    const proposal = await readExpectedChargeProposal(
       activeWorker.id,
       reservation.id
     );
@@ -123,7 +99,7 @@ test.describe("Reservation charge", () => {
       activeWorker.id,
       testInfo.project.name
     );
-    const proposal = await readExpectedProposal(
+    const proposal = await readExpectedChargeProposal(
       activeWorker.id,
       reservation.id
     );
@@ -180,7 +156,7 @@ test.describe("Reservation charge", () => {
       testInfo.project.name,
       RESERVATION_STATUS.CLOSED
     );
-    const proposal = await readExpectedProposal(
+    const proposal = await readExpectedChargeProposal(
       activeWorker.id,
       reservation.id
     );

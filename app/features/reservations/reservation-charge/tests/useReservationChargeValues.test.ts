@@ -16,7 +16,7 @@ import {
 } from "./ReservationChargeForm.constants";
 
 describe("useReservationChargeValues", () => {
-  it("starts on USD with both currencies offered", () => {
+  it("starts on USD with the catalog amount", () => {
     const { result } = renderHook(() =>
       useReservationChargeValues(BOTH_PROPOSAL)
     );
@@ -25,14 +25,11 @@ describe("useReservationChargeValues", () => {
       amountText: USD_PROPOSAL_TEXT,
       currency: CURRENCY_CODE.USD,
       paymentMethod: STRING.Empty,
+      secondAmountText: null,
     });
-    expect(result.current.currencyOptions).toEqual([
-      CURRENCY_CODE.USD,
-      CURRENCY_CODE.CRC,
-    ]);
   });
 
-  it("offers one currency when only one has a proposal", () => {
+  it("starts on the proposed currency when only one has a proposal", () => {
     const { result } = renderHook(() =>
       useReservationChargeValues(MIXED_PROPOSAL)
     );
@@ -40,12 +37,12 @@ describe("useReservationChargeValues", () => {
     expect(result.current.values.amountText).toBe(
       MIXED_USD_PROPOSAL_TEXT
     );
-    expect(result.current.currencyOptions).toEqual([
-      CURRENCY_CODE.USD,
-    ]);
+    expect(result.current.values.currency).toBe(
+      CURRENCY_CODE.USD
+    );
   });
 
-  it("starts empty with every currency when nothing is proposed", () => {
+  it("starts empty on USD when nothing is proposed", () => {
     const { result } = renderHook(() =>
       useReservationChargeValues(EMPTY_PROPOSAL)
     );
@@ -53,10 +50,26 @@ describe("useReservationChargeValues", () => {
     expect(result.current.values.amountText).toBe(
       STRING.Empty
     );
-    expect(result.current.currencyOptions).toEqual([
-      CURRENCY_CODE.USD,
-      CURRENCY_CODE.CRC,
-    ]);
+    expect(result.current.values.currency).toBe(
+      CURRENCY_CODE.USD
+    );
+  });
+
+  it("empties the amount when switching to a currency without a proposal", () => {
+    const { result } = renderHook(() =>
+      useReservationChargeValues(MIXED_PROPOSAL)
+    );
+
+    act(() =>
+      result.current.setCurrency(CURRENCY_CODE.CRC)
+    );
+
+    expect(result.current.values.currency).toBe(
+      CURRENCY_CODE.CRC
+    );
+    expect(result.current.values.amountText).toBe(
+      STRING.Empty
+    );
   });
 
   it("swaps the untouched proposal when the currency changes", () => {
