@@ -94,10 +94,10 @@ select throws_ok(
   $$select dispatch_reservation_group(
       'dddddddd-0000-0000-0000-000000000001', 'aaaaaaaa-0000-0000-0000-000000000001',
       '2026-09-05 14:00:00+00', '2026-09-05 15:30:00+00',
-      array['bbbbbbbb-0000-0000-0000-000000000001']::uuid[])$$,
+      array[]::uuid[])$$,
   '22023',
-  'Exactly 2 more units must be chosen',
-  'fewer units than committed are refused'
+  'Between 1 and 2 more units must be chosen',
+  'a dispatch without any unit is refused'
 );
 
 select throws_ok(
@@ -174,8 +174,8 @@ select throws_ok(
       'dddddddd-0000-0000-0000-000000000001', 'aaaaaaaa-0000-0000-0000-000000000001',
       '2026-09-05 14:00:00+00', '2026-09-05 15:30:00+00',
       array['bbbbbbbb-0000-0000-0000-000000000001', 'bbbbbbbb-0000-0000-0000-000000000002']::uuid[])$$,
-  '23505',
-  'This category is already dispatched',
+  'P0002',
+  'The reservation has no equipment in this category to dispatch',
   'a retry cannot commit the units twice'
 );
 

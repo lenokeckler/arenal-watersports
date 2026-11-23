@@ -42,3 +42,11 @@ export type ReservationDetailChargeStatus =
 
 export type ReservationDetailCurrency =
   (typeof RESERVATION_DETAIL_CURRENCY)[keyof typeof RESERVATION_DETAIL_CURRENCY];
+
+export const RESERVATION_DETAIL_MOVEMENT_TYPE = {
+  CHARGE: "charge",
+  REFUND: "refund",
+} as const;
+
+export type ReservationDetailMovementType =
+  (typeof RESERVATION_DETAIL_MOVEMENT_TYPE)[keyof typeof RESERVATION_DETAIL_MOVEMENT_TYPE];
