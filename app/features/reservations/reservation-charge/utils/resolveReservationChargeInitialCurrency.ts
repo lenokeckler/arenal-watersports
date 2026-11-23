@@ -2,13 +2,9 @@ import type { CurrencyCode } from "@/app/constants";
 import { RESERVATION_CHARGE_CURRENCY_ORDER } from "../constants/ReservationChargeUi.constants";
 import type { ReservationChargeProposal } from "../models/ReservationChargeProposal.type";
 
-export const resolveReservationChargeCurrencyOptions = (
+export const resolveReservationChargeInitialCurrency = (
   proposal: ReservationChargeProposal
-): readonly CurrencyCode[] => {
-  const proposed = RESERVATION_CHARGE_CURRENCY_ORDER.filter(
+): CurrencyCode =>
+  RESERVATION_CHARGE_CURRENCY_ORDER.find(
     (currency) => proposal[currency] !== null
-  );
-  return proposed.length > 0
-    ? proposed
-    : RESERVATION_CHARGE_CURRENCY_ORDER;
-};
+  ) ?? RESERVATION_CHARGE_CURRENCY_ORDER[0];

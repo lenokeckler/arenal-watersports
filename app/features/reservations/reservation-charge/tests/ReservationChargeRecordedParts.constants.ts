@@ -31,3 +31,14 @@ export const MIXED_RECORDED: ReservationChargeRecorded = {
   paymentMethod: CHARGE_RECORD_ROW.charged_payment_method,
   recordedByName: CHARGE_RECORD_ROW.recorded_by_name,
 };
+
+export const CRC_RECORDED: ReservationChargeRecorded = {
+  ...MIXED_RECORDED,
+  parts: [
+    {
+      amount: CRC_CHARGE_ROW.charged_amount,
+      chargeId: CRC_CHARGE_ROW.charge_id,
+      currency: CURRENCY_CODE.CRC,
+    },
+  ],
+};
