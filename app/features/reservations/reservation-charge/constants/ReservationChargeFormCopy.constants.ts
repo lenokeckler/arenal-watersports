@@ -6,10 +6,10 @@ export const RESERVATION_CHARGE_FORM_COPY = {
   AMOUNT_HELPER_MANUAL:
     "No hay tarifa del catálogo para esta moneda. Escriba el monto acordado con el cliente.",
   AMOUNT_HELPER_PROPOSED:
-    "Propuesto: tarifa del catálogo por la duración de la salida. Ajústelo si el precio acordado fue otro.",
+    "Propuesto: tarifa del catálogo por la duración de la salida. Ajústelo libremente si el precio acordado fue otro.",
   AMOUNT_LABEL: {
-    [CURRENCY_CODE.CRC]: "Monto cobrado en colones",
-    [CURRENCY_CODE.USD]: "Monto cobrado en dólares",
+    [CURRENCY_CODE.CRC]: "Monto acordado en colones",
+    [CURRENCY_CODE.USD]: "Monto acordado en dólares",
   } satisfies Record<CurrencyCode, string>,
   AMOUNT_PLACEHOLDER: "0.00",
   BACK: "Volver",

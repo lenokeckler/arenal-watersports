@@ -34,7 +34,8 @@ Como la persona de reservas, necesito registrar un cobro sobre una reserva con e
 
 - `ReservationChargeView` is the client view: summary and form while nothing is recorded, `ReservationChargeSuccess` once `recorded` is set. The form is replaced, never kept disabled, so a recorded charge cannot be submitted twice.
 - Copy lives in `ReservationChargeFormCopy.constants.ts`: `AMOUNT_LABEL` per currency, `AMOUNT_HELPER_PROPOSED`, `AMOUNT_HELPER_MANUAL`, `AMOUNT_PLACEHOLDER`, `CURRENCY_LEGEND`, `LABEL_METHOD`, `METHOD_PLACEHOLDER`, `METHOD_HELPER`, `SUBMIT`, `SUBMITTING`, `BACK`, `ACTIONS`, `SUCCESS(code)`, `RECORDED_BY(name)` and the receipt labels `LABEL_AMOUNT`, `LABEL_CURRENCY`, `LABEL_METHOD`.
-- Amount input is a text field with `inputMode` decimal; its label names the selected currency.
+- The price is edited inside the summary section (`ReservationChargePrice`), not in a section of its own: the currency group and the amount field sit under the reservation details, and the form below keeps the payment method, the alert and the actions.
+- Amount input is a text field with `inputMode` decimal; its label names the agreed amount in the selected currency (`Monto acordado en <moneda>`), and its helper names the catalog proposal and invites adjusting it freely when the agreed price was another.
 - The currency group (radio cards, each showing the catalog proposal or "Sin tarifa del catálogo") is rendered only when more than one currency is offered.
 - Currency switch rule: the amount is replaced by the new currency's proposal only while it is empty or still the previous proposal; a typed amount is kept.
 - States: default, pending (`aria-busy`, every field and the submit disabled, submit reads "Registrando cobro…"), field errors under the field with focus on the first invalid one, form error in a `role=alert` box that takes focus, success.

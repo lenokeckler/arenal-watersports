@@ -65,7 +65,18 @@ describe("ReservationChargeSummary", () => {
     ).not.toBeNull();
   });
 
-  it("says a currency has no catalog tariff when its proposal is null", () => {
+  it("lists the catalog proposal only on the currency options, not as static lines", () => {
+    const page = renderReservationChargeSummary();
+
+    expect(
+      page.queryAllText(proposalLine(EXPECTED_USD_PROPOSAL))
+    ).toHaveLength(1);
+    expect(
+      page.queryAllText(proposalLine(EXPECTED_CRC_PROPOSAL))
+    ).toHaveLength(1);
+  });
+
+  it("shows no proposal line when only one currency is offered", () => {
     const page =
       renderReservationChargeSummary(EXPECTED_MIXED);
 
@@ -73,10 +84,10 @@ describe("ReservationChargeSummary", () => {
       page.queryText(
         proposalLine(EXPECTED_MIXED_USD_PROPOSAL)
       )
-    ).not.toBeNull();
+    ).toBeNull();
     expect(
       page.queryText(COPY.NO_PROPOSAL_LINE.CRC)
-    ).not.toBeNull();
+    ).toBeNull();
   });
 
   it("states that the charge is per reservation and not per person", () => {
