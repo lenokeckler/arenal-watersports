@@ -5,9 +5,9 @@ import { CATEGORY_DURATION_PRESET_MINUTES } from "../constants/CategoryDurationP
 import { formatCategoryDurationLabel } from "../utils/formatCategoryDurationLabel";
 import type { CategoryDurationChipsProps } from "../models/CategoryDurationChipsProps.interface";
 import {
-  CATEGORY_DURATION_CHIPS_GROUP_CLASS,
-  resolveCategoryDurationChipClassName,
-} from "../styles/CategoryDurationChips.styles";
+  CATEGORY_CHIPS_GROUP_CLASS,
+  resolveCategoryChipClassName,
+} from "../styles/CategoryChips.styles";
 
 const CategoryDurationChips = ({
   selectedPresetMinutes,
@@ -18,7 +18,7 @@ const CategoryDurationChips = ({
   <div
     role={ARIA_ROLE.GROUP}
     aria-label={CATEGORY_CONFIGURE_COPY.DURATION_LABEL}
-    className={CATEGORY_DURATION_CHIPS_GROUP_CLASS}
+    className={CATEGORY_CHIPS_GROUP_CLASS}
   >
     {CATEGORY_DURATION_PRESET_MINUTES.map((minutes) => {
       const isSelected = selectedPresetMinutes === minutes;
@@ -28,7 +28,7 @@ const CategoryDurationChips = ({
           key={minutes}
           variant={BUTTON.BASE}
           aria-pressed={isSelected}
-          className={resolveCategoryDurationChipClassName(
+          className={resolveCategoryChipClassName(
             isSelected
           )}
           onClick={() => onSelectPreset(minutes)}
@@ -40,7 +40,7 @@ const CategoryDurationChips = ({
     <Button
       variant={BUTTON.BASE}
       aria-pressed={isOtherSelected}
-      className={resolveCategoryDurationChipClassName(
+      className={resolveCategoryChipClassName(
         isOtherSelected
       )}
       onClick={onSelectOther}
