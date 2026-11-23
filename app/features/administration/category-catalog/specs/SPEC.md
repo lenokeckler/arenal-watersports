@@ -13,8 +13,8 @@ and a clear error state they can retry from.
 - The header: title, the registered total as text and the create link.
 - Three view states: ready, empty and error.
 - One row per category: name, a subtitle with the tracking mode and the current quantity, a status
-  chip, one Editar button and, when present, the group row. Editar expands the options panel of that
-  row.
+  chip, the Editar label and, when present, the group row. The whole row is one link to the
+  Configurar screen of the category.
 - The Retry button of the error state.
 - Spanish copy, read from `CATEGORY_CATALOG_COPY`.
 
@@ -40,14 +40,14 @@ and a clear error state they can retry from.
 
 ## Edge cases & errors
 
-| Case                    | Observable result                                                                                                                                                                    | Copy key                                                                 |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
-| Ready, with groups      | One row per category; rows with a group show the group row, rows without one show none                                                                                               | `GROUP_PREFIX_LABEL`, `TRACKING_MODE_*_LABEL`                            |
-| Empty list              | Empty state with title and body, no cards                                                                                                                                            | `EMPTY_STATE_TITLE`, `EMPTY_STATE_BODY`                                  |
-| Fetch failure           | `CategoryList` returns no categories and `fetchFailed: true`; the error state shows the message and a Retry button                                                                   | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`                                    |
-| Retry, read succeeds    | The refresh re-renders the server component with the new list; the view state becomes ready or empty                                                                                 | The keys of the resulting state                                          |
-| Retry, read fails again | The error state is shown again                                                                                                                                                       | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`                                    |
-| Inactive category       | The row shows the Inactiva chip; its only state action, inside the options panel, is Reactivar, which sets the status back to active, shows the success toast and refreshes the list | `STATUS_LABEL_INACTIVE`, `REACTIVATE_BUTTON`, `REACTIVATE_SUCCESS_TOAST` |
+| Case                    | Observable result                                                                                                      | Copy key                                      |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| Ready, with groups      | One row per category; rows with a group show the group row, rows without one show none                                 | `GROUP_PREFIX_LABEL`, `TRACKING_MODE_*_LABEL` |
+| Empty list              | Empty state with title and body, no cards                                                                              | `EMPTY_STATE_TITLE`, `EMPTY_STATE_BODY`       |
+| Fetch failure           | `CategoryList` returns no categories and `fetchFailed: true`; the error state shows the message and a Retry button     | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`         |
+| Retry, read succeeds    | The refresh re-renders the server component with the new list; the view state becomes ready or empty                   | The keys of the resulting state               |
+| Retry, read fails again | The error state is shown again                                                                                         | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`         |
+| Inactive category       | The row shows the Inactiva chip; the category is reactivated from the Categoría activa switch of the Configurar screen | `STATUS_LABEL_INACTIVE`                       |
 
 ## Design notes (list redesign)
 
@@ -62,16 +62,15 @@ and a clear error state they can retry from.
   `PATHS.ADMINISTRATION.CATEGORIES_NEW`.
 - Row: name (two lines at most), subtitle `Por cantidad · N unidades` or `Por unidad · N unidades`
   (`1 unidad` in the singular), status chip (`Activa` in the primary colour, `Inactiva` in the error
-  colour, always with its word and a dot) and one outlined Editar button of at least 44 px.
+  colour, always with its word and a dot) and the Editar label, plain text inside the link; the row is at least 44 px high.
 - N is the current quantity, read by the view `category_current_quantity` (`security_invoker`): for a
   by-quantity category the sum of available, damaged and in-repair stock; for a by-unit category the
   count of units that are not decommissioned. It covers active and inactive categories.
   `fetchCategoryQuantities` reads it for the ids of the page only.
-- Options panel: Editar is a button with `aria-expanded` and `aria-controls`; the panel under the row
-  holds Comportamiento, Depósito, Avisos, Unidades (by-unit categories only) and the state action
-  (Marcar inactiva or Eliminar with its confirmation, or Reactivar). The open row lives in
-  `useCategoryCardPanels`, so one panel is open at a time and it stays open across `router.refresh()`.
-  Every behaviour and server action of the state flows is unchanged.
+- Row link: the whole row is a link to `resolveCategoryConfigurePath`; its accessible name is built
+  from the category name. The options panel and the Marcar inactiva, Eliminar and Reactivar buttons are
+  no longer rendered on the row: the Configurar screen holds the sections, the Categoría activa switch
+  and Eliminar categoría.
 - Administration sub-screens (behavior, deposit, alerts, create, units list, unit form, worker
   registration, worker areas, reservations by worker) render their heading with `hasLogo={false}` on the
   shared `ScreenHeading`; the prop defaults to true, so login, work mode and profile keep the logo. The
