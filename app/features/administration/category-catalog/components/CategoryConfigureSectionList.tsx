@@ -5,7 +5,7 @@ import CategoryConfigureSectionBody from "./CategoryConfigureSectionBody";
 const CategoryConfigureSectionList = ({
   categoryId,
   trackingMode,
-  reservations,
+  bodies,
   sections,
   onToggleSection,
 }: CategoryConfigureSectionListProps): React.JSX.Element => (
@@ -20,7 +20,7 @@ const CategoryConfigureSectionList = ({
           sectionId={section.id}
           categoryId={categoryId}
           trackingMode={trackingMode}
-          reservations={reservations}
+          bodies={bodies}
         />
       </CategoryConfigureSection>
     ))}

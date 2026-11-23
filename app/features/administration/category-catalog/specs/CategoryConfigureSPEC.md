@@ -67,3 +67,12 @@ US-ADM-12 to US-ADM-15 as written in `docs/proyecto/historias-de-usuario.md`; pa
 | Otra, or a duration outside the presets, selects Otra and keeps the existing field validation     | `resolveCategoryDurationChipSelection.test.ts` |
 | Duration and guide only are hidden while the category is not reservable                           | `CategoryConfigureReservations.test.tsx`       |
 | The section summary follows the edited values; nothing is saved in this part                      | `category-configure.e2e.ts`                    |
+
+## Part 2c requirements
+
+| Requirement                                                                                       | Test                                                             |
+| ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Depósito, Avisos and Características bodies reuse the previous fields and rules; nothing is saved | `CategoryConfigureDetails.test.tsx`, `category-configure.e2e.ts` |
+| Summaries follow the edited values; text that is not a number never reaches them                  | `CategoryConfigureDetails.test.tsx`                              |
+| One behavior field instance feeds Reservas and Características                                    | `CategoryConfigureReservations.test.tsx`                         |
+| A saved combined alert type keeps both specific choices selected                                  | `isCategoryAlertTypeChoiceSelected.test.ts`                      |

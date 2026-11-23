@@ -7,42 +7,56 @@ import type { CategoryConfigureSectionBodyProps } from "../models/CategoryConfig
 import { CATEGORY_CONFIGURE_SECTION_BODY_LINK_CLASS } from "../styles/CategoryConfigureSectionBody.styles";
 import { resolveCategoryStockPath } from "../utils/resolveCategoryStockPath";
 import { resolveCategoryUnitsPath } from "../utils/resolveCategoryUnitsPath";
+import CategoryConfigureAlerts from "./CategoryConfigureAlerts";
+import CategoryConfigureDeposit from "./CategoryConfigureDeposit";
 import CategoryConfigureReservations from "./CategoryConfigureReservations";
+import CategoryConfigureTraits from "./CategoryConfigureTraits";
 
 const CategoryConfigureSectionBody = ({
   sectionId,
   categoryId,
   trackingMode,
-  reservations,
+  bodies,
 }: CategoryConfigureSectionBodyProps): NullableRef<React.JSX.Element> => {
-  if (
-    sectionId === CATEGORY_CONFIGURE_SECTION_ID.RESERVATIONS
-  ) {
-    return (
-      <CategoryConfigureReservations {...reservations} />
-    );
+  switch (sectionId) {
+    case CATEGORY_CONFIGURE_SECTION_ID.RESERVATIONS:
+      return (
+        <CategoryConfigureReservations
+          {...bodies.reservations}
+        />
+      );
+    case CATEGORY_CONFIGURE_SECTION_ID.DEPOSIT:
+      return (
+        <CategoryConfigureDeposit {...bodies.deposit} />
+      );
+    case CATEGORY_CONFIGURE_SECTION_ID.ALERTS:
+      return <CategoryConfigureAlerts {...bodies.alerts} />;
+    case CATEGORY_CONFIGURE_SECTION_ID.TRAITS:
+      return <CategoryConfigureTraits {...bodies.traits} />;
+    case CATEGORY_CONFIGURE_SECTION_ID.INVENTORY:
+      return trackingMode ===
+        CATEGORY_TRACKING_MODE.BY_UNIT ? (
+        <Link
+          href={resolveCategoryUnitsPath(categoryId)}
+          className={
+            CATEGORY_CONFIGURE_SECTION_BODY_LINK_CLASS
+          }
+        >
+          {CATEGORY_CONFIGURE_COPY.INVENTORY_VIEW_UNITS}
+        </Link>
+      ) : (
+        <Link
+          href={resolveCategoryStockPath(categoryId)}
+          className={
+            CATEGORY_CONFIGURE_SECTION_BODY_LINK_CLASS
+          }
+        >
+          {CATEGORY_CONFIGURE_COPY.INVENTORY_REGISTER_STOCK}
+        </Link>
+      );
+    default:
+      return null;
   }
-  if (
-    sectionId !== CATEGORY_CONFIGURE_SECTION_ID.INVENTORY
-  ) {
-    return null;
-  }
-
-  return trackingMode === CATEGORY_TRACKING_MODE.BY_UNIT ? (
-    <Link
-      href={resolveCategoryUnitsPath(categoryId)}
-      className={CATEGORY_CONFIGURE_SECTION_BODY_LINK_CLASS}
-    >
-      {CATEGORY_CONFIGURE_COPY.INVENTORY_VIEW_UNITS}
-    </Link>
-  ) : (
-    <Link
-      href={resolveCategoryStockPath(categoryId)}
-      className={CATEGORY_CONFIGURE_SECTION_BODY_LINK_CLASS}
-    >
-      {CATEGORY_CONFIGURE_COPY.INVENTORY_REGISTER_STOCK}
-    </Link>
-  );
 };
 
 export default CategoryConfigureSectionBody;
