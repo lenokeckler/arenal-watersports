@@ -1,5 +1,6 @@
 export const STORE_SLICES = {
   CALENDAR: "calendar",
+  CATEGORY_CONFIGURE: "categoryConfigure",
   LANGUAGE: "language",
   TOAST: "toast",
 } as const;
