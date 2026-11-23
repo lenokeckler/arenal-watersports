@@ -197,11 +197,12 @@ describe("useReservationExtraTimeViewModel", () => {
       recordReservationExtraTimeAction
     ).toHaveBeenCalledOnce();
 
-    await act(async () => {
+    await act(() => {
       resolveAction({
         ok: true,
         recorded: EXTRA_TIME_CHARGED_RECORDED,
       });
+      return Promise.resolve();
     });
     expect(result.current.isPending).toBe(false);
   });
