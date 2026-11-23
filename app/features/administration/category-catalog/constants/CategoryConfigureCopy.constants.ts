@@ -20,6 +20,15 @@ export const CATEGORY_CONFIGURE_COPY = {
   BOOKABLE_HELP:
     "Si lo apaga, no aparece en el tablero. Úselo para equipo interno, como chalecos o botiquines.",
   BOOKABLE_LABEL: "Se puede reservar",
+  DELETE_ALTERNATIVE:
+    "¿Solo quiere que deje de verse? Desactívela: no aparece en el tablero ni en las reservas y conserva su historial.",
+  DELETE_BODY:
+    "Se borrará la categoría, sus unidades y su historial de conteo. Esta acción no se puede deshacer.",
+  DELETE_CONFIRM: (name: string): string =>
+    `Sí, eliminar ${name}`,
+  DELETE_DEACTIVATE: "Desactivar en su lugar",
+  DELETE_TITLE: (name: string): string =>
+    `¿Eliminar ${name}?`,
   DEPOSIT_HELP:
     "Deje vacío lo que no aplique. Cada monto se cobra en su moneda; no se convierte.",
   DEPOSIT_NONE: "Sin depósito",
@@ -40,8 +49,14 @@ export const CATEGORY_CONFIGURE_COPY = {
   MISSING_STOCK: "existencias",
   MODE_LOCKED:
     "El modo de conteo no se puede cambiar después de crear la categoría.",
-  PHOTO_PRESENT: "Con foto",
+  PHOTO_EMPTY:
+    "Sin foto. En el tablero se muestra este marcador.",
+  PHOTO_HELP:
+    "JPG, PNG o WebP. En el tablero se ve recortada como en esta vista previa.",
   PHOTO_MISSING: "Sin foto · se usa el marcador",
+  PHOTO_PICK: "Tomar o elegir foto",
+  PHOTO_PICKED: "Foto nueva",
+  PHOTO_PRESENT: "Con foto",
   RESERVABLE: "Reservable",
   RESERVATIONS_NOT_RESERVABLE: "No reservable",
   SECTION_ALERTS: "Avisos",
