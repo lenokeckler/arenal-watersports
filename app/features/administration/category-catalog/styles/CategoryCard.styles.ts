@@ -19,6 +19,8 @@ export const resolveCategoryCardContainerClassName = (
       : CATEGORY_CARD_CONTAINER_BORDER_CLASS
   );
 
+export const CATEGORY_CARD_LINK_CLASS = `${CATEGORY_CARD_CONTAINER_BASE_CLASS} ${CATEGORY_CARD_CONTAINER_BORDER_CLASS} min-h-11 transition-colors hover:bg-surface-container focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary`;
+
 export const CATEGORY_CARD_ROW_CLASS =
   "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 md:flex md:gap-3";
 
