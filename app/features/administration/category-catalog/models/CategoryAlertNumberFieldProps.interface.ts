@@ -7,5 +7,6 @@ export interface CategoryAlertNumberFieldProps {
   value: string;
   error?: string;
   disabled?: boolean;
+  describedBy?: string;
   onChange: CategoryFormFieldChangeHandler;
 }
