@@ -15,5 +15,3 @@ export const DEPOSIT_RESOLUTION_FIELD_ID = {
 export const DEPOSIT_RESOLUTION_FOCUS = {
   TAB_INDEX: -1,
 } as const;
-
-export const DEPOSIT_RESOLUTION_REASON_ROWS = 3;
