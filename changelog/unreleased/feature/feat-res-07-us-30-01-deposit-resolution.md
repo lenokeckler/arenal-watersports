@@ -1,0 +1,1 @@
+RES-07.30.01: Deposit resolution — Reservas records how much of the security deposit goes back to the client after the trip, the company keeps the difference with the damage reason, and the kept amount enters the income report (US-RES-30 · AWS-113)
