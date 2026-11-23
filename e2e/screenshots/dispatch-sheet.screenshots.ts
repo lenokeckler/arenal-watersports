@@ -17,6 +17,14 @@ test.describe("Dispatch sheet screenshots", () => {
     const [first, second] = dispatchSheet.unitCodes;
 
     await board.goTo();
+    await expect(
+      board.getReservation(dispatchSheet.customerName)
+    ).toBeVisible();
+    await captureFullPage(
+      page,
+      E2E_DISPATCH_SHEET_SCREENSHOT_BASENAME.LIST_WITH_EQUIPMENT,
+      testInfo.project.name
+    );
     await sheet
       .getOpenButton(dispatchSheet.customerName)
       .click();
@@ -27,8 +35,8 @@ test.describe("Dispatch sheet screenshots", () => {
       testInfo.project.name
     );
 
-    await sheet.getUnit(first).check();
-    await sheet.getUnit(second).check();
+    await sheet.getUnit(first).click();
+    await sheet.getUnit(second).click();
     await expect(sheet.getSubmit()).toBeEnabled();
     await captureFullPage(
       page,
@@ -49,23 +57,14 @@ test.describe("Dispatch sheet screenshots", () => {
     await sheet
       .getOpenButton(dispatchSheet.customerName)
       .click();
-    await sheet.getUnit(first).check();
-    await sheet.getUnit(second).check();
+    await sheet.getUnit(first).click();
+    await sheet.getUnit(second).click();
     await sheet
-      .getFuelPreset(
+      .getGaugeLine(
         first,
-        E2E_DISPATCH_READINGS.FIRST.PRESET
+        E2E_DISPATCH_READINGS.SECOND.LINE
       )
       .click();
-    await sheet
-      .getUsageField(
-        first,
-        E2E_DISPATCH_READINGS.HOURS_LABEL
-      )
-      .fill(E2E_DISPATCH_READINGS.FIRST.HOURS_TEXT);
-    await expect(sheet.getFuelField(first)).toHaveValue(
-      String(E2E_DISPATCH_READINGS.FIRST.FUEL)
-    );
     await captureFullPage(
       page,
       E2E_DISPATCH_SHEET_SCREENSHOT_BASENAME.READINGS,

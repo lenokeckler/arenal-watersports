@@ -129,6 +129,27 @@ describe("updateCategoryBehaviorAction", () => {
     });
   });
 
+  it("returns the low fuel message when the warning is above a gauge", async () => {
+    mockMaybeSingle.mockResolvedValue({
+      data: null,
+      error: {
+        code: POSTGRES_ERROR_CODE.CHECK_VIOLATION,
+        message:
+          "The low fuel warning cannot exceed the lines of the gauge",
+      },
+    });
+
+    await expect(
+      updateCategoryBehaviorAction(
+        DEFAULT_UPDATE_CATEGORY_BEHAVIOR_INPUT
+      )
+    ).resolves.toEqual({
+      status: CATEGORY_MUTATION_STATUS.ERROR,
+      message:
+        CATEGORY_CATALOG_COPY.LOW_FUEL_LINES_TOO_HIGH_ERROR,
+    });
+  });
+
   it("throws instead of returning an error result when the database rejects the update", async () => {
     mockMaybeSingle.mockResolvedValue({
       data: null,
