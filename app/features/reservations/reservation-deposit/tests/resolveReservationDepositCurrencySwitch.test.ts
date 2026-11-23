@@ -53,7 +53,7 @@ describe("resolveReservationDepositCurrencySwitch", () => {
     ).toBe(STRING.Empty);
   });
 
-  it("keeps an amount the worker edited", () => {
+  it("never carries a typed amount into the other currency", () => {
     expect(
       resolveReservationDepositCurrencySwitch(
         {
@@ -65,7 +65,7 @@ describe("resolveReservationDepositCurrencySwitch", () => {
       )
     ).toEqual({
       ...RECEIVED_DEPOSIT_VALUES,
-      amountText: EDITED_AMOUNT_TEXT,
+      amountText: CRC_PROPOSAL_TEXT,
       currency: CURRENCY_CODE.CRC,
     });
   });
