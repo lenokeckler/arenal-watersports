@@ -1,1 +1,1 @@
-RES-07.31.03: Extra time rules — validation, group source, unavailable reason, command and result mapping of the extra time decision (US-RES-31 · AWS-114)
+RES-07.31.03: Extra time rules — input guard, validation, group source, reservation total and unavailable reason of the extra time decision (US-RES-31 · AWS-114)
