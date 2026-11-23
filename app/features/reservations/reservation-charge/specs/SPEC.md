@@ -59,3 +59,9 @@ Como la persona de reservas, necesito registrar un cobro sobre una reserva con e
 - `useReservationChargeValues` exposes `setSecondAmountText` and `toggleSecondAmount`: the toggle turns `null` into an empty string (first amount untouched) and any string back into `null`. It works for either currency, whether or not the catalog proposes the other one; `currencyOptions` still governs only the single-mode radio group.
 - `useReservationChargeViewModel` adds `isMixed` and `secondCurrency` (the currency not selected) and wraps both new setters in the shared edit guard: ignored while pending, errors cleared.
 - `useReservationChargeErrorFocus` focuses `RESERVATION_CHARGE_FIELD_ID.SECOND_AMOUNT` after the first amount and before the payment method. `ADD_CURRENCY` and `SECOND_AMOUNT_HELPER` ids are reserved for the UI slice.
+
+### Second currency field (US-RES-24)
+
+- `ReservationChargeSecondAmountToggle` is always rendered under the price fields, disabled while pending, and names the other currency of the selected one: `Agregar monto en <moneda>` in single mode, `Quitar monto en <moneda>` in mixed mode. It carries `aria-expanded` and `aria-controls` pointing at the price group (`PRICE_BLOCK`).
+- Mixed mode shows a second `ReservationChargeAmountField` (empty on entry, own error, helper plus the `MIXED_SECOND_HELPER` note in `aria-describedby`) in the same group; the fields stack below `sm` and sit side by side from `sm`. The currency radio group is hidden while mixed.
+- `useReservationChargeSecondAmountFocus` moves focus to the second input when mixed mode starts and back to the toggle when it ends, and does nothing on first render.

@@ -17,3 +17,6 @@ export const RESERVATION_CHARGE_SUBMIT_CLASS =
 
 export const RESERVATION_CHARGE_SECONDARY_LINK_CLASS =
   "inline-flex min-h-12 w-full items-center justify-center rounded-full px-6 font-semibold text-primary transition-colors hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:w-auto";
+
+export const RESERVATION_CHARGE_ADD_CURRENCY_CLASS =
+  "min-h-11 rounded-full px-5 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";

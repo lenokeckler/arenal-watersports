@@ -8,9 +8,11 @@ export const RESERVATION_CHARGE_FIELD_ID = {
   AMOUNT_HELPER: "reservation-charge-amount-helper",
   CURRENCY: "reservation-charge-currency",
   HEADING: "reservation-charge-heading",
+  MIXED_HELPER: "reservation-charge-mixed-helper",
   PAYMENT_METHOD: "reservation-charge-payment-method",
   PAYMENT_METHOD_HELPER:
     "reservation-charge-payment-method-helper",
+  PRICE_BLOCK: "reservation-charge-price-block",
   SECOND_AMOUNT: "reservation-charge-second-amount",
   SECOND_AMOUNT_HELPER:
     "reservation-charge-second-amount-helper",

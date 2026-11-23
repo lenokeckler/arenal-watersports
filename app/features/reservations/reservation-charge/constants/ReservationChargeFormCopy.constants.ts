@@ -3,6 +3,10 @@ import type { CurrencyCode } from "@/app/constants";
 
 export const RESERVATION_CHARGE_FORM_COPY = {
   ACTIONS: "Acciones del cobro",
+  ADD_CURRENCY: {
+    [CURRENCY_CODE.CRC]: "Agregar monto en colones",
+    [CURRENCY_CODE.USD]: "Agregar monto en dólares",
+  } satisfies Record<CurrencyCode, string>,
   AMOUNT_HELPER_MANUAL:
     "No hay tarifa del catálogo para esta moneda. Escriba el monto acordado con el cliente.",
   AMOUNT_HELPER_PROPOSED:
@@ -23,10 +27,17 @@ export const RESERVATION_CHARGE_FORM_COPY = {
   } satisfies Record<CurrencyCode, string>,
   METHOD_HELPER:
     "Escriba cómo pagó el cliente. Queda registrado junto con su nombre.",
+  MIXED_SECOND_HELPER:
+    "Este monto se suma al primero: el cliente paga una parte en cada moneda. Si no lo necesita, quítelo.",
   METHOD_PLACEHOLDER:
     "Por ejemplo: efectivo, tarjeta o SINPE",
+  PRICE_GROUP_LABEL: "Precio acordado",
   RECORDED_BY: (name: string): string =>
     `Registrado por ${name}`,
+  REMOVE_CURRENCY: {
+    [CURRENCY_CODE.CRC]: "Quitar monto en colones",
+    [CURRENCY_CODE.USD]: "Quitar monto en dólares",
+  } satisfies Record<CurrencyCode, string>,
   SUBMIT: "Registrar cobro",
   SUBMITTING: "Registrando cobro…",
   SUCCESS: (code: string): string =>

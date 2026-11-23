@@ -37,6 +37,9 @@ export const RESERVATION_CHARGE_DEFINITION_CLASS =
 export const RESERVATION_CHARGE_PRICE_BLOCK_CLASS =
   "space-y-4 border-t border-outline-variant/50 pt-4";
 
+export const RESERVATION_CHARGE_PARTS_GRID_CLASS =
+  "grid grid-cols-1 items-start gap-4 sm:grid-cols-2";
+
 export const RESERVATION_CHARGE_NOTE_CLASS =
   "text-sm text-on-surface-variant";
 
