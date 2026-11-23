@@ -6,6 +6,6 @@ export interface CategoryAlertNumberFieldProps {
   placeholder: string;
   value: string;
   error?: string;
-  disabled: boolean;
+  disabled?: boolean;
   onChange: CategoryFormFieldChangeHandler;
 }
