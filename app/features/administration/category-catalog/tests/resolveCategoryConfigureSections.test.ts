@@ -98,4 +98,21 @@ describe("resolveCategoryConfigureSections", () => {
       },
     ]);
   });
+
+  it("does not badge a missing photo when the category is not reservable", () => {
+    const sections = resolveCategoryConfigureSections(
+      buildCategoryConfiguration({
+        behavior: { ...behavior, isReservable: false },
+        image: { ...image, imagePath: null },
+      }),
+      []
+    );
+
+    expect(
+      sections.find(
+        (section) =>
+          section.id === CATEGORY_CONFIGURE_SECTION_ID.PHOTO
+      )?.badge
+    ).toBeNull();
+  });
 });

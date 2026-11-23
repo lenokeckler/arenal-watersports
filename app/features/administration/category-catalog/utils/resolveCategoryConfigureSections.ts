@@ -72,10 +72,11 @@ const resolveSummary = (
 
 const resolveBadge = (
   sectionId: CategoryConfigureSectionId,
-  { image }: CategoryConfiguration
+  { behavior, image }: CategoryConfiguration
 ): NullableRef<CategoryConfigureChipProps> => {
   if (
     sectionId === CATEGORY_CONFIGURE_SECTION_ID.PHOTO &&
+    behavior.isReservable &&
     !image.imagePath
   ) {
     return {

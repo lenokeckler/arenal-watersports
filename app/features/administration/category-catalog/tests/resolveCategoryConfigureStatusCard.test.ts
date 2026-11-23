@@ -133,4 +133,16 @@ describe("resolveCategoryConfigureStatusCard", () => {
         .missingNote
     ).toBeNull();
   });
+
+  it("does not ask for a photo when the category is not reservable", () => {
+    const configuration = buildCategoryConfiguration({
+      behavior: { ...behavior, isReservable: false },
+      image: { ...image, imagePath: null },
+    });
+
+    expect(
+      resolveCategoryConfigureStatusCard(configuration)
+        .missingNote
+    ).toBeNull();
+  });
 });
