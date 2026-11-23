@@ -52,6 +52,9 @@ export const createCategoryConfigurePage = (page: Page) => {
   const getDurationField = (): Locator =>
     page.getByRole(ARIA_ROLE.TEXTBOX);
 
+  const getField = (label: string): Locator =>
+    page.getByLabel(label);
+
   const getNotFoundMessage = (): Locator =>
     page.getByText(E2E_NEXT_NOT_FOUND_MESSAGE);
 
@@ -71,6 +74,7 @@ export const createCategoryConfigurePage = (page: Page) => {
     getSwitch,
     getChip,
     getDurationField,
+    getField,
     getNotFoundMessage,
     toggleSection,
   };
