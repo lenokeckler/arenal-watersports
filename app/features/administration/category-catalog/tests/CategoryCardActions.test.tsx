@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { CATEGORY_CARD_ACTION_STATE } from "../constants/CategoryCardActionState.constants";
-import CategoryCard from "../components/CategoryCard";
+import CategoryCard from "./CategoryCardLegacy.harness";
 import { DEFAULT_CATEGORY_CARD_VIEW_MODEL } from "./CategoryCardViewModel.constants";
 import { createCategoryCardPage } from "./CategoryCard.page";
 

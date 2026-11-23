@@ -8,6 +8,15 @@ import { CATEGORY_GROUP_PREFIX_LABEL } from "../constants/CategoryGroupPrefixLab
 export const createCategoryCardPage = () => {
   const user = userEvent.setup();
 
+  const getCardLink = () =>
+    screen.getByRole(ARIA_ROLE.LINK);
+
+  const getButtons = () =>
+    screen.queryAllByRole(ARIA_ROLE.BUTTON);
+
+  const getEditLabel = () =>
+    screen.queryByText(CATEGORY_CATALOG_COPY.EDIT_BUTTON);
+
   const getNameHeading = (name: string) =>
     screen.queryByRole(ARIA_ROLE.HEADING, { name });
 
@@ -129,6 +138,9 @@ export const createCategoryCardPage = () => {
     };
 
   return {
+    getCardLink,
+    getEditLabel,
+    getButtons,
     getNameHeading,
     getStatusChip,
     getSubtitle,
