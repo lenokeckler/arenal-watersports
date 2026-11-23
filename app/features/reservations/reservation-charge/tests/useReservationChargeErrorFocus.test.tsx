@@ -9,9 +9,15 @@ import type { ReservationChargeErrors } from "../models/ReservationChargeErrors.
 
 const FOCUSABLE_IDS = [
   RESERVATION_CHARGE_FIELD_ID.AMOUNT,
+  RESERVATION_CHARGE_FIELD_ID.SECOND_AMOUNT,
   RESERVATION_CHARGE_FIELD_ID.PAYMENT_METHOD,
   RESERVATION_CHARGE_FIELD_ID.ALERT,
 ];
+
+const SECOND_AND_METHOD_ERRORS: ReservationChargeErrors = {
+  paymentMethod: VALIDATION.METHOD_REQUIRED,
+  secondAmount: VALIDATION.AMOUNT_REQUIRED,
+};
 
 const BOTH_FIELD_ERRORS: ReservationChargeErrors = {
   amount: VALIDATION.AMOUNT_REQUIRED,
@@ -57,6 +63,13 @@ describe("useReservationChargeErrorFocus", () => {
       expected: RESERVATION_CHARGE_FIELD_ID.AMOUNT,
       props: {
         errors: BOTH_FIELD_ERRORS,
+        formError: FEEDBACK.GENERIC,
+      },
+    },
+    {
+      expected: RESERVATION_CHARGE_FIELD_ID.SECOND_AMOUNT,
+      props: {
+        errors: SECOND_AND_METHOD_ERRORS,
         formError: FEEDBACK.GENERIC,
       },
     },

@@ -2,14 +2,20 @@ import type { CurrencyCode } from "@/app/constants";
 import { CURRENCY_CODE } from "@/app/constants";
 
 export const RESERVATION_CHARGE_FIELD_ID = {
+  ADD_CURRENCY: "reservation-charge-add-currency",
   ALERT: "reservation-charge-alert",
   AMOUNT: "reservation-charge-amount",
   AMOUNT_HELPER: "reservation-charge-amount-helper",
   CURRENCY: "reservation-charge-currency",
   HEADING: "reservation-charge-heading",
+  MIXED_HELPER: "reservation-charge-mixed-helper",
   PAYMENT_METHOD: "reservation-charge-payment-method",
   PAYMENT_METHOD_HELPER:
     "reservation-charge-payment-method-helper",
+  PRICE_BLOCK: "reservation-charge-price-block",
+  SECOND_AMOUNT: "reservation-charge-second-amount",
+  SECOND_AMOUNT_HELPER:
+    "reservation-charge-second-amount-helper",
   SUCCESS: "reservation-charge-success",
   SUMMARY_HEADING: "reservation-charge-summary-heading",
 } as const;
@@ -25,6 +31,14 @@ export const RESERVATION_CHARGE_FOCUS = {
 
 export const RESERVATION_CHARGE_CURRENCY_ORDER: readonly CurrencyCode[] =
   [CURRENCY_CODE.USD, CURRENCY_CODE.CRC];
+
+export const RESERVATION_CHARGE_OTHER_CURRENCY: Record<
+  CurrencyCode,
+  CurrencyCode
+> = {
+  [CURRENCY_CODE.CRC]: CURRENCY_CODE.USD,
+  [CURRENCY_CODE.USD]: CURRENCY_CODE.CRC,
+};
 
 export const RESERVATION_CHARGE_DATE_FORMAT = {
   LOCALE: "es-CR",
