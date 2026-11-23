@@ -28,6 +28,7 @@ describe("mapCategoryRowToBehavior", () => {
       hasMotor: true,
       usageMetric: USAGE_METRIC.ENGINE_HOURS,
       consumesFuel: true,
+      lowFuelLines: 1,
       canBeDamaged: true,
       hasConditionPhotos: true,
       guideOnly: true,

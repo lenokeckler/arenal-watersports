@@ -15,6 +15,7 @@ export const DEFAULT_UPDATE_CATEGORY_BEHAVIOR_INPUT: UpdateCategoryBehaviorInput
     hasMotor: true,
     usageMetric: USAGE_METRIC.ENGINE_HOURS,
     consumesFuel: true,
+    lowFuelLines: 1,
     canBeDamaged: true,
     hasConditionPhotos: false,
     guideOnly: false,

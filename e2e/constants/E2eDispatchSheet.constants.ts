@@ -2,6 +2,7 @@ export const E2E_DISPATCH_SHEET_SEED = {
   CATEGORY_NAME_PREFIX: "E2E despacho",
   COMMITTED_QUANTITY: 2,
   DURATION_MINUTES: 60,
+  OPEN_WINDOW_STARTED_MS_AGO: 300_000,
   PEOPLE_COUNT: 2,
   TYPE: "rental",
   UNIT_COUNT: 3,
@@ -11,19 +12,14 @@ export const E2E_DISPATCH_SHEET_SEED = {
 export const E2E_DISPATCH_READINGS = {
   FIRST: {
     FUEL: 2,
-    HOURS_TEXT: "13",
-    PRESET: "Medio tanque: 2 de 4",
-    USAGE: 13,
+    USAGE: 12.5,
   },
-  HOURS_BELOW_LAST: "12",
-  HOURS_LABEL: "Horas de motor",
   LAST_FUEL: 2,
   LAST_USAGE: 12.5,
   SECOND: {
     FUEL: 4,
-    HOURS_TEXT: "14,5",
-    PRESET: "Lleno: 4 de 4",
-    USAGE: 14.5,
+    LINE: "Raya 4 de 4",
+    USAGE: 12.5,
   },
 } as const;
 
@@ -69,6 +65,7 @@ export const E2E_DISPATCH_SHEET_ERROR = {
 
 export const E2E_DISPATCH_SHEET_SCREENSHOT_BASENAME = {
   CHOOSING_UNITS: "06-dispatch-sheet-choosing-units",
+  LIST_WITH_EQUIPMENT: "05-dispatch-list-with-equipment",
   READINGS: "08-dispatch-sheet-readings",
   READY_TO_CONFIRM: "07-dispatch-sheet-ready-to-confirm",
 } as const;
