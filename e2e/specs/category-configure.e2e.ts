@@ -65,7 +65,7 @@ test.describe("Category configure screen", () => {
       ).toBeVisible();
       await expect(
         configurePage.getActiveSwitch()
-      ).toBeDisabled();
+      ).toBeEnabled();
       await expect(
         configurePage.getSectionHeadings()
       ).toHaveCount(E2E_SECTION_COUNT);
