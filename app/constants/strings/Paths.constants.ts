@@ -92,6 +92,7 @@ export const PATHS = {
     CANCEL_SEGMENT: "cancel",
     CHARGE_SEGMENT: "charge",
     EDIT_SEGMENT: "edit",
+    EXTRA_TIME_SEGMENT: "extra-time",
     INCOME: "/reservations/income",
     NEW: "/reservations/new",
     POSTPONE_SEGMENT: "postpone",
