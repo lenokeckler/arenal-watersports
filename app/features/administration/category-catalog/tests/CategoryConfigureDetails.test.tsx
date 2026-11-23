@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { STRING } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_CONFIGURE_COPY } from "../constants/CategoryConfigureCopy.constants";
 import { resolveAlertsSummary } from "../utils/resolveAlertsSummary";
@@ -26,7 +27,9 @@ const {
 const {
   ALERTS_EXPIRY_FIELD_LABEL,
   ALERTS_QUANTITY_FIELD_LABEL,
+  ALERTS_TYPE_BOTH,
   ALERTS_TYPE_EXPIRY,
+  ALERTS_TYPE_LABEL,
   ALERTS_TYPE_QUANTITY,
   DEPOSIT_HELP,
   SECTION_ALERTS,
@@ -90,6 +93,42 @@ describe("CategoryConfigureDetails", () => {
     ).not.toBeInTheDocument();
     expect(
       page.getField(ALERTS_EXPIRY_FIELD_LABEL)
+    ).toBeInTheDocument();
+  });
+
+  it("selects only Ambos and shows both number fields when both alerts are chosen", async () => {
+    renderCategoryConfigureView();
+    const page = createCategoryConfigureViewPage();
+
+    await page.toggleSection(SECTION_ALERTS);
+    await page.clickChip(ALERTS_TYPE_BOTH);
+
+    expect(
+      page.getField(ALERTS_QUANTITY_FIELD_LABEL)
+    ).toBeInTheDocument();
+    expect(
+      page.getField(ALERTS_EXPIRY_FIELD_LABEL)
+    ).toBeInTheDocument();
+    expect(page.getChip(ALERTS_TYPE_BOTH)).toHaveAttribute(
+      "aria-pressed",
+      STRING.TRUE
+    );
+    expect(
+      page.getChip(ALERTS_TYPE_QUANTITY)
+    ).toHaveAttribute("aria-pressed", STRING.FALSE);
+    expect(
+      page.getChip(ALERTS_TYPE_EXPIRY)
+    ).toHaveAttribute("aria-pressed", STRING.FALSE);
+  });
+
+  it("names the alert type group after its visible label", async () => {
+    renderCategoryConfigureView();
+    const page = createCategoryConfigureViewPage();
+
+    await page.toggleSection(SECTION_ALERTS);
+
+    expect(
+      page.getGroup(ALERTS_TYPE_LABEL)
     ).toBeInTheDocument();
   });
 

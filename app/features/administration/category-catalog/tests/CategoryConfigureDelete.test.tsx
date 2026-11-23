@@ -10,6 +10,8 @@ import { KEYBOARD, PATHS, STATUS } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_CONFIGURE_COPY } from "../constants/CategoryConfigureCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
+import { CATEGORY_STATUS } from "../constants/CategoryStatus.constants";
+import type { CategoryConfiguration } from "../models/CategoryConfiguration.interface";
 import {
   buildCategoryConfiguration,
   DEFAULT_CATEGORY_CONFIGURATION,
@@ -35,14 +37,20 @@ vi.mock("../services/markCategoryInactiveAction", () => ({
 }));
 
 const { name } = DEFAULT_CATEGORY_CONFIGURATION;
-const { DELETE_CONFIRM, DELETE_DEACTIVATE, DELETE_TITLE } =
-  CATEGORY_CONFIGURE_COPY;
+const {
+  DELETE_ALTERNATIVE,
+  DELETE_CONFIRM,
+  DELETE_DEACTIVATE,
+  DELETE_TITLE,
+} = CATEGORY_CONFIGURE_COPY;
 const { DELETE_CATEGORY_BUTTON: DELETE_BUTTON } =
   CATEGORY_CATALOG_COPY;
 const FAKE_FAILURE_MESSAGE = "The category was refused";
 
-const openSheet = async () => {
-  const store = renderCategoryConfigureView();
+const openSheet = async (
+  configuration: CategoryConfiguration = DEFAULT_CATEGORY_CONFIGURATION
+) => {
+  const store = renderCategoryConfigureView(configuration);
   const page = createCategoryConfigureViewPage();
   await page.clickButton(DELETE_BUTTON);
 
@@ -125,6 +133,38 @@ describe("CategoryConfigureDelete", () => {
     expect(
       page.getDialog(DELETE_TITLE(name))
     ).not.toBeInTheDocument();
+  });
+
+  it("does not offer to deactivate a category that is already inactive", async () => {
+    const { page } = await openSheet(
+      buildCategoryConfiguration({
+        status: CATEGORY_STATUS.INACTIVE,
+      })
+    );
+
+    expect(
+      page.getDialog(DELETE_TITLE(name))
+    ).toBeInTheDocument();
+    expect(
+      page.queryButton(DELETE_DEACTIVATE)
+    ).not.toBeInTheDocument();
+    expect(
+      page.getText(DELETE_ALTERNATIVE)
+    ).not.toBeInTheDocument();
+    expect(
+      page.queryButton(DELETE_CONFIRM(name))
+    ).toBeInTheDocument();
+  });
+
+  it("offers to deactivate an active category", async () => {
+    const { page } = await openSheet();
+
+    expect(
+      page.getText(DELETE_ALTERNATIVE)
+    ).toBeInTheDocument();
+    expect(
+      page.queryButton(DELETE_DEACTIVATE)
+    ).toBeInTheDocument();
   });
 
   it("does not close the sheet while the delete is running", async () => {
