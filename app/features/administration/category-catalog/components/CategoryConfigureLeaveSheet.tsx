@@ -41,7 +41,7 @@ const CategoryConfigureLeaveSheet = ({
         {CATEGORY_CONFIGURE_COPY.LEAVE_SAVE}
       </Button>
       <Button
-        variant={BUTTON.SECONDARY}
+        variant={BUTTON.DANGER}
         type={BUTTON_TYPES.BUTTON}
         disabled={isSaving}
         onClick={onDiscard}
@@ -52,7 +52,7 @@ const CategoryConfigureLeaveSheet = ({
         {CATEGORY_CONFIGURE_COPY.LEAVE_DISCARD}
       </Button>
       <Button
-        variant={BUTTON.CANCEL}
+        variant={BUTTON.SECONDARY}
         type={BUTTON_TYPES.BUTTON}
         disabled={isSaving}
         onClick={onCancel}
