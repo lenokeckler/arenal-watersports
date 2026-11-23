@@ -25,6 +25,7 @@ describe("useReservationChargeValues", () => {
       amountText: USD_PROPOSAL_TEXT,
       currency: CURRENCY_CODE.USD,
       paymentMethod: STRING.Empty,
+      secondAmountText: null,
     });
     expect(result.current.currencyOptions).toEqual([
       CURRENCY_CODE.USD,

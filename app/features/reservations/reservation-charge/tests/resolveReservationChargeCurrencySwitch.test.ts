@@ -17,6 +17,7 @@ describe("resolveReservationChargeCurrencySwitch", () => {
           amountText: USD_PROPOSAL_TEXT,
           currency: CURRENCY_CODE.USD,
           paymentMethod: EDITED_METHOD_TEXT,
+          secondAmountText: null,
         },
         BOTH_PROPOSAL,
         CURRENCY_CODE.CRC
@@ -25,6 +26,7 @@ describe("resolveReservationChargeCurrencySwitch", () => {
       amountText: CRC_PROPOSAL_TEXT,
       currency: CURRENCY_CODE.CRC,
       paymentMethod: EDITED_METHOD_TEXT,
+      secondAmountText: null,
     });
   });
 
@@ -35,6 +37,7 @@ describe("resolveReservationChargeCurrencySwitch", () => {
           amountText: STRING.Empty,
           currency: CURRENCY_CODE.USD,
           paymentMethod: STRING.Empty,
+          secondAmountText: null,
         },
         BOTH_PROPOSAL,
         CURRENCY_CODE.CRC
@@ -49,6 +52,7 @@ describe("resolveReservationChargeCurrencySwitch", () => {
           amountText: EDITED_AMOUNT_TEXT,
           currency: CURRENCY_CODE.USD,
           paymentMethod: STRING.Empty,
+          secondAmountText: null,
         },
         BOTH_PROPOSAL,
         CURRENCY_CODE.CRC
@@ -57,6 +61,7 @@ describe("resolveReservationChargeCurrencySwitch", () => {
       amountText: EDITED_AMOUNT_TEXT,
       currency: CURRENCY_CODE.CRC,
       paymentMethod: STRING.Empty,
+      secondAmountText: null,
     });
   });
 });

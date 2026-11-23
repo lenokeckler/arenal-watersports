@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { RESERVATION_CHARGE_ERROR } from "../constants/ReservationChargeError.constants";
+import { RESERVATION_CHARGE_FEEDBACK_COPY as COPY } from "../constants/ReservationChargeFeedbackCopy.constants";
 import { RESERVATION_CHARGE_REFUSALS } from "../constants/ReservationChargeRefusals.constants";
 import { mapReservationChargeError } from "../utils/mapReservationChargeError";
 import {
   CHARGE_POSTGRES_PREFIX,
   CHARGE_UNEXPECTED_ERROR,
+  PARTS_INVALID_POSTGRES_MESSAGE,
 } from "./ReservationChargeAction.constants";
 
 describe("mapReservationChargeError", () => {
@@ -33,6 +35,18 @@ describe("mapReservationChargeError", () => {
         RESERVATION_CHARGE_ERROR.MESSAGE
       ).toSorted()
     );
+  });
+
+  it("maps invalid charge parts to the generic form error", () => {
+    expect(
+      mapReservationChargeError(
+        new Error(PARTS_INVALID_POSTGRES_MESSAGE)
+      )
+    ).toEqual({
+      ok: false,
+      errors: {},
+      formError: COPY.GENERIC,
+    });
   });
 
   it("rethrows an unknown failure", () => {

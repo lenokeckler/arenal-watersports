@@ -11,6 +11,7 @@ export const RESERVATION_CHARGE_ERROR = {
     NOT_CHARGEABLE:
       "Only scheduled, dispatched or closed reservations can be charged",
     NOT_FOUND: "Reservation was not found",
+    PARTS_INVALID: "Charge parts are invalid",
     PAYLOAD_INVALID: "Reservation payload is invalid",
     PAYLOAD_NOT_OBJECT:
       "Reservation payload must be an object",

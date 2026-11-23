@@ -22,6 +22,10 @@ export const RESERVATION_CHARGE_REFUSALS: readonly ReservationChargeRefusal[] =
     },
     {
       formError: COPY.GENERIC,
+      message: MESSAGE.PARTS_INVALID,
+    },
+    {
+      formError: COPY.GENERIC,
       message: MESSAGE.PAYLOAD_INVALID,
     },
     {

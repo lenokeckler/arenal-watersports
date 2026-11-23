@@ -14,8 +14,12 @@ export const recordReservationCharge = async (
     RESERVATION_CHARGE_QUERY.RPC.RECORD,
     {
       p_payload: {
-        amount: command.amount,
-        currency: command.currency,
+        parts: command.parts.map(
+          ({ amount, currency }) => ({
+            amount,
+            currency,
+          })
+        ),
         payment_method: command.paymentMethod,
         reservation_id: command.reservationId,
       },
