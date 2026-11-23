@@ -19,6 +19,12 @@ export const createCategoryConfigureViewPage = () => {
   const getActiveSwitch = (label: string) =>
     screen.getByRole(ARIA_ROLE.SWITCH, { name: label });
 
+  const getChip = (label: string) =>
+    screen.getByRole(ARIA_ROLE.BUTTON, { name: label });
+
+  const queryDurationField = () =>
+    screen.queryByRole(ARIA_ROLE.TEXTBOX);
+
   const getText = (text: string) =>
     screen.queryByText(text);
 
@@ -36,6 +42,8 @@ export const createCategoryConfigureViewPage = () => {
     getBackLink,
     getLink,
     getActiveSwitch,
+    getChip,
+    queryDurationField,
     getText,
     getHeading,
     toggleSection,
