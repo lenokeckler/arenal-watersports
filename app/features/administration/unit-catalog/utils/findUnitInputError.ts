@@ -14,6 +14,7 @@ export const findUnitInputError = (
         status: input.status,
         fuelMax: String(input.fuelMax),
         fuelLevel: input.fuelLevel?.toString() ?? "",
+        lowFuelLines: input.lowFuelLines?.toString() ?? "",
         usageTotal: String(input.usageTotal),
         nextOilChangeAt:
           input.nextOilChangeAt?.toString() ?? "",

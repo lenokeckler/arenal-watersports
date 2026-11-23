@@ -27,7 +27,9 @@ describe("UnitReadingsView", () => {
     expect(
       screen.getByText("JS-1 · Jet ski")
     ).toBeInTheDocument();
-    expect(screen.getByText("2 de 4")).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: "Gasolina: 2 de 4" })
+    ).toBeInTheDocument();
     expect(screen.getByText("60.5 h")).toBeInTheDocument();
     expect(
       screen.getAllByText(UNIT_READINGS_COPY.OIL_OVERDUE)

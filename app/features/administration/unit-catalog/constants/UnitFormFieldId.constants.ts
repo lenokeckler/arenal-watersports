@@ -3,6 +3,7 @@ export const UNIT_FORM_FIELD_ID = {
   FUEL_LEVEL: "unit-fuel-level",
   FUEL_MAX: "unit-fuel-max",
   HINT: "unit-form-hint",
+  LOW_FUEL_LINES: "unit-low-fuel-lines",
   NEXT_OIL_CHANGE_AT: "unit-next-oil-change-at",
   REASON: "unit-decommission-reason",
   STATUS: "unit-status",
