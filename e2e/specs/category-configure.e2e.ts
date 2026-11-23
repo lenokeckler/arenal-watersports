@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 import { LENGTH, PATHS, STRING } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
 import { CATEGORY_CONFIGURE_COPY } from "@/app/features/administration/category-catalog/constants/CategoryConfigureCopy.constants";
+import { CATEGORY_CONFIGURE_SAVE_COPY } from "@/app/features/administration/category-catalog/constants/CategoryConfigureSaveCopy.constants";
 import { formatCategoryDurationLabel } from "@/app/features/administration/category-catalog/utils/formatCategoryDurationLabel";
 import { E2E_CATEGORY_IMAGE_FILE } from "../constants/E2eCategoryImage.constants";
 import { createCategoryBehaviorFormPage } from "../pages/CategoryBehaviorForm.page";
@@ -18,6 +19,7 @@ import {
   E2E_ALERT_QUANTITY_TEXT,
   E2E_DEPOSIT_USD_TEXT,
   E2E_PICKED_DURATION_MINUTES,
+  E2E_UNSAVED_CHANGE_COUNT,
   resolveCategoryConfigureFixtureName,
 } from "../constants/E2eCategoryConfigure.constants";
 
@@ -27,8 +29,13 @@ const {
   DEPOSIT_USD_FIELD_LABEL,
   HAS_MOTOR_FIELD_LABEL,
 } = CATEGORY_CATALOG_COPY;
+const { DIRTY_PLURAL, RETRY, SAVE, SAVED } =
+  CATEGORY_CONFIGURE_SAVE_COPY;
 const {
   ALERTS_EXPIRY_FIELD_LABEL,
+  BOOKABLE_LABEL,
+  GUIDE_ONLY_LABEL,
+  LEAVE_DISCARD,
   ALERTS_QUANTITY_FIELD_LABEL,
   DELETE_CONFIRM,
   SECTION_PHOTO,
@@ -326,6 +333,130 @@ test.describe("Category configure screen", () => {
         await findCategoryId(categoryName)
       );
       await configurePage.getBackLink().click();
+
+      await expect(page).toHaveURL(
+        PATHS.ADMINISTRATION.CATEGORIES
+      );
+    } finally {
+      await removeDeletableCategory(categoryName);
+    }
+  });
+
+  test("saves the reservations edits with Guardar cambios and keeps them after reloading", async ({
+    page,
+  }, testInfo) => {
+    const categoryName =
+      resolveCategoryConfigureFixtureName(
+        testInfo.project.name,
+        "save"
+      );
+    const durationLabel = formatCategoryDurationLabel(
+      E2E_PICKED_DURATION_MINUTES
+    );
+
+    try {
+      const configurePage =
+        await openCategoryConfigureScreen(
+          page,
+          categoryName
+        );
+      await configurePage.getSwitch(BOOKABLE_LABEL).click();
+      await configurePage.getChip(durationLabel).click();
+      await configurePage
+        .getSwitch(GUIDE_ONLY_LABEL)
+        .click();
+      await expect(
+        configurePage.getStatusMessage(
+          DIRTY_PLURAL(E2E_UNSAVED_CHANGE_COUNT)
+        )
+      ).toBeVisible();
+
+      await configurePage.getButton(SAVE).click();
+      await expect(
+        configurePage.getStatusMessage(SAVED)
+      ).toBeVisible();
+
+      await page.reload();
+      await expect(
+        configurePage.getSwitch(BOOKABLE_LABEL)
+      ).toHaveAttribute("aria-checked", STRING.TRUE);
+      await expect(
+        configurePage.getChip(durationLabel)
+      ).toHaveAttribute("aria-pressed", STRING.TRUE);
+      await expect(
+        configurePage.getSwitch(GUIDE_ONLY_LABEL)
+      ).toHaveAttribute("aria-checked", STRING.TRUE);
+    } finally {
+      await removeDeletableCategory(categoryName);
+    }
+  });
+
+  test("keeps the edits after a failed save and saves them on Reintentar", async ({
+    page,
+  }, testInfo) => {
+    const categoryName =
+      resolveCategoryConfigureFixtureName(
+        testInfo.project.name,
+        "retry"
+      );
+
+    try {
+      const configurePage =
+        await openCategoryConfigureScreen(
+          page,
+          categoryName
+        );
+      await configurePage.getSwitch(BOOKABLE_LABEL).click();
+      await configurePage
+        .getChip(
+          formatCategoryDurationLabel(
+            E2E_PICKED_DURATION_MINUTES
+          )
+        )
+        .click();
+
+      await page.context().setOffline(true);
+      await configurePage.getButton(SAVE).click();
+      await expect(
+        configurePage.getFailureAlert()
+      ).toBeVisible();
+      await expect(
+        configurePage.getSwitch(BOOKABLE_LABEL)
+      ).toHaveAttribute("aria-checked", STRING.TRUE);
+
+      await page.context().setOffline(false);
+      await configurePage.getButton(RETRY).click();
+      await expect(
+        configurePage.getStatusMessage(SAVED)
+      ).toBeVisible();
+    } finally {
+      await page.context().setOffline(false);
+      await removeDeletableCategory(categoryName);
+    }
+  });
+
+  test("Regresar with unsaved changes asks first and Regresar sin guardar goes to the list", async ({
+    page,
+  }, testInfo) => {
+    const categoryName =
+      resolveCategoryConfigureFixtureName(
+        testInfo.project.name,
+        "leave"
+      );
+
+    try {
+      const configurePage =
+        await openCategoryConfigureScreen(
+          page,
+          categoryName
+        );
+      await configurePage.getSwitch(BOOKABLE_LABEL).click();
+      await configurePage.getBackButton().click();
+      await expect(
+        configurePage.getLeaveSheet()
+      ).toBeVisible();
+
+      await configurePage.getButton(LEAVE_DISCARD).click();
 
       await expect(page).toHaveURL(
         PATHS.ADMINISTRATION.CATEGORIES
