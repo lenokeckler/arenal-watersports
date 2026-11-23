@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ARIA_ROLE } from "@/app/constants";
+import { ARIA_ROLE, KEYBOARD } from "@/app/constants";
 import { CATEGORY_IMAGE_COPY } from "../constants/CategoryImageCopy.constants";
 
 export const createCategoryConfigureViewPage = () => {
@@ -50,12 +50,35 @@ export const createCategoryConfigureViewPage = () => {
   const getAlert = () =>
     screen.queryByRole(ARIA_ROLE.ALERT);
 
+  const getStatusMessage = () =>
+    screen.getByRole(ARIA_ROLE.STATUS);
+
   const clickButton = async (
     name: string
   ): Promise<void> => {
     await user.click(
       screen.getByRole(ARIA_ROLE.BUTTON, { name })
     );
+  };
+
+  const toggleSwitch = async (
+    label: string
+  ): Promise<void> => {
+    await user.click(getActiveSwitch(label));
+  };
+
+  const requestLeave = async (
+    label: string
+  ): Promise<void> => {
+    await user.click(
+      screen.getByRole(ARIA_ROLE.BUTTON, {
+        name: new RegExp(label),
+      })
+    );
+  };
+
+  const pressEscape = async (): Promise<void> => {
+    await user.keyboard(`{${KEYBOARD.ESCAPE}}`);
   };
 
   const pickPhoto = async (file: File): Promise<void> => {
@@ -112,7 +135,11 @@ export const createCategoryConfigureViewPage = () => {
     getGroup,
     getImage,
     getAlert,
+    getStatusMessage,
     clickButton,
+    toggleSwitch,
+    requestLeave,
+    pressEscape,
     pickPhoto,
     fillField,
     clickField,
