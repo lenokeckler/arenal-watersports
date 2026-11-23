@@ -22,7 +22,7 @@ export const resolveMissingNote = ({
       CATEGORY_CONFIGURE_COPY.MISSING_DURATION
     );
   }
-  if (!image.imagePath) {
+  if (behavior.isReservable && !image.imagePath) {
     missingItems.push(
       CATEGORY_CONFIGURE_COPY.MISSING_PHOTO
     );
