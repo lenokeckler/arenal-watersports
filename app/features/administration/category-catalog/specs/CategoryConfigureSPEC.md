@@ -76,3 +76,11 @@ US-ADM-12 to US-ADM-15 as written in `docs/proyecto/historias-de-usuario.md`; pa
 | Summaries follow the edited values; text that is not a number never reaches them                  | `CategoryConfigureDetails.test.tsx`                              |
 | One behavior field instance feeds Reservas and Características                                    | `CategoryConfigureReservations.test.tsx`                         |
 | A saved combined alert type keeps both specific choices selected                                  | `isCategoryAlertTypeChoiceSelected.test.ts`                      |
+
+## Part 2d requirements
+
+| Requirement                                                                                                                                                                        | Test                                                                                                |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| The Foto body shows the preview or placeholder, the pick button and the help; picking only changes local state                                                                     | `CategoryConfigurePhoto.test.tsx`, `category-configure.e2e.ts`                                      |
+| A picked photo clears the Falta badge and sets the summary; an invalid file shows the existing validation message                                                                  | `CategoryConfigurePhoto.test.tsx`, `resolveCategoryConfigureSummaries.test.ts`                      |
+| Eliminar categoría asks for confirmation, deletes and returns to the list; it is hidden when the category has records; Desactivar en su lugar and a refused delete are covered too | `CategoryConfigureDelete.test.tsx`, `getCategoryConfiguration.test.ts`, `category-configure.e2e.ts` |

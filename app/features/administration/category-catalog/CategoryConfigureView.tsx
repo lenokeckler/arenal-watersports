@@ -1,5 +1,6 @@
 "use client";
 
+import CategoryConfigureDelete from "./components/CategoryConfigureDelete";
 import CategoryConfigureHeader from "./components/CategoryConfigureHeader";
 import CategoryConfigureSectionList from "./components/CategoryConfigureSectionList";
 import CategoryConfigureStatusCard from "./components/CategoryConfigureStatusCard";
@@ -15,6 +16,7 @@ const CategoryConfigureView = ({
     statusCard,
     sections,
     bodies,
+    deletion,
     onToggleSection,
   } = useCategoryConfigureViewModel({ configuration });
 
@@ -29,6 +31,9 @@ const CategoryConfigureView = ({
         bodies={bodies}
         onToggleSection={onToggleSection}
       />
+      {deletion && (
+        <CategoryConfigureDelete {...deletion} />
+      )}
     </div>
   );
 };
