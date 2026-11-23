@@ -13,11 +13,26 @@ export const DISPATCH_BOARD_LIST_CLASS =
 export const DISPATCH_BOARD_RESERVATION_CLASS =
   "flex min-h-11 flex-col gap-1 rounded-xl border border-outline-variant/60 bg-surface-container/80 px-4 py-3 shadow-sm backdrop-blur";
 
+export const DISPATCH_BOARD_RESERVATION_HEADER_CLASS =
+  "flex flex-wrap items-center gap-2";
+
 export const DISPATCH_BOARD_RESERVATION_HEADING_CLASS =
   "text-title-md font-semibold text-on-surface";
 
 export const DISPATCH_BOARD_RESERVATION_TIME_CLASS =
   "text-body-base text-on-surface-variant";
+
+export const DISPATCH_BOARD_EQUIPMENT_LIST_CLASS =
+  "flex flex-wrap gap-2 pt-1";
+
+export const DISPATCH_BOARD_EQUIPMENT_CHIP_CLASS =
+  "rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-body-sm font-semibold text-on-surface";
+
+export const DISPATCH_BOARD_COMBO_TAG_CLASS =
+  "inline-flex items-center rounded-full border border-tertiary/50 bg-tertiary/15 px-2 py-0.5 align-middle text-label-mono font-bold uppercase text-tertiary";
+
+export const DISPATCH_BOARD_DOCK_TAG_CLASS =
+  "inline-flex items-center rounded-full border border-primary bg-primary px-2 py-0.5 align-middle text-label-mono font-bold uppercase text-on-primary";
 
 export const DISPATCH_BOARD_MESSAGE_CLASS =
   "rounded-xl border border-outline-variant/60 bg-surface-container/80 px-4 py-3 text-body-base text-on-surface shadow-sm backdrop-blur";
