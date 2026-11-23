@@ -30,6 +30,7 @@ export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
   `${PATHS.HISTORY.ROOT}${ROUTE_SEPARATOR}[reservationId]`,
   "/reservations/[reservationId]/cancel",
   "/reservations/[reservationId]/charge",
+  "/reservations/[reservationId]/deposit",
   "/reservations/[reservationId]/edit",
   "/reservations/[reservationId]/postpone",
   "/reservations/[reservationId]/refund",
