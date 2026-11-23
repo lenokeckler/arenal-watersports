@@ -13,7 +13,8 @@ export const useReservationChargeViewModel = (
   const {
     setAmountText,
     setCurrency,
-    setPaymentMethod,
+    setOtherPaymentMethod,
+    setPaymentChoice,
     setSecondAmountText,
     toggleSecondAmount,
     values,
@@ -46,7 +47,8 @@ export const useReservationChargeViewModel = (
     secondCurrency: resolveReservationChargeSecondCurrency(
       values.currency
     ),
-    setPaymentMethod: edit(setPaymentMethod),
+    setOtherPaymentMethod: edit(setOtherPaymentMethod),
+    setPaymentChoice: edit(setPaymentChoice),
     setSecondAmountText: edit(setSecondAmountText),
     toggleSecondAmount: edit<void>(toggleSecondAmount),
   };

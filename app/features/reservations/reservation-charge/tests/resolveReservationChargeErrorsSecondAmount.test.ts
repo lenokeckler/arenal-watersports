@@ -90,7 +90,7 @@ describe("resolveReservationChargeErrors second amount", () => {
     const errors = resolveReservationChargeErrors({
       ...MIXED_CHARGE_VALUES,
       amountText: CASES.EMPTY,
-      paymentMethod: CASES.EMPTY,
+      paymentChoice: null,
       secondAmountText: CASES.EMPTY,
     });
 

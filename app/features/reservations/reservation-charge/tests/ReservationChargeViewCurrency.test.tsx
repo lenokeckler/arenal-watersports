@@ -17,6 +17,7 @@ import {
   CRC_ENTERED_AMOUNT_TEXT,
   CRC_ONLY_CHARGE,
   CRC_ONLY_PROPOSAL_TEXT,
+  EDITED_METHOD_FIELDS,
   EDITED_METHOD_TEXT,
   EMPTY_CHARGE,
   MIXED_CHARGE,
@@ -85,7 +86,7 @@ describe("ReservationChargeView charge in either currency", () => {
     const page = renderReservationChargeView(MIXED_CHARGE);
 
     await page.selectCurrency(CURRENCY_NAME_COPY.CRC);
-    await page.typePaymentMethod(EDITED_METHOD_TEXT);
+    await page.selectPaymentMethod(EDITED_METHOD_TEXT);
     await page.submit();
 
     expect(
@@ -108,7 +109,7 @@ describe("ReservationChargeView charge in either currency", () => {
 
     await page.selectCurrency(CURRENCY_NAME_COPY.CRC);
     await page.typeAmount(CRC_ENTERED_AMOUNT_TEXT);
-    await page.typePaymentMethod(EDITED_METHOD_TEXT);
+    await page.selectPaymentMethod(EDITED_METHOD_TEXT);
     await page.submit();
 
     expect(
@@ -116,7 +117,7 @@ describe("ReservationChargeView charge in either currency", () => {
     ).toHaveBeenCalledWith({
       amountText: CRC_ENTERED_AMOUNT_TEXT,
       currency: CURRENCY_CODE.CRC,
-      paymentMethod: EDITED_METHOD_TEXT,
+      ...EDITED_METHOD_FIELDS,
       reservationId: EXPECTED_SCHEDULED.id,
       secondAmountText: null,
     });

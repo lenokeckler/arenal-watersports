@@ -9,12 +9,10 @@ import {
 import { CURRENCY_CODE, STRING } from "@/app/constants";
 import { recordReservationChargeAction } from "../actions/recordReservationChargeAction";
 import { RESERVATION_CHARGE_VALIDATION_COPY as VALIDATION } from "../constants/ReservationChargeValidationCopy.constants";
+import { RESERVATION_CHARGE_PAYMENT_CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
 import { useReservationChargeViewModel } from "../hooks/useReservationChargeViewModel";
 import type { ReservationChargeActionResult } from "../models/ReservationChargeActionResult.type";
-import {
-  BOTH_CHARGE,
-  EDITED_METHOD_TEXT,
-} from "./ReservationChargeForm.constants";
+import { BOTH_CHARGE } from "./ReservationChargeForm.constants";
 import { SECOND_AMOUNT_TEXT_CASES } from "./ReservationChargeSecondAmount.constants";
 
 vi.mock("../actions/recordReservationChargeAction", () => ({
@@ -74,7 +72,9 @@ describe("useReservationChargeViewModel mixed mode", () => {
 
     act(() => result.current.toggleSecondAmount());
     act(() =>
-      result.current.setPaymentMethod(EDITED_METHOD_TEXT)
+      result.current.setPaymentChoice(
+        RESERVATION_CHARGE_PAYMENT_CHOICE.SINPE
+      )
     );
     act(() => result.current.handleSubmit());
     expect(result.current.errors.secondAmount).toBe(
@@ -103,7 +103,9 @@ describe("useReservationChargeViewModel mixed mode", () => {
     );
 
     act(() =>
-      result.current.setPaymentMethod(EDITED_METHOD_TEXT)
+      result.current.setPaymentChoice(
+        RESERVATION_CHARGE_PAYMENT_CHOICE.SINPE
+      )
     );
     act(() => result.current.handleSubmit());
     act(() => result.current.toggleSecondAmount());

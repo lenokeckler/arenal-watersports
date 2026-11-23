@@ -17,6 +17,7 @@ import { CHARGE_RECORDED } from "./ReservationChargeAction.constants";
 import {
   CRC_PROPOSAL_TEXT,
   EDITED_AMOUNT_TEXT,
+  EDITED_METHOD_FIELDS,
   EDITED_METHOD_TEXT,
   EMPTY_CHARGE,
   MIXED_CHARGE,
@@ -55,7 +56,7 @@ describe("ReservationChargeView form", () => {
 
     await page.clearAmount();
     await page.typeAmount(EDITED_AMOUNT_TEXT);
-    await page.typePaymentMethod(EDITED_METHOD_TEXT);
+    await page.selectPaymentMethod(EDITED_METHOD_TEXT);
     await page.submit();
 
     expect(await page.findStatusText()).toBe(
@@ -67,7 +68,7 @@ describe("ReservationChargeView form", () => {
       expect.objectContaining({
         amountText: EDITED_AMOUNT_TEXT,
         currency: CURRENCY_CODE.USD,
-        paymentMethod: EDITED_METHOD_TEXT,
+        ...EDITED_METHOD_FIELDS,
       })
     );
   });
@@ -152,7 +153,7 @@ describe("ReservationChargeView form", () => {
     ).mockReturnValue(new Promise(() => undefined));
     const page = renderReservationChargeView();
 
-    await page.typePaymentMethod(EDITED_METHOD_TEXT);
+    await page.selectPaymentMethod(EDITED_METHOD_TEXT);
     await page.submit();
 
     expect(page.getAmount()).toBeDisabled();

@@ -23,5 +23,5 @@ export const EXTRA_INPUT_KEYS = { injected: "value" };
 export const EXPECTED_ERROR_KEYS = [
   "amount",
   "secondAmount",
-  "paymentMethod",
+  "paymentChoice",
 ] as const satisfies readonly (keyof ReservationChargeErrors)[];

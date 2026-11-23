@@ -10,10 +10,24 @@ import {
 } from "@/app/constants";
 import type { CurrencyCode } from "@/app/constants";
 import { RESERVATION_CHARGE_FORM_COPY as copy } from "@/app/features/reservations/reservation-charge/constants/ReservationChargeFormCopy.constants";
+import { RESERVATION_CHARGE_PAYMENT_CHOICE } from "@/app/features/reservations/reservation-charge/constants/ReservationChargePaymentChoice.constants";
 import { RESERVATION_CHARGE_UI_COPY as ui } from "@/app/features/reservations/reservation-charge/constants/ReservationChargeUiCopy.constants";
 import type { NullableRef } from "@/app/types";
 import { resolveReservationChargePath } from "@/app/utils/reservations/resolveReservationChargePath";
 import { getMainRegion } from "../support/mainRegion";
+
+const OTHER_LABEL =
+  copy.PAYMENT_CHOICE_LABEL[
+    RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER
+  ];
+
+const STORED_METHOD_LABELS: readonly string[] =
+  Object.values(RESERVATION_CHARGE_PAYMENT_CHOICE)
+    .filter(
+      (choice) =>
+        choice !== RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER
+    )
+    .map((choice) => copy.PAYMENT_CHOICE_LABEL[choice]);
 
 export const createReservationChargePage = (page: Page) => {
   const main = getMainRegion(page);
@@ -27,6 +41,12 @@ export const createReservationChargePage = (page: Page) => {
       exact: true,
     });
 
+  const getMethodOption = (label: string): Locator =>
+    main.getByRole(ARIA_ROLE.RADIO, {
+      name: label,
+      exact: true,
+    });
+
   return {
     fillAmount: (
       amount: string,
@@ -35,8 +55,20 @@ export const createReservationChargePage = (page: Page) => {
       main
         .getByLabel(copy.AMOUNT_LABEL[currency])
         .fill(amount),
-    fillPaymentMethod: (method: string): Promise<void> =>
-      main.getByLabel(copy.LABEL_METHOD).fill(method),
+    fillPaymentMethod: async (
+      method: string
+    ): Promise<void> => {
+      if (STORED_METHOD_LABELS.includes(method)) {
+        await getMethodOption(method).check();
+        return;
+      }
+      await getMethodOption(OTHER_LABEL).check();
+      await main
+        .getByRole(ARIA_ROLE.TEXTBOX, {
+          name: copy.OTHER_METHOD_LABEL,
+        })
+        .fill(method);
+    },
     fillMixedAmounts: async (
       usd: string,
       crc: string

@@ -2,6 +2,7 @@ import { TYPE_OF, UUID_PATTERN } from "@/app/constants";
 import { isCurrencyCode } from "@/app/utils/money/isCurrencyCode";
 import type { NullableRef } from "@/app/types";
 import type { ReservationChargeInput } from "../models/ReservationChargeInput.interface";
+import { isReservationChargePaymentChoice } from "./isReservationChargePaymentChoice";
 
 const isObject = (value: unknown): value is object =>
   typeof value === TYPE_OF.OBJECT && value !== null;
@@ -25,7 +26,12 @@ export const isReservationChargeInput = (
   isString(input.amountText) &&
   "currency" in input &&
   isCurrencyCode(input.currency) &&
-  "paymentMethod" in input &&
-  isString(input.paymentMethod) &&
+  "paymentChoice" in input &&
+  (input.paymentChoice === null ||
+    isReservationChargePaymentChoice(
+      input.paymentChoice
+    )) &&
+  "otherPaymentMethod" in input &&
+  isString(input.otherPaymentMethod) &&
   "secondAmountText" in input &&
   isNullableString(input.secondAmountText);
