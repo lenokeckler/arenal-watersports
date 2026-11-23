@@ -1,7 +1,7 @@
 import Section from "@/app/components/section/Section";
 import Text from "@/app/components/text/Text";
 import { CATEGORY_CONFIGURE_COPY } from "../constants/CategoryConfigureCopy.constants";
-import type { CategoryConfigureStatusCardProps } from "../models/CategoryConfigureStatusCardProps.interface";
+import type { CategoryConfigureStatusCardViewProps } from "../models/CategoryConfigureStatusCardViewProps.interface";
 import {
   CATEGORY_CONFIGURE_STATUS_CARD_ACTIVE_HELP_CLASS,
   CATEGORY_CONFIGURE_STATUS_CARD_ACTIVE_LABEL_CLASS,
@@ -23,7 +23,8 @@ const CategoryConfigureStatusCard = ({
   missingNote,
   isActive,
   trackingModeLabel,
-}: CategoryConfigureStatusCardProps): React.JSX.Element => (
+  onToggleActive,
+}: CategoryConfigureStatusCardViewProps): React.JSX.Element => (
   <Section className={CATEGORY_CONFIGURE_STATUS_CARD_CLASS}>
     <div
       className={CATEGORY_CONFIGURE_STATUS_CARD_CHIPS_CLASS}
@@ -79,7 +80,7 @@ const CategoryConfigureStatusCard = ({
       <CategoryConfigureSwitch
         ariaLabel={CATEGORY_CONFIGURE_COPY.ACTIVE_LABEL}
         isChecked={isActive}
-        isDisabled
+        onToggle={onToggleActive}
       />
     </div>
     <div
