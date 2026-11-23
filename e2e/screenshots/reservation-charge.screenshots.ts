@@ -13,6 +13,7 @@ import { createReservationDetailChargePage } from "../pages/ReservationDetailCha
 import { expect, test } from "../support/activeWorkerTest";
 import { captureFullPage } from "../support/captureFullPage";
 import { createReservationChargeFixture as seedCharge } from "../support/createReservationChargeFixture";
+import { openSeededCharge } from "../support/openSeededCharge";
 import { removeReservationChargeFixtures } from "../support/removeReservationChargeFixtures";
 import { signInToReservationsMode } from "../support/signInToReservationsMode";
 
@@ -75,6 +76,28 @@ test("captures every reservation charge state", async ({
       charge.getText(unavailable.TITLE)
     ).toBeVisible();
     await captureState(state.UNAVAILABLE);
+
+    const { charge: mixedCharge, reservation: mixed } =
+      await openSeededCharge(
+        page,
+        activeWorker.id,
+        project
+      );
+    await mixedCharge.fillMixedAmounts(
+      values.MIXED_AMOUNT_USD,
+      values.MIXED_AMOUNT_CRC
+    );
+    await captureState(state.MIXED);
+
+    await mixedCharge.fillPaymentMethod(
+      values.PAYMENT_METHOD
+    );
+    await mixedCharge.submit();
+    await expect(mixedCharge.getStatus()).toHaveText(
+      copy.SUCCESS(mixed.code),
+      { timeout: E2E_TIMEOUT_MS.POST_SUBMIT }
+    );
+    await captureState(state.MIXED_SUCCESS);
   } finally {
     await removeReservationChargeFixtures(activeWorker);
   }
