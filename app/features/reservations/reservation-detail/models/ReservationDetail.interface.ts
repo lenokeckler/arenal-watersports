@@ -6,6 +6,7 @@ import type { ReservationDetailExtraTimeCharge } from "./ReservationDetailExtraT
 import type { ReservationDetailRefund } from "./ReservationDetailRefund.interface";
 import type { ReservationDetailExtra } from "./ReservationDetailExtra.interface";
 import type { ReservationDetailGuide } from "./ReservationDetailGuide.interface";
+import type { ReservationDetailMoneyMovement } from "./ReservationDetailMoneyMovement.interface";
 import type { ReservationDetailChargeStatus } from "../constants/ReservationDetail.constants";
 
 export interface ReservationDetail extends Pick<
@@ -37,6 +38,7 @@ export interface ReservationDetail extends Pick<
   refunds: ReservationDetailRefund[];
   extras: ReservationDetailExtra[];
   guides: ReservationDetailGuide[];
+  moneyMovements: ReservationDetailMoneyMovement[];
   updatedByName: NullableRef<string>;
 }
 

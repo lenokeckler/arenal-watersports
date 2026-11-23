@@ -23,6 +23,7 @@ export const RESERVATION_DETAIL_OVERVIEW_FIXTURE: ReservationDetail =
     extras: [],
     guides: [],
     id: test.RESERVATION_ID,
+    moneyMovements: [],
     parent_reservation_id: null,
     people_count: test.PEOPLE_COUNT,
     refunds: [],

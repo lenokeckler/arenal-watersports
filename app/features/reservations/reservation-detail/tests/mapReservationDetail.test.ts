@@ -5,6 +5,9 @@ import {
   RESERVATION_DETAIL_WORKER_NAMES_FIXTURE,
 } from "./ReservationDetailTest.constants";
 import { RESERVATION_DETAIL_SOURCE_FIXTURE } from "./ReservationDetailSourceFixture.constants";
+import { RESERVATION_DETAIL_MOVEMENTS_TEST as movement } from "./ReservationDetailMoneyMovementsTest.constants";
+import { createReservationDetailChargeSource } from "./createReservationDetailChargeSource";
+import { createReservationDetailRefundSource } from "./createReservationDetailRefundSource";
 
 describe("mapReservationDetail", () => {
   it("maps unit codes to their dispatched group", () => {
@@ -166,6 +169,33 @@ describe("mapReservationDetail", () => {
         name: test.MISSING_RELATED_NAME,
         workerId: test.GUIDE_WORKER_ID,
       },
+    ]);
+  });
+
+  it("maps charges and refunds into one movement list", () => {
+    const detail = mapReservationDetail(
+      {
+        ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+        refunds: [createReservationDetailRefundSource()],
+        reservation_charges: [
+          createReservationDetailChargeSource(),
+        ],
+      },
+      [
+        {
+          full_name: movement.CHARGE_WORKER_NAME,
+          worker_id: movement.CHARGE_WORKER_ID,
+        },
+      ]
+    );
+
+    expect(
+      detail.moneyMovements.map(
+        ({ id, recordedByName }) => [id, recordedByName]
+      )
+    ).toEqual([
+      [movement.REFUND_ID, null],
+      [movement.CHARGE_ID, movement.CHARGE_WORKER_NAME],
     ]);
   });
 
