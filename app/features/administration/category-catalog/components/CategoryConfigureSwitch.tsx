@@ -10,6 +10,7 @@ const CategoryConfigureSwitch = ({
   ariaLabel,
   isChecked,
   isDisabled,
+  onToggle,
 }: CategoryConfigureSwitchProps): React.JSX.Element => (
   <Button
     variant={BUTTON.BASE}
@@ -17,6 +18,7 @@ const CategoryConfigureSwitch = ({
     aria-checked={isChecked}
     aria-label={ariaLabel}
     disabled={isDisabled}
+    onClick={onToggle}
     className={resolveCategoryConfigureSwitchTrackClassName(
       isChecked
     )}
