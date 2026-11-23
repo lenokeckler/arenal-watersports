@@ -62,6 +62,13 @@ export const CATEGORY_RESERVATION_ROW_FIXTURE = {
   starts_at: "2026-09-05T15:00:00.000Z",
 };
 
+export const DISPATCH_RADIO_FIXTURE = {
+  ABOVE_RANGE: 100,
+  FRACTION: 7.5,
+  VALID: 7,
+  ZERO: 0,
+} as const;
+
 export const DISPATCH_READING_FIXTURE = {
   FRACTION_FUEL: 2.5,
   FUEL: 3,
@@ -95,6 +102,7 @@ export const DISPATCH_UNIT_ROW_FIXTURE = {
   fuel_level: null,
   fuel_max: 4,
   is_assigned: false,
+  low_fuel_lines: 1,
   unit_id: DISPATCH_INPUT_FIXTURE.UNIT_ID,
   usage_total: 0,
 };

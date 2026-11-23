@@ -16,6 +16,7 @@ const renderFields = (isStatusLocked: boolean): void => {
       onCodeChange={vi.fn()}
       onStatusChange={vi.fn()}
       onFuelMaxChange={vi.fn()}
+      onLowFuelLinesChange={vi.fn()}
       onFuelLevelChange={vi.fn()}
       onUsageTotalChange={vi.fn()}
       onNextOilChangeAtChange={vi.fn()}

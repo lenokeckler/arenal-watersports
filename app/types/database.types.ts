@@ -384,6 +384,7 @@ export type Database = {
           id: string;
           image_path: string | null;
           is_reservable: boolean;
+          low_fuel_lines: number;
           name: string;
           status: Database["public"]["Enums"]["category_status"];
           tracking_mode: Database["public"]["Enums"]["tracking_mode"];
@@ -411,6 +412,7 @@ export type Database = {
           id?: string;
           image_path?: string | null;
           is_reservable?: boolean;
+          low_fuel_lines?: number;
           name: string;
           status?: Database["public"]["Enums"]["category_status"];
           tracking_mode: Database["public"]["Enums"]["tracking_mode"];
@@ -438,6 +440,7 @@ export type Database = {
           id?: string;
           image_path?: string | null;
           is_reservable?: boolean;
+          low_fuel_lines?: number;
           name?: string;
           status?: Database["public"]["Enums"]["category_status"];
           tracking_mode?: Database["public"]["Enums"]["tracking_mode"];
@@ -691,6 +694,7 @@ export type Database = {
           fuel_max: number;
           id: string;
           impact_count: number;
+          low_fuel_lines: number | null;
           next_oil_change_at: number | null;
           status: Database["public"]["Enums"]["unit_status"];
           updated_at: string;
@@ -708,6 +712,7 @@ export type Database = {
           fuel_max?: number;
           id?: string;
           impact_count?: number;
+          low_fuel_lines?: number | null;
           next_oil_change_at?: number | null;
           status?: Database["public"]["Enums"]["unit_status"];
           updated_at?: string;
@@ -725,6 +730,7 @@ export type Database = {
           fuel_max?: number;
           id?: string;
           impact_count?: number;
+          low_fuel_lines?: number | null;
           next_oil_change_at?: number | null;
           status?: Database["public"]["Enums"]["unit_status"];
           updated_at?: string;
@@ -1555,6 +1561,7 @@ export type Database = {
           extra_time_minutes: number;
           id: string;
           planned_duration_minutes: number | null;
+          radio_channel: number | null;
           reservation_id: string;
           updated_at: string;
           updated_by: string;
@@ -1571,6 +1578,7 @@ export type Database = {
           extra_time_minutes?: number;
           id?: string;
           planned_duration_minutes?: number | null;
+          radio_channel?: number | null;
           reservation_id: string;
           updated_at?: string;
           updated_by: string;
@@ -1587,6 +1595,7 @@ export type Database = {
           extra_time_minutes?: number;
           id?: string;
           planned_duration_minutes?: number | null;
+          radio_channel?: number | null;
           reservation_id?: string;
           updated_at?: string;
           updated_by?: string;
@@ -1681,6 +1690,53 @@ export type Database = {
             columns: ["updated_by"];
             isOneToOne: false;
             referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reservation_dock_notices: {
+        Row: {
+          notified_at: string;
+          notified_by: string;
+          reservation_id: string;
+        };
+        Insert: {
+          notified_at?: string;
+          notified_by: string;
+          reservation_id: string;
+        };
+        Update: {
+          notified_at?: string;
+          notified_by?: string;
+          reservation_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reservation_dock_notices_notified_by_fkey";
+            columns: ["notified_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "reservation_dock_notices_notified_by_fkey";
+            columns: ["notified_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_dock_notices_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["reservation_id"];
+          },
+          {
+            foreignKeyName: "reservation_dock_notices_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "reservations";
             referencedColumns: ["id"];
           },
         ];
@@ -1867,6 +1923,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_items_dispatch_id_fkey";
+            columns: ["dispatch_id"];
+            isOneToOne: false;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["dispatch_id"];
           },
           {
             foreignKeyName: "reservation_items_dispatch_id_fkey";
@@ -2883,8 +2946,18 @@ export type Database = {
       board_category_units: {
         Row: {
           category_id: string | null;
+          consumes_fuel: boolean | null;
           customer_name: string | null;
+          dispatch_id: string | null;
+          dispatched_at: string | null;
           effective_status: string | null;
+          fuel_level: number | null;
+          fuel_max: number | null;
+          has_motor: boolean | null;
+          impact_count: number | null;
+          low_fuel_lines: number | null;
+          people_count: number | null;
+          radio_channel: number | null;
           reservation_code: string | null;
           reservation_ends_at: string | null;
           reservation_id: string | null;
@@ -2892,6 +2965,10 @@ export type Database = {
           returns_at: string | null;
           unit_code: string | null;
           unit_id: string | null;
+          usage_metric:
+            | Database["public"]["Enums"]["usage_metric"]
+            | null;
+          usage_total: number | null;
         };
         Relationships: [
           {
@@ -3477,6 +3554,10 @@ export type Database = {
         };
         Returns: undefined;
       };
+      close_expired_dispatch_remainders: {
+        Args: Record<PropertyKey, never>;
+        Returns: undefined;
+      };
       complete_first_password_change: {
         Args: { p_user_id: string };
         Returns: undefined;
@@ -3575,6 +3656,7 @@ export type Database = {
           fuel_level: number;
           fuel_max: number;
           is_assigned: boolean;
+          low_fuel_lines: number;
           unit_id: string;
           usage_total: number;
         }[];
@@ -3586,15 +3668,19 @@ export type Database = {
           consumes_fuel: boolean;
           fuel_max: number;
           fuel_out: number;
+          impact_count: number;
+          low_fuel_lines: number;
           unit_id: string;
           usage_metric: Database["public"]["Enums"]["usage_metric"];
           usage_out: number;
+          usage_total: number;
         }[];
       };
       dispatch_reservation_group: {
         Args: {
           p_category_id: string;
           p_dispatched_at: string;
+          p_radio_channel?: number;
           p_readings?: Json;
           p_reservation_id: string;
           p_returns_at: string;
@@ -3889,6 +3975,17 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: number;
       };
+      pending_dispatch_equipment: {
+        Args: { p_reservation_ids: string[] };
+        Returns: {
+          category_id: string;
+          category_name: string;
+          quantity: number;
+          reservation_id: string;
+          reservation_type: Database["public"]["Enums"]["reservation_type"];
+          total_quantity: number;
+        }[];
+      };
       pending_dispatch_reservations: {
         Args: {
           p_ends_at: string;
@@ -3899,6 +3996,8 @@ export type Database = {
         Returns: {
           code: string;
           customer_name: string;
+          dock_notified_at: string;
+          ends_at: string;
           id: string;
           starts_at: string;
           status: Database["public"]["Enums"]["reservation_status"];
@@ -3930,6 +4029,14 @@ export type Database = {
       };
       purge_password_reset_records: {
         Args: Record<PropertyKey, never>;
+        Returns: undefined;
+      };
+      receive_dispatch_unit: {
+        Args: {
+          p_arrived_at: string;
+          p_return: Json;
+          p_unit_id: string;
+        };
         Returns: undefined;
       };
       record_failed_sign_in: {
@@ -4127,9 +4234,23 @@ export type Database = {
         };
         Returns: string;
       };
+      set_reservation_dock_notice: {
+        Args: {
+          p_notified: boolean;
+          p_reservation_id: string;
+        };
+        Returns: undefined;
+      };
       set_unit_condition: {
         Args: {
           new_status: Database["public"]["Enums"]["unit_status"];
+          target_unit: string;
+        };
+        Returns: string;
+      };
+      set_unit_maintenance: {
+        Args: {
+          in_maintenance: boolean;
           target_unit: string;
         };
         Returns: string;
@@ -4242,6 +4363,15 @@ export type Database = {
       unlock_worker: {
         Args: { target_worker: string };
         Returns: string;
+      };
+      update_open_dispatch: {
+        Args: {
+          p_dispatch_id: string;
+          p_dispatched_at: string;
+          p_radio_channel?: number;
+          p_returns_at: string;
+        };
+        Returns: undefined;
       };
       update_reservation: {
         Args: { p_payload: Json };
