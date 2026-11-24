@@ -7,21 +7,24 @@ import {
 } from "vitest";
 import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
-import { COMBO_STATUS } from "../constants/ComboStatus.constants";
+import { COMBO_CATEGORY_OPTIONS_FILTER } from "../constants/ComboCategoryOptionsFilter.constants";
 import { listComboCategoryOptions } from "../services/listComboCategoryOptions";
+import { buildComboCategoryOptionsFilter } from "../utils/buildComboCategoryOptionsFilter";
 import { buildPostgrestError } from "./buildPostgrestError";
 import {
   CATEGORIES_TABLE,
   FAKE_CATEGORY_ID,
   NAME_COLUMN,
-  STATUS_COLUMN,
+  SECOND_CATEGORY_ID,
 } from "./ComboForm.constants";
 import { FAKE_CATEGORY_NAME } from "./Combo.constants";
 
 const mockOrder = vi.fn();
-const mockEq = vi.fn(() => ({ order: mockOrder }));
+const mockOr = vi.fn((_filter: string) => ({
+  order: mockOrder,
+}));
 const mockSelect = vi.fn((_columns: string) => ({
-  eq: mockEq,
+  or: mockOr,
 }));
 const mockFrom = vi.fn((_table: string) => ({
   select: mockSelect,
@@ -36,11 +39,11 @@ vi.mock("@/app/services/supabase", () => ({
 describe("listComboCategoryOptions", () => {
   beforeEach(() => {
     mockFrom.mockClear();
-    mockEq.mockClear();
+    mockOr.mockClear();
     mockOrder.mockReset();
   });
 
-  it("lists the active categories ordered by name", async () => {
+  it("lists the active reservable categories ordered by name", async () => {
     const options = [
       { id: FAKE_CATEGORY_ID, name: FAKE_CATEGORY_NAME },
     ];
@@ -53,13 +56,28 @@ describe("listComboCategoryOptions", () => {
       options
     );
     expect(mockFrom).toHaveBeenCalledWith(CATEGORIES_TABLE);
-    expect(mockEq).toHaveBeenCalledWith(
-      STATUS_COLUMN,
-      COMBO_STATUS.ACTIVE
+    expect(mockOr).toHaveBeenCalledWith(
+      COMBO_CATEGORY_OPTIONS_FILTER.RESERVABLE_ACTIVE
     );
     expect(mockOrder).toHaveBeenCalledWith(NAME_COLUMN, {
       ascending: true,
     });
+  });
+
+  it("also lists the categories the edited combo already holds", async () => {
+    mockOrder.mockResolvedValue({ data: [], error: null });
+
+    await listComboCategoryOptions([
+      FAKE_CATEGORY_ID,
+      SECOND_CATEGORY_ID,
+    ]);
+
+    expect(mockOr).toHaveBeenCalledWith(
+      buildComboCategoryOptionsFilter([
+        FAKE_CATEGORY_ID,
+        SECOND_CATEGORY_ID,
+      ])
+    );
   });
 
   it("returns an empty list when there are no categories", async () => {
