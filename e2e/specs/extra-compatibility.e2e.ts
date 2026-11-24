@@ -78,7 +78,7 @@ test.describe("Extra compatibility", () => {
       )
     ).toBeVisible();
     await expect(unitsPage.getSaveButton()).toBeDisabled();
-    await unitsPage.getUnitCheckbox(checkedCode).check();
+    await unitsPage.selectUnit(checkedCode);
     await unitsPage.getSaveButton().click();
 
     await expect(
@@ -145,11 +145,9 @@ test.describe("Extra compatibility", () => {
     await categoriesPage
       .getCategoryLink(category.categoryName)
       .click();
-    await unitsPage
-      .getUnitCheckbox(
-        category.codes[E2E_COMPATIBILITY_UNIT_INDEX.FIRST]
-      )
-      .check();
+    await unitsPage.selectUnit(
+      category.codes[E2E_COMPATIBILITY_UNIT_INDEX.FIRST]
+    );
     await unitsPage.getSaveButton().click();
 
     await expect(
@@ -199,7 +197,7 @@ test.describe("Extra compatibility", () => {
     await categoriesPage
       .getCategoryLink(category.categoryName)
       .click();
-    await unitsPage.getClearAllButton().click();
+    await unitsPage.clearAllUnits();
     await unitsPage.getSaveButton().click();
 
     await expect(
@@ -239,7 +237,7 @@ test.describe("Extra compatibility", () => {
     await categoriesPage
       .getCategoryLink(category.categoryName)
       .click();
-    await unitsPage.getSelectAllButton().click();
+    await unitsPage.selectAllUnits();
     await unitsPage.getSaveButton().click();
 
     await expect(
@@ -269,11 +267,9 @@ test.describe("Extra compatibility", () => {
     await categoriesPage
       .getCategoryLink(category.categoryName)
       .click();
-    await unitsPage
-      .getUnitCheckbox(
-        category.codes[E2E_COMPATIBILITY_UNIT_INDEX.FIRST]
-      )
-      .check();
+    await unitsPage.selectUnit(
+      category.codes[E2E_COMPATIBILITY_UNIT_INDEX.FIRST]
+    );
     await unitsPage.getBackButton().click();
 
     await expect(
