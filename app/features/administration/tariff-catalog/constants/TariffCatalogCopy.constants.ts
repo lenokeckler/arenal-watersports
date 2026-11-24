@@ -7,4 +7,5 @@ export const TARIFF_CATALOG_COPY = {
   RETRY_BUTTON: "Reintentar",
   TYPE_LABEL_RENTAL: "Renta",
   TYPE_LABEL_TOUR: "Tour",
+  UNIT_PER_HOUR: "por hora",
 } as const;
