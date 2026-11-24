@@ -27,6 +27,7 @@ export const PATHS = {
     CATEGORY_STOCK_SEGMENT: "stock",
     CATEGORY_UNITS_SEGMENT: "units",
     COMBOS: "/administration/combos",
+    COMBOS_NEW: "/administration/combos/new",
     DEPOSITS: "/administration/reports/deposits",
     EQUIPMENT_HOURS:
       "/administration/reports/equipment-hours",
