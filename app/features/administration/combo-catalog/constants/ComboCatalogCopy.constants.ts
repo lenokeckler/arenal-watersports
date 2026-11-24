@@ -1,5 +1,7 @@
 export const COMBO_CATALOG_COPY = {
   CANCEL_BUTTON: "Cancelar",
+  CREATE_CTA: "Nuevo combo",
+  EDIT_LINK: "Editar",
   FETCH_ERROR_MESSAGE: "No se pudieron cargar los combos.",
   FORBIDDEN_ERROR:
     "No tiene permiso para administrar los combos.",
