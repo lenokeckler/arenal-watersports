@@ -118,6 +118,25 @@ test("shows Operations links and supports keyboard navigation", async ({
   );
 });
 
+test("opens Combos from the account menu in Administration", async ({
+  page,
+}) => {
+  const navigationPage = createSystemNavigationPage(page);
+  await signInAsSeededWorker(page);
+  await navigationPage.goTo();
+  await navigationPage.openMenu();
+
+  const combosLink = navigationPage.getMenuLink(
+    E2E_SYSTEM_NAVIGATION_EXPECTED_LINKS.COMBOS_LABEL
+  );
+  await expect(combosLink).toHaveAttribute(
+    "href",
+    E2E_SYSTEM_NAVIGATION_EXPECTED_LINKS.COMBOS
+  );
+  await combosLink.click();
+  await expect(page).toHaveURL(PATHS.ADMINISTRATION.COMBOS);
+});
+
 test("shows the five Administration links in order without the account menu", async ({
   page,
 }) => {
