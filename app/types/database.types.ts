@@ -4211,6 +4211,10 @@ export type Database = {
         Args: { target_worker: string };
         Returns: undefined;
       };
+      save_category_tariffs: {
+        Args: { p_payload: Json };
+        Returns: number;
+      };
       session_idle_deadline: {
         Args: { last_activity: string };
         Returns: string;
