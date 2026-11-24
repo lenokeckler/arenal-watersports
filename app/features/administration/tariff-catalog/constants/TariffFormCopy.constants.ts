@@ -1,4 +1,5 @@
 export const TARIFF_FORM_COPY = {
+  BACK_BUTTON: "Regresar",
   CHANGE_HINT:
     "Cambiar una tarifa no cambia lo ya cobrado.",
   CRC_LABEL: "Precio en colones (CRC)",
@@ -8,7 +9,12 @@ export const TARIFF_FORM_COPY = {
     "Indique al menos un precio por tipo con tarifa",
   REMOVE_TARIFF_ERROR:
     "No se puede quitar una tarifa; cambie su precio.",
+  SAVE_BUTTON: "Guardar tarifas",
+  SAVE_GENERIC_ERROR:
+    "No se pudieron guardar las tarifas. Intente de nuevo.",
   SAVE_SUCCESS_TOAST: "Tarifas guardadas.",
+  SAVING_TEXT: "Guardando…",
+  TITLE_EDIT: "Editar tarifas",
   TYPE_PRICE_REQUIRED_ERROR:
     "Escriba un precio en dólares o en colones",
   USD_LABEL: "Precio en dólares (USD)",

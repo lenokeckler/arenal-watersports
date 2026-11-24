@@ -2,6 +2,7 @@ import type { TariffCardTone } from "./TariffCardTone.type";
 import type { TariffLineViewModel } from "./TariffLineViewModel.interface";
 
 export interface TariffCardViewModel {
+  editHref: string;
   id: string;
   lines: TariffLineViewModel[];
   name: string;

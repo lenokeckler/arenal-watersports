@@ -1,5 +1,6 @@
 export const TARIFF_CATALOG_COPY = {
   AMOUNT_SEPARATOR: " · ",
+  EDIT_LINK: "Editar",
   EMPTY_MESSAGE: "Aún no hay categorías activas.",
   FETCH_ERROR_MESSAGE: "No se pudieron cargar las tarifas.",
   LIST_TITLE: "Tarifas",

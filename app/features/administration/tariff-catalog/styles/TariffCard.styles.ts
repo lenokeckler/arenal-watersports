@@ -1,3 +1,10 @@
+import {
+  BUTTON_BASE_CLASS,
+  BUTTON_ENABLED_CLASS,
+  BUTTON_SIZE_CLASS,
+  BUTTON_VARIANT_CLASS,
+} from "@/app/components/button/styles/Button.styles";
+import { BUTTON, SIZE } from "@/app/constants";
 import { TARIFF_CARD_TONE } from "../constants/TariffCardTone.constants";
 import type { TariffCardTone } from "../models/TariffCardTone.type";
 
@@ -29,3 +36,5 @@ export const TARIFF_CARD_LINE_AMOUNTS_CLASS =
 
 export const TARIFF_CARD_LINE_UNIT_CLASS =
   "text-sm text-on-surface-variant";
+
+export const TARIFF_CARD_EDIT_LINK_CLASS = `${BUTTON_BASE_CLASS} ${BUTTON_VARIANT_CLASS[BUTTON.SECONDARY]} ${BUTTON_SIZE_CLASS[SIZE.FULL]} ${BUTTON_ENABLED_CLASS} min-h-11 rounded-md`;
