@@ -7,14 +7,17 @@ import type { TariffListViewProps } from "../models/TariffListViewProps.interfac
 import {
   buildCatalogRow,
   DEFAULT_CATALOG_ROW,
+  FAKE_CATEGORY_ID,
   FAKE_CATEGORY_NAME,
   FORMATTED_BOTH_AMOUNTS,
   FORMATTED_TOUR_USD,
   SECOND_CATEGORY_ID,
   SECOND_CATEGORY_NAME,
 } from "./TariffCatalog.constants";
+import { resolveTariffEditPath } from "../utils/resolveTariffEditPath";
 import { createTariffListPage } from "./TariffList.page";
 
+const HREF_ATTRIBUTE = "href";
 const LINES_WITH_TARIFF = 2;
 const LINES_WITH_TARIFF_AFTER_MISSING_TOUR = 1;
 
@@ -67,6 +70,18 @@ describe("TariffListView", () => {
     expect(
       tariffListPage.queryCardUnits(FAKE_CATEGORY_NAME)
     ).toHaveLength(LINES_WITH_TARIFF);
+  });
+
+  it("links each card to the edit form of its category", () => {
+    renderTariffListView();
+    const tariffListPage = createTariffListPage();
+
+    expect(
+      tariffListPage.getEditLink(FAKE_CATEGORY_NAME)
+    ).toHaveAttribute(
+      HREF_ATTRIBUTE,
+      resolveTariffEditPath(FAKE_CATEGORY_ID)
+    );
   });
 
   it("shows no tariff without the unit for a missing tariff", () => {

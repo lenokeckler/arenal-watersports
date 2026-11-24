@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { TARIFF_CARD_TONE } from "../constants/TariffCardTone.constants";
 import { TARIFF_CATALOG_COPY } from "../constants/TariffCatalogCopy.constants";
 import { buildTariffCardViewModel } from "../utils/buildTariffCardViewModel";
+import { resolveTariffEditPath } from "../utils/resolveTariffEditPath";
 import {
   buildCatalogRow,
   DEFAULT_CATALOG_ROW,
@@ -16,6 +17,7 @@ describe("buildTariffCardViewModel", () => {
     expect(
       buildTariffCardViewModel(DEFAULT_CATALOG_ROW)
     ).toEqual({
+      editHref: resolveTariffEditPath(FAKE_CATEGORY_ID),
       id: FAKE_CATEGORY_ID,
       lines: [
         {
