@@ -13,14 +13,15 @@ const ComboEditForm = async ({
     redirect(PATHS.HOME);
   }
 
-  const [combo, categoryOptions] = await Promise.all([
-    getComboForEdit(comboId),
-    listComboCategoryOptions(),
-  ]);
+  const combo = await getComboForEdit(comboId);
 
   if (!combo) {
     notFound();
   }
+
+  const categoryOptions = await listComboCategoryOptions(
+    combo.items.map((item) => item.categoryId)
+  );
 
   return (
     <ComboFormView

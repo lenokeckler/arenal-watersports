@@ -19,5 +19,11 @@ export const mapComboWriteErrorToMessage = (
   ) {
     return COMBO_CATALOG_COPY.NOT_FOUND_ERROR;
   }
+  if (
+    error?.code ===
+    POSTGRES_ERROR_CODE.OBJECT_NOT_IN_PREREQUISITE_STATE
+  ) {
+    return error.message;
+  }
   return null;
 };
