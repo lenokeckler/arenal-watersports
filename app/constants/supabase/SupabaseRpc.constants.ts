@@ -20,6 +20,7 @@ export const SUPABASE_RPC = {
   ADJUST_EQUIPMENT_STOCK: "adjust_equipment_stock",
   LIST_INVENTORY_COUNTS: "list_inventory_counts",
   RECORD_INVENTORY_COUNT: "record_inventory_count",
+  SAVE_COMBO: "save_combo",
   SET_COMBO_ACTIVE: "set_combo_active",
   SET_UNIT_CONDITION: "set_unit_condition",
   LIST_OPERATIONS_STOCK_MOVEMENTS:
