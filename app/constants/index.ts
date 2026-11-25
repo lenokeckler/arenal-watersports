@@ -357,6 +357,10 @@ export {
   type ReservationChargeableStatus,
 } from "./supabase/ReservationChargeableStatus.constants";
 export {
+  RESERVATION_DEPOSITABLE_STATUS,
+  type ReservationDepositableStatus,
+} from "./supabase/ReservationDepositableStatus.constants";
+export {
   RESERVATION_CALENDAR_ACTIVE_STATUS,
   RESERVATION_CALENDAR_QUERY,
   RESERVATION_CALENDAR_WINDOW_FORMAT,
@@ -385,6 +389,10 @@ export {
   MONEY_AMOUNT_PATTERN,
 } from "./money/MoneyAmountText.constants";
 export { MONEY_FORMAT } from "./money/MoneyFormat.constants";
+export {
+  RESERVATION_DEPOSIT_DECISION_KIND,
+  type ReservationDepositDecisionKind,
+} from "./money/ReservationDepositDecisionKind.constants";
 export { NON_FINITE_AMOUNT_ERROR_MESSAGE } from "./money/NonFiniteAmountError.constants";
 export {
   CURRENCY_SYMBOL,
