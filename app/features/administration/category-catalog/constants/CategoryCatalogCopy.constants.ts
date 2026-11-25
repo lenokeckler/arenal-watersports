@@ -52,7 +52,6 @@ export const CATEGORY_CATALOG_COPY = {
   DEFAULT_DURATION_MINUTES_FIELD_PLACEHOLDER: "Ej. 60",
   DEFAULT_DURATION_MINUTES_REQUIRED_WHEN_RESERVABLE_ERROR:
     "Ingrese la duración estándar del alquiler en minutos para una categoría reservable.",
-  DELETE_BUTTON: "Eliminar",
   LOW_FUEL_LINES_FIELD_HINT:
     "Cuántas rayas del medidor o menos marcan la gasolina como baja en el tablero. Cada unidad puede tener su propio aviso.",
   LOW_FUEL_LINES_FIELD_LABEL:
@@ -63,8 +62,6 @@ export const CATEGORY_CATALOG_COPY = {
   LOW_FUEL_LINES_TOO_HIGH_ERROR:
     "No puede ser mayor que las rayas del medidor de la unidad con menos rayas de esta categoría.",
   DELETE_CATEGORY_BUTTON: "Eliminar categoría",
-  DELETE_CONFIRM_MESSAGE:
-    "¿Eliminar esta categoría? No se puede deshacer.",
   DELETE_HAS_RECORDS_ERROR:
     "Esta categoría ya tiene unidades o existencias registradas y no se puede eliminar.",
   DELETE_SUCCESS_TOAST: "Categoría eliminada.",
@@ -98,7 +95,6 @@ export const CATEGORY_CATALOG_COPY = {
   IS_RESERVABLE_FIELD_LABEL: "Es reservable",
   LIST_TITLE: "Inventario",
   LOADING_TEXT_CREATING: "Guardando…",
-  LOADING_TEXT_DELETING: "Eliminando…",
   LOADING_TEXT_UPDATING: "Actualizando…",
   MARK_INACTIVE_BUTTON: "Marcar inactiva",
   MARK_INACTIVE_SUCCESS_TOAST:
@@ -109,7 +105,6 @@ export const CATEGORY_CATALOG_COPY = {
     "Escriba el nombre de la categoría.",
   PAGINATION_NAV_LABEL: "Paginación de categorías",
   REACTIVATE_BUTTON: "Reactivar",
-  REACTIVATE_SUCCESS_TOAST: "Categoría reactivada.",
   RETRY_BUTTON: "Reintentar",
   STATUS_LABEL_ACTIVE: "Activa",
   STATUS_LABEL_INACTIVE: "Inactiva",

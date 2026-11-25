@@ -56,12 +56,6 @@ const buildCategoryCardViewModel = (
     category.id
   ),
   onDeleteClick: cardActions.onDeleteClick(category.id),
-  onMarkInactiveClick: cardActions.onMarkInactiveClick(
-    category.id
-  ),
-  onReactivateClick: cardActions.onReactivateClick(
-    category.id
-  ),
 });
 
 export const useCategoryListViewModel = ({

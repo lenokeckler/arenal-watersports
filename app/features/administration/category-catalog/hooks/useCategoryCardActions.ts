@@ -4,7 +4,6 @@ import { useState } from "react";
 import type { Nullable } from "@/app/types";
 import type { CategoryCardActionsViewModel } from "../models/CategoryCardActionsViewModel.interface";
 import { useCategoryCardDeleteActions } from "./useCategoryCardDeleteActions";
-import { useCategoryCardStatusActions } from "./useCategoryCardStatusActions";
 
 export const useCategoryCardActions =
   (): CategoryCardActionsViewModel => {
@@ -13,13 +12,9 @@ export const useCategoryCardActions =
     const deleteActions = useCategoryCardDeleteActions(
       setPendingCategoryId
     );
-    const statusActions = useCategoryCardStatusActions(
-      setPendingCategoryId
-    );
 
     return {
       pendingCategoryId,
       ...deleteActions,
-      ...statusActions,
     };
   };
