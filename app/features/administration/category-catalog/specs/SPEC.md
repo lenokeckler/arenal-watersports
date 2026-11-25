@@ -111,6 +111,13 @@ and a clear error state they can retry from.
 - The create screen is `app/(system)/administration/categories/new/page.tsx`, reached through
   `PATHS.ADMINISTRATION.CATEGORIES_NEW`. `CategoryCreateForm` applies the same administrator redirect and
   renders `CategoryCreateFormView`; `createCategoryAction` validates the trimmed name again on the server.
+- The create form counts the mode with two `aria-pressed` option cards (`CategoryCreateFormChoiceGroup`) and the note
+  that it cannot be changed later, asks whether clients can book the category (default "Sí, se reserva") and keeps the
+  group optional. `createCategoryAction` writes `is_reservable` explicitly; a reservable category is stored with a
+  default duration of `CATEGORY_NEW_RESERVABLE_DURATION_MINUTES` because the table requires one, and the duration is
+  edited later on Configurar. A unique violation on the name returns `NAME_DUPLICATE_ERROR` on the name field.
+- After a successful creation the screen shows `CREATE_SUCCESS_TOAST` and opens `resolveCategoryConfigurePath(categoryId)`;
+  the "Siguientes pasos" block of Configurar is carried by a later pull request.
 - Skills that apply: `component-architecture`, `component-standards`, `constants-standards`,
   `styles-standards`, `structure-standards`, `unit-testing-standards`.
 
