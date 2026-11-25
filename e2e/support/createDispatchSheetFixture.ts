@@ -37,6 +37,7 @@ import { removeDispatchSheetFixture } from "./removeDispatchSheetFixture";
 
 interface DispatchSheetFixtureOptions {
   hasMotor?: boolean;
+  hasOpenWindow?: boolean;
   isOnBoard?: boolean;
 }
 
@@ -44,6 +45,7 @@ export const createDispatchSheetFixture = async (
   workerId: string,
   {
     hasMotor = false,
+    hasOpenWindow = false,
     isOnBoard = false,
   }: DispatchSheetFixtureOptions = {}
 ): Promise<DispatchSheetFixture> => {
@@ -123,7 +125,12 @@ export const createDispatchSheetFixture = async (
       duration_minutes:
         E2E_DISPATCH_SHEET_SEED.DURATION_MINUTES,
       people_count: E2E_DISPATCH_SHEET_SEED.PEOPLE_COUNT,
-      starts_at: getCostaRicaDayRange(new Date()).startsAt,
+      starts_at: hasOpenWindow
+        ? new Date(
+            Date.now() -
+              E2E_DISPATCH_SHEET_SEED.OPEN_WINDOW_STARTED_MS_AGO
+          ).toISOString()
+        : getCostaRicaDayRange(new Date()).startsAt,
       type: E2E_DISPATCH_SHEET_SEED.TYPE,
     })
     .select("id")

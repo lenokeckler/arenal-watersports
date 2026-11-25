@@ -11,10 +11,11 @@ Let any worker see the state of every unit of one category, and, for an occupied
 - One row per unit, listed by code, paginated on the server: 20 per page, 1-based `?page=`, the same list pagination as the admin lists (RNF-027). Pagination shows only when there is more than one page.
 - States: loading skeleton, empty ("Esta categoría todavía no tiene unidades"), error with a retry button, and a Spanish not found for a missing, invalid or non-board category.
 - Per unit: code and status chip. Statuses: Disponible, Ocupada, En mantenimiento, Dañada and En reparación (its own label, maintenance color).
-- Occupied unit: return time, the customer who carries it, and the reservation reference (code and time window).
+- Occupied unit: the card says Ocupada (and Retrasada when overdue); who carries it, how many people, the times and the radio channel are read in the panel the card opens.
 - The return time is shown in Costa Rica time; the date is added when the return is not today.
 - The status is never conveyed by color alone: the chip carries the Spanish word and the dot is decorative.
-- Rows have no photo and no buttons. For a worker with the operations area, the rows of the available units are tappable to dispatch (see Dispatch from the category); for everyone else nothing is interactive.
+- Cards show the category photo, the code, the status chip, the gauge (lines only, no text), the hours or kilometers and the impact count of the motor units. They never write the customer or the reservation.
+- For a worker with the operations area: the available units are tappable to dispatch (see Dispatch from the category), an occupied unit opens who carries it, and the Editar button next to the unit count turns every motor card into its edit panel (see Edit mode). For everyone else nothing is interactive.
 - Reached from the board: every card links here (a grouped card opens its first member by name).
 - Group switch, a design decision of the product owner: when the category belongs to a group with more than one visible member, a `nav` under the header ("Categorías del mismo grupo") shows one pill link per member, by name, the current one with `aria-current="page"`, each linking to that member's units screen. A category without a group, or alone in it, shows nothing.
 
@@ -106,3 +107,12 @@ con la finalidad de saber cuáles puedo ofrecer y cuándo vuelven las que están
 - [ ] A category in a group of two or more shows the switch links with the current one marked; others show none.
 - [ ] An occupied unit whose return time has passed shows the late return line, the "Retrasada" chip and the amber row, and keeps the status Ocupada.
 - [ ] Pending in later pull requests: the latest-return rule end to end.
+
+## Edit mode and unit panels (US-OPE-20, US-OPE-04, US-OPE-06)
+
+- The Editar button (with `aria-pressed`) sits in the header next to the unit count and appears only when some unit of the category has a motor.
+- Edit mode off: tapping an available unit selects it; tapping an occupied unit opens its information panel.
+- Edit mode on: a pencil mark is drawn on every motor card, tapping any part of the card opens the edit panel, selection to dispatch is off, and a card without motor does nothing. Turning the mode on or off clears the units chosen to dispatch.
+- Information panel (read only first): customer, people, departure, return and radio channel. Its Editar button turns the times (time fields plus -15/+15, times first) and the radio channel into editable fields; saving calls `update_open_dispatch`, and the return moves with the departure when only the departure changes. Recibir unidad links to the screen of the groups out on the water.
+- Edit panel (motor units): gauge by lines, hours or kilometers in a numeric field, and the impact count with a stepper; saving calls `correct_unit_readings`, recording an occupied unit as available and keeping the status of any other. A unit with a gauge cannot be saved without a level; a unit without gauge is saved with level 0.
+- The gauge is colored by the low fuel warning of the unit (`low_fuel_lines` of the unit, or of its category), and an empty tank is drawn with a red border.
