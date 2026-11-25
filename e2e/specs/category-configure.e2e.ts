@@ -2,11 +2,18 @@ import { expect, test } from "@playwright/test";
 import { LENGTH, PATHS, STRING } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
 import { CATEGORY_CONFIGURE_COPY } from "@/app/features/administration/category-catalog/constants/CategoryConfigureCopy.constants";
+import { CATEGORY_CONFIGURE_NEXT_STEP_ID } from "@/app/features/administration/category-catalog/constants/CategoryConfigureNextStepId.constants";
+import { CATEGORY_CONFIGURE_NEXT_STEPS_COPY } from "@/app/features/administration/category-catalog/constants/CategoryConfigureNextStepsCopy.constants";
+import { CATEGORY_TRACKING_MODE } from "@/app/features/administration/category-catalog/constants/CategoryTrackingMode.constants";
 import { CATEGORY_CONFIGURE_SAVE_COPY } from "@/app/features/administration/category-catalog/constants/CategoryConfigureSaveCopy.constants";
 import { formatCategoryDurationLabel } from "@/app/features/administration/category-catalog/utils/formatCategoryDurationLabel";
 import { E2E_CATEGORY_IMAGE_FILE } from "../constants/E2eCategoryImage.constants";
 import { createCategoryBehaviorFormPage } from "../pages/CategoryBehaviorForm.page";
 import { createCategoryConfigurePage } from "../pages/CategoryConfigure.page";
+import { addCategoryImage } from "../support/addCategoryImage";
+import { removeCategoryImage } from "../support/removeCategoryImage";
+import { removeCategoryWithStock } from "../support/stockFixtures";
+import { setCategoryStockQuantity } from "../support/setCategoryStockQuantity";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 import { openCategoryConfigureScreen } from "../support/openCategoryConfigureScreen";
 import {
@@ -17,6 +24,13 @@ import {
 import {
   E2E_ALERT_EXPIRY_DAYS_TEXT,
   E2E_ALERT_QUANTITY_TEXT,
+  E2E_DURATION_STEP_DONE_COUNT,
+  E2E_INTERNAL_REQUIRED_STEPS,
+  E2E_NEW_CATEGORY_DURATION_MINUTES,
+  E2E_NO_STEPS_DONE,
+  E2E_RESERVABLE_REQUIRED_STEPS,
+  E2E_STOCK_QUANTITY,
+  E2E_STOCK_STEP_DONE_COUNT,
   E2E_DEPOSIT_USD_TEXT,
   E2E_PICKED_DURATION_MINUTES,
   E2E_UNSAVED_CHANGE_COUNT,
@@ -24,6 +38,14 @@ import {
 } from "../constants/E2eCategoryConfigure.constants";
 
 const E2E_SECTION_COUNT = 6;
+const E2E_NEW_RESERVABLE_CATEGORY = {
+  defaultDurationMinutes: E2E_NEW_CATEGORY_DURATION_MINUTES,
+  isReservable: true,
+  trackingMode: CATEGORY_TRACKING_MODE.BY_QUANTITY,
+};
+const { PROGRESS } = CATEGORY_CONFIGURE_NEXT_STEPS_COPY;
+const { DEPOSIT, PHOTO, STOCK } =
+  CATEGORY_CONFIGURE_NEXT_STEP_ID;
 const {
   DELETE_CATEGORY_BUTTON,
   DEPOSIT_USD_FIELD_LABEL,
@@ -487,6 +509,133 @@ test.describe("Category configure screen", () => {
       await expect(
         behaviorFormPage.getHeading()
       ).toBeVisible();
+    } finally {
+      await removeDeletableCategory(categoryName);
+    }
+  });
+
+  test("a new reservable category lists its pending steps and Agregar opens the photo section", async ({
+    page,
+  }, testInfo) => {
+    const categoryName =
+      resolveCategoryConfigureFixtureName(
+        testInfo.project.name,
+        "next-steps"
+      );
+    await seedCategoryWithBehavior(
+      categoryName,
+      E2E_NEW_RESERVABLE_CATEGORY
+    );
+    const configurePage = createCategoryConfigurePage(page);
+
+    try {
+      await logInAsAdmin(page);
+      await configurePage.goTo(
+        await findCategoryId(categoryName)
+      );
+
+      await expect(
+        configurePage.getNextStepsProgress(
+          PROGRESS(
+            E2E_DURATION_STEP_DONE_COUNT,
+            E2E_RESERVABLE_REQUIRED_STEPS
+          )
+        )
+      ).toBeVisible();
+      await expect(
+        configurePage.getNextStepButton(DEPOSIT)
+      ).toBeVisible();
+
+      await configurePage.getNextStepButton(PHOTO).click();
+      await expect(
+        configurePage.getSectionButton(SECTION_PHOTO)
+      ).toHaveAttribute("aria-expanded", STRING.TRUE);
+    } finally {
+      await removeDeletableCategory(categoryName);
+    }
+  });
+
+  test("the progress grows after stock and a photo are added and the block disappears when all is done", async ({
+    page,
+  }, testInfo) => {
+    const categoryName =
+      resolveCategoryConfigureFixtureName(
+        testInfo.project.name,
+        "next-steps-progress"
+      );
+    await seedCategoryWithBehavior(
+      categoryName,
+      E2E_NEW_RESERVABLE_CATEGORY
+    );
+    const configurePage = createCategoryConfigurePage(page);
+
+    try {
+      await logInAsAdmin(page);
+      await configurePage.goTo(
+        await findCategoryId(categoryName)
+      );
+
+      await setCategoryStockQuantity(
+        categoryName,
+        E2E_STOCK_QUANTITY
+      );
+      await page.reload();
+      await expect(
+        configurePage.getNextStepsProgress(
+          PROGRESS(
+            E2E_STOCK_STEP_DONE_COUNT,
+            E2E_RESERVABLE_REQUIRED_STEPS
+          )
+        )
+      ).toBeVisible();
+      await expect(
+        configurePage.getNextStepButton(STOCK)
+      ).toHaveCount(LENGTH.ZERO);
+
+      await addCategoryImage(categoryName);
+      await page.reload();
+      await expect(
+        configurePage.getHeading(categoryName)
+      ).toBeVisible();
+      await expect(
+        configurePage.getNextStepsHeading()
+      ).toHaveCount(LENGTH.ZERO);
+    } finally {
+      await removeCategoryImage(categoryName);
+      await removeCategoryWithStock(categoryName);
+    }
+  });
+
+  test("a category that is not reservable lists only the stock step", async ({
+    page,
+  }, testInfo) => {
+    const categoryName =
+      resolveCategoryConfigureFixtureName(
+        testInfo.project.name,
+        "next-steps-internal"
+      );
+
+    try {
+      const configurePage =
+        await openCategoryConfigureScreen(
+          page,
+          categoryName
+        );
+
+      await expect(
+        configurePage.getNextStepsProgress(
+          PROGRESS(
+            E2E_NO_STEPS_DONE,
+            E2E_INTERNAL_REQUIRED_STEPS
+          )
+        )
+      ).toBeVisible();
+      await expect(
+        configurePage.getNextStepButton(STOCK)
+      ).toBeVisible();
+      await expect(
+        configurePage.getNextStepButton(PHOTO)
+      ).toHaveCount(LENGTH.ZERO);
     } finally {
       await removeDeletableCategory(categoryName);
     }

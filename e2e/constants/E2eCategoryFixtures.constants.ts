@@ -3,7 +3,9 @@ import type { CategoryFixtureBehavior } from "../models/CategoryFixtureBehavior.
 
 export const DEFAULT_CATEGORY_FIXTURE_BEHAVIOR: CategoryFixtureBehavior =
   {
+    defaultDurationMinutes: null,
     hasMotor: false,
+    isReservable: false,
     trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
     usageMetric: null,
   };
