@@ -7,6 +7,7 @@ import { UUID_PATTERN } from "@/app/constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { getOperationsSupabaseClient } from "./getOperationsSupabaseClient";
 import { readDispatchCandidateUnits } from "./readDispatchCandidateUnits";
+import { readDispatchCategoryImages } from "./readDispatchCategoryImages";
 
 export const getDispatchSheet = async (
   reservationId: string
@@ -27,8 +28,14 @@ export const getDispatchSheet = async (
     DISPATCH_SHEET_ERROR.LOAD_GROUPS
   );
 
+  const rows = data ?? [];
+  const imagePaths = await readDispatchCategoryImages(
+    supabase,
+    rows.map((group) => group.category_id)
+  );
+
   return Promise.all(
-    (data ?? []).map(async (group) => {
+    rows.map(async (group) => {
       const isTrackedByUnit =
         group.tracking_mode ===
         DISPATCH_TRACKING_MODE.BY_UNIT;
@@ -47,6 +54,8 @@ export const getDispatchSheet = async (
         durationMinutes: group.duration_minutes,
         fixedUnitIds: group.fixed_unit_ids,
         hasMotor: group.has_motor,
+        imagePath:
+          imagePaths.get(group.category_id) ?? null,
         isTrackedByUnit,
         requiredQuantity: group.required_quantity,
         usageMetric: group.usage_metric,

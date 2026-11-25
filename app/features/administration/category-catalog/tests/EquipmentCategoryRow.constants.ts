@@ -24,6 +24,7 @@ export const DEFAULT_EQUIPMENT_CATEGORY_ROW: EquipmentCategoryRow =
     id: FAKE_CATEGORY_ID,
     image_path: null,
     is_reservable: true,
+    low_fuel_lines: 1,
     name: "Kayak doble",
     status: CATEGORY_STATUS.ACTIVE,
     tracking_mode: CATEGORY_TRACKING_MODE.BY_UNIT,
