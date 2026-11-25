@@ -2,7 +2,6 @@ import {
   E2E_CLOSE_GROUP,
   E2E_CLOSE_GROUP_SCREENSHOT_BASENAME,
 } from "../constants/E2eCloseGroup.constants";
-import { E2E_DISPATCH_READINGS } from "../constants/E2eDispatchSheet.constants";
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 import { createDispatchBoardPage } from "../pages/DispatchBoard.page";
 import { createDispatchSheetPage } from "../pages/DispatchSheet.page";
@@ -24,33 +23,9 @@ test.describe("Group closing screenshots", () => {
     await sheet
       .getOpenButton(dispatchSheet.customerName)
       .click();
-    await sheet.getUnit(first).check();
-    await sheet.getUnit(second).check();
-    await sheet
-      .getFuelPreset(
-        first,
-        E2E_DISPATCH_READINGS.FIRST.PRESET
-      )
-      .click();
-    await sheet
-      .getUsageField(
-        first,
-        E2E_DISPATCH_READINGS.HOURS_LABEL
-      )
-      .fill(E2E_DISPATCH_READINGS.FIRST.HOURS_TEXT);
-    await sheet
-      .getFuelPreset(
-        second,
-        E2E_DISPATCH_READINGS.SECOND.PRESET
-      )
-      .click();
-    await sheet
-      .getUsageField(
-        second,
-        E2E_DISPATCH_READINGS.HOURS_LABEL
-      )
-      .fill(E2E_DISPATCH_READINGS.SECOND.HOURS_TEXT);
-    await sheet.getSubmit().click();
+    await sheet.getUnit(first).click();
+    await sheet.getUnit(second).click();
+    await sheet.confirm();
     await expect(sheet.getDialog()).toHaveCount(
       E2E_COUNT.NONE
     );
@@ -116,9 +91,9 @@ test.describe("Group closing screenshots", () => {
     await sheet
       .getOpenButton(dispatchSheet.customerName)
       .click();
-    await sheet.getUnit(first).check();
-    await sheet.getUnit(second).check();
-    await sheet.getSubmit().click();
+    await sheet.getUnit(first).click();
+    await sheet.getUnit(second).click();
+    await sheet.confirm();
     await expect(sheet.getDialog()).toHaveCount(
       E2E_COUNT.NONE
     );

@@ -8,7 +8,7 @@ import type { UnitReading } from "../models/UnitReading.interface";
 import { mapUnitReading } from "../utils/mapUnitReading";
 
 const UNIT_COLUMNS =
-  "id, code, status, fuel_max, fuel_level, usage_total, impact_count, next_oil_change_at, category:equipment_categories!inner(name, usage_metric, has_motor)";
+  "id, code, status, fuel_max, fuel_level, low_fuel_lines, usage_total, impact_count, next_oil_change_at, category:equipment_categories!inner(name, usage_metric, has_motor, low_fuel_lines)";
 
 export const getMotorUnitReadings = async (): Promise<
   UnitReading[]

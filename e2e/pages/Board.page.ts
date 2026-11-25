@@ -22,6 +22,13 @@ export const createBoardPage = (page: Page) => {
     await page.goto(PATHS.BOARD);
   };
 
+  const getPendingDispatchLink = (): Locator =>
+    main.getByRole(ARIA_ROLE.LINK, {
+      name: new RegExp(
+        EQUIPMENT_BOARD_COPY.PENDING_DISPATCH_TITLE
+      ),
+    });
+
   const getHeading = (): Locator =>
     main.getByRole(ARIA_ROLE.HEADING, {
       level: HEADING_LEVEL.PAGE,
@@ -194,6 +201,7 @@ export const createBoardPage = (page: Page) => {
     getLinksIn,
     getSubtitle,
     getTextInMain,
+    getPendingDispatchLink,
     goTo,
     isCardImageLoaded,
   };

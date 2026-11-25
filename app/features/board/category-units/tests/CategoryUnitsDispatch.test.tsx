@@ -72,8 +72,11 @@ vi.mock(
 const renderDispatch = () => {
   render(
     <CategoryUnitsDispatch
+      afterHeader={null}
       categoryId={DISPATCH_CATEGORY_ID}
       categoryName={CATEGORY_NAME}
+      image={null}
+      unitCount={DISPATCH_UNITS.length}
       units={DISPATCH_UNITS}
     />
   );

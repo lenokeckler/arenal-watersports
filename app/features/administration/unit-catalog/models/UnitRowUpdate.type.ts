@@ -10,6 +10,7 @@ export type UnitRowUpdate = Required<
     | "status"
     | "fuel_max"
     | "fuel_level"
+    | "low_fuel_lines"
     | "usage_total"
     | "next_oil_change_at"
     | "updated_by"

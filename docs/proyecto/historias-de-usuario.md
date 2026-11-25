@@ -960,7 +960,7 @@ El comportamiento de la categoría es lo que hace que un jet ski y un remo se tr
 - Si sus unidades son intercambiables entre sí. Es una pregunta distinta de la anterior: un jet ski se lleva por unidad y aun así cualquiera sirve, mientras que la lancha se lleva por unidad y es una lancha concreta, porque solo la Bennington arrastra y el wakeboard y el tubing dependen de eso. De esta marca depende si Reservas compromete cantidad o unidad.
 - Si es reservable. Solo las categorías reservables aparecen en el tablero y se pueden asociar a una reserva.
 - Si lleva motor, y si el uso se mide en horas de motor o en kilómetros. El equipo de agua con motor lleva horas; los cuadraciclos llevan kilometraje.
-- Si consume gasolina.
+- Si consume gasolina, y con cuántas rayas o menos del medidor se avisa que la gasolina está baja. Es un número por categoría, 1 por defecto, que no puede ser mayor que las rayas de la unidad con menos rayas de esa categoría: por ejemplo 1 en los jet skis y 2 en los cuadraciclos.
 - Si se puede dañar.
 - Si lleva fotos de estado. Los jet skis las llevan; un kayak no las necesita.
 - Si solo se alquila con guía.
@@ -1048,6 +1048,7 @@ De un jet ski no da lo mismo cuál sale: cada uno tiene su gasolina, sus horas y
 - Se lleva la gasolina actual, las horas o el kilometraje acumulado, y el valor al que toca el próximo cambio de aceite.
 - Cada unidad declara cuántas rayas tiene su medidor de gasolina, porque no toda la flota trae el mismo tablero: los cuadraciclos marcan seis y los jet skis y las lanchas cuatro. La lectura del día se guarda sobre ese máximo.
 - Una unidad sin lectura de gasolina todavía no es lo mismo que una unidad en cero.
+- Cada unidad puede tener su propio aviso de gasolina baja, distinto al de su categoría: vacío significa usar el de la categoría, y no puede ser mayor que las rayas de su medidor.
 - Crear, consultar y modificar. Para sacarla del inventario se da de baja, no se elimina.
 - El código se recorta de espacios y distingue mayúsculas de minúsculas.
 - Una unidad dada de baja no se reactiva.
@@ -1481,6 +1482,7 @@ El detalle reúne el equipo comprometido, los extras, los guías asignados y el 
 - Incluye el equipo comprometido, los extras, los guías asignados y el estado del cobro.
 - Indica quién creó la reserva y quién la modificó de último.
 - Lista cada grupo despachado con su hora real de salida, su hora de regreso y, si ya volvió, su hora de llegada.
+- Si la reserva tiene equipo por salir, el detalle permite avisar al muelle con «Enviar al muelle» y quitar el aviso. El aviso es opcional y solo marca la reserva como «Bajando» en la lista de operaciones.
 
 ### EP-RES-02 — Creación de reservas
 
@@ -2260,6 +2262,8 @@ La lista se limita al día en curso, que es lo único que le sirve a quien está
 
 - La lista se limita al día en curso.
 - Las reservas canceladas no aparecen.
+- Si a una reserva le falta una parte por salir, la tarjeta muestra cuánto falta («falta 1 de 2») y a qué hora caduca lo que no llegue.
+- Las reservas que la oficina avisó al muelle salen primero, con la marca «Bajando». El aviso es opcional: una reserva sin él se despacha igual.
 
 ---
 
@@ -2293,34 +2297,40 @@ Es la parte nueva más importante del sistema: la separación entre agendar y de
 - El despacho queda registrado a nombre de quien lo hizo.
 - La hoja propone la hora de regreso (salida más duración) y operaciones la puede ajustar; la duración del grupo sale de esas dos horas.
 - Una hora de regreso anterior a la de salida se entiende como del día siguiente.
-- Se escogen exactamente tantas unidades como las comprometidas en esa categoría.
+- Pueden salir menos unidades de las comprometidas en esa categoría: la hoja pregunta cuántas salen ahora («2 de 2», «1 de 2») y escoge esas unidades. Un combo no se parte.
+- Lo que queda sin salir sigue en la misma reserva como pendiente, con cuánto falta, y no bloquea ninguna máquina: se despacha cuando llega ese grupo, con su propia hora real, su propia duración y cualquier unidad libre en ese momento.
+- El pendiente que no llega caduca solo al terminar la franja de la reserva y deja de aparecer en la lista; esa máquina nunca estuvo apartada y sirve para otras reservas. Operaciones no necesita un botón para liberarla.
+- La hoja de despacho es una sola pantalla corta, sin pasos: unidades, gasolina, canal de radio, salida y regreso.
+- Se puede anotar el canal del radio de comunicación que lleva la salida. Es opcional y se guarda con el despacho.
 - Si el despacho falla y se reintenta, ninguna unidad queda comprometida dos veces.
 - El equipo de un combo no se cambia al despachar: si el paquete cambió, se cancela y se crea una reserva nueva. Un combo se despacha desde la lista del día y no desde la tarjeta de la categoría.
 
 ---
 
-#### US-OPE-03 — Registro de gasolina y horas al despachar
+#### US-OPE-03 — Registro de gasolina al despachar
 
 **ID:** US-OPE-03
 
-**Nombre de la historia:** Registro de gasolina y horas al despachar
+**Nombre de la historia:** Registro de gasolina al despachar
 
 **Historia de usuario:**
 
 Como la persona de operaciones,  
-necesito registrar la gasolina y las horas de motor al momento del despacho,  
+necesito registrar la gasolina con la que sale cada máquina al momento del despacho,  
 con la finalidad de saber después cuánto se consumió en esa salida.
 
 **Descripción:**
 
-Aplica solo a las categorías que llevan motor. El dato de salida es lo que después se compara contra el de regreso, y es lo que alimenta el aviso de cambio de aceite. La gasolina se lee como la lee el muelle: en rayas del medidor, no en porcentaje.
+Aplica solo a las categorías que llevan motor. El dato de salida es lo que después se compara contra el de regreso. La gasolina se lee como la lee el muelle: en rayas del medidor, no en porcentaje, y se marca tocando la raya. Las horas de motor y los kilómetros no se piden al despachar: se registran al cerrar la salida.
 
 **Criterios de aceptación:**
 
 - Aplica solo a las categorías que llevan motor.
-- La gasolina se registra en rayas sobre el máximo del medidor de esa unidad, nunca en porcentaje: en el muelle se lee «3 de 4».
-- Hay botones de un cuarto, medio, tres cuartos y lleno, con el medidor dibujado, y también el campo numérico para el valor exacto.
-- El despacho escribe la gasolina y las horas en la unidad, no solo en la reserva: mientras la máquina está afuera su ficha tiene que mostrar la lectura de hoy y no la del regreso anterior.
+- La gasolina se registra en rayas sobre el máximo del medidor de esa unidad, nunca en porcentaje: en el muelle se leen contando rayas.
+- El medidor se dibuja con sus rayas y se marca tocando la raya hasta donde llega la gasolina; tocar de nuevo la raya del nivel actual lo baja una. No hay botones de fracciones ni campo numérico.
+- El medidor arranca en el último nivel conocido de la unidad y la máquina puede salir sin tocarlo. Una unidad que todavía no tiene ninguna lectura no sale hasta que se marque su nivel.
+- No se piden horas de motor ni kilómetros al despachar.
+- El despacho escribe la gasolina en la unidad, no solo en la reserva: mientras la máquina está afuera su ficha tiene que mostrar la lectura de hoy y no la del regreso anterior.
 
 ---
 
@@ -2344,6 +2354,9 @@ Es la vista que hoy no existe y que obliga a subir a leer la conversación de Wh
 
 - Es la vista que hoy no existe y obliga a subir a leer la conversación de WhatsApp.
 - La hora de regreso de cada grupo se calcula desde su hora real de salida más su duración, no desde la hora agendada.
+- Al tocar una unidad que está afuera se ve quién la lleva: el cliente, cuántas personas son, la hora de salida, la hora de regreso y el canal del radio de comunicación.
+- Esa información se ve primero solo para leer; con el botón «Editar» se corrigen las horas y el canal si operaciones se equivocó al anotarlos.
+- Desde esa misma información se recibe la unidad.
 
 ---
 
@@ -2393,6 +2406,7 @@ El cliente pide media hora más, o devuelve el equipo antes. La duración se aju
 - El conteo hasta la hora de regreso se recalcula.
 - Al extender, la reserva queda marcada para reservas con las horas de más, para que la oficina decida si las cobra o si van de cortesía.
 - Operaciones no decide de plata: solo deja constancia de que la salida se alargó.
+- Si operaciones se equivocó al anotar la hora de salida de un grupo que está afuera, la corrige; el regreso se mueve con ella y conserva la duración.
 
 ---
 
@@ -2454,20 +2468,23 @@ con la finalidad de dejar constancia del estado en que regresó antes de que sal
 
 **Descripción:**
 
-Si todo está en orden, queda la constancia. Si no, se levanta el reporte de daño y se actualiza el estado de la unidad; ese reporte es lo que después usa reservas para decidir cuánto del depósito se le devuelve al cliente. En el mismo cierre se registran la gasolina y las horas o el kilometraje con los que volvió. Como cada categoría sale por su lado, cada grupo se cierra cuando vuelve, con su hora real de llegada; la reserva queda cerrada cuando el último grupo regresa. La reserva cerrada pasa al historial y de ahí salen las estadísticas.
+Si todo está en orden, queda la constancia. Si no, se levanta el reporte de daño y se actualiza el estado de la unidad; ese reporte es lo que después usa reservas para decidir cuánto del depósito se le devuelve al cliente. En el mismo cierre se registran la gasolina que quedó, en rayas del medidor, y las horas o el kilometraje con los que volvió, además de los golpes de la unidad. Como cada categoría sale por su lado, cada grupo se cierra cuando vuelve, con su hora real de llegada; la reserva queda cerrada cuando el último grupo regresa. La reserva cerrada pasa al historial y de ahí salen las estadísticas.
 
 **Criterios de aceptación:**
 
 - Si todo está en orden, queda constancia.
 - Si no, se levanta el reporte de daño correspondiente y se actualiza el estado de la unidad.
 - El reporte de daño es lo que después usa reservas para decidir cuánto del depósito se le devuelve al cliente. Operaciones no ve ni toca el depósito, porque no recibe dinero.
-- Se registra la gasolina y las horas de motor con las que volvió.
+- Se registra la gasolina que quedó, marcando las rayas del medidor, y las horas de motor o el kilometraje con los que volvió, en un campo numérico.
+- El cierre permite ajustar los golpes de la unidad.
+- La pregunta «¿Todo en orden?» se responde con «Sí, todo bien» o «Hay daños»; con daños se pide qué se dañó y la unidad pasa a mantenimiento.
 - Cada grupo se cierra por separado, con su hora real de llegada. La reserva queda cerrada cuando se cierra el último grupo.
 - La hora de llegada se propone como la hora actual al abrir el cierre, pero operaciones puede ajustarla si el equipo llegó antes o después.
 - La reserva cerrada pasa al historial.
-- Si queda equipo comprometido por unidad sin despachar, la reserva no se cierra aunque los grupos despachados ya hayan vuelto; ese equipo se quita al despachar o la reserva se modifica.
+- Si queda equipo comprometido sin despachar y todavía no terminó la franja de la reserva, la reserva no se cierra aunque los grupos despachados ya hayan vuelto: ese equipo todavía puede llegar.
+- Cuando termina la franja de la reserva, el equipo que nunca salió se descarta y la reserva se cierra sola si todos los grupos ya volvieron.
 - La hora de llegada no puede ser anterior a la hora de salida del grupo.
-- La lectura de horas o kilometraje al cerrar no puede ser menor que la de salida; la pantalla muestra con qué lectura salió cada unidad.
+- La lectura de horas o kilometraje al cerrar no puede ser menor que la última que se conoce de la unidad; la pantalla muestra cuál es.
 
 ### EP-OPE-03 — Máquinas y mantenimiento
 
@@ -2492,6 +2509,9 @@ Aplica a las categorías marcadas como que consumen gasolina. La diferencia entr
 - Aplica a las categorías marcadas como que consumen gasolina.
 - El nivel se registra en rayas sobre el máximo del medidor de la unidad: seis en los cuadraciclos, cuatro en los jet skis y las lanchas.
 - Una unidad sin lectura todavía no es lo mismo que una unidad en cero.
+- La gasolina con la que sale una unidad es el último nivel conocido; la gasolina con la que vuelve se registra al cerrar la salida.
+- El medidor no escribe el nivel con números ni con un ícono: las rayas lo dicen. Cuando el nivel es igual o menor al aviso de gasolina baja, las rayas llenas se ven en color de advertencia; en cero, las rayas se ven vacías con borde rojo.
+- El aviso de gasolina baja es el de la categoría, salvo que la unidad tenga uno propio (US-ADM-13, US-ADM-16).
 
 ---
 
@@ -2514,6 +2534,7 @@ Las horas se llevan en el equipo de agua con motor, como las lanchas y los jet s
 **Criterios de aceptación:**
 
 - De ahí sale el aviso de cambio de aceite.
+- Las horas o los kilómetros se registran al cerrar la salida o al corregir la unidad, nunca al despacharla.
 
 ---
 
@@ -2649,13 +2670,14 @@ con la finalidad de sacarla de la disponibilidad para que nadie la agende mientr
 
 **Descripción:**
 
-La unidad sale de la disponibilidad sin borrarse y deja de aparecer en el tablero. Se puede marcar en el momento de recibir el equipo, cuando se detecta el problema.
+La unidad sale de la disponibilidad sin borrarse y se queda visible en el tablero, en gris y con la etiqueta «En mantenimiento». Se puede marcar en el momento de recibir el equipo, cuando se detecta el problema.
 
 **Criterios de aceptación:**
 
 - La unidad sale de la disponibilidad sin borrarse.
+- En el tablero la unidad sigue visible, en gris y con la etiqueta «En mantenimiento».
 - Se puede marcar al momento de recibir el equipo.
-- Desde la ficha de la máquina se devuelve la unidad a servicio y vuelve a aparecer en el tablero.
+- Desde la ficha de la máquina se devuelve la unidad a servicio y vuelve a mostrarse como disponible en el tablero.
 
 ---
 
@@ -2731,6 +2753,9 @@ Pasa seguido que alguien echa gasolina, cambia el aceite o encuentra un golpe cu
 - Solo aparecen las unidades con motor: un kayak no tiene medidor que leer.
 - La corrección queda registrada a nombre de quien la hizo.
 - La corrección permite ajustar también cuántas rayas tiene el medidor de la unidad.
+- Desde la categoría en el tablero, el botón «Editar» activa la corrección de sus unidades: con el modo encendido, tocar cualquier parte de la tarjeta abre el panel de corrección, y con el modo apagado una tarjeta no se corrige por error.
+- El panel corrige la gasolina marcando las rayas del medidor, las horas o los kilómetros en un campo numérico y los golpes.
+- La tarjeta de cada unidad con motor en el tablero muestra sus golpes.
 
 ### EP-OPE-04 — Inventario
 
