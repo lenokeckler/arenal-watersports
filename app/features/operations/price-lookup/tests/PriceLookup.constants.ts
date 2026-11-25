@@ -1,4 +1,7 @@
+import { CURRENCY_CODE } from "@/app/constants";
+import { formatMoney } from "@/app/utils/money/formatMoney";
 import { PRICE_LOOKUP_AUDIENCE } from "../constants/PriceLookupAudience.constants";
+import type { PriceLookupCatalog } from "../models/PriceLookupCatalog.interface";
 import type { PriceLookupCombo } from "../models/PriceLookupCombo.interface";
 import type { PriceLookupExtra } from "../models/PriceLookupExtra.interface";
 import type { PriceLookupTariff } from "../models/PriceLookupTariff.interface";
@@ -28,6 +31,12 @@ export const NATIONAL_COMBO_CRC = 90_000;
 export const FOREIGN_COMBO_USD = 180;
 export const COMBO_BOAT_QUANTITY = 1;
 export const COMBO_JET_SKI_QUANTITY = 2;
+
+export const formatCrc = (amount: number): string =>
+  formatMoney({ amount, currency: CURRENCY_CODE.CRC });
+
+export const formatUsd = (amount: number): string =>
+  formatMoney({ amount, currency: CURRENCY_CODE.USD });
 
 export const JET_SKI_TARIFF_ROW: PriceLookupTariffRow = {
   id: "category-jet-ski",
@@ -93,6 +102,8 @@ export const FOREIGN_COMBO_ROW: PriceLookupComboRow = {
   package_price_usd: FOREIGN_COMBO_USD,
 };
 
+export const COMBO_ITEMS_TEXT = "1 × Lancha · 2 × Jet ski";
+
 export const NATIONAL_COMBO: PriceLookupCombo = {
   audience: PRICE_LOOKUP_AUDIENCE.NATIONAL,
   id: NATIONAL_COMBO_ROW.id,
@@ -145,4 +156,16 @@ export const BOAT_TARIFF: PriceLookupTariff = {
   categoryName: BOAT_TARIFF_ROW.name,
   rental: null,
   tour: null,
+};
+
+export const FULL_CATALOG: PriceLookupCatalog = {
+  combos: [NATIONAL_COMBO, FOREIGN_COMBO],
+  extras: [PARRILLA_EXTRA, TUBING_EXTRA],
+  tariffs: [JET_SKI_TARIFF, BOAT_TARIFF],
+};
+
+export const EMPTY_CATALOG: PriceLookupCatalog = {
+  combos: [],
+  extras: [],
+  tariffs: [],
 };
