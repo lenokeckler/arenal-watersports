@@ -44,6 +44,21 @@ export const CATEGORY_CATALOG_COPY = {
   CREATE_FORM_PURPOSE:
     "Indique cómo se llama y cómo se cuenta en el inventario.",
   CREATE_FORM_TITLE: "Nueva categoría",
+  CREATE_MODE_LABEL: "¿Cómo se cuenta este equipo?",
+  CREATE_MODE_LOCKED:
+    "Esto no se puede cambiar después de crear la categoría.",
+  CREATE_MODE_QUANTITY_HELP:
+    "Usted solo registra cuántos hay. Para equipo igual entre sí, como chalecos, remos o kayaks.",
+  CREATE_MODE_UNIT_HELP:
+    "Cada uno tiene nombre o número y se le da seguimiento propio. Para lanchas o cuadraciclos.",
+  CREATE_NAME_HELP:
+    "Así se verá en el tablero y en las reservas.",
+  CREATE_RESERVABLE_HELP:
+    "Si elige «No», no aparecerá en el tablero. Puede cambiarlo después.",
+  CREATE_RESERVABLE_LABEL:
+    "¿Los clientes la pueden reservar?",
+  CREATE_RESERVABLE_NO: "No, es equipo interno",
+  CREATE_RESERVABLE_YES: "Sí, se reserva",
   CREATE_SUCCESS_TOAST: "Categoría creada.",
   DEFAULT_DURATION_MINUTES_FIELD_HINT:
     "Tiempo que normalmente dura un alquiler de esta categoría. Se puede cambiar en cada reserva.",
@@ -84,7 +99,7 @@ export const CATEGORY_CATALOG_COPY = {
     "No se pudieron cargar las categorías.",
   GENERIC_MUTATION_ERROR:
     "No se pudo completar la acción. Intente de nuevo.",
-  GROUP_FIELD_LABEL: "Grupo",
+  GROUP_FIELD_LABEL: "Grupo (opcional)",
   GROUP_FIELD_PLACEHOLDER: "Opcional — ej. Kayaks",
   GROUP_PREFIX_LABEL: "GRUPO",
   GUIDE_ONLY_FIELD_LABEL: "Uso exclusivo de guías",
@@ -99,22 +114,23 @@ export const CATEGORY_CATALOG_COPY = {
   MARK_INACTIVE_BUTTON: "Marcar inactiva",
   MARK_INACTIVE_SUCCESS_TOAST:
     "Categoría marcada como inactiva.",
+  NAME_DUPLICATE_ERROR:
+    "Ya existe una categoría con ese nombre. Use otro.",
   NAME_FIELD_LABEL: "Nombre",
   NAME_FIELD_PLACEHOLDER: "Ej. Kayak doble",
   NAME_FIELD_REQUIRED_ERROR:
-    "Escriba el nombre de la categoría.",
+    "Escriba un nombre para la categoría.",
   PAGINATION_NAV_LABEL: "Paginación de categorías",
   REACTIVATE_BUTTON: "Reactivar",
   RETRY_BUTTON: "Reintentar",
   STATUS_LABEL_ACTIVE: "Activa",
   STATUS_LABEL_INACTIVE: "Inactiva",
-  SUBMIT_BUTTON: "Guardar categoría",
+  SUBMIT_BUTTON: "Crear categoría",
   TRACKING_MODE_BY_QUANTITY_LABEL: "Por cantidad",
   TRACKING_MODE_BY_QUANTITY_LOWERCASE: "por cantidad",
   TRACKING_MODE_BY_UNIT_LABEL: "Por unidad",
   TRACKING_MODE_BY_UNIT_LOWERCASE: "por unidad",
   TRACKING_MODE_FIELD_LABEL: "Modo de conteo",
-  TRACKING_MODE_FIELD_PLACEHOLDER: "Seleccione un modo",
   TRACKING_MODE_REQUIRED_ERROR:
     "Seleccione un modo de conteo.",
   UNITS_ARE_INTERCHANGEABLE_FIELD_LABEL:
