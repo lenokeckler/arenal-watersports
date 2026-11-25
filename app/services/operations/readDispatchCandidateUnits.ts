@@ -25,6 +25,7 @@ export const readDispatchCandidateUnits = async (
     fuelLevel: unit.fuel_level,
     fuelMax: unit.fuel_max,
     isAssigned: unit.is_assigned,
+    lowFuelLines: unit.low_fuel_lines,
     unitId: unit.unit_id,
     usageTotal: unit.usage_total,
   }));

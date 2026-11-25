@@ -9,6 +9,7 @@ export type CategoryBehaviorRowUpdate = Pick<
   | "has_motor"
   | "usage_metric"
   | "consumes_fuel"
+  | "low_fuel_lines"
   | "can_be_damaged"
   | "has_condition_photos"
   | "guide_only"

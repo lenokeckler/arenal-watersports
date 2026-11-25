@@ -5,6 +5,7 @@ export interface UnitFormValues {
   status: UnitStatus;
   fuelMax: string;
   fuelLevel: string;
+  lowFuelLines: string;
   usageTotal: string;
   nextOilChangeAt: string;
 }
