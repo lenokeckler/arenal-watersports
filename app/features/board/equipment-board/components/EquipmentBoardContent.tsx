@@ -1,15 +1,19 @@
-import { ARIA_ROLE } from "@/app/constants";
+import {
+  ARIA_ROLE,
+  DEFAULT_BOARD_LAYOUT,
+} from "@/app/constants";
 import { EQUIPMENT_BOARD_COPY } from "../constants/EquipmentBoardCopy.constants";
 import type { EquipmentBoardContentProps } from "../models/EquipmentBoardContentProps.interface";
 import {
   EQUIPMENT_BOARD_GRID_CLASS,
-  EQUIPMENT_BOARD_GRID_ITEM_CLASS,
+  resolveEquipmentBoardGridItemClassName,
 } from "../styles/EquipmentBoard.styles";
 import { resolveBoardCardImage } from "../utils/resolveBoardCardImage";
 import BoardCard from "./BoardCard";
 
 const EquipmentBoardContent = ({
   cards,
+  columns = DEFAULT_BOARD_LAYOUT.columns,
 }: EquipmentBoardContentProps): React.JSX.Element => {
   const firstCardWithImage = cards.find(
     (card) => resolveBoardCardImage(card) !== null
@@ -25,7 +29,9 @@ const EquipmentBoardContent = ({
         <div
           key={card.id}
           role={ARIA_ROLE.LISTITEM}
-          className={EQUIPMENT_BOARD_GRID_ITEM_CLASS}
+          className={resolveEquipmentBoardGridItemClassName(
+            columns
+          )}
         >
           <BoardCard
             card={card}
