@@ -26,15 +26,28 @@ const renderForm = (preselectedUnitIds: string[]) => {
 };
 
 describe("DispatchGroupForm opened from the board", () => {
-  it("opens with the tapped units already checked and ready to confirm", () => {
+  it("shows the tapped units instead of the grid when they are complete", () => {
     const { sheet } = renderForm([
       FIRST.unitId,
       SECOND.unitId,
     ]);
 
-    expect(sheet.getUnit(FIRST.code)).toBeChecked();
-    expect(sheet.getUnit(SECOND.code)).toBeChecked();
+    expect(sheet.queryUnits()).toHaveLength(0);
+    expect(sheet.getChangeUnits()).toBeInTheDocument();
     expect(sheet.getSubmit()).toBeEnabled();
+  });
+
+  it("brings the unit grid back with the tapped units checked", async () => {
+    const { sheet } = renderForm([
+      FIRST.unitId,
+      SECOND.unitId,
+    ]);
+
+    await userEvent.click(sheet.getChangeUnits());
+
+    expect(sheet.queryUnits()).toHaveLength(
+      UNIT_GROUP_FIXTURE.candidateUnits.length
+    );
   });
 
   it("dispatches exactly the tapped units", async () => {
@@ -51,25 +64,28 @@ describe("DispatchGroupForm opened from the board", () => {
     ]);
   });
 
-  it("lets the worker complete the units that are still missing", async () => {
+  it("sends only the tapped unit when one of two leaves now", async () => {
+    const { onSubmit, sheet } = renderForm([FIRST.unitId]);
+
+    expect(sheet.getTakeMore()).toBeEnabled();
+    expect(sheet.getSubmit()).toBeEnabled();
+
+    await userEvent.click(sheet.getSubmit());
+
+    expect(onSubmit.mock.calls[0][0].unitIds).toEqual([
+      FIRST.unitId,
+    ]);
+  });
+
+  it("lets the worker complete the units when the pair is wanted", async () => {
     const { sheet } = renderForm([FIRST.unitId]);
+
+    await userEvent.click(sheet.getTakeMore());
 
     expect(sheet.getSubmit()).toBeDisabled();
 
     await userEvent.click(sheet.getUnit(SECOND.code));
 
     expect(sheet.getSubmit()).toBeEnabled();
-  });
-
-  it("lets the worker uncheck a tapped unit", async () => {
-    const { sheet } = renderForm([
-      FIRST.unitId,
-      SECOND.unitId,
-    ]);
-
-    await userEvent.click(sheet.getUnit(SECOND.code));
-
-    expect(sheet.getUnit(SECOND.code)).not.toBeChecked();
-    expect(sheet.getSubmit()).toBeDisabled();
   });
 });

@@ -12,6 +12,7 @@ import DispatchSheet from "./DispatchSheet";
 
 const DispatchReservationAction = ({
   customerName,
+  isCombo,
   reservationId,
 }: DispatchReservationActionProps): React.JSX.Element => {
   const router = useRouter();
@@ -36,6 +37,7 @@ const DispatchReservationAction = ({
       {isOpen && (
         <DispatchSheet
           customerName={customerName}
+          isCombo={isCombo}
           onClose={handleClose}
           onDispatched={handleClose}
           reservationId={reservationId}

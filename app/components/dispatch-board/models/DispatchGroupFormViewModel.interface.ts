@@ -1,24 +1,14 @@
-import type { ChangeEvent, FormEvent } from "react";
-import type { DispatchUnitReadingsViewModel } from "./DispatchUnitReadingsViewModel.interface";
-
-type DispatchFieldChangeEvent = ChangeEvent<
-  HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
->;
+import type { FormEvent } from "react";
+import type { DispatchRadioChannelViewModel } from "./DispatchRadioChannelViewModel.interface";
+import type { DispatchTimesViewModel } from "./DispatchTimesViewModel.interface";
+import type { DispatchUnitFuelViewModel } from "./DispatchUnitFuelViewModel.interface";
+import type { DispatchUnitSelectionViewModel } from "./DispatchUnitSelectionViewModel.interface";
 
 export interface DispatchGroupFormViewModel {
   canSubmit: boolean;
-  departureTime: string;
-  handleDepartureChange: (
-    event: DispatchFieldChangeEvent
-  ) => void;
-  handleReturnChange: (
-    event: DispatchFieldChangeEvent
-  ) => void;
+  fuel: DispatchUnitFuelViewModel;
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
-  handleToggleUnit: (unitId: string) => void;
-  isNextDay: boolean;
-  readings: DispatchUnitReadingsViewModel;
-  returnTime: string;
-  selectedUnitIds: string[];
-  targetCount: number;
+  radio: DispatchRadioChannelViewModel;
+  selection: DispatchUnitSelectionViewModel;
+  timeState: DispatchTimesViewModel;
 }
