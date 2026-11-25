@@ -21,6 +21,7 @@ const EMPTY_DRAFT: CloseGroupDraft = {
   fuel: STRING.Empty,
   hasDamage: false,
   impact: STRING.Empty,
+  impactCount: null,
   maintenance: false,
   usage: STRING.Empty,
 };
@@ -91,6 +92,7 @@ export const useCloseGroupForm = ({
         returns: rows.map((row) => ({
           damage: row.damage,
           fuel: row.fuelLevel,
+          impactCount: row.newImpactCount,
           maintenance: row.draft.maintenance,
           unitId: row.unitId,
           usage: row.usageReading,

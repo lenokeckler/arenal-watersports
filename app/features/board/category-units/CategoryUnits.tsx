@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { BOARD_REALTIME, LENGTH } from "@/app/constants";
 import BoardRealtime from "@/app/components/board-realtime/BoardRealtime";
 import { readBoardCategory } from "@/app/services/board";
+import { resolveCategoryImageOption } from "@/app/utils/category-image/resolveCategoryImageOption";
 import { resolveBoardCategoryPath } from "@/app/utils/board-paths/resolveBoardCategoryPath";
 import { resolveListPage } from "@/app/utils/list-pagination/resolveListPage";
 import { resolveListPageCount } from "@/app/utils/list-pagination/resolveListPageCount";
@@ -49,12 +50,8 @@ const CategoryUnits = async ({
       pageCount,
     });
 
-  return (
-    <main className={CATEGORY_UNITS_PAGE_CLASS}>
-      <CategoryUnitsHeader
-        categoryName={categoryName}
-        unitCount={unitCount}
-      />
+  const realtimeAndGroups = (
+    <>
       <BoardRealtime
         channelName={BOARD_REALTIME.CHANNEL.CATEGORY_UNITS}
       />
@@ -62,13 +59,31 @@ const CategoryUnits = async ({
         currentCategoryId={categoryId}
         members={groupMembers}
       />
+    </>
+  );
+
+  return (
+    <main className={CATEGORY_UNITS_PAGE_CLASS}>
       {rows.length === LENGTH.ZERO ? (
-        <CategoryUnitsEmpty />
+        <>
+          <CategoryUnitsHeader
+            categoryName={categoryName}
+            unitCount={unitCount}
+          />
+          {realtimeAndGroups}
+          <CategoryUnitsEmpty />
+        </>
       ) : (
         <CategoryUnitsView
+          afterHeader={realtimeAndGroups}
           canDispatch={canDispatch}
           categoryId={categoryId}
           categoryName={categoryName}
+          image={resolveCategoryImageOption(
+            category.image_path,
+            categoryName
+          )}
+          unitCount={unitCount}
           units={rows.map((row) =>
             mapBoardCategoryUnitRow(row, now)
           )}

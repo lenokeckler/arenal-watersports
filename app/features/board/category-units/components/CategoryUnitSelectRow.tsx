@@ -10,6 +10,7 @@ import {
 import CategoryUnitRow from "./CategoryUnitRow";
 
 const CategoryUnitSelectRow = ({
+  image,
   isSelected,
   onToggle,
   unit,
@@ -25,6 +26,7 @@ const CategoryUnitSelectRow = ({
       onChange={() => onToggle(unit.id)}
     />
     <CategoryUnitRow
+      image={image}
       isSelectable
       isSelected={isSelected}
       unit={unit}

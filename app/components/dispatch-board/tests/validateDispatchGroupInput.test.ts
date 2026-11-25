@@ -4,6 +4,7 @@ import type { DispatchUnitReading } from "../models/DispatchUnitReading.interfac
 import { validateDispatchGroupInput } from "../utils/validateDispatchGroupInput";
 import {
   DISPATCH_INPUT_FIXTURE,
+  DISPATCH_RADIO_FIXTURE,
   DISPATCH_READING_FIXTURE,
   DISPATCH_TOO_MANY_UNITS,
 } from "./DispatchSheetTest.constants";
@@ -11,6 +12,7 @@ import {
 const VALID_INPUT = {
   categoryId: DISPATCH_INPUT_FIXTURE.CATEGORY_ID,
   departureAt: DISPATCH_INPUT_FIXTURE.DEPARTURE_AT,
+  radioChannel: null,
   readings: [],
   reservationId: DISPATCH_INPUT_FIXTURE.RESERVATION_ID,
   returnsAt: DISPATCH_INPUT_FIXTURE.RETURNS_AT,
@@ -38,6 +40,15 @@ describe("validateDispatchGroupInput", () => {
       validateDispatchGroupInput({
         ...VALID_INPUT,
         readings: [buildReading()],
+      })
+    ).not.toThrow();
+  });
+
+  it("accepts a radio channel inside the range", () => {
+    expect(() =>
+      validateDispatchGroupInput({
+        ...VALID_INPUT,
+        radioChannel: DISPATCH_RADIO_FIXTURE.VALID,
       })
     ).not.toThrow();
   });
@@ -140,6 +151,18 @@ describe("validateDispatchGroupInput", () => {
           }),
         ],
       },
+    ],
+    [
+      "a radio channel above the range",
+      { radioChannel: DISPATCH_RADIO_FIXTURE.ABOVE_RANGE },
+    ],
+    [
+      "a radio channel of zero",
+      { radioChannel: DISPATCH_RADIO_FIXTURE.ZERO },
+    ],
+    [
+      "a radio channel with a fraction",
+      { radioChannel: DISPATCH_RADIO_FIXTURE.FRACTION },
     ],
     [
       "a return before the departure",
