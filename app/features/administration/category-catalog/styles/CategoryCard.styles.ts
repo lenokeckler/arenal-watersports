@@ -6,19 +6,6 @@ export const CATEGORY_CARD_CONTAINER_BASE_CLASS =
 export const CATEGORY_CARD_CONTAINER_BORDER_CLASS =
   "border-outline-variant";
 
-export const CATEGORY_CARD_CONTAINER_BORDER_CONFIRM_DELETE_CLASS =
-  "border-error";
-
-export const resolveCategoryCardContainerClassName = (
-  isConfirmingDelete: boolean
-): string =>
-  joinClassNames(
-    CATEGORY_CARD_CONTAINER_BASE_CLASS,
-    isConfirmingDelete
-      ? CATEGORY_CARD_CONTAINER_BORDER_CONFIRM_DELETE_CLASS
-      : CATEGORY_CARD_CONTAINER_BORDER_CLASS
-  );
-
 export const CATEGORY_CARD_LINK_CLASS = `${CATEGORY_CARD_CONTAINER_BASE_CLASS} ${CATEGORY_CARD_CONTAINER_BORDER_CLASS} min-h-11 transition-colors hover:bg-surface-container focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary`;
 
 export const CATEGORY_CARD_ROW_CLASS =
