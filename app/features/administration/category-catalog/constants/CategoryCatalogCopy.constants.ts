@@ -7,7 +7,6 @@ export const CATEGORY_CATALOG_COPY = {
   ALERT_FORM_HINT:
     "Elija cómo avisa esta categoría. Solo se piden los datos del tipo de aviso elegido.",
   ALERT_FORM_TITLE: "Avisos del inventario",
-  ALERT_LINK: "Avisos",
   ALERT_MIN_QUANTITY_FIELD_LABEL: "Cantidad mínima",
   ALERT_MIN_QUANTITY_PLACEHOLDER: "Ejemplo: 5",
   ALERT_SUBMIT_BUTTON: "Guardar avisos",
@@ -76,7 +75,6 @@ export const CATEGORY_CATALOG_COPY = {
   DEPOSIT_FORM_HINT:
     "Deje ambos campos vacíos si la categoría no lleva depósito. Cada monto se guarda en su moneda y no se convierte.",
   DEPOSIT_FORM_TITLE: "Depósito de garantía",
-  DEPOSIT_LINK: "Depósito",
   DEPOSIT_SUBMIT_BUTTON: "Guardar depósito",
   DEPOSIT_UPDATE_SUCCESS_TOAST:
     "Depósito de la categoría actualizado.",
@@ -115,7 +113,6 @@ export const CATEGORY_CATALOG_COPY = {
   RETRY_BUTTON: "Reintentar",
   STATUS_LABEL_ACTIVE: "Activa",
   STATUS_LABEL_INACTIVE: "Inactiva",
-  STOCK_LINK: "Conteo",
   SUBMIT_BUTTON: "Guardar categoría",
   TRACKING_MODE_BY_QUANTITY_LABEL: "Por cantidad",
   TRACKING_MODE_BY_QUANTITY_LOWERCASE: "por cantidad",
@@ -127,7 +124,6 @@ export const CATEGORY_CATALOG_COPY = {
     "Seleccione un modo de conteo.",
   UNITS_ARE_INTERCHANGEABLE_FIELD_LABEL:
     "Las unidades son intercambiables",
-  UNITS_LINK: "Unidades",
   UNIT_COUNT_PLURAL: "unidades",
   UNIT_COUNT_SINGULAR: "unidad",
   USAGE_METRIC_ENGINE_HOURS_LABEL: "Horas de motor",
