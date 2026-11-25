@@ -1,0 +1,5 @@
+update equipment_categories set deposit_usd = 200, deposit_crc = 100000
+where id = 'e2c20000-0000-4000-8000-000000000101';
+
+update equipment_categories set deposit_usd = 20, deposit_crc = null
+where id = 'e2c20000-0000-4000-8000-000000000102';
