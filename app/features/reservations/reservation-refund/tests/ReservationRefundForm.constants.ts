@@ -42,3 +42,15 @@ export const EDITED_AMOUNT_TEXT = "10.00";
 
 export const ABOVE_USD_AMOUNT_TEXT = "30.01";
 export const CRC_ONLY_AMOUNT_TEXT = "10000";
+
+export const USD_ONLY_REFUND: ReservationRefund = {
+  ...EXPECTED_SCHEDULED,
+  refundable: USD_ONLY_REFUNDABLE,
+};
+
+export const NOTHING_REFUND: ReservationRefund = {
+  ...EXPECTED_SCHEDULED,
+  refundable: NOTHING_REFUNDABLE,
+};
+
+export const FULL_AMOUNT_TEXT = "30.00";
