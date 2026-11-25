@@ -61,6 +61,8 @@ const mapReservationDetailBase = (
   comboName: source.combo?.name ?? null,
   created_at: source.created_at,
   customer_name: source.customer_name,
+  dockNotifiedAt:
+    source.reservation_dock_notices?.notified_at ?? null,
   dispatched_at: source.dispatched_at,
   duration_minutes: source.duration_minutes,
   ends_at: source.ends_at,

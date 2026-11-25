@@ -1,3 +1,6 @@
+import { DISPATCH_BOARD_PAGINATION } from "@/app/components/dispatch-board/constants/DispatchBoard.constants";
+import type { NullableRef } from "@/app/types";
+
 export const EQUIPMENT_BOARD_COPY = {
   EMPTY_BODY:
     "Cuando administración active una categoría reservable, aparecerá aquí con su equipo.",
@@ -18,6 +21,19 @@ export const EQUIPMENT_BOARD_COPY = {
   PAGE_DESCRIPTION:
     "Qué se puede alquilar en este momento.",
   PAGE_TITLE: "Tablero",
+  PENDING_DISPATCH_COUNT: (count: number): string =>
+    count > DISPATCH_BOARD_PAGINATION.PAGE_SIZE
+      ? `${DISPATCH_BOARD_PAGINATION.PAGE_SIZE}+`
+      : String(count),
+  PENDING_DISPATCH_HINT:
+    "Reservas de hoy que faltan por salir",
+  PENDING_DISPATCH_LABEL: (
+    count: NullableRef<number>
+  ): string =>
+    count === null
+      ? "Pendientes de hoy: reservas por despachar"
+      : `Pendientes de hoy: ${count} ${count === 1 ? "reserva" : "reservas"} por despachar`,
+  PENDING_DISPATCH_TITLE: "Pendientes de hoy",
   PER_UNIT_CHIP: "Por unidad",
   PER_UNIT_CHIP_SHORT: "Unidad",
   RETRY: "Reintentar",

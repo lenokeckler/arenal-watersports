@@ -51,6 +51,10 @@ const UnitCorrectionForm = (
       </Text>
       <FuelGauge
         level={form.gaugeLevel}
+        lowLines={Math.min(
+          unit.lowFuelLines,
+          form.gaugeMax
+        )}
         max={form.gaugeMax}
         onSelectLevel={form.handleSelectLevel}
       />

@@ -1,25 +1,20 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { STRING } from "@/app/constants";
 import type { ReservationChargeProposal } from "../models/ReservationChargeProposal.type";
 import type { ReservationChargeValuesState } from "../models/ReservationChargeValuesState.interface";
-import { resolveReservationChargeCurrencyOptions } from "../utils/resolveReservationChargeCurrencyOptions";
 import { resolveReservationChargeCurrencySwitch } from "../utils/resolveReservationChargeCurrencySwitch";
 import { resolveReservationChargeInitialValues } from "../utils/resolveReservationChargeInitialValues";
 
 export const useReservationChargeValues = (
   proposal: ReservationChargeProposal
 ): ReservationChargeValuesState => {
-  const currencyOptions = useMemo(
-    () => resolveReservationChargeCurrencyOptions(proposal),
-    [proposal]
-  );
   const [values, setValues] = useState(() =>
     resolveReservationChargeInitialValues(proposal)
   );
 
   return {
-    currencyOptions,
     setAmountText: (amountText) =>
       setValues((current) => ({ ...current, amountText })),
     setCurrency: (currency) =>
@@ -30,10 +25,28 @@ export const useReservationChargeValues = (
           currency
         )
       ),
-    setPaymentMethod: (paymentMethod) =>
+    setOtherPaymentMethod: (otherPaymentMethod) =>
       setValues((current) => ({
         ...current,
-        paymentMethod,
+        otherPaymentMethod,
+      })),
+    setPaymentChoice: (paymentChoice) =>
+      setValues((current) => ({
+        ...current,
+        paymentChoice,
+      })),
+    setSecondAmountText: (secondAmountText) =>
+      setValues((current) => ({
+        ...current,
+        secondAmountText,
+      })),
+    toggleSecondAmount: () =>
+      setValues((current) => ({
+        ...current,
+        secondAmountText:
+          current.secondAmountText === null
+            ? STRING.Empty
+            : null,
       })),
     values,
   };

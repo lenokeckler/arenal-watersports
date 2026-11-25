@@ -3,7 +3,7 @@ export const BOARD_CATEGORY_UNITS_QUERY = {
   ORDER_BY_CODE: "unit_code",
   ORDER_BY_ID: "unit_id",
   PROJECTION:
-    "unit_id,unit_code,category_id,effective_status,returns_at,reservation_id,reservation_code,customer_name,reservation_starts_at,reservation_ends_at",
+    "unit_id,unit_code,category_id,effective_status,returns_at,reservation_id,reservation_code,customer_name,reservation_starts_at,reservation_ends_at,fuel_level,fuel_max,usage_total,has_motor,consumes_fuel,usage_metric,impact_count,low_fuel_lines,people_count,dispatch_id,dispatched_at,radio_channel",
   VIEW: "board_category_units",
 } as const;
 
