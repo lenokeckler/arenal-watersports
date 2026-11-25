@@ -5,9 +5,11 @@ import {
   it,
   vi,
 } from "vitest";
+import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { NotAuthorizedError } from "@/app/services/authorization/NotAuthorizedError";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
+import { CATEGORY_NEW_RESERVABLE_DURATION_MINUTES } from "../constants/CategoryReservableDefaults.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import { CATEGORY_TRACKING_MODE } from "../constants/CategoryTrackingMode.constants";
 import { CategoryGroupConflictError } from "../services/assertCategoryGroupTrackingModeAvailable";
@@ -82,6 +84,7 @@ describe("createCategoryAction", () => {
       name: "   ",
       trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
       groupName: FAKE_GROUP_NAME,
+      isReservable: true,
     });
 
     expect(result).toEqual({
@@ -108,12 +111,16 @@ describe("createCategoryAction", () => {
       name: FAKE_CATEGORY_NAME,
       trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
       groupName: "",
+      isReservable: true,
     });
 
     expect(mockInsert).toHaveBeenCalledWith({
       name: FAKE_CATEGORY_NAME,
       tracking_mode: CATEGORY_TRACKING_MODE.BY_UNIT,
       group_name: null,
+      is_reservable: true,
+      default_duration_minutes:
+        CATEGORY_NEW_RESERVABLE_DURATION_MINUTES,
       created_by: FAKE_ADMIN_WORKER_ID,
       updated_by: FAKE_ADMIN_WORKER_ID,
     });
@@ -142,6 +149,7 @@ describe("createCategoryAction", () => {
       name: FAKE_CATEGORY_NAME,
       trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
       groupName: FAKE_GROUP_NAME,
+      isReservable: true,
     });
 
     expect(
@@ -170,6 +178,7 @@ describe("createCategoryAction", () => {
       name: FAKE_CATEGORY_NAME,
       trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
       groupName: FAKE_GROUP_NAME,
+      isReservable: true,
     });
 
     expect(result).toEqual({
@@ -190,6 +199,7 @@ describe("createCategoryAction", () => {
         name: FAKE_CATEGORY_NAME,
         trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
         groupName: "",
+        isReservable: true,
       })
     ).rejects.toThrow(NotAuthorizedError);
     expect(mockInsert).not.toHaveBeenCalled();
@@ -209,6 +219,7 @@ describe("createCategoryAction", () => {
         name: FAKE_CATEGORY_NAME,
         trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
         groupName: "",
+        isReservable: true,
       })
     ).rejects.toThrow(SupabaseQueryError);
   });
@@ -226,6 +237,7 @@ describe("createCategoryAction", () => {
       name: FAKE_CATEGORY_NAME,
       trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
       groupName: "   ",
+      isReservable: true,
     });
 
     expect(
@@ -234,5 +246,54 @@ describe("createCategoryAction", () => {
     expect(mockInsert).toHaveBeenCalledWith(
       expect.objectContaining({ group_name: null })
     );
+  });
+
+  it("stores a category that clients cannot reserve without a default duration", async () => {
+    mockAssertIsAdminWorker.mockResolvedValue(
+      FAKE_ADMIN_WORKER_ID
+    );
+    mockSingle.mockResolvedValue({
+      data: { id: FAKE_CATEGORY_ID },
+      error: null,
+    });
+
+    await createCategoryAction({
+      name: FAKE_CATEGORY_NAME,
+      trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
+      groupName: "",
+      isReservable: false,
+    });
+
+    expect(mockInsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        is_reservable: false,
+        default_duration_minutes: null,
+      })
+    );
+  });
+
+  it("returns the duplicate-name error instead of throwing when the name already exists", async () => {
+    mockAssertIsAdminWorker.mockResolvedValue(
+      FAKE_ADMIN_WORKER_ID
+    );
+    mockSingle.mockResolvedValue({
+      data: null,
+      error: {
+        code: POSTGRES_ERROR_CODE.UNIQUE_VIOLATION,
+        message: "duplicate key",
+      },
+    });
+
+    const result = await createCategoryAction({
+      name: FAKE_CATEGORY_NAME,
+      trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
+      groupName: "",
+      isReservable: true,
+    });
+
+    expect(result).toEqual({
+      status: CATEGORY_MUTATION_STATUS.ERROR,
+      nameError: CATEGORY_CATALOG_COPY.NAME_DUPLICATE_ERROR,
+    });
   });
 });
