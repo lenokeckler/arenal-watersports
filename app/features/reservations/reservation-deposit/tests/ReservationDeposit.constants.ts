@@ -27,6 +27,13 @@ export const EMPTY_PROPOSAL: ReservationDepositProposal = {
   [CURRENCY_CODE.USD]: 0,
 };
 
+export const DEPOSIT_READ_FAILURE = {
+  code: "XX000",
+  details: "",
+  hint: "",
+  message: "database unavailable",
+};
+
 export const SPLIT_PARENT_ID =
   "e2c20000-0000-4000-8000-000000000902";
 
