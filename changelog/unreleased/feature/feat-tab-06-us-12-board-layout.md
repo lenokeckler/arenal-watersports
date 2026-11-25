@@ -1,1 +1,1 @@
-TAB-06.12: Board layout per device — choose two or three cards per row and drag the categories into your own order, saved on the device (US-TAB-12)
+TAB-06.12.01: Board layout rules — the two-or-three column choice, the saved-order merge, the drag target and the device storage behind the board layout (US-TAB-12)
