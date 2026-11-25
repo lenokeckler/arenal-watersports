@@ -20,10 +20,10 @@ export const createCategoryCreateFormPage = (
   const getNameInput = (): Locator =>
     page.getByLabel(CATEGORY_CATALOG_COPY.NAME_FIELD_LABEL);
 
-  const getTrackingModeSelect = (): Locator =>
-    page.getByLabel(
-      CATEGORY_CATALOG_COPY.TRACKING_MODE_FIELD_LABEL
-    );
+  const getChoiceCard = (label: string): Locator =>
+    page.getByRole(ARIA_ROLE.BUTTON, {
+      name: new RegExp(`^${label}`),
+    });
 
   const getGroupNameInput = (): Locator =>
     page.getByLabel(
@@ -33,6 +33,11 @@ export const createCategoryCreateFormPage = (
   const getNameError = (): Locator =>
     page.getByText(
       CATEGORY_CATALOG_COPY.NAME_FIELD_REQUIRED_ERROR
+    );
+
+  const getNameDuplicateError = (): Locator =>
+    page.getByText(
+      CATEGORY_CATALOG_COPY.NAME_DUPLICATE_ERROR
     );
 
   const getTrackingModeError = (): Locator =>
@@ -62,10 +67,10 @@ export const createCategoryCreateFormPage = (
     await getNameInput().fill(value);
   };
 
-  const selectTrackingMode = async (
+  const selectChoice = async (
     label: string
   ): Promise<void> => {
-    await getTrackingModeSelect().selectOption({ label });
+    await getChoiceCard(label).click();
   };
 
   const fillGroupName = async (
@@ -86,16 +91,17 @@ export const createCategoryCreateFormPage = (
     goTo,
     getHeading,
     getNameInput,
-    getTrackingModeSelect,
+    getChoiceCard,
     getGroupNameInput,
     getNameError,
+    getNameDuplicateError,
     getTrackingModeError,
     getGroupNameError,
     getCancelButton,
     getSubmitButton,
     getToastMessage,
     fillName,
-    selectTrackingMode,
+    selectChoice,
     fillGroupName,
     submit,
     cancel,
