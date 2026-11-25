@@ -34,6 +34,7 @@ const loadActiveCategory = async () => {
     .from(E2E_SUPABASE_TABLE.EQUIPMENT_CATEGORIES)
     .select("id, name")
     .eq(E2E_SUPABASE_COLUMN.STATUS, CATEGORY_STATUS.ACTIVE)
+    .eq(E2E_SUPABASE_COLUMN.IS_RESERVABLE, true)
     .order("name")
     .limit(1)
     .single();
