@@ -53,7 +53,11 @@ export const RESERVATION_WINDOW = {
 
 export const DEFAULT_UNIT_OCCUPANCY: UnitOccupancy = {
   customerName: "María Rojas",
+  dispatchId: "dispatch-123",
+  dispatchedAt: "2026-11-02T09:30:00-06:00",
   isOverdue: false,
+  peopleCount: 3,
+  radioChannel: 7,
   reservationCode: "R-000123",
   reservationEndsAt: RESERVATION_WINDOW.ENDS_AT,
   reservationId: "reservation-123",
@@ -65,6 +69,7 @@ export const DEFAULT_CATEGORY_UNIT: CategoryUnit = {
   code: "JS-01",
   id: "unit-01",
   occupancy: null,
+  readings: null,
   status: INVENTORY_UNIT_STATUS.AVAILABLE,
 };
 
@@ -116,7 +121,7 @@ export const UNMAPPABLE_STATUSES = [
 
 export const DECORATIVE_SELECTOR = "[aria-hidden='true']";
 
-export const RETURN_TEXT_PATTERN = /^Regresa/;
+export const RETURN_TEXT_PATTERN = /^Fin:/;
 
 export const HEADING_LEVEL_TWO = 2;
 

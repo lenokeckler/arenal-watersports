@@ -29,12 +29,21 @@ export const DISPATCH_READING_PATTERN = {
   USAGE: /^\d+([.,]\d{1,2})?$/,
 } as const;
 
+export const DISPATCH_RADIO_CHANNEL = {
+  MAX: 99,
+  MIN: 1,
+  PATTERN: /^\d{1,2}$/,
+} as const;
+
 export const DISPATCH_SHEET_ERROR = {
   DISPATCH_GROUP: "dispatch reservation group",
   INVALID_INPUT: "Invalid dispatch input",
   LOAD_CATEGORY_RESERVATIONS:
     "load the reservations of a category to dispatch",
+  COUNT_PENDING: "count pending dispatch reservations",
   LOAD_GROUPS: "load dispatch groups",
+  LOAD_IMAGES: "load dispatch category images",
+  LOAD_PENDING_EQUIPMENT: "load pending dispatch equipment",
   LOAD_UNITS: "load dispatch candidate units",
 } as const;
 
@@ -59,4 +68,10 @@ export const DISPATCH_TRACKING_MODE = {
 export const DISPATCH_USAGE_METRIC = {
   ENGINE_HOURS: "engine_hours",
   KILOMETERS: "kilometers",
+} as const;
+
+export const DISPATCH_CATEGORY_IMAGE_QUERY = {
+  ID_COLUMN: "category_id",
+  PROJECTION: "category_id,image_path",
+  TABLE: "board_category_summary",
 } as const;

@@ -3,6 +3,7 @@ import type { UnitReading } from "../models/UnitReading.interface";
 
 interface UnitReadingRow {
   category: {
+    low_fuel_lines: number;
     name: string;
     usage_metric:
       Database["public"]["Enums"]["usage_metric"] | null;
@@ -12,6 +13,7 @@ interface UnitReadingRow {
   fuel_max: number;
   id: string;
   impact_count: number;
+  low_fuel_lines: number | null;
   next_oil_change_at: number | null;
   status: Database["public"]["Enums"]["unit_status"];
   usage_total: number;
@@ -26,6 +28,8 @@ export const mapUnitReading = (
   fuelMax: row.fuel_max,
   id: row.id,
   impactCount: row.impact_count,
+  lowFuelLines:
+    row.low_fuel_lines ?? row.category?.low_fuel_lines ?? 1,
   nextOilChangeAt:
     row.next_oil_change_at === null
       ? null
