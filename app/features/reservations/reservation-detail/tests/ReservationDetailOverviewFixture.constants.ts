@@ -15,6 +15,7 @@ export const RESERVATION_DETAIL_OVERVIEW_FIXTURE: ReservationDetail =
     customer_name: test.CUSTOMER_NAME,
     dispatched_at: null,
     dispatches: [],
+    dockNotifiedAt: null,
     duration_minutes: test.DURATION_MINUTES,
     ends_at: test.RESERVATION_END,
     equipment: [],

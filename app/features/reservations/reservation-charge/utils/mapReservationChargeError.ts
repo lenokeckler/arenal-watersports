@@ -1,8 +1,12 @@
 import { RESERVATION_CHARGE_REFUSALS } from "../constants/ReservationChargeRefusals.constants";
 import type { ReservationChargeActionResult } from "../models/ReservationChargeActionResult.type";
+import type { ReservationChargePaymentChoice } from "../models/ReservationChargePaymentChoice.type";
+import type { NullableRef } from "@/app/types";
+import { resolveReservationChargeMethodRefusalErrors } from "./resolveReservationChargeMethodRefusalErrors";
 
 export const mapReservationChargeError = (
-  error: unknown
+  error: unknown,
+  paymentChoice: NullableRef<ReservationChargePaymentChoice>
 ): ReservationChargeActionResult => {
   if (!(error instanceof Error)) {
     throw error;
@@ -18,7 +22,13 @@ export const mapReservationChargeError = (
 
   return {
     ok: false,
-    errors: { ...refusal.errors },
+    errors: {
+      ...refusal.errors,
+      ...resolveReservationChargeMethodRefusalErrors(
+        refusal.paymentMethodError,
+        paymentChoice
+      ),
+    },
     formError: refusal.formError,
   };
 };

@@ -2,7 +2,8 @@ import type { DispatchSheetGroup } from "../models/DispatchSheetGroup.interface"
 
 export const buildInitialUnitSelection = (
   group: DispatchSheetGroup,
-  preselectedUnitIds: string[]
+  preselectedUnitIds: string[],
+  takeCount: number
 ): string[] => {
   if (!group.isTrackedByUnit) {
     return group.fixedUnitIds;
@@ -11,8 +12,7 @@ export const buildInitialUnitSelection = (
   const freeUnitIds = new Set(
     group.candidateUnits.map((unit) => unit.unitId)
   );
-  const target =
-    group.fixedUnitIds.length + group.requiredQuantity;
+  const target = group.fixedUnitIds.length + takeCount;
   const chosen = preselectedUnitIds.filter(
     (unitId) =>
       freeUnitIds.has(unitId) &&
