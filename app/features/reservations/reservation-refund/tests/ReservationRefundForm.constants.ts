@@ -41,3 +41,4 @@ export const BOTH_REFUND: ReservationRefund = {
 export const EDITED_AMOUNT_TEXT = "10.00";
 
 export const ABOVE_USD_AMOUNT_TEXT = "30.01";
+export const CRC_ONLY_AMOUNT_TEXT = "10000";
