@@ -1,12 +1,70 @@
-import {
-  STRING,
-  type ActiveInventoryUnitStatus,
-} from "@/app/constants";
+import type { DispatchUsageMetric } from "@/app/components/dispatch-board/models/DispatchUsageMetric.type";
+import type { ActiveInventoryUnitStatus } from "@/app/constants";
 
 export const CATEGORY_UNITS_COPY = {
   BACK_TO_BOARD: "Volver al tablero",
-  CUSTOMER_LINE: (customerName: string): string =>
-    `La lleva ${customerName}`,
+  CLOSE_SHEET: "Cerrar",
+  EDIT: "Editar",
+  EDIT_UNIT: (code: string): string => `Modificar ${code}`,
+  IMPACT_COUNT_LABEL: "Golpes",
+  IMPACT_COUNT_LESS: "Quitar un golpe",
+  IMPACT_COUNT_MORE: "Agregar un golpe",
+  IMPACT_COUNT_SHORT: (count: number): string =>
+    `✕ ${count}`,
+  IMPACT_COUNT_SPOKEN: (count: number): string =>
+    `Golpes: ${count}`,
+  INFO_CUSTOMER: "Cliente",
+  INFO_DEPARTED: "Inicio",
+  INFO_PEOPLE: "Personas",
+  INFO_RADIO: "Radio",
+  INFO_RADIO_CHANNEL: (channel: number): string =>
+    `Canal ${channel}`,
+  INFO_RADIO_NONE: "Sin canal",
+  INFO_RETURNS: "Fin",
+  INFO_UNIT: (code: string): string =>
+    `Ver quién lleva ${code}`,
+  MAINTENANCE_IN_SERVICE: "Disponible",
+  MAINTENANCE_IN_WORKSHOP: "En mantenimiento",
+  MAINTENANCE_LABEL: "Estado de la unidad",
+  MAINTENANCE_OCCUPIED:
+    "Esta unidad está en el agua. Recíbala antes de ponerla en mantenimiento.",
+  MODIFY_ERROR:
+    "No se pudo guardar el cambio. Intente de nuevo.",
+  MODIFY_FUEL: "Gasolina",
+  MODIFY_INVALID: "Revise los datos e intente de nuevo.",
+  MODIFY_NOT_CORRECTABLE:
+    "Esta unidad no se puede modificar ahora.",
+  MODIFY_SAVE: "Guardar",
+  MODIFY_SAVING: "Guardando…",
+  MODIFY_TITLE: (code: string): string =>
+    `Modificar · ${code}`,
+  MODIFY_USAGE_INVALID:
+    "Escriba una lectura válida, con hasta dos decimales.",
+  RETURN_BADGE: (time: string): string => `Fin: ${time}`,
+  RECEIVE: "Recibir unidad",
+  RECEIVE_DAMAGE_LABEL: "Qué se dañó",
+  RECEIVE_DUE: (
+    customerName: string,
+    time: string
+  ): string => `${customerName} · Fin: ${time}`,
+  RECEIVE_ERROR:
+    "No se pudo recibir la unidad. Intente de nuevo.",
+  RECEIVE_FUEL: "Gasolina que quedó",
+  RECEIVE_INVALID: "Revise los datos e intente de nuevo.",
+  RECEIVE_NOT_OUT: "Esta unidad ya no está en el agua.",
+  RECEIVE_ORDER: "¿Todo en orden?",
+  RECEIVE_ORDER_DAMAGED: "Hay daños",
+  RECEIVE_ORDER_OK: "Sí, todo bien",
+  RECEIVE_PREVIOUS: (value: string): string =>
+    `Antes: ${value}`,
+  RECEIVE_SAVING: "Recibiendo…",
+  RECEIVE_TITLE: (code: string): string =>
+    `Recibir · ${code}`,
+  UPDATE_ALREADY_CLOSED: "Este grupo ya regresó.",
+  UPDATE_ERROR:
+    "No se pudo guardar el cambio. Intente de nuevo.",
+  UPDATE_INVALID:
+    "Revise las horas y el canal e intente de nuevo.",
   DISPATCH_ACTION: "Despachar",
   DISPATCH_CANCEL: "Cancelar",
   DISPATCH_SELECT_UNIT: (code: string): string =>
@@ -32,12 +90,6 @@ export const CATEGORY_UNITS_COPY = {
     "Es posible que la categoría ya no esté activa o que el enlace no sea correcto.",
   NOT_FOUND_TITLE: "Esta categoría no está en el tablero",
   OVERDUE_CHIP: "Retrasada",
-  OVERDUE_RETURNS_AT: (time: string): string =>
-    `Debía regresar a las ${time}`,
-  OVERDUE_RETURNS_ON: (
-    date: string,
-    time: string
-  ): string => `Debía regresar el ${date} a las ${time}`,
   PICKER_COMMITTED: (count: number): string =>
     `Comprometidas: ${count}`,
   PICKER_DISPATCH: (customerName: string): string =>
@@ -58,19 +110,9 @@ export const CATEGORY_UNITS_COPY = {
     pageCount: number
   ): string => `${page} de ${pageCount}`,
   PAGINATION_PREVIOUS: "Anterior",
-  RESERVATION_LINE: (
-    reservationCode: string,
-    reservationWindow: string
-  ): string =>
-    `Reserva ${reservationCode} ${STRING.MIDDLE_DOT} ${reservationWindow}`,
   RETRY: "Reintentar",
-  RETURNS_AT: (time: string): string =>
-    `Regresa a las ${time}`,
-  RETURNS_ON: (date: string, time: string): string =>
-    `Regresa el ${date} a las ${time}`,
   UNITS_COUNT: (unitCount: number): string =>
     unitCount === 1 ? "1 unidad" : `${unitCount} unidades`,
-  WINDOW_SEPARATOR: " a ",
 } as const;
 
 export const CATEGORY_UNIT_STATUS_LABEL: Record<
@@ -81,5 +123,29 @@ export const CATEGORY_UNIT_STATUS_LABEL: Record<
   damaged: "Dañada",
   in_maintenance: "En mantenimiento",
   in_repair: "En reparación",
-  occupied: "Ocupada",
+  occupied: "Por regresar",
+};
+
+export const CATEGORY_UNIT_USAGE_COPY: Record<
+  DispatchUsageMetric,
+  (value: string) => string
+> = {
+  engine_hours: (value) => `${value} h`,
+  kilometers: (value) => `${value} km`,
+};
+
+export const CATEGORY_UNIT_RECEIVE_USAGE_LABEL: Record<
+  DispatchUsageMetric,
+  string
+> = {
+  engine_hours: "Horas de motor al terminar",
+  kilometers: "Kilómetros al terminar",
+};
+
+export const CATEGORY_UNIT_MODIFY_USAGE_LABEL: Record<
+  DispatchUsageMetric,
+  string
+> = {
+  engine_hours: "Horas de motor",
+  kilometers: "Kilómetros",
 };

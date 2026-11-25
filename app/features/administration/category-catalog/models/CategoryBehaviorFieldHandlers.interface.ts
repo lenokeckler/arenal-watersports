@@ -8,6 +8,7 @@ export interface CategoryBehaviorFieldHandlers {
   onHasConditionPhotosChange: CategoryFormFieldChangeHandler;
   onHasMotorChange: CategoryFormFieldChangeHandler;
   onIsReservableChange: CategoryFormFieldChangeHandler;
+  onLowFuelLinesChange: CategoryFormFieldChangeHandler;
   onUnitsAreInterchangeableChange: CategoryFormFieldChangeHandler;
   onUsageMetricChange: CategoryFormFieldChangeHandler;
 }

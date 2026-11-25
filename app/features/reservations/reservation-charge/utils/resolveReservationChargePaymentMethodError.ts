@@ -15,7 +15,7 @@ export const resolveReservationChargePaymentMethodError = (
     STRING.Empty
   );
   if (trimmed === STRING.Empty) {
-    return COPY.METHOD_REQUIRED;
+    return COPY.OTHER_REQUIRED;
   }
   if (
     RESERVATION_CHARGE_DISALLOWED_CHARACTER_PATTERN.test(
