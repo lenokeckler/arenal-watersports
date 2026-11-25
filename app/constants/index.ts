@@ -132,6 +132,14 @@ export {
   THEME_STORAGE_KEY,
   type Theme,
 } from "./theme/Theme.constants";
+export {
+  BOARD_LAYOUT_COLUMN_OPTIONS,
+  BOARD_LAYOUT_COLUMNS,
+  BOARD_LAYOUT_STORAGE_FIELD,
+  BOARD_LAYOUT_STORAGE_KEY,
+  type BoardLayoutColumns,
+} from "./board-layout/BoardLayout.constants";
+export { DEFAULT_BOARD_LAYOUT } from "./board-layout/DefaultBoardLayout.constants";
 export { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
 export { PASSWORD_LENGTH } from "./access/PasswordLength.constants";
 export {
