@@ -1,6 +1,7 @@
 "use client";
 
 import CategoryConfigureDelete from "./components/CategoryConfigureDelete";
+import CategoryConfigureNextSteps from "./components/CategoryConfigureNextSteps";
 import CategoryConfigureLeaveSheet from "./components/CategoryConfigureLeaveSheet";
 import CategoryConfigureHeader from "./components/CategoryConfigureHeader";
 import CategoryConfigureSaveBar from "./components/CategoryConfigureSaveBar";
@@ -16,6 +17,7 @@ const CategoryConfigureView = ({
   const {
     name,
     statusCard,
+    nextSteps,
     sections,
     bodies,
     deletion,
@@ -32,6 +34,9 @@ const CategoryConfigureView = ({
         onRequestLeave={leave.onRequestLeave}
       />
       <CategoryConfigureStatusCard {...statusCard} />
+      {nextSteps && (
+        <CategoryConfigureNextSteps {...nextSteps} />
+      )}
       <CategoryConfigureSectionList
         categoryId={configuration.id}
         trackingMode={configuration.behavior.trackingMode}
