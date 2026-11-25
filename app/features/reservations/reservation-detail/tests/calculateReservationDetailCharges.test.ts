@@ -221,4 +221,41 @@ describe("calculateReservationDetailCharges", () => {
       amountRemaining: RESERVATION_DETAIL_TEST.ZERO_AMOUNT,
     });
   });
+
+  it("accumulates each currency on its own line and never adds one to the other", () => {
+    const summary = calculateReservationDetailCharges(
+      RESERVATION_DETAIL_PRICING_FIXTURE,
+      [
+        {
+          amount: RESERVATION_DETAIL_TEST.CHARGE_CRC,
+          currency: RESERVATION_DETAIL_CURRENCY.CRC,
+          kind: RESERVATION_DETAIL_CHARGE_KIND.TARIFF,
+        },
+        {
+          amount: RESERVATION_DETAIL_TEST.CHARGE_USD,
+          currency: RESERVATION_DETAIL_CURRENCY.USD,
+          kind: RESERVATION_DETAIL_CHARGE_KIND.TARIFF,
+        },
+        {
+          amount: RESERVATION_DETAIL_TEST.CHARGE_CRC,
+          currency: RESERVATION_DETAIL_CURRENCY.CRC,
+          kind: RESERVATION_DETAIL_CHARGE_KIND.TARIFF,
+        },
+      ],
+      []
+    );
+    const grossByCurrency = Object.fromEntries(
+      summary.charges.map((charge) => [
+        charge.currency,
+        charge.amountChargedGross,
+      ])
+    );
+
+    expect(grossByCurrency).toEqual({
+      [RESERVATION_DETAIL_CURRENCY.CRC]:
+        RESERVATION_DETAIL_TEST.CHARGE_CRC * 2,
+      [RESERVATION_DETAIL_CURRENCY.USD]:
+        RESERVATION_DETAIL_TEST.CHARGE_USD,
+    });
+  });
 });

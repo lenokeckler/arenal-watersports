@@ -26,7 +26,7 @@ describe("resolveReservationChargePaymentMethodError", () => {
   ])("asks for a method when it is %j", (method) => {
     expect(
       resolveReservationChargePaymentMethodError(method)
-    ).toBe(COPY.METHOD_REQUIRED);
+    ).toBe(COPY.OTHER_REQUIRED);
   });
 
   it.each([
