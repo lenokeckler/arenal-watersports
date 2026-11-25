@@ -3,6 +3,7 @@ import { PRICE_LOOKUP_AUDIENCE } from "@/app/features/operations/price-lookup/co
 import {
   E2E_PRICE_LOOKUP_AMOUNT,
   E2E_PRICE_LOOKUP_SCENARIO,
+  E2E_PRICE_LOOKUP_EXTRA_OCCUPANCY,
   E2E_PRICE_LOOKUP_STATUS,
   E2E_PRICE_LOOKUP_TOKEN_LENGTH,
   resolvePriceLookupName,
@@ -95,7 +96,12 @@ const seedCatalog = async (
   ];
   for (const { name, ...input } of extras) {
     ledger.extraIds.push(
-      (await insertExtra(name, input)).id
+      (
+        await insertExtra(name, {
+          ...input,
+          ...E2E_PRICE_LOOKUP_EXTRA_OCCUPANCY,
+        })
+      ).id
     );
   }
 

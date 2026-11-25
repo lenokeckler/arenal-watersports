@@ -50,3 +50,8 @@ export const resolvePriceLookupName = (
   )
 ): string =>
   `${E2E_PRICE_LOOKUP_NAME_PREFIX} ${scenario} ${projectName} ${token}`;
+
+export const E2E_PRICE_LOOKUP_EXTRA_OCCUPANCY = {
+  occupiesCategoryId: null,
+  occupiesQuantity: null,
+} as const;
