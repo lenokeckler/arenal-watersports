@@ -26,8 +26,11 @@ export const getGroupReturnUnits = async (
     consumesFuel: row.consumes_fuel,
     fuelMax: row.fuel_max,
     fuelOut: row.fuel_out,
+    impactCount: row.impact_count,
+    lowFuelLines: row.low_fuel_lines,
     unitId: row.unit_id,
     usageMetric: row.usage_metric,
     usageOut: row.usage_out,
+    usageTotal: row.usage_total,
   }));
 };

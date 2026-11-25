@@ -9,12 +9,14 @@ import {
 } from "../constants/DispatchSheet.constants";
 import {
   DISPATCH_INPUT_FIXTURE,
+  DISPATCH_RADIO_FIXTURE,
   DISPATCH_READING_FIXTURE,
 } from "./DispatchSheetTest.constants";
 
 const INPUT = {
   categoryId: DISPATCH_INPUT_FIXTURE.CATEGORY_ID,
   departureAt: DISPATCH_INPUT_FIXTURE.DEPARTURE_AT,
+  radioChannel: null,
   readings: [],
   reservationId: DISPATCH_INPUT_FIXTURE.RESERVATION_ID,
   returnsAt: DISPATCH_INPUT_FIXTURE.RETURNS_AT,
@@ -50,6 +52,23 @@ describe("dispatchReservationGroup", () => {
         p_returns_at: INPUT.returnsAt,
         p_unit_ids: INPUT.unitIds,
       }
+    );
+  });
+
+  it("sends the radio channel when the worker typed one", async () => {
+    const { rpc } = createOperationsClient(true, true);
+    answerDispatchWith(rpc, null);
+
+    await dispatchReservationGroup({
+      ...INPUT,
+      radioChannel: DISPATCH_RADIO_FIXTURE.VALID,
+    });
+
+    expect(rpc).toHaveBeenLastCalledWith(
+      "dispatch_reservation_group",
+      expect.objectContaining({
+        p_radio_channel: DISPATCH_RADIO_FIXTURE.VALID,
+      })
     );
   });
 

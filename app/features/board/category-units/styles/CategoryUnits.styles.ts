@@ -14,13 +14,13 @@ export const CATEGORY_UNITS_SUBTITLE_CLASS =
   "max-w-prose text-body-base text-on-surface-variant";
 
 export const CATEGORY_UNITS_LIST_CLASS =
-  "grid grid-cols-1 items-start gap-2 md:grid-cols-2";
+  "grid grid-cols-2 gap-sm md:grid-cols-3 xl:grid-cols-4";
 
 export const CATEGORY_UNITS_LIST_ITEM_CLASS =
   "flex min-w-0";
 
 export const CATEGORY_UNITS_DISPATCH_BAR_CLASS =
-  "fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-30 flex items-center justify-between gap-sm border-t border-outline-variant bg-surface-container-high/95 px-margin-mobile py-sm backdrop-blur-xl";
+  "fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-30 md:bottom-0 md:left-64 flex items-center justify-between gap-sm border-t border-outline-variant bg-surface-container-high/95 px-margin-mobile py-sm backdrop-blur-xl";
 
 export const CATEGORY_UNITS_DISPATCH_BAR_COUNT_CLASS =
   "text-title-md font-semibold text-on-surface";
