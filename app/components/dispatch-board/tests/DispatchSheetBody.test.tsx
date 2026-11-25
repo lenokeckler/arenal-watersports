@@ -98,6 +98,37 @@ describe("DispatchSheetBody", () => {
     expect(viewModel.handleBack).toHaveBeenCalledOnce();
   });
 
+  it("warns that a combo keeps its equipment", () => {
+    render(
+      <DispatchSheetBody
+        isCombo
+        viewModel={buildViewModel({
+          groups: [UNIT_GROUP_FIXTURE],
+          selectedGroup: UNIT_GROUP_FIXTURE,
+        })}
+      />
+    );
+
+    expect(
+      screen.getByText(DISPATCH_SHEET_COPY.COMBO_NOTE)
+    ).toBeInTheDocument();
+  });
+
+  it("does not warn about a combo on a plain reservation", () => {
+    render(
+      <DispatchSheetBody
+        viewModel={buildViewModel({
+          groups: [UNIT_GROUP_FIXTURE],
+          selectedGroup: UNIT_GROUP_FIXTURE,
+        })}
+      />
+    );
+
+    expect(
+      screen.queryByText(DISPATCH_SHEET_COPY.COMBO_NOTE)
+    ).not.toBeInTheDocument();
+  });
+
   it("offers no way back when only one category is left", () => {
     render(
       <DispatchSheetBody
