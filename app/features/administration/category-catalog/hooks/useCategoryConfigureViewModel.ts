@@ -24,6 +24,7 @@ import { useCategoryConfigurePhoto } from "./useCategoryConfigurePhoto";
 import { useCategoryConfigureReservations } from "./useCategoryConfigureReservations";
 import { useCategoryConfigureDraft } from "./useCategoryConfigureDraft";
 import { useCategoryConfigureLeave } from "./useCategoryConfigureLeave";
+import { useCategoryConfigureNextSteps } from "./useCategoryConfigureNextSteps";
 import { useCategoryConfigureSave } from "./useCategoryConfigureSave";
 import { useCategoryDepositFormFields } from "./useCategoryDepositFormFields";
 
@@ -75,6 +76,8 @@ export const useCategoryConfigureViewModel = ({
     changedCount: draft.changedCount,
     onSave: save.onSave,
   });
+  const nextSteps =
+    useCategoryConfigureNextSteps(configuration);
   const editedConfiguration = {
     ...applyCategoryEditedValues(
       configuration,
@@ -108,6 +111,7 @@ export const useCategoryConfigureViewModel = ({
       ),
       onToggleActive: draft.onToggleActive,
     },
+    nextSteps,
     sections: resolveCategoryConfigureSections(
       editedConfiguration,
       openSectionIds,
