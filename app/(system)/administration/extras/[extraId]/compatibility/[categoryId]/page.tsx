@@ -1,21 +1,12 @@
-import type { Metadata } from "next";
-import { EXTRA_COMPATIBILITY_UNITS_METADATA } from "@/app/features/administration/extra-catalog/constants/ExtraCatalogMetadata.constants";
-import ExtraCompatibilityUnitsForm from "@/app/features/administration/extra-catalog/ExtraCompatibilityUnitsForm";
-
-export const metadata: Metadata =
-  EXTRA_COMPATIBILITY_UNITS_METADATA;
+import { redirect } from "next/navigation";
+import { resolveExtraCompatibilityPath } from "@/app/features/administration/extra-catalog/utils/resolveExtraCompatibilityPath";
 
 const ExtraCompatibilityUnitsPage = async ({
   params,
-}: PageProps<"/administration/extras/[extraId]/compatibility/[categoryId]">): Promise<React.JSX.Element> => {
-  const { categoryId, extraId } = await params;
+}: PageProps<"/administration/extras/[extraId]/compatibility/[categoryId]">): Promise<never> => {
+  const { extraId } = await params;
 
-  return (
-    <ExtraCompatibilityUnitsForm
-      categoryId={categoryId}
-      extraId={extraId}
-    />
-  );
+  redirect(resolveExtraCompatibilityPath(extraId));
 };
 
 export default ExtraCompatibilityUnitsPage;
