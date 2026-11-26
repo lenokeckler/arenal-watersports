@@ -11,5 +11,7 @@ export interface ComboItemRowProps {
   item: ComboFormItemValues;
   onCategoryChange: ComboFormFieldChangeHandler;
   onQuantityChange: ComboFormFieldChangeHandler;
+  onQuantityDecrease: () => void;
+  onQuantityIncrease: () => void;
   onRemoveClick: () => void;
 }

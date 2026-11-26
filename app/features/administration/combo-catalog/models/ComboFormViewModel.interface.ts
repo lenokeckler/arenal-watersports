@@ -17,6 +17,10 @@ export interface ComboFormViewModel extends ComboFormSubmitViewModel {
   onItemQuantityChange: (
     index: number
   ) => ComboFormFieldChangeHandler;
+  onItemQuantityStep: (
+    index: number,
+    step: number
+  ) => () => void;
   onNameChange: ComboFormFieldChangeHandler;
   onPriceChange: ComboFormFieldChangeHandler;
   onRemoveItem: (index: number) => () => void;

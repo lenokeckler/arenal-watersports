@@ -1,12 +1,16 @@
 import Button from "@/app/components/button/Button";
+import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
+import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
+import InlineText from "@/app/components/text/InlineText";
 import Text from "@/app/components/text/Text";
-import { BUTTON } from "@/app/constants";
+import { BUTTON, BUTTON_TYPES } from "@/app/constants";
 import { COMBO_FORM_COPY } from "../constants/ComboFormCopy.constants";
+import { COMBO_ITEM_QUANTITY_STEP } from "../constants/ComboItemQuantity.constants";
 import type { ComboFormViewModel } from "../models/ComboFormViewModel.interface";
 import {
   COMBO_FORM_GROUP_CLASS,
   COMBO_FORM_GROUP_TITLE_CLASS,
-  COMBO_ITEM_BUTTON_CLASS,
+  COMBO_ITEM_ADD_BUTTON_CLASS,
   COMBO_ITEMS_ERROR_CLASS,
 } from "../styles/ComboForm.styles";
 import ComboItemRow from "./ComboItemRow";
@@ -18,6 +22,7 @@ const ComboItemsEditor = ({
   onAddItem,
   onItemCategoryChange,
   onItemQuantityChange,
+  onItemQuantityStep,
   onRemoveItem,
   values,
 }: ComboFormViewModel): React.JSX.Element => (
@@ -35,6 +40,14 @@ const ComboItemsEditor = ({
         item={item}
         onCategoryChange={onItemCategoryChange(index)}
         onQuantityChange={onItemQuantityChange(index)}
+        onQuantityDecrease={onItemQuantityStep(
+          index,
+          COMBO_ITEM_QUANTITY_STEP.DECREASE
+        )}
+        onQuantityIncrease={onItemQuantityStep(
+          index,
+          COMBO_ITEM_QUANTITY_STEP.INCREASE
+        )}
         onRemoveClick={onRemoveItem(index)}
       />
     ))}
@@ -44,13 +57,16 @@ const ComboItemsEditor = ({
       </Text>
     )}
     <Button
-      variant={BUTTON.SECONDARY}
-      type="button"
+      variant={BUTTON.BASE}
+      type={BUTTON_TYPES.BUTTON}
       disabled={isSubmitting}
       onClick={onAddItem}
-      className={COMBO_ITEM_BUTTON_CLASS}
+      className={COMBO_ITEM_ADD_BUTTON_CLASS}
     >
-      {COMBO_FORM_COPY.ADD_ITEM_BUTTON}
+      <MaterialIcon name={MATERIAL_ICON_NAME.ADD} />
+      <InlineText>
+        {COMBO_FORM_COPY.ADD_ITEM_BUTTON}
+      </InlineText>
     </Button>
   </div>
 );

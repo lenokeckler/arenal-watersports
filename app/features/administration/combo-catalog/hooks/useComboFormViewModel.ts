@@ -14,6 +14,7 @@ import type { ComboFormViewModel } from "../models/ComboFormViewModel.interface"
 import type { ComboFormViewProps } from "../models/ComboFormViewProps.interface";
 import { mapComboToFormValues } from "../utils/mapComboToFormValues";
 import { resolveComboPriceField } from "../utils/resolveComboPriceField";
+import { stepComboItemQuantity } from "../utils/stepComboItemQuantity";
 import { useComboFormSubmit } from "./useComboFormSubmit";
 
 export const useComboFormViewModel = ({
@@ -46,6 +47,23 @@ export const useComboFormViewModel = ({
         itemIndex === index ? { ...item, ...changes } : item
       ),
     }));
+
+  const onItemQuantityStep =
+    (index: number, step: number) => (): void =>
+      setValues((current) => ({
+        ...current,
+        items: current.items.map((item, itemIndex) =>
+          itemIndex === index
+            ? {
+                ...item,
+                quantityText: stepComboItemQuantity(
+                  item.quantityText,
+                  step
+                ),
+              }
+            : item
+        ),
+      }));
 
   const onAddItem = (): void =>
     setValues((current) => ({
@@ -81,6 +99,7 @@ export const useComboFormViewModel = ({
       updateItem(index, {
         quantityText: event.target.value,
       }),
+    onItemQuantityStep,
     onNameChange: (event) =>
       updateValues({ name: event.target.value }),
     onPriceChange: (event) =>

@@ -1,6 +1,9 @@
 export const COMBO_FORM_COPY = {
   ADD_ITEM_BUTTON: "Agregar equipo",
+  AUDIENCE_FIXED_HELP:
+    "Después de crear el combo, el público no se puede cambiar.",
   AUDIENCE_FOREIGN_OPTION: "Extranjeros",
+  AUDIENCE_LOCKED_NOTE: "No se cambia",
   AUDIENCE_LABEL: "Público del combo",
   AUDIENCE_NATIONAL_OPTION: "Nacionales",
   AUDIENCE_REQUIRED_ERROR: "Escoja el público del combo.",
@@ -24,6 +27,8 @@ export const COMBO_FORM_COPY = {
     "No se encontró el combo o uno de sus equipos. Es posible que otra persona lo haya eliminado o desactivado.",
   QUANTITY_INVALID_ERROR:
     "Ingrese una cantidad entera mayor que cero.",
+  QUANTITY_DECREASE_LABEL: "Restar uno",
+  QUANTITY_INCREASE_LABEL: "Sumar uno",
   QUANTITY_LABEL: "Cantidad",
   REMOVE_ITEM_BUTTON: "Quitar",
   SAVE_BUTTON: "Guardar combo",
