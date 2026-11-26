@@ -3693,6 +3693,10 @@ export type Database = {
               list_amount_usd: number;
             }[];
           };
+      delete_or_deactivate_combo: {
+        Args: { p_combo_id: string };
+        Returns: string;
+      };
       delete_or_deactivate_extra: {
         Args: { p_extra_id: string };
         Returns: string;
@@ -4307,6 +4311,10 @@ export type Database = {
         Args: { target_worker: string };
         Returns: undefined;
       };
+      save_combo: {
+        Args: { p_payload: Json };
+        Returns: string;
+      };
       session_idle_deadline: {
         Args: { last_activity: string };
         Returns: string;
@@ -4328,6 +4336,10 @@ export type Database = {
           signed_in_at: string;
           target_session: string;
         };
+        Returns: string;
+      };
+      set_combo_active: {
+        Args: { p_active: boolean; p_combo_id: string };
         Returns: string;
       };
       set_reservation_dock_notice: {
