@@ -2,6 +2,7 @@ export const SYSTEM_NAVIGATION_COPY = {
   BOARD: "Tablero",
   CALENDAR: "Calendario",
   CHANGE_MODE: "Cambiar modo",
+  COMBOS: "Combos",
   EXTRAS: "Extras",
   HISTORY: "Historial",
   INCOME: "Ingresos",

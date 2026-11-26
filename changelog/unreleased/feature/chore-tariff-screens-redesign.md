@@ -1,0 +1,1 @@
+chore - Tariff screens redesign — the Tarifas list gets a subtitle, filters with counts, lighter cards and a clear "Sin tarifa" mark; the tariff form gets a left-aligned title, a notice box, a status per type, currency and "por hora" inside the fields, and the actions pinned at the bottom

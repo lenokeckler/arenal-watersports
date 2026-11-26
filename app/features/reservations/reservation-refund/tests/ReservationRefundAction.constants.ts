@@ -38,3 +38,27 @@ export const EXCEEDS_NET_FAILURE = {
   hint: "",
   message: RESERVATION_REFUND_ERROR.MESSAGE.EXCEEDS_NET,
 };
+
+export const REFUND_POSTGRES_PREFIX = "P0001: ";
+
+export const REFUND_NON_ERROR_THROWN =
+  "Unexpected refund value";
+
+export const REFUND_SUPABASE_WRAP_PREFIX =
+  "Supabase query failed: ";
+
+export const REFUND_SUPABASE_WRAP_SUFFIX = " (P0001)";
+
+export const REFUND_REASON_MESSAGES = [
+  RESERVATION_REFUND_ERROR.MESSAGE.REASON_INVALID,
+  RESERVATION_REFUND_ERROR.MESSAGE.REASON_REQUIRED,
+  RESERVATION_REFUND_ERROR.MESSAGE.REASON_TOO_LONG,
+];
+
+export const REFUND_UNEXPECTED_ERROR = new Error(
+  "Unexpected refund failure"
+);
+
+export const REFUND_ACCESS_REDIRECT = new Error(
+  "NEXT_REDIRECT"
+);
