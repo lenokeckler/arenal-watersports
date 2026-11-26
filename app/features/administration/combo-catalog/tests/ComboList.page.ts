@@ -35,6 +35,16 @@ export const createComboListPage = () => {
   const queryEmptyMessage = (message: string) =>
     screen.queryByText(message);
 
+  const getCreateLink = () =>
+    screen.getByRole(ARIA_ROLE.LINK, {
+      name: COMBO_CATALOG_COPY.CREATE_CTA,
+    });
+
+  const getEditLink = (name: string) =>
+    getCard(name).getByRole(ARIA_ROLE.LINK, {
+      name: COMBO_CATALOG_COPY.EDIT_LINK,
+    });
+
   const getErrorMessage = () =>
     screen.queryByText(
       COMBO_CATALOG_COPY.FETCH_ERROR_MESSAGE
@@ -94,6 +104,8 @@ export const createComboListPage = () => {
     clickReactivate,
     clickRetry,
     confirmRemoval,
+    getCreateLink,
+    getEditLink,
     getErrorMessage,
     getTitle,
     queryButton,
