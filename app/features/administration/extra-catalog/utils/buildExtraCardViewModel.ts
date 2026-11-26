@@ -1,3 +1,4 @@
+import { LENGTH } from "@/app/constants";
 import type { Extra } from "../models/Extra.interface";
 import type { ExtraCardActionsViewModel } from "../models/ExtraCardActionsViewModel.interface";
 import type { ExtraCardViewModel } from "../models/ExtraCardViewModel.interface";
@@ -23,6 +24,7 @@ export const buildExtraCardViewModel = (
     extra.compatibleUnitCount
   ),
   editHref: resolveExtraEditPath(extra.id),
+  hasCompatibility: extra.compatibleUnitCount > LENGTH.ZERO,
   id: extra.id,
   isActionLoading: cardActions.pendingExtraIds.includes(
     extra.id

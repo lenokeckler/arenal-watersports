@@ -2,6 +2,8 @@ export const EXTRA_CATALOG_COPY = {
   CANCEL_BUTTON: "Cancelar",
   CREATE_CTA: "Nuevo extra",
   CREATE_SUCCESS_TOAST: "Extra agregado.",
+  EDIT_CARD_LABEL: (name: string): string =>
+    `Editar ${name}`,
   EDIT_LINK: "Editar",
   EMPTY_STATE_BODY: "Cada extra que agregue aparece aquí.",
   EMPTY_STATE_TITLE: "Todavía no hay extras.",
@@ -14,6 +16,8 @@ export const EXTRA_CATALOG_COPY = {
   FORM_TITLE_EDIT: "Editar extra",
   GENERIC_MUTATION_ERROR:
     "No se pudo guardar el extra. Intente de nuevo.",
+  LIST_SUBTITLE:
+    "Lo que se suma a una salida: parrilla, tubing, tablas…",
   LIST_TITLE: "Extras",
   LOADING_TEXT_DELETING: "Eliminando…",
   LOADING_TEXT_SAVING: "Guardando…",
@@ -27,6 +31,7 @@ export const EXTRA_CATALOG_COPY = {
   PAGINATION_NAV_LABEL: "Paginación de extras",
   PRICES_REQUIRED_ERROR:
     "Ingrese al menos un precio, en dólares o en colones.",
+  PRICE_SEPARATOR: " · ",
   PRICE_CRC_LABEL: "Precio en colones (CRC)",
   PRICE_FIELD_PLACEHOLDER: "Sin precio",
   PRICE_FORMAT_ERROR:
@@ -36,8 +41,11 @@ export const EXTRA_CATALOG_COPY = {
   REACTIVATE_GENERIC_ERROR:
     "No se pudo reactivar el extra. Intente de nuevo.",
   REACTIVATE_SUCCESS_TOAST: "Extra reactivado.",
-  REMOVAL_CONFIRM_MESSAGE:
-    "¿Eliminar este extra? Si nunca se usó en una reserva, se elimina por completo. Si ya se usó en alguna, se marca como inactivo y el historial de las reservas no cambia.",
+  REMOVAL_NEVER_USED_NOTE:
+    "Si nunca se usó en una reserva, se elimina por completo.",
+  REMOVAL_SHEET_TITLE: "¿Eliminar este extra?",
+  REMOVAL_USED_NOTE:
+    "Si ya se usó en alguna, se marca como inactivo y el historial de las reservas no cambia. Puede reactivarlo después.",
   REMOVAL_GENERIC_ERROR:
     "No se pudo eliminar el extra. Intente de nuevo.",
   REMOVE_BUTTON: "Eliminar",
