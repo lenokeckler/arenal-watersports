@@ -147,6 +147,28 @@ export const removeCombos = async (
   throwIfSupabaseError(error, "removeCombos");
 };
 
+export const removeCombosNamed = async (
+  names: string[]
+): Promise<void> => {
+  if (names.length === 0) {
+    return;
+  }
+  const supabase = createServiceRoleSupabaseClient();
+
+  const { data, error } = await supabase
+    .from(E2E_SUPABASE_TABLE.COMBOS)
+    .select(E2E_SUPABASE_COLUMN.ID)
+    .in(E2E_SUPABASE_COLUMN.NAME, names);
+  throwIfSupabaseError(error, "removeCombosNamed");
+  const comboIds = (data ?? []).map(({ id }) => id);
+  if (comboIds.length === 0) {
+    return;
+  }
+
+  await removeComboSales(comboIds);
+  await removeCombos(comboIds);
+};
+
 export const comboExists = async (
   comboId: string
 ): Promise<boolean> => {
