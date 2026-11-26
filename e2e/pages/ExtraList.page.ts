@@ -1,4 +1,4 @@
-﻿import type { Locator, Page } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE, PATHS } from "@/app/constants";
 import { EXTRA_CATALOG_COPY } from "@/app/features/administration/extra-catalog/constants/ExtraCatalogCopy.constants";
 import { EXTRA_COMPATIBILITY_COPY } from "@/app/features/administration/extra-catalog/constants/ExtraCompatibilityCopy.constants";
