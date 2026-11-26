@@ -29,6 +29,10 @@ vi.mock("@/app/services/board", () => ({
   readBoardCategory: vi.fn(),
   readBoardCategoryGroup: vi.fn().mockResolvedValue([]),
   readBoardCategoryUnits: vi.fn(),
+  readBoardUnitStatusDetails: vi.fn().mockResolvedValue({
+    damages: [],
+    jobs: [],
+  }),
 }));
 
 describe("CategoryUnitsPagination targets", () => {
