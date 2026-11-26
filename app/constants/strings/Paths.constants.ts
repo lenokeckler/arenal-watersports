@@ -26,6 +26,8 @@ export const PATHS = {
     CATEGORY_IMAGE_SEGMENT: "image",
     CATEGORY_STOCK_SEGMENT: "stock",
     CATEGORY_UNITS_SEGMENT: "units",
+    COMBOS: "/administration/combos",
+    COMBOS_NEW: "/administration/combos/new",
     DEPOSITS: "/administration/reports/deposits",
     EQUIPMENT_HOURS:
       "/administration/reports/equipment-hours",
@@ -38,6 +40,7 @@ export const PATHS = {
     RESERVATIONS_BY_WORKER:
       "/administration/reports/reservations-by-worker",
     ROOT: "/administration",
+    TARIFFS: "/administration/tariffs",
     UNITS_NEW_SEGMENT: "new",
     WORKER_AREAS: "/administration/workers/areas",
     WORKERS: "/administration/workers",
@@ -91,6 +94,7 @@ export const PATHS = {
     DEPOSITS: "/reservations/deposits",
     CANCEL_SEGMENT: "cancel",
     CHARGE_SEGMENT: "charge",
+    DEPOSIT_SEGMENT: "deposit",
     EDIT_SEGMENT: "edit",
     INCOME: "/reservations/income",
     NEW: "/reservations/new",
