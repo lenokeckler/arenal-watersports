@@ -3,6 +3,7 @@ import type { TariffFormSubmitViewModel } from "./TariffFormSubmitViewModel.inte
 import type { TariffFormValues } from "./TariffFormValues.interface";
 import type { TariffPriceField } from "./TariffPriceField.type";
 import type { TariffType } from "./TariffType.type";
+import type { TariffTypeSectionState } from "./TariffTypeSectionState.type";
 
 export interface TariffFormViewModel extends TariffFormSubmitViewModel {
   bannerMessage: string;
@@ -11,6 +12,7 @@ export interface TariffFormViewModel extends TariffFormSubmitViewModel {
     type: TariffType,
     field: TariffPriceField
   ) => TariffFormFieldChangeHandler;
+  sectionStates: Record<TariffType, TariffTypeSectionState>;
   title: string;
   values: TariffFormValues;
 }

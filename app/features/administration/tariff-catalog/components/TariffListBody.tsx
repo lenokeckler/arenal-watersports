@@ -1,5 +1,4 @@
 import Text from "@/app/components/text/Text";
-import { TARIFF_CATALOG_COPY } from "../constants/TariffCatalogCopy.constants";
 import type { TariffListBodyProps } from "../models/TariffListBodyProps.interface";
 import {
   TARIFF_LIST_CARDS_CLASS,
@@ -10,6 +9,7 @@ import TariffListErrorState from "./TariffListErrorState";
 
 const TariffListBody = ({
   cards,
+  emptyMessage,
   fetchFailed,
   onRetry,
 }: TariffListBodyProps): React.JSX.Element => {
@@ -20,7 +20,7 @@ const TariffListBody = ({
   if (cards.length === 0) {
     return (
       <Text className={TARIFF_LIST_EMPTY_CLASS}>
-        {TARIFF_CATALOG_COPY.EMPTY_MESSAGE}
+        {emptyMessage}
       </Text>
     );
   }

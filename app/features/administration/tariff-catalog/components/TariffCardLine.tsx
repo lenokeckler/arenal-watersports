@@ -1,15 +1,16 @@
 import InlineText from "@/app/components/text/InlineText";
 import type { TariffLineViewModel } from "../models/TariffLineViewModel.interface";
 import {
-  TARIFF_CARD_LINE_AMOUNTS_CLASS,
   TARIFF_CARD_LINE_CLASS,
   TARIFF_CARD_LINE_LABEL_CLASS,
   TARIFF_CARD_LINE_UNIT_CLASS,
   TARIFF_CARD_LINE_VALUE_CLASS,
+  resolveTariffCardLineAmountsClassName,
 } from "../styles/TariffCard.styles";
 
 const TariffCardLine = ({
   amounts,
+  hasTariff,
   label,
   unit,
 }: TariffLineViewModel): React.JSX.Element => (
@@ -19,7 +20,9 @@ const TariffCardLine = ({
     </InlineText>
     <div className={TARIFF_CARD_LINE_VALUE_CLASS}>
       <InlineText
-        className={TARIFF_CARD_LINE_AMOUNTS_CLASS}
+        className={resolveTariffCardLineAmountsClassName(
+          hasTariff
+        )}
       >
         {amounts}
       </InlineText>

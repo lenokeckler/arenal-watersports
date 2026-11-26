@@ -8,6 +8,7 @@ const TariffFormFields = ({
   errors,
   isSubmitting,
   onPriceChange,
+  sectionStates,
   values,
 }: TariffFormViewModel): React.JSX.Element => (
   <>
@@ -17,6 +18,7 @@ const TariffFormFields = ({
         errors={errors}
         isSubmitting={isSubmitting}
         onPriceChange={onPriceChange}
+        state={sectionStates[type]}
         type={type}
         values={values}
       />
