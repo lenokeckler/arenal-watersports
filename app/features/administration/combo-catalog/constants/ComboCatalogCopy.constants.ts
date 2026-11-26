@@ -1,4 +1,5 @@
 export const COMBO_CATALOG_COPY = {
+  BACK_TO_HOME: "Volver al inicio",
   CANCEL_BUTTON: "Cancelar",
   CREATE_CTA: "Nuevo combo",
   EDIT_LINK: "Editar",
