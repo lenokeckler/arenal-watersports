@@ -37,6 +37,15 @@ describe("ExtraListView", () => {
     );
   });
 
+  it("ends with a link back to the home screen", () => {
+    renderExtraListView();
+    const extraListPage = createExtraListPage();
+
+    expect(
+      extraListPage.getBackToHomeLink()
+    ).toHaveAttribute("href", PATHS.HOME);
+  });
+
   it("shows one card per extra with its edit link", () => {
     renderExtraListView({
       extras: [
