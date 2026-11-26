@@ -50,8 +50,7 @@ describe("recordReservationCharge", () => {
       RESERVATION_CHARGE_QUERY.RPC.RECORD,
       {
         p_payload: {
-          amount: VALID_CHARGE_COMMAND.amount,
-          currency: VALID_CHARGE_COMMAND.currency,
+          parts: VALID_CHARGE_COMMAND.parts,
           payment_method:
             VALID_CHARGE_COMMAND.paymentMethod,
           reservation_id:

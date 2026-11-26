@@ -25,9 +25,9 @@ test.describe("Equipment out screenshots", () => {
     await sheet
       .getOpenButton(dispatchSheet.customerName)
       .click();
-    await sheet.getUnit(first).check();
-    await sheet.getUnit(second).check();
-    await sheet.getSubmit().click();
+    await sheet.getUnit(first).click();
+    await sheet.getUnit(second).click();
+    await sheet.confirm();
     await expect(sheet.getDialog()).toHaveCount(
       E2E_COUNT.NONE
     );
