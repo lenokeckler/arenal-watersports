@@ -3,6 +3,8 @@ import { buildReservationChargeCommand } from "../utils/buildReservationChargeCo
 import { VALID_CHARGE_COMMAND } from "./ReservationChargeAction.constants";
 import {
   NON_BREAKING_SPACE,
+  OTHER_CHARGE_VALUES,
+  OTHER_METHOD_TEXT,
   VALID_CHARGE_INPUT,
 } from "./ReservationChargeValues.constants";
 
@@ -14,13 +16,14 @@ describe("buildReservationChargeCommand", () => {
   });
 
   it("trims the payment method edges like the validator", () => {
-    const paddedMethod = `${NON_BREAKING_SPACE} ${VALID_CHARGE_INPUT.paymentMethod} ${NON_BREAKING_SPACE}`;
+    const paddedMethod = `${NON_BREAKING_SPACE} ${OTHER_METHOD_TEXT} ${NON_BREAKING_SPACE}`;
 
     expect(
       buildReservationChargeCommand({
-        ...VALID_CHARGE_INPUT,
-        paymentMethod: paddedMethod,
+        ...OTHER_CHARGE_VALUES,
+        otherPaymentMethod: paddedMethod,
+        reservationId: VALID_CHARGE_INPUT.reservationId,
       }).paymentMethod
-    ).toBe(VALID_CHARGE_INPUT.paymentMethod);
+    ).toBe(OTHER_METHOD_TEXT);
   });
 });

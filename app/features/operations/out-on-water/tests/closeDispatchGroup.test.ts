@@ -41,9 +41,12 @@ describe("getGroupReturnUnits", () => {
         consumesFuel: CLOSE_RETURN_UNIT_ROW.consumes_fuel,
         fuelMax: CLOSE_RETURN_UNIT_ROW.fuel_max,
         fuelOut: CLOSE_RETURN_UNIT_ROW.fuel_out,
+        impactCount: CLOSE_RETURN_UNIT_ROW.impact_count,
+        lowFuelLines: CLOSE_RETURN_UNIT_ROW.low_fuel_lines,
         unitId: CLOSE_RETURN_UNIT_ROW.unit_id,
         usageMetric: CLOSE_RETURN_UNIT_ROW.usage_metric,
         usageOut: CLOSE_RETURN_UNIT_ROW.usage_out,
+        usageTotal: CLOSE_RETURN_UNIT_ROW.usage_total,
       },
     ]);
     expect(rpc).toHaveBeenLastCalledWith(

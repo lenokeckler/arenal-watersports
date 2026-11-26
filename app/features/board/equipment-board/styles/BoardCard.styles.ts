@@ -8,6 +8,11 @@ export const BOARD_CARD_INTERACTIVE_CLASS = joinClassNames(
   "relative transition-transform duration-200 hover:scale-102 active:scale-98 motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100"
 );
 
+export const BOARD_CARD_EMPTY_CLASS = joinClassNames(
+  BOARD_CARD_CLASS,
+  "relative opacity-45"
+);
+
 export const BOARD_CARD_LINK_CLASS =
   "absolute inset-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary";
 
@@ -29,20 +34,10 @@ export const BOARD_CARD_PLACEHOLDER_ICON_CLASS =
   "text-6xl text-on-surface-variant/40";
 
 export const BOARD_CARD_CHIPS_CLASS =
-  "absolute inset-x-0 top-0 flex items-start justify-between gap-1 p-2 md:gap-xs md:p-sm";
+  "absolute inset-x-0 top-0 flex items-start justify-end gap-1 p-2 md:gap-xs md:p-sm";
 
 export const BOARD_CARD_CHIP_CLASS =
   "whitespace-nowrap rounded-full border border-primary/30 bg-background/70 px-1.5 py-0.5 font-mono text-label-mono tracking-normal uppercase text-primary backdrop-blur-md";
-
-export const BOARD_CARD_UNIT_CHIP_CLASS = joinClassNames(
-  BOARD_CARD_CHIP_CLASS,
-  "min-w-0 truncate md:px-2"
-);
-
-export const BOARD_CARD_UNIT_CHIP_SHORT_CLASS = "md:hidden";
-
-export const BOARD_CARD_UNIT_CHIP_LONG_CLASS =
-  "hidden md:inline";
 
 export const BOARD_CARD_FREE_CHIP_CLASS = joinClassNames(
   BOARD_CARD_CHIP_CLASS,
@@ -54,8 +49,3 @@ export const BOARD_CARD_NAME_CLASS =
 
 export const BOARD_CARD_LABEL_CLASS =
   "break-words text-body-base font-semibold text-on-surface md:text-title-md";
-
-export const BOARD_CARD_BAR_TRACK_CLASS =
-  "block h-2 w-full shrink-0 overflow-hidden rounded-full bg-on-surface/25";
-
-export const BOARD_CARD_BAR_FILL_CLASS = "fill-primary";
