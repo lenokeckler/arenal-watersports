@@ -3,7 +3,7 @@ export interface MaintenanceJobDraft {
   costCurrency: string;
   description: string;
   isExternal: boolean;
-  nextOilChangeAt: string;
+  oilInterval: string;
   performedAt: string;
   unitId: string;
   workType: string;

@@ -20,7 +20,7 @@ export const insertE2eCharge = async (
       amount: seed.amount,
       created_by: workerId,
       currency: seed.currency,
-      kind: E2E_CHARGE_KIND,
+      kind: seed.kind ?? E2E_CHARGE_KIND,
       payment_method: paymentMethod,
       reservation_id: reservationId,
     })

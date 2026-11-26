@@ -6,7 +6,7 @@ export const DAMAGE_REPORTS_ERROR = {
 export const DAMAGE_REPORTS_PAGINATION = {
   FIRST_PAGE: 1,
   MAX_PAGE: 100_000,
-  PAGE_SIZE: 20,
+  PAGE_SIZE: 10,
   QUERY_KEY: "pagina",
 } as const;
 

@@ -60,6 +60,25 @@ export const createBoardCategoryUnitsPage = (
       ),
     });
 
+  const getEditToggle = (): Locator =>
+    main.getByRole(ARIA_ROLE.BUTTON, {
+      exact: true,
+      name: CATEGORY_UNITS_COPY.EDIT,
+    });
+
+  const getModifyUnit = (unitCode: string): Locator =>
+    main.getByRole(ARIA_ROLE.BUTTON, {
+      name: CATEGORY_UNITS_COPY.EDIT_UNIT(unitCode),
+    });
+
+  const getUnitSheet = (): Locator =>
+    page.getByRole(ARIA_ROLE.DIALOG);
+
+  const getSaveUnit = (): Locator =>
+    getUnitSheet().getByRole(ARIA_ROLE.BUTTON, {
+      name: CATEGORY_UNITS_COPY.MODIFY_SAVE,
+    });
+
   const getBackLink = (): Locator =>
     main.getByRole(ARIA_ROLE.LINK, {
       name: CATEGORY_UNITS_COPY.BACK_TO_BOARD,
@@ -92,11 +111,15 @@ export const createBoardCategoryUnitsPage = (
     getBackLink,
     getDispatchAction,
     getDispatchBar,
+    getEditToggle,
     getGroupSwitch,
     getHeading,
+    getModifyUnit,
     getNotFoundTitle,
     getPickerAction,
+    getSaveUnit,
     getSelectUnit,
+    getUnitSheet,
     selectUnit,
     getSwitchLink,
     getUnitHeading,

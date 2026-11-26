@@ -169,6 +169,11 @@ export const createExtraListPage = () => {
       name: EXTRA_CATALOG_COPY.LIST_TITLE,
     });
 
+  const getBackToHomeLink = () =>
+    screen.queryByRole(ARIA_ROLE.LINK, {
+      name: EXTRA_CATALOG_COPY.BACK_TO_HOME,
+    });
+
   const getCreateLink = () =>
     screen.queryByRole(ARIA_ROLE.LINK, {
       name: EXTRA_CATALOG_COPY.CREATE_CTA,
@@ -208,6 +213,7 @@ export const createExtraListPage = () => {
   };
 
   return {
+    getBackToHomeLink,
     clickCancel,
     clickReactivate,
     clickRemove,

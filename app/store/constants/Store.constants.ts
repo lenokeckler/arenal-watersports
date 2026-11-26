@@ -1,4 +1,5 @@
 export const STORE_SLICES = {
+  BOARD_LAYOUT: "boardLayout",
   CALENDAR: "calendar",
   LANGUAGE: "language",
   TOAST: "toast",
