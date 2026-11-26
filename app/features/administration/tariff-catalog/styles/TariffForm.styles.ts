@@ -29,7 +29,7 @@ export const TARIFF_FORM_CARD_CLASS =
   "flex flex-col gap-4 rounded-2xl border border-outline-variant bg-surface-container p-4 md:p-6";
 
 export const TARIFF_FORM_ACTIONS_CLASS =
-  "sticky bottom-0 z-10 -mx-margin-mobile flex flex-col gap-2 border-t border-outline-variant bg-surface-container px-margin-mobile pb-4 pt-3 md:static md:mx-0 md:flex-row-reverse md:justify-start md:border-0 md:bg-transparent md:px-0";
+  "sticky bottom-[calc(4rem+env(safe-area-inset-bottom))] z-10 -mx-margin-mobile flex flex-col gap-2 border-t border-outline-variant bg-surface-container px-margin-mobile pb-4 pt-3 md:static md:mx-0 md:flex-row-reverse md:justify-start md:border-0 md:bg-transparent md:px-0";
 
 export const TARIFF_FORM_ACTION_BUTTON_CLASS =
   "min-h-12 w-full min-w-0 md:w-auto md:min-w-40";
