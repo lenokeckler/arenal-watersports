@@ -98,10 +98,10 @@ export const createBoardDeviceLayoutPage = (page: Page) => {
       }
     );
 
-  const resolveHandlePoint = async (
-    label: string
+  const resolvePoint = async (
+    target: Locator
   ): Promise<E2ePoint> => {
-    const box = await getHandle(label).boundingBox();
+    const box = await target.boundingBox();
 
     if (!box) {
       return failE2eOperation(
@@ -116,22 +116,22 @@ export const createBoardDeviceLayoutPage = (page: Page) => {
     };
   };
 
-  const centerHandle = async (
-    label: string
+  const centerElement = async (
+    target: Locator
   ): Promise<void> => {
-    await getHandle(label).evaluate(
+    await target.evaluate(
       (handle, block) => handle.scrollIntoView({ block }),
       E2E_BOARD_DEVICE_LAYOUT.SCROLL_BLOCK
     );
   };
 
-  const dragHandleWithMouse = async (
-    label: string,
-    targetLabel: string
+  const dragWithMouse = async (
+    source: Locator,
+    destination: Locator
   ): Promise<void> => {
-    await centerHandle(label);
-    const start = await resolveHandlePoint(label);
-    const target = await resolveHandlePoint(targetLabel);
+    await centerElement(source);
+    const start = await resolvePoint(source);
+    const target = await resolvePoint(destination);
 
     await page.mouse.move(start.x, start.y);
     await page.mouse.down();
@@ -141,13 +141,14 @@ export const createBoardDeviceLayoutPage = (page: Page) => {
     await page.mouse.up();
   };
 
-  const dragHandleWithFinger = async (
-    label: string,
-    targetLabel: string
+  const dragWithFinger = async (
+    source: Locator,
+    destination: Locator,
+    holdMs = 0
   ): Promise<void> => {
-    await centerHandle(label);
-    const start = await resolveHandlePoint(label);
-    const target = await resolveHandlePoint(targetLabel);
+    await centerElement(source);
+    const start = await resolvePoint(source);
+    const target = await resolvePoint(destination);
     const session = await page
       .context()
       .newCDPSession(page);
@@ -164,6 +165,7 @@ export const createBoardDeviceLayoutPage = (page: Page) => {
       E2E_BOARD_DEVICE_LAYOUT_TOUCH.START,
       start
     );
+    await page.waitForTimeout(holdMs);
 
     for (
       let step = 1;
@@ -186,6 +188,40 @@ export const createBoardDeviceLayoutPage = (page: Page) => {
     await session.detach();
   };
 
+  const dragHandleWithMouse = (
+    label: string,
+    targetLabel: string
+  ): Promise<void> =>
+    dragWithMouse(getHandle(label), getHandle(targetLabel));
+
+  const dragHandleWithFinger = (
+    label: string,
+    targetLabel: string
+  ): Promise<void> =>
+    dragWithFinger(
+      getHandle(label),
+      getHandle(targetLabel)
+    );
+
+  const dragCardWithMouse = (
+    label: string,
+    targetLabel: string
+  ): Promise<void> =>
+    dragWithMouse(
+      boardPage.getCard(label),
+      boardPage.getCard(targetLabel)
+    );
+
+  const dragCardWithFinger = (
+    label: string,
+    targetLabel: string
+  ): Promise<void> =>
+    dragWithFinger(
+      boardPage.getCard(label),
+      boardPage.getCard(targetLabel),
+      E2E_BOARD_DEVICE_LAYOUT.LONG_PRESS_HOLD_MS
+    );
+
   const moveWithKeyboard = async (
     label: string
   ): Promise<void> => {
@@ -196,6 +232,8 @@ export const createBoardDeviceLayoutPage = (page: Page) => {
   return {
     boardPage,
     closePanel,
+    dragCardWithFinger,
+    dragCardWithMouse,
     dragHandleWithFinger,
     dragHandleWithMouse,
     getColumnsButton,
