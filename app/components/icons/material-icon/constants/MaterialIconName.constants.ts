@@ -12,6 +12,7 @@ export const MATERIAL_ICON_NAME = {
   DARK_MODE: "dark_mode",
   DELETE: "delete",
   DIRECTIONS_BOAT: "directions_boat",
+  DRAG_INDICATOR: "drag_indicator",
   EDIT: "edit",
   ERROR: "error",
   EVENT: "event",
