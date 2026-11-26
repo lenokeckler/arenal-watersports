@@ -22,6 +22,7 @@ export const E2E_SUPABASE_TABLE = {
   RESERVATION_GUIDES: "reservation_guides",
   RESERVATION_ITEMS: "reservation_items",
   RESERVATIONS: "reservations",
+  TARIFFS: "tariffs",
   WORKER_AREAS: "worker_areas",
   WORKER_MARKS: "worker_marks",
   WORKERS: "workers",
@@ -38,6 +39,7 @@ export const E2E_SUPABASE_FILTER = {
 export const E2E_SUPABASE_COLUMN = {
   COMBO_ID: "combo_id",
   BLOCKED_REASON: "blocked_reason",
+  CATEGORY_ID: "category_id",
   CREATED_BY: "created_by",
   CREATED_AT: "created_at",
   EXPIRES_AT: "expires_at",
