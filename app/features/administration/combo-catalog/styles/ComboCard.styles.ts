@@ -1,3 +1,10 @@
+import {
+  BUTTON_BASE_CLASS,
+  BUTTON_ENABLED_CLASS,
+  BUTTON_SIZE_CLASS,
+  BUTTON_VARIANT_CLASS,
+} from "@/app/components/button/styles/Button.styles";
+import { BUTTON, SIZE } from "@/app/constants";
 import { COMBO_STATUS } from "../constants/ComboStatus.constants";
 import type { ComboStatus } from "../models/ComboStatus.type";
 
@@ -11,6 +18,11 @@ export const COMBO_CARD_CONTAINER_CLASS: Record<
   [COMBO_STATUS.ACTIVE]: COMBO_CARD_BASE_CLASS,
   [COMBO_STATUS.INACTIVE]: `${COMBO_CARD_BASE_CLASS} opacity-60`,
 };
+
+export const COMBO_CARD_ACTIONS_ROW_CLASS =
+  "grid grid-cols-2 gap-3 md:flex md:shrink-0";
+
+export const COMBO_CARD_EDIT_LINK_CLASS = `${BUTTON_BASE_CLASS} ${BUTTON_VARIANT_CLASS[BUTTON.SECONDARY]} ${BUTTON_SIZE_CLASS[SIZE.FULL]} ${BUTTON_ENABLED_CLASS} min-h-11 rounded-md md:w-40`;
 
 export const COMBO_CARD_BODY_CLASS =
   "flex flex-col gap-1 md:min-w-0 md:flex-1";

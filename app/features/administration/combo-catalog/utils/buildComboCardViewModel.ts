@@ -4,6 +4,7 @@ import { COMBO_CATALOG_COPY } from "../constants/ComboCatalogCopy.constants";
 import type { Combo } from "../models/Combo.interface";
 import type { ComboCardActions } from "../models/ComboCardActions.interface";
 import type { ComboCardViewModel } from "../models/ComboCardViewModel.interface";
+import { resolveComboEditPath } from "./resolveComboEditPath";
 
 const buildItemsSummary = ({ items }: Combo): string =>
   items.length > 0
@@ -30,6 +31,7 @@ export const buildComboCardViewModel = (
   combo: Combo,
   actions: ComboCardActions
 ): ComboCardViewModel => ({
+  editHref: resolveComboEditPath(combo.id),
   id: combo.id,
   isActionLoading: actions.pendingComboId === combo.id,
   itemsSummary: buildItemsSummary(combo),

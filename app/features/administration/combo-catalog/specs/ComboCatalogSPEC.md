@@ -21,7 +21,7 @@ The administration worker sees every predefined combo, grouped by the audience i
 
 ## Out of scope
 
-- Creating and editing a combo, its equipment and its price (next PR).
+- End-to-end specs of the combo form (next PR).
 - Tariffs (US-ADM-24, US-ADM-25).
 
 ## Rules
@@ -40,3 +40,13 @@ The administration worker sees every predefined combo, grouped by the audience i
 - [x] The price uses the currency of the audience.
 - [x] A never sold combo is deleted and a sold one is marked inactive, and the worker is told which.
 - [x] An inactive combo is shown muted and can be reactivated.
+
+## Combo form screen (US-ADM-22, US-ADM-23)
+
+- `/administration/combos/new` and `/administration/combos/[comboId]`, thin shells over `ComboCreateForm` and `ComboEditForm`; the edit screen is a not found when the combo does not exist.
+- The audience (nationals or foreigners) is chosen with two large buttons only when creating; when editing it is shown as read-only text.
+- The equipment is a list of rows (category and quantity) with add and remove; at least one row is required.
+- The price field uses the currency of the audience; a combo without a price cannot be saved.
+- Errors show after the first submit attempt and follow the values; the message the database gives for a sold combo is shown in the error banner and the data is kept.
+- Saving shows "Combo guardado." and returns to the list; Regresar returns to the list without saving.
+- The list has a Nuevo combo button and an Editar link on every card.

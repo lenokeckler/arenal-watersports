@@ -1,10 +1,14 @@
+import Link from "@/app/components/link/Link";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
 import { ARIA_ROLE, TitleVariant } from "@/app/constants";
+import { COMBO_CATALOG_COPY } from "../constants/ComboCatalogCopy.constants";
 import type { ComboCardViewModel } from "../models/ComboCardViewModel.interface";
 import {
+  COMBO_CARD_ACTIONS_ROW_CLASS,
   COMBO_CARD_BODY_CLASS,
   COMBO_CARD_CONTAINER_CLASS,
+  COMBO_CARD_EDIT_LINK_CLASS,
   COMBO_CARD_HEADING_ROW_CLASS,
   COMBO_CARD_ITEMS_CLASS,
   COMBO_CARD_NAME_CLASS,
@@ -37,7 +41,15 @@ const ComboCard = (
         {card.priceLabel}
       </Text>
     </div>
-    <ComboCardActions {...card} />
+    <div className={COMBO_CARD_ACTIONS_ROW_CLASS}>
+      <Link
+        href={card.editHref}
+        className={COMBO_CARD_EDIT_LINK_CLASS}
+      >
+        {COMBO_CATALOG_COPY.EDIT_LINK}
+      </Link>
+      <ComboCardActions {...card} />
+    </div>
   </div>
 );
 
