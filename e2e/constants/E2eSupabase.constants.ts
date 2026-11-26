@@ -47,6 +47,7 @@ export const E2E_SUPABASE_COLUMN = {
   MUST_CHANGE_PASSWORD: "must_change_password",
   PERSONAL_EMAIL: "personal_email",
   RESERVATION_ID: "reservation_id",
+  IS_RESERVABLE: "is_reservable",
   STATUS: "status",
   USED_AT: "used_at",
   USERNAME: "username",
