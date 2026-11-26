@@ -1,4 +1,4 @@
-import type { Locator, Page } from "@playwright/test";
+﻿import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE, PATHS } from "@/app/constants";
 import { EXTRA_CATALOG_COPY } from "@/app/features/administration/extra-catalog/constants/ExtraCatalogCopy.constants";
 import { EXTRA_COMPATIBILITY_COPY } from "@/app/features/administration/extra-catalog/constants/ExtraCompatibilityCopy.constants";
@@ -39,7 +39,7 @@ export const createExtraListPage = (page: Page) => {
 
   const getExtraEditLink = (extraName: string): Locator =>
     getExtraCard(extraName).getByRole(ARIA_ROLE.LINK, {
-      name: EXTRA_CATALOG_COPY.EDIT_LINK,
+      name: EXTRA_CATALOG_COPY.EDIT_CARD_LABEL(extraName),
     });
 
   const getExtraCompatibilityLink = (
@@ -70,16 +70,29 @@ export const createExtraListPage = (page: Page) => {
       name: EXTRA_CATALOG_COPY.CREATE_CTA,
     });
 
+  const getRemovalSheet = (extraName: string): Locator =>
+    page
+      .getByRole(ARIA_ROLE.DIALOG)
+      .filter({ hasText: extraName });
+
   const getRemoveButton = (extraName: string): Locator =>
-    getExtraCard(extraName).getByRole(ARIA_ROLE.BUTTON, {
-      name: EXTRA_CATALOG_COPY.REMOVE_BUTTON,
-    });
+    getExtraCard(extraName)
+      .getByRole(ARIA_ROLE.BUTTON, {
+        name: EXTRA_CATALOG_COPY.REMOVE_BUTTON,
+      })
+      .or(
+        getRemovalSheet(extraName).getByRole(
+          ARIA_ROLE.BUTTON,
+          { name: EXTRA_CATALOG_COPY.REMOVE_BUTTON }
+        )
+      )
+      .last();
 
   const getRemovalConfirmMessage = (
     extraName: string
   ): Locator =>
-    getExtraCard(extraName).getByText(
-      EXTRA_CATALOG_COPY.REMOVAL_CONFIRM_MESSAGE
+    getRemovalSheet(extraName).getByText(
+      EXTRA_CATALOG_COPY.REMOVAL_USED_NOTE
     );
 
   const getReactivateButton = (
