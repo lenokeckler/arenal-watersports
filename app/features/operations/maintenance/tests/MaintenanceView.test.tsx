@@ -9,7 +9,7 @@ import { MAINTENANCE_COPY } from "../constants/MaintenanceCopy.constants";
 import type { MaintenanceOverview } from "../models/MaintenanceOverview.interface";
 import {
   MAINTENANCE_OVERVIEW_FIXTURE,
-  OIL_TEXT_CASES,
+  OIL_CARD_CASES,
 } from "./Maintenance.constants";
 
 const renderView = (
@@ -27,15 +27,32 @@ const getSection = (name: string) =>
   screen.getByRole("region", { name });
 
 describe("MaintenanceView", () => {
-  it("lists the machines that reached their oil change with how far they went", () => {
+  it("lists the machines that reached or are near their oil change, with the distance on the card", () => {
     renderView(MAINTENANCE_OVERVIEW_FIXTURE);
     const oil = getSection(MAINTENANCE_COPY.OIL_HEADING);
 
-    OIL_TEXT_CASES.forEach(({ text }) => {
-      expect(
-        within(oil).getByText(text)
-      ).toBeInTheDocument();
-    });
+    OIL_CARD_CASES.forEach(
+      ({ code, current, next, remaining }) => {
+        const card = within(oil)
+          .getAllByRole("listitem")
+          .find((item) =>
+            item.textContent?.includes(`${code} ·`)
+          );
+
+        expect(card).toBeDefined();
+        expect(
+          within(card as HTMLElement).getByText(remaining)
+        ).toBeInTheDocument();
+        expect(
+          within(card as HTMLElement).getAllByText(current)
+            .length
+        ).toBeGreaterThan(0);
+        expect(
+          within(card as HTMLElement).getAllByText(next)
+            .length
+        ).toBeGreaterThan(0);
+      }
+    );
     expect(
       within(oil).getAllByRole("listitem")
     ).toHaveLength(

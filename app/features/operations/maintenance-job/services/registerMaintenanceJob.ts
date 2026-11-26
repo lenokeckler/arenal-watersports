@@ -27,8 +27,7 @@ export const registerMaintenanceJob = async (
       p_cost_currency: input.costCurrency ?? undefined,
       p_description: input.description.trim(),
       p_is_external: input.isExternal,
-      p_next_oil_change_at:
-        input.nextOilChangeAt ?? undefined,
+      p_oil_interval: input.oilInterval ?? undefined,
       p_performed_at: input.performedAt,
       p_unit_id: input.unitId,
       p_work_type: input.workType,

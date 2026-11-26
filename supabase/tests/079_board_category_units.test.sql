@@ -51,7 +51,9 @@ select columns_are(
     'people_count',
     'dispatch_id',
     'dispatched_at',
-    'radio_channel'
+    'radio_channel',
+    'oil_remaining',
+    'oil_warning'
   ],
   'la vista expone solo las veintidos columnas acordadas'
 );

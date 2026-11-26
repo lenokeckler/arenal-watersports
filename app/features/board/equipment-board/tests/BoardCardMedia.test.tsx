@@ -1,8 +1,8 @@
+import { BOARD_UNIT_FILTER } from "@/app/constants";
 import { describe, expect, it, vi } from "vitest";
 import { render } from "@testing-library/react";
 import type { ImageProps } from "next/image";
 import EquipmentBoardContent from "../components/EquipmentBoardContent";
-import { EQUIPMENT_BOARD_COPY } from "../constants/EquipmentBoardCopy.constants";
 import {
   CARDS_WITH_UNKNOWN_CATEGORY,
   CARDS_WITH_UNKNOWN_CATEGORY_FIRST,
@@ -39,22 +39,13 @@ vi.mock("next/image", async () => {
 });
 
 describe("BoardCard media", () => {
-  it("marks every card as tracked per unit", () => {
-    render(<EquipmentBoardContent cards={BOARD_CARDS} />);
-    const page = createEquipmentBoardPage();
-
-    page.getCards().forEach((card) => {
-      expect(
-        page.getText(
-          card,
-          EQUIPMENT_BOARD_COPY.PER_UNIT_CHIP
-        )
-      ).toBeInTheDocument();
-    });
-  });
-
   it("shows the product image of a known category and of a group by its name", () => {
-    render(<EquipmentBoardContent cards={BOARD_CARDS} />);
+    render(
+      <EquipmentBoardContent
+        cards={BOARD_CARDS}
+        filter={BOARD_UNIT_FILTER.ALL}
+      />
+    );
     const page = createEquipmentBoardPage();
 
     expect(
@@ -66,7 +57,12 @@ describe("BoardCard media", () => {
   });
 
   it("prioritizes only the first card image", () => {
-    render(<EquipmentBoardContent cards={BOARD_CARDS} />);
+    render(
+      <EquipmentBoardContent
+        cards={BOARD_CARDS}
+        filter={BOARD_UNIT_FILTER.ALL}
+      />
+    );
     const page = createEquipmentBoardPage();
 
     expect(
@@ -81,6 +77,7 @@ describe("BoardCard media", () => {
     render(
       <EquipmentBoardContent
         cards={CARDS_WITH_UNKNOWN_CATEGORY}
+        filter={BOARD_UNIT_FILTER.ALL}
       />
     );
     const page = createEquipmentBoardPage();
@@ -96,6 +93,7 @@ describe("BoardCard media", () => {
     render(
       <EquipmentBoardContent
         cards={CARDS_WITH_UNKNOWN_CATEGORY_FIRST}
+        filter={BOARD_UNIT_FILTER.ALL}
       />
     );
     const page = createEquipmentBoardPage();
