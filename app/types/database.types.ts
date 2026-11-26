@@ -4311,6 +4311,10 @@ export type Database = {
         Args: { target_worker: string };
         Returns: undefined;
       };
+      save_category_tariffs: {
+        Args: { p_payload: Json };
+        Returns: number;
+      };
       save_combo: {
         Args: { p_payload: Json };
         Returns: string;
