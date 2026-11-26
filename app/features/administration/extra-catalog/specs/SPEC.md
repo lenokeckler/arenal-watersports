@@ -108,3 +108,12 @@ The administration worker keeps the list of extras that reservations can add to 
 | `getExtraCompatibilityUnits(extraId, categoryId)` returns the extra, the category and its units, each with `isLinked`                 | `getExtraCompatibilityUnits.test.ts`, `buildExtraCompatibilityUnits.test.ts`           |
 | Decommissioned units are never counted or listed; a category left with no units is not offered                                        | `buildExtraCompatibilityCategories.test.ts`, `buildExtraCompatibilityUnits.test.ts`    |
 | An unknown or malformed extra id, an unknown category or a by-quantity category gives `null`; any other read error throws             | `extraCompatibilityQueries.test.ts`, `getExtraCompatibilityUnits.test.ts`              |
+
+## 20.02 Extra compatibility action (US-ADM-20)
+
+| Requirement                                                                                                        | Test                                                                                |
+| ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| The action refuses a non-admin before any read and validates its `unknown` input (three uuids and a list of uuids) | `setExtraCompatibilityAction.test.ts`, `parseSetExtraCompatibilityInput.test.ts`    |
+| Saving one category replaces its links and keeps the links the extra has in other categories                       | `resolveExtraCompatibilityUnitIds.test.ts`, `setExtraCompatibilityAction.test.ts`   |
+| A selected unit from another category or decommissioned is a validation error and nothing is written               | `resolveExtraCompatibilityUnitIds.test.ts`, `setExtraCompatibilityAction.test.ts`   |
+| The database errors 42501, P0002 and 22023 become Spanish results; any other error throws                          | `mapExtraCompatibilityErrorToResult.test.ts`, `setExtraCompatibilityAction.test.ts` |

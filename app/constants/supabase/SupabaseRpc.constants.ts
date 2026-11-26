@@ -23,6 +23,7 @@ export const SUPABASE_RPC = {
   SAVE_CATEGORY_TARIFFS: "save_category_tariffs",
   SAVE_COMBO: "save_combo",
   SET_COMBO_ACTIVE: "set_combo_active",
+  SET_EXTRA_COMPATIBILITY: "set_extra_compatibility",
   SET_UNIT_CONDITION: "set_unit_condition",
   LIST_OPERATIONS_STOCK_MOVEMENTS:
     "list_operations_stock_movements",
