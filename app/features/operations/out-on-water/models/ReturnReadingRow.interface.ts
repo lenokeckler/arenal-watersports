@@ -14,11 +14,15 @@ export interface ReturnReadingRow {
   fuelLevel: NullableRef<number>;
   fuelMax: number;
   fuelOut: NullableRef<number>;
+  impactCount: number;
   impactError: NullableRef<string>;
   isComplete: boolean;
+  lowFuelLines: number;
+  newImpactCount: NullableRef<number>;
   unitId: string;
   usageError: NullableRef<string>;
   usageMetric: NullableRef<DispatchUsageMetric>;
   usageOut: NullableRef<number>;
   usageReading: NullableRef<number>;
+  usageTotal: number;
 }

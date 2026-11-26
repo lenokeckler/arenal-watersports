@@ -31,6 +31,7 @@ describe("mapUnitFormValuesToInput", () => {
       status: UNIT_STATUS.AVAILABLE,
       fuelMax: 6,
       fuelLevel: 3,
+      lowFuelLines: null,
       usageTotal: 12.5,
       nextOilChangeAt: 50,
     });

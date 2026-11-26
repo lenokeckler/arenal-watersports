@@ -1,3 +1,4 @@
+import { BOARD_UNIT_FILTER } from "@/app/constants";
 import { describe, expect, it, vi } from "vitest";
 import { render } from "@testing-library/react";
 import type { ImageProps } from "next/image";
@@ -45,6 +46,7 @@ describe("BoardCard uploaded image", () => {
     render(
       <EquipmentBoardContent
         cards={CARDS_WITH_UPLOADED_IMAGE_SECOND}
+        filter={BOARD_UNIT_FILTER.ALL}
       />
     );
     const page = createEquipmentBoardPage();
@@ -60,6 +62,7 @@ describe("BoardCard uploaded image", () => {
     render(
       <EquipmentBoardContent
         cards={CARDS_WITH_UPLOADED_IMAGE_SECOND}
+        filter={BOARD_UNIT_FILTER.ALL}
       />
     );
     const page = createEquipmentBoardPage();
@@ -75,6 +78,7 @@ describe("BoardCard uploaded image", () => {
     render(
       <EquipmentBoardContent
         cards={CARDS_WITH_UPLOADED_IMAGE_SECOND}
+        filter={BOARD_UNIT_FILTER.ALL}
       />
     );
     const page = createEquipmentBoardPage();

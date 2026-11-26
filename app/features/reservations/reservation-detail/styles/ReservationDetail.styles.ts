@@ -32,3 +32,9 @@ export const RESERVATION_DETAIL_FALLBACK_COPY_CLASS =
   "text-sm text-on-surface-variant";
 export const RESERVATION_DETAIL_RETRY_BUTTON_CLASS =
   "inline-flex min-h-11 items-center justify-center rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-on-primary transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+export const RESERVATION_DETAIL_DOCK_ACTION_CLASS =
+  "flex flex-wrap items-center gap-3";
+export const RESERVATION_DETAIL_DOCK_SENT_CLASS =
+  "inline-flex min-h-11 items-center rounded-full border border-primary bg-primary px-4 text-sm font-bold text-on-primary";
+export const RESERVATION_DETAIL_DOCK_ERROR_CLASS =
+  "w-full text-sm text-error";

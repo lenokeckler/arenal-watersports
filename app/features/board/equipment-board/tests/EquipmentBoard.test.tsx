@@ -5,7 +5,6 @@ import {
   it,
   vi,
 } from "vitest";
-import { render } from "@testing-library/react";
 import { readBoardCategories } from "@/app/services/board";
 import EquipmentBoard from "../EquipmentBoard";
 import { EQUIPMENT_BOARD_COPY } from "../constants/EquipmentBoardCopy.constants";
@@ -23,6 +22,7 @@ import {
   READ_FAILURE_MESSAGE,
 } from "./EquipmentBoard.constants";
 import { createEquipmentBoardPage } from "./EquipmentBoard.page";
+import { renderWithBoardStore } from "./renderWithBoardStore";
 
 vi.mock(
   "@/app/components/board-realtime/BoardRealtime",
@@ -44,7 +44,7 @@ describe("EquipmentBoard", () => {
   });
 
   it("renders one card per category, merging the grouped ones, under a titled main landmark", async () => {
-    render(await EquipmentBoard());
+    renderWithBoardStore(await EquipmentBoard());
     const page = createEquipmentBoardPage();
 
     expect(page.getMain()).toBeInTheDocument();
@@ -58,7 +58,7 @@ describe("EquipmentBoard", () => {
   });
 
   it("shows the grouped card like any other card, with the summed totals and no member lines", async () => {
-    render(await EquipmentBoard());
+    renderWithBoardStore(await EquipmentBoard());
     const page = createEquipmentBoardPage();
     const kayakCard = page.getCard(KAYAK_LABEL);
 
@@ -82,7 +82,7 @@ describe("EquipmentBoard", () => {
     vi.mocked(readBoardCategories).mockResolvedValue([
       PADDLE_BOARD_ROW,
     ]);
-    render(await EquipmentBoard());
+    renderWithBoardStore(await EquipmentBoard());
     const page = createEquipmentBoardPage();
     const card = page.getCard(
       BOARD_CATEGORY_NAME.PADDLE_BOARD
@@ -95,7 +95,7 @@ describe("EquipmentBoard", () => {
 
   it("shows the empty state and no grid when there is no reservable equipment", async () => {
     vi.mocked(readBoardCategories).mockResolvedValue([]);
-    render(await EquipmentBoard());
+    renderWithBoardStore(await EquipmentBoard());
     const page = createEquipmentBoardPage();
 
     expect(
@@ -108,7 +108,7 @@ describe("EquipmentBoard", () => {
     vi.mocked(readBoardCategories).mockResolvedValue([
       DEFAULT_BOARD_ROW,
     ]);
-    render(await EquipmentBoard());
+    renderWithBoardStore(await EquipmentBoard());
 
     expect(
       createEquipmentBoardPage().queryText(
