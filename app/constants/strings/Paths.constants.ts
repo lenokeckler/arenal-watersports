@@ -39,6 +39,7 @@ export const PATHS = {
     RESERVATIONS_BY_WORKER:
       "/administration/reports/reservations-by-worker",
     ROOT: "/administration",
+    TARIFFS: "/administration/tariffs",
     UNITS_NEW_SEGMENT: "new",
     WORKER_AREAS: "/administration/workers/areas",
     WORKERS: "/administration/workers",

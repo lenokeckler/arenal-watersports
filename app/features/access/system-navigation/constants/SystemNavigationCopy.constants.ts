@@ -16,5 +16,6 @@ export const SYSTEM_NAVIGATION_COPY = {
   USER_PREFIX: "Usuario",
   PROFILE: "Perfil",
   REPORTS: "Reportes",
+  TARIFFS: "Tarifas",
   WORKERS: "Trabajadores",
 } as const;
