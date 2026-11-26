@@ -42,6 +42,7 @@ describe("mapBoardCategoryUnitRow", () => {
       hasFuelGauge: true,
       impactCount: 0,
       lowFuelLines: 1,
+      oilRemaining: null,
       usageMetric: "engine_hours",
       usageTotal: 97.5,
     });
@@ -59,6 +60,7 @@ describe("mapBoardCategoryUnitRow", () => {
       hasFuelGauge: false,
       impactCount: 0,
       lowFuelLines: 1,
+      oilRemaining: null,
       usageMetric: "kilometers",
       usageTotal: 1250,
     });
