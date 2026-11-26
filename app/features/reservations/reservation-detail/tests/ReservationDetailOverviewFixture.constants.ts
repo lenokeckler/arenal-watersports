@@ -26,6 +26,7 @@ export const RESERVATION_DETAIL_OVERVIEW_FIXTURE: ReservationDetail =
     moneyMovements: [],
     parent_reservation_id: null,
     people_count: test.PEOPLE_COUNT,
+    refundable: [],
     refunds: [],
     starts_at: test.RESERVATION_START,
     status: test.RESERVATION_STATUS,

@@ -12,11 +12,14 @@ describe("mapBoardCategoryRow", () => {
     expect(
       mapBoardCategoryRow(FILLED_BOARD_CATEGORY_ROW)
     ).toEqual({
+      damagedCount: FILLED_BOARD_CATEGORY_ROW.damaged_count,
       freeCount: FILLED_BOARD_CATEGORY_ROW.free_count,
       groupName: FILLED_BOARD_CATEGORY_ROW.group_name,
       id: FILLED_BOARD_CATEGORY_ROW.category_id,
       imagePath: FILLED_BOARD_CATEGORY_ROW.image_path,
       inUseCount: FILLED_BOARD_CATEGORY_ROW.in_use_count,
+      maintenanceCount:
+        FILLED_BOARD_CATEGORY_ROW.maintenance_count,
       name: FILLED_BOARD_CATEGORY_ROW.category_name,
       totalCount: FILLED_BOARD_CATEGORY_ROW.total_count,
     });
@@ -37,11 +40,13 @@ describe("mapBoardCategoryRow", () => {
     expect(
       mapBoardCategoryRow(NULL_BOARD_CATEGORY_ROW)
     ).toEqual({
+      damagedCount: 0,
       freeCount: 0,
       groupName: null,
       id: STRING.Empty,
       imagePath: null,
       inUseCount: 0,
+      maintenanceCount: 0,
       name: STRING.Empty,
       totalCount: 0,
     });

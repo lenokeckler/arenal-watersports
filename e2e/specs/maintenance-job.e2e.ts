@@ -51,7 +51,7 @@ test.describe("Maintenance job", () => {
     });
   });
 
-  test("defines the threshold of the next notice with an oil change and the unit leaves the oil change list", async ({
+  test("schedules the next oil change from the interval and the unit leaves the oil change list", async ({
     motorDispatchSheet: dispatchSheet,
     signedInPage: page,
   }) => {
@@ -77,7 +77,7 @@ test.describe("Maintenance job", () => {
     });
     await form
       .getNextOilChange()
-      .fill(E2E_MAINTENANCE_JOB.NEW_THRESHOLD);
+      .fill(E2E_MAINTENANCE_JOB.OIL_INTERVAL);
     await form.getSubmit().click();
 
     await page.waitForURL(
