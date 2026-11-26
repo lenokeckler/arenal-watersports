@@ -10,6 +10,7 @@ import {
   E2E_COUNT,
   E2E_SIGNED_OUT_STORAGE_STATE,
 } from "../constants/E2eRuntime.constants";
+import { createBoardPage } from "../pages/Board.page";
 import { createDispatchBoardPage } from "../pages/DispatchBoard.page";
 import { createLoginPage } from "../pages/Login.page";
 import { test } from "../support/dispatchBoardTest";
@@ -58,6 +59,31 @@ test.describe("Dispatch board for operations", () => {
     await expect(row).toContainText(
       E2E_DISPATCH_RESERVATION.FIRST_TIME
     );
+  });
+
+  test("reaches the list of the day from the board with the number of reservations left", async ({
+    pendingDispatch,
+    signedInPage: page,
+  }) => {
+    const boardPage = createBoardPage(page);
+    const dispatchBoardPage = createDispatchBoardPage(page);
+
+    await boardPage.goTo();
+    await expect(
+      boardPage.getPendingDispatchLink()
+    ).toContainText(
+      String(pendingDispatch.reservations.length)
+    );
+
+    await boardPage.getPendingDispatchLink().click();
+
+    await expect(page).toHaveURL(
+      (url) =>
+        url.pathname === PATHS.OPERATIONS.PENDING_DISPATCHES
+    );
+    await expect(
+      dispatchBoardPage.getHeading()
+    ).toBeVisible();
   });
 
   test("shows the empty message and no next link beyond the last page", async ({

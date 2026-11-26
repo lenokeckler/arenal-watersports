@@ -40,6 +40,7 @@ export const BASE_FIELD_LABELS = [
 ];
 export const motorFieldLabels = (usageLabel: string) => [
   UNIT_FORM_COPY.FUEL_MAX_LABEL,
+  UNIT_FORM_COPY.LOW_FUEL_LINES_LABEL,
   UNIT_FORM_COPY.FUEL_LEVEL_LABEL,
   usageLabel,
   UNIT_FORM_COPY.NEXT_OIL_CHANGE_LABEL,
