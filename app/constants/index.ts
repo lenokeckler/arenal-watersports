@@ -187,6 +187,16 @@ export {
 export { SUPABASE_TABLE } from "./supabase/SupabaseTable.constants";
 export { BOARD_REALTIME } from "./supabase/BoardRealtime.constants";
 export {
+  BOARD_UNIT_FILTER,
+  BOARD_UNIT_FILTER_COPY,
+  BOARD_UNIT_FILTER_MENU_ID,
+  BOARD_UNIT_FILTER_TRIGGER_ATTRIBUTES,
+  BOARD_UNIT_FILTER_ORDER,
+  BOARD_UNIT_FILTER_QUERY_PARAM,
+  BOARD_UNIT_FILTER_STATUSES,
+  type BoardUnitFilter,
+} from "./board/BoardUnitFilter.constants";
+export {
   BOARD_CATEGORY_DETAIL_OPERATION,
   BOARD_CATEGORY_OPERATION,
   BOARD_CATEGORY_QUERY,
