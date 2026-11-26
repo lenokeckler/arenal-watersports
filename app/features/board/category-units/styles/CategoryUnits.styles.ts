@@ -10,9 +10,6 @@ export const CATEGORY_UNITS_BACK_LINK_CLASS =
 export const CATEGORY_UNITS_TITLE_CLASS =
   "break-words font-sans text-headline-lg-mobile text-on-surface md:text-headline-lg";
 
-export const CATEGORY_UNITS_SUBTITLE_CLASS =
-  "max-w-prose text-body-base text-on-surface-variant";
-
 export const CATEGORY_UNITS_LIST_CLASS =
   "grid grid-cols-2 gap-sm md:grid-cols-3 xl:grid-cols-4";
 
