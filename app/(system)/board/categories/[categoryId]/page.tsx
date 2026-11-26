@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BOARD_UNIT_FILTER_QUERY_PARAM } from "@/app/constants";
 import { ensureWorkModeChosen } from "@/app/features/access/work-mode/ensureWorkModeChosen";
 import CategoryUnits from "@/app/features/board/category-units/CategoryUnits";
 import { CATEGORY_UNITS_METADATA } from "@/app/features/board/category-units/constants/CategoryUnitsMetadata.constants";
@@ -13,7 +14,8 @@ const CategoryUnitsPage = async ({
   await ensureWorkModeChosen();
 
   const { categoryId } = await params;
-  const { page } = await searchParams;
+  const { page, [BOARD_UNIT_FILTER_QUERY_PARAM]: status } =
+    await searchParams;
   const canDispatch = await hasOperationsArea();
 
   return (
@@ -21,6 +23,7 @@ const CategoryUnitsPage = async ({
       canDispatch={canDispatch}
       categoryId={categoryId}
       pageParam={page}
+      statusParam={status}
     />
   );
 };

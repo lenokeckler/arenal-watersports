@@ -7,6 +7,7 @@ import type { ReservationDetailRefund } from "./ReservationDetailRefund.interfac
 import type { ReservationDetailExtra } from "./ReservationDetailExtra.interface";
 import type { ReservationDetailGuide } from "./ReservationDetailGuide.interface";
 import type { ReservationDetailMoneyMovement } from "./ReservationDetailMoneyMovement.interface";
+import type { ReservationRefundableAmount } from "@/app/utils/reservations/models/ReservationRefundableAmount.interface";
 import type { ReservationDetailChargeStatus } from "../constants/ReservationDetail.constants";
 
 export interface ReservationDetail extends Pick<
@@ -35,6 +36,7 @@ export interface ReservationDetail extends Pick<
   dockNotifiedAt: NullableRef<string>;
   equipment: ReservationDetailEquipment[];
   extraTimeCharges: ReservationDetailExtraTimeCharge[];
+  refundable: ReservationRefundableAmount[];
   refunds: ReservationDetailRefund[];
   extras: ReservationDetailExtra[];
   guides: ReservationDetailGuide[];

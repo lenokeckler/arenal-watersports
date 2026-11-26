@@ -26,6 +26,8 @@ export const BOARD_UNITS_ROW: BoardCategoryUnitRow = {
   low_fuel_lines: 1,
   people_count: 3,
   radio_channel: 7,
+  oil_remaining: null,
+  oil_warning: false,
   reservation_code: "R-000123",
   reservation_ends_at: "2026-11-01T16:00:00+00:00",
   reservation_id: "cccccccc-0000-0000-0000-000000000001",
