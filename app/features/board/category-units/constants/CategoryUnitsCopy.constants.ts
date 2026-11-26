@@ -152,8 +152,6 @@ export const CATEGORY_UNITS_COPY = {
   ): string => `${page} de ${pageCount}`,
   PAGINATION_PREVIOUS: "Anterior",
   RETRY: "Reintentar",
-  UNITS_COUNT: (unitCount: number): string =>
-    unitCount === 1 ? "1 unidad" : `${unitCount} unidades`,
 } as const;
 
 export const CATEGORY_UNIT_STATUS_LABEL: Record<
