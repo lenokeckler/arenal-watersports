@@ -187,6 +187,10 @@ export {
 export { SUPABASE_TABLE } from "./supabase/SupabaseTable.constants";
 export { BOARD_REALTIME } from "./supabase/BoardRealtime.constants";
 export {
+  BOARD_UNIT_STATUS_DETAILS_OPERATION,
+  BOARD_UNIT_STATUS_DETAILS_QUERY,
+} from "./supabase/BoardUnitStatusDetailsQuery.constants";
+export {
   OIL_REMAINING_COPY,
   OIL_REMAINING_FORMAT,
 } from "./maintenance/OilRemaining.constants";
