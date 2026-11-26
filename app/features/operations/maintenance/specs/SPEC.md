@@ -6,7 +6,7 @@ Let the operations worker see in one screen which machines reached their oil cha
 
 ## In scope
 
-- Listing the machines whose accumulated hours or kilometers reached the oil change threshold of their unit sheet, with how far they went past it.
+- Listing the machines whose accumulated hours or kilometers reached, or are within 50 km (10 hours for water equipment) of, their next oil change, with how much is left or how far they went past it.
 - Listing the machines that are out of service: in maintenance, damaged or in repair.
 - Showing hours for the water equipment with motor and kilometers for the quad bikes.
 
@@ -18,9 +18,10 @@ Let the operations worker see in one screen which machines reached their oil cha
 
 ## Requirements
 
-- A machine is listed for its oil change when it has a threshold and its accumulated usage is equal to or above it; the overage is the usage minus the threshold, and zero means it just reached it.
-- The machines past their threshold come first, the ones that went furthest before the others.
-- A machine without a threshold, or below it, is not listed for its oil change.
+- A machine is listed for its oil change when it has a threshold and the distance left (threshold minus accumulated usage) is at most 50 km, or 10 hours; the margin is `oil_warning_margin` in the database. A negative distance means it went past.
+- The most urgent come first, measured against the margin of their metric.
+- A machine without a threshold, or farther than the margin, is not listed for its oil change.
+- Each card shows the unit and, at its right, the distance left with an amber drop, or the distance past with a minus sign and a red drop; below it, two figures: Km actual (Horas actuales) and Próximo cambio.
 - A decommissioned machine is never listed.
 - A machine can appear in both sections when it is past its oil change and out of service.
 - Only workers with the operations area can read the screen.
