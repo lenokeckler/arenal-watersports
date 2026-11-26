@@ -45,9 +45,9 @@ export const validateMaintenanceJobInput = (
         input.costCurrency !== null &&
         CURRENCIES.includes(input.costCurrency))) &&
     (isOilChange
-      ? input.nextOilChangeAt !== null &&
-        isMoney(input.nextOilChangeAt)
-      : input.nextOilChangeAt === null);
+      ? input.oilInterval !== null &&
+        isMoney(input.oilInterval)
+      : input.oilInterval === null);
 
   if (!isValid) {
     throw new RangeError(
