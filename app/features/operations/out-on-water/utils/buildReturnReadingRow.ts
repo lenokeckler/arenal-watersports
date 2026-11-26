@@ -35,8 +35,7 @@ export const buildReturnReadingRow = (
       ? null
       : parseUsageInput(draft.usage);
   const usageReading =
-    typedUsage !== null &&
-    typedUsage >= (unit.usageOut ?? 0)
+    typedUsage !== null && typedUsage >= unit.usageTotal
       ? typedUsage
       : null;
 
@@ -46,7 +45,7 @@ export const buildReturnReadingRow = (
     if (typedUsage === null) {
       usageError = CLOSE_GROUP_COPY.USAGE_INVALID;
     } else if (usageReading === null) {
-      usageError = `${CLOSE_GROUP_COPY.USAGE_BELOW_PREFIX}${unit.usageOut}.`;
+      usageError = `${CLOSE_GROUP_COPY.USAGE_BELOW_PREFIX}${unit.usageTotal}.`;
     }
   }
 
@@ -81,6 +80,11 @@ export const buildReturnReadingRow = (
         }
       : null;
 
+  const hasChangedImpactCount =
+    !draft.hasDamage &&
+    draft.impactCount !== null &&
+    draft.impactCount !== unit.impactCount;
+
   const isComplete =
     (!unit.consumesFuel || fuelLevel !== null) &&
     (unit.usageMetric === null || usageReading !== null) &&
@@ -102,12 +106,18 @@ export const buildReturnReadingRow = (
     fuelLevel,
     fuelMax: unit.fuelMax,
     fuelOut: unit.fuelOut,
+    impactCount: draft.impactCount ?? unit.impactCount,
     impactError,
     isComplete,
+    lowFuelLines: unit.lowFuelLines,
+    newImpactCount: hasChangedImpactCount
+      ? draft.impactCount
+      : null,
     unitId: unit.unitId,
     usageError,
     usageMetric: unit.usageMetric,
     usageOut: unit.usageOut,
     usageReading,
+    usageTotal: unit.usageTotal,
   };
 };

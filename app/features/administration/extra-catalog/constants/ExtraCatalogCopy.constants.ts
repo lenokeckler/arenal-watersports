@@ -1,5 +1,6 @@
 export const EXTRA_CATALOG_COPY = {
   BACK_BUTTON: "Regresar",
+  BACK_TO_HOME: "Volver al inicio",
   BOATS_CHANGE_LINK: "Cambiar",
   BOATS_CREATE_NOTE:
     "Después de agregar el extra podrá marcar en qué embarcaciones se ofrece. Mientras no marque ninguna, no aparece en las reservas.",

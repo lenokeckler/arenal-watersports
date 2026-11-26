@@ -31,6 +31,7 @@ export const dispatchReservationGroup = async (
         usage: reading.usage,
       })),
       p_reservation_id: input.reservationId,
+      p_radio_channel: input.radioChannel ?? undefined,
       p_returns_at: input.returnsAt,
       p_unit_ids: input.unitIds,
     }

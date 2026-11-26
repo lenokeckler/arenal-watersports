@@ -62,6 +62,9 @@ docs/proyecto/PROGRESO.md
 .agents/tmp/*
 !.agents/tmp/.gitkeep
 
+.agents/skills/modern-web-guidance/
+skills-lock.json
+
 docs/referencia/stitch/
 .mcp.json
 
@@ -70,3 +73,6 @@ docs/referencia/stitch/
 /playwright-screenshots/local-calendar-preview/
 /debug.log
 /image.png
+
+supabase/local-profiles.sql
+supabase/local-demo-data.sql

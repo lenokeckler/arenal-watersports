@@ -5,6 +5,7 @@ export interface DispatchCandidateUnit {
   fuelLevel: NullableRef<number>;
   fuelMax: number;
   isAssigned: boolean;
+  lowFuelLines: number;
   unitId: string;
   usageTotal: number;
 }
