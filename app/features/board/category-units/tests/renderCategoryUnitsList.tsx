@@ -10,6 +10,7 @@ export const renderCategoryUnitsList = () => {
   render(
     <CategoryUnitsList
       categoryName={CATEGORY_NAME}
+      image={null}
       units={CATEGORY_UNITS}
     />
   );

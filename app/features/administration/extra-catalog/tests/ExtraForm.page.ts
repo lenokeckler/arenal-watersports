@@ -128,8 +128,8 @@ export const createExtraFormPage = (
       screen.queryByRole(ARIA_ROLE.BUTTON, {
         name: EXTRA_CATALOG_COPY.LOADING_TEXT_SAVING,
       }),
-    getCancelButton: () =>
-      getButton(EXTRA_CATALOG_COPY.CANCEL_BUTTON),
+    getBackButton: () =>
+      getButton(EXTRA_CATALOG_COPY.BACK_BUTTON),
     getNameError: (message: string) =>
       screen.queryByText(message),
     getError: (message: string) =>
@@ -138,9 +138,7 @@ export const createExtraFormPage = (
     typePrice,
     submit: () =>
       user.click(getButton(EXTRA_FORM_SUBMIT_LABEL[mode])),
-    cancel: () =>
-      user.click(
-        getButton(EXTRA_CATALOG_COPY.CANCEL_BUTTON)
-      ),
+    back: () =>
+      user.click(getButton(EXTRA_CATALOG_COPY.BACK_BUTTON)),
   };
 };

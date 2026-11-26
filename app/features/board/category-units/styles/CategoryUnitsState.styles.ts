@@ -34,7 +34,7 @@ export const CATEGORY_UNITS_ERROR_BUTTON_CLASS =
 export const CATEGORY_UNITS_SKELETON_ROW_CLASS =
   joinClassNames(
     CATEGORY_UNIT_ROW_CLASS,
-    "animate-pulse motion-reduce:animate-none"
+    "animate-pulse gap-sm p-sm motion-reduce:animate-none"
   );
 
 const CATEGORY_UNITS_SKELETON_BAR_CLASS =

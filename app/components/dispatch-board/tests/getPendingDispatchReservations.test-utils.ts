@@ -26,7 +26,13 @@ export const createOperationsClient = (
     .mockResolvedValueOnce({
       data: pendingReservations,
       error: null,
-    });
+    })
+    .mockResolvedValue({ data: [], error: null });
+  const from = vi.fn(() => ({
+    select: () => ({
+      in: () => Promise.resolve({ data: [], error: null }),
+    }),
+  }));
   const client = {
     auth: {
       getUser: vi.fn().mockResolvedValue({
@@ -38,6 +44,7 @@ export const createOperationsClient = (
         error: null,
       }),
     },
+    from,
     rpc,
   };
 

@@ -80,15 +80,15 @@ describe("recordReservationChargeAction", () => {
       recordReservationChargeAction({
         ...VALID_CHARGE_INPUT,
         amountText: "",
-        paymentMethod: " ",
+        paymentChoice: null,
       })
     ).resolves.toEqual({
       ok: false,
       errors: {
         amount:
           RESERVATION_CHARGE_VALIDATION_COPY.AMOUNT_REQUIRED,
-        paymentMethod:
-          RESERVATION_CHARGE_VALIDATION_COPY.METHOD_REQUIRED,
+        paymentChoice:
+          RESERVATION_CHARGE_VALIDATION_COPY.CHOICE_REQUIRED,
       },
     });
     expect(

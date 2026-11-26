@@ -8,14 +8,12 @@ import {
   BOARD_CARD_MEDIA_CLASS,
   BOARD_CARD_NAME_CLASS,
 } from "../styles/BoardCard.styles";
-import { computeFreePercent } from "../utils/computeFreePercent";
-import { resolveFreeOfTotalText } from "../utils/resolveFreeOfTotalText";
-import BoardCardFreeBar from "./BoardCardFreeBar";
+import { resolveBoardCardChipText } from "../utils/resolveBoardCardChipText";
 import BoardCardImage from "./BoardCardImage";
-import BoardCardUnitChip from "./BoardCardUnitChip";
 
 const BoardCardMedia = ({
   card,
+  filter,
   isPriorityImage,
 }: BoardCardProps): React.JSX.Element => (
   <div className={BOARD_CARD_MEDIA_CLASS}>
@@ -24,12 +22,8 @@ const BoardCardMedia = ({
       isPriorityImage={isPriorityImage}
     />
     <div className={BOARD_CARD_CHIPS_CLASS}>
-      <BoardCardUnitChip />
       <InlineText className={BOARD_CARD_FREE_CHIP_CLASS}>
-        {resolveFreeOfTotalText(
-          card.freeCount,
-          card.totalCount
-        )}
+        {resolveBoardCardChipText(card, filter)}
       </InlineText>
     </div>
     <div className={BOARD_CARD_NAME_CLASS}>
@@ -37,12 +31,6 @@ const BoardCardMedia = ({
         variant={TitleVariant.SECONDARY}
         text={card.label}
         className={BOARD_CARD_LABEL_CLASS}
-      />
-      <BoardCardFreeBar
-        percent={computeFreePercent(
-          card.freeCount,
-          card.totalCount
-        )}
       />
     </div>
   </div>
