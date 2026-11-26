@@ -10,6 +10,7 @@ export const E2E_COMPATIBILITY_SCENARIO = {
   JOURNEY: "compat_journey",
   OTHER_CATEGORY: "compat_other",
   OTHER_CATEGORY_KEEPS_LINKS: "compat_keeps",
+  REDIRECT: "compat_redirect",
   SAVE_DISABLED: "compat_disabled",
   TAP_TARGETS: "compat_targets",
 } as const;
