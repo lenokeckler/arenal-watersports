@@ -118,54 +118,42 @@ The administration worker keeps the list of extras that reservations can add to 
 | A selected unit from another category or decommissioned is a validation error and nothing is written               | `resolveExtraCompatibilityUnitIds.test.ts`, `setExtraCompatibilityAction.test.ts`   |
 | The database errors 42501, P0002 and 22023 become Spanish results; any other error throws                          | `mapExtraCompatibilityErrorToResult.test.ts`, `setExtraCompatibilityAction.test.ts` |
 
-## 20.03 Extra compatibility categories screen (US-ADM-20)
+## 20.03 Extra boats screen (US-ADM-20, redesigned)
 
-| Requirement                                                                                                                                         | Test                                                                                                                                          |
-| --------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| The compatibility routes are the extra path plus the `compatibility` segment and the encoded category id                                            | `resolveExtraCompatibilityPath.test.ts`, `resolveExtraCompatibilityCategoryPath.test.ts`                                                      |
-| Every extra card has an "Embarcaciones" link to its compatibility screen and says "Sin embarcaciones", "Aplica a 1 unidad" or "Aplica a N unidades" | `buildExtraCardViewModel.test.ts`, `ExtraListView.test.tsx`                                                                                   |
-| The screen is for administration only and shows not found for an unknown extra                                                                      | `ExtraCompatibilityCategoryList.test.tsx`                                                                                                     |
-| The screen names the extra and lists each by-unit category as a tappable card with "N de M unidades" linking to its units screen                    | `buildExtraCompatibilityCategoryCards.test.ts`, `buildExtraCompatibilityProgressLabel.test.ts`, `ExtraCompatibilityCategoryListView.test.tsx` |
-| A category with one unit says "de 1 unidad"; the empty state shows when no category has units; "Volver a extras" returns to the list                | `buildExtraCompatibilityProgressLabel.test.ts`, `ExtraCompatibilityCategoryListView.test.tsx`                                                 |
-| The new dynamic route is classified for the session bar scan                                                                                        | `pageRouteClassification.test.ts`                                                                                                             |
+The two-step flow (a categories list, then one units screen per category) was replaced by **one screen** in the Extras redesign (#782 to #785). This section records that design; the old category list, units screen, their hooks and their tests were removed in #784 and #785.
 
-### Acceptance criteria
-
-- [x] Each extra card has an "Embarcaciones" button and shows how many units the extra applies to.
-- [x] The compatibility screen lists the extra name and the by-unit categories with their linked count.
-- [x] Each category row is at least 44 px tall and opens the units screen of that category.
-- [ ] Choosing the units of a category is carried by US-ADM-20 PR 20.05.
-
-## 20.04 Extra compatibility units logic and screen (US-ADM-20)
-
-| Requirement                                                                                                        | Test                                                                                                                      |
-| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| A unit is toggled without mutating the selection; the saved and the selected units are compared as sets            | `toggleExtraCompatibilityUnitId.test.ts`, `hasExtraCompatibilityChanges.test.ts`, `listExtraCompatibilityUnitIds.test.ts` |
-| Every unit row shows its code, its status word and whether it is checked                                           | `buildExtraCompatibilityUnitOptions.test.ts`, `ExtraCompatibilityUnitsFormView.test.tsx`                                  |
-| Marcar todas checks every unit, Quitar todas clears them and Guardar stays disabled until the selection changes    | `useExtraCompatibilityUnitsFormViewModel.test.ts`, `ExtraCompatibilityUnitsFormView.test.tsx`                             |
-| Saving sends the extra, the category and the checked ids, toasts, goes back to the categories screen and refreshes | `useExtraCompatibilityUnitsFormViewModel.test.ts`, `submitExtraCompatibility.test.ts`                                     |
-| Nothing is submitted when nothing changed, and a second submit is blocked while the first is in flight             | `useExtraCompatibilityUnitsFormViewModel.test.ts`                                                                         |
-| Offline, a failed result and a broken request each give a clear Spanish toast and keep the worker on the screen    | `submitExtraCompatibility.test.ts`                                                                                        |
-| The screen is for administration only and shows not found for an unknown extra or category                         | `ExtraCompatibilityUnitsForm.test.tsx`                                                                                    |
-| The new dynamic route is classified for the session bar scan                                                       | `pageRouteClassification.test.ts`                                                                                         |
+| Requirement                                                                                                                                                                                                                                              | Test                                                                                                                           |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| The route is the extra path plus the `compatibility` segment; every extra card has an "Embarcaciones" link to it and says "Sin embarcaciones", "Aplica a 1 embarcación" or "Aplica a N embarcaciones"                                                    | `resolveExtraCompatibilityPath.test.ts`, `buildExtraCompatibilityLabel.test.ts`, `ExtraListView.test.tsx`                      |
+| The screen is for administration only and shows not found for an unknown extra                                                                                                                                                                           | `ExtraCompatibilityCategoryList.test.tsx`                                                                                      |
+| `getExtraCompatibilityCategories(extraId)` returns the extra and every active by-unit category with its units (each with `isLinked`), its unit count and its linked count; decommissioned units are left out and a category with no units is not offered | `getExtraCompatibilityCategories.test.ts`, `buildExtraCompatibilityCategories.test.ts`, `buildExtraCompatibilityUnits.test.ts` |
+| The screen shows the extra's name, the total "Aplica a X de Y embarcaciones" and one collapsible section per category with "N de M unidades" and an "N marcadas" pill                                                                                    | `ExtraCompatibilityBoatsView.test.tsx`, `buildExtraCompatibilityProgressLabel.test.ts`                                         |
+| The categories that already have boats open first; when none has boats, the first category opens                                                                                                                                                         | `countExtraCompatibilityChanges.test.ts`, `ExtraCompatibilityBoatsView.test.tsx`                                               |
+| Inside a section, Marcar todas, Quitar todas and each unit checkbox (code and status word) change only that category; the selection is compared as a set                                                                                                 | `toggleExtraCompatibilityUnitId.test.ts`, `hasExtraCompatibilityChanges.test.ts`, `buildExtraCompatibilityUnitOptions.test.ts` |
+| The unsaved changes are counted across categories ("1 cambio sin guardar" / "N cambios sin guardar") and "Guardar embarcaciones" stays disabled while there are none                                                                                     | `countExtraCompatibilityChanges.test.ts`, `ExtraCompatibilityBoatsView.test.tsx`                                               |
+| Saving calls `setExtraCompatibilityAction` once per changed category only, in order; on success one toast "Embarcaciones guardadas." shows and the counts become the saved state                                                                         | `ExtraCompatibilityBoatsView.test.tsx`                                                                                         |
+| Offline, a failed result or a broken request shows a clear Spanish toast and keeps the selection on screen                                                                                                                                               | `setExtraCompatibilityAction.test.ts`, `mapExtraCompatibilityErrorToResult.test.ts`                                            |
+| Regresar with unsaved changes opens "¿Salir sin guardar?" with _Guardar y regresar_ and _Regresar sin guardar_; without changes it returns to Extras; the browser asks before closing the tab while there are changes                                    | `ExtraCompatibilityBoatsView.test.tsx`                                                                                         |
+| The old per-category address `/administration/extras/{id}/compatibility/{categoryId}` redirects to the single screen                                                                                                                                     | `e2e/specs/extra-compatibility.e2e.ts`                                                                                         |
 
 ### Acceptance criteria
 
-- [x] The units screen lists all active units of the category as a checklist with code and status word; linked units are checked.
-- [x] Marcar todas, Quitar todas, Guardar and Regresar work; Guardar saves only the units of that category.
-- [x] On success the worker sees a toast and returns to the categories screen with the counts refreshed.
-- [x] Offline or failed saves show a clear Spanish message and keep the selection.
+- [x] Each extra card has an "Embarcaciones" button and shows how many boats the extra applies to.
+- [x] One screen lists the extra's name, the total and every by-unit category as a collapsible section with its count.
+- [x] Marcar todas, Quitar todas and the checkboxes work per category; one "Guardar embarcaciones" saves only the categories that changed.
+- [x] On success the worker sees one toast and stays on the screen with the counts updated; offline or failed saves keep the selection.
+- [x] Leaving with unsaved changes asks first; the old per-category route redirects.
 - [ ] Offering only the matching extras when building a reservation is carried by a later US-ADM-20 PR.
 
-## 20.05 Extra compatibility E2E (US-ADM-20)
+## 20.04 Extra boats E2E (US-ADM-20)
 
-| Requirement                                                                                                                                | Test                                   |
-| ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------- |
-| From the extras list, Embarcaciones opens the categories; a unit is checked and saved; the toast, the new count and the card label show it | `e2e/specs/extra-compatibility.e2e.ts` |
-| Reopening the category shows the saved units checked                                                                                       | `e2e/specs/extra-compatibility.e2e.ts` |
-| Saving one category keeps the links of another category                                                                                    | `e2e/specs/extra-compatibility.e2e.ts` |
-| Quitar todas and Guardar clear the links and the card says Sin embarcaciones; Marcar todas links every unit; Cancelar saves nothing        | `e2e/specs/extra-compatibility.e2e.ts` |
-| Every category card, unit row and helper button is at least 44 px tall, on mobile and desktop                                              | `e2e/specs/extra-compatibility.e2e.ts` |
+| Requirement                                                                                                                                     | Test                                   |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| From the extras list, Embarcaciones opens the screen; a unit is checked and saved; the toast, the section count and the card label show it      | `e2e/specs/extra-compatibility.e2e.ts` |
+| Reopening the screen shows the saved units checked                                                                                              | `e2e/specs/extra-compatibility.e2e.ts` |
+| Saving one category keeps the links of another category                                                                                         | `e2e/specs/extra-compatibility.e2e.ts` |
+| Quitar todas and Guardar clear the links and the card says Sin embarcaciones; Marcar todas links every unit; Regresar sin guardar saves nothing | `e2e/specs/extra-compatibility.e2e.ts` |
+| Every section header, unit row and helper button is at least 44 px tall, on mobile and desktop                                                  | `e2e/specs/extra-compatibility.e2e.ts` |
 
 ## 21.01 Extra occupancy data (US-ADM-21)
 
