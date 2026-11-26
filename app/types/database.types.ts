@@ -3949,6 +3949,8 @@ export type Database = {
           code: string;
           next_oil_change_at: number;
           oil_overage: number;
+          oil_remaining: number;
+          oil_warning: boolean;
           status: Database["public"]["Enums"]["unit_status"];
           unit_id: string;
           usage_metric: Database["public"]["Enums"]["usage_metric"];
