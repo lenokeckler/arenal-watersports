@@ -22,6 +22,7 @@ const INTERACTION = {
   isEditing: false,
   onOpenInfo: () => undefined,
   onOpenModify: () => undefined,
+  onOpenStatus: () => undefined,
 };
 const EDITING = { ...INTERACTION, isEditing: true };
 
