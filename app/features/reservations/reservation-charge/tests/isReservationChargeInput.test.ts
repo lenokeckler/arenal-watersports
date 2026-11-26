@@ -10,6 +10,15 @@ describe("isReservationChargeInput", () => {
     ).toBe(true);
   });
 
+  it("accepts an input with no choice yet", () => {
+    expect(
+      isReservationChargeInput({
+        ...VALID_CHARGE_INPUT,
+        paymentChoice: null,
+      })
+    ).toBe(true);
+  });
+
   it.each([
     ["null", null],
     ["a string", "charge"],
@@ -45,12 +54,23 @@ describe("isReservationChargeInput", () => {
       { ...VALID_CHARGE_INPUT, currency: undefined },
     ],
     [
-      "a numeric method",
-      { ...VALID_CHARGE_INPUT, paymentMethod: 7 },
+      "an unknown choice",
+      { ...VALID_CHARGE_INPUT, paymentChoice: "crypto" },
     ],
     [
-      "a missing method",
-      { ...VALID_CHARGE_INPUT, paymentMethod: undefined },
+      "a missing choice",
+      { ...VALID_CHARGE_INPUT, paymentChoice: undefined },
+    ],
+    [
+      "a numeric other method",
+      { ...VALID_CHARGE_INPUT, otherPaymentMethod: 7 },
+    ],
+    [
+      "a missing other method",
+      {
+        ...VALID_CHARGE_INPUT,
+        otherPaymentMethod: undefined,
+      },
     ],
   ])("refuses %s", (_, input) => {
     expect(isReservationChargeInput(input)).toBe(false);
@@ -60,7 +80,8 @@ describe("isReservationChargeInput", () => {
     "reservationId",
     "amountText",
     "currency",
-    "paymentMethod",
+    "paymentChoice",
+    "otherPaymentMethod",
   ])("refuses an input without the %s key", (key) => {
     const withoutKey: Record<string, unknown> = {
       ...VALID_CHARGE_INPUT,

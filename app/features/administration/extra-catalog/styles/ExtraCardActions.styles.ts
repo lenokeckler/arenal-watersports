@@ -7,7 +7,7 @@ import {
 import { BUTTON, SIZE } from "@/app/constants";
 
 export const EXTRA_CARD_ACTIONS_ROW_CLASS =
-  "grid grid-cols-2 gap-3 md:flex md:shrink-0";
+  "grid grid-cols-2 gap-3 md:flex md:flex-wrap";
 
 const EXTRA_CARD_ACTION_SIZE_CLASS =
   "min-h-11 rounded-md md:w-40";

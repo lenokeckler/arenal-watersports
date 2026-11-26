@@ -5,6 +5,9 @@ import {
   RESERVATION_DETAIL_WORKER_NAMES_FIXTURE,
 } from "./ReservationDetailTest.constants";
 import { RESERVATION_DETAIL_SOURCE_FIXTURE } from "./ReservationDetailSourceFixture.constants";
+import { RESERVATION_DETAIL_MOVEMENTS_TEST as movement } from "./ReservationDetailMoneyMovementsTest.constants";
+import { createReservationDetailChargeSource } from "./createReservationDetailChargeSource";
+import { createReservationDetailRefundSource } from "./createReservationDetailRefundSource";
 
 describe("mapReservationDetail", () => {
   it("maps unit codes to their dispatched group", () => {
@@ -169,6 +172,33 @@ describe("mapReservationDetail", () => {
     ]);
   });
 
+  it("maps charges and refunds into one movement list", () => {
+    const detail = mapReservationDetail(
+      {
+        ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+        refunds: [createReservationDetailRefundSource()],
+        reservation_charges: [
+          createReservationDetailChargeSource(),
+        ],
+      },
+      [
+        {
+          full_name: movement.CHARGE_WORKER_NAME,
+          worker_id: movement.CHARGE_WORKER_ID,
+        },
+      ]
+    );
+
+    expect(
+      detail.moneyMovements.map(
+        ({ id, recordedByName }) => [id, recordedByName]
+      )
+    ).toEqual([
+      [movement.REFUND_ID, null],
+      [movement.CHARGE_ID, movement.CHARGE_WORKER_NAME],
+    ]);
+  });
+
   it("keeps expected return when dispatch is open", () => {
     const [dispatch] =
       RESERVATION_DETAIL_SOURCE_FIXTURE.reservation_dispatches;
@@ -186,5 +216,28 @@ describe("mapReservationDetail", () => {
     expect(detail.dispatches[0].expectedReturnAt).toBe(
       test.EXPECTED_RETURN
     );
+  });
+
+  it("maps what is refundable per currency", () => {
+    const detail = mapReservationDetail(
+      RESERVATION_DETAIL_SOURCE_FIXTURE,
+      RESERVATION_DETAIL_WORKER_NAMES_FIXTURE
+    );
+
+    expect(
+      detail.refundable.map(({ amount }) => amount)
+    ).toEqual([test.CHARGE_USD, test.CHARGE_CRC]);
+  });
+
+  it("leaves nothing refundable on a split child", () => {
+    const detail = mapReservationDetail(
+      {
+        ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+        parent_reservation_id: test.PARENT_RESERVATION_ID,
+      },
+      RESERVATION_DETAIL_WORKER_NAMES_FIXTURE
+    );
+
+    expect(detail.refundable).toEqual([]);
   });
 });

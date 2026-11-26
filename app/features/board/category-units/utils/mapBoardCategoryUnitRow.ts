@@ -3,6 +3,7 @@ import type { BoardCategoryUnitRow } from "@/app/services/board";
 import { safeString } from "@/app/utils/safe-value/SafeValue";
 import type { CategoryUnit } from "../models/CategoryUnit.interface";
 import { buildUnitOccupancy } from "./buildUnitOccupancy";
+import { buildUnitReadings } from "./buildUnitReadings";
 import { resolveBoardUnitStatus } from "./resolveBoardUnitStatus";
 
 export const mapBoardCategoryUnitRow = (
@@ -21,6 +22,8 @@ export const mapBoardCategoryUnitRow = (
     occupancy: isOccupied
       ? buildUnitOccupancy(row, now)
       : null,
+    readings: buildUnitReadings(row),
     status,
+    statusDetails: null,
   };
 };
