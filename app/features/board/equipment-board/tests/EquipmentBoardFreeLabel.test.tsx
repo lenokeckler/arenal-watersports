@@ -5,7 +5,6 @@ import {
   it,
   vi,
 } from "vitest";
-import { render } from "@testing-library/react";
 import { readBoardCategories } from "@/app/services/board";
 import EquipmentBoard from "../EquipmentBoard";
 import { EQUIPMENT_BOARD_COPY } from "../constants/EquipmentBoardCopy.constants";
@@ -20,6 +19,7 @@ import {
   SINGLE_FREE_ROW,
 } from "./EquipmentBoard.constants";
 import { createEquipmentBoardPage } from "./EquipmentBoard.page";
+import { renderWithBoardStore } from "./renderWithBoardStore";
 
 vi.mock(
   "@/app/components/board-realtime/BoardRealtime",
@@ -42,7 +42,7 @@ describe("EquipmentBoard free label", () => {
   });
 
   const renderCardText = async (label: string) => {
-    render(await EquipmentBoard());
+    renderWithBoardStore(await EquipmentBoard());
     const page = createEquipmentBoardPage();
 
     return page.getCardText(page.getCard(label));
