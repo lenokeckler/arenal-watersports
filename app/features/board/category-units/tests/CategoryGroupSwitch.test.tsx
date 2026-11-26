@@ -1,3 +1,4 @@
+import { BOARD_UNIT_FILTER } from "@/app/constants";
 import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import { ARIA_CURRENT } from "@/app/constants";
@@ -23,6 +24,7 @@ const renderSwitch = (
   render(
     <CategoryGroupSwitch
       currentCategoryId={currentCategoryId}
+      filter={BOARD_UNIT_FILTER.ALL}
       members={members}
     />
   );

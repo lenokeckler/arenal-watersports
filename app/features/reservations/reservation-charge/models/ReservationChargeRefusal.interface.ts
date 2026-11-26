@@ -4,4 +4,5 @@ export interface ReservationChargeRefusal {
   errors?: ReservationChargeErrors;
   formError?: string;
   message: string;
+  paymentMethodError?: string;
 }

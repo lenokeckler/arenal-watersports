@@ -45,21 +45,9 @@ export const buildMaintenanceJobForm = (
   const costAmount = parseMaintenanceAmount(
     draft.costAmount
   );
-  const threshold = parseMaintenanceAmount(
-    draft.nextOilChangeAt
+  const oilInterval = parseMaintenanceAmount(
+    draft.oilInterval
   );
-
-  let thresholdError: MaintenanceJobErrors["threshold"] =
-    null;
-
-  if (isOilChange) {
-    if (threshold === null) {
-      thresholdError =
-        MAINTENANCE_JOB_COPY.ERROR_THRESHOLD_INVALID;
-    } else if (unit && threshold <= unit.usageTotal) {
-      thresholdError = `${MAINTENANCE_JOB_COPY.ERROR_THRESHOLD_BELOW_PREFIX}${unit.usageTotal}.`;
-    }
-  }
 
   const errors: MaintenanceJobErrors = {
     cost:
@@ -83,7 +71,10 @@ export const buildMaintenanceJobForm = (
         !isFilled(draft.description))
         ? MAINTENANCE_JOB_COPY.ERROR_DESCRIPTION
         : null,
-    threshold: thresholdError,
+    interval:
+      isOilChange && oilInterval === null
+        ? MAINTENANCE_JOB_COPY.ERROR_INTERVAL_INVALID
+        : null,
     unit: unit ? null : MAINTENANCE_JOB_COPY.ERROR_UNIT,
     workType: WORK_TYPES.includes(draft.workType)
       ? null
@@ -104,7 +95,7 @@ export const buildMaintenanceJobForm = (
             : null,
           description: draft.description.trim(),
           isExternal: draft.isExternal,
-          nextOilChangeAt: isOilChange ? threshold : null,
+          oilInterval: isOilChange ? oilInterval : null,
           performedAt: draft.performedAt,
           unitId: draft.unitId,
           workType:

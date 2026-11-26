@@ -10,6 +10,7 @@ export interface DispatchSheetGroup {
   durationMinutes: number;
   fixedUnitIds: string[];
   hasMotor: boolean;
+  imagePath: NullableRef<string>;
   isTrackedByUnit: boolean;
   requiredQuantity: number;
   usageMetric: NullableRef<DispatchUsageMetric>;

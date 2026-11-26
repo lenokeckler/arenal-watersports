@@ -11,6 +11,7 @@ export const useCategoryBehaviorFieldHandlers = ({
   trackingMode,
   setValues,
   clearDurationError,
+  clearLowFuelLinesError,
 }: CategoryBehaviorFieldHandlersOptions): CategoryBehaviorFieldHandlers => {
   const flagHandlers =
     useCategoryBehaviorFlagHandlers(setValues);
@@ -31,6 +32,17 @@ export const useCategoryBehaviorFieldHandlers = ({
     clearDurationError();
   };
 
+  const onLowFuelLinesChange = (
+    event: CategoryFormFieldChangeEvent
+  ): void => {
+    const lowFuelLines = event.target.value;
+    setValues((currentValues) => ({
+      ...currentValues,
+      lowFuelLines,
+    }));
+    clearLowFuelLinesError();
+  };
+
   const onIsReservableChange = (
     event: CategoryFormFieldChangeEvent
   ): void => {
@@ -48,5 +60,6 @@ export const useCategoryBehaviorFieldHandlers = ({
     ...dependentHandlers,
     onDefaultDurationMinutesChange,
     onIsReservableChange,
+    onLowFuelLinesChange,
   };
 };

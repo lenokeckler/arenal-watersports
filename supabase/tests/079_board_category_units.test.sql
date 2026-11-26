@@ -1,5 +1,5 @@
 begin;
-select plan(12);
+select plan(13);
 
 insert into auth.users (id, email) values
   ('b0a4d000-0000-0000-0000-000000000001', 'units-structure@arenal.local');
@@ -39,9 +39,23 @@ select columns_are(
     'reservation_code',
     'customer_name',
     'reservation_starts_at',
-    'reservation_ends_at'
+    'reservation_ends_at',
+    'fuel_level',
+    'fuel_max',
+    'usage_total',
+    'has_motor',
+    'consumes_fuel',
+    'usage_metric',
+    'impact_count',
+    'low_fuel_lines',
+    'people_count',
+    'dispatch_id',
+    'dispatched_at',
+    'radio_channel',
+    'oil_remaining',
+    'oil_warning'
   ],
-  'la vista expone solo las diez columnas acordadas'
+  'la vista expone solo las veintidos columnas acordadas'
 );
 select ok(
   (select coalesce(reloptions @> array['security_invoker=true'], false) from pg_class where oid = 'public.board_category_units'::regclass),
@@ -96,6 +110,13 @@ select is(
   (select effective_status from board_category_units where unit_id = 'b0a4d002-0000-0000-0000-000000000004'),
   'in_repair',
   'una unidad en reparacion se muestra en reparacion'
+);
+
+select is(
+  (select fuel_max::text || ':' || usage_total::text || ':' || has_motor::text
+     from board_category_units where unit_id = 'b0a4d002-0000-0000-0000-000000000001'),
+  '4:0.00:false',
+  'cada unidad trae su medidor, su uso acumulado y si la categoria lleva motor'
 );
 
 select * from finish();

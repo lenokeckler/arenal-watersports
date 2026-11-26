@@ -21,7 +21,7 @@ const ExtraFormActions = ({
       onClick={onBack}
       className={EXTRA_FORM_ACTION_BUTTON_CLASS}
     >
-      {EXTRA_CATALOG_COPY.CANCEL_BUTTON}
+      {EXTRA_CATALOG_COPY.BACK_BUTTON}
     </Button>
     <Button
       variant={BUTTON.PRIMARY}

@@ -1,0 +1,1 @@
+RES-07.26.02: Money movements list — the reservation detail lists every charge and refund with amount, currency, concept, method, date and who recorded it, folded behind a button (US-RES-26 · AWS-109)

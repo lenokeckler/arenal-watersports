@@ -35,6 +35,135 @@ describe("getPendingDispatchReservations", () => {
       DISPATCH_BOARD_PAGINATION.PAGE_SIZE
     );
     expect(result.hasNextPage).toBe(true);
+    expect(rpc).toHaveBeenCalledTimes(3);
+  });
+
+  it("reads the pending equipment of the whole page in one call", async () => {
+    const reservations = Array.from(
+      { length: DISPATCH_BOARD_PAGINATION.PAGE_SIZE },
+      (_, index) => ({
+        ...PENDING_RESERVATION_FIXTURE,
+        id: String(index),
+      })
+    );
+    const { rpc } = createOperationsClient(
+      true,
+      true,
+      reservations
+    );
+
+    await getPendingDispatchReservations(
+      DISPATCH_BOARD_PAGINATION.FIRST_PAGE
+    );
+
+    expect(rpc).toHaveBeenCalledTimes(3);
+    expect(rpc).toHaveBeenNthCalledWith(
+      3,
+      "pending_dispatch_equipment",
+      {
+        p_reservation_ids: reservations.map(
+          (reservation) => reservation.id
+        ),
+      }
+    );
+  });
+
+  it("attaches to each reservation its own pending equipment", async () => {
+    const { rpc } = createOperationsClient(true, true, [
+      PENDING_RESERVATION_FIXTURE,
+      {
+        ...PENDING_RESERVATION_FIXTURE,
+        id: "reservation-2",
+      },
+    ]);
+    rpc.mockResolvedValueOnce({
+      data: [
+        {
+          category_id: "category-1",
+          category_name: "Jet ski",
+          quantity: 2,
+          reservation_id: PENDING_RESERVATION_FIXTURE.id,
+        },
+        {
+          category_id: "category-2",
+          category_name: "Kayak doble",
+          quantity: 1,
+          reservation_id: "reservation-2",
+        },
+      ],
+      error: null,
+    });
+
+    const { reservations } =
+      await getPendingDispatchReservations(
+        DISPATCH_BOARD_PAGINATION.FIRST_PAGE
+      );
+
+    expect(reservations[0].equipment).toEqual([
+      { categoryName: "Jet ski", quantity: 2 },
+    ]);
+    expect(reservations[1].equipment).toEqual([
+      { categoryName: "Kayak doble", quantity: 1 },
+    ]);
+  });
+
+  it("flags a combo apart from a plain reservation", async () => {
+    const { rpc } = createOperationsClient(true, true, [
+      PENDING_RESERVATION_FIXTURE,
+      {
+        ...PENDING_RESERVATION_FIXTURE,
+        id: "reservation-2",
+      },
+    ]);
+    rpc.mockResolvedValueOnce({
+      data: [
+        {
+          category_id: "category-1",
+          category_name: "Jet ski",
+          quantity: 2,
+          reservation_id: PENDING_RESERVATION_FIXTURE.id,
+          reservation_type: "rental",
+        },
+        {
+          category_id: "category-2",
+          category_name: "Kayak doble",
+          quantity: 1,
+          reservation_id: "reservation-2",
+          reservation_type: "combo",
+        },
+      ],
+      error: null,
+    });
+
+    const { reservations } =
+      await getPendingDispatchReservations(
+        DISPATCH_BOARD_PAGINATION.FIRST_PAGE
+      );
+
+    expect(reservations[0].isCombo).toBe(false);
+    expect(reservations[1].isCombo).toBe(true);
+  });
+
+  it("leaves a reservation without equipment when none is pending", async () => {
+    createOperationsClient(true, true, [
+      PENDING_RESERVATION_FIXTURE,
+    ]);
+
+    const { reservations } =
+      await getPendingDispatchReservations(
+        DISPATCH_BOARD_PAGINATION.FIRST_PAGE
+      );
+
+    expect(reservations[0].equipment).toEqual([]);
+  });
+
+  it("asks for no equipment when the page is empty", async () => {
+    const { rpc } = createOperationsClient(true, true, []);
+
+    await getPendingDispatchReservations(
+      DISPATCH_BOARD_PAGINATION.FIRST_PAGE
+    );
+
     expect(rpc).toHaveBeenCalledTimes(2);
   });
 

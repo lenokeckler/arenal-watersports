@@ -1,18 +1,17 @@
-import {
-  ARIA_ROLE,
-  INVENTORY_UNIT_STATUS,
-} from "@/app/constants";
+import { ARIA_ROLE } from "@/app/constants";
 import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 import type { CategoryUnitsListProps } from "../models/CategoryUnitsListProps.interface";
 import {
   CATEGORY_UNITS_LIST_CLASS,
   CATEGORY_UNITS_LIST_ITEM_CLASS,
 } from "../styles/CategoryUnits.styles";
-import CategoryUnitRow from "./CategoryUnitRow";
-import CategoryUnitSelectRow from "./CategoryUnitSelectRow";
+import { resolveCategoryUnitRowKind } from "../utils/resolveCategoryUnitRowKind";
+import CategoryUnitListItem from "./CategoryUnitListItem";
 
 const CategoryUnitsList = ({
   categoryName,
+  image,
+  interaction,
   selection,
   units,
 }: CategoryUnitsListProps): React.JSX.Element => (
@@ -29,18 +28,17 @@ const CategoryUnitsList = ({
         role={ARIA_ROLE.LISTITEM}
         className={CATEGORY_UNITS_LIST_ITEM_CLASS}
       >
-        {selection &&
-        unit.status === INVENTORY_UNIT_STATUS.AVAILABLE ? (
-          <CategoryUnitSelectRow
-            isSelected={selection.selectedUnitIds.includes(
-              unit.id
-            )}
-            onToggle={selection.onToggle}
-            unit={unit}
-          />
-        ) : (
-          <CategoryUnitRow unit={unit} />
-        )}
+        <CategoryUnitListItem
+          image={image}
+          interaction={interaction}
+          kind={resolveCategoryUnitRowKind({
+            hasSelection: Boolean(selection),
+            interaction,
+            unit,
+          })}
+          selection={selection}
+          unit={unit}
+        />
       </div>
     ))}
   </div>

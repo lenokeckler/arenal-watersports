@@ -69,6 +69,8 @@ export const useUnitFormFields = ({
     onCodeChange: buildTextChangeHandler("code"),
     onStatusChange,
     onFuelMaxChange: buildTextChangeHandler("fuelMax"),
+    onLowFuelLinesChange:
+      buildTextChangeHandler("lowFuelLines"),
     onFuelLevelChange: buildTextChangeHandler("fuelLevel"),
     onUsageTotalChange:
       buildTextChangeHandler("usageTotal"),

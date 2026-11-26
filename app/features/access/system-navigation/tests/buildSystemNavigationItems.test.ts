@@ -3,7 +3,7 @@ import { PATHS, SUPABASE_WORK_AREA } from "@/app/constants";
 import { buildSystemNavigationItems } from "../utils/buildSystemNavigationItems";
 
 describe("buildSystemNavigationItems", () => {
-  it("includes Inventory only for Operations", () => {
+  it("includes Inventory and Prices only for Operations", () => {
     const operationsItems = buildSystemNavigationItems(
       SUPABASE_WORK_AREA.OPERATIONS
     );
@@ -16,6 +16,7 @@ describe("buildSystemNavigationItems", () => {
         PATHS.BOARD,
         PATHS.OPERATIONS.CALENDAR,
         PATHS.OPERATIONS.INVENTORY,
+        PATHS.OPERATIONS.PRICE_LOOKUP,
         PATHS.HISTORY.ROOT,
       ]
     );

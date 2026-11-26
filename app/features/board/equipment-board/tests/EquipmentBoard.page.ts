@@ -3,11 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
 import { EQUIPMENT_BOARD_COPY } from "../constants/EquipmentBoardCopy.constants";
 import {
-  ARIA_HIDDEN_ATTRIBUTE,
-  BAR_FILL_SELECTOR,
-  BAR_SELECTOR,
   CARD_NOT_FOUND_MESSAGE,
-  BAR_WIDTH_ATTRIBUTE,
   HEADING_LEVEL_TWO,
 } from "./EquipmentBoard.constants";
 import { createEquipmentBoardImagePage } from "./EquipmentBoardImage.page";
@@ -75,16 +71,6 @@ export const createEquipmentBoardPage = () => {
   const getCardText = (card: HTMLElement) =>
     card.textContent;
 
-  const getBarWidth = (card: HTMLElement) =>
-    card
-      .querySelector(BAR_FILL_SELECTOR)
-      ?.getAttribute(BAR_WIDTH_ATTRIBUTE);
-
-  const isBarHidden = (card: HTMLElement) =>
-    card
-      .querySelector(BAR_SELECTOR)
-      ?.getAttribute(ARIA_HIDDEN_ATTRIBUTE);
-
   const getHeadings = (level: number) =>
     screen.getAllByRole(ARIA_ROLE.HEADING, { level });
 
@@ -114,7 +100,6 @@ export const createEquipmentBoardPage = () => {
   return {
     ...createEquipmentBoardImagePage(),
     getAlert,
-    getBarWidth,
     getCard,
     getCardLink,
     getCardLinks,
@@ -129,7 +114,6 @@ export const createEquipmentBoardPage = () => {
     getStatus,
     getText,
     queryButton,
-    isBarHidden,
     queryGrid,
     queryHeadings,
     queryMemberList,

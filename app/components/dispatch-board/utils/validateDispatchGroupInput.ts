@@ -1,5 +1,6 @@
 import { UUID_PATTERN } from "@/app/constants";
 import {
+  DISPATCH_RADIO_CHANNEL,
   DISPATCH_SHEET_ERROR,
   DISPATCH_SHEET_LIMITS,
 } from "../constants/DispatchSheet.constants";
@@ -32,9 +33,18 @@ const hasValidReadings = (
     isValidReading(reading, unitIds)
   );
 
+const isValidRadioChannel = (
+  radioChannel: DispatchGroupInput["radioChannel"]
+): boolean =>
+  radioChannel === null ||
+  (Number.isInteger(radioChannel) &&
+    radioChannel >= DISPATCH_RADIO_CHANNEL.MIN &&
+    radioChannel <= DISPATCH_RADIO_CHANNEL.MAX);
+
 export const validateDispatchGroupInput = ({
   categoryId,
   departureAt,
+  radioChannel,
   readings,
   reservationId,
   returnsAt,
@@ -48,6 +58,7 @@ export const validateDispatchGroupInput = ({
     unitIds.length <= DISPATCH_SHEET_LIMITS.MAX_UNITS &&
     unitIds.every(isUuid) &&
     hasValidReadings(readings, unitIds) &&
+    isValidRadioChannel(radioChannel) &&
     Number.isFinite(departureMs) &&
     Number.isFinite(returnsMs) &&
     returnsMs > departureMs;

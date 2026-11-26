@@ -7,6 +7,7 @@ export interface UnitReading {
   fuelMax: number;
   id: string;
   impactCount: number;
+  lowFuelLines: number;
   nextOilChangeAt: NullableRef<number>;
   status: Database["public"]["Enums"]["unit_status"];
   usageMetric: NullableRef<

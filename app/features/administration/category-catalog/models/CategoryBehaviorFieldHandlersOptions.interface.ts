@@ -8,4 +8,5 @@ export interface CategoryBehaviorFieldHandlersOptions {
     SetStateAction<CategoryBehaviorFormValues>
   >;
   clearDurationError: () => void;
+  clearLowFuelLinesError: () => void;
 }
