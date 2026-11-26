@@ -2982,10 +2982,12 @@ export type Database = {
         Row: {
           category_id: string | null;
           category_name: string | null;
+          damaged_count: number | null;
           free_count: number | null;
           group_name: string | null;
           image_path: string | null;
           in_use_count: number | null;
+          maintenance_count: number | null;
           total_count: number | null;
         };
         Relationships: [];
