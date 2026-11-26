@@ -80,12 +80,18 @@ export const SINGLE_UNIT_CATEGORY_NAME = "Kayak";
 export const LINKED_CATEGORY_UNIT_COUNT = 3;
 export const LINKED_CATEGORY_LINKED_COUNT = 2;
 
+export const OTHER_CATEGORY_UNIT_CODE = "KA-01";
+
 export const COMPATIBILITY_CATEGORY_SUMMARY: ExtraCompatibilityCategory =
   {
     id: COMPATIBILITY_CATEGORY_ID,
     name: COMPATIBILITY_CATEGORY_NAME,
-    unitCount: LINKED_CATEGORY_UNIT_COUNT,
-    linkedUnitCount: LINKED_CATEGORY_LINKED_COUNT,
+    unitCount: LENGTH.TWO,
+    linkedUnitCount: LENGTH.ONE,
+    units: [
+      { ...LINKED_UNIT_ROW, isLinked: true },
+      { ...FREE_UNIT_ROW, isLinked: false },
+    ],
   };
 
 export const SINGLE_UNIT_CATEGORY_SUMMARY: ExtraCompatibilityCategory =
@@ -94,6 +100,14 @@ export const SINGLE_UNIT_CATEGORY_SUMMARY: ExtraCompatibilityCategory =
     name: SINGLE_UNIT_CATEGORY_NAME,
     unitCount: LENGTH.ONE,
     linkedUnitCount: LENGTH.ZERO,
+    units: [
+      {
+        id: OTHER_CATEGORY_UNIT_ID,
+        code: OTHER_CATEGORY_UNIT_CODE,
+        status: INVENTORY_UNIT_STATUS.AVAILABLE,
+        isLinked: false,
+      },
+    ],
   };
 
 export const COMPATIBILITY_CATEGORIES: ExtraCompatibilityCategories =

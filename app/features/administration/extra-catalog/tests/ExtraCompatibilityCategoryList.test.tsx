@@ -8,7 +8,7 @@ import {
 import { PATHS } from "@/app/constants";
 import { isAdministratorSignedIn } from "@/app/services/worker-registration";
 import ExtraCompatibilityCategoryList from "../ExtraCompatibilityCategoryList";
-import ExtraCompatibilityCategoryListView from "../ExtraCompatibilityCategoryListView";
+import ExtraCompatibilityBoatsView from "../ExtraCompatibilityBoatsView";
 import { getExtraCompatibilityCategories } from "../services/getExtraCompatibilityCategories";
 import {
   COMPATIBILITY_CATEGORIES,
@@ -87,9 +87,7 @@ describe("ExtraCompatibilityCategoryList", () => {
     expect(
       getExtraCompatibilityCategories
     ).toHaveBeenCalledWith(COMPATIBILITY_EXTRA_ID);
-    expect(element.type).toBe(
-      ExtraCompatibilityCategoryListView
-    );
+    expect(element.type).toBe(ExtraCompatibilityBoatsView);
     expect(element.props).toEqual(COMPATIBILITY_CATEGORIES);
   });
 });
