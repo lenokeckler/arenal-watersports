@@ -1,5 +1,8 @@
 import { screen } from "@testing-library/react";
-import { ARIA_ROLE } from "@/app/constants";
+import {
+  ARIA_ROLE,
+  MATERIAL_ICON_NAME,
+} from "@/app/constants";
 import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 
 export const createCategoryUnitsDispatchPage = () => ({
@@ -27,4 +30,6 @@ export const createCategoryUnitsDispatchPage = () => ({
     }),
   querySelectBoxes: () =>
     screen.queryAllByRole(ARIA_ROLE.CHECKBOX),
+  queryCheckMarks: () =>
+    screen.queryAllByText(MATERIAL_ICON_NAME.CHECK),
 });

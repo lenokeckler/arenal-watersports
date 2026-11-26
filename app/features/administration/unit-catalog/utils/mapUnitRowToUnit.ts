@@ -12,6 +12,7 @@ export const mapUnitRowToUnit = (
   status: unitRow.status,
   fuelMax: unitRow.fuel_max,
   fuelLevel: unitRow.fuel_level,
+  lowFuelLines: unitRow.low_fuel_lines,
   usageTotal: unitRow.usage_total,
   nextOilChangeAt: unitRow.next_oil_change_at,
   decommissionedAt: unitRow.decommissioned_at,
