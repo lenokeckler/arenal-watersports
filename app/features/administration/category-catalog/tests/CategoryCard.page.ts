@@ -22,6 +22,9 @@ export const createCategoryCardPage = () => {
   const getSubtitle = (subtitle: string) =>
     screen.queryByText(subtitle);
 
+  const getStatusNote = (statusNote: string) =>
+    screen.queryByText(statusNote);
+
   const getBehaviorLink = () =>
     screen.queryByRole(ARIA_ROLE.LINK, {
       name: CATEGORY_CATALOG_COPY.BEHAVIOR_LINK,
@@ -52,6 +55,7 @@ export const createCategoryCardPage = () => {
     getNameHeading,
     getStatusChip,
     getSubtitle,
+    getStatusNote,
     getBehaviorLink,
     getGroupPrefix,
     getDeleteButton,

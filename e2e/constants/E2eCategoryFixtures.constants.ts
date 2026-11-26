@@ -43,3 +43,11 @@ export const resolveCreatedCategoryName = (
 export const E2E_CATEGORY_TARIFF_AMOUNT_USD = 5;
 
 export const E2E_CATEGORY_TARIFF_TYPE = "rental";
+
+export const E2E_RESERVABLE_CATEGORY_DURATION_MINUTES = 60;
+
+export const resolveStatusNoteCategoryName = (
+  projectName: string,
+  scenario: string
+): string =>
+  `E2E Fixture — Nota de estado (${projectName} · ${scenario})`;
