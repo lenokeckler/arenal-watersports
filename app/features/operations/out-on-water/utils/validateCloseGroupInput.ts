@@ -23,8 +23,17 @@ const isValidDamage = (damage: CloseGroupDamage): boolean =>
   damage.impactDelta >= 0 &&
   damage.impactDelta <= CLOSE_GROUP_LIMITS.IMPACT_MAX;
 
+const isValidImpactCount = (
+  impactCount: CloseGroupReturn["impactCount"]
+): boolean =>
+  impactCount === null ||
+  (Number.isInteger(impactCount) &&
+    impactCount >= 0 &&
+    impactCount <= CLOSE_GROUP_LIMITS.IMPACT_COUNT_MAX);
+
 const isValidReturn = (value: CloseGroupReturn): boolean =>
   UUID_PATTERN.test(value.unitId) &&
+  isValidImpactCount(value.impactCount) &&
   typeof value.maintenance === "boolean" &&
   (value.fuel === null || isValidFuelLevel(value.fuel)) &&
   (value.usage === null ||

@@ -17,6 +17,11 @@ test.describe("Dispatch sheet", () => {
     const sheet = createDispatchSheetPage(page);
 
     await board.goTo();
+    await expect(
+      board.getReservation(dispatchSheet.customerName)
+    ).toContainText(
+      `${dispatchSheet.categoryName} × ${E2E_DISPATCH_SHEET_SEED.COMMITTED_QUANTITY}`
+    );
     await sheet
       .getOpenButton(dispatchSheet.customerName)
       .click();
@@ -26,7 +31,7 @@ test.describe("Dispatch sheet", () => {
       dispatchSheet.categoryName
     );
     await expect(sheet.getDialog()).toContainText(
-      `${DISPATCH_SHEET_COPY.COMMITTED_LABEL} ${E2E_DISPATCH_SHEET_SEED.COMMITTED_QUANTITY}`
+      `${DISPATCH_SHEET_COPY.PENDING_LABEL} ${E2E_DISPATCH_SHEET_SEED.COMMITTED_QUANTITY}`
     );
     await expect(sheet.getSubmit()).toBeDisabled();
   });
@@ -60,19 +65,19 @@ test.describe("Dispatch sheet", () => {
   }) => {
     const board = createDispatchBoardPage(page);
     const sheet = createDispatchSheetPage(page);
-    const [first, second, third] = dispatchSheet.unitCodes;
+    const [first, second] = dispatchSheet.unitCodes;
 
     await board.goTo();
     await sheet
       .getOpenButton(dispatchSheet.customerName)
       .click();
-    await sheet.getUnit(first).check();
-    await sheet.getUnit(second).check();
+    await sheet.getUnit(first).click();
+    await sheet.getUnit(second).click();
 
-    await expect(sheet.getUnit(third)).toBeDisabled();
+    await expect(sheet.getChangeUnits()).toBeVisible();
     await expect(sheet.getSubmit()).toBeEnabled();
 
-    await sheet.getSubmit().click();
+    await sheet.confirm();
 
     await expect(sheet.getDialog()).toHaveCount(
       E2E_COUNT.NONE
@@ -91,5 +96,36 @@ test.describe("Dispatch sheet", () => {
           E2E_DISPATCH_SHEET_EXPECTED.RESERVATION_STATUS,
       }
     );
+  });
+
+  test("sends only one of the two committed units and keeps the other pending", async ({
+    openWindowDispatchSheet: dispatchSheet,
+    signedInPage: page,
+  }) => {
+    const board = createDispatchBoardPage(page);
+    const sheet = createDispatchSheetPage(page);
+    const [first] = dispatchSheet.unitCodes;
+
+    await board.goTo();
+    await sheet
+      .getOpenButton(dispatchSheet.customerName)
+      .click();
+    await sheet.getTakeLess().click();
+    await sheet.getUnit(first).click();
+    await sheet.confirm();
+
+    await expect(sheet.getDialog()).toHaveCount(
+      E2E_COUNT.NONE
+    );
+    await expect(
+      board.getReservation(dispatchSheet.customerName)
+    ).toBeVisible();
+    await expect(
+      page.getByText(/falta 1 de 2/)
+    ).toBeVisible();
+    expect(
+      (await dispatchSheet.readDispatchState())
+        .dispatchedUnitCount
+    ).toBe(E2E_DISPATCH_SHEET_EXPECTED.ONE_DISPATCH);
   });
 });

@@ -23,6 +23,7 @@ describe("mapUpdateCategoryBehaviorInputToRow", () => {
       has_motor: true,
       usage_metric: USAGE_METRIC.ENGINE_HOURS,
       consumes_fuel: true,
+      low_fuel_lines: 1,
       can_be_damaged: true,
       has_condition_photos: false,
       guide_only: false,

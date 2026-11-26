@@ -10,6 +10,10 @@ export const UNIT_FORM_COPY = {
   FUEL_LEVEL_PLACEHOLDER:
     "Déjelo vacío si aún no hay lectura",
   FUEL_MAX_LABEL: "Rayas del medidor de gasolina",
+  LOW_FUEL_LINES_LABEL:
+    "Aviso de gasolina baja propio (rayas)",
+  LOW_FUEL_LINES_PLACEHOLDER:
+    "Vacío: usa el aviso de la categoría",
   LOADING_TEXT: "Guardando…",
   NEXT_OIL_CHANGE_LABEL: "Próximo cambio de aceite",
   STATUS_LABEL: "Estado",

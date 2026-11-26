@@ -6,6 +6,10 @@ import { CHARGE_RESERVATION_ID } from "./ReservationCharge.constants";
 
 export const CHARGE_POSTGRES_PREFIX = "P0001: ";
 
+export const PARTS_INVALID_POSTGRES_MESSAGE = `${CHARGE_POSTGRES_PREFIX}Charge parts are invalid`;
+
+export const CHARGE_PAYMENT_METHOD = "Efectivo";
+
 export const CHARGE_UNEXPECTED_ERROR = new Error(
   "Unexpected charge failure"
 );
@@ -18,23 +22,36 @@ export const CHARGE_RECORD_ROW: ReservationChargeRecordRow =
     charge_id: "e2c20000-0000-4000-8000-000000000601",
     charged_amount: 45.5,
     charged_currency: CURRENCY_CODE.USD,
-    charged_payment_method: "Efectivo",
+    charged_payment_method: CHARGE_PAYMENT_METHOD,
     recorded_by_name: "Ana Mora",
   };
 
 export const CHARGE_RECORDED: ReservationChargeRecorded = {
-  amount: 45.5,
-  chargeId: "e2c20000-0000-4000-8000-000000000601",
-  currency: CURRENCY_CODE.USD,
-  paymentMethod: "Efectivo",
+  parts: [
+    {
+      amount: 45.5,
+      chargeId: "e2c20000-0000-4000-8000-000000000601",
+      currency: CURRENCY_CODE.USD,
+    },
+  ],
+  paymentMethod: CHARGE_PAYMENT_METHOD,
   recordedByName: "Ana Mora",
 };
 
 export const VALID_CHARGE_COMMAND: ReservationChargeCommand =
   {
-    amount: 45.5,
-    currency: CURRENCY_CODE.USD,
-    paymentMethod: "Efectivo",
+    parts: [{ amount: 45.5, currency: CURRENCY_CODE.USD }],
+    paymentMethod: CHARGE_PAYMENT_METHOD,
+    reservationId: CHARGE_RESERVATION_ID,
+  };
+
+export const MIXED_CHARGE_COMMAND: ReservationChargeCommand =
+  {
+    parts: [
+      { amount: 45.5, currency: CURRENCY_CODE.USD },
+      { amount: 12000, currency: CURRENCY_CODE.CRC },
+    ],
+    paymentMethod: CHARGE_PAYMENT_METHOD,
     reservationId: CHARGE_RESERVATION_ID,
   };
 

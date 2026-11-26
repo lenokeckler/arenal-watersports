@@ -1,8 +1,8 @@
 "use client";
 
+import CountStepper from "@/app/components/count-stepper/CountStepper";
 import FormField from "@/app/components/form-field/FormField";
 import FuelGauge from "@/app/components/fuel-gauge/FuelGauge";
-import FuelPresetButtons from "@/app/components/fuel-gauge/FuelPresetButtons";
 import Text from "@/app/components/text/Text";
 import {
   INPUT_MODE,
@@ -14,7 +14,10 @@ import {
   CLOSE_GROUP_FIELD_ID,
   CLOSE_GROUP_USAGE_COPY,
 } from "../constants/CloseGroupCopy.constants";
-import { CLOSE_GROUP_DAMAGE_CAUSE } from "../constants/CloseGroup.constants";
+import {
+  CLOSE_GROUP_DAMAGE_CAUSE,
+  CLOSE_GROUP_LIMITS,
+} from "../constants/CloseGroup.constants";
 import type { CloseGroupUnitCardProps } from "../models/CloseGroupUnitCardProps.interface";
 import {
   CLOSE_GROUP_BLOCK_CLASS,
@@ -33,6 +36,8 @@ const CAUSE_OPTIONS = Object.values(
   value: cause,
 }));
 
+const MINIMUM_IMPACT_COUNT = 0;
+
 const CloseGroupUnitCard = ({
   onChange,
   row,
@@ -48,39 +53,12 @@ const CloseGroupUnitCard = ({
         </Text>
         <FuelGauge
           level={row.fuelLevel}
+          lowLines={row.lowFuelLines}
           max={row.fuelMax}
           onSelectLevel={(level) =>
             onChange(row.unitId, { fuel: String(level) })
           }
         />
-        <FuelPresetButtons
-          level={row.fuelLevel}
-          max={row.fuelMax}
-          onSelect={(level) =>
-            onChange(row.unitId, { fuel: String(level) })
-          }
-        />
-        <FormField
-          id={`${CLOSE_GROUP_FIELD_ID.FUEL_PREFIX}${row.unitId}`}
-          name={`${CLOSE_GROUP_FIELD_ID.FUEL_PREFIX}${row.unitId}`}
-          label={CLOSE_GROUP_COPY.FUEL_FIELD_LABEL}
-          labelSuffix={STRING.Empty}
-          type={INPUT_TYPES.TEXT}
-          inputMode={INPUT_MODE.NUMERIC}
-          value={row.draft.fuel}
-          error={row.fuelError ?? undefined}
-          showErrorText
-          onChange={(event) =>
-            onChange(row.unitId, {
-              fuel: event.target.value,
-            })
-          }
-        />
-        <Text className={OUT_ON_WATER_EXTENDED_CLASS}>
-          {row.fuelOut === null
-            ? CLOSE_GROUP_COPY.FUEL_OUT_NONE
-            : `${CLOSE_GROUP_COPY.FUEL_OUT_PREFIX}${row.fuelOut} de ${row.fuelMax}.`}
-        </Text>
       </div>
     )}
     {row.usageMetric !== null && (
@@ -104,11 +82,22 @@ const CloseGroupUnitCard = ({
           }
         />
         <Text className={OUT_ON_WATER_EXTENDED_CLASS}>
-          {row.usageOut === null
-            ? CLOSE_GROUP_COPY.USAGE_OUT_NONE
-            : `${CLOSE_GROUP_COPY.USAGE_OUT_PREFIX}${row.usageOut}${CLOSE_GROUP_USAGE_COPY[row.usageMetric].UNIT}.`}
+          {`${CLOSE_GROUP_COPY.USAGE_LAST_PREFIX}${row.usageTotal}${CLOSE_GROUP_USAGE_COPY[row.usageMetric].UNIT}.`}
         </Text>
       </div>
+    )}
+    {!row.draft.hasDamage && (
+      <CountStepper
+        label={CLOSE_GROUP_COPY.IMPACT_COUNT_LABEL}
+        lessLabel={CLOSE_GROUP_COPY.IMPACT_COUNT_LESS}
+        max={CLOSE_GROUP_LIMITS.IMPACT_COUNT_MAX}
+        min={MINIMUM_IMPACT_COUNT}
+        moreLabel={CLOSE_GROUP_COPY.IMPACT_COUNT_MORE}
+        onChange={(impactCount) =>
+          onChange(row.unitId, { impactCount })
+        }
+        value={row.impactCount}
+      />
     )}
     <FormField
       id={`${CLOSE_GROUP_FIELD_ID.DAMAGE_PREFIX}${row.unitId}`}
