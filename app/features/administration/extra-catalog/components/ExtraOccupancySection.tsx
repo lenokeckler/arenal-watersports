@@ -1,17 +1,19 @@
 import FormErrorBanner from "@/app/components/form-error-banner/FormErrorBanner";
-import FormField from "@/app/components/form-field/FormField";
-import SectionTitle from "@/app/components/section-title/SectionTitle";
+import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
+import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
 import Text from "@/app/components/text/Text";
-import { INPUT_TYPES } from "@/app/constants";
 import { EXTRA_OCCUPANCY_COPY } from "../constants/ExtraOccupancyCopy.constants";
-import { EXTRA_FORM_FIELD_ID } from "../constants/ExtraFormFieldId.constants";
 import type { ExtraOccupancySectionProps } from "../models/ExtraOccupancySectionProps.type";
 import {
-  EXTRA_OCCUPANCY_NOTE_CLASS,
+  EXTRA_FORM_NOTE_CLASS,
+  EXTRA_FORM_NOTE_ICON_CLASS,
+} from "../styles/ExtraForm.styles";
+import {
+  EXTRA_OCCUPANCY_LEGEND_CLASS,
   EXTRA_OCCUPANCY_SECTION_CLASS,
-  EXTRA_OCCUPANCY_TOGGLE_CLASS,
 } from "../styles/ExtraOccupancy.styles";
 import ExtraOccupancyFields from "./ExtraOccupancyFields";
+import ExtraOccupancyKindChoices from "./ExtraOccupancyKindChoices";
 
 const ExtraOccupancySection = ({
   values,
@@ -21,31 +23,29 @@ const ExtraOccupancySection = ({
   isOccupancyLocked,
   hasOccupiableCategories,
   occupancyCategoryOptions,
-  onOccupancyToggle,
+  onOccupancySelect,
   onOccupiesCategoryChange,
   onOccupiesQuantityChange,
+  onOccupiesQuantityStep,
 }: ExtraOccupancySectionProps): React.JSX.Element => (
-  <div className={EXTRA_OCCUPANCY_SECTION_CLASS}>
-    <SectionTitle
-      text={EXTRA_OCCUPANCY_COPY.SECTION_TITLE}
-    />
-    <div className={EXTRA_OCCUPANCY_TOGGLE_CLASS}>
-      <FormField
-        id={EXTRA_FORM_FIELD_ID.OCCUPANCY_TOGGLE}
-        name={EXTRA_FORM_FIELD_ID.OCCUPANCY_TOGGLE}
-        label={EXTRA_OCCUPANCY_COPY.TOGGLE_LABEL}
-        value={EXTRA_OCCUPANCY_COPY.TOGGLE_LABEL}
-        type={INPUT_TYPES.CHECKBOX}
-        checked={isOccupancyEnabled}
-        onChange={onOccupancyToggle}
-        disabled={isOccupancyDisabled}
-      />
-    </div>
+  <fieldset className={EXTRA_OCCUPANCY_SECTION_CLASS}>
+    <legend className={EXTRA_OCCUPANCY_LEGEND_CLASS}>
+      {EXTRA_OCCUPANCY_COPY.KIND_LEGEND}
+    </legend>
     {isOccupancyLocked && (
-      <Text className={EXTRA_OCCUPANCY_NOTE_CLASS}>
-        {EXTRA_OCCUPANCY_COPY.LOCKED_NOTE}
-      </Text>
+      <div className={EXTRA_FORM_NOTE_CLASS}>
+        <MaterialIcon
+          name={MATERIAL_ICON_NAME.LOCK_RESET}
+          className={EXTRA_FORM_NOTE_ICON_CLASS}
+        />
+        <Text>{EXTRA_OCCUPANCY_COPY.LOCKED_NOTE}</Text>
+      </div>
     )}
+    <ExtraOccupancyKindChoices
+      isOccupancyEnabled={isOccupancyEnabled}
+      isOccupancyDisabled={isOccupancyDisabled}
+      onOccupancySelect={onOccupancySelect}
+    />
     {isOccupancyEnabled && (
       <ExtraOccupancyFields
         values={values}
@@ -55,10 +55,11 @@ const ExtraOccupancySection = ({
         occupancyCategoryOptions={occupancyCategoryOptions}
         onOccupiesCategoryChange={onOccupiesCategoryChange}
         onOccupiesQuantityChange={onOccupiesQuantityChange}
+        onOccupiesQuantityStep={onOccupiesQuantityStep}
       />
     )}
     <FormErrorBanner message={errors.occupancy} />
-  </div>
+  </fieldset>
 );
 
 export default ExtraOccupancySection;
