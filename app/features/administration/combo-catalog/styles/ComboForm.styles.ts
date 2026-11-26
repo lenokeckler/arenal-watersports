@@ -22,7 +22,7 @@ export const COMBO_FORM_CARD_CLASS =
   "flex flex-col gap-5 rounded-2xl border border-outline-variant bg-surface-container p-4 md:p-6";
 
 export const COMBO_FORM_ACTIONS_CLASS =
-  "sticky bottom-0 z-10 -mx-margin-mobile flex flex-col gap-2 border-t border-outline-variant bg-surface-container px-margin-mobile pb-4 pt-3 md:static md:mx-0 md:flex-row-reverse md:justify-start md:border-0 md:bg-transparent md:px-0";
+  "sticky bottom-[calc(4rem+env(safe-area-inset-bottom))] z-10 -mx-margin-mobile flex flex-col gap-2 border-t border-outline-variant bg-surface-container px-margin-mobile pb-4 pt-3 md:static md:mx-0 md:flex-row-reverse md:justify-start md:border-0 md:bg-transparent md:px-0";
 
 export const COMBO_FORM_ACTION_BUTTON_CLASS =
   "min-h-12 w-full min-w-0 md:w-auto md:min-w-40";
@@ -96,7 +96,7 @@ export const COMBO_ITEM_QUANTITY_INPUT_CLASS =
   "text-center text-xl font-bold";
 
 export const COMBO_ITEM_STEP_BUTTON_CLASS =
-  "flex size-12 shrink-0 items-center justify-center rounded-xl border-2 border-outline bg-surface-container-high text-on-surface hover:border-primary focus-visible:outline-2 focus-visible:outline-primary disabled:opacity-50";
+  "flex h-14 w-12 shrink-0 items-center justify-center rounded-xl border-2 border-outline bg-surface-container-high text-on-surface hover:border-primary focus-visible:outline-2 focus-visible:outline-primary disabled:opacity-50";
 
 export const COMBO_ITEM_REMOVE_BUTTON_CLASS =
   "inline-flex min-h-12 shrink-0 items-center gap-1.5 px-1 text-base font-bold text-error hover:underline focus-visible:outline-2 focus-visible:outline-primary disabled:opacity-50";
