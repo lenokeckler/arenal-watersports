@@ -8,7 +8,7 @@ export interface CategoryUnitsViewProps {
   canDispatch: boolean;
   categoryId: string;
   categoryName: string;
+  filterControl: ReactNode;
   image: NullableRef<ReservationEquipmentImageOption>;
-  unitCount: number;
   units: CategoryUnit[];
 }

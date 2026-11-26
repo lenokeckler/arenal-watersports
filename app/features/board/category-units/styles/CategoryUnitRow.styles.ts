@@ -70,19 +70,10 @@ export const CATEGORY_UNIT_ROW_USAGE_CLASS =
   "text-body-sm tabular-nums text-on-surface-variant";
 
 export const CATEGORY_UNIT_ROW_TITLE_CLASS =
-  "flex min-w-0 items-center gap-sm";
+  "flex w-full min-w-0 items-center justify-between gap-sm";
 
-const SELECT_MARK_BASE_CLASS =
-  "pointer-events-none absolute right-2 top-2 z-10 flex size-8 items-center justify-center rounded-full border-2 bg-background/70";
-
-const SELECT_MARK_OFF_CLASS = `${SELECT_MARK_BASE_CLASS} border-outline text-transparent`;
-
-const SELECT_MARK_ON_CLASS = `${SELECT_MARK_BASE_CLASS} border-primary bg-primary text-on-primary`;
-
-export const resolveCategoryUnitSelectMarkClass = (
-  isSelected: boolean
-): string =>
-  isSelected ? SELECT_MARK_ON_CLASS : SELECT_MARK_OFF_CLASS;
+export const CATEGORY_UNIT_SELECT_MARK_CLASS =
+  "pointer-events-none absolute right-2 top-2 z-10 flex size-8 items-center justify-center rounded-full border-2 border-primary bg-primary text-on-primary";
 
 export const CATEGORY_UNIT_SELECT_LABEL_CLASS =
   "relative flex h-full w-full min-w-0 cursor-pointer rounded-xl focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary";
@@ -129,12 +120,12 @@ const CHIP_AVAILABLE_CLASS = `${CHIP_BASE_CLASS} border-primary/30 text-primary`
 const CHIP_OCCUPIED_CLASS = `${CHIP_BASE_CLASS} border-warning/40 text-warning`;
 const CHIP_MAINTENANCE_CLASS = `${CHIP_BASE_CLASS} border-on-surface-variant/50 text-on-surface-variant`;
 
-const CHIP_DAMAGED_CLASS = `${CHIP_BASE_CLASS} border-error/30 text-error`;
+const CHIP_DAMAGED_CLASS = `${CHIP_BASE_CLASS} border-[#ff1744] bg-[#ff1744]/10 font-bold text-[#ff1744] [box-shadow:0_0_8px_-2px_#ff1744]`;
 
 const DOT_AVAILABLE_CLASS = `${DOT_BASE_CLASS} bg-primary`;
 const DOT_OCCUPIED_CLASS = `${DOT_BASE_CLASS} bg-warning`;
 const DOT_MAINTENANCE_CLASS = `${DOT_BASE_CLASS} bg-on-surface-variant`;
-const DOT_DAMAGED_CLASS = `${DOT_BASE_CLASS} bg-error`;
+const DOT_DAMAGED_CLASS = `${DOT_BASE_CLASS} bg-[#ff1744] [box-shadow:0_0_6px_#ff1744]`;
 
 export const CATEGORY_UNIT_STATUS_CHIP_CLASS: Record<
   ActiveInventoryUnitStatus,
