@@ -8,13 +8,13 @@ A worker who always rents the same equipment arranges the board once, on the dev
 
 - Choose two or three cards per row from the side panel.
 - Reorder the categories from the side panel by dragging a handle with a finger or a mouse, or with the arrow keys.
+- Reorder the categories on the board itself: hold a card (long press with a finger, or press and move with the mouse) and drag it to its new place.
 - Keep the layout and the order on the device (`localStorage`), like the theme.
 - Read the saved order as a hint: an id the board no longer has is ignored, a category the order does not mention goes to the end.
 
 ## Out of scope
 
 - Saving the layout in the account or the database.
-- Dragging the cards on the board itself.
 - Any other screen's layout.
 
 ## Requirements
@@ -29,6 +29,7 @@ A worker who always rents the same equipment arranges the board once, on the dev
 - Storage unavailable, full, corrupt or foreign: read as the default layout, write failures ignored.
 - A column count other than two or three is dropped; non-string ids of a saved order are dropped.
 - A pointer that leaves the list is clamped to the first or last row; only the primary pointer button starts a drag.
+- On the board a finger that moves before the long press ends is a scroll, not a drag; a tap after a drag never opens the category.
 
 ## Constraints
 
