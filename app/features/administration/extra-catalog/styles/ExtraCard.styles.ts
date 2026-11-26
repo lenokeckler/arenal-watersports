@@ -2,10 +2,10 @@ import { EXTRA_STATUS } from "../constants/ExtraStatus.constants";
 import type { ExtraStatus } from "../models/ExtraStatus.type";
 
 export const EXTRA_CARD_CONTAINER_CLASS =
-  "flex flex-col gap-3 rounded-xl border border-outline-variant bg-surface-container/60 p-4 md:flex-row md:items-center";
+  "flex flex-col gap-3 rounded-xl border border-outline-variant bg-surface-container/60 p-4 md:flex-row md:flex-wrap md:items-center";
 
 export const EXTRA_CARD_BODY_CLASS =
-  "flex flex-col gap-1 md:min-w-0 md:flex-1";
+  "flex flex-col gap-1 md:min-w-64 md:flex-1";
 
 export const EXTRA_CARD_HEADING_ROW_CLASS =
   "flex items-center justify-between gap-3";

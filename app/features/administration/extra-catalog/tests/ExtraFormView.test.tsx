@@ -244,17 +244,17 @@ describe("ExtraFormView", () => {
     expect(
       page.getPriceField(CURRENCY_CODE.CRC)
     ).toBeDisabled();
-    expect(page.getCancelButton()).toBeDisabled();
+    expect(page.getBackButton()).toBeDisabled();
     deferred.resolve(EXTRA_FORM_SUCCESS_RESULT);
     await waitFor(() =>
       expect(page.getNameField()).toBeEnabled()
     );
   });
 
-  it("goes back to the extra list from the cancel button", async () => {
+  it("goes back to the extra list from the back button", async () => {
     const page = renderExtraFormView(CREATE_FORM_PROPS);
 
-    await page.cancel();
+    await page.back();
 
     expect(pushMock).toHaveBeenCalledWith(
       PATHS.ADMINISTRATION.EXTRAS

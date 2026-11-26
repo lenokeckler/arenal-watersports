@@ -9,11 +9,17 @@ const { FUEL_LEVEL_MIN, FUEL_MAX_MAX, FUEL_MAX_MIN } =
   UNIT_FORM_LIMITS;
 
 export const findUnitFuelErrors = (
-  values: Pick<UnitFormValues, "fuelMax" | "fuelLevel">
-): Pick<UnitFormErrors, "fuelMax" | "fuelLevel"> => {
+  values: Pick<
+    UnitFormValues,
+    "fuelMax" | "fuelLevel" | "lowFuelLines"
+  >
+): Pick<
+  UnitFormErrors,
+  "fuelMax" | "fuelLevel" | "lowFuelLines"
+> => {
   const errors: Pick<
     UnitFormErrors,
-    "fuelMax" | "fuelLevel"
+    "fuelMax" | "fuelLevel" | "lowFuelLines"
   > = {};
   const fuelMax = parseUnitInteger(values.fuelMax);
   const isFuelMaxValid =
@@ -22,6 +28,25 @@ export const findUnitFuelErrors = (
     fuelMax <= FUEL_MAX_MAX;
   if (!isFuelMaxValid) {
     errors.fuelMax = UNIT_FORM_ERROR_COPY.FUEL_MAX_INVALID;
+  }
+
+  const ceilingForWarning = isFuelMaxValid
+    ? fuelMax
+    : FUEL_MAX_MAX;
+  if (values.lowFuelLines.trim() !== STRING.Empty) {
+    const lowFuelLines = parseUnitInteger(
+      values.lowFuelLines
+    );
+    if (
+      lowFuelLines === null ||
+      lowFuelLines < FUEL_MAX_MIN
+    ) {
+      errors.lowFuelLines =
+        UNIT_FORM_ERROR_COPY.LOW_FUEL_LINES_INVALID;
+    } else if (lowFuelLines > ceilingForWarning) {
+      errors.lowFuelLines =
+        UNIT_FORM_ERROR_COPY.LOW_FUEL_LINES_ABOVE_MAX;
+    }
   }
 
   if (values.fuelLevel.trim() === STRING.Empty) {

@@ -10,6 +10,7 @@ export const test = base.extend<{
   boardMotorDispatchSheet: DispatchSheetFixture;
   dispatchSheet: DispatchSheetFixture;
   motorDispatchSheet: DispatchSheetFixture;
+  openWindowDispatchSheet: DispatchSheetFixture;
 }>({
   administratorPage: async ({ page }, provide) => {
     await signInAsSeededWorker(page);
@@ -39,6 +40,18 @@ export const test = base.extend<{
   dispatchSheet: async ({ activeWorker }, provide) => {
     const fixture = await createDispatchSheetFixture(
       activeWorker.id
+    );
+
+    await provide(fixture);
+    await fixture.remove();
+  },
+  openWindowDispatchSheet: async (
+    { activeWorker },
+    provide
+  ) => {
+    const fixture = await createDispatchSheetFixture(
+      activeWorker.id,
+      { hasOpenWindow: true }
     );
 
     await provide(fixture);

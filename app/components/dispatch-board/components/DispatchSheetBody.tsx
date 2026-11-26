@@ -18,11 +18,13 @@ import DispatchGroupForm from "./DispatchGroupForm";
 import DispatchSheetGroupChooser from "./DispatchSheetGroupChooser";
 
 interface DispatchSheetBodyProps {
+  isCombo?: boolean;
   preselectedUnitIds?: string[];
   viewModel: DispatchSheetViewModel;
 }
 
 const DispatchSheetBody = ({
+  isCombo = false,
   preselectedUnitIds,
   viewModel,
 }: DispatchSheetBodyProps): React.JSX.Element => {
@@ -64,6 +66,11 @@ const DispatchSheetBody = ({
           className={DISPATCH_SHEET_ERROR_CLASS}
         >
           {errorMessage}
+        </Text>
+      )}
+      {isCombo && (
+        <Text className={DISPATCH_SHEET_MESSAGE_CLASS}>
+          {DISPATCH_SHEET_COPY.COMBO_NOTE}
         </Text>
       )}
       {groups.length === 0 && (

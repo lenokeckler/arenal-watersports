@@ -40,6 +40,9 @@ export const recordReservationChargeAction = async (
     revalidatePath(PATHS.RESERVATIONS.INCOME);
     return { ok: true, recorded };
   } catch (error) {
-    return mapReservationChargeError(error);
+    return mapReservationChargeError(
+      error,
+      input.paymentChoice
+    );
   }
 };
