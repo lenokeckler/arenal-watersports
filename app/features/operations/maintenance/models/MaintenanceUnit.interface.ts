@@ -7,6 +7,8 @@ export interface MaintenanceUnit {
   code: string;
   nextOilChangeAt: NullableRef<number>;
   oilOverage: NullableRef<number>;
+  oilRemaining: NullableRef<number>;
+  oilWarning: boolean;
   status: Database["public"]["Enums"]["unit_status"];
   unitId: string;
   usageMetric: NullableRef<

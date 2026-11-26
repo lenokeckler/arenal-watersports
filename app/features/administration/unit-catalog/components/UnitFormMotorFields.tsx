@@ -11,6 +11,7 @@ const UnitFormMotorFields = ({
   usageMetric,
   disabled,
   onFuelMaxChange,
+  onLowFuelLinesChange,
   onFuelLevelChange,
   onUsageTotalChange,
   onNextOilChangeAtChange,
@@ -25,6 +26,18 @@ const UnitFormMotorFields = ({
       error={errors.fuelMax}
       disabled={disabled}
       onChange={onFuelMaxChange}
+    />
+    <UnitFormTextField
+      id={UNIT_FORM_FIELD_ID.LOW_FUEL_LINES}
+      label={UNIT_FORM_COPY.LOW_FUEL_LINES_LABEL}
+      placeholder={
+        UNIT_FORM_COPY.LOW_FUEL_LINES_PLACEHOLDER
+      }
+      inputMode={INPUT_MODE.NUMERIC}
+      value={values.lowFuelLines}
+      error={errors.lowFuelLines}
+      disabled={disabled}
+      onChange={onLowFuelLinesChange}
     />
     <UnitFormTextField
       id={UNIT_FORM_FIELD_ID.FUEL_LEVEL}

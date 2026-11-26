@@ -1,26 +1,23 @@
 import { Section, Text, Title } from "@/app/components";
 import { TitleVariant } from "@/app/constants";
-import {
-  RESERVATION_CHARGE_CURRENCY_ORDER,
-  RESERVATION_CHARGE_FIELD_ID,
-} from "../constants/ReservationChargeUi.constants";
+import { RESERVATION_CHARGE_FIELD_ID } from "../constants/ReservationChargeUi.constants";
 import { RESERVATION_CHARGE_UI_COPY as COPY } from "../constants/ReservationChargeUiCopy.constants";
 import type { ReservationChargeSummaryProps } from "../models/ReservationChargeSummaryProps.interface";
 import {
   RESERVATION_CHARGE_CODE_CLASS,
   RESERVATION_CHARGE_DETAILS_CLASS,
   RESERVATION_CHARGE_NOTE_CLASS,
-  RESERVATION_CHARGE_PROPOSAL_CLASS,
   RESERVATION_CHARGE_SUMMARY_CLASS,
   RESERVATION_CHARGE_SUMMARY_HEADING_CLASS,
 } from "../styles/ReservationCharge.styles";
 import { formatReservationChargeDate } from "../utils/formatReservationChargeDate";
 import { formatReservationChargeDuration } from "../utils/formatReservationChargeDuration";
-import { formatReservationChargeProposal } from "../utils/formatReservationChargeProposal";
+import ReservationChargePrice from "./ReservationChargePrice";
 import ReservationChargeSummaryRow from "./ReservationChargeSummaryRow";
 
 const ReservationChargeSummary = ({
   charge,
+  viewModel,
 }: ReservationChargeSummaryProps): React.JSX.Element => (
   <Section
     ariaLabel={RESERVATION_CHARGE_FIELD_ID.SUMMARY_HEADING}
@@ -60,17 +57,10 @@ const ReservationChargeSummary = ({
         value={String(charge.peopleCount)}
       />
     </dl>
-    {RESERVATION_CHARGE_CURRENCY_ORDER.map((currency) => (
-      <Text
-        key={currency}
-        className={RESERVATION_CHARGE_PROPOSAL_CLASS}
-      >
-        {formatReservationChargeProposal(
-          charge.proposal[currency],
-          currency
-        )}
-      </Text>
-    ))}
+    <ReservationChargePrice
+      charge={charge}
+      viewModel={viewModel}
+    />
     <Text className={RESERVATION_CHARGE_NOTE_CLASS}>
       {COPY.PER_RESERVATION_NOTE}
     </Text>

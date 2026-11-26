@@ -26,8 +26,11 @@ describe("EquipmentBoardPage", () => {
     expect(metadata).toBe(EQUIPMENT_BOARD_METADATA);
   });
 
-  it("renders the shared guarded board entry", () => {
-    const page = EquipmentBoardPage();
+  it("renders the shared guarded board entry", async () => {
+    const page = await EquipmentBoardPage({
+      params: Promise.resolve({}),
+      searchParams: Promise.resolve({}),
+    });
 
     expect(isValidElement(page)).toBe(true);
     expect(page.type).toBe(EquipmentBoardEntry);
