@@ -186,6 +186,10 @@ export {
 } from "./access/BlockedReauthentication.constants";
 export { SUPABASE_TABLE } from "./supabase/SupabaseTable.constants";
 export { BOARD_REALTIME } from "./supabase/BoardRealtime.constants";
+export {
+  OIL_REMAINING_COPY,
+  OIL_REMAINING_FORMAT,
+} from "./maintenance/OilRemaining.constants";
 export { MAINTENANCE_JOB_QUERY_PARAM } from "./maintenance/MaintenanceJobQuery.constants";
 export {
   BOARD_UNIT_FILTER,
