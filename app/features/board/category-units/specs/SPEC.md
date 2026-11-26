@@ -44,7 +44,7 @@ con la finalidad de saber cuáles puedo ofrecer y cuándo vuelven las que están
 ## Dispatch from the category (US-OPE-02)
 
 - Only a worker with the operations area sees the rows of the available units as tappable; the page asks `has_area('operaciones')` and a failed answer reaches `error.tsx`, never a silently read-only board.
-- Tapping a unit marks it and shows a bar above the navigation with the count ("2 unidades seleccionadas"), "Cancelar" and "Despachar". An occupied, damaged or in-maintenance unit cannot be tapped.
+- Nothing is drawn on a unit before it is tapped. Tapping a unit marks it with a check and a highlighted border, and shows a bar above the navigation with the count ("2 unidades seleccionadas"), "Cancelar" and "Despachar". An occupied, damaged or in-maintenance unit cannot be tapped.
 - "Despachar" opens a sheet with the reservations of today in Costa Rica that still have this category pending, by time, each with its committed count. A combo is never listed: it is dispatched from the list of the day.
 - A reservation that commits fewer units than were tapped says how many fit.
 - Choosing a reservation opens the dispatch sheet on this category with the tapped units already marked; the worker completes or unchecks them there, and confirming goes through `dispatch_reservation_group`.
@@ -116,3 +116,15 @@ con la finalidad de saber cuáles puedo ofrecer y cuándo vuelven las que están
 - Information panel (read only first): customer, people, departure, return and radio channel. Its Editar button turns the times (time fields plus -15/+15, times first) and the radio channel into editable fields; saving calls `update_open_dispatch`, and the return moves with the departure when only the departure changes. Recibir unidad links to the screen of the groups out on the water.
 - Edit panel (motor units): gauge by lines, hours or kilometers in a numeric field, and the impact count with a stepper; saving calls `correct_unit_readings`, recording an occupied unit as available and keeping the status of any other. A unit with a gauge cannot be saved without a level; a unit without gauge is saved with level 0.
 - The gauge is colored by the low fuel warning of the unit (`low_fuel_lines` of the unit, or of its category), and an empty tank is drawn with a red border.
+
+## Status filter and status panel (US-TAB-02, US-OPE-17)
+
+- The same filter links appear under the header of the category and the unit list, the page count and the group switch links keep the filter. A filter with no unit shows "No hay unidades con este filtro".
+- With Editar off, tapping a unit in maintenance, in repair or damaged opens its status panel (operations only). Units in maintenance show the last five jobs done (type, description, date, cost, external workshop) and the buttons Registrar trabajo and Devolver a servicio; damaged units show the latest damage report and the buttons Pasar a mantenimiento and Devolver a servicio.
+- Registrar trabajo opens `/operations/maintenance/new?unit=<id>` with the unit already chosen. Saving a job does not return the unit to service; Devolver a servicio does, through `set_unit_maintenance`, which now accepts units in maintenance, in repair and damaged.
+
+## Oil change warning on the card (US-OPE-12)
+
+- On the right of the unit code the card shows a drop with the distance left, in amber, when the unit is within 50 km (10 hours for water equipment) of its next oil change; past it, the drop is red and the distance has a minus sign. No text, only an accessible name `Necesita cambio de aceite`.
+- It shows on any unit with a threshold, free, out or gray; it never blocks the dispatch and does not change the status.
+- The database decides (`oil_warning`, `oil_remaining` of `board_category_units`); registering an oil change moves the next change and clears the warning.

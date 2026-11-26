@@ -60,6 +60,44 @@ export const CATEGORY_UNITS_COPY = {
   RECEIVE_SAVING: "Recibiendo…",
   RECEIVE_TITLE: (code: string): string =>
     `Recibir · ${code}`,
+  STATUS_COST_AMOUNT: (
+    symbol: string,
+    amount: string
+  ): string => `${symbol} ${amount}`,
+  STATUS_COST_SYMBOLS: { CRC: "₡", USD: "$" } as Record<
+    string,
+    string
+  >,
+  STATUS_DAMAGE_CAUSE: "Causa",
+  STATUS_DAMAGE_CAUSES: {
+    collision: "Choque",
+    machine_failure: "Falla de máquina",
+    other: "Otra",
+    rollover: "Vuelco",
+  } as Record<string, string>,
+  STATUS_DAMAGE_DATE: "Fecha",
+  STATUS_DAMAGE_TITLE: "Daño reportado",
+  STATUS_DAMAGE_WHAT: "Qué pasó",
+  STATUS_EXTERNAL_WORKSHOP: "taller externo",
+  STATUS_HINT:
+    "Anote cada trabajo que le hagan. La unidad sigue en mantenimiento hasta que usted la devuelva.",
+  STATUS_JOBS_EMPTY:
+    "Todavía no se ha anotado ningún trabajo.",
+  STATUS_JOBS_TITLE: "Trabajos hechos",
+  STATUS_REGISTER_JOB: "Registrar trabajo",
+  STATUS_RETURN_TO_SERVICE: "Devolver a servicio",
+  STATUS_SAVING: "Guardando…",
+  STATUS_SEND_TO_MAINTENANCE: "Pasar a mantenimiento",
+  STATUS_TITLE: (code: string, status: string): string =>
+    `${code} · ${status}`,
+  STATUS_UNIT: (code: string): string =>
+    `Ver estado de ${code}`,
+  STATUS_WORK_TYPES: {
+    oil_change: "Cambio de aceite",
+    other: "Otro trabajo",
+    part_change: "Cambio de pieza",
+    tire_change: "Cambio de llanta",
+  } as Record<string, string>,
   UPDATE_ALREADY_CLOSED: "Este grupo ya regresó.",
   UPDATE_ERROR:
     "No se pudo guardar el cambio. Intente de nuevo.",
@@ -75,6 +113,9 @@ export const CATEGORY_UNITS_COPY = {
       : `${count} unidades seleccionadas`,
   EMPTY_BODY:
     "Cuando administración registre unidades en esta categoría, aparecerán aquí con su estado.",
+  FILTERED_EMPTY_BODY:
+    "Cambie el filtro de arriba para ver las demás unidades.",
+  FILTERED_EMPTY_TITLE: "No hay unidades con este filtro",
   EMPTY_TITLE: "Esta categoría todavía no tiene unidades",
   ERROR_BODY:
     "Revise su conexión e intente de nuevo. Mientras no cargue, no asuma que hay unidades libres.",
@@ -111,8 +152,6 @@ export const CATEGORY_UNITS_COPY = {
   ): string => `${page} de ${pageCount}`,
   PAGINATION_PREVIOUS: "Anterior",
   RETRY: "Reintentar",
-  UNITS_COUNT: (unitCount: number): string =>
-    unitCount === 1 ? "1 unidad" : `${unitCount} unidades`,
 } as const;
 
 export const CATEGORY_UNIT_STATUS_LABEL: Record<
