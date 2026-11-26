@@ -14,8 +14,20 @@ export const BOARD_UNITS_SECOND_PAGE_RANGE =
 
 export const BOARD_UNITS_ROW: BoardCategoryUnitRow = {
   category_id: BOARD_UNITS_CATEGORY_ID,
+  consumes_fuel: true,
   customer_name: "Ana Mora",
+  dispatch_id: "dddddddd-0000-0000-0000-000000000001",
+  dispatched_at: "2026-11-01T14:05:00+00:00",
   effective_status: "occupied",
+  fuel_level: 3,
+  fuel_max: 4,
+  has_motor: true,
+  impact_count: 2,
+  low_fuel_lines: 1,
+  people_count: 3,
+  radio_channel: 7,
+  oil_remaining: null,
+  oil_warning: false,
   reservation_code: "R-000123",
   reservation_ends_at: "2026-11-01T16:00:00+00:00",
   reservation_id: "cccccccc-0000-0000-0000-000000000001",
@@ -23,6 +35,8 @@ export const BOARD_UNITS_ROW: BoardCategoryUnitRow = {
   returns_at: "2026-11-01T16:00:00+00:00",
   unit_code: "JS-01",
   unit_id: "bbbbbbbb-0000-0000-0000-000000000001",
+  usage_metric: "engine_hours",
+  usage_total: 97.5,
 };
 
 export const BOARD_UNITS_RESULT = {

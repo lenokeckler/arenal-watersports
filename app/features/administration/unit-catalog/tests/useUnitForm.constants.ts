@@ -28,6 +28,7 @@ export const ALL_FIELD_ERRORS: Required<UnitFormErrors> = {
   status: "fake-status-error",
   fuelMax: UNIT_FORM_ERROR_COPY.FUEL_MAX_INVALID,
   fuelLevel: UNIT_FORM_ERROR_COPY.FUEL_LEVEL_INVALID,
+  lowFuelLines: UNIT_FORM_ERROR_COPY.LOW_FUEL_LINES_INVALID,
   usageTotal: UNIT_FORM_ERROR_COPY.DECIMAL_INVALID,
   nextOilChangeAt: UNIT_FORM_ERROR_COPY.DECIMAL_INVALID,
 };

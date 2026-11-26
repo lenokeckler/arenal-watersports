@@ -3,6 +3,7 @@ import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constant
 import type { CategoryBehaviorFormFieldsProps } from "../models/CategoryBehaviorFormFieldsProps.interface";
 import CategoryBehaviorCheckboxField from "./CategoryBehaviorCheckboxField";
 import CategoryBehaviorDurationField from "./CategoryBehaviorDurationField";
+import CategoryBehaviorLowFuelField from "./CategoryBehaviorLowFuelField";
 import CategoryBehaviorUsageMetricField from "./CategoryBehaviorUsageMetricField";
 
 const CategoryBehaviorFormFields = ({
@@ -19,6 +20,7 @@ const CategoryBehaviorFormFields = ({
   onHasConditionPhotosChange,
   onGuideOnlyChange,
   onDefaultDurationMinutesChange,
+  onLowFuelLinesChange,
 }: CategoryBehaviorFormFieldsProps): React.JSX.Element => (
   <>
     <CategoryBehaviorCheckboxField
@@ -64,6 +66,14 @@ const CategoryBehaviorFormFields = ({
       disabled={isSubmitting}
       onChange={onConsumesFuelChange}
     />
+    {values.consumesFuel && (
+      <CategoryBehaviorLowFuelField
+        value={values.lowFuelLines}
+        error={errors.lowFuelLines}
+        disabled={isSubmitting}
+        onChange={onLowFuelLinesChange}
+      />
+    )}
     <CategoryBehaviorCheckboxField
       id={CATEGORY_BEHAVIOR_FORM_FIELD_ID.CAN_BE_DAMAGED}
       label={

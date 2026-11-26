@@ -55,7 +55,7 @@ describe("CategoryUnitStatusChip", () => {
     const unit = page.getUnit(UNIT_CODE.DAMAGED);
 
     expect(page.getDecorativeElements(unit)).toHaveLength(
-      1
+      2
     );
     expect(page.getUnitText(unit)).toContain(
       CATEGORY_UNIT_STATUS_LABEL[
