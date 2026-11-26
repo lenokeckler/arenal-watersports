@@ -24,6 +24,11 @@ export const createTariffListPage = () => {
       TARIFF_CATALOG_COPY.UNIT_PER_HOUR
     );
 
+  const getEditLink = (name: string) =>
+    getCard(name).getByRole(ARIA_ROLE.LINK, {
+      name: TARIFF_CATALOG_COPY.EDIT_LINK,
+    });
+
   const getTitle = () =>
     screen.queryByRole(ARIA_ROLE.HEADING, {
       name: TARIFF_CATALOG_COPY.LIST_TITLE,
@@ -47,6 +52,7 @@ export const createTariffListPage = () => {
 
   return {
     clickRetry,
+    getEditLink,
     getTitle,
     queryCard,
     queryCardText,

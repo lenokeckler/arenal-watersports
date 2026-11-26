@@ -10,6 +10,7 @@ import type { TariffLineViewModel } from "../models/TariffLineViewModel.interfac
 import type { TariffType } from "../models/TariffType.type";
 import { formatTariffAmounts } from "./formatTariffAmounts";
 import { hasTariffAmounts } from "./hasTariffAmounts";
+import { resolveTariffEditPath } from "./resolveTariffEditPath";
 
 const buildTariffLine = (
   tariffType: TariffType,
@@ -25,6 +26,7 @@ const buildTariffLine = (
 export const buildTariffCardViewModel = (
   row: TariffCatalogRow
 ): TariffCardViewModel => ({
+  editHref: resolveTariffEditPath(row.categoryId),
   id: row.categoryId,
   lines: [
     buildTariffLine(TARIFF_TYPE.RENTAL, row.rental),

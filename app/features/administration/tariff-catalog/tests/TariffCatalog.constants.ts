@@ -15,6 +15,7 @@ export const RENTAL_AMOUNT_USD = 120.5;
 export const RENTAL_AMOUNT_CRC = 60_000;
 export const TOUR_AMOUNT_USD = 80;
 export const UNKNOWN_TARIFF_TYPE = "combo";
+export const UNSAFE_CATEGORY_ID = "category jet/ski";
 export const CATEGORIES_TABLE = "equipment_categories";
 export const NAME_COLUMN = "name";
 export const ID_COLUMN = "id";

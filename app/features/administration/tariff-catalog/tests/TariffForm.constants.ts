@@ -1,6 +1,8 @@
-import { STRING } from "@/app/constants";
+import { STATUS, STRING } from "@/app/constants";
 import { DEFAULT_TARIFF_FORM_VALUES } from "../constants/TariffFormDefaults.constants";
 import type { SaveTariffsInput } from "../models/SaveTariffsInput.type";
+import type { SaveTariffsResult } from "../models/SaveTariffsResult.interface";
+import type { TariffFormViewProps } from "../models/TariffFormViewProps.interface";
 import type { TariffFormValues } from "../models/TariffFormValues.interface";
 import type { TariffTypeFormValues } from "../models/TariffTypeFormValues.interface";
 import {
@@ -58,4 +60,33 @@ export const EXPECTED_SAVE_PAYLOAD: SaveTariffsInput = {
     usd: RENTAL_AMOUNT_USD,
   },
   tour: { crc: null, usd: TOUR_AMOUNT_USD },
+};
+
+export const SERVER_ERROR_MESSAGE = "boom";
+export const SUBMISSIONS_WHILE_LOCKED = 1;
+export const REDIRECT_ERROR_MESSAGE = "NEXT_REDIRECT";
+export const NOT_FOUND_ERROR_MESSAGE = "NEXT_NOT_FOUND";
+
+export const throwNavigation = (message: string) => () => {
+  throw new Error(message);
+};
+
+export const SAVE_SUCCESS_RESULT: SaveTariffsResult = {
+  status: STATUS.SUCCESS,
+};
+
+export const SAVE_FAILURE_RESULT: SaveTariffsResult = {
+  message: SERVER_ERROR_MESSAGE,
+  status: STATUS.ERROR,
+};
+
+export const SAVE_FAILURE_WITHOUT_MESSAGE_RESULT: SaveTariffsResult =
+  { status: STATUS.ERROR };
+
+export const EDIT_FORM_PROPS: TariffFormViewProps = {
+  tariff: EXISTING_TARIFFS,
+};
+
+export const EMPTY_FORM_PROPS: TariffFormViewProps = {
+  tariff: NO_EXISTING_TARIFFS,
 };
