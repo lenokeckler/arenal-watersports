@@ -13,15 +13,6 @@ const TariffFormActions = ({
 }: TariffFormActionsProps): React.JSX.Element => (
   <div className={TARIFF_FORM_ACTIONS_CLASS}>
     <Button
-      variant={BUTTON.SECONDARY}
-      type="button"
-      disabled={isSubmitting}
-      onClick={onBack}
-      className={TARIFF_FORM_ACTION_BUTTON_CLASS}
-    >
-      {TARIFF_FORM_COPY.BACK_BUTTON}
-    </Button>
-    <Button
       variant={BUTTON.PRIMARY}
       type="submit"
       isLoading={isSubmitting}
@@ -29,6 +20,15 @@ const TariffFormActions = ({
       className={TARIFF_FORM_ACTION_BUTTON_CLASS}
     >
       {TARIFF_FORM_COPY.SAVE_BUTTON}
+    </Button>
+    <Button
+      variant={BUTTON.SECONDARY}
+      type="button"
+      disabled={isSubmitting}
+      onClick={onBack}
+      className={TARIFF_FORM_ACTION_BUTTON_CLASS}
+    >
+      {TARIFF_FORM_COPY.BACK_BUTTON}
     </Button>
   </div>
 );

@@ -20,6 +20,7 @@ import {
 import { TARIFF_FORM_COPY } from "../constants/TariffFormCopy.constants";
 import { TARIFF_FORM_TYPE_ORDER } from "../constants/TariffFormTypeOrder.constants";
 import { TARIFF_PRICE_ERROR_COPY } from "../constants/TariffPriceErrorCopy.constants";
+import { TARIFF_PRICE_FIELDS } from "../constants/TariffPriceField.constants";
 import { TARIFF_TYPE } from "../constants/TariffType.constants";
 import type { SaveTariffsResult } from "../models/SaveTariffsResult.interface";
 import type { TariffFormViewProps } from "../models/TariffFormViewProps.interface";
@@ -65,7 +66,9 @@ describe("TariffFormView", () => {
       page.queryText(TARIFF_FORM_COPY.CHANGE_HINT)
     ).toBeInTheDocument();
     TARIFF_FORM_TYPE_ORDER.forEach((type) => {
-      expect(page.querySectionUnits(type)).toHaveLength(1);
+      expect(page.querySectionUnits(type)).toHaveLength(
+        TARIFF_PRICE_FIELDS.length
+      );
     });
     expect(
       page.getUsdField(TARIFF_TYPE.RENTAL)
