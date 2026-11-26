@@ -1,9 +1,11 @@
 "use client";
 
+import BackLink from "@/app/components/back-link/BackLink";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
 import {
   ADMINISTRATION_SCREEN_TITLE_ID,
+  PATHS,
   TitleVariant,
   WIDE_LAYOUT_MARKER_PROPS,
 } from "@/app/constants";
@@ -52,6 +54,10 @@ const TariffListView = ({
         emptyMessage={viewModel.emptyMessage}
         fetchFailed={fetchFailed}
         onRetry={viewModel.onRetry}
+      />
+      <BackLink
+        href={PATHS.HOME}
+        label={TARIFF_CATALOG_COPY.BACK_TO_HOME}
       />
     </div>
   );

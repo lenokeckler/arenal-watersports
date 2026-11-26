@@ -2,7 +2,7 @@ import { refreshMock } from "./tariffList.harness";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
-import { ARIA_ROLE } from "@/app/constants";
+import { ARIA_ROLE, PATHS } from "@/app/constants";
 import { TARIFF_CATALOG_COPY } from "../constants/TariffCatalogCopy.constants";
 import TariffListView from "../TariffListView";
 import {
@@ -73,6 +73,24 @@ describe("TariffListView filters", () => {
         TARIFF_CATALOG_COPY.FILTER_MISSING_EMPTY
       )
     ).toBeInTheDocument();
+  });
+
+  it("links back to the home screen", () => {
+    render(
+      <TariffListView
+        categories={[DEFAULT_CATALOG_ROW]}
+        fetchFailed={false}
+      />
+    );
+
+    expect(
+      screen.getByRole(ARIA_ROLE.LINK, {
+        name: new RegExp(
+          TARIFF_CATALOG_COPY.BACK_TO_HOME,
+          "i"
+        ),
+      })
+    ).toHaveAttribute("href", PATHS.HOME);
   });
 
   it("shows no filters when there are no categories", () => {
