@@ -27,7 +27,6 @@ const CategoryUnitSelectRow = ({
     />
     <CategoryUnitRow
       image={image}
-      isSelectable
       isSelected={isSelected}
       unit={unit}
     />

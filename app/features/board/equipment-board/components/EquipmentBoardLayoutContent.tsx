@@ -7,6 +7,7 @@ import EquipmentBoardContent from "./EquipmentBoardContent";
 
 const EquipmentBoardLayoutContent = ({
   cards,
+  filter,
 }: EquipmentBoardLayoutContentProps): React.JSX.Element => {
   const { columns, orderedCards } =
     useBoardLayoutViewModel(cards);
@@ -17,6 +18,7 @@ const EquipmentBoardLayoutContent = ({
       cards={orderedCards}
       columns={columns}
       drag={drag}
+      filter={filter}
     />
   );
 };
