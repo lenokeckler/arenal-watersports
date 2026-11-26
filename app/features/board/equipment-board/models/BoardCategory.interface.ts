@@ -5,7 +5,9 @@ export interface BoardCategory {
   groupName: NullableRef<string>;
   id: string;
   imagePath: NullableRef<string>;
+  damagedCount: number;
   inUseCount: number;
+  maintenanceCount: number;
   name: string;
   totalCount: number;
 }

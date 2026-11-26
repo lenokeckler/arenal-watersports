@@ -10,6 +10,7 @@ import BoardCard from "./BoardCard";
 
 const EquipmentBoardContent = ({
   cards,
+  filter,
 }: EquipmentBoardContentProps): React.JSX.Element => {
   const firstCardWithImage = cards.find(
     (card) => resolveBoardCardImage(card) !== null
@@ -29,6 +30,7 @@ const EquipmentBoardContent = ({
         >
           <BoardCard
             card={card}
+            filter={filter}
             isPriorityImage={
               card.id === firstCardWithImage?.id
             }

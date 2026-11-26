@@ -2,6 +2,7 @@ import { Link } from "@/app/components";
 import { ARIA_CURRENT, LENGTH } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import { resolveBoardCategoryPath } from "@/app/utils/board-paths/resolveBoardCategoryPath";
+import { resolveBoardFilterHref } from "@/app/utils/board-unit-filter/resolveBoardFilterHref";
 import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 import type { CategoryGroupSwitchProps } from "../models/CategoryGroupSwitchProps.interface";
 import {
@@ -11,6 +12,7 @@ import {
 
 const CategoryGroupSwitch = ({
   currentCategoryId,
+  filter,
   members,
 }: CategoryGroupSwitchProps): NullableRef<React.JSX.Element> => {
   if (members.length <= LENGTH.ONE) {
@@ -28,7 +30,10 @@ const CategoryGroupSwitch = ({
         return (
           <Link
             key={member.id}
-            href={resolveBoardCategoryPath(member.id)}
+            href={resolveBoardFilterHref(
+              resolveBoardCategoryPath(member.id),
+              filter
+            )}
             ariaCurrent={
               isCurrent ? ARIA_CURRENT.PAGE : undefined
             }

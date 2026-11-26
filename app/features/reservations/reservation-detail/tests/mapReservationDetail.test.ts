@@ -217,4 +217,27 @@ describe("mapReservationDetail", () => {
       test.EXPECTED_RETURN
     );
   });
+
+  it("maps what is refundable per currency", () => {
+    const detail = mapReservationDetail(
+      RESERVATION_DETAIL_SOURCE_FIXTURE,
+      RESERVATION_DETAIL_WORKER_NAMES_FIXTURE
+    );
+
+    expect(
+      detail.refundable.map(({ amount }) => amount)
+    ).toEqual([test.CHARGE_USD, test.CHARGE_CRC]);
+  });
+
+  it("leaves nothing refundable on a split child", () => {
+    const detail = mapReservationDetail(
+      {
+        ...RESERVATION_DETAIL_SOURCE_FIXTURE,
+        parent_reservation_id: test.PARENT_RESERVATION_ID,
+      },
+      RESERVATION_DETAIL_WORKER_NAMES_FIXTURE
+    );
+
+    expect(detail.refundable).toEqual([]);
+  });
 });

@@ -17,6 +17,8 @@ export const DEFAULT_BOARD_UNIT_ROW: BoardCategoryUnitRow =
     low_fuel_lines: 1,
     people_count: null,
     radio_channel: null,
+    oil_remaining: null,
+    oil_warning: false,
     reservation_code: null,
     reservation_ends_at: null,
     reservation_id: null,
@@ -37,6 +39,8 @@ export const OCCUPIED_BOARD_UNIT_ROW: BoardCategoryUnitRow =
     effective_status: INVENTORY_UNIT_STATUS.OCCUPIED,
     people_count: DEFAULT_UNIT_OCCUPANCY.peopleCount,
     radio_channel: DEFAULT_UNIT_OCCUPANCY.radioChannel,
+    oil_remaining: null,
+    oil_warning: false,
     reservation_code:
       DEFAULT_UNIT_OCCUPANCY.reservationCode,
     reservation_ends_at:
