@@ -8,36 +8,44 @@ import {
   SYSTEM_NAVIGATION_MENU_IDENTITY_TEXT_CLASS,
 } from "../styles/SystemNavigation.styles";
 import { buildSystemNavigationInitials } from "../utils/buildSystemNavigationInitials";
+import { resolveSystemNavigationDisplayName } from "../utils/resolveSystemNavigationDisplayName";
 
 const SystemNavigationMenuIdentityCard = ({
   identity,
-}: SystemNavigationMenuIdentityCardProps): React.JSX.Element => (
-  <div className={SYSTEM_NAVIGATION_MENU_IDENTITY_CLASS}>
-    <InlineText
-      aria-hidden="true"
-      className={SYSTEM_NAVIGATION_MENU_AVATAR_CLASS}
-    >
-      {buildSystemNavigationInitials(identity.fullName)}
-    </InlineText>
-    <div
-      className={SYSTEM_NAVIGATION_MENU_IDENTITY_TEXT_CLASS}
-    >
-      <Text
+}: SystemNavigationMenuIdentityCardProps): React.JSX.Element => {
+  const displayName =
+    resolveSystemNavigationDisplayName(identity);
+
+  return (
+    <div className={SYSTEM_NAVIGATION_MENU_IDENTITY_CLASS}>
+      <InlineText
+        aria-hidden="true"
+        className={SYSTEM_NAVIGATION_MENU_AVATAR_CLASS}
+      >
+        {buildSystemNavigationInitials(displayName)}
+      </InlineText>
+      <div
         className={
-          SYSTEM_NAVIGATION_MENU_IDENTITY_NAME_CLASS
+          SYSTEM_NAVIGATION_MENU_IDENTITY_TEXT_CLASS
         }
       >
-        {identity.fullName}
-      </Text>
-      <Text
-        className={
-          SYSTEM_NAVIGATION_MENU_IDENTITY_META_CLASS
-        }
-      >
-        {identity.role}
-      </Text>
+        <Text
+          className={
+            SYSTEM_NAVIGATION_MENU_IDENTITY_NAME_CLASS
+          }
+        >
+          {displayName}
+        </Text>
+        <Text
+          className={
+            SYSTEM_NAVIGATION_MENU_IDENTITY_META_CLASS
+          }
+        >
+          {identity.role}
+        </Text>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default SystemNavigationMenuIdentityCard;
