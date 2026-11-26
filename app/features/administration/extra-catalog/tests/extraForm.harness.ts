@@ -115,9 +115,7 @@ export const toggleExtraOccupancy = (
   checked: boolean
 ): void => {
   act(() => {
-    result.current.onOccupancyToggle(
-      buildExtraFormFieldChangeEvent({ checked })
-    );
+    result.current.onOccupancySelect(checked)();
   });
 };
 
