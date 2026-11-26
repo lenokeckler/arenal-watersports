@@ -4,9 +4,10 @@ import {
   refreshMock,
   showToastMock,
 } from "./comboActions.harness";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
+  ARIA_ROLE,
   CURRENCY_CODE,
   PATHS,
   STATUS,
@@ -115,6 +116,19 @@ describe("ComboListView", () => {
       "href",
       PATHS.ADMINISTRATION.COMBOS_NEW
     );
+  });
+
+  it("links back to the home screen", () => {
+    renderComboListView();
+
+    expect(
+      screen.getByRole(ARIA_ROLE.LINK, {
+        name: new RegExp(
+          COMBO_CATALOG_COPY.BACK_TO_HOME,
+          "i"
+        ),
+      })
+    ).toHaveAttribute("href", PATHS.HOME);
   });
 
   it("links the Editar of each card to the edit form of its combo", () => {

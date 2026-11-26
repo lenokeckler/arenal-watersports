@@ -1,3 +1,4 @@
+import type { NullableRef } from "@/app/types";
 import type { ComboStatus } from "./ComboStatus.type";
 
 export interface ComboCardViewModel {
@@ -9,5 +10,6 @@ export interface ComboCardViewModel {
   onReactivateClick: () => Promise<void>;
   onRemoveClick: () => void;
   priceLabel: string;
+  priceUnit: NullableRef<string>;
   status: ComboStatus;
 }

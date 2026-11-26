@@ -39,5 +39,9 @@ export const buildComboCardViewModel = (
   onReactivateClick: actions.onReactivateClick(combo.id),
   onRemoveClick: actions.onRemoveClick(combo),
   priceLabel: buildPriceLabel(combo),
+  priceUnit:
+    combo.packagePrice === null
+      ? null
+      : COMBO_CATALOG_COPY.PER_PACKAGE,
   status: combo.status,
 });

@@ -2,6 +2,7 @@ import FormErrorBanner from "@/app/components/form-error-banner/FormErrorBanner"
 import FormField from "@/app/components/form-field/FormField";
 import {
   AUTOCOMPLETE,
+  CURRENCY_SYMBOL,
   INPUT_MODE,
   INPUT_TYPES,
   STRING,
@@ -9,6 +10,7 @@ import {
 import { COMBO_FORM_COPY } from "../constants/ComboFormCopy.constants";
 import { COMBO_FORM_FIELD_ID } from "../constants/ComboFormFieldId.constants";
 import type { ComboFormViewModel } from "../models/ComboFormViewModel.interface";
+import { COMBO_FORM_PRICE_INPUT_CLASS } from "../styles/ComboForm.styles";
 import ComboAudienceChooser from "./ComboAudienceChooser";
 import ComboItemsEditor from "./ComboItemsEditor";
 
@@ -29,6 +31,12 @@ const ComboFormFields = (
 
   return (
     <>
+      <ComboAudienceChooser
+        audience={values.audience}
+        isDisabled={isSubmitting}
+        isLocked={isAudienceLocked}
+        onSelect={onAudienceSelect}
+      />
       <FormField
         id={COMBO_FORM_FIELD_ID.NAME}
         name={COMBO_FORM_FIELD_ID.NAME}
@@ -40,12 +48,7 @@ const ComboFormFields = (
         disabled={isSubmitting}
         autoComplete={AUTOCOMPLETE.OFF}
         describedBy={COMBO_FORM_FIELD_ID.HINT}
-      />
-      <ComboAudienceChooser
-        audience={values.audience}
-        isDisabled={isSubmitting}
-        isLocked={isAudienceLocked}
-        onSelect={onAudienceSelect}
+        labelSuffix={STRING.Empty}
       />
       <FormField
         id={COMBO_FORM_FIELD_ID.PRICE}
@@ -62,6 +65,12 @@ const ComboFormFields = (
         inputMode={INPUT_MODE.DECIMAL}
         labelSuffix={STRING.Empty}
         spellCheck={false}
+        startAdornment={
+          CURRENCY_SYMBOL[priceField.currency]
+        }
+        classNameField={
+          COMBO_FORM_PRICE_INPUT_CLASS[priceField.currency]
+        }
       />
       <ComboItemsEditor {...viewModel} />
       <FormErrorBanner message={submitError} />
