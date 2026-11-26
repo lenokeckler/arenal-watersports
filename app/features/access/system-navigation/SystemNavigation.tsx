@@ -35,6 +35,7 @@ const SystemNavigation = ({
         />
       </nav>
       <SystemNavigationMenu
+        destinations={viewModel.menuItems}
         extras={menuExtras}
         identity={menuIdentity}
         isOpen={viewModel.isMenuOpen}

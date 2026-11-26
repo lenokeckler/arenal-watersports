@@ -21,12 +21,14 @@ describe("buildBoardCards", () => {
     expect(buildBoardCards([category])).toEqual([
       {
         categories: [category],
+        damagedCount: category.damagedCount,
         freeCount: category.freeCount,
         id: category.id,
         imagePath: category.imagePath,
         inUseCount: category.inUseCount,
         isGrouped: false,
         label: category.name,
+        maintenanceCount: category.maintenanceCount,
         targetCategoryId: category.id,
         totalCount: category.totalCount,
       },

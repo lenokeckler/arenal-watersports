@@ -23,6 +23,7 @@ export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
   "/administration/categories/[categoryId]/units",
   "/administration/categories/[categoryId]/units/[unitId]",
   "/administration/categories/[categoryId]/units/new",
+  "/administration/combos/[comboId]",
   "/administration/extras/[extraId]",
   "/board/categories/[categoryId]",
   "/operations/unit-photos/[unitId]",
@@ -32,6 +33,7 @@ export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
   "/reservations/[reservationId]/charge",
   "/reservations/[reservationId]/edit",
   "/reservations/[reservationId]/postpone",
+  "/reservations/[reservationId]/refund",
   "/reservations/[reservationId]/split",
 ];
 

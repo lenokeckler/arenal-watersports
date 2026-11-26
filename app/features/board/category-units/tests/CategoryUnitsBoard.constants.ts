@@ -12,6 +12,7 @@ export const MOTOR_READINGS: CategoryUnitReadings = {
   hasFuelGauge: true,
   impactCount: 2,
   lowFuelLines: 1,
+  oilRemaining: null,
   usageMetric: "engine_hours",
   usageTotal: 12.5,
 };
@@ -29,6 +30,7 @@ export const MOTOR_OCCUPIED_UNIT: CategoryUnit = {
   occupancy: DEFAULT_UNIT_OCCUPANCY,
   readings: MOTOR_READINGS,
   status: INVENTORY_UNIT_STATUS.OCCUPIED,
+  statusDetails: null,
 };
 
 export const PLAIN_UNIT: CategoryUnit = {

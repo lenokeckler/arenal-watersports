@@ -10,6 +10,8 @@ export const E2E_LOCAL_SUPABASE_HOSTS: readonly string[] = [
 ];
 
 export const E2E_SUPABASE_TABLE = {
+  COMBO_ITEMS: "combo_items",
+  COMBOS: "combos",
   PASSWORD_RESET_PINS: "password_reset_pins",
   PASSWORD_RESET_REQUESTS: "password_reset_requests",
   EQUIPMENT_CATEGORIES: "equipment_categories",
@@ -34,6 +36,7 @@ export const E2E_SUPABASE_FILTER = {
 } as const;
 
 export const E2E_SUPABASE_COLUMN = {
+  COMBO_ID: "combo_id",
   BLOCKED_REASON: "blocked_reason",
   CREATED_BY: "created_by",
   CREATED_AT: "created_at",
@@ -42,8 +45,10 @@ export const E2E_SUPABASE_COLUMN = {
   FAILED_ATTEMPTS: "failed_attempts",
   ID: "id",
   MUST_CHANGE_PASSWORD: "must_change_password",
+  NAME: "name",
   PERSONAL_EMAIL: "personal_email",
   RESERVATION_ID: "reservation_id",
+  IS_RESERVABLE: "is_reservable",
   STATUS: "status",
   USED_AT: "used_at",
   USERNAME: "username",

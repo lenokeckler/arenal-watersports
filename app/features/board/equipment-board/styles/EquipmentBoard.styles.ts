@@ -24,17 +24,14 @@ export const EQUIPMENT_BOARD_GRID_CLASS =
 export const EQUIPMENT_BOARD_GRID_ITEM_CLASS =
   "flex w-[calc((100%-var(--spacing-sm))/2)] shrink-0 grow-0 min-w-0 md:w-[calc((100%-2*var(--spacing-md))/3)]";
 
-export const EQUIPMENT_BOARD_PENDING_LINK_CLASS =
-  "mb-md flex min-h-14 items-center justify-between gap-sm rounded-xl border border-primary/40 bg-linear-to-r from-primary/15 to-card-tint-neutral-bg px-md py-sm transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+export const EQUIPMENT_BOARD_TOOLBAR_CLASS =
+  "mb-md flex flex-wrap items-center justify-between gap-sm";
 
-export const EQUIPMENT_BOARD_PENDING_TEXT_CLASS =
-  "flex min-w-0 flex-col";
+export const EQUIPMENT_BOARD_PENDING_LINK_CLASS =
+  "inline-flex min-h-12 items-center gap-sm rounded-xl border border-primary/40 bg-primary/10 px-md transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 
 export const EQUIPMENT_BOARD_PENDING_TITLE_CLASS =
-  "text-title-md font-semibold text-primary";
-
-export const EQUIPMENT_BOARD_PENDING_HINT_CLASS =
-  "text-body-sm text-on-surface-variant";
+  "text-button font-semibold text-primary";
 
 export const EQUIPMENT_BOARD_PENDING_BADGE_CLASS =
-  "inline-flex min-w-9 shrink-0 items-center justify-center rounded-full bg-primary px-3 py-1 text-title-md font-bold tabular-nums text-on-primary";
+  "text-button font-bold tabular-nums text-primary";
