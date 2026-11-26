@@ -25,7 +25,7 @@ describe("buildMaintenanceJobForm", () => {
     expect(input).toMatchObject({
       costAmount: null,
       costCurrency: null,
-      nextOilChangeAt: null,
+      oilInterval: null,
       workType: "tire_change",
     });
   });
@@ -70,27 +70,20 @@ describe("buildMaintenanceJobForm", () => {
     ).not.toBeNull();
   });
 
-  it("defines the next oil change threshold only on an oil change and above the accumulated usage", () => {
+  it("asks for the oil change interval only on an oil change and above zero", () => {
     expect(
-      build({ workType: "oil_change" }).errors.threshold
-    ).toBe(MAINTENANCE_JOB_COPY.ERROR_THRESHOLD_INVALID);
+      build({ workType: "oil_change" }).errors.interval
+    ).toBe(MAINTENANCE_JOB_COPY.ERROR_INTERVAL_INVALID);
     expect(
-      build({
-        nextOilChangeAt: "90",
-        workType: "oil_change",
-      }).errors.threshold
-    ).toBe(
-      `${MAINTENANCE_JOB_COPY.ERROR_THRESHOLD_BELOW_PREFIX}100.`
-    );
+      build({ oilInterval: "0", workType: "oil_change" })
+        .errors.interval
+    ).toBe(MAINTENANCE_JOB_COPY.ERROR_INTERVAL_INVALID);
     expect(
-      build({
-        nextOilChangeAt: "150",
-        workType: "oil_change",
-      }).input?.nextOilChangeAt
+      build({ oilInterval: "150", workType: "oil_change" })
+        .input?.oilInterval
     ).toBe(150);
     expect(
-      build({ nextOilChangeAt: "150" }).input
-        ?.nextOilChangeAt
+      build({ oilInterval: "150" }).input?.oilInterval
     ).toBeNull();
   });
 

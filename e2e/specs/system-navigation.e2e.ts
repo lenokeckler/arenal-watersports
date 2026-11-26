@@ -158,7 +158,7 @@ test("opens Tarifas from the account menu in Administration", async ({
   );
 });
 
-test("shows the five Administration links in order without the account menu", async ({
+test("shows the five Administration links in order and the account menu", async ({
   page,
 }) => {
   const navigationPage = createSystemNavigationPage(page);
@@ -177,9 +177,9 @@ test("shows the five Administration links in order without the account menu", as
       ({ href }) => href
     )
   );
-  await expect(navigationPage.getMenuButton()).toHaveCount(
-    0
-  );
+  await expect(
+    navigationPage.getMenuButton()
+  ).toBeVisible();
   for (const {
     href,
     label,
