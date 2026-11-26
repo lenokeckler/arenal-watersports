@@ -9,7 +9,8 @@ export type ExtraOccupancySectionProps = Pick<
   | "isOccupancyLocked"
   | "hasOccupiableCategories"
   | "occupancyCategoryOptions"
-  | "onOccupancyToggle"
+  | "onOccupancySelect"
+  | "onOccupiesQuantityStep"
   | "onOccupiesCategoryChange"
   | "onOccupiesQuantityChange"
 >;

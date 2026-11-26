@@ -10,10 +10,12 @@ export type ExtraFormFieldsProps = Pick<
   | "isOccupancyLocked"
   | "hasOccupiableCategories"
   | "occupancyCategoryOptions"
+  | "compatibilityHref"
   | "onNameChange"
   | "onPriceUsdChange"
   | "onPriceCrcChange"
-  | "onOccupancyToggle"
+  | "onOccupancySelect"
+  | "onOccupiesQuantityStep"
   | "onOccupiesCategoryChange"
   | "onOccupiesQuantityChange"
 >;

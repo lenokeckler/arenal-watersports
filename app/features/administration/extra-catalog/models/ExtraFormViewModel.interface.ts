@@ -1,3 +1,4 @@
+import type { NullableRef } from "@/app/types";
 import type { FormSubmitEvent } from "@/app/utils/form-submit/models/FormSubmitEvent.type";
 import type { ExtraFormErrors } from "./ExtraFormErrors.interface";
 import type { ExtraFormFieldChangeHandler } from "./ExtraFormFieldChangeHandler.type";
@@ -16,7 +17,9 @@ export interface ExtraFormViewModel {
   onNameChange: ExtraFormFieldChangeHandler;
   onPriceUsdChange: ExtraFormFieldChangeHandler;
   onPriceCrcChange: ExtraFormFieldChangeHandler;
-  onOccupancyToggle: ExtraFormFieldChangeHandler;
+  onOccupancySelect: (isEnabled: boolean) => () => void;
+  onOccupiesQuantityStep: (step: number) => () => void;
+  compatibilityHref: NullableRef<string>;
   onOccupiesCategoryChange: ExtraFormFieldChangeHandler;
   onOccupiesQuantityChange: ExtraFormFieldChangeHandler;
   onBack: () => void;

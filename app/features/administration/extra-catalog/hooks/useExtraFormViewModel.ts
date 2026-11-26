@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PATHS, STRING } from "@/app/constants";
+import { EXTRA_FORM_MODE } from "../constants/ExtraFormMode.constants";
 import { EXTRA_INPUT_FIELD } from "../constants/ExtraInputField.constants";
 import type { ExtraFormErrors } from "../models/ExtraFormErrors.interface";
 import type { ExtraFormFieldChangeHandler } from "../models/ExtraFormFieldChangeHandler.type";
@@ -11,7 +12,8 @@ import type { ExtraFormViewModel } from "../models/ExtraFormViewModel.interface"
 import type { ExtraFormViewModelProps } from "../models/ExtraFormViewModelProps.type";
 import { buildExtraOccupancyCategoryOptions } from "../utils/buildExtraOccupancyCategoryOptions";
 import { isExtraOccupancyLocked } from "../utils/isExtraOccupancyLocked";
-import { readExtraToggleChecked } from "../utils/readExtraToggleChecked";
+import { resolveExtraCompatibilityPath } from "../utils/resolveExtraCompatibilityPath";
+import { stepExtraOccupancyQuantity } from "../utils/stepExtraOccupancyQuantity";
 import { resolveExtraFormInitialValues } from "../utils/resolveExtraFormInitialValues";
 import { useExtraFormSubmit } from "./useExtraFormSubmit";
 
@@ -49,20 +51,30 @@ export const useExtraFormViewModel = (
       setErrors({});
     };
 
-  const onOccupancyToggle: ExtraFormFieldChangeHandler = (
-    event
-  ) => {
-    const isChecked = readExtraToggleChecked(event);
-    setIsOccupancyEnabled(isChecked);
-    if (!isChecked) {
+  const onOccupancySelect =
+    (isEnabled: boolean) => (): void => {
+      setIsOccupancyEnabled(isEnabled);
+      if (!isEnabled) {
+        setValues((currentValues) => ({
+          ...currentValues,
+          occupiesCategoryId: STRING.Empty,
+          occupiesQuantity: STRING.Empty,
+        }));
+      }
+      setErrors({});
+    };
+
+  const onOccupiesQuantityStep =
+    (step: number) => (): void => {
       setValues((currentValues) => ({
         ...currentValues,
-        occupiesCategoryId: STRING.Empty,
-        occupiesQuantity: STRING.Empty,
+        occupiesQuantity: stepExtraOccupancyQuantity(
+          currentValues.occupiesQuantity,
+          step
+        ),
       }));
-    }
-    setErrors({});
-  };
+      setErrors({});
+    };
 
   const onBack = (): void => {
     router.push(PATHS.ADMINISTRATION.EXTRAS);
@@ -93,7 +105,12 @@ export const useExtraFormViewModel = (
     onPriceCrcChange: buildChangeHandler(
       EXTRA_INPUT_FIELD.PRICE_CRC
     ),
-    onOccupancyToggle,
+    onOccupancySelect,
+    onOccupiesQuantityStep,
+    compatibilityHref:
+      props.mode === EXTRA_FORM_MODE.EDIT
+        ? resolveExtraCompatibilityPath(props.extra.id)
+        : null,
     onOccupiesCategoryChange: buildChangeHandler(
       EXTRA_INPUT_FIELD.OCCUPIES_CATEGORY_ID
     ),

@@ -9,4 +9,5 @@ export type ExtraOccupancyFieldsProps = Pick<
   | "occupancyCategoryOptions"
   | "onOccupiesCategoryChange"
   | "onOccupiesQuantityChange"
+  | "onOccupiesQuantityStep"
 >;

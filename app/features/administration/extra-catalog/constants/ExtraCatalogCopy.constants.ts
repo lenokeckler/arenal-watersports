@@ -1,4 +1,10 @@
 export const EXTRA_CATALOG_COPY = {
+  BACK_BUTTON: "Regresar",
+  BOATS_CHANGE_LINK: "Cambiar",
+  BOATS_CREATE_NOTE:
+    "Después de agregar el extra podrá marcar en qué embarcaciones se ofrece. Mientras no marque ninguna, no aparece en las reservas.",
+  BOATS_EDIT_TEXT: "Marque en qué embarcaciones se ofrece",
+  BOATS_SECTION_TITLE: "Embarcaciones",
   CANCEL_BUTTON: "Cancelar",
   CREATE_CTA: "Nuevo extra",
   CREATE_SUCCESS_TOAST: "Extra agregado.",
@@ -10,8 +16,7 @@ export const EXTRA_CATALOG_COPY = {
   FETCH_ERROR_MESSAGE: "No se pudieron cargar los extras.",
   FORBIDDEN_ERROR:
     "No tiene permiso para administrar los extras.",
-  FORM_PURPOSE:
-    "Escriba el nombre con el que el extra aparece en las reservas y al menos un precio, en dólares o en colones.",
+  FORM_OVERLINE: "Extras",
   FORM_TITLE_CREATE: "Agregar extra",
   FORM_TITLE_EDIT: "Editar extra",
   GENERIC_MUTATION_ERROR:
@@ -22,6 +27,7 @@ export const EXTRA_CATALOG_COPY = {
   LOADING_TEXT_DELETING: "Eliminando…",
   LOADING_TEXT_SAVING: "Guardando…",
   LOADING_TEXT_UPDATING: "Actualizando…",
+  NAME_HELP: "Así aparece en las reservas.",
   NAME_DUPLICATE_ERROR:
     "Ya existe un extra con ese nombre.",
   NAME_LABEL: "Nombre del extra",
@@ -32,6 +38,9 @@ export const EXTRA_CATALOG_COPY = {
   PRICES_REQUIRED_ERROR:
     "Ingrese al menos un precio, en dólares o en colones.",
   PRICE_SEPARATOR: " · ",
+  PRICE_GROUP_HELP:
+    "Escriba al menos uno. Use punto o coma para los decimales.",
+  PRICE_GROUP_TITLE: "Precio",
   PRICE_CRC_LABEL: "Precio en colones (CRC)",
   PRICE_FIELD_PLACEHOLDER: "Sin precio",
   PRICE_FORMAT_ERROR:
