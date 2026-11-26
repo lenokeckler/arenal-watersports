@@ -3,6 +3,7 @@ import { formatMoney } from "@/app/utils/money/formatMoney";
 import { TARIFF_CATALOG_COPY } from "../constants/TariffCatalogCopy.constants";
 import { TARIFF_TYPE } from "../constants/TariffType.constants";
 import type { TariffAmounts } from "../models/TariffAmounts.interface";
+import type { TariffCatalogRow } from "../models/TariffCatalogRow.interface";
 import type { TariffRow } from "../models/TariffRow.type";
 import type { TariffRowTariff } from "../models/TariffRowTariff.type";
 
@@ -57,5 +58,34 @@ export const buildTariffRow = (
   id: FAKE_CATEGORY_ID,
   name: FAKE_CATEGORY_NAME,
   tariffs: [RENTAL_TARIFF_ROW, TOUR_TARIFF_ROW],
+  ...overrides,
+});
+
+export const EMPTY_AMOUNTS: TariffAmounts = {
+  crc: null,
+  usd: null,
+};
+
+export const TOUR_ONLY_USD_AMOUNTS: TariffAmounts = {
+  crc: null,
+  usd: TOUR_AMOUNT_USD,
+};
+
+export const FORMATTED_TOUR_USD = formatMoney({
+  amount: TOUR_AMOUNT_USD,
+  currency: CURRENCY_CODE.USD,
+});
+
+export const DEFAULT_CATALOG_ROW: TariffCatalogRow = {
+  categoryId: FAKE_CATEGORY_ID,
+  categoryName: FAKE_CATEGORY_NAME,
+  rental: BOTH_AMOUNTS,
+  tour: TOUR_ONLY_USD_AMOUNTS,
+};
+
+export const buildCatalogRow = (
+  overrides: Partial<TariffCatalogRow> = {}
+): TariffCatalogRow => ({
+  ...DEFAULT_CATALOG_ROW,
   ...overrides,
 });
