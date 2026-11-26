@@ -4346,6 +4346,10 @@ export type Database = {
         Args: { p_active: boolean; p_combo_id: string };
         Returns: string;
       };
+      set_extra_compatibility: {
+        Args: { p_extra_id: string; p_unit_ids: string[] };
+        Returns: number;
+      };
       set_reservation_dock_notice: {
         Args: {
           p_notified: boolean;
