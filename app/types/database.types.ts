@@ -2982,10 +2982,12 @@ export type Database = {
         Row: {
           category_id: string | null;
           category_name: string | null;
+          damaged_count: number | null;
           free_count: number | null;
           group_name: string | null;
           image_path: string | null;
           in_use_count: number | null;
+          maintenance_count: number | null;
           total_count: number | null;
         };
         Relationships: [];
@@ -3003,6 +3005,8 @@ export type Database = {
           has_motor: boolean | null;
           impact_count: number | null;
           low_fuel_lines: number | null;
+          oil_remaining: number | null;
+          oil_warning: boolean | null;
           people_count: number | null;
           radio_channel: number | null;
           reservation_code: string | null;
@@ -3689,6 +3693,10 @@ export type Database = {
               list_amount_usd: number;
             }[];
           };
+      delete_or_deactivate_combo: {
+        Args: { p_combo_id: string };
+        Returns: string;
+      };
       delete_or_deactivate_extra: {
         Args: { p_extra_id: string };
         Returns: string;
@@ -3949,6 +3957,8 @@ export type Database = {
           code: string;
           next_oil_change_at: number;
           oil_overage: number;
+          oil_remaining: number;
+          oil_warning: boolean;
           status: Database["public"]["Enums"]["unit_status"];
           unit_id: string;
           usage_metric: Database["public"]["Enums"]["usage_metric"];
@@ -3973,6 +3983,12 @@ export type Database = {
       normalize_cancellation_reason: {
         Args: { p_reason: string };
         Returns: string;
+      };
+      oil_warning_margin: {
+        Args: {
+          metric: Database["public"]["Enums"]["usage_metric"];
+        };
+        Returns: number;
       };
       password_reset_grant_is_open: {
         Args: { p_token: string };
@@ -4152,7 +4168,7 @@ export type Database = {
           p_cost_currency?: Database["public"]["Enums"]["currency_code"];
           p_description?: string;
           p_is_external?: boolean;
-          p_next_oil_change_at?: number;
+          p_oil_interval?: number;
           p_performed_at: string;
           p_unit_id: string;
           p_work_type: string;
@@ -4295,6 +4311,14 @@ export type Database = {
         Args: { target_worker: string };
         Returns: undefined;
       };
+      save_category_tariffs: {
+        Args: { p_payload: Json };
+        Returns: number;
+      };
+      save_combo: {
+        Args: { p_payload: Json };
+        Returns: string;
+      };
       session_idle_deadline: {
         Args: { last_activity: string };
         Returns: string;
@@ -4317,6 +4341,14 @@ export type Database = {
           target_session: string;
         };
         Returns: string;
+      };
+      set_combo_active: {
+        Args: { p_active: boolean; p_combo_id: string };
+        Returns: string;
+      };
+      set_extra_compatibility: {
+        Args: { p_extra_id: string; p_unit_ids: string[] };
+        Returns: number;
       };
       set_reservation_dock_notice: {
         Args: {

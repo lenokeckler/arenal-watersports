@@ -13,6 +13,7 @@ import EquipmentBoard from "../EquipmentBoard";
 import EquipmentBoardPendingLink from "../components/EquipmentBoardPendingLink";
 import { EQUIPMENT_BOARD_COPY } from "../constants/EquipmentBoardCopy.constants";
 import { BOARD_ROWS_WITH_GROUP } from "./EquipmentBoard.constants";
+import { renderWithBoardStore } from "./renderWithBoardStore";
 
 vi.mock(
   "@/app/components/board-realtime/BoardRealtime",
@@ -94,7 +95,7 @@ describe("EquipmentBoardPendingLink", () => {
   });
 
   it("is on the board for a worker of operations", async () => {
-    render(
+    renderWithBoardStore(
       await EquipmentBoard({
         pendingDispatch: { count: 2, isVisible: true },
       })
@@ -104,7 +105,7 @@ describe("EquipmentBoardPendingLink", () => {
   });
 
   it("is not on the board for a worker without that area", async () => {
-    render(
+    renderWithBoardStore(
       await EquipmentBoard({
         pendingDispatch: { count: null, isVisible: false },
       })

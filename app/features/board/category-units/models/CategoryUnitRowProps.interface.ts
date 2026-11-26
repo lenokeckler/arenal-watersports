@@ -6,6 +6,5 @@ export interface CategoryUnitRowProps {
   image: NullableRef<ReservationEquipmentImageOption>;
   isEditable?: boolean;
   isSelected?: boolean;
-  isSelectable?: boolean;
   unit: CategoryUnit;
 }
