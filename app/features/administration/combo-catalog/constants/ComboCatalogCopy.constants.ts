@@ -11,8 +11,10 @@ export const COMBO_CATALOG_COPY = {
   LOADING_TEXT_UPDATING: "Actualizando…",
   NO_ITEMS: "Sin equipo",
   NO_PRICE: "Sin precio",
+  LIST_SUBTITLE: "Paquetes de equipo con un precio fijo.",
   NOT_FOUND_ERROR:
     "No se encontró el combo. Es posible que otra persona lo haya eliminado.",
+  PER_PACKAGE: "por paquete",
   REACTIVATE_BUTTON: "Reactivar",
   REACTIVATE_GENERIC_ERROR:
     "No se pudo reactivar el combo. Intente de nuevo.",

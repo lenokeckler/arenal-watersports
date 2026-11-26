@@ -4,6 +4,7 @@ import { formatMoney } from "@/app/utils/money/formatMoney";
 import { COMBO_AUDIENCE } from "../constants/ComboAudience.constants";
 import {
   COMBO_AUDIENCE_EMPTY,
+  COMBO_AUDIENCE_PRICE_NOTE,
   COMBO_AUDIENCE_TITLE,
 } from "../constants/ComboAudienceCopy.constants";
 import { COMBO_CATALOG_COPY } from "../constants/ComboCatalogCopy.constants";
@@ -25,18 +26,24 @@ const buildActions = (): ComboCardActions => ({
 });
 
 describe("buildComboSections", () => {
-  it("returns national first and foreign second with their copy", () => {
+  it("returns foreign first and national second with their copy and price note", () => {
     const sections = buildComboSections([], buildActions());
 
     expect(sections.map(({ title }) => title)).toEqual([
-      COMBO_AUDIENCE_TITLE[COMBO_AUDIENCE.NATIONAL],
       COMBO_AUDIENCE_TITLE[COMBO_AUDIENCE.FOREIGN],
+      COMBO_AUDIENCE_TITLE[COMBO_AUDIENCE.NATIONAL],
     ]);
     expect(
       sections.map(({ emptyMessage }) => emptyMessage)
     ).toEqual([
-      COMBO_AUDIENCE_EMPTY[COMBO_AUDIENCE.NATIONAL],
       COMBO_AUDIENCE_EMPTY[COMBO_AUDIENCE.FOREIGN],
+      COMBO_AUDIENCE_EMPTY[COMBO_AUDIENCE.NATIONAL],
+    ]);
+    expect(
+      sections.map(({ priceNote }) => priceNote)
+    ).toEqual([
+      COMBO_AUDIENCE_PRICE_NOTE[COMBO_AUDIENCE.FOREIGN],
+      COMBO_AUDIENCE_PRICE_NOTE[COMBO_AUDIENCE.NATIONAL],
     ]);
   });
 
@@ -47,7 +54,7 @@ describe("buildComboSections", () => {
       packagePrice: FOREIGN_PRICE,
     });
 
-    const [national, foreign] = buildComboSections(
+    const [foreign, national] = buildComboSections(
       [DEFAULT_COMBO, foreignCombo],
       buildActions()
     );
@@ -71,7 +78,7 @@ describe("buildComboSections", () => {
   });
 
   it("marks only the pending combo as loading", () => {
-    const [national, foreign] = buildComboSections(
+    const [foreign, national] = buildComboSections(
       [
         DEFAULT_COMBO,
         buildCombo({
@@ -87,7 +94,7 @@ describe("buildComboSections", () => {
   });
 
   it("falls back for a combo without items or price", () => {
-    const [national] = buildComboSections(
+    const [, national] = buildComboSections(
       [buildCombo({ items: [], packagePrice: null })],
       buildActions()
     );
@@ -98,5 +105,6 @@ describe("buildComboSections", () => {
     expect(national.cards[0].priceLabel).toBe(
       COMBO_CATALOG_COPY.NO_PRICE
     );
+    expect(national.cards[0].priceUnit).toBeNull();
   });
 });
