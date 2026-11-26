@@ -1,6 +1,7 @@
 import { expect } from "@playwright/test";
 import { buildExtraCompatibilityLabel } from "@/app/features/administration/extra-catalog/utils/buildExtraCompatibilityLabel";
 import { buildExtraCompatibilityProgressLabel } from "@/app/features/administration/extra-catalog/utils/buildExtraCompatibilityProgressLabel";
+import { resolveExtraCompatibilityPath } from "@/app/features/administration/extra-catalog/utils/resolveExtraCompatibilityPath";
 import {
   E2E_COMPATIBILITY_CATEGORY_UNIT_COUNT,
   E2E_COMPATIBILITY_LINKED_COUNT,
@@ -232,6 +233,29 @@ test.describe("Extra compatibility", () => {
         mainProgress(E2E_COMPATIBILITY_LINKED_COUNT.ALL)
       )
     ).toBeVisible();
+  });
+
+  test("redirects the old per-category address to the single screen", async ({
+    page,
+    seedCompatibleExtra,
+    seedUnitCategory,
+  }) => {
+    const extra = await seedCompatibleExtra(
+      E2E_COMPATIBILITY_SCENARIO.REDIRECT
+    );
+    const category = await seedUnitCategory(
+      E2E_COMPATIBILITY_SCENARIO.REDIRECT,
+      {},
+      E2E_COMPATIBILITY_UNIT_STATUSES
+    );
+
+    await page.goto(
+      `${resolveExtraCompatibilityPath(extra.id)}/${category.categoryId}`
+    );
+
+    await expect(page).toHaveURL(
+      resolveExtraCompatibilityPath(extra.id)
+    );
   });
 
   test("goes back with Regresar without saving the changes", async ({
