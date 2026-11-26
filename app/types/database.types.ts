@@ -3005,6 +3005,8 @@ export type Database = {
           has_motor: boolean | null;
           impact_count: number | null;
           low_fuel_lines: number | null;
+          oil_remaining: number | null;
+          oil_warning: boolean | null;
           people_count: number | null;
           radio_channel: number | null;
           reservation_code: string | null;
