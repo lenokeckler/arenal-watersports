@@ -67,11 +67,10 @@ const getSubmit = () =>
   });
 
 const fillMotorReadings = () => {
-  fireEvent.change(
-    screen.getByLabelText(
-      CLOSE_GROUP_COPY.FUEL_FIELD_LABEL
-    ),
-    { target: { value: CLOSE_FORM_TEXT.FUEL } }
+  fireEvent.click(
+    screen.getByRole("button", {
+      name: CLOSE_FORM_TEXT.FUEL_LINE,
+    })
   );
   fireEvent.change(
     screen.getByLabelText(CLOSE_FORM_TEXT.USAGE_LABEL),
@@ -90,9 +89,6 @@ describe("Group closing", () => {
   it("shows how each unit went out and asks for its readings", async () => {
     await openSheet();
 
-    expect(
-      screen.getByText(CLOSE_FORM_TEXT.FUEL_OUT)
-    ).toBeInTheDocument();
     expect(
       screen.getByText(CLOSE_FORM_TEXT.USAGE_OUT)
     ).toBeInTheDocument();
@@ -131,6 +127,7 @@ describe("Group closing", () => {
         {
           damage: null,
           fuel: Number(CLOSE_FORM_TEXT.FUEL),
+          impactCount: null,
           maintenance: false,
           unitId: CLOSE_RETURN_UNITS[0].unitId,
           usage: Number(CLOSE_FORM_TEXT.USAGE),
@@ -138,12 +135,51 @@ describe("Group closing", () => {
         {
           damage: null,
           fuel: null,
+          impactCount: null,
           maintenance: false,
           unitId: CLOSE_RETURN_UNITS[1].unitId,
           usage: null,
         },
       ],
     });
+  });
+
+  it("sends the new impact count when the worker raises it", async () => {
+    submitMock.mockResolvedValue({
+      status: CLOSE_GROUP_STATUS.CLOSED,
+    });
+    await openSheet();
+    fillMotorReadings();
+
+    fireEvent.click(
+      screen.getAllByRole("button", {
+        name: CLOSE_FORM_TEXT.IMPACT_MORE,
+      })[0]
+    );
+    fireEvent.click(getSubmit());
+
+    await waitFor(() =>
+      expect(submitMock).toHaveBeenCalled()
+    );
+    expect(
+      submitMock.mock.calls[0][0].returns[0].impactCount
+    ).toBe(CLOSE_RETURN_UNITS[0].impactCount + 1);
+  });
+
+  it("sends no impact count when the worker does not touch it", async () => {
+    submitMock.mockResolvedValue({
+      status: CLOSE_GROUP_STATUS.CLOSED,
+    });
+    await openSheet();
+    fillMotorReadings();
+    fireEvent.click(getSubmit());
+
+    await waitFor(() =>
+      expect(submitMock).toHaveBeenCalled()
+    );
+    expect(
+      submitMock.mock.calls[0][0].returns[0].impactCount
+    ).toBeNull();
   });
 
   it("refuses hours below the reading of the departure", async () => {

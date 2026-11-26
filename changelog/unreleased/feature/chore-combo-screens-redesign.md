@@ -1,0 +1,1 @@
+chore - Combo screens redesign — the Combos list shows Extranjeros first, smaller section titles with the currency, a bigger price, an outlined Eliminar and a tonal Reactivar; the combo form asks público, nombre, precio and equipo in that order, with a − / + quantity selector, a small Quitar and the actions pinned at the bottom
