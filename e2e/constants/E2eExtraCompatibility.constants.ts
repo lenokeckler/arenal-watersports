@@ -44,7 +44,13 @@ export const E2E_COMPATIBILITY_CATEGORY_UNIT_COUNT = {
 } as const;
 
 export const E2E_COMPATIBILITY_SELECTOR = {
+  OPEN_SECTION_TOGGLE: "button[aria-expanded=true]",
+  SECTION_TOGGLE: "button[aria-expanded]",
   UNIT_ROW: "label",
+} as const;
+
+export const E2E_COMPATIBILITY_ATTRIBUTE = {
+  EXPANDED: "aria-expanded",
 } as const;
 
 export const E2E_COMPATIBILITY_SAVE_ENABLED_TIMEOUT_MS = 2_000;
