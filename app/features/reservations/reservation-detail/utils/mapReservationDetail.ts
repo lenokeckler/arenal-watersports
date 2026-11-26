@@ -8,6 +8,7 @@ import { mapReservationDetailDispatches } from "./mapReservationDetailDispatches
 import { mapReservationDetailEquipment } from "./mapReservationDetailEquipment";
 import { mapReservationDetailExtras } from "./mapReservationDetailExtras";
 import { mapReservationDetailGuides } from "./mapReservationDetailGuides";
+import { calculateReservationDetailRefundable } from "./calculateReservationDetailRefundable";
 import { mapReservationDetailMoneyMovements } from "./mapReservationDetailMoneyMovements";
 
 const getReservationDetailChargeSummary = (
@@ -50,6 +51,7 @@ const mapReservationDetailBase = (
   | "extras"
   | "guides"
   | "moneyMovements"
+  | "refundable"
   | "refunds"
   | "updatedByName"
 > => ({
@@ -73,6 +75,16 @@ const mapReservationDetailBase = (
   updated_at: source.updated_at,
 });
 
+const mapReservationDetailRefundable = (
+  source: ReservationDetailReservationSource
+): ReservationDetail["refundable"] =>
+  source.parent_reservation_id
+    ? []
+    : calculateReservationDetailRefundable(
+        source.reservation_charges,
+        source.refunds
+      );
+
 export const mapReservationDetail = (
   source: ReservationDetailReservationSource,
   workerNames: ReservationDetailWorkerName[]
@@ -94,6 +106,7 @@ export const mapReservationDetail = (
       source,
       workerNames
     ),
+    refundable: mapReservationDetailRefundable(source),
     refunds: chargeSummary.refunds,
   };
 };

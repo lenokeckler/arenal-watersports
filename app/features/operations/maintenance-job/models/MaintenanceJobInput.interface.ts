@@ -15,7 +15,7 @@ export interface MaintenanceJobInput {
   costCurrency: NullableRef<MaintenanceJobCurrency>;
   description: string;
   isExternal: boolean;
-  nextOilChangeAt: NullableRef<number>;
+  oilInterval: NullableRef<number>;
   performedAt: string;
   unitId: string;
   workType: MaintenanceJobWorkType;
