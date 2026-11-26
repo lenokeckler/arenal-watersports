@@ -73,7 +73,12 @@ export const useDispatchSheetViewModel = ({
         setErrorMessage(
           DISPATCH_SHEET_COPY.READINGS_INVALID
         );
-      } else if (remaining.length === 0) {
+      } else if (
+        remaining.every(
+          (group) =>
+            group.categoryId === selectedGroup.categoryId
+        )
+      ) {
         onDispatched();
       } else {
         setSelectedCategoryId(null);

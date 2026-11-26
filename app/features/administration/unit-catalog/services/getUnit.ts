@@ -14,7 +14,7 @@ export const getUnit = async (
   const { data: unitRow, error } = await supabase
     .from("equipment_units")
     .select(
-      "id, category_id, code, status, fuel_max, fuel_level, usage_total, next_oil_change_at, decommissioned_at, decommission_reason"
+      "id, category_id, code, status, fuel_max, fuel_level, low_fuel_lines, usage_total, next_oil_change_at, decommissioned_at, decommission_reason"
     )
     .eq("id", unitId)
     .maybeSingle();

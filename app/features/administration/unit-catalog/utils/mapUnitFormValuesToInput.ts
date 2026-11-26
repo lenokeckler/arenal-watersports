@@ -16,6 +16,7 @@ const mapMotorFields = (
     UNIT_FORM_ERROR_COPY.FUEL_MAX_INVALID
   ),
   fuelLevel: parseUnitInteger(values.fuelLevel),
+  lowFuelLines: parseUnitInteger(values.lowFuelLines),
   usageTotal: requireUnitNumber(
     parseMoneyAmount(values.usageTotal),
     UNIT_FORM_ERROR_COPY.USAGE_REQUIRED

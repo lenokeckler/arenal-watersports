@@ -27,10 +27,19 @@ export const useCategoryBehaviorFormFields = ({
     );
   };
 
+  const clearLowFuelLinesError = (): void => {
+    setErrors((currentErrors) =>
+      currentErrors.lowFuelLines === undefined
+        ? currentErrors
+        : {}
+    );
+  };
+
   const handlers = useCategoryBehaviorFieldHandlers({
     trackingMode: behavior.trackingMode,
     setValues,
     clearDurationError,
+    clearLowFuelLinesError,
   });
 
   return {

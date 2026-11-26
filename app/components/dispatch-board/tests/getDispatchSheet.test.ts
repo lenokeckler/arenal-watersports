@@ -46,6 +46,8 @@ describe("getDispatchSheet", () => {
             fuelLevel: null,
             fuelMax: DISPATCH_UNIT_ROW_FIXTURE.fuel_max,
             isAssigned: false,
+            lowFuelLines:
+              DISPATCH_UNIT_ROW_FIXTURE.low_fuel_lines,
             unitId: DISPATCH_UNIT_ROW_FIXTURE.unit_id,
             usageTotal:
               DISPATCH_UNIT_ROW_FIXTURE.usage_total,
@@ -59,6 +61,7 @@ describe("getDispatchSheet", () => {
           DISPATCH_GROUP_ROW_FIXTURE.duration_minutes,
         fixedUnitIds: [],
         hasMotor: false,
+        imagePath: null,
         isTrackedByUnit: true,
         requiredQuantity:
           DISPATCH_GROUP_ROW_FIXTURE.required_quantity,

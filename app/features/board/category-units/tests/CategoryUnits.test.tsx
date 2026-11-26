@@ -1,3 +1,5 @@
+import { screen } from "@testing-library/react";
+import { BOARD_UNIT_FILTER } from "@/app/constants";
 import {
   afterEach,
   beforeEach,
@@ -11,10 +13,9 @@ import {
   readBoardCategory,
   readBoardCategoryUnits,
 } from "@/app/services/board";
-import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 import {
   CATEGORY_NAME,
-  EXPECTED_TIME,
+  DEFAULT_UNIT_OCCUPANCY,
   FAKE_TIMER_OPTIONS,
   UNIT_CODE,
 } from "./CategoryUnits.constants";
@@ -23,7 +24,6 @@ import {
   OCCUPIED_BOARD_UNIT_ROW,
 } from "./CategoryUnitRows.constants";
 import {
-  buildBoardCategoryRow,
   CATEGORY_ID,
   DEFAULT_BOARD_CATEGORY_ROW,
   PAGE,
@@ -42,6 +42,10 @@ vi.mock("@/app/services/board", () => ({
   readBoardCategory: vi.fn(),
   readBoardCategoryGroup: vi.fn().mockResolvedValue([]),
   readBoardCategoryUnits: vi.fn(),
+  readBoardUnitStatusDetails: vi.fn().mockResolvedValue({
+    damages: [],
+    jobs: [],
+  }),
 }));
 
 describe("CategoryUnits", () => {
@@ -70,33 +74,19 @@ describe("CategoryUnits", () => {
     );
   });
 
-  it("states the unit count under the title", async () => {
+  it("puts the status filter in the header row and no unit count text", async () => {
     const page = await renderCategoryUnits();
 
     expect(
-      page.getPageText(
-        CATEGORY_UNITS_COPY.UNITS_COUNT(
-          TOTAL_COUNT.TWO_UNITS
-        )
-      )
-    ).toBeInTheDocument();
-  });
-
-  it("uses the singular when the category has one unit", async () => {
-    vi.mocked(readBoardCategory).mockResolvedValue(
-      buildBoardCategoryRow({
-        total_count: TOTAL_COUNT.ONE_UNIT,
+      screen.getByRole("button", {
+        name: /Mostrar unidades/,
       })
-    );
-    const page = await renderCategoryUnits();
-
-    expect(
-      page.getPageText(
-        CATEGORY_UNITS_COPY.UNITS_COUNT(
-          TOTAL_COUNT.ONE_UNIT
-        )
-      )
     ).toBeInTheDocument();
+    expect(
+      page.queryPageText(
+        `${TOTAL_COUNT.TWO_UNITS} unidades`
+      )
+    ).not.toBeInTheDocument();
   });
 
   it("links back to the board", async () => {
@@ -108,18 +98,20 @@ describe("CategoryUnits", () => {
     );
   });
 
-  it("lists the units of the page with the occupied detail only on the occupied one", async () => {
+  it("lists the units of the page with the return time of the occupied one and no customer on any card", async () => {
     const page = await renderCategoryUnits();
+    const occupied = page.getUnit(UNIT_CODE.OCCUPIED);
 
     expect(page.getUnits()).toHaveLength(
       TOTAL_COUNT.TWO_UNITS
     );
     expect(
-      page.getReturnText(page.getUnit(UNIT_CODE.OCCUPIED))
-    ).toHaveTextContent(EXPECTED_TIME.TODAY);
+      page.getReturnText(occupied)
+    ).toBeInTheDocument();
     expect(
-      page.queryReturnText(
-        page.getUnit(UNIT_CODE.AVAILABLE)
+      page.queryText(
+        occupied,
+        DEFAULT_UNIT_OCCUPANCY.customerName
       )
     ).not.toBeInTheDocument();
   });
@@ -129,7 +121,8 @@ describe("CategoryUnits", () => {
 
     expect(readBoardCategoryUnits).toHaveBeenCalledWith(
       CATEGORY_ID,
-      PAGE.FIRST
+      PAGE.FIRST,
+      BOARD_UNIT_FILTER.ALL
     );
   });
 

@@ -76,7 +76,7 @@ export const createExtraFormPage = (page: Page) => {
       exact: true,
     });
 
-  const getCancelButton = (): Locator =>
+  const getBackButton = (): Locator =>
     page.getByRole(ARIA_ROLE.BUTTON, {
       name: EXTRA_CATALOG_COPY.BACK_BUTTON,
       exact: true,
@@ -123,8 +123,8 @@ export const createExtraFormPage = (page: Page) => {
     await getSubmitButton(label).click();
   };
 
-  const cancel = async (): Promise<void> => {
-    await getCancelButton().click();
+  const back = async (): Promise<void> => {
+    await getBackButton().click();
   };
 
   return {
@@ -141,7 +141,7 @@ export const createExtraFormPage = (page: Page) => {
     getLockedNote,
     getOccupancyError,
     getSubmitButton,
-    getCancelButton,
+    getBackButton,
     getToastMessage,
     getNotFoundMessage,
     fillName,
@@ -150,6 +150,6 @@ export const createExtraFormPage = (page: Page) => {
     chooseCategory,
     fillQuantity,
     submit,
-    cancel,
+    back,
   };
 };
