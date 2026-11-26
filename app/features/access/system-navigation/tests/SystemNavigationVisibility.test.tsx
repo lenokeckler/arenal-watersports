@@ -161,11 +161,17 @@ describe("SystemNavigation visibility", () => {
       )
     ).toHaveAttribute("href", PATHS.OPERATIONS.INVENTORY);
     expect(
+      page.getNavigationLink(SYSTEM_NAVIGATION_COPY.PRICES)
+    ).toHaveAttribute(
+      "href",
+      PATHS.OPERATIONS.PRICE_LOOKUP
+    );
+    expect(
       page.getNavigationLink(SYSTEM_NAVIGATION_COPY.HISTORY)
     ).toHaveAttribute("href", PATHS.HISTORY.ROOT);
   });
 
-  it("shows Reservations calendar and hides Inventory", () => {
+  it("shows Reservations calendar and hides Inventory and Prices", () => {
     render(
       <SystemNavigation
         overview={
@@ -186,6 +192,11 @@ describe("SystemNavigation visibility", () => {
     expect(
       page.queryNavigationLink(
         SYSTEM_NAVIGATION_COPY.INVENTORY
+      )
+    ).toBeNull();
+    expect(
+      page.queryNavigationLink(
+        SYSTEM_NAVIGATION_COPY.PRICES
       )
     ).toBeNull();
   });

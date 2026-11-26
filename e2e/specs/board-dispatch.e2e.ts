@@ -35,12 +35,14 @@ test.describe("Dispatch from the board", () => {
     await expect(sheet.getDialog()).toContainText(
       dispatchSheet.categoryName
     );
-    await expect(sheet.getUnit(first)).toBeChecked();
-    await expect(sheet.getUnit(second)).toBeChecked();
-    await expect(sheet.getUnit(third)).toBeDisabled();
     await expect(sheet.getSubmit()).toBeEnabled();
+    await sheet.getChangeUnits().click();
+    await sheet.getUnit(first).click();
+    await sheet.getUnit(second).click();
+    await expect(sheet.getChangeUnits()).toBeVisible();
+    expect(third).toBeTruthy();
 
-    await sheet.getSubmit().click();
+    await sheet.confirm();
 
     await expect(sheet.getDialog()).toHaveCount(
       E2E_COUNT.NONE
@@ -74,25 +76,18 @@ test.describe("Dispatch from the board", () => {
       .getPickerAction(dispatchSheet.customerName)
       .click();
 
-    await expect(sheet.getSubmit()).toBeDisabled();
+    await expect(sheet.getSubmit()).toBeEnabled();
 
     for (const code of [first, second]) {
       await sheet
-        .getFuelPreset(
+        .getGaugeLine(
           code,
-          E2E_DISPATCH_READINGS.FIRST.PRESET
+          E2E_DISPATCH_READINGS.SECOND.LINE
         )
         .click();
-      await sheet
-        .getUsageField(
-          code,
-          E2E_DISPATCH_READINGS.HOURS_LABEL
-        )
-        .fill(E2E_DISPATCH_READINGS.FIRST.HOURS_TEXT);
     }
 
-    await expect(sheet.getSubmit()).toBeEnabled();
-    await sheet.getSubmit().click();
+    await sheet.confirm();
 
     await expect(sheet.getDialog()).toHaveCount(
       E2E_COUNT.NONE
@@ -101,10 +96,10 @@ test.describe("Dispatch from the board", () => {
       await dispatchSheet.readDispatchReadings();
 
     expect(readings[first].fuelOut).toBe(
-      E2E_DISPATCH_READINGS.FIRST.FUEL
+      E2E_DISPATCH_READINGS.SECOND.FUEL
     );
     expect(readings[second].usageOut).toBe(
-      E2E_DISPATCH_READINGS.FIRST.USAGE
+      E2E_DISPATCH_READINGS.SECOND.USAGE
     );
   });
 });

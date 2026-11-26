@@ -18,9 +18,6 @@ export const DISPATCH_SHEET_GROUP_BUTTON_CLASS =
 export const DISPATCH_SHEET_SUMMARY_CLASS =
   "flex flex-col gap-1 rounded-xl border border-outline-variant/60 bg-surface-container/80 px-4 py-3";
 
-export const DISPATCH_SHEET_SUMMARY_TITLE_CLASS =
-  "text-title-md font-semibold text-on-surface";
-
 export const DISPATCH_SHEET_FIELDSET_CLASS =
   "flex flex-col gap-sm border-0 p-0";
 
@@ -30,23 +27,26 @@ export const DISPATCH_SHEET_LEGEND_CLASS =
 export const DISPATCH_SHEET_UNIT_NOTE_CLASS =
   "text-body-sm text-on-surface-variant";
 
-export const DISPATCH_READINGS_CLASS =
-  "flex flex-col gap-sm border-0 p-0";
+export const DISPATCH_GROUP_HEADER_CLASS =
+  "flex flex-col gap-1 rounded-xl border border-outline-variant/60 bg-surface-container/80 px-4 py-3";
 
-export const DISPATCH_READING_CARD_CLASS =
-  "flex flex-col gap-md rounded-xl border border-outline-variant/60 bg-surface-container/80 px-4 py-3";
+export const DISPATCH_GROUP_TITLE_CLASS =
+  "text-title-md font-semibold text-on-surface";
 
-export const DISPATCH_READING_BLOCK_CLASS =
-  "flex flex-col gap-sm";
+export const DISPATCH_TAKE_BLOCK_CLASS =
+  "flex flex-col gap-sm rounded-xl border border-outline-variant/60 bg-surface-container/80 px-4 py-3";
 
-export const DISPATCH_READING_LEGEND_CLASS =
-  "px-1 text-title-md font-semibold text-on-surface";
+export const DISPATCH_TAKE_ROW_CLASS =
+  "grid grid-cols-[auto_1fr_auto] items-center gap-sm";
 
-export const DISPATCH_READING_LABEL_CLASS =
-  "text-label-md font-semibold text-on-surface";
+export const DISPATCH_TAKE_BUTTON_CLASS =
+  "min-h-14 min-w-16 px-sm text-title-md font-semibold";
 
-export const DISPATCH_SHEET_TIMES_CLASS =
-  "grid grid-cols-1 gap-md sm:grid-cols-2";
+export const DISPATCH_TAKE_VALUE_CLASS =
+  "text-center text-title-md font-semibold tabular-nums text-on-surface";
 
-export const DISPATCH_SHEET_ACTIONS_CLASS =
-  "flex flex-col gap-sm";
+export const DISPATCH_SUBMIT_BAR_CLASS =
+  "sticky bottom-0 -mx-margin-mobile flex border-t border-outline-variant/50 bg-surface-container-lowest/95 px-margin-mobile pb-1 pt-sm backdrop-blur-md";
+
+export const DISPATCH_SUBMIT_BUTTON_CLASS =
+  "min-h-14 flex-1";

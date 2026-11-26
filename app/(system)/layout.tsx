@@ -1,3 +1,4 @@
+import BoardLayoutControls from "@/app/features/board/board-layout/BoardLayoutControls";
 import SessionActivityTracker from "@/app/features/access/session-activity/SessionActivityTracker";
 import { readOwnProfileIdentity } from "@/app/features/access/profile-hub/services/readOwnProfileIdentity";
 import SessionControls from "@/app/features/access/session-bar/SessionControls";
@@ -24,7 +25,12 @@ const SystemLayout = async ({
       {overview?.current ? (
         <SystemNavigation
           overview={overview}
-          menuExtras={<SessionControls />}
+          menuExtras={
+            <>
+              <BoardLayoutControls />
+              <SessionControls />
+            </>
+          }
           menuIdentity={identity}
         />
       ) : null}
