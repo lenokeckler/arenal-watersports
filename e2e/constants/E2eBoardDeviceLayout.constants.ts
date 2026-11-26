@@ -2,6 +2,7 @@ export const E2E_BOARD_DEVICE_LAYOUT = {
   DRAGGED_INDEX: 0,
   DRAG_STEPS: 12,
   FIRST_INDEX: 0,
+  LONG_PRESS_HOLD_MS: 600,
   MIN_CATEGORIES: 3,
   ROW_LABEL_SELECTOR: ":scope > :first-child",
   SCROLL_BLOCK: "center",

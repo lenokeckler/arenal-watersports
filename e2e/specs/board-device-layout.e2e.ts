@@ -1,4 +1,7 @@
-import { BOARD_LAYOUT_COLUMNS } from "@/app/constants";
+import {
+  BOARD_LAYOUT_COLUMNS,
+  PATHS,
+} from "@/app/constants";
 import { E2E_BOARD_DEVICE_LAYOUT } from "../constants/E2eBoardDeviceLayout.constants";
 import { createBoardDeviceLayoutPage } from "../pages/BoardDeviceLayout.page";
 import { expect, test } from "../support/activeWorkerTest";
@@ -118,6 +121,41 @@ test.describe("Board layout on the device", () => {
     await expect
       .poll(() => layoutPage.readBoardOrder())
       .toEqual(moveFirstBeforeThird(initialOrder));
+  });
+
+  test("reorders the cards by dragging them on the board with the mouse", async ({
+    page,
+  }) => {
+    const layoutPage = createBoardDeviceLayoutPage(page);
+    const initialOrder = await layoutPage.readBoardOrder();
+
+    await layoutPage.dragCardWithMouse(
+      initialOrder[E2E_BOARD_DEVICE_LAYOUT.DRAGGED_INDEX],
+      initialOrder[E2E_BOARD_DEVICE_LAYOUT.TARGET_INDEX]
+    );
+
+    await expect
+      .poll(() => layoutPage.readBoardOrder())
+      .toEqual(moveFirstBeforeThird(initialOrder));
+    await expect(page).toHaveURL(PATHS.BOARD);
+  });
+
+  test("reorders the cards by holding and dragging them on the board with a finger", async ({
+    page,
+  }, testInfo) => {
+    test.skip(!testInfo.project.use.hasTouch);
+    const layoutPage = createBoardDeviceLayoutPage(page);
+    const initialOrder = await layoutPage.readBoardOrder();
+
+    await layoutPage.dragCardWithFinger(
+      initialOrder[E2E_BOARD_DEVICE_LAYOUT.DRAGGED_INDEX],
+      initialOrder[E2E_BOARD_DEVICE_LAYOUT.TARGET_INDEX]
+    );
+
+    await expect
+      .poll(() => layoutPage.readBoardOrder())
+      .toEqual(moveFirstBeforeThird(initialOrder));
+    await expect(page).toHaveURL(PATHS.BOARD);
   });
 
   test("ignores a saved category the catalog no longer has and sends a category the order does not mention to the end", async ({

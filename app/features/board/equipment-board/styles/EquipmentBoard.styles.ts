@@ -3,6 +3,7 @@ import {
   type BoardLayoutColumns,
 } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
+import { joinClassNames } from "@/app/utils/class-names/joinClassNames";
 
 export const EQUIPMENT_BOARD_PAGE_CLASS =
   "mx-auto w-full max-w-7xl px-margin-mobile py-md md:px-margin-desktop";
@@ -40,12 +41,31 @@ export const EQUIPMENT_BOARD_GRID_ITEM_BY_COLUMNS_CLASS: Record<
   [BOARD_LAYOUT_COLUMNS.TWO]: `${EQUIPMENT_BOARD_GRID_ITEM_BASE_CLASS} w-[calc((100%-var(--spacing-sm))/2)] md:w-[calc((100%-var(--spacing-md))/2)]`,
 };
 
-export const resolveEquipmentBoardGridItemClassName = (
+const EQUIPMENT_BOARD_GRID_ITEM_DRAGGABLE_CLASS =
+  "select-none [-webkit-touch-callout:none]";
+
+const EQUIPMENT_BOARD_GRID_ITEM_DRAGGED_CLASS =
+  "relative z-10 scale-105 rounded-xl opacity-90 shadow-xl ring-2 ring-primary transition-transform motion-reduce:transition-none";
+
+const resolveGridItemWidthClassName = (
   columns: NullableRef<BoardLayoutColumns>
 ): string =>
   columns === null
     ? EQUIPMENT_BOARD_GRID_ITEM_CLASS
     : EQUIPMENT_BOARD_GRID_ITEM_BY_COLUMNS_CLASS[columns];
+
+export const resolveEquipmentBoardGridItemClassName = (
+  columns: NullableRef<BoardLayoutColumns>,
+  isDragged = false
+): string =>
+  joinClassNames(
+    resolveGridItemWidthClassName(columns),
+    EQUIPMENT_BOARD_GRID_ITEM_DRAGGABLE_CLASS,
+    isDragged && EQUIPMENT_BOARD_GRID_ITEM_DRAGGED_CLASS
+  );
+
+export const EQUIPMENT_BOARD_DRAG_HINT_CLASS =
+  "text-center text-sm text-on-surface-variant";
 
 export const EQUIPMENT_BOARD_TOOLBAR_CLASS =
   "mb-md flex flex-wrap items-center justify-between gap-sm";
