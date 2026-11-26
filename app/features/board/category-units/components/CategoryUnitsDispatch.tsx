@@ -10,6 +10,7 @@ import CategoryDispatchReservationPicker from "./CategoryDispatchReservationPick
 import CategoryUnitInfoSheet from "./CategoryUnitInfoSheet";
 import CategoryUnitModifySheet from "./CategoryUnitModifySheet";
 import CategoryUnitReceiveSheet from "./CategoryUnitReceiveSheet";
+import CategoryUnitStatusSheet from "./CategoryUnitStatusSheet";
 import CategoryUnitsDispatchBar from "./CategoryUnitsDispatchBar";
 import CategoryUnitsEditToggle from "./CategoryUnitsEditToggle";
 import CategoryUnitsHeader from "./CategoryUnitsHeader";
@@ -19,8 +20,8 @@ const CategoryUnitsDispatch = ({
   afterHeader,
   categoryId,
   categoryName,
+  filterControl,
   image,
-  unitCount,
   units,
 }: CategoryUnitsDispatchProps): React.JSX.Element => {
   const dispatch = useCategoryUnitsDispatch();
@@ -37,12 +38,15 @@ const CategoryUnitsDispatch = ({
   const receiveUnit = units.find(
     (unit) => unit.id === board.receiveUnitId
   );
+  const statusUnit = units.find(
+    (unit) => unit.id === board.statusUnitId
+  );
 
   return (
     <>
       <CategoryUnitsHeader
         categoryName={categoryName}
-        unitCount={unitCount}
+        filterControl={filterControl}
       >
         {units.length > 0 && (
           <CategoryUnitsEditToggle
@@ -59,6 +63,7 @@ const CategoryUnitsDispatch = ({
           isEditing: board.isEditing,
           onOpenInfo: board.handleOpenInfo,
           onOpenModify: board.handleOpenModify,
+          onOpenStatus: board.handleOpenStatus,
         }}
         selection={{
           onToggle: dispatch.handleToggleUnit,
@@ -120,6 +125,12 @@ const CategoryUnitsDispatch = ({
           onClose={board.handleCloseReceive}
           readings={receiveUnit.readings}
           unit={receiveUnit}
+        />
+      )}
+      {statusUnit && (
+        <CategoryUnitStatusSheet
+          onClose={board.handleCloseStatus}
+          unit={statusUnit}
         />
       )}
       {modifyUnit && (
