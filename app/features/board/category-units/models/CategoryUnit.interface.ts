@@ -1,5 +1,6 @@
 import type { ActiveInventoryUnitStatus } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
+import type { CategoryUnitStatusDetails } from "./CategoryUnitStatusDetails.interface";
 import type { CategoryUnitReadings } from "./CategoryUnitReadings.interface";
 import type { UnitOccupancy } from "./UnitOccupancy.interface";
 
@@ -9,4 +10,5 @@ export interface CategoryUnit {
   occupancy: NullableRef<UnitOccupancy>;
   readings: NullableRef<CategoryUnitReadings>;
   status: ActiveInventoryUnitStatus;
+  statusDetails: NullableRef<CategoryUnitStatusDetails>;
 }
