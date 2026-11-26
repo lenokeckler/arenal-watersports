@@ -1,0 +1,135 @@
+begin;
+select plan(25);
+\ir fixtures/reservation_charge.sql.fixture
+
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"e2c20000-0000-4000-8000-000000000001","role":"authenticated"}';
+
+select throws_ok(
+  format(
+    $$ select record_reservation_charge(jsonb_build_object(
+         'reservation_id', 'e2c20000-0000-4000-8000-000000000309', 'payment_method', 'Efectivo', 'parts', %L::jsonb)) $$,
+    v.parts
+  ),
+  'P0001', 'Charge parts are invalid', 'parts that are ' || v.label || ' are refused'
+)
+from (values
+  ('JSON null', 'null'),
+  ('a string', '"USD"'),
+  ('an object', '{}'),
+  ('empty', '[]'),
+  ('three elements', '[{"currency":"USD","amount":1},{"currency":"CRC","amount":1},{"currency":"USD","amount":1}]'),
+  ('a number element', '[1]'),
+  ('a repeated currency', '[{"currency":"USD","amount":1},{"currency":"USD","amount":2}]')
+) as v(label, parts);
+
+select throws_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000309', 'payment_method', 'Efectivo',
+       'parts', '[{"currency":"USD","amount":1},{"currency":"EUR","amount":1}]'::jsonb)) $$,
+  'P0001', 'Charge currency is invalid', 'a part with an unknown currency is refused'
+);
+
+select throws_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000309', 'payment_method', 'Efectivo',
+       'parts', '[{"currency":"USD","amount":1},{"currency":"CRC","amount":0}]'::jsonb)) $$,
+  'P0001', 'Charge amount is invalid', 'a part with a zero amount is refused'
+);
+
+select throws_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000309', 'payment_method', 'Efectivo',
+       'parts', '[{"currency":"USD","amount":"abc"}]'::jsonb)) $$,
+  'P0001', 'Reservation payload is invalid', 'a part with a non-numeric amount is refused'
+);
+
+select throws_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000309', 'payment_method', '  ',
+       'parts', '[{"currency":"USD","amount":1},{"currency":"CRC","amount":1}]'::jsonb)) $$,
+  'P0001', 'A payment method is required', 'valid parts without a payment method are refused'
+);
+
+select throws_ok(
+  format(
+    $$ select record_reservation_charge(jsonb_build_object(
+         'reservation_id', 'e2c20000-0000-4000-8000-000000000309', 'payment_method', 'Efectivo', 'parts', %L::jsonb)) $$,
+    v.parts
+  ),
+  'P0001', v.message, 'parts with ' || v.label || ' are refused'
+)
+from (values
+  ('a lowercase currency', '[{"currency":"usd","amount":1}]', 'Charge currency is invalid'),
+  ('a lowercase repeat of a currency', '[{"currency":"USD","amount":1},{"currency":"usd","amount":1}]',
+   'Charge currency is invalid'),
+  ('a null amount', '[{"currency":"USD","amount":null},{"currency":"CRC","amount":1}]', 'Charge amount is invalid'),
+  ('a missing amount', '[{"currency":"USD"}]', 'Charge amount is invalid'),
+  ('three decimals', '[{"currency":"CRC","amount":1.555}]', 'Charge amount is invalid')
+) as v(label, parts, message);
+
+select throws_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000312', 'payment_method', 'Efectivo',
+       'parts', '[{"currency":"USD","amount":1},{"currency":"CRC","amount":1}]'::jsonb)) $$,
+  'P0001', 'Only scheduled, dispatched or closed reservations can be charged', 'a cancelled reservation is refused'
+);
+
+select throws_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000314', 'payment_method', 'Efectivo',
+       'parts', '[{"currency":"USD","amount":1},{"currency":"CRC","amount":1}]'::jsonb)) $$,
+  'P0001', 'A split reservation is charged on the original reservation', 'a split child is refused'
+);
+
+select throws_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000999', 'payment_method', 'Efectivo', 'parts', '[]'::jsonb)) $$,
+  'P0001', 'Reservation was not found', 'an unknown reservation is refused before its parts are read'
+);
+
+select throws_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000309', 'payment_method', 'Efectivo',
+       'parts', '[{"currency":"USD","amount":10000000000},{"currency":"CRC","amount":1}]'::jsonb)) $$,
+  'P0001', 'Charge amount is invalid', 'a dollar part above the ceiling is refused'
+);
+
+select results_eq(
+  $$ select count(*) from pg_attribute
+     where attrelid = 'public.reservations'::regclass and attnum > 0 and not attisdropped
+       and attname ~ '(amount|price|usd|crc)' $$,
+  $$ values (0::bigint) $$,
+  'the reservation row has no amount or price column'
+);
+
+select lives_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000301', 'payment_method', 'Efectivo',
+       'parts', '[{"currency":"USD","amount":55},{"currency":"CRC","amount":18000}]'::jsonb)) $$,
+  'a mixed charge is recorded'
+);
+
+select results_eq(
+  $$ select count(*) from reservation_pricing where reservation_id = 'e2c20000-0000-4000-8000-000000000301' $$,
+  $$ values (1::bigint) $$,
+  'reservas reads the pricing written by a mixed charge'
+);
+
+set local request.jwt.claims to '{"sub":"e2c20000-0000-4000-8000-000000000002","role":"authenticated"}';
+
+select results_eq(
+  $$ select count(*) from reservation_pricing where reservation_id = 'e2c20000-0000-4000-8000-000000000301' $$,
+  $$ values (0::bigint) $$,
+  'operations cannot read the pricing written by a mixed charge'
+);
+
+select throws_ok(
+  $$ select record_reservation_charge(jsonb_build_object(
+       'reservation_id', 'e2c20000-0000-4000-8000-000000000304', 'payment_method', 'Efectivo',
+       'parts', '[{"currency":"USD","amount":1},{"currency":"CRC","amount":1}]'::jsonb)) $$,
+  'P0001', 'Reservations access is required', 'operations cannot record a mixed charge'
+);
+
+select * from finish();
+rollback;

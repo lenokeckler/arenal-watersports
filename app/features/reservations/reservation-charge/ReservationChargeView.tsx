@@ -34,7 +34,10 @@ const ReservationChargeView = ({
           className={RESERVATION_CHARGE_FORM_CLASS}
           onSubmit={viewModel.handleSubmit}
         >
-          <ReservationChargeSummary charge={charge} />
+          <ReservationChargeSummary
+            charge={charge}
+            viewModel={viewModel}
+          />
           <ReservationChargeForm
             charge={charge}
             viewModel={viewModel}
