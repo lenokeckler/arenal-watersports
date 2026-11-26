@@ -10,6 +10,7 @@ export const SUPABASE_RPC = {
     "current_session_seconds_left",
   CURRENT_SESSION_STATE: "current_session_state",
   CURRENT_WORK_AREA: "current_work_area",
+  DELETE_OR_DEACTIVATE_COMBO: "delete_or_deactivate_combo",
   DELETE_OR_DEACTIVATE_EXTRA: "delete_or_deactivate_extra",
   EXCHANGE_PASSWORD_RESET_PIN:
     "exchange_password_reset_pin",
@@ -20,6 +21,8 @@ export const SUPABASE_RPC = {
   LIST_INVENTORY_COUNTS: "list_inventory_counts",
   RECORD_INVENTORY_COUNT: "record_inventory_count",
   SAVE_CATEGORY_TARIFFS: "save_category_tariffs",
+  SAVE_COMBO: "save_combo",
+  SET_COMBO_ACTIVE: "set_combo_active",
   SET_UNIT_CONDITION: "set_unit_condition",
   LIST_OPERATIONS_STOCK_MOVEMENTS:
     "list_operations_stock_movements",
