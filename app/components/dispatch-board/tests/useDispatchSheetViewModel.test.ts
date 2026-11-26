@@ -39,6 +39,7 @@ vi.mock("../actions/submitDispatchGroup", () => ({
 
 const SELECTION = {
   departureAt: DISPATCH_INPUT_FIXTURE.DEPARTURE_AT,
+  radioChannel: null,
   readings: [],
   returnsAt: DISPATCH_INPUT_FIXTURE.RETURNS_AT,
   unitIds: [DISPATCH_INPUT_FIXTURE.UNIT_ID],

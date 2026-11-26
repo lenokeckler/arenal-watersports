@@ -17,6 +17,10 @@ export const UNIT_FORM_ERROR_COPY = {
   FUEL_LEVEL_INVALID:
     "La gasolina debe ser un número entero de cero en adelante, o deje el campo vacío si aún no hay lectura.",
   FUEL_MAX_INVALID: `Las rayas del medidor deben ser un número entero entre ${FUEL_MAX_MIN} y ${FUEL_MAX_MAX}.`,
+  LOW_FUEL_LINES_ABOVE_MAX:
+    "El aviso no puede ser mayor que las rayas del medidor.",
+  LOW_FUEL_LINES_INVALID:
+    "El aviso debe ser un número entero de 1 en adelante, o deje el campo vacío para usar el de la categoría.",
   REASON_REQUIRED: "Ingrese el motivo de la baja.",
   USAGE_REQUIRED:
     "Ingrese las horas o el kilometraje acumulado; escriba 0 si la unidad es nueva.",

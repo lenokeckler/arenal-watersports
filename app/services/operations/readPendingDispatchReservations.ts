@@ -3,6 +3,7 @@ import { DISPATCH_BOARD_PAGINATION } from "@/app/components/dispatch-board/const
 import { ERRORS } from "@/app/constants/errors/Errors.constant";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { getPendingDispatchOffset } from "./getPendingDispatchOffset";
+import { readPendingDispatchEquipment } from "./readPendingDispatchEquipment";
 import type { PendingDispatchSupabaseClient } from "./models/PendingDispatchSupabaseClient.type";
 
 export const readPendingDispatchReservations = async (
@@ -30,13 +31,25 @@ export const readPendingDispatchReservations = async (
     throw new Error(ERRORS.COMMON.SERVER);
   }
 
+  const pageRows = data.slice(
+    0,
+    DISPATCH_BOARD_PAGINATION.PAGE_SIZE
+  );
+  const equipment = await readPendingDispatchEquipment(
+    supabase,
+    pageRows.map((reservation) => reservation.id)
+  );
+
   return {
     hasNextPage:
       data.length > DISPATCH_BOARD_PAGINATION.PAGE_SIZE,
     page,
-    reservations: data.slice(
-      0,
-      DISPATCH_BOARD_PAGINATION.PAGE_SIZE
-    ),
+    reservations: pageRows.map((reservation) => ({
+      ...reservation,
+      equipment:
+        equipment.get(reservation.id)?.equipment ?? [],
+      isCombo:
+        equipment.get(reservation.id)?.isCombo ?? false,
+    })),
   };
 };

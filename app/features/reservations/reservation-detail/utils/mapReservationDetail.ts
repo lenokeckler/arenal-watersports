@@ -8,6 +8,8 @@ import { mapReservationDetailDispatches } from "./mapReservationDetailDispatches
 import { mapReservationDetailEquipment } from "./mapReservationDetailEquipment";
 import { mapReservationDetailExtras } from "./mapReservationDetailExtras";
 import { mapReservationDetailGuides } from "./mapReservationDetailGuides";
+import { calculateReservationDetailRefundable } from "./calculateReservationDetailRefundable";
+import { mapReservationDetailMoneyMovements } from "./mapReservationDetailMoneyMovements";
 
 const getReservationDetailChargeSummary = (
   source: ReservationDetailReservationSource
@@ -48,6 +50,8 @@ const mapReservationDetailBase = (
   | "extraTimeCharges"
   | "extras"
   | "guides"
+  | "moneyMovements"
+  | "refundable"
   | "refunds"
   | "updatedByName"
 > => ({
@@ -57,6 +61,8 @@ const mapReservationDetailBase = (
   comboName: source.combo?.name ?? null,
   created_at: source.created_at,
   customer_name: source.customer_name,
+  dockNotifiedAt:
+    source.reservation_dock_notices?.notified_at ?? null,
   dispatched_at: source.dispatched_at,
   duration_minutes: source.duration_minutes,
   ends_at: source.ends_at,
@@ -68,6 +74,16 @@ const mapReservationDetailBase = (
   type: source.type,
   updated_at: source.updated_at,
 });
+
+const mapReservationDetailRefundable = (
+  source: ReservationDetailReservationSource
+): ReservationDetail["refundable"] =>
+  source.parent_reservation_id
+    ? []
+    : calculateReservationDetailRefundable(
+        source.reservation_charges,
+        source.refunds
+      );
 
 export const mapReservationDetail = (
   source: ReservationDetailReservationSource,
@@ -86,6 +102,11 @@ export const mapReservationDetail = (
     extraTimeCharges: chargeSummary.extraTimeCharges,
     extras: mapReservationDetailExtras(source),
     guides: mapReservationDetailGuides(source, workerNames),
+    moneyMovements: mapReservationDetailMoneyMovements(
+      source,
+      workerNames
+    ),
+    refundable: mapReservationDetailRefundable(source),
     refunds: chargeSummary.refunds,
   };
 };

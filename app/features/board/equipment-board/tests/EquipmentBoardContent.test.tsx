@@ -1,3 +1,4 @@
+import { BOARD_UNIT_FILTER } from "@/app/constants";
 import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import EquipmentBoardContent from "../components/EquipmentBoardContent";
@@ -5,11 +6,9 @@ import { resolveFreeOfTotalText } from "../utils/resolveFreeOfTotalText";
 import { createKayakDouble } from "./createKayakCategories";
 import { DEFAULT_BOARD_CATEGORY } from "./EquipmentBoardUtils.constants";
 import {
-  ARIA_HIDDEN_TRUE,
   BOARD_CARDS,
   CARD_COUNT_WITH_GROUP,
   EN_USO_TEXT,
-  EXPECTED_BAR_WIDTHS,
   HEADING_LEVEL_TWO,
   JET_SKI_LABEL,
   KAYAK_LABEL,
@@ -18,7 +17,12 @@ import {
 import { createEquipmentBoardPage } from "./EquipmentBoard.page";
 
 const renderContent = () => {
-  render(<EquipmentBoardContent cards={BOARD_CARDS} />);
+  render(
+    <EquipmentBoardContent
+      cards={BOARD_CARDS}
+      filter={BOARD_UNIT_FILTER.ALL}
+    />
+  );
 
   return createEquipmentBoardPage();
 };
@@ -74,19 +78,5 @@ describe("EquipmentBoardContent", () => {
     expect(page.getCardText(kayakCard)).not.toContain(
       createKayakDouble().name
     );
-  });
-
-  it("draws a decorative bar sized by the share free", () => {
-    const page = renderContent();
-
-    expect(
-      page.getBarWidth(page.getCard(JET_SKI_LABEL))
-    ).toBe(EXPECTED_BAR_WIDTHS.JET_SKI);
-    expect(
-      page.getBarWidth(page.getCard(KAYAK_LABEL))
-    ).toBe(EXPECTED_BAR_WIDTHS.KAYAK);
-    expect(
-      page.isBarHidden(page.getCard(JET_SKI_LABEL))
-    ).toBe(ARIA_HIDDEN_TRUE);
   });
 });

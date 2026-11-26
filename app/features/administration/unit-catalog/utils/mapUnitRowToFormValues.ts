@@ -9,6 +9,7 @@ export const mapUnitRowToFormValues = (
   status: unit.status,
   fuelMax: unit.fuelMax.toString(),
   fuelLevel: safeString(unit.fuelLevel?.toString()),
+  lowFuelLines: safeString(unit.lowFuelLines?.toString()),
   usageTotal: unit.usageTotal.toString(),
   nextOilChangeAt: safeString(
     unit.nextOilChangeAt?.toString()
