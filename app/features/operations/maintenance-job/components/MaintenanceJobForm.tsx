@@ -19,6 +19,8 @@ import {
   MAINTENANCE_JOB_COPY,
   MAINTENANCE_JOB_FIELD_ID,
 } from "../constants/MaintenanceJobCopy.constants";
+import MaintenanceJobOilInterval from "./MaintenanceJobOilInterval";
+import MaintenanceJobPresetUnit from "./MaintenanceJobPresetUnit";
 import { useMaintenanceJobForm } from "../hooks/useMaintenanceJobForm";
 import type { MaintenanceJobFormInput } from "../models/MaintenanceJobFormInput.interface";
 import {
@@ -49,29 +51,38 @@ const MaintenanceJobForm = (
 ): React.JSX.Element => {
   const form = useMaintenanceJobForm(props);
   const { draft, errors, selectedUnit } = form;
+  const presetUnit = props.units.find(
+    (unit) => unit.unitId === props.initialUnitId
+  );
 
   return (
     <form
       className={MAINTENANCE_JOB_FORM_CLASS}
       onSubmit={form.handleSubmit}
     >
-      <FormField
-        id={MAINTENANCE_JOB_FIELD_ID.UNIT}
-        name={MAINTENANCE_JOB_FIELD_ID.UNIT}
-        label={MAINTENANCE_JOB_COPY.UNIT_LABEL}
-        labelSuffix={STRING.Empty}
-        placeholder={MAINTENANCE_JOB_COPY.UNIT_PLACEHOLDER}
-        type={INPUT_TYPES.SELECT}
-        value={draft.unitId}
-        error={errors.unit ?? undefined}
-        showErrorText
-        onChange={form.handleChange("unitId")}
-        options={props.units.map((unit) => ({
-          key: unit.unitId,
-          label: `${unit.code}${MAINTENANCE_JOB_COPY.UNIT_SEPARATOR}${unit.categoryName}`,
-          value: unit.unitId,
-        }))}
-      />
+      {presetUnit ? (
+        <MaintenanceJobPresetUnit unit={presetUnit} />
+      ) : (
+        <FormField
+          id={MAINTENANCE_JOB_FIELD_ID.UNIT}
+          name={MAINTENANCE_JOB_FIELD_ID.UNIT}
+          label={MAINTENANCE_JOB_COPY.UNIT_LABEL}
+          labelSuffix={STRING.Empty}
+          placeholder={
+            MAINTENANCE_JOB_COPY.UNIT_PLACEHOLDER
+          }
+          type={INPUT_TYPES.SELECT}
+          value={draft.unitId}
+          error={errors.unit ?? undefined}
+          showErrorText
+          onChange={form.handleChange("unitId")}
+          options={props.units.map((unit) => ({
+            key: unit.unitId,
+            label: `${unit.code}${MAINTENANCE_JOB_COPY.UNIT_SEPARATOR}${unit.categoryName}`,
+            value: unit.unitId,
+          }))}
+        />
+      )}
       <FormField
         id={MAINTENANCE_JOB_FIELD_ID.WORK_TYPE}
         name={MAINTENANCE_JOB_FIELD_ID.WORK_TYPE}
@@ -110,27 +121,12 @@ const MaintenanceJobForm = (
         onChange={form.handleChange("description")}
       />
       {form.isOilChange && (
-        <>
-          <FormField
-            id={MAINTENANCE_JOB_FIELD_ID.NEXT_OIL_CHANGE}
-            name={MAINTENANCE_JOB_FIELD_ID.NEXT_OIL_CHANGE}
-            label={
-              MAINTENANCE_JOB_COPY.NEXT_OIL_CHANGE_LABEL
-            }
-            labelSuffix={STRING.Empty}
-            type={INPUT_TYPES.TEXT}
-            inputMode={INPUT_MODE.DECIMAL}
-            value={draft.nextOilChangeAt}
-            error={errors.threshold ?? undefined}
-            showErrorText
-            onChange={form.handleChange("nextOilChangeAt")}
-          />
-          <Text className={MAINTENANCE_JOB_NOTE_CLASS}>
-            {selectedUnit
-              ? `${MAINTENANCE_JOB_COPY.NEXT_OIL_CHANGE_HINT}${MAINTENANCE_JOB_COPY.ACCUMULATED_PREFIX}${selectedUnit.usageTotal}${selectedUnit.usageMetric === null ? STRING.Empty : MAINTENANCE_JOB_COPY.USAGE_UNIT[selectedUnit.usageMetric]}.`
-              : MAINTENANCE_JOB_COPY.NEXT_OIL_CHANGE_HINT}
-          </Text>
-        </>
+        <MaintenanceJobOilInterval
+          error={errors.interval}
+          onChange={form.handleChange("oilInterval")}
+          unit={selectedUnit}
+          value={draft.oilInterval}
+        />
       )}
       <div className={MAINTENANCE_JOB_COST_CLASS}>
         <FormField
