@@ -1,11 +1,11 @@
 import Button from "@/app/components/button/Button";
 import { ARIA_ROLE, BUTTON } from "@/app/constants";
-import { CATEGORY_CONFIGURE_COPY } from "../constants/CategoryConfigureCopy.constants";
+import { CATEGORY_CONFIGURE_ALERTS_ID } from "../constants/CategoryConfigureAlertsId.constants";
 import type { CategoryConfigureAlertTypeChipsProps } from "../models/CategoryConfigureAlertTypeChipsProps.interface";
 import {
-  CATEGORY_DURATION_CHIPS_GROUP_CLASS,
-  resolveCategoryDurationChipClassName,
-} from "../styles/CategoryDurationChips.styles";
+  CATEGORY_CHIPS_GROUP_CLASS,
+  resolveCategoryChipClassName,
+} from "../styles/CategoryChips.styles";
 
 const CategoryConfigureAlertTypeChips = ({
   choices,
@@ -13,17 +13,17 @@ const CategoryConfigureAlertTypeChips = ({
 }: CategoryConfigureAlertTypeChipsProps): React.JSX.Element => (
   <div
     role={ARIA_ROLE.GROUP}
-    aria-label={CATEGORY_CONFIGURE_COPY.ALERTS_TYPE_LABEL}
-    className={CATEGORY_DURATION_CHIPS_GROUP_CLASS}
+    aria-labelledby={
+      CATEGORY_CONFIGURE_ALERTS_ID.TYPE_LABEL
+    }
+    className={CATEGORY_CHIPS_GROUP_CLASS}
   >
     {choices.map(({ type, label, isSelected }) => (
       <Button
         key={type}
         variant={BUTTON.BASE}
         aria-pressed={isSelected}
-        className={resolveCategoryDurationChipClassName(
-          isSelected
-        )}
+        className={resolveCategoryChipClassName(isSelected)}
         onClick={() => onSelectType(type)}
       >
         {label}

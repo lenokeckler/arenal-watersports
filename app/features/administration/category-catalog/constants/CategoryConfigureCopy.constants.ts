@@ -10,6 +10,7 @@ export const CATEGORY_CONFIGURE_COPY = {
   ALERTS_NONE: "No avisa",
   ALERTS_QUANTITY_FIELD_LABEL: "Avisar cuando queden",
   ALERTS_QUANTITY_PREFIX: "Pocas existencias:",
+  ALERTS_TYPE_BOTH: "Ambos",
   ALERTS_TYPE_EXPIRY: "Por vencimiento",
   ALERTS_TYPE_LABEL: "¿Cuándo avisar?",
   ALERTS_TYPE_NONE: "No avisar",

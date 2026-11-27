@@ -1,5 +1,6 @@
 import Text from "@/app/components/text/Text";
 import { CATEGORY_ALERT_FORM_FIELD_ID } from "../constants/CategoryAlertFormFieldId.constants";
+import { CATEGORY_CONFIGURE_ALERTS_ID } from "../constants/CategoryConfigureAlertsId.constants";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_CONFIGURE_COPY } from "../constants/CategoryConfigureCopy.constants";
 import type { CategoryConfigureAlertsProps } from "../models/CategoryConfigureAlertsProps.interface";
@@ -20,7 +21,10 @@ const CategoryConfigureAlerts = ({
   onExpiryDaysChange,
 }: CategoryConfigureAlertsProps): React.JSX.Element => (
   <div className={CATEGORY_CONFIGURE_BODY_CLASS}>
-    <Text className={CATEGORY_CONFIGURE_BODY_LABEL_CLASS}>
+    <Text
+      id={CATEGORY_CONFIGURE_ALERTS_ID.TYPE_LABEL}
+      className={CATEGORY_CONFIGURE_BODY_LABEL_CLASS}
+    >
       {CATEGORY_CONFIGURE_COPY.ALERTS_TYPE_LABEL}
     </Text>
     <CategoryConfigureAlertTypeChips {...typeChips} />

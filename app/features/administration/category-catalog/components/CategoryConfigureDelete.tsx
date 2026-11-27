@@ -18,6 +18,7 @@ const CategoryConfigureDelete = ({
   name,
   isSheetOpen,
   isPending,
+  canDeactivate,
   onOpen,
   onClose,
   onConfirm,
@@ -57,24 +58,28 @@ const CategoryConfigureDelete = ({
           >
             {CATEGORY_CONFIGURE_COPY.DELETE_CONFIRM(name)}
           </Button>
-          <Text
-            className={
-              CATEGORY_CONFIGURE_DELETE_SHEET_TEXT_CLASS
-            }
-          >
-            {CATEGORY_CONFIGURE_COPY.DELETE_ALTERNATIVE}
-          </Text>
-          <Button
-            variant={BUTTON.SECONDARY}
-            type={BUTTON_TYPES.BUTTON}
-            disabled={isPending}
-            onClick={onDeactivate}
-            className={
-              CATEGORY_CONFIGURE_DELETE_SHEET_BUTTON_CLASS
-            }
-          >
-            {CATEGORY_CONFIGURE_COPY.DELETE_DEACTIVATE}
-          </Button>
+          {canDeactivate && (
+            <>
+              <Text
+                className={
+                  CATEGORY_CONFIGURE_DELETE_SHEET_TEXT_CLASS
+                }
+              >
+                {CATEGORY_CONFIGURE_COPY.DELETE_ALTERNATIVE}
+              </Text>
+              <Button
+                variant={BUTTON.SECONDARY}
+                type={BUTTON_TYPES.BUTTON}
+                disabled={isPending}
+                onClick={onDeactivate}
+                className={
+                  CATEGORY_CONFIGURE_DELETE_SHEET_BUTTON_CLASS
+                }
+              >
+                {CATEGORY_CONFIGURE_COPY.DELETE_DEACTIVATE}
+              </Button>
+            </>
+          )}
         </div>
       </ActionSheet>
     )}

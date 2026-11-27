@@ -6,6 +6,7 @@ import { useToast } from "@/app/components/toast/utils/useToast";
 import { PATHS } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
+import { CATEGORY_STATUS } from "../constants/CategoryStatus.constants";
 import type { CategoryConfiguration } from "../models/CategoryConfiguration.interface";
 import type { CategoryConfigureDeleteProps } from "../models/CategoryConfigureDeleteProps.interface";
 import type { CategoryMutationResult } from "../models/CategoryMutationResult.interface";
@@ -16,6 +17,7 @@ import { runCategoryCardMutation } from "../utils/runCategoryCardMutation";
 export const useCategoryConfigureDelete = ({
   id,
   name,
+  status,
   hasRecords,
 }: CategoryConfiguration): NullableRef<CategoryConfigureDeleteProps> => {
   const router = useRouter();
@@ -71,6 +73,7 @@ export const useCategoryConfigureDelete = ({
     name,
     isSheetOpen,
     isPending,
+    canDeactivate: status === CATEGORY_STATUS.ACTIVE,
     onOpen: () => setIsSheetOpen(true),
     onClose,
     onConfirm,

@@ -41,6 +41,9 @@ export const createCategoryConfigureViewPage = () => {
   const getDialog = (name: string) =>
     screen.queryByRole(ARIA_ROLE.DIALOG, { name });
 
+  const getGroup = (name: string) =>
+    screen.queryByRole(ARIA_ROLE.GROUP, { name });
+
   const getImage = (alt: string) =>
     screen.queryByRole(ARIA_ROLE.IMG, { name: alt });
 
@@ -106,6 +109,7 @@ export const createCategoryConfigureViewPage = () => {
     getHeading,
     queryButton,
     getDialog,
+    getGroup,
     getImage,
     getAlert,
     clickButton,
