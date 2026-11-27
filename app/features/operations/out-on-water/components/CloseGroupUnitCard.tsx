@@ -8,6 +8,7 @@ import {
   INPUT_MODE,
   INPUT_TYPES,
   STRING,
+  DAMAGE_CAUSE_LABELS,
 } from "@/app/constants";
 import {
   CLOSE_GROUP_COPY,
@@ -32,7 +33,7 @@ const CAUSE_OPTIONS = Object.values(
   CLOSE_GROUP_DAMAGE_CAUSE
 ).map((cause) => ({
   key: cause,
-  label: CLOSE_GROUP_COPY.CAUSES[cause],
+  label: DAMAGE_CAUSE_LABELS[cause],
   value: cause,
 }));
 

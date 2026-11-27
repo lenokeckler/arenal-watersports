@@ -15,6 +15,7 @@ const OperationsMaintenanceNewPage = async ({
 
   return (
     <MaintenanceJob
+      dateParam={params[MAINTENANCE_JOB_QUERY_PARAM.DATE]}
       unitParam={params[MAINTENANCE_JOB_QUERY_PARAM.UNIT]}
     />
   );

@@ -1,7 +1,12 @@
+import ScreenBack from "@/app/components/screen-back/ScreenBack";
 import UnorderedList from "@/app/components/list/UnorderedList";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
-import { ARIA_ROLE, TitleVariant } from "@/app/constants";
+import {
+  ARIA_ROLE,
+  TitleVariant,
+  PATHS,
+} from "@/app/constants";
 import MaintenanceCostCard from "./components/MaintenanceCostCard";
 import {
   MAINTENANCE_COST_COPY,
@@ -21,6 +26,7 @@ const MaintenanceCostView = ({
   errorMessage,
 }: MaintenanceCostViewProps): JSX.Element => (
   <main className={MAINTENANCE_COST_CLASS}>
+    <ScreenBack fallbackHref={PATHS.HOME} />
     <Title
       id={MAINTENANCE_COST_HEADING_ID}
       variant={TitleVariant.PRIMARY}

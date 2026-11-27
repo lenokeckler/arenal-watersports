@@ -6,12 +6,6 @@ export const CLOSE_GROUP_COPY = {
   CAUSE_LABEL: "Causa del daño",
   CAUSE_PLACEHOLDER: "Seleccione la causa",
   CAUSE_REQUIRED: "Seleccione la causa del daño.",
-  CAUSES: {
-    collision: "Choque",
-    machine_failure: "Falla de la máquina",
-    other: "Otra",
-    rollover: "Volcadura",
-  },
   DAMAGE_LABEL: "Volvió con daño",
   DESCRIPTION_LABEL: "Qué pasó",
   DESCRIPTION_REQUIRED: "Describa el daño.",
