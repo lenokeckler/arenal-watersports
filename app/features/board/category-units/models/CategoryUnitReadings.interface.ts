@@ -7,6 +7,7 @@ export interface CategoryUnitReadings {
   hasFuelGauge: boolean;
   impactCount: number;
   lowFuelLines: number;
+  oilRemaining: NullableRef<number>;
   usageMetric: NullableRef<DispatchUsageMetric>;
   usageTotal: number;
 }

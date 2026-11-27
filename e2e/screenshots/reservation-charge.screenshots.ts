@@ -3,6 +3,7 @@ import {
   RESERVATION_STATUS,
 } from "@/app/constants";
 import { RESERVATION_CHARGE_FORM_COPY as copy } from "@/app/features/reservations/reservation-charge/constants/ReservationChargeFormCopy.constants";
+import { RESERVATION_CHARGE_PAYMENT_CHOICE } from "@/app/features/reservations/reservation-charge/constants/ReservationChargePaymentChoice.constants";
 import { RESERVATION_CHARGE_UNAVAILABLE_COPY as unavailable } from "@/app/features/reservations/reservation-charge/constants/ReservationChargeUnavailableCopy.constants";
 import { RESERVATION_CHARGE_VALIDATION_COPY as validation } from "@/app/features/reservations/reservation-charge/constants/ReservationChargeValidationCopy.constants";
 import {
@@ -21,6 +22,11 @@ import { openSeededCharge } from "../support/openSeededCharge";
 import { removeReservationChargeFixtures } from "../support/removeReservationChargeFixtures";
 import { removeUsdOnlyChargeFixture } from "../support/removeUsdOnlyChargeFixture";
 import { signInToReservationsMode } from "../support/signInToReservationsMode";
+
+const otherLabel =
+  copy.PAYMENT_CHOICE_LABEL[
+    RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER
+  ];
 
 test("captures every reservation charge state", async ({
   activeWorker,
@@ -67,6 +73,12 @@ test("captures every reservation charge state", async ({
       charge.getText(validation.CHOICE_REQUIRED)
     ).toBeVisible();
     await captureState(state.ERROR);
+
+    await charge.selectMethod(otherLabel);
+    await expect(
+      charge.getText(copy.OTHER_METHOD_LABEL)
+    ).toBeVisible();
+    await captureState(state.OTHER);
 
     await charge.fillPaymentMethod(values.PAYMENT_METHOD);
     await charge.submit();

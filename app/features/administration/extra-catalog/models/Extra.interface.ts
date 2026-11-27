@@ -7,4 +7,5 @@ export interface Extra {
   status: ExtraStatus;
   priceUsd: NullableRef<number>;
   priceCrc: NullableRef<number>;
+  compatibleUnitCount: number;
 }

@@ -15,6 +15,9 @@ export const buildUnitReadings = (
         impactCount: safeNumber(row.impact_count),
         lowFuelLines:
           row.low_fuel_lines ?? DEFAULT_LOW_FUEL_LINES,
+        oilRemaining: row.oil_warning
+          ? row.oil_remaining
+          : null,
         usageMetric: row.usage_metric,
         usageTotal: safeNumber(row.usage_total),
       }

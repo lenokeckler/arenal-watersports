@@ -2552,12 +2552,13 @@ con la finalidad de darle mantenimiento antes de que la máquina se dañe.
 
 **Descripción:**
 
-El umbral se define en la ficha de la unidad. Cuando las horas o el kilometraje acumulado lo alcanzan, el sistema avisa para que se programe el cambio en vez de que se descubra tarde.
+El umbral se define en la ficha de la unidad y, después, al registrar cada cambio de aceite. El sistema avisa antes de que llegue: a 50 km del próximo cambio en los cuadraciclos, o a 10 horas en el equipo de agua, la tarjeta de la unidad en el tablero muestra una gota de aceite con lo que falta, en ámbar; al llegar o pasarse, la gota va en rojo con los kilómetros u horas de más. Así se programa el cambio en vez de descubrirlo tarde.
 
 **Criterios de aceptación:**
 
 - El umbral se define en la ficha de la unidad.
-- La pantalla de mantenimiento reúne las máquinas que llegaron a su cambio de aceite, con cuánto se pasaron, y las que están fuera de servicio.
+- La pantalla de mantenimiento reúne las máquinas que llegaron o están por llegar a su cambio de aceite, con lo que les falta o lo que se pasaron, y las que están fuera de servicio.
+- La tarjeta de la unidad en el tablero muestra la gota de aceite, sin texto, en ámbar a 50 km o 10 horas del cambio y en rojo al llegar o pasarse.
 
 ---
 
@@ -2703,7 +2704,7 @@ Cambio de llanta, cambio de pieza, cambio de aceite y en general todo lo que se 
 - Hoy esto no está anotado en ninguna parte.
 - Se registra el costo del trabajo con su moneda; queda vacío si no costó nada.
 - Se indica si lo hizo un taller externo, aparte del costo.
-- Si el trabajo fue un cambio de aceite, se define ahí el nuevo umbral del próximo aviso.
+- Si el trabajo fue un cambio de aceite, se escribe cada cuánto rinde el aceite (por ejemplo 2500 km, o 100 horas en el equipo de agua) y el sistema calcula el próximo cambio sumándolo a lo que lleva la máquina.
 
 ---
 

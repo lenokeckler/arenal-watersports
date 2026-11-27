@@ -1,8 +1,4 @@
-import {
-  render,
-  screen,
-  within,
-} from "@testing-library/react";
+import { render, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   afterEach,
@@ -54,7 +50,7 @@ const renderBoard = (units = BOARD_UNITS) => {
       categoryId={DISPATCH_CATEGORY_ID}
       categoryName={CATEGORY_NAME}
       image={null}
-      unitCount={units.length}
+      filterControl={null}
       units={units}
     />
   );
@@ -81,11 +77,6 @@ describe("CategoryUnitsDispatch edit mode", () => {
       "aria-pressed",
       "false"
     );
-    expect(
-      screen.getByText(
-        CATEGORY_UNITS_COPY.UNITS_COUNT(BOARD_UNITS.length)
-      )
-    ).toBeInTheDocument();
   });
 
   it("offers the edit button even when no unit has a motor, to mark maintenance", () => {
