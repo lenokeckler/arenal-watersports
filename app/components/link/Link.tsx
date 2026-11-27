@@ -8,6 +8,8 @@ const Link = ({
   ariaLabel,
   onClick,
   ariaCurrent,
+  replace,
+  scroll,
 }: LinkProps) => (
   <NextLink
     href={href}
@@ -15,6 +17,8 @@ const Link = ({
     aria-label={ariaLabel}
     onClick={onClick}
     aria-current={ariaCurrent}
+    replace={replace}
+    scroll={scroll}
   >
     {children}
   </NextLink>
