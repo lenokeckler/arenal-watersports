@@ -4,9 +4,17 @@ import {
   THEME_STORAGE_KEY,
   type Theme,
 } from "@/app/constants";
-import { THEME_TOGGLE_ACCESSIBLE_COPY } from "@/app/features/access/session-bar/constants/ThemeToggleCopy.constants";
+import { SESSION_CONTROLS_COPY } from "@/app/features/access/session-bar/constants/SessionControlsCopy.constants";
 
 export const E2E_LIGHT_THEME_ROOT_SELECTOR = "html";
+
+export const E2E_LIGHT_THEME_OPTION_LABEL: Record<
+  Theme,
+  string
+> = {
+  [THEME.DARK]: SESSION_CONTROLS_COPY.DARK_THEME,
+  [THEME.LIGHT]: SESSION_CONTROLS_COPY.LIGHT_THEME,
+};
 
 export const E2E_LIGHT_THEME_SCREENSHOT_EXTENSION = ".png";
 
@@ -61,17 +69,6 @@ export const E2E_LIGHT_THEME_STORAGE = {
   ATTRIBUTE: THEME_ATTRIBUTE,
   KEY: THEME_STORAGE_KEY,
 } as const;
-
-export const E2E_LIGHT_THEME_TOGGLE_LABEL =
-  THEME_TOGGLE_ACCESSIBLE_COPY;
-
-export const E2E_LIGHT_THEME_TOGGLE_SOURCE: Record<
-  Theme,
-  Theme
-> = {
-  [THEME.DARK]: THEME.LIGHT,
-  [THEME.LIGHT]: THEME.DARK,
-};
 
 export const E2E_LIGHT_THEME_SCREENSHOT = {
   DARK: "01-light-theme-calendar-dark",
