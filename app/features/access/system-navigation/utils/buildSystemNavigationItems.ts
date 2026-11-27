@@ -6,6 +6,7 @@ import {
   SYSTEM_NAVIGATION_CALENDAR_ITEM,
   SYSTEM_NAVIGATION_ITEMS,
   SYSTEM_NAVIGATION_INVENTORY_ITEM,
+  SYSTEM_NAVIGATION_PRICE_LOOKUP_ITEM,
 } from "../constants/SystemNavigationItems.constants";
 
 export const buildSystemNavigationItems = (
@@ -25,7 +26,10 @@ export const buildSystemNavigationItems = (
   };
   const inventoryItems =
     area === SUPABASE_WORK_AREA.OPERATIONS
-      ? [SYSTEM_NAVIGATION_INVENTORY_ITEM]
+      ? [
+          SYSTEM_NAVIGATION_INVENTORY_ITEM,
+          SYSTEM_NAVIGATION_PRICE_LOOKUP_ITEM,
+        ]
       : [];
 
   return [

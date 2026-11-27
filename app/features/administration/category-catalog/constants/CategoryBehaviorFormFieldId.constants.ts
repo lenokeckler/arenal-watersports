@@ -10,6 +10,9 @@ export const CATEGORY_BEHAVIOR_FORM_FIELD_ID = {
     "category-behavior-has-condition-photos",
   HAS_MOTOR: "category-behavior-has-motor",
   IS_RESERVABLE: "category-behavior-is-reservable",
+  LOW_FUEL_LINES: "category-behavior-low-fuel-lines",
+  LOW_FUEL_LINES_HINT:
+    "category-behavior-low-fuel-lines-hint",
   UNITS_ARE_INTERCHANGEABLE:
     "category-behavior-units-are-interchangeable",
   USAGE_METRIC: "category-behavior-usage-metric",
