@@ -32,79 +32,79 @@ select throws_ok(
 
 select throws_ok(
   $$ update workers set expires_at = now() + interval '90 days' where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no cambia su fecha de vencimiento'
 );
 
 select throws_ok(
   $$ update workers set is_external_guide = false where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no cambia su marca de guia externo'
 );
 
 select throws_ok(
   $$ update workers set national_id = '999999999' where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no cambia su cedula'
 );
 
 select throws_ok(
   $$ update workers set full_name = 'Otro Nombre' where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no cambia su nombre completo'
 );
 
 select throws_ok(
   $$ update workers set username = 'otro_usuario' where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no cambia su usuario'
 );
 
 select throws_ok(
   $$ update workers set base_role = 'reservas' where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no cambia su rol base'
 );
 
 select throws_ok(
   $$ update workers set deleted_at = now() where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no cambia su fecha de retiro'
 );
 
 select throws_ok(
   $$ update workers set created_by = '11111111-1111-1111-1111-111111111111' where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no cambia quien lo creo'
 );
 
 select throws_ok(
   $$ update workers set updated_by = '11111111-1111-1111-1111-111111111111' where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no cambia quien lo modifico'
 );
 
 select throws_ok(
   $$ update workers set status = 'blocked', blocked_reason = 'administration' where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no cambia su estado'
 );
 
 select throws_ok(
   $$ update workers set failed_attempts = 3 where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no cambia su contador de intentos'
 );
 
 select throws_ok(
   $$ update workers set blocked_reason = 'administration' where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no cambia su motivo de bloqueo'
 );
 
 select throws_ok(
   $$ update workers set personal_email = 'nuevo@correo.com', expires_at = now() + interval '90 days' where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no mezcla un cambio permitido con uno prohibido'
 );
 

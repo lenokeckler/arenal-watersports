@@ -67,7 +67,7 @@ select is(
 );
 select throws_ok(
   $$ update workers set updated_at = now() - interval '1 day' where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no fija a mano su fecha de actualizacion'
 );
 
@@ -90,7 +90,7 @@ set local request.jwt.claims to '{"sub":"77777777-7777-7777-7777-777777777777","
 
 select throws_ok(
   $$ update workers set status = 'active', blocked_reason = null where id = '77777777-7777-7777-7777-777777777777' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador bloqueado con area de administracion no se desbloquea solo'
 );
 
