@@ -5,8 +5,8 @@ export interface DamageReportUnit {
   categoryName: string;
   code: string;
   id: string;
-  impactCount?: number;
-  isOut?: boolean;
-  status?: Database["public"]["Enums"]["unit_status"];
-  trips?: DamageReportTrip[];
+  impactCount: number;
+  isOut: boolean;
+  status: Database["public"]["Enums"]["unit_status"];
+  trips: DamageReportTrip[];
 }
