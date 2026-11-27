@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EXTRA_CATALOG_COPY } from "./ExtraCatalogCopy.constants";
+import { EXTRA_COMPATIBILITY_COPY } from "./ExtraCompatibilityCopy.constants";
 import { EXTRA_FORM_MODE } from "./ExtraFormMode.constants";
 import { EXTRA_FORM_TITLE } from "./ExtraFormModeCopy.constants";
 
@@ -14,3 +15,13 @@ export const EXTRA_CREATE_METADATA: Metadata = {
 export const EXTRA_EDIT_METADATA: Metadata = {
   title: EXTRA_FORM_TITLE[EXTRA_FORM_MODE.EDIT],
 };
+
+export const EXTRA_COMPATIBILITY_CATEGORIES_METADATA: Metadata =
+  {
+    title: EXTRA_COMPATIBILITY_COPY.CATEGORIES_TITLE,
+  };
+
+export const EXTRA_COMPATIBILITY_UNITS_METADATA: Metadata =
+  {
+    title: EXTRA_COMPATIBILITY_COPY.UNITS_TITLE,
+  };

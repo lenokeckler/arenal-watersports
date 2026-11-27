@@ -1,6 +1,5 @@
 import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE, STRING } from "@/app/constants";
-import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
 import type { StockAdjustmentReason } from "@/app/features/administration/stock-catalog/constants/StockAdjustmentReason.constants";
 import { STOCK_COUNT_COPY } from "@/app/features/administration/stock-catalog/constants/StockCountCopy.constants";
 import { STOCK_REASON_COPY } from "@/app/features/administration/stock-catalog/constants/StockReasonCopy.constants";
@@ -13,28 +12,12 @@ import {
   E2E_STOCK_HISTORY_INDEX,
 } from "../constants/E2eStockCount.constants";
 import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
-import { createCategoryCardOptionsPage } from "./CategoryCardOptions.page";
 
 export const createStockCountPage = (page: Page) => {
-  const categoryCardOptionsPage =
-    createCategoryCardOptionsPage();
-
   const goTo = async (
     categoryId: string
   ): Promise<void> => {
     await page.goto(resolveCategoryStockPath(categoryId));
-  };
-
-  const getStockLink = (categoryCard: Locator): Locator =>
-    categoryCard.getByRole(ARIA_ROLE.LINK, {
-      name: CATEGORY_CATALOG_COPY.STOCK_LINK,
-    });
-
-  const clickStockLink = async (
-    categoryCard: Locator
-  ): Promise<void> => {
-    await categoryCardOptionsPage.openOptions(categoryCard);
-    await getStockLink(categoryCard).click();
   };
 
   const getHeading = (categoryName: string): Locator =>
@@ -128,7 +111,6 @@ export const createStockCountPage = (page: Page) => {
     page.getByText(E2E_NEXT_NOT_FOUND_MESSAGE);
 
   return {
-    clickStockLink,
     fillQuantity,
     getField,
     getHeading,
@@ -139,7 +121,6 @@ export const createStockCountPage = (page: Page) => {
     getRowReason,
     getRowTotal,
     getRowTransition,
-    getStockLink,
     getToastMessage,
     getTotal,
     goTo,
