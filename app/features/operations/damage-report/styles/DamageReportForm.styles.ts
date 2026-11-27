@@ -21,11 +21,3 @@ export const DAMAGE_REPORT_UNIT_BOX_CLASS =
 
 export const DAMAGE_REPORT_UNIT_CODE_CLASS =
   "text-title-md font-semibold text-on-surface";
-
-export const DAMAGE_REPORT_SUCCESS_CLASS =
-  "rounded-lg bg-success px-4 py-3 text-on-success";
-
-export const DAMAGE_REPORT_FIELDS_CLASS =
-  "flex flex-col gap-4";
-
-export const DAMAGE_REPORT_ACTIONS_CLASS = "pt-2";

@@ -40,15 +40,4 @@ export const DAMAGE_REPORT_COPY = {
     `${code} · ${category}`,
   UNIT_PLACEHOLDER: "Seleccione la unidad",
   UNIT_REQUIRED_ERROR: "Seleccione la unidad.",
-
-  CAUSES: {
-    COLLISION: "Choque",
-    MACHINE_FAILURE: "Falla de máquina",
-    OTHER: "Otra",
-    ROLLOVER: "Vuelco",
-  },
-  CAUSE_PLACEHOLDER: "Seleccionar causa",
-  IMPACT_DELTA_LABEL: "Aumento del conteo de golpes",
-  LOADING_BUTTON: "Registrando...",
-  SUCCESS: "Reporte de daño registrado correctamente.",
 } as const;
