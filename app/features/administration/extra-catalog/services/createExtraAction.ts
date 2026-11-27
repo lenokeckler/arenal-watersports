@@ -7,8 +7,10 @@ import { EXTRA_MUTATION_STATUS } from "../constants/ExtraMutationStatus.constant
 import type { CreateExtraInput } from "../models/CreateExtraInput.interface";
 import type { ExtraMutationResult } from "../models/ExtraMutationResult.interface";
 import { mapExtraWriteErrorToResult } from "../utils/mapExtraWriteErrorToResult";
+import { mapExtraInputToOccupancyColumns } from "../utils/mapExtraInputToOccupancyColumns";
 import { mapExtraInputToPriceColumns } from "../utils/mapExtraInputToPriceColumns";
 import { resolveExtraValidationResult } from "../utils/resolveExtraValidationResult";
+import { resolveExtraCategoryFailure } from "./resolveExtraCategoryFailure";
 
 export const createExtraAction = async (
   input: CreateExtraInput
@@ -22,9 +24,20 @@ export const createExtraAction = async (
     return validationFailure;
   }
 
+  const occupancyColumns =
+    mapExtraInputToOccupancyColumns(input);
+  const categoryFailure = await resolveExtraCategoryFailure(
+    supabase,
+    occupancyColumns
+  );
+  if (categoryFailure) {
+    return categoryFailure;
+  }
+
   const { error } = await supabase.from("extras").insert({
     name: input.name.trim(),
     ...mapExtraInputToPriceColumns(input),
+    ...occupancyColumns,
     created_by: adminWorkerId,
     updated_by: adminWorkerId,
   });

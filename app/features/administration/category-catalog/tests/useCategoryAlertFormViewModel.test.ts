@@ -8,7 +8,7 @@ import {
 } from "vitest";
 import { PATHS } from "@/app/constants";
 import type { UpdateCategoryAlertsInput } from "../models/UpdateCategoryAlertsInput.interface";
-import { buildCategoryFormFieldChangeEvent } from "./buildCategoryFormFieldChangeEvent";
+import { buildCategoryFormFieldChangeEvent } from "../utils/buildCategoryFormFieldChangeEvent";
 import {
   renderCategoryAlertViewModel,
   submitCategoryAlertViewModel,
