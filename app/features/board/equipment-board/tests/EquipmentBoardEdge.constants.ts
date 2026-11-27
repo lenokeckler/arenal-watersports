@@ -12,12 +12,6 @@ export const EDGE_CATEGORY_NAME = {
   UNKNOWN: "Categoría sin foto",
 } as const;
 
-export const EDGE_BAR_WIDTHS = {
-  EMPTY: "0",
-  FULL: "100",
-  HALF: "50",
-} as const;
-
 const createSpareKayak = () =>
   createBoardCategory({
     freeCount: 0,

@@ -1,0 +1,1 @@
+RES-07.29.10: Deposit on the reservation detail — the detail shows whether the client left a deposit and how much, and offers the "Registrar depósito" button while it is still undecided (US-RES-29 · AWS-112)
