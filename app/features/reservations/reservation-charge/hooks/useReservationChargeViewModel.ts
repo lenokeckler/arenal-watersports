@@ -2,6 +2,7 @@
 
 import type { ReservationCharge } from "../models/ReservationCharge.interface";
 import type { ReservationChargeViewModel } from "../models/ReservationChargeViewModel.interface";
+import { resolveReservationChargeSecondCurrency } from "../utils/resolveReservationChargeSecondCurrency";
 import { useReservationChargeEdit } from "./useReservationChargeEdit";
 import { useReservationChargeSubmission } from "./useReservationChargeSubmission";
 import { useReservationChargeValues } from "./useReservationChargeValues";
@@ -10,10 +11,12 @@ export const useReservationChargeViewModel = (
   charge: ReservationCharge
 ): ReservationChargeViewModel => {
   const {
-    currencyOptions,
     setAmountText,
     setCurrency,
-    setPaymentMethod,
+    setOtherPaymentMethod,
+    setPaymentChoice,
+    setSecondAmountText,
+    toggleSecondAmount,
     values,
   } = useReservationChargeValues(charge.proposal);
   const {
@@ -32,15 +35,21 @@ export const useReservationChargeViewModel = (
 
   return {
     ...values,
-    currencyOptions,
     errors,
     formError,
     handleSubmit,
     isPending,
+    isMixed: values.secondAmountText !== null,
     isSubmitDisabled: isPending || recorded !== null,
     recorded,
     setAmountText: edit(setAmountText),
     setCurrency: edit(setCurrency),
-    setPaymentMethod: edit(setPaymentMethod),
+    secondCurrency: resolveReservationChargeSecondCurrency(
+      values.currency
+    ),
+    setOtherPaymentMethod: edit(setOtherPaymentMethod),
+    setPaymentChoice: edit(setPaymentChoice),
+    setSecondAmountText: edit(setSecondAmountText),
+    toggleSecondAmount: edit<void>(toggleSecondAmount),
   };
 };

@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import boardLayoutReducer from "./slices/boardLayoutSlice";
 import languageReducer from "./slices/languageSlice";
 import { STORE_SLICES } from "./constants";
 import toastReducer from "@/app/components/toast/store/toastSlice";
@@ -7,6 +8,7 @@ import categoryConfigureReducer from "@/app/features/administration/category-cat
 
 export const store = configureStore({
   reducer: {
+    [STORE_SLICES.BOARD_LAYOUT]: boardLayoutReducer,
     [STORE_SLICES.CALENDAR]: calendarReducer,
     [STORE_SLICES.CATEGORY_CONFIGURE]:
       categoryConfigureReducer,
@@ -22,3 +24,4 @@ export { useLanguage } from "./useLanguage";
 export { toastActions } from "@/app/components/toast/store/toastSlice";
 export { calendarActions } from "@/app/components/calendar/store/calendarSlice";
 export { categoryConfigureActions } from "@/app/features/administration/category-catalog/store/categoryConfigureSlice";
+export { boardLayoutActions } from "./slices/boardLayoutSlice";
