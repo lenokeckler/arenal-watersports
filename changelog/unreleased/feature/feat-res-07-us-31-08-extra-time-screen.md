@@ -1,0 +1,1 @@
+RES-07.31.08: Extra time screen — /reservations/<id>/extra-time lists the extra minutes of each group against its real arrival with the reservation total, records the decision and shows who recorded it, or explains why there is nothing to decide (US-RES-31 · AWS-114)

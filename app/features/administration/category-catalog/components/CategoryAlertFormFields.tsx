@@ -34,6 +34,7 @@ const CategoryAlertFormFields = ({
         value={values.minQuantityText}
         error={errors.minQuantityText}
         disabled={isSubmitting}
+        describedBy={CATEGORY_ALERT_FORM_FIELD_ID.HINT}
         onChange={onMinQuantityChange}
       />
     )}
@@ -51,6 +52,7 @@ const CategoryAlertFormFields = ({
         value={values.expiryDaysText}
         error={errors.expiryDaysText}
         disabled={isSubmitting}
+        describedBy={CATEGORY_ALERT_FORM_FIELD_ID.HINT}
         onChange={onExpiryDaysChange}
       />
     )}

@@ -47,16 +47,9 @@ it("opens a panel with the person, the profile link and the session controls", a
   );
 
   expect(screen.getByText("Ana Rojas")).toBeVisible();
-  expect(
-    screen.getByText(
-      `${SYSTEM_NAVIGATION_COPY.USER_PREFIX}: anarojas`
-    )
-  ).toBeVisible();
-  expect(
-    screen.getByText(
-      `${SYSTEM_NAVIGATION_COPY.ROLE_PREFIX}: Operaciones`
-    )
-  ).toBeVisible();
+  expect(screen.getByText("AR")).toBeInTheDocument();
+  expect(screen.getByText("Operaciones")).toBeVisible();
+  expect(screen.queryByText("anarojas")).toBeNull();
   expect(
     screen.getByRole(ARIA_ROLE.LINK, {
       name: SYSTEM_NAVIGATION_COPY.PROFILE,

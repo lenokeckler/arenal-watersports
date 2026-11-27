@@ -15,15 +15,6 @@ const ExtraFormActions = ({
 }: ExtraFormActionsProps): React.JSX.Element => (
   <div className={EXTRA_FORM_ACTIONS_CLASS}>
     <Button
-      variant={BUTTON.SECONDARY}
-      type="button"
-      disabled={isSubmitting}
-      onClick={onBack}
-      className={EXTRA_FORM_ACTION_BUTTON_CLASS}
-    >
-      {EXTRA_CATALOG_COPY.BACK_BUTTON}
-    </Button>
-    <Button
       variant={BUTTON.PRIMARY}
       type="submit"
       isLoading={isSubmitting}
@@ -31,6 +22,15 @@ const ExtraFormActions = ({
       className={EXTRA_FORM_ACTION_BUTTON_CLASS}
     >
       {EXTRA_FORM_SUBMIT_LABEL[mode]}
+    </Button>
+    <Button
+      variant={BUTTON.SECONDARY}
+      type="button"
+      disabled={isSubmitting}
+      onClick={onBack}
+      className={EXTRA_FORM_ACTION_BUTTON_CLASS}
+    >
+      {EXTRA_CATALOG_COPY.BACK_BUTTON}
     </Button>
   </div>
 );

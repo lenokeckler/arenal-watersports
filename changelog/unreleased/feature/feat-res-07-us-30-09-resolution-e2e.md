@@ -1,0 +1,1 @@
+RES-07.30.09: Deposit resolution E2E and screenshots — end to end coverage of resolving a deposit in full, in part, with an invalid amount and for a trip that is not closed yet, on desktop and mobile (US-RES-30 · AWS-113)
