@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
-import { EXTRA_COMPATIBILITY_COPY } from "@/app/features/administration/extra-catalog/constants/ExtraCompatibilityCopy.constants";
 import { buildExtraCompatibilityLabel } from "@/app/features/administration/extra-catalog/utils/buildExtraCompatibilityLabel";
 import { buildExtraCompatibilityProgressLabel } from "@/app/features/administration/extra-catalog/utils/buildExtraCompatibilityProgressLabel";
+import { resolveExtraCompatibilityPath } from "@/app/features/administration/extra-catalog/utils/resolveExtraCompatibilityPath";
 import {
   E2E_COMPATIBILITY_CATEGORY_UNIT_COUNT,
   E2E_COMPATIBILITY_LINKED_COUNT,
@@ -66,26 +66,13 @@ test.describe("Extra compatibility", () => {
         mainProgress(E2E_COMPATIBILITY_LINKED_COUNT.NONE)
       )
     ).toBeVisible();
-    await categoriesPage
-      .getCategoryLink(category.categoryName)
-      .click();
-
-    await expect(unitsPage.getHeading()).toBeVisible();
-    await expect(
-      unitsPage.getInstruction(
-        extra.name,
-        category.categoryName
-      )
-    ).toBeVisible();
+    await categoriesPage.openCategory(
+      category.categoryName
+    );
+    await expect(unitsPage.getInstruction()).toBeVisible();
     await expect(unitsPage.getSaveButton()).toBeDisabled();
     await unitsPage.selectUnit(checkedCode);
-    await unitsPage.getSaveButton().click();
-
-    await expect(
-      unitsPage.getToastMessage(
-        EXTRA_COMPATIBILITY_COPY.SAVE_SUCCESS_TOAST
-      )
-    ).toBeVisible();
+    await unitsPage.saveAndWait();
     await expect(
       categoriesPage.getCategoryProgress(
         category.categoryName,
@@ -94,9 +81,9 @@ test.describe("Extra compatibility", () => {
     ).toBeVisible();
 
     await categoriesPage.goTo(extra.id);
-    await categoriesPage
-      .getCategoryLink(category.categoryName)
-      .click();
+    await categoriesPage.openCategory(
+      category.categoryName
+    );
     await expect(
       unitsPage.getUnitCheckbox(checkedCode)
     ).toBeChecked();
@@ -142,13 +129,13 @@ test.describe("Extra compatibility", () => {
     ]);
 
     await categoriesPage.goTo(extra.id);
-    await categoriesPage
-      .getCategoryLink(category.categoryName)
-      .click();
+    await categoriesPage.openCategory(
+      category.categoryName
+    );
     await unitsPage.selectUnit(
       category.codes[E2E_COMPATIBILITY_UNIT_INDEX.FIRST]
     );
-    await unitsPage.getSaveButton().click();
+    await unitsPage.saveAndWait();
 
     await expect(
       categoriesPage.getCategoryProgress(
@@ -194,11 +181,11 @@ test.describe("Extra compatibility", () => {
         mainProgress(E2E_COMPATIBILITY_LINKED_COUNT.TWO)
       )
     ).toBeVisible();
-    await categoriesPage
-      .getCategoryLink(category.categoryName)
-      .click();
+    await categoriesPage.openCategory(
+      category.categoryName
+    );
     await unitsPage.clearAllUnits();
-    await unitsPage.getSaveButton().click();
+    await unitsPage.saveAndWait();
 
     await expect(
       categoriesPage.getCategoryProgress(
@@ -234,11 +221,11 @@ test.describe("Extra compatibility", () => {
     );
 
     await categoriesPage.goTo(extra.id);
-    await categoriesPage
-      .getCategoryLink(category.categoryName)
-      .click();
+    await categoriesPage.openCategory(
+      category.categoryName
+    );
     await unitsPage.selectAllUnits();
-    await unitsPage.getSaveButton().click();
+    await unitsPage.saveAndWait();
 
     await expect(
       categoriesPage.getCategoryProgress(
@@ -246,6 +233,29 @@ test.describe("Extra compatibility", () => {
         mainProgress(E2E_COMPATIBILITY_LINKED_COUNT.ALL)
       )
     ).toBeVisible();
+  });
+
+  test("redirects the old per-category address to the single screen", async ({
+    page,
+    seedCompatibleExtra,
+    seedUnitCategory,
+  }) => {
+    const extra = await seedCompatibleExtra(
+      E2E_COMPATIBILITY_SCENARIO.REDIRECT
+    );
+    const category = await seedUnitCategory(
+      E2E_COMPATIBILITY_SCENARIO.REDIRECT,
+      {},
+      E2E_COMPATIBILITY_UNIT_STATUSES
+    );
+
+    await page.goto(
+      `${resolveExtraCompatibilityPath(extra.id)}/${category.categoryId}`
+    );
+
+    await expect(page).toHaveURL(
+      resolveExtraCompatibilityPath(extra.id)
+    );
   });
 
   test("goes back with Regresar without saving the changes", async ({
@@ -264,13 +274,15 @@ test.describe("Extra compatibility", () => {
     );
 
     await categoriesPage.goTo(extra.id);
-    await categoriesPage
-      .getCategoryLink(category.categoryName)
-      .click();
+    await categoriesPage.openCategory(
+      category.categoryName
+    );
     await unitsPage.selectUnit(
       category.codes[E2E_COMPATIBILITY_UNIT_INDEX.FIRST]
     );
     await unitsPage.getBackButton().click();
+    await unitsPage.getLeaveWithoutSavingButton().click();
+    await categoriesPage.goTo(extra.id);
 
     await expect(
       categoriesPage.getCategoryProgress(
@@ -299,9 +311,9 @@ test.describe("Extra compatibility", () => {
     const categoryBox = await categoriesPage
       .getCategoryLink(category.categoryName)
       .boundingBox();
-    await categoriesPage
-      .getCategoryLink(category.categoryName)
-      .click();
+    await categoriesPage.openCategory(
+      category.categoryName
+    );
     const unitBoxes = await Promise.all(
       category.codes.map((code) =>
         unitsPage.getUnitRow(code).boundingBox()
