@@ -18,6 +18,8 @@ export const DEFAULT_BOARD_ROW: BoardCategoryRow = {
   group_name: null,
   image_path: null,
   in_use_count: 1,
+  maintenance_count: 0,
+  damaged_count: 0,
   total_count: 4,
 };
 
@@ -28,6 +30,8 @@ export const KAYAK_DOUBLE_ROW: BoardCategoryRow = {
   group_name: BOARD_GROUP_NAME.KAYAK,
   image_path: null,
   in_use_count: 1,
+  maintenance_count: 0,
+  damaged_count: 0,
   total_count: 4,
 };
 
@@ -38,6 +42,8 @@ export const KAYAK_INDIVIDUAL_ROW: BoardCategoryRow = {
   group_name: BOARD_GROUP_NAME.KAYAK_LOWER,
   image_path: null,
   in_use_count: 2,
+  maintenance_count: 0,
+  damaged_count: 0,
   total_count: 6,
 };
 
@@ -48,6 +54,8 @@ export const PADDLE_BOARD_ROW: BoardCategoryRow = {
   group_name: BOARD_GROUP_NAME.PADDLE,
   image_path: null,
   in_use_count: 0,
+  maintenance_count: 0,
+  damaged_count: 0,
   total_count: 4,
 };
 
@@ -75,11 +83,6 @@ export const KAYAK_SUMMED = {
 
 export const CARD_COUNT_WITH_GROUP = 2;
 
-export const EXPECTED_BAR_WIDTHS = {
-  JET_SKI: "50",
-  KAYAK: "50",
-} as const;
-
 export const EN_USO_TEXT = "en uso";
 
 export const IMAGE_ELEMENT_SELECTOR = "img";
@@ -90,11 +93,6 @@ export const KAYAK_IMAGE_FILE = "kayak-doble.webp";
 
 export const SAILING_ICON_TEXT = MATERIAL_ICON_NAME.SAILING;
 
-export const BAR_FILL_SELECTOR = "rect";
-export const BAR_WIDTH_ATTRIBUTE = "width";
-export const BAR_SELECTOR = "svg";
-export const ARIA_HIDDEN_ATTRIBUTE = "aria-hidden";
-export const ARIA_HIDDEN_TRUE = "true";
 export const ARIA_BUSY_ATTRIBUTE = "aria-busy";
 export const ARIA_BUSY_TRUE = "true";
 

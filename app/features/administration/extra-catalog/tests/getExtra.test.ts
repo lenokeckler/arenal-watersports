@@ -7,10 +7,13 @@ import {
 } from "vitest";
 import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
+import { EXTRA_ROW_COLUMNS } from "../constants/ExtraQuery.constants";
 import { getExtra } from "../services/getExtra";
+import { isExtraUsedInReservations } from "../services/isExtraUsedInReservations";
 import {
-  DEFAULT_EXTRA,
+  DEFAULT_EXTRA_DETAIL,
   DEFAULT_EXTRA_ROW,
+  OCCUPYING_EXTRA_ROW,
   FAKE_EXTRA_ID,
 } from "./Extra.constants";
 import {
@@ -31,6 +34,10 @@ const mockFrom = vi.fn((_table: string) => ({
   select: mockSelect,
 }));
 
+vi.mock("../services/isExtraUsedInReservations", () => ({
+  isExtraUsedInReservations: vi.fn(),
+}));
+
 vi.mock("@/app/services/supabase", () => ({
   createServerSupabaseClient: vi.fn().mockResolvedValue({
     from: (table: string) => mockFrom(table),
@@ -40,8 +47,13 @@ vi.mock("@/app/services/supabase", () => ({
 describe("getExtra", () => {
   beforeEach(() => {
     mockFrom.mockClear();
+    mockSelect.mockClear();
     mockEq.mockClear();
     mockMaybeSingle.mockReset();
+    vi.mocked(isExtraUsedInReservations).mockReset();
+    vi.mocked(isExtraUsedInReservations).mockResolvedValue(
+      false
+    );
   });
 
   it("reads the extra with the given id from the extras table", async () => {
@@ -59,6 +71,19 @@ describe("getExtra", () => {
     );
   });
 
+  it("reads the extra columns with the linked unit count", async () => {
+    mockMaybeSingle.mockResolvedValue({
+      data: DEFAULT_EXTRA_ROW,
+      error: null,
+    });
+
+    await getExtra(FAKE_EXTRA_ID);
+
+    expect(mockSelect).toHaveBeenCalledWith(
+      EXTRA_ROW_COLUMNS
+    );
+  });
+
   it("returns the row mapped to an extra", async () => {
     mockMaybeSingle.mockResolvedValue({
       data: DEFAULT_EXTRA_ROW,
@@ -66,8 +91,35 @@ describe("getExtra", () => {
     });
 
     expect(await getExtra(FAKE_EXTRA_ID)).toEqual(
-      DEFAULT_EXTRA
+      DEFAULT_EXTRA_DETAIL
     );
+  });
+
+  it("flags an extra that a reservation uses", async () => {
+    mockMaybeSingle.mockResolvedValue({
+      data: OCCUPYING_EXTRA_ROW,
+      error: null,
+    });
+    vi.mocked(isExtraUsedInReservations).mockResolvedValue(
+      true
+    );
+
+    const extra = await getExtra(FAKE_EXTRA_ID);
+
+    expect(extra?.isUsedInReservations).toBe(true);
+  });
+
+  it("does not look for reservations when the extra does not exist", async () => {
+    mockMaybeSingle.mockResolvedValue({
+      data: null,
+      error: null,
+    });
+
+    await getExtra(FAKE_EXTRA_ID);
+
+    expect(
+      isExtraUsedInReservations
+    ).not.toHaveBeenCalled();
   });
 
   it("returns null when no extra matches the id", async () => {

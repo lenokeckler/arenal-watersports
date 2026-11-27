@@ -15,16 +15,13 @@ import {
 } from "../constants/CategoryUnitsCopy.constants";
 import {
   CATEGORY_UNIT_OVERDUE_CHIP_CLASS,
-  CATEGORY_UNIT_RETURN_OVERDUE_CLASS,
   CATEGORY_UNIT_ROW_OVERDUE_CLASS,
 } from "../styles/CategoryUnitRow.styles";
 import {
   DEFAULT_CATEGORY_UNIT,
-  EXPECTED_OVERDUE,
   FAKE_TIMER_OPTIONS,
   OCCUPIED_CATEGORY_UNIT,
   RETURNS_OVERDUE_TODAY,
-  RETURNS_OVERDUE_YESTERDAY,
 } from "./CategoryUnits.constants";
 import { createCategoryUnitsPage } from "./CategoryUnits.page";
 import { createOverdueUnit } from "./createOverdueUnit";
@@ -33,7 +30,10 @@ const renderRow = (
   unit = createOverdueUnit(RETURNS_OVERDUE_TODAY)
 ) => {
   const { container } = render(
-    <CategoryUnitRow unit={unit} />
+    <CategoryUnitRow
+      image={null}
+      unit={unit}
+    />
   );
 
   return {
@@ -49,35 +49,6 @@ describe("CategoryUnitRow overdue return", () => {
 
   afterEach(() => {
     vi.useRealTimers();
-  });
-
-  it("reads the return as late, with the time only when it was today", () => {
-    const { page, row } = renderRow();
-
-    expect(
-      page.getText(
-        row,
-        CATEGORY_UNITS_COPY.OVERDUE_RETURNS_AT(
-          EXPECTED_OVERDUE.TIME_TODAY
-        )
-      )
-    ).toHaveClass(CATEGORY_UNIT_RETURN_OVERDUE_CLASS);
-  });
-
-  it("adds the date when the late return was another day", () => {
-    const { page, row } = renderRow(
-      createOverdueUnit(RETURNS_OVERDUE_YESTERDAY)
-    );
-
-    expect(
-      page.getText(
-        row,
-        CATEGORY_UNITS_COPY.OVERDUE_RETURNS_ON(
-          EXPECTED_OVERDUE.DATE_YESTERDAY,
-          EXPECTED_OVERDUE.TIME_YESTERDAY
-        )
-      )
-    ).toBeInTheDocument();
   });
 
   it("shows the overdue chip next to the Ocupada status and tints the row", () => {
@@ -106,9 +77,6 @@ describe("CategoryUnitRow overdue return", () => {
     expect(
       page.queryText(row, CATEGORY_UNITS_COPY.OVERDUE_CHIP)
     ).toBeNull();
-    expect(page.getReturnText(row)).not.toHaveClass(
-      CATEGORY_UNIT_RETURN_OVERDUE_CLASS
-    );
     expect(row.firstElementChild).not.toHaveClass(
       CATEGORY_UNIT_ROW_OVERDUE_CLASS
     );

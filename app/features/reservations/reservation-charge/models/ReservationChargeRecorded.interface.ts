@@ -1,9 +1,7 @@
-import type { CurrencyCode } from "@/app/constants";
+import type { ReservationChargeRecordedPart } from "./ReservationChargeRecordedPart.interface";
 
 export interface ReservationChargeRecorded {
-  amount: number;
-  chargeId: string;
-  currency: CurrencyCode;
+  parts: readonly ReservationChargeRecordedPart[];
   paymentMethod: string;
   recordedByName: string;
 }

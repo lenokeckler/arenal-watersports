@@ -4,14 +4,14 @@ export const E2E_CLOSE_GROUP = {
   FIRST: {
     FUEL: 2,
     HOURS_TEXT: "15",
-    PRESET: "Medio tanque: 2 de 4",
+    PRESET: "Raya 2 de 4",
     USAGE: 15,
   },
   HOURS_BELOW_DEPARTURE: "12",
   SECOND: {
     FUEL: 4,
     HOURS_TEXT: "16,5",
-    PRESET: "Lleno: 4 de 4",
+    PRESET: "Raya 4 de 4",
     USAGE: 16.5,
   },
   UNIT_DAMAGED: "damaged",

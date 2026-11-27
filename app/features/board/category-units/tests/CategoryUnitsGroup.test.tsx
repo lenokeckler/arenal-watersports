@@ -34,6 +34,10 @@ vi.mock("@/app/services/board", () => ({
   readBoardCategory: vi.fn(),
   readBoardCategoryGroup: vi.fn(),
   readBoardCategoryUnits: vi.fn(),
+  readBoardUnitStatusDetails: vi.fn().mockResolvedValue({
+    damages: [],
+    jobs: [],
+  }),
 }));
 
 describe("CategoryUnits group switch", () => {

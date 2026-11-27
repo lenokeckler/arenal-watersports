@@ -7,6 +7,7 @@ export const VALID_CATEGORY_BEHAVIOR_FORM_VALUES: CategoryBehaviorFormValues =
     hasMotor: true,
     usageMetric: USAGE_METRIC.ENGINE_HOURS,
     consumesFuel: true,
+    lowFuelLines: "1",
     canBeDamaged: true,
     hasConditionPhotos: false,
     guideOnly: false,

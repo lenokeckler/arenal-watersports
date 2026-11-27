@@ -11,9 +11,12 @@ export const CLOSE_RETURN_UNIT_ROW = {
   consumes_fuel: true,
   fuel_max: 4,
   fuel_out: 3,
+  impact_count: 2,
+  low_fuel_lines: 1,
   unit_id: CLOSE_UNIT_ID,
   usage_metric: "engine_hours",
   usage_out: 13,
+  usage_total: 13,
 };
 
 export const CLOSE_INPUT_FIXTURE = {
@@ -23,6 +26,7 @@ export const CLOSE_INPUT_FIXTURE = {
     {
       damage: null,
       fuel: 2,
+      impactCount: null,
       maintenance: false,
       unitId: CLOSE_UNIT_ID,
       usage: 14.25,
@@ -48,6 +52,7 @@ export const CLOSE_RPC_RETURNS = [
   {
     damage: null,
     fuel: 2,
+    impact_count: null,
     maintenance: false,
     unit_id: CLOSE_UNIT_ID,
     usage: 14.25,
@@ -62,6 +67,7 @@ export const CLOSE_RPC_RETURNS_WITH_DAMAGE = [
       impact_delta: 1,
     },
     fuel: 2,
+    impact_count: null,
     maintenance: false,
     unit_id: CLOSE_UNIT_ID,
     usage: 14.25,
@@ -69,6 +75,30 @@ export const CLOSE_RPC_RETURNS_WITH_DAMAGE = [
 ];
 
 export const INVALID_CLOSE_INPUTS = [
+  {
+    input: {
+      ...CLOSE_INPUT_FIXTURE,
+      returns: [
+        {
+          ...CLOSE_INPUT_FIXTURE.returns[0],
+          impactCount: -1,
+        },
+      ],
+    },
+    name: "a negative impact count",
+  },
+  {
+    input: {
+      ...CLOSE_INPUT_FIXTURE,
+      returns: [
+        {
+          ...CLOSE_INPUT_FIXTURE.returns[0],
+          impactCount: 1.5,
+        },
+      ],
+    },
+    name: "an impact count with a fraction",
+  },
   {
     input: {
       ...CLOSE_INPUT_FIXTURE,
