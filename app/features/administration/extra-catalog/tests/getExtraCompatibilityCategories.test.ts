@@ -7,9 +7,8 @@ import {
 } from "vitest";
 import { getExtraCompatibilityCategories } from "../services/getExtraCompatibilityCategories";
 import {
-  COMPATIBILITY_CATEGORY_ID,
-  COMPATIBILITY_CATEGORY_NAME,
   COMPATIBILITY_CATEGORY_ROW,
+  COMPATIBILITY_CATEGORY_SUMMARY,
   COMPATIBILITY_EXTRA,
   COMPATIBILITY_EXTRA_ID,
   LINKED_UNIT_ID,
@@ -64,14 +63,7 @@ describe("getExtraCompatibilityCategories", () => {
       )
     ).toEqual({
       extra: COMPATIBILITY_EXTRA,
-      categories: [
-        {
-          id: COMPATIBILITY_CATEGORY_ID,
-          name: COMPATIBILITY_CATEGORY_NAME,
-          unitCount: 2,
-          linkedUnitCount: 1,
-        },
-      ],
+      categories: [COMPATIBILITY_CATEGORY_SUMMARY],
     });
   });
 

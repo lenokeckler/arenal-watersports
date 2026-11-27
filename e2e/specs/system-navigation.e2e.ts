@@ -137,6 +137,27 @@ test("opens Combos from the account menu in Administration", async ({
   await expect(page).toHaveURL(PATHS.ADMINISTRATION.COMBOS);
 });
 
+test("opens Tarifas from the account menu in Administration", async ({
+  page,
+}) => {
+  const navigationPage = createSystemNavigationPage(page);
+  await signInAsSeededWorker(page);
+  await navigationPage.goTo();
+  await navigationPage.openMenu();
+
+  const tariffsLink = navigationPage.getMenuLink(
+    E2E_SYSTEM_NAVIGATION_EXPECTED_LINKS.TARIFFS_LABEL
+  );
+  await expect(tariffsLink).toHaveAttribute(
+    "href",
+    E2E_SYSTEM_NAVIGATION_EXPECTED_LINKS.TARIFFS
+  );
+  await tariffsLink.click();
+  await expect(page).toHaveURL(
+    PATHS.ADMINISTRATION.TARIFFS
+  );
+});
+
 test("shows the five Administration links in order and the account menu", async ({
   page,
 }) => {

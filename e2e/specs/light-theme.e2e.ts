@@ -16,9 +16,10 @@ test.describe("Light theme", () => {
     await expect(homePage.getHeading()).toBeVisible();
 
     const themePage = createLightThemePage(page);
+    await themePage.openMenu();
     await expect(
-      themePage.getToggleButton(THEME.DARK)
-    ).toBeVisible();
+      themePage.getThemeOption(THEME.DARK)
+    ).toHaveAttribute("aria-pressed", "true");
   });
 
   test("switches themes, restores the device choice, and meets contrast targets", async ({
@@ -26,7 +27,7 @@ test.describe("Light theme", () => {
   }) => {
     const themePage = createLightThemePage(page);
 
-    await themePage.clickToggleForTheme(THEME.LIGHT);
+    await themePage.chooseTheme(THEME.LIGHT);
     await expect(themePage.getRoot()).toHaveAttribute(
       E2E_LIGHT_THEME_STORAGE.ATTRIBUTE,
       THEME.LIGHT
@@ -44,11 +45,12 @@ test.describe("Light theme", () => {
       E2E_LIGHT_THEME_STORAGE.ATTRIBUTE,
       THEME.LIGHT
     );
+    await themePage.openMenu();
     await expect(
-      themePage.getToggleButton(THEME.LIGHT)
-    ).toBeVisible();
+      themePage.getThemeOption(THEME.LIGHT)
+    ).toHaveAttribute("aria-pressed", "true");
 
-    await themePage.clickToggleForTheme(THEME.DARK);
+    await themePage.chooseTheme(THEME.DARK);
     await expect(themePage.getRoot()).not.toHaveAttribute(
       E2E_LIGHT_THEME_STORAGE.ATTRIBUTE,
       THEME.LIGHT

@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { createReservationAction } from "../actions/createReservationAction";
 import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
@@ -34,7 +35,9 @@ describe("ReservationFormView submission", () => {
       await page.findSuccessMessage()
     ).toBeInTheDocument();
 
-    expect(page.getSubmitButton()).toBeEnabled();
+    await waitFor(() =>
+      expect(page.getSubmitButton()).toBeEnabled()
+    );
 
     expect(createReservationAction).toHaveBeenCalledTimes(
       1
