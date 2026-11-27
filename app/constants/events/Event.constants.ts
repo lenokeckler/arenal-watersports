@@ -8,5 +8,6 @@ export const BROWSER_EVENTS = {
   POPSTATE: "popstate",
   SCROLL: "scroll",
   STORAGE: "storage",
+  TOUCHMOVE: "touchmove",
   TOUCHSTART: "touchstart",
 } as const;

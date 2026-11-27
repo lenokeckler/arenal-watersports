@@ -1,0 +1,9 @@
+import {
+  BUTTON_BASE_CLASS,
+  BUTTON_ENABLED_CLASS,
+  BUTTON_SIZE_CLASS,
+  BUTTON_VARIANT_CLASS,
+} from "@/app/components/button/styles/Button.styles";
+import { BUTTON, SIZE } from "@/app/constants";
+
+export const CATEGORY_CONFIGURE_SECTION_BODY_LINK_CLASS = `${BUTTON_BASE_CLASS} ${BUTTON_VARIANT_CLASS[BUTTON.SECONDARY]} ${BUTTON_SIZE_CLASS[SIZE.MD]} ${BUTTON_ENABLED_CLASS} min-h-11 rounded-md`;

@@ -1,13 +1,28 @@
 import { EXTRA_STATUS } from "../constants/ExtraStatus.constants";
 import type { Extra } from "../models/Extra.interface";
+import type { ExtraDetail } from "../models/ExtraDetail.interface";
+import type { ExtraOccupiableCategory } from "../models/ExtraOccupiableCategory.interface";
 import type { ExtraRow } from "../models/ExtraRow.type";
 
 export const FAKE_EXTRA_ID = "fake-extra-id";
 export const FAKE_EXTRA_NAME = "Tubing";
+export const FAKE_EXTRA_COMPATIBLE_UNIT_COUNT = 3;
 export const FAKE_EXTRA_PRICE_USD = 25;
 export const FAKE_EXTRA_PRICE_USD_TEXT = "25";
 export const FAKE_EXTRA_PRICE_CRC = 15000.5;
 export const FAKE_EXTRA_PRICE_CRC_TEXT = "15000.5";
+export const FAKE_OCCUPIED_CATEGORY_ID =
+  "7c1f5a52-2f1c-4d52-9a47-0d1a6f2a9b11";
+export const FAKE_OCCUPIED_CATEGORY_NAME = "Tabla de wake";
+export const FAKE_OCCUPIED_QUANTITY = 2;
+export const FAKE_OCCUPIED_QUANTITY_TEXT = "2";
+export const OCCUPIABLE_CATEGORIES: ExtraOccupiableCategory[] =
+  [
+    {
+      id: FAKE_OCCUPIED_CATEGORY_ID,
+      name: FAKE_OCCUPIED_CATEGORY_NAME,
+    },
+  ];
 export const LONG_EXTRA_NAME_REPEATS = 100;
 export const UNKNOWN_REMOVAL_OUTCOME = "archived";
 export const UNSAFE_EXTRA_ID = "a/b c?d";
@@ -20,6 +35,22 @@ export const DEFAULT_EXTRA: Extra = {
   status: EXTRA_STATUS.ACTIVE,
   priceUsd: FAKE_EXTRA_PRICE_USD,
   priceCrc: null,
+  occupiesCategoryId: null,
+  occupiesQuantity: null,
+  occupiedCategoryName: null,
+  compatibleUnitCount: FAKE_EXTRA_COMPATIBLE_UNIT_COUNT,
+};
+
+export const OCCUPYING_EXTRA: Extra = {
+  ...DEFAULT_EXTRA,
+  occupiesCategoryId: FAKE_OCCUPIED_CATEGORY_ID,
+  occupiesQuantity: FAKE_OCCUPIED_QUANTITY,
+  occupiedCategoryName: FAKE_OCCUPIED_CATEGORY_NAME,
+};
+
+export const DEFAULT_EXTRA_DETAIL: ExtraDetail = {
+  ...DEFAULT_EXTRA,
+  isUsedInReservations: false,
 };
 
 export const DEFAULT_EXTRA_ROW: ExtraRow = {
@@ -28,4 +59,17 @@ export const DEFAULT_EXTRA_ROW: ExtraRow = {
   status: EXTRA_STATUS.ACTIVE,
   price_usd: FAKE_EXTRA_PRICE_USD,
   price_crc: null,
+  occupies_category_id: null,
+  occupies_quantity: null,
+  occupied_category: null,
+  extra_compatibility: [
+    { count: FAKE_EXTRA_COMPATIBLE_UNIT_COUNT },
+  ],
+};
+
+export const OCCUPYING_EXTRA_ROW: ExtraRow = {
+  ...DEFAULT_EXTRA_ROW,
+  occupies_category_id: FAKE_OCCUPIED_CATEGORY_ID,
+  occupies_quantity: FAKE_OCCUPIED_QUANTITY,
+  occupied_category: { name: FAKE_OCCUPIED_CATEGORY_NAME },
 };

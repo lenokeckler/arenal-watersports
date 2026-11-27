@@ -6,6 +6,7 @@ import {
   STRING,
   type CurrencyCode,
 } from "@/app/constants";
+import { EXTRA_OCCUPANCY_COPY } from "../constants/ExtraOccupancyCopy.constants";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
 import type { ExtraFormMode } from "../constants/ExtraFormMode.constants";
 import {
@@ -62,7 +63,70 @@ export const createExtraFormPage = (
     getNameField().getAttribute(ARIA_INVALID_ATTRIBUTE) ===
     ARIA_INVALID_TRUE;
 
+  const getOccupancyToggle = () =>
+    screen.getByRole(ARIA_ROLE.RADIO, {
+      name: new RegExp(
+        EXTRA_OCCUPANCY_COPY.EQUIPMENT_OPTION
+      ),
+    });
+
+  const getChargeOnlyChoice = () =>
+    screen.getByRole(ARIA_ROLE.RADIO, {
+      name: new RegExp(
+        EXTRA_OCCUPANCY_COPY.CHARGE_ONLY_OPTION
+      ),
+    });
+
+  const queryCategorySelect = () =>
+    screen.queryByLabelText(
+      EXTRA_OCCUPANCY_COPY.CATEGORY_LABEL,
+      { exact: false }
+    );
+
+  const queryQuantityField = () =>
+    screen.queryByLabelText(
+      EXTRA_OCCUPANCY_COPY.QUANTITY_LABEL,
+      { exact: false }
+    );
+
+  const getCategorySelect = () =>
+    screen.getByLabelText(
+      EXTRA_OCCUPANCY_COPY.CATEGORY_LABEL,
+      { exact: false }
+    );
+
+  const getQuantityField = () =>
+    screen.getByLabelText(
+      EXTRA_OCCUPANCY_COPY.QUANTITY_LABEL,
+      { exact: false }
+    );
+
+  const toggleOccupancy = (): Promise<void> =>
+    user.click(
+      (getOccupancyToggle() as HTMLInputElement).checked
+        ? getChargeOnlyChoice()
+        : getOccupancyToggle()
+    );
+
+  const chooseCategory = (name: string): Promise<void> =>
+    user.selectOptions(getCategorySelect(), name);
+
+  const typeQuantity = async (
+    text: string
+  ): Promise<void> => {
+    await user.clear(getQuantityField());
+    await user.type(getQuantityField(), text);
+  };
+
   return {
+    getOccupancyToggle,
+    queryCategorySelect,
+    queryQuantityField,
+    getCategorySelect,
+    getQuantityField,
+    toggleOccupancy,
+    chooseCategory,
+    typeQuantity,
     getNameField,
     getPriceField,
     getNameDescribedByIds,
@@ -77,8 +141,8 @@ export const createExtraFormPage = (
       screen.queryByRole(ARIA_ROLE.BUTTON, {
         name: EXTRA_CATALOG_COPY.LOADING_TEXT_SAVING,
       }),
-    getCancelButton: () =>
-      getButton(EXTRA_CATALOG_COPY.CANCEL_BUTTON),
+    getBackButton: () =>
+      getButton(EXTRA_CATALOG_COPY.BACK_BUTTON),
     getNameError: (message: string) =>
       screen.queryByText(message),
     getError: (message: string) =>
@@ -87,9 +151,7 @@ export const createExtraFormPage = (
     typePrice,
     submit: () =>
       user.click(getButton(EXTRA_FORM_SUBMIT_LABEL[mode])),
-    cancel: () =>
-      user.click(
-        getButton(EXTRA_CATALOG_COPY.CANCEL_BUTTON)
-      ),
+    back: () =>
+      user.click(getButton(EXTRA_CATALOG_COPY.BACK_BUTTON)),
   };
 };

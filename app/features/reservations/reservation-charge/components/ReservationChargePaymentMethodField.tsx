@@ -1,11 +1,7 @@
-import {
-  FormField,
-  InlineText,
-  Label,
-  Text,
-} from "@/app/components";
+import { FormField, Text } from "@/app/components";
 import { FORM_FIELD_VARIANT } from "@/app/components/form-field/constants/FormFieldVariant.constants";
 import {
+  ARIA_ROLE,
   AUTOCOMPLETE,
   INPUT_TYPES,
   STRING,
@@ -20,7 +16,17 @@ import {
   RESERVATION_CHARGE_PAYMENT_CHOICE_OPTION_ID,
 } from "../constants/ReservationChargeUi.constants";
 import type { ReservationChargeFormProps } from "../models/ReservationChargeFormProps.interface";
+import {
+  RESERVATION_CHARGE_CURRENCY_FIELDSET_CLASS,
+  RESERVATION_CHARGE_CURRENCY_LEGEND_CLASS,
+} from "../styles/ReservationChargeCurrency.styles";
 import { RESERVATION_CHARGE_HINT_CLASS } from "../styles/ReservationChargeForm.styles";
+import {
+  RESERVATION_CHARGE_PAYMENT_METHOD_ERROR_CLASS,
+  RESERVATION_CHARGE_PAYMENT_METHOD_GRID_CLASS,
+  RESERVATION_CHARGE_PAYMENT_METHOD_GROUP_CLASS,
+} from "../styles/ReservationChargePaymentMethod.styles";
+import ReservationChargePaymentChoiceOption from "./ReservationChargePaymentChoiceOption";
 
 const ReservationChargePaymentMethodField = ({
   viewModel,
@@ -37,43 +43,59 @@ const ReservationChargePaymentMethodField = ({
     .join(STRING.SPACE);
 
   return (
-    <div>
+    <div
+      className={
+        RESERVATION_CHARGE_PAYMENT_METHOD_GROUP_CLASS
+      }
+    >
       <fieldset
         aria-describedby={describedBy}
-        aria-invalid={groupError ? true : undefined}
+        className={
+          RESERVATION_CHARGE_CURRENCY_FIELDSET_CLASS
+        }
       >
-        <legend>{COPY.LABEL_METHOD}</legend>
-        {RESERVATION_CHARGE_PAYMENT_CHOICE_ORDER.map(
-          (choice) => (
-            <Label
-              key={choice}
-              htmlFor={RESERVATION_CHARGE_PAYMENT_CHOICE_OPTION_ID(
-                choice
-              )}
-            >
-              <input
-                checked={viewModel.paymentChoice === choice}
-                disabled={viewModel.isPending}
+        <legend
+          className={
+            RESERVATION_CHARGE_CURRENCY_LEGEND_CLASS
+          }
+        >
+          {COPY.LABEL_METHOD}
+        </legend>
+        <div
+          className={
+            RESERVATION_CHARGE_PAYMENT_METHOD_GRID_CLASS
+          }
+        >
+          {RESERVATION_CHARGE_PAYMENT_CHOICE_ORDER.map(
+            (choice) => (
+              <ReservationChargePaymentChoiceOption
+                key={choice}
+                choice={choice}
                 id={RESERVATION_CHARGE_PAYMENT_CHOICE_OPTION_ID(
                   choice
                 )}
-                name={FIELD_ID.PAYMENT_METHOD}
-                onChange={() =>
-                  viewModel.setPaymentChoice(choice)
+                isDisabled={viewModel.isPending}
+                isInvalid={Boolean(groupError)}
+                isSelected={
+                  viewModel.paymentChoice === choice
                 }
-                type={INPUT_TYPES.RADIO}
-                value={choice}
+                label={COPY.PAYMENT_CHOICE_LABEL[choice]}
+                name={FIELD_ID.PAYMENT_METHOD}
+                onSelect={viewModel.setPaymentChoice}
               />
-              <InlineText>
-                {COPY.PAYMENT_CHOICE_LABEL[choice]}
-              </InlineText>
-            </Label>
-          )
-        )}
+            )
+          )}
+        </div>
       </fieldset>
-      {viewModel.errors.paymentChoice ? (
-        <Text id={FIELD_ID.PAYMENT_METHOD_ERROR}>
-          {viewModel.errors.paymentChoice}
+      {groupError ? (
+        <Text
+          id={FIELD_ID.PAYMENT_METHOD_ERROR}
+          className={
+            RESERVATION_CHARGE_PAYMENT_METHOD_ERROR_CLASS
+          }
+          role={ARIA_ROLE.ALERT}
+        >
+          {groupError}
         </Text>
       ) : null}
       <Text
