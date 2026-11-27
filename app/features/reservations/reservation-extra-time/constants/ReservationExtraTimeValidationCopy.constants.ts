@@ -11,10 +11,12 @@ export const RESERVATION_EXTRA_TIME_VALIDATION_COPY = {
     [MONEY_AMOUNT_ISSUE.NOT_POSITIVE]:
       "El monto debe ser mayor que cero.",
     [MONEY_AMOUNT_ISSUE.PRECISION]:
-      "El monto es demasiado grande o tiene más de dos decimales.",
+      "El monto es demasiado grande.",
   } satisfies Record<MoneyAmountIssue, string>,
   AMOUNT_REQUIRED:
     "Escriba el monto acordado por el tiempo de más.",
+  AMOUNT_TOO_MANY_DECIMALS:
+    "Use como máximo dos decimales.",
   CHOICE_REQUIRED: "Elija cómo pagó el cliente.",
   METHOD_DISALLOWED_CHARACTERS:
     "El método de pago tiene caracteres no permitidos.",
