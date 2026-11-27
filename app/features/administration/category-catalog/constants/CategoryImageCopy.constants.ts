@@ -15,7 +15,6 @@ export const CATEGORY_IMAGE_COPY = {
   FORM_HINT:
     "Elija una foto JPG, PNG o WebP. En el tablero se muestra recortada; la vista previa le indica cómo se verá.",
   FORM_TITLE: "Imagen de la categoría",
-  IMAGE_LINK: "Imagen",
   INVALID_INPUT_ERROR:
     "No se pudo leer la imagen seleccionada. Inténtelo de nuevo.",
   LEFTOVER_OBJECT_WARNING_TOAST:

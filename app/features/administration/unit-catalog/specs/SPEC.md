@@ -33,16 +33,15 @@
 
 ## 16.05 Unit list
 
-| Requirement                                                                                                 | Test                                                |
-| ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| Only an administrator opens the list; an unknown or by-quantity category is a 404                           | `UnitList.test.tsx`                                 |
-| Units of one category, ordered by code, one page at a time, counted before the page is read                 | `listUnits.test.ts`, `unitListQueries.test.ts`      |
-| A page past the end redirects to the last page                                                              | `UnitList.test.tsx`, `listUnits.test.ts`            |
-| Effective status read from `unit_current_state` for the ids of the page only; `occupied` shown as "Ocupada" | `listUnits.test.ts`, `UnitListView.test.tsx`        |
-| Fuel, usage and next oil change appear only for motorized categories; no fuel reading says "Sin lectura"    | `UnitListView.test.tsx`                             |
-| A decommissioned unit is dimmed and has no edit link                                                        | `UnitListView.test.tsx`                             |
-| Empty, error and pagination states                                                                          | `UnitListView.test.tsx`                             |
-| By-unit category cards, active or inactive, link to their units; by-quantity cards do not                   | `CategoryCardUnitsLink.test.tsx` (category-catalog) |
+| Requirement                                                                                                 | Test                                           |
+| ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| Only an administrator opens the list; an unknown or by-quantity category is a 404                           | `UnitList.test.tsx`                            |
+| Units of one category, ordered by code, one page at a time, counted before the page is read                 | `listUnits.test.ts`, `unitListQueries.test.ts` |
+| A page past the end redirects to the last page                                                              | `UnitList.test.tsx`, `listUnits.test.ts`       |
+| Effective status read from `unit_current_state` for the ids of the page only; `occupied` shown as "Ocupada" | `listUnits.test.ts`, `UnitListView.test.tsx`   |
+| Fuel, usage and next oil change appear only for motorized categories; no fuel reading says "Sin lectura"    | `UnitListView.test.tsx`                        |
+| A decommissioned unit is dimmed and has no edit link                                                        | `UnitListView.test.tsx`                        |
+| Empty, error and pagination states                                                                          | `UnitListView.test.tsx`                        |
 
 ## 16.09 Unit form screen and create route
 

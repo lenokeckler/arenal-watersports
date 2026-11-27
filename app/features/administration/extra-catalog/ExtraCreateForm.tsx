@@ -3,6 +3,7 @@ import { PATHS } from "@/app/constants";
 import { isAdministratorSignedIn } from "@/app/services/worker-registration";
 import { EXTRA_FORM_MODE } from "./constants/ExtraFormMode.constants";
 import ExtraFormView from "./ExtraFormView";
+import { getOccupiableCategories } from "./services/getOccupiableCategories";
 
 const ExtraCreateForm =
   async (): Promise<React.JSX.Element> => {
@@ -10,7 +11,12 @@ const ExtraCreateForm =
       redirect(PATHS.HOME);
     }
 
-    return <ExtraFormView mode={EXTRA_FORM_MODE.CREATE} />;
+    return (
+      <ExtraFormView
+        mode={EXTRA_FORM_MODE.CREATE}
+        occupiableCategories={await getOccupiableCategories()}
+      />
+    );
   };
 
 export default ExtraCreateForm;

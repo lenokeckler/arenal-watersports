@@ -4,15 +4,15 @@ import { CategoryFormFieldChangeEvent } from "./CategoryFormFieldChangeEvent.typ
 
 export interface CategoryCreateFormViewModel {
   values: CategoryCreateFormValues;
+  reservableChoice: string;
   errors: CategoryCreateFormErrors;
   isSubmitting: boolean;
   onBack: () => void;
   onNameChange: (
     event: CategoryFormFieldChangeEvent
   ) => void;
-  onTrackingModeChange: (
-    event: CategoryFormFieldChangeEvent
-  ) => void;
+  onTrackingModeChange: (value: string) => void;
+  onReservableChoiceChange: (value: string) => void;
   onGroupNameChange: (
     event: CategoryFormFieldChangeEvent
   ) => void;
