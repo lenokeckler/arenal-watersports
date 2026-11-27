@@ -19,19 +19,4 @@ export const UNIT_PHOTOS_ERROR = {
   RECORD_PHOTO: "record the condition photo of the unit",
   SIGN_PHOTOS: "sign the condition photo urls",
   UPLOAD_PHOTO: "upload the condition photo of the unit",
-
-  CHECK_MARK: "check the general manager mark",
 } as const;
-
-export const UNIT_PHOTOS_BUCKET = "unit-condition-photos";
-
-export const UNIT_PHOTOS_SIGNED_URL_SECONDS = 3600;
-
-export const UNIT_PHOTO_ANGLES = [
-  "right_side",
-  "left_side",
-  "front",
-  "bottom",
-] as const;
-
-export const UNIT_PHOTO_MANAGER_MARK = "encargado_general";

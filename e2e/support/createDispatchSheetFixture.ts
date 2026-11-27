@@ -18,10 +18,7 @@ import { addMaintenanceJobs } from "./addMaintenanceJobs";
 import { addDamageReports } from "./addDamageReports";
 import { readUnitCorrection } from "./readUnitCorrection";
 import { addUnitPhoto } from "./addUnitPhoto";
-import {
-  grantGeneralManagerMark,
-  removeGeneralManagerMark,
-} from "./grantGeneralManagerMark";
+import { setTemporaryGuide } from "./setTemporaryGuide";
 import { readUnitPhotos } from "./readUnitPhotos";
 import { removeUnitPhotos } from "./removeUnitPhotos";
 import { removeUnitCorrections } from "./removeUnitCorrections";
@@ -187,8 +184,8 @@ export const createDispatchSheetFixture = async (
     readUnitId: (code) => readUnitId(supabase, code),
     addUnitPhoto: (code, angle) =>
       addUnitPhoto(supabase, code, angle, workerId),
-    grantGeneralManagerMark: () =>
-      grantGeneralManagerMark(supabase, workerId),
+    makeTemporaryGuide: () =>
+      setTemporaryGuide(supabase, workerId, true),
     readUnitPhotos: (code) =>
       readUnitPhotos(supabase, code),
     readUnitCorrection: (code) =>
@@ -212,7 +209,7 @@ export const createDispatchSheetFixture = async (
       await removeDamageReports(supabase, unitCodes);
       await removeUnitCorrections(supabase, unitCodes);
       await removeUnitPhotos(supabase, unitCodes);
-      await removeGeneralManagerMark(supabase, workerId);
+      await setTemporaryGuide(supabase, workerId, false);
       await removeDispatchSheetFixture(
         supabase,
         reservationId
