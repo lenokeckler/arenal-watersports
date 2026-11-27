@@ -8,30 +8,27 @@ import {
   ARIA_ROLE,
   BUTTON,
   BUTTON_TYPES,
-  PATHS,
 } from "@/app/constants";
 import { SYSTEM_NAVIGATION_COPY } from "../constants/SystemNavigationCopy.constants";
 import { SYSTEM_NAVIGATION_MENU_ID } from "../constants/SystemNavigationMenu.constants";
 import type { SystemNavigationMenuProps } from "../models/SystemNavigationMenuProps.interface";
 import {
   SYSTEM_NAVIGATION_MENU_BACKDROP_CLASS,
+  SYSTEM_NAVIGATION_MENU_BODY_CLASS,
   SYSTEM_NAVIGATION_MENU_CLOSE_CLASS,
   SYSTEM_NAVIGATION_MENU_HEADER_CLASS,
-  SYSTEM_NAVIGATION_MENU_IDENTITY_CLASS,
-  SYSTEM_NAVIGATION_MENU_IDENTITY_META_CLASS,
-  SYSTEM_NAVIGATION_MENU_IDENTITY_NAME_CLASS,
-  SYSTEM_NAVIGATION_MENU_SECTION_LABEL_CLASS,
   SYSTEM_NAVIGATION_MENU_TITLE_CLASS,
   resolveSystemNavigationMenuClassName,
 } from "../styles/SystemNavigation.styles";
-import SystemNavigationMenuLink from "./SystemNavigationMenuLink";
+import SystemNavigationMenuIdentityCard from "./SystemNavigationMenuIdentityCard";
+import SystemNavigationMenuSection from "./SystemNavigationMenuSection";
 
 const SystemNavigationMenu = ({
-  destinations,
+  sections,
   extras,
   identity,
   isOpen,
-  canChangeMode,
+  pathname,
   closeMenu,
 }: SystemNavigationMenuProps): React.JSX.Element => (
   <>
@@ -66,61 +63,22 @@ const SystemNavigationMenu = ({
           <MaterialIcon name={MATERIAL_ICON_NAME.CLOSE} />
         </Button>
       </div>
-      {identity ? (
-        <div
-          className={SYSTEM_NAVIGATION_MENU_IDENTITY_CLASS}
-        >
-          <Text
-            className={
-              SYSTEM_NAVIGATION_MENU_IDENTITY_NAME_CLASS
-            }
-          >
-            {identity.fullName}
-          </Text>
-          <Text
-            className={
-              SYSTEM_NAVIGATION_MENU_IDENTITY_META_CLASS
-            }
-          >
-            {`${SYSTEM_NAVIGATION_COPY.USER_PREFIX}: ${identity.username}`}
-          </Text>
-          <Text
-            className={
-              SYSTEM_NAVIGATION_MENU_IDENTITY_META_CLASS
-            }
-          >
-            {`${SYSTEM_NAVIGATION_COPY.ROLE_PREFIX}: ${identity.role}`}
-          </Text>
-        </div>
-      ) : null}
-      <Text
-        className={
-          SYSTEM_NAVIGATION_MENU_SECTION_LABEL_CLASS
-        }
-      >
-        {SYSTEM_NAVIGATION_COPY.MORE_OPTIONS}
-      </Text>
-      <SystemNavigationMenuLink
-        href={PATHS.PROFILE.ROOT}
-        label={SYSTEM_NAVIGATION_COPY.PROFILE}
-        onNavigate={closeMenu}
-      />
-      {canChangeMode ? (
-        <SystemNavigationMenuLink
-          href={PATHS.MODE}
-          label={SYSTEM_NAVIGATION_COPY.CHANGE_MODE}
-          onNavigate={closeMenu}
-        />
-      ) : null}
-      {destinations.map(({ href, label }) => (
-        <SystemNavigationMenuLink
-          key={href}
-          href={href}
-          label={label}
-          onNavigate={closeMenu}
-        />
-      ))}
-      {extras}
+      <div className={SYSTEM_NAVIGATION_MENU_BODY_CLASS}>
+        {identity ? (
+          <SystemNavigationMenuIdentityCard
+            identity={identity}
+          />
+        ) : null}
+        {sections.map((section) => (
+          <SystemNavigationMenuSection
+            key={section.label}
+            section={section}
+            pathname={pathname}
+            onNavigate={closeMenu}
+          />
+        ))}
+        {extras}
+      </div>
     </div>
   </>
 );
