@@ -2,6 +2,6 @@ import { CategoryFormFieldChangeHandler } from "./CategoryFormFieldChangeHandler
 
 export interface CategoryBehaviorUsageMetricFieldProps {
   value: string;
-  disabled: boolean;
+  disabled?: boolean;
   onChange: CategoryFormFieldChangeHandler;
 }

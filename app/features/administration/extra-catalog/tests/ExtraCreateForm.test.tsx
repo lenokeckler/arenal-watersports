@@ -10,6 +10,8 @@ import { isAdministratorSignedIn } from "@/app/services/worker-registration";
 import { EXTRA_FORM_MODE } from "../constants/ExtraFormMode.constants";
 import ExtraCreateForm from "../ExtraCreateForm";
 import ExtraFormView from "../ExtraFormView";
+import { getOccupiableCategories } from "../services/getOccupiableCategories";
+import { OCCUPIABLE_CATEGORIES } from "./Extra.constants";
 import {
   REDIRECT_ERROR_MESSAGE,
   throwNavigation,
@@ -20,6 +22,8 @@ const redirectMock = vi.hoisted(() => vi.fn());
 vi.mock("next/navigation", () => ({
   redirect: redirectMock,
 }));
+
+vi.mock("../services/getOccupiableCategories");
 
 vi.mock("@/app/services/worker-registration", () => ({
   isAdministratorSignedIn: vi.fn(),
@@ -33,6 +37,9 @@ describe("ExtraCreateForm", () => {
     );
     vi.mocked(isAdministratorSignedIn).mockResolvedValue(
       true
+    );
+    vi.mocked(getOccupiableCategories).mockResolvedValue(
+      OCCUPIABLE_CATEGORIES
     );
   });
 
@@ -54,6 +61,7 @@ describe("ExtraCreateForm", () => {
     expect(element.type).toBe(ExtraFormView);
     expect(element.props).toEqual({
       mode: EXTRA_FORM_MODE.CREATE,
+      occupiableCategories: OCCUPIABLE_CATEGORIES,
     });
   });
 });
