@@ -102,6 +102,7 @@ export const PATHS = {
     NEW: "/reservations/new",
     POSTPONE_SEGMENT: "postpone",
     REFUND_SEGMENT: "refund",
+    RESOLVE_SEGMENT: "resolve",
     ROOT: "/reservations",
     SPLIT_SEGMENT: "split",
   },
