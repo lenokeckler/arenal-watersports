@@ -21,7 +21,7 @@ test.describe("Maintenance job screenshots", () => {
     });
     await form
       .getNextOilChange()
-      .fill(E2E_MAINTENANCE_JOB.NEW_THRESHOLD);
+      .fill(E2E_MAINTENANCE_JOB.OIL_INTERVAL);
     await form.getCost().fill(E2E_MAINTENANCE_JOB.COST);
     await form.getCurrency().selectOption({
       label: E2E_MAINTENANCE_JOB.CURRENCY_LABEL,

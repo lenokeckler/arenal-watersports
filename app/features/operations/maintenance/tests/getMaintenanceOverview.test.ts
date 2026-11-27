@@ -2,11 +2,7 @@ import { createOperationsClient } from "@/app/components/dispatch-board/tests/ge
 import { describe, expect, it } from "vitest";
 import { OperationsAccessError } from "@/app/services/operations/getOperationsSupabaseClient";
 import { getMaintenanceOverview } from "../services/getMaintenanceOverview";
-import { getOilChangeText } from "../utils/getOilChangeText";
-import {
-  MAINTENANCE_ROWS,
-  OIL_TEXT_CASES,
-} from "./Maintenance.constants";
+import { MAINTENANCE_ROWS } from "./Maintenance.constants";
 
 type Rpc = ReturnType<typeof createOperationsClient>["rpc"];
 
@@ -28,13 +24,13 @@ describe("getMaintenanceOverview", () => {
     );
     expect(
       overview.oilDue.map((unit) => unit.code)
-    ).toEqual(["JS-1", "CU-1", "JS-3"]);
+    ).toEqual(["JS-1", "CU-1", "JS-3", "JS-4"]);
     expect(
       overview.outOfService.map((unit) => unit.code)
     ).toEqual(["JS-2", "JS-3"]);
   });
 
-  it("keeps how far a machine went past its threshold", async () => {
+  it("keeps how far a machine is from its oil change, before or after it", async () => {
     const { rpc } = createOperationsClient(true, true);
     queueRows(rpc, MAINTENANCE_ROWS);
 
@@ -43,7 +39,13 @@ describe("getMaintenanceOverview", () => {
     expect(oilDue[0]).toMatchObject({
       nextOilChangeAt: 100,
       oilOverage: 10,
+      oilRemaining: -10,
+      oilWarning: true,
       usageTotal: 110,
+    });
+    expect(oilDue[3]).toMatchObject({
+      oilRemaining: 5,
+      oilWarning: true,
     });
   });
 
@@ -66,20 +68,4 @@ describe("getMaintenanceOverview", () => {
       getMaintenanceOverview()
     ).rejects.toBeInstanceOf(OperationsAccessError);
   });
-});
-
-describe("getOilChangeText", () => {
-  it.each(OIL_TEXT_CASES)(
-    "writes the oil change of $code",
-    async ({ code, text }) => {
-      const { rpc } = createOperationsClient(true, true);
-      queueRows(rpc, MAINTENANCE_ROWS);
-      const { oilDue } = await getMaintenanceOverview();
-      const unit = oilDue.find(
-        (item) => item.code === code
-      );
-
-      expect(unit && getOilChangeText(unit)).toBe(text);
-    }
-  );
 });

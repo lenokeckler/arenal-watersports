@@ -52,6 +52,20 @@ const CategoryUnitListItem = ({
     );
   }
 
+  if (
+    kind === CATEGORY_UNIT_ROW_KIND.STATUS &&
+    interaction
+  ) {
+    return (
+      <CategoryUnitActionRow
+        action={CATEGORY_UNIT_ACTION.STATUS}
+        image={image}
+        onAction={interaction.onOpenStatus}
+        unit={unit}
+      />
+    );
+  }
+
   return (
     <CategoryUnitRow
       image={image}

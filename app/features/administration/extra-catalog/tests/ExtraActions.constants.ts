@@ -5,6 +5,9 @@ import {
 } from "@/app/constants";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
 import { EXTRA_PRICE_ERROR_COPY } from "../constants/ExtraPriceErrorCopy.constants";
+import { EXTRA_MUTATION_STATUS } from "../constants/ExtraMutationStatus.constants";
+import { EXTRA_OCCUPANCY_COPY } from "../constants/ExtraOccupancyCopy.constants";
+import type { ExtraMutationResult } from "../models/ExtraMutationResult.interface";
 import type { ExtraPriceInputCase } from "./models/ExtraPriceInputCase.interface";
 import { FAKE_EXTRA_NAME } from "./Extra.constants";
 
@@ -80,3 +83,14 @@ export const INVALID_PRICE_INPUT_CASES: ExtraPriceInputCase[] =
       },
     },
   ];
+
+export const CATEGORY_FAILURE_RESULT: ExtraMutationResult =
+  {
+    status: EXTRA_MUTATION_STATUS.ERROR,
+    occupancyError: EXTRA_OCCUPANCY_COPY.CATEGORY_ERROR,
+  };
+
+export const LOCK_FAILURE_RESULT: ExtraMutationResult = {
+  status: EXTRA_MUTATION_STATUS.ERROR,
+  occupancyError: EXTRA_OCCUPANCY_COPY.LOCKED_ERROR,
+};

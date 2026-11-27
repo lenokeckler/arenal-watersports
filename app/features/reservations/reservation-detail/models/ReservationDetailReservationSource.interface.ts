@@ -1,33 +1,35 @@
 import type { Database, NullableRef } from "@/app/types";
+import type { ReservationDetailChargeSource } from "./ReservationDetailChargeSource.interface";
+import type { ReservationDetailDepositSource } from "./ReservationDetailDepositSource.interface";
 import type { ReservationDetailPricingSource } from "./ReservationDetailPricingSource.interface";
-import type { ReservationDetailRecordedCharge } from "./ReservationDetailRecordedCharge.interface";
+import type { ReservationDetailRefundSource } from "./ReservationDetailRefundSource.interface";
 
-export interface ReservationDetailReservationSource extends Pick<
-  Database["public"]["Tables"]["reservations"]["Row"],
-  | "cancellation_reason"
-  | "closed_at"
-  | "code"
-  | "created_at"
-  | "created_by"
-  | "customer_name"
-  | "dispatched_at"
-  | "duration_minutes"
-  | "ends_at"
-  | "id"
-  | "parent_reservation_id"
-  | "people_count"
-  | "starts_at"
-  | "status"
-  | "type"
-  | "updated_at"
-  | "updated_by"
-> {
+export interface ReservationDetailReservationSource
+  extends
+    ReservationDetailDepositSource,
+    Pick<
+      Database["public"]["Tables"]["reservations"]["Row"],
+      | "cancellation_reason"
+      | "closed_at"
+      | "code"
+      | "created_at"
+      | "created_by"
+      | "customer_name"
+      | "dispatched_at"
+      | "duration_minutes"
+      | "ends_at"
+      | "id"
+      | "parent_reservation_id"
+      | "people_count"
+      | "starts_at"
+      | "status"
+      | "type"
+      | "updated_at"
+      | "updated_by"
+    > {
   combo: NullableRef<{ name: string }>;
-  refunds: {
-    amount: number;
-    currency: Database["public"]["Enums"]["currency_code"];
-  }[];
-  reservation_charges: ReservationDetailRecordedCharge[];
+  refunds: ReservationDetailRefundSource[];
+  reservation_charges: ReservationDetailChargeSource[];
   reservation_dispatches: {
     category: NullableRef<{ name: string }>;
     category_id: string;

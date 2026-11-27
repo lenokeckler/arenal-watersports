@@ -31,6 +31,11 @@ export const getMaintenanceOverview =
           row.oil_overage === null
             ? null
             : Number(row.oil_overage),
+        oilRemaining:
+          row.oil_remaining === null
+            ? null
+            : Number(row.oil_remaining),
+        oilWarning: row.oil_warning,
         status: row.status,
         unitId: row.unit_id,
         usageMetric: row.usage_metric,
@@ -39,9 +44,7 @@ export const getMaintenanceOverview =
     );
 
     return {
-      oilDue: units.filter(
-        (unit) => unit.oilOverage !== null
-      ),
+      oilDue: units.filter((unit) => unit.oilWarning),
       outOfService: units.filter(
         (unit) =>
           unit.status !== MAINTENANCE_AVAILABLE_STATUS
