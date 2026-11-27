@@ -1,4 +1,4 @@
-import { UNIT_PHOTO_ANGLES } from "../constants/UnitPhotos.constants";
+import { UNIT_PHOTO_ANGLES } from "@/app/constants";
 import type { UnitPhotoRow } from "../models/UnitPhotoRow.interface";
 import type { UnitPhotoSlot } from "../models/UnitPhotoSlot.interface";
 
