@@ -12,7 +12,7 @@ import ExtraEditForm from "../ExtraEditForm";
 import ExtraFormView from "../ExtraFormView";
 import { getExtra } from "../services/getExtra";
 import {
-  DEFAULT_EXTRA,
+  DEFAULT_EXTRA_DETAIL,
   FAKE_EXTRA_ID,
 } from "./Extra.constants";
 import {
@@ -50,7 +50,9 @@ describe("ExtraEditForm", () => {
     vi.mocked(isAdministratorSignedIn).mockResolvedValue(
       true
     );
-    vi.mocked(getExtra).mockResolvedValue(DEFAULT_EXTRA);
+    vi.mocked(getExtra).mockResolvedValue(
+      DEFAULT_EXTRA_DETAIL
+    );
   });
 
   it("redirects a worker who is not an administrator home without reading the extra", async () => {
@@ -81,7 +83,7 @@ describe("ExtraEditForm", () => {
     expect(element.type).toBe(ExtraFormView);
     expect(element.props).toEqual({
       mode: EXTRA_FORM_MODE.EDIT,
-      extra: DEFAULT_EXTRA,
+      extra: DEFAULT_EXTRA_DETAIL,
     });
   });
 });

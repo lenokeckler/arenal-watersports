@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { CURRENCY_CODE, STRING } from "@/app/constants";
+import { RESERVATION_CHARGE_PAYMENT_CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
 import { resolveReservationChargeCurrencySwitch } from "../utils/resolveReservationChargeCurrencySwitch";
 import { BOTH_PROPOSAL } from "./ReservationCharge.constants";
 import {
@@ -16,7 +17,10 @@ describe("resolveReservationChargeCurrencySwitch", () => {
         {
           amountText: USD_PROPOSAL_TEXT,
           currency: CURRENCY_CODE.USD,
-          paymentMethod: EDITED_METHOD_TEXT,
+          otherPaymentMethod: EDITED_METHOD_TEXT,
+          paymentChoice:
+            RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER,
+          secondAmountText: null,
         },
         BOTH_PROPOSAL,
         CURRENCY_CODE.CRC
@@ -24,7 +28,10 @@ describe("resolveReservationChargeCurrencySwitch", () => {
     ).toEqual({
       amountText: CRC_PROPOSAL_TEXT,
       currency: CURRENCY_CODE.CRC,
-      paymentMethod: EDITED_METHOD_TEXT,
+      otherPaymentMethod: EDITED_METHOD_TEXT,
+      paymentChoice:
+        RESERVATION_CHARGE_PAYMENT_CHOICE.OTHER,
+      secondAmountText: null,
     });
   });
 
@@ -34,7 +41,9 @@ describe("resolveReservationChargeCurrencySwitch", () => {
         {
           amountText: STRING.Empty,
           currency: CURRENCY_CODE.USD,
-          paymentMethod: STRING.Empty,
+          otherPaymentMethod: STRING.Empty,
+          paymentChoice: null,
+          secondAmountText: null,
         },
         BOTH_PROPOSAL,
         CURRENCY_CODE.CRC
@@ -48,7 +57,9 @@ describe("resolveReservationChargeCurrencySwitch", () => {
         {
           amountText: EDITED_AMOUNT_TEXT,
           currency: CURRENCY_CODE.USD,
-          paymentMethod: STRING.Empty,
+          otherPaymentMethod: STRING.Empty,
+          paymentChoice: null,
+          secondAmountText: null,
         },
         BOTH_PROPOSAL,
         CURRENCY_CODE.CRC
@@ -56,7 +67,9 @@ describe("resolveReservationChargeCurrencySwitch", () => {
     ).toEqual({
       amountText: EDITED_AMOUNT_TEXT,
       currency: CURRENCY_CODE.CRC,
-      paymentMethod: STRING.Empty,
+      otherPaymentMethod: STRING.Empty,
+      paymentChoice: null,
+      secondAmountText: null,
     });
   });
 });

@@ -1,8 +1,10 @@
 import type { Extra } from "../models/Extra.interface";
 import type { ExtraCardActionsViewModel } from "../models/ExtraCardActionsViewModel.interface";
 import type { ExtraCardViewModel } from "../models/ExtraCardViewModel.interface";
+import { buildExtraCompatibilityLabel } from "./buildExtraCompatibilityLabel";
 import { buildExtraPriceLabels } from "./buildExtraPriceLabels";
 import { resolveExtraCardActionState } from "./resolveExtraCardActionState";
+import { resolveExtraCompatibilityPath } from "./resolveExtraCompatibilityPath";
 import { resolveExtraEditPath } from "./resolveExtraEditPath";
 
 export const buildExtraCardViewModel = (
@@ -12,6 +14,12 @@ export const buildExtraCardViewModel = (
   actionState: resolveExtraCardActionState(
     extra,
     extra.id === cardActions.confirmingExtraId
+  ),
+  compatibilityHref: resolveExtraCompatibilityPath(
+    extra.id
+  ),
+  compatibilityLabel: buildExtraCompatibilityLabel(
+    extra.compatibleUnitCount
   ),
   editHref: resolveExtraEditPath(extra.id),
   id: extra.id,
