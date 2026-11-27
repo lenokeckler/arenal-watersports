@@ -46,6 +46,4 @@ export const UNIT_PHOTOS_COPY = {
   VIEW_HISTORY: "Ver historial",
   VIEW_LARGE: (angle: string): string =>
     `Ver en grande: ${angle}`,
-
-  IMPACTS: "Golpes acumulados: ",
 } as const;

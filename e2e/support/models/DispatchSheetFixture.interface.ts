@@ -11,7 +11,7 @@ export interface DispatchSheetFixture {
     code: string,
     angle: string
   ) => Promise<void>;
-  grantGeneralManagerMark: () => Promise<void>;
+  makeTemporaryGuide: () => Promise<void>;
   readUnitPhotos: (
     code: string
   ) => Promise<UnitPhotoRecord[]>;
