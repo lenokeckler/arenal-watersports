@@ -4,6 +4,7 @@ import {
   ARIA_ROLE,
   BUTTON,
   BUTTON_TYPES,
+  STRING,
 } from "@/app/constants";
 import { CATEGORY_CONFIGURE_SAVE_COPY } from "../constants/CategoryConfigureSaveCopy.constants";
 import { CATEGORY_CONFIGURE_SAVE_STATUS } from "../constants/CategoryConfigureSaveStatus.constants";
@@ -28,9 +29,19 @@ const CategoryConfigureSaveBar = ({
       className={CATEGORY_CONFIGURE_SAVE_BAR_SPACER_CLASS}
     />
     <div className={CATEGORY_CONFIGURE_SAVE_BAR_CLASS}>
-      {message && (
+      <Text
+        role={ARIA_ROLE.STATUS}
+        className={
+          CATEGORY_CONFIGURE_SAVE_BAR_MESSAGE_CLASS
+        }
+      >
+        {status === CATEGORY_CONFIGURE_SAVE_STATUS.FAILED
+          ? STRING.Empty
+          : message}
+      </Text>
+      {status === CATEGORY_CONFIGURE_SAVE_STATUS.FAILED && (
         <Text
-          role={ARIA_ROLE.STATUS}
+          role={ARIA_ROLE.ALERT}
           className={
             CATEGORY_CONFIGURE_SAVE_BAR_MESSAGE_CLASS
           }

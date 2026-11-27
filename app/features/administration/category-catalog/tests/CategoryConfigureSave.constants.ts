@@ -1,5 +1,7 @@
-import { LENGTH, STRING } from "@/app/constants";
+import { LENGTH, STATUS, STRING } from "@/app/constants";
 import { CATEGORY_ALERT_TYPE } from "../constants/CategoryAlertType.constants";
+import { CATEGORY_CONFIGURE_SAVE_COPY } from "../constants/CategoryConfigureSaveCopy.constants";
+import type { CategoryConfigurationErrors } from "../models/CategoryConfigurationErrors.interface";
 import type { CategoryConfigureDraft } from "../models/CategoryConfigureDraft.interface";
 import type { CategoryEditedValues } from "../models/CategoryEditedValues.interface";
 import type { UpdateCategoryConfigurationInput } from "../models/UpdateCategoryConfigurationInput.interface";
@@ -106,6 +108,28 @@ export const INVALID_EDITED_VALUES: CategoryEditedValues = {
 };
 
 export const INVALID_FIELD_COUNT = LENGTH.THREE;
+
+export const SAVED_STEP_FEEDBACK = {
+  status: STATUS.SUCCESS,
+  message: CATEGORY_CONFIGURE_SAVE_COPY.SAVED,
+};
+
+export const FAILED_STEP_FEEDBACK = {
+  status: STATUS.ERROR,
+  message: CATEGORY_CONFIGURE_SAVE_COPY.FAILED,
+};
+
+export const FAKE_FIELD_ERROR = "Fake field error";
+
+export const NO_CONFIGURATION_ERRORS: CategoryConfigurationErrors =
+  { behavior: {}, deposit: {}, alerts: {} };
+
+export const buildConfigurationErrors = (
+  overrides: Partial<CategoryConfigurationErrors> = {}
+): CategoryConfigurationErrors => ({
+  ...NO_CONFIGURATION_ERRORS,
+  ...overrides,
+});
 
 export const DEFAULT_UPDATE_CATEGORY_CONFIGURATION_INPUT: UpdateCategoryConfigurationInput =
   {

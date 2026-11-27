@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { PATHS, STRING } from "@/app/constants";
 import { CATEGORY_CONFIGURE_COPY } from "../constants/CategoryConfigureCopy.constants";
+import { CATEGORY_CONFIGURE_SAVE_COPY } from "../constants/CategoryConfigureSaveCopy.constants";
 import { DEFAULT_CATEGORY_CONFIGURATION } from "./CategoryConfiguration.constants";
 import { createCategoryConfigureViewPage } from "./CategoryConfigureView.page";
 import { renderCategoryConfigureView } from "./renderCategoryConfigureView";
@@ -41,6 +42,30 @@ describe("CategoryConfigureView", () => {
     expect(
       page.getText(CATEGORY_CONFIGURE_COPY.MODE_LOCKED)
     ).toBeInTheDocument();
+  });
+
+  it("turns the chips to Inactiva and counts one change when the active switch is turned off", async () => {
+    renderCategoryConfigureView();
+    const page = createCategoryConfigureViewPage();
+
+    await page.toggleSwitch(
+      CATEGORY_CONFIGURE_COPY.ACTIVE_LABEL
+    );
+
+    expect(
+      page.getActiveSwitch(
+        CATEGORY_CONFIGURE_COPY.ACTIVE_LABEL
+      )
+    ).toHaveAttribute("aria-checked", STRING.FALSE);
+    expect(
+      page.getText(CATEGORY_CONFIGURE_COPY.STATUS_INACTIVE)
+    ).toBeInTheDocument();
+    expect(
+      page.getText(CATEGORY_CONFIGURE_COPY.STATUS_ON_BOARD)
+    ).not.toBeInTheDocument();
+    expect(page.getStatusMessage()).toHaveTextContent(
+      CATEGORY_CONFIGURE_SAVE_COPY.DIRTY_SINGULAR
+    );
   });
 
   it("shows the six section titles with the reservations open and the others closed", () => {
