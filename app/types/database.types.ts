@@ -1788,6 +1788,69 @@ export type Database = {
           },
         ];
       };
+      reservation_extra_time_resolutions: {
+        Row: {
+          charge_id: string | null;
+          created_at: string;
+          created_by: string;
+          extra_minutes: number;
+          outcome: Database["public"]["Enums"]["extra_time_outcome"];
+          reservation_id: string;
+        };
+        Insert: {
+          charge_id?: string | null;
+          created_at?: string;
+          created_by: string;
+          extra_minutes: number;
+          outcome: Database["public"]["Enums"]["extra_time_outcome"];
+          reservation_id: string;
+        };
+        Update: {
+          charge_id?: string | null;
+          created_at?: string;
+          created_by?: string;
+          extra_minutes?: number;
+          outcome?: Database["public"]["Enums"]["extra_time_outcome"];
+          reservation_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reservation_extra_time_resolutions_charge_id_fkey";
+            columns: ["charge_id"];
+            isOneToOne: true;
+            referencedRelation: "reservation_charges";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_extra_time_resolutions_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "reservation_extra_time_resolutions_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_extra_time_resolutions_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["reservation_id"];
+          },
+          {
+            foreignKeyName: "reservation_extra_time_resolutions_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "reservations";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       reservation_guides: {
         Row: {
           assigned_at: string;
@@ -4133,6 +4196,18 @@ export type Database = {
           recorded_has_deposit: boolean;
         }[];
       };
+      record_reservation_extra_time: {
+        Args: { p_payload: Json };
+        Returns: {
+          charge_id: string;
+          charged_amount: number;
+          charged_currency: Database["public"]["Enums"]["currency_code"];
+          charged_payment_method: string;
+          extra_minutes: number;
+          outcome: Database["public"]["Enums"]["extra_time_outcome"];
+          recorded_by_name: string;
+        }[];
+      };
       record_reservation_refund: {
         Args: { p_payload: Json };
         Returns: {
@@ -4254,6 +4329,18 @@ export type Database = {
           p_unit_id: string;
         };
         Returns: boolean;
+      };
+      reservation_extra_time_groups: {
+        Args: { p_reservation_id: string };
+        Returns: {
+          arrived_at: string;
+          category_id: string;
+          category_name: string;
+          dispatched_at: string;
+          extended_minutes: number;
+          extra_minutes: number;
+          planned_returns_at: string;
+        }[];
       };
       reservation_extras_price_quote: {
         Args: {
@@ -4576,6 +4663,7 @@ export type Database = {
         | "returned"
         | "retained"
         | "partially_retained";
+      extra_time_outcome: "charged" | "courtesy";
       photo_angle:
         "right_side" | "left_side" | "front" | "bottom";
       reservation_postponement_cause:
@@ -4758,6 +4846,7 @@ export const Constants = {
         "retained",
         "partially_retained",
       ],
+      extra_time_outcome: ["charged", "courtesy"],
       photo_angle: [
         "right_side",
         "left_side",
