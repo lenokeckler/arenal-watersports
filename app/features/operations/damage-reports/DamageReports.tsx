@@ -1,32 +1,46 @@
+import {
+  DAMAGE_REPORT_OUTCOME,
+  EQUIPMENT_PERIOD,
+} from "@/app/constants";
 import { OperationsAccessError } from "@/app/services/operations/getOperationsSupabaseClient";
 import type { NullableRef } from "@/app/types";
+import { toCostaRicaDate } from "@/app/utils/equipment-months/toCostaRicaDate";
+import { resolveQueryChoice } from "@/app/utils/query-param/resolveQueryChoice";
 import DamageReportsView from "./DamageReportsView";
+import { DAMAGE_REPORTS_QUERY } from "./constants/DamageReports.constants";
 import { DAMAGE_REPORTS_COPY } from "./constants/DamageReportsCopy.constants";
-import type { DamageReportEntry } from "./models/DamageReportEntry.interface";
+import type { DamageOverview } from "./models/DamageOverview.interface";
 import type { DamageReportsProps } from "./models/DamageReportsProps.interface";
-import type { DamageReportsUnit } from "./models/DamageReportsUnit.interface";
-import { getUnitDamageReports } from "./services/getUnitDamageReports";
+import { getDamageOverview } from "./services/getDamageOverview";
+import { resolveDamageFilters } from "./utils/resolveDamageFilters";
 import type { JSX } from "react";
 
+const buildEmptyOverview = (): DamageOverview => {
+  const today = toCostaRicaDate(new Date());
+
+  return {
+    calendarMonths: [],
+    calendarReports: [],
+    month: today.slice(
+      0,
+      EQUIPMENT_PERIOD.MONTH_KEY_LENGTH
+    ),
+    pending: [],
+    recent: [],
+    today,
+  };
+};
+
 const DamageReports = async ({
-  page,
-  unitId,
-}: DamageReportsProps): Promise<JSX.Element> => {
-  let entries: DamageReportEntry[] = [];
-  let hasNextPage = false;
-  let unit: NullableRef<DamageReportsUnit> = null;
+  searchParams = {},
+}: DamageReportsProps = {}): Promise<JSX.Element> => {
+  let overview = buildEmptyOverview();
   let errorMessage: NullableRef<string> = null;
 
   try {
-    if (unitId) {
-      const result = await getUnitDamageReports(
-        unitId,
-        page
-      );
-      entries = result.entries;
-      hasNextPage = result.hasNextPage;
-      unit = result.unit;
-    }
+    overview = await getDamageOverview(
+      searchParams[DAMAGE_REPORTS_QUERY.MONTH]
+    );
   } catch (error) {
     errorMessage =
       error instanceof OperationsAccessError
@@ -34,13 +48,19 @@ const DamageReports = async ({
         : DAMAGE_REPORTS_COPY.ERROR;
   }
 
+  const saved = resolveQueryChoice(
+    searchParams[DAMAGE_REPORTS_QUERY.SAVED],
+    Object.values(DAMAGE_REPORT_OUTCOME)
+  );
+
   return (
     <DamageReportsView
-      entries={entries}
       errorMessage={errorMessage}
-      hasNextPage={hasNextPage}
-      page={page}
-      unit={unit}
+      filters={resolveDamageFilters(searchParams, overview)}
+      overview={overview}
+      savedMessage={
+        saved ? DAMAGE_REPORTS_COPY.SAVED[saved] : null
+      }
     />
   );
 };

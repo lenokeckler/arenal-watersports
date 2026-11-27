@@ -55,29 +55,3 @@ export const resolveDamageDayTotalClass = (
   hasReports
     ? DAMAGE_REPORTS_DAY_TOTAL_CLASS
     : DAMAGE_REPORTS_HINT_CLASS;
-
-export const DAMAGE_REPORTS_HEADING_CLASS =
-  "text-headline-lg-mobile text-on-surface md:text-headline-lg";
-
-export const DAMAGE_REPORTS_UNIT_CLASS =
-  "text-title-md font-semibold text-on-surface";
-
-export const DAMAGE_REPORTS_UNIT_DETAIL_CLASS =
-  "text-body-base text-on-surface-variant";
-
-export const DAMAGE_REPORTS_LIST_CLASS =
-  "flex w-full flex-col gap-3 [&_ul]:list-none";
-
-export const DAMAGE_REPORTS_CARD_HEADING_CLASS =
-  "text-title-md font-semibold text-on-surface";
-
-export const DAMAGE_REPORTS_CARD_DETAIL_CLASS =
-  "text-body-base text-on-surface-variant";
-
-export const DAMAGE_REPORTS_PAGINATION_CLASS =
-  "flex justify-between gap-3 pt-2";
-
-export const DAMAGE_REPORTS_PAGINATION_LINK_CLASS =
-  "inline-flex min-h-12 items-center rounded-xl border border-outline-variant bg-surface-container/80 px-4 text-on-surface transition-colors hover:bg-surface-container-high focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
-
-export const DAMAGE_REPORTS_PAGINATION_NEXT_CLASS = `${DAMAGE_REPORTS_PAGINATION_LINK_CLASS} ml-auto`;
