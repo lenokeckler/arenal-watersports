@@ -23,6 +23,7 @@ export const RESERVATION_DETAIL_OVERVIEW_FIXTURE: ReservationDetail =
     duration_minutes: test.DURATION_MINUTES,
     ends_at: test.RESERVATION_END,
     equipment: [],
+    extraTime: null,
     extraTimeCharges: [],
     extras: [],
     guides: [],

@@ -17,6 +17,7 @@ import ReservationDetailChargeAction from "./ReservationDetailChargeAction";
 import ReservationDetailRefundAction from "./ReservationDetailRefundAction";
 import ReservationDetailDepositSummary from "./ReservationDetailDepositSummary";
 import ReservationDetailDepositAction from "./ReservationDetailDepositAction";
+import ReservationDetailExtraTime from "./ReservationDetailExtraTime";
 
 const ReservationDetailChargesSection = ({
   detail,
@@ -49,6 +50,7 @@ const ReservationDetailChargesSection = ({
     />
     <ReservationDetailDepositSummary detail={detail} />
     <ReservationDetailChargeAction detail={detail} />
+    <ReservationDetailExtraTime detail={detail} />
     <ReservationDetailDepositAction detail={detail} />
     <ReservationDetailRefundAction detail={detail} />
   </ReservationDetailPanel>
