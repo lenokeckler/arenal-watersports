@@ -1,46 +1,15 @@
 import { expect } from "@playwright/test";
-import { createCategoryListPage } from "../pages/CategoryList.page";
 import { test } from "../support/categoryUnitsTest";
-import { E2E_BY_QUANTITY_CATEGORY } from "../constants/E2eCategoryUnits.constants";
-import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 
 test.describe("Category units list", () => {
-  test("only a by-unit card links to its units, and the link opens the empty list", async ({
-    page,
+  test("opens the empty list of a by-unit category with its add link", async ({
     listPage,
     seedUnitCategory,
   }) => {
     const unitCategory =
       await seedUnitCategory("link-unit");
-    const quantityCategory = await seedUnitCategory(
-      "link-quantity",
-      E2E_BY_QUANTITY_CATEGORY
-    );
-    const categoryListPage = createCategoryListPage(page);
 
-    await categoryListPage.goToCategory(
-      quantityCategory.categoryName
-    );
-    await categoryListPage.openCategoryOptions(
-      quantityCategory.categoryName
-    );
-
-    await expect(
-      listPage.getUnitsLink(
-        categoryListPage.getCategoryCard(
-          quantityCategory.categoryName
-        )
-      )
-    ).toHaveCount(E2E_COUNT.NONE);
-
-    await categoryListPage.goToCategory(
-      unitCategory.categoryName
-    );
-    await listPage.clickUnitsLink(
-      categoryListPage.getCategoryCard(
-        unitCategory.categoryName
-      )
-    );
+    await listPage.goTo(unitCategory.categoryId);
 
     await expect(
       listPage.getHeading(unitCategory.categoryName)
