@@ -13,6 +13,4 @@ export interface CategoryCardViewModel {
   onCancelClick: () => void;
   onConfirmDeleteClick: () => void;
   onDeleteClick: () => void;
-  onMarkInactiveClick: () => void;
-  onReactivateClick: () => void;
 }
