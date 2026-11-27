@@ -86,6 +86,12 @@ export const createCategoryListPage = (page: Page) => {
       CATEGORY_CATALOG_COPY.STATUS_LABEL_INACTIVE
     );
 
+  const getCategoryStatusNote = (
+    categoryName: string,
+    statusNote: string
+  ): Locator =>
+    getCategoryCard(categoryName).getByText(statusNote);
+
   const getCreateLink = (): Locator =>
     page.getByRole(ARIA_ROLE.LINK, {
       name: CATEGORY_CATALOG_COPY.CREATE_CTA,
@@ -128,6 +134,7 @@ export const createCategoryListPage = (page: Page) => {
     getCategoryInactiveChip,
     getCategoryEditLabel,
     getCategoryButtons,
+    getCategoryStatusNote,
     getCreateLink,
     getToastMessage,
     clickCategoryCard,

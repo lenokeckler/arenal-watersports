@@ -126,6 +126,12 @@ export const CATEGORY_CATALOG_COPY = {
   RETRY_BUTTON: "Reintentar",
   STATUS_LABEL_ACTIVE: "Activa",
   STATUS_LABEL_INACTIVE: "Inactiva",
+  STATUS_NOTE_INACTIVE:
+    "Inactiva: no aparece en el tablero ni en las reservas",
+  STATUS_NOTE_NOT_RESERVABLE:
+    "No es reservable: no aparece en el tablero",
+  STATUS_NOTE_NO_IMAGE:
+    "Sin imagen: se muestra la foto predeterminada o un ícono",
   SUBMIT_BUTTON: "Crear categoría",
   TRACKING_MODE_BY_QUANTITY_LABEL: "Por cantidad",
   TRACKING_MODE_BY_QUANTITY_LOWERCASE: "por cantidad",
