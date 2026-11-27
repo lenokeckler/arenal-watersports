@@ -1,0 +1,20 @@
+export const PRICE_LOOKUP_COPY = {
+  COMBOS_EMPTY: "No hay combos activos para este público.",
+  COMBOS_HEADING: "Combos",
+  EMPTY: "Todavía no hay precios para consultar.",
+  ERROR:
+    "No se pudieron cargar los precios. Revise su señal e inténtelo de nuevo.",
+  EXTRAS_EMPTY: "No hay extras activos para este público.",
+  EXTRAS_HEADING: "Extras",
+  FORBIDDEN: "No tiene acceso a las operaciones.",
+  FOREIGN_HEADING: "Extranjeros",
+  HEADING: "Consulta de precios",
+  ITEM_QUANTITY_SEPARATOR: " × ",
+  ITEM_SEPARATOR: " · ",
+  NATIONAL_HEADING: "Nacionales",
+  NO_TARIFF: "Sin tarifa",
+  RENTAL_LABEL: "Alquiler",
+  TARIFFS_EMPTY: "No hay tarifas activas.",
+  TARIFFS_HEADING: "Tarifas por hora",
+  TOUR_LABEL: "Tour",
+} as const;

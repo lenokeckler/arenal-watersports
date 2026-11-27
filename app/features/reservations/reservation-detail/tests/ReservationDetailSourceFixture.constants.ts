@@ -10,6 +10,7 @@ export const RESERVATION_DETAIL_SOURCE_FIXTURE = {
   closed_at: null,
   code: RESERVATION_DETAIL_TEST.RESERVATION_CODE,
   combo: null,
+  reservation_dock_notices: null,
   created_at: RESERVATION_DETAIL_TEST.TIMESTAMP,
   created_by: RESERVATION_DETAIL_TEST.CREATED_WORKER_ID,
   customer_name: RESERVATION_DETAIL_TEST.CUSTOMER_NAME,

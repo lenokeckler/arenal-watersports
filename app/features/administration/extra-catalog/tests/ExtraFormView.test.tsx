@@ -126,6 +126,8 @@ describe("ExtraFormView", () => {
       name: FAKE_EXTRA_NAME,
       priceUsd: FAKE_EXTRA_PRICE_USD_TEXT,
       priceCrc: STRING.Empty,
+      occupiesCategoryId: STRING.Empty,
+      occupiesQuantity: STRING.Empty,
     });
   });
 
@@ -147,6 +149,8 @@ describe("ExtraFormView", () => {
       name: FAKE_EXTRA_NAME,
       priceUsd: FAKE_EXTRA_PRICE_USD_TEXT,
       priceCrc: FAKE_EXTRA_PRICE_CRC_TEXT,
+      occupiesCategoryId: STRING.Empty,
+      occupiesQuantity: STRING.Empty,
     });
   });
 
@@ -199,6 +203,8 @@ describe("ExtraFormView", () => {
       name: EDITED_EXTRA_NAME,
       priceUsd: EDITED_EXTRA_PRICE_USD_TEXT,
       priceCrc: STRING.Empty,
+      occupiesCategoryId: STRING.Empty,
+      occupiesQuantity: STRING.Empty,
     });
     expect(createExtraMock).not.toHaveBeenCalled();
   });
@@ -238,17 +244,17 @@ describe("ExtraFormView", () => {
     expect(
       page.getPriceField(CURRENCY_CODE.CRC)
     ).toBeDisabled();
-    expect(page.getCancelButton()).toBeDisabled();
+    expect(page.getBackButton()).toBeDisabled();
     deferred.resolve(EXTRA_FORM_SUCCESS_RESULT);
     await waitFor(() =>
       expect(page.getNameField()).toBeEnabled()
     );
   });
 
-  it("goes back to the extra list from the cancel button", async () => {
+  it("goes back to the extra list from the back button", async () => {
     const page = renderExtraFormView(CREATE_FORM_PROPS);
 
-    await page.cancel();
+    await page.back();
 
     expect(pushMock).toHaveBeenCalledWith(
       PATHS.ADMINISTRATION.EXTRAS

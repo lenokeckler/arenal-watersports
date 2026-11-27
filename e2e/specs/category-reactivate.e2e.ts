@@ -1,61 +1,67 @@
 import { expect, test } from "@playwright/test";
-import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
+import { CATEGORY_CONFIGURE_SAVE_COPY } from "@/app/features/administration/category-catalog/constants/CategoryConfigureSaveCopy.constants";
 import { resolveReactivateCategoryName } from "../constants/E2eCategoryFixtures.constants";
-import { createCategoryReactivatePage } from "../pages/CategoryReactivate.page";
+import { createCategoryConfigurePage } from "../pages/CategoryConfigure.page";
+import { createCategoryListPage } from "../pages/CategoryList.page";
+import { findCategoryId } from "../support/categoryFixtures";
 import {
   removeCategoryWithRecords,
   seedCategoryWithRecords,
 } from "../support/categoryRecordsFixtures";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 
+const { SAVE, SAVED } = CATEGORY_CONFIGURE_SAVE_COPY;
+
 test.describe("Category reactivation", () => {
-  test("reactivates an inactive category and gives its actions back", async ({
+  test("marks a category inactive and reactivates it from the Categor�a activa switch", async ({
     page,
   }, testInfo) => {
     const categoryName = resolveReactivateCategoryName(
       testInfo.project.name
     );
     await seedCategoryWithRecords(categoryName);
-    const categoryListPage =
-      createCategoryReactivatePage(page);
+    const categoryListPage = createCategoryListPage(page);
+    const configurePage = createCategoryConfigurePage(page);
 
     try {
       await logInAsAdmin(page);
+      await configurePage.goTo(
+        await findCategoryId(categoryName)
+      );
+      await configurePage.getActiveSwitch().click();
+      await configurePage.getButton(SAVE).click();
+      await expect(
+        configurePage.getStatusMessage(SAVED)
+      ).toBeVisible();
+
       await categoryListPage.goToCategory(categoryName);
-      await categoryListPage.clickCategoryMarkInactiveButton(
-        categoryName
-      );
       await expect(
         categoryListPage.getCategoryInactiveChip(
           categoryName
         )
       ).toBeVisible();
-      await expect(
-        categoryListPage.getReactivateButton(categoryName)
-      ).toBeVisible();
 
-      await categoryListPage.clickReactivateButton(
+      await categoryListPage.clickCategoryCard(
         categoryName
       );
-
       await expect(
-        categoryListPage.getToastMessage(
-          CATEGORY_CATALOG_COPY.REACTIVATE_SUCCESS_TOAST
-        )
+        configurePage.getHeading(categoryName)
+      ).toBeVisible();
+      await configurePage.getActiveSwitch().click();
+      await configurePage.getButton(SAVE).click();
+      await expect(
+        configurePage.getStatusMessage(SAVED)
+      ).toBeVisible();
+
+      await categoryListPage.goToCategory(categoryName);
+      await expect(
+        categoryListPage.getCategoryCard(categoryName)
       ).toBeVisible();
       await expect(
         categoryListPage.getCategoryInactiveChip(
           categoryName
         )
       ).toHaveCount(0);
-      await expect(
-        categoryListPage.getReactivateButton(categoryName)
-      ).toHaveCount(0);
-      await expect(
-        categoryListPage.getCategoryMarkInactiveButton(
-          categoryName
-        )
-      ).toBeVisible();
     } finally {
       await removeCategoryWithRecords(categoryName);
     }

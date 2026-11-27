@@ -1,5 +1,4 @@
 import type { BoardCategoryRow } from "@/app/services/board";
-import { EQUIPMENT_BOARD_PERCENT } from "../constants/EquipmentBoard.constants";
 import type { BoardCategory } from "../models/BoardCategory.interface";
 
 export const DEFAULT_BOARD_CATEGORY: BoardCategory = {
@@ -8,6 +7,8 @@ export const DEFAULT_BOARD_CATEGORY: BoardCategory = {
   id: "category-default",
   imagePath: null,
   inUseCount: 1,
+  maintenanceCount: 0,
+  damagedCount: 0,
   name: "Jet ski",
   totalCount: 4,
 };
@@ -33,6 +34,8 @@ export const NULL_BOARD_CATEGORY_ROW = {
   group_name: null,
   image_path: null,
   in_use_count: null,
+  maintenance_count: null,
+  damaged_count: null,
   total_count: null,
 } as unknown as BoardCategoryRow;
 
@@ -43,24 +46,10 @@ export const FILLED_BOARD_CATEGORY_ROW: BoardCategoryRow = {
   group_name: BOARD_GROUP_NAME.KAYAK,
   image_path: null,
   in_use_count: 2,
+  maintenance_count: 0,
+  damaged_count: 0,
   total_count: 6,
 };
-
-export const FREE_PERCENT_CASES = {
-  CLAMPED_ABOVE: { freeCount: 9, totalCount: 4 },
-  CLAMPED_BELOW: { freeCount: -3, totalCount: 4 },
-  FULL: { freeCount: 4, totalCount: 4 },
-  ROUNDED_DOWN: { freeCount: 1, totalCount: 3 },
-  ROUNDED_UP: { freeCount: 2, totalCount: 3 },
-  ZERO_TOTAL: { freeCount: 2, totalCount: 0 },
-} as const;
-
-export const FREE_PERCENT_EXPECTED = {
-  EMPTY: 0,
-  FULL: EQUIPMENT_BOARD_PERCENT.MAX,
-  ROUNDED_DOWN: 33,
-  ROUNDED_UP: 67,
-} as const;
 
 export const FREE_OF_TOTAL_CASES = [
   { expected: "0 / 4 libres", freeCount: 0, totalCount: 4 },
