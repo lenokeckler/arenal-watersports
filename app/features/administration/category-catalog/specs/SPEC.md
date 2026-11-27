@@ -21,7 +21,7 @@ and a clear error state they can retry from.
 ## Out of scope / deferred
 
 - Marking a category inactive and deleting it: carried by `feat/adm-02/us-12-03-mark-inactive-and-delete`
-  (#18). On this branch the card action state is always `NONE`, so no action is rendered.
+  (#18).
 - Creating a category: carried by #35-#38.
 - Board and booking grouping of categories that share a group.
 
@@ -68,8 +68,8 @@ and a clear error state they can retry from.
   count of units that are not decommissioned. It covers active and inactive categories.
   `fetchCategoryQuantities` reads it for the ids of the page only.
 - Row link: the whole row is a link to `resolveCategoryConfigurePath`; its accessible name is built
-  from the category name. The options panel and the Marcar inactiva, Eliminar and Reactivar buttons are
-  no longer rendered on the row: the Configurar screen holds the sections, the Categoría activa switch
+  from the category name. The Marcar inactiva, Eliminar and Reactivar buttons are
+  not rendered on the row: the Configurar screen holds the sections, the Categoría activa switch
   and Eliminar categoría.
 - Administration sub-screens (behavior, deposit, alerts, create, units list, unit form, worker
   registration, worker areas, reservations by worker) render their heading with `hasLogo={false}` on the
@@ -89,8 +89,8 @@ and a clear error state they can retry from.
   The failure is wrapped with `CATEGORY_LIST_DIAGNOSTICS.FETCH_FAILED` and the original error as its
   `cause`.
 - View state and retry live in `hooks/useCategoryListViewModel.ts`, with the states in
-  `constants/CategoryListViewState.constants.ts`; each card's action state comes from
-  `utils/resolveCategoryCardActionState.ts` and its handlers from `hooks/useCategoryCardActions.ts`.
+  `constants/CategoryListViewState.constants.ts`; each card carries its category, its inactive flag and
+  its subtitle.
 - The page file `app/(system)/administration/categories/page.tsx` renders `CategoryList`, reached through
   `PATHS.ADMINISTRATION.CATEGORIES`. The entry component redirects a worker who is not an administrator
   to `PATHS.HOME` before it reads any category, the same server check the other administration screens use.

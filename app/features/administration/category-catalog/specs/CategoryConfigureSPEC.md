@@ -13,7 +13,6 @@ Let the administration worker open one category and see everything about it on a
 
 ## Out of scope
 
-- Linking the category card to this screen and removing the card panel.
 - The six existing screens (`behavior`, `deposit`, `alerts`, `image`, `stock`, `units`): they keep working untouched.
 - Offline queueing.
 
