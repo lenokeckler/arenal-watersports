@@ -7,7 +7,6 @@ import {
 } from "../constants/E2eLightTheme.constants";
 import { createLightThemePage } from "../pages/LightTheme.page";
 import { createReservationsCalendarPage } from "../pages/ReservationsCalendar.page";
-import { createSessionBarPage } from "../pages/SessionBar.page";
 import { createWorkModePage } from "../pages/WorkMode.page";
 import { captureViewport } from "../support/captureViewport";
 import { addReservationsArea } from "../support/addReservationsArea";
@@ -45,11 +44,13 @@ test("captures the Reservations calendar in dark and light themes", async ({
     `${E2E_LIGHT_THEME_SCREENSHOT.DARK}-${testInfo.project.name}${E2E_LIGHT_THEME_SCREENSHOT_EXTENSION}`
   );
 
-  await themePage.clickToggleForTheme(THEME.LIGHT);
+  await themePage.openMenu();
+  await themePage.chooseTheme(THEME.LIGHT);
   await expect(themePage.getRoot()).toHaveAttribute(
     E2E_LIGHT_THEME_STORAGE.ATTRIBUTE,
     THEME.LIGHT
   );
+  await themePage.closeMenu();
   await waitForCalendarPeriod(page, calendarPage);
   await waitForVisualStability(page);
   await expect(
@@ -60,6 +61,7 @@ test("captures the Reservations calendar in dark and light themes", async ({
     `${E2E_LIGHT_THEME_SCREENSHOT.LIGHT}-${testInfo.project.name}${E2E_LIGHT_THEME_SCREENSHOT_EXTENSION}`
   );
 
-  await createSessionBarPage(page).signOut();
+  await themePage.openMenu();
+  await themePage.signOutFromMenu();
   await expect(page).toHaveURL(PATHS.ACCESS.LOGIN);
 });

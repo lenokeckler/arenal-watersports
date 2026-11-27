@@ -9,6 +9,7 @@ import type { ExtraFormViewModelProps } from "./models/ExtraFormViewModelProps.t
 import {
   EXTRA_FORM_CARD_CLASS,
   EXTRA_FORM_CONTENT_CLASS,
+  EXTRA_FORM_FORM_CLASS,
 } from "./styles/ExtraForm.styles";
 
 const ExtraFormView = (
@@ -19,11 +20,9 @@ const ExtraFormView = (
     values,
     errors,
     isSubmitting,
-    onNameChange,
-    onPriceUsdChange,
-    onPriceCrcChange,
     onBack,
     onSubmit,
+    ...fieldProps
   } = useExtraFormViewModel(props);
 
   return (
@@ -32,22 +31,23 @@ const ExtraFormView = (
       {...WIDE_LAYOUT_MARKER_PROPS}
     >
       <ExtraFormHeader mode={mode} />
-      <form onSubmit={onSubmit}>
+      <form
+        onSubmit={onSubmit}
+        className={EXTRA_FORM_FORM_CLASS}
+      >
         <div className={EXTRA_FORM_CARD_CLASS}>
           <ExtraFormFields
             values={values}
             errors={errors}
             isSubmitting={isSubmitting}
-            onNameChange={onNameChange}
-            onPriceUsdChange={onPriceUsdChange}
-            onPriceCrcChange={onPriceCrcChange}
-          />
-          <ExtraFormActions
-            mode={mode}
-            isSubmitting={isSubmitting}
-            onBack={onBack}
+            {...fieldProps}
           />
         </div>
+        <ExtraFormActions
+          mode={mode}
+          isSubmitting={isSubmitting}
+          onBack={onBack}
+        />
       </form>
     </div>
   );

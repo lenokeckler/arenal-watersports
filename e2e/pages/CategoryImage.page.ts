@@ -5,28 +5,12 @@ import { CATEGORY_IMAGE_FORM_FIELD_ID } from "@/app/features/administration/cate
 import { resolveCategoryImagePath } from "@/app/features/administration/category-catalog/utils/resolveCategoryImagePath";
 import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
 import type { E2eCategoryImageFile } from "../models/E2eCategoryImageFile.interface";
-import { createCategoryCardOptionsPage } from "./CategoryCardOptions.page";
 
 export const createCategoryImagePage = (page: Page) => {
-  const categoryCardOptionsPage =
-    createCategoryCardOptionsPage();
-
   const goTo = async (
     categoryId: string
   ): Promise<void> => {
     await page.goto(resolveCategoryImagePath(categoryId));
-  };
-
-  const clickImageLink = async (
-    categoryCard: Locator
-  ): Promise<void> => {
-    await categoryCardOptionsPage.openOptions(categoryCard);
-    await categoryCard
-      .getByRole(ARIA_ROLE.LINK, {
-        name: CATEGORY_IMAGE_COPY.IMAGE_LINK,
-        exact: true,
-      })
-      .click();
   };
 
   const getHeading = (): Locator =>
@@ -72,7 +56,6 @@ export const createCategoryImagePage = (page: Page) => {
 
   return {
     chooseFile,
-    clickImageLink,
     clickNamedButton,
     getAlert,
     getButton,

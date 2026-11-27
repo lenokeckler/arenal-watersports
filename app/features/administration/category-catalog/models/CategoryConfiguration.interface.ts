@@ -13,4 +13,5 @@ export interface CategoryConfiguration {
   deposit: CategoryDeposit;
   alerts: CategoryAlerts;
   image: CategoryImage;
+  hasRecords: boolean;
 }

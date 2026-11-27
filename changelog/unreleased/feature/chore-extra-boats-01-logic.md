@@ -1,0 +1,1 @@
+chore - Extra boats logic — the boats of an extra are read with every unit of each category, and a view model keeps the selection of all categories, counts the unsaved changes and saves only the categories that changed

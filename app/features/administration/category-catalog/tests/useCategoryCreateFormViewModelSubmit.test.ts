@@ -15,7 +15,7 @@ import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constant
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import { useCategoryCreateFormViewModel } from "../hooks/useCategoryCreateFormViewModel";
 import type { CategoryFormFieldChangeEvent } from "../models/CategoryFormFieldChangeEvent.type";
-import { resolveCategoryAlertsPath } from "../utils/resolveCategoryAlertsPath";
+import { resolveCategoryConfigurePath } from "../utils/resolveCategoryConfigurePath";
 import {
   FAKE_CREATED_CATEGORY_ID,
   VALID_CATEGORY_CREATE_FORM_VALUES,
@@ -98,12 +98,9 @@ describe("useCategoryCreateFormViewModel submit", () => {
           value: VALID_CATEGORY_CREATE_FORM_VALUES.name,
         },
       } as CategoryFormFieldChangeEvent);
-      result.current.onTrackingModeChange({
-        target: {
-          value:
-            VALID_CATEGORY_CREATE_FORM_VALUES.trackingMode,
-        },
-      } as CategoryFormFieldChangeEvent);
+      result.current.onTrackingModeChange(
+        VALID_CATEGORY_CREATE_FORM_VALUES.trackingMode
+      );
       result.current.onGroupNameChange({
         target: {
           value:
@@ -119,7 +116,7 @@ describe("useCategoryCreateFormViewModel submit", () => {
       CATEGORY_CATALOG_COPY.CREATE_SUCCESS_TOAST
     );
     expect(mockPush).toHaveBeenCalledWith(
-      resolveCategoryAlertsPath(FAKE_CREATED_CATEGORY_ID)
+      resolveCategoryConfigurePath(FAKE_CREATED_CATEGORY_ID)
     );
     expect(result.current.isSubmitting).toBe(false);
   });

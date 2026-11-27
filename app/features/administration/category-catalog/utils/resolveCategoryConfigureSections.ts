@@ -47,7 +47,8 @@ const resolveTitle = (
 
 const resolveSummary = (
   sectionId: CategoryConfigureSectionId,
-  configuration: CategoryConfiguration
+  configuration: CategoryConfiguration,
+  hasPickedPhoto: boolean
 ): string => {
   const summaries: Record<
     CategoryConfigureSectionId,
@@ -60,7 +61,10 @@ const resolveSummary = (
     [CATEGORY_CONFIGURE_SECTION_ID.INVENTORY]:
       resolveStockSummary(configuration.currentQuantity),
     [CATEGORY_CONFIGURE_SECTION_ID.PHOTO]:
-      resolvePhotoSummary(configuration.image),
+      resolvePhotoSummary(
+        configuration.image,
+        hasPickedPhoto
+      ),
     [CATEGORY_CONFIGURE_SECTION_ID.RESERVATIONS]:
       resolveReservationsSummary(configuration.behavior),
     [CATEGORY_CONFIGURE_SECTION_ID.TRAITS]:
@@ -72,12 +76,14 @@ const resolveSummary = (
 
 const resolveBadge = (
   sectionId: CategoryConfigureSectionId,
-  { behavior, image }: CategoryConfiguration
+  { behavior, image }: CategoryConfiguration,
+  hasPickedPhoto: boolean
 ): NullableRef<CategoryConfigureChipProps> => {
   if (
     sectionId === CATEGORY_CONFIGURE_SECTION_ID.PHOTO &&
     behavior.isReservable &&
-    !image.imagePath
+    !image.imagePath &&
+    !hasPickedPhoto
   ) {
     return {
       label: CATEGORY_CONFIGURE_COPY.BADGE_MISSING,
@@ -96,12 +102,21 @@ const resolveBadge = (
 
 export const resolveCategoryConfigureSections = (
   configuration: CategoryConfiguration,
-  openSectionIds: CategoryConfigureSectionId[]
+  openSectionIds: CategoryConfigureSectionId[],
+  hasPickedPhoto: boolean
 ): CategoryConfigureSectionModel[] =>
   CATEGORY_CONFIGURE_SECTION_ORDER.map((sectionId) => ({
     id: sectionId,
     title: resolveTitle(sectionId, configuration),
-    summary: resolveSummary(sectionId, configuration),
-    badge: resolveBadge(sectionId, configuration),
+    summary: resolveSummary(
+      sectionId,
+      configuration,
+      hasPickedPhoto
+    ),
+    badge: resolveBadge(
+      sectionId,
+      configuration,
+      hasPickedPhoto
+    ),
     isOpen: openSectionIds.includes(sectionId),
   }));
