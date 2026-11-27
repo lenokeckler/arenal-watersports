@@ -1,3 +1,4 @@
+import { BOARD_UNIT_FILTER } from "@/app/constants";
 import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import { resolveBoardCategoryPath } from "@/app/utils/board-paths/resolveBoardCategoryPath";
@@ -20,7 +21,12 @@ import { createEquipmentBoardPage } from "./EquipmentBoard.page";
 const renderContent = (
   cards: typeof BOARD_CARDS = BOARD_CARDS
 ) => {
-  render(<EquipmentBoardContent cards={cards} />);
+  render(
+    <EquipmentBoardContent
+      cards={cards}
+      filter={BOARD_UNIT_FILTER.ALL}
+    />
+  );
 
   return createEquipmentBoardPage();
 };
