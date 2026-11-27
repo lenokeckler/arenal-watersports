@@ -1,0 +1,1 @@
+RES-07.29.08: Deposit screen — Reservas sees the reservation summary and the deposit form on one screen, a confirmation once the deposit is recorded, and a clear message when the reservation cannot take a deposit (US-RES-29 · AWS-112)
