@@ -135,3 +135,24 @@ The administration worker keeps the list of extras that reservations can add to 
 - [x] The compatibility screen lists the extra name and the by-unit categories with their linked count.
 - [x] Each category row is at least 44 px tall and opens the units screen of that category.
 - [ ] Choosing the units of a category is carried by US-ADM-20 PR 20.05.
+
+## 20.04 Extra compatibility units logic and screen (US-ADM-20)
+
+| Requirement                                                                                                        | Test                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| A unit is toggled without mutating the selection; the saved and the selected units are compared as sets            | `toggleExtraCompatibilityUnitId.test.ts`, `hasExtraCompatibilityChanges.test.ts`, `listExtraCompatibilityUnitIds.test.ts` |
+| Every unit row shows its code, its status word and whether it is checked                                           | `buildExtraCompatibilityUnitOptions.test.ts`, `ExtraCompatibilityUnitsFormView.test.tsx`                                  |
+| Marcar todas checks every unit, Quitar todas clears them and Guardar stays disabled until the selection changes    | `useExtraCompatibilityUnitsFormViewModel.test.ts`, `ExtraCompatibilityUnitsFormView.test.tsx`                             |
+| Saving sends the extra, the category and the checked ids, toasts, goes back to the categories screen and refreshes | `useExtraCompatibilityUnitsFormViewModel.test.ts`, `submitExtraCompatibility.test.ts`                                     |
+| Nothing is submitted when nothing changed, and a second submit is blocked while the first is in flight             | `useExtraCompatibilityUnitsFormViewModel.test.ts`                                                                         |
+| Offline, a failed result and a broken request each give a clear Spanish toast and keep the worker on the screen    | `submitExtraCompatibility.test.ts`                                                                                        |
+| The screen is for administration only and shows not found for an unknown extra or category                         | `ExtraCompatibilityUnitsForm.test.tsx`                                                                                    |
+| The new dynamic route is classified for the session bar scan                                                       | `pageRouteClassification.test.ts`                                                                                         |
+
+### Acceptance criteria
+
+- [x] The units screen lists all active units of the category as a checklist with code and status word; linked units are checked.
+- [x] Marcar todas, Quitar todas, Guardar and Regresar work; Guardar saves only the units of that category.
+- [x] On success the worker sees a toast and returns to the categories screen with the counts refreshed.
+- [x] Offline or failed saves show a clear Spanish message and keep the selection.
+- [ ] Offering only the matching extras when building a reservation is carried by a later US-ADM-20 PR.
