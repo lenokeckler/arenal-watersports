@@ -57,6 +57,14 @@ export const E2E_RESERVATION_CHARGE_SCREENSHOT_STATE = {
   FORM: "form",
   MIXED: "mixed",
   MIXED_SUCCESS: "mixed-success",
+  OTHER: "other",
   SUCCESS: "success",
   UNAVAILABLE: "unavailable",
+} as const;
+
+export const E2E_RESERVATION_CHARGE_PAYMENT_METHOD = {
+  OTHER_METHOD: "Transferencia",
+  TEST_TITLE_CHOICE:
+    "asks for a choice, then records the chosen method",
+  TEST_TITLE_OTHER: "records the text typed under Otro",
 } as const;

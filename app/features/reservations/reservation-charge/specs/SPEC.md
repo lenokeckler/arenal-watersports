@@ -70,3 +70,13 @@ Como la persona de reservas, necesito registrar un cobro sobre una reserva con e
 - `resolveReservationChargeInitialCurrency` picks the first currency of the order that has a proposal, else the first of the order; the viewmodel and the values state no longer expose `currencyOptions`.
 - Nothing converts one currency into the other and no exchange rate is read or stored; the amount is recorded in the currency it was entered in.
 - Amounts accumulate per currency in the reservation detail and are never summed across currencies (C3, RNF-035).
+
+### Payment method (US-RES-27)
+
+- The method is a single-choice chip group, in this order: Efectivo, Tarjeta, PayPal, SINPE, Otro. Nothing is chosen at first. One method covers both parts of a mixed charge.
+- The stored value is text: the chip label for the first four, and for Otro the trimmed text typed under "¿Cuál método?", never the word "Otro". The existing rules apply to that text: required, at most 60 characters, no control characters.
+- Choosing Otro mounts the text field; leaving Otro unmounts it and keeps the typed text in state, so choosing Otro again restores it.
+- Submitting with no choice shows "Elija cómo pagó el cliente." under the group and focuses the first chip. Otro with empty text shows "Escriba cuál fue el método de pago." under its field and focuses it.
+- C2: the helper "Solo queda anotado: el sistema no cobra ni valida tarjetas." is always visible and linked to the group with `aria-describedby`. No card number, processor or payment link exists anywhere.
+- Pending disables every chip and the Otro field.
+- The database is unchanged: `payment_method` stays free text, so old rows stay valid. `147_charge_payment_method.test.sql` proves each label and a free text are stored verbatim and that no card, processor or token column exists.
