@@ -13,9 +13,11 @@ import {
   E2E_STOCK_UNCHANGED,
   resolveStockCountFixtureName,
 } from "../constants/E2eStockCount.constants";
-import { createCategoryListPage } from "../pages/CategoryList.page";
 import { createStockCountPage } from "../pages/StockCount.page";
-import { seedCategoryWithBehavior } from "../support/categoryFixtures";
+import {
+  findCategoryId,
+  seedCategoryWithBehavior,
+} from "../support/categoryFixtures";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 import { removeCategoryWithStock } from "../support/stockFixtures";
 
@@ -31,14 +33,12 @@ test.describe("Stock count", () => {
       categoryName,
       E2E_BY_QUANTITY_CATEGORY
     );
-    const categoryListPage = createCategoryListPage(page);
     const stockCountPage = createStockCountPage(page);
 
     try {
       await logInAsAdmin(page);
-      await categoryListPage.goToCategory(categoryName);
-      await stockCountPage.clickStockLink(
-        categoryListPage.getCategoryCard(categoryName)
+      await stockCountPage.goTo(
+        await findCategoryId(categoryName)
       );
 
       await expect(

@@ -1,0 +1,1 @@
+RES-07.29.09: Deposit route — the deposit screen opens at /reservations/<id>/deposit for whoever is working in the Reservas area, loads the reservation on the server and explains when it cannot take a deposit (US-RES-29 · AWS-112)

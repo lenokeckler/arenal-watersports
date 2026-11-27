@@ -4,7 +4,7 @@ import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constant
 import { CATEGORY_TRACKING_MODE } from "../constants/CategoryTrackingMode.constants";
 import { useCategoryBehaviorFormFields } from "../hooks/useCategoryBehaviorFormFields";
 import type { CategoryBehavior } from "../models/CategoryBehavior.interface";
-import { buildCategoryFormFieldChangeEvent } from "./buildCategoryFormFieldChangeEvent";
+import { buildCategoryFormFieldChangeEvent } from "../utils/buildCategoryFormFieldChangeEvent";
 import { DEFAULT_CATEGORY_BEHAVIOR } from "./CategoryBehavior.constants";
 import { VALID_CATEGORY_BEHAVIOR_FORM_VALUES } from "./CategoryBehaviorFormValues.constants";
 
