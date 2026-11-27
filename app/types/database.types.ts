@@ -4311,6 +4311,10 @@ export type Database = {
         Args: { target_worker: string };
         Returns: undefined;
       };
+      save_category_tariffs: {
+        Args: { p_payload: Json };
+        Returns: number;
+      };
       save_combo: {
         Args: { p_payload: Json };
         Returns: string;
@@ -4341,6 +4345,10 @@ export type Database = {
       set_combo_active: {
         Args: { p_active: boolean; p_combo_id: string };
         Returns: string;
+      };
+      set_extra_compatibility: {
+        Args: { p_extra_id: string; p_unit_ids: string[] };
+        Returns: number;
       };
       set_reservation_dock_notice: {
         Args: {

@@ -10,14 +10,14 @@ insert into workers (id, username, full_name, personal_email, base_role) values
 insert into workers (id, username, full_name, base_role) values
   ('22222222-2222-2222-2222-222222222222', 'combo_ops', 'Ops', 'operaciones');
 
-insert into equipment_categories (id, name, tracking_mode, status, created_by, updated_by) values
-  ('aaaaaaaa-0000-0000-0000-000000000001', 'Combo lancha', 'by_unit', 'active',
+insert into equipment_categories (id, name, tracking_mode, status, is_reservable, default_duration_minutes, created_by, updated_by) values
+  ('aaaaaaaa-0000-0000-0000-000000000001', 'Combo lancha', 'by_unit', 'active', true, 60,
    '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'),
-  ('aaaaaaaa-0000-0000-0000-000000000002', 'Combo jet ski', 'by_unit', 'active',
+  ('aaaaaaaa-0000-0000-0000-000000000002', 'Combo jet ski', 'by_unit', 'active', true, 60,
    '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'),
-  ('aaaaaaaa-0000-0000-0000-000000000003', 'Combo paddleboard', 'by_quantity', 'active',
+  ('aaaaaaaa-0000-0000-0000-000000000003', 'Combo paddleboard', 'by_quantity', 'active', true, 60,
    '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'),
-  ('aaaaaaaa-0000-0000-0000-000000000004', 'Combo retired gear', 'by_quantity', 'inactive',
+  ('aaaaaaaa-0000-0000-0000-000000000004', 'Combo retired gear', 'by_quantity', 'inactive', true, 60,
    '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 
 insert into combos (id, name, audience, package_price_usd, created_by, updated_by) values
@@ -126,12 +126,12 @@ select throws_ok(
 select throws_ok(
   $$ select save_combo('{"name":"Inactive cat","audience":"national","package_price":1000,
        "items":[{"category_id":"aaaaaaaa-0000-0000-0000-000000000004","quantity":1}]}'::jsonb) $$,
-  'P0002', null, 'an inactive category is rejected'
+  '22023', null, 'an inactive category is rejected'
 );
 select throws_ok(
   $$ select save_combo('{"name":"Ghost cat","audience":"national","package_price":1000,
        "items":[{"category_id":"aaaaaaaa-0000-0000-0000-0000000000ff","quantity":1}]}'::jsonb) $$,
-  'P0002', null, 'an unknown category is rejected'
+  '22023', null, 'an unknown category is rejected'
 );
 select is(
   (select count(*) from combos where name in ('Zero', 'Negative', 'No items', 'Repeated', 'Inactive cat')),

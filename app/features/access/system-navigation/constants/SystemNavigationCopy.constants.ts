@@ -14,6 +14,7 @@ export const SYSTEM_NAVIGATION_COPY = {
   MORE_OPTIONS: "Más opciones",
   ROLE_PREFIX: "Área",
   USER_PREFIX: "Usuario",
+  PRICES: "Precios",
   PROFILE: "Perfil",
   REPORTS: "Reportes",
   TARIFFS: "Tarifas",

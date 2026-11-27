@@ -1,5 +1,6 @@
 import {
   COMBO_AUDIENCE_EMPTY,
+  COMBO_AUDIENCE_PRICE_NOTE,
   COMBO_AUDIENCE_TITLE,
 } from "../constants/ComboAudienceCopy.constants";
 import { COMBO_AUDIENCE_ORDER } from "../constants/ComboAudienceOrder.constants";
@@ -19,5 +20,6 @@ export const buildComboSections = (
         buildComboCardViewModel(combo, actions)
       ),
     emptyMessage: COMBO_AUDIENCE_EMPTY[audience],
+    priceNote: COMBO_AUDIENCE_PRICE_NOTE[audience],
     title: COMBO_AUDIENCE_TITLE[audience],
   }));

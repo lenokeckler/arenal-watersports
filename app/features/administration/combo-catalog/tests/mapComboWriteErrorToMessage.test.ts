@@ -24,6 +24,16 @@ describe("mapComboWriteErrorToMessage", () => {
     ).toBe(COMBO_CATALOG_COPY.NOT_FOUND_ERROR);
   });
 
+  it("shows the database message when the combo state forbids the change", () => {
+    const error = buildPostgrestError(
+      POSTGRES_ERROR_CODE.OBJECT_NOT_IN_PREREQUISITE_STATE
+    );
+
+    expect(mapComboWriteErrorToMessage(error)).toBe(
+      error.message
+    );
+  });
+
   it("leaves other errors and no error unmapped", () => {
     expect(
       mapComboWriteErrorToMessage(
