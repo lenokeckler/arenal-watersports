@@ -1,7 +1,13 @@
-import { ARIA_ROLE, TitleVariant } from "@/app/constants";
+import ScreenBack from "@/app/components/screen-back/ScreenBack";
+import {
+  ARIA_ROLE,
+  TitleVariant,
+  PATHS,
+} from "@/app/constants";
 import UnorderedList from "@/app/components/list/UnorderedList";
 import Link from "@/app/components/link/Link";
 import Section from "@/app/components/section/Section";
+import InlineText from "@/app/components/text/InlineText";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
 import {
@@ -16,6 +22,8 @@ import type { ReservationRowProps } from "./models/ReservationRowProps.interface
 import type { JSX } from "react";
 import {
   DISPATCH_BOARD_CLASS,
+  DISPATCH_BOARD_COMBO_TAG_CLASS,
+  DISPATCH_BOARD_DOCK_TAG_CLASS,
   DISPATCH_BOARD_HEADING_CLASS,
   DISPATCH_BOARD_LIST_CLASS,
   DISPATCH_BOARD_MESSAGE_CLASS,
@@ -23,28 +31,52 @@ import {
   DISPATCH_BOARD_PAGINATION_LINK_CLASS,
   DISPATCH_BOARD_PAGINATION_NEXT_LINK_CLASS,
   DISPATCH_BOARD_RESERVATION_CLASS,
+  DISPATCH_BOARD_RESERVATION_HEADER_CLASS,
   DISPATCH_BOARD_RESERVATION_HEADING_CLASS,
   DISPATCH_BOARD_RESERVATION_TIME_CLASS,
   DISPATCH_BOARD_SECTION_CLASS,
 } from "./styles/DispatchBoard.styles";
 import DispatchReservationAction from "./components/DispatchReservationAction";
-import { formatCostaRicaTime } from "./utils/formatCostaRicaTime";
+import DispatchReservationEquipment from "./components/DispatchReservationEquipment";
+import { buildDispatchReservationTimeText } from "./utils/buildDispatchReservationTimeText";
 import { getDispatchPageHref } from "./utils/getDispatchPageHref";
 
 const ReservationRow = ({
   reservation,
 }: ReservationRowProps): JSX.Element => (
   <div className={DISPATCH_BOARD_RESERVATION_CLASS}>
-    <Title
-      variant={TitleVariant.SECONDARY}
-      text={`${reservation.customer_name}${DISPATCH_BOARD_COPY.RESERVATION_SEPARATOR}${reservation.code}`}
-      className={DISPATCH_BOARD_RESERVATION_HEADING_CLASS}
-    />
+    <div
+      className={DISPATCH_BOARD_RESERVATION_HEADER_CLASS}
+    >
+      <Title
+        variant={TitleVariant.SECONDARY}
+        text={`${reservation.customer_name}${DISPATCH_BOARD_COPY.RESERVATION_SEPARATOR}${reservation.code}`}
+        className={DISPATCH_BOARD_RESERVATION_HEADING_CLASS}
+      />
+      {reservation.isCombo && (
+        <InlineText
+          className={DISPATCH_BOARD_COMBO_TAG_CLASS}
+        >
+          {DISPATCH_BOARD_COPY.COMBO_TAG}
+        </InlineText>
+      )}
+      {reservation.dock_notified_at && (
+        <InlineText
+          className={DISPATCH_BOARD_DOCK_TAG_CLASS}
+        >
+          {DISPATCH_BOARD_COPY.DOCK_TAG}
+        </InlineText>
+      )}
+    </div>
     <Text className={DISPATCH_BOARD_RESERVATION_TIME_CLASS}>
-      {formatCostaRicaTime(reservation.starts_at)}
+      {buildDispatchReservationTimeText(reservation)}
     </Text>
+    <DispatchReservationEquipment
+      equipment={reservation.equipment}
+    />
     <DispatchReservationAction
       customerName={reservation.customer_name}
+      isCombo={reservation.isCombo}
       reservationId={reservation.id}
     />
   </div>
@@ -98,6 +130,7 @@ export const DispatchBoardView = ({
   reservations,
 }: DispatchBoardContentProps): JSX.Element => (
   <main className={DISPATCH_BOARD_CLASS}>
+    <ScreenBack fallbackHref={PATHS.BOARD} />
     <Section
       ariaLabel={DISPATCH_BOARD_HEADING_ID}
       className={DISPATCH_BOARD_SECTION_CLASS}

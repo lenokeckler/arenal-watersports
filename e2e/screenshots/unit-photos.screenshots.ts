@@ -4,7 +4,7 @@ import { captureFullPage } from "../support/captureFullPage";
 import { expect, test } from "../support/dispatchSheetTest";
 
 test.describe("Unit photos screenshots", () => {
-  test("captures the photos of a unit for the rest of operations", async ({
+  test("captures the photos of a unit for operations", async ({
     motorDispatchSheet: dispatchSheet,
     signedInPage: page,
   }, testInfo) => {
@@ -22,21 +22,21 @@ test.describe("Unit photos screenshots", () => {
     );
   });
 
-  test("captures the photos of a unit with the upload buttons of the general manager", async ({
+  test("captures the photos of a unit for a temporary guide", async ({
     motorDispatchSheet: dispatchSheet,
     signedInPage: page,
   }, testInfo) => {
     const photos = createUnitPhotosPage(page);
     const [unit] = dispatchSheet.unitCodes;
 
-    await dispatchSheet.grantGeneralManagerMark();
     await dispatchSheet.addUnitPhoto(unit, "front");
+    await dispatchSheet.makeTemporaryGuide();
     await photos.goTo(await dispatchSheet.readUnitId(unit));
     await expect(photos.getPhoto("front")).toBeVisible();
-    await expect(photos.getUploadInputs()).toHaveCount(4);
+    await expect(photos.getViewOnlyNotice()).toBeVisible();
     await captureFullPage(
       page,
-      E2E_UNIT_PHOTOS_SCREENSHOT_BASENAME.MANAGER,
+      E2E_UNIT_PHOTOS_SCREENSHOT_BASENAME.TEMPORARY_GUIDE,
       testInfo.project.name
     );
   });

@@ -134,7 +134,7 @@ select throws_ok(
       '[{"unit_id":"bbbbbbbb-0000-0000-0000-000000000001","fuel":3,"usage":13},
         {"unit_id":"bbbbbbbb-0000-0000-0000-000000000009","fuel":3,"usage":1}]'::jsonb)$$,
   '23514',
-  'The readings must name each chosen unit once',
+  'The readings must name each chosen unit at most once',
   'a reading for a unit outside the dispatch is refused'
 );
 
@@ -146,7 +146,7 @@ select throws_ok(
       '[{"unit_id":"bbbbbbbb-0000-0000-0000-000000000001","fuel":3,"usage":13},
         {"unit_id":"bbbbbbbb-0000-0000-0000-000000000001","fuel":3,"usage":14}]'::jsonb)$$,
   '23514',
-  'The readings must name each chosen unit once',
+  'The readings must name each chosen unit at most once',
   'two readings for the same unit are refused'
 );
 

@@ -8,6 +8,8 @@ export const MAINTENANCE_ROWS = [
     code: "JS-1",
     next_oil_change_at: 100,
     oil_overage: 10,
+    oil_remaining: -10,
+    oil_warning: true,
     status: "available",
     unit_id: "bbbbbbbb-0000-0000-0000-000000000001",
     usage_metric: "engine_hours",
@@ -19,6 +21,8 @@ export const MAINTENANCE_ROWS = [
     code: "CU-1",
     next_oil_change_at: 5000,
     oil_overage: 0,
+    oil_remaining: 0,
+    oil_warning: true,
     status: "available",
     unit_id: "bbbbbbbb-0000-0000-0000-000000000002",
     usage_metric: "kilometers",
@@ -30,6 +34,8 @@ export const MAINTENANCE_ROWS = [
     code: "JS-2",
     next_oil_change_at: null,
     oil_overage: null,
+    oil_remaining: null,
+    oil_warning: false,
     status: "damaged",
     unit_id: "bbbbbbbb-0000-0000-0000-000000000003",
     usage_metric: "engine_hours",
@@ -41,23 +47,27 @@ export const MAINTENANCE_ROWS = [
     code: "JS-3",
     next_oil_change_at: 100,
     oil_overage: 20,
+    oil_remaining: -20,
+    oil_warning: true,
     status: "in_repair",
     unit_id: "bbbbbbbb-0000-0000-0000-000000000004",
     usage_metric: "engine_hours",
     usage_total: 120,
   },
+  {
+    category_id: "aaaaaaaa-0000-0000-0000-000000000001",
+    category_name: "Jet ski",
+    code: "JS-4",
+    next_oil_change_at: 100,
+    oil_overage: null,
+    oil_remaining: 5,
+    oil_warning: true,
+    status: "available",
+    unit_id: "bbbbbbbb-0000-0000-0000-000000000005",
+    usage_metric: "engine_hours",
+    usage_total: 95,
+  },
 ];
-
-export const OIL_TEXT_CASES = [
-  {
-    code: "JS-1",
-    text: "Acumulado: 110 h · Cambio a las 100 h · Se pasó 10 h",
-  },
-  {
-    code: "CU-1",
-    text: "Acumulado: 5000 km · Cambio a las 5000 km · Llegó justo a su cambio de aceite.",
-  },
-] as const;
 
 const toUnit = (
   row: (typeof MAINTENANCE_ROWS)[number]
@@ -67,6 +77,8 @@ const toUnit = (
   code: row.code,
   nextOilChangeAt: row.next_oil_change_at,
   oilOverage: row.oil_overage,
+  oilRemaining: row.oil_remaining,
+  oilWarning: row.oil_warning,
   status: row.status as MaintenanceUnit["status"],
   unitId: row.unit_id,
   usageMetric:
@@ -77,7 +89,7 @@ const toUnit = (
 export const MAINTENANCE_OVERVIEW_FIXTURE: MaintenanceOverview =
   {
     oilDue: MAINTENANCE_ROWS.filter(
-      (row) => row.oil_overage !== null
+      (row) => row.oil_warning
     ).map(toUnit),
     outOfService: MAINTENANCE_ROWS.filter(
       (row) => row.status !== "available"

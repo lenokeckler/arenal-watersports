@@ -11,11 +11,14 @@ Let any worker see the state of every unit of one category, and, for an occupied
 - One row per unit, listed by code, paginated on the server: 20 per page, 1-based `?page=`, the same list pagination as the admin lists (RNF-027). Pagination shows only when there is more than one page.
 - States: loading skeleton, empty ("Esta categoría todavía no tiene unidades"), error with a retry button, and a Spanish not found for a missing, invalid or non-board category.
 - Per unit: code and status chip. Statuses: Disponible, Ocupada, En mantenimiento, Dañada and En reparación (its own label, maintenance color).
-- Occupied unit: return time, the customer who carries it, and the reservation reference (code and time window).
+- Occupied unit: the card says Ocupada (and Retrasada when overdue); who carries it, how many people, the times and the radio channel are read in the panel the card opens.
 - The return time is shown in Costa Rica time; the date is added when the return is not today.
 - The status is never conveyed by color alone: the chip carries the Spanish word and the dot is decorative.
-- Rows have no photo and no buttons. For a worker with the operations area, the rows of the available units are tappable to dispatch (see Dispatch from the category); for everyone else nothing is interactive.
+- Cards show the category photo, the code, the status chip, the gauge (lines only, no text), the hours or kilometers and the impact count of the motor units. They never write the customer or the reservation.
+- For a worker with the operations area: the available units are tappable to dispatch (see Dispatch from the category), an occupied unit opens who carries it, and the Editar button next to the unit count turns every motor card into its edit panel (see Edit mode). For everyone else nothing is interactive.
 - Reached from the board: every card links here (a grouped card opens its first member by name).
+- On a wide screen the cards stay centered and grow when a category without pages shows three or fewer: one or two are capped at 384px, three share the row. A phone keeps two per row.
+- The panel of a unit leads to a damage report, its history and, when the category keeps them, its photos.
 - Group switch, a design decision of the product owner: when the category belongs to a group with more than one visible member, a `nav` under the header ("Categorías del mismo grupo") shows one pill link per member, by name, the current one with `aria-current="page"`, each linking to that member's units screen. A category without a group, or alone in it, shows nothing.
 
 ## Out of scope
@@ -43,7 +46,7 @@ con la finalidad de saber cuáles puedo ofrecer y cuándo vuelven las que están
 ## Dispatch from the category (US-OPE-02)
 
 - Only a worker with the operations area sees the rows of the available units as tappable; the page asks `has_area('operaciones')` and a failed answer reaches `error.tsx`, never a silently read-only board.
-- Tapping a unit marks it and shows a bar above the navigation with the count ("2 unidades seleccionadas"), "Cancelar" and "Despachar". An occupied, damaged or in-maintenance unit cannot be tapped.
+- Nothing is drawn on a unit before it is tapped. Tapping a unit marks it with a check and a highlighted border, and shows a bar above the navigation with the count ("2 unidades seleccionadas"), "Cancelar" and "Despachar". An occupied, damaged or in-maintenance unit cannot be tapped.
 - "Despachar" opens a sheet with the reservations of today in Costa Rica that still have this category pending, by time, each with its committed count. A combo is never listed: it is dispatched from the list of the day.
 - A reservation that commits fewer units than were tapped says how many fit.
 - Choosing a reservation opens the dispatch sheet on this category with the tapped units already marked; the worker completes or unchecks them there, and confirming goes through `dispatch_reservation_group`.
@@ -106,3 +109,24 @@ con la finalidad de saber cuáles puedo ofrecer y cuándo vuelven las que están
 - [ ] A category in a group of two or more shows the switch links with the current one marked; others show none.
 - [ ] An occupied unit whose return time has passed shows the late return line, the "Retrasada" chip and the amber row, and keeps the status Ocupada.
 - [ ] Pending in later pull requests: the latest-return rule end to end.
+
+## Edit mode and unit panels (US-OPE-20, US-OPE-04, US-OPE-06)
+
+- The Editar button (with `aria-pressed`) sits in the header next to the unit count and appears only when some unit of the category has a motor.
+- Edit mode off: tapping an available unit selects it; tapping an occupied unit opens its information panel.
+- Edit mode on: a pencil mark is drawn on every motor card, tapping any part of the card opens the edit panel, selection to dispatch is off, and a card without motor does nothing. Turning the mode on or off clears the units chosen to dispatch.
+- Information panel (read only first): customer, people, departure, return and radio channel. Its Editar button turns the times (time fields plus -15/+15, times first) and the radio channel into editable fields; saving calls `update_open_dispatch`, and the return moves with the departure when only the departure changes. Recibir unidad links to the screen of the groups out on the water.
+- Edit panel (motor units): gauge by lines, hours or kilometers in a numeric field, and the impact count with a stepper; saving calls `correct_unit_readings`, recording an occupied unit as available and keeping the status of any other. A unit with a gauge cannot be saved without a level; a unit without gauge is saved with level 0.
+- The gauge is colored by the low fuel warning of the unit (`low_fuel_lines` of the unit, or of its category), and an empty tank is drawn with a red border.
+
+## Status filter and status panel (US-TAB-02, US-OPE-17)
+
+- The same filter links appear under the header of the category and the unit list, the page count and the group switch links keep the filter. A filter with no unit shows "No hay unidades con este filtro".
+- With Editar off, tapping a unit in maintenance, in repair or damaged opens its status panel (operations only). Units in maintenance show the last five jobs done (type, description, date, cost, external workshop) and the buttons Registrar trabajo and Devolver a servicio; damaged units show the latest damage report and the buttons Pasar a mantenimiento and Devolver a servicio.
+- Registrar trabajo opens `/operations/maintenance/new?unit=<id>` with the unit already chosen. Saving a job does not return the unit to service; Devolver a servicio does, through `set_unit_maintenance`, which now accepts units in maintenance, in repair and damaged.
+
+## Oil change warning on the card (US-OPE-12)
+
+- On the right of the unit code the card shows a drop with the distance left, in amber, when the unit is within 50 km (10 hours for water equipment) of its next oil change; past it, the drop is red and the distance has a minus sign. No text, only an accessible name `Necesita cambio de aceite`.
+- It shows on any unit with a threshold, free, out or gray; it never blocks the dispatch and does not change the status.
+- The database decides (`oil_warning`, `oil_remaining` of `board_category_units`); registering an oil change moves the next change and clears the warning.

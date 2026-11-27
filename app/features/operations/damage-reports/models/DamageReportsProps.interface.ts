@@ -1,6 +1,8 @@
-import type { NullableRef } from "@/app/types";
+import type { NullableUndefined } from "@/app/types";
 
 export interface DamageReportsProps {
-  page: number;
-  unitId: NullableRef<string>;
+  searchParams?: Record<
+    string,
+    NullableUndefined<string | string[]>
+  >;
 }

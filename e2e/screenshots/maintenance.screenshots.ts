@@ -13,14 +13,23 @@ test.describe("Maintenance screenshots", () => {
     await dispatchSheet.makeMaintenanceNeeds();
     await maintenance.goTo();
     await expect(
-      maintenance
-        .getOilSection()
-        .getByRole("listitem")
-        .filter({ hasText: dispatchSheet.unitCodes[0] })
+      maintenance.getAttentionChip(
+        dispatchSheet.unitCodes[0]
+      )
     ).toBeVisible();
     await captureFullPage(
       page,
       E2E_MAINTENANCE_SCREENSHOT_BASENAME.LIST,
+      testInfo.project.name
+    );
+
+    await maintenance.openSummary();
+    await expect(
+      maintenance.getSpendHeading()
+    ).toBeVisible();
+    await captureFullPage(
+      page,
+      E2E_MAINTENANCE_SCREENSHOT_BASENAME.SUMMARY,
       testInfo.project.name
     );
   });

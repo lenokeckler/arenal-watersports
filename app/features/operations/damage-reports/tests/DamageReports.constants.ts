@@ -1,50 +1,94 @@
-import type { DamageReportEntry } from "../models/DamageReportEntry.interface";
-import type { DamageReportsUnit } from "../models/DamageReportsUnit.interface";
+import type { EquipmentReport } from "@/app/services/equipment/models/EquipmentReport.interface";
+import type { DamageFilters } from "../models/DamageFilters.interface";
+import type { DamageOverview } from "../models/DamageOverview.interface";
 
-export const UNIT_ID =
-  "dddddddd-0000-0000-0000-000000000001";
+export const DAMAGE_TODAY = "2026-11-25";
 
-export const UNIT_ROW = {
-  category: { name: "Jet ski" },
-  code: "JS-1",
-  id: UNIT_ID,
-  impact_count: 3,
+export const DAMAGE_DAY = "2026-11-20";
+
+export const DAMAGE_MONTH = "2026-11";
+
+export const DAMAGE_FILTERS: DamageFilters = {
+  cause: null,
+  day: DAMAGE_DAY,
+  isDayOpen: false,
+  month: DAMAGE_MONTH,
+  period: "month",
+  showPending: false,
+  tab: "calendar",
 };
 
-export const UNIT: DamageReportsUnit = {
-  categoryName: "Jet ski",
-  code: "JS-1",
-  id: UNIT_ID,
-  impactCount: 3,
-};
-
-export const REPORT_ROW = {
+const buildReport = (
+  id: string,
+  overrides: Partial<EquipmentReport> = {}
+): EquipmentReport => ({
   cause: "collision",
-  created_at: "2026-11-10T20:30:00+00:00",
-  description: "Golpe contra el muelle",
-  id: "dddddddd-0000-0000-0000-000000000002",
-  impact_delta: 2,
-};
+  createdAt: "2026-11-20T15:00:00Z",
+  date: DAMAGE_DAY,
+  description: `Detalle ${id}`,
+  hasPhotos: true,
+  hits: 1,
+  id,
+  isPending: false,
+  isRetired: false,
+  reservationId: null,
+  unitCode: "JET-01",
+  unitId: "unit-1",
+  ...overrides,
+});
 
-export const REPORT_ENTRY: DamageReportEntry = {
-  cause: "collision",
-  createdAt: "2026-11-10T20:30:00+00:00",
-  description: "Golpe contra el muelle",
-  id: "dddddddd-0000-0000-0000-000000000002",
-  impactDelta: 2,
-};
+export const PENDING_REPORT = buildReport("pending", {
+  cause: null,
+  description: null,
+  isPending: true,
+  unitCode: "JET-04",
+  unitId: "unit-4",
+});
 
-export const REPORT_DETAIL_TEXT =
-  "10 de noviembre de 2026 · Golpes sumados: 2";
+export const SECOND_PENDING_REPORT = buildReport(
+  "second-pending",
+  {
+    cause: null,
+    description: null,
+    isPending: true,
+    unitCode: "JET-03",
+    unitId: "unit-3",
+  }
+);
 
-export const PAGE_CASES: {
-  expected: number;
-  param: string | string[] | undefined;
-}[] = [
-  { expected: 1, param: undefined },
-  { expected: 1, param: "0" },
-  { expected: 1, param: "abc" },
-  { expected: 1, param: ["2"] },
-  { expected: 1, param: "100001" },
-  { expected: 4, param: "4" },
+export const RETIRED_PENDING_REPORT = buildReport(
+  "retired",
+  {
+    cause: null,
+    description: null,
+    isPending: true,
+    isRetired: true,
+    unitCode: "JET-99",
+    unitId: "unit-99",
+  }
+);
+
+const RECENT_REPORTS: EquipmentReport[] = [
+  PENDING_REPORT,
+  buildReport("one"),
+  buildReport("two", { cause: "rollover" }),
+  buildReport("three"),
+  buildReport("four", {
+    hasPhotos: false,
+    unitCode: "KD-02",
+    unitId: "unit-2",
+  }),
+  buildReport("old", {
+    cause: "other",
+    date: "2026-07-02",
+  }),
 ];
+
+export const DAMAGE_OVERVIEW: DamageOverview = {
+  calendarMonths: ["2026-10", DAMAGE_MONTH],
+  calendarReports: RECENT_REPORTS,
+  month: DAMAGE_MONTH,
+  pending: [PENDING_REPORT],
+  recent: RECENT_REPORTS,
+  today: DAMAGE_TODAY,
+};

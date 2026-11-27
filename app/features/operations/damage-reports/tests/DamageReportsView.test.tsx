@@ -1,108 +1,117 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-import DamageReportsView from "../DamageReportsView";
-import { DAMAGE_REPORTS_COPY } from "../constants/DamageReportsCopy.constants";
-import type { DamageReportsViewProps } from "../models/DamageReportsViewProps.interface";
+import { cleanup } from "@testing-library/react";
 import {
-  REPORT_ENTRY,
-  UNIT,
-  UNIT_ID,
+  afterEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
+import { PATHS } from "@/app/constants";
+import { DAMAGE_REPORTS_COPY } from "../constants/DamageReportsCopy.constants";
+import {
+  DAMAGE_FILTERS,
+  DAMAGE_OVERVIEW,
+  PENDING_REPORT,
+  SECOND_PENDING_REPORT,
 } from "./DamageReports.constants";
+import { createDamageReportsPage } from "./DamageReports.page";
 
-const BASE_PROPS: DamageReportsViewProps = {
-  entries: [REPORT_ENTRY],
-  errorMessage: null,
-  hasNextPage: false,
-  page: 1,
-  unit: UNIT,
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ replace: vi.fn() }),
+}));
+
+const CHARTS = {
+  ...DAMAGE_FILTERS,
+  tab: "charts" as const,
 };
 
-const renderView = (
-  props: Partial<DamageReportsViewProps> = {}
-) =>
-  render(
-    <DamageReportsView
-      {...BASE_PROPS}
-      {...props}
-    />
-  );
-
 describe("DamageReportsView", () => {
-  it("shows the unit with its accumulated impacts and each report", () => {
-    renderView();
+  afterEach(cleanup);
+
+  it("offers a new report", () => {
+    const page = createDamageReportsPage();
 
     expect(
-      screen.getByText("JS-1 · Jet ski")
-    ).toBeInTheDocument();
+      page.getLink(DAMAGE_REPORTS_COPY.NEW_REPORT)
+    ).toHaveAttribute(
+      "href",
+      PATHS.OPERATIONS.DAMAGE_REPORT
+    );
+  });
+
+  it("goes straight to the only report left to complete", () => {
+    const page = createDamageReportsPage();
+
     expect(
-      screen.getByText("Golpes acumulados: 3")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(DAMAGE_REPORTS_COPY.CAUSES.collision)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("Golpe contra el muelle")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "10 de noviembre de 2026 · Golpes sumados: 2"
+      page.getLink(
+        new RegExp(DAMAGE_REPORTS_COPY.PENDING_TITLE(1))
       )
-    ).toBeInTheDocument();
-  });
-
-  it("says the unit has no reports", () => {
-    renderView({ entries: [] });
-
-    expect(
-      screen.getByText(DAMAGE_REPORTS_COPY.EMPTY)
-    ).toBeInTheDocument();
-  });
-
-  it("says the unit was not found", () => {
-    renderView({ entries: [], unit: null });
-
-    expect(
-      screen.getByText(DAMAGE_REPORTS_COPY.UNIT_NOT_FOUND)
-    ).toBeInTheDocument();
-  });
-
-  it("shows the error and nothing else", () => {
-    renderView({ errorMessage: DAMAGE_REPORTS_COPY.ERROR });
-
-    expect(screen.getByRole("alert")).toHaveTextContent(
-      DAMAGE_REPORTS_COPY.ERROR
-    );
-    expect(
-      screen.queryByText(DAMAGE_REPORTS_COPY.EMPTY)
-    ).not.toBeInTheDocument();
-  });
-
-  it("links to the previous and next pages of the unit", () => {
-    renderView({ hasNextPage: true, page: 2 });
-
-    expect(
-      screen.getByRole("link", {
-        name: DAMAGE_REPORTS_COPY.PREVIOUS_PAGE,
-      })
     ).toHaveAttribute(
       "href",
-      `/operations/damage-reports?unidad=${UNIT_ID}&pagina=1`
-    );
-    expect(
-      screen.getByRole("link", {
-        name: DAMAGE_REPORTS_COPY.NEXT_PAGE,
-      })
-    ).toHaveAttribute(
-      "href",
-      `/operations/damage-reports?unidad=${UNIT_ID}&pagina=3`
+      PATHS.OPERATIONS.DAMAGE_REPORT_COMPLETE(
+        PENDING_REPORT.id
+      )
     );
   });
 
-  it("shows no pagination links on a single page", () => {
-    renderView();
+  it("lists several pending reports in a sheet", () => {
+    const pending = [PENDING_REPORT, SECOND_PENDING_REPORT];
+    const page = createDamageReportsPage({
+      filters: { ...DAMAGE_FILTERS, showPending: true },
+      overview: { ...DAMAGE_OVERVIEW, pending },
+    });
+
+    expect(page.queryDialog()).toHaveAccessibleName(
+      DAMAGE_REPORTS_COPY.PENDING_TITLE(pending.length)
+    );
+    expect(
+      page.queryLinks(
+        new RegExp(DAMAGE_REPORTS_COPY.COMPLETE)
+      )
+    ).toHaveLength(pending.length);
+  });
+
+  it("keeps the day closed on a phone until it is touched", () => {
+    const page = createDamageReportsPage();
+
+    expect(page.queryDialog()).not.toBeInTheDocument();
+  });
+
+  it("confirms what was just saved", () => {
+    const page = createDamageReportsPage({
+      savedMessage: DAMAGE_REPORTS_COPY.SAVED.later,
+    });
+
+    expect(page.getStatus()).toHaveTextContent(
+      DAMAGE_REPORTS_COPY.SAVED.later
+    );
+  });
+
+  it("says so when the period has no damage", () => {
+    const page = createDamageReportsPage({
+      filters: CHARTS,
+      overview: {
+        ...DAMAGE_OVERVIEW,
+        pending: [],
+        recent: [],
+      },
+    });
 
     expect(
-      screen.queryByRole("link")
+      page.getText(DAMAGE_REPORTS_COPY.TOP_EMPTY)
+    ).toBeInTheDocument();
+  });
+
+  it("shows the error instead of the screen", () => {
+    const page = createDamageReportsPage({
+      errorMessage: DAMAGE_REPORTS_COPY.FORBIDDEN,
+    });
+
+    expect(page.getAlert()).toHaveTextContent(
+      DAMAGE_REPORTS_COPY.FORBIDDEN
+    );
+    expect(
+      page.queryText(DAMAGE_REPORTS_COPY.NEW_REPORT)
     ).not.toBeInTheDocument();
   });
 });

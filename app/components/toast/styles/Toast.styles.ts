@@ -1,5 +1,5 @@
 export const TOAST_CLASS =
-  "flex items-center w-full p-4 bg-surface-container-high rounded-lg shadow-sm";
+  "flex items-center w-full p-4 bg-surface-container-high border border-outline-variant rounded-lg shadow-lg";
 
 export const TOAST_ICON_WRAPPER_CLASS =
   "inline-flex items-center justify-center w-8 h-8 rounded-lg";

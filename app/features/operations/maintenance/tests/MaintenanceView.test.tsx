@@ -1,88 +1,117 @@
+import { cleanup } from "@testing-library/react";
 import {
-  render,
-  screen,
-  within,
-} from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-import MaintenanceView from "../MaintenanceView";
+  afterEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
+import { PATHS } from "@/app/constants";
 import { MAINTENANCE_COPY } from "../constants/MaintenanceCopy.constants";
-import type { MaintenanceOverview } from "../models/MaintenanceOverview.interface";
 import {
-  MAINTENANCE_OVERVIEW_FIXTURE,
-  OIL_TEXT_CASES,
-} from "./Maintenance.constants";
+  MAINTENANCE_DATA,
+  OTHER_UNIT_ID,
+} from "./MaintenanceData.constants";
+import { createMaintenancePage } from "./Maintenance.page";
 
-const renderView = (
-  overview: MaintenanceOverview,
-  errorMessage: string | null = null
-) =>
-  render(
-    <MaintenanceView
-      errorMessage={errorMessage}
-      overview={overview}
-    />
-  );
+const replace = vi.hoisted(() => vi.fn());
 
-const getSection = (name: string) =>
-  screen.getByRole("region", { name });
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ replace }),
+}));
+
+const WAITING = 5;
+const OIL_WAITING = 4;
+const OUT_WAITING = 1;
 
 describe("MaintenanceView", () => {
-  it("lists the machines that reached their oil change with how far they went", () => {
-    renderView(MAINTENANCE_OVERVIEW_FIXTURE);
-    const oil = getSection(MAINTENANCE_COPY.OIL_HEADING);
+  afterEach(() => {
+    cleanup();
+    replace.mockReset();
+  });
 
-    OIL_TEXT_CASES.forEach(({ text }) => {
-      expect(
-        within(oil).getByText(text)
-      ).toBeInTheDocument();
+  it("offers to register a job from the heading", () => {
+    const page = createMaintenancePage();
+
+    expect(
+      page.getLink(MAINTENANCE_COPY.NEW_JOB)
+    ).toHaveAttribute(
+      "href",
+      PATHS.OPERATIONS.MAINTENANCE_NEW
+    );
+  });
+
+  it("sums up what needs attention in one strip", () => {
+    const page = createMaintenancePage();
+
+    expect(
+      page.getText(MAINTENANCE_COPY.ATTEND_HEADING(WAITING))
+    ).toBeInTheDocument();
+    expect(
+      page.getText(
+        MAINTENANCE_COPY.ATTEND_DETAIL(
+          OIL_WAITING,
+          OUT_WAITING
+        )
+      )
+    ).toBeInTheDocument();
+    expect(page.queryDialog()).not.toBeInTheDocument();
+  });
+
+  it("lists every machine to attend in a sheet on request", () => {
+    const page = createMaintenancePage({ attend: "open" });
+
+    expect(page.queryDialog()).toHaveAccessibleName(
+      MAINTENANCE_COPY.ATTEND_HEADING(WAITING)
+    );
+    expect(
+      page.getText(MAINTENANCE_COPY.STATUS.damaged)
+    ).toBeInTheDocument();
+    expect(
+      page.getText(MAINTENANCE_COPY.STATUS.in_repair)
+    ).toBeInTheDocument();
+  });
+
+  it("moves to the chosen machine without adding history", () => {
+    const page = createMaintenancePage();
+
+    page.chooseMachine(OTHER_UNIT_ID);
+
+    expect(replace).toHaveBeenCalledWith(
+      expect.stringContaining(`machine=${OTHER_UNIT_ID}`),
+      { scroll: false }
+    );
+  });
+
+  it("adds up each currency on its own in the charts", () => {
+    const page = createMaintenancePage({
+      currency: "USD",
+      tab: "summary",
     });
-    expect(
-      within(oil).getAllByRole("listitem")
-    ).toHaveLength(
-      MAINTENANCE_OVERVIEW_FIXTURE.oilDue.length
+
+    expect(page.getLink(/CU-1.*US\$/)).toHaveAttribute(
+      "href",
+      PATHS.OPERATIONS.UNIT_HISTORY(OTHER_UNIT_ID)
     );
-  });
-
-  it("lists the machines that are out of service with their state", () => {
-    renderView(MAINTENANCE_OVERVIEW_FIXTURE);
-    const service = getSection(
-      MAINTENANCE_COPY.SERVICE_HEADING
-    );
-
     expect(
-      within(service).getByText(
-        MAINTENANCE_COPY.STATUS.damaged
-      )
-    ).toBeInTheDocument();
-    expect(
-      within(service).getByText(
-        MAINTENANCE_COPY.STATUS.in_repair
-      )
-    ).toBeInTheDocument();
-  });
-
-  it("says so when nothing needs maintenance", () => {
-    renderView({ oilDue: [], outOfService: [] });
-
-    expect(
-      screen.getByText(MAINTENANCE_COPY.OIL_EMPTY)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(MAINTENANCE_COPY.SERVICE_EMPTY)
-    ).toBeInTheDocument();
+      page.queryLink(/JS-1.*US\$/)
+    ).not.toBeInTheDocument();
   });
 
   it("shows the error instead of the lists", () => {
-    renderView(
-      { oilDue: [], outOfService: [] },
-      MAINTENANCE_COPY.ERROR
+    const page = createMaintenancePage(
+      {},
+      MAINTENANCE_DATA,
+      MAINTENANCE_COPY.FORBIDDEN
     );
 
-    expect(screen.getByRole("alert")).toHaveTextContent(
-      MAINTENANCE_COPY.ERROR
+    expect(page.getAlert()).toHaveTextContent(
+      MAINTENANCE_COPY.FORBIDDEN
     );
     expect(
-      screen.queryByText(MAINTENANCE_COPY.OIL_EMPTY)
+      page.queryText(
+        MAINTENANCE_COPY.ATTEND_HEADING(WAITING)
+      )
     ).not.toBeInTheDocument();
   });
 });

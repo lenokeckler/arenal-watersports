@@ -1,6 +1,9 @@
 import { CURRENCY_NAME_COPY } from "@/app/constants";
 import { RESERVATION_CHARGE_FORM_COPY as COPY } from "../constants/ReservationChargeFormCopy.constants";
-import { RESERVATION_CHARGE_CURRENCY_OPTION_ID } from "../constants/ReservationChargeUi.constants";
+import {
+  RESERVATION_CHARGE_CURRENCY_OPTION_ID,
+  RESERVATION_CHARGE_CURRENCY_ORDER,
+} from "../constants/ReservationChargeUi.constants";
 import type { ReservationChargeFormProps } from "../models/ReservationChargeFormProps.interface";
 import {
   RESERVATION_CHARGE_CURRENCY_FIELDSET_CLASS,
@@ -23,7 +26,7 @@ const ReservationChargeCurrencyField = ({
       {COPY.CURRENCY_LEGEND}
     </legend>
     <div className={RESERVATION_CHARGE_CURRENCY_GRID_CLASS}>
-      {viewModel.currencyOptions.map((currency) => (
+      {RESERVATION_CHARGE_CURRENCY_ORDER.map((currency) => (
         <ReservationChargeCurrencyOption
           key={currency}
           description={formatReservationChargeProposal(

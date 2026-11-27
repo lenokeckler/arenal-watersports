@@ -1,112 +1,102 @@
 import {
-  afterEach,
   beforeEach,
   describe,
   expect,
   it,
   vi,
 } from "vitest";
-import { createServerSupabaseClient } from "@/app/services/supabase";
-import { createClient } from "@supabase/supabase-js";
-import type { Database } from "@/app/types";
+import { DAMAGE_REPORT_COPY } from "../constants/DamageReportCopy.constants";
 import { submitDamageReport } from "../actions/submitDamageReport";
 import {
-  AUTHENTICATED_DAMAGE_REPORT_USER,
-  DEFAULT_DAMAGE_REPORT_SUBMISSION,
-} from "./DamageReportSubmission.constants";
+  REPORT_ID,
+  REPORT_UNIT_ID,
+  VALID_REPORT_INPUT,
+} from "./DamageReport.constants";
 
-vi.mock("@/app/services/supabase", () => ({
-  createServerSupabaseClient: vi.fn(),
+const mocks = vi.hoisted(() => ({
+  revalidatePath: vi.fn(),
+  rpc: vi.fn(),
 }));
 
-const insertedDamageReports: string[] = [];
+vi.mock("next/cache", () => ({
+  revalidatePath: mocks.revalidatePath,
+}));
 
-const createMockDamageReportSupabaseClient = (): Awaited<
-  ReturnType<typeof createServerSupabaseClient>
-> => {
-  const client = createClient<Database>(
-    "http://127.0.0.1:54321",
-    "test-anon-key",
-    {
-      auth: {
-        autoRefreshToken: false,
-        detectSessionInUrl: false,
-        persistSession: false,
-      },
-      global: {
-        fetch: (_input, init) => {
-          if (typeof init?.body === "string") {
-            insertedDamageReports.push(init.body);
-          }
-
-          return Promise.resolve(
-            new Response(null, { status: 201 })
-          );
-        },
-      },
-    }
-  );
-  vi.spyOn(client.auth, "getUser").mockResolvedValue({
-    data: {
-      user: AUTHENTICATED_DAMAGE_REPORT_USER,
-    },
-    error: null,
-  });
-
-  return client;
-};
-
-const supabaseClient =
-  createMockDamageReportSupabaseClient();
+vi.mock(
+  "@/app/services/operations/getOperationsSupabaseClient",
+  () => ({
+    OperationsAccessError: class extends Error {},
+    getOperationsSupabaseClient: () =>
+      Promise.resolve({ rpc: mocks.rpc }),
+  })
+);
 
 describe("submitDamageReport", () => {
   beforeEach(() => {
-    insertedDamageReports.splice(0);
-    vi.clearAllMocks();
-    vi.spyOn(
-      supabaseClient.auth,
-      "getUser"
-    ).mockResolvedValue({
-      data: {
-        user: AUTHENTICATED_DAMAGE_REPORT_USER,
+    mocks.rpc
+      .mockReset()
+      .mockResolvedValue({ error: null });
+    mocks.revalidatePath.mockReset();
+  });
+
+  it("creates a new report through the database function", async () => {
+    await expect(
+      submitDamageReport(VALID_REPORT_INPUT)
+    ).resolves.toEqual({ ok: true });
+    expect(mocks.rpc).toHaveBeenCalledWith(
+      "create_damage_report",
+      {
+        p_cause: "collision",
+        p_description: "Golpe en la proa",
+        p_detail_later: false,
+        p_impact_delta: 1,
+        p_reservation_id: undefined,
+        p_unit_id: REPORT_UNIT_ID,
+        p_unit_status: "damaged",
+      }
+    );
+    expect(mocks.revalidatePath).toHaveBeenCalled();
+  });
+
+  it("completes a pending report through its own function", async () => {
+    await submitDamageReport({
+      ...VALID_REPORT_INPUT,
+      reportId: REPORT_ID,
+    });
+
+    expect(mocks.rpc).toHaveBeenCalledWith(
+      "complete_damage_report",
+      expect.objectContaining({ p_report_id: REPORT_ID })
+    );
+  });
+
+  it("never reaches the database with a forged request", async () => {
+    await expect(
+      submitDamageReport({
+        ...VALID_REPORT_INPUT,
+        unitStatus: "available" as never,
+      })
+    ).resolves.toEqual({
+      message: DAMAGE_REPORT_COPY.INVALID,
+      ok: false,
+    });
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
+  it("does not leak the database error", async () => {
+    mocks.rpc.mockResolvedValue({
+      error: {
+        code: "XX000",
+        message: "relation damage_reports",
       },
-      error: null,
     });
-    vi.mocked(createServerSupabaseClient).mockResolvedValue(
-      supabaseClient
-    );
-  });
-
-  afterEach(() => {
-    insertedDamageReports.splice(0);
-    vi.restoreAllMocks();
-  });
-
-  it("sends all report fields with the authenticated creator", async () => {
-    const result = await submitDamageReport(
-      DEFAULT_DAMAGE_REPORT_SUBMISSION
-    );
-
-    expect(result).toEqual({ ok: true });
-    expect(insertedDamageReports).toHaveLength(1);
-    expect(JSON.parse(insertedDamageReports[0])).toEqual({
-      unit_id: DEFAULT_DAMAGE_REPORT_SUBMISSION.unitId,
-      cause: DEFAULT_DAMAGE_REPORT_SUBMISSION.cause,
-      description:
-        DEFAULT_DAMAGE_REPORT_SUBMISSION.description,
-      impact_delta:
-        DEFAULT_DAMAGE_REPORT_SUBMISSION.impactDelta,
-      created_by: AUTHENTICATED_DAMAGE_REPORT_USER.id,
-    });
-  });
-
-  it("preserves submission failures for the form boundary", async () => {
-    vi.mocked(createServerSupabaseClient).mockRejectedValue(
-      new Error("Supabase connection failed")
-    );
 
     await expect(
-      submitDamageReport(DEFAULT_DAMAGE_REPORT_SUBMISSION)
-    ).rejects.toThrow("Supabase connection failed");
+      submitDamageReport(VALID_REPORT_INPUT)
+    ).resolves.toEqual({
+      message: DAMAGE_REPORT_COPY.ERROR,
+      ok: false,
+    });
+    expect(mocks.revalidatePath).not.toHaveBeenCalled();
   });
 });

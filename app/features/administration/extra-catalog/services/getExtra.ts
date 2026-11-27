@@ -2,17 +2,19 @@ import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services/supabase";
 import type { NullableRef } from "@/app/types";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
-import type { Extra } from "../models/Extra.interface";
+import { EXTRA_ROW_COLUMNS } from "../constants/ExtraQuery.constants";
+import type { ExtraDetail } from "../models/ExtraDetail.interface";
 import { mapExtraRowToExtra } from "../utils/mapExtraRowToExtra";
+import { isExtraUsedInReservations } from "./isExtraUsedInReservations";
 
 export const getExtra = async (
   extraId: string
-): Promise<NullableRef<Extra>> => {
+): Promise<NullableRef<ExtraDetail>> => {
   const supabase = await createServerSupabaseClient();
 
   const { data: extraRow, error } = await supabase
     .from("extras")
-    .select("id, name, status, price_usd, price_crc")
+    .select(EXTRA_ROW_COLUMNS)
     .eq("id", extraId)
     .maybeSingle();
   if (
@@ -23,5 +25,15 @@ export const getExtra = async (
   }
   throwIfSupabaseError(error, "getExtra");
 
-  return extraRow ? mapExtraRowToExtra(extraRow) : null;
+  if (!extraRow) {
+    return null;
+  }
+
+  return {
+    ...mapExtraRowToExtra(extraRow),
+    isUsedInReservations: await isExtraUsedInReservations(
+      supabase,
+      extraId
+    ),
+  };
 };

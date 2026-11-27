@@ -6,8 +6,13 @@ import { resolveReservationDetailChargeSummary } from "./resolveReservationDetai
 import { getReservationDetailWorkerName } from "./getReservationDetailWorkerName";
 import { mapReservationDetailDispatches } from "./mapReservationDetailDispatches";
 import { mapReservationDetailEquipment } from "./mapReservationDetailEquipment";
+import { RESERVATION_DETAIL_NO_EXTRA_MINUTES } from "../constants/ReservationDetail.constants";
+import { mapReservationDetailExtraTime } from "./mapReservationDetailExtraTime";
 import { mapReservationDetailExtras } from "./mapReservationDetailExtras";
 import { mapReservationDetailGuides } from "./mapReservationDetailGuides";
+import { calculateReservationDetailRefundable } from "./calculateReservationDetailRefundable";
+import { mapReservationDetailMoneyMovements } from "./mapReservationDetailMoneyMovements";
+import { mapReservationDetailDeposit } from "./mapReservationDetailDeposit";
 
 const getReservationDetailChargeSummary = (
   source: ReservationDetailReservationSource
@@ -43,11 +48,15 @@ const mapReservationDetailBase = (
   | "chargeStatus"
   | "charges"
   | "createdByName"
+  | "deposit"
   | "dispatches"
   | "equipment"
+  | "extraTime"
   | "extraTimeCharges"
   | "extras"
   | "guides"
+  | "moneyMovements"
+  | "refundable"
   | "refunds"
   | "updatedByName"
 > => ({
@@ -57,6 +66,8 @@ const mapReservationDetailBase = (
   comboName: source.combo?.name ?? null,
   created_at: source.created_at,
   customer_name: source.customer_name,
+  dockNotifiedAt:
+    source.reservation_dock_notices?.notified_at ?? null,
   dispatched_at: source.dispatched_at,
   duration_minutes: source.duration_minutes,
   ends_at: source.ends_at,
@@ -69,9 +80,20 @@ const mapReservationDetailBase = (
   updated_at: source.updated_at,
 });
 
+const mapReservationDetailRefundable = (
+  source: ReservationDetailReservationSource
+): ReservationDetail["refundable"] =>
+  source.parent_reservation_id
+    ? []
+    : calculateReservationDetailRefundable(
+        source.reservation_charges,
+        source.refunds
+      );
+
 export const mapReservationDetail = (
   source: ReservationDetailReservationSource,
-  workerNames: ReservationDetailWorkerName[]
+  workerNames: ReservationDetailWorkerName[],
+  pendingExtraMinutes: number = RESERVATION_DETAIL_NO_EXTRA_MINUTES
 ): ReservationDetail => {
   const chargeSummary =
     getReservationDetailChargeSummary(source);
@@ -81,11 +103,21 @@ export const mapReservationDetail = (
     ...mapReservationDetailAuditNames(source, workerNames),
     chargeStatus: chargeSummary.status,
     charges: chargeSummary.charges,
+    deposit: mapReservationDetailDeposit(source),
     dispatches: mapReservationDetailDispatches(source),
     equipment: mapReservationDetailEquipment(source),
+    extraTime: mapReservationDetailExtraTime(
+      source.reservation_extra_time_resolutions,
+      pendingExtraMinutes
+    ),
     extraTimeCharges: chargeSummary.extraTimeCharges,
     extras: mapReservationDetailExtras(source),
     guides: mapReservationDetailGuides(source, workerNames),
+    moneyMovements: mapReservationDetailMoneyMovements(
+      source,
+      workerNames
+    ),
+    refundable: mapReservationDetailRefundable(source),
     refunds: chargeSummary.refunds,
   };
 };

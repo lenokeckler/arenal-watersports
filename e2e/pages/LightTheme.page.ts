@@ -4,29 +4,47 @@ import type { NullableRef } from "@/app/types";
 import {
   E2E_LIGHT_THEME_COLORS,
   E2E_LIGHT_THEME_COLOR_VARIABLE_PREFIX,
+  E2E_LIGHT_THEME_OPTION_LABEL,
   E2E_LIGHT_THEME_ROOT_SELECTOR,
   E2E_LIGHT_THEME_STORAGE,
-  E2E_LIGHT_THEME_TOGGLE_LABEL,
-  E2E_LIGHT_THEME_TOGGLE_SOURCE,
 } from "../constants/E2eLightTheme.constants";
+import { SYSTEM_NAVIGATION_COPY } from "@/app/features/access/system-navigation/constants/SystemNavigationCopy.constants";
+import { E2E_LOGOUT_COPY } from "../constants/E2eLogout.constants";
+import { createSystemNavigationPage } from "./SystemNavigation.page";
 
 export const createLightThemePage = (page: Page) => {
   const getRoot = (): Locator =>
     page.locator(E2E_LIGHT_THEME_ROOT_SELECTOR);
 
-  const getToggleButton = (theme: Theme): Locator =>
+  const navigation = createSystemNavigationPage(page);
+  const getThemeOption = (theme: Theme): Locator =>
     page.getByRole(ARIA_ROLE.BUTTON, {
-      name: E2E_LIGHT_THEME_TOGGLE_LABEL[theme],
+      name: E2E_LIGHT_THEME_OPTION_LABEL[theme],
       exact: true,
     });
 
   return {
     getRoot,
-    getToggleButton,
-    clickToggleForTheme: (theme: Theme): Promise<void> =>
-      getToggleButton(
-        E2E_LIGHT_THEME_TOGGLE_SOURCE[theme]
-      ).click(),
+    getThemeOption,
+    openMenu: navigation.openMenu,
+    closeMenu: (): Promise<void> =>
+      page
+        .getByRole(ARIA_ROLE.BUTTON, {
+          name: SYSTEM_NAVIGATION_COPY.CLOSE_MENU,
+        })
+        .click(),
+    signOutFromMenu: async (): Promise<void> => {
+      for (const name of [
+        E2E_LOGOUT_COPY.BUTTON,
+        E2E_LOGOUT_COPY.CONFIRM,
+      ]) {
+        await page
+          .getByRole(ARIA_ROLE.BUTTON, { name })
+          .click();
+      }
+    },
+    chooseTheme: (theme: Theme): Promise<void> =>
+      getThemeOption(theme).click(),
     readStoredTheme: (): Promise<NullableRef<string>> =>
       page.evaluate(
         (storageKey) =>

@@ -1,9 +1,8 @@
-import UnorderedList from "@/app/components/list/UnorderedList";
+import ScreenBack from "@/app/components/screen-back/ScreenBack";
+import ScreenHeading from "@/app/components/screen-heading/ScreenHeading";
 import Text from "@/app/components/text/Text";
-import Title from "@/app/components/title/Title";
-import { ARIA_ROLE, TitleVariant } from "@/app/constants";
-import DamageReportCard from "./components/DamageReportCard";
-import DamageReportsPagination from "./components/DamageReportsPagination";
+import { ARIA_ROLE, PATHS } from "@/app/constants";
+import DamageReportsContent from "./components/DamageReportsContent";
 import {
   DAMAGE_REPORTS_COPY,
   DAMAGE_REPORTS_HEADING_ID,
@@ -11,69 +10,51 @@ import {
 import type { DamageReportsViewProps } from "./models/DamageReportsViewProps.interface";
 import {
   DAMAGE_REPORTS_CLASS,
-  DAMAGE_REPORTS_HEADING_CLASS,
-  DAMAGE_REPORTS_LIST_CLASS,
   DAMAGE_REPORTS_MESSAGE_CLASS,
-  DAMAGE_REPORTS_UNIT_CLASS,
-  DAMAGE_REPORTS_UNIT_DETAIL_CLASS,
+  DAMAGE_REPORTS_SAVED_CLASS,
 } from "./styles/DamageReports.styles";
 import type { JSX } from "react";
 
 const DamageReportsView = ({
-  entries,
   errorMessage,
-  hasNextPage,
-  page,
-  unit,
+  filters,
+  overview,
+  savedMessage,
 }: DamageReportsViewProps): JSX.Element => (
   <main className={DAMAGE_REPORTS_CLASS}>
-    <Title
+    <ScreenBack fallbackHref={PATHS.OPERATIONS.EQUIPMENT} />
+    <ScreenHeading
       id={DAMAGE_REPORTS_HEADING_ID}
-      variant={TitleVariant.PRIMARY}
-      text={DAMAGE_REPORTS_COPY.HEADING}
-      className={DAMAGE_REPORTS_HEADING_CLASS}
+      title={DAMAGE_REPORTS_COPY.HEADING}
+      action={
+        errorMessage
+          ? undefined
+          : {
+              href: PATHS.OPERATIONS.DAMAGE_REPORT,
+              label: DAMAGE_REPORTS_COPY.NEW_REPORT,
+            }
+      }
     />
-    {errorMessage && (
+    {savedMessage && (
+      <Text
+        className={DAMAGE_REPORTS_SAVED_CLASS}
+        role={ARIA_ROLE.STATUS}
+      >
+        {savedMessage}
+      </Text>
+    )}
+    {errorMessage ? (
       <Text
         className={DAMAGE_REPORTS_MESSAGE_CLASS}
         role={ARIA_ROLE.ALERT}
       >
         {errorMessage}
       </Text>
-    )}
-    {!errorMessage && !unit && (
-      <Text className={DAMAGE_REPORTS_MESSAGE_CLASS}>
-        {DAMAGE_REPORTS_COPY.UNIT_NOT_FOUND}
-      </Text>
-    )}
-    {!errorMessage && unit && (
-      <>
-        <Text className={DAMAGE_REPORTS_UNIT_CLASS}>
-          {`${unit.code}${DAMAGE_REPORTS_COPY.UNIT_SEPARATOR}${unit.categoryName}`}
-        </Text>
-        <Text className={DAMAGE_REPORTS_UNIT_DETAIL_CLASS}>
-          {`${DAMAGE_REPORTS_COPY.IMPACTS_TOTAL_PREFIX}${unit.impactCount}`}
-        </Text>
-        {entries.length === 0 && (
-          <Text className={DAMAGE_REPORTS_MESSAGE_CLASS}>
-            {DAMAGE_REPORTS_COPY.EMPTY}
-          </Text>
-        )}
-        {entries.length > 0 && (
-          <UnorderedList
-            className={DAMAGE_REPORTS_LIST_CLASS}
-            items={entries.map((entry) => ({
-              id: entry.id,
-              text: <DamageReportCard entry={entry} />,
-            }))}
-          />
-        )}
-        <DamageReportsPagination
-          hasNextPage={hasNextPage}
-          page={page}
-          unitId={unit.id}
-        />
-      </>
+    ) : (
+      <DamageReportsContent
+        filters={filters}
+        overview={overview}
+      />
     )}
   </main>
 );

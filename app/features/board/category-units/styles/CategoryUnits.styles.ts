@@ -1,3 +1,5 @@
+import type { CardGridSize } from "@/app/utils/card-grid/models/CardGridSize.type";
+
 export const CATEGORY_UNITS_PAGE_CLASS =
   "mx-auto flex w-full max-w-6xl flex-col gap-md px-margin-mobile py-md md:px-margin-desktop md:py-lg";
 
@@ -10,17 +12,21 @@ export const CATEGORY_UNITS_BACK_LINK_CLASS =
 export const CATEGORY_UNITS_TITLE_CLASS =
   "break-words font-sans text-headline-lg-mobile text-on-surface md:text-headline-lg";
 
-export const CATEGORY_UNITS_SUBTITLE_CLASS =
-  "max-w-prose text-body-base text-on-surface-variant";
-
 export const CATEGORY_UNITS_LIST_CLASS =
-  "grid grid-cols-1 items-start gap-2 md:grid-cols-2";
+  "grid grid-cols-2 gap-sm md:flex md:flex-wrap md:justify-center";
 
-export const CATEGORY_UNITS_LIST_ITEM_CLASS =
-  "flex min-w-0";
+export const CATEGORY_UNITS_LIST_ITEM_CLASSES: Record<
+  CardGridSize,
+  string
+> = {
+  pair: "flex min-w-0 md:w-[calc((100%-var(--spacing-sm))/2)] md:max-w-[24rem]",
+  trio: "flex min-w-0 md:w-[calc((100%-2*var(--spacing-sm))/3)]",
+  standard:
+    "flex min-w-0 md:w-[calc((100%-2*var(--spacing-sm))/3)] xl:w-[calc((100%-3*var(--spacing-sm))/4)]",
+};
 
 export const CATEGORY_UNITS_DISPATCH_BAR_CLASS =
-  "fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-30 flex items-center justify-between gap-sm border-t border-outline-variant bg-surface-container-high/95 px-margin-mobile py-sm backdrop-blur-xl";
+  "fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-30 md:bottom-0 md:left-64 flex items-center justify-between gap-sm border-t border-outline-variant bg-surface-container-high/95 px-margin-mobile py-sm backdrop-blur-xl";
 
 export const CATEGORY_UNITS_DISPATCH_BAR_COUNT_CLASS =
   "text-title-md font-semibold text-on-surface";

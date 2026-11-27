@@ -8,7 +8,7 @@ import {
 import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 import {
   CATEGORY_UNITS_LIST_CLASS,
-  CATEGORY_UNITS_LIST_ITEM_CLASS,
+  CATEGORY_UNITS_LIST_ITEM_CLASSES,
   CATEGORY_UNITS_PAGE_CLASS,
 } from "../styles/CategoryUnits.styles";
 import { CATEGORY_UNITS_SKELETON_TITLE_CLASS } from "../styles/CategoryUnitsState.styles";
@@ -33,7 +33,9 @@ const CategoryUnitsLoading = (): React.JSX.Element => (
         (skeletonIndex) => (
           <div
             key={skeletonIndex}
-            className={CATEGORY_UNITS_LIST_ITEM_CLASS}
+            className={
+              CATEGORY_UNITS_LIST_ITEM_CLASSES.standard
+            }
           >
             <CategoryUnitSkeletonRow
               withDetail={

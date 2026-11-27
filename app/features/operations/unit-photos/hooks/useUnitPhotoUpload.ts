@@ -2,7 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useState, type ChangeEvent } from "react";
-import type { NullableRef } from "@/app/types";
+import { useToast } from "@/app/components/toast/utils/useToast";
+import { STATUS } from "@/app/constants";
+import { UNIT_PHOTO_NOTICE_MS } from "../constants/UnitPhotos.constants";
 import { UNIT_PHOTOS_COPY } from "../constants/UnitPhotosCopy.constants";
 import type { UnitPhotoUpload } from "../models/UnitPhotoUpload.interface";
 import type { UnitPhotoUploadProps } from "../models/UnitPhotoUploadProps.interface";
@@ -14,11 +16,14 @@ export const useUnitPhotoUpload = ({
   unitId,
 }: UnitPhotoUploadProps): UnitPhotoUpload => {
   const router = useRouter();
+  const { showToast } = useToast();
   const [isUploading, setIsUploading] = useState(false);
-  const [errorMessage, setErrorMessage] =
-    useState<NullableRef<string>>(null);
-  const [savedMessage, setSavedMessage] =
-    useState<NullableRef<string>>(null);
+  const showError = (message: string): void =>
+    showToast(
+      STATUS.ERROR,
+      message,
+      UNIT_PHOTO_NOTICE_MS.ERROR
+    );
 
   const handleChange = async (
     event: ChangeEvent<HTMLInputElement>
@@ -30,16 +35,14 @@ export const useUnitPhotoUpload = ({
       return;
     }
 
-    setSavedMessage(null);
     const invalidMessage = validatePhotoFile(file);
 
     if (invalidMessage) {
-      setErrorMessage(invalidMessage);
+      showError(invalidMessage);
       input.value = "";
       return;
     }
 
-    setErrorMessage(null);
     setIsUploading(true);
 
     try {
@@ -48,20 +51,15 @@ export const useUnitPhotoUpload = ({
         file,
         unitId,
       });
-      setSavedMessage(UNIT_PHOTOS_COPY.SAVED);
+      showToast(STATUS.SUCCESS, UNIT_PHOTOS_COPY.SAVED);
       router.refresh();
     } catch {
-      setErrorMessage(UNIT_PHOTOS_COPY.ERROR_UPLOAD);
+      showError(UNIT_PHOTOS_COPY.ERROR_UPLOAD);
     } finally {
       setIsUploading(false);
       input.value = "";
     }
   };
 
-  return {
-    errorMessage,
-    handleChange,
-    isUploading,
-    savedMessage,
-  };
+  return { handleChange, isUploading };
 };

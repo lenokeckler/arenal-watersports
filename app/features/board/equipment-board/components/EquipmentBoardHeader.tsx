@@ -6,6 +6,8 @@ import {
 import { MATERIAL_ICON_NAME } from "@/app/components/icons/material-icon/constants/MaterialIconName.constants";
 import { TitleVariant } from "@/app/constants";
 import { EQUIPMENT_BOARD_COPY } from "../constants/EquipmentBoardCopy.constants";
+import type { EquipmentBoardHeaderProps } from "../models/EquipmentBoardHeaderProps.interface";
+import EquipmentBoardTeamLink from "./EquipmentBoardTeamLink";
 import {
   EQUIPMENT_BOARD_DESCRIPTION_CLASS,
   EQUIPMENT_BOARD_HEADER_CLASS,
@@ -15,7 +17,10 @@ import {
   EQUIPMENT_BOARD_TITLE_CLASS,
 } from "../styles/EquipmentBoard.styles";
 
-const EquipmentBoardHeader = (): React.JSX.Element => (
+const EquipmentBoardHeader = ({
+  equipmentPending = null,
+  showEquipment = false,
+}: EquipmentBoardHeaderProps): React.JSX.Element => (
   <header className={EQUIPMENT_BOARD_HEADER_CLASS}>
     <div className={EQUIPMENT_BOARD_ICON_TILE_CLASS}>
       <MaterialIcon
@@ -33,6 +38,9 @@ const EquipmentBoardHeader = (): React.JSX.Element => (
         {EQUIPMENT_BOARD_COPY.PAGE_DESCRIPTION}
       </Text>
     </div>
+    {showEquipment && (
+      <EquipmentBoardTeamLink pending={equipmentPending} />
+    )}
   </header>
 );
 

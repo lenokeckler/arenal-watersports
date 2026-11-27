@@ -179,36 +179,65 @@ export type Database = {
       };
       damage_reports: {
         Row: {
-          cause: Database["public"]["Enums"]["damage_cause"];
+          cause:
+            | Database["public"]["Enums"]["damage_cause"]
+            | null;
+          completed_at: string | null;
+          completed_by: string | null;
           created_at: string;
           created_by: string;
-          description: string;
+          description: string | null;
+          detail_pending: boolean;
           id: string;
           impact_delta: number;
           reservation_id: string | null;
           unit_id: string;
         };
         Insert: {
-          cause: Database["public"]["Enums"]["damage_cause"];
+          cause?:
+            | Database["public"]["Enums"]["damage_cause"]
+            | null;
+          completed_at?: string | null;
+          completed_by?: string | null;
           created_at?: string;
           created_by: string;
-          description: string;
+          description?: string | null;
+          detail_pending?: boolean;
           id?: string;
           impact_delta?: number;
           reservation_id?: string | null;
           unit_id: string;
         };
         Update: {
-          cause?: Database["public"]["Enums"]["damage_cause"];
+          cause?:
+            | Database["public"]["Enums"]["damage_cause"]
+            | null;
+          completed_at?: string | null;
+          completed_by?: string | null;
           created_at?: string;
           created_by?: string;
-          description?: string;
+          description?: string | null;
+          detail_pending?: boolean;
           id?: string;
           impact_delta?: number;
           reservation_id?: string | null;
           unit_id?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: "damage_reports_completed_by_fkey";
+            columns: ["completed_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "damage_reports_completed_by_fkey";
+            columns: ["completed_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "damage_reports_created_by_fkey";
             columns: ["created_by"];
@@ -278,6 +307,53 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "unit_service_status";
             referencedColumns: ["unit_id"];
+          },
+        ];
+      };
+      deposit_declinations: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          reservation_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          reservation_id: string;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          reservation_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "deposit_declinations_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "deposit_declinations_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "deposit_declinations_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["reservation_id"];
+          },
+          {
+            foreignKeyName: "deposit_declinations_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "reservations";
+            referencedColumns: ["id"];
           },
         ];
       };
@@ -384,6 +460,7 @@ export type Database = {
           id: string;
           image_path: string | null;
           is_reservable: boolean;
+          low_fuel_lines: number;
           name: string;
           status: Database["public"]["Enums"]["category_status"];
           tracking_mode: Database["public"]["Enums"]["tracking_mode"];
@@ -411,6 +488,7 @@ export type Database = {
           id?: string;
           image_path?: string | null;
           is_reservable?: boolean;
+          low_fuel_lines?: number;
           name: string;
           status?: Database["public"]["Enums"]["category_status"];
           tracking_mode: Database["public"]["Enums"]["tracking_mode"];
@@ -438,6 +516,7 @@ export type Database = {
           id?: string;
           image_path?: string | null;
           is_reservable?: boolean;
+          low_fuel_lines?: number;
           name?: string;
           status?: Database["public"]["Enums"]["category_status"];
           tracking_mode?: Database["public"]["Enums"]["tracking_mode"];
@@ -691,6 +770,7 @@ export type Database = {
           fuel_max: number;
           id: string;
           impact_count: number;
+          low_fuel_lines: number | null;
           next_oil_change_at: number | null;
           status: Database["public"]["Enums"]["unit_status"];
           updated_at: string;
@@ -708,6 +788,7 @@ export type Database = {
           fuel_max?: number;
           id?: string;
           impact_count?: number;
+          low_fuel_lines?: number | null;
           next_oil_change_at?: number | null;
           status?: Database["public"]["Enums"]["unit_status"];
           updated_at?: string;
@@ -725,6 +806,7 @@ export type Database = {
           fuel_max?: number;
           id?: string;
           impact_count?: number;
+          low_fuel_lines?: number | null;
           next_oil_change_at?: number | null;
           status?: Database["public"]["Enums"]["unit_status"];
           updated_at?: string;
@@ -1555,6 +1637,7 @@ export type Database = {
           extra_time_minutes: number;
           id: string;
           planned_duration_minutes: number | null;
+          radio_channel: number | null;
           reservation_id: string;
           updated_at: string;
           updated_by: string;
@@ -1571,6 +1654,7 @@ export type Database = {
           extra_time_minutes?: number;
           id?: string;
           planned_duration_minutes?: number | null;
+          radio_channel?: number | null;
           reservation_id: string;
           updated_at?: string;
           updated_by: string;
@@ -1587,6 +1671,7 @@ export type Database = {
           extra_time_minutes?: number;
           id?: string;
           planned_duration_minutes?: number | null;
+          radio_channel?: number | null;
           reservation_id?: string;
           updated_at?: string;
           updated_by?: string;
@@ -1681,6 +1766,116 @@ export type Database = {
             columns: ["updated_by"];
             isOneToOne: false;
             referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reservation_dock_notices: {
+        Row: {
+          notified_at: string;
+          notified_by: string;
+          reservation_id: string;
+        };
+        Insert: {
+          notified_at?: string;
+          notified_by: string;
+          reservation_id: string;
+        };
+        Update: {
+          notified_at?: string;
+          notified_by?: string;
+          reservation_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reservation_dock_notices_notified_by_fkey";
+            columns: ["notified_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "reservation_dock_notices_notified_by_fkey";
+            columns: ["notified_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_dock_notices_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["reservation_id"];
+          },
+          {
+            foreignKeyName: "reservation_dock_notices_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "reservations";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reservation_extra_time_resolutions: {
+        Row: {
+          charge_id: string | null;
+          created_at: string;
+          created_by: string;
+          extra_minutes: number;
+          outcome: Database["public"]["Enums"]["extra_time_outcome"];
+          reservation_id: string;
+        };
+        Insert: {
+          charge_id?: string | null;
+          created_at?: string;
+          created_by: string;
+          extra_minutes: number;
+          outcome: Database["public"]["Enums"]["extra_time_outcome"];
+          reservation_id: string;
+        };
+        Update: {
+          charge_id?: string | null;
+          created_at?: string;
+          created_by?: string;
+          extra_minutes?: number;
+          outcome?: Database["public"]["Enums"]["extra_time_outcome"];
+          reservation_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reservation_extra_time_resolutions_charge_id_fkey";
+            columns: ["charge_id"];
+            isOneToOne: true;
+            referencedRelation: "reservation_charges";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_extra_time_resolutions_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "reservation_extra_time_resolutions_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_extra_time_resolutions_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["reservation_id"];
+          },
+          {
+            foreignKeyName: "reservation_extra_time_resolutions_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "reservations";
             referencedColumns: ["id"];
           },
         ];
@@ -1867,6 +2062,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_items_dispatch_id_fkey";
+            columns: ["dispatch_id"];
+            isOneToOne: false;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["dispatch_id"];
           },
           {
             foreignKeyName: "reservation_items_dispatch_id_fkey";
@@ -2497,6 +2699,90 @@ export type Database = {
           },
         ];
       };
+      unit_condition_photo_changes: {
+        Row: {
+          action: string;
+          angle: Database["public"]["Enums"]["photo_angle"];
+          changed_at: string;
+          changed_by: string | null;
+          id: string;
+          unit_id: string;
+        };
+        Insert: {
+          action: string;
+          angle: Database["public"]["Enums"]["photo_angle"];
+          changed_at?: string;
+          changed_by?: string | null;
+          id?: string;
+          unit_id: string;
+        };
+        Update: {
+          action?: string;
+          angle?: Database["public"]["Enums"]["photo_angle"];
+          changed_at?: string;
+          changed_by?: string | null;
+          id?: string;
+          unit_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "unit_condition_photo_changes_changed_by_fkey";
+            columns: ["changed_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photo_changes_changed_by_fkey";
+            columns: ["changed_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photo_changes_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photo_changes_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_units";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photo_changes_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photo_changes_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "maintenance_cost_by_unit";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photo_changes_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_current_state";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photo_changes_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
+          },
+        ];
+      };
       unit_condition_photos: {
         Row: {
           angle: Database["public"]["Enums"]["photo_angle"];
@@ -2875,10 +3161,12 @@ export type Database = {
         Row: {
           category_id: string | null;
           category_name: string | null;
+          damaged_count: number | null;
           free_count: number | null;
           group_name: string | null;
           image_path: string | null;
           in_use_count: number | null;
+          maintenance_count: number | null;
           total_count: number | null;
         };
         Relationships: [];
@@ -2886,8 +3174,20 @@ export type Database = {
       board_category_units: {
         Row: {
           category_id: string | null;
+          consumes_fuel: boolean | null;
           customer_name: string | null;
+          dispatch_id: string | null;
+          dispatched_at: string | null;
           effective_status: string | null;
+          fuel_level: number | null;
+          fuel_max: number | null;
+          has_motor: boolean | null;
+          impact_count: number | null;
+          low_fuel_lines: number | null;
+          oil_remaining: number | null;
+          oil_warning: boolean | null;
+          people_count: number | null;
+          radio_channel: number | null;
           reservation_code: string | null;
           reservation_ends_at: string | null;
           reservation_id: string | null;
@@ -2895,6 +3195,10 @@ export type Database = {
           returns_at: string | null;
           unit_code: string | null;
           unit_id: string | null;
+          usage_metric:
+            | Database["public"]["Enums"]["usage_metric"]
+            | null;
+          usage_total: number | null;
         };
         Relationships: [
           {
@@ -3312,6 +3616,14 @@ export type Database = {
         };
         Returns: undefined;
       };
+      apply_damage_to_unit: {
+        Args: {
+          p_impact_change: number;
+          p_unit_id: string;
+          p_unit_status: Database["public"]["Enums"]["unit_status"];
+        };
+        Returns: undefined;
+      };
       assert_postponement_reason: {
         Args: {
           p_cause: Database["public"]["Enums"]["reservation_postponement_cause"];
@@ -3430,6 +3742,10 @@ export type Database = {
         Args: { target_worker: string };
         Returns: string;
       };
+      can_manage_unit_photos: {
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
       can_register_external_guide: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
@@ -3466,6 +3782,16 @@ export type Database = {
           starts_at: string;
         }[];
       };
+      check_damage_report_input: {
+        Args: {
+          p_description: string;
+          p_impact_delta: number;
+          p_reservation_id: string;
+          p_unit_id: string;
+          p_unit_status: Database["public"]["Enums"]["unit_status"];
+        };
+        Returns: undefined;
+      };
       choose_work_area: {
         Args: {
           target: Database["public"]["Enums"]["work_area"];
@@ -3477,6 +3803,21 @@ export type Database = {
           p_arrived_at: string;
           p_dispatch_id: string;
           p_returns?: Json;
+        };
+        Returns: undefined;
+      };
+      close_expired_dispatch_remainders: {
+        Args: Record<PropertyKey, never>;
+        Returns: undefined;
+      };
+      complete_damage_report: {
+        Args: {
+          p_cause: Database["public"]["Enums"]["damage_cause"];
+          p_description: string;
+          p_impact_delta: number;
+          p_report_id: string;
+          p_reservation_id?: string;
+          p_unit_status?: Database["public"]["Enums"]["unit_status"];
         };
         Returns: undefined;
       };
@@ -3501,6 +3842,18 @@ export type Database = {
       };
       create_custom_combo_reservation: {
         Args: { p_payload: Json };
+        Returns: string;
+      };
+      create_damage_report: {
+        Args: {
+          p_cause?: Database["public"]["Enums"]["damage_cause"];
+          p_description?: string;
+          p_detail_later?: boolean;
+          p_impact_delta: number;
+          p_reservation_id?: string;
+          p_unit_id: string;
+          p_unit_status?: Database["public"]["Enums"]["unit_status"];
+        };
         Returns: string;
       };
       create_predefined_combo_reservation: {
@@ -3564,6 +3917,10 @@ export type Database = {
               list_amount_usd: number;
             }[];
           };
+      delete_or_deactivate_combo: {
+        Args: { p_combo_id: string };
+        Returns: string;
+      };
       delete_or_deactivate_extra: {
         Args: { p_extra_id: string };
         Returns: string;
@@ -3578,6 +3935,7 @@ export type Database = {
           fuel_level: number;
           fuel_max: number;
           is_assigned: boolean;
+          low_fuel_lines: number;
           unit_id: string;
           usage_total: number;
         }[];
@@ -3589,15 +3947,19 @@ export type Database = {
           consumes_fuel: boolean;
           fuel_max: number;
           fuel_out: number;
+          impact_count: number;
+          low_fuel_lines: number;
           unit_id: string;
           usage_metric: Database["public"]["Enums"]["usage_metric"];
           usage_out: number;
+          usage_total: number;
         }[];
       };
       dispatch_reservation_group: {
         Args: {
           p_category_id: string;
           p_dispatched_at: string;
+          p_radio_channel?: number;
           p_readings?: Json;
           p_reservation_id: string;
           p_returns_at: string;
@@ -3819,6 +4181,8 @@ export type Database = {
           code: string;
           next_oil_change_at: number;
           oil_overage: number;
+          oil_remaining: number;
+          oil_warning: boolean;
           status: Database["public"]["Enums"]["unit_status"];
           unit_id: string;
           usage_metric: Database["public"]["Enums"]["usage_metric"];
@@ -3843,6 +4207,12 @@ export type Database = {
       normalize_cancellation_reason: {
         Args: { p_reason: string };
         Returns: string;
+      };
+      oil_warning_margin: {
+        Args: {
+          metric: Database["public"]["Enums"]["usage_metric"];
+        };
+        Returns: number;
       };
       password_reset_grant_is_open: {
         Args: { p_token: string };
@@ -3892,6 +4262,17 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: number;
       };
+      pending_dispatch_equipment: {
+        Args: { p_reservation_ids: string[] };
+        Returns: {
+          category_id: string;
+          category_name: string;
+          quantity: number;
+          reservation_id: string;
+          reservation_type: Database["public"]["Enums"]["reservation_type"];
+          total_quantity: number;
+        }[];
+      };
       pending_dispatch_reservations: {
         Args: {
           p_ends_at: string;
@@ -3902,6 +4283,8 @@ export type Database = {
         Returns: {
           code: string;
           customer_name: string;
+          dock_notified_at: string;
+          ends_at: string;
           id: string;
           starts_at: string;
           status: Database["public"]["Enums"]["reservation_status"];
@@ -3935,6 +4318,14 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: undefined;
       };
+      receive_dispatch_unit: {
+        Args: {
+          p_arrived_at: string;
+          p_return: Json;
+          p_unit_id: string;
+        };
+        Returns: undefined;
+      };
       record_failed_sign_in: {
         Args: { p_username: string };
         Returns: undefined;
@@ -3954,6 +4345,39 @@ export type Database = {
           charged_currency: Database["public"]["Enums"]["currency_code"];
           charged_payment_method: string;
           recorded_by_name: string;
+        }[];
+      };
+      record_reservation_deposit: {
+        Args: { p_payload: Json };
+        Returns: {
+          recorded_amount: number;
+          recorded_by_name: string;
+          recorded_currency: Database["public"]["Enums"]["currency_code"];
+          recorded_deposit_id: string;
+          recorded_has_deposit: boolean;
+        }[];
+      };
+      record_reservation_extra_time: {
+        Args: { p_payload: Json };
+        Returns: {
+          charge_id: string;
+          charged_amount: number;
+          charged_currency: Database["public"]["Enums"]["currency_code"];
+          charged_payment_method: string;
+          extra_minutes: number;
+          outcome: Database["public"]["Enums"]["extra_time_outcome"];
+          recorded_by_name: string;
+        }[];
+      };
+      record_reservation_refund: {
+        Args: { p_payload: Json };
+        Returns: {
+          recorded_by_name: string;
+          refund_id: string;
+          refunded_amount: number;
+          refunded_currency: Database["public"]["Enums"]["currency_code"];
+          refunded_reason: string;
+          remaining_amount: number;
         }[];
       };
       record_successful_sign_in: {
@@ -3980,7 +4404,7 @@ export type Database = {
           p_cost_currency?: Database["public"]["Enums"]["currency_code"];
           p_description?: string;
           p_is_external?: boolean;
-          p_next_oil_change_at?: number;
+          p_oil_interval?: number;
           p_performed_at: string;
           p_unit_id: string;
           p_work_type: string;
@@ -4037,6 +4461,13 @@ export type Database = {
           proposal_usd: number;
         }[];
       };
+      reservation_deposit_proposal: {
+        Args: { p_reservation_id: string };
+        Returns: {
+          proposal_crc: number;
+          proposal_usd: number;
+        }[];
+      };
       reservation_dispatch_groups: {
         Args: { p_reservation_id: string };
         Returns: {
@@ -4059,6 +4490,18 @@ export type Database = {
           p_unit_id: string;
         };
         Returns: boolean;
+      };
+      reservation_extra_time_groups: {
+        Args: { p_reservation_id: string };
+        Returns: {
+          arrived_at: string;
+          category_id: string;
+          category_name: string;
+          dispatched_at: string;
+          extended_minutes: number;
+          extra_minutes: number;
+          planned_returns_at: string;
+        }[];
       };
       reservation_extras_price_quote: {
         Args: {
@@ -4085,6 +4528,28 @@ export type Database = {
         Args: { p_reservation_id: string };
         Returns: boolean;
       };
+      reservation_refundable_net: {
+        Args: { p_reservation_id: string };
+        Returns: {
+          charged_amount: number;
+          currency: Database["public"]["Enums"]["currency_code"];
+          refundable_amount: number;
+          refunded_amount: number;
+        }[];
+      };
+      resolve_reservation_deposit: {
+        Args: { p_payload: Json };
+        Returns: {
+          deposit_amount: number;
+          kept_amount: number;
+          resolved_by_name: string;
+          resolved_currency: Database["public"]["Enums"]["currency_code"];
+          resolved_deposit_id: string;
+          resolved_reason: string;
+          resolved_status: Database["public"]["Enums"]["deposit_status"];
+          returned_amount: number;
+        }[];
+      };
       retire_worker: {
         Args: { target_worker: string };
         Returns: string;
@@ -4106,6 +4571,14 @@ export type Database = {
       revoke_worker_sessions: {
         Args: { target_worker: string };
         Returns: undefined;
+      };
+      save_category_tariffs: {
+        Args: { p_payload: Json };
+        Returns: number;
+      };
+      save_combo: {
+        Args: { p_payload: Json };
+        Returns: string;
       };
       session_idle_deadline: {
         Args: { last_activity: string };
@@ -4130,9 +4603,31 @@ export type Database = {
         };
         Returns: string;
       };
+      set_combo_active: {
+        Args: { p_active: boolean; p_combo_id: string };
+        Returns: string;
+      };
+      set_extra_compatibility: {
+        Args: { p_extra_id: string; p_unit_ids: string[] };
+        Returns: number;
+      };
+      set_reservation_dock_notice: {
+        Args: {
+          p_notified: boolean;
+          p_reservation_id: string;
+        };
+        Returns: undefined;
+      };
       set_unit_condition: {
         Args: {
           new_status: Database["public"]["Enums"]["unit_status"];
+          target_unit: string;
+        };
+        Returns: string;
+      };
+      set_unit_maintenance: {
+        Args: {
+          in_maintenance: boolean;
           target_unit: string;
         };
         Returns: string;
@@ -4246,6 +4741,15 @@ export type Database = {
         Args: { target_worker: string };
         Returns: string;
       };
+      update_open_dispatch: {
+        Args: {
+          p_dispatch_id: string;
+          p_dispatched_at: string;
+          p_radio_channel?: number;
+          p_returns_at: string;
+        };
+        Returns: undefined;
+      };
       update_reservation: {
         Args: { p_payload: Json };
         Returns: string;
@@ -4320,8 +4824,14 @@ export type Database = {
         | "returned"
         | "retained"
         | "partially_retained";
+      extra_time_outcome: "charged" | "courtesy";
       photo_angle:
-        "right_side" | "left_side" | "front" | "bottom";
+        | "right_side"
+        | "left_side"
+        | "front"
+        | "bottom"
+        | "back"
+        | "extra";
       reservation_postponement_cause:
         "heavy_rain" | "storm" | "other";
       reservation_status:
@@ -4502,11 +5012,14 @@ export const Constants = {
         "retained",
         "partially_retained",
       ],
+      extra_time_outcome: ["charged", "courtesy"],
       photo_angle: [
         "right_side",
         "left_side",
         "front",
         "bottom",
+        "back",
+        "extra",
       ],
       reservation_postponement_cause: [
         "heavy_rain",

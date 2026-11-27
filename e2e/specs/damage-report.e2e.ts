@@ -1,89 +1,108 @@
-import { expect, test } from "@playwright/test";
+import { DAMAGE_CAUSE_ORDER } from "@/app/constants";
 import { DAMAGE_REPORT_COPY } from "@/app/features/operations/damage-report/constants/DamageReportCopy.constants";
-import {
-  E2E_DAMAGE_REPORT_CAUSES,
-  E2E_DAMAGE_REPORT_FORM_INPUT,
-} from "../constants/E2eDamageReport.constants";
+import { DAMAGE_REPORTS_COPY } from "@/app/features/operations/damage-reports/constants/DamageReportsCopy.constants";
+import { E2E_DAMAGE_REPORT_FORM_INPUT } from "../constants/E2eDamageReport.constants";
 import { createDamageReportPage } from "../pages/DamageReport.page";
-import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
+import { createDamageReportsPage } from "../pages/DamageReports.page";
+import { expect, test } from "../support/dispatchSheetTest";
 
 test.describe("Damage report", () => {
-  test.beforeEach(async ({ page }) => {
-    await signInAsSeededWorker(page);
-  });
-
-  test("shows all fields required to report machine damage", async ({
-    page,
+  test("shows every field and the four causes", async ({
+    signedInPage: page,
   }) => {
-    const damageReportPage = createDamageReportPage(page);
+    const report = createDamageReportPage(page);
 
-    await damageReportPage.goTo();
+    await report.goTo();
 
-    await expect(damageReportPage.getHeading()).toHaveText(
+    await expect(report.getHeading()).toHaveText(
       DAMAGE_REPORT_COPY.TITLE
     );
-    await expect(
-      damageReportPage.getUnitSelect()
-    ).toBeVisible();
-    await expect(
-      damageReportPage.getCauseSelect()
-    ).toBeVisible();
-    await expect(
-      damageReportPage.getDescriptionInput()
-    ).toBeVisible();
-    await expect(
-      damageReportPage.getImpactDeltaInput()
-    ).toBeVisible();
-  });
-
-  test("allows selecting each supported damage cause", async ({
-    page,
-  }) => {
-    const damageReportPage = createDamageReportPage(page);
-
-    await damageReportPage.goTo();
-
-    for (const causeOption of E2E_DAMAGE_REPORT_CAUSES) {
-      await damageReportPage.selectCause(causeOption.value);
-      await expect(
-        damageReportPage.getCauseSelect()
-      ).toHaveValue(causeOption.value);
+    await expect(report.getUnitSelect()).toBeVisible();
+    for (const cause of DAMAGE_CAUSE_ORDER) {
+      await expect(report.getCause(cause)).toBeAttached();
     }
+    await expect(
+      report.getDescriptionInput()
+    ).toBeVisible();
+    await expect(report.getHits()).toBeVisible();
   });
 
-  test("allows entering a description and impact count increase", async ({
-    page,
+  test("requires a cause before saving", async ({
+    signedInPage: page,
   }) => {
-    const damageReportPage = createDamageReportPage(page);
+    const report = createDamageReportPage(page);
 
-    await damageReportPage.goTo();
-    await damageReportPage.fillDescription(
+    await report.goTo();
+    await report.submit();
+
+    await expect(
+      report.getCauseRequiredError()
+    ).toBeVisible();
+  });
+
+  test("saves a report, adds its hits and takes the machine out of service", async ({
+    motorDispatchSheet: dispatchSheet,
+    signedInPage: page,
+  }) => {
+    const report = createDamageReportPage(page);
+    const reports = createDamageReportsPage(page);
+    const [unit] = dispatchSheet.unitCodes;
+
+    await report.goToUnit(
+      await dispatchSheet.readUnitId(unit)
+    );
+    await report.chooseCause("rollover");
+    await report.fillDescription(
       E2E_DAMAGE_REPORT_FORM_INPUT.DESCRIPTION
     );
-    await damageReportPage.fillImpactDelta(
-      E2E_DAMAGE_REPORT_FORM_INPUT.IMPACT_DELTA
-    );
+    await report.moreHits();
+    await report.submit();
 
     await expect(
-      damageReportPage.getDescriptionInput()
-    ).toHaveValue(E2E_DAMAGE_REPORT_FORM_INPUT.DESCRIPTION);
-    await expect(
-      damageReportPage.getImpactDeltaInput()
-    ).toHaveValue(
-      E2E_DAMAGE_REPORT_FORM_INPUT.IMPACT_DELTA
+      reports.getSaved(DAMAGE_REPORTS_COPY.SAVED.complete)
+    ).toBeVisible();
+    await reports.openToday();
+    await expect(reports.getReport(unit)).toContainText(
+      E2E_DAMAGE_REPORT_FORM_INPUT.DESCRIPTION
     );
+    await expect
+      .poll(() => dispatchSheet.readUnitCorrection(unit))
+      .toMatchObject({ impactCount: 2, status: "damaged" });
   });
 
-  test("requires a cause before submitting the report", async ({
-    page,
+  test("leaves the detail for later and completes it afterwards without counting the hits twice", async ({
+    motorDispatchSheet: dispatchSheet,
+    signedInPage: page,
   }) => {
-    const damageReportPage = createDamageReportPage(page);
+    const report = createDamageReportPage(page);
+    const reports = createDamageReportsPage(page);
+    const [unit] = dispatchSheet.unitCodes;
 
-    await damageReportPage.goTo();
-    await damageReportPage.submit();
+    await report.goToUnit(
+      await dispatchSheet.readUnitId(unit)
+    );
+    await report.submitLater();
 
     await expect(
-      damageReportPage.getCauseRequiredError()
+      reports.getSaved(DAMAGE_REPORTS_COPY.SAVED.later)
     ).toBeVisible();
+    await reports.openToday();
+    await reports.openCompletion(unit);
+    await expect(report.getHeading()).toHaveText(
+      DAMAGE_REPORT_COPY.TITLE_COMPLETE
+    );
+    await report.chooseCause("machine_failure");
+    await report.fillDescription(
+      E2E_DAMAGE_REPORT_FORM_INPUT.PENDING_DESCRIPTION
+    );
+    await report.submit();
+    await reports.openToday();
+
+    await expect(reports.getReport(unit)).toContainText(
+      E2E_DAMAGE_REPORT_FORM_INPUT.PENDING_DESCRIPTION
+    );
+    await expect
+      .poll(() => dispatchSheet.readUnitCorrection(unit))
+      .toMatchObject({ impactCount: 1, status: "damaged" });
   });
 });

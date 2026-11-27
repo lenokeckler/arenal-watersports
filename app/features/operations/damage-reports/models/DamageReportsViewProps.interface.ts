@@ -1,11 +1,10 @@
 import type { NullableRef } from "@/app/types";
-import type { DamageReportEntry } from "./DamageReportEntry.interface";
-import type { DamageReportsUnit } from "./DamageReportsUnit.interface";
+import type { DamageFilters } from "./DamageFilters.interface";
+import type { DamageOverview } from "./DamageOverview.interface";
 
 export interface DamageReportsViewProps {
-  entries: DamageReportEntry[];
   errorMessage: NullableRef<string>;
-  hasNextPage: boolean;
-  page: number;
-  unit: NullableRef<DamageReportsUnit>;
+  filters: DamageFilters;
+  overview: DamageOverview;
+  savedMessage: NullableRef<string>;
 }

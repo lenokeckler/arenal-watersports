@@ -5,8 +5,17 @@ import {
 
 export const RESERVATION_DETAIL_CHARGE_BADGE_BASE_CLASS =
   "inline-flex min-h-11 w-fit items-center rounded-full border px-4 py-2 text-sm font-semibold";
-export const RESERVATION_DETAIL_CHARGE_ACTION_CLASS =
-  "inline-flex min-h-11 w-full items-center justify-center rounded-full border border-primary/40 px-5 text-sm font-semibold text-primary hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-fit";
+const RESERVATION_DETAIL_ACTION_BASE_CLASS =
+  "inline-flex min-h-12 w-full items-center justify-center rounded-full border px-5 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-fit";
+export const RESERVATION_DETAIL_CHARGE_ACTION_CLASS = `${RESERVATION_DETAIL_ACTION_BASE_CLASS} border-primary/40 text-primary hover:bg-primary/10`;
+export const RESERVATION_DETAIL_REFUND_ACTION_CLASS = `${RESERVATION_DETAIL_ACTION_BASE_CLASS} border-outline-variant text-on-surface transition-colors hover:bg-surface-container-high`;
+export const RESERVATION_DETAIL_DEPOSIT_ACTION_CLASS = `${RESERVATION_DETAIL_ACTION_BASE_CLASS} border-outline-variant text-on-surface transition-colors hover:bg-surface-container-high`;
+export const RESERVATION_DETAIL_DEPOSIT_NONE_CLASS =
+  "break-words text-sm font-medium text-on-surface-variant";
+export const RESERVATION_DETAIL_EXTRA_TIME_CLASS =
+  "flex flex-col gap-2";
+export const RESERVATION_DETAIL_EXTRA_TIME_TEXT_CLASS =
+  "text-sm font-semibold text-on-surface";
 export const RESERVATION_DETAIL_MONEY_CLASS =
   "break-words font-mono text-sm font-medium tabular-nums text-on-surface";
 

@@ -25,10 +25,16 @@ export const RESERVATION_DETAIL_LABEL_CLASS =
 export const RESERVATION_DETAIL_VALUE_CLASS =
   "break-words text-base font-medium text-on-surface";
 export const RESERVATION_DETAIL_FALLBACK_CLASS =
-  "mx-auto flex min-h-96 w-full max-w-xl flex-col items-center justify-center gap-4 text-center";
+  "mx-auto flex min-h-96 w-full max-w-[36rem] flex-col items-center justify-center gap-4 text-center";
 export const RESERVATION_DETAIL_FALLBACK_TITLE_CLASS =
   "text-xl font-semibold text-on-surface";
 export const RESERVATION_DETAIL_FALLBACK_COPY_CLASS =
   "text-sm text-on-surface-variant";
 export const RESERVATION_DETAIL_RETRY_BUTTON_CLASS =
   "inline-flex min-h-11 items-center justify-center rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-on-primary transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+export const RESERVATION_DETAIL_DOCK_ACTION_CLASS =
+  "flex flex-wrap items-center gap-3";
+export const RESERVATION_DETAIL_DOCK_SENT_CLASS =
+  "inline-flex min-h-11 items-center rounded-full border border-primary bg-primary px-4 text-sm font-bold text-on-primary";
+export const RESERVATION_DETAIL_DOCK_ERROR_CLASS =
+  "w-full text-sm text-error";

@@ -1,3 +1,4 @@
+import { RESERVATION_DEPOSIT_DECISION_KIND } from "@/app/constants";
 import { RESERVATION_DETAIL_CHARGE_STATUS } from "../constants/ReservationDetail.constants";
 import type { ReservationDetail } from "../models/ReservationDetail.interface";
 import { RESERVATION_DETAIL_OVERVIEW_TEST as test } from "./ReservationDetailOverviewTest.constants";
@@ -12,18 +13,25 @@ export const RESERVATION_DETAIL_OVERVIEW_FIXTURE: ReservationDetail =
     comboName: null,
     created_at: test.TIMESTAMP,
     createdByName: null,
+    deposit: {
+      kind: RESERVATION_DEPOSIT_DECISION_KIND.UNDECIDED,
+    },
     customer_name: test.CUSTOMER_NAME,
     dispatched_at: null,
     dispatches: [],
+    dockNotifiedAt: null,
     duration_minutes: test.DURATION_MINUTES,
     ends_at: test.RESERVATION_END,
     equipment: [],
+    extraTime: null,
     extraTimeCharges: [],
     extras: [],
     guides: [],
     id: test.RESERVATION_ID,
+    moneyMovements: [],
     parent_reservation_id: null,
     people_count: test.PEOPLE_COUNT,
+    refundable: [],
     refunds: [],
     starts_at: test.RESERVATION_START,
     status: test.RESERVATION_STATUS,

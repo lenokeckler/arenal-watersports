@@ -68,7 +68,7 @@ with changed as (update public.unit_condition_photos set storage_path = 'tab-07-
 select is((select count(*)::integer from changed), 1, 'operations with the mark updates a condition photo row');
 select lives_ok($$insert into storage.objects (bucket_id, name, owner) values ('unit-condition-photos', 'tab-07-02/operations.webp', '77000000-0000-0000-0000-000000000001')$$, 'operations with the mark uploads into the condition photo bucket');
 with changed as (update storage.objects set metadata = '{"size":1024}'::jsonb where bucket_id = 'unit-condition-photos' and name = 'tab-07-02/existing.webp' returning 1)
-select is((select count(*)::integer from changed), 1, 'operations with the mark updates a condition photo object');
+select is((select count(*)::integer from changed), 0, 'a stored condition photo object is never overwritten');
 select throws_ok($$insert into storage.objects (bucket_id, name, owner) values ('tab-07-02-other-bucket', 'tab-07-02/other.webp', '77000000-0000-0000-0000-000000000001')$$, '42501', null, 'the photo mark does not grant writes to another bucket');
 
 reset role; set local role authenticated; set local request.jwt.claims to '{"sub":"77000000-0000-0000-0000-000000000002","role":"authenticated"}';
@@ -105,10 +105,10 @@ select is(array[
   (select count(*)::integer from public.inventory_counts where id = '93000000-0000-0000-0000-000000000001'),
   (select count(*)::integer from public.inventory_count_lines where id = '94000000-0000-0000-0000-000000000001')
 ], array[1, 1, 1, 1, 1], 'operations without the mark retains inventory history reads');
-select throws_ok($$insert into public.unit_condition_photos (unit_id, angle, storage_path, uploaded_by) values ('89000000-0000-0000-0000-000000000001', 'front', 'tab-07-02/unmarked.webp', '77000000-0000-0000-0000-000000000003')$$, '42501', null, 'operations without the mark cannot insert condition photo rows');
+select lives_ok($$insert into public.unit_condition_photos (unit_id, angle, storage_path, uploaded_by) values ('89000000-0000-0000-0000-000000000001', 'front', 'tab-07-02/unmarked.webp', '77000000-0000-0000-0000-000000000003')$$, 'operations staff without the mark inserts a condition photo row');
 with changed as (update public.unit_condition_photos set storage_path = 'tab-07-02/unmarked.webp' where unit_id = '89000000-0000-0000-0000-000000000001' and angle = 'right_side' returning 1)
-select is((select count(*)::integer from changed), 0, 'operations without the mark cannot update condition photo rows');
-select throws_ok($$insert into storage.objects (bucket_id, name, owner) values ('unit-condition-photos', 'tab-07-02/unmarked.webp', '77000000-0000-0000-0000-000000000003')$$, '42501', null, 'operations without the mark cannot upload condition photo objects');
+select is((select count(*)::integer from changed), 1, 'operations staff without the mark updates a condition photo row');
+select lives_ok($$insert into storage.objects (bucket_id, name, owner) values ('unit-condition-photos', 'tab-07-02/unmarked.webp', '77000000-0000-0000-0000-000000000003')$$, 'operations staff without the mark uploads a condition photo object');
 with changed as (update storage.objects set metadata = '{"size":4096}'::jsonb where bucket_id = 'unit-condition-photos' and name = 'tab-07-02/existing.webp' returning 1)
 select is((select count(*)::integer from changed), 0, 'operations without the mark cannot update condition photo objects');
 
@@ -126,7 +126,7 @@ with changed as (update public.unit_condition_photos set storage_path = 'tab-07-
 select is((select count(*)::integer from changed), 1, 'administrator updates a condition photo row without the mark');
 select lives_ok($$insert into storage.objects (bucket_id, name, owner) values ('unit-condition-photos', 'tab-07-02/admin.webp', '77000000-0000-0000-0000-000000000009')$$, 'administrator uploads a condition photo object without the mark');
 with changed as (update storage.objects set metadata = '{"size":8192}'::jsonb where bucket_id = 'unit-condition-photos' and name = 'tab-07-02/existing.webp' returning 1)
-select is((select count(*)::integer from changed), 1, 'administrator updates a condition photo object without the mark');
+select is((select count(*)::integer from changed), 0, 'the administrator does not overwrite a stored condition photo object either');
 
 set local request.jwt.claims to '';
 select ok(not public.has_area('operaciones') and not public.has_area('reservas'), 'cleared JWT claims grant no area');

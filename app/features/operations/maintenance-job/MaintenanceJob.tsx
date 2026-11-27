@@ -1,11 +1,17 @@
+import ScreenBack from "@/app/components/screen-back/ScreenBack";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
-import { ARIA_ROLE, TitleVariant } from "@/app/constants";
-import { OperationsAccessError } from "@/app/services/operations/getOperationsSupabaseClient";
+import {
+  ARIA_ROLE,
+  TitleVariant,
+  PATHS,
+} from "@/app/constants";
+import { isString } from "@/app/utils/type-guards/isString";
 import MaintenanceJobForm from "./components/MaintenanceJobForm";
 import { MAINTENANCE_JOB_COPY } from "./constants/MaintenanceJobCopy.constants";
-import type { MaintenanceJobUnit } from "./models/MaintenanceJobUnit.interface";
-import { getMaintenanceJobUnits } from "./services/getMaintenanceJobUnits";
+import type { MaintenanceJobProps } from "./models/MaintenanceJobProps.interface";
+import { loadMaintenanceJobUnits } from "./services/loadMaintenanceJobUnits";
+import { resolveInitialUnitId } from "./utils/resolveInitialUnitId";
 import {
   MAINTENANCE_JOB_ERROR_CLASS,
   MAINTENANCE_JOB_HEADING_CLASS,
@@ -13,21 +19,18 @@ import {
 } from "./styles/MaintenanceJob.styles";
 import type { JSX } from "react";
 
-const MaintenanceJob = async (): Promise<JSX.Element> => {
-  let units: MaintenanceJobUnit[] = [];
-  let errorMessage: string | null = null;
-
-  try {
-    units = await getMaintenanceJobUnits();
-  } catch (error) {
-    errorMessage =
-      error instanceof OperationsAccessError
-        ? MAINTENANCE_JOB_COPY.FORBIDDEN
-        : MAINTENANCE_JOB_COPY.ERROR_LOAD;
-  }
+const MaintenanceJob = async ({
+  dateParam,
+  unitParam,
+}: MaintenanceJobProps = {}): Promise<JSX.Element> => {
+  const { errorMessage, units } =
+    await loadMaintenanceJobUnits();
 
   return (
     <main className={MAINTENANCE_JOB_PAGE_CLASS}>
+      <ScreenBack
+        fallbackHref={PATHS.OPERATIONS.MAINTENANCE}
+      />
       <Title
         variant={TitleVariant.PRIMARY}
         text={MAINTENANCE_JOB_COPY.HEADING}
@@ -41,7 +44,13 @@ const MaintenanceJob = async (): Promise<JSX.Element> => {
           {errorMessage}
         </Text>
       ) : (
-        <MaintenanceJobForm units={units} />
+        <MaintenanceJobForm
+          initialDate={
+            isString(dateParam) ? dateParam : undefined
+          }
+          initialUnitId={resolveInitialUnitId(unitParam)}
+          units={units}
+        />
       )}
     </main>
   );

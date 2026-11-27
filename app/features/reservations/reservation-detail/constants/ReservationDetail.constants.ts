@@ -34,6 +34,7 @@ export const RESERVATION_DETAIL_ZERO_MINOR_UNITS = 0;
 
 export const RESERVATION_DETAIL_OPERATION = {
   ACCESS: "check reservation detail access",
+  EXTRA_TIME: "load reservation extra time",
   LOAD: "load reservation detail",
 } as const;
 
@@ -42,3 +43,29 @@ export type ReservationDetailChargeStatus =
 
 export type ReservationDetailCurrency =
   (typeof RESERVATION_DETAIL_CURRENCY)[keyof typeof RESERVATION_DETAIL_CURRENCY];
+
+export const RESERVATION_DETAIL_MOVEMENT_TYPE = {
+  CHARGE: "charge",
+  REFUND: "refund",
+} as const;
+
+export type ReservationDetailMovementType =
+  (typeof RESERVATION_DETAIL_MOVEMENT_TYPE)[keyof typeof RESERVATION_DETAIL_MOVEMENT_TYPE];
+
+export const RESERVATION_DETAIL_EXTRA_TIME_OUTCOME = {
+  CHARGED: "charged",
+  COURTESY: "courtesy",
+} as const;
+
+export type ReservationDetailExtraTimeOutcome =
+  (typeof RESERVATION_DETAIL_EXTRA_TIME_OUTCOME)[keyof typeof RESERVATION_DETAIL_EXTRA_TIME_OUTCOME];
+
+export const RESERVATION_DETAIL_EXTRA_TIME_STATE = {
+  ...RESERVATION_DETAIL_EXTRA_TIME_OUTCOME,
+  PENDING: "pending",
+} as const;
+
+export type ReservationDetailExtraTimeState =
+  (typeof RESERVATION_DETAIL_EXTRA_TIME_STATE)[keyof typeof RESERVATION_DETAIL_EXTRA_TIME_STATE];
+
+export const RESERVATION_DETAIL_NO_EXTRA_MINUTES = 0;

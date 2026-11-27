@@ -57,24 +57,24 @@ export const MULTIPLE_STATUSES = [
 
 export const SECOND_PAGE = 2;
 export const SECOND_PAGE_RANGE = {
-  from: 20,
-  to: 39,
+  from: 10,
+  to: 19,
 } as const;
 export const FIRST_PAGE_RANGE = {
   from: 0,
-  to: 19,
+  to: 9,
 } as const;
 export const LAST_PAGE_RANGE = {
   from: 40,
-  to: 59,
+  to: 49,
 } as const;
 export const MULTI_PAGE_TOTAL_COUNT = 45;
-export const MULTI_PAGE_COUNT = 3;
+export const MULTI_PAGE_COUNT = 5;
 export const TWO_DEPOSITS_COUNT = 2;
 export const OUT_OF_RANGE_PAGE = 9;
 export const OUT_OF_RANGE_PAGE_RANGE = {
-  from: 160,
-  to: 179,
+  from: 80,
+  to: 89,
 } as const;
 export const TEST_OPERATION = "read deposits page";
 

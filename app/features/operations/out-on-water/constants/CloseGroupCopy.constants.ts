@@ -6,21 +6,15 @@ export const CLOSE_GROUP_COPY = {
   CAUSE_LABEL: "Causa del daño",
   CAUSE_PLACEHOLDER: "Seleccione la causa",
   CAUSE_REQUIRED: "Seleccione la causa del daño.",
-  CAUSES: {
-    collision: "Choque",
-    machine_failure: "Falla de la máquina",
-    other: "Otra",
-    rollover: "Volcadura",
-  },
   DAMAGE_LABEL: "Volvió con daño",
   DESCRIPTION_LABEL: "Qué pasó",
   DESCRIPTION_REQUIRED: "Describa el daño.",
-  FUEL_FIELD_LABEL: "Rayas de gasolina al volver",
   FUEL_INVALID_PREFIX:
     "Escriba un número entero entre 0 y ",
-  FUEL_LABEL: "Gasolina",
-  FUEL_OUT_PREFIX: "Salió con ",
-  FUEL_OUT_NONE: "No hay lectura de gasolina de la salida.",
+  FUEL_LABEL: "Gasolina que quedó",
+  IMPACT_COUNT_LABEL: "Golpes",
+  IMPACT_COUNT_LESS: "Quitar un golpe",
+  IMPACT_COUNT_MORE: "Agregar un golpe",
   IMPACT_INVALID: "Escriba un número entero de cero o más.",
   IMPACT_LABEL: "Aumento del conteo de golpes",
   MAINTENANCE_LABEL: "Enviar a mantenimiento",
@@ -45,11 +39,10 @@ export const CLOSE_GROUP_COPY = {
   SUBMITTING: "Cerrando…",
   TITLE_PREFIX: "Cerrar · ",
   USAGE_BELOW_PREFIX:
-    "No puede ser menor que la lectura de salida: ",
+    "No puede ser menor que la última lectura: ",
   USAGE_INVALID:
     "Escriba una lectura válida, con hasta dos decimales.",
-  USAGE_OUT_NONE: "No hay lectura de la salida.",
-  USAGE_OUT_PREFIX: "Salió con ",
+  USAGE_LAST_PREFIX: "Última lectura: ",
 } as const;
 
 export const CLOSE_GROUP_FIELD_ID = {

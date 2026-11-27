@@ -7,6 +7,7 @@ import {
   type FormEvent,
 } from "react";
 import { PATHS, STRING } from "@/app/constants";
+import { resolveInitialDate } from "../utils/resolveInitialDate";
 import type { NullableRef } from "@/app/types";
 import { submitMaintenanceJob } from "../actions/submitMaintenanceJob";
 import {
@@ -26,12 +27,14 @@ const NO_ERRORS: MaintenanceJobErrors = {
   currency: null,
   date: null,
   description: null,
-  threshold: null,
+  interval: null,
   unit: null,
   workType: null,
 };
 
 export const useMaintenanceJobForm = ({
+  initialDate,
+  initialUnitId,
   units,
 }: MaintenanceJobFormInput): MaintenanceJobForm => {
   const router = useRouter();
@@ -41,9 +44,16 @@ export const useMaintenanceJobForm = ({
       costCurrency: STRING.Empty,
       description: STRING.Empty,
       isExternal: false,
-      nextOilChangeAt: STRING.Empty,
-      performedAt: getCostaRicaToday(new Date()),
-      unitId: STRING.Empty,
+      oilInterval: STRING.Empty,
+      performedAt: resolveInitialDate(
+        initialDate,
+        getCostaRicaToday(new Date())
+      ),
+      unitId: units.some(
+        (unit) => unit.unitId === initialUnitId
+      )
+        ? (initialUnitId ?? STRING.Empty)
+        : STRING.Empty,
       workType: STRING.Empty,
     })
   );

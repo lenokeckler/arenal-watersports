@@ -2,6 +2,7 @@
 
 import React from "react";
 import Toast from "./Toast";
+import { ARIA_LABEL, ARIA_ROLE } from "@/app/constants";
 import { useToast } from "./utils/useToast";
 import { resolveToastContainerClassName } from "./styles/ToastContainer.styles";
 
@@ -11,6 +12,9 @@ const ToastContainer = () => {
 
   return (
     <div
+      role={ARIA_ROLE.REGION}
+      aria-label={ARIA_LABEL.TOASTS}
+      aria-live="polite"
       className={resolveToastContainerClassName(isMobile)}
     >
       {toasts.map((toastItem) => (

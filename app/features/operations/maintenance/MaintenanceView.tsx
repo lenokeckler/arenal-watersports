@@ -1,13 +1,8 @@
-import {
-  ARIA_ROLE,
-  PATHS,
-  TitleVariant,
-} from "@/app/constants";
-import Link from "@/app/components/link/Link";
+import ScreenBack from "@/app/components/screen-back/ScreenBack";
 import Text from "@/app/components/text/Text";
-import Title from "@/app/components/title/Title";
-import MaintenanceOilSection from "./components/MaintenanceOilSection";
-import MaintenanceServiceSection from "./components/MaintenanceServiceSection";
+import ScreenHeading from "@/app/components/screen-heading/ScreenHeading";
+import { ARIA_ROLE, PATHS } from "@/app/constants";
+import MaintenanceContent from "./components/MaintenanceContent";
 import {
   MAINTENANCE_COPY,
   MAINTENANCE_HEADING_ID,
@@ -15,35 +10,25 @@ import {
 import type { MaintenanceViewProps } from "./models/MaintenanceViewProps.interface";
 import {
   MAINTENANCE_CLASS,
-  MAINTENANCE_HEADING_CLASS,
   MAINTENANCE_MESSAGE_CLASS,
-  MAINTENANCE_NEW_JOB_LINK_CLASS,
 } from "./styles/Maintenance.styles";
 import type { JSX } from "react";
 
 const MaintenanceView = ({
+  data,
   errorMessage,
-  overview,
+  filters,
 }: MaintenanceViewProps): JSX.Element => (
   <main className={MAINTENANCE_CLASS}>
-    <Title
+    <ScreenBack fallbackHref={PATHS.OPERATIONS.EQUIPMENT} />
+    <ScreenHeading
       id={MAINTENANCE_HEADING_ID}
-      variant={TitleVariant.PRIMARY}
-      text={MAINTENANCE_COPY.HEADING}
-      className={MAINTENANCE_HEADING_CLASS}
+      title={MAINTENANCE_COPY.HEADING}
+      action={{
+        href: PATHS.OPERATIONS.MAINTENANCE_NEW,
+        label: MAINTENANCE_COPY.NEW_JOB,
+      }}
     />
-    <Link
-      href={PATHS.OPERATIONS.MAINTENANCE_NEW}
-      className={MAINTENANCE_NEW_JOB_LINK_CLASS}
-    >
-      {MAINTENANCE_COPY.NEW_JOB}
-    </Link>
-    <Link
-      href={PATHS.OPERATIONS.MAINTENANCE_HISTORY}
-      className={MAINTENANCE_NEW_JOB_LINK_CLASS}
-    >
-      {MAINTENANCE_COPY.HISTORY}
-    </Link>
     {errorMessage ? (
       <Text
         className={MAINTENANCE_MESSAGE_CLASS}
@@ -52,12 +37,10 @@ const MaintenanceView = ({
         {errorMessage}
       </Text>
     ) : (
-      <>
-        <MaintenanceOilSection units={overview.oilDue} />
-        <MaintenanceServiceSection
-          units={overview.outOfService}
-        />
-      </>
+      <MaintenanceContent
+        data={data}
+        filters={filters}
+      />
     )}
   </main>
 );

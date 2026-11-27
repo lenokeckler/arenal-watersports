@@ -1,6 +1,6 @@
-import Image from "@/app/components/image/Image";
 import Text from "@/app/components/text/Text";
 import { UNIT_PHOTOS_COPY } from "../constants/UnitPhotosCopy.constants";
+import UnitPhotoPreview from "./UnitPhotoPreview";
 import UnitPhotoUpload from "./UnitPhotoUpload";
 import type { UnitPhotoCardProps } from "../models/UnitPhotoCardProps.interface";
 import {
@@ -8,7 +8,6 @@ import {
   UNIT_PHOTO_CLASS,
   UNIT_PHOTO_EMPTY_CLASS,
   UNIT_PHOTO_FRAME_CLASS,
-  UNIT_PHOTO_IMAGE_CLASS,
 } from "../styles/UnitPhotos.styles";
 import type { JSX } from "react";
 
@@ -24,29 +23,24 @@ const UnitPhotoCard = ({
       <Text className={UNIT_PHOTO_ANGLE_CLASS}>
         {angleLabel}
       </Text>
-      <div className={UNIT_PHOTO_FRAME_CLASS}>
-        {slot.url ? (
-          <Image
-            aria-hidden={false}
-            alt={`${UNIT_PHOTOS_COPY.ALT_PREFIX}${angleLabel}`}
-            className={UNIT_PHOTO_IMAGE_CLASS}
-            fill
-            priority={false}
-            sizes={UNIT_PHOTOS_COPY.IMAGE_SIZES}
-            src={slot.url}
-            unoptimized
-          />
-        ) : (
-          <Text className={UNIT_PHOTO_EMPTY_CLASS}>
-            {UNIT_PHOTOS_COPY.NO_PHOTO}
-          </Text>
-        )}
-      </div>
-      {canManage && (
+      {canManage ? (
         <UnitPhotoUpload
           slot={slot}
           unitId={unitId}
         />
+      ) : (
+        <div className={UNIT_PHOTO_FRAME_CLASS}>
+          {slot.url ? (
+            <UnitPhotoPreview
+              angleLabel={angleLabel}
+              url={slot.url}
+            />
+          ) : (
+            <Text className={UNIT_PHOTO_EMPTY_CLASS}>
+              {UNIT_PHOTOS_COPY.NO_PHOTO}
+            </Text>
+          )}
+        </div>
       )}
     </div>
   );

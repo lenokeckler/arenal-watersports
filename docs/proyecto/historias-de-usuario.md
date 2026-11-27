@@ -349,6 +349,8 @@ El tablero es la pantalla de entrada. Muestra una tarjeta por cada categoría re
 
 - Se muestra una tarjeta por cada categoría reservable del inventario.
 - Cada tarjeta indica cuántas unidades hay libres y cuántas en uso sobre el total.
+- El tablero y cada categoría se pueden filtrar por estado: todas, disponibles, en mantenimiento o dañadas. El filtro se conserva al entrar a una categoría.
+- En el modo Operaciones, un botón «Equipo» junto al título lleva a daños, fotos y mantenimiento, con el número de reportes por completar.
 - Una unidad despachada nunca cuenta como libre, aunque la hora real de regreso de su salida ya haya vencido. Libres más en uso nunca supera el total.
 - Las categorías que administración agrupó se muestran como una sola tarjeta, con los totales sumados y sin fusionarse por dentro.
 - En pantalla de celular las tarjetas van de dos en dos, para no obligar a bajar media pantalla por categoría.
@@ -719,16 +721,16 @@ El guía no es un rol aparte, porque la misma persona que despacha equipo en la 
 
 Como la persona de administración,  
 necesito marcar a alguien de operaciones como encargado general,  
-con la finalidad de que solo esa persona pueda cambiar las fotos de estado de las máquinas.
+con la finalidad de que haya una persona responsable de revisar quién cambió las fotos de estado de las máquinas.
 
 **Descripción:**
 
-Funciona igual que la marca de guía: va sobre la cuenta y no crea un rol nuevo. Lo que habilita es la carga y el reemplazo de las fotos de estado de las máquinas, que son la referencia de cómo está cada una hoy.
+Funciona igual que la marca de guía: va sobre la cuenta y no crea un rol nuevo. Lo que habilita es consultar el registro de quién subió, cambió o borró cada foto de estado de las máquinas, que son la referencia de cómo está cada una hoy. Subir, cambiar y borrar las fotos lo hace cualquier persona de operaciones (US-OPE-15).
 
 **Criterios de aceptación:**
 
 - La marca va sobre la cuenta, igual que la de guía, y no crea un rol nuevo.
-- Es quien puede subir y reemplazar las fotos de estado de las máquinas.
+- Junto con administración, es quien puede consultar el registro de quién subió, cambió o borró cada foto de estado. El registro ya se guarda; todavía no tiene pantalla.
 
 ---
 
@@ -960,7 +962,7 @@ El comportamiento de la categoría es lo que hace que un jet ski y un remo se tr
 - Si sus unidades son intercambiables entre sí. Es una pregunta distinta de la anterior: un jet ski se lleva por unidad y aun así cualquiera sirve, mientras que la lancha se lleva por unidad y es una lancha concreta, porque solo la Bennington arrastra y el wakeboard y el tubing dependen de eso. De esta marca depende si Reservas compromete cantidad o unidad.
 - Si es reservable. Solo las categorías reservables aparecen en el tablero y se pueden asociar a una reserva.
 - Si lleva motor, y si el uso se mide en horas de motor o en kilómetros. El equipo de agua con motor lleva horas; los cuadraciclos llevan kilometraje.
-- Si consume gasolina.
+- Si consume gasolina, y con cuántas rayas o menos del medidor se avisa que la gasolina está baja. Es un número por categoría, 1 por defecto, que no puede ser mayor que las rayas de la unidad con menos rayas de esa categoría: por ejemplo 1 en los jet skis y 2 en los cuadraciclos.
 - Si se puede dañar.
 - Si lleva fotos de estado. Los jet skis las llevan; un kayak no las necesita.
 - Si solo se alquila con guía.
@@ -1048,6 +1050,7 @@ De un jet ski no da lo mismo cuál sale: cada uno tiene su gasolina, sus horas y
 - Se lleva la gasolina actual, las horas o el kilometraje acumulado, y el valor al que toca el próximo cambio de aceite.
 - Cada unidad declara cuántas rayas tiene su medidor de gasolina, porque no toda la flota trae el mismo tablero: los cuadraciclos marcan seis y los jet skis y las lanchas cuatro. La lectura del día se guarda sobre ese máximo.
 - Una unidad sin lectura de gasolina todavía no es lo mismo que una unidad en cero.
+- Cada unidad puede tener su propio aviso de gasolina baja, distinto al de su categoría: vacío significa usar el de la categoría, y no puede ser mayor que las rayas de su medidor.
 - Crear, consultar y modificar. Para sacarla del inventario se da de baja, no se elimina.
 - El código se recorta de espacios y distingue mayúsculas de minúsculas.
 - Una unidad dada de baja no se reactiva.
@@ -1481,6 +1484,7 @@ El detalle reúne el equipo comprometido, los extras, los guías asignados y el 
 - Incluye el equipo comprometido, los extras, los guías asignados y el estado del cobro.
 - Indica quién creó la reserva y quién la modificó de último.
 - Lista cada grupo despachado con su hora real de salida, su hora de regreso y, si ya volvió, su hora de llegada.
+- Si la reserva tiene equipo por salir, el detalle permite avisar al muelle con «Enviar al muelle» y quitar el aviso. El aviso es opcional y solo marca la reserva como «Bajando» en la lista de operaciones.
 
 ### EP-RES-02 — Creación de reservas
 
@@ -2260,6 +2264,8 @@ La lista se limita al día en curso, que es lo único que le sirve a quien está
 
 - La lista se limita al día en curso.
 - Las reservas canceladas no aparecen.
+- Si a una reserva le falta una parte por salir, la tarjeta muestra cuánto falta («falta 1 de 2») y a qué hora caduca lo que no llegue.
+- Las reservas que la oficina avisó al muelle salen primero, con la marca «Bajando». El aviso es opcional: una reserva sin él se despacha igual.
 
 ---
 
@@ -2293,34 +2299,40 @@ Es la parte nueva más importante del sistema: la separación entre agendar y de
 - El despacho queda registrado a nombre de quien lo hizo.
 - La hoja propone la hora de regreso (salida más duración) y operaciones la puede ajustar; la duración del grupo sale de esas dos horas.
 - Una hora de regreso anterior a la de salida se entiende como del día siguiente.
-- Se escogen exactamente tantas unidades como las comprometidas en esa categoría.
+- Pueden salir menos unidades de las comprometidas en esa categoría: la hoja pregunta cuántas salen ahora («2 de 2», «1 de 2») y escoge esas unidades. Un combo no se parte.
+- Lo que queda sin salir sigue en la misma reserva como pendiente, con cuánto falta, y no bloquea ninguna máquina: se despacha cuando llega ese grupo, con su propia hora real, su propia duración y cualquier unidad libre en ese momento.
+- El pendiente que no llega caduca solo al terminar la franja de la reserva y deja de aparecer en la lista; esa máquina nunca estuvo apartada y sirve para otras reservas. Operaciones no necesita un botón para liberarla.
+- La hoja de despacho es una sola pantalla corta, sin pasos: unidades, gasolina, canal de radio, salida y regreso.
+- Se puede anotar el canal del radio de comunicación que lleva la salida. Es opcional y se guarda con el despacho.
 - Si el despacho falla y se reintenta, ninguna unidad queda comprometida dos veces.
 - El equipo de un combo no se cambia al despachar: si el paquete cambió, se cancela y se crea una reserva nueva. Un combo se despacha desde la lista del día y no desde la tarjeta de la categoría.
 
 ---
 
-#### US-OPE-03 — Registro de gasolina y horas al despachar
+#### US-OPE-03 — Registro de gasolina al despachar
 
 **ID:** US-OPE-03
 
-**Nombre de la historia:** Registro de gasolina y horas al despachar
+**Nombre de la historia:** Registro de gasolina al despachar
 
 **Historia de usuario:**
 
 Como la persona de operaciones,  
-necesito registrar la gasolina y las horas de motor al momento del despacho,  
+necesito registrar la gasolina con la que sale cada máquina al momento del despacho,  
 con la finalidad de saber después cuánto se consumió en esa salida.
 
 **Descripción:**
 
-Aplica solo a las categorías que llevan motor. El dato de salida es lo que después se compara contra el de regreso, y es lo que alimenta el aviso de cambio de aceite. La gasolina se lee como la lee el muelle: en rayas del medidor, no en porcentaje.
+Aplica solo a las categorías que llevan motor. El dato de salida es lo que después se compara contra el de regreso. La gasolina se lee como la lee el muelle: en rayas del medidor, no en porcentaje, y se marca tocando la raya. Las horas de motor y los kilómetros no se piden al despachar: se registran al cerrar la salida.
 
 **Criterios de aceptación:**
 
 - Aplica solo a las categorías que llevan motor.
-- La gasolina se registra en rayas sobre el máximo del medidor de esa unidad, nunca en porcentaje: en el muelle se lee «3 de 4».
-- Hay botones de un cuarto, medio, tres cuartos y lleno, con el medidor dibujado, y también el campo numérico para el valor exacto.
-- El despacho escribe la gasolina y las horas en la unidad, no solo en la reserva: mientras la máquina está afuera su ficha tiene que mostrar la lectura de hoy y no la del regreso anterior.
+- La gasolina se registra en rayas sobre el máximo del medidor de esa unidad, nunca en porcentaje: en el muelle se leen contando rayas.
+- El medidor se dibuja con sus rayas y se marca tocando la raya hasta donde llega la gasolina; tocar de nuevo la raya del nivel actual lo baja una. No hay botones de fracciones ni campo numérico.
+- El medidor arranca en el último nivel conocido de la unidad y la máquina puede salir sin tocarlo. Una unidad que todavía no tiene ninguna lectura no sale hasta que se marque su nivel.
+- No se piden horas de motor ni kilómetros al despachar.
+- El despacho escribe la gasolina en la unidad, no solo en la reserva: mientras la máquina está afuera su ficha tiene que mostrar la lectura de hoy y no la del regreso anterior.
 
 ---
 
@@ -2344,6 +2356,9 @@ Es la vista que hoy no existe y que obliga a subir a leer la conversación de Wh
 
 - Es la vista que hoy no existe y obliga a subir a leer la conversación de WhatsApp.
 - La hora de regreso de cada grupo se calcula desde su hora real de salida más su duración, no desde la hora agendada.
+- Al tocar una unidad que está afuera se ve quién la lleva: el cliente, cuántas personas son, la hora de salida, la hora de regreso y el canal del radio de comunicación.
+- Esa información se ve primero solo para leer; con el botón «Editar» se corrigen las horas y el canal si operaciones se equivocó al anotarlos.
+- Desde esa misma información se recibe la unidad.
 
 ---
 
@@ -2393,6 +2408,7 @@ El cliente pide media hora más, o devuelve el equipo antes. La duración se aju
 - El conteo hasta la hora de regreso se recalcula.
 - Al extender, la reserva queda marcada para reservas con las horas de más, para que la oficina decida si las cobra o si van de cortesía.
 - Operaciones no decide de plata: solo deja constancia de que la salida se alargó.
+- Si operaciones se equivocó al anotar la hora de salida de un grupo que está afuera, la corrige; el regreso se mueve con ella y conserva la duración.
 
 ---
 
@@ -2454,20 +2470,25 @@ con la finalidad de dejar constancia del estado en que regresó antes de que sal
 
 **Descripción:**
 
-Si todo está en orden, queda la constancia. Si no, se levanta el reporte de daño y se actualiza el estado de la unidad; ese reporte es lo que después usa reservas para decidir cuánto del depósito se le devuelve al cliente. En el mismo cierre se registran la gasolina y las horas o el kilometraje con los que volvió. Como cada categoría sale por su lado, cada grupo se cierra cuando vuelve, con su hora real de llegada; la reserva queda cerrada cuando el último grupo regresa. La reserva cerrada pasa al historial y de ahí salen las estadísticas.
+Si todo está en orden, queda la constancia. Si no, se levanta el reporte de daño y se actualiza el estado de la unidad; ese reporte es lo que después usa reservas para decidir cuánto del depósito se le devuelve al cliente. En el mismo cierre se registran la gasolina que quedó, en rayas del medidor, y las horas o el kilometraje con los que volvió, además de los golpes de la unidad. Como cada categoría sale por su lado, cada grupo se cierra cuando vuelve, con su hora real de llegada; la reserva queda cerrada cuando el último grupo regresa. La reserva cerrada pasa al historial y de ahí salen las estadísticas.
 
 **Criterios de aceptación:**
 
 - Si todo está en orden, queda constancia.
 - Si no, se levanta el reporte de daño correspondiente y se actualiza el estado de la unidad.
 - El reporte de daño es lo que después usa reservas para decidir cuánto del depósito se le devuelve al cliente. Operaciones no ve ni toca el depósito, porque no recibe dinero.
-- Se registra la gasolina y las horas de motor con las que volvió.
+- Se registra la gasolina que quedó, marcando las rayas del medidor, y las horas de motor o el kilometraje con los que volvió, en un campo numérico.
+- El cierre permite ajustar los golpes de la unidad.
+- La pregunta «¿Todo en orden?» se responde con «Sí, todo bien» o «Hay daños»; con daños se pide qué se dañó y la unidad pasa a mantenimiento.
+- Al recibir una unidad desde el tablero con daños se escoge la causa y se describe qué se dañó, o se recibe y se deja el detalle para después. La unidad no queda disponible aunque falte el detalle.
+- Los golpes nuevos del reporte se suman al conteo de la unidad.
 - Cada grupo se cierra por separado, con su hora real de llegada. La reserva queda cerrada cuando se cierra el último grupo.
 - La hora de llegada se propone como la hora actual al abrir el cierre, pero operaciones puede ajustarla si el equipo llegó antes o después.
 - La reserva cerrada pasa al historial.
-- Si queda equipo comprometido por unidad sin despachar, la reserva no se cierra aunque los grupos despachados ya hayan vuelto; ese equipo se quita al despachar o la reserva se modifica.
+- Si queda equipo comprometido sin despachar y todavía no terminó la franja de la reserva, la reserva no se cierra aunque los grupos despachados ya hayan vuelto: ese equipo todavía puede llegar.
+- Cuando termina la franja de la reserva, el equipo que nunca salió se descarta y la reserva se cierra sola si todos los grupos ya volvieron.
 - La hora de llegada no puede ser anterior a la hora de salida del grupo.
-- La lectura de horas o kilometraje al cerrar no puede ser menor que la de salida; la pantalla muestra con qué lectura salió cada unidad.
+- La lectura de horas o kilometraje al cerrar no puede ser menor que la última que se conoce de la unidad; la pantalla muestra cuál es.
 
 ### EP-OPE-03 — Máquinas y mantenimiento
 
@@ -2492,6 +2513,9 @@ Aplica a las categorías marcadas como que consumen gasolina. La diferencia entr
 - Aplica a las categorías marcadas como que consumen gasolina.
 - El nivel se registra en rayas sobre el máximo del medidor de la unidad: seis en los cuadraciclos, cuatro en los jet skis y las lanchas.
 - Una unidad sin lectura todavía no es lo mismo que una unidad en cero.
+- La gasolina con la que sale una unidad es el último nivel conocido; la gasolina con la que vuelve se registra al cerrar la salida.
+- El medidor no escribe el nivel con números ni con un ícono: las rayas lo dicen. Cuando el nivel es igual o menor al aviso de gasolina baja, las rayas llenas se ven en color de advertencia; en cero, las rayas se ven vacías con borde rojo.
+- El aviso de gasolina baja es el de la categoría, salvo que la unidad tenga uno propio (US-ADM-13, US-ADM-16).
 
 ---
 
@@ -2514,6 +2538,7 @@ Las horas se llevan en el equipo de agua con motor, como las lanchas y los jet s
 **Criterios de aceptación:**
 
 - De ahí sale el aviso de cambio de aceite.
+- Las horas o los kilómetros se registran al cerrar la salida o al corregir la unidad, nunca al despacharla.
 
 ---
 
@@ -2531,12 +2556,13 @@ con la finalidad de darle mantenimiento antes de que la máquina se dañe.
 
 **Descripción:**
 
-El umbral se define en la ficha de la unidad. Cuando las horas o el kilometraje acumulado lo alcanzan, el sistema avisa para que se programe el cambio en vez de que se descubra tarde.
+El umbral se define en la ficha de la unidad y, después, al registrar cada cambio de aceite. El sistema avisa antes de que llegue: a 50 km del próximo cambio en los cuadraciclos, o a 10 horas en el equipo de agua, la tarjeta de la unidad en el tablero muestra una gota de aceite con lo que falta, en ámbar; al llegar o pasarse, la gota va en rojo con los kilómetros u horas de más. Así se programa el cambio en vez de descubrirlo tarde.
 
 **Criterios de aceptación:**
 
 - El umbral se define en la ficha de la unidad.
-- La pantalla de mantenimiento reúne las máquinas que llegaron a su cambio de aceite, con cuánto se pasaron, y las que están fuera de servicio.
+- La pantalla de mantenimiento reúne las máquinas que llegaron o están por llegar a su cambio de aceite, con lo que les falta o lo que se pasaron, y las que están fuera de servicio.
+- La tarjeta de la unidad en el tablero muestra la gota de aceite, sin texto, en ámbar a 50 km o 10 horas del cambio y en rojo al llegar o pasarse.
 
 ---
 
@@ -2560,8 +2586,11 @@ La causa se elige entre vuelco, choque, falla de máquina u otra, y se escribe u
 
 - La causa se elige entre vuelco, choque, falla de máquina u otra.
 - Se escribe una descripción de lo ocurrido.
-- Se indica cuánto subió el conteo de golpes de esa máquina.
+- Se indica cuánto subió el conteo de golpes de esa máquina, y esos golpes se suman a su conteo.
 - El reporte queda a nombre de quien lo levantó.
+- Se puede guardar sin causa ni descripción para detallarlo después. Un reporte pendiente se completa una sola vez, queda constancia de quién lo completó y solo se suma la diferencia de golpes.
+- Al reportar se escoge si la unidad queda dañada, en mantenimiento o sin cambios. Un reporte nunca devuelve una unidad a servicio ni cambia el estado de una que está en el agua.
+- Si el daño ocurrió en una salida reciente de esa unidad, se puede indicar en cuál.
 
 ---
 
@@ -2584,6 +2613,9 @@ Los reportes se consultan después, no solamente se registran. Ver los anteriore
 **Criterios de aceptación:**
 
 - Los reportes se consultan después, no solamente se registran.
+- La pantalla de daños muestra primero los pendientes de completar; un calendario de daños, que se puede filtrar por causa y muestra el resumen de cada día; y unos gráficos del mes o de los últimos seis meses, por causa y con las cinco máquinas con más daños.
+- Los reportes de una máquina dada de baja se siguen viendo, marcados como tales; no se completan ni se cuentan como pendientes.
+- El historial de cada máquina reúne sus reportes de daño.
 
 ---
 
@@ -2595,20 +2627,25 @@ Los reportes se consultan después, no solamente se registran. Ver los anteriore
 
 **Historia de usuario:**
 
-Como el encargado general de operaciones,  
-necesito subir y reemplazar las fotos de estado de una máquina,  
+Como la persona de operaciones,  
+necesito subir, reemplazar y borrar las fotos de estado de una máquina,  
 con la finalidad de tener una referencia visual de cómo está hoy y de dónde tiene los daños.
 
 **Descripción:**
 
-Se guardan varias fotos por máquina, una por ángulo: costado derecho, costado izquierdo y frente, y opcionalmente una por debajo. Se reemplazan cuando cambia el estado. Solo puede subirlas quien tenga la marca de encargado general, además de administración. No se guarda una foto por salida porque ocupa demasiado espacio y no compensa: para una discusión puntual con un cliente basta con la foto que el trabajador toma en el momento con su propio celular.
+Se guardan varias fotos por máquina, una por ángulo: costado derecho, costado izquierdo, frente y atrás, y opcionalmente una por debajo y una adicional. Se reemplazan cuando cambia el estado. Las puede subir, cambiar y borrar cualquier persona de operaciones, además de administración; los guías temporales solo las ven. Cada cambio queda registrado. No se guarda una foto por salida porque ocupa demasiado espacio y no compensa: para una discusión puntual con un cliente basta con la foto que el trabajador toma en el momento con su propio celular.
 
 **Criterios de aceptación:**
 
-- Se guardan varias fotos por máquina, una por ángulo: costado derecho, costado izquierdo y frente, y opcionalmente una por debajo.
+- Se guardan varias fotos por máquina, una por ángulo: las cuatro básicas son costado derecho, costado izquierdo, frente y atrás; por debajo y una adicional son opcionales.
+- Cada foto se puede ver en grande.
 - Sirven para ver el detalle de los daños y tener una referencia de cómo está la máquina hoy.
 - Se reemplazan cuando cambia el estado de la máquina.
-- Solo puede subirlas quien tenga la marca de encargado general, además de administración.
+- Puede subirlas, cambiarlas y borrarlas cualquier persona de operaciones, además de administración. Los guías temporales solo las ven.
+- Borrar una foto pide confirmación.
+- Cada foto nueva se guarda en un archivo aparte; no se sobrescribe ni se borra el archivo de una foto que está en uso.
+- Una foto guardada no se puede pasar a otra máquina ni a otro ángulo.
+- Cada subida, cambio o borrado queda registrado con quién y cuándo, y lo consultan administración y el encargado general.
 - No se guarda una foto por salida, porque ocupa demasiado espacio y no compensa. Para una discusión puntual con un cliente basta con la foto que el trabajador toma en el momento con su propio celular.
 
 ---
@@ -2627,11 +2664,12 @@ con la finalidad de comparar cómo está hoy contra cómo vuelve de una salida.
 
 **Descripción:**
 
-Las fotos se muestran junto al conteo de golpes acumulados. El resto de operaciones las ve pero no las cambia: cambiarlas es del encargado general.
+Las fotos se muestran junto al conteo de golpes acumulados. Los guías temporales las ven pero no las cambian.
 
 **Criterios de aceptación:**
 
-- El resto de operaciones las ve pero no las cambia.
+- Los guías temporales las ven pero no las cambian.
+- Una lista de las máquinas que llevan fotos muestra cada una con la foto de su categoría, la misma del tablero, cuántas de las cuatro básicas tiene y sus golpes, filtrada por categoría y por páginas.
 
 ---
 
@@ -2649,13 +2687,14 @@ con la finalidad de sacarla de la disponibilidad para que nadie la agende mientr
 
 **Descripción:**
 
-La unidad sale de la disponibilidad sin borrarse y deja de aparecer en el tablero. Se puede marcar en el momento de recibir el equipo, cuando se detecta el problema.
+La unidad sale de la disponibilidad sin borrarse y se queda visible en el tablero, en gris y con la etiqueta «En mantenimiento». Se puede marcar en el momento de recibir el equipo, cuando se detecta el problema.
 
 **Criterios de aceptación:**
 
 - La unidad sale de la disponibilidad sin borrarse.
+- En el tablero la unidad sigue visible, en gris y con la etiqueta «En mantenimiento».
 - Se puede marcar al momento de recibir el equipo.
-- Desde la ficha de la máquina se devuelve la unidad a servicio y vuelve a aparecer en el tablero.
+- Desde la ficha de la máquina se devuelve la unidad a servicio y vuelve a mostrarse como disponible en el tablero.
 
 ---
 
@@ -2681,7 +2720,7 @@ Cambio de llanta, cambio de pieza, cambio de aceite y en general todo lo que se 
 - Hoy esto no está anotado en ninguna parte.
 - Se registra el costo del trabajo con su moneda; queda vacío si no costó nada.
 - Se indica si lo hizo un taller externo, aparte del costo.
-- Si el trabajo fue un cambio de aceite, se define ahí el nuevo umbral del próximo aviso.
+- Si el trabajo fue un cambio de aceite, se escribe cada cuánto rinde el aceite (por ejemplo 2500 km, o 100 horas en el equipo de agua) y el sistema calcula el próximo cambio sumándolo a lo que lleva la máquina.
 
 ---
 
@@ -2704,6 +2743,9 @@ El historial reúne todos los trabajos registrados con su fecha. Es la base del 
 **Criterios de aceptación:**
 
 - Es lo que permite saber cuánto cuesta sostener cada máquina.
+- El historial de una máquina muestra sus trabajos por mes, de diez en diez; lo gastado en cada moneda, sumando todos; y sus daños.
+- La pantalla de mantenimiento muestra los trabajos y los daños en un calendario que llega hasta el primer registro, que se puede filtrar por máquina y muestra el resumen de cada día, y unos gráficos del gasto de los últimos seis meses en cada moneda por separado.
+- Los registros de una máquina dada de baja se siguen viendo, marcados como tales, sin abrir su historial.
 
 ---
 
@@ -2731,6 +2773,9 @@ Pasa seguido que alguien echa gasolina, cambia el aceite o encuentra un golpe cu
 - Solo aparecen las unidades con motor: un kayak no tiene medidor que leer.
 - La corrección queda registrada a nombre de quien la hizo.
 - La corrección permite ajustar también cuántas rayas tiene el medidor de la unidad.
+- Desde la categoría en el tablero, el botón «Editar» activa la corrección de sus unidades: con el modo encendido, tocar cualquier parte de la tarjeta abre el panel de corrección, y con el modo apagado una tarjeta no se corrige por error.
+- El panel corrige la gasolina marcando las rayas del medidor, las horas o los kilómetros en un campo numérico y los golpes.
+- La tarjeta de cada unidad con motor en el tablero muestra sus golpes.
 
 ### EP-OPE-04 — Inventario
 
@@ -2933,7 +2978,7 @@ Reglas que aplican a todo el sistema. Se listan aquí una sola vez en lugar de r
 Sobre RNF-013, el alcance de cada marca:
 
 - La marca de guía no otorga permisos: solo hace que la persona aparezca en la lista al asignar un tour.
-- La de encargado general habilita subir las fotos de estado de las máquinas.
+- La de encargado general habilita consultar el registro de quién cambió las fotos de estado de las máquinas.
 - La de registro de guías externos habilita a alguien de reservas para crear esas cuentas temporales.
 
 ### Estados de una reserva
@@ -3040,7 +3085,7 @@ Las decisiones las toma el dueño del repositorio y el resto del equipo las lee.
   - El sistema lleva el control del dinero pero no mueve dinero real, así que no hace falta una segunda confirmación.
 - **Las capacidades que no son un área completa se resuelven con marcas sobre la cuenta. Hoy son tres.**
   - La marca de guía habilita a la persona para que se le asigne un tour.
-  - La marca de encargado general habilita a la persona para subir las fotos de estado de las máquinas.
+  - La marca de encargado general habilita a la persona para consultar el registro de quién cambió las fotos de estado de las máquinas.
   - La marca de registro de guías externos habilita a alguien de reservas para crear esas cuentas temporales.
   - Se escogió la marca en vez de una lista de permisos sueltos, para no terminar con veinte casillas que nadie puede auditar.
 - **Administración habilita áreas adicionales sobre una cuenta, y quien tenga más de un área escoge el modo al entrar.**
@@ -3067,10 +3112,10 @@ Las decisiones las toma el dueño del repositorio y el resto del equipo las lee.
 - **El historial de reservas se conserva cinco años.**
   - Si el plan de Supabase contratado no alcanza para ese volumen, se baja a dos años.
   - El historial de conteos de inventario ya estaba definido en un año.
-- **Las fotos de estado de una máquina son varias y las sube el encargado general.**
-  - Una por ángulo: costado derecho, costado izquierdo y frente, y opcionalmente una por debajo.
+- **Las fotos de estado de una máquina son varias y las cambia operaciones.**
+  - Una por ángulo: costado derecho, costado izquierdo, frente y atrás, y opcionalmente una por debajo y una adicional.
   - Sirven para ver el detalle de los daños y tener una referencia de cómo está la máquina hoy.
-  - El resto de operaciones las ve pero no las cambia.
+  - Las sube, cambia y borra cualquier persona de operaciones; los guías temporales solo las ven, y cada cambio queda registrado.
 - **Del guía externo se guardan solo el nombre y la cédula, y su registro lleva fecha de caducidad.**
   - Cumplida la fecha queda inhabilitado y administración lo ve así en su lista.
 - **El uso se mide en horas de motor para el equipo de agua y en kilometraje para los cuadraciclos.**

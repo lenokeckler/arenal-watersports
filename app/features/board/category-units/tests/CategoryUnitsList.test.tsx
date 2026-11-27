@@ -1,3 +1,4 @@
+import { within } from "@testing-library/react";
 import {
   afterEach,
   beforeEach,
@@ -6,14 +7,11 @@ import {
   it,
   vi,
 } from "vitest";
-import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 import {
   CATEGORY_UNITS,
   DEFAULT_UNIT_OCCUPANCY,
-  EXPECTED_TIME,
   FAKE_TIMER_OPTIONS,
   NON_OCCUPIED_UNIT_CODES,
-  RESERVATION_WINDOW,
   UNIT_CODE,
 } from "./CategoryUnits.constants";
 import { renderCategoryUnitsList } from "./renderCategoryUnitsList";
@@ -35,33 +33,20 @@ describe("CategoryUnitsList", () => {
     );
   });
 
-  it("shows return time, customer and reservation reference on the occupied unit", () => {
+  it("keeps the customer and the reservation off the card of an occupied unit", () => {
     const page = renderCategoryUnitsList();
     const unit = page.getUnit(UNIT_CODE.OCCUPIED);
 
     expect(
-      page.getText(
-        unit,
-        CATEGORY_UNITS_COPY.RETURNS_AT(EXPECTED_TIME.TODAY)
+      within(unit).queryByText(
+        DEFAULT_UNIT_OCCUPANCY.customerName
       )
-    ).toBeInTheDocument();
+    ).not.toBeInTheDocument();
     expect(
-      page.getText(
-        unit,
-        CATEGORY_UNITS_COPY.CUSTOMER_LINE(
-          DEFAULT_UNIT_OCCUPANCY.customerName
-        )
+      within(unit).queryByText(
+        new RegExp(DEFAULT_UNIT_OCCUPANCY.reservationCode)
       )
-    ).toBeInTheDocument();
-    expect(
-      page.getText(
-        unit,
-        CATEGORY_UNITS_COPY.RESERVATION_LINE(
-          DEFAULT_UNIT_OCCUPANCY.reservationCode,
-          RESERVATION_WINDOW.EXPECTED
-        )
-      )
-    ).toBeInTheDocument();
+    ).not.toBeInTheDocument();
   });
 
   it("shows no occupied detail on a unit that is not occupied", () => {

@@ -10,12 +10,12 @@ insert into public.workers (id, username, full_name, base_role, personal_email, 
   ('33333333-3333-3333-3333-333333333333', 'celso', 'Celso Rojas', 'operaciones', null, false);
 
 select ok(
-  (select pg_get_expr(p.polwithcheck, p.polrelid) like '%encargado_general%' from pg_policy p where p.polname = 'photos_insert'),
-  'subir fotos de estado exige la marca de encargado general o administracion'
+  (select pg_get_expr(p.polwithcheck, p.polrelid) like '%can_manage_unit_photos%' from pg_policy p where p.polname = 'photos_insert'),
+  'subir fotos de estado lo decide el permiso de fotos, no la marca'
 );
 select ok(
-  (select pg_get_expr(p.polqual, p.polrelid) like '%encargado_general%' from pg_policy p where p.polname = 'photos_update'),
-  'reemplazar fotos de estado exige la marca de encargado general o administracion'
+  (select pg_get_expr(p.polqual, p.polrelid) like '%encargado_general%' from pg_policy p where p.polname = 'unit_condition_photo_changes_select'),
+  'leer quien cambio las fotos exige la marca de encargado general o administracion'
 );
 
 set local role authenticated;
@@ -39,13 +39,13 @@ select is(
 
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated"}';
-select ok(public.has_mark('encargado_general'), 'con la marca la persona puede subir y reemplazar fotos de estado');
+select ok(public.has_mark('encargado_general'), 'con la marca la persona es encargado general');
 
 set local request.jwt.claims to '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}';
 select is(public.revoke_worker_mark('33333333-3333-3333-3333-333333333333', 'encargado_general'), 'revoked', 'administracion quita la marca de encargado general');
 
 set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated"}';
-select ok(not public.has_mark('encargado_general'), 'al quitarla deja de poder subir fotos de inmediato');
+select ok(not public.has_mark('encargado_general'), 'al quitarla deja de serlo de inmediato');
 
 select * from finish();
 rollback;

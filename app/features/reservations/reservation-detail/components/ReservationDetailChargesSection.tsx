@@ -12,7 +12,12 @@ import { resolveReservationDetailChargeBadgeClassName } from "../styles/Reservat
 import ReservationDetailPanel from "./ReservationDetailPanel";
 import ReservationDetailChargeRows from "./ReservationDetailChargeRows";
 import ReservationDetailOtherAmounts from "./ReservationDetailOtherAmounts";
+import ReservationDetailMoneyMovements from "./ReservationDetailMoneyMovements";
 import ReservationDetailChargeAction from "./ReservationDetailChargeAction";
+import ReservationDetailRefundAction from "./ReservationDetailRefundAction";
+import ReservationDetailDepositSummary from "./ReservationDetailDepositSummary";
+import ReservationDetailDepositAction from "./ReservationDetailDepositAction";
+import ReservationDetailExtraTime from "./ReservationDetailExtraTime";
 
 const ReservationDetailChargesSection = ({
   detail,
@@ -40,7 +45,14 @@ const ReservationDetailChargesSection = ({
     ) : null}
     <ReservationDetailChargeRows charges={detail.charges} />
     <ReservationDetailOtherAmounts detail={detail} />
+    <ReservationDetailMoneyMovements
+      movements={detail.moneyMovements}
+    />
+    <ReservationDetailDepositSummary detail={detail} />
     <ReservationDetailChargeAction detail={detail} />
+    <ReservationDetailExtraTime detail={detail} />
+    <ReservationDetailDepositAction detail={detail} />
+    <ReservationDetailRefundAction detail={detail} />
   </ReservationDetailPanel>
 );
 

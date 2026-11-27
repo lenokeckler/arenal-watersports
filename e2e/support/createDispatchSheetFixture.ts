@@ -18,10 +18,7 @@ import { addMaintenanceJobs } from "./addMaintenanceJobs";
 import { addDamageReports } from "./addDamageReports";
 import { readUnitCorrection } from "./readUnitCorrection";
 import { addUnitPhoto } from "./addUnitPhoto";
-import {
-  grantGeneralManagerMark,
-  removeGeneralManagerMark,
-} from "./grantGeneralManagerMark";
+import { setTemporaryGuide } from "./setTemporaryGuide";
 import { readUnitPhotos } from "./readUnitPhotos";
 import { removeUnitPhotos } from "./removeUnitPhotos";
 import { removeUnitCorrections } from "./removeUnitCorrections";
@@ -37,6 +34,7 @@ import { removeDispatchSheetFixture } from "./removeDispatchSheetFixture";
 
 interface DispatchSheetFixtureOptions {
   hasMotor?: boolean;
+  hasOpenWindow?: boolean;
   isOnBoard?: boolean;
 }
 
@@ -44,6 +42,7 @@ export const createDispatchSheetFixture = async (
   workerId: string,
   {
     hasMotor = false,
+    hasOpenWindow = false,
     isOnBoard = false,
   }: DispatchSheetFixtureOptions = {}
 ): Promise<DispatchSheetFixture> => {
@@ -123,7 +122,12 @@ export const createDispatchSheetFixture = async (
       duration_minutes:
         E2E_DISPATCH_SHEET_SEED.DURATION_MINUTES,
       people_count: E2E_DISPATCH_SHEET_SEED.PEOPLE_COUNT,
-      starts_at: getCostaRicaDayRange(new Date()).startsAt,
+      starts_at: hasOpenWindow
+        ? new Date(
+            Date.now() -
+              E2E_DISPATCH_SHEET_SEED.OPEN_WINDOW_STARTED_MS_AGO
+          ).toISOString()
+        : getCostaRicaDayRange(new Date()).startsAt,
       type: E2E_DISPATCH_SHEET_SEED.TYPE,
     })
     .select("id")
@@ -180,8 +184,8 @@ export const createDispatchSheetFixture = async (
     readUnitId: (code) => readUnitId(supabase, code),
     addUnitPhoto: (code, angle) =>
       addUnitPhoto(supabase, code, angle, workerId),
-    grantGeneralManagerMark: () =>
-      grantGeneralManagerMark(supabase, workerId),
+    makeTemporaryGuide: () =>
+      setTemporaryGuide(supabase, workerId, true),
     readUnitPhotos: (code) =>
       readUnitPhotos(supabase, code),
     readUnitCorrection: (code) =>
@@ -205,7 +209,7 @@ export const createDispatchSheetFixture = async (
       await removeDamageReports(supabase, unitCodes);
       await removeUnitCorrections(supabase, unitCodes);
       await removeUnitPhotos(supabase, unitCodes);
-      await removeGeneralManagerMark(supabase, workerId);
+      await setTemporaryGuide(supabase, workerId, false);
       await removeDispatchSheetFixture(
         supabase,
         reservationId
