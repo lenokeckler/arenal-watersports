@@ -8,7 +8,11 @@ export const insertExtra = async (
   name: string,
   input: Pick<
     ExtraSeedInput,
-    "status" | "priceUsd" | "priceCrc"
+    | "status"
+    | "priceUsd"
+    | "priceCrc"
+    | "occupiesCategoryId"
+    | "occupiesQuantity"
   >
 ): Promise<SeededExtra> => {
   const supabase = createServiceRoleSupabaseClient();
@@ -18,6 +22,8 @@ export const insertExtra = async (
     .insert({
       created_by: E2E_ADMIN_ACCOUNT.workerId,
       name,
+      occupies_category_id: input.occupiesCategoryId,
+      occupies_quantity: input.occupiesQuantity,
       price_crc: input.priceCrc,
       price_usd: input.priceUsd,
       status: input.status,

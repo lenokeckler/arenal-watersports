@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { PATHS } from "@/app/constants";
 import { isAdministratorSignedIn } from "@/app/services/worker-registration";
-import ExtraCompatibilityCategoryListView from "./ExtraCompatibilityCategoryListView";
+import ExtraCompatibilityBoatsView from "./ExtraCompatibilityBoatsView";
 import type { ExtraCompatibilityCategoryListProps } from "./models/ExtraCompatibilityCategoryListProps.interface";
 import { getExtraCompatibilityCategories } from "./services/getExtraCompatibilityCategories";
 
@@ -19,11 +19,7 @@ const ExtraCompatibilityCategoryList = async ({
     notFound();
   }
 
-  return (
-    <ExtraCompatibilityCategoryListView
-      {...compatibility}
-    />
-  );
+  return <ExtraCompatibilityBoatsView {...compatibility} />;
 };
 
 export default ExtraCompatibilityCategoryList;
