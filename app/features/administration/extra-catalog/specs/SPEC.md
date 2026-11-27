@@ -166,3 +166,21 @@ The administration worker keeps the list of extras that reservations can add to 
 | Saving one category keeps the links of another category                                                                                    | `e2e/specs/extra-compatibility.e2e.ts` |
 | Quitar todas and Guardar clear the links and the card says Sin embarcaciones; Marcar todas links every unit; Cancelar saves nothing        | `e2e/specs/extra-compatibility.e2e.ts` |
 | Every category card, unit row and helper button is at least 44 px tall, on mobile and desktop                                              | `e2e/specs/extra-compatibility.e2e.ts` |
+
+## 21.01 Extra occupancy data (US-ADM-21)
+
+| Requirement                                                                                                                                  | Test                                                                                                      |
+| -------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| An extra carries `occupiesCategoryId`, `occupiesQuantity` and the occupied category name, read with the `equipment_categories(name)` embed   | `mapExtraRowToExtra.test.ts`, `getExtra.test.ts`                                                          |
+| The form values keep the category id and the quantity as text and preload them when editing                                                  | `mapExtraToFormValues.test.ts`                                                                            |
+| The occupancy is both a category and a positive whole quantity up to the limit, or neither; a category must be a uuid                        | `validateExtraOccupancy.test.ts`, `resolveExtraValidationResult.test.ts`                                  |
+| The actions persist `occupies_category_id` and `occupies_quantity`, both null when no category is chosen                                     | `mapExtraInputToOccupancyColumns.test.ts`, `createExtraAction.test.ts`, `updateExtraAction.test.ts`       |
+| Only active categories counted by quantity can be occupied, checked on the server; the form is offered the same list                         | `extraOccupancyQueries.test.ts`, `resolveExtraCategoryFailure.test.ts`, `getOccupiableCategories.test.ts` |
+| `getExtra` flags `isUsedInReservations`; an occupancy change on a used extra is refused before the update, and name and prices stay editable | `getExtra.test.ts`, `resolveExtraOccupancyLockFailure.test.ts`, `hasExtraOccupancyChanged.test.ts`        |
+| The database errors 55006, 23514 and 23503 become Spanish occupancy errors                                                                   | `mapExtraWriteErrorToResult.test.ts`, `updateExtraAction.test.ts`, `createExtraAction.test.ts`            |
+| The card label says "Ocupa N × Categoría" or "Solo cobro adicional"                                                                          | `buildExtraOccupancyLabel.test.ts`                                                                        |
+
+### Acceptance criteria
+
+- [x] An extra can be saved as only an additional charge or as occupying a quantity of an equipment category counted by quantity.
+- [ ] The form section and the card label are carried by US-ADM-21 PRs 21.03 and 21.04.
