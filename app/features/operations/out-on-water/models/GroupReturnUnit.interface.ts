@@ -6,7 +6,10 @@ export interface GroupReturnUnit {
   consumesFuel: boolean;
   fuelMax: number;
   fuelOut: NullableRef<number>;
+  impactCount: number;
+  lowFuelLines: number;
   unitId: string;
   usageMetric: NullableRef<DispatchUsageMetric>;
   usageOut: NullableRef<number>;
+  usageTotal: number;
 }

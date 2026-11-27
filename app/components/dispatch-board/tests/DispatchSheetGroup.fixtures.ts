@@ -3,6 +3,7 @@ import type { DispatchSheetGroup } from "../models/DispatchSheetGroup.interface"
 export const DISPATCH_FIXTURE_GAUGE = {
   LAST_FUEL: 2,
   LAST_USAGE: 12.5,
+  LOW_LINES: 1,
   MAX: 4,
 } as const;
 
@@ -12,6 +13,7 @@ export const DISPATCH_FIXTURE_UNIT = {
     fuelLevel: null,
     fuelMax: DISPATCH_FIXTURE_GAUGE.MAX,
     isAssigned: false,
+    lowFuelLines: DISPATCH_FIXTURE_GAUGE.LOW_LINES,
     unitId: "bbbbbbbb-0000-4000-8000-000000000001",
     usageTotal: 0,
   },
@@ -20,6 +22,7 @@ export const DISPATCH_FIXTURE_UNIT = {
     fuelLevel: null,
     fuelMax: DISPATCH_FIXTURE_GAUGE.MAX,
     isAssigned: false,
+    lowFuelLines: DISPATCH_FIXTURE_GAUGE.LOW_LINES,
     unitId: "bbbbbbbb-0000-4000-8000-000000000002",
     usageTotal: 0,
   },
@@ -28,6 +31,7 @@ export const DISPATCH_FIXTURE_UNIT = {
     fuelLevel: null,
     fuelMax: DISPATCH_FIXTURE_GAUGE.MAX,
     isAssigned: false,
+    lowFuelLines: DISPATCH_FIXTURE_GAUGE.LOW_LINES,
     unitId: "bbbbbbbb-0000-4000-8000-000000000003",
     usageTotal: 0,
   },
@@ -36,6 +40,7 @@ export const DISPATCH_FIXTURE_UNIT = {
     fuelLevel: null,
     fuelMax: DISPATCH_FIXTURE_GAUGE.MAX,
     isAssigned: true,
+    lowFuelLines: DISPATCH_FIXTURE_GAUGE.LOW_LINES,
     unitId: "bbbbbbbb-0000-4000-8000-000000000009",
     usageTotal: 0,
   },
@@ -61,6 +66,7 @@ export const UNIT_GROUP_FIXTURE: DispatchSheetGroup = {
   durationMinutes: 60,
   fixedUnitIds: [],
   hasMotor: false,
+  imagePath: null,
   isTrackedByUnit: true,
   requiredQuantity: DISPATCH_FIXTURE_COUNT.TWO,
   usageMetric: null,
@@ -84,6 +90,7 @@ export const QUANTITY_GROUP_FIXTURE: DispatchSheetGroup = {
   durationMinutes: 60,
   fixedUnitIds: [],
   hasMotor: false,
+  imagePath: null,
   isTrackedByUnit: false,
   requiredQuantity: DISPATCH_FIXTURE_COUNT.TWO,
   usageMetric: null,
@@ -112,6 +119,15 @@ export const MOTOR_READINGS_GROUP_FIXTURE: DispatchSheetGroup =
     candidateUnits: MOTOR_UNITS,
     consumesFuel: true,
     usageMetric: "engine_hours",
+  };
+
+export const NO_LEVEL_FUEL_GROUP_FIXTURE: DispatchSheetGroup =
+  {
+    ...MOTOR_READINGS_GROUP_FIXTURE,
+    candidateUnits: [DISPATCH_FIXTURE_UNIT.FIRST],
+    categoryId: "aaaaaaaa-0000-4000-8000-000000000004",
+    consumesFuel: true,
+    requiredQuantity: DISPATCH_FIXTURE_COUNT.ONE,
   };
 
 export const KILOMETERS_GROUP_FIXTURE: DispatchSheetGroup =
