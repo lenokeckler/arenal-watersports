@@ -16,6 +16,7 @@ import {
   resolveCategoryConfigureSectionChevronClassName,
 } from "../styles/CategoryConfigureSection.styles";
 import { resolveCategoryConfigurePanelId } from "../utils/resolveCategoryConfigurePanelId";
+import { resolveCategoryConfigureSectionAnchorId } from "../utils/resolveCategoryConfigureSectionAnchorId";
 import CategoryConfigureChip from "./CategoryConfigureChip";
 
 const CategoryConfigureSection = ({
@@ -30,7 +31,10 @@ const CategoryConfigureSection = ({
   const panelId = resolveCategoryConfigurePanelId(id);
 
   return (
-    <div className={CATEGORY_CONFIGURE_SECTION_CLASS}>
+    <div
+      id={resolveCategoryConfigureSectionAnchorId(id)}
+      className={CATEGORY_CONFIGURE_SECTION_CLASS}
+    >
       <Title
         variant={TitleVariant.AUXILIAR}
         text={title}

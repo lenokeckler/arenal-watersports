@@ -35,6 +35,9 @@ export const createCategoryConfigureViewPage = () => {
   const getHeading = (name: string) =>
     screen.getByRole(ARIA_ROLE.HEADING, { name });
 
+  const queryHeading = (name: string) =>
+    screen.queryByRole(ARIA_ROLE.HEADING, { name });
+
   const queryButton = (name: string) =>
     screen.queryByRole(ARIA_ROLE.BUTTON, { name });
 
@@ -130,6 +133,7 @@ export const createCategoryConfigureViewPage = () => {
     getField,
     getText,
     getHeading,
+    queryHeading,
     queryButton,
     getDialog,
     getGroup,
