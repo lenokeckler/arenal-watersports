@@ -200,3 +200,18 @@ The administration worker keeps the list of extras that reservations can add to 
 
 - [x] Administration chooses whether an extra only charges or occupies equipment of the inventory.
 - [ ] The card label and the end to end coverage are carried by US-ADM-21 PR 21.04.
+
+## 21.04 Extra occupancy card and E2E (US-ADM-21)
+
+| Requirement                                                                                                                            | Test                                                        |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Every card says "Ocupa N × Categoría" or "Solo cobro adicional"                                                                        | `buildExtraCardViewModel.test.ts`, `extra-occupancy.e2e.ts` |
+| An extra that occupies two boards is created from the form and its card names them                                                     | `e2e/specs/extra-occupancy.e2e.ts`                          |
+| The quantity of an extra no reservation uses can change                                                                                | `e2e/specs/extra-occupancy.e2e.ts`                          |
+| A used extra shows the occupancy controls disabled with the note, the database refuses a change with 55006 and the name stays editable | `e2e/specs/extra-occupancy.e2e.ts`                          |
+| The category select and the quantity input are at least 44 px tall, on mobile and desktop                                              | `e2e/specs/extra-occupancy.e2e.ts`                          |
+
+### Acceptance criteria
+
+- [x] Some extras are only an additional charge and the card says so.
+- [x] The extras that occupy real equipment name it and its quantity; the reservations already subtract it from availability.

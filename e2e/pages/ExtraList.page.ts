@@ -57,6 +57,14 @@ export const createExtraListPage = (page: Page) => {
       exact: true,
     });
 
+  const getExtraOccupancyLabel = (
+    extraName: string,
+    label: string
+  ): Locator =>
+    getExtraCard(extraName).getByText(label, {
+      exact: true,
+    });
+
   const getCreateLink = (): Locator =>
     page.getByRole(ARIA_ROLE.LINK, {
       name: EXTRA_CATALOG_COPY.CREATE_CTA,
@@ -93,6 +101,7 @@ export const createExtraListPage = (page: Page) => {
     getExtraEditLink,
     getExtraCompatibilityLink,
     getExtraCompatibilityLabel,
+    getExtraOccupancyLabel,
     getCreateLink,
     getRemoveButton,
     getRemovalConfirmMessage,

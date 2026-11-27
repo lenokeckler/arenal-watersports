@@ -46,3 +46,5 @@ export const E2E_COMPATIBILITY_CATEGORY_UNIT_COUNT = {
 export const E2E_COMPATIBILITY_SELECTOR = {
   UNIT_ROW: "label",
 } as const;
+
+export const E2E_COMPATIBILITY_SAVE_ENABLED_TIMEOUT_MS = 2_000;
