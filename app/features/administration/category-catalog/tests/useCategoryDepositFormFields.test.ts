@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { CURRENCY_CODE, STRING } from "@/app/constants";
 import { useCategoryDepositFormFields } from "../hooks/useCategoryDepositFormFields";
 import type { CategoryDeposit } from "../models/CategoryDeposit.interface";
-import { buildCategoryFormFieldChangeEvent } from "./buildCategoryFormFieldChangeEvent";
+import { buildCategoryFormFieldChangeEvent } from "../utils/buildCategoryFormFieldChangeEvent";
 import {
   buildCategoryDeposit,
   buildCategoryDepositFormValues,

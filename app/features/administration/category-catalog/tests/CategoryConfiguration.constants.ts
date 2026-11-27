@@ -5,10 +5,14 @@ import { FAKE_CATEGORY_ID } from "./EquipmentCategoryRow.constants";
 
 export const FAKE_CONFIGURATION_QUANTITY = 8;
 export const FAKE_CONFIGURATION_DURATION_MINUTES = 60;
+export const FAKE_UNSELECTED_PRESET_DURATION_MINUTES = 30;
+export const FAKE_PICKED_PRESET_DURATION_MINUTES = 90;
+export const FAKE_OTHER_DURATION_MINUTES = 45;
 export const FAKE_CONFIGURATION_DEPOSIT_USD = 50;
 export const FAKE_CONFIGURATION_DEPOSIT_CRC = 25000;
 export const FAKE_CONFIGURATION_ALERT_QUANTITY = 5;
 export const FAKE_CONFIGURATION_ALERT_EXPIRY_DAYS = 30;
+export const FAKE_INVALID_AMOUNT_TEXT = "abc";
 export const FAKE_CONFIGURATION_IMAGE_PATH =
   "categories/fake.jpg";
 
@@ -40,6 +44,7 @@ export const DEFAULT_CATEGORY_CONFIGURATION: CategoryConfiguration =
       imagePath: FAKE_CONFIGURATION_IMAGE_PATH,
       imageUrl: null,
     },
+    hasRecords: false,
   };
 
 export const buildCategoryConfiguration = (

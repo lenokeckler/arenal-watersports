@@ -16,6 +16,7 @@ import {
 } from "./EquipmentCategoryRow.constants";
 
 const mockFetchCategoryQuantities = vi.fn();
+const mockFetchCategoryIdsWithRecords = vi.fn();
 const mockMaybeSingle = vi.fn();
 const mockEq = vi.fn(() => ({
   maybeSingle: mockMaybeSingle,
@@ -36,6 +37,12 @@ vi.mock("../services/fetchCategoryQuantities", () => ({
     mockFetchCategoryQuantities(...args),
 }));
 
+vi.mock("../services/fetchCategoryIdsWithRecords", () => ({
+  fetchCategoryIdsWithRecords: (
+    ...args: unknown[]
+  ): unknown => mockFetchCategoryIdsWithRecords(...args),
+}));
+
 describe("getCategoryConfiguration", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -45,9 +52,12 @@ describe("getCategoryConfiguration", () => {
         [FAKE_CATEGORY_ID, FAKE_CONFIGURATION_QUANTITY],
       ])
     );
+    mockFetchCategoryIdsWithRecords.mockResolvedValue(
+      new Set([FAKE_CATEGORY_ID])
+    );
   });
 
-  it("returns the category row and its current quantity mapped together", async () => {
+  it("returns the category row, its current quantity and whether it has records, mapped together", async () => {
     mockMaybeSingle.mockResolvedValue({
       data: DEFAULT_EQUIPMENT_CATEGORY_ROW,
       error: null,
@@ -64,7 +74,8 @@ describe("getCategoryConfiguration", () => {
     expect(configuration).toEqual(
       mapCategoryRowToConfiguration(
         DEFAULT_EQUIPMENT_CATEGORY_ROW,
-        FAKE_CONFIGURATION_QUANTITY
+        FAKE_CONFIGURATION_QUANTITY,
+        true
       )
     );
   });
