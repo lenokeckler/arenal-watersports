@@ -7,7 +7,7 @@ import {
   it,
   vi,
 } from "vitest";
-import { PATHS } from "@/app/constants";
+import { ARIA_CURRENT, PATHS } from "@/app/constants";
 import SystemNavigation from "../SystemNavigation";
 import { SYSTEM_NAVIGATION_COPY } from "../constants/SystemNavigationCopy.constants";
 import { SYSTEM_NAVIGATION_MENU_ID } from "../constants/SystemNavigationMenu.constants";
@@ -85,6 +85,70 @@ describe("SystemNavigation menu", () => {
     expect(page.getMenuRegion()).not.toBeVisible();
   });
 
+  it("lists Combos in Administration and closes after navigation", async () => {
+    render(
+      <SystemNavigation
+        overview={
+          SYSTEM_NAVIGATION_TEST_OVERVIEW.ADMINISTRATION
+        }
+      />
+    );
+    const page = createSystemNavigationPage();
+
+    await page.openMenu();
+
+    expect(
+      page.getMenuLink(SYSTEM_NAVIGATION_COPY.COMBOS)
+    ).toHaveAttribute("href", PATHS.ADMINISTRATION.COMBOS);
+    await page.followMenuLink(
+      SYSTEM_NAVIGATION_COPY.COMBOS
+    );
+
+    expect(page.getMenuRegion()).not.toBeVisible();
+  });
+
+  it("lists Tarifas in Administration and closes after navigation", async () => {
+    render(
+      <SystemNavigation
+        overview={
+          SYSTEM_NAVIGATION_TEST_OVERVIEW.ADMINISTRATION
+        }
+      />
+    );
+    const page = createSystemNavigationPage();
+
+    await page.openMenu();
+
+    expect(
+      page.getMenuLink(SYSTEM_NAVIGATION_COPY.TARIFFS)
+    ).toHaveAttribute("href", PATHS.ADMINISTRATION.TARIFFS);
+    await page.followMenuLink(
+      SYSTEM_NAVIGATION_COPY.TARIFFS
+    );
+
+    expect(page.getMenuRegion()).not.toBeVisible();
+  });
+
+  it("does not list Combos outside Administration", async () => {
+    render(
+      <SystemNavigation
+        overview={
+          SYSTEM_NAVIGATION_TEST_OVERVIEW.OPERATIONS
+        }
+      />
+    );
+    const page = createSystemNavigationPage();
+
+    await page.openMenu();
+
+    expect(
+      page.queryMenuLink(SYSTEM_NAVIGATION_COPY.COMBOS)
+    ).toBeNull();
+    expect(
+      page.queryMenuLink(SYSTEM_NAVIGATION_COPY.TARIFFS)
+    ).toBeNull();
+  });
+
   it("hides Change mode for a single-area account", async () => {
     render(
       <SystemNavigation
@@ -103,5 +167,27 @@ describe("SystemNavigation menu", () => {
     expect(
       page.getMenuLink(SYSTEM_NAVIGATION_COPY.PROFILE)
     ).toHaveAttribute("href", PATHS.PROFILE.ROOT);
+  });
+
+  it("marks the open screen as the current menu link", async () => {
+    systemNavigationMocks.pathname =
+      PATHS.ADMINISTRATION.TARIFFS;
+    render(
+      <SystemNavigation
+        overview={
+          SYSTEM_NAVIGATION_TEST_OVERVIEW.ADMINISTRATION
+        }
+      />
+    );
+    const page = createSystemNavigationPage();
+
+    await page.openMenu();
+
+    expect(
+      page.getMenuLink(SYSTEM_NAVIGATION_COPY.TARIFFS)
+    ).toHaveAttribute("aria-current", ARIA_CURRENT.PAGE);
+    expect(
+      page.getMenuLink(SYSTEM_NAVIGATION_COPY.COMBOS)
+    ).not.toHaveAttribute("aria-current");
   });
 });

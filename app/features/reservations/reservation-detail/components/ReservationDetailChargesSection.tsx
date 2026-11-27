@@ -14,6 +14,9 @@ import ReservationDetailChargeRows from "./ReservationDetailChargeRows";
 import ReservationDetailOtherAmounts from "./ReservationDetailOtherAmounts";
 import ReservationDetailMoneyMovements from "./ReservationDetailMoneyMovements";
 import ReservationDetailChargeAction from "./ReservationDetailChargeAction";
+import ReservationDetailRefundAction from "./ReservationDetailRefundAction";
+import ReservationDetailDepositSummary from "./ReservationDetailDepositSummary";
+import ReservationDetailDepositAction from "./ReservationDetailDepositAction";
 
 const ReservationDetailChargesSection = ({
   detail,
@@ -44,7 +47,10 @@ const ReservationDetailChargesSection = ({
     <ReservationDetailMoneyMovements
       movements={detail.moneyMovements}
     />
+    <ReservationDetailDepositSummary detail={detail} />
     <ReservationDetailChargeAction detail={detail} />
+    <ReservationDetailDepositAction detail={detail} />
+    <ReservationDetailRefundAction detail={detail} />
   </ReservationDetailPanel>
 );
 
