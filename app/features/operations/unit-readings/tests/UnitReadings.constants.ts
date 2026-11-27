@@ -26,6 +26,7 @@ export const UNIT: UnitReading = {
   fuelMax: 4,
   id: UNIT_ID,
   impactCount: 1,
+  lowFuelLines: 1,
   nextOilChangeAt: 50,
   status: "available",
   usageMetric: "engine_hours",

@@ -20,13 +20,14 @@ import {
   CURRENCY_CODE,
   MONEY_AMOUNT_ISSUE,
   PATHS,
+  STRING,
 } from "@/app/constants";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
 import { EXTRA_FORM_MODE } from "../constants/ExtraFormMode.constants";
 import { EXTRA_PRICE_ERROR_COPY } from "../constants/ExtraPriceErrorCopy.constants";
 import { EXTRA_MUTATION_STATUS } from "../constants/ExtraMutationStatus.constants";
 import {
-  DEFAULT_EXTRA,
+  DEFAULT_EXTRA_DETAIL,
   FAKE_EXTRA_ID,
   FAKE_EXTRA_NAME,
   FAKE_EXTRA_PRICE_CRC_TEXT,
@@ -138,6 +139,8 @@ describe("useExtraFormViewModel", () => {
       name: FAKE_EXTRA_NAME,
       priceUsd: FAKE_EXTRA_PRICE_USD_TEXT,
       priceCrc: FAKE_EXTRA_PRICE_CRC_TEXT,
+      occupiesCategoryId: STRING.Empty,
+      occupiesQuantity: STRING.Empty,
     });
     expect(updateExtraMock).not.toHaveBeenCalled();
   });
@@ -145,7 +148,7 @@ describe("useExtraFormViewModel", () => {
   it("updates the extra with its id, the new name and the new price in edit mode", async () => {
     const { result } = renderExtraViewModel({
       mode: EXTRA_FORM_MODE.EDIT,
-      extra: DEFAULT_EXTRA,
+      extra: DEFAULT_EXTRA_DETAIL,
     });
     changeExtraName(result, EDITED_EXTRA_NAME);
     changeExtraPriceUsd(
@@ -160,6 +163,8 @@ describe("useExtraFormViewModel", () => {
       extraId: FAKE_EXTRA_ID,
       name: EDITED_EXTRA_NAME,
       priceUsd: EDITED_EXTRA_PRICE_USD_TEXT,
+      occupiesCategoryId: STRING.Empty,
+      occupiesQuantity: STRING.Empty,
     });
     expect(createExtraMock).not.toHaveBeenCalled();
   });

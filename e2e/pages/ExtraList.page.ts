@@ -1,6 +1,7 @@
 import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE, PATHS } from "@/app/constants";
 import { EXTRA_CATALOG_COPY } from "@/app/features/administration/extra-catalog/constants/ExtraCatalogCopy.constants";
+import { EXTRA_COMPATIBILITY_COPY } from "@/app/features/administration/extra-catalog/constants/ExtraCompatibilityCopy.constants";
 import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
 
 export const createExtraListPage = (page: Page) => {
@@ -41,6 +42,21 @@ export const createExtraListPage = (page: Page) => {
       name: EXTRA_CATALOG_COPY.EDIT_LINK,
     });
 
+  const getExtraCompatibilityLink = (
+    extraName: string
+  ): Locator =>
+    getExtraCard(extraName).getByRole(ARIA_ROLE.LINK, {
+      name: EXTRA_COMPATIBILITY_COPY.LINK,
+    });
+
+  const getExtraCompatibilityLabel = (
+    extraName: string,
+    label: string
+  ): Locator =>
+    getExtraCard(extraName).getByText(label, {
+      exact: true,
+    });
+
   const getCreateLink = (): Locator =>
     page.getByRole(ARIA_ROLE.LINK, {
       name: EXTRA_CATALOG_COPY.CREATE_CTA,
@@ -75,6 +91,8 @@ export const createExtraListPage = (page: Page) => {
     getExtraStatusChip,
     getExtraPrice,
     getExtraEditLink,
+    getExtraCompatibilityLink,
+    getExtraCompatibilityLabel,
     getCreateLink,
     getRemoveButton,
     getRemovalConfirmMessage,

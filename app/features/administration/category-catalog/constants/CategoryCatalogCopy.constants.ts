@@ -26,6 +26,7 @@ export const CATEGORY_CATALOG_COPY = {
   ALERT_TYPE_QUANTITY_LABEL: "Por cantidad",
   ALERT_UPDATE_SUCCESS_TOAST:
     "Avisos de la categoría actualizados.",
+  BACK_TO_HOME: "Volver al inicio",
   BEHAVIOR_CATEGORY_NOT_FOUND_ERROR:
     "No se encontró la categoría. Es posible que otra persona la haya eliminado.",
   BEHAVIOR_FORM_TITLE: "Comportamiento de la categoría",
@@ -54,6 +55,15 @@ export const CATEGORY_CATALOG_COPY = {
   DEFAULT_DURATION_MINUTES_REQUIRED_WHEN_RESERVABLE_ERROR:
     "Ingrese la duración estándar del alquiler en minutos para una categoría reservable.",
   DELETE_BUTTON: "Eliminar",
+  LOW_FUEL_LINES_FIELD_HINT:
+    "Cuántas rayas del medidor o menos marcan la gasolina como baja en el tablero. Cada unidad puede tener su propio aviso.",
+  LOW_FUEL_LINES_FIELD_LABEL:
+    "Avisar gasolina baja con … rayas o menos",
+  LOW_FUEL_LINES_FIELD_PLACEHOLDER: "Ej. 1",
+  LOW_FUEL_LINES_INVALID_ERROR:
+    "Escriba un número entero de 1 a 20.",
+  LOW_FUEL_LINES_TOO_HIGH_ERROR:
+    "No puede ser mayor que las rayas del medidor de la unidad con menos rayas de esta categoría.",
   DELETE_CATEGORY_BUTTON: "Eliminar categoría",
   DELETE_CONFIRM_MESSAGE:
     "¿Eliminar esta categoría? No se puede deshacer.",
