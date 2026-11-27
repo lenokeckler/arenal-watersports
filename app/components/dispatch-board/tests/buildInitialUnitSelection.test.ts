@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { buildInitialUnitSelection } from "../utils/buildInitialUnitSelection";
 import {
   ASSIGNED_GROUP_FIXTURE,
+  DISPATCH_FIXTURE_COUNT,
   DISPATCH_FIXTURE_UNIT,
   QUANTITY_GROUP_FIXTURE,
   UNIT_GROUP_FIXTURE,
@@ -16,61 +17,71 @@ const NOT_FREE = "bbbbbbbb-0000-4000-8000-000000000099";
 describe("buildInitialUnitSelection", () => {
   it("starts empty when nothing was tapped on the board", () => {
     expect(
-      buildInitialUnitSelection(UNIT_GROUP_FIXTURE, [])
+      buildInitialUnitSelection(
+        UNIT_GROUP_FIXTURE,
+        [],
+        DISPATCH_FIXTURE_COUNT.TWO
+      )
     ).toEqual([]);
   });
 
   it("marks the units tapped on the board", () => {
     expect(
-      buildInitialUnitSelection(UNIT_GROUP_FIXTURE, [
-        FIRST,
-        SECOND,
-      ])
+      buildInitialUnitSelection(
+        UNIT_GROUP_FIXTURE,
+        [FIRST, SECOND],
+        DISPATCH_FIXTURE_COUNT.TWO
+      )
     ).toEqual([FIRST, SECOND]);
   });
 
   it("keeps only as many units as the reservation commits", () => {
     expect(
-      buildInitialUnitSelection(UNIT_GROUP_FIXTURE, [
-        FIRST,
-        SECOND,
-        THIRD,
-      ])
+      buildInitialUnitSelection(
+        UNIT_GROUP_FIXTURE,
+        [FIRST, SECOND, THIRD],
+        DISPATCH_FIXTURE_COUNT.TWO
+      )
     ).toEqual([FIRST, SECOND]);
   });
 
   it("ignores a unit that is no longer free", () => {
     expect(
-      buildInitialUnitSelection(UNIT_GROUP_FIXTURE, [
-        NOT_FREE,
-        FIRST,
-      ])
+      buildInitialUnitSelection(
+        UNIT_GROUP_FIXTURE,
+        [NOT_FREE, FIRST],
+        DISPATCH_FIXTURE_COUNT.TWO
+      )
     ).toEqual([FIRST]);
   });
 
   it("keeps the units already assigned ahead of the tapped ones", () => {
     expect(
-      buildInitialUnitSelection(ASSIGNED_GROUP_FIXTURE, [
-        FIRST,
-        SECOND,
-      ])
+      buildInitialUnitSelection(
+        ASSIGNED_GROUP_FIXTURE,
+        [FIRST, SECOND],
+        DISPATCH_FIXTURE_COUNT.ONE
+      )
     ).toEqual([ASSIGNED, FIRST]);
   });
 
   it("never repeats an assigned unit that was also tapped", () => {
     expect(
-      buildInitialUnitSelection(ASSIGNED_GROUP_FIXTURE, [
-        ASSIGNED,
-        FIRST,
-      ])
+      buildInitialUnitSelection(
+        ASSIGNED_GROUP_FIXTURE,
+        [ASSIGNED, FIRST],
+        DISPATCH_FIXTURE_COUNT.ONE
+      )
     ).toEqual([ASSIGNED, FIRST]);
   });
 
   it("selects nothing for a category counted by quantity", () => {
     expect(
-      buildInitialUnitSelection(QUANTITY_GROUP_FIXTURE, [
-        FIRST,
-      ])
+      buildInitialUnitSelection(
+        QUANTITY_GROUP_FIXTURE,
+        [FIRST],
+        DISPATCH_FIXTURE_COUNT.TWO
+      )
     ).toEqual([]);
   });
 });

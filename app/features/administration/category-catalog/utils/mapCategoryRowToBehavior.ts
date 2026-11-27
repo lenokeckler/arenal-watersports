@@ -10,6 +10,7 @@ export const mapCategoryRowToBehavior = (
   hasMotor: categoryRow.has_motor,
   usageMetric: categoryRow.usage_metric,
   consumesFuel: categoryRow.consumes_fuel,
+  lowFuelLines: categoryRow.low_fuel_lines,
   canBeDamaged: categoryRow.can_be_damaged,
   hasConditionPhotos: categoryRow.has_condition_photos,
   guideOnly: categoryRow.guide_only,

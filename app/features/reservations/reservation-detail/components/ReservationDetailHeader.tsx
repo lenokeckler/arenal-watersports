@@ -2,6 +2,7 @@ import InlineText from "@/app/components/text/InlineText";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
 import { TitleVariant } from "@/app/constants";
+import ReservationDetailDockAction from "./ReservationDetailDockAction";
 import { RESERVATION_DETAIL_COPY as copy } from "../constants/ReservationDetailCopy.constants";
 import {
   RESERVATION_DETAIL_STATUS_COPY,
@@ -36,6 +37,11 @@ const ReservationDetailHeader = ({
           ? `${copy.COMBO_SEPARATOR}${detail.comboName}`
           : null}
       </Text>
+      <ReservationDetailDockAction
+        dockNotifiedAt={detail.dockNotifiedAt}
+        reservationId={detail.id}
+        status={detail.status}
+      />
     </div>
     <InlineText className={RESERVATION_DETAIL_STATUS_CLASS}>
       <span

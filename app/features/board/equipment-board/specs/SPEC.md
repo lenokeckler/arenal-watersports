@@ -85,3 +85,9 @@ con la finalidad de saber de un vistazo qué se puede alquilar en este momento.
 - [ ] Every card has exactly one link, named after the card label, that opens `/board/categories/<id>`; a plain card and a single-member group open their own category and a grouped card opens its first member by name.
 - [ ] The card link is reachable with the keyboard, shows a visible focus ring, and hover and press give a subtle `motion-reduce`-safe state.
 - [ ] Pending: choosing equipment for a reservation from the board (second half of the sixth criterion) needs the reservation creation flow and is not part of this story.
+
+## Status filter (US-TAB-01)
+
+- Four links sit under the header: Todas, Disponibles, En mantenimiento and Dañadas, each with the number of units in that state across every category. The current one is marked with `aria-current`.
+- The filter travels in the address as `?status=available|maintenance|damaged` and no value means Todas. En reparación counts as En mantenimiento.
+- Each card shows the number of units in the chosen state; a card with none is dimmed and has no link. Every link keeps the filter, so the category opens already filtered.

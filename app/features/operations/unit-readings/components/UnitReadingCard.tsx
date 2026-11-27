@@ -30,6 +30,7 @@ const UnitReadingCard = ({
     />
     <FuelGauge
       level={unit.fuelLevel}
+      lowLines={unit.lowFuelLines}
       max={unit.fuelMax}
     />
     <Text className={UNIT_READINGS_CARD_DETAIL_CLASS}>

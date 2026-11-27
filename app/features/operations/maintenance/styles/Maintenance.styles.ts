@@ -25,10 +25,19 @@ export const MAINTENANCE_CARD_HEADING_CLASS =
 export const MAINTENANCE_CARD_DETAIL_CLASS =
   "text-body-base text-on-surface-variant";
 
-export const MAINTENANCE_OIL_TEXT_CLASS = {
-  PASSED: "text-body-base font-semibold text-warning",
-  REACHED: "text-body-base text-on-surface-variant",
-} as const;
+export const MAINTENANCE_OIL_HEADER_CLASS =
+  "flex items-center justify-between gap-sm";
+
+export const MAINTENANCE_OIL_COLUMNS_CLASS =
+  "grid grid-cols-2 gap-md";
+
+export const MAINTENANCE_OIL_COLUMN_CLASS = "flex flex-col";
+
+export const MAINTENANCE_OIL_CAPTION_CLASS =
+  "text-body-sm text-on-surface-variant";
+
+export const MAINTENANCE_OIL_VALUE_CLASS =
+  "text-title-md font-semibold text-on-surface";
 
 export const MAINTENANCE_STATUS_CLASS =
   "text-body-base font-semibold text-error";

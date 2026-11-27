@@ -55,5 +55,8 @@ export interface ReservationDetailReservationSource extends Pick<
     }>;
     unit_id: NullableRef<string>;
   }[];
+  reservation_dock_notices: NullableRef<{
+    notified_at: string;
+  }>;
   reservation_pricing: NullableRef<ReservationDetailPricingSource>;
 }

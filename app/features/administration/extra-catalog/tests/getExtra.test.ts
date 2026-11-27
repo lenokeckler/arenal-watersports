@@ -7,6 +7,7 @@ import {
 } from "vitest";
 import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
+import { EXTRA_ROW_COLUMNS } from "../constants/ExtraQuery.constants";
 import { getExtra } from "../services/getExtra";
 import {
   DEFAULT_EXTRA,
@@ -40,6 +41,7 @@ vi.mock("@/app/services/supabase", () => ({
 describe("getExtra", () => {
   beforeEach(() => {
     mockFrom.mockClear();
+    mockSelect.mockClear();
     mockEq.mockClear();
     mockMaybeSingle.mockReset();
   });
@@ -56,6 +58,19 @@ describe("getExtra", () => {
     expect(mockEq).toHaveBeenCalledWith(
       EXTRA_ID_COLUMN,
       FAKE_EXTRA_ID
+    );
+  });
+
+  it("reads the extra columns with the linked unit count", async () => {
+    mockMaybeSingle.mockResolvedValue({
+      data: DEFAULT_EXTRA_ROW,
+      error: null,
+    });
+
+    await getExtra(FAKE_EXTRA_ID);
+
+    expect(mockSelect).toHaveBeenCalledWith(
+      EXTRA_ROW_COLUMNS
     );
   });
 

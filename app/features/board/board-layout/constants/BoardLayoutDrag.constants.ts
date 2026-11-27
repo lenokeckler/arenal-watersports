@@ -1,0 +1,4 @@
+export const BOARD_LAYOUT_DRAG = {
+  KEYBOARD_STEP: 1,
+  PRIMARY_POINTER_BUTTON: 0,
+} as const;
