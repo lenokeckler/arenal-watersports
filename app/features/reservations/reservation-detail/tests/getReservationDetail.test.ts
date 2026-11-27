@@ -12,6 +12,7 @@ import {
   RESERVATION_DETAIL_TEST,
   RESERVATION_DETAIL_WORKER_NAMES_FIXTURE,
 } from "./ReservationDetailTest.constants";
+import { RESERVATION_DETAIL_MOVEMENTS_TEST } from "./ReservationDetailMoneyMovementsTest.constants";
 import { RESERVATION_DETAIL_SOURCE_FIXTURE } from "./ReservationDetailSourceFixture.constants";
 import { createReservationDetailSupabaseClient } from "./createReservationDetailSupabaseClient";
 
@@ -76,6 +77,7 @@ describe("getReservationDetail", () => {
           RESERVATION_DETAIL_TEST.CREATED_WORKER_ID,
           RESERVATION_DETAIL_TEST.UPDATED_WORKER_ID,
           RESERVATION_DETAIL_TEST.GUIDE_WORKER_ID,
+          RESERVATION_DETAIL_MOVEMENTS_TEST.CHARGE_WORKER_ID,
         ],
       }
     );

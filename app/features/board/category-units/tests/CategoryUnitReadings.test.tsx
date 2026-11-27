@@ -11,6 +11,7 @@ const ENGINE_HOURS_READINGS: CategoryUnitReadings = {
   hasFuelGauge: true,
   impactCount: 2,
   lowFuelLines: 1,
+  oilRemaining: null,
   usageMetric: "engine_hours",
   usageTotal: 97.5,
 };
@@ -21,6 +22,7 @@ const KILOMETERS_READINGS: CategoryUnitReadings = {
   hasFuelGauge: false,
   impactCount: 0,
   lowFuelLines: 1,
+  oilRemaining: null,
   usageMetric: "kilometers",
   usageTotal: 1250,
 };

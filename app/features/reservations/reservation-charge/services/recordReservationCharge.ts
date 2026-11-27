@@ -14,8 +14,12 @@ export const recordReservationCharge = async (
     RESERVATION_CHARGE_QUERY.RPC.RECORD,
     {
       p_payload: {
-        amount: command.amount,
-        currency: command.currency,
+        parts: command.parts.map(
+          ({ amount, currency }) => ({
+            amount,
+            currency,
+          })
+        ),
         payment_method: command.paymentMethod,
         reservation_id: command.reservationId,
       },
@@ -27,13 +31,13 @@ export const recordReservationCharge = async (
     RESERVATION_CHARGE_ERROR.OPERATION.RECORD
   );
 
-  const [row] = data ?? [];
+  const [first, ...others] = data ?? [];
 
-  if (!row) {
+  if (!first) {
     throw new Error(
       RESERVATION_CHARGE_ERROR.OPERATION.MISSING_CHARGE
     );
   }
 
-  return mapReservationChargeRecorded(row);
+  return mapReservationChargeRecorded([first, ...others]);
 };

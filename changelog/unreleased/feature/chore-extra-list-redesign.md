@@ -1,0 +1,1 @@
+chore - Extra list redesign — the extras list gets a subtitle, cards that open Editar when tapped with the price by the name, what the extra occupies and where it is offered with icons ("Sin embarcaciones · no se ofrece" when nowhere), Embarcaciones and Eliminar side by side, and a bottom sheet to confirm the removal
