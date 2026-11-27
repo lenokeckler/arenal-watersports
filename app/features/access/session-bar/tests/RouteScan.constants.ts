@@ -37,6 +37,7 @@ export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
   "/reservations/[reservationId]/charge",
   "/reservations/[reservationId]/deposit",
   "/reservations/[reservationId]/edit",
+  "/reservations/[reservationId]/extra-time",
   "/reservations/[reservationId]/postpone",
   "/reservations/[reservationId]/refund",
   "/reservations/[reservationId]/split",

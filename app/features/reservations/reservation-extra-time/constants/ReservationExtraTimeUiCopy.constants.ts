@@ -4,6 +4,10 @@ import { RESERVATION_EXTRA_TIME_SOURCE as SOURCE } from "./ReservationExtraTimeS
 export const RESERVATION_EXTRA_TIME_UI_COPY = {
   ARRIVED: "Llegó",
   DEPARTED: "Salió",
+  EXTENDED_BY: (duration: string): string =>
+    `Operaciones la extendió ${duration}`,
+  EXTRA_MINUTES: (duration: string): string =>
+    `+${duration}`,
   GROUPS_TITLE: "Tiempo de más por grupo",
   HOURS_SUFFIX: " h",
   MINUTES_SUFFIX: " min",

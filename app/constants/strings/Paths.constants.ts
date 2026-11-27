@@ -98,6 +98,7 @@ export const PATHS = {
     CHARGE_SEGMENT: "charge",
     DEPOSIT_SEGMENT: "deposit",
     EDIT_SEGMENT: "edit",
+    EXTRA_TIME_SEGMENT: "extra-time",
     INCOME: "/reservations/income",
     NEW: "/reservations/new",
     POSTPONE_SEGMENT: "postpone",
