@@ -78,3 +78,9 @@ export const EQUIPMENT_BOARD_PENDING_TITLE_CLASS =
 
 export const EQUIPMENT_BOARD_PENDING_BADGE_CLASS =
   "text-button font-bold tabular-nums text-primary";
+
+export const EQUIPMENT_BOARD_TEAM_LINK_CLASS =
+  "ml-auto inline-flex min-h-12 shrink-0 items-center gap-xs rounded-xl border border-primary/40 bg-primary/10 px-3 text-button font-semibold text-on-surface transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+
+export const EQUIPMENT_BOARD_TEAM_BADGE_CLASS =
+  "inline-flex min-w-6 items-center justify-center rounded-full bg-primary px-1.5 text-body-sm font-bold text-on-primary";

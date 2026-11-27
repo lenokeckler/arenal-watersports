@@ -36,6 +36,13 @@ export const EQUIPMENT_BOARD_COPY = {
   METADATA_TITLE: "Tablero — Arenal Water Sports",
   PAGE_DESCRIPTION:
     "Qué se puede alquilar en este momento.",
+  TEAM_LABEL: (pending: number): string =>
+    pending === 0
+      ? "Equipo"
+      : pending === 1
+        ? "Equipo, 1 reporte por completar"
+        : `Equipo, ${pending} reportes por completar`,
+  TEAM_TITLE: "Equipo",
   PAGE_TITLE: "Tablero",
   PENDING_DISPATCH_COUNT: (count: number): string =>
     count > DISPATCH_BOARD_PAGINATION.PAGE_SIZE

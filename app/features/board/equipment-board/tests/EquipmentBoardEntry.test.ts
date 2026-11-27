@@ -9,6 +9,7 @@ import {
 } from "vitest";
 import { ensureWorkModeChosen } from "@/app/services/work-mode/ensureWorkModeChosen";
 import { getBoardPendingDispatch } from "@/app/services/operations/getBoardPendingDispatch";
+import { getBoardEquipmentPending } from "@/app/services/equipment/getBoardEquipmentPending";
 import EquipmentBoard from "../EquipmentBoard";
 import EquipmentBoardEntry from "../EquipmentBoardEntry";
 import { WORK_MODE_REDIRECT_MESSAGE } from "./EquipmentBoardEntry.constants";
@@ -27,6 +28,13 @@ vi.mock(
   })
 );
 
+vi.mock(
+  "@/app/services/equipment/getBoardEquipmentPending",
+  () => ({
+    getBoardEquipmentPending: vi.fn(),
+  })
+);
+
 vi.mock("../EquipmentBoard", () => ({
   default: vi.fn(),
 }));
@@ -42,6 +50,9 @@ describe("EquipmentBoardEntry", () => {
       count: 4,
       isVisible: true,
     });
+    vi.mocked(getBoardEquipmentPending).mockResolvedValue(
+      2
+    );
 
     const entry = await EquipmentBoardEntry();
 
@@ -51,7 +62,19 @@ describe("EquipmentBoardEntry", () => {
     expect(entry.props).toEqual({
       filter: BOARD_UNIT_FILTER.ALL,
       pendingDispatch: { count: 4, isVisible: true },
+      equipmentPending: 2,
     });
+  });
+
+  it("does not read the equipment reports outside operations", async () => {
+    vi.mocked(getBoardPendingDispatch).mockResolvedValue({
+      count: null,
+      isVisible: false,
+    });
+
+    await EquipmentBoardEntry();
+
+    expect(getBoardEquipmentPending).not.toHaveBeenCalled();
   });
 
   it("does not render the board when the work-mode guard redirects", async () => {
