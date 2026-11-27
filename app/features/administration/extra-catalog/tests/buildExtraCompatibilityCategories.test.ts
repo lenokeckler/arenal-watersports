@@ -1,9 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { buildExtraCompatibilityCategories } from "../utils/buildExtraCompatibilityCategories";
 import {
-  COMPATIBILITY_CATEGORY_ID,
-  COMPATIBILITY_CATEGORY_NAME,
   COMPATIBILITY_CATEGORY_ROW,
+  COMPATIBILITY_CATEGORY_SUMMARY,
   EMPTY_COMPATIBILITY_CATEGORY_ROW,
   LINKED_UNIT_ID,
   OTHER_CATEGORY_UNIT_ID,
@@ -16,14 +15,7 @@ describe("buildExtraCompatibilityCategories", () => {
         [COMPATIBILITY_CATEGORY_ROW],
         new Set([LINKED_UNIT_ID])
       )
-    ).toEqual([
-      {
-        id: COMPATIBILITY_CATEGORY_ID,
-        name: COMPATIBILITY_CATEGORY_NAME,
-        unitCount: 2,
-        linkedUnitCount: 1,
-      },
-    ]);
+    ).toEqual([COMPATIBILITY_CATEGORY_SUMMARY]);
   });
 
   it("ignores links to units of other categories", () => {

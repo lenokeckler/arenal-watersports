@@ -1,24 +1,22 @@
 import { expect, test } from "@playwright/test";
 import { STRING } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
+import { resolveCategoryConfigurePath } from "@/app/features/administration/category-catalog/utils/resolveCategoryConfigurePath";
+import { createCategoryConfigurePage } from "../pages/CategoryConfigure.page";
 import { createCategoryListPage } from "../pages/CategoryList.page";
+import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 import {
+  findCategoryId,
   removeDeletableCategory,
   seedDeletableCategory,
 } from "../support/categoryFixtures";
-import {
-  addTariffToCategory,
-  removeCategoryWithRecords,
-  seedCategoryWithRecords,
-} from "../support/categoryRecordsFixtures";
 import {
   E2E_CATEGORY_GROUP_LABEL,
   E2E_CATEGORY_WITHOUT_GROUP_NAME,
   E2E_CATEGORY_WITH_GROUP_NAME,
   E2E_CATEGORY_WITH_RECORDS_NAME,
   resolveDeletableCategoryName,
-  resolveMarkInactiveCategoryName,
 } from "../constants/E2eCategoryFixtures.constants";
 
 const buildGroupMetaText = (groupName: string): string =>
@@ -43,7 +41,7 @@ test.describe("Category list", () => {
     );
   });
 
-  test("shows Marcar inactiva, and not Eliminar categoría, for a category with existing records", async ({
+  test("shows Editar as text on a card, with no button inside it", async ({
     page,
   }) => {
     const categoryListPage = createCategoryListPage(page);
@@ -51,46 +49,17 @@ test.describe("Category list", () => {
     await categoryListPage.goToCategory(
       E2E_CATEGORY_WITH_RECORDS_NAME
     );
-    await categoryListPage.openCategoryOptions(
-      E2E_CATEGORY_WITH_RECORDS_NAME
-    );
 
     await expect(
-      categoryListPage.getCategoryMarkInactiveButton(
+      categoryListPage.getCategoryEditLabel(
         E2E_CATEGORY_WITH_RECORDS_NAME
       )
     ).toBeVisible();
     await expect(
-      categoryListPage.getCategoryDeleteButton(
+      categoryListPage.getCategoryButtons(
         E2E_CATEGORY_WITH_RECORDS_NAME
       )
-    ).toHaveCount(0);
-  });
-
-  test("shows Eliminar categoría for a category with no existing records", async ({
-    page,
-  }, testInfo) => {
-    const categoryName = resolveDeletableCategoryName(
-      testInfo.project.name,
-      "visibility"
-    );
-    await seedDeletableCategory(categoryName);
-    const categoryListPage = createCategoryListPage(page);
-
-    try {
-      await categoryListPage.goToCategory(categoryName);
-      await categoryListPage.openCategoryOptions(
-        categoryName
-      );
-
-      await expect(
-        categoryListPage.getCategoryDeleteButton(
-          categoryName
-        )
-      ).toBeVisible();
-    } finally {
-      await removeDeletableCategory(categoryName);
-    }
+    ).toHaveCount(E2E_COUNT.NONE);
   });
 
   test("shows the group meta for a category that belongs to a group", async ({
@@ -127,144 +96,34 @@ test.describe("Category list", () => {
     ).toHaveCount(0);
   });
 
-  test("marks a category with records inactive and removes its actions from the card", async ({
-    page,
-  }, testInfo) => {
-    const categoryName = resolveMarkInactiveCategoryName(
-      testInfo.project.name
-    );
-    await seedCategoryWithRecords(categoryName);
-    const categoryListPage = createCategoryListPage(page);
-
-    try {
-      await categoryListPage.goToCategory(categoryName);
-      await categoryListPage.clickCategoryMarkInactiveButton(
-        categoryName
-      );
-
-      await expect(
-        categoryListPage.getToastMessage(
-          CATEGORY_CATALOG_COPY.MARK_INACTIVE_SUCCESS_TOAST
-        )
-      ).toBeVisible();
-      await expect(
-        categoryListPage.getCategoryInactiveChip(
-          categoryName
-        )
-      ).toBeVisible();
-      await expect(
-        categoryListPage.getCategoryMarkInactiveButton(
-          categoryName
-        )
-      ).toHaveCount(0);
-    } finally {
-      await removeCategoryWithRecords(categoryName);
-    }
-  });
-
-  test("cancels a delete confirmation without removing the category", async ({
+  test("opens the Configurar screen of a category when its card is tapped", async ({
     page,
   }, testInfo) => {
     const categoryName = resolveDeletableCategoryName(
       testInfo.project.name,
-      "cancel"
+      "open"
     );
     await seedDeletableCategory(categoryName);
     const categoryListPage = createCategoryListPage(page);
+    const configurePage = createCategoryConfigurePage(page);
 
     try {
+      await logInAsAdmin(page);
       await categoryListPage.goToCategory(categoryName);
-      await categoryListPage.clickCategoryDeleteButton(
+      await categoryListPage.clickCategoryCard(
         categoryName
       );
 
       await expect(
-        categoryListPage.getCategoryConfirmDeleteMessage(
-          categoryName
-        )
+        configurePage.getHeading(categoryName)
       ).toBeVisible();
-
-      await categoryListPage.clickCategoryCancelButton(
-        categoryName
+      await expect(page).toHaveURL(
+        resolveCategoryConfigurePath(
+          await findCategoryId(categoryName)
+        )
       );
-
-      await expect(
-        categoryListPage.getCategoryDeleteButton(
-          categoryName
-        )
-      ).toBeVisible();
-      await expect(
-        categoryListPage.getCategoryConfirmDeleteMessage(
-          categoryName
-        )
-      ).toHaveCount(0);
     } finally {
       await removeDeletableCategory(categoryName);
-    }
-  });
-
-  test("deletes a category with no records after confirming", async ({
-    page,
-  }, testInfo) => {
-    const categoryName = resolveDeletableCategoryName(
-      testInfo.project.name,
-      "confirm"
-    );
-    await seedDeletableCategory(categoryName);
-    const categoryListPage = createCategoryListPage(page);
-
-    try {
-      await categoryListPage.goToCategory(categoryName);
-      await categoryListPage.clickCategoryDeleteButton(
-        categoryName
-      );
-      await categoryListPage.clickCategoryConfirmDeleteButton(
-        categoryName
-      );
-
-      await expect(
-        categoryListPage.getToastMessage(
-          CATEGORY_CATALOG_COPY.DELETE_SUCCESS_TOAST
-        )
-      ).toBeVisible();
-      await expect(
-        categoryListPage.getCategoryCard(categoryName)
-      ).toHaveCount(0);
-    } finally {
-      await removeDeletableCategory(categoryName);
-    }
-  });
-
-  test("keeps the category and shows the has-records message when a record appears before the deletion is confirmed", async ({
-    page,
-  }, testInfo) => {
-    const categoryName = resolveDeletableCategoryName(
-      testInfo.project.name,
-      "rejected"
-    );
-    await seedDeletableCategory(categoryName);
-    const categoryListPage = createCategoryListPage(page);
-
-    try {
-      await categoryListPage.goToCategory(categoryName);
-      await categoryListPage.clickCategoryDeleteButton(
-        categoryName
-      );
-      await addTariffToCategory(categoryName);
-      await categoryListPage.clickCategoryConfirmDeleteButton(
-        categoryName
-      );
-
-      await expect(
-        categoryListPage.getToastMessage(
-          CATEGORY_CATALOG_COPY.DELETE_HAS_RECORDS_ERROR
-        )
-      ).toBeVisible();
-      await expect(
-        categoryListPage.getCategoryCard(categoryName)
-      ).toHaveCount(1);
-    } finally {
-      await removeCategoryWithRecords(categoryName);
     }
   });
 });
