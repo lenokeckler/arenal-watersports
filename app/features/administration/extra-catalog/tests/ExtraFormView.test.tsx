@@ -126,6 +126,8 @@ describe("ExtraFormView", () => {
       name: FAKE_EXTRA_NAME,
       priceUsd: FAKE_EXTRA_PRICE_USD_TEXT,
       priceCrc: STRING.Empty,
+      occupiesCategoryId: STRING.Empty,
+      occupiesQuantity: STRING.Empty,
     });
   });
 
@@ -147,6 +149,8 @@ describe("ExtraFormView", () => {
       name: FAKE_EXTRA_NAME,
       priceUsd: FAKE_EXTRA_PRICE_USD_TEXT,
       priceCrc: FAKE_EXTRA_PRICE_CRC_TEXT,
+      occupiesCategoryId: STRING.Empty,
+      occupiesQuantity: STRING.Empty,
     });
   });
 
@@ -199,6 +203,8 @@ describe("ExtraFormView", () => {
       name: EDITED_EXTRA_NAME,
       priceUsd: EDITED_EXTRA_PRICE_USD_TEXT,
       priceCrc: STRING.Empty,
+      occupiesCategoryId: STRING.Empty,
+      occupiesQuantity: STRING.Empty,
     });
     expect(createExtraMock).not.toHaveBeenCalled();
   });
