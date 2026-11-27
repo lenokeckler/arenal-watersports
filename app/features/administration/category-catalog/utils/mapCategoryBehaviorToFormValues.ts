@@ -9,6 +9,7 @@ export const mapCategoryBehaviorToFormValues = (
   hasMotor: behavior.hasMotor,
   usageMetric: safeString(behavior.usageMetric),
   consumesFuel: behavior.consumesFuel,
+  lowFuelLines: String(behavior.lowFuelLines),
   canBeDamaged: behavior.canBeDamaged,
   hasConditionPhotos: behavior.hasConditionPhotos,
   guideOnly: behavior.guideOnly,

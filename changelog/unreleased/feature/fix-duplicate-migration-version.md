@@ -1,0 +1,1 @@
+chore - Unique migration versions — the mixed charge migration moves to 20261203000150 because it shared 20261203000100 with the dispatch radio channel one, and a test now fails on any repeated version

@@ -1,4 +1,3 @@
-import { DISPATCH_SHEET_COPY } from "@/app/components/dispatch-board/constants/DispatchSheetCopy.constants";
 import { E2E_DISPATCH_READINGS } from "../constants/E2eDispatchSheet.constants";
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 import { createDispatchBoardPage } from "../pages/DispatchBoard.page";
@@ -6,7 +5,7 @@ import { createDispatchSheetPage } from "../pages/DispatchSheet.page";
 import { expect, test } from "../support/dispatchSheetTest";
 
 test.describe("Dispatch sheet readings", () => {
-  test("asks for the gauge and the hours of each motor unit and writes them on the item and on the unit", async ({
+  test("starts the gauge at the last level, lets a unit leave untouched and writes the marked level on the item and on the unit", async ({
     motorDispatchSheet: dispatchSheet,
     signedInPage: page,
   }) => {
@@ -18,38 +17,18 @@ test.describe("Dispatch sheet readings", () => {
     await sheet
       .getOpenButton(dispatchSheet.customerName)
       .click();
-    await sheet.getUnit(first).check();
-    await sheet.getUnit(second).check();
-
-    await expect(sheet.getSubmit()).toBeDisabled();
-
-    await sheet
-      .getFuelPreset(
-        first,
-        E2E_DISPATCH_READINGS.FIRST.PRESET
-      )
-      .click();
-    await sheet
-      .getUsageField(
-        first,
-        E2E_DISPATCH_READINGS.HOURS_LABEL
-      )
-      .fill(E2E_DISPATCH_READINGS.FIRST.HOURS_TEXT);
-    await sheet
-      .getFuelPreset(
-        second,
-        E2E_DISPATCH_READINGS.SECOND.PRESET
-      )
-      .click();
-    await sheet
-      .getUsageField(
-        second,
-        E2E_DISPATCH_READINGS.HOURS_LABEL
-      )
-      .fill(E2E_DISPATCH_READINGS.SECOND.HOURS_TEXT);
+    await sheet.getUnit(first).click();
+    await sheet.getUnit(second).click();
 
     await expect(sheet.getSubmit()).toBeEnabled();
-    await sheet.getSubmit().click();
+
+    await sheet
+      .getGaugeLine(
+        second,
+        E2E_DISPATCH_READINGS.SECOND.LINE
+      )
+      .click();
+    await sheet.confirm();
 
     await expect(sheet.getDialog()).toHaveCount(
       E2E_COUNT.NONE
@@ -78,7 +57,7 @@ test.describe("Dispatch sheet readings", () => {
     });
   });
 
-  test("refuses hours below the last reading and keeps the dispatch closed", async ({
+  test("asks for no hours and no fuel number when dispatching", async ({
     motorDispatchSheet: dispatchSheet,
     signedInPage: page,
   }) => {
@@ -90,28 +69,12 @@ test.describe("Dispatch sheet readings", () => {
     await sheet
       .getOpenButton(dispatchSheet.customerName)
       .click();
-    await sheet.getUnit(first).check();
-    await sheet.getUnit(second).check();
+    await sheet.getUnit(first).click();
+    await sheet.getUnit(second).click();
 
-    for (const code of [first, second]) {
-      await sheet
-        .getFuelPreset(
-          code,
-          E2E_DISPATCH_READINGS.FIRST.PRESET
-        )
-        .click();
-      await sheet
-        .getUsageField(
-          code,
-          E2E_DISPATCH_READINGS.HOURS_LABEL
-        )
-        .fill(E2E_DISPATCH_READINGS.HOURS_BELOW_LAST);
-    }
-
-    await expect(sheet.getDialog()).toContainText(
-      DISPATCH_SHEET_COPY.USAGE_BELOW_PREFIX
-    );
-    await expect(sheet.getSubmit()).toBeDisabled();
+    await expect(
+      sheet.getDialog().getByLabel(/Horas de motor/)
+    ).toHaveCount(E2E_COUNT.NONE);
     expect(
       (await dispatchSheet.readDispatchState())
         .dispatchCount

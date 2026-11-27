@@ -3,7 +3,7 @@ export const OPERATIONS_AREA = "operaciones";
 export const DISPATCH_BOARD_PAGINATION = {
   FIRST_PAGE: 1,
   MAX_OFFSET: 2_147_483_647,
-  PAGE_SIZE: 50,
+  PAGE_SIZE: 10,
   QUERY_KEY: "pagina",
 } as const;
 
@@ -22,9 +22,19 @@ export const DISPATCH_BOARD_COPY = {
   ERROR: "No se pudieron cargar las reservas pendientes.",
   FORBIDDEN: "No tiene acceso a las operaciones.",
   HEADING: "Reservas pendientes de despachar",
+  EQUIPMENT_LABEL: "Equipo por despachar",
   NEXT_PAGE: "Siguiente",
   PAGE_LABEL: "Paginación de reservas",
   PREVIOUS_PAGE: "Anterior",
+  COMBO_TAG: "Combo",
+  DOCK_TAG: "Bajando",
+  EXPIRES: (time: string) =>
+    `caduca a las ${time} si no llegan`,
+  MISSING: (
+    name: string,
+    quantity: number,
+    total: number
+  ) => `${name} · falta ${quantity} de ${total}`,
   RESERVATION_SEPARATOR: " · ",
 } as const;
 
@@ -32,6 +42,9 @@ export const DISPATCH_BOARD_HEADING_ID =
   "reservas-pendientes-de-despachar";
 
 export const DISPATCH_BOARD_TIME_FORMAT = {
+  AM: "AM",
+  HALF_DAY_HOURS: 12,
+  PM: "PM",
   SEPARATOR: ":",
 } as const;
 
@@ -39,4 +52,8 @@ export const DISPATCH_BOARD_PAGE_PATTERN = /^\d+$/;
 
 export const DISPATCH_BOARD_QUERY = {
   SEPARATOR: "?",
+} as const;
+
+export const RESERVATION_TYPE = {
+  COMBO: "combo",
 } as const;

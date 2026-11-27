@@ -1,3 +1,4 @@
+import { BOARD_UNIT_FILTER } from "@/app/constants";
 import {
   beforeEach,
   describe,
@@ -43,6 +44,10 @@ vi.mock("@/app/services/board", () => ({
   readBoardCategory: vi.fn(),
   readBoardCategoryGroup: vi.fn().mockResolvedValue([]),
   readBoardCategoryUnits: vi.fn(),
+  readBoardUnitStatusDetails: vi.fn().mockResolvedValue({
+    damages: [],
+    jobs: [],
+  }),
 }));
 
 const mockSeveralPages = () => {
@@ -106,7 +111,8 @@ describe("CategoryUnits pagination", () => {
 
     expect(readBoardCategoryUnits).toHaveBeenCalledWith(
       CATEGORY_ID,
-      PAGE.SECOND
+      PAGE.SECOND,
+      BOARD_UNIT_FILTER.ALL
     );
     expect(page.queryPreviousLink()).toHaveAttribute(
       "href",
@@ -126,7 +132,8 @@ describe("CategoryUnits pagination", () => {
 
       expect(readBoardCategoryUnits).toHaveBeenCalledWith(
         CATEGORY_ID,
-        PAGE.FIRST
+        PAGE.FIRST,
+        BOARD_UNIT_FILTER.ALL
       );
     }
   );
@@ -137,7 +144,8 @@ describe("CategoryUnits pagination", () => {
 
     expect(readBoardCategoryUnits).toHaveBeenCalledWith(
       CATEGORY_ID,
-      PAGE.SECOND
+      PAGE.SECOND,
+      BOARD_UNIT_FILTER.ALL
     );
   });
 

@@ -1,0 +1,1 @@
+RES-07.29.03: Deposit validators — the deposit form checks the amount in either currency, proposes the equipment's deposit as the starting value, replaces it with the other currency's proposal on a switch, and builds the command it sends (US-RES-29 · AWS-112)

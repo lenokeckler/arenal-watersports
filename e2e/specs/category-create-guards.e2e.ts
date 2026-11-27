@@ -6,7 +6,10 @@ import { resolveGroupConflictErrorMessage } from "@/app/features/administration/
 import { createCategoryCreateFormPage } from "../pages/CategoryCreateForm.page";
 import { createCategoryListPage } from "../pages/CategoryList.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
-import { removeDeletableCategory } from "../support/categoryFixtures";
+import {
+  removeDeletableCategory,
+  seedDeletableCategory,
+} from "../support/categoryFixtures";
 import {
   E2E_CATEGORY_GROUP_LABEL,
   resolveCreatedCategoryName,
@@ -31,7 +34,7 @@ test.describe("Category create guards", () => {
     try {
       await categoryCreateFormPage.goTo();
       await categoryCreateFormPage.fillName(categoryName);
-      await categoryCreateFormPage.selectTrackingMode(
+      await categoryCreateFormPage.selectChoice(
         CATEGORY_CATALOG_COPY.TRACKING_MODE_BY_QUANTITY_LABEL
       );
       await categoryCreateFormPage.fillGroupName(
@@ -75,7 +78,7 @@ test.describe("Category create guards", () => {
     try {
       await categoryCreateFormPage.goTo();
       await categoryCreateFormPage.fillName(categoryName);
-      await categoryCreateFormPage.selectTrackingMode(
+      await categoryCreateFormPage.selectChoice(
         CATEGORY_CATALOG_COPY.TRACKING_MODE_BY_QUANTITY_LABEL
       );
       await categoryCreateFormPage.fillGroupName(
@@ -100,6 +103,36 @@ test.describe("Category create guards", () => {
       await expect(
         categoryListPage.getCategoryCard(categoryName)
       ).toHaveCount(0);
+    } finally {
+      await removeDeletableCategory(categoryName);
+    }
+  });
+
+  test("shows the duplicate-name error and creates nothing when the name already exists", async ({
+    page,
+  }, testInfo) => {
+    const categoryName = resolveCreatedCategoryName(
+      testInfo.project.name,
+      "duplicate-name"
+    );
+    const categoryCreateFormPage =
+      createCategoryCreateFormPage(page);
+
+    try {
+      await seedDeletableCategory(categoryName);
+      await categoryCreateFormPage.goTo();
+      await categoryCreateFormPage.fillName(categoryName);
+      await categoryCreateFormPage.selectChoice(
+        CATEGORY_CATALOG_COPY.TRACKING_MODE_BY_QUANTITY_LABEL
+      );
+      await categoryCreateFormPage.submit();
+
+      await expect(
+        categoryCreateFormPage.getNameDuplicateError()
+      ).toBeVisible();
+      await expect(page).toHaveURL(
+        PATHS.ADMINISTRATION.CATEGORIES_NEW
+      );
     } finally {
       await removeDeletableCategory(categoryName);
     }
