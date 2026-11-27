@@ -1,5 +1,7 @@
-import type { MaintenanceUnit } from "./MaintenanceUnit.interface";
+import type { MaintenanceData } from "./MaintenanceData.interface";
+import type { MaintenanceFilters } from "./MaintenanceFilters.interface";
 
 export interface MaintenanceSectionProps {
-  units: MaintenanceUnit[];
+  data: MaintenanceData;
+  filters: MaintenanceFilters;
 }

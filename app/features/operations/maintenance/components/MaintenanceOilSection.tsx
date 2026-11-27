@@ -7,7 +7,7 @@ import {
   MAINTENANCE_COPY,
   MAINTENANCE_OIL_HEADING_ID,
 } from "../constants/MaintenanceCopy.constants";
-import type { MaintenanceSectionProps } from "../models/MaintenanceSectionProps.interface";
+import type { MaintenanceListProps } from "../models/MaintenanceListProps.interface";
 import {
   MAINTENANCE_LIST_CLASS,
   MAINTENANCE_MESSAGE_CLASS,
@@ -19,7 +19,7 @@ import type { JSX } from "react";
 
 const MaintenanceOilSection = ({
   units,
-}: MaintenanceSectionProps): JSX.Element => (
+}: MaintenanceListProps): JSX.Element => (
   <Section
     ariaLabel={MAINTENANCE_OIL_HEADING_ID}
     className={MAINTENANCE_SECTION_CLASS}
