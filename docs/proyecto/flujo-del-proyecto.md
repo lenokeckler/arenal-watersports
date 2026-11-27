@@ -26,7 +26,7 @@ Tres roles cubren la operación. El guía no es un rol aparte y las áreas adici
     - La misma persona puede estar en operaciones y salir de guía en un tour.
   - Encargado general
     - Tampoco es un rol separado, sino otra marca sobre la cuenta de una persona de operaciones.
-    - Es quien puede subir y reemplazar las fotos de estado de las máquinas.
+    - Junto con administración, consulta quién subió, cambió o borró las fotos de estado de las máquinas.
   - Registro de guías externos
     - Tercera marca, esta vez sobre una cuenta de reservas.
     - Habilita a esa persona para crear cuentas temporales de guía externo.
@@ -270,7 +270,7 @@ Rol: administración. Configura el inventario, los extras, los combos, las tarif
 **US-ADM-04 — Como administración marco a un trabajador como encargado general de operaciones**
 
 - La marca va sobre la cuenta, igual que la de guía, y no crea un rol nuevo.
-- Es quien puede subir y reemplazar las fotos de estado de las máquinas.
+- Junto con administración, consulta quién subió, cambió o borró las fotos de estado de las máquinas.
 
 **US-ADM-05 — Como administración habilito a alguien de reservas para registrar guías externos**
 
@@ -797,17 +797,18 @@ Rol: operaciones. Es quien está en la playa y en el muelle. Despacha contra res
 
 - Los reportes se consultan después, no solamente se registran.
 
-**US-OPE-15 — Como encargado general subo y reemplazo las fotos de estado de una máquina**
+**US-OPE-15 — Como operaciones subo, reemplazo y borro las fotos de estado de una máquina**
 
-- Se guardan varias fotos por máquina, una por ángulo: costado derecho, costado izquierdo y frente, y opcionalmente una por debajo.
+- Se guardan varias fotos por máquina, una por ángulo: costado derecho, costado izquierdo, frente y atrás, y opcionalmente una por debajo y una adicional.
 - Sirven para ver el detalle de los daños y tener una referencia de cómo está la máquina hoy.
 - Se reemplazan cuando cambia el estado de la máquina.
-- Solo puede subirlas quien tenga la marca de encargado general, además de administración.
+- Las puede subir, cambiar y borrar cualquier persona de operaciones, además de administración; los guías temporales solo las ven.
+- Cada subida, cambio o borrado queda registrado.
 - No se guarda una foto por salida, porque ocupa demasiado espacio y no compensa. Para una discusión puntual con un cliente basta con la foto que el trabajador toma en el momento con su propio celular.
 
 **US-OPE-16 — Como operaciones veo las fotos actualizadas de una máquina junto a su número de golpes**
 
-- El resto de operaciones las ve pero no las cambia.
+- Los guías temporales las ven pero no las cambian.
 
 **US-OPE-17 — Como operaciones marco una unidad como en mantenimiento**
 
@@ -893,7 +894,7 @@ Reglas que aplican a todo el sistema. Se listan aquí una sola vez en lugar de r
 - El sistema tiene una sola cuenta de administración y no se puede bloquear ni eliminar.
 - Las marcas sobre una cuenta son independientes del rol y se ponen y se quitan por aparte. Hoy son tres: guía, encargado general y registro de guías externos.
   - La marca de guía no otorga permisos: solo hace que la persona aparezca en la lista al asignar un tour.
-  - La de encargado general habilita subir las fotos de estado de las máquinas.
+  - La de encargado general habilita consultar el registro de quién cambió las fotos de estado de las máquinas.
   - La de registro de guías externos habilita a alguien de reservas para crear esas cuentas temporales.
 - Las áreas se habilitan completas y los permisos sueltos no existen. Lo que no es un área es una marca, y las marcas son pocas y con nombre propio.
 - El modo de trabajo restringe y nunca otorga. Estando en modo operaciones la cuenta no alcanza nada de reservas aunque tenga esa área habilitada, y ninguna pantalla decide con las áreas de la cuenta cuando hay un modo activo.
@@ -982,7 +983,7 @@ Las decisiones las toma el dueño del repositorio y el resto del equipo las lee.
   - El sistema lleva el control del dinero pero no mueve dinero real, así que no hace falta una segunda confirmación.
 - Las capacidades que no son un área completa se resuelven con marcas sobre la cuenta. Hoy son tres.
   - La marca de guía habilita a la persona para que se le asigne un tour.
-  - La marca de encargado general habilita a la persona para subir las fotos de estado de las máquinas.
+  - La marca de encargado general habilita a la persona para consultar el registro de quién cambió las fotos de estado de las máquinas.
   - La marca de registro de guías externos habilita a alguien de reservas para crear esas cuentas temporales.
   - Se escogió la marca en vez de una lista de permisos sueltos, para no terminar con veinte casillas que nadie puede auditar.
 - Administración habilita áreas adicionales sobre una cuenta, y quien tenga más de un área escoge el modo al entrar.
@@ -1009,8 +1010,8 @@ Las decisiones las toma el dueño del repositorio y el resto del equipo las lee.
 - El historial de reservas se conserva cinco años.
   - Si el plan de Supabase contratado no alcanza para ese volumen, se baja a dos años.
   - El historial de conteos de inventario ya estaba definido en un año.
-- Las fotos de estado de una máquina son varias y las sube el encargado general.
-  - Una por ángulo: costado derecho, costado izquierdo y frente, y opcionalmente una por debajo.
+- Las fotos de estado de una máquina son varias y las cambia operaciones, salvo los guías temporales.
+  - Una por ángulo: costado derecho, costado izquierdo, frente y atrás, y opcionalmente una por debajo y una adicional.
   - Sirven para ver el detalle de los daños y tener una referencia de cómo está la máquina hoy.
   - El resto de operaciones las ve pero no las cambia.
 - Del guía externo se guardan solo el nombre y la cédula, y su registro lleva fecha de caducidad.

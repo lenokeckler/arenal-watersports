@@ -349,6 +349,8 @@ El tablero es la pantalla de entrada. Muestra una tarjeta por cada categoría re
 
 - Se muestra una tarjeta por cada categoría reservable del inventario.
 - Cada tarjeta indica cuántas unidades hay libres y cuántas en uso sobre el total.
+- El tablero y cada categoría se pueden filtrar por estado: todas, disponibles, en mantenimiento o dañadas. El filtro se conserva al entrar a una categoría.
+- En el modo Operaciones, un botón «Equipo» junto al título lleva a daños, fotos y mantenimiento, con el número de reportes por completar.
 - Una unidad despachada nunca cuenta como libre, aunque la hora real de regreso de su salida ya haya vencido. Libres más en uso nunca supera el total.
 - Las categorías que administración agrupó se muestran como una sola tarjeta, con los totales sumados y sin fusionarse por dentro.
 - En pantalla de celular las tarjetas van de dos en dos, para no obligar a bajar media pantalla por categoría.
@@ -719,16 +721,16 @@ El guía no es un rol aparte, porque la misma persona que despacha equipo en la 
 
 Como la persona de administración,  
 necesito marcar a alguien de operaciones como encargado general,  
-con la finalidad de que solo esa persona pueda cambiar las fotos de estado de las máquinas.
+con la finalidad de que haya una persona responsable de revisar quién cambió las fotos de estado de las máquinas.
 
 **Descripción:**
 
-Funciona igual que la marca de guía: va sobre la cuenta y no crea un rol nuevo. Lo que habilita es la carga y el reemplazo de las fotos de estado de las máquinas, que son la referencia de cómo está cada una hoy.
+Funciona igual que la marca de guía: va sobre la cuenta y no crea un rol nuevo. Lo que habilita es consultar el registro de quién subió, cambió o borró cada foto de estado de las máquinas, que son la referencia de cómo está cada una hoy. Subir, cambiar y borrar las fotos lo hace cualquier persona de operaciones (US-OPE-15).
 
 **Criterios de aceptación:**
 
 - La marca va sobre la cuenta, igual que la de guía, y no crea un rol nuevo.
-- Es quien puede subir y reemplazar las fotos de estado de las máquinas.
+- Junto con administración, es quien puede consultar el registro de quién subió, cambió o borró cada foto de estado. El registro ya se guarda; todavía no tiene pantalla.
 
 ---
 
@@ -2478,6 +2480,8 @@ Si todo está en orden, queda la constancia. Si no, se levanta el reporte de da�
 - Se registra la gasolina que quedó, marcando las rayas del medidor, y las horas de motor o el kilometraje con los que volvió, en un campo numérico.
 - El cierre permite ajustar los golpes de la unidad.
 - La pregunta «¿Todo en orden?» se responde con «Sí, todo bien» o «Hay daños»; con daños se pide qué se dañó y la unidad pasa a mantenimiento.
+- Al recibir una unidad desde el tablero con daños se escoge la causa y se describe qué se dañó, o se recibe y se deja el detalle para después. La unidad no queda disponible aunque falte el detalle.
+- Los golpes nuevos del reporte se suman al conteo de la unidad.
 - Cada grupo se cierra por separado, con su hora real de llegada. La reserva queda cerrada cuando se cierra el último grupo.
 - La hora de llegada se propone como la hora actual al abrir el cierre, pero operaciones puede ajustarla si el equipo llegó antes o después.
 - La reserva cerrada pasa al historial.
@@ -2582,8 +2586,11 @@ La causa se elige entre vuelco, choque, falla de máquina u otra, y se escribe u
 
 - La causa se elige entre vuelco, choque, falla de máquina u otra.
 - Se escribe una descripción de lo ocurrido.
-- Se indica cuánto subió el conteo de golpes de esa máquina.
+- Se indica cuánto subió el conteo de golpes de esa máquina, y esos golpes se suman a su conteo.
 - El reporte queda a nombre de quien lo levantó.
+- Se puede guardar sin causa ni descripción para detallarlo después. Un reporte pendiente se completa una sola vez, queda constancia de quién lo completó y solo se suma la diferencia de golpes.
+- Al reportar se escoge si la unidad queda dañada, en mantenimiento o sin cambios. Un reporte nunca devuelve una unidad a servicio ni cambia el estado de una que está en el agua.
+- Si el daño ocurrió en una salida reciente de esa unidad, se puede indicar en cuál.
 
 ---
 
@@ -2606,6 +2613,9 @@ Los reportes se consultan después, no solamente se registran. Ver los anteriore
 **Criterios de aceptación:**
 
 - Los reportes se consultan después, no solamente se registran.
+- La pantalla de daños muestra primero los pendientes de completar; un calendario de daños, que se puede filtrar por causa y muestra el resumen de cada día; y unos gráficos del mes o de los últimos seis meses, por causa y con las cinco máquinas con más daños.
+- Los reportes de una máquina dada de baja se siguen viendo, marcados como tales; no se completan ni se cuentan como pendientes.
+- El historial de cada máquina reúne sus reportes de daño.
 
 ---
 
@@ -2617,20 +2627,25 @@ Los reportes se consultan después, no solamente se registran. Ver los anteriore
 
 **Historia de usuario:**
 
-Como el encargado general de operaciones,  
-necesito subir y reemplazar las fotos de estado de una máquina,  
+Como la persona de operaciones,  
+necesito subir, reemplazar y borrar las fotos de estado de una máquina,  
 con la finalidad de tener una referencia visual de cómo está hoy y de dónde tiene los daños.
 
 **Descripción:**
 
-Se guardan varias fotos por máquina, una por ángulo: costado derecho, costado izquierdo y frente, y opcionalmente una por debajo. Se reemplazan cuando cambia el estado. Solo puede subirlas quien tenga la marca de encargado general, además de administración. No se guarda una foto por salida porque ocupa demasiado espacio y no compensa: para una discusión puntual con un cliente basta con la foto que el trabajador toma en el momento con su propio celular.
+Se guardan varias fotos por máquina, una por ángulo: costado derecho, costado izquierdo, frente y atrás, y opcionalmente una por debajo y una adicional. Se reemplazan cuando cambia el estado. Las puede subir, cambiar y borrar cualquier persona de operaciones, además de administración; los guías temporales solo las ven. Cada cambio queda registrado. No se guarda una foto por salida porque ocupa demasiado espacio y no compensa: para una discusión puntual con un cliente basta con la foto que el trabajador toma en el momento con su propio celular.
 
 **Criterios de aceptación:**
 
-- Se guardan varias fotos por máquina, una por ángulo: costado derecho, costado izquierdo y frente, y opcionalmente una por debajo.
+- Se guardan varias fotos por máquina, una por ángulo: las cuatro básicas son costado derecho, costado izquierdo, frente y atrás; por debajo y una adicional son opcionales.
+- Cada foto se puede ver en grande.
 - Sirven para ver el detalle de los daños y tener una referencia de cómo está la máquina hoy.
 - Se reemplazan cuando cambia el estado de la máquina.
-- Solo puede subirlas quien tenga la marca de encargado general, además de administración.
+- Puede subirlas, cambiarlas y borrarlas cualquier persona de operaciones, además de administración. Los guías temporales solo las ven.
+- Borrar una foto pide confirmación.
+- Cada foto nueva se guarda en un archivo aparte; no se sobrescribe ni se borra el archivo de una foto que está en uso.
+- Una foto guardada no se puede pasar a otra máquina ni a otro ángulo.
+- Cada subida, cambio o borrado queda registrado con quién y cuándo, y lo consultan administración y el encargado general.
 - No se guarda una foto por salida, porque ocupa demasiado espacio y no compensa. Para una discusión puntual con un cliente basta con la foto que el trabajador toma en el momento con su propio celular.
 
 ---
@@ -2649,11 +2664,12 @@ con la finalidad de comparar cómo está hoy contra cómo vuelve de una salida.
 
 **Descripción:**
 
-Las fotos se muestran junto al conteo de golpes acumulados. El resto de operaciones las ve pero no las cambia: cambiarlas es del encargado general.
+Las fotos se muestran junto al conteo de golpes acumulados. Los guías temporales las ven pero no las cambian.
 
 **Criterios de aceptación:**
 
-- El resto de operaciones las ve pero no las cambia.
+- Los guías temporales las ven pero no las cambian.
+- Una lista de las máquinas que llevan fotos muestra cada una con la foto de su categoría, la misma del tablero, cuántas de las cuatro básicas tiene y sus golpes, filtrada por categoría y por páginas.
 
 ---
 
@@ -2727,6 +2743,9 @@ El historial reúne todos los trabajos registrados con su fecha. Es la base del 
 **Criterios de aceptación:**
 
 - Es lo que permite saber cuánto cuesta sostener cada máquina.
+- El historial de una máquina muestra sus trabajos por mes, de diez en diez; lo gastado en cada moneda, sumando todos; y sus daños.
+- La pantalla de mantenimiento muestra los trabajos y los daños en un calendario que llega hasta el primer registro, que se puede filtrar por máquina y muestra el resumen de cada día, y unos gráficos del gasto de los últimos seis meses en cada moneda por separado.
+- Los registros de una máquina dada de baja se siguen viendo, marcados como tales, sin abrir su historial.
 
 ---
 
@@ -2959,7 +2978,7 @@ Reglas que aplican a todo el sistema. Se listan aquí una sola vez en lugar de r
 Sobre RNF-013, el alcance de cada marca:
 
 - La marca de guía no otorga permisos: solo hace que la persona aparezca en la lista al asignar un tour.
-- La de encargado general habilita subir las fotos de estado de las máquinas.
+- La de encargado general habilita consultar el registro de quién cambió las fotos de estado de las máquinas.
 - La de registro de guías externos habilita a alguien de reservas para crear esas cuentas temporales.
 
 ### Estados de una reserva
@@ -3066,7 +3085,7 @@ Las decisiones las toma el dueño del repositorio y el resto del equipo las lee.
   - El sistema lleva el control del dinero pero no mueve dinero real, así que no hace falta una segunda confirmación.
 - **Las capacidades que no son un área completa se resuelven con marcas sobre la cuenta. Hoy son tres.**
   - La marca de guía habilita a la persona para que se le asigne un tour.
-  - La marca de encargado general habilita a la persona para subir las fotos de estado de las máquinas.
+  - La marca de encargado general habilita a la persona para consultar el registro de quién cambió las fotos de estado de las máquinas.
   - La marca de registro de guías externos habilita a alguien de reservas para crear esas cuentas temporales.
   - Se escogió la marca en vez de una lista de permisos sueltos, para no terminar con veinte casillas que nadie puede auditar.
 - **Administración habilita áreas adicionales sobre una cuenta, y quien tenga más de un área escoge el modo al entrar.**
@@ -3093,10 +3112,10 @@ Las decisiones las toma el dueño del repositorio y el resto del equipo las lee.
 - **El historial de reservas se conserva cinco años.**
   - Si el plan de Supabase contratado no alcanza para ese volumen, se baja a dos años.
   - El historial de conteos de inventario ya estaba definido en un año.
-- **Las fotos de estado de una máquina son varias y las sube el encargado general.**
-  - Una por ángulo: costado derecho, costado izquierdo y frente, y opcionalmente una por debajo.
+- **Las fotos de estado de una máquina son varias y las cambia operaciones.**
+  - Una por ángulo: costado derecho, costado izquierdo, frente y atrás, y opcionalmente una por debajo y una adicional.
   - Sirven para ver el detalle de los daños y tener una referencia de cómo está la máquina hoy.
-  - El resto de operaciones las ve pero no las cambia.
+  - Las sube, cambia y borra cualquier persona de operaciones; los guías temporales solo las ven, y cada cambio queda registrado.
 - **Del guía externo se guardan solo el nombre y la cédula, y su registro lleva fecha de caducidad.**
   - Cumplida la fecha queda inhabilitado y administración lo ve así en su lista.
 - **El uso se mide en horas de motor para el equipo de agua y en kilometraje para los cuadraciclos.**
