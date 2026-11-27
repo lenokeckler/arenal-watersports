@@ -5,8 +5,3 @@ export const MAINTENANCE_ERROR = {
 } as const;
 
 export const MAINTENANCE_AVAILABLE_STATUS = "available";
-
-export const DAMAGE_REPORTS_LINK = {
-  QUERY_SEPARATOR: "?",
-  UNIT_QUERY_KEY: "unidad",
-} as const;

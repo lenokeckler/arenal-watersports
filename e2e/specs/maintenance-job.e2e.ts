@@ -1,4 +1,4 @@
-import { ARIA_ROLE, PATHS } from "@/app/constants";
+import { PATHS } from "@/app/constants";
 import { E2E_MAINTENANCE_JOB } from "../constants/E2eMaintenanceJob.constants";
 import { E2E_MAINTENANCE_SEED } from "../constants/E2eMaintenance.constants";
 import { createMaintenanceJobPage } from "../pages/MaintenanceJob.page";
@@ -62,10 +62,7 @@ test.describe("Maintenance job", () => {
     await dispatchSheet.makeMaintenanceNeeds();
     await maintenance.goTo();
     await expect(
-      maintenance
-        .getOilSection()
-        .getByRole(ARIA_ROLE.LISTITEM)
-        .filter({ hasText: unit })
+      maintenance.getAttentionChip(unit)
     ).toContainText(E2E_MAINTENANCE_SEED.OVERAGE_TEXT);
 
     await form.goTo();
@@ -83,11 +80,10 @@ test.describe("Maintenance job", () => {
     await page.waitForURL(
       `**${PATHS.OPERATIONS.MAINTENANCE}`
     );
+    await maintenance.goTo();
+    await expect(maintenance.getHeading()).toBeVisible();
     await expect(
-      maintenance
-        .getOilSection()
-        .getByRole(ARIA_ROLE.LISTITEM)
-        .filter({ hasText: unit })
+      maintenance.getAttentionChip(unit)
     ).toHaveCount(0);
 
     const { nextOilChangeAt } =

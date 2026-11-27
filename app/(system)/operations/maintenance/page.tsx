@@ -7,8 +7,10 @@ export const metadata: Metadata = {
   title: MAINTENANCE_COPY.HEADING,
 };
 
-const OperationsMaintenancePage = (): JSX.Element => (
-  <Maintenance />
+const OperationsMaintenancePage = async ({
+  searchParams,
+}: PageProps<"/operations/maintenance">): Promise<JSX.Element> => (
+  <Maintenance searchParams={await searchParams} />
 );
 
 export default OperationsMaintenancePage;

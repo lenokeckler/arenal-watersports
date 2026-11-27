@@ -3,7 +3,7 @@ import {
   E2E_DISPATCH_SHEET_ERROR,
   E2E_DISPATCH_SHEET_TABLE,
 } from "../constants/E2eDispatchSheet.constants";
-import { E2E_MAINTENANCE_HISTORY_SEED } from "../constants/E2eMaintenanceHistory.constants";
+import { E2E_MAINTENANCE_RECORD_SEED } from "../constants/E2eMaintenanceRecordSeed.constants";
 import { failE2eOperation } from "./failE2eOperation";
 
 export const addMaintenanceJobs = async (
@@ -35,9 +35,10 @@ export const addMaintenanceJobs = async (
         cost_currency: "CRC",
         created_by: workerId,
         description:
-          E2E_MAINTENANCE_HISTORY_SEED.DESCRIPTION,
+          E2E_MAINTENANCE_RECORD_SEED.DESCRIPTION,
         is_external: true,
-        performed_at: "2026-09-06",
+        performed_at:
+          E2E_MAINTENANCE_RECORD_SEED.PERFORMED_AT,
         unit_id: idOf(first),
         work_type: "part_change",
       },
