@@ -8,6 +8,7 @@ export type UnitRow = Pick<
   | "status"
   | "fuel_max"
   | "fuel_level"
+  | "low_fuel_lines"
   | "usage_total"
   | "next_oil_change_at"
   | "decommissioned_at"

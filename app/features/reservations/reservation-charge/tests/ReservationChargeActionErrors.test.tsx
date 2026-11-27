@@ -31,7 +31,7 @@ describe("ReservationChargeView action errors", () => {
     });
     const page = renderReservationChargeView();
 
-    await page.typePaymentMethod(EDITED_METHOD_TEXT);
+    await page.selectPaymentMethod(EDITED_METHOD_TEXT);
     await page.submit();
 
     expect(await page.findAlertText()).toBe(
@@ -51,7 +51,7 @@ describe("ReservationChargeView action errors", () => {
     });
     const page = renderReservationChargeView();
 
-    await page.typePaymentMethod(EDITED_METHOD_TEXT);
+    await page.selectPaymentMethod(EDITED_METHOD_TEXT);
     await page.submit();
 
     expect(
@@ -73,11 +73,13 @@ describe("ReservationChargeView action errors", () => {
     ).mockReturnValue(new Promise(() => undefined));
     const page = renderReservationChargeView();
 
-    await page.typePaymentMethod(EDITED_METHOD_TEXT);
+    await page.selectPaymentMethod(EDITED_METHOD_TEXT);
     await page.submit();
 
     expect(page.getAmount()).toBeDisabled();
-    expect(page.getPaymentMethod()).toBeDisabled();
+    expect(
+      page.getPaymentChoice(EDITED_METHOD_TEXT)
+    ).toBeDisabled();
     expect(page.getSubmit()).toBeDisabled();
     expect(page.getSubmit()).toHaveAccessibleName(
       expect.stringContaining(COPY.SUBMITTING)

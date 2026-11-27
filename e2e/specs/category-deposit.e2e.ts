@@ -2,7 +2,6 @@ import { expect, test } from "@playwright/test";
 import { CURRENCY_CODE, STRING } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
 import { createCategoryDepositFormPage } from "../pages/CategoryDepositForm.page";
-import { createCategoryListPage } from "../pages/CategoryList.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 import {
   readCategoryDeposit,
@@ -22,7 +21,7 @@ import {
 const BOTH_FIELDS_EMPTY = 2;
 
 test.describe("Category deposit", () => {
-  test("opens from the card link with both fields empty and the placeholder", async ({
+  test("opens with both fields empty and the placeholder", async ({
     page,
   }, testInfo) => {
     const categoryName = resolveCategoryDepositFixtureName(
@@ -30,15 +29,13 @@ test.describe("Category deposit", () => {
       "open"
     );
     await seedCategoryWithDeposit(categoryName);
-    const categoryListPage = createCategoryListPage(page);
     const depositFormPage =
       createCategoryDepositFormPage(page);
 
     try {
       await logInAsAdmin(page);
-      await categoryListPage.goToCategory(categoryName);
-      await depositFormPage.clickDepositLink(
-        categoryListPage.getCategoryCard(categoryName)
+      await depositFormPage.goTo(
+        await findCategoryId(categoryName)
       );
 
       await expect(

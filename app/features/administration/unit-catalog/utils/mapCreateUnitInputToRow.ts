@@ -10,6 +10,7 @@ export const mapCreateUnitInputToRow = (
   status: input.status,
   fuel_max: input.fuelMax,
   fuel_level: input.fuelLevel ?? null,
+  low_fuel_lines: input.lowFuelLines ?? null,
   usage_total: input.usageTotal,
   next_oil_change_at: input.nextOilChangeAt ?? null,
   created_by: adminWorkerId,

@@ -3,6 +3,6 @@ import { CategoryFormFieldChangeHandler } from "./CategoryFormFieldChangeHandler
 export interface CategoryBehaviorDurationFieldProps {
   value: string;
   error?: string;
-  disabled: boolean;
+  disabled?: boolean;
   onChange: CategoryFormFieldChangeHandler;
 }
