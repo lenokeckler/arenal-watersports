@@ -11,7 +11,6 @@ export const MAINTENANCE_JOB_COPY = {
   DESCRIPTION_LABEL: "Descripción",
   ERROR_LOAD: "No se pudieron cargar las unidades.",
   FORBIDDEN: "No tiene acceso a las operaciones.",
-  ACCUMULATED_PREFIX: " Acumulado: ",
   ERROR_COST:
     "Escriba un monto válido, con hasta dos decimales.",
   ERROR_CURRENCY: "Seleccione la moneda del costo.",
@@ -22,17 +21,19 @@ export const MAINTENANCE_JOB_COPY = {
   ERROR_INVALID:
     "Alguno de los datos no es válido. Revíselos e intente de nuevo.",
   ERROR_RETIRED: "Esa unidad fue dada de baja.",
-  ERROR_THRESHOLD_BELOW_PREFIX:
-    "Debe ser mayor que lo acumulado: ",
-  ERROR_THRESHOLD_INVALID:
-    "Escriba un número válido, con hasta dos decimales.",
+  ERROR_INTERVAL_INVALID:
+    "Escriba un número mayor que cero, con hasta dos decimales.",
   ERROR_UNIT: "Seleccione la unidad.",
   ERROR_WORK_TYPE: "Seleccione el tipo de trabajo.",
   EXTERNAL_LABEL: "Lo hizo un taller externo",
   HEADING: "Registrar un trabajo de mantenimiento",
-  NEXT_OIL_CHANGE_LABEL: "Próximo cambio de aceite",
-  NEXT_OIL_CHANGE_HINT:
-    "Escriba la lectura en la que debe sonar el próximo aviso.",
+  NEXT_OIL_CHANGE_LABEL: "Cada cuánto cambia el aceite",
+  NEXT_OIL_CHANGE_PLACEHOLDER: {
+    engine_hours: "Ej. 100",
+    kilometers: "Ej. 2500",
+  },
+  NEXT_OIL_CHANGE_RESULT: (value: string): string =>
+    `Próximo cambio: ${value}`,
   SUBMIT: "Registrar trabajo",
   SUBMITTING: "Registrando…",
   UNIT_LABEL: "Unidad",
