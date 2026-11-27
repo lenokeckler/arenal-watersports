@@ -1,10 +1,10 @@
 import { getOperationsSupabaseClient } from "@/app/services/operations/getOperationsSupabaseClient";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+import { UNIT_PHOTOS_ERROR } from "../constants/UnitPhotos.constants";
 import {
   UNIT_PHOTOS_BUCKET,
-  UNIT_PHOTOS_ERROR,
   UNIT_PHOTOS_SIGNED_URL_SECONDS,
-} from "../constants/UnitPhotos.constants";
+} from "@/app/constants";
 import type { UnitPhotosData } from "../models/UnitPhotosData.interface";
 import { canManageUnitPhotos } from "./canManageUnitPhotos";
 import { buildPhotoSlots } from "../utils/buildPhotoSlots";
