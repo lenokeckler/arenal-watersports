@@ -40,6 +40,7 @@ export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
   "/reservations/[reservationId]/postpone",
   "/reservations/[reservationId]/refund",
   "/reservations/[reservationId]/split",
+  "/reservations/deposits/[depositId]/resolve",
 ];
 
 export const CLASSIFIED_PAGE_ROUTES: readonly string[] = [
