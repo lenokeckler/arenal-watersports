@@ -85,7 +85,6 @@ export const PATHS = {
       currency: string
     ) =>
       `/operations/maintenance?tab=summary&bar=${encodeURIComponent(month)}&currency=${encodeURIComponent(currency)}`,
-    MAINTENANCE_HISTORY: "/operations/maintenance/history",
     MAINTENANCE_NEW: "/operations/maintenance/new",
     MAINTENANCE_NEW_FOR_UNIT: (unitId: string) =>
       `/operations/maintenance/new?unit=${encodeURIComponent(unitId)}`,
