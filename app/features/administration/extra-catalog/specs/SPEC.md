@@ -117,3 +117,21 @@ The administration worker keeps the list of extras that reservations can add to 
 | Saving one category replaces its links and keeps the links the extra has in other categories                       | `resolveExtraCompatibilityUnitIds.test.ts`, `setExtraCompatibilityAction.test.ts`   |
 | A selected unit from another category or decommissioned is a validation error and nothing is written               | `resolveExtraCompatibilityUnitIds.test.ts`, `setExtraCompatibilityAction.test.ts`   |
 | The database errors 42501, P0002 and 22023 become Spanish results; any other error throws                          | `mapExtraCompatibilityErrorToResult.test.ts`, `setExtraCompatibilityAction.test.ts` |
+
+## 20.03 Extra compatibility categories screen (US-ADM-20)
+
+| Requirement                                                                                                                                         | Test                                                                                                                                          |
+| --------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| The compatibility routes are the extra path plus the `compatibility` segment and the encoded category id                                            | `resolveExtraCompatibilityPath.test.ts`, `resolveExtraCompatibilityCategoryPath.test.ts`                                                      |
+| Every extra card has an "Embarcaciones" link to its compatibility screen and says "Sin embarcaciones", "Aplica a 1 unidad" or "Aplica a N unidades" | `buildExtraCardViewModel.test.ts`, `ExtraListView.test.tsx`                                                                                   |
+| The screen is for administration only and shows not found for an unknown extra                                                                      | `ExtraCompatibilityCategoryList.test.tsx`                                                                                                     |
+| The screen names the extra and lists each by-unit category as a tappable card with "N de M unidades" linking to its units screen                    | `buildExtraCompatibilityCategoryCards.test.ts`, `buildExtraCompatibilityProgressLabel.test.ts`, `ExtraCompatibilityCategoryListView.test.tsx` |
+| A category with one unit says "de 1 unidad"; the empty state shows when no category has units; "Volver a extras" returns to the list                | `buildExtraCompatibilityProgressLabel.test.ts`, `ExtraCompatibilityCategoryListView.test.tsx`                                                 |
+| The new dynamic route is classified for the session bar scan                                                                                        | `pageRouteClassification.test.ts`                                                                                                             |
+
+### Acceptance criteria
+
+- [x] Each extra card has an "Embarcaciones" button and shows how many units the extra applies to.
+- [x] The compatibility screen lists the extra name and the by-unit categories with their linked count.
+- [x] Each category row is at least 44 px tall and opens the units screen of that category.
+- [ ] Choosing the units of a category is carried by US-ADM-20 PR 20.05.

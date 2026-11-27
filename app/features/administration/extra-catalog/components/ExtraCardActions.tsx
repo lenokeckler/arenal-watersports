@@ -1,15 +1,18 @@
 import Link from "@/app/components/link/Link";
 import { EXTRA_CARD_ACTION_STATE } from "../constants/ExtraCardActionState.constants";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
+import { EXTRA_COMPATIBILITY_COPY } from "../constants/ExtraCompatibilityCopy.constants";
 import type { ExtraCardActionsProps } from "../models/ExtraCardActionsProps.interface";
 import {
   EXTRA_CARD_ACTIONS_ROW_CLASS,
+  EXTRA_CARD_COMPATIBILITY_LINK_CLASS,
   EXTRA_CARD_EDIT_LINK_CLASS,
 } from "../styles/ExtraCardActions.styles";
 import ExtraCardConfirmRemovalActions from "./ExtraCardConfirmRemovalActions";
 import ExtraCardSingleAction from "./ExtraCardSingleAction";
 
 const ExtraCardActions = ({
+  compatibilityHref,
   editHref,
   onCancelClick,
   onConfirmRemovalClick,
@@ -31,6 +34,12 @@ const ExtraCardActions = ({
         {EXTRA_CATALOG_COPY.EDIT_LINK}
       </Link>
       <ExtraCardSingleAction {...singleActionProps} />
+      <Link
+        href={compatibilityHref}
+        className={EXTRA_CARD_COMPATIBILITY_LINK_CLASS}
+      >
+        {EXTRA_COMPATIBILITY_COPY.LINK}
+      </Link>
     </div>
   );
 

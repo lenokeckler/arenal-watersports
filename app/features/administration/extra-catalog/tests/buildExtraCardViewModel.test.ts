@@ -3,7 +3,9 @@ import { CURRENCY_CODE } from "@/app/constants";
 import { formatMoney } from "@/app/utils/money/formatMoney";
 import { EXTRA_CARD_ACTION_STATE } from "../constants/ExtraCardActionState.constants";
 import { EXTRA_STATUS } from "../constants/ExtraStatus.constants";
+import { buildExtraCompatibilityLabel } from "../utils/buildExtraCompatibilityLabel";
 import { buildExtraCardViewModel } from "../utils/buildExtraCardViewModel";
+import { resolveExtraCompatibilityPath } from "../utils/resolveExtraCompatibilityPath";
 import { resolveExtraEditPath } from "../utils/resolveExtraEditPath";
 import {
   DEFAULT_EXTRA,
@@ -26,6 +28,30 @@ describe("buildExtraCardViewModel", () => {
       name: DEFAULT_EXTRA.name,
       status: DEFAULT_EXTRA.status,
     });
+  });
+
+  it("points the compatibility link at the compatibility path of the extra", () => {
+    const card = buildExtraCardViewModel(
+      DEFAULT_EXTRA,
+      buildExtraCardActionsViewModel()
+    );
+
+    expect(card.compatibilityHref).toBe(
+      resolveExtraCompatibilityPath(DEFAULT_EXTRA.id)
+    );
+  });
+
+  it("labels the extra with the number of units it applies to", () => {
+    const card = buildExtraCardViewModel(
+      DEFAULT_EXTRA,
+      buildExtraCardActionsViewModel()
+    );
+
+    expect(card.compatibilityLabel).toBe(
+      buildExtraCompatibilityLabel(
+        DEFAULT_EXTRA.compatibleUnitCount
+      )
+    );
   });
 
   it("carries the formatted prices of the extra", () => {
