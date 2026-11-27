@@ -8,11 +8,12 @@ Let the person in Reservas see every deposit that is still unresolved, with its 
 
 - Read-only list at `PATHS.RESERVATIONS.DEPOSITS`, rendered on the server, one row per deposit with status `held`, oldest first.
 - Each row: customer name, reservation code, the amount in its own currency and the currency name.
+- Each row links to `/reservations/deposits/<depositId>/resolve` with "Resolver" (US-RES-30). A resolved deposit is no longer `held`, so it leaves the list.
 - Empty state, error state and loading state with Spanish copy.
 
 ## Out of scope
 
-- Resolving a deposit, filters, pagination, totals of any kind, a date per row, a retry button.
+- Resolving a deposit on this screen (each row links to the resolution screen of US-RES-30), filters, totals of any kind, a date per row, a retry button.
 - Route-level area gating: not part of this story. Row Level Security already returns no deposit rows to a worker without the Reservas area.
 - The application shell and its `<main>` landmark.
 

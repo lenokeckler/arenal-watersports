@@ -1,0 +1,1 @@
+RES-07.31.01: Extra time database — the extra time of each group is counted against its real arrival and added for the reservation, and Reservas records it as an extra time charge apart from the tariff or as a courtesy (US-RES-31 · AWS-114)
