@@ -166,7 +166,6 @@ Let the administration worker set, change and clear the guarantee deposit of a c
 | Stored amounts prefill, typed amounts are sent as numbers, cleared fields as `null`                                                                               | `CategoryDepositForm.test.tsx` "prefills the %s field..."; `CategoryDepositFormSubmit.test.tsx` "sends both amounts as numbers...", "sends null for both amounts..."                                                                                                                |
 | Fields and Cancelar are disabled while saving; Cancelar returns to the list                                                                                       | `CategoryDepositForm.test.tsx` "disables both fields and Cancelar...", "navigates back to the category list..."                                                                                                                                                                     |
 | A visitor who is not administration goes to the home; an unknown category shows not found                                                                         | `CategoryDeposit.test.tsx`                                                                                                                                                                                                                                                          |
-| Every category card, active or inactive, links to its deposit screen                                                                                              | `CategoryCardDepositLink.test.tsx`                                                                                                                                                                                                                                                  |
 
 ## Edge cases & errors
 
@@ -204,7 +203,6 @@ Let the administration worker give a category an optional image, see how it will
 
 - Its own page at `/administration/categories/[categoryId]/image`, administration only, with `loading.tsx`.
 - `CategoryImage` (server entry) reads the category with `getCategoryImage`; `CategoryImageForm` (client view) renders the preview, the picker and the actions through `useCategoryImageFormViewModel`.
-- The Imagen link in the options panel of every card, next to Comportamiento, Dep�sito and Avisos.
 - Choose, preview (4:3 frame), save, replace and remove with inline confirmation.
 
 ## Out of scope
@@ -242,5 +240,4 @@ Let the administration worker give a category an optional image, see how it will
 ## Acceptance criteria
 
 - [ ] Una categor�a puede llevar una imagen opcional, que se agrega despu�s de crearla, se reemplaza y se quita. � `CategoryImageForm.test.tsx` "saves the chosen image...", "asks before removing..."; the create-form field is carried by a later pull request.
-- [ ] El enlace Imagen aparece en las opciones de cada categor�a. � `CategoryCardImageLink.test.tsx`.
 - [ ] Solo administraci�n abre la pantalla. � `CategoryImage.test.tsx`.
