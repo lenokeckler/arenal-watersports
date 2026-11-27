@@ -27,6 +27,7 @@ export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
   "/administration/extras/[extraId]",
   "/administration/tariffs/[categoryId]",
   "/board/categories/[categoryId]",
+  "/operations/unit-history/[unitId]",
   "/operations/unit-photos/[unitId]",
   "/operations/unit-readings/[unitId]",
   `${PATHS.HISTORY.ROOT}${ROUTE_SEPARATOR}[reservationId]`,
