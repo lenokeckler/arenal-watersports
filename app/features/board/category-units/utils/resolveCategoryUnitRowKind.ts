@@ -1,5 +1,6 @@
 import { INVENTORY_UNIT_STATUS } from "@/app/constants";
 import { CATEGORY_UNIT_ROW_KIND } from "../constants/CategoryUnits.constants";
+import { hasStatusSheet } from "./hasStatusSheet";
 import type { CategoryUnit } from "../models/CategoryUnit.interface";
 import type { CategoryUnitInteraction } from "../models/CategoryUnitInteraction.interface";
 
@@ -25,6 +26,10 @@ export const resolveCategoryUnitRowKind = ({
 
   if (interaction && unit.occupancy) {
     return CATEGORY_UNIT_ROW_KIND.INFO;
+  }
+
+  if (interaction && hasStatusSheet(unit.status)) {
+    return CATEGORY_UNIT_ROW_KIND.STATUS;
   }
 
   return hasSelection &&

@@ -2,19 +2,12 @@
 
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
-import { LOW_FUEL_LINES_DATABASE_ERROR } from "../constants/CategoryBehaviorValidation.constants";
-import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import type { CategoryMutationResult } from "../models/CategoryMutationResult.interface";
 import type { UpdateCategoryBehaviorInput } from "../models/UpdateCategoryBehaviorInput.interface";
+import { isLowFuelTooHighError } from "../utils/isLowFuelTooHighError";
 import { mapUpdateCategoryBehaviorInputToRow } from "../utils/mapUpdateCategoryBehaviorInputToRow";
 import { resolveCategoryUpdateResult } from "../utils/resolveCategoryUpdateResult";
 import { updateCategoryRow } from "./updateCategoryRow";
-
-const isLowFuelTooHighError = (error: unknown): boolean =>
-  error instanceof SupabaseQueryError &&
-  error.message.includes(
-    LOW_FUEL_LINES_DATABASE_ERROR.TOO_HIGH_MESSAGE
-  );
 
 export const updateCategoryBehaviorAction = async (
   input: UpdateCategoryBehaviorInput

@@ -5,7 +5,7 @@ import { createCategoryCreateFormPage } from "../pages/CategoryCreateForm.page";
 import { createCategoryListPage } from "../pages/CategoryList.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 import { removeDeletableCategory } from "../support/categoryFixtures";
-import { E2E_CATEGORY_ALERTS_URL_PATTERN } from "../constants/E2eCategoryCreate.constants";
+import { E2E_CATEGORY_CONFIGURE_URL_PATTERN } from "../constants/E2eCategoryCreate.constants";
 import { resolveCreatedCategoryName } from "../constants/E2eCategoryFixtures.constants";
 
 test.describe("Category create", () => {
@@ -13,7 +13,7 @@ test.describe("Category create", () => {
     await logInAsAdmin(page);
   });
 
-  test("shows the page heading and all three fields", async ({
+  test("shows the page heading and all four fields", async ({
     page,
   }) => {
     const categoryCreateFormPage =
@@ -28,7 +28,14 @@ test.describe("Category create", () => {
       categoryCreateFormPage.getNameInput()
     ).toBeVisible();
     await expect(
-      categoryCreateFormPage.getTrackingModeSelect()
+      categoryCreateFormPage.getChoiceCard(
+        CATEGORY_CATALOG_COPY.TRACKING_MODE_BY_UNIT_LABEL
+      )
+    ).toBeVisible();
+    await expect(
+      categoryCreateFormPage.getChoiceCard(
+        CATEGORY_CATALOG_COPY.CREATE_RESERVABLE_YES
+      )
     ).toBeVisible();
     await expect(
       categoryCreateFormPage.getGroupNameInput()
@@ -55,7 +62,7 @@ test.describe("Category create", () => {
     );
   });
 
-  test("creates a category with no group, opens its alerts screen and shows it in the list", async ({
+  test("creates a category with no group, opens its Configurar screen and shows it in the list", async ({
     page,
   }, testInfo) => {
     const categoryName = resolveCreatedCategoryName(
@@ -69,7 +76,7 @@ test.describe("Category create", () => {
     try {
       await categoryCreateFormPage.goTo();
       await categoryCreateFormPage.fillName(categoryName);
-      await categoryCreateFormPage.selectTrackingMode(
+      await categoryCreateFormPage.selectChoice(
         CATEGORY_CATALOG_COPY.TRACKING_MODE_BY_UNIT_LABEL
       );
       await categoryCreateFormPage.submit();
@@ -80,7 +87,7 @@ test.describe("Category create", () => {
         )
       ).toBeVisible();
       await expect(page).toHaveURL(
-        E2E_CATEGORY_ALERTS_URL_PATTERN
+        E2E_CATEGORY_CONFIGURE_URL_PATTERN
       );
       await categoryListPage.goToCategory(categoryName);
       await expect(
@@ -105,7 +112,7 @@ test.describe("Category create", () => {
     try {
       await categoryCreateFormPage.goTo();
       await categoryCreateFormPage.fillName(categoryName);
-      await categoryCreateFormPage.selectTrackingMode(
+      await categoryCreateFormPage.selectChoice(
         CATEGORY_CATALOG_COPY.TRACKING_MODE_BY_QUANTITY_LABEL
       );
       await categoryCreateFormPage.fillGroupName(
@@ -119,7 +126,7 @@ test.describe("Category create", () => {
         )
       ).toBeVisible();
       await expect(page).toHaveURL(
-        E2E_CATEGORY_ALERTS_URL_PATTERN
+        E2E_CATEGORY_CONFIGURE_URL_PATTERN
       );
     } finally {
       await removeDeletableCategory(categoryName);

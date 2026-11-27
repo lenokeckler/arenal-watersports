@@ -1,0 +1,1 @@
+RES-07.30.07: Deposit resolution screen and route — the /reservations/deposits/<depositId>/resolve screen where Reservas resolves a deposit, with its summary, form, success and unavailable states (US-RES-30 · AWS-113)

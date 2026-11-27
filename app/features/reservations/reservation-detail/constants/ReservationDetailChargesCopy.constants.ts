@@ -10,6 +10,8 @@ export const RESERVATION_DETAIL_CHARGES_COPY = {
   AMOUNT_REMAINING: "Pendiente",
   AMOUNT_TARGET: "Tarifa",
   CHARGE_STATUS: "Estado del cobro",
+  DEPOSIT: "Depósito",
+  DEPOSIT_NONE: "Sin depósito",
   EXTRA_TIME_CHARGES: "Tiempo adicional",
   EXTRA_TIME_STATE: {
     [STATE.CHARGED]: (duration: string): string =>
@@ -32,6 +34,12 @@ export const RESERVATION_DETAIL_CHARGES_COPY = {
   RECORD_CHARGE: "Registrar cobro",
   RECORD_CHARGE_LABEL: (code: string): string =>
     `Registrar cobro de la reserva ${code}`,
+  RECORD_DEPOSIT: "Registrar depósito",
+  RECORD_DEPOSIT_LABEL: (code: string): string =>
+    `Registrar depósito de la reserva ${code}`,
+  RECORD_REFUND: "Registrar devolución",
+  RECORD_REFUND_LABEL: (code: string): string =>
+    `Registrar devolución de la reserva ${code}`,
   REFUNDS: "Reembolsos registrados",
   RESOLVE_EXTRA_TIME: "Cobrar tiempo adicional",
   RESOLVE_EXTRA_TIME_LABEL: (code: string): string =>

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { readCategoryFormFieldChecked } from "../utils/readCategoryFormFieldChecked";
-import { buildCategoryFormFieldChangeEvent } from "./buildCategoryFormFieldChangeEvent";
+import { buildCategoryFormFieldChangeEvent } from "../utils/buildCategoryFormFieldChangeEvent";
 
 describe("readCategoryFormFieldChecked", () => {
   it("returns true for a checked checkbox", () => {
