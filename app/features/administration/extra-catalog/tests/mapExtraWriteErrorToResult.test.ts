@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { POSTGRES_ERROR_CODE } from "@/app/constants";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
 import { EXTRA_MUTATION_STATUS } from "../constants/ExtraMutationStatus.constants";
+import { EXTRA_OCCUPANCY_COPY } from "../constants/ExtraOccupancyCopy.constants";
 import { mapExtraWriteErrorToResult } from "../utils/mapExtraWriteErrorToResult";
 import { buildPostgrestError } from "./buildPostgrestError";
 
@@ -31,6 +32,25 @@ describe("mapExtraWriteErrorToResult", () => {
         message: EXTRA_CATALOG_COPY.NOT_FOUND_ERROR,
       },
     },
+    {
+      code: POSTGRES_ERROR_CODE.OBJECT_NOT_IN_PREREQUISITE_STATE,
+      expected: {
+        occupancyError: EXTRA_OCCUPANCY_COPY.LOCKED_ERROR,
+      },
+    },
+    {
+      code: POSTGRES_ERROR_CODE.CHECK_VIOLATION,
+      expected: {
+        occupancyError:
+          EXTRA_OCCUPANCY_COPY.INCOMPLETE_ERROR,
+      },
+    },
+    {
+      code: POSTGRES_ERROR_CODE.FOREIGN_KEY_VIOLATION,
+      expected: {
+        occupancyError: EXTRA_OCCUPANCY_COPY.CATEGORY_ERROR,
+      },
+    },
   ])(
     "maps the $code error to a friendly result",
     ({ code, expected }) => {
@@ -50,7 +70,7 @@ describe("mapExtraWriteErrorToResult", () => {
     expect(
       mapExtraWriteErrorToResult(
         buildPostgrestError(
-          POSTGRES_ERROR_CODE.CHECK_VIOLATION
+          POSTGRES_ERROR_CODE.RAISE_EXCEPTION
         )
       )
     ).toBeNull();
