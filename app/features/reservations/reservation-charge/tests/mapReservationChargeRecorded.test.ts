@@ -8,7 +8,7 @@ import {
 describe("mapReservationChargeRecorded", () => {
   it("maps the database row to the recorded charge", () => {
     expect(
-      mapReservationChargeRecorded(CHARGE_RECORD_ROW)
+      mapReservationChargeRecorded([CHARGE_RECORD_ROW])
     ).toEqual(CHARGE_RECORDED);
   });
 });

@@ -1,0 +1,1 @@
+chore - Extra boats in one screen — Embarcaciones becomes one screen with a collapsible section per category, the total ("Aplica a X de Y embarcaciones"), one "Guardar embarcaciones", a count of unsaved changes and a "¿Salir sin guardar?" sheet; the per-category screen now redirects to it
