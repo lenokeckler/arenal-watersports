@@ -7,29 +7,14 @@ import { resolveCategoryAlertsPath } from "@/app/features/administration/categor
 import { E2E_NEXT_NOT_FOUND_MESSAGE } from "../constants/E2eCategoryBehavior.constants";
 import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
 import type { CategoryAlertThresholdInput } from "../models/CategoryAlertThresholdInput.interface";
-import { createCategoryCardOptionsPage } from "./CategoryCardOptions.page";
 
 export const createCategoryAlertsFormPage = (
   page: Page
 ) => {
-  const categoryCardOptionsPage =
-    createCategoryCardOptionsPage();
-
   const goTo = async (
     categoryId: string
   ): Promise<void> => {
     await page.goto(resolveCategoryAlertsPath(categoryId));
-  };
-
-  const clickAlertsLink = async (
-    categoryCard: Locator
-  ): Promise<void> => {
-    await categoryCardOptionsPage.openOptions(categoryCard);
-    await categoryCard
-      .getByRole(ARIA_ROLE.LINK, {
-        name: CATEGORY_CATALOG_COPY.ALERT_LINK,
-      })
-      .click();
   };
 
   const reload = async (): Promise<void> => {
@@ -105,7 +90,6 @@ export const createCategoryAlertsFormPage = (
 
   return {
     goTo,
-    clickAlertsLink,
     reload,
     getHeading,
     getTypeSelect,

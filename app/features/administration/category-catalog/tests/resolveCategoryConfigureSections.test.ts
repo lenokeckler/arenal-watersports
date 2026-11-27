@@ -11,12 +11,14 @@ import {
 
 const { behavior, image } = DEFAULT_CATEGORY_CONFIGURATION;
 const SECTION_COUNT = 6;
+const NO_PICKED_PHOTO = false;
 
 describe("resolveCategoryConfigureSections", () => {
   it("lists the six sections in screen order", () => {
     const sections = resolveCategoryConfigureSections(
       buildCategoryConfiguration(),
-      []
+      [],
+      NO_PICKED_PHOTO
     );
 
     expect(sections).toHaveLength(SECTION_COUNT);
@@ -33,7 +35,8 @@ describe("resolveCategoryConfigureSections", () => {
   it("marks only the given sections as open", () => {
     const sections = resolveCategoryConfigureSections(
       buildCategoryConfiguration(),
-      [CATEGORY_CONFIGURE_SECTION_ID.DEPOSIT]
+      [CATEGORY_CONFIGURE_SECTION_ID.DEPOSIT],
+      NO_PICKED_PHOTO
     );
 
     expect(
@@ -61,7 +64,8 @@ describe("resolveCategoryConfigureSections", () => {
         buildCategoryConfiguration({
           behavior: { ...behavior, trackingMode },
         }),
-        []
+        [],
+        NO_PICKED_PHOTO
       );
 
       expect(
@@ -79,7 +83,8 @@ describe("resolveCategoryConfigureSections", () => {
       buildCategoryConfiguration({
         image: { ...image, imagePath: null },
       }),
-      []
+      [],
+      NO_PICKED_PHOTO
     );
     const badges = sections.map((section) => section.badge);
 
@@ -105,7 +110,8 @@ describe("resolveCategoryConfigureSections", () => {
         behavior: { ...behavior, isReservable: false },
         image: { ...image, imagePath: null },
       }),
-      []
+      [],
+      NO_PICKED_PHOTO
     );
 
     expect(

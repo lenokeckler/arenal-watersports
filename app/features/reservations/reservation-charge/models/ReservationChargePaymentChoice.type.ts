@@ -1,4 +1,3 @@
-import type { RESERVATION_CHARGE_PAYMENT_CHOICE } from "../constants/ReservationChargePaymentChoice.constants";
+import type { PaymentChoice } from "@/app/constants";
 
-export type ReservationChargePaymentChoice =
-  (typeof RESERVATION_CHARGE_PAYMENT_CHOICE)[keyof typeof RESERVATION_CHARGE_PAYMENT_CHOICE];
+export type ReservationChargePaymentChoice = PaymentChoice;

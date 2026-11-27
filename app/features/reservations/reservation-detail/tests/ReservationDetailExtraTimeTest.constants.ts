@@ -1,0 +1,5 @@
+export const RESERVATION_DETAIL_EXTRA_TIME_TEST = {
+  DURATION: "35min",
+  GROUP_MINUTES: [20, 15],
+  MINUTES: 35,
+} as const;
