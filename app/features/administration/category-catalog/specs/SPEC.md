@@ -13,15 +13,15 @@ and a clear error state they can retry from.
 - The header: title, the registered total as text and the create link.
 - Three view states: ready, empty and error.
 - One row per category: name, a subtitle with the tracking mode and the current quantity, a status
-  chip, one Editar button and, when present, the group row. Editar expands the options panel of that
-  row.
+  chip, the Editar label and, when present, the group row. The whole row is one link to the
+  Configurar screen of the category.
 - The Retry button of the error state.
 - Spanish copy, read from `CATEGORY_CATALOG_COPY`.
 
 ## Out of scope / deferred
 
 - Marking a category inactive and deleting it: carried by `feat/adm-02/us-12-03-mark-inactive-and-delete`
-  (#18). On this branch the card action state is always `NONE`, so no action is rendered.
+  (#18).
 - Creating a category: carried by #35-#38.
 - Board and booking grouping of categories that share a group.
 
@@ -36,18 +36,19 @@ and a clear error state they can retry from.
   is set, a group row made of `GROUP_PREFIX_LABEL` and the group name.
 - Every row shows a status chip with the word of its status (`STATUS_LABEL_ACTIVE` or
   `STATUS_LABEL_INACTIVE`), never colour alone; an inactive row also dims its name block.
+- Each row also lists, under the group row, the notes `buildCategoryStatusNotes` returns, as plain text and never colour alone: an inactive category shows only `STATUS_NOTE_INACTIVE`; an active one that is not reservable shows `STATUS_NOTE_NOT_RESERVABLE`; a reservable one without an uploaded image shows `STATUS_NOTE_NO_IMAGE`. `CategoryListItem.isReservable` and `hasImage` come from `is_reservable` and `image_path`.
 - Retry calls `router.refresh()`, which re-runs the server read.
 
 ## Edge cases & errors
 
-| Case                    | Observable result                                                                                                                                                                    | Copy key                                                                 |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
-| Ready, with groups      | One row per category; rows with a group show the group row, rows without one show none                                                                                               | `GROUP_PREFIX_LABEL`, `TRACKING_MODE_*_LABEL`                            |
-| Empty list              | Empty state with title and body, no cards                                                                                                                                            | `EMPTY_STATE_TITLE`, `EMPTY_STATE_BODY`                                  |
-| Fetch failure           | `CategoryList` returns no categories and `fetchFailed: true`; the error state shows the message and a Retry button                                                                   | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`                                    |
-| Retry, read succeeds    | The refresh re-renders the server component with the new list; the view state becomes ready or empty                                                                                 | The keys of the resulting state                                          |
-| Retry, read fails again | The error state is shown again                                                                                                                                                       | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`                                    |
-| Inactive category       | The row shows the Inactiva chip; its only state action, inside the options panel, is Reactivar, which sets the status back to active, shows the success toast and refreshes the list | `STATUS_LABEL_INACTIVE`, `REACTIVATE_BUTTON`, `REACTIVATE_SUCCESS_TOAST` |
+| Case                    | Observable result                                                                                                      | Copy key                                      |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| Ready, with groups      | One row per category; rows with a group show the group row, rows without one show none                                 | `GROUP_PREFIX_LABEL`, `TRACKING_MODE_*_LABEL` |
+| Empty list              | Empty state with title and body, no cards                                                                              | `EMPTY_STATE_TITLE`, `EMPTY_STATE_BODY`       |
+| Fetch failure           | `CategoryList` returns no categories and `fetchFailed: true`; the error state shows the message and a Retry button     | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`         |
+| Retry, read succeeds    | The refresh re-renders the server component with the new list; the view state becomes ready or empty                   | The keys of the resulting state               |
+| Retry, read fails again | The error state is shown again                                                                                         | `FETCH_ERROR_MESSAGE`, `RETRY_BUTTON`         |
+| Inactive category       | The row shows the Inactiva chip; the category is reactivated from the Categoría activa switch of the Configurar screen | `STATUS_LABEL_INACTIVE`                       |
 
 ## Design notes (list redesign)
 
@@ -62,16 +63,15 @@ and a clear error state they can retry from.
   `PATHS.ADMINISTRATION.CATEGORIES_NEW`.
 - Row: name (two lines at most), subtitle `Por cantidad · N unidades` or `Por unidad · N unidades`
   (`1 unidad` in the singular), status chip (`Activa` in the primary colour, `Inactiva` in the error
-  colour, always with its word and a dot) and one outlined Editar button of at least 44 px.
+  colour, always with its word and a dot) and the Editar label, plain text inside the link; the row is at least 44 px high.
 - N is the current quantity, read by the view `category_current_quantity` (`security_invoker`): for a
   by-quantity category the sum of available, damaged and in-repair stock; for a by-unit category the
   count of units that are not decommissioned. It covers active and inactive categories.
   `fetchCategoryQuantities` reads it for the ids of the page only.
-- Options panel: Editar is a button with `aria-expanded` and `aria-controls`; the panel under the row
-  holds Comportamiento, Depósito, Avisos, Unidades (by-unit categories only) and the state action
-  (Marcar inactiva or Eliminar with its confirmation, or Reactivar). The open row lives in
-  `useCategoryCardPanels`, so one panel is open at a time and it stays open across `router.refresh()`.
-  Every behaviour and server action of the state flows is unchanged.
+- Row link: the whole row is a link to `resolveCategoryConfigurePath`; its accessible name is built
+  from the category name. The Marcar inactiva, Eliminar and Reactivar buttons are
+  not rendered on the row: the Configurar screen holds the sections, the Categoría activa switch
+  and Eliminar categoría.
 - Administration sub-screens (behavior, deposit, alerts, create, units list, unit form, worker
   registration, worker areas, reservations by worker) render their heading with `hasLogo={false}` on the
   shared `ScreenHeading`; the prop defaults to true, so login, work mode and profile keep the logo. The
@@ -90,8 +90,8 @@ and a clear error state they can retry from.
   The failure is wrapped with `CATEGORY_LIST_DIAGNOSTICS.FETCH_FAILED` and the original error as its
   `cause`.
 - View state and retry live in `hooks/useCategoryListViewModel.ts`, with the states in
-  `constants/CategoryListViewState.constants.ts`; each card's action state comes from
-  `utils/resolveCategoryCardActionState.ts` and its handlers from `hooks/useCategoryCardActions.ts`.
+  `constants/CategoryListViewState.constants.ts`; each card carries its category, its inactive flag and
+  its subtitle.
 - The page file `app/(system)/administration/categories/page.tsx` renders `CategoryList`, reached through
   `PATHS.ADMINISTRATION.CATEGORIES`. The entry component redirects a worker who is not an administrator
   to `PATHS.HOME` before it reads any category, the same server check the other administration screens use.
@@ -112,6 +112,13 @@ and a clear error state they can retry from.
 - The create screen is `app/(system)/administration/categories/new/page.tsx`, reached through
   `PATHS.ADMINISTRATION.CATEGORIES_NEW`. `CategoryCreateForm` applies the same administrator redirect and
   renders `CategoryCreateFormView`; `createCategoryAction` validates the trimmed name again on the server.
+- The create form counts the mode with two `aria-pressed` option cards (`CategoryCreateFormChoiceGroup`) and the note
+  that it cannot be changed later, asks whether clients can book the category (default "Sí, se reserva") and keeps the
+  group optional. `createCategoryAction` writes `is_reservable` explicitly; a reservable category is stored with a
+  default duration of `CATEGORY_NEW_RESERVABLE_DURATION_MINUTES` because the table requires one, and the duration is
+  edited later on Configurar. A unique violation on the name returns `NAME_DUPLICATE_ERROR` on the name field.
+- After a successful creation the screen shows `CREATE_SUCCESS_TOAST` and opens `resolveCategoryConfigurePath(categoryId)`;
+  the "Siguientes pasos" block of Configurar is carried by a later pull request.
 - Skills that apply: `component-architecture`, `component-standards`, `constants-standards`,
   `styles-standards`, `structure-standards`, `unit-testing-standards`.
 
@@ -167,7 +174,6 @@ Let the administration worker set, change and clear the guarantee deposit of a c
 | Stored amounts prefill, typed amounts are sent as numbers, cleared fields as `null`                                                                               | `CategoryDepositForm.test.tsx` "prefills the %s field..."; `CategoryDepositFormSubmit.test.tsx` "sends both amounts as numbers...", "sends null for both amounts..."                                                                                                                |
 | Fields and Cancelar are disabled while saving; Cancelar returns to the list                                                                                       | `CategoryDepositForm.test.tsx` "disables both fields and Cancelar...", "navigates back to the category list..."                                                                                                                                                                     |
 | A visitor who is not administration goes to the home; an unknown category shows not found                                                                         | `CategoryDeposit.test.tsx`                                                                                                                                                                                                                                                          |
-| Every category card, active or inactive, links to its deposit screen                                                                                              | `CategoryCardDepositLink.test.tsx`                                                                                                                                                                                                                                                  |
 
 ## Edge cases & errors
 
@@ -205,7 +211,6 @@ Let the administration worker give a category an optional image, see how it will
 
 - Its own page at `/administration/categories/[categoryId]/image`, administration only, with `loading.tsx`.
 - `CategoryImage` (server entry) reads the category with `getCategoryImage`; `CategoryImageForm` (client view) renders the preview, the picker and the actions through `useCategoryImageFormViewModel`.
-- The Imagen link in the options panel of every card, next to Comportamiento, Dep�sito and Avisos.
 - Choose, preview (4:3 frame), save, replace and remove with inline confirmation.
 
 ## Out of scope
@@ -243,5 +248,4 @@ Let the administration worker give a category an optional image, see how it will
 ## Acceptance criteria
 
 - [ ] Una categor�a puede llevar una imagen opcional, que se agrega despu�s de crearla, se reemplaza y se quita. � `CategoryImageForm.test.tsx` "saves the chosen image...", "asks before removing..."; the create-form field is carried by a later pull request.
-- [ ] El enlace Imagen aparece en las opciones de cada categor�a. � `CategoryCardImageLink.test.tsx`.
 - [ ] Solo administraci�n abre la pantalla. � `CategoryImage.test.tsx`.

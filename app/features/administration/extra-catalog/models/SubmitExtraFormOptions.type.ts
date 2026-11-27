@@ -1,5 +1,7 @@
 import type { ExtraFormSubmitCallbacks } from "./ExtraFormSubmitCallbacks.interface";
-import type { ExtraFormSubmitOptions } from "./ExtraFormSubmitOptions.type";
+import type { SaveExtraOptions } from "./SaveExtraOptions.type";
+import type { ShowExtraFormErrorsOptions } from "./ShowExtraFormErrorsOptions.interface";
 
-export type SubmitExtraFormOptions =
-  ExtraFormSubmitOptions & ExtraFormSubmitCallbacks;
+export type SubmitExtraFormOptions = SaveExtraOptions &
+  ShowExtraFormErrorsOptions &
+  ExtraFormSubmitCallbacks;
