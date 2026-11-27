@@ -2,6 +2,11 @@ import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE } from "@/app/constants";
 import { CATEGORY_IMAGE_COPY } from "@/app/features/administration/category-catalog/constants/CategoryImageCopy.constants";
 import { CATEGORY_CONFIGURE_SAVE_COPY } from "@/app/features/administration/category-catalog/constants/CategoryConfigureSaveCopy.constants";
+import {
+  CATEGORY_CONFIGURE_NEXT_STEP_COPY,
+  CATEGORY_CONFIGURE_NEXT_STEPS_COPY,
+} from "@/app/features/administration/category-catalog/constants/CategoryConfigureNextStepsCopy.constants";
+import type { CategoryConfigureNextStepId } from "@/app/features/administration/category-catalog/models/CategoryConfigureNextStepId.type";
 import { CATEGORY_CONFIGURE_COPY } from "@/app/features/administration/category-catalog/constants/CategoryConfigureCopy.constants";
 import { resolveCategoryConfigurePath } from "@/app/features/administration/category-catalog/utils/resolveCategoryConfigurePath";
 import { E2E_NEXT_NOT_FOUND_MESSAGE } from "../constants/E2eCategoryBehavior.constants";
@@ -26,6 +31,25 @@ export const createCategoryConfigurePage = (page: Page) => {
   const getSectionButton = (title: string): Locator =>
     page.getByRole(ARIA_ROLE.BUTTON, {
       name: new RegExp(`^${title}`),
+    });
+
+  const getNextStepsHeading = (): Locator =>
+    page.getByRole(ARIA_ROLE.HEADING, {
+      level: HEADING_LEVEL.SCREEN,
+      name: CATEGORY_CONFIGURE_NEXT_STEPS_COPY.TITLE,
+    });
+
+  const getNextStepsProgress = (text: string): Locator =>
+    page.getByText(text);
+
+  const getNextStepButton = (
+    stepId: CategoryConfigureNextStepId
+  ): Locator =>
+    page.getByRole(ARIA_ROLE.BUTTON, {
+      name: CATEGORY_CONFIGURE_NEXT_STEPS_COPY.ACTION_LABEL(
+        CATEGORY_CONFIGURE_NEXT_STEP_COPY[stepId].action,
+        CATEGORY_CONFIGURE_NEXT_STEP_COPY[stepId].title
+      ),
     });
 
   const getSectionHeadings = (): Locator =>
@@ -107,6 +131,9 @@ export const createCategoryConfigurePage = (page: Page) => {
     goTo,
     getHeading,
     getSectionButton,
+    getNextStepsHeading,
+    getNextStepsProgress,
+    getNextStepButton,
     getSectionHeadings,
     getBackLink,
     getBackButton,
