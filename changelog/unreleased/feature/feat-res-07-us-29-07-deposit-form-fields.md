@@ -1,0 +1,1 @@
+RES-07.29.07: Deposit form fields — the deposit form shows the decision of whether the client left a deposit, the currency it came in and the amount, with large tap targets and its Spanish copy (US-RES-29 · AWS-112)

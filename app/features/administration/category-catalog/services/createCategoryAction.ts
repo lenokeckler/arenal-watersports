@@ -2,8 +2,13 @@
 
 import { assertIsAdminWorker } from "@/app/services/authorization/assertIsAdminWorker";
 import { createServerSupabaseClient } from "@/app/services/supabase";
-import { STRING } from "@/app/constants";
+import {
+  POSTGRES_ERROR_CODE,
+  STRING,
+} from "@/app/constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
+import { CATEGORY_NEW_RESERVABLE_DURATION_MINUTES } from "../constants/CategoryReservableDefaults.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import type { CreateCategoryInput } from "../models/CreateCategoryInput.interface";
 import type { CreateCategoryResult } from "../models/CreateCategoryResult.interface";
@@ -69,11 +74,23 @@ export const createCategoryAction = async (
           trimmedGroupName === STRING.Empty
             ? null
             : trimmedGroupName,
+        is_reservable: input.isReservable,
+        default_duration_minutes: input.isReservable
+          ? CATEGORY_NEW_RESERVABLE_DURATION_MINUTES
+          : null,
         created_by: adminWorkerId,
         updated_by: adminWorkerId,
       })
       .select("id")
       .single();
+  if (
+    error?.code === POSTGRES_ERROR_CODE.UNIQUE_VIOLATION
+  ) {
+    return {
+      status: CATEGORY_MUTATION_STATUS.ERROR,
+      nameError: CATEGORY_CATALOG_COPY.NAME_DUPLICATE_ERROR,
+    };
+  }
   throwIfSupabaseError(error, "createCategoryAction");
   if (!insertedCategoryRow) {
     throw new Error(

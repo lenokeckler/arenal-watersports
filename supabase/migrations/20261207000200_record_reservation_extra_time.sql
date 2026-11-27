@@ -47,7 +47,7 @@ returns table (
   charged_payment_method text,
   recorded_by_name text
 )
-language plpgsql security invoker set search_path = public, private
+language plpgsql security definer set search_path = public, private
 as $$
 declare
   v_input record;
@@ -92,8 +92,6 @@ end;
 $$;
 
 revoke all on function private.parse_extra_time_outcome(text) from public, anon;
-grant execute on function private.parse_extra_time_outcome(text) to authenticated;
 revoke all on function private.assert_extra_time_resolvable(reservations) from public, anon;
-grant execute on function private.assert_extra_time_resolvable(reservations) to authenticated;
 revoke all on function record_reservation_extra_time(jsonb) from public, anon;
 grant execute on function record_reservation_extra_time(jsonb) to authenticated;
