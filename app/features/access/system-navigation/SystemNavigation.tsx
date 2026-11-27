@@ -35,11 +35,11 @@ const SystemNavigation = ({
         />
       </nav>
       <SystemNavigationMenu
-        destinations={viewModel.menuItems}
+        sections={viewModel.menuSections}
         extras={menuExtras}
         identity={menuIdentity}
         isOpen={viewModel.isMenuOpen}
-        canChangeMode={viewModel.canChangeMode}
+        pathname={viewModel.pathname}
         closeMenu={viewModel.closeMenu}
       />
     </div>

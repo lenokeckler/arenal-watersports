@@ -6,18 +6,7 @@ export const CATEGORY_CARD_CONTAINER_BASE_CLASS =
 export const CATEGORY_CARD_CONTAINER_BORDER_CLASS =
   "border-outline-variant";
 
-export const CATEGORY_CARD_CONTAINER_BORDER_CONFIRM_DELETE_CLASS =
-  "border-error";
-
-export const resolveCategoryCardContainerClassName = (
-  isConfirmingDelete: boolean
-): string =>
-  joinClassNames(
-    CATEGORY_CARD_CONTAINER_BASE_CLASS,
-    isConfirmingDelete
-      ? CATEGORY_CARD_CONTAINER_BORDER_CONFIRM_DELETE_CLASS
-      : CATEGORY_CARD_CONTAINER_BORDER_CLASS
-  );
+export const CATEGORY_CARD_LINK_CLASS = `${CATEGORY_CARD_CONTAINER_BASE_CLASS} ${CATEGORY_CARD_CONTAINER_BORDER_CLASS} min-h-11 transition-colors hover:bg-surface-container focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary`;
 
 export const CATEGORY_CARD_ROW_CLASS =
   "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 md:flex md:gap-3";
@@ -61,3 +50,9 @@ export const CATEGORY_CARD_GROUP_ROW_CLASS =
 
 export const CATEGORY_CARD_GROUP_PREFIX_CLASS =
   CATEGORY_CARD_MICRO_LABEL_CLASS;
+
+export const CATEGORY_CARD_STATUS_NOTES_CLASS =
+  "col-span-2 row-start-4 flex flex-col gap-1";
+
+export const CATEGORY_CARD_STATUS_NOTE_CLASS =
+  "text-sm font-medium text-warning";
