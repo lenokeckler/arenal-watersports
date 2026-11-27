@@ -13,7 +13,10 @@ import { NotAuthorizedError } from "@/app/services/authorization/NotAuthorizedEr
 import { SupabaseQueryError } from "@/app/utils/supabase-error/SupabaseError";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
 import { EXTRA_MUTATION_STATUS } from "../constants/ExtraMutationStatus.constants";
+import { EXTRA_OCCUPANCY_COPY } from "../constants/ExtraOccupancyCopy.constants";
 import type { UpdateExtraInput } from "../models/UpdateExtraInput.interface";
+import { resolveExtraCategoryFailure } from "../services/resolveExtraCategoryFailure";
+import { resolveExtraOccupancyLockFailure } from "../services/resolveExtraOccupancyLockFailure";
 import { updateExtraAction } from "../services/updateExtraAction";
 import {
   FAKE_EXTRA_ID,
@@ -21,10 +24,15 @@ import {
   FAKE_EXTRA_PRICE_CRC,
   FAKE_EXTRA_PRICE_CRC_TEXT,
   FAKE_EXTRA_PRICE_USD,
+  FAKE_OCCUPIED_CATEGORY_ID,
+  FAKE_OCCUPIED_QUANTITY,
+  FAKE_OCCUPIED_QUANTITY_TEXT,
 } from "./Extra.constants";
 import { VALID_EXTRA_FORM_VALUES } from "./ExtraForm.constants";
 import {
   BLANK_EXTRA_NAME,
+  CATEGORY_FAILURE_RESULT,
+  LOCK_FAILURE_RESULT,
   NON_STRING_EXTRA_NAMES,
   EXTRA_ID_COLUMN,
   EXTRAS_TABLE,
@@ -62,6 +70,17 @@ vi.mock(
   })
 );
 
+vi.mock("../services/resolveExtraCategoryFailure", () => ({
+  resolveExtraCategoryFailure: vi.fn(),
+}));
+
+vi.mock(
+  "../services/resolveExtraOccupancyLockFailure",
+  () => ({
+    resolveExtraOccupancyLockFailure: vi.fn(),
+  })
+);
+
 vi.mock("@/app/services/supabase", () => ({
   createServerSupabaseClient: vi.fn().mockResolvedValue({
     from: (table: string) => mockFrom(table),
@@ -82,6 +101,14 @@ describe("updateExtraAction", () => {
       data: { id: FAKE_EXTRA_ID },
       error: null,
     });
+    vi.mocked(resolveExtraCategoryFailure).mockReset();
+    vi.mocked(
+      resolveExtraCategoryFailure
+    ).mockResolvedValue(null);
+    vi.mocked(resolveExtraOccupancyLockFailure).mockReset();
+    vi.mocked(
+      resolveExtraOccupancyLockFailure
+    ).mockResolvedValue(null);
   });
 
   it("rejects a caller who is not an admin before any update", async () => {
@@ -184,6 +211,8 @@ describe("updateExtraAction", () => {
       name: FAKE_EXTRA_NAME,
       price_usd: FAKE_EXTRA_PRICE_USD,
       price_crc: null,
+      occupies_category_id: null,
+      occupies_quantity: null,
       updated_by: FAKE_EXTRA_ADMIN_WORKER_ID,
     });
     expect(mockEq).toHaveBeenCalledWith(
@@ -252,5 +281,69 @@ describe("updateExtraAction", () => {
     await expect(
       updateExtraAction(UPDATE_INPUT)
     ).rejects.toThrow(SupabaseQueryError);
+  });
+
+  it("stores the occupied category and quantity", async () => {
+    await updateExtraAction({
+      ...UPDATE_INPUT,
+      occupiesCategoryId: FAKE_OCCUPIED_CATEGORY_ID,
+      occupiesQuantity: FAKE_OCCUPIED_QUANTITY_TEXT,
+    });
+
+    expect(mockUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        occupies_category_id: FAKE_OCCUPIED_CATEGORY_ID,
+        occupies_quantity: FAKE_OCCUPIED_QUANTITY,
+      })
+    );
+    expect(
+      resolveExtraOccupancyLockFailure
+    ).toHaveBeenCalledWith(
+      expect.anything(),
+      FAKE_EXTRA_ID,
+      {
+        occupies_category_id: FAKE_OCCUPIED_CATEGORY_ID,
+        occupies_quantity: FAKE_OCCUPIED_QUANTITY,
+      }
+    );
+  });
+
+  it("returns the category failure without updating", async () => {
+    vi.mocked(
+      resolveExtraCategoryFailure
+    ).mockResolvedValue(CATEGORY_FAILURE_RESULT);
+
+    const result = await updateExtraAction(UPDATE_INPUT);
+
+    expect(result).toEqual(CATEGORY_FAILURE_RESULT);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("refuses an occupancy change on a used extra without updating", async () => {
+    vi.mocked(
+      resolveExtraOccupancyLockFailure
+    ).mockResolvedValue(LOCK_FAILURE_RESULT);
+
+    const result = await updateExtraAction(UPDATE_INPUT);
+
+    expect(result).toEqual(LOCK_FAILURE_RESULT);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("maps the database guard error to the locked occupancy message", async () => {
+    mockMaybeSingle.mockResolvedValue({
+      data: null,
+      error: {
+        code: POSTGRES_ERROR_CODE.OBJECT_NOT_IN_PREREQUISITE_STATE,
+        message: "used",
+      },
+    });
+
+    const result = await updateExtraAction(UPDATE_INPUT);
+
+    expect(result).toEqual({
+      status: EXTRA_MUTATION_STATUS.ERROR,
+      occupancyError: EXTRA_OCCUPANCY_COPY.LOCKED_ERROR,
+    });
   });
 });

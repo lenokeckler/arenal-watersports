@@ -27,7 +27,10 @@ export const seedCategoryWithBehavior = async (
     .from("equipment_categories")
     .insert({
       created_by: E2E_ADMIN_ACCOUNT.workerId,
+      default_duration_minutes:
+        behavior.defaultDurationMinutes,
       has_motor: behavior.hasMotor,
+      is_reservable: behavior.isReservable,
       name: categoryName,
       tracking_mode: behavior.trackingMode,
       updated_by: E2E_ADMIN_ACCOUNT.workerId,
