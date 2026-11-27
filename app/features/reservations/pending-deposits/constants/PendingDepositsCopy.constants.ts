@@ -13,4 +13,7 @@ export const PENDING_DEPOSITS_COPY = {
     "Este dinero es de sus clientes. Mientras no se resuelva, sigue apareciendo aquí con la reserva a la que pertenece.",
   PAGE_TITLE: "Depósitos pendientes",
   PAGINATION_LABEL: "Páginas de depósitos pendientes",
+  RESOLVE: "Resolver",
+  RESOLVE_LABEL: (code: string): string =>
+    `Resolver depósito de la reserva ${code}`,
 } as const;

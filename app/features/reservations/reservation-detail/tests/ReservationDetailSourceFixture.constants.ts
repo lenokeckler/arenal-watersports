@@ -14,6 +14,8 @@ export const RESERVATION_DETAIL_SOURCE_FIXTURE = {
   created_at: RESERVATION_DETAIL_TEST.TIMESTAMP,
   created_by: RESERVATION_DETAIL_TEST.CREATED_WORKER_ID,
   customer_name: RESERVATION_DETAIL_TEST.CUSTOMER_NAME,
+  deposit_declination: null,
+  deposits: [],
   dispatched_at: null,
   duration_minutes:
     RESERVATION_DETAIL_TEST.DURATION_MINUTES,
@@ -94,6 +96,7 @@ export const RESERVATION_DETAIL_SOURCE_FIXTURE = {
       unit_id: null,
     },
   ],
+  reservation_extra_time_resolutions: null,
   reservation_pricing: RESERVATION_DETAIL_PRICING_FIXTURE,
   starts_at: RESERVATION_DETAIL_TEST.RESERVATION_START,
   status: RESERVATION_DETAIL_TEST.RESERVATION_STATUS,
