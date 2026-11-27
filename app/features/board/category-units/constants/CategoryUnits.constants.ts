@@ -1,6 +1,7 @@
 import {
   CALENDAR_PRESENTATION,
   COSTA_RICA_TIME_ZONE,
+  INVENTORY_UNIT_STATUS,
 } from "@/app/constants";
 
 export const CATEGORY_UNITS_ERROR = {
@@ -54,7 +55,15 @@ export const CATEGORY_UNITS_DISPATCH_STEP = {
 export const CATEGORY_UNIT_ACTION = {
   INFO: "info",
   MODIFY: "modify",
+  STATUS: "status",
 } as const;
+
+export const CATEGORY_UNIT_STATUS_SHEET_STATUSES: readonly string[] =
+  [
+    INVENTORY_UNIT_STATUS.IN_MAINTENANCE,
+    INVENTORY_UNIT_STATUS.IN_REPAIR,
+    INVENTORY_UNIT_STATUS.DAMAGED,
+  ];
 
 export const CATEGORY_UNIT_UPDATE_STATUS = {
   ALREADY_CLOSED: "already_closed",
@@ -118,4 +127,5 @@ export const CATEGORY_UNIT_ROW_KIND = {
   MODIFY: "modify",
   PLAIN: "plain",
   SELECT: "select",
+  STATUS: "status",
 } as const;

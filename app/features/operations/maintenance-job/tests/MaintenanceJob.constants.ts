@@ -19,7 +19,7 @@ export const EMPTY_JOB_DRAFT: MaintenanceJobDraft = {
   costCurrency: "",
   description: "",
   isExternal: false,
-  nextOilChangeAt: "",
+  oilInterval: "",
   performedAt: JOB_TODAY,
   unitId: JOB_UNIT.unitId,
   workType: "tire_change",
@@ -30,7 +30,7 @@ export const JOB_INPUT_FIXTURE: MaintenanceJobInput = {
   costCurrency: "CRC",
   description: "  New handlebar  ",
   isExternal: true,
-  nextOilChangeAt: null,
+  oilInterval: null,
   performedAt: JOB_TODAY,
   unitId: JOB_UNIT.unitId,
   workType: "part_change",
@@ -41,7 +41,7 @@ export const JOB_RPC_ARGS = {
   p_cost_currency: "CRC",
   p_description: "New handlebar",
   p_is_external: true,
-  p_next_oil_change_at: undefined,
+  p_oil_interval: undefined,
   p_performed_at: JOB_TODAY,
   p_unit_id: JOB_UNIT.unitId,
   p_work_type: "part_change",
@@ -97,21 +97,20 @@ export const INVALID_JOB_INPUTS = [
     input: {
       ...JOB_INPUT_FIXTURE,
       workType: "oil_change" as const,
-      nextOilChangeAt: null,
+      oilInterval: null,
     },
-    name: "an oil change without the next threshold",
+    name: "an oil change without the interval",
   },
   {
-    input: { ...JOB_INPUT_FIXTURE, nextOilChangeAt: 150 },
-    name: "a threshold on a work that is not an oil change",
+    input: { ...JOB_INPUT_FIXTURE, oilInterval: 150 },
+    name: "an interval on a work that is not an oil change",
   },
 ] as const;
 
 export const JOB_FORM_TEXT = {
   COST: "35000",
   CURRENCY: "CRC",
-  THRESHOLD: "150",
-  THRESHOLD_BELOW: "90",
-  THRESHOLD_BELOW_ERROR:
-    "Debe ser mayor que lo acumulado: 100.",
+  INTERVAL: "150",
+  INTERVAL_ZERO: "0",
+  NEXT_OIL_CHANGE: "Próximo cambio: 250 h",
 } as const;

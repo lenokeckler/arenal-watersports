@@ -4,6 +4,7 @@ import type { ExtraRow } from "../models/ExtraRow.type";
 
 export const FAKE_EXTRA_ID = "fake-extra-id";
 export const FAKE_EXTRA_NAME = "Tubing";
+export const FAKE_EXTRA_COMPATIBLE_UNIT_COUNT = 3;
 export const FAKE_EXTRA_PRICE_USD = 25;
 export const FAKE_EXTRA_PRICE_USD_TEXT = "25";
 export const FAKE_EXTRA_PRICE_CRC = 15000.5;
@@ -20,6 +21,7 @@ export const DEFAULT_EXTRA: Extra = {
   status: EXTRA_STATUS.ACTIVE,
   priceUsd: FAKE_EXTRA_PRICE_USD,
   priceCrc: null,
+  compatibleUnitCount: FAKE_EXTRA_COMPATIBLE_UNIT_COUNT,
 };
 
 export const DEFAULT_EXTRA_ROW: ExtraRow = {
@@ -28,4 +30,7 @@ export const DEFAULT_EXTRA_ROW: ExtraRow = {
   status: EXTRA_STATUS.ACTIVE,
   price_usd: FAKE_EXTRA_PRICE_USD,
   price_crc: null,
+  extra_compatibility: [
+    { count: FAKE_EXTRA_COMPATIBLE_UNIT_COUNT },
+  ],
 };

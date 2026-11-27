@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { STRING } from "@/app/constants";
+import { STRING, TYPE_OF } from "@/app/constants";
+import { EXTRA_COMPATIBILITY_COPY } from "../constants/ExtraCompatibilityCopy.constants";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
 import {
   EXTRA_FORM_SUBMIT_LABEL,
@@ -13,6 +14,9 @@ import { NON_USTED_WORDS_PATTERN } from "./Extra.constants";
 describe("extra catalog copy", () => {
   it.each([
     ...Object.entries(EXTRA_CATALOG_COPY),
+    ...Object.entries(EXTRA_COMPATIBILITY_COPY).filter(
+      ([, text]) => typeof text === TYPE_OF.STRING
+    ),
     ...Object.entries(EXTRA_REMOVAL_OUTCOME_COPY),
     ...Object.entries(EXTRA_FORM_TITLE),
     ...Object.entries(EXTRA_FORM_SUBMIT_LABEL),
