@@ -83,10 +83,10 @@ select throws_ok(
 select throws_ok(
   $$ select register_maintenance_job(
        'bbbbbbbb-0000-0000-0000-000000000001', 'oil_change', '2026-09-06',
-       null, null, null, false, 90) $$,
+       null, null, null, false, 0) $$,
   '23514',
   null,
-  'the next threshold must be above the accumulated usage'
+  'the oil change interval must be above zero'
 );
 
 select register_maintenance_job(
@@ -95,8 +95,8 @@ select register_maintenance_job(
 
 select is(
   (select next_oil_change_at from equipment_units where id = 'bbbbbbbb-0000-0000-0000-000000000001'),
-  150::numeric,
-  'an oil change defines the threshold of the next notice'
+  250::numeric,
+  'an oil change sets the next notice at the accumulated usage plus the interval'
 );
 
 select throws_ok(

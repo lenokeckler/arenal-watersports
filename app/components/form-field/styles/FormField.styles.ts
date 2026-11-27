@@ -148,3 +148,11 @@ export const resolveFormFieldInputClassName = (
   options.variant === FORM_FIELD_VARIANT.GLASS
     ? resolveFormFieldGlassInputClassName(options)
     : resolveFormFieldDefaultInputClassName(options);
+
+export const FORM_FIELD_ADORNED_CLASS = "relative";
+
+export const FORM_FIELD_START_ADORNMENT_CLASS =
+  "pointer-events-none absolute inset-y-0 left-3.5 flex items-center font-bold text-on-surface-variant";
+
+export const FORM_FIELD_END_ADORNMENT_CLASS =
+  "pointer-events-none absolute inset-y-0 right-3.5 flex items-center text-sm text-on-surface-variant";

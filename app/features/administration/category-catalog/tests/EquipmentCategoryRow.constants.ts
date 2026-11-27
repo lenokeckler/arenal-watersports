@@ -3,6 +3,8 @@ import { CATEGORY_TRACKING_MODE } from "../constants/CategoryTrackingMode.consta
 import type { EquipmentCategoryRow } from "../models/EquipmentCategoryRow.type";
 
 export const FAKE_CATEGORY_ID = "fake-category-id";
+export const FAKE_IMAGE_PATH =
+  "fake-category-id/image.webp";
 const FAKE_WORKER_ID = "fake-worker-id";
 const FAKE_TIMESTAMP = "2026-01-01T00:00:00.000Z";
 
@@ -24,6 +26,7 @@ export const DEFAULT_EQUIPMENT_CATEGORY_ROW: EquipmentCategoryRow =
     id: FAKE_CATEGORY_ID,
     image_path: null,
     is_reservable: true,
+    low_fuel_lines: 1,
     name: "Kayak doble",
     status: CATEGORY_STATUS.ACTIVE,
     tracking_mode: CATEGORY_TRACKING_MODE.BY_UNIT,
