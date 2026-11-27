@@ -15,7 +15,7 @@ import type { ExtraInvalidPriceFieldCase } from "./models/ExtraInvalidPriceField
 import type { ExtraFormSeedCase } from "./models/ExtraFormSeedCase.interface";
 import type { ExtraFormSubmitOverrides } from "./models/ExtraFormSubmitOverrides.interface";
 import {
-  DEFAULT_EXTRA,
+  DEFAULT_EXTRA_DETAIL,
   FAKE_EXTRA_NAME,
   FAKE_EXTRA_PRICE_USD_TEXT,
 } from "./Extra.constants";
@@ -64,12 +64,16 @@ export const EMPTY_EXTRA_FORM_VALUES: ExtraFormValues = {
   name: STRING.Empty,
   priceUsd: STRING.Empty,
   priceCrc: STRING.Empty,
+  occupiesCategoryId: STRING.Empty,
+  occupiesQuantity: STRING.Empty,
 };
 
 export const VALID_EXTRA_FORM_VALUES: ExtraFormValues = {
   name: FAKE_EXTRA_NAME,
   priceUsd: FAKE_EXTRA_PRICE_USD_TEXT,
   priceCrc: STRING.Empty,
+  occupiesCategoryId: STRING.Empty,
+  occupiesQuantity: STRING.Empty,
 };
 
 export const CREATE_FORM_PROPS: ExtraFormViewModelProps = {
@@ -78,7 +82,7 @@ export const CREATE_FORM_PROPS: ExtraFormViewModelProps = {
 
 export const EDIT_FORM_PROPS: ExtraFormViewModelProps = {
   mode: EXTRA_FORM_MODE.EDIT,
-  extra: DEFAULT_EXTRA,
+  extra: DEFAULT_EXTRA_DETAIL,
 };
 
 export const buildExtraFormSubmitOptions = (

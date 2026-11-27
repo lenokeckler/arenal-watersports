@@ -3,6 +3,7 @@ export interface CategoryBehaviorFormValues {
   hasMotor: boolean;
   usageMetric: string;
   consumesFuel: boolean;
+  lowFuelLines: string;
   canBeDamaged: boolean;
   hasConditionPhotos: boolean;
   guideOnly: boolean;

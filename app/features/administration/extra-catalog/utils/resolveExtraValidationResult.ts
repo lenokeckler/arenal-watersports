@@ -7,15 +7,20 @@ import { validateExtraInput } from "./validateExtraInput";
 export const resolveExtraValidationResult = (
   input: unknown
 ): NullableRef<ExtraMutationResult> => {
-  const { name, ...priceErrors } =
+  const { name, occupancy, ...priceErrors } =
     validateExtraInput(input);
-  if (!name && !hasExtraFormErrors(priceErrors)) {
+  if (
+    !name &&
+    !occupancy &&
+    !hasExtraFormErrors(priceErrors)
+  ) {
     return null;
   }
 
   return {
     status: EXTRA_MUTATION_STATUS.ERROR,
     nameError: name,
+    occupancyError: occupancy,
     priceErrors: hasExtraFormErrors(priceErrors)
       ? priceErrors
       : undefined,

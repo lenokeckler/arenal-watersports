@@ -26,18 +26,22 @@ export const PATHS = {
     CATEGORY_IMAGE_SEGMENT: "image",
     CATEGORY_STOCK_SEGMENT: "stock",
     CATEGORY_UNITS_SEGMENT: "units",
+    COMBOS: "/administration/combos",
+    COMBOS_NEW: "/administration/combos/new",
     DEPOSITS: "/administration/reports/deposits",
     EQUIPMENT_HOURS:
       "/administration/reports/equipment-hours",
     MOVEMENT: "/administration/reports/movement",
     MAINTENANCE_COST:
       "/administration/reports/maintenance-cost",
+    EXTRA_COMPATIBILITY_SEGMENT: "compatibility",
     EXTRAS: "/administration/extras",
     EXTRAS_NEW: "/administration/extras/new",
     INCOME: "/administration/income",
     RESERVATIONS_BY_WORKER:
       "/administration/reports/reservations-by-worker",
     ROOT: "/administration",
+    TARIFFS: "/administration/tariffs",
     UNITS_NEW_SEGMENT: "new",
     WORKER_AREAS: "/administration/workers/areas",
     WORKERS: "/administration/workers",
@@ -68,6 +72,7 @@ export const PATHS = {
     MAINTENANCE_HISTORY: "/operations/maintenance/history",
     MAINTENANCE_NEW: "/operations/maintenance/new",
     OUT_ON_WATER: "/operations/out-on-water",
+    PRICE_LOOKUP: "/operations/price-lookup",
     UNIT_PHOTOS: (unitId: string) =>
       `/operations/unit-photos/${encodeURIComponent(unitId)}`,
     UNIT_READINGS: "/operations/unit-readings",

@@ -4,6 +4,7 @@ import { UNIT_FORM_LIMITS } from "./UnitFormLimits.constants";
 export const UNIT_MOTORLESS_DEFAULTS: UnitMotorFields = {
   fuelLevel: null,
   fuelMax: UNIT_FORM_LIMITS.FUEL_MAX_DEFAULT,
+  lowFuelLines: null,
   nextOilChangeAt: null,
   usageTotal: 0,
 };

@@ -8,10 +8,12 @@ import {
   EXTRA_CARD_NAME_CLASS,
 } from "../styles/ExtraCard.styles";
 import ExtraCardActions from "./ExtraCardActions";
+import ExtraCardCompatibility from "./ExtraCardCompatibility";
 import ExtraCardPrices from "./ExtraCardPrices";
 import ExtraCardStatusChip from "./ExtraCardStatusChip";
 
 const ExtraCard = ({
+  compatibilityLabel,
   name,
   status,
   prices,
@@ -32,6 +34,7 @@ const ExtraCard = ({
         <ExtraCardStatusChip status={status} />
       </div>
       <ExtraCardPrices prices={prices} />
+      <ExtraCardCompatibility label={compatibilityLabel} />
     </div>
     <ExtraCardActions {...actionProps} />
   </div>

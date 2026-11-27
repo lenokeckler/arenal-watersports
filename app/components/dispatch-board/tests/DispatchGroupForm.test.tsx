@@ -32,23 +32,43 @@ const renderForm = (
 };
 
 describe("DispatchGroupForm", () => {
-  it("asks for exactly the committed number of units", async () => {
+  it("is a single screen: units, radio, times and the dispatch button", () => {
     const { sheet } = renderForm();
 
+    expect(
+      sheet.getUnit(DISPATCH_FIXTURE_UNIT.FIRST.code)
+    ).toBeInTheDocument();
+    expect(sheet.getRadio()).toBeInTheDocument();
+    expect(sheet.getDeparture()).toBeInTheDocument();
+    expect(sheet.getReturn()).toBeInTheDocument();
     expect(sheet.getSubmit()).toBeDisabled();
+  });
+
+  it("asks for exactly the units that leave now", async () => {
+    const { sheet } = renderForm();
 
     await userEvent.click(
       sheet.getUnit(DISPATCH_FIXTURE_UNIT.FIRST.code)
     );
-    expect(sheet.getSubmit()).toBeDisabled();
-
     await userEvent.click(
       sheet.getUnit(DISPATCH_FIXTURE_UNIT.SECOND.code)
     );
+
     expect(sheet.getSubmit()).toBeEnabled();
+  });
+
+  it("stops offering more units once the committed ones are chosen", async () => {
+    const { sheet } = renderForm(ASSIGNED_GROUP_FIXTURE);
+
     expect(
-      sheet.getUnit(DISPATCH_FIXTURE_UNIT.THIRD.code)
-    ).toBeDisabled();
+      sheet.getUnit(DISPATCH_FIXTURE_UNIT.FIRST.code)
+    ).toBeEnabled();
+
+    await userEvent.click(
+      sheet.getUnit(DISPATCH_FIXTURE_UNIT.FIRST.code)
+    );
+
+    expect(sheet.getSubmit()).toBeEnabled();
   });
 
   it("sends the chosen units with the departure and the return", async () => {
@@ -86,7 +106,7 @@ describe("DispatchGroupForm", () => {
     );
   });
 
-  it("reads a return before the departure as the next day", () => {
+  it("reads a return before the departure as the next day", async () => {
     const { onSubmit, sheet } = renderForm(
       QUANTITY_GROUP_FIXTURE
     );
@@ -106,7 +126,7 @@ describe("DispatchGroupForm", () => {
       screen.getByText(DISPATCH_SHEET_COPY.NEXT_DAY_NOTE)
     ).toBeInTheDocument();
 
-    fireEvent.click(sheet.getSubmit());
+    await userEvent.click(sheet.getSubmit());
 
     const [selection] = onSubmit.mock.calls[0];
     expect(
@@ -151,7 +171,7 @@ describe("DispatchGroupForm", () => {
     expect(sheet.getSubmit()).toBeEnabled();
   });
 
-  it("shows the committed equipment with or without motor", () => {
+  it("shows the pending equipment with or without motor", () => {
     renderForm(UNIT_GROUP_FIXTURE);
 
     expect(
@@ -159,5 +179,16 @@ describe("DispatchGroupForm", () => {
         new RegExp(DISPATCH_SHEET_COPY.WITHOUT_MOTOR)
       )
     ).toBeInTheDocument();
+  });
+
+  it("writes no explanation about steps or readings", () => {
+    renderForm(UNIT_GROUP_FIXTURE);
+
+    expect(
+      screen.queryByText(/Paso \d de \d/)
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /Siguiente/ })
+    ).not.toBeInTheDocument();
   });
 });
