@@ -1,7 +1,7 @@
 import { Link, Text } from "@/app/components";
 import type { NullableRef } from "@/app/types";
 import { LIST_PAGINATION } from "@/app/utils/list-pagination/constants/ListPagination.constants";
-import { resolveListPageHref } from "@/app/utils/list-pagination/resolveListPageHref";
+import { resolveBoardFilterHref } from "@/app/utils/board-unit-filter/resolveBoardFilterHref";
 import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 import type { CategoryUnitsPaginationProps } from "../models/CategoryUnitsPaginationProps.interface";
 import {
@@ -14,6 +14,7 @@ import {
 const CategoryUnitsPagination = ({
   basePath,
   currentPage,
+  filter,
   pageCount,
 }: CategoryUnitsPaginationProps): NullableRef<React.JSX.Element> => {
   if (pageCount <= LIST_PAGINATION.FIRST_PAGE) {
@@ -27,8 +28,9 @@ const CategoryUnitsPagination = ({
     >
       {currentPage > LIST_PAGINATION.FIRST_PAGE && (
         <Link
-          href={resolveListPageHref(
+          href={resolveBoardFilterHref(
             basePath,
+            filter,
             currentPage - 1
           )}
           className={
@@ -48,8 +50,9 @@ const CategoryUnitsPagination = ({
       </Text>
       {currentPage < pageCount && (
         <Link
-          href={resolveListPageHref(
+          href={resolveBoardFilterHref(
             basePath,
+            filter,
             currentPage + 1
           )}
           className={CATEGORY_UNITS_PAGINATION_NEXT_CLASS}

@@ -7,4 +7,8 @@ export interface Extra {
   status: ExtraStatus;
   priceUsd: NullableRef<number>;
   priceCrc: NullableRef<number>;
+  occupiesCategoryId: NullableRef<string>;
+  occupiesQuantity: NullableRef<number>;
+  occupiedCategoryName: NullableRef<string>;
+  compatibleUnitCount: number;
 }

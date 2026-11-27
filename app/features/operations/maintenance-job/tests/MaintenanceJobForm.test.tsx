@@ -84,7 +84,7 @@ describe("MaintenanceJobForm", () => {
       costCurrency: null,
       description: "",
       isExternal: false,
-      nextOilChangeAt: null,
+      oilInterval: null,
       performedAt: expect.stringMatching(
         /^\d{4}-\d{2}-\d{2}$/
       ),
@@ -130,7 +130,7 @@ describe("MaintenanceJobForm", () => {
     });
   });
 
-  it("asks for the next oil change threshold only on an oil change and above the accumulated usage", async () => {
+  it("asks for the oil change interval only on an oil change, above zero, and shows the next change", async () => {
     submitMock.mockResolvedValue({
       status: MAINTENANCE_JOB_STATUS.REGISTERED,
     });
@@ -143,27 +143,33 @@ describe("MaintenanceJobForm", () => {
     fillBasics("oil_change");
     choose(
       MAINTENANCE_JOB_COPY.NEXT_OIL_CHANGE_LABEL,
-      JOB_FORM_TEXT.THRESHOLD_BELOW
+      JOB_FORM_TEXT.INTERVAL_ZERO
     );
     submit();
 
     expect(
-      screen.getByText(JOB_FORM_TEXT.THRESHOLD_BELOW_ERROR)
+      screen.getByText(
+        MAINTENANCE_JOB_COPY.ERROR_INTERVAL_INVALID
+      )
     ).toBeInTheDocument();
     expect(submitMock).not.toHaveBeenCalled();
 
     choose(
       MAINTENANCE_JOB_COPY.NEXT_OIL_CHANGE_LABEL,
-      JOB_FORM_TEXT.THRESHOLD
+      JOB_FORM_TEXT.INTERVAL
     );
+
+    expect(
+      screen.getByText(JOB_FORM_TEXT.NEXT_OIL_CHANGE)
+    ).toBeInTheDocument();
     submit();
 
     await waitFor(() =>
       expect(submitMock).toHaveBeenCalled()
     );
-    expect(
-      submitMock.mock.calls[0][0].nextOilChangeAt
-    ).toBe(Number(JOB_FORM_TEXT.THRESHOLD));
+    expect(submitMock.mock.calls[0][0].oilInterval).toBe(
+      Number(JOB_FORM_TEXT.INTERVAL)
+    );
   });
 
   it("tells the worker when the unit was decommissioned", async () => {

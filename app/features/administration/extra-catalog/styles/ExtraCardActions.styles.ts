@@ -7,12 +7,14 @@ import {
 import { BUTTON, SIZE } from "@/app/constants";
 
 export const EXTRA_CARD_ACTIONS_ROW_CLASS =
-  "grid grid-cols-2 gap-3 md:flex md:shrink-0";
+  "grid grid-cols-2 gap-3 md:flex md:flex-wrap";
 
 const EXTRA_CARD_ACTION_SIZE_CLASS =
   "min-h-11 rounded-md md:w-40";
 
 export const EXTRA_CARD_EDIT_LINK_CLASS = `${BUTTON_BASE_CLASS} ${BUTTON_VARIANT_CLASS[BUTTON.SECONDARY]} ${BUTTON_SIZE_CLASS[SIZE.FULL]} ${BUTTON_ENABLED_CLASS} ${EXTRA_CARD_ACTION_SIZE_CLASS}`;
+
+export const EXTRA_CARD_COMPATIBILITY_LINK_CLASS = `${EXTRA_CARD_EDIT_LINK_CLASS} col-span-2 md:col-span-1`;
 
 const EXTRA_CARD_ACTION_SHAPE_CLASS = `inline-flex w-full items-center justify-center border px-4 text-body-base transition-colors ${EXTRA_CARD_ACTION_SIZE_CLASS}`;
 

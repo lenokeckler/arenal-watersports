@@ -7,6 +7,7 @@ import type { UnitFormValues } from "./UnitFormValues.interface";
 export interface UnitFormMotorFieldsProps extends Pick<
   UnitFieldHandlers,
   | "onFuelMaxChange"
+  | "onLowFuelLinesChange"
   | "onFuelLevelChange"
   | "onUsageTotalChange"
   | "onNextOilChangeAtChange"

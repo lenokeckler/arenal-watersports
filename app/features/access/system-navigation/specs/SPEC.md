@@ -21,7 +21,9 @@ their active work area.
 - Preserve the existing Operations and Reservations items, including their account Menu button.
 - Link the board and active area's calendar using existing `PATHS` entries.
 - Show Inventory in Operations and History in both supported work areas as active destinations.
-- Provide a Menu panel that slides in from the left with the person (name, username and area), the Profile and work-mode selector destinations, the theme choice and Log out.
+- Provide a Menu panel that slides in from the left with the person (name, username and area), the Profile and work-mode selector destinations, the destinations of the active work area, the theme choice and Log out.
+- List the per-area Menu destinations in a constant map keyed by work area; Administration lists Combos (`/administration/combos`), the other areas list none. Administration keeps exactly five bottom-bar items, Combos is not one of them.
+- Close the Menu when any of its destinations is followed.
 - From the `md` width up, show the navigation as a left sidebar instead of the bottom bar.
 - Keep navigation visibility separate from authorization; server-side route checks remain
   authoritative.

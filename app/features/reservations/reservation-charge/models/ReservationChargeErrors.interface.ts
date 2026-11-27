@@ -1,4 +1,6 @@
 export interface ReservationChargeErrors {
   amount?: string;
-  paymentMethod?: string;
+  otherPaymentMethod?: string;
+  paymentChoice?: string;
+  secondAmount?: string;
 }
