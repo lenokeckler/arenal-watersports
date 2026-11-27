@@ -24,5 +24,6 @@ export const mapBoardCategoryUnitRow = (
       : null,
     readings: buildUnitReadings(row),
     status,
+    statusDetails: null,
   };
 };
