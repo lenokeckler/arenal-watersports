@@ -17,6 +17,7 @@ import { CHARGE_RECORDED } from "./ReservationChargeAction.constants";
 import {
   CRC_PROPOSAL_TEXT,
   EDITED_AMOUNT_TEXT,
+  EDITED_METHOD_FIELDS,
   EDITED_METHOD_TEXT,
   EMPTY_CHARGE,
   MIXED_CHARGE,
@@ -55,7 +56,7 @@ describe("ReservationChargeView form", () => {
 
     await page.clearAmount();
     await page.typeAmount(EDITED_AMOUNT_TEXT);
-    await page.typePaymentMethod(EDITED_METHOD_TEXT);
+    await page.selectPaymentMethod(EDITED_METHOD_TEXT);
     await page.submit();
 
     expect(await page.findStatusText()).toBe(
@@ -67,7 +68,7 @@ describe("ReservationChargeView form", () => {
       expect.objectContaining({
         amountText: EDITED_AMOUNT_TEXT,
         currency: CURRENCY_CODE.USD,
-        paymentMethod: EDITED_METHOD_TEXT,
+        ...EDITED_METHOD_FIELDS,
       })
     );
   });
@@ -97,12 +98,23 @@ describe("ReservationChargeView form", () => {
     ).not.toBeNull();
   });
 
-  it("offers only the proposal currency without the group and names it in the label", () => {
+  it("offers both currencies when only one has a proposal and names the proposed one in the label", () => {
     const page = renderReservationChargeView(MIXED_CHARGE);
 
-    expect(page.queryCurrencyRadios()).toHaveLength(0);
+    expect(page.getCurrencyRadios()).toHaveLength(2);
     expect(
       page.queryText(COPY.AMOUNT_LABEL.USD)
+    ).not.toBeNull();
+  });
+
+  it("charges in a currency without a proposal with an empty amount", async () => {
+    const page = renderReservationChargeView(MIXED_CHARGE);
+
+    await page.selectCurrency(CURRENCY_NAME_COPY.CRC);
+
+    expect(page.getAmount()).toHaveValue("");
+    expect(
+      page.queryText(COPY.AMOUNT_LABEL.CRC)
     ).not.toBeNull();
   });
 
@@ -114,5 +126,36 @@ describe("ReservationChargeView form", () => {
     expect(
       page.queryText(COPY.AMOUNT_HELPER_MANUAL)
     ).not.toBeNull();
+  });
+
+  it("keeps the amount field in the same form as the submit button", () => {
+    const page = renderReservationChargeView();
+
+    expect(page.getAmountForm()).not.toBeNull();
+    expect(page.getAmountForm()).toBe(page.getSubmitForm());
+  });
+
+  it("keeps a typed amount when the currency changes", async () => {
+    const page = renderReservationChargeView();
+
+    await page.clearAmount();
+    await page.typeAmount(EDITED_AMOUNT_TEXT);
+    await page.selectCurrency(CURRENCY_NAME_COPY.CRC);
+
+    expect(page.getAmount()).toHaveValue(
+      EDITED_AMOUNT_TEXT
+    );
+  });
+
+  it("disables the amount field while the charge is being recorded", async () => {
+    vi.mocked(
+      recordReservationChargeAction
+    ).mockReturnValue(new Promise(() => undefined));
+    const page = renderReservationChargeView();
+
+    await page.selectPaymentMethod(EDITED_METHOD_TEXT);
+    await page.submit();
+
+    expect(page.getAmount()).toBeDisabled();
   });
 });

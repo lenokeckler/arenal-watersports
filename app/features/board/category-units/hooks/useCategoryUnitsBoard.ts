@@ -19,16 +19,21 @@ export const useCategoryUnitsBoard = ({
   const [receiveUnitId, setReceiveUnitId] =
     useState<NullableRef<string>>(null);
 
+  const [statusUnitId, setStatusUnitId] =
+    useState<NullableRef<string>>(null);
+
   return {
     handleCloseInfo: () => setInfoUnitId(null),
     handleCloseModify: () => setModifyUnitId(null),
     handleCloseReceive: () => setReceiveUnitId(null),
+    handleCloseStatus: () => setStatusUnitId(null),
     handleOpenInfo: setInfoUnitId,
     handleOpenModify: setModifyUnitId,
     handleOpenReceive: (unitId) => {
       setInfoUnitId(null);
       setReceiveUnitId(unitId);
     },
+    handleOpenStatus: setStatusUnitId,
     handleToggleEditing: () => {
       setIsEditing((current) => !current);
       onEditingChange();
@@ -37,5 +42,6 @@ export const useCategoryUnitsBoard = ({
     isEditing,
     modifyUnitId,
     receiveUnitId,
+    statusUnitId,
   };
 };

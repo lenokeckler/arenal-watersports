@@ -339,7 +339,7 @@ test.describe("Extra form", () => {
     ).not.toContainText(CURRENCY_SYMBOL[CURRENCY_CODE.CRC]);
   });
 
-  test("returns to the list without changes when cancelling an edit", async ({
+  test("returns to the list without changes when going back from an edit", async ({
     page,
     formPage,
     seedExtra,
@@ -354,7 +354,7 @@ test.describe("Extra form", () => {
     await formPage.goTo(resolveExtraEditPath(id));
 
     await formPage.fillName(typedName);
-    await formPage.cancel();
+    await formPage.back();
 
     await expect(page).toHaveURL(
       PATHS.ADMINISTRATION.EXTRAS
