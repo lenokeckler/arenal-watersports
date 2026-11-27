@@ -17,11 +17,10 @@ export const createCategoryCreateFormPage = () => {
       { exact: false }
     );
 
-  const getTrackingModeInput = () =>
-    screen.getByLabelText(
-      CATEGORY_CATALOG_COPY.TRACKING_MODE_FIELD_LABEL,
-      { exact: false }
-    );
+  const getChoiceCard = (label: string) =>
+    screen.getByRole(ARIA_ROLE.BUTTON, {
+      name: new RegExp(`^${label}`),
+    });
 
   const getGroupNameInput = () =>
     screen.getByLabelText(
@@ -29,9 +28,20 @@ export const createCategoryCreateFormPage = () => {
       { exact: false }
     );
 
+  const isChoiceSelected = (label: string): boolean =>
+    screen.queryByRole(ARIA_ROLE.BUTTON, {
+      name: new RegExp(`^${label}`),
+      pressed: true,
+    }) !== null;
+
   const getNameError = () =>
     screen.queryByText(
       CATEGORY_CATALOG_COPY.NAME_FIELD_REQUIRED_ERROR
+    );
+
+  const getNameDuplicateError = () =>
+    screen.queryByText(
+      CATEGORY_CATALOG_COPY.NAME_DUPLICATE_ERROR
     );
 
   const getTrackingModeError = () =>
@@ -63,10 +73,10 @@ export const createCategoryCreateFormPage = () => {
     await user.type(getNameInput(), name);
   };
 
-  const selectTrackingMode = async (
-    value: string
+  const selectChoice = async (
+    label: string
   ): Promise<void> => {
-    await user.selectOptions(getTrackingModeInput(), value);
+    await user.click(getChoiceCard(label));
   };
 
   const fillGroupName = async (
@@ -91,15 +101,17 @@ export const createCategoryCreateFormPage = () => {
   return {
     getHeading,
     getNameInput,
-    getTrackingModeInput,
+    getChoiceCard,
+    isChoiceSelected,
     getGroupNameInput,
     getNameError,
+    getNameDuplicateError,
     getTrackingModeError,
     getCancelButton,
     getSubmitButton,
     isSubmitButtonLoading,
     fillName,
-    selectTrackingMode,
+    selectChoice,
     fillGroupName,
     submit,
     clickLoadingSubmitButton,

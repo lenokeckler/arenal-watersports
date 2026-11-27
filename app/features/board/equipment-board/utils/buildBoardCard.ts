@@ -38,6 +38,10 @@ export const buildBoardCard = (
 
   return {
     categories: members,
+    damagedCount: sumCounts(
+      members,
+      (member) => member.damagedCount
+    ),
     freeCount: sumCounts(
       members,
       (member) => member.freeCount
@@ -52,6 +56,10 @@ export const buildBoardCard = (
     label: isGrouped
       ? safeString(firstMember.groupName)
       : firstMember.name,
+    maintenanceCount: sumCounts(
+      members,
+      (member) => member.maintenanceCount
+    ),
     targetCategoryId: resolveTargetCategoryId(members),
     totalCount: sumCounts(
       members,

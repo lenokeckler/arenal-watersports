@@ -1,0 +1,1 @@
+chore - Category card status notes on the redesigned card — each category card says in plain words when it is inactive, cannot be reserved or has no image (replaces #691 on top of the category redesign)
