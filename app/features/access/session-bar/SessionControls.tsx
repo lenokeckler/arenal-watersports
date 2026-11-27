@@ -9,6 +9,7 @@ import {
 } from "@/app/constants";
 import LogoutButton from "./components/LogoutButton";
 import LogoutStatus from "./components/LogoutStatus";
+import { SESSION_CONTROLS_COPY } from "./constants/SessionControlsCopy.constants";
 import { useLogoutViewModel } from "./hooks/useLogoutViewModel";
 import { useThemeViewModel } from "./hooks/useThemeViewModel";
 import {
@@ -18,13 +19,6 @@ import {
   SESSION_THEME_GROUP_CLASS,
   SESSION_THEME_OPTION_CLASS,
 } from "./styles/SessionControls.styles";
-
-const THEME_OPTIONS = [
-  { label: "Oscuro", theme: THEME.DARK },
-  { label: "Claro", theme: THEME.LIGHT },
-] as const;
-
-const PREFERENCES_LABEL = "Preferencias";
 
 const SessionControls = (): React.JSX.Element => {
   const {
@@ -39,27 +33,27 @@ const SessionControls = (): React.JSX.Element => {
     <div className={SESSION_CONTROLS_CLASS}>
       <LogoutStatus message={pendingAnnouncement} />
       <Text className={SESSION_PREFERENCES_LABEL_CLASS}>
-        {PREFERENCES_LABEL}
+        {SESSION_CONTROLS_COPY.PREFERENCES}
       </Text>
       <div className={SESSION_THEME_GROUP_CLASS}>
-        {THEME_OPTIONS.map((option) => (
+        {Object.values(THEME).map((option) => (
           <Button
-            key={option.theme}
+            key={option}
             type={BUTTON_TYPES.BUTTON}
             variant={BUTTON.BASE}
-            aria-pressed={theme === option.theme}
+            aria-pressed={theme === option}
             className={
               SESSION_THEME_OPTION_CLASS[
-                theme === option.theme ? "selected" : "idle"
+                theme === option ? "selected" : "idle"
               ]
             }
             onClick={() => {
-              if (theme !== option.theme) {
+              if (theme !== option) {
                 handleToggle();
               }
             }}
           >
-            {option.label}
+            {SESSION_CONTROLS_COPY.THEMES[option]}
           </Button>
         ))}
       </div>
