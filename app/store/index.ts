@@ -4,11 +4,14 @@ import languageReducer from "./slices/languageSlice";
 import { STORE_SLICES } from "./constants";
 import toastReducer from "@/app/components/toast/store/toastSlice";
 import calendarReducer from "@/app/components/calendar/store/calendarSlice";
+import categoryConfigureReducer from "@/app/features/administration/category-catalog/store/categoryConfigureSlice";
 
 export const store = configureStore({
   reducer: {
     [STORE_SLICES.BOARD_LAYOUT]: boardLayoutReducer,
     [STORE_SLICES.CALENDAR]: calendarReducer,
+    [STORE_SLICES.CATEGORY_CONFIGURE]:
+      categoryConfigureReducer,
     [STORE_SLICES.LANGUAGE]: languageReducer,
     [STORE_SLICES.TOAST]: toastReducer,
   },
@@ -20,4 +23,5 @@ export { default as languageReducer } from "./slices/languageSlice";
 export { useLanguage } from "./useLanguage";
 export { toastActions } from "@/app/components/toast/store/toastSlice";
 export { calendarActions } from "@/app/components/calendar/store/calendarSlice";
+export { categoryConfigureActions } from "@/app/features/administration/category-catalog/store/categoryConfigureSlice";
 export { boardLayoutActions } from "./slices/boardLayoutSlice";
