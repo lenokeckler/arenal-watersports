@@ -1,0 +1,1 @@
+chore - Category next steps — The Configurar screen lists the steps left to finish a category (stock, duration, photo, optional deposit) with progress, and each button opens and scrolls to its section.
