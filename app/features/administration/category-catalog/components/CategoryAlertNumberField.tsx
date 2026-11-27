@@ -5,7 +5,6 @@ import {
   INPUT_MODE,
   INPUT_TYPES,
 } from "@/app/constants";
-import { CATEGORY_ALERT_FORM_FIELD_ID } from "../constants/CategoryAlertFormFieldId.constants";
 import type { CategoryAlertNumberFieldProps } from "../models/CategoryAlertNumberFieldProps.interface";
 
 const CategoryAlertNumberField = ({
@@ -15,6 +14,7 @@ const CategoryAlertNumberField = ({
   value,
   error,
   disabled,
+  describedBy,
   onChange,
 }: CategoryAlertNumberFieldProps): React.JSX.Element => (
   <FormField
@@ -31,7 +31,7 @@ const CategoryAlertNumberField = ({
     variant={FORM_FIELD_VARIANT.DEFAULT}
     autoComplete={AUTOCOMPLETE.OFF}
     inputMode={INPUT_MODE.NUMERIC}
-    describedBy={CATEGORY_ALERT_FORM_FIELD_ID.HINT}
+    describedBy={describedBy}
     spellCheck={false}
   />
 );

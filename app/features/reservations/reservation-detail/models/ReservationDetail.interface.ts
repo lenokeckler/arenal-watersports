@@ -35,6 +35,7 @@ export interface ReservationDetail extends Pick<
   createdByName: NullableRef<string>;
   deposit: ReservationDepositDecision;
   dispatches: ReservationDetailDispatch[];
+  dockNotifiedAt: NullableRef<string>;
   equipment: ReservationDetailEquipment[];
   extraTimeCharges: ReservationDetailExtraTimeCharge[];
   refundable: ReservationRefundableAmount[];

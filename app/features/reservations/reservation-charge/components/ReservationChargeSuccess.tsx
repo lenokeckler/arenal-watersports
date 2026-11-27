@@ -1,10 +1,5 @@
 import { Link, Text } from "@/app/components";
-import {
-  ARIA_ROLE,
-  CURRENCY_NAME_COPY,
-  PATHS,
-} from "@/app/constants";
-import { formatMoney } from "@/app/utils/money/formatMoney";
+import { ARIA_ROLE, PATHS } from "@/app/constants";
 import { RESERVATION_CHARGE_FORM_COPY as COPY } from "../constants/ReservationChargeFormCopy.constants";
 import {
   RESERVATION_CHARGE_FIELD_ID,
@@ -18,6 +13,7 @@ import {
   RESERVATION_CHARGE_DETAILS_CLASS,
   RESERVATION_CHARGE_STACK_CLASS,
 } from "../styles/ReservationCharge.styles";
+import ReservationChargeReceiptParts from "./ReservationChargeReceiptParts";
 import ReservationChargeSummaryRow from "./ReservationChargeSummaryRow";
 
 const ReservationChargeSuccess = ({
@@ -37,16 +33,8 @@ const ReservationChargeSuccess = ({
         {COPY.SUCCESS(code)}
       </Text>
       <dl className={RESERVATION_CHARGE_DETAILS_CLASS}>
-        <ReservationChargeSummaryRow
-          label={COPY.LABEL_AMOUNT}
-          value={formatMoney({
-            amount: recorded.amount,
-            currency: recorded.currency,
-          })}
-        />
-        <ReservationChargeSummaryRow
-          label={COPY.LABEL_CURRENCY}
-          value={CURRENCY_NAME_COPY[recorded.currency]}
+        <ReservationChargeReceiptParts
+          parts={recorded.parts}
         />
         <ReservationChargeSummaryRow
           label={COPY.LABEL_METHOD}

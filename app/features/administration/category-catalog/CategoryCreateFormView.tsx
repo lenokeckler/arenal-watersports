@@ -10,11 +10,13 @@ import { CATEGORY_CREATE_FORM_CARD_CLASS } from "./styles/CategoryCreateForm.sty
 const CategoryCreateFormView = (): React.JSX.Element => {
   const {
     values,
+    reservableChoice,
     errors,
     isSubmitting,
     onBack,
     onNameChange,
     onTrackingModeChange,
+    onReservableChoiceChange,
     onGroupNameChange,
     onSubmit,
   } = useCategoryCreateFormViewModel();
@@ -26,10 +28,14 @@ const CategoryCreateFormView = (): React.JSX.Element => {
         <div className={CATEGORY_CREATE_FORM_CARD_CLASS}>
           <CategoryCreateFormFields
             values={values}
+            reservableChoice={reservableChoice}
             errors={errors}
             isSubmitting={isSubmitting}
             onNameChange={onNameChange}
             onTrackingModeChange={onTrackingModeChange}
+            onReservableChoiceChange={
+              onReservableChoiceChange
+            }
             onGroupNameChange={onGroupNameChange}
           />
           <CategoryCreateFormActions

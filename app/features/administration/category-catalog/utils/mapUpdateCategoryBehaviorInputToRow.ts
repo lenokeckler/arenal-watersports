@@ -9,6 +9,7 @@ export const mapUpdateCategoryBehaviorInputToRow = (
   has_motor: input.hasMotor,
   usage_metric: input.usageMetric ?? null,
   consumes_fuel: input.consumesFuel,
+  low_fuel_lines: input.lowFuelLines,
   can_be_damaged: input.canBeDamaged,
   has_condition_photos: input.hasConditionPhotos,
   guide_only: input.guideOnly,
