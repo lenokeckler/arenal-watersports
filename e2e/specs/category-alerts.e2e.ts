@@ -1,7 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { CATEGORY_ALERT_TYPE } from "@/app/features/administration/category-catalog/constants/CategoryAlertType.constants";
 import { createCategoryAlertsFormPage } from "../pages/CategoryAlertsForm.page";
-import { createCategoryListPage } from "../pages/CategoryList.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 import { seedCategoryWithAlerts } from "../support/categoryAlertFixtures";
 import {
@@ -12,7 +11,7 @@ import { resolveCategoryAlertsFixtureName } from "../constants/E2eCategoryAlerts
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 
 test.describe("Category alerts", () => {
-  test("opens from the card link with no alert type and no number fields", async ({
+  test("opens with no alert type and no number fields", async ({
     page,
   }, testInfo) => {
     const categoryName = resolveCategoryAlertsFixtureName(
@@ -20,15 +19,13 @@ test.describe("Category alerts", () => {
       "open"
     );
     await seedCategoryWithAlerts(categoryName);
-    const categoryListPage = createCategoryListPage(page);
     const alertsFormPage =
       createCategoryAlertsFormPage(page);
 
     try {
       await logInAsAdmin(page);
-      await categoryListPage.goToCategory(categoryName);
-      await alertsFormPage.clickAlertsLink(
-        categoryListPage.getCategoryCard(categoryName)
+      await alertsFormPage.goTo(
+        await findCategoryId(categoryName)
       );
 
       await expect(

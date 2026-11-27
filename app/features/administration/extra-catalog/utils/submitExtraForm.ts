@@ -15,9 +15,14 @@ export const submitExtraForm = async ({
   try {
     const result = await saveExtra(saveOptions);
 
-    if (result.nameError || result.priceErrors) {
+    if (
+      result.nameError ||
+      result.priceErrors ||
+      result.occupancyError
+    ) {
       showErrors({
         name: result.nameError,
+        occupancy: result.occupancyError,
         ...result.priceErrors,
       });
       return;

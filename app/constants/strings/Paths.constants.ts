@@ -34,6 +34,7 @@ export const PATHS = {
     MOVEMENT: "/administration/reports/movement",
     MAINTENANCE_COST:
       "/administration/reports/maintenance-cost",
+    EXTRA_COMPATIBILITY_SEGMENT: "compatibility",
     EXTRAS: "/administration/extras",
     EXTRAS_NEW: "/administration/extras/new",
     INCOME: "/administration/income",
@@ -101,6 +102,7 @@ export const PATHS = {
     NEW: "/reservations/new",
     POSTPONE_SEGMENT: "postpone",
     REFUND_SEGMENT: "refund",
+    RESOLVE_SEGMENT: "resolve",
     ROOT: "/reservations",
     SPLIT_SEGMENT: "split",
   },
