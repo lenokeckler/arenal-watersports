@@ -71,6 +71,7 @@ export const DEFAULT_CATEGORY_UNIT: CategoryUnit = {
   occupancy: null,
   readings: null,
   status: INVENTORY_UNIT_STATUS.AVAILABLE,
+  statusDetails: null,
 };
 
 export const OCCUPIED_CATEGORY_UNIT: CategoryUnit = {

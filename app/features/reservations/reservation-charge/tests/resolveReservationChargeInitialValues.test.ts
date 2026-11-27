@@ -18,7 +18,9 @@ describe("resolveReservationChargeInitialValues", () => {
     ).toEqual({
       amountText: USD_PROPOSAL_TEXT,
       currency: CURRENCY_CODE.USD,
-      paymentMethod: STRING.Empty,
+      otherPaymentMethod: STRING.Empty,
+      paymentChoice: null,
+      secondAmountText: null,
     });
   });
 
@@ -30,7 +32,9 @@ describe("resolveReservationChargeInitialValues", () => {
     ).toEqual({
       amountText: CRC_PROPOSAL_TEXT,
       currency: CURRENCY_CODE.CRC,
-      paymentMethod: STRING.Empty,
+      otherPaymentMethod: STRING.Empty,
+      paymentChoice: null,
+      secondAmountText: null,
     });
   });
 
@@ -40,7 +44,9 @@ describe("resolveReservationChargeInitialValues", () => {
     ).toEqual({
       amountText: STRING.Empty,
       currency: CURRENCY_CODE.USD,
-      paymentMethod: STRING.Empty,
+      otherPaymentMethod: STRING.Empty,
+      paymentChoice: null,
+      secondAmountText: null,
     });
   });
 });
