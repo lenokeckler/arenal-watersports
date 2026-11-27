@@ -3,6 +3,7 @@ import { LENGTH, PATHS, STRING } from "@/app/constants";
 import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
 import { CATEGORY_CONFIGURE_COPY } from "@/app/features/administration/category-catalog/constants/CategoryConfigureCopy.constants";
 import { formatCategoryDurationLabel } from "@/app/features/administration/category-catalog/utils/formatCategoryDurationLabel";
+import { E2E_CATEGORY_IMAGE_FILE } from "../constants/E2eCategoryImage.constants";
 import { createCategoryBehaviorFormPage } from "../pages/CategoryBehaviorForm.page";
 import { createCategoryConfigurePage } from "../pages/CategoryConfigure.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
@@ -20,10 +21,15 @@ import {
 } from "../constants/E2eCategoryConfigure.constants";
 
 const E2E_SECTION_COUNT = 6;
-const { DEPOSIT_USD_FIELD_LABEL, HAS_MOTOR_FIELD_LABEL } =
-  CATEGORY_CATALOG_COPY;
+const {
+  DELETE_CATEGORY_BUTTON,
+  DEPOSIT_USD_FIELD_LABEL,
+  HAS_MOTOR_FIELD_LABEL,
+} = CATEGORY_CATALOG_COPY;
 const {
   ALERTS_QUANTITY_FIELD_LABEL,
+  DELETE_CONFIRM,
+  SECTION_PHOTO,
   ALERTS_TYPE_QUANTITY,
   SECTION_ALERTS,
   SECTION_DEPOSIT,
@@ -229,6 +235,67 @@ test.describe("Category configure screen", () => {
       await expect(
         configurePage.getSectionButton(SECTION_TRAITS)
       ).toContainText(TRAIT_HAS_MOTOR);
+    } finally {
+      await removeDeletableCategory(categoryName);
+    }
+  });
+
+  test("previews a picked photo", async ({
+    page,
+  }, testInfo) => {
+    const categoryName =
+      resolveCategoryConfigureFixtureName(
+        testInfo.project.name,
+        "photo"
+      );
+
+    try {
+      const configurePage =
+        await openCategoryConfigureScreen(
+          page,
+          categoryName
+        );
+      await configurePage.toggleSection(SECTION_PHOTO);
+      await configurePage.choosePhoto(
+        E2E_CATEGORY_IMAGE_FILE.PNG
+      );
+
+      await expect(
+        configurePage.getPhotoPreview()
+      ).toBeVisible();
+    } finally {
+      await removeDeletableCategory(categoryName);
+    }
+  });
+
+  test("deletes a category without records after confirming and returns to the list", async ({
+    page,
+  }, testInfo) => {
+    const categoryName =
+      resolveCategoryConfigureFixtureName(
+        testInfo.project.name,
+        "delete"
+      );
+
+    try {
+      const configurePage =
+        await openCategoryConfigureScreen(
+          page,
+          categoryName
+        );
+      await configurePage
+        .getButton(DELETE_CATEGORY_BUTTON)
+        .click();
+      await configurePage
+        .getButton(DELETE_CONFIRM(categoryName))
+        .click();
+
+      await expect(page).toHaveURL(
+        PATHS.ADMINISTRATION.CATEGORIES
+      );
+      await expect(
+        findCategoryId(categoryName)
+      ).rejects.toThrow();
     } finally {
       await removeDeletableCategory(categoryName);
     }

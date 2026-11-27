@@ -5,6 +5,7 @@ import {
   type RootState,
 } from "@/app/store";
 import { STORE_SLICES } from "@/app/constants";
+import { CATEGORY_IMAGE_FORM_STATE } from "../constants/CategoryImageFormState.constants";
 import type { CategoryConfigureSectionId } from "../models/CategoryConfigureSectionId.type";
 import type { CategoryConfigureViewModel } from "../models/CategoryConfigureViewModel.interface";
 import type { CategoryConfigureViewProps } from "../models/CategoryConfigureViewProps.interface";
@@ -14,6 +15,8 @@ import { resolveCategoryConfigureSections } from "../utils/resolveCategoryConfig
 import { resolveCategoryConfigureStatusCard } from "../utils/resolveCategoryConfigureStatusCard";
 import { useCategoryAlertFormFields } from "./useCategoryAlertFormFields";
 import { useCategoryBehaviorFormFields } from "./useCategoryBehaviorFormFields";
+import { useCategoryConfigureDelete } from "./useCategoryConfigureDelete";
+import { useCategoryConfigurePhoto } from "./useCategoryConfigurePhoto";
 import { useCategoryConfigureReservations } from "./useCategoryConfigureReservations";
 import { useCategoryDepositFormFields } from "./useCategoryDepositFormFields";
 
@@ -36,6 +39,11 @@ export const useCategoryConfigureViewModel = ({
   });
   const reservations =
     useCategoryConfigureReservations(behaviorFields);
+  const photo = useCategoryConfigurePhoto(
+    configuration.image
+  );
+  const deletion =
+    useCategoryConfigureDelete(configuration);
 
   const onToggleSection = (
     sectionId: CategoryConfigureSectionId
@@ -55,15 +63,18 @@ export const useCategoryConfigureViewModel = ({
         deposit: depositFields.values,
         alerts: alertFields.values,
       }),
-      openSectionIds
+      openSectionIds,
+      photo.formState === CATEGORY_IMAGE_FORM_STATE.PICKED
     ),
     bodies: {
       reservations,
       deposit: depositFields,
+      photo,
       alerts:
         buildCategoryConfigureAlertsProps(alertFields),
       traits: behaviorFields,
     },
+    deletion,
     onToggleSection,
   };
 };

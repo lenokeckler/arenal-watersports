@@ -9,6 +9,7 @@ import { resolveCategoryStockPath } from "../utils/resolveCategoryStockPath";
 import { resolveCategoryUnitsPath } from "../utils/resolveCategoryUnitsPath";
 import CategoryConfigureAlerts from "./CategoryConfigureAlerts";
 import CategoryConfigureDeposit from "./CategoryConfigureDeposit";
+import CategoryConfigurePhoto from "./CategoryConfigurePhoto";
 import CategoryConfigureReservations from "./CategoryConfigureReservations";
 import CategoryConfigureTraits from "./CategoryConfigureTraits";
 
@@ -29,6 +30,8 @@ const CategoryConfigureSectionBody = ({
       return (
         <CategoryConfigureDeposit {...bodies.deposit} />
       );
+    case CATEGORY_CONFIGURE_SECTION_ID.PHOTO:
+      return <CategoryConfigurePhoto {...bodies.photo} />;
     case CATEGORY_CONFIGURE_SECTION_ID.ALERTS:
       return <CategoryConfigureAlerts {...bodies.alerts} />;
     case CATEGORY_CONFIGURE_SECTION_ID.TRAITS:

@@ -1,9 +1,10 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ARIA_ROLE } from "@/app/constants";
+import { CATEGORY_IMAGE_COPY } from "../constants/CategoryImageCopy.constants";
 
 export const createCategoryConfigureViewPage = () => {
-  const user = userEvent.setup();
+  const user = userEvent.setup({ applyAccept: false });
 
   const getSectionButton = (title: string) =>
     screen.getByRole(ARIA_ROLE.BUTTON, {
@@ -33,6 +34,35 @@ export const createCategoryConfigureViewPage = () => {
 
   const getHeading = (name: string) =>
     screen.getByRole(ARIA_ROLE.HEADING, { name });
+
+  const queryButton = (name: string) =>
+    screen.queryByRole(ARIA_ROLE.BUTTON, { name });
+
+  const getDialog = (name: string) =>
+    screen.queryByRole(ARIA_ROLE.DIALOG, { name });
+
+  const getImage = (alt: string) =>
+    screen.queryByRole(ARIA_ROLE.IMG, { name: alt });
+
+  const getAlert = () =>
+    screen.queryByRole(ARIA_ROLE.ALERT);
+
+  const clickButton = async (
+    name: string
+  ): Promise<void> => {
+    await user.click(
+      screen.getByRole(ARIA_ROLE.BUTTON, { name })
+    );
+  };
+
+  const pickPhoto = async (file: File): Promise<void> => {
+    await user.upload(
+      screen.getByLabelText<HTMLInputElement>(
+        CATEGORY_IMAGE_COPY.FILE_INPUT_LABEL
+      ),
+      file
+    );
+  };
 
   const toggleSection = async (
     title: string
@@ -74,6 +104,12 @@ export const createCategoryConfigureViewPage = () => {
     getField,
     getText,
     getHeading,
+    queryButton,
+    getDialog,
+    getImage,
+    getAlert,
+    clickButton,
+    pickPhoto,
     fillField,
     clickField,
     clickChip,
