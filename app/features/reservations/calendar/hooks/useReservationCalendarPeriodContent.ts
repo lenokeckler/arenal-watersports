@@ -13,6 +13,7 @@ import { buildCalendarPeriod } from "@/app/components/calendar/utils";
 import type { CalendarPeriod } from "@/app/components/calendar/models/CalendarPeriod.interface";
 import { getReservationCalendarMessages } from "../utils/getReservationCalendarMessages";
 import type { ReservationCalendarAgendaContent } from "../models/ReservationCalendarAgendaContent.interface";
+import type { ReservationCalendarAgendaPagination } from "../models/ReservationCalendarAgendaPagination.interface";
 
 const buildAgendaContent = (
   snapshot: NullableUndefined<ReservationCalendarSnapshot>,
@@ -79,12 +80,14 @@ const getSelectedMonthPeriod = (
 
 export const useReservationCalendarPeriodContent = (
   snapshot: NullableUndefined<ReservationCalendarSnapshot>,
-  selection: ReservationsCalendarSelection
+  selection: ReservationsCalendarSelection,
+  pagination: ReservationCalendarAgendaPagination
 ): CalendarPeriodContent =>
   useCallback(
     (period) =>
       createElement(ReservationCalendarGroups, {
         period,
+        pagination,
         periodAgenda: buildAgendaContent(snapshot, period),
         selectedDayAgenda: getSelectedAgendaContent(
           snapshot,
@@ -102,5 +105,5 @@ export const useReservationCalendarPeriodContent = (
           )
         ),
       }),
-    [selection, snapshot]
+    [pagination, selection, snapshot]
   );

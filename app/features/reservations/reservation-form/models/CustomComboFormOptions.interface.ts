@@ -8,6 +8,8 @@ export interface CustomComboFormOptions {
     field: ReservationFormErrorField
   ) => void;
   durationHours: number;
+  date?: string;
   onGuideIdsChange: (guideIds: string[]) => void;
   reservationType: ReservationType;
+  time?: string;
 }

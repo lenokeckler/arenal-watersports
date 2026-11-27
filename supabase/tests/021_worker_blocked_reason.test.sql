@@ -37,14 +37,14 @@ set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","
 
 select throws_ok(
   $$ update workers set failed_attempts = 0 where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no reescribe el contador de intentos de su propia cuenta'
 );
 
 select throws_ok(
   $$ update workers set status = 'blocked', blocked_reason = 'administration'
       where id = '22222222-2222-2222-2222-222222222222' $$,
-  '42501', 'Un trabajador solo cambia su correo personal y su ultimo modo de trabajo',
+  '42501', 'Un trabajador solo cambia su correo personal, ultimo modo de trabajo y tamano de pagina del calendario',
   'un trabajador no cambia el estado de su propia cuenta'
 );
 

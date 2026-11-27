@@ -20,6 +20,9 @@ export const RESERVATION_FORM_VIEW_TEST = {
   BACK_TO_CALENDAR: "Volver al calendario",
   CUSTOM_DURATION_HOURS: "2.5",
   CUSTOM_DURATION_HOURS_VALUE: 2.5,
+  SUBMIT_BUTTON_SELECTOR: "button[type='submit']",
+  SUBMIT_BUTTON_MISSING:
+    "The reservation submit button is missing.",
   NEGATIVE_INPUT: "-1",
   VALID_EQUIPMENT_QUANTITY: "3",
   VALID_PEOPLE_COUNT: "4",

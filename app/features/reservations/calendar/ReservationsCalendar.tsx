@@ -5,11 +5,15 @@ import { ReservationsCalendarView } from "./ReservationsCalendarView";
 
 export const ReservationsCalendar = ({
   canRegisterExternalGuide,
+  initialPageSize,
+  pageSizeReadError,
   snapshot,
   today,
 }: ReservationsCalendarProps): ReactElement => (
   <ReservationsCalendarView
     canRegisterExternalGuide={canRegisterExternalGuide}
+    initialPageSize={initialPageSize}
+    pageSizeReadError={pageSizeReadError}
     snapshot={snapshot}
     today={today ?? getCalendarToday(new Date())}
   />

@@ -1,45 +1,49 @@
-import type { NullableUndefined } from "@/app/types";
-import type { CalendarDate } from "@/app/types";
-import type { ReservationCalendarSnapshot } from "@/app/components/reservation-calendar/models/ReservationCalendarSnapshot.interface";
 import type { ReservationsCalendarViewModel } from "../models/ReservationsCalendarViewModel.interface";
-import { useReservationCalendarDayContent } from "@/app/components/reservation-calendar/hooks/useReservationCalendarDayContent";
+import type { ReservationsCalendarViewModelOptions } from "../models/ReservationsCalendarViewModelOptions.interface";
 import { useReservationCalendarPeriodContent } from "./useReservationCalendarPeriodContent";
-import { useReservationCalendarSnapshot } from "./useReservationCalendarSnapshot";
-import { useReservationCalendarSelection } from "./useReservationCalendarSelection";
-import { renderReservationCalendarBlockActions } from "../utils/renderReservationCalendarBlockActions";
+import { RESERVATION_CALENDAR_LIST } from "@/app/components/reservation-calendar/constants/ReservationCalendarList.constants";
+import { useReservationCalendarAgendaPagination } from "./useReservationCalendarAgendaPagination";
+import { updateOwnReservationCalendarPageSize } from "../actions/updateOwnReservationCalendarPageSize";
+import { useReservationsCalendarCoreViewModel } from "./useReservationsCalendarCoreViewModel";
+import { useReservationCalendarPeriodChangeHandler } from "./useReservationCalendarPeriodChangeHandler";
 
-export const useReservationsCalendarViewModel = (
-  snapshot: NullableUndefined<ReservationCalendarSnapshot>,
-  today: CalendarDate
-): ReservationsCalendarViewModel => {
-  const snapshotState = useReservationCalendarSnapshot(
-    snapshot ?? null
-  );
-  const dayContent = useReservationCalendarDayContent(
-    snapshotState.snapshot ?? undefined,
-    {
-      enableDetailLinks: true,
-      renderBlockActions:
-        renderReservationCalendarBlockActions,
-      reserveMobileFabSpace: true,
-    }
-  );
-  const calendarSelection = useReservationCalendarSelection(
-    snapshotState.snapshot ?? undefined,
+export const useReservationsCalendarViewModel = ({
+  initialPageSize,
+  pageSizeReadError = false,
+  snapshot,
+  today,
+}: ReservationsCalendarViewModelOptions): ReservationsCalendarViewModel => {
+  const agendaPagination =
+    useReservationCalendarAgendaPagination({
+      initialPageSize:
+        initialPageSize ??
+        RESERVATION_CALENDAR_LIST.DEFAULT_PAGE_SIZE,
+      pageSizeReadError,
+      savePageSize: updateOwnReservationCalendarPageSize,
+    });
+  const core = useReservationsCalendarCoreViewModel(
+    snapshot,
     today
   );
   const periodContent = useReservationCalendarPeriodContent(
-    snapshotState.snapshot ?? undefined,
-    calendarSelection
+    core.snapshotState.snapshot ?? undefined,
+    core.calendarSelection,
+    agendaPagination
   );
+  const onPeriodChange =
+    useReservationCalendarPeriodChangeHandler(
+      core.snapshotState.onPeriodChange,
+      agendaPagination.resetPage
+    );
   return {
-    dayContent,
-    hasRefreshError: snapshotState.hasRefreshError,
-    isRefreshing: snapshotState.isRefreshing,
-    onPeriodChange: snapshotState.onPeriodChange,
-    onRetry: snapshotState.onRetry,
+    agendaPagination,
+    dayContent: core.dayContent,
+    hasRefreshError: core.snapshotState.hasRefreshError,
+    isRefreshing: core.snapshotState.isRefreshing,
+    onPeriodChange,
+    onRetry: core.snapshotState.onRetry,
     periodContent,
-    snapshot: snapshotState.snapshot,
-    selection: calendarSelection.selection,
+    snapshot: core.snapshotState.snapshot,
+    selection: core.calendarSelection.selection,
   };
 };

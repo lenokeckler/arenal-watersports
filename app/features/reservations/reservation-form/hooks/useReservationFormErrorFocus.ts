@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import type { NullableRef } from "@/app/types";
 import {
   RESERVATION_FORM_ERROR_SCROLL_OPTIONS,
@@ -36,8 +36,20 @@ export const useReservationFormErrorFocus = (
   submission: ReservationSubmissionState
 ): void => {
   const errorTargetId = resolveErrorTargetId(submission);
+  const handledFocusRequest = useRef(
+    submission.errorFocusRequest
+  );
 
   useEffect(() => {
+    if (
+      handledFocusRequest.current ===
+      submission.errorFocusRequest
+    ) {
+      return;
+    }
+    handledFocusRequest.current =
+      submission.errorFocusRequest;
+
     const errorTarget = errorTargetId
       ? document.getElementById(errorTargetId)
       : null;

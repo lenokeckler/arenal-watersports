@@ -6,6 +6,7 @@ import {
   vi,
 } from "vitest";
 import { createCustomComboReservationAction } from "../actions/createCustomComboReservationAction";
+import { getReservationCategoryConflictsAction } from "../actions/getReservationCategoryConflictsAction";
 import { RESERVATION_FORM_COPY } from "../constants/ReservationFormCopy.constants";
 import { RESERVATION_FORM_ERROR_SCROLL_OPTIONS } from "../constants/ReservationFormUi.constants";
 import { RESERVATION_TYPE_COPY } from "../constants/ReservationTypeCopy.constants";
@@ -15,6 +16,7 @@ import { CUSTOM_COMBO_TEST } from "./CustomCombo.constants";
 import { createCustomComboPage } from "./CustomCombo.page";
 import { renderReservationForm } from "./ReservationFormView.fixture";
 import { RESERVATION_FORM_VIEW_TEST } from "./ReservationFormView.constants";
+import { RESERVATION_CATEGORY_CONFLICT_WARNING_TEST } from "./ReservationCategoryConflictWarning.constants";
 
 vi.mock(
   "../actions/createCustomComboReservationAction",
@@ -22,10 +24,32 @@ vi.mock(
     createCustomComboReservationAction: vi.fn(),
   })
 );
+vi.mock(
+  "../actions/getReservationCategoryConflictsAction",
+  () => ({ getReservationCategoryConflictsAction: vi.fn() })
+);
 
 beforeEach(() => vi.clearAllMocks());
 
 describe("custom combo selection", () => {
+  it("keeps submission available when selected equipment has a schedule conflict", async () => {
+    vi.mocked(
+      getReservationCategoryConflictsAction
+    ).mockResolvedValue([
+      RESERVATION_CATEGORY_CONFLICT_WARNING_TEST.RPC_ROW,
+    ]);
+    renderReservationForm(true, true, true);
+    const page = createCustomComboPage(document.body);
+    await page.selectComboWithCategory(
+      RESERVATION_FORM_VIEW_TEST.CATEGORY_NAME
+    );
+
+    expect(
+      await page.findConflictWarningDescription()
+    ).toBeInTheDocument();
+    expect(page.getSubmitButton()).toBeEnabled();
+  });
+
   it("offers guide-only categories and shows the no-guide state", async () => {
     renderReservationForm(true, true, true);
     const page = createCustomComboPage(document.body);
