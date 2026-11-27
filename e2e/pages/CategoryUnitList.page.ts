@@ -1,34 +1,17 @@
 import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE, STRING } from "@/app/constants";
-import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
 import { UNIT_LIST_COPY } from "@/app/features/administration/unit-catalog/constants/UnitListCopy.constants";
 import type { UnitEffectiveStatus } from "@/app/features/administration/unit-catalog/constants/UnitStatus.constants";
 import { UNIT_STATUS_LABEL } from "@/app/features/administration/unit-catalog/constants/UnitStatusLabel.constants";
 import { resolveCategoryUnitsPath } from "@/app/features/administration/unit-catalog/utils/resolveUnitPaths";
 import { E2E_NEXT_NOT_FOUND_MESSAGE } from "../constants/E2eCategoryBehavior.constants";
 import { HEADING_LEVEL } from "../constants/E2eRuntime.constants";
-import { createCategoryCardOptionsPage } from "./CategoryCardOptions.page";
 
 export const createCategoryUnitListPage = (page: Page) => {
-  const categoryCardOptionsPage =
-    createCategoryCardOptionsPage();
-
   const goTo = async (
     categoryId: string
   ): Promise<void> => {
     await page.goto(resolveCategoryUnitsPath(categoryId));
-  };
-
-  const getUnitsLink = (categoryCard: Locator): Locator =>
-    categoryCard.getByRole(ARIA_ROLE.LINK, {
-      name: CATEGORY_CATALOG_COPY.UNITS_LINK,
-    });
-
-  const clickUnitsLink = async (
-    categoryCard: Locator
-  ): Promise<void> => {
-    await categoryCardOptionsPage.openOptions(categoryCard);
-    await getUnitsLink(categoryCard).click();
   };
 
   const getHeading = (categoryName: string): Locator =>
@@ -74,8 +57,6 @@ export const createCategoryUnitListPage = (page: Page) => {
 
   return {
     goTo,
-    clickUnitsLink,
-    getUnitsLink,
     getHeading,
     getAddLink,
     getEmptyStateTitle,

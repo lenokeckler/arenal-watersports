@@ -15,6 +15,7 @@ export const ROUTE_SEPARATOR = "/";
 export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
   PATHS.RESERVATIONS.EXTERNAL_GUIDE_NEW,
   "/reservations/[reservationId]",
+  "/administration/categories/[categoryId]",
   "/administration/categories/[categoryId]/alerts",
   "/administration/categories/[categoryId]/behavior",
   "/administration/categories/[categoryId]/deposit",
@@ -25,6 +26,8 @@ export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
   "/administration/categories/[categoryId]/units/new",
   "/administration/combos/[comboId]",
   "/administration/extras/[extraId]",
+  "/administration/extras/[extraId]/compatibility",
+  "/administration/extras/[extraId]/compatibility/[categoryId]",
   "/administration/tariffs/[categoryId]",
   "/board/categories/[categoryId]",
   "/operations/unit-photos/[unitId]",
@@ -32,10 +35,13 @@ export const EXCLUDED_PAGE_ROUTES: readonly string[] = [
   `${PATHS.HISTORY.ROOT}${ROUTE_SEPARATOR}[reservationId]`,
   "/reservations/[reservationId]/cancel",
   "/reservations/[reservationId]/charge",
+  "/reservations/[reservationId]/deposit",
   "/reservations/[reservationId]/edit",
+  "/reservations/[reservationId]/extra-time",
   "/reservations/[reservationId]/postpone",
   "/reservations/[reservationId]/refund",
   "/reservations/[reservationId]/split",
+  "/reservations/deposits/[depositId]/resolve",
 ];
 
 export const CLASSIFIED_PAGE_ROUTES: readonly string[] = [
