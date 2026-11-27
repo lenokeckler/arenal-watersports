@@ -1,3 +1,4 @@
+import { BOARD_UNIT_FILTER } from "@/app/constants";
 import { isValidElement } from "react";
 import {
   beforeEach,
@@ -48,6 +49,7 @@ describe("EquipmentBoardEntry", () => {
     expect(isValidElement(entry)).toBe(true);
     expect(entry.type).toBe(EquipmentBoard);
     expect(entry.props).toEqual({
+      filter: BOARD_UNIT_FILTER.ALL,
       pendingDispatch: { count: 4, isVisible: true },
     });
   });

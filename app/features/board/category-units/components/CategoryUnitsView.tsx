@@ -8,8 +8,8 @@ const CategoryUnitsView = ({
   canDispatch,
   categoryId,
   categoryName,
+  filterControl,
   image,
-  unitCount,
   units,
 }: CategoryUnitsViewProps): React.JSX.Element =>
   canDispatch ? (
@@ -17,15 +17,15 @@ const CategoryUnitsView = ({
       afterHeader={afterHeader}
       categoryId={categoryId}
       categoryName={categoryName}
+      filterControl={filterControl}
       image={image}
-      unitCount={unitCount}
       units={units}
     />
   ) : (
     <>
       <CategoryUnitsHeader
         categoryName={categoryName}
-        unitCount={unitCount}
+        filterControl={filterControl}
       />
       {afterHeader}
       <CategoryUnitsList
