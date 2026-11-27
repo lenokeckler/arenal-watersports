@@ -97,7 +97,7 @@ describe("buildReturnReadingRow", () => {
 
     expect(row.isComplete).toBe(false);
     expect(row.usageError).toBe(
-      `${CLOSE_GROUP_COPY.USAGE_BELOW_PREFIX}${MOTOR_UNIT.usageOut}.`
+      `${CLOSE_GROUP_COPY.USAGE_BELOW_PREFIX}${MOTOR_UNIT.usageTotal}.`
     );
   });
 

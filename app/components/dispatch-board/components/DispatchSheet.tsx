@@ -9,6 +9,7 @@ import DispatchSheetBody from "./DispatchSheetBody";
 const DispatchSheet = ({
   customerName,
   initialCategoryId,
+  isCombo = false,
   onClose,
   onDispatched,
   preselectedUnitIds,
@@ -26,6 +27,7 @@ const DispatchSheet = ({
       onClose={onClose}
     >
       <DispatchSheetBody
+        isCombo={isCombo}
         preselectedUnitIds={preselectedUnitIds}
         viewModel={viewModel}
       />

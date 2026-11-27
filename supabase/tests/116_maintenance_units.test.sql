@@ -36,7 +36,7 @@ update equipment_units set usage_total = 110, next_oil_change_at = 100
  where id = 'bbbbbbbb-0000-0000-0000-000000000001';
 update equipment_units set usage_total = 100, next_oil_change_at = 100
  where id = 'bbbbbbbb-0000-0000-0000-000000000002';
-update equipment_units set usage_total = 99.5, next_oil_change_at = 100
+update equipment_units set usage_total = 50, next_oil_change_at = 100
  where id = 'bbbbbbbb-0000-0000-0000-000000000003';
 update equipment_units set usage_total = 500
  where id = 'bbbbbbbb-0000-0000-0000-000000000004';

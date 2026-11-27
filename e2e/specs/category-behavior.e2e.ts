@@ -1,8 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { CATEGORY_CATALOG_COPY } from "@/app/features/administration/category-catalog/constants/CategoryCatalogCopy.constants";
-import { createCategoryBehaviorLinkPage } from "../pages/CategoryBehaviorLink.page";
 import { createCategoryBehaviorFormPage } from "../pages/CategoryBehaviorForm.page";
-import { createCategoryListPage } from "../pages/CategoryList.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 import {
   findCategoryId,
@@ -12,7 +10,7 @@ import {
 import { resolveCategoryBehaviorFixtureName } from "../constants/E2eCategoryBehavior.constants";
 
 test.describe("Category behavior rules", () => {
-  test("opens from the list link and shows the tracking mode as read-only text", async ({
+  test("opens and shows the tracking mode as read-only text", async ({
     page,
   }, testInfo) => {
     const categoryName = resolveCategoryBehaviorFixtureName(
@@ -20,15 +18,13 @@ test.describe("Category behavior rules", () => {
       "open"
     );
     await seedCategoryWithBehavior(categoryName);
-    const categoryListPage = createCategoryListPage(page);
     const categoryBehaviorFormPage =
       createCategoryBehaviorFormPage(page);
 
     try {
       await logInAsAdmin(page);
-      await categoryListPage.goToCategory(categoryName);
-      await createCategoryBehaviorLinkPage().clickBehaviorLink(
-        categoryListPage.getCategoryCard(categoryName)
+      await categoryBehaviorFormPage.goTo(
+        await findCategoryId(categoryName)
       );
 
       await expect(

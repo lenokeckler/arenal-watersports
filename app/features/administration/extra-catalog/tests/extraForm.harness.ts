@@ -109,3 +109,34 @@ export const submitExtraViewModel = async (
     await result.current.onSubmit(buildFormSubmitEvent());
   });
 };
+
+export const toggleExtraOccupancy = (
+  result: ReturnType<typeof renderExtraViewModel>["result"],
+  checked: boolean
+): void => {
+  act(() => {
+    result.current.onOccupancySelect(checked)();
+  });
+};
+
+export const changeExtraOccupiesCategory = (
+  result: ReturnType<typeof renderExtraViewModel>["result"],
+  value: string
+): void => {
+  act(() => {
+    result.current.onOccupiesCategoryChange(
+      buildExtraFormFieldChangeEvent({ value })
+    );
+  });
+};
+
+export const changeExtraOccupiesQuantity = (
+  result: ReturnType<typeof renderExtraViewModel>["result"],
+  value: string
+): void => {
+  act(() => {
+    result.current.onOccupiesQuantityChange(
+      buildExtraFormFieldChangeEvent({ value })
+    );
+  });
+};
