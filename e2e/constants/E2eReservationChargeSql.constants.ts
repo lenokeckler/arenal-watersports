@@ -42,6 +42,19 @@ select concat_ws('|',
 from (select 1) base
 left join first_charge on true
 left join reservation_pricing pricing on pricing.reservation_id = :'reservation';`,
+  READ_PARTS: `
+select concat_ws('|',
+  coalesce((
+    select string_agg(concat_ws(',', charge.currency, charge.amount, charge.kind, charge.payment_method, (charge.created_by = :'uid')::text), ';' order by charge.currency)
+    from reservation_charges charge
+    where charge.reservation_id = :'reservation'
+  ), ''),
+  coalesce(pricing.agreed_amount_usd::text, ''),
+  coalesce(pricing.agreed_amount_crc::text, ''),
+  (select count(*) from reservation_pricing where reservation_id = :'reservation')
+)
+from (select 1) base
+left join reservation_pricing pricing on pricing.reservation_id = :'reservation';`,
   SEED: `
 with unit as (
   select id, category_id from equipment_units where code = :'unit'

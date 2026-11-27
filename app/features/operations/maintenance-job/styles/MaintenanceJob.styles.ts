@@ -15,3 +15,21 @@ export const MAINTENANCE_JOB_ERROR_CLASS =
 
 export const MAINTENANCE_JOB_COST_CLASS =
   "grid grid-cols-1 gap-md sm:grid-cols-2";
+
+export const MAINTENANCE_JOB_PRESET_UNIT_CLASS =
+  "flex flex-col";
+
+export const MAINTENANCE_JOB_PRESET_UNIT_LABEL_CLASS =
+  "mb-1 block text-sm font-bold text-on-surface md:text-base";
+
+export const MAINTENANCE_JOB_PRESET_UNIT_VALUE_CLASS =
+  "flex w-full items-center justify-between gap-md rounded-2xl border border-outline bg-surface-container-highest p-4 text-sm text-on-surface md:text-base";
+
+export const MAINTENANCE_JOB_PRESET_UNIT_ROW_CLASS =
+  "text-on-surface";
+
+export const MAINTENANCE_JOB_OIL_FIELD_CLASS =
+  "grid grid-cols-[1fr_auto] items-center gap-sm";
+
+export const MAINTENANCE_JOB_OIL_UNIT_CLASS =
+  "pt-6 text-body-base font-semibold text-on-surface-variant";

@@ -6,8 +6,14 @@ export const mapExtraToFormValues = ({
   name,
   priceUsd,
   priceCrc,
+  occupiesCategoryId,
+  occupiesQuantity,
 }: Extra): ExtraFormValues => ({
   name,
   priceUsd: safeString(priceUsd?.toString()),
   priceCrc: safeString(priceCrc?.toString()),
+  occupiesCategoryId: safeString(occupiesCategoryId),
+  occupiesQuantity: safeString(
+    occupiesQuantity?.toString()
+  ),
 });
