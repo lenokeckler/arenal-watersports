@@ -58,6 +58,7 @@ const renderSheet = (
 ) => {
   render(
     <CategoryUnitModifySheet
+      hasPhotos={false}
       onClose={onClose}
       readings={readings}
       unit={unit}

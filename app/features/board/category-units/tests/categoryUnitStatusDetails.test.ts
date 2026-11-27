@@ -6,6 +6,7 @@ import { buildUnitStatusDetails } from "../utils/buildUnitStatusDetails";
 import { hasStatusSheet } from "../utils/hasStatusSheet";
 import { resolveCategoryUnitRowKind } from "../utils/resolveCategoryUnitRowKind";
 import { DEFAULT_CATEGORY_UNIT } from "./CategoryUnits.constants";
+import { DAMAGE_ROW } from "./CategoryUnitDamageRow.constants";
 
 const JOB_ROW = {
   cost_amount: 12000,
@@ -15,13 +16,6 @@ const JOB_ROW = {
   performed_at: "2026-11-18",
   unit_id: "unit-1",
   work_type: "part_change",
-};
-
-const DAMAGE_ROW = {
-  cause: "rollover" as const,
-  created_at: "2026-11-19T15:00:00Z",
-  description: "Se volcó",
-  unit_id: "unit-1",
 };
 
 const INTERACTION = {
@@ -52,8 +46,9 @@ describe("buildUnitStatusDetails", () => {
     );
 
     expect(details.jobs).toHaveLength(1);
-    expect(details.jobs[0].cost).toMatch(/^₡ 12\s000$/);
+    expect(details.jobs[0].cost).toMatch(/^₡\s12\s000$/);
     expect(details.damage?.cause).toBe("rollover");
+    expect(details.pendingReportId).toBeNull();
   });
 
   it("keeps the five most recent jobs", () => {

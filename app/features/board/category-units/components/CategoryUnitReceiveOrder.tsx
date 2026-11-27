@@ -2,10 +2,13 @@
 
 import Button from "@/app/components/button/Button";
 import { BUTTON } from "@/app/components/button/constants";
+import ChoicePills from "@/app/components/choice-pills/ChoicePills";
 import FormField from "@/app/components/form-field/FormField";
 import Text from "@/app/components/text/Text";
 import {
   BUTTON_TYPES,
+  DAMAGE_CAUSE_LABELS,
+  DAMAGE_CAUSE_ORDER,
   INPUT_TYPES,
   STRING,
 } from "@/app/constants";
@@ -22,8 +25,10 @@ import {
 } from "../styles/CategoryUnitSheets.styles";
 
 const CategoryUnitReceiveOrder = ({
+  damageCause,
   damageText,
   hasDamage,
+  onDamageCauseChange,
   onDamageTextChange,
   onHasDamageChange,
 }: CategoryUnitReceiveOrderProps): React.JSX.Element => (
@@ -57,6 +62,18 @@ const CategoryUnitReceiveOrder = ({
         {CATEGORY_UNITS_COPY.RECEIVE_ORDER_DAMAGED}
       </Button>
     </div>
+    {hasDamage && (
+      <ChoicePills
+        legend={CATEGORY_UNITS_COPY.RECEIVE_CAUSE_LABEL}
+        name={CATEGORY_UNIT_FIELD_ID.CAUSE}
+        onChange={onDamageCauseChange}
+        options={DAMAGE_CAUSE_ORDER.map((cause) => ({
+          label: DAMAGE_CAUSE_LABELS[cause],
+          value: cause,
+        }))}
+        value={damageCause}
+      />
+    )}
     {hasDamage && (
       <FormField
         id={CATEGORY_UNIT_FIELD_ID.DAMAGE}

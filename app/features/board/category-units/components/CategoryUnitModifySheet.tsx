@@ -28,9 +28,11 @@ import {
   CATEGORY_UNIT_SHEET_ALERT_CLASS,
   CATEGORY_UNIT_SHEET_STACK_CLASS,
 } from "../styles/CategoryUnitSheets.styles";
+import CategoryUnitAccessRow from "./CategoryUnitAccessRow";
 import CategoryUnitMaintenanceChoice from "./CategoryUnitMaintenanceChoice";
 
 const CategoryUnitModifySheet = ({
+  hasPhotos,
   onClose,
   readings,
   unit,
@@ -112,6 +114,10 @@ const CategoryUnitModifySheet = ({
         >
           {CATEGORY_UNITS_COPY.MODIFY_SAVE}
         </Button>
+        <CategoryUnitAccessRow
+          hasPhotos={hasPhotos}
+          unitId={unit.id}
+        />
       </div>
     </ActionSheet>
   );

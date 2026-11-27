@@ -1,7 +1,8 @@
 export const BOARD_UNIT_STATUS_DETAILS_QUERY = {
   DAMAGE: {
     ORDER_BY: "created_at",
-    PROJECTION: "unit_id,cause,description,created_at",
+    PROJECTION:
+      "id,unit_id,cause,description,detail_pending,created_at",
     TABLE: "damage_reports",
   },
   JOBS: {

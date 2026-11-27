@@ -17,6 +17,8 @@ Let any worker see the state of every unit of one category, and, for an occupied
 - Cards show the category photo, the code, the status chip, the gauge (lines only, no text), the hours or kilometers and the impact count of the motor units. They never write the customer or the reservation.
 - For a worker with the operations area: the available units are tappable to dispatch (see Dispatch from the category), an occupied unit opens who carries it, and the Editar button next to the unit count turns every motor card into its edit panel (see Edit mode). For everyone else nothing is interactive.
 - Reached from the board: every card links here (a grouped card opens its first member by name).
+- On a wide screen the cards stay centered and grow when a category without pages shows three or fewer: one or two are capped at 384px, three share the row. A phone keeps two per row.
+- The panel of a unit leads to a damage report, its history and, when the category keeps them, its photos.
 - Group switch, a design decision of the product owner: when the category belongs to a group with more than one visible member, a `nav` under the header ("Categorías del mismo grupo") shows one pill link per member, by name, the current one with `aria-current="page"`, each linking to that member's units screen. A category without a group, or alone in it, shows nothing.
 
 ## Out of scope

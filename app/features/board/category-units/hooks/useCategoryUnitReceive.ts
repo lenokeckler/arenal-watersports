@@ -5,6 +5,7 @@ import { useState } from "react";
 import { parseUsageInput } from "@/app/components/dispatch-board/utils/parseUsageInput";
 import { STRING } from "@/app/constants";
 import type { NullableRef } from "@/app/types";
+import type { BoardUnitReceiveInput } from "../models/BoardUnitReceiveInput.interface";
 import { submitBoardUnitReceive } from "../actions/submitBoardUnitReceive";
 import { CATEGORY_UNIT_UPDATE_STATUS } from "../constants/CategoryUnits.constants";
 import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
@@ -36,6 +37,8 @@ export const useCategoryUnitReceive = ({
   const [damageText, setDamageText] = useState<string>(
     STRING.Empty
   );
+  const [damageCause, setDamageCause] =
+    useState<BoardUnitReceiveInput["damageCause"]>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] =
     useState<NullableRef<string>>(null);
@@ -45,15 +48,19 @@ export const useCategoryUnitReceive = ({
     : null;
   const hasValidUsage = !hasUsage || usageTotal !== null;
   const hasValidDamage =
-    !hasDamage || damageText.trim() !== STRING.Empty;
-  const canSave =
+    !hasDamage ||
+    (damageCause !== null &&
+      damageText.trim() !== STRING.Empty);
+  const canSaveLater =
     hasValidUsage &&
-    hasValidDamage &&
     (!readings.hasFuelGauge || fuelLevel !== null) &&
     !isSaving;
+  const canSave = canSaveLater && hasValidDamage;
 
-  const handleSave = async (): Promise<void> => {
-    if (!canSave) {
+  const handleSave = async (
+    detailLater: boolean
+  ): Promise<void> => {
+    if (!(detailLater ? canSaveLater : canSave)) {
       return;
     }
 
@@ -62,7 +69,9 @@ export const useCategoryUnitReceive = ({
 
     try {
       const { status } = await submitBoardUnitReceive({
+        damageCause,
         damageDescription: damageText,
+        detailLater,
         fuelLevel: readings.hasFuelGauge ? fuelLevel : null,
         fuelMax: readings.fuelMax,
         hasDamage,
@@ -96,6 +105,15 @@ export const useCategoryUnitReceive = ({
 
   return {
     canSave,
+    canSaveLater,
+    damageCause,
+    handleDamageCauseChange: (value) =>
+      setDamageCause(
+        value as BoardUnitReceiveInput["damageCause"]
+      ),
+    handleSaveLater: () => {
+      void handleSave(true);
+    },
     damageText,
     errorMessage,
     fuelLevel,
@@ -104,7 +122,7 @@ export const useCategoryUnitReceive = ({
     handleHasDamageChange: setHasDamage,
     handleImpactCountChange: setImpactCount,
     handleSave: () => {
-      void handleSave();
+      void handleSave(false);
     },
     handleUsageChange: (event) => {
       setErrorMessage(null);

@@ -60,21 +60,19 @@ export const CATEGORY_UNITS_COPY = {
   RECEIVE_SAVING: "Recibiendo…",
   RECEIVE_TITLE: (code: string): string =>
     `Recibir · ${code}`,
-  STATUS_COST_AMOUNT: (
-    symbol: string,
-    amount: string
-  ): string => `${symbol} ${amount}`,
-  STATUS_COST_SYMBOLS: { CRC: "₡", USD: "$" } as Record<
-    string,
-    string
-  >,
   STATUS_DAMAGE_CAUSE: "Causa",
-  STATUS_DAMAGE_CAUSES: {
-    collision: "Choque",
-    machine_failure: "Falla de máquina",
-    other: "Otra",
-    rollover: "Vuelco",
-  } as Record<string, string>,
+  STATUS_DAMAGE_COMPLETE: "Completar reporte",
+  STATUS_DAMAGE_PENDING:
+    "Falta el detalle de un daño de esta unidad.",
+  STATUS_DAMAGE_UNKNOWN: "Por completar",
+  ACCESS_LABEL: "Más de esta unidad",
+  ACCESS_DAMAGE: "Reportar daño",
+  ACCESS_PHOTOS: "Fotos",
+  ACCESS_HISTORY: "Historial",
+  RECEIVE_CAUSE_LABEL: "Causa",
+  RECEIVE_LATER: "Recibir y detallar después",
+  RECEIVE_LATER_HINT:
+    "La unidad no queda disponible aunque falte el detalle.",
   STATUS_DAMAGE_DATE: "Fecha",
   STATUS_DAMAGE_TITLE: "Daño reportado",
   STATUS_DAMAGE_WHAT: "Qué pasó",

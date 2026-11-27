@@ -5,4 +5,5 @@ import type { CategoryUnitMaintenanceJob } from "./CategoryUnitMaintenanceJob.in
 export interface CategoryUnitStatusDetails {
   damage: NullableRef<CategoryUnitDamage>;
   jobs: CategoryUnitMaintenanceJob[];
+  pendingReportId: NullableRef<string>;
 }

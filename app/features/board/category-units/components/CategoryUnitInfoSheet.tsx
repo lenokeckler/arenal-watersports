@@ -22,9 +22,11 @@ import {
   CATEGORY_UNIT_SHEET_TOOLBAR_CLASS,
   CATEGORY_UNITS_EDIT_TOGGLE_CLASS,
 } from "../styles/CategoryUnitSheets.styles";
+import CategoryUnitAccessRow from "./CategoryUnitAccessRow";
 import CategoryUnitInfoDetails from "./CategoryUnitInfoDetails";
 
 const CategoryUnitInfoSheet = ({
+  hasPhotos,
   occupancy,
   onClose,
   onReceive,
@@ -93,6 +95,10 @@ const CategoryUnitInfoSheet = ({
             {CATEGORY_UNITS_COPY.RECEIVE}
           </Button>
         </div>
+        <CategoryUnitAccessRow
+          hasPhotos={hasPhotos}
+          unitId={unit.id}
+        />
       </div>
     </ActionSheet>
   );

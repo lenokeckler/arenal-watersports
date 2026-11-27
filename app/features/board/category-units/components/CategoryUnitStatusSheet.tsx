@@ -26,10 +26,13 @@ import {
   CATEGORY_UNIT_STATUS_HINT_CLASS,
   CATEGORY_UNIT_STATUS_LINK_CLASS,
 } from "../styles/CategoryUnitStatusSheet.styles";
+import CategoryUnitAccessRow from "./CategoryUnitAccessRow";
+import CategoryUnitPendingDamage from "./CategoryUnitPendingDamage";
 import CategoryUnitStatusDamage from "./CategoryUnitStatusDamage";
 import CategoryUnitStatusJobs from "./CategoryUnitStatusJobs";
 
 const CategoryUnitStatusSheet = ({
+  hasPhotos,
   onClose,
   unit,
 }: CategoryUnitStatusSheetProps): React.JSX.Element => {
@@ -37,6 +40,8 @@ const CategoryUnitStatusSheet = ({
   const isDamaged =
     unit.status === INVENTORY_UNIT_STATUS.DAMAGED;
   const damage = unit.statusDetails?.damage ?? null;
+  const pendingReportId =
+    unit.statusDetails?.pendingReportId ?? null;
 
   return (
     <ActionSheet
@@ -47,6 +52,11 @@ const CategoryUnitStatusSheet = ({
       onClose={onClose}
     >
       <div className={CATEGORY_UNIT_SHEET_STACK_CLASS}>
+        {pendingReportId && (
+          <CategoryUnitPendingDamage
+            reportId={pendingReportId}
+          />
+        )}
         {isDamaged ? (
           damage && (
             <CategoryUnitStatusDamage damage={damage} />
@@ -104,6 +114,10 @@ const CategoryUnitStatusSheet = ({
             {CATEGORY_UNITS_COPY.STATUS_RETURN_TO_SERVICE}
           </Button>
         </div>
+        <CategoryUnitAccessRow
+          hasPhotos={hasPhotos}
+          unitId={unit.id}
+        />
       </div>
     </ActionSheet>
   );

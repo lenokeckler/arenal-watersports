@@ -12,7 +12,10 @@ import {
   it,
   vi,
 } from "vitest";
-import { ARIA_ROLE } from "@/app/constants";
+import {
+  ARIA_ROLE,
+  DAMAGE_CAUSE_LABELS,
+} from "@/app/constants";
 import { submitBoardUnitReceive } from "../actions/submitBoardUnitReceive";
 import CategoryUnitReceiveSheet from "../components/CategoryUnitReceiveSheet";
 import { CATEGORY_UNIT_UPDATE_STATUS } from "../constants/CategoryUnits.constants";
@@ -67,6 +70,13 @@ const getReceive = () =>
   screen.getByRole(ARIA_ROLE.BUTTON, {
     name: CATEGORY_UNITS_COPY.RECEIVE,
   });
+
+const chooseRollover = () =>
+  userEvent.click(
+    screen.getByRole(ARIA_ROLE.RADIO, {
+      name: DAMAGE_CAUSE_LABELS.rollover,
+    })
+  );
 
 describe("CategoryUnitReceiveSheet", () => {
   beforeEach(() => {
@@ -129,7 +139,9 @@ describe("CategoryUnitReceiveSheet", () => {
 
     await waitFor(() =>
       expect(submitBoardUnitReceive).toHaveBeenCalledWith({
+        damageCause: null,
         damageDescription: "",
+        detailLater: false,
         fuelLevel: 1,
         fuelMax: MOTOR_READINGS.fuelMax,
         hasDamage: false,
@@ -161,6 +173,10 @@ describe("CategoryUnitReceiveSheet", () => {
       RECEIVE_DAMAGE_TEXT
     );
 
+    expect(getReceive()).toBeDisabled();
+
+    await chooseRollover();
+
     expect(getReceive()).toBeEnabled();
 
     fireEvent.click(getReceive());
@@ -168,7 +184,9 @@ describe("CategoryUnitReceiveSheet", () => {
     await waitFor(() =>
       expect(submitBoardUnitReceive).toHaveBeenCalledWith(
         expect.objectContaining({
+          damageCause: "rollover",
           damageDescription: RECEIVE_DAMAGE_TEXT,
+          detailLater: false,
           hasDamage: true,
         })
       )

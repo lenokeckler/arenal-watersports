@@ -1,9 +1,10 @@
 import { ARIA_ROLE } from "@/app/constants";
+import { resolveCardGridSize } from "@/app/utils/card-grid/resolveCardGridSize";
 import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 import type { CategoryUnitsListProps } from "../models/CategoryUnitsListProps.interface";
 import {
   CATEGORY_UNITS_LIST_CLASS,
-  CATEGORY_UNITS_LIST_ITEM_CLASS,
+  CATEGORY_UNITS_LIST_ITEM_CLASSES,
 } from "../styles/CategoryUnits.styles";
 import { resolveCategoryUnitRowKind } from "../utils/resolveCategoryUnitRowKind";
 import CategoryUnitListItem from "./CategoryUnitListItem";
@@ -12,6 +13,7 @@ const CategoryUnitsList = ({
   categoryName,
   image,
   interaction,
+  isPaginated = false,
   selection,
   units,
 }: CategoryUnitsListProps): React.JSX.Element => (
@@ -26,7 +28,11 @@ const CategoryUnitsList = ({
       <div
         key={unit.id}
         role={ARIA_ROLE.LISTITEM}
-        className={CATEGORY_UNITS_LIST_ITEM_CLASS}
+        className={
+          CATEGORY_UNITS_LIST_ITEM_CLASSES[
+            resolveCardGridSize(units.length, isPaginated)
+          ]
+        }
       >
         <CategoryUnitListItem
           image={image}
