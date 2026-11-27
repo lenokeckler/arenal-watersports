@@ -6,7 +6,6 @@ import {
 } from "../constants/E2eCategoryImage.constants";
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 import { createCategoryImagePage } from "../pages/CategoryImage.page";
-import { createCategoryListPage } from "../pages/CategoryList.page";
 import {
   readCategoryImagePath,
   removeCategoryWithImages,
@@ -18,7 +17,7 @@ import {
 import { logInAsAdmin } from "../support/logInAsAdmin";
 
 test.describe("Category image", () => {
-  test("opens from the Imagen link of the card with the no-image state", async ({
+  test("opens with the no-image state", async ({
     page,
   }, testInfo) => {
     const categoryName = resolveCategoryImageFixtureName(
@@ -26,14 +25,12 @@ test.describe("Category image", () => {
       "open"
     );
     await seedDeletableCategory(categoryName);
-    const categoryListPage = createCategoryListPage(page);
     const imagePage = createCategoryImagePage(page);
 
     try {
       await logInAsAdmin(page);
-      await categoryListPage.goToCategory(categoryName);
-      await imagePage.clickImageLink(
-        categoryListPage.getCategoryCard(categoryName)
+      await imagePage.goTo(
+        await findCategoryId(categoryName)
       );
 
       await expect(imagePage.getHeading()).toBeVisible();
