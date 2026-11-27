@@ -30,3 +30,4 @@ Raise a damage report for a machine, or complete one that was left to detail lat
 - A report is completed only once, and completing it adds only the difference of hits.
 - A report of a decommissioned machine cannot be completed.
 - The database functions `create_damage_report` and `complete_damage_report` enforce these rules.
+- Signed in accounts cannot insert a report directly; only those functions and the return of a trip write one.

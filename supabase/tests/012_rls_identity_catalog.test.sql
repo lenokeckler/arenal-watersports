@@ -534,8 +534,8 @@ set local role authenticated;
 set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}';
 
 select lives_ok(
-  $$ insert into damage_reports (unit_id, cause, description)
-     values ('bbbbbbbb-0000-0000-0000-000000000001', 'collision', 'golpe leve') $$,
+  $$ select create_damage_report(
+       'bbbbbbbb-0000-0000-0000-000000000001', 0, 'collision', 'golpe leve') $$,
   'operaciones reporta danos'
 );
 

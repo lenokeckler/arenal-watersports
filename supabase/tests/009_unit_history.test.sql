@@ -49,7 +49,6 @@ select throws_ok(
 );
 
 set local request.jwt.claims = '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}';
-set local role authenticated;
 
 select lives_ok(
   $$ insert into damage_reports (id, unit_id, cause, description, impact_delta, created_by)
@@ -58,8 +57,6 @@ select lives_ok(
              null) $$,
   'un reporte de dano valido, sin reserva, se acepta'
 );
-
-reset role;
 
 select is(
   (select row(unit_id, cause::text, description,
