@@ -9,6 +9,7 @@ export const ARIA_ROLE = {
   BANNER: "banner",
   HEADING: "heading",
   IMG: "img",
+  COMPLEMENTARY: "complementary",
   LINK: "link",
   MAIN: "main",
   PRESENTATION: "presentation",

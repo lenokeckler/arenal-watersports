@@ -4,4 +4,5 @@ export const TYPE_OF = {
   OBJECT: "object",
   STRING: "string",
   UNDEFINED: "undefined",
+  FUNCTION: "function",
 } as const;
