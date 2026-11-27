@@ -10,8 +10,13 @@ import { CATEGORY_LIST_CONTENT_CLASS } from "./styles/CategoryList.styles";
 const CategoryConfigureView = ({
   configuration,
 }: CategoryConfigureViewProps): React.JSX.Element => {
-  const { name, statusCard, sections, onToggleSection } =
-    useCategoryConfigureViewModel({ configuration });
+  const {
+    name,
+    statusCard,
+    sections,
+    reservations,
+    onToggleSection,
+  } = useCategoryConfigureViewModel({ configuration });
 
   return (
     <div className={CATEGORY_LIST_CONTENT_CLASS}>
@@ -21,6 +26,7 @@ const CategoryConfigureView = ({
         categoryId={configuration.id}
         trackingMode={configuration.behavior.trackingMode}
         sections={sections}
+        reservations={reservations}
         onToggleSection={onToggleSection}
       />
     </div>

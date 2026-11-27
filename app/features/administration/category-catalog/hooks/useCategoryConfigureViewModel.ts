@@ -8,8 +8,10 @@ import { STORE_SLICES } from "@/app/constants";
 import type { CategoryConfigureSectionId } from "../models/CategoryConfigureSectionId.type";
 import type { CategoryConfigureViewModel } from "../models/CategoryConfigureViewModel.interface";
 import type { CategoryConfigureViewProps } from "../models/CategoryConfigureViewProps.interface";
+import { applyCategoryReservationValues } from "../utils/applyCategoryReservationValues";
 import { resolveCategoryConfigureSections } from "../utils/resolveCategoryConfigureSections";
 import { resolveCategoryConfigureStatusCard } from "../utils/resolveCategoryConfigureStatusCard";
+import { useCategoryConfigureReservations } from "./useCategoryConfigureReservations";
 
 export const useCategoryConfigureViewModel = ({
   configuration,
@@ -19,6 +21,10 @@ export const useCategoryConfigureViewModel = ({
     (state: RootState) =>
       state[STORE_SLICES.CATEGORY_CONFIGURE].openSectionIds
   );
+  const { reservations, values } =
+    useCategoryConfigureReservations(
+      configuration.behavior
+    );
 
   const onToggleSection = (
     sectionId: CategoryConfigureSectionId
@@ -33,9 +39,10 @@ export const useCategoryConfigureViewModel = ({
     statusCard:
       resolveCategoryConfigureStatusCard(configuration),
     sections: resolveCategoryConfigureSections(
-      configuration,
+      applyCategoryReservationValues(configuration, values),
       openSectionIds
     ),
+    reservations,
     onToggleSection,
   };
 };

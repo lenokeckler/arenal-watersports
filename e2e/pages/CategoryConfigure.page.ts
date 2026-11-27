@@ -40,6 +40,18 @@ export const createCategoryConfigurePage = (page: Page) => {
       name: CATEGORY_CONFIGURE_COPY.ACTIVE_LABEL,
     });
 
+  const getSwitch = (label: string): Locator =>
+    page.getByRole(ARIA_ROLE.SWITCH, { name: label });
+
+  const getChip = (label: string): Locator =>
+    page.getByRole(ARIA_ROLE.BUTTON, {
+      name: label,
+      exact: true,
+    });
+
+  const getDurationField = (): Locator =>
+    page.getByRole(ARIA_ROLE.TEXTBOX);
+
   const getNotFoundMessage = (): Locator =>
     page.getByText(E2E_NEXT_NOT_FOUND_MESSAGE);
 
@@ -56,6 +68,9 @@ export const createCategoryConfigurePage = (page: Page) => {
     getSectionHeadings,
     getBackLink,
     getActiveSwitch,
+    getSwitch,
+    getChip,
+    getDurationField,
     getNotFoundMessage,
     toggleSection,
   };

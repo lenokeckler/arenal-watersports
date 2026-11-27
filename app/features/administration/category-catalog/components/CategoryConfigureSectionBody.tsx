@@ -7,12 +7,21 @@ import type { CategoryConfigureSectionBodyProps } from "../models/CategoryConfig
 import { CATEGORY_CONFIGURE_SECTION_BODY_LINK_CLASS } from "../styles/CategoryConfigureSectionBody.styles";
 import { resolveCategoryStockPath } from "../utils/resolveCategoryStockPath";
 import { resolveCategoryUnitsPath } from "../utils/resolveCategoryUnitsPath";
+import CategoryConfigureReservations from "./CategoryConfigureReservations";
 
 const CategoryConfigureSectionBody = ({
   sectionId,
   categoryId,
   trackingMode,
+  reservations,
 }: CategoryConfigureSectionBodyProps): NullableRef<React.JSX.Element> => {
+  if (
+    sectionId === CATEGORY_CONFIGURE_SECTION_ID.RESERVATIONS
+  ) {
+    return (
+      <CategoryConfigureReservations {...reservations} />
+    );
+  }
   if (
     sectionId !== CATEGORY_CONFIGURE_SECTION_ID.INVENTORY
   ) {

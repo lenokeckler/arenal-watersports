@@ -58,3 +58,12 @@ US-ADM-12 to US-ADM-15 as written in `docs/proyecto/historias-de-usuario.md`; pa
 - [ ] One screen shows the category with its status and a summary per concern. — 2a.
 - [ ] Every flag, deposit and alert is editable and saved together. — 2b and 2c.
 - [ ] Photo, reactivation and delete. — 2b and 2d.
+
+## Part 2b-1 requirements
+
+| Requirement                                                                                       | Test                                           |
+| ------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| Switches Se puede reservar and Solo con guía, duration chips 30/60/90/120 and Otra with the field | `CategoryConfigureReservations.test.tsx`       |
+| Otra, or a duration outside the presets, selects Otra and keeps the existing field validation     | `resolveCategoryDurationChipSelection.test.ts` |
+| Duration and guide only are hidden while the category is not reservable                           | `CategoryConfigureReservations.test.tsx`       |
+| The section summary follows the edited values; nothing is saved in this part                      | `category-configure.e2e.ts`                    |
