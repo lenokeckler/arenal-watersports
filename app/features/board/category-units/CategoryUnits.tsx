@@ -6,7 +6,10 @@ import {
 } from "@/app/constants";
 import BoardUnitFilter from "@/app/components/board-unit-filter/BoardUnitFilter";
 import BoardRealtime from "@/app/components/board-realtime/BoardRealtime";
-import { readBoardCategory } from "@/app/services/board";
+import {
+  readBoardCategory,
+  readBoardCategoryHasPhotos,
+} from "@/app/services/board";
 import { resolveCategoryImageOption } from "@/app/utils/category-image/resolveCategoryImageOption";
 import { resolveBoardCategoryPath } from "@/app/utils/board-paths/resolveBoardCategoryPath";
 import { parseBoardUnitFilter } from "@/app/utils/board-unit-filter/parseBoardUnitFilter";
@@ -69,6 +72,10 @@ const CategoryUnits = async ({
       pageCount,
     });
 
+  const hasPhotos = canDispatch
+    ? await readBoardCategoryHasPhotos(categoryId)
+    : false;
+
   const filterControl = (
     <BoardUnitFilter
       basePath={basePath}
@@ -110,6 +117,8 @@ const CategoryUnits = async ({
           categoryId={categoryId}
           categoryName={categoryName}
           filterControl={filterControl}
+          hasPhotos={hasPhotos}
+          isPaginated={pageCount > 1}
           image={resolveCategoryImageOption(
             category.image_path,
             categoryName

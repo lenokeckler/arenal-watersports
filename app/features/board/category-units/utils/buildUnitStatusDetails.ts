@@ -16,15 +16,19 @@ export const buildUnitStatusDetails = (
     (row) => row.unit_id === unitId
   );
 
+  const pendingDamage = damages.find(
+    (row) => row.unit_id === unitId && row.detail_pending
+  );
+
   return {
-    damage:
-      latestDamage?.cause && latestDamage.description
-        ? {
-            cause: latestDamage.cause,
-            description: latestDamage.description,
-            reportedAt: latestDamage.created_at,
-          }
-        : null,
+    pendingReportId: pendingDamage?.id ?? null,
+    damage: latestDamage
+      ? {
+          cause: latestDamage.cause,
+          description: latestDamage.description,
+          reportedAt: latestDamage.created_at,
+        }
+      : null,
     jobs: jobs
       .filter((row) => row.unit_id === unitId)
       .slice(0, RECENT_JOBS_LIMIT)

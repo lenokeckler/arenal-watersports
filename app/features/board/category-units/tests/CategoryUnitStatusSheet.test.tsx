@@ -11,7 +11,11 @@ import {
   it,
   vi,
 } from "vitest";
-import { INVENTORY_UNIT_STATUS } from "@/app/constants";
+import {
+  ARIA_ROLE,
+  INVENTORY_UNIT_STATUS,
+  PATHS,
+} from "@/app/constants";
 import { submitBoardUnitMaintenance } from "../actions/submitBoardUnitMaintenance";
 import CategoryUnitStatusSheet from "../components/CategoryUnitStatusSheet";
 import { CATEGORY_UNIT_UPDATE_STATUS } from "../constants/CategoryUnits.constants";
@@ -36,6 +40,7 @@ const MAINTENANCE_UNIT: CategoryUnit = {
   status: INVENTORY_UNIT_STATUS.IN_MAINTENANCE,
   statusDetails: {
     damage: null,
+    pendingReportId: null,
     jobs: [
       {
         cost: "₡ 18.000",
@@ -59,12 +64,14 @@ const DAMAGED_UNIT: CategoryUnit = {
       reportedAt: "2026-11-19T15:00:00Z",
     },
     jobs: [],
+    pendingReportId: null,
   },
 };
 
 const renderSheet = (unit: CategoryUnit) =>
   render(
     <CategoryUnitStatusSheet
+      hasPhotos
       onClose={onClose}
       unit={unit}
     />
@@ -77,6 +84,51 @@ describe("CategoryUnitStatusSheet", () => {
       {
         status: CATEGORY_UNIT_UPDATE_STATUS.UPDATED,
       }
+    );
+  });
+
+  it("offers damage, photos and history of the unit", () => {
+    renderSheet(MAINTENANCE_UNIT);
+
+    expect(
+      screen.getByRole(ARIA_ROLE.LINK, {
+        name: new RegExp(CATEGORY_UNITS_COPY.ACCESS_DAMAGE),
+      })
+    ).toHaveAttribute(
+      "href",
+      PATHS.OPERATIONS.DAMAGE_REPORT_FOR_UNIT(
+        MAINTENANCE_UNIT.id
+      )
+    );
+    expect(
+      screen.getByRole(ARIA_ROLE.LINK, {
+        name: new RegExp(
+          CATEGORY_UNITS_COPY.ACCESS_HISTORY
+        ),
+      })
+    ).toHaveAttribute(
+      "href",
+      PATHS.OPERATIONS.UNIT_HISTORY(MAINTENANCE_UNIT.id)
+    );
+  });
+
+  it("asks to complete a report that was left for later", () => {
+    renderSheet({
+      ...MAINTENANCE_UNIT,
+      statusDetails: {
+        damage: null,
+        jobs: [],
+        pendingReportId: "report-9",
+      },
+    });
+
+    expect(
+      screen.getByRole(ARIA_ROLE.LINK, {
+        name: CATEGORY_UNITS_COPY.STATUS_DAMAGE_COMPLETE,
+      })
+    ).toHaveAttribute(
+      "href",
+      PATHS.OPERATIONS.DAMAGE_REPORT_COMPLETE("report-9")
     );
   });
 
@@ -96,7 +148,11 @@ describe("CategoryUnitStatusSheet", () => {
   it("says no job was noted when the unit has none", () => {
     renderSheet({
       ...MAINTENANCE_UNIT,
-      statusDetails: { damage: null, jobs: [] },
+      statusDetails: {
+        damage: null,
+        jobs: [],
+        pendingReportId: null,
+      },
     });
 
     expect(

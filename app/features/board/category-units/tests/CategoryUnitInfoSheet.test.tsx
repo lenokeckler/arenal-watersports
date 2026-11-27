@@ -45,6 +45,7 @@ const renderSheet = () => {
 
   render(
     <CategoryUnitInfoSheet
+      hasPhotos
       occupancy={occupancy}
       onClose={vi.fn()}
       onReceive={onReceive}

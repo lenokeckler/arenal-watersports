@@ -9,7 +9,9 @@ const CategoryUnitsView = ({
   categoryId,
   categoryName,
   filterControl,
+  hasPhotos,
   image,
+  isPaginated,
   units,
 }: CategoryUnitsViewProps): React.JSX.Element =>
   canDispatch ? (
@@ -18,7 +20,9 @@ const CategoryUnitsView = ({
       categoryId={categoryId}
       categoryName={categoryName}
       filterControl={filterControl}
+      hasPhotos={hasPhotos}
       image={image}
+      isPaginated={isPaginated}
       units={units}
     />
   ) : (
@@ -31,6 +35,7 @@ const CategoryUnitsView = ({
       <CategoryUnitsList
         categoryName={categoryName}
         image={image}
+        isPaginated={isPaginated}
         units={units}
       />
     </>

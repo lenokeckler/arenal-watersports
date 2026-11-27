@@ -1,5 +1,7 @@
+import type { NullableRef } from "@/app/types";
+
 export interface CategoryUnitDamage {
-  cause: string;
-  description: string;
+  cause: NullableRef<string>;
+  description: NullableRef<string>;
   reportedAt: string;
 }

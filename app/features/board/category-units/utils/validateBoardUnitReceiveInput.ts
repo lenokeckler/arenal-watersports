@@ -1,4 +1,9 @@
-import { STRING, UUID_PATTERN } from "@/app/constants";
+import {
+  DAMAGE_CAUSE_ORDER,
+  STRING,
+  TYPE_OF,
+  UUID_PATTERN,
+} from "@/app/constants";
 import {
   CATEGORY_UNIT_LIMITS,
   CATEGORY_UNIT_RECEIVE,
@@ -14,13 +19,34 @@ const isWholeBetween = (
   Number.isInteger(value) && value >= min && value <= max;
 
 const hasValidDamage = ({
+  damageCause,
   damageDescription,
+  detailLater,
   hasDamage,
-}: BoardUnitReceiveInput): boolean =>
-  !hasDamage ||
-  (damageDescription.trim() !== STRING.Empty &&
-    damageDescription.length <=
-      CATEGORY_UNIT_RECEIVE.DAMAGE_MAX_LENGTH);
+}: BoardUnitReceiveInput): boolean => {
+  if (!hasDamage) {
+    return true;
+  }
+
+  const isKnownCause =
+    damageCause !== null &&
+    (DAMAGE_CAUSE_ORDER as readonly string[]).includes(
+      damageCause
+    );
+
+  if (
+    typeof detailLater !== TYPE_OF.BOOLEAN ||
+    damageDescription.length >
+      CATEGORY_UNIT_RECEIVE.DAMAGE_MAX_LENGTH
+  ) {
+    return false;
+  }
+
+  return detailLater
+    ? damageCause === null || isKnownCause
+    : isKnownCause &&
+        damageDescription.trim() !== STRING.Empty;
+};
 
 export const validateBoardUnitReceiveInput = (
   input: BoardUnitReceiveInput

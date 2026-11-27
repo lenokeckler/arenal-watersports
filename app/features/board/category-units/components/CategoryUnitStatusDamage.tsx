@@ -1,4 +1,5 @@
 import { Text } from "@/app/components";
+import { DAMAGE_CAUSE_LABELS } from "@/app/constants";
 import { CATEGORY_UNITS_COPY } from "../constants/CategoryUnitsCopy.constants";
 import type { CategoryUnitStatusDamageProps } from "../models/CategoryUnitStatusDamageProps.interface";
 import {
@@ -9,6 +10,9 @@ import {
   CATEGORY_UNIT_STATUS_JOB_TITLE_CLASS,
 } from "../styles/CategoryUnitStatusSheet.styles";
 import { formatStatusDate } from "../utils/formatStatusDate";
+
+const DAMAGE_CAUSE_LABELS_BY_CODE: Record<string, string> =
+  DAMAGE_CAUSE_LABELS;
 
 const CategoryUnitStatusDamage = ({
   damage,
@@ -26,9 +30,10 @@ const CategoryUnitStatusDamage = ({
       <Text
         className={CATEGORY_UNIT_STATUS_JOB_TITLE_CLASS}
       >
-        {CATEGORY_UNITS_COPY.STATUS_DAMAGE_CAUSES[
-          damage.cause
-        ] ?? damage.cause}
+        {damage.cause
+          ? (DAMAGE_CAUSE_LABELS_BY_CODE[damage.cause] ??
+            damage.cause)
+          : CATEGORY_UNITS_COPY.STATUS_DAMAGE_UNKNOWN}
       </Text>
     </div>
     <div className={CATEGORY_UNIT_STATUS_JOB_CLASS}>
@@ -38,7 +43,8 @@ const CategoryUnitStatusDamage = ({
       <Text
         className={CATEGORY_UNIT_STATUS_JOB_TITLE_CLASS}
       >
-        {damage.description}
+        {damage.description ??
+          CATEGORY_UNITS_COPY.STATUS_DAMAGE_UNKNOWN}
       </Text>
     </div>
     <div className={CATEGORY_UNIT_STATUS_JOB_CLASS}>

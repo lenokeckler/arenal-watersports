@@ -2,7 +2,12 @@ import type { Database } from "@/app/types";
 
 export type BoardUnitDamageRow = Pick<
   Database["public"]["Tables"]["damage_reports"]["Row"],
-  "cause" | "created_at" | "description" | "unit_id"
+  | "cause"
+  | "created_at"
+  | "description"
+  | "detail_pending"
+  | "id"
+  | "unit_id"
 >;
 
 export type BoardUnitJobRow = Pick<

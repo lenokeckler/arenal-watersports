@@ -12,7 +12,10 @@ import type { CategoryUnitStatusViewModel } from "../models/CategoryUnitStatusVi
 export const useCategoryUnitStatus = ({
   onClose,
   unit,
-}: CategoryUnitStatusSheetProps): CategoryUnitStatusViewModel => {
+}: Pick<
+  CategoryUnitStatusSheetProps,
+  "onClose" | "unit"
+>): CategoryUnitStatusViewModel => {
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] =

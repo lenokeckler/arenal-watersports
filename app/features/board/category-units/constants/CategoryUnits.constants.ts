@@ -26,8 +26,7 @@ export const DEFAULT_LOW_FUEL_LINES = 1;
 
 export const CATEGORY_UNIT_IMAGE = {
   HEIGHT: 400,
-  SIZES:
-    "(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw",
+  SIZES: "(min-width: 768px) 384px, 50vw",
   WIDTH: 600,
 } as const;
 
@@ -103,6 +102,7 @@ export const CATEGORY_UNIT_RECORDED_STATUS = {
 } as const;
 
 export const CATEGORY_UNIT_FIELD_ID = {
+  CAUSE: "category-unit-damage-cause",
   DAMAGE: "category-unit-damage",
   USAGE: "category-unit-usage",
 } as const;
@@ -117,7 +117,6 @@ export const CATEGORY_UNIT_MAINTENANCE = {
 } as const;
 
 export const CATEGORY_UNIT_RECEIVE = {
-  DAMAGE_CAUSE: "other",
   DAMAGE_MAX_LENGTH: 300,
   RPC: "receive_dispatch_unit",
 } as const;

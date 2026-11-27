@@ -1,8 +1,14 @@
 import type { ChangeEvent } from "react";
-import type { NullableRef } from "@/app/types";
+import type { Database, NullableRef } from "@/app/types";
 
 export interface CategoryUnitReceiveViewModel {
   canSave: boolean;
+  canSaveLater: boolean;
+  damageCause: NullableRef<
+    Database["public"]["Enums"]["damage_cause"]
+  >;
+  handleDamageCauseChange: (value: string) => void;
+  handleSaveLater: () => void;
   damageText: string;
   errorMessage: NullableRef<string>;
   fuelLevel: NullableRef<number>;

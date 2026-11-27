@@ -10,3 +10,4 @@ export type {
 } from "./models/BoardUnitStatusDetailsRows.interface";
 export type { BoardCategoryRow } from "./models/BoardCategoryRow.type";
 export type { BoardCategoryUnitRow } from "./models/BoardCategoryUnitRow.type";
+export { readBoardCategoryHasPhotos } from "./readBoardCategoryHasPhotos";

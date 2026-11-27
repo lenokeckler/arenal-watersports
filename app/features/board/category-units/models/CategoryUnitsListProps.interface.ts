@@ -5,6 +5,7 @@ import type { CategoryUnitInteraction } from "./CategoryUnitInteraction.interfac
 import type { CategoryUnitSelection } from "./CategoryUnitSelection.interface";
 
 export interface CategoryUnitsListProps {
+  isPaginated?: boolean;
   image: NullableRef<ReservationEquipmentImageOption>;
   categoryName: string;
   interaction?: CategoryUnitInteraction;

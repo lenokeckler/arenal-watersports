@@ -31,6 +31,7 @@ import {
   CATEGORY_UNIT_SHEET_STACK_CLASS,
 } from "../styles/CategoryUnitSheets.styles";
 import { formatCategoryUnitUsage } from "../utils/formatCategoryUnitUsage";
+import CategoryUnitReceiveLater from "./CategoryUnitReceiveLater";
 import CategoryUnitReceiveOrder from "./CategoryUnitReceiveOrder";
 
 const CategoryUnitReceiveSheet = ({
@@ -110,6 +111,10 @@ const CategoryUnitReceiveSheet = ({
           value={receive.impactCount}
         />
         <CategoryUnitReceiveOrder
+          damageCause={receive.damageCause}
+          onDamageCauseChange={
+            receive.handleDamageCauseChange
+          }
           damageText={receive.damageText}
           hasDamage={receive.hasDamage}
           onDamageTextChange={
@@ -135,6 +140,7 @@ const CategoryUnitReceiveSheet = ({
         >
           {CATEGORY_UNITS_COPY.RECEIVE}
         </Button>
+        <CategoryUnitReceiveLater receive={receive} />
       </div>
     </ActionSheet>
   );

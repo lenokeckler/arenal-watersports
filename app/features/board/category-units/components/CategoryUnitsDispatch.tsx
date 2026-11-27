@@ -7,10 +7,9 @@ import { useCategoryUnitsDispatch } from "../hooks/useCategoryUnitsDispatch";
 import type { CategoryUnitsDispatchProps } from "../models/CategoryUnitsDispatchProps.interface";
 import { CATEGORY_UNITS_DISPATCH_SPACER_CLASS } from "../styles/CategoryUnits.styles";
 import CategoryDispatchReservationPicker from "./CategoryDispatchReservationPicker";
+import CategoryUnitEditSheets from "./CategoryUnitEditSheets";
 import CategoryUnitInfoSheet from "./CategoryUnitInfoSheet";
-import CategoryUnitModifySheet from "./CategoryUnitModifySheet";
 import CategoryUnitReceiveSheet from "./CategoryUnitReceiveSheet";
-import CategoryUnitStatusSheet from "./CategoryUnitStatusSheet";
 import CategoryUnitsDispatchBar from "./CategoryUnitsDispatchBar";
 import CategoryUnitsEditToggle from "./CategoryUnitsEditToggle";
 import CategoryUnitsHeader from "./CategoryUnitsHeader";
@@ -21,6 +20,8 @@ const CategoryUnitsDispatch = ({
   categoryId,
   categoryName,
   filterControl,
+  hasPhotos = false,
+  isPaginated,
   image,
   units,
 }: CategoryUnitsDispatchProps): React.JSX.Element => {
@@ -59,6 +60,7 @@ const CategoryUnitsDispatch = ({
       <CategoryUnitsList
         categoryName={categoryName}
         image={image}
+        isPaginated={isPaginated}
         interaction={{
           isEditing: board.isEditing,
           onOpenInfo: board.handleOpenInfo,
@@ -111,6 +113,7 @@ const CategoryUnitsDispatch = ({
         )}
       {infoUnit?.occupancy && (
         <CategoryUnitInfoSheet
+          hasPhotos={hasPhotos}
           occupancy={infoUnit.occupancy}
           onClose={board.handleCloseInfo}
           onReceive={() =>
@@ -127,19 +130,13 @@ const CategoryUnitsDispatch = ({
           unit={receiveUnit}
         />
       )}
-      {statusUnit && (
-        <CategoryUnitStatusSheet
-          onClose={board.handleCloseStatus}
-          unit={statusUnit}
-        />
-      )}
-      {modifyUnit && (
-        <CategoryUnitModifySheet
-          onClose={board.handleCloseModify}
-          readings={modifyUnit.readings}
-          unit={modifyUnit}
-        />
-      )}
+      <CategoryUnitEditSheets
+        hasPhotos={hasPhotos}
+        modifyUnit={modifyUnit}
+        onCloseModify={board.handleCloseModify}
+        onCloseStatus={board.handleCloseStatus}
+        statusUnit={statusUnit}
+      />
     </>
   );
 };

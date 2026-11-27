@@ -1,5 +1,5 @@
 import type { Database } from "@/app/types";
-import { CATEGORY_UNIT_RECEIVE } from "../constants/CategoryUnits.constants";
+import { STRING } from "@/app/constants";
 import type { BoardUnitReceiveInput } from "../models/BoardUnitReceiveInput.interface";
 
 type BoardUnitReturn =
@@ -24,8 +24,13 @@ export const buildBoardUnitReturn = (
   return {
     ...readings,
     damage: {
-      cause: CATEGORY_UNIT_RECEIVE.DAMAGE_CAUSE,
-      description: input.damageDescription.trim(),
+      ...(input.damageCause === null
+        ? {}
+        : { cause: input.damageCause }),
+      ...(input.damageDescription.trim() === STRING.Empty
+        ? {}
+        : { description: input.damageDescription.trim() }),
+      ...(input.detailLater ? { later: true } : {}),
       impact_delta: Math.max(
         input.impactCount - input.previousImpactCount,
         0

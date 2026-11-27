@@ -32,6 +32,9 @@ vi.mock(
 
 vi.mock("@/app/services/board", () => ({
   readBoardCategory: vi.fn(),
+  readBoardCategoryHasPhotos: vi
+    .fn()
+    .mockResolvedValue(true),
   readBoardCategoryGroup: vi.fn().mockResolvedValue([]),
   readBoardCategoryUnits: vi.fn(),
   readBoardUnitStatusDetails: vi.fn().mockResolvedValue({
