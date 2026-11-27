@@ -25,7 +25,7 @@ export const RESERVATION_DETAIL_LABEL_CLASS =
 export const RESERVATION_DETAIL_VALUE_CLASS =
   "break-words text-base font-medium text-on-surface";
 export const RESERVATION_DETAIL_FALLBACK_CLASS =
-  "mx-auto flex min-h-96 w-full max-w-xl flex-col items-center justify-center gap-4 text-center";
+  "mx-auto flex min-h-96 w-full max-w-[36rem] flex-col items-center justify-center gap-4 text-center";
 export const RESERVATION_DETAIL_FALLBACK_TITLE_CLASS =
   "text-xl font-semibold text-on-surface";
 export const RESERVATION_DETAIL_FALLBACK_COPY_CLASS =
