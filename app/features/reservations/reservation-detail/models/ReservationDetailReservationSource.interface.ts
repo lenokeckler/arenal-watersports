@@ -1,28 +1,32 @@
 import type { Database, NullableRef } from "@/app/types";
 import type { ReservationDetailChargeSource } from "./ReservationDetailChargeSource.interface";
+import type { ReservationDetailDepositSource } from "./ReservationDetailDepositSource.interface";
 import type { ReservationDetailPricingSource } from "./ReservationDetailPricingSource.interface";
 import type { ReservationDetailRefundSource } from "./ReservationDetailRefundSource.interface";
 
-export interface ReservationDetailReservationSource extends Pick<
-  Database["public"]["Tables"]["reservations"]["Row"],
-  | "cancellation_reason"
-  | "closed_at"
-  | "code"
-  | "created_at"
-  | "created_by"
-  | "customer_name"
-  | "dispatched_at"
-  | "duration_minutes"
-  | "ends_at"
-  | "id"
-  | "parent_reservation_id"
-  | "people_count"
-  | "starts_at"
-  | "status"
-  | "type"
-  | "updated_at"
-  | "updated_by"
-> {
+export interface ReservationDetailReservationSource
+  extends
+    ReservationDetailDepositSource,
+    Pick<
+      Database["public"]["Tables"]["reservations"]["Row"],
+      | "cancellation_reason"
+      | "closed_at"
+      | "code"
+      | "created_at"
+      | "created_by"
+      | "customer_name"
+      | "dispatched_at"
+      | "duration_minutes"
+      | "ends_at"
+      | "id"
+      | "parent_reservation_id"
+      | "people_count"
+      | "starts_at"
+      | "status"
+      | "type"
+      | "updated_at"
+      | "updated_by"
+    > {
   combo: NullableRef<{ name: string }>;
   refunds: ReservationDetailRefundSource[];
   reservation_charges: ReservationDetailChargeSource[];
@@ -58,5 +62,11 @@ export interface ReservationDetailReservationSource extends Pick<
   reservation_dock_notices: NullableRef<{
     notified_at: string;
   }>;
+  reservation_extra_time_resolutions: NullableRef<
+    Pick<
+      Database["public"]["Tables"]["reservation_extra_time_resolutions"]["Row"],
+      "extra_minutes" | "outcome"
+    >
+  >;
   reservation_pricing: NullableRef<ReservationDetailPricingSource>;
 }
