@@ -69,27 +69,6 @@ export const MAINTENANCE_ROWS = [
   },
 ];
 
-export const OIL_CARD_CASES = [
-  {
-    code: "JS-1",
-    current: "110 h",
-    next: "100 h",
-    remaining: "−10 h",
-  },
-  {
-    code: "CU-1",
-    current: "5000 km",
-    next: "5000 km",
-    remaining: "0 km",
-  },
-  {
-    code: "JS-4",
-    current: "95 h",
-    next: "100 h",
-    remaining: "5 h",
-  },
-] as const;
-
 const toUnit = (
   row: (typeof MAINTENANCE_ROWS)[number]
 ): MaintenanceUnit => ({

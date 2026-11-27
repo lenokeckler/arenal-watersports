@@ -233,10 +233,7 @@ test.describe("Group closing", () => {
 
     await maintenance.goTo();
     await expect(
-      maintenance
-        .getServiceSection()
-        .getByRole("listitem")
-        .filter({ hasText: first })
+      maintenance.getAttentionChip(first)
     ).toBeVisible();
   });
 });

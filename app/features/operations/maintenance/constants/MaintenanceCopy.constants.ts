@@ -68,31 +68,6 @@ export const MAINTENANCE_COPY = {
   TABS_LABEL: "Vista de mantenimiento",
   TOP_EMPTY: "Ninguna máquina tiene gasto en esta moneda.",
   TOP_HEADING: "Máquinas con más gasto",
-
-  HISTORY: "Historial de trabajos",
-  CURRENT_USAGE: {
-    engine_hours: "Horas actuales",
-    kilometers: "Km actual",
-  },
-  NEXT_OIL_CHANGE: "Próximo cambio",
-  OIL_EMPTY:
-    "Ninguna máquina está cerca de su cambio de aceite.",
-  OIL_HEADING: "Cambio de aceite",
-  SERVICE_EMPTY: "Ninguna máquina está fuera de servicio.",
-  SERVICE_HEADING: "Fuera de servicio",
-  VIEW_DAMAGE_REPORTS: "Ver reportes de daño",
-  UNIT_SEPARATOR: " · ",
 } as const;
 
 export const MAINTENANCE_HEADING_ID = "mantenimiento";
-
-export const MAINTENANCE_USAGE_UNIT = {
-  engine_hours: " h",
-  kilometers: " km",
-} as const;
-
-export const MAINTENANCE_OIL_HEADING_ID =
-  "cambio-de-aceite";
-
-export const MAINTENANCE_SERVICE_HEADING_ID =
-  "fuera-de-servicio";
