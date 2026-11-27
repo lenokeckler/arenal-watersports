@@ -1,18 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import type { CategoryBehavior } from "../models/CategoryBehavior.interface";
-import type { CategoryConfigureReservationsState } from "../models/CategoryConfigureReservationsState.interface";
+import type { CategoryBehaviorFormFieldsViewModel } from "../models/CategoryBehaviorFormFieldsViewModel.interface";
+import type { CategoryConfigureReservationsProps } from "../models/CategoryConfigureReservationsProps.interface";
 import { buildCategoryFormFieldChangeEvent } from "../utils/buildCategoryFormFieldChangeEvent";
 import { resolveCategoryDurationChipSelection } from "../utils/resolveCategoryDurationChipSelection";
-import { useCategoryBehaviorFormFields } from "./useCategoryBehaviorFormFields";
 
 export const useCategoryConfigureReservations = (
-  behavior: CategoryBehavior
-): CategoryConfigureReservationsState => {
-  const fields = useCategoryBehaviorFormFields({
-    behavior,
-  });
+  fields: CategoryBehaviorFormFieldsViewModel
+): CategoryConfigureReservationsProps => {
   const { values, errors } = fields;
   const [isOtherChosen, setIsOtherChosen] = useState(false);
 
@@ -40,24 +36,20 @@ export const useCategoryConfigureReservations = (
   };
 
   return {
-    values,
-    reservations: {
-      isReservable: values.isReservable,
-      isGuideOnly: values.guideOnly,
-      durationText: values.defaultDurationMinutes,
-      durationError: errors.defaultDurationMinutes,
-      durationChips: {
-        ...resolveCategoryDurationChipSelection(
-          values.defaultDurationMinutes,
-          isOtherChosen
-        ),
-        onSelectPreset,
-        onSelectOther: () => setIsOtherChosen(true),
-      },
-      onToggleReservable,
-      onToggleGuideOnly,
-      onDurationChange:
-        fields.onDefaultDurationMinutesChange,
+    isReservable: values.isReservable,
+    isGuideOnly: values.guideOnly,
+    durationText: values.defaultDurationMinutes,
+    durationError: errors.defaultDurationMinutes,
+    durationChips: {
+      ...resolveCategoryDurationChipSelection(
+        values.defaultDurationMinutes,
+        isOtherChosen
+      ),
+      onSelectPreset,
+      onSelectOther: () => setIsOtherChosen(true),
     },
+    onToggleReservable,
+    onToggleGuideOnly,
+    onDurationChange: fields.onDefaultDurationMinutesChange,
   };
 };

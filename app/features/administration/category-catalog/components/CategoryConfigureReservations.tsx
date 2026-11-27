@@ -47,7 +47,6 @@ const CategoryConfigureReservations = ({
             <CategoryBehaviorDurationField
               value={durationText}
               error={durationError}
-              disabled={false}
               onChange={onDurationChange}
             />
           )}

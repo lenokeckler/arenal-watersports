@@ -25,6 +25,9 @@ export const createCategoryConfigureViewPage = () => {
   const queryDurationField = () =>
     screen.queryByRole(ARIA_ROLE.TEXTBOX);
 
+  const getField = (label: string) =>
+    screen.queryByLabelText(label, { exact: false });
+
   const getText = (text: string) =>
     screen.queryByText(text);
 
@@ -37,6 +40,30 @@ export const createCategoryConfigureViewPage = () => {
     await user.click(getSectionButton(title));
   };
 
+  const fillField = async (
+    label: string,
+    text: string
+  ): Promise<void> => {
+    await user.type(
+      screen.getByLabelText(label, { exact: false }),
+      text
+    );
+  };
+
+  const clickField = async (
+    label: string
+  ): Promise<void> => {
+    await user.click(
+      screen.getByLabelText(label, { exact: false })
+    );
+  };
+
+  const clickChip = async (
+    label: string
+  ): Promise<void> => {
+    await user.click(getChip(label));
+  };
+
   return {
     getSectionButton,
     getBackLink,
@@ -44,8 +71,12 @@ export const createCategoryConfigureViewPage = () => {
     getActiveSwitch,
     getChip,
     queryDurationField,
+    getField,
     getText,
     getHeading,
+    fillField,
+    clickField,
+    clickChip,
     toggleSection,
   };
 };

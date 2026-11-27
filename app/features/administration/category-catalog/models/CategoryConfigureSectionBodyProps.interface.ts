@@ -1,10 +1,10 @@
-import type { CategoryConfigureReservationsProps } from "./CategoryConfigureReservationsProps.interface";
-import type { CategoryTrackingMode } from "./CategoryTrackingMode.type";
+import type { CategoryConfigureBodiesProps } from "./CategoryConfigureBodiesProps.interface";
 import type { CategoryConfigureSectionId } from "./CategoryConfigureSectionId.type";
+import type { CategoryTrackingMode } from "./CategoryTrackingMode.type";
 
 export interface CategoryConfigureSectionBodyProps {
   sectionId: CategoryConfigureSectionId;
   categoryId: string;
   trackingMode: CategoryTrackingMode;
-  reservations: CategoryConfigureReservationsProps;
+  bodies: CategoryConfigureBodiesProps;
 }

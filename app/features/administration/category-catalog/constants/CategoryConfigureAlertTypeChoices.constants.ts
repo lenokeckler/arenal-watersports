@@ -1,0 +1,17 @@
+import { CATEGORY_ALERT_TYPE } from "./CategoryAlertType.constants";
+import { CATEGORY_CONFIGURE_COPY } from "./CategoryConfigureCopy.constants";
+
+export const CATEGORY_CONFIGURE_ALERT_TYPE_CHOICES = [
+  {
+    type: CATEGORY_ALERT_TYPE.NONE,
+    label: CATEGORY_CONFIGURE_COPY.ALERTS_TYPE_NONE,
+  },
+  {
+    type: CATEGORY_ALERT_TYPE.QUANTITY,
+    label: CATEGORY_CONFIGURE_COPY.ALERTS_TYPE_QUANTITY,
+  },
+  {
+    type: CATEGORY_ALERT_TYPE.EXPIRY,
+    label: CATEGORY_CONFIGURE_COPY.ALERTS_TYPE_EXPIRY,
+  },
+] as const;

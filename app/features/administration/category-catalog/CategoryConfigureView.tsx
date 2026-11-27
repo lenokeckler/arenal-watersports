@@ -14,7 +14,7 @@ const CategoryConfigureView = ({
     name,
     statusCard,
     sections,
-    reservations,
+    bodies,
     onToggleSection,
   } = useCategoryConfigureViewModel({ configuration });
 
@@ -26,7 +26,7 @@ const CategoryConfigureView = ({
         categoryId={configuration.id}
         trackingMode={configuration.behavior.trackingMode}
         sections={sections}
-        reservations={reservations}
+        bodies={bodies}
         onToggleSection={onToggleSection}
       />
     </div>
