@@ -26,12 +26,13 @@ const NO_ERRORS: MaintenanceJobErrors = {
   currency: null,
   date: null,
   description: null,
-  threshold: null,
+  interval: null,
   unit: null,
   workType: null,
 };
 
 export const useMaintenanceJobForm = ({
+  initialUnitId,
   units,
 }: MaintenanceJobFormInput): MaintenanceJobForm => {
   const router = useRouter();
@@ -41,9 +42,13 @@ export const useMaintenanceJobForm = ({
       costCurrency: STRING.Empty,
       description: STRING.Empty,
       isExternal: false,
-      nextOilChangeAt: STRING.Empty,
+      oilInterval: STRING.Empty,
       performedAt: getCostaRicaToday(new Date()),
-      unitId: STRING.Empty,
+      unitId: units.some(
+        (unit) => unit.unitId === initialUnitId
+      )
+        ? (initialUnitId ?? STRING.Empty)
+        : STRING.Empty,
       workType: STRING.Empty,
     })
   );

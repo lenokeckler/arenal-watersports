@@ -7,7 +7,7 @@ export interface CategoryUnitsDispatchProps {
   afterHeader: ReactNode;
   categoryId: string;
   categoryName: string;
+  filterControl: ReactNode;
   image: NullableRef<ReservationEquipmentImageOption>;
-  unitCount: number;
   units: CategoryUnit[];
 }
