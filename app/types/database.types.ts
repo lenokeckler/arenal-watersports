@@ -2699,6 +2699,90 @@ export type Database = {
           },
         ];
       };
+      unit_condition_photo_changes: {
+        Row: {
+          action: string;
+          angle: Database["public"]["Enums"]["photo_angle"];
+          changed_at: string;
+          changed_by: string | null;
+          id: string;
+          unit_id: string;
+        };
+        Insert: {
+          action: string;
+          angle: Database["public"]["Enums"]["photo_angle"];
+          changed_at?: string;
+          changed_by?: string | null;
+          id?: string;
+          unit_id: string;
+        };
+        Update: {
+          action?: string;
+          angle?: Database["public"]["Enums"]["photo_angle"];
+          changed_at?: string;
+          changed_by?: string | null;
+          id?: string;
+          unit_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "unit_condition_photo_changes_changed_by_fkey";
+            columns: ["changed_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photo_changes_changed_by_fkey";
+            columns: ["changed_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photo_changes_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photo_changes_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_units";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photo_changes_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_usage_hours";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photo_changes_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "maintenance_cost_by_unit";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photo_changes_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_current_state";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photo_changes_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
+          },
+        ];
+      };
       unit_condition_photos: {
         Row: {
           angle: Database["public"]["Enums"]["photo_angle"];
@@ -3654,6 +3738,10 @@ export type Database = {
       block_worker: {
         Args: { target_worker: string };
         Returns: string;
+      };
+      can_manage_unit_photos: {
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
       };
       can_register_external_guide: {
         Args: Record<PropertyKey, never>;
