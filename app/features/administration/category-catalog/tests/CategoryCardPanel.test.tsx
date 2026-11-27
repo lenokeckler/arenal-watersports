@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import CategoryCard from "../components/CategoryCard";
+import CategoryCard from "./CategoryCardLegacy.harness";
 import { createCategoryCardPage } from "./CategoryCard.page";
 import {
   DEFAULT_CATEGORY_CARD_PANEL_ID,

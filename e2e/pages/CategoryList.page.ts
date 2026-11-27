@@ -8,12 +8,8 @@ import {
   E2E_COUNT,
   HEADING_LEVEL,
 } from "../constants/E2eRuntime.constants";
-import { createCategoryCardOptionsPage } from "./CategoryCardOptions.page";
 
 export const createCategoryListPage = (page: Page) => {
-  const categoryCardOptionsPage =
-    createCategoryCardOptionsPage();
-
   const goToPage = async (
     pageNumber: number
   ): Promise<void> => {
@@ -36,7 +32,7 @@ export const createCategoryListPage = (page: Page) => {
     });
 
   const getCategoryCard = (categoryName: string): Locator =>
-    page.getByRole(ARIA_ROLE.GROUP).filter({
+    page.getByRole(ARIA_ROLE.LINK).filter({
       has: page.getByRole(ARIA_ROLE.HEADING, {
         level: HEADING_LEVEL.CARD,
         name: categoryName,
@@ -67,39 +63,11 @@ export const createCategoryListPage = (page: Page) => {
     }
   };
 
-  const openCategoryOptions = async (
-    categoryName: string
-  ): Promise<void> => {
-    await categoryCardOptionsPage.openOptions(
-      getCategoryCard(categoryName)
-    );
-  };
-
   const getCategoryGroupMeta = (
     categoryName: string
   ): Locator =>
     getCategoryCard(categoryName).getByText(
       CATEGORY_CATALOG_COPY.GROUP_PREFIX_LABEL
-    );
-
-  const getCategoryDeleteButton = (
-    categoryName: string
-  ): Locator =>
-    getCategoryCard(categoryName).getByRole(
-      ARIA_ROLE.BUTTON,
-      {
-        name: CATEGORY_CATALOG_COPY.DELETE_CATEGORY_BUTTON,
-      }
-    );
-
-  const getCategoryMarkInactiveButton = (
-    categoryName: string
-  ): Locator =>
-    getCategoryCard(categoryName).getByRole(
-      ARIA_ROLE.BUTTON,
-      {
-        name: CATEGORY_CATALOG_COPY.MARK_INACTIVE_BUTTON,
-      }
     );
 
   const getCategoryStatusChip = (
@@ -118,29 +86,6 @@ export const createCategoryListPage = (page: Page) => {
       CATEGORY_CATALOG_COPY.STATUS_LABEL_INACTIVE
     );
 
-  const getCategoryCancelButton = (
-    categoryName: string
-  ): Locator =>
-    getCategoryCard(categoryName).getByRole(
-      ARIA_ROLE.BUTTON,
-      { name: CATEGORY_CATALOG_COPY.CANCEL_BUTTON }
-    );
-
-  const getCategoryConfirmDeleteButton = (
-    categoryName: string
-  ): Locator =>
-    getCategoryCard(categoryName).getByRole(
-      ARIA_ROLE.BUTTON,
-      { name: CATEGORY_CATALOG_COPY.DELETE_BUTTON }
-    );
-
-  const getCategoryConfirmDeleteMessage = (
-    categoryName: string
-  ): Locator =>
-    getCategoryCard(categoryName).getByText(
-      CATEGORY_CATALOG_COPY.DELETE_CONFIRM_MESSAGE
-    );
-
   const getCreateLink = (): Locator =>
     page.getByRole(ARIA_ROLE.LINK, {
       name: CATEGORY_CATALOG_COPY.CREATE_CTA,
@@ -149,38 +94,28 @@ export const createCategoryListPage = (page: Page) => {
   const getToastMessage = (message: string): Locator =>
     page.getByText(message);
 
+  const getCategoryEditLabel = (
+    categoryName: string
+  ): Locator =>
+    getCategoryCard(categoryName).getByText(
+      CATEGORY_CATALOG_COPY.EDIT_BUTTON
+    );
+
+  const getCategoryButtons = (
+    categoryName: string
+  ): Locator =>
+    getCategoryCard(categoryName).getByRole(
+      ARIA_ROLE.BUTTON
+    );
+
+  const clickCategoryCard = async (
+    categoryName: string
+  ): Promise<void> => {
+    await getCategoryCard(categoryName).click();
+  };
+
   const clickCreateLink = async (): Promise<void> => {
     await getCreateLink().click();
-  };
-
-  const clickCategoryDeleteButton = async (
-    categoryName: string
-  ): Promise<void> => {
-    await openCategoryOptions(categoryName);
-    await getCategoryDeleteButton(categoryName).click();
-  };
-
-  const clickCategoryMarkInactiveButton = async (
-    categoryName: string
-  ): Promise<void> => {
-    await openCategoryOptions(categoryName);
-    await getCategoryMarkInactiveButton(
-      categoryName
-    ).click();
-  };
-
-  const clickCategoryCancelButton = async (
-    categoryName: string
-  ): Promise<void> => {
-    await getCategoryCancelButton(categoryName).click();
-  };
-
-  const clickCategoryConfirmDeleteButton = async (
-    categoryName: string
-  ): Promise<void> => {
-    await getCategoryConfirmDeleteButton(
-      categoryName
-    ).click();
   };
 
   return {
@@ -188,21 +123,14 @@ export const createCategoryListPage = (page: Page) => {
     goToCategory,
     getHeading,
     getCategoryCard,
-    openCategoryOptions,
     getCategoryGroupMeta,
-    getCategoryDeleteButton,
-    getCategoryMarkInactiveButton,
     getCategoryStatusChip,
     getCategoryInactiveChip,
-    getCategoryCancelButton,
-    getCategoryConfirmDeleteButton,
-    getCategoryConfirmDeleteMessage,
+    getCategoryEditLabel,
+    getCategoryButtons,
     getCreateLink,
     getToastMessage,
+    clickCategoryCard,
     clickCreateLink,
-    clickCategoryDeleteButton,
-    clickCategoryMarkInactiveButton,
-    clickCategoryCancelButton,
-    clickCategoryConfirmDeleteButton,
   };
 };

@@ -19,14 +19,6 @@ export const resolveDeletableCategoryName = (
 
 export const E2E_CATEGORY_WITH_RECORDS_NAME = "Jet Ski";
 
-export const E2E_MARK_INACTIVE_CATEGORY_BASE_NAME =
-  "E2E Fixture — Con registros";
-
-export const resolveMarkInactiveCategoryName = (
-  projectName: string
-): string =>
-  `${E2E_MARK_INACTIVE_CATEGORY_BASE_NAME} (${projectName})`;
-
 export const resolveReactivateCategoryName = (
   projectName: string
 ): string => `E2E Fixture — Reactivar (${projectName})`;
