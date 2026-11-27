@@ -63,13 +63,19 @@ export const getUnitDamageReports = async (
   return {
     entries: rows
       .slice(0, DAMAGE_REPORTS_PAGINATION.PAGE_SIZE)
-      .map((row) => ({
-        cause: row.cause,
-        createdAt: row.created_at,
-        description: row.description,
-        id: row.id,
-        impactDelta: row.impact_delta,
-      })),
+      .flatMap((row) =>
+        row.cause && row.description
+          ? [
+              {
+                cause: row.cause,
+                createdAt: row.created_at,
+                description: row.description,
+                id: row.id,
+                impactDelta: row.impact_delta,
+              },
+            ]
+          : []
+      ),
     hasNextPage:
       rows.length > DAMAGE_REPORTS_PAGINATION.PAGE_SIZE,
     page,
