@@ -4,6 +4,7 @@ import type { NullableRef } from "@/app/types";
 import type { CategoryConfiguration } from "../models/CategoryConfiguration.interface";
 import type { EquipmentCategoryRow } from "../models/EquipmentCategoryRow.type";
 import { mapCategoryRowToConfiguration } from "../utils/mapCategoryRowToConfiguration";
+import { fetchCategoryIdsWithRecords } from "./fetchCategoryIdsWithRecords";
 import { fetchCategoryQuantities } from "./fetchCategoryQuantities";
 import { readCategoryRow } from "./readCategoryRow";
 
@@ -29,13 +30,17 @@ export const getCategoryConfiguration = async (
   }
 
   const supabase = await createServerSupabaseClient();
-  const quantityByCategoryId =
-    await fetchCategoryQuantities(supabase, [
-      categoryRow.id,
+  const [quantityByCategoryId, categoryIdsWithRecords] =
+    await Promise.all([
+      fetchCategoryQuantities(supabase, [categoryRow.id]),
+      fetchCategoryIdsWithRecords(supabase, [
+        categoryRow.id,
+      ]),
     ]);
 
   return mapCategoryRowToConfiguration(
     categoryRow,
-    quantityByCategoryId.get(categoryRow.id) ?? LENGTH.ZERO
+    quantityByCategoryId.get(categoryRow.id) ?? LENGTH.ZERO,
+    categoryIdsWithRecords.has(categoryRow.id)
   );
 };

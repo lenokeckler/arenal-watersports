@@ -7,6 +7,7 @@ import {
 } from "next/navigation";
 import { PATHS } from "@/app/constants";
 import { useToast } from "@/app/components/toast/utils/useToast";
+import { CATEGORY_RESERVABLE_CHOICE } from "../constants/CategoryReservableChoice.constants";
 import { EMPTY_CATEGORY_CREATE_FORM_VALUES } from "../constants/EmptyCategoryCreateFormValues.constants";
 import type { CategoryCreateFormErrors } from "../models/CategoryCreateFormErrors.interface";
 import type { CategoryCreateFormValues } from "../models/CategoryCreateFormValues.interface";
@@ -17,15 +18,18 @@ import type { CreateCategoryInput } from "../models/CreateCategoryInput.interfac
 import { createCategoryAction } from "../services/createCategoryAction";
 import { handleCreateCategoryResult } from "../utils/handleCreateCategoryResult";
 import { showGenericMutationErrorToast } from "../utils/showGenericMutationErrorToast";
-import { resolveCategoryAlertsPath } from "../utils/resolveCategoryAlertsPath";
+import { resolveCategoryConfigurePath } from "../utils/resolveCategoryConfigurePath";
 import { validateCategoryCreateFormValues } from "../utils/validateCategoryCreateFormValues";
 
 const buildCreateCategoryInput = (
-  values: CategoryCreateFormValues
+  values: CategoryCreateFormValues,
+  reservableChoice: string
 ): CreateCategoryInput => ({
   name: values.name,
   trackingMode: values.trackingMode as CategoryTrackingMode,
   groupName: values.groupName,
+  isReservable:
+    reservableChoice === CATEGORY_RESERVABLE_CHOICE.YES,
 });
 
 export const useCategoryCreateFormViewModel =
@@ -36,6 +40,8 @@ export const useCategoryCreateFormViewModel =
       useState<CategoryCreateFormValues>(
         EMPTY_CATEGORY_CREATE_FORM_VALUES
       );
+    const [reservableChoice, setReservableChoice] =
+      useState<string>(CATEGORY_RESERVABLE_CHOICE.YES);
     const [errors, setErrors] =
       useState<CategoryCreateFormErrors>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -72,11 +78,11 @@ export const useCategoryCreateFormViewModel =
       updateFieldValue("name", event.target.value);
     };
 
-    const onTrackingModeChange = (
-      event: CategoryFormFieldChangeEvent
-    ): void => {
-      updateFieldValue("trackingMode", event.target.value);
+    const onTrackingModeChange = (value: string): void => {
+      updateFieldValue("trackingMode", value);
     };
+
+    const onReservableChoiceChange = setReservableChoice;
 
     const onGroupNameChange = (
       event: CategoryFormFieldChangeEvent
@@ -110,13 +116,13 @@ export const useCategoryCreateFormViewModel =
 
       try {
         const result = await createCategoryAction(
-          buildCreateCategoryInput(values)
+          buildCreateCategoryInput(values, reservableChoice)
         );
         handleCreateCategoryResult(result, {
           showToast,
           onSuccess: (categoryId) =>
             router.push(
-              resolveCategoryAlertsPath(categoryId)
+              resolveCategoryConfigurePath(categoryId)
             ),
           onGroupNameError: (groupNameError) =>
             setErrors({ groupName: groupNameError }),
@@ -134,11 +140,13 @@ export const useCategoryCreateFormViewModel =
 
     return {
       values,
+      reservableChoice,
       errors,
       isSubmitting,
       onBack,
       onNameChange,
       onTrackingModeChange,
+      onReservableChoiceChange,
       onGroupNameChange,
       onSubmit,
     };

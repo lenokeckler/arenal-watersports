@@ -5,7 +5,10 @@ import {
   DEFAULT_CATEGORY_LIST_SOURCES,
   DEFAULT_CATEGORY_QUANTITY,
 } from "./CategoryListSources.constants";
-import { DEFAULT_EQUIPMENT_CATEGORY_ROW } from "./EquipmentCategoryRow.constants";
+import {
+  DEFAULT_EQUIPMENT_CATEGORY_ROW,
+  FAKE_IMAGE_PATH,
+} from "./EquipmentCategoryRow.constants";
 
 describe("mapCategoryRowToListItem", () => {
   it("marks hasRecords false when the category id is not in the set", () => {
@@ -95,5 +98,38 @@ describe("mapCategoryRowToListItem", () => {
     );
 
     expect(categoryListItem.currentQuantity).toBe(0);
+  });
+
+  it("marks isReservable from the row", () => {
+    const categoryListItem = mapCategoryRowToListItem(
+      {
+        ...DEFAULT_EQUIPMENT_CATEGORY_ROW,
+        is_reservable: false,
+      },
+      DEFAULT_CATEGORY_LIST_SOURCES
+    );
+
+    expect(categoryListItem.isReservable).toBe(false);
+  });
+
+  it("marks hasImage true when the row has an image path", () => {
+    const categoryListItem = mapCategoryRowToListItem(
+      {
+        ...DEFAULT_EQUIPMENT_CATEGORY_ROW,
+        image_path: FAKE_IMAGE_PATH,
+      },
+      DEFAULT_CATEGORY_LIST_SOURCES
+    );
+
+    expect(categoryListItem.hasImage).toBe(true);
+  });
+
+  it("marks hasImage false when the row has no image path", () => {
+    const categoryListItem = mapCategoryRowToListItem(
+      DEFAULT_EQUIPMENT_CATEGORY_ROW,
+      DEFAULT_CATEGORY_LIST_SOURCES
+    );
+
+    expect(categoryListItem.hasImage).toBe(false);
   });
 });
