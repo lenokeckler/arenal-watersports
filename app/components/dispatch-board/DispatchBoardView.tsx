@@ -1,4 +1,9 @@
-import { ARIA_ROLE, TitleVariant } from "@/app/constants";
+import ScreenBack from "@/app/components/screen-back/ScreenBack";
+import {
+  ARIA_ROLE,
+  TitleVariant,
+  PATHS,
+} from "@/app/constants";
 import UnorderedList from "@/app/components/list/UnorderedList";
 import Link from "@/app/components/link/Link";
 import Section from "@/app/components/section/Section";
@@ -125,6 +130,7 @@ export const DispatchBoardView = ({
   reservations,
 }: DispatchBoardContentProps): JSX.Element => (
   <main className={DISPATCH_BOARD_CLASS}>
+    <ScreenBack fallbackHref={PATHS.BOARD} />
     <Section
       ariaLabel={DISPATCH_BOARD_HEADING_ID}
       className={DISPATCH_BOARD_SECTION_CLASS}

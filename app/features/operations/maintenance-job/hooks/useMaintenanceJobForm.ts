@@ -7,6 +7,7 @@ import {
   type FormEvent,
 } from "react";
 import { PATHS, STRING } from "@/app/constants";
+import { resolveInitialDate } from "../utils/resolveInitialDate";
 import type { NullableRef } from "@/app/types";
 import { submitMaintenanceJob } from "../actions/submitMaintenanceJob";
 import {
@@ -32,6 +33,7 @@ const NO_ERRORS: MaintenanceJobErrors = {
 };
 
 export const useMaintenanceJobForm = ({
+  initialDate,
   initialUnitId,
   units,
 }: MaintenanceJobFormInput): MaintenanceJobForm => {
@@ -43,7 +45,10 @@ export const useMaintenanceJobForm = ({
       description: STRING.Empty,
       isExternal: false,
       oilInterval: STRING.Empty,
-      performedAt: getCostaRicaToday(new Date()),
+      performedAt: resolveInitialDate(
+        initialDate,
+        getCostaRicaToday(new Date())
+      ),
       unitId: units.some(
         (unit) => unit.unitId === initialUnitId
       )

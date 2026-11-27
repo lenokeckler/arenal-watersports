@@ -1,9 +1,11 @@
+import ScreenBack from "@/app/components/screen-back/ScreenBack";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
 import {
   ARIA_ROLE,
   UUID_PATTERN,
   TitleVariant,
+  PATHS,
 } from "@/app/constants";
 import { OperationsAccessError } from "@/app/services/operations/getOperationsSupabaseClient";
 import type { NullableRef } from "@/app/types";
@@ -42,6 +44,9 @@ const UnitCorrection = async ({
 
   return (
     <main className={UNIT_CORRECTION_PAGE_CLASS}>
+      <ScreenBack
+        fallbackHref={PATHS.OPERATIONS.UNIT_READINGS}
+      />
       <Title
         variant={TitleVariant.PRIMARY}
         text={UNIT_CORRECTION_COPY.HEADING}

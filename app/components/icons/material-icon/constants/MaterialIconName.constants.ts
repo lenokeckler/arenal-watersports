@@ -2,6 +2,7 @@ export const MATERIAL_ICON_NAME = {
   ADD: "add",
   ADMIN_PANEL_SETTINGS: "admin_panel_settings",
   ARROW_BACK: "arrow_back",
+  BUILD: "build",
   CANCEL: "cancel",
   CLOSE: "close",
   CHECK: "check",
@@ -31,6 +32,7 @@ export const MATERIAL_ICON_NAME = {
   MENU: "menu",
   PAYMENTS: "payments",
   PERSON_ADD: "person_add",
+  PHOTO_CAMERA: "photo_camera",
   PROGRESS_ACTIVITY: "progress_activity",
   RADIO_BUTTON_UNCHECKED: "radio_button_unchecked",
   REMOVE: "remove",
@@ -40,4 +42,5 @@ export const MATERIAL_ICON_NAME = {
   TRENDING_DOWN: "trending_down",
   VISIBILITY: "visibility",
   VISIBILITY_OFF: "visibility_off",
+  WARNING: "warning",
 } as const;

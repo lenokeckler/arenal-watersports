@@ -1,4 +1,9 @@
-import { ARIA_ROLE, TitleVariant } from "@/app/constants";
+import ScreenBack from "@/app/components/screen-back/ScreenBack";
+import {
+  ARIA_ROLE,
+  TitleVariant,
+  PATHS,
+} from "@/app/constants";
 import Section from "@/app/components/section/Section";
 import Text from "@/app/components/text/Text";
 import Title from "@/app/components/title/Title";
@@ -22,6 +27,7 @@ const OutOnWaterView = ({
   nowIso,
 }: OutOnWaterViewProps): JSX.Element => (
   <main className={OUT_ON_WATER_CLASS}>
+    <ScreenBack fallbackHref={PATHS.BOARD} />
     <Section
       ariaLabel={OUT_ON_WATER_HEADING_ID}
       className={OUT_ON_WATER_SECTION_CLASS}
