@@ -9,6 +9,8 @@ const { behavior, image } = DEFAULT_CATEGORY_CONFIGURATION;
 const SINGLE_UNIT = 1;
 const NO_UNITS = 0;
 const SEVERAL_UNITS = 8;
+const NO_PICKED_PHOTO = false;
+const PICKED_PHOTO = true;
 
 describe("resolveReservationsSummary", () => {
   it.each([
@@ -52,14 +54,26 @@ describe("resolveStockSummary", () => {
 
 describe("resolvePhotoSummary", () => {
   it("says the photo is there when one is saved", () => {
-    expect(resolvePhotoSummary(image)).toBe(
-      CATEGORY_CONFIGURE_COPY.PHOTO_PRESENT
-    );
+    expect(
+      resolvePhotoSummary(image, NO_PICKED_PHOTO)
+    ).toBe(CATEGORY_CONFIGURE_COPY.PHOTO_PRESENT);
   });
 
   it("says the placeholder is used when there is none", () => {
     expect(
-      resolvePhotoSummary({ ...image, imagePath: null })
+      resolvePhotoSummary(
+        { ...image, imagePath: null },
+        NO_PICKED_PHOTO
+      )
     ).toBe(CATEGORY_CONFIGURE_COPY.PHOTO_MISSING);
+  });
+
+  it("names the new photo as soon as one is picked", () => {
+    expect(
+      resolvePhotoSummary(
+        { ...image, imagePath: null },
+        PICKED_PHOTO
+      )
+    ).toBe(CATEGORY_CONFIGURE_COPY.PHOTO_PICKED);
   });
 });

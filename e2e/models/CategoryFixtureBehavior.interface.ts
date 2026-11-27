@@ -3,7 +3,9 @@ import type { UsageMetric } from "@/app/features/administration/category-catalog
 import type { NullableRef } from "@/app/types";
 
 export interface CategoryFixtureBehavior {
+  defaultDurationMinutes: NullableRef<number>;
   hasMotor: boolean;
+  isReservable: boolean;
   trackingMode: CategoryTrackingMode;
   usageMetric: NullableRef<UsageMetric>;
 }

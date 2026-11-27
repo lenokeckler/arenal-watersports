@@ -6,4 +6,6 @@ export interface ExtraSeedInput {
   status: ExtraStatus;
   priceUsd: NullableRef<number>;
   priceCrc: NullableRef<number>;
+  occupiesCategoryId: NullableRef<string>;
+  occupiesQuantity: NullableRef<number>;
 }
