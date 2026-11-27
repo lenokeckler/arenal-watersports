@@ -1,25 +1,14 @@
-# Damage reports
+# Damage screen
 
 ## Intent
 
-Let the operations worker read the earlier damage reports of a unit, to know whether a machine is hit often or the incident was isolated before deciding what to do with it.
-
-## In scope
-
-- Listing the damage reports of one unit, the latest first, with their cause, their description, their date and the impacts they added.
-- Showing the unit with its accumulated impacts.
-- Paging through the list.
-- A link to the reports from each unit card of the maintenance screen.
-
-## Out of scope
-
-- Registering a damage report (US-OPE-09 and the damage report form).
-- Editing or deleting a report.
-- Photos of the damage (US-OPE-15).
+Let operations see what is pending and where the machines get damaged (US-OPE-14).
 
 ## Requirements
 
-- The screen lives at `/operations/damage-reports?unidad=<unit id>` and only workers with the operations area read it.
-- The unit id is validated as a uuid before any read; an unknown or malformed id reads «No se encontró la unidad.».
-- A unit without reports reads «Esta unidad no tiene reportes de daño.».
-- The reports come twenty at a time, the latest first; a next link appears only when there are more and a previous link after the first page.
+- Reports left to detail later come first: one opens straight away, several open a list.
+- A calendar marks the days with damage, goes back to the first report and can be filtered by cause. Touching a day shows its reports, beside the calendar on wide screens and in a sheet on a phone.
+- The charts cover the current month or the last six months. A cause bar opens the calendar filtered by that cause; pending reports have no cause yet.
+- The five machines with most damage link to their history.
+- A retired machine keeps its reports on the screen, marked as retired, with no history, photos or completion, and its pending reports are not counted: the database refuses to complete them.
+- Only operations reads damage reports; Row Level Security enforces it.
