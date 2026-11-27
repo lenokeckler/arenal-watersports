@@ -1,0 +1,1 @@
+RES-07.29.04: Deposit mappers — the deposit screen reads the reservation and its proposal, maps a recorded deposit and its errors to Spanish messages, and carries the data access and form state merged in from RES-07.29.05 and RES-07.29.06 (US-RES-29 · AWS-112)

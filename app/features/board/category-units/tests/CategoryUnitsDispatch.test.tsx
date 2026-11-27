@@ -76,7 +76,7 @@ const renderDispatch = () => {
       categoryId={DISPATCH_CATEGORY_ID}
       categoryName={CATEGORY_NAME}
       image={null}
-      unitCount={DISPATCH_UNITS.length}
+      filterControl={null}
       units={DISPATCH_UNITS}
     />
   );
@@ -127,6 +127,22 @@ describe("CategoryUnitsDispatch", () => {
     const page = renderDispatch();
 
     expect(page.queryDispatch()).not.toBeInTheDocument();
+  });
+
+  it("draws the check mark only on the units the worker has tapped", async () => {
+    const page = renderDispatch();
+
+    expect(page.queryCheckMarks()).toHaveLength(0);
+
+    await userEvent.click(
+      page.getSelectBox(DEFAULT_CATEGORY_UNIT.code)
+    );
+    expect(page.queryCheckMarks()).toHaveLength(1);
+
+    await userEvent.click(
+      page.getSelectBox(DEFAULT_CATEGORY_UNIT.code)
+    );
+    expect(page.queryCheckMarks()).toHaveLength(0);
   });
 
   it("shows how many units are selected and clears them on cancel", async () => {
