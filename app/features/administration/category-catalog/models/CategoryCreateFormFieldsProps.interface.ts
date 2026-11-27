@@ -4,14 +4,14 @@ import { CategoryFormFieldChangeEvent } from "./CategoryFormFieldChangeEvent.typ
 
 export interface CategoryCreateFormFieldsProps {
   values: CategoryCreateFormValues;
+  reservableChoice: string;
   errors: CategoryCreateFormErrors;
   isSubmitting: boolean;
   onNameChange: (
     event: CategoryFormFieldChangeEvent
   ) => void;
-  onTrackingModeChange: (
-    event: CategoryFormFieldChangeEvent
-  ) => void;
+  onTrackingModeChange: (value: string) => void;
+  onReservableChoiceChange: (value: string) => void;
   onGroupNameChange: (
     event: CategoryFormFieldChangeEvent
   ) => void;

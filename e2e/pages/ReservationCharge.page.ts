@@ -41,11 +41,8 @@ export const createReservationChargePage = (page: Page) => {
       exact: true,
     });
 
-  const getMethodOption = (label: string): Locator =>
-    main.getByRole(ARIA_ROLE.RADIO, {
-      name: label,
-      exact: true,
-    });
+  const selectMethod = (label: string): Promise<void> =>
+    main.getByText(label, { exact: true }).click();
 
   return {
     fillAmount: (
@@ -59,10 +56,10 @@ export const createReservationChargePage = (page: Page) => {
       method: string
     ): Promise<void> => {
       if (STORED_METHOD_LABELS.includes(method)) {
-        await getMethodOption(method).check();
+        await selectMethod(method);
         return;
       }
-      await getMethodOption(OTHER_LABEL).check();
+      await selectMethod(OTHER_LABEL);
       await main
         .getByRole(ARIA_ROLE.TEXTBOX, {
           name: copy.OTHER_METHOD_LABEL,
@@ -89,6 +86,7 @@ export const createReservationChargePage = (page: Page) => {
       main.getByRole(ARIA_ROLE.BUTTON, {
         name: copy.ADD_CURRENCY[currency],
       }),
+    selectMethod,
     getAlert: (): Locator =>
       main.getByRole(ARIA_ROLE.ALERT),
     getAmount: (

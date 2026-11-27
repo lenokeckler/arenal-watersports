@@ -1,5 +1,5 @@
 begin;
-select plan(16);
+select plan(19);
 \ir fixtures/reservation_extra_time.sql.fixture
 
 set local role authenticated;
@@ -107,6 +107,24 @@ select throws_ok(
        jsonb_build_object('outcome', 'charged', 'currency', 'USD', 'amount', 10.555, 'payment_method', 'Efectivo')) $$,
   'P0001', 'Charge amount is invalid',
   'a charge keeps the amount rules of the tariff charge'
+);
+
+select throws_ok(
+  $$ insert into reservation_extra_time_resolutions (reservation_id, outcome, extra_minutes, created_by)
+     values ('e3310000-0000-4000-8000-000000000301', 'courtesy', 999, 'e3310000-0000-4000-8000-000000000001') $$,
+  '42501', null,
+  'reservas cannot write a resolution around the decision'
+);
+
+select is(
+  has_table_privilege('authenticated', 'reservation_extra_time_resolutions', 'insert, update, delete'),
+  false,
+  'workers only read the extra time resolutions'
+);
+
+select lives_ok(
+  $$ select pg_temp.resolve('e3310000-0000-4000-8000-000000000301', jsonb_build_object('outcome', 'courtesy')) $$,
+  'the decision still records the resolution'
 );
 
 set local request.jwt.claims to '{"sub":"e3310000-0000-4000-8000-000000000002","role":"authenticated"}';
