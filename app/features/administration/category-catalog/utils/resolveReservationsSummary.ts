@@ -1,6 +1,6 @@
-import { STRING } from "@/app/constants";
 import { CATEGORY_CONFIGURE_COPY } from "../constants/CategoryConfigureCopy.constants";
 import type { CategoryBehavior } from "../models/CategoryBehavior.interface";
+import { formatCategoryDurationLabel } from "./formatCategoryDurationLabel";
 import { joinSummaryParts } from "./joinSummaryParts";
 
 export const resolveReservationsSummary = (
@@ -15,10 +15,9 @@ export const resolveReservationsSummary = (
   ];
   if (behavior.defaultDurationMinutes) {
     parts.push(
-      [
-        behavior.defaultDurationMinutes,
-        CATEGORY_CONFIGURE_COPY.DURATION_UNIT,
-      ].join(STRING.SPACE)
+      formatCategoryDurationLabel(
+        behavior.defaultDurationMinutes
+      )
     );
   }
   if (behavior.guideOnly) {

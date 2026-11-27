@@ -4,6 +4,7 @@ import type { ReservationDetailResult } from "../models/ReservationDetail.interf
 import { getAuthorizedReservationDetailClient } from "./getAuthorizedReservationDetailClient";
 import { getReservationDetailWorkerNames } from "./getReservationDetailWorkerNames";
 import { loadReservationDetailSource } from "./loadReservationDetailSource";
+import { readReservationDetailPendingExtraMinutes } from "./readReservationDetailPendingExtraMinutes";
 
 export const getReservationDetail = async (
   reservationId: string
@@ -25,9 +26,17 @@ export const getReservationDetail = async (
     return null;
   }
 
-  const workerNames = await getReservationDetailWorkerNames(
-    supabase,
-    source
+  const [workerNames, pendingExtraMinutes] =
+    await Promise.all([
+      getReservationDetailWorkerNames(supabase, source),
+      readReservationDetailPendingExtraMinutes(
+        supabase,
+        source
+      ),
+    ]);
+  return mapReservationDetail(
+    source,
+    workerNames,
+    pendingExtraMinutes
   );
-  return mapReservationDetail(source, workerNames);
 };

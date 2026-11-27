@@ -31,7 +31,6 @@ Let the administration worker choose, per category, whether the inventory alert 
 | Typed values are sent as numbers and what does not apply as `null`                                                      | `CategoryAlertsFormSubmit.test.tsx` "sends numbers and null..."                                                       |
 | Fields and Cancelar are disabled while saving; Cancelar returns to the list                                             | `CategoryAlertsForm.test.tsx`                                                                                         |
 | A visitor who is not administration goes to the home; an unknown category shows not found                               | `CategoryAlerts.test.tsx`                                                                                             |
-| Every category card, active or inactive, links to its alerts screen                                                     | `CategoryCardAlertsLink.test.tsx`                                                                                     |
 | After a category is created the worker lands on its alerts screen                                                       | `handleCreateCategoryResult.test.ts`, `useCategoryCreateFormViewModel.test.ts`, `category-create.e2e.ts`              |
 
 ## Acceptance criteria

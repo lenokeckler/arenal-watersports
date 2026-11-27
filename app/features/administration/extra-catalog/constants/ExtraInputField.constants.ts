@@ -5,6 +5,8 @@ import {
 
 export const EXTRA_INPUT_FIELD = {
   NAME: "name",
+  OCCUPIES_CATEGORY_ID: "occupiesCategoryId",
+  OCCUPIES_QUANTITY: "occupiesQuantity",
   PRICE_CRC: "priceCrc",
   PRICE_USD: "priceUsd",
 } as const;

@@ -6,17 +6,20 @@ import { createCategoryAlertsFormPage } from "../pages/CategoryAlertsForm.page";
 import { createCategoryCreateFormPage } from "../pages/CategoryCreateForm.page";
 import { logInAsAdmin } from "../support/logInAsAdmin";
 import { readCategoryAlerts } from "../support/categoryAlertFixtures";
-import { removeDeletableCategory } from "../support/categoryFixtures";
+import {
+  findCategoryId,
+  removeDeletableCategory,
+} from "../support/categoryFixtures";
 import {
   E2E_ALERT_INPUT,
   E2E_ALERT_NO_INPUT,
   E2E_ALERT_QUANTITY,
 } from "../constants/E2eCategoryAlerts.constants";
-import { E2E_CATEGORY_ALERTS_URL_PATTERN } from "../constants/E2eCategoryCreate.constants";
+import { E2E_CATEGORY_CONFIGURE_URL_PATTERN } from "../constants/E2eCategoryCreate.constants";
 import { resolveCreatedCategoryName } from "../constants/E2eCategoryFixtures.constants";
 
 test.describe("Category alerts after creating a category", () => {
-  test("a new category lands on its alerts screen and a threshold can be saved there", async ({
+  test("a new category opens Configurar and a threshold can be saved on its alerts screen", async ({
     page,
   }, testInfo) => {
     const categoryName = resolveCreatedCategoryName(
@@ -32,13 +35,16 @@ test.describe("Category alerts after creating a category", () => {
       await logInAsAdmin(page);
       await categoryCreateFormPage.goTo();
       await categoryCreateFormPage.fillName(categoryName);
-      await categoryCreateFormPage.selectTrackingMode(
+      await categoryCreateFormPage.selectChoice(
         CATEGORY_CATALOG_COPY.TRACKING_MODE_BY_QUANTITY_LABEL
       );
       await categoryCreateFormPage.submit();
 
       await expect(page).toHaveURL(
-        E2E_CATEGORY_ALERTS_URL_PATTERN
+        E2E_CATEGORY_CONFIGURE_URL_PATTERN
+      );
+      await alertsFormPage.goTo(
+        await findCategoryId(categoryName)
       );
       await expect(
         alertsFormPage.getTypeSelect()

@@ -1,0 +1,1 @@
+chore - Extra form redesign — the extra form gets a back link and a left-aligned title, a Precio group with US$ and ₡ inside the fields, two large choices for "Solo un cobro" or "Ocupa equipo" with a − / + quantity, the boats note or link, and the actions pinned at the bottom

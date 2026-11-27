@@ -9,6 +9,9 @@ import {
   it,
   vi,
 } from "vitest";
+import { screen } from "@testing-library/react";
+import { ARIA_ROLE } from "@/app/constants";
+import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
 import { EXTRA_STATUS } from "../constants/ExtraStatus.constants";
 import { DEFAULT_EXTRA } from "./Extra.constants";
 import { DELETED_REMOVAL_RESULT } from "./ExtraCardActions.constants";
@@ -68,7 +71,7 @@ describe("ExtraCard actions", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("switches the card to the inline confirmation that states the rule", async () => {
+  it("opens a confirmation sheet that names the extra and states the rule", async () => {
     renderExtraListView();
     const extraListPage = createExtraListPage();
 
@@ -83,8 +86,10 @@ describe("ExtraCard actions", () => {
       extraListPage.queryCancelButton(DEFAULT_EXTRA.name)
     ).toBeInTheDocument();
     expect(
-      extraListPage.getEditLink(DEFAULT_EXTRA.name)
-    ).not.toBeInTheDocument();
+      screen.getByRole(ARIA_ROLE.DIALOG, {
+        name: EXTRA_CATALOG_COPY.REMOVAL_SHEET_TITLE,
+      })
+    ).toBeInTheDocument();
   });
 
   it("goes back to the plain card when Cancelar is tapped", async () => {
