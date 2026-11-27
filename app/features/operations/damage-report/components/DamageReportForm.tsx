@@ -1,121 +1,126 @@
 "use client";
 
-import FormField from "@/app/components/form-field/FormField";
-import { INPUT_TYPES } from "@/app/constants";
-import { DAMAGE_REPORT_CAUSES } from "../constants/DamageReportCause.constants";
-import { DAMAGE_REPORT_COPY } from "../constants/DamageReportCopy.constants";
-import type { DamageReportFormViewModel } from "../models/DamageReportFormViewModel.interface";
 import Button from "@/app/components/button/Button";
 import {
   BUTTON,
   SIZE,
 } from "@/app/components/button/constants";
+import ChoicePills from "@/app/components/choice-pills/ChoicePills";
+import CountStepper from "@/app/components/count-stepper/CountStepper";
+import FormField from "@/app/components/form-field/FormField";
+import Text from "@/app/components/text/Text";
 import {
-  DAMAGE_REPORT_ACTIONS_CLASS,
-  DAMAGE_REPORT_FIELDS_CLASS,
-  DAMAGE_REPORT_FORM_CLASS,
+  ARIA_ROLE,
+  BUTTON_TYPES,
+  DAMAGE_CAUSE_LABELS,
+  DAMAGE_CAUSE_ORDER,
+  DAMAGE_REPORT_LIMITS,
+  INPUT_TYPES,
+  STRING,
+} from "@/app/constants";
+import { DAMAGE_REPORT_FIELD_ID } from "../constants/DamageReport.constants";
+import { DAMAGE_REPORT_COPY } from "../constants/DamageReportCopy.constants";
+import { useDamageReportFormViewModel } from "../hooks/useDamageReportFormViewModel";
+import type { DamageReportFormProps } from "../models/DamageReportFormProps.interface";
+import DamageReportAftermath from "./DamageReportAftermath";
+import DamageReportUnitField from "./DamageReportUnitField";
+import {
   DAMAGE_REPORT_ERROR_CLASS,
-  DAMAGE_REPORT_SUCCESS_CLASS,
+  DAMAGE_REPORT_FORM_CLASS,
 } from "../styles/DamageReportForm.styles";
+import type { JSX } from "react";
 
-interface DamageReportFormProps {
-  viewModel: DamageReportFormViewModel;
-}
+const CAUSE_OPTIONS = DAMAGE_CAUSE_ORDER.map((cause) => ({
+  label: DAMAGE_CAUSE_LABELS[cause],
+  value: cause,
+}));
 
 const DamageReportForm = ({
-  viewModel,
-}: DamageReportFormProps) => {
-  const {
-    handleCauseChange,
-    handleDescriptionChange,
-    handleImpactDeltaChange,
-    handleSubmit,
-    handleUnitChange,
-    isSubmitting,
-    submissionError,
-    submissionSuccess,
-    units,
-    values,
-  } = viewModel;
+  screen,
+}: DamageReportFormProps): JSX.Element => {
+  const form = useDamageReportFormViewModel(screen);
+  const { draft, errors, selectedUnit } = form;
 
   return (
     <form
       className={DAMAGE_REPORT_FORM_CLASS}
-      onSubmit={handleSubmit}
+      onSubmit={form.handleSubmit}
+      noValidate
     >
-      <div className={DAMAGE_REPORT_FIELDS_CLASS}>
-        <FormField
-          id="damage-report-unit"
-          name="unitId"
-          label={DAMAGE_REPORT_COPY.UNIT_LABEL}
-          value={values.unitId}
-          placeholder={DAMAGE_REPORT_COPY.UNIT_PLACEHOLDER}
-          type={INPUT_TYPES.SELECT}
-          onChange={handleUnitChange}
-          options={units.map((unit) => ({
-            key: unit.id,
-            value: unit.id,
-            label: `${unit.code} — ${unit.categoryName}`,
-          }))}
-        />
-
-        <FormField
-          id="damage-report-cause"
-          name="cause"
-          label={DAMAGE_REPORT_COPY.CAUSE_LABEL}
-          placeholder={DAMAGE_REPORT_COPY.CAUSE_PLACEHOLDER}
-          value={values.cause ?? ""}
-          type={INPUT_TYPES.SELECT}
-          onChange={handleCauseChange}
-          options={DAMAGE_REPORT_CAUSES}
-        />
-
-        <FormField
-          id="damage-report-description"
-          name="description"
-          label={DAMAGE_REPORT_COPY.DESCRIPTION_LABEL}
-          value={values.description}
-          placeholder={
-            DAMAGE_REPORT_COPY.DESCRIPTION_PLACEHOLDER
-          }
-          type={INPUT_TYPES.TEXTAREA}
-          onChange={handleDescriptionChange}
-        />
-
-        <FormField
-          id="damage-report-impact-delta"
-          name="impactDelta"
-          label={DAMAGE_REPORT_COPY.IMPACT_DELTA_LABEL}
-          value={String(values.impactDelta)}
-          type={INPUT_TYPES.NUMBER}
-          onChange={handleImpactDeltaChange}
-        />
-      </div>
-
-      {submissionSuccess && (
-        <p className={DAMAGE_REPORT_SUCCESS_CLASS}>
-          {DAMAGE_REPORT_COPY.SUCCESS}
-        </p>
-      )}
-
-      {submissionError && (
-        <p className={DAMAGE_REPORT_ERROR_CLASS}>
-          {submissionError}
-        </p>
-      )}
-
-      <div className={DAMAGE_REPORT_ACTIONS_CLASS}>
-        <Button
-          type="submit"
-          variant={BUTTON.DANGER}
-          size={SIZE.FULL}
-          disabled={isSubmitting}
+      <DamageReportUnitField
+        error={errors.unit}
+        isLocked={screen.presetUnitId !== null}
+        onChange={form.handleUnitChange}
+        selectedUnit={selectedUnit}
+        units={screen.units}
+        value={draft.unitId}
+      />
+      <ChoicePills
+        error={errors.cause}
+        legend={DAMAGE_REPORT_COPY.CAUSE_LABEL}
+        name={DAMAGE_REPORT_FIELD_ID.CAUSE}
+        onChange={form.handleCauseChange}
+        options={CAUSE_OPTIONS}
+        value={draft.cause}
+      />
+      <FormField
+        id={DAMAGE_REPORT_FIELD_ID.DESCRIPTION}
+        name={DAMAGE_REPORT_FIELD_ID.DESCRIPTION}
+        label={DAMAGE_REPORT_COPY.DESCRIPTION_LABEL}
+        labelSuffix={STRING.Empty}
+        placeholder={
+          DAMAGE_REPORT_COPY.DESCRIPTION_PLACEHOLDER
+        }
+        type={INPUT_TYPES.TEXTAREA}
+        value={draft.description}
+        error={errors.description ?? undefined}
+        showErrorText
+        onChange={form.handleDescriptionChange}
+      />
+      <CountStepper
+        label={DAMAGE_REPORT_COPY.HITS_LABEL}
+        lessLabel={DAMAGE_REPORT_COPY.HITS_LESS}
+        moreLabel={DAMAGE_REPORT_COPY.HITS_MORE}
+        max={DAMAGE_REPORT_LIMITS.HITS_MAX}
+        min={DAMAGE_REPORT_LIMITS.HITS_MIN}
+        onChange={form.handleHitsChange}
+        value={draft.hits}
+      />
+      <DamageReportAftermath
+        draft={draft}
+        hasNotedTrip={screen.pending?.hasTrip ?? false}
+        onStateChange={form.handleStateChange}
+        onTripChange={form.handleTripChange}
+        selectedUnit={selectedUnit}
+      />
+      {form.errorMessage && (
+        <Text
+          className={DAMAGE_REPORT_ERROR_CLASS}
+          role={ARIA_ROLE.ALERT}
         >
-          {isSubmitting
-            ? DAMAGE_REPORT_COPY.LOADING_BUTTON
-            : DAMAGE_REPORT_COPY.SUBMIT_BUTTON}
+          {form.errorMessage}
+        </Text>
+      )}
+      <Button
+        type={BUTTON_TYPES.SUBMIT}
+        variant={BUTTON.PRIMARY}
+        size={SIZE.FULL}
+        isLoading={form.isSubmitting}
+        loadingText={DAMAGE_REPORT_COPY.SUBMITTING}
+      >
+        {DAMAGE_REPORT_COPY.SUBMIT_BUTTON}
+      </Button>
+      {!form.isCompleting && (
+        <Button
+          type={BUTTON_TYPES.BUTTON}
+          variant={BUTTON.SECONDARY}
+          size={SIZE.FULL}
+          disabled={form.isSubmitting}
+          onClick={form.handleSubmitLater}
+        >
+          {DAMAGE_REPORT_COPY.SUBMIT_LATER_BUTTON}
         </Button>
-      </div>
+      )}
     </form>
   );
 };
