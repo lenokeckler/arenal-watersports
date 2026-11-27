@@ -1,4 +1,3 @@
-import type { NullableRef } from "@/app/types";
 import type { NullableUndefined } from "@/app/types";
 
 export interface DamageReportsProps {
@@ -6,6 +5,4 @@ export interface DamageReportsProps {
     string,
     NullableUndefined<string | string[]>
   >;
-  page: number;
-  unitId: NullableRef<string>;
 }

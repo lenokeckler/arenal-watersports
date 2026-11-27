@@ -1,33 +1,42 @@
+import InlineText from "@/app/components/text/InlineText";
 import Text from "@/app/components/text/Text";
-import Title from "@/app/components/title/Title";
-import { TitleVariant } from "@/app/constants";
+import {
+  DAMAGE_CAUSE_LABELS,
+  DAMAGE_PENDING_LABEL,
+} from "@/app/constants";
+import { safeString } from "@/app/utils/safe-value/SafeValue";
 import { DAMAGE_REPORTS_COPY } from "../constants/DamageReportsCopy.constants";
 import type { DamageReportCardProps } from "../models/DamageReportCardProps.interface";
 import {
   DAMAGE_REPORTS_CARD_CLASS,
-  DAMAGE_REPORTS_CARD_DETAIL_CLASS,
-  DAMAGE_REPORTS_CARD_HEADING_CLASS,
+  DAMAGE_REPORTS_HINT_CLASS,
+  DAMAGE_REPORTS_ROW_CLASS,
+  DAMAGE_REPORTS_TEXT_CLASS,
 } from "../styles/DamageReports.styles";
-import { getReportDetailText } from "../utils/getReportDetailText";
+import DamageReportCardActions from "./DamageReportCardActions";
+import DamageReportCardCode from "./DamageReportCardCode";
 import type { JSX } from "react";
 
 const DamageReportCard = ({
-  entry,
+  report,
 }: DamageReportCardProps): JSX.Element => (
-  <div className={DAMAGE_REPORTS_CARD_CLASS}>
-    <Title
-      id={`${DAMAGE_REPORTS_COPY.TITLE_ID_PREFIX}${entry.id}`}
-      variant={TitleVariant.SECONDARY}
-      text={DAMAGE_REPORTS_COPY.CAUSES[entry.cause]}
-      className={DAMAGE_REPORTS_CARD_HEADING_CLASS}
-    />
-    <Text className={DAMAGE_REPORTS_CARD_DETAIL_CLASS}>
-      {entry.description}
+  <article className={DAMAGE_REPORTS_CARD_CLASS}>
+    <div className={DAMAGE_REPORTS_ROW_CLASS}>
+      <DamageReportCardCode report={report} />
+      <InlineText className={DAMAGE_REPORTS_HINT_CLASS}>
+        {DAMAGE_REPORTS_COPY.HITS(report.hits)}
+      </InlineText>
+    </div>
+    <Text className={DAMAGE_REPORTS_TEXT_CLASS}>
+      {report.cause
+        ? DAMAGE_REPORTS_COPY.DETAIL(
+            DAMAGE_CAUSE_LABELS[report.cause],
+            safeString(report.description)
+          )
+        : (report.description ?? DAMAGE_PENDING_LABEL)}
     </Text>
-    <Text className={DAMAGE_REPORTS_CARD_DETAIL_CLASS}>
-      {getReportDetailText(entry)}
-    </Text>
-  </div>
+    <DamageReportCardActions report={report} />
+  </article>
 );
 
 export default DamageReportCard;
