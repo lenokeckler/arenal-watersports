@@ -1,6 +1,7 @@
 import type { Locator, Page } from "@playwright/test";
 import { ARIA_ROLE } from "@/app/constants";
 import { CATEGORY_IMAGE_COPY } from "@/app/features/administration/category-catalog/constants/CategoryImageCopy.constants";
+import { CATEGORY_CONFIGURE_SAVE_COPY } from "@/app/features/administration/category-catalog/constants/CategoryConfigureSaveCopy.constants";
 import { CATEGORY_CONFIGURE_COPY } from "@/app/features/administration/category-catalog/constants/CategoryConfigureCopy.constants";
 import { resolveCategoryConfigurePath } from "@/app/features/administration/category-catalog/utils/resolveCategoryConfigurePath";
 import { E2E_NEXT_NOT_FOUND_MESSAGE } from "../constants/E2eCategoryBehavior.constants";
@@ -35,6 +36,26 @@ export const createCategoryConfigurePage = (page: Page) => {
   const getBackLink = (): Locator =>
     page.getByRole(ARIA_ROLE.LINK, {
       name: CATEGORY_CONFIGURE_COPY.BACK,
+    });
+
+  const getBackButton = (): Locator =>
+    page.getByRole(ARIA_ROLE.BUTTON, {
+      name: new RegExp(CATEGORY_CONFIGURE_COPY.BACK),
+    });
+
+  const getLeaveSheet = (): Locator =>
+    page.getByRole(ARIA_ROLE.DIALOG, {
+      name: CATEGORY_CONFIGURE_COPY.LEAVE_TITLE,
+    });
+
+  const getStatusMessage = (text: string): Locator =>
+    page
+      .getByRole(ARIA_ROLE.STATUS)
+      .filter({ hasText: text });
+
+  const getFailureAlert = (): Locator =>
+    page.getByRole(ARIA_ROLE.ALERT).filter({
+      hasText: CATEGORY_CONFIGURE_SAVE_COPY.FAILED,
     });
 
   const getActiveSwitch = (): Locator =>
@@ -88,6 +109,10 @@ export const createCategoryConfigurePage = (page: Page) => {
     getSectionButton,
     getSectionHeadings,
     getBackLink,
+    getBackButton,
+    getLeaveSheet,
+    getStatusMessage,
+    getFailureAlert,
     getActiveSwitch,
     getSwitch,
     getChip,
