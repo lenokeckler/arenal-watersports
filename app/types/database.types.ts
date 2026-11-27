@@ -4289,6 +4289,19 @@ export type Database = {
           refunded_amount: number;
         }[];
       };
+      resolve_reservation_deposit: {
+        Args: { p_payload: Json };
+        Returns: {
+          deposit_amount: number;
+          kept_amount: number;
+          resolved_by_name: string;
+          resolved_currency: Database["public"]["Enums"]["currency_code"];
+          resolved_deposit_id: string;
+          resolved_reason: string;
+          resolved_status: Database["public"]["Enums"]["deposit_status"];
+          returned_amount: number;
+        }[];
+      };
       retire_worker: {
         Args: { target_worker: string };
         Returns: string;
