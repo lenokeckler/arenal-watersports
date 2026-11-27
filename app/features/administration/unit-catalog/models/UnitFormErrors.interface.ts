@@ -3,6 +3,7 @@ export interface UnitFormErrors {
   status?: string;
   fuelMax?: string;
   fuelLevel?: string;
+  lowFuelLines?: string;
   usageTotal?: string;
   nextOilChangeAt?: string;
 }

@@ -13,8 +13,6 @@ import {
   RESERVATION_CHARGE_SECONDARY_LINK_CLASS,
   RESERVATION_CHARGE_SUBMIT_CLASS,
 } from "../styles/ReservationChargeForm.styles";
-import ReservationChargeAmountField from "./ReservationChargeAmountField";
-import ReservationChargeCurrencyField from "./ReservationChargeCurrencyField";
 import ReservationChargePaymentMethodField from "./ReservationChargePaymentMethodField";
 
 const ReservationChargeForm = ({
@@ -22,16 +20,6 @@ const ReservationChargeForm = ({
   viewModel,
 }: ReservationChargeFormProps): React.JSX.Element => (
   <>
-    {viewModel.currencyOptions.length > 1 && (
-      <ReservationChargeCurrencyField
-        charge={charge}
-        viewModel={viewModel}
-      />
-    )}
-    <ReservationChargeAmountField
-      charge={charge}
-      viewModel={viewModel}
-    />
     <ReservationChargePaymentMethodField
       viewModel={viewModel}
     />
