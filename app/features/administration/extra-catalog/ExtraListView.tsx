@@ -1,5 +1,6 @@
 "use client";
 
+import BackLink from "@/app/components/back-link/BackLink";
 import ListPagination from "@/app/components/list-pagination/ListPagination";
 import {
   PATHS,
@@ -37,6 +38,10 @@ const ExtraListView = ({
         navLabel={EXTRA_CATALOG_COPY.PAGINATION_NAV_LABEL}
         currentPage={currentPage}
         pageCount={pageCount}
+      />
+      <BackLink
+        href={PATHS.HOME}
+        label={EXTRA_CATALOG_COPY.BACK_TO_HOME}
       />
     </div>
   );

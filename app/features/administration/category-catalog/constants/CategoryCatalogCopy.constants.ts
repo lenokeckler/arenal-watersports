@@ -7,7 +7,6 @@ export const CATEGORY_CATALOG_COPY = {
   ALERT_FORM_HINT:
     "Elija cómo avisa esta categoría. Solo se piden los datos del tipo de aviso elegido.",
   ALERT_FORM_TITLE: "Avisos del inventario",
-  ALERT_LINK: "Avisos",
   ALERT_MIN_QUANTITY_FIELD_LABEL: "Cantidad mínima",
   ALERT_MIN_QUANTITY_PLACEHOLDER: "Ejemplo: 5",
   ALERT_SUBMIT_BUTTON: "Guardar avisos",
@@ -26,6 +25,7 @@ export const CATEGORY_CATALOG_COPY = {
   ALERT_TYPE_QUANTITY_LABEL: "Por cantidad",
   ALERT_UPDATE_SUCCESS_TOAST:
     "Avisos de la categoría actualizados.",
+  BACK_TO_HOME: "Volver al inicio",
   BEHAVIOR_CATEGORY_NOT_FOUND_ERROR:
     "No se encontró la categoría. Es posible que otra persona la haya eliminado.",
   BEHAVIOR_FORM_TITLE: "Comportamiento de la categoría",
@@ -45,6 +45,21 @@ export const CATEGORY_CATALOG_COPY = {
   CREATE_FORM_PURPOSE:
     "Indique cómo se llama y cómo se cuenta en el inventario.",
   CREATE_FORM_TITLE: "Nueva categoría",
+  CREATE_MODE_LABEL: "¿Cómo se cuenta este equipo?",
+  CREATE_MODE_LOCKED:
+    "Esto no se puede cambiar después de crear la categoría.",
+  CREATE_MODE_QUANTITY_HELP:
+    "Usted solo registra cuántos hay. Para equipo igual entre sí, como chalecos, remos o kayaks.",
+  CREATE_MODE_UNIT_HELP:
+    "Cada uno tiene nombre o número y se le da seguimiento propio. Para lanchas o cuadraciclos.",
+  CREATE_NAME_HELP:
+    "Así se verá en el tablero y en las reservas.",
+  CREATE_RESERVABLE_HELP:
+    "Si elige «No», no aparecerá en el tablero. Puede cambiarlo después.",
+  CREATE_RESERVABLE_LABEL:
+    "¿Los clientes la pueden reservar?",
+  CREATE_RESERVABLE_NO: "No, es equipo interno",
+  CREATE_RESERVABLE_YES: "Sí, se reserva",
   CREATE_SUCCESS_TOAST: "Categoría creada.",
   DEFAULT_DURATION_MINUTES_FIELD_HINT:
     "Tiempo que normalmente dura un alquiler de esta categoría. Se puede cambiar en cada reserva.",
@@ -53,7 +68,6 @@ export const CATEGORY_CATALOG_COPY = {
   DEFAULT_DURATION_MINUTES_FIELD_PLACEHOLDER: "Ej. 60",
   DEFAULT_DURATION_MINUTES_REQUIRED_WHEN_RESERVABLE_ERROR:
     "Ingrese la duración estándar del alquiler en minutos para una categoría reservable.",
-  DELETE_BUTTON: "Eliminar",
   LOW_FUEL_LINES_FIELD_HINT:
     "Cuántas rayas del medidor o menos marcan la gasolina como baja en el tablero. Cada unidad puede tener su propio aviso.",
   LOW_FUEL_LINES_FIELD_LABEL:
@@ -64,8 +78,6 @@ export const CATEGORY_CATALOG_COPY = {
   LOW_FUEL_LINES_TOO_HIGH_ERROR:
     "No puede ser mayor que las rayas del medidor de la unidad con menos rayas de esta categoría.",
   DELETE_CATEGORY_BUTTON: "Eliminar categoría",
-  DELETE_CONFIRM_MESSAGE:
-    "¿Eliminar esta categoría? No se puede deshacer.",
   DELETE_HAS_RECORDS_ERROR:
     "Esta categoría ya tiene unidades o existencias registradas y no se puede eliminar.",
   DELETE_SUCCESS_TOAST: "Categoría eliminada.",
@@ -76,7 +88,6 @@ export const CATEGORY_CATALOG_COPY = {
   DEPOSIT_FORM_HINT:
     "Deje ambos campos vacíos si la categoría no lleva depósito. Cada monto se guarda en su moneda y no se convierte.",
   DEPOSIT_FORM_TITLE: "Depósito de garantía",
-  DEPOSIT_LINK: "Depósito",
   DEPOSIT_SUBMIT_BUTTON: "Guardar depósito",
   DEPOSIT_UPDATE_SUCCESS_TOAST:
     "Depósito de la categoría actualizado.",
@@ -89,7 +100,7 @@ export const CATEGORY_CATALOG_COPY = {
     "No se pudieron cargar las categorías.",
   GENERIC_MUTATION_ERROR:
     "No se pudo completar la acción. Intente de nuevo.",
-  GROUP_FIELD_LABEL: "Grupo",
+  GROUP_FIELD_LABEL: "Grupo (opcional)",
   GROUP_FIELD_PLACEHOLDER: "Opcional — ej. Kayaks",
   GROUP_PREFIX_LABEL: "GRUPO",
   GUIDE_ONLY_FIELD_LABEL: "Uso exclusivo de guías",
@@ -100,34 +111,37 @@ export const CATEGORY_CATALOG_COPY = {
   IS_RESERVABLE_FIELD_LABEL: "Es reservable",
   LIST_TITLE: "Inventario",
   LOADING_TEXT_CREATING: "Guardando…",
-  LOADING_TEXT_DELETING: "Eliminando…",
   LOADING_TEXT_UPDATING: "Actualizando…",
   MARK_INACTIVE_BUTTON: "Marcar inactiva",
   MARK_INACTIVE_SUCCESS_TOAST:
     "Categoría marcada como inactiva.",
+  NAME_DUPLICATE_ERROR:
+    "Ya existe una categoría con ese nombre. Use otro.",
   NAME_FIELD_LABEL: "Nombre",
   NAME_FIELD_PLACEHOLDER: "Ej. Kayak doble",
   NAME_FIELD_REQUIRED_ERROR:
-    "Escriba el nombre de la categoría.",
+    "Escriba un nombre para la categoría.",
   PAGINATION_NAV_LABEL: "Paginación de categorías",
   REACTIVATE_BUTTON: "Reactivar",
-  REACTIVATE_SUCCESS_TOAST: "Categoría reactivada.",
   RETRY_BUTTON: "Reintentar",
   STATUS_LABEL_ACTIVE: "Activa",
   STATUS_LABEL_INACTIVE: "Inactiva",
-  STOCK_LINK: "Conteo",
-  SUBMIT_BUTTON: "Guardar categoría",
+  STATUS_NOTE_INACTIVE:
+    "Inactiva: no aparece en el tablero ni en las reservas",
+  STATUS_NOTE_NOT_RESERVABLE:
+    "No es reservable: no aparece en el tablero",
+  STATUS_NOTE_NO_IMAGE:
+    "Sin imagen: se muestra la foto predeterminada o un ícono",
+  SUBMIT_BUTTON: "Crear categoría",
   TRACKING_MODE_BY_QUANTITY_LABEL: "Por cantidad",
   TRACKING_MODE_BY_QUANTITY_LOWERCASE: "por cantidad",
   TRACKING_MODE_BY_UNIT_LABEL: "Por unidad",
   TRACKING_MODE_BY_UNIT_LOWERCASE: "por unidad",
   TRACKING_MODE_FIELD_LABEL: "Modo de conteo",
-  TRACKING_MODE_FIELD_PLACEHOLDER: "Seleccione un modo",
   TRACKING_MODE_REQUIRED_ERROR:
     "Seleccione un modo de conteo.",
   UNITS_ARE_INTERCHANGEABLE_FIELD_LABEL:
     "Las unidades son intercambiables",
-  UNITS_LINK: "Unidades",
   UNIT_COUNT_PLURAL: "unidades",
   UNIT_COUNT_SINGULAR: "unidad",
   USAGE_METRIC_ENGINE_HOURS_LABEL: "Horas de motor",

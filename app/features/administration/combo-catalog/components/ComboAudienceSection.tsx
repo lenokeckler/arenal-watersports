@@ -6,6 +6,8 @@ import {
   COMBO_LIST_CARDS_CLASS,
   COMBO_LIST_EMPTY_CLASS,
   COMBO_LIST_SECTION_CLASS,
+  COMBO_LIST_SECTION_HEADER_CLASS,
+  COMBO_LIST_SECTION_NOTE_CLASS,
   COMBO_LIST_SECTION_TITLE_CLASS,
 } from "../styles/ComboList.styles";
 import ComboCard from "./ComboCard";
@@ -13,13 +15,19 @@ import ComboCard from "./ComboCard";
 const ComboAudienceSection = ({
   cards,
   emptyMessage,
+  priceNote,
   title,
 }: ComboAudienceSectionProps): React.JSX.Element => (
   <Section className={COMBO_LIST_SECTION_CLASS}>
-    <SectionTitle
-      text={title}
-      className={COMBO_LIST_SECTION_TITLE_CLASS}
-    />
+    <div className={COMBO_LIST_SECTION_HEADER_CLASS}>
+      <SectionTitle
+        text={title}
+        className={COMBO_LIST_SECTION_TITLE_CLASS}
+      />
+      <Text className={COMBO_LIST_SECTION_NOTE_CLASS}>
+        {priceNote}
+      </Text>
+    </div>
     {cards.length > 0 ? (
       <div className={COMBO_LIST_CARDS_CLASS}>
         {cards.map((card) => (

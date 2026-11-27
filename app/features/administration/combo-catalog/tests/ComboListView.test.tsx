@@ -4,9 +4,14 @@ import {
   refreshMock,
   showToastMock,
 } from "./comboActions.harness";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
-import { CURRENCY_CODE, STATUS } from "@/app/constants";
+import {
+  ARIA_ROLE,
+  CURRENCY_CODE,
+  PATHS,
+  STATUS,
+} from "@/app/constants";
 import { formatMoney } from "@/app/utils/money/formatMoney";
 import { COMBO_AUDIENCE } from "../constants/ComboAudience.constants";
 import {
@@ -14,6 +19,7 @@ import {
   COMBO_AUDIENCE_TITLE,
 } from "../constants/ComboAudienceCopy.constants";
 import { COMBO_CATALOG_COPY } from "../constants/ComboCatalogCopy.constants";
+import { resolveComboEditPath } from "../utils/resolveComboEditPath";
 import { COMBO_STATUS } from "../constants/ComboStatus.constants";
 import { COMBO_STATUS_LABEL } from "../constants/ComboStatusLabel.constants";
 import ComboListView from "../ComboListView";
@@ -100,6 +106,51 @@ describe("ComboListView", () => {
         COMBO_AUDIENCE_EMPTY[COMBO_AUDIENCE.NATIONAL]
       )
     ).not.toBeInTheDocument();
+  });
+
+  it("links Nuevo combo to the create form", () => {
+    renderComboListView();
+    const comboListPage = createComboListPage();
+
+    expect(comboListPage.getCreateLink()).toHaveAttribute(
+      "href",
+      PATHS.ADMINISTRATION.COMBOS_NEW
+    );
+  });
+
+  it("links back to the home screen", () => {
+    renderComboListView();
+
+    expect(
+      screen.getByRole(ARIA_ROLE.LINK, {
+        name: new RegExp(
+          COMBO_CATALOG_COPY.BACK_TO_HOME,
+          "i"
+        ),
+      })
+    ).toHaveAttribute("href", PATHS.HOME);
+  });
+
+  it("links the Editar of each card to the edit form of its combo", () => {
+    renderComboListView({
+      combos: [
+        DEFAULT_COMBO,
+        buildCombo({
+          id: SECOND_COMBO_ID,
+          name: SECOND_COMBO_NAME,
+        }),
+      ],
+    });
+    const comboListPage = createComboListPage();
+
+    [
+      [DEFAULT_COMBO.name, FAKE_COMBO_ID],
+      [SECOND_COMBO_NAME, SECOND_COMBO_ID],
+    ].forEach(([name, id]) => {
+      expect(
+        comboListPage.getEditLink(name)
+      ).toHaveAttribute("href", resolveComboEditPath(id));
+    });
   });
 
   it("shows the fetch error and refreshes on retry", async () => {

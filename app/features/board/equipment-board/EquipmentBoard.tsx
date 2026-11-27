@@ -6,7 +6,7 @@ import {
 import BoardUnitFilter from "@/app/components/board-unit-filter/BoardUnitFilter";
 import BoardRealtime from "@/app/components/board-realtime/BoardRealtime";
 import { readBoardCategories } from "@/app/services/board";
-import EquipmentBoardContent from "./components/EquipmentBoardContent";
+import EquipmentBoardLayoutContent from "./components/EquipmentBoardLayoutContent";
 import EquipmentBoardEmpty from "./components/EquipmentBoardEmpty";
 import EquipmentBoardHeader from "./components/EquipmentBoardHeader";
 import EquipmentBoardPendingLink from "./components/EquipmentBoardPendingLink";
@@ -51,7 +51,7 @@ const EquipmentBoard = async ({
       {cards.length === 0 ? (
         <EquipmentBoardEmpty />
       ) : (
-        <EquipmentBoardContent
+        <EquipmentBoardLayoutContent
           cards={cards}
           filter={filter}
         />

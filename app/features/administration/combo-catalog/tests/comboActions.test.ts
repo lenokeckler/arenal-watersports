@@ -88,6 +88,20 @@ describe("combo actions", () => {
       });
     });
 
+    it("shows the database message when the combo cannot be deactivated", async () => {
+      const error = buildPostgrestError(
+        POSTGRES_ERROR_CODE.OBJECT_NOT_IN_PREREQUISITE_STATE
+      );
+      mockRpc.mockResolvedValue({ data: null, error });
+
+      expect(
+        await deleteOrDeactivateComboAction(FAKE_COMBO_ID)
+      ).toEqual({
+        message: error.message,
+        status: STATUS.ERROR,
+      });
+    });
+
     it("throws on an unmapped database error", async () => {
       mockRpc.mockResolvedValue({
         data: null,
@@ -157,6 +171,20 @@ describe("combo actions", () => {
         await reactivateComboAction(FAKE_COMBO_ID)
       ).toEqual({
         message: COMBO_CATALOG_COPY.NOT_FOUND_ERROR,
+        status: STATUS.ERROR,
+      });
+    });
+
+    it("shows the database message when the combo has unavailable equipment", async () => {
+      const error = buildPostgrestError(
+        POSTGRES_ERROR_CODE.OBJECT_NOT_IN_PREREQUISITE_STATE
+      );
+      mockRpc.mockResolvedValue({ data: null, error });
+
+      expect(
+        await reactivateComboAction(FAKE_COMBO_ID)
+      ).toEqual({
+        message: error.message,
         status: STATUS.ERROR,
       });
     });

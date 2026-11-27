@@ -13,6 +13,7 @@ export const SYSTEM_NAVIGATION_COPY = {
   MENU: "Menú",
   MENU_LABEL: "Opciones de cuenta",
   PRICES_SECTION: "Precios",
+  PRICES: "Precios",
   PROFILE: "Perfil",
   REPORTS: "Reportes",
   TARIFFS: "Tarifas",

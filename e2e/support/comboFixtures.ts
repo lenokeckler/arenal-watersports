@@ -34,6 +34,7 @@ const loadActiveCategory = async () => {
     .from(E2E_SUPABASE_TABLE.EQUIPMENT_CATEGORIES)
     .select("id, name")
     .eq(E2E_SUPABASE_COLUMN.STATUS, CATEGORY_STATUS.ACTIVE)
+    .eq(E2E_SUPABASE_COLUMN.IS_RESERVABLE, true)
     .order("name")
     .limit(1)
     .single();
@@ -144,6 +145,28 @@ export const removeCombos = async (
     .delete()
     .in(E2E_SUPABASE_COLUMN.ID, comboIds);
   throwIfSupabaseError(error, "removeCombos");
+};
+
+export const removeCombosNamed = async (
+  names: string[]
+): Promise<void> => {
+  if (names.length === 0) {
+    return;
+  }
+  const supabase = createServiceRoleSupabaseClient();
+
+  const { data, error } = await supabase
+    .from(E2E_SUPABASE_TABLE.COMBOS)
+    .select(E2E_SUPABASE_COLUMN.ID)
+    .in(E2E_SUPABASE_COLUMN.NAME, names);
+  throwIfSupabaseError(error, "removeCombosNamed");
+  const comboIds = (data ?? []).map(({ id }) => id);
+  if (comboIds.length === 0) {
+    return;
+  }
+
+  await removeComboSales(comboIds);
+  await removeCombos(comboIds);
 };
 
 export const comboExists = async (

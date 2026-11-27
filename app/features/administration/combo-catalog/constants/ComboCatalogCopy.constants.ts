@@ -1,5 +1,8 @@
 export const COMBO_CATALOG_COPY = {
+  BACK_TO_HOME: "Volver al inicio",
   CANCEL_BUTTON: "Cancelar",
+  CREATE_CTA: "Nuevo combo",
+  EDIT_LINK: "Editar",
   FETCH_ERROR_MESSAGE: "No se pudieron cargar los combos.",
   FORBIDDEN_ERROR:
     "No tiene permiso para administrar los combos.",
@@ -9,8 +12,10 @@ export const COMBO_CATALOG_COPY = {
   LOADING_TEXT_UPDATING: "Actualizando…",
   NO_ITEMS: "Sin equipo",
   NO_PRICE: "Sin precio",
+  LIST_SUBTITLE: "Paquetes de equipo con un precio fijo.",
   NOT_FOUND_ERROR:
     "No se encontró el combo. Es posible que otra persona lo haya eliminado.",
+  PER_PACKAGE: "por paquete",
   REACTIVATE_BUTTON: "Reactivar",
   REACTIVATE_GENERIC_ERROR:
     "No se pudo reactivar el combo. Intente de nuevo.",

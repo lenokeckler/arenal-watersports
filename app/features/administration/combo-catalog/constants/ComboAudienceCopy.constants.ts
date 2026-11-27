@@ -18,3 +18,11 @@ export const COMBO_AUDIENCE_EMPTY: Record<
   [COMBO_AUDIENCE.NATIONAL]:
     "Aún no hay combos para nacionales.",
 };
+
+export const COMBO_AUDIENCE_PRICE_NOTE: Record<
+  ComboAudience,
+  string
+> = {
+  [COMBO_AUDIENCE.FOREIGN]: "Precio en USD",
+  [COMBO_AUDIENCE.NATIONAL]: "Precio en CRC",
+};

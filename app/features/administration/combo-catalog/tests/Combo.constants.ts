@@ -40,3 +40,4 @@ export const DEFAULT_COMBO: Combo = {
 export const buildCombo = (
   overrides: Partial<Combo> = {}
 ): Combo => ({ ...DEFAULT_COMBO, ...overrides });
+export const UNSAFE_COMBO_ID = "combo/ñ 1?";

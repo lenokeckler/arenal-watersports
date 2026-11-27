@@ -2,6 +2,8 @@ import { DISPATCH_BOARD_PAGINATION } from "@/app/components/dispatch-board/const
 import type { NullableRef } from "@/app/types";
 
 export const EQUIPMENT_BOARD_COPY = {
+  DRAG_HINT:
+    "Mantenga presionada una tarjeta y arrástrela para cambiar el orden.",
   EMPTY_BODY:
     "Cuando administración active una categoría reservable, aparecerá aquí con su equipo.",
   EMPTY_TITLE: "No hay equipo reservable que mostrar",
