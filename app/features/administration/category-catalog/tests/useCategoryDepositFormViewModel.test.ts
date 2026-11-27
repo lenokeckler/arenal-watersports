@@ -9,7 +9,7 @@ import {
 import { PATHS } from "@/app/constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import type { UpdateCategoryDepositInput } from "../models/UpdateCategoryDepositInput.interface";
-import { buildCategoryFormFieldChangeEvent } from "./buildCategoryFormFieldChangeEvent";
+import { buildCategoryFormFieldChangeEvent } from "../utils/buildCategoryFormFieldChangeEvent";
 import {
   renderCategoryDepositViewModel,
   submitCategoryDepositViewModel,
