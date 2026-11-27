@@ -38,5 +38,4 @@
 | A failed read shows an error with a retry instead of the form                                                    | `StockCount.test.tsx`, `StockCountView.test.tsx`                   |
 | The history shows the date, the reason and the from to values per state and for the total, with its empty state  | `buildStockMovementCard.test.ts`, `StockCountView.test.tsx`        |
 | The history is paginated on the server and a page past the end redirects to the last one                         | `StockCount.test.tsx`, `StockCountView.test.tsx`                   |
-| By-quantity category cards, active or inactive, link to the stock count; by-unit cards do not                    | `CategoryCardStockLink.test.tsx` (category-catalog)                |
 | A count and a discard are registered and appear in the history with their from to values                         | `e2e/specs/stock-count.e2e.ts`                                     |

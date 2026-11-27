@@ -4,4 +4,5 @@ export interface CreateCategoryInput {
   name: string;
   trackingMode: CategoryTrackingMode;
   groupName: string;
+  isReservable: boolean;
 }
