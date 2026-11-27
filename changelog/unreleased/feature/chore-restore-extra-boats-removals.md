@@ -1,1 +1,1 @@
-- Remove the old extra boats screens and logic that came back with the stack merge.
+chore - Restore the extra boats removals — the old boats screens and logic that came back while merging the extras stack are removed again
