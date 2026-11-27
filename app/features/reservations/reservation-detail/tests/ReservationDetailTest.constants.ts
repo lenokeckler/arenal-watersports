@@ -1,10 +1,8 @@
-import type { ReservationDetailMoneyEntry } from "../models/ReservationDetailMoneyEntry.interface";
+import type { ReservationDetailChargeSource } from "../models/ReservationDetailChargeSource.interface";
 import type { ReservationDetailPricingSource } from "../models/ReservationDetailPricingSource.interface";
-import {
-  RESERVATION_DETAIL_CHARGE_KIND,
-  RESERVATION_DETAIL_CURRENCY,
-} from "../constants/ReservationDetail.constants";
-import type { ReservationDetailRecordedCharge } from "../models/ReservationDetailRecordedCharge.interface";
+import { RESERVATION_DETAIL_CURRENCY } from "../constants/ReservationDetail.constants";
+import type { ReservationDetailRefundSource } from "../models/ReservationDetailRefundSource.interface";
+import { createReservationDetailChargeSource } from "./createReservationDetailChargeSource";
 
 export const RESERVATION_DETAIL_TEST = {
   ACTUAL_ARRIVAL: "2026-10-21T12:00:00.000Z",
@@ -66,20 +64,18 @@ export const RESERVATION_DETAIL_PRICING_FIXTURE = {
 } satisfies ReservationDetailPricingSource;
 
 export const RESERVATION_DETAIL_MONEY_FIXTURE: {
-  charges: ReservationDetailRecordedCharge[];
-  refunds: ReservationDetailMoneyEntry[];
+  charges: ReservationDetailChargeSource[];
+  refunds: ReservationDetailRefundSource[];
 } = {
   charges: [
-    {
+    createReservationDetailChargeSource({
       amount: RESERVATION_DETAIL_TEST.CHARGE_CRC,
       currency: RESERVATION_DETAIL_CURRENCY.CRC,
-      kind: RESERVATION_DETAIL_CHARGE_KIND.TARIFF,
-    },
-    {
+    }),
+    createReservationDetailChargeSource({
       amount: RESERVATION_DETAIL_TEST.CHARGE_USD,
       currency: RESERVATION_DETAIL_CURRENCY.USD,
-      kind: RESERVATION_DETAIL_CHARGE_KIND.TARIFF,
-    },
+    }),
   ],
   refunds: [],
 };
