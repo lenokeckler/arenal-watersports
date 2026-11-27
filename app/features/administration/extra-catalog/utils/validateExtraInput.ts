@@ -1,6 +1,7 @@
 import type { ExtraFormErrors } from "../models/ExtraFormErrors.interface";
 import { readExtraName } from "./readExtraName";
 import { validateExtraName } from "./validateExtraName";
+import { validateExtraOccupancy } from "./validateExtraOccupancy";
 import { validateExtraPrices } from "./validateExtraPrices";
 
 export const validateExtraInput = (
@@ -11,5 +12,6 @@ export const validateExtraInput = (
   return {
     ...(nameError ? { name: nameError } : {}),
     ...validateExtraPrices(input),
+    ...validateExtraOccupancy(input),
   };
 };

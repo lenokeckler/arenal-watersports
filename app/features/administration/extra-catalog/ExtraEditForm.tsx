@@ -5,6 +5,8 @@ import { EXTRA_FORM_MODE } from "./constants/ExtraFormMode.constants";
 import ExtraFormView from "./ExtraFormView";
 import type { ExtraEditFormProps } from "./models/ExtraEditFormProps.interface";
 import { getExtra } from "./services/getExtra";
+import { getOccupiableCategories } from "./services/getOccupiableCategories";
+import { includeOccupiedCategory } from "./utils/includeOccupiedCategory";
 
 const ExtraEditForm = async ({
   extraId,
@@ -13,7 +15,10 @@ const ExtraEditForm = async ({
     redirect(PATHS.HOME);
   }
 
-  const extra = await getExtra(extraId);
+  const [extra, occupiableCategories] = await Promise.all([
+    getExtra(extraId),
+    getOccupiableCategories(),
+  ]);
 
   if (!extra) {
     notFound();
@@ -23,6 +28,10 @@ const ExtraEditForm = async ({
     <ExtraFormView
       mode={EXTRA_FORM_MODE.EDIT}
       extra={extra}
+      occupiableCategories={includeOccupiedCategory(
+        occupiableCategories,
+        extra
+      )}
     />
   );
 };

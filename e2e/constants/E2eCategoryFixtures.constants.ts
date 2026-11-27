@@ -3,7 +3,9 @@ import type { CategoryFixtureBehavior } from "../models/CategoryFixtureBehavior.
 
 export const DEFAULT_CATEGORY_FIXTURE_BEHAVIOR: CategoryFixtureBehavior =
   {
+    defaultDurationMinutes: null,
     hasMotor: false,
+    isReservable: false,
     trackingMode: CATEGORY_TRACKING_MODE.BY_UNIT,
     usageMetric: null,
   };
@@ -18,14 +20,6 @@ export const resolveDeletableCategoryName = (
   `${E2E_DELETABLE_CATEGORY_BASE_NAME} (${projectName} · ${scenario})`;
 
 export const E2E_CATEGORY_WITH_RECORDS_NAME = "Jet Ski";
-
-export const E2E_MARK_INACTIVE_CATEGORY_BASE_NAME =
-  "E2E Fixture — Con registros";
-
-export const resolveMarkInactiveCategoryName = (
-  projectName: string
-): string =>
-  `${E2E_MARK_INACTIVE_CATEGORY_BASE_NAME} (${projectName})`;
 
 export const resolveReactivateCategoryName = (
   projectName: string
@@ -49,3 +43,11 @@ export const resolveCreatedCategoryName = (
 export const E2E_CATEGORY_TARIFF_AMOUNT_USD = 5;
 
 export const E2E_CATEGORY_TARIFF_TYPE = "rental";
+
+export const E2E_RESERVABLE_CATEGORY_DURATION_MINUTES = 60;
+
+export const resolveStatusNoteCategoryName = (
+  projectName: string,
+  scenario: string
+): string =>
+  `E2E Fixture — Nota de estado (${projectName} · ${scenario})`;

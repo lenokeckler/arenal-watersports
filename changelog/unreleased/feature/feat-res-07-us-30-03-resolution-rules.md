@@ -1,0 +1,1 @@
+RES-07.30.03: Deposit resolution rules and mappers — validates the returned amount, the kept amount and the reason before a deposit is resolved, and maps the result and its errors (US-RES-30 · AWS-113)
