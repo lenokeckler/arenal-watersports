@@ -1,11 +1,11 @@
-import type { ChangeEvent } from "react";
 import type { NullableRef } from "@/app/types";
+import type { ChangeEvent } from "react";
 
 export interface UnitPhotoUpload {
-  errorMessage: NullableRef<string>;
   handleChange: (
     event: ChangeEvent<HTMLInputElement>
   ) => Promise<void>;
   isUploading: boolean;
+  errorMessage: NullableRef<string>;
   savedMessage: NullableRef<string>;
 }
