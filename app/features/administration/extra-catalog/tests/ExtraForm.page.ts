@@ -64,8 +64,17 @@ export const createExtraFormPage = (
     ARIA_INVALID_TRUE;
 
   const getOccupancyToggle = () =>
-    screen.getByRole(ARIA_ROLE.CHECKBOX, {
-      name: EXTRA_OCCUPANCY_COPY.TOGGLE_LABEL,
+    screen.getByRole(ARIA_ROLE.RADIO, {
+      name: new RegExp(
+        EXTRA_OCCUPANCY_COPY.EQUIPMENT_OPTION
+      ),
+    });
+
+  const getChargeOnlyChoice = () =>
+    screen.getByRole(ARIA_ROLE.RADIO, {
+      name: new RegExp(
+        EXTRA_OCCUPANCY_COPY.CHARGE_ONLY_OPTION
+      ),
     });
 
   const queryCategorySelect = () =>
@@ -93,7 +102,11 @@ export const createExtraFormPage = (
     );
 
   const toggleOccupancy = (): Promise<void> =>
-    user.click(getOccupancyToggle());
+    user.click(
+      (getOccupancyToggle() as HTMLInputElement).checked
+        ? getChargeOnlyChoice()
+        : getOccupancyToggle()
+    );
 
   const chooseCategory = (name: string): Promise<void> =>
     user.selectOptions(getCategorySelect(), name);

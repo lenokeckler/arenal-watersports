@@ -79,6 +79,7 @@ export const createExtraFormPage = (page: Page) => {
   const getBackButton = (): Locator =>
     page.getByRole(ARIA_ROLE.BUTTON, {
       name: EXTRA_CATALOG_COPY.BACK_BUTTON,
+      exact: true,
     });
 
   const getToastMessage = (message: string): Locator =>
@@ -99,7 +100,11 @@ export const createExtraFormPage = (page: Page) => {
   };
 
   const enableOccupancy = async (): Promise<void> => {
-    await getOccupancyToggle().check();
+    await page
+      .locator(
+        `label[for="${EXTRA_FORM_FIELD_ID.OCCUPANCY_TOGGLE}"]`
+      )
+      .click();
   };
 
   const chooseCategory = async (

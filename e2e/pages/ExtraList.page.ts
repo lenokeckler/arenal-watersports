@@ -65,29 +65,6 @@ export const createExtraListPage = (page: Page) => {
       exact: true,
     });
 
-  const getExtraCompatibilityLink = (
-    extraName: string
-  ): Locator =>
-    getExtraCard(extraName).getByRole(ARIA_ROLE.LINK, {
-      name: EXTRA_COMPATIBILITY_COPY.LINK,
-    });
-
-  const getExtraCompatibilityLabel = (
-    extraName: string,
-    label: string
-  ): Locator =>
-    getExtraCard(extraName).getByText(label, {
-      exact: true,
-    });
-
-  const getExtraOccupancyLabel = (
-    extraName: string,
-    label: string
-  ): Locator =>
-    getExtraCard(extraName).getByText(label, {
-      exact: true,
-    });
-
   const getCreateLink = (): Locator =>
     page.getByRole(ARIA_ROLE.LINK, {
       name: EXTRA_CATALOG_COPY.CREATE_CTA,

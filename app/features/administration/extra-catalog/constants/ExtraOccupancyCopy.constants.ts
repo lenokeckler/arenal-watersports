@@ -4,11 +4,18 @@ const LOCKED_MESSAGE =
   "Este extra ya se usa en reservas, por lo que no se puede cambiar el equipo que ocupa. Desactive el extra y cree uno nuevo.";
 
 export const EXTRA_OCCUPANCY_COPY = {
+  CATEGORY_HELP:
+    "Solo aparece el equipo activo que se cuenta por cantidad.",
   CATEGORY_ERROR:
     "Elija un equipo del inventario que se cuente por cantidad y esté activo.",
   CATEGORY_LABEL: "Equipo que ocupa",
   CATEGORY_PLACEHOLDER: "Elija el equipo",
+  CHARGE_ONLY_HINT: "No descuenta nada. Ej. parrilla",
   CHARGE_ONLY_LABEL: "Solo cobro adicional",
+  CHARGE_ONLY_OPTION: "Solo un cobro",
+  EQUIPMENT_HINT: "Descuenta del inventario. Ej. tablas",
+  EQUIPMENT_OPTION: "Ocupa equipo",
+  KIND_LEGEND: "¿Ocupa equipo del inventario?",
   INCOMPLETE_ERROR:
     "Elija el equipo del inventario y escriba la cantidad que ocupa el extra.",
   LOCKED_ERROR: LOCKED_MESSAGE,
@@ -20,7 +27,8 @@ export const EXTRA_OCCUPANCY_COPY = {
     categoryName: string
   ): string => `Ocupa ${quantity} × ${categoryName}`,
   QUANTITY_ERROR: `Escriba una cantidad entera entre ${EXTRA_OCCUPANCY_LIMITS.MIN_QUANTITY} y ${EXTRA_OCCUPANCY_LIMITS.MAX_QUANTITY}.`,
+  QUANTITY_DECREASE: "Restar uno",
+  QUANTITY_HELP: `De ${EXTRA_OCCUPANCY_LIMITS.MIN_QUANTITY} a ${EXTRA_OCCUPANCY_LIMITS.MAX_QUANTITY}.`,
+  QUANTITY_INCREASE: "Sumar uno",
   QUANTITY_LABEL: "Cantidad que ocupa",
-  SECTION_TITLE: "Equipo del inventario",
-  TOGGLE_LABEL: "Este extra ocupa equipo del inventario",
 } as const;
