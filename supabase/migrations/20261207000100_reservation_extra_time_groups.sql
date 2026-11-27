@@ -22,6 +22,7 @@ create policy reservation_extra_time_resolutions_select on reservation_extra_tim
   for select to authenticated
   using (has_area('reservas') or is_admin());
 
+revoke all on table reservation_extra_time_resolutions from public, anon, authenticated;
 grant select on reservation_extra_time_resolutions to authenticated;
 
 create function reservation_extra_time_groups(p_reservation_id uuid)
