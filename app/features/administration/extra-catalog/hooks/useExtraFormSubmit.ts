@@ -9,10 +9,11 @@ import type { ExtraFormSubmitOptions } from "../models/ExtraFormSubmitOptions.ty
 import type { ExtraFormSubmitViewModel } from "../models/ExtraFormSubmitViewModel.interface";
 import { hasExtraFormErrors } from "../utils/hasExtraFormErrors";
 import { submitExtraForm } from "../utils/submitExtraForm";
-import { validateExtraInput } from "../utils/validateExtraInput";
+import { validateExtraFormInput } from "../utils/validateExtraFormInput";
 
 export const useExtraFormSubmit = ({
   showErrors,
+  isOccupancyEnabled,
   ...saveOptions
 }: ExtraFormSubmitOptions): ExtraFormSubmitViewModel => {
   const router = useRouter();
@@ -29,7 +30,10 @@ export const useExtraFormSubmit = ({
   ): Promise<void> => {
     event.preventDefault();
 
-    const errors = validateExtraInput(saveOptions.values);
+    const errors = validateExtraFormInput(
+      saveOptions.values,
+      isOccupancyEnabled
+    );
     if (hasExtraFormErrors(errors)) {
       showErrors(errors);
       return;

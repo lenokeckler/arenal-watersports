@@ -10,7 +10,7 @@ import { PATHS } from "@/app/constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import { useCategoryBehaviorFormViewModel } from "../hooks/useCategoryBehaviorFormViewModel";
 import type { UpdateCategoryBehaviorInput } from "../models/UpdateCategoryBehaviorInput.interface";
-import { buildCategoryFormFieldChangeEvent } from "./buildCategoryFormFieldChangeEvent";
+import { buildCategoryFormFieldChangeEvent } from "../utils/buildCategoryFormFieldChangeEvent";
 import { DEFAULT_CATEGORY_BEHAVIOR } from "./CategoryBehavior.constants";
 import { VALID_CATEGORY_BEHAVIOR_FORM_VALUES } from "./CategoryBehaviorFormValues.constants";
 import { DEFAULT_UPDATE_CATEGORY_BEHAVIOR_INPUT } from "./UpdateCategoryBehaviorInput.constants";

@@ -1,11 +1,11 @@
-import type { SystemNavigationMenuDestination } from "./SystemNavigationMenuDestination.interface";
 import type { SystemNavigationMenuIdentity } from "./SystemNavigationMenuIdentity.interface";
+import type { SystemNavigationMenuSection } from "./SystemNavigationMenuSection.interface";
 
 export interface SystemNavigationMenuProps {
-  destinations: readonly SystemNavigationMenuDestination[];
+  sections: readonly SystemNavigationMenuSection[];
   extras?: React.ReactNode;
   identity?: SystemNavigationMenuIdentity | null;
   isOpen: boolean;
-  canChangeMode: boolean;
+  pathname: string;
   closeMenu: () => void;
 }

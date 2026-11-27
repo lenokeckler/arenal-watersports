@@ -1,0 +1,1 @@
+RES-07.29.11: Deposit E2E and screenshots — end to end tests open the deposit from the detail with the category proposal, record an edited amount, a deposit in colones listed as pending and a reservation without deposit, refuse an invalid amount, and keep Operaciones out, on mobile and desktop, plus the PR screenshots of every deposit state (US-RES-29 · AWS-112)
