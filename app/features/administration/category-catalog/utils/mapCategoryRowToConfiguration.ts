@@ -7,7 +7,8 @@ import { mapCategoryRowToImage } from "./mapCategoryRowToImage";
 
 export const mapCategoryRowToConfiguration = (
   categoryRow: EquipmentCategoryRow,
-  currentQuantity: number
+  currentQuantity: number,
+  hasRecords: boolean
 ): CategoryConfiguration => ({
   id: categoryRow.id,
   name: categoryRow.name,
@@ -17,4 +18,5 @@ export const mapCategoryRowToConfiguration = (
   deposit: mapCategoryRowToDeposit(categoryRow),
   alerts: mapCategoryRowToAlerts(categoryRow),
   image: mapCategoryRowToImage(categoryRow),
+  hasRecords,
 });

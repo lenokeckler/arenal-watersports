@@ -20,19 +20,20 @@ import {
   CURRENCY_CODE,
   MONEY_AMOUNT_ISSUE,
   PATHS,
+  STRING,
 } from "@/app/constants";
 import { EXTRA_CATALOG_COPY } from "../constants/ExtraCatalogCopy.constants";
-import { EXTRA_FORM_MODE } from "../constants/ExtraFormMode.constants";
 import { EXTRA_PRICE_ERROR_COPY } from "../constants/ExtraPriceErrorCopy.constants";
 import { EXTRA_MUTATION_STATUS } from "../constants/ExtraMutationStatus.constants";
 import {
-  DEFAULT_EXTRA,
   FAKE_EXTRA_ID,
   FAKE_EXTRA_NAME,
   FAKE_EXTRA_PRICE_CRC_TEXT,
   FAKE_EXTRA_PRICE_USD_TEXT,
 } from "./Extra.constants";
 import {
+  CREATE_FORM_PROPS,
+  EDIT_FORM_PROPS,
   EDITED_EXTRA_NAME,
   EDITED_EXTRA_PRICE_USD_TEXT,
   EXTRA_FORM_SUCCESS_RESULT,
@@ -65,9 +66,9 @@ describe("useExtraFormViewModel", () => {
   );
 
   it("shows the required name and prices errors on submit without calling the server", async () => {
-    const { result } = renderExtraViewModel({
-      mode: EXTRA_FORM_MODE.CREATE,
-    });
+    const { result } = renderExtraViewModel(
+      CREATE_FORM_PROPS
+    );
 
     await submitExtraViewModel(result);
 
@@ -79,9 +80,9 @@ describe("useExtraFormViewModel", () => {
   });
 
   it("shows an error on the price field that is not a valid amount without calling the server", async () => {
-    const { result } = renderExtraViewModel({
-      mode: EXTRA_FORM_MODE.CREATE,
-    });
+    const { result } = renderExtraViewModel(
+      CREATE_FORM_PROPS
+    );
     changeExtraName(result, FAKE_EXTRA_NAME);
     changeExtraPriceUsd(result, INVALID_PRICE_TEXT);
 
@@ -97,9 +98,9 @@ describe("useExtraFormViewModel", () => {
   });
 
   it("clears the price errors when a price changes", async () => {
-    const { result } = renderExtraViewModel({
-      mode: EXTRA_FORM_MODE.CREATE,
-    });
+    const { result } = renderExtraViewModel(
+      CREATE_FORM_PROPS
+    );
     await submitExtraViewModel(result);
 
     changeExtraPriceCrc(result, FAKE_EXTRA_PRICE_CRC_TEXT);
@@ -111,9 +112,9 @@ describe("useExtraFormViewModel", () => {
   });
 
   it("clears the name error when the name changes", async () => {
-    const { result } = renderExtraViewModel({
-      mode: EXTRA_FORM_MODE.CREATE,
-    });
+    const { result } = renderExtraViewModel(
+      CREATE_FORM_PROPS
+    );
     await submitExtraViewModel(result);
 
     changeExtraName(result, FAKE_EXTRA_NAME);
@@ -125,9 +126,9 @@ describe("useExtraFormViewModel", () => {
   });
 
   it("creates the extra with the typed name and prices", async () => {
-    const { result } = renderExtraViewModel({
-      mode: EXTRA_FORM_MODE.CREATE,
-    });
+    const { result } = renderExtraViewModel(
+      CREATE_FORM_PROPS
+    );
     changeExtraName(result, FAKE_EXTRA_NAME);
     changeExtraPriceUsd(result, FAKE_EXTRA_PRICE_USD_TEXT);
     changeExtraPriceCrc(result, FAKE_EXTRA_PRICE_CRC_TEXT);
@@ -138,15 +139,15 @@ describe("useExtraFormViewModel", () => {
       name: FAKE_EXTRA_NAME,
       priceUsd: FAKE_EXTRA_PRICE_USD_TEXT,
       priceCrc: FAKE_EXTRA_PRICE_CRC_TEXT,
+      occupiesCategoryId: STRING.Empty,
+      occupiesQuantity: STRING.Empty,
     });
     expect(updateExtraMock).not.toHaveBeenCalled();
   });
 
   it("updates the extra with its id, the new name and the new price in edit mode", async () => {
-    const { result } = renderExtraViewModel({
-      mode: EXTRA_FORM_MODE.EDIT,
-      extra: DEFAULT_EXTRA,
-    });
+    const { result } =
+      renderExtraViewModel(EDIT_FORM_PROPS);
     changeExtraName(result, EDITED_EXTRA_NAME);
     changeExtraPriceUsd(
       result,
@@ -160,6 +161,8 @@ describe("useExtraFormViewModel", () => {
       extraId: FAKE_EXTRA_ID,
       name: EDITED_EXTRA_NAME,
       priceUsd: EDITED_EXTRA_PRICE_USD_TEXT,
+      occupiesCategoryId: STRING.Empty,
+      occupiesQuantity: STRING.Empty,
     });
     expect(createExtraMock).not.toHaveBeenCalled();
   });
@@ -169,9 +172,9 @@ describe("useExtraFormViewModel", () => {
       status: EXTRA_MUTATION_STATUS.ERROR,
       nameError: EXTRA_CATALOG_COPY.NAME_DUPLICATE_ERROR,
     });
-    const { result } = renderExtraViewModel({
-      mode: EXTRA_FORM_MODE.CREATE,
-    });
+    const { result } = renderExtraViewModel(
+      CREATE_FORM_PROPS
+    );
     changeExtraName(result, FAKE_EXTRA_NAME);
     changeExtraPriceUsd(result, FAKE_EXTRA_PRICE_USD_TEXT);
 
@@ -184,9 +187,9 @@ describe("useExtraFormViewModel", () => {
   });
 
   it("goes back to the extra list", () => {
-    const { result } = renderExtraViewModel({
-      mode: EXTRA_FORM_MODE.CREATE,
-    });
+    const { result } = renderExtraViewModel(
+      CREATE_FORM_PROPS
+    );
 
     act(() => {
       result.current.onBack();

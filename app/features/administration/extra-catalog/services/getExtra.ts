@@ -3,12 +3,13 @@ import { createServerSupabaseClient } from "@/app/services/supabase";
 import type { NullableRef } from "@/app/types";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { EXTRA_ROW_COLUMNS } from "../constants/ExtraQuery.constants";
-import type { Extra } from "../models/Extra.interface";
+import type { ExtraDetail } from "../models/ExtraDetail.interface";
 import { mapExtraRowToExtra } from "../utils/mapExtraRowToExtra";
+import { isExtraUsedInReservations } from "./isExtraUsedInReservations";
 
 export const getExtra = async (
   extraId: string
-): Promise<NullableRef<Extra>> => {
+): Promise<NullableRef<ExtraDetail>> => {
   const supabase = await createServerSupabaseClient();
 
   const { data: extraRow, error } = await supabase
@@ -24,5 +25,15 @@ export const getExtra = async (
   }
   throwIfSupabaseError(error, "getExtra");
 
-  return extraRow ? mapExtraRowToExtra(extraRow) : null;
+  if (!extraRow) {
+    return null;
+  }
+
+  return {
+    ...mapExtraRowToExtra(extraRow),
+    isUsedInReservations: await isExtraUsedInReservations(
+      supabase,
+      extraId
+    ),
+  };
 };
