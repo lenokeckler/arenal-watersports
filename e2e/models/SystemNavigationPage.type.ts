@@ -8,6 +8,8 @@ export interface SystemNavigationPage {
   getLinkHrefs: () => Promise<string[]>;
   getLinks: () => Locator;
   getMenuButton: () => Locator;
+  getMenuLink: (label: string) => Locator;
   getNavigation: () => Locator;
   goTo: () => Promise<void>;
+  openMenu: () => Promise<void>;
 }

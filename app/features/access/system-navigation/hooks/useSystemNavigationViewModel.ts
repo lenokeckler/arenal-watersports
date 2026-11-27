@@ -5,6 +5,7 @@ import type { WorkModeOverview } from "@/app/services/work-mode/models/WorkModeO
 import { hasSeveralWorkAreas } from "@/app/utils/work-mode/hasSeveralWorkAreas";
 import { shouldShowSystemNavigation } from "@/app/utils/work-mode/shouldShowSystemNavigation";
 import { buildSystemNavigationItems } from "../utils/buildSystemNavigationItems";
+import { buildSystemNavigationMenuItems } from "../utils/buildSystemNavigationMenuItems";
 import { useSystemNavigationMenuDismissal } from "./useSystemNavigationMenuDismissal";
 import { useSystemNavigationMenuState } from "./useSystemNavigationMenuState";
 import type { SystemNavigationViewModelResult } from "../models/SystemNavigationViewModelResult.type";
@@ -22,6 +23,9 @@ export const useSystemNavigationViewModel = (
 
   const viewModel = {
     items: area ? buildSystemNavigationItems(area) : [],
+    menuItems: area
+      ? buildSystemNavigationMenuItems(area)
+      : [],
     pathname,
     ...menuState,
     canChangeMode: hasSeveralWorkAreas(overview),
