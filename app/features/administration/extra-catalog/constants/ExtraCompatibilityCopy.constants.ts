@@ -3,6 +3,23 @@ export const EXTRA_COMPATIBILITY_COPY = {
   APPLIES_TO_UNITS: (unitCount: number): string =>
     `Aplica a ${unitCount} embarcaciones`,
   BACK_BUTTON: "Regresar",
+  BOATS_SUBTITLE:
+    "Marque en qué embarcaciones se puede ofrecer este extra.",
+  BOATS_TOTAL: (
+    linkedCount: number,
+    unitCount: number
+  ): string =>
+    `Aplica a ${linkedCount} de ${unitCount} embarcaciones`,
+  BOATS_TOTAL_HELP:
+    "Al armar una reserva, solo se ofrece en estas.",
+  DIRTY_ONE: "1 cambio sin guardar",
+  DIRTY_MANY: (count: number): string =>
+    `${count} cambios sin guardar`,
+  LEAVE_DISCARD_BUTTON: "Regresar sin guardar",
+  LEAVE_SAVE_BUTTON: "Guardar y regresar",
+  LEAVE_TITLE: "¿Salir sin guardar?",
+  LEAVE_BODY:
+    "Marcó o quitó embarcaciones y no las ha guardado.",
   BACK_TO_EXTRAS_LINK: "Volver a extras",
   CATEGORIES_EMPTY_BODY:
     "Agregue embarcaciones a una categoría por unidad para poder asignarles este extra.",
@@ -27,16 +44,18 @@ export const EXTRA_COMPATIBILITY_COPY = {
     linkedCount: number,
     unitCount: number
   ): string => `${linkedCount} de ${unitCount} unidades`,
+  MARKED_COUNT: (count: number): string =>
+    `${count} marcadas`,
   NOT_FOUND_ERROR:
     "No se encontró el extra o una de las embarcaciones. Es posible que otra persona la haya eliminado.",
   NOT_OFFERED: "no se ofrece",
   NO_UNITS: "Sin embarcaciones",
   OFFLINE_ERROR:
-    "Sin conexión. Los cambios no se guardaron; conéctese a internet e intente de nuevo.",
-  SAVE_BUTTON: "Guardar",
+    "Sin conexión. Los cambios no se guardaron; conéctese a internet e intente de nuevo. Lo que marcó sigue aquí.",
+  SAVE_BUTTON: "Guardar embarcaciones",
   SAVE_ERROR:
     "No se pudieron guardar las embarcaciones. Revise la conexión e intente de nuevo.",
-  SAVE_SUCCESS_TOAST: "Embarcaciones del extra guardadas.",
+  SAVE_SUCCESS_TOAST: "Embarcaciones guardadas.",
   SELECT_ALL_BUTTON: "Marcar todas",
   UNITS_EMPTY:
     "Esta categoría no tiene embarcaciones activas.",
