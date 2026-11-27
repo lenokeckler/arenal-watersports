@@ -22,11 +22,7 @@ create policy reservation_extra_time_resolutions_select on reservation_extra_tim
   for select to authenticated
   using (has_area('reservas') or is_admin());
 
-create policy reservation_extra_time_resolutions_insert on reservation_extra_time_resolutions
-  for insert to authenticated
-  with check (has_area('reservas') or is_admin());
-
-grant select, insert on reservation_extra_time_resolutions to authenticated;
+grant select on reservation_extra_time_resolutions to authenticated;
 
 create function reservation_extra_time_groups(p_reservation_id uuid)
 returns table (
