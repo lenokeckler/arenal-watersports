@@ -1,6 +1,8 @@
 export const UNIT_PHOTOS_COPY = {
   ALT_PREFIX: "Foto de la máquina: ",
   ANGLE: {
+    back: "Atrás",
+    extra: "Adicional (opcional)",
     bottom: "Por debajo (opcional)",
     front: "Frente",
     left_side: "Costado izquierdo",
