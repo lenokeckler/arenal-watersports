@@ -6,7 +6,7 @@ export interface MaintenanceJobErrors {
   currency: NullableRef<string>;
   date: NullableRef<string>;
   description: NullableRef<string>;
-  threshold: NullableRef<string>;
+  interval: NullableRef<string>;
   unit: NullableRef<string>;
   workType: NullableRef<string>;
 }

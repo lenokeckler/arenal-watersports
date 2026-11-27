@@ -27,6 +27,7 @@ import {
 import SystemNavigationMenuLink from "./SystemNavigationMenuLink";
 
 const SystemNavigationMenu = ({
+  destinations,
   extras,
   identity,
   isOpen,
@@ -111,6 +112,14 @@ const SystemNavigationMenu = ({
           onNavigate={closeMenu}
         />
       ) : null}
+      {destinations.map(({ href, label }) => (
+        <SystemNavigationMenuLink
+          key={href}
+          href={href}
+          label={label}
+          onNavigate={closeMenu}
+        />
+      ))}
       {extras}
     </div>
   </>

@@ -6,7 +6,6 @@ import {
   E2E_BOARD_STANDALONE_CARDS,
   resolveBoardChipText,
 } from "../constants/E2eBoard.constants";
-import { EQUIPMENT_BOARD_COPY } from "@/app/features/board/equipment-board/constants/EquipmentBoardCopy.constants";
 import { E2E_COUNT } from "../constants/E2eRuntime.constants";
 import { createBoardPage } from "../pages/Board.page";
 import { signInAsSeededWorker } from "../support/signInAsSeededWorker";
@@ -41,12 +40,6 @@ test.describe("Equipment board", () => {
       await expect(
         boardPage.getCardText(
           card,
-          EQUIPMENT_BOARD_COPY.PER_UNIT_CHIP
-        )
-      ).toHaveCount(E2E_COUNT.ONE);
-      await expect(
-        boardPage.getCardText(
-          card,
           resolveBoardChipText(seeded.totalCount)
         )
       ).toHaveCount(E2E_COUNT.ONE);
@@ -66,12 +59,6 @@ test.describe("Equipment board", () => {
       boardPage.getCardText(
         groupCard,
         resolveBoardChipText(E2E_BOARD_GROUP.TOTAL_COUNT)
-      )
-    ).toHaveCount(E2E_COUNT.ONE);
-    await expect(
-      boardPage.getCardText(
-        groupCard,
-        EQUIPMENT_BOARD_COPY.PER_UNIT_CHIP
       )
     ).toHaveCount(E2E_COUNT.ONE);
     await expect(

@@ -55,4 +55,6 @@ export interface FormFieldProps {
   inputMode?: InputMode;
   autoCapitalize?: Autocapitalize;
   spellCheck?: boolean;
+  startAdornment?: string;
+  endAdornment?: string;
 }

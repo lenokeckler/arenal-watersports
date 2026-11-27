@@ -31,6 +31,8 @@ export const DEFAULT_EXTRA_SEED_INPUT: ExtraSeedInput = {
   status: EXTRA_STATUS.ACTIVE,
   priceUsd: E2E_EXTRA_SEED_PRICE.USD,
   priceCrc: null,
+  occupiesCategoryId: null,
+  occupiesQuantity: null,
 };
 
 export const resolveExtraFixtureName = (

@@ -17,6 +17,8 @@ export const DEFAULT_BOARD_CATEGORY_ROW: BoardCategoryRow =
     group_name: null,
     image_path: null,
     in_use_count: 1,
+    maintenance_count: 0,
+    damaged_count: 0,
     total_count: 2,
   };
 

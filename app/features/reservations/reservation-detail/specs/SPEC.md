@@ -40,6 +40,8 @@ Let Reservations open one read-only view of an outing and see its reservation, c
 - Compare gross recorded `tariff` charges against the configured agreed amount, falling back to list amount only when no agreed amount exists for that currency.
 - Compare each currency independently. The state is `pending` when no amount is recorded, `partial` when a positive balance remains after some payment, and `paid` only when every configured currency target is met.
 - Do not use deposits or convert between currencies.
+- Show "Registrar devolución" after the charge action, on any reservation status, only when some currency has a positive net (all `tariff` and `extra_time` charges minus refunds, the same definition as `private.reservation_refundable_amount`); a split child never shows it.
+- Show the recorded security deposit in one line inside the charges panel: the amount in its currency, or "Sin depósito" after the "no deposit" answer (US-RES-29). It is never added to the charge state. "Registrar depósito" sits after the charge action while no decision exists, on a scheduled or dispatched original reservation only, and opens `/reservations/<id>/deposit`.
 
 ## Acceptance criteria
 

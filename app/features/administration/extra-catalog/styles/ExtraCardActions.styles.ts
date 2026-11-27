@@ -1,32 +1,28 @@
-import {
-  BUTTON_BASE_CLASS,
-  BUTTON_ENABLED_CLASS,
-  BUTTON_SIZE_CLASS,
-  BUTTON_VARIANT_CLASS,
-} from "@/app/components/button/styles/Button.styles";
-import { BUTTON, SIZE } from "@/app/constants";
-
 export const EXTRA_CARD_ACTIONS_ROW_CLASS =
-  "grid grid-cols-2 gap-3 md:flex md:shrink-0";
+  "grid grid-cols-2 gap-2 md:flex md:shrink-0";
 
-const EXTRA_CARD_ACTION_SIZE_CLASS =
-  "min-h-11 rounded-md md:w-40";
+const EXTRA_CARD_ACTION_CLASS =
+  "inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-xl border-2 px-3 text-base font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none md:w-44";
 
-export const EXTRA_CARD_EDIT_LINK_CLASS = `${BUTTON_BASE_CLASS} ${BUTTON_VARIANT_CLASS[BUTTON.SECONDARY]} ${BUTTON_SIZE_CLASS[SIZE.FULL]} ${BUTTON_ENABLED_CLASS} ${EXTRA_CARD_ACTION_SIZE_CLASS}`;
+export const EXTRA_CARD_ACTION_ICON_CLASS = "text-xl";
 
-const EXTRA_CARD_ACTION_SHAPE_CLASS = `inline-flex w-full items-center justify-center border px-4 text-body-base transition-colors ${EXTRA_CARD_ACTION_SIZE_CLASS}`;
+export const EXTRA_CARD_COMPATIBILITY_LINK_CLASS = `${EXTRA_CARD_ACTION_CLASS} border-outline text-on-surface hover:bg-surface-container-high`;
 
-export const EXTRA_CARD_REACTIVATE_BUTTON_CLASS = `${EXTRA_CARD_ACTION_SHAPE_CLASS} border-outline-variant text-on-surface hover:bg-surface-container-high`;
+export const EXTRA_CARD_REACTIVATE_BUTTON_CLASS = `${EXTRA_CARD_ACTION_CLASS} border-transparent bg-primary/15 text-primary hover:bg-primary/25`;
 
-export const EXTRA_CARD_REMOVE_BUTTON_CLASS = `${EXTRA_CARD_ACTION_SHAPE_CLASS} border-error text-error hover:bg-error-container/30`;
+export const EXTRA_CARD_REMOVE_BUTTON_CLASS = `${EXTRA_CARD_ACTION_CLASS} border-error text-error hover:bg-error-container/30`;
 
-export const EXTRA_CARD_CONFIRM_CLASS =
-  "flex w-full flex-col gap-3 md:w-96 md:shrink-0";
+export const EXTRA_REMOVAL_SHEET_BODY_CLASS =
+  "flex flex-col gap-3.5";
 
-export const EXTRA_CARD_CONFIRM_MESSAGE_CLASS =
-  "text-body-base text-on-surface";
+export const EXTRA_REMOVAL_SHEET_NAME_CLASS =
+  "text-lg font-bold text-on-surface";
 
-export const EXTRA_CARD_CONFIRM_BUTTON_ROW_CLASS =
-  "grid grid-cols-2 gap-3";
+export const EXTRA_REMOVAL_SHEET_NOTE_CLASS =
+  "flex items-start gap-2.5 text-base text-on-surface";
 
-export const EXTRA_CARD_CONFIRM_BUTTON_CLASS = "min-h-11";
+export const EXTRA_REMOVAL_SHEET_NOTE_ICON_CLASS =
+  "shrink-0 text-xl text-on-surface-variant";
+
+export const EXTRA_REMOVAL_SHEET_BUTTON_CLASS =
+  "min-h-12 w-full";
