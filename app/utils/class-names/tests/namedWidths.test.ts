@@ -2,7 +2,6 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
-  KNOWN_NAMED_WIDTH_FILES,
   NAMED_WIDTH_PATTERN,
   SOURCE_FILE_PATTERN,
   SOURCE_ROOT,
@@ -40,9 +39,6 @@ describe("named width utilities", () => {
         )
         .map((path) =>
           relative(process.cwd(), path).split(sep).join("/")
-        )
-        .filter(
-          (path) => !KNOWN_NAMED_WIDTH_FILES.includes(path)
         );
 
       expect(offenders).toEqual([]);
