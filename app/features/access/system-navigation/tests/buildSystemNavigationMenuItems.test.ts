@@ -4,7 +4,7 @@ import { SYSTEM_NAVIGATION_COPY } from "../constants/SystemNavigationCopy.consta
 import { buildSystemNavigationMenuItems } from "../utils/buildSystemNavigationMenuItems";
 
 describe("buildSystemNavigationMenuItems", () => {
-  it("lists Combos for Administration", () => {
+  it("lists Combos and Tarifas for Administration", () => {
     expect(
       buildSystemNavigationMenuItems(
         SUPABASE_WORK_AREA.ADMINISTRATION
@@ -13,6 +13,10 @@ describe("buildSystemNavigationMenuItems", () => {
       {
         label: SYSTEM_NAVIGATION_COPY.COMBOS,
         href: PATHS.ADMINISTRATION.COMBOS,
+      },
+      {
+        label: SYSTEM_NAVIGATION_COPY.TARIFFS,
+        href: PATHS.ADMINISTRATION.TARIFFS,
       },
     ]);
   });
