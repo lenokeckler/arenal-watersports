@@ -184,3 +184,19 @@ The administration worker keeps the list of extras that reservations can add to 
 
 - [x] An extra can be saved as only an additional charge or as occupying a quantity of an equipment category counted by quantity.
 - [ ] The form section and the card label are carried by US-ADM-21 PRs 21.03 and 21.04.
+
+## 21.03 Extra occupancy form (US-ADM-21)
+
+| Requirement                                                                                                                            | Test                                                                   |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| The form has an "Equipo del inventario" section with a switch that is off by default and shows the category and quantity when on       | `ExtraOccupancySection.test.tsx`                                       |
+| The category options are the active categories counted by quantity, plus the one the extra already occupies when editing               | `buildExtraOccupancyCategoryOptions.test.ts`, `ExtraEditForm.test.tsx` |
+| Editing preloads the category and quantity; turning the switch off clears both before saving                                           | `ExtraOccupancySection.test.tsx`                                       |
+| Submitting sends the category id and the quantity text; an incomplete pair or a server error shows the group error under the fields    | `ExtraOccupancySection.test.tsx`, `useExtraFormViewModel.test.ts`      |
+| When a reservation uses the extra, the switch and both fields are disabled and a note tells the administrator to deactivate and create | `ExtraOccupancySection.test.tsx`                                       |
+| The create and edit entries read the occupiable categories on the server and pass them to the form                                     | `ExtraCreateForm.test.tsx`, `ExtraEditForm.test.tsx`                   |
+
+### Acceptance criteria
+
+- [x] Administration chooses whether an extra only charges or occupies equipment of the inventory.
+- [ ] The card label and the end to end coverage are carried by US-ADM-21 PR 21.04.
