@@ -1,7 +1,7 @@
 export const EXTRA_COMPATIBILITY_COPY = {
-  APPLIES_TO_ONE_UNIT: "Aplica a 1 unidad",
+  APPLIES_TO_ONE_UNIT: "Aplica a 1 embarcación",
   APPLIES_TO_UNITS: (unitCount: number): string =>
-    `Aplica a ${unitCount} unidades`,
+    `Aplica a ${unitCount} embarcaciones`,
   BACK_BUTTON: "Regresar",
   BACK_TO_EXTRAS_LINK: "Volver a extras",
   CATEGORIES_EMPTY_BODY:
@@ -29,6 +29,7 @@ export const EXTRA_COMPATIBILITY_COPY = {
   ): string => `${linkedCount} de ${unitCount} unidades`,
   NOT_FOUND_ERROR:
     "No se encontró el extra o una de las embarcaciones. Es posible que otra persona la haya eliminado.",
+  NOT_OFFERED: "no se ofrece",
   NO_UNITS: "Sin embarcaciones",
   OFFLINE_ERROR:
     "Sin conexión. Los cambios no se guardaron; conéctese a internet e intente de nuevo.",

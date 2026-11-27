@@ -17,7 +17,7 @@ export const createExtraListPage = () => {
     within(
       screen.getByRole(ARIA_ROLE.GROUP, { name })
     ).queryByRole(ARIA_ROLE.LINK, {
-      name: EXTRA_CATALOG_COPY.EDIT_LINK,
+      name: EXTRA_CATALOG_COPY.EDIT_CARD_LABEL(name),
     });
 
   const getCompatibilityLink = (name: string) =>
@@ -74,15 +74,33 @@ export const createExtraListPage = () => {
       EXTRA_CATALOG_COPY.LOADING_TEXT_UPDATING
     );
 
-  const queryCancelButton = (name: string) =>
-    queryCardButton(name, EXTRA_CATALOG_COPY.CANCEL_BUTTON);
+  const queryRemovalSheet = (name: string) => {
+    const sheet = screen.queryByRole(ARIA_ROLE.DIALOG);
 
-  const queryRemovalConfirmMessage = (name: string) =>
-    within(
-      screen.getByRole(ARIA_ROLE.GROUP, { name })
-    ).queryByText(
-      EXTRA_CATALOG_COPY.REMOVAL_CONFIRM_MESSAGE
-    );
+    return sheet && within(sheet).queryByText(name)
+      ? sheet
+      : null;
+  };
+
+  const queryCancelButton = (name: string) => {
+    const sheet = queryRemovalSheet(name);
+
+    return sheet
+      ? within(sheet).queryByRole(ARIA_ROLE.BUTTON, {
+          name: EXTRA_CATALOG_COPY.CANCEL_BUTTON,
+        })
+      : null;
+  };
+
+  const queryRemovalConfirmMessage = (name: string) => {
+    const sheet = queryRemovalSheet(name);
+
+    return sheet
+      ? within(sheet).queryByText(
+          EXTRA_CATALOG_COPY.REMOVAL_USED_NOTE
+        )
+      : null;
+  };
 
   const clickCardButton = async (
     name: string,
@@ -95,11 +113,50 @@ export const createExtraListPage = () => {
     );
   };
 
-  const clickRemove = (name: string): Promise<void> =>
-    clickCardButton(name, EXTRA_CATALOG_COPY.REMOVE_BUTTON);
+  const clickSheetButton = async (
+    name: string,
+    buttonName: string
+  ): Promise<boolean> => {
+    const sheet = queryRemovalSheet(name);
 
-  const clickCancel = (name: string): Promise<void> =>
-    clickCardButton(name, EXTRA_CATALOG_COPY.CANCEL_BUTTON);
+    if (!sheet) {
+      return false;
+    }
+
+    await user.click(
+      within(sheet).getByRole(ARIA_ROLE.BUTTON, {
+        name: buttonName,
+      })
+    );
+    return true;
+  };
+
+  const clickRemove = async (
+    name: string
+  ): Promise<void> => {
+    if (
+      await clickSheetButton(
+        name,
+        EXTRA_CATALOG_COPY.REMOVE_BUTTON
+      )
+    ) {
+      return;
+    }
+
+    await clickCardButton(
+      name,
+      EXTRA_CATALOG_COPY.REMOVE_BUTTON
+    );
+  };
+
+  const clickCancel = async (
+    name: string
+  ): Promise<void> => {
+    await clickSheetButton(
+      name,
+      EXTRA_CATALOG_COPY.CANCEL_BUTTON
+    );
+  };
 
   const clickReactivate = (name: string): Promise<void> =>
     clickCardButton(
