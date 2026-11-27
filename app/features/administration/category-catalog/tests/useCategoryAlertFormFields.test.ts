@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { STRING } from "@/app/constants";
 import { CATEGORY_ALERT_TYPE } from "../constants/CategoryAlertType.constants";
 import { useCategoryAlertFormFields } from "../hooks/useCategoryAlertFormFields";
-import { buildCategoryFormFieldChangeEvent } from "./buildCategoryFormFieldChangeEvent";
+import { buildCategoryFormFieldChangeEvent } from "../utils/buildCategoryFormFieldChangeEvent";
 import { ALERT_TYPE_BY_STORED_VALUES } from "./CategoryAlertCases.constants";
 import {
   buildCategoryAlertFormValues,

@@ -77,12 +77,9 @@ describe("useCategoryCreateFormViewModel lock", () => {
           value: VALID_CATEGORY_CREATE_FORM_VALUES.name,
         },
       } as CategoryFormFieldChangeEvent);
-      result.current.onTrackingModeChange({
-        target: {
-          value:
-            VALID_CATEGORY_CREATE_FORM_VALUES.trackingMode,
-        },
-      } as CategoryFormFieldChangeEvent);
+      result.current.onTrackingModeChange(
+        VALID_CATEGORY_CREATE_FORM_VALUES.trackingMode
+      );
     });
 
     await expect(submitForm(result)).rejects.toBe(
@@ -117,12 +114,9 @@ describe("useCategoryCreateFormViewModel lock", () => {
           value: VALID_CATEGORY_CREATE_FORM_VALUES.name,
         },
       } as CategoryFormFieldChangeEvent);
-      result.current.onTrackingModeChange({
-        target: {
-          value:
-            VALID_CATEGORY_CREATE_FORM_VALUES.trackingMode,
-        },
-      } as CategoryFormFieldChangeEvent);
+      result.current.onTrackingModeChange(
+        VALID_CATEGORY_CREATE_FORM_VALUES.trackingMode
+      );
     });
 
     const formEvent = {
