@@ -1,9 +1,5 @@
-import { THEME } from "@/app/constants";
-
 export const SESSION_CONTROLS_COPY = {
-  PREFERENCES: "Preferencias",
-  THEMES: {
-    [THEME.DARK]: "Oscuro",
-    [THEME.LIGHT]: "Claro",
-  },
+  DARK_THEME: "Oscuro",
+  LIGHT_THEME: "Claro",
+  THEME_SECTION: "Tema",
 } as const;

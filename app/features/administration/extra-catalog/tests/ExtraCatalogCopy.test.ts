@@ -15,7 +15,9 @@ import { NON_USTED_WORDS_PATTERN } from "./Extra.constants";
 
 describe("extra catalog copy", () => {
   it.each([
-    ...Object.entries(EXTRA_CATALOG_COPY),
+    ...Object.entries(EXTRA_CATALOG_COPY).filter(
+      ([, text]) => typeof text === TYPE_OF.STRING
+    ),
     ...Object.entries(EXTRA_OCCUPANCY_COPY).filter(
       ([, text]) => typeof text === TYPE_OF.STRING
     ),

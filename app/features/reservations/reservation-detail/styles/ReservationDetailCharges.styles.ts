@@ -12,6 +12,10 @@ export const RESERVATION_DETAIL_REFUND_ACTION_CLASS = `${RESERVATION_DETAIL_ACTI
 export const RESERVATION_DETAIL_DEPOSIT_ACTION_CLASS = `${RESERVATION_DETAIL_ACTION_BASE_CLASS} border-outline-variant text-on-surface transition-colors hover:bg-surface-container-high`;
 export const RESERVATION_DETAIL_DEPOSIT_NONE_CLASS =
   "break-words text-sm font-medium text-on-surface-variant";
+export const RESERVATION_DETAIL_EXTRA_TIME_CLASS =
+  "flex flex-col gap-2";
+export const RESERVATION_DETAIL_EXTRA_TIME_TEXT_CLASS =
+  "text-sm font-semibold text-on-surface";
 export const RESERVATION_DETAIL_MONEY_CLASS =
   "break-words font-mono text-sm font-medium tabular-nums text-on-surface";
 

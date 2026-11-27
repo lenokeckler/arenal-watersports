@@ -1,15 +1,16 @@
 "use client";
 
-import { Button, Text } from "@/app/components";
-import FormErrorBanner from "@/app/components/form-error-banner/FormErrorBanner";
 import {
-  BUTTON,
-  BUTTON_TYPES,
-  THEME,
-} from "@/app/constants";
+  Button,
+  MaterialIcon,
+  Text,
+} from "@/app/components";
+import FormErrorBanner from "@/app/components/form-error-banner/FormErrorBanner";
+import { BUTTON, BUTTON_TYPES } from "@/app/constants";
 import LogoutButton from "./components/LogoutButton";
 import LogoutStatus from "./components/LogoutStatus";
 import { SESSION_CONTROLS_COPY } from "./constants/SessionControlsCopy.constants";
+import { SESSION_THEME_OPTIONS } from "./constants/SessionThemeOptions.constants";
 import { useLogoutViewModel } from "./hooks/useLogoutViewModel";
 import { useThemeViewModel } from "./hooks/useThemeViewModel";
 import {
@@ -17,6 +18,8 @@ import {
   SESSION_LOGOUT_SLOT_CLASS,
   SESSION_PREFERENCES_LABEL_CLASS,
   SESSION_THEME_GROUP_CLASS,
+  SESSION_THEME_ICON_CLASS,
+  SESSION_THEME_SECTION_CLASS,
   SESSION_THEME_OPTION_CLASS,
 } from "./styles/SessionControls.styles";
 
@@ -32,30 +35,38 @@ const SessionControls = (): React.JSX.Element => {
   return (
     <div className={SESSION_CONTROLS_CLASS}>
       <LogoutStatus message={pendingAnnouncement} />
-      <Text className={SESSION_PREFERENCES_LABEL_CLASS}>
-        {SESSION_CONTROLS_COPY.PREFERENCES}
-      </Text>
-      <div className={SESSION_THEME_GROUP_CLASS}>
-        {Object.values(THEME).map((option) => (
-          <Button
-            key={option}
-            type={BUTTON_TYPES.BUTTON}
-            variant={BUTTON.BASE}
-            aria-pressed={theme === option}
-            className={
-              SESSION_THEME_OPTION_CLASS[
-                theme === option ? "selected" : "idle"
-              ]
-            }
-            onClick={() => {
-              if (theme !== option) {
-                handleToggle();
+      <div className={SESSION_THEME_SECTION_CLASS}>
+        <Text className={SESSION_PREFERENCES_LABEL_CLASS}>
+          {SESSION_CONTROLS_COPY.THEME_SECTION}
+        </Text>
+        <div className={SESSION_THEME_GROUP_CLASS}>
+          {SESSION_THEME_OPTIONS.map((option) => (
+            <Button
+              key={option.theme}
+              type={BUTTON_TYPES.BUTTON}
+              variant={BUTTON.BASE}
+              aria-pressed={theme === option.theme}
+              className={
+                SESSION_THEME_OPTION_CLASS[
+                  theme === option.theme
+                    ? "selected"
+                    : "idle"
+                ]
               }
-            }}
-          >
-            {SESSION_CONTROLS_COPY.THEMES[option]}
-          </Button>
-        ))}
+              onClick={() => {
+                if (theme !== option.theme) {
+                  handleToggle();
+                }
+              }}
+            >
+              <MaterialIcon
+                name={option.icon}
+                className={SESSION_THEME_ICON_CLASS}
+              />
+              {option.label}
+            </Button>
+          ))}
+        </div>
       </div>
       <div className={SESSION_LOGOUT_SLOT_CLASS}>
         <LogoutButton

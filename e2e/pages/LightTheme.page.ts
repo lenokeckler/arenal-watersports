@@ -4,10 +4,10 @@ import type { NullableRef } from "@/app/types";
 import {
   E2E_LIGHT_THEME_COLORS,
   E2E_LIGHT_THEME_COLOR_VARIABLE_PREFIX,
+  E2E_LIGHT_THEME_OPTION_LABEL,
   E2E_LIGHT_THEME_ROOT_SELECTOR,
   E2E_LIGHT_THEME_STORAGE,
 } from "../constants/E2eLightTheme.constants";
-import { SESSION_CONTROLS_COPY } from "@/app/features/access/session-bar/constants/SessionControlsCopy.constants";
 import { SYSTEM_NAVIGATION_COPY } from "@/app/features/access/system-navigation/constants/SystemNavigationCopy.constants";
 import { E2E_LOGOUT_COPY } from "../constants/E2eLogout.constants";
 import { createSystemNavigationPage } from "./SystemNavigation.page";
@@ -19,7 +19,7 @@ export const createLightThemePage = (page: Page) => {
   const navigation = createSystemNavigationPage(page);
   const getThemeOption = (theme: Theme): Locator =>
     page.getByRole(ARIA_ROLE.BUTTON, {
-      name: SESSION_CONTROLS_COPY.THEMES[theme],
+      name: E2E_LIGHT_THEME_OPTION_LABEL[theme],
       exact: true,
     });
 

@@ -1,9 +1,20 @@
 import {
+  THEME,
   THEME_ATTRIBUTE,
   THEME_STORAGE_KEY,
+  type Theme,
 } from "@/app/constants";
+import { SESSION_CONTROLS_COPY } from "@/app/features/access/session-bar/constants/SessionControlsCopy.constants";
 
 export const E2E_LIGHT_THEME_ROOT_SELECTOR = "html";
+
+export const E2E_LIGHT_THEME_OPTION_LABEL: Record<
+  Theme,
+  string
+> = {
+  [THEME.DARK]: SESSION_CONTROLS_COPY.DARK_THEME,
+  [THEME.LIGHT]: SESSION_CONTROLS_COPY.LIGHT_THEME,
+};
 
 export const E2E_LIGHT_THEME_SCREENSHOT_EXTENSION = ".png";
 

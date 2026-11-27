@@ -18,6 +18,8 @@ import {
   DEFAULT_EXTRA_DETAIL,
   FAKE_EXTRA_NAME,
   FAKE_EXTRA_PRICE_USD_TEXT,
+  OCCUPIABLE_CATEGORIES,
+  OCCUPYING_EXTRA,
 } from "./Extra.constants";
 
 export const EDITED_EXTRA_NAME = "Wakeboard";
@@ -78,12 +80,34 @@ export const VALID_EXTRA_FORM_VALUES: ExtraFormValues = {
 
 export const CREATE_FORM_PROPS: ExtraFormViewModelProps = {
   mode: EXTRA_FORM_MODE.CREATE,
+  occupiableCategories: OCCUPIABLE_CATEGORIES,
 };
 
 export const EDIT_FORM_PROPS: ExtraFormViewModelProps = {
   mode: EXTRA_FORM_MODE.EDIT,
   extra: DEFAULT_EXTRA_DETAIL,
+  occupiableCategories: OCCUPIABLE_CATEGORIES,
 };
+
+export const LOCKED_EDIT_FORM_PROPS: ExtraFormViewModelProps =
+  {
+    mode: EXTRA_FORM_MODE.EDIT,
+    extra: {
+      ...OCCUPYING_EXTRA,
+      isUsedInReservations: true,
+    },
+    occupiableCategories: OCCUPIABLE_CATEGORIES,
+  };
+
+export const UNLOCKED_OCCUPYING_EDIT_FORM_PROPS: ExtraFormViewModelProps =
+  {
+    mode: EXTRA_FORM_MODE.EDIT,
+    extra: {
+      ...OCCUPYING_EXTRA,
+      isUsedInReservations: false,
+    },
+    occupiableCategories: OCCUPIABLE_CATEGORIES,
+  };
 
 export const buildExtraFormSubmitOptions = (
   overrides: ExtraFormSubmitOverrides = {},
@@ -92,6 +116,7 @@ export const buildExtraFormSubmitOptions = (
   ...props,
   values: VALID_EXTRA_FORM_VALUES,
   showErrors: () => undefined,
+  isOccupancyEnabled: false,
   ...overrides,
 });
 

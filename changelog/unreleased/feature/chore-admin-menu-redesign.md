@@ -1,0 +1,1 @@
+chore - Admin menu redesign — the menu groups its links into Precios and Cuenta with icons, highlights the open screen, shows an avatar with the name and area once, and turns the theme choice into Oscuro and Claro buttons
