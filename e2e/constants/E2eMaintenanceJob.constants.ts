@@ -4,7 +4,7 @@ export const E2E_MAINTENANCE_JOB = {
   CURRENCY_LABEL: "Colones (CRC)",
   CURRENCY_VALUE: "CRC",
   DESCRIPTION: "Manubrio nuevo",
-  NEW_THRESHOLD: "200",
+  OIL_INTERVAL: "90",
   NEW_THRESHOLD_VALUE: 200,
   OIL_CHANGE: "Cambio de aceite",
   PART_CHANGE: "Cambio de pieza",

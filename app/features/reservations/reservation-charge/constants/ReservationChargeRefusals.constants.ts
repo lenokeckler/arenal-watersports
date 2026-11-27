@@ -22,6 +22,10 @@ export const RESERVATION_CHARGE_REFUSALS: readonly ReservationChargeRefusal[] =
     },
     {
       formError: COPY.GENERIC,
+      message: MESSAGE.PARTS_INVALID,
+    },
+    {
+      formError: COPY.GENERIC,
       message: MESSAGE.PAYLOAD_INVALID,
     },
     {
@@ -48,22 +52,16 @@ export const RESERVATION_CHARGE_REFUSALS: readonly ReservationChargeRefusal[] =
       message: MESSAGE.AMOUNT_INVALID,
     },
     {
-      errors: {
-        paymentMethod: VALIDATION_COPY.METHOD_REQUIRED,
-      },
       message: MESSAGE.METHOD_REQUIRED,
+      paymentMethodError: VALIDATION_COPY.OTHER_REQUIRED,
     },
     {
-      errors: {
-        paymentMethod: VALIDATION_COPY.METHOD_TOO_LONG,
-      },
       message: MESSAGE.METHOD_TOO_LONG,
+      paymentMethodError: VALIDATION_COPY.METHOD_TOO_LONG,
     },
     {
-      errors: {
-        paymentMethod:
-          VALIDATION_COPY.METHOD_DISALLOWED_CHARACTERS,
-      },
       message: MESSAGE.METHOD_INVALID,
+      paymentMethodError:
+        VALIDATION_COPY.METHOD_DISALLOWED_CHARACTERS,
     },
   ];

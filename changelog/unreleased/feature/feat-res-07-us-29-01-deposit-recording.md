@@ -1,0 +1,1 @@
+RES-07.29.01: Deposit recording — Reservas records whether the client left a security deposit, with the amount proposed from the equipment category and the currency received, and the deposit joins the pending list (US-RES-29 · AWS-112)
