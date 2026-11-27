@@ -6,7 +6,9 @@ import type { ExtraCompatibilityCategories } from "../models/ExtraCompatibilityC
 import type { ExtraCompatibilityCategory } from "../models/ExtraCompatibilityCategory.interface";
 import type { ExtraCompatibilityCategoryRow } from "../models/ExtraCompatibilityCategoryRow.type";
 import type { ExtraCompatibilityReference } from "../models/ExtraCompatibilityReference.interface";
+import type { ExtraCompatibilityUnit } from "../models/ExtraCompatibilityUnit.interface";
 import type { ExtraCompatibilityUnitRow } from "../models/ExtraCompatibilityUnitRow.type";
+import type { ExtraCompatibilityUnits } from "../models/ExtraCompatibilityUnits.interface";
 import { FAKE_EXTRA_NAME } from "./Extra.constants";
 
 export const COMPATIBILITY_EXTRA_ID =
@@ -105,3 +107,25 @@ export const COMPATIBILITY_CATEGORIES: ExtraCompatibilityCategories =
 
 export const NO_COMPATIBILITY_CATEGORIES: ExtraCompatibilityCategories =
   { extra: COMPATIBILITY_EXTRA, categories: [] };
+
+export const LINKED_COMPATIBILITY_UNIT: ExtraCompatibilityUnit =
+  { ...LINKED_UNIT_ROW, isLinked: true };
+
+export const FREE_COMPATIBILITY_UNIT: ExtraCompatibilityUnit =
+  { ...FREE_UNIT_ROW, isLinked: false };
+
+export const COMPATIBILITY_UNITS: ExtraCompatibilityUnits =
+  {
+    extra: COMPATIBILITY_EXTRA,
+    category: {
+      id: COMPATIBILITY_CATEGORY_ID,
+      name: COMPATIBILITY_CATEGORY_NAME,
+    },
+    units: [
+      LINKED_COMPATIBILITY_UNIT,
+      FREE_COMPATIBILITY_UNIT,
+    ],
+  };
+
+export const EMPTY_COMPATIBILITY_UNITS: ExtraCompatibilityUnits =
+  { ...COMPATIBILITY_UNITS, units: [] };
