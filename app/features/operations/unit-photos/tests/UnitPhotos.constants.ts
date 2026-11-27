@@ -12,7 +12,9 @@ export const PHOTOS_DATA: UnitPhotosData = {
     { angle: "right_side", url: PHOTO_URL },
     { angle: "left_side", url: null },
     { angle: "front", url: null },
+    { angle: "back", url: null },
     { angle: "bottom", url: null },
+    { angle: "extra", url: null },
   ],
   unit: {
     categoryName: "Jet ski",

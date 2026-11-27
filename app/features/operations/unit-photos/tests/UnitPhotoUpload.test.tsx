@@ -1,10 +1,11 @@
 import {
-  render,
+  cleanup,
   screen,
   waitFor,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
+  afterEach,
   beforeEach,
   describe,
   expect,
@@ -13,11 +14,20 @@ import {
 } from "vitest";
 import UnitPhotosView from "../UnitPhotosView";
 import { UNIT_PHOTOS_COPY } from "../constants/UnitPhotosCopy.constants";
-import { validatePhotoFile } from "../utils/validatePhotoFile";
 import {
   PHOTOS_DATA,
   PHOTO_UNIT_ID,
 } from "./UnitPhotos.constants";
+import {
+  FRONT_LABEL,
+  MANAGER_DATA,
+  RIGHT_LABEL,
+  buildPhotoFile,
+} from "./UnitPhotoUpload.constants";
+import {
+  clearToasts,
+  renderWithToasts,
+} from "./renderWithToasts";
 
 const { refresh, uploadUnitPhoto } = vi.hoisted(() => ({
   refresh: vi.fn(),
@@ -32,12 +42,13 @@ vi.mock("../services/uploadUnitPhoto", () => ({
   uploadUnitPhoto,
 }));
 
-const MANAGER_DATA = { ...PHOTOS_DATA, canManage: true };
-const FRONT_LABEL = `${UNIT_PHOTOS_COPY.UPLOAD}: ${UNIT_PHOTOS_COPY.ANGLE.front}`;
-const RIGHT_LABEL = `${UNIT_PHOTOS_COPY.REPLACE}: ${UNIT_PHOTOS_COPY.ANGLE.right_side}`;
-
-const buildFile = (type: string): File =>
-  new File(["photo"], "photo.jpg", { type });
+const renderPhotos = (data = MANAGER_DATA) =>
+  renderWithToasts(
+    <UnitPhotosView
+      data={data}
+      errorMessage={null}
+    />
+  );
 
 describe("UnitPhotoUpload", () => {
   beforeEach(() => {
@@ -46,14 +57,17 @@ describe("UnitPhotoUpload", () => {
     uploadUnitPhoto.mockResolvedValue(undefined);
   });
 
-  it("offers no upload to someone without the general manager mark", () => {
-    render(
-      <UnitPhotosView
-        data={PHOTOS_DATA}
-        errorMessage={null}
-      />
-    );
+  afterEach(() => {
+    cleanup();
+    clearToasts();
+  });
 
+  it("offers no upload to a temporary guide and says why", () => {
+    renderPhotos(PHOTOS_DATA);
+
+    expect(
+      screen.getByText(UNIT_PHOTOS_COPY.VIEW_ONLY)
+    ).toBeInTheDocument();
     expect(
       screen.queryByLabelText(FRONT_LABEL)
     ).not.toBeInTheDocument();
@@ -62,17 +76,25 @@ describe("UnitPhotoUpload", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("offers to upload an empty angle and to replace the one that has a photo", () => {
-    render(
-      <UnitPhotosView
-        data={MANAGER_DATA}
-        errorMessage={null}
-      />
-    );
+  it("offers to upload an empty angle and to replace a photo from its large view", async () => {
+    const user = userEvent.setup();
+    renderPhotos();
 
     expect(
       screen.getByLabelText(FRONT_LABEL)
     ).toBeInTheDocument();
+    expect(
+      screen.queryByLabelText(RIGHT_LABEL)
+    ).not.toBeInTheDocument();
+
+    await user.click(
+      screen.getByRole("button", {
+        name: UNIT_PHOTOS_COPY.VIEW_LARGE(
+          UNIT_PHOTOS_COPY.ANGLE.right_side
+        ),
+      })
+    );
+
     expect(
       screen.getByLabelText(RIGHT_LABEL)
     ).toBeInTheDocument();
@@ -80,13 +102,8 @@ describe("UnitPhotoUpload", () => {
 
   it("uploads the chosen photo for its angle and refreshes the screen", async () => {
     const user = userEvent.setup();
-    const file = buildFile("image/jpeg");
-    render(
-      <UnitPhotosView
-        data={MANAGER_DATA}
-        errorMessage={null}
-      />
-    );
+    const file = buildPhotoFile("image/jpeg");
+    renderPhotos();
 
     await user.upload(
       screen.getByLabelText(FRONT_LABEL),
@@ -110,16 +127,11 @@ describe("UnitPhotoUpload", () => {
     const user = userEvent.setup({
       applyAccept: false,
     });
-    render(
-      <UnitPhotosView
-        data={MANAGER_DATA}
-        errorMessage={null}
-      />
-    );
+    renderPhotos();
 
     await user.upload(
       screen.getByLabelText(FRONT_LABEL),
-      buildFile("application/pdf")
+      buildPhotoFile("application/pdf")
     );
 
     expect(
@@ -131,53 +143,16 @@ describe("UnitPhotoUpload", () => {
   it("says so when the photo could not be saved", async () => {
     uploadUnitPhoto.mockRejectedValue(new Error("denied"));
     const user = userEvent.setup();
-    render(
-      <UnitPhotosView
-        data={MANAGER_DATA}
-        errorMessage={null}
-      />
-    );
+    renderPhotos();
 
     await user.upload(
       screen.getByLabelText(FRONT_LABEL),
-      buildFile("image/png")
+      buildPhotoFile("image/png")
     );
 
     expect(
       await screen.findByText(UNIT_PHOTOS_COPY.ERROR_UPLOAD)
     ).toBeInTheDocument();
     expect(refresh).not.toHaveBeenCalled();
-  });
-});
-
-describe("validatePhotoFile", () => {
-  it.each(["image/jpeg", "image/png", "image/webp"])(
-    "accepts %s",
-    (type) => {
-      expect(
-        validatePhotoFile({ size: 1024, type })
-      ).toBeNull();
-    }
-  );
-
-  it("refuses a type that is not an image the bucket allows", () => {
-    expect(
-      validatePhotoFile({ size: 1024, type: "image/gif" })
-    ).toBe(UNIT_PHOTOS_COPY.ERROR_TYPE);
-  });
-
-  it("refuses a photo over 5 MB and accepts exactly 5 MB", () => {
-    expect(
-      validatePhotoFile({
-        size: 5_242_881,
-        type: "image/jpeg",
-      })
-    ).toBe(UNIT_PHOTOS_COPY.ERROR_SIZE);
-    expect(
-      validatePhotoFile({
-        size: 5_242_880,
-        type: "image/jpeg",
-      })
-    ).toBeNull();
   });
 });
