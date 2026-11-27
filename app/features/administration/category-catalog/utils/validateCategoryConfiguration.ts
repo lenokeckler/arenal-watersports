@@ -1,18 +1,10 @@
 import type { CategoryConfigurationErrors } from "../models/CategoryConfigurationErrors.interface";
 import type { CategoryConfigurationValidation } from "../models/CategoryConfigurationValidation.interface";
 import type { CategoryEditedValues } from "../models/CategoryEditedValues.interface";
+import { countConfigurationErrors } from "./countConfigurationErrors";
 import { validateCategoryAlertFormValues } from "./validateCategoryAlertFormValues";
 import { validateCategoryBehaviorFormValues } from "./validateCategoryBehaviorFormValues";
 import { validateCategoryDepositFormValues } from "./validateCategoryDepositFormValues";
-
-const countInvalidFields = (
-  errors: CategoryConfigurationErrors
-): number =>
-  Object.values(errors).reduce(
-    (total, sectionErrors) =>
-      total + Object.keys(sectionErrors).length,
-    0
-  );
 
 export const validateCategoryConfiguration = (
   values: CategoryEditedValues
@@ -26,7 +18,8 @@ export const validateCategoryConfiguration = (
     ),
     alerts: validateCategoryAlertFormValues(values.alerts),
   };
-  const invalidFieldCount = countInvalidFields(errors);
+  const invalidFieldCount =
+    countConfigurationErrors(errors);
 
   return {
     errors,

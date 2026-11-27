@@ -21,7 +21,7 @@ describe("CategoryConfigureView", () => {
     );
   });
 
-  it("shows the status card with the disabled active switch and the locked mode note", () => {
+  it("shows the status card with the editable active switch and the locked mode note", () => {
     renderCategoryConfigureView();
     const page = createCategoryConfigureViewPage();
 
@@ -37,7 +37,7 @@ describe("CategoryConfigureView", () => {
       page.getActiveSwitch(
         CATEGORY_CONFIGURE_COPY.ACTIVE_LABEL
       )
-    ).toBeDisabled();
+    ).toBeEnabled();
     expect(
       page.getText(CATEGORY_CONFIGURE_COPY.MODE_LOCKED)
     ).toBeInTheDocument();

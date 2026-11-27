@@ -95,3 +95,9 @@ US-ADM-12 to US-ADM-15 as written in `docs/proyecto/historias-de-usuario.md`; pa
 | Saving runs photo, settings and active switch in that order and returns one outcome per step; a failed step does not undo the others; nothing throws | `saveCategoryConfiguration.test.ts`, `runCategoryConfigurationStep.test.ts` |
 | An invalid field blocks every network call; nothing changed makes none                                                                               | `saveCategoryConfiguration.test.ts`                                         |
 | Singular and plural copy for the unsaved changes and the fields to fix                                                                               | `resolveDirtyLabel.test.ts`, `resolveFixFieldsLabel.test.ts`                |
+
+## Part 2b-3 requirements (Guardar cambios and the leave guard)
+
+| Requirement                                                                                           | Test                                                           |
+| ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| The active switch is editable; the status card and chips follow it and the dirty count counts it once | `CategoryConfigureView.test.tsx`, `countChangedFields.test.ts` |

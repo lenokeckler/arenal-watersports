@@ -1,7 +1,9 @@
 "use client";
 
 import CategoryConfigureDelete from "./components/CategoryConfigureDelete";
+import CategoryConfigureLeaveSheet from "./components/CategoryConfigureLeaveSheet";
 import CategoryConfigureHeader from "./components/CategoryConfigureHeader";
+import CategoryConfigureSaveBar from "./components/CategoryConfigureSaveBar";
 import CategoryConfigureSectionList from "./components/CategoryConfigureSectionList";
 import CategoryConfigureStatusCard from "./components/CategoryConfigureStatusCard";
 import { useCategoryConfigureViewModel } from "./hooks/useCategoryConfigureViewModel";
@@ -17,12 +19,18 @@ const CategoryConfigureView = ({
     sections,
     bodies,
     deletion,
+    leave,
+    saveBar,
     onToggleSection,
   } = useCategoryConfigureViewModel({ configuration });
 
   return (
     <div className={CATEGORY_LIST_CONTENT_CLASS}>
-      <CategoryConfigureHeader name={name} />
+      <CategoryConfigureHeader
+        name={name}
+        hasUnsavedChanges={leave.hasUnsavedChanges}
+        onRequestLeave={leave.onRequestLeave}
+      />
       <CategoryConfigureStatusCard {...statusCard} />
       <CategoryConfigureSectionList
         categoryId={configuration.id}
@@ -33,6 +41,10 @@ const CategoryConfigureView = ({
       />
       {deletion && (
         <CategoryConfigureDelete {...deletion} />
+      )}
+      <CategoryConfigureSaveBar {...saveBar} />
+      {leave.sheet && (
+        <CategoryConfigureLeaveSheet {...leave.sheet} />
       )}
     </div>
   );

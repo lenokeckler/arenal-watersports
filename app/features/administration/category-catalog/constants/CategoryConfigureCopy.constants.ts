@@ -21,6 +21,7 @@ export const CATEGORY_CONFIGURE_COPY = {
   BOOKABLE_HELP:
     "Si lo apaga, no aparece en el tablero. Úselo para equipo interno, como chalecos o botiquines.",
   BOOKABLE_LABEL: "Se puede reservar",
+  CANCEL: "Cancelar",
   DELETE_ALTERNATIVE:
     "¿Solo quiere que deje de verse? Desactívela: no aparece en el tablero ni en las reservas y conserva su historial.",
   DELETE_BODY:
@@ -44,6 +45,11 @@ export const CATEGORY_CONFIGURE_COPY = {
   GUIDE_ONLY_LABEL: "Solo con guía",
   INVENTORY_REGISTER_STOCK: "Registrar existencias",
   INVENTORY_VIEW_UNITS: "Ver unidades",
+  LEAVE_BODY: (dirtyLabel: string, name: string): string =>
+    `Tiene ${dirtyLabel} en ${name}.`,
+  LEAVE_DISCARD: "Regresar sin guardar",
+  LEAVE_SAVE: "Guardar y regresar",
+  LEAVE_TITLE: "¿Salir sin guardar?",
   MISSING_DURATION: "duración",
   MISSING_PHOTO: "foto (opcional)",
   MISSING_PREFIX: "Falta:",

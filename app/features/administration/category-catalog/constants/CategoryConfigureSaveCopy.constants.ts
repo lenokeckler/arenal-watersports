@@ -8,6 +8,8 @@ export const CATEGORY_CONFIGURE_SAVE_COPY = {
     `Corrija ${count} campos para poder guardar.`,
   FIX_FIELDS_SINGULAR:
     "Corrija 1 campo para poder guardar.",
+  RETRY: "Reintentar",
+  SAVE: "Guardar cambios",
   SAVED: "Cambios guardados.",
   SAVING: "Guardando…",
 } as const;
