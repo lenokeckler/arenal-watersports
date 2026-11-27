@@ -4,11 +4,13 @@ import { formatMoney } from "@/app/utils/money/formatMoney";
 import { EXTRA_CARD_ACTION_STATE } from "../constants/ExtraCardActionState.constants";
 import { EXTRA_STATUS } from "../constants/ExtraStatus.constants";
 import { buildExtraCompatibilityLabel } from "../utils/buildExtraCompatibilityLabel";
+import { buildExtraOccupancyLabel } from "../utils/buildExtraOccupancyLabel";
 import { buildExtraCardViewModel } from "../utils/buildExtraCardViewModel";
 import { resolveExtraCompatibilityPath } from "../utils/resolveExtraCompatibilityPath";
 import { resolveExtraEditPath } from "../utils/resolveExtraEditPath";
 import {
   DEFAULT_EXTRA,
+  OCCUPYING_EXTRA,
   FAKE_EXTRA_PRICE_CRC,
   FAKE_EXTRA_PRICE_USD,
 } from "./Extra.constants";
@@ -51,6 +53,17 @@ describe("buildExtraCardViewModel", () => {
       buildExtraCompatibilityLabel(
         DEFAULT_EXTRA.compatibleUnitCount
       )
+    );
+  });
+
+  it("labels the extra with the equipment it occupies", () => {
+    const card = buildExtraCardViewModel(
+      OCCUPYING_EXTRA,
+      buildExtraCardActionsViewModel()
+    );
+
+    expect(card.occupancyLabel).toBe(
+      buildExtraOccupancyLabel(OCCUPYING_EXTRA)
     );
   });
 

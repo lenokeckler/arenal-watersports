@@ -10,6 +10,7 @@ export const E2E_COMPATIBILITY_SCENARIO = {
   JOURNEY: "compat_journey",
   OTHER_CATEGORY: "compat_other",
   OTHER_CATEGORY_KEEPS_LINKS: "compat_keeps",
+  REDIRECT: "compat_redirect",
   SAVE_DISABLED: "compat_disabled",
   TAP_TARGETS: "compat_targets",
 } as const;
@@ -44,5 +45,13 @@ export const E2E_COMPATIBILITY_CATEGORY_UNIT_COUNT = {
 } as const;
 
 export const E2E_COMPATIBILITY_SELECTOR = {
+  OPEN_SECTION_TOGGLE: "button[aria-expanded=true]",
+  SECTION_TOGGLE: "button[aria-expanded]",
   UNIT_ROW: "label",
 } as const;
+
+export const E2E_COMPATIBILITY_ATTRIBUTE = {
+  EXPANDED: "aria-expanded",
+} as const;
+
+export const E2E_COMPATIBILITY_SAVE_ENABLED_TIMEOUT_MS = 2_000;

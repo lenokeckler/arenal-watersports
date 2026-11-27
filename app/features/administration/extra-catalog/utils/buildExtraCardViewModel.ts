@@ -1,7 +1,9 @@
+import { LENGTH } from "@/app/constants";
 import type { Extra } from "../models/Extra.interface";
 import type { ExtraCardActionsViewModel } from "../models/ExtraCardActionsViewModel.interface";
 import type { ExtraCardViewModel } from "../models/ExtraCardViewModel.interface";
 import { buildExtraCompatibilityLabel } from "./buildExtraCompatibilityLabel";
+import { buildExtraOccupancyLabel } from "./buildExtraOccupancyLabel";
 import { buildExtraPriceLabels } from "./buildExtraPriceLabels";
 import { resolveExtraCardActionState } from "./resolveExtraCardActionState";
 import { resolveExtraCompatibilityPath } from "./resolveExtraCompatibilityPath";
@@ -22,6 +24,7 @@ export const buildExtraCardViewModel = (
     extra.compatibleUnitCount
   ),
   editHref: resolveExtraEditPath(extra.id),
+  hasCompatibility: extra.compatibleUnitCount > LENGTH.ZERO,
   id: extra.id,
   isActionLoading: cardActions.pendingExtraIds.includes(
     extra.id
@@ -35,6 +38,7 @@ export const buildExtraCardViewModel = (
     extra.id
   ),
   onRemoveClick: cardActions.onRemoveClick(extra.id),
+  occupancyLabel: buildExtraOccupancyLabel(extra),
   prices: buildExtraPriceLabels(extra),
   status: extra.status,
 });

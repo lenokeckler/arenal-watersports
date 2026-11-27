@@ -11,8 +11,9 @@ import CategoryCreateFormView from "../CategoryCreateFormView";
 import { CATEGORY_CATALOG_COPY } from "../constants/CategoryCatalogCopy.constants";
 import { CATEGORY_MUTATION_STATUS } from "../constants/CategoryMutationStatus.constants";
 import { createCategoryCreateFormPage } from "./CategoryCreateForm.page";
-import { resolveCategoryAlertsPath } from "../utils/resolveCategoryAlertsPath";
+import { resolveCategoryConfigurePath } from "../utils/resolveCategoryConfigurePath";
 import {
+  EXPECTED_CREATE_CATEGORY_INPUT,
   FAKE_CREATED_CATEGORY_ID,
   VALID_CATEGORY_CREATE_FORM_VALUES,
 } from "./CategoryCreateFormValues.constants";
@@ -33,7 +34,7 @@ vi.mock("@/app/components/toast/utils/useToast", () => ({
 
 vi.mock("../services/createCategoryAction", () => ({
   createCategoryAction: (
-    input: typeof VALID_CATEGORY_CREATE_FORM_VALUES
+    input: typeof EXPECTED_CREATE_CATEGORY_INPUT
   ) => mockCreateCategoryAction(input),
 }));
 
@@ -44,7 +45,7 @@ describe("CategoryCreateFormView fields", () => {
     mockCreateCategoryAction.mockReset();
   });
 
-  it("creates the category and opens its alerts screen when submitted with valid values", async () => {
+  it("creates the category and opens its Configurar screen when submitted with valid values", async () => {
     mockCreateCategoryAction.mockResolvedValue({
       status: CATEGORY_MUTATION_STATUS.SUCCESS,
       categoryId: FAKE_CREATED_CATEGORY_ID,
@@ -56,8 +57,8 @@ describe("CategoryCreateFormView fields", () => {
     await categoryCreateFormPage.fillName(
       VALID_CATEGORY_CREATE_FORM_VALUES.name
     );
-    await categoryCreateFormPage.selectTrackingMode(
-      VALID_CATEGORY_CREATE_FORM_VALUES.trackingMode
+    await categoryCreateFormPage.selectChoice(
+      CATEGORY_CATALOG_COPY.TRACKING_MODE_BY_UNIT_LABEL
     );
     await categoryCreateFormPage.fillGroupName(
       VALID_CATEGORY_CREATE_FORM_VALUES.groupName
@@ -65,14 +66,14 @@ describe("CategoryCreateFormView fields", () => {
     await categoryCreateFormPage.submit();
 
     expect(mockCreateCategoryAction).toHaveBeenCalledWith(
-      VALID_CATEGORY_CREATE_FORM_VALUES
+      EXPECTED_CREATE_CATEGORY_INPUT
     );
     expect(mockShowToast).toHaveBeenCalledWith(
       STATUS.SUCCESS,
       CATEGORY_CATALOG_COPY.CREATE_SUCCESS_TOAST
     );
     expect(mockPush).toHaveBeenCalledWith(
-      resolveCategoryAlertsPath(FAKE_CREATED_CATEGORY_ID)
+      resolveCategoryConfigurePath(FAKE_CREATED_CATEGORY_ID)
     );
   });
 
@@ -94,8 +95,8 @@ describe("CategoryCreateFormView fields", () => {
     await categoryCreateFormPage.fillName(
       VALID_CATEGORY_CREATE_FORM_VALUES.name
     );
-    await categoryCreateFormPage.selectTrackingMode(
-      VALID_CATEGORY_CREATE_FORM_VALUES.trackingMode
+    await categoryCreateFormPage.selectChoice(
+      CATEGORY_CATALOG_COPY.TRACKING_MODE_BY_UNIT_LABEL
     );
     await categoryCreateFormPage.submit();
     expect(
@@ -122,6 +123,31 @@ describe("CategoryCreateFormView fields", () => {
 
     expect(mockPush).toHaveBeenCalledWith(
       PATHS.ADMINISTRATION.CATEGORIES
+    );
+  });
+
+  it("creates the category as not reservable when the internal equipment option is chosen", async () => {
+    mockCreateCategoryAction.mockResolvedValue({
+      status: CATEGORY_MUTATION_STATUS.SUCCESS,
+      categoryId: FAKE_CREATED_CATEGORY_ID,
+    });
+    render(<CategoryCreateFormView />);
+    const categoryCreateFormPage =
+      createCategoryCreateFormPage();
+
+    await categoryCreateFormPage.fillName(
+      VALID_CATEGORY_CREATE_FORM_VALUES.name
+    );
+    await categoryCreateFormPage.selectChoice(
+      CATEGORY_CATALOG_COPY.TRACKING_MODE_BY_QUANTITY_LABEL
+    );
+    await categoryCreateFormPage.selectChoice(
+      CATEGORY_CATALOG_COPY.CREATE_RESERVABLE_NO
+    );
+    await categoryCreateFormPage.submit();
+
+    expect(mockCreateCategoryAction).toHaveBeenCalledWith(
+      expect.objectContaining({ isReservable: false })
     );
   });
 });
