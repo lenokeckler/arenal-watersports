@@ -10,7 +10,9 @@ import { RESERVATION_DETAIL_NO_EXTRA_MINUTES } from "../constants/ReservationDet
 import { mapReservationDetailExtraTime } from "./mapReservationDetailExtraTime";
 import { mapReservationDetailExtras } from "./mapReservationDetailExtras";
 import { mapReservationDetailGuides } from "./mapReservationDetailGuides";
+import { calculateReservationDetailRefundable } from "./calculateReservationDetailRefundable";
 import { mapReservationDetailMoneyMovements } from "./mapReservationDetailMoneyMovements";
+import { mapReservationDetailDeposit } from "./mapReservationDetailDeposit";
 
 const getReservationDetailChargeSummary = (
   source: ReservationDetailReservationSource
@@ -46,6 +48,7 @@ const mapReservationDetailBase = (
   | "chargeStatus"
   | "charges"
   | "createdByName"
+  | "deposit"
   | "dispatches"
   | "equipment"
   | "extraTime"
@@ -53,6 +56,7 @@ const mapReservationDetailBase = (
   | "extras"
   | "guides"
   | "moneyMovements"
+  | "refundable"
   | "refunds"
   | "updatedByName"
 > => ({
@@ -76,6 +80,16 @@ const mapReservationDetailBase = (
   updated_at: source.updated_at,
 });
 
+const mapReservationDetailRefundable = (
+  source: ReservationDetailReservationSource
+): ReservationDetail["refundable"] =>
+  source.parent_reservation_id
+    ? []
+    : calculateReservationDetailRefundable(
+        source.reservation_charges,
+        source.refunds
+      );
+
 export const mapReservationDetail = (
   source: ReservationDetailReservationSource,
   workerNames: ReservationDetailWorkerName[],
@@ -89,6 +103,7 @@ export const mapReservationDetail = (
     ...mapReservationDetailAuditNames(source, workerNames),
     chargeStatus: chargeSummary.status,
     charges: chargeSummary.charges,
+    deposit: mapReservationDetailDeposit(source),
     dispatches: mapReservationDetailDispatches(source),
     equipment: mapReservationDetailEquipment(source),
     extraTime: mapReservationDetailExtraTime(
@@ -102,6 +117,7 @@ export const mapReservationDetail = (
       source,
       workerNames
     ),
+    refundable: mapReservationDetailRefundable(source),
     refunds: chargeSummary.refunds,
   };
 };

@@ -1,5 +1,7 @@
+import type { SystemNavigationMenuDestination } from "./SystemNavigationMenuDestination.interface";
+
 export interface SystemNavigationMenuLinkProps {
-  href: string;
-  label: string;
+  destination: SystemNavigationMenuDestination;
+  isCurrent: boolean;
   onNavigate: () => void;
 }

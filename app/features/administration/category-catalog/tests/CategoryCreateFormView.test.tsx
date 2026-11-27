@@ -50,8 +50,15 @@ describe("CategoryCreateFormView", () => {
       categoryCreateFormPage.getNameInput()
     ).toBeInTheDocument();
     expect(
-      categoryCreateFormPage.getTrackingModeInput()
+      categoryCreateFormPage.getChoiceCard(
+        CATEGORY_CATALOG_COPY.TRACKING_MODE_BY_UNIT_LABEL
+      )
     ).toBeInTheDocument();
+    expect(
+      categoryCreateFormPage.isChoiceSelected(
+        CATEGORY_CATALOG_COPY.CREATE_RESERVABLE_YES
+      )
+    ).toBe(true);
     expect(
       categoryCreateFormPage.getGroupNameInput()
     ).toBeInTheDocument();
@@ -83,32 +90,15 @@ describe("CategoryCreateFormView", () => {
     await categoryCreateFormPage.submit();
 
     const nameInput = categoryCreateFormPage.getNameInput();
-    const trackingModeInput =
-      categoryCreateFormPage.getTrackingModeInput();
 
     expect(nameInput).toHaveAttribute(
       "aria-invalid",
       "true"
     );
-    expect(trackingModeInput).toHaveAttribute(
-      "aria-invalid",
-      "true"
-    );
-    expect(
-      document.getElementById(
-        nameInput.getAttribute("aria-describedby") ?? ""
+    expect(nameInput).toHaveAccessibleDescription(
+      expect.stringContaining(
+        CATEGORY_CATALOG_COPY.NAME_FIELD_REQUIRED_ERROR
       )
-    ).toHaveTextContent(
-      CATEGORY_CATALOG_COPY.NAME_FIELD_REQUIRED_ERROR
-    );
-    expect(
-      document.getElementById(
-        trackingModeInput.getAttribute(
-          "aria-describedby"
-        ) ?? ""
-      )
-    ).toHaveTextContent(
-      CATEGORY_CATALOG_COPY.TRACKING_MODE_REQUIRED_ERROR
     );
   });
 });

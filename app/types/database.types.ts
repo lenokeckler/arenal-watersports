@@ -281,6 +281,53 @@ export type Database = {
           },
         ];
       };
+      deposit_declinations: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          reservation_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          reservation_id: string;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          reservation_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "deposit_declinations_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "deposit_declinations_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "deposit_declinations_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "board_category_units";
+            referencedColumns: ["reservation_id"];
+          },
+          {
+            foreignKeyName: "deposit_declinations_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "reservations";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       deposits: {
         Row: {
           amount: number;
@@ -2998,10 +3045,12 @@ export type Database = {
         Row: {
           category_id: string | null;
           category_name: string | null;
+          damaged_count: number | null;
           free_count: number | null;
           group_name: string | null;
           image_path: string | null;
           in_use_count: number | null;
+          maintenance_count: number | null;
           total_count: number | null;
         };
         Relationships: [];
@@ -3019,6 +3068,8 @@ export type Database = {
           has_motor: boolean | null;
           impact_count: number | null;
           low_fuel_lines: number | null;
+          oil_remaining: number | null;
+          oil_warning: boolean | null;
           people_count: number | null;
           radio_channel: number | null;
           reservation_code: string | null;
@@ -3705,6 +3756,10 @@ export type Database = {
               list_amount_usd: number;
             }[];
           };
+      delete_or_deactivate_combo: {
+        Args: { p_combo_id: string };
+        Returns: string;
+      };
       delete_or_deactivate_extra: {
         Args: { p_extra_id: string };
         Returns: string;
@@ -3965,6 +4020,8 @@ export type Database = {
           code: string;
           next_oil_change_at: number;
           oil_overage: number;
+          oil_remaining: number;
+          oil_warning: boolean;
           status: Database["public"]["Enums"]["unit_status"];
           unit_id: string;
           usage_metric: Database["public"]["Enums"]["usage_metric"];
@@ -3989,6 +4046,12 @@ export type Database = {
       normalize_cancellation_reason: {
         Args: { p_reason: string };
         Returns: string;
+      };
+      oil_warning_margin: {
+        Args: {
+          metric: Database["public"]["Enums"]["usage_metric"];
+        };
+        Returns: number;
       };
       password_reset_grant_is_open: {
         Args: { p_token: string };
@@ -4123,6 +4186,16 @@ export type Database = {
           recorded_by_name: string;
         }[];
       };
+      record_reservation_deposit: {
+        Args: { p_payload: Json };
+        Returns: {
+          recorded_amount: number;
+          recorded_by_name: string;
+          recorded_currency: Database["public"]["Enums"]["currency_code"];
+          recorded_deposit_id: string;
+          recorded_has_deposit: boolean;
+        }[];
+      };
       record_reservation_extra_time: {
         Args: { p_payload: Json };
         Returns: {
@@ -4133,6 +4206,17 @@ export type Database = {
           extra_minutes: number;
           outcome: Database["public"]["Enums"]["extra_time_outcome"];
           recorded_by_name: string;
+        }[];
+      };
+      record_reservation_refund: {
+        Args: { p_payload: Json };
+        Returns: {
+          recorded_by_name: string;
+          refund_id: string;
+          refunded_amount: number;
+          refunded_currency: Database["public"]["Enums"]["currency_code"];
+          refunded_reason: string;
+          remaining_amount: number;
         }[];
       };
       record_successful_sign_in: {
@@ -4159,7 +4243,7 @@ export type Database = {
           p_cost_currency?: Database["public"]["Enums"]["currency_code"];
           p_description?: string;
           p_is_external?: boolean;
-          p_next_oil_change_at?: number;
+          p_oil_interval?: number;
           p_performed_at: string;
           p_unit_id: string;
           p_work_type: string;
@@ -4210,6 +4294,13 @@ export type Database = {
         }[];
       };
       reservation_charge_proposal: {
+        Args: { p_reservation_id: string };
+        Returns: {
+          proposal_crc: number;
+          proposal_usd: number;
+        }[];
+      };
+      reservation_deposit_proposal: {
         Args: { p_reservation_id: string };
         Returns: {
           proposal_crc: number;
@@ -4276,6 +4367,28 @@ export type Database = {
         Args: { p_reservation_id: string };
         Returns: boolean;
       };
+      reservation_refundable_net: {
+        Args: { p_reservation_id: string };
+        Returns: {
+          charged_amount: number;
+          currency: Database["public"]["Enums"]["currency_code"];
+          refundable_amount: number;
+          refunded_amount: number;
+        }[];
+      };
+      resolve_reservation_deposit: {
+        Args: { p_payload: Json };
+        Returns: {
+          deposit_amount: number;
+          kept_amount: number;
+          resolved_by_name: string;
+          resolved_currency: Database["public"]["Enums"]["currency_code"];
+          resolved_deposit_id: string;
+          resolved_reason: string;
+          resolved_status: Database["public"]["Enums"]["deposit_status"];
+          returned_amount: number;
+        }[];
+      };
       retire_worker: {
         Args: { target_worker: string };
         Returns: string;
@@ -4297,6 +4410,14 @@ export type Database = {
       revoke_worker_sessions: {
         Args: { target_worker: string };
         Returns: undefined;
+      };
+      save_category_tariffs: {
+        Args: { p_payload: Json };
+        Returns: number;
+      };
+      save_combo: {
+        Args: { p_payload: Json };
+        Returns: string;
       };
       session_idle_deadline: {
         Args: { last_activity: string };
@@ -4320,6 +4441,14 @@ export type Database = {
           target_session: string;
         };
         Returns: string;
+      };
+      set_combo_active: {
+        Args: { p_active: boolean; p_combo_id: string };
+        Returns: string;
+      };
+      set_extra_compatibility: {
+        Args: { p_extra_id: string; p_unit_ids: string[] };
+        Returns: number;
       };
       set_reservation_dock_notice: {
         Args: {

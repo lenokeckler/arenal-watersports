@@ -97,3 +97,109 @@ The administration worker keeps the list of extras that reservations can add to 
 - [x] The server re-validates exactly the same rules before writing.
 - [x] Editing preloads the current prices and saves the changed ones.
 - [x] The card lists the prices the extra has with the project money format.
+
+## 20.01 Extra compatibility reads (US-ADM-20)
+
+| Requirement                                                                                                                           | Test                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Every extra carries `compatibleUnitCount`, read with the `extra_compatibility(count)` embed; no aggregate row means 0                 | `readCompatibleUnitCount.test.ts`, `mapExtraRowToExtra.test.ts`, `getExtra.test.ts`    |
+| The label says "Sin embarcaciones", "Aplica a 1 unidad" or "Aplica a N unidades"                                                      | `buildExtraCompatibilityLabel.test.ts`                                                 |
+| `getExtraCompatibilityCategories(extraId)` returns the extra and the active by-unit categories with their unit count and linked count | `getExtraCompatibilityCategories.test.ts`, `buildExtraCompatibilityCategories.test.ts` |
+| `getExtraCompatibilityUnits(extraId, categoryId)` returns the extra, the category and its units, each with `isLinked`                 | `getExtraCompatibilityUnits.test.ts`, `buildExtraCompatibilityUnits.test.ts`           |
+| Decommissioned units are never counted or listed; a category left with no units is not offered                                        | `buildExtraCompatibilityCategories.test.ts`, `buildExtraCompatibilityUnits.test.ts`    |
+| An unknown or malformed extra id, an unknown category or a by-quantity category gives `null`; any other read error throws             | `extraCompatibilityQueries.test.ts`, `getExtraCompatibilityUnits.test.ts`              |
+
+## 20.02 Extra compatibility action (US-ADM-20)
+
+| Requirement                                                                                                        | Test                                                                                |
+| ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| The action refuses a non-admin before any read and validates its `unknown` input (three uuids and a list of uuids) | `setExtraCompatibilityAction.test.ts`, `parseSetExtraCompatibilityInput.test.ts`    |
+| Saving one category replaces its links and keeps the links the extra has in other categories                       | `resolveExtraCompatibilityUnitIds.test.ts`, `setExtraCompatibilityAction.test.ts`   |
+| A selected unit from another category or decommissioned is a validation error and nothing is written               | `resolveExtraCompatibilityUnitIds.test.ts`, `setExtraCompatibilityAction.test.ts`   |
+| The database errors 42501, P0002 and 22023 become Spanish results; any other error throws                          | `mapExtraCompatibilityErrorToResult.test.ts`, `setExtraCompatibilityAction.test.ts` |
+
+## 20.03 Extra boats screen (US-ADM-20, redesigned)
+
+The two-step flow (a categories list, then one units screen per category) was replaced by **one screen** in the Extras redesign (#782 to #785). This section records that design; the old category list, units screen, their hooks and their tests were removed in #784 and #785.
+
+| Requirement                                                                                                                                                                                                                                              | Test                                                                                                                           |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| The route is the extra path plus the `compatibility` segment; every extra card has an "Embarcaciones" link to it and says "Sin embarcaciones", "Aplica a 1 embarcación" or "Aplica a N embarcaciones"                                                    | `resolveExtraCompatibilityPath.test.ts`, `buildExtraCompatibilityLabel.test.ts`, `ExtraListView.test.tsx`                      |
+| The screen is for administration only and shows not found for an unknown extra                                                                                                                                                                           | `ExtraCompatibilityCategoryList.test.tsx`                                                                                      |
+| `getExtraCompatibilityCategories(extraId)` returns the extra and every active by-unit category with its units (each with `isLinked`), its unit count and its linked count; decommissioned units are left out and a category with no units is not offered | `getExtraCompatibilityCategories.test.ts`, `buildExtraCompatibilityCategories.test.ts`, `buildExtraCompatibilityUnits.test.ts` |
+| The screen shows the extra's name, the total "Aplica a X de Y embarcaciones" and one collapsible section per category with "N de M unidades" and an "N marcadas" pill                                                                                    | `ExtraCompatibilityBoatsView.test.tsx`, `buildExtraCompatibilityProgressLabel.test.ts`                                         |
+| The categories that already have boats open first; when none has boats, the first category opens                                                                                                                                                         | `countExtraCompatibilityChanges.test.ts`, `ExtraCompatibilityBoatsView.test.tsx`                                               |
+| Inside a section, Marcar todas, Quitar todas and each unit checkbox (code and status word) change only that category; the selection is compared as a set                                                                                                 | `toggleExtraCompatibilityUnitId.test.ts`, `hasExtraCompatibilityChanges.test.ts`, `buildExtraCompatibilityUnitOptions.test.ts` |
+| The unsaved changes are counted across categories ("1 cambio sin guardar" / "N cambios sin guardar") and "Guardar embarcaciones" stays disabled while there are none                                                                                     | `countExtraCompatibilityChanges.test.ts`, `ExtraCompatibilityBoatsView.test.tsx`                                               |
+| Saving calls `setExtraCompatibilityAction` once per changed category only, in order; on success one toast "Embarcaciones guardadas." shows and the counts become the saved state                                                                         | `ExtraCompatibilityBoatsView.test.tsx`                                                                                         |
+| Offline, a failed result or a broken request shows a clear Spanish toast and keeps the selection on screen                                                                                                                                               | `setExtraCompatibilityAction.test.ts`, `mapExtraCompatibilityErrorToResult.test.ts`                                            |
+| Regresar with unsaved changes opens "¿Salir sin guardar?" with _Guardar y regresar_ and _Regresar sin guardar_; without changes it returns to Extras; the browser asks before closing the tab while there are changes                                    | `ExtraCompatibilityBoatsView.test.tsx`                                                                                         |
+| The old per-category address `/administration/extras/{id}/compatibility/{categoryId}` redirects to the single screen                                                                                                                                     | `e2e/specs/extra-compatibility.e2e.ts`                                                                                         |
+
+### Acceptance criteria
+
+- [x] Each extra card has an "Embarcaciones" button and shows how many boats the extra applies to.
+- [x] One screen lists the extra's name, the total and every by-unit category as a collapsible section with its count.
+- [x] Marcar todas, Quitar todas and the checkboxes work per category; one "Guardar embarcaciones" saves only the categories that changed.
+- [x] On success the worker sees one toast and stays on the screen with the counts updated; offline or failed saves keep the selection.
+- [x] Leaving with unsaved changes asks first; the old per-category route redirects.
+- [ ] Offering only the matching extras when building a reservation is carried by a later US-ADM-20 PR.
+
+## 20.04 Extra boats E2E (US-ADM-20)
+
+| Requirement                                                                                                                                     | Test                                   |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| From the extras list, Embarcaciones opens the screen; a unit is checked and saved; the toast, the section count and the card label show it      | `e2e/specs/extra-compatibility.e2e.ts` |
+| Reopening the screen shows the saved units checked                                                                                              | `e2e/specs/extra-compatibility.e2e.ts` |
+| Saving one category keeps the links of another category                                                                                         | `e2e/specs/extra-compatibility.e2e.ts` |
+| Quitar todas and Guardar clear the links and the card says Sin embarcaciones; Marcar todas links every unit; Regresar sin guardar saves nothing | `e2e/specs/extra-compatibility.e2e.ts` |
+| Every section header, unit row and helper button is at least 44 px tall, on mobile and desktop                                                  | `e2e/specs/extra-compatibility.e2e.ts` |
+
+## 21.01 Extra occupancy data (US-ADM-21)
+
+| Requirement                                                                                                                                  | Test                                                                                                      |
+| -------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| An extra carries `occupiesCategoryId`, `occupiesQuantity` and the occupied category name, read with the `equipment_categories(name)` embed   | `mapExtraRowToExtra.test.ts`, `getExtra.test.ts`                                                          |
+| The form values keep the category id and the quantity as text and preload them when editing                                                  | `mapExtraToFormValues.test.ts`                                                                            |
+| The occupancy is both a category and a positive whole quantity up to the limit, or neither; a category must be a uuid                        | `validateExtraOccupancy.test.ts`, `resolveExtraValidationResult.test.ts`                                  |
+| The actions persist `occupies_category_id` and `occupies_quantity`, both null when no category is chosen                                     | `mapExtraInputToOccupancyColumns.test.ts`, `createExtraAction.test.ts`, `updateExtraAction.test.ts`       |
+| Only active categories counted by quantity can be occupied, checked on the server; the form is offered the same list                         | `extraOccupancyQueries.test.ts`, `resolveExtraCategoryFailure.test.ts`, `getOccupiableCategories.test.ts` |
+| `getExtra` flags `isUsedInReservations`; an occupancy change on a used extra is refused before the update, and name and prices stay editable | `getExtra.test.ts`, `resolveExtraOccupancyLockFailure.test.ts`, `hasExtraOccupancyChanged.test.ts`        |
+| The database errors 55006, 23514 and 23503 become Spanish occupancy errors                                                                   | `mapExtraWriteErrorToResult.test.ts`, `updateExtraAction.test.ts`, `createExtraAction.test.ts`            |
+| The card label says "Ocupa N × Categoría" or "Solo cobro adicional"                                                                          | `buildExtraOccupancyLabel.test.ts`                                                                        |
+
+### Acceptance criteria
+
+- [x] An extra can be saved as only an additional charge or as occupying a quantity of an equipment category counted by quantity.
+- [ ] The form section and the card label are carried by US-ADM-21 PRs 21.03 and 21.04.
+
+## 21.03 Extra occupancy form (US-ADM-21)
+
+| Requirement                                                                                                                            | Test                                                                   |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| The form has an "Equipo del inventario" section with a switch that is off by default and shows the category and quantity when on       | `ExtraOccupancySection.test.tsx`                                       |
+| The category options are the active categories counted by quantity, plus the one the extra already occupies when editing               | `buildExtraOccupancyCategoryOptions.test.ts`, `ExtraEditForm.test.tsx` |
+| Editing preloads the category and quantity; turning the switch off clears both before saving                                           | `ExtraOccupancySection.test.tsx`                                       |
+| Submitting sends the category id and the quantity text; an incomplete pair or a server error shows the group error under the fields    | `ExtraOccupancySection.test.tsx`, `useExtraFormViewModel.test.ts`      |
+| When a reservation uses the extra, the switch and both fields are disabled and a note tells the administrator to deactivate and create | `ExtraOccupancySection.test.tsx`                                       |
+| The create and edit entries read the occupiable categories on the server and pass them to the form                                     | `ExtraCreateForm.test.tsx`, `ExtraEditForm.test.tsx`                   |
+
+### Acceptance criteria
+
+- [x] Administration chooses whether an extra only charges or occupies equipment of the inventory.
+- [ ] The card label and the end to end coverage are carried by US-ADM-21 PR 21.04.
+
+## 21.04 Extra occupancy card and E2E (US-ADM-21)
+
+| Requirement                                                                                                                            | Test                                                        |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Every card says "Ocupa N × Categoría" or "Solo cobro adicional"                                                                        | `buildExtraCardViewModel.test.ts`, `extra-occupancy.e2e.ts` |
+| An extra that occupies two boards is created from the form and its card names them                                                     | `e2e/specs/extra-occupancy.e2e.ts`                          |
+| The quantity of an extra no reservation uses can change                                                                                | `e2e/specs/extra-occupancy.e2e.ts`                          |
+| A used extra shows the occupancy controls disabled with the note, the database refuses a change with 55006 and the name stays editable | `e2e/specs/extra-occupancy.e2e.ts`                          |
+| The category select and the quantity input are at least 44 px tall, on mobile and desktop                                              | `e2e/specs/extra-occupancy.e2e.ts`                          |
+
+### Acceptance criteria
+
+- [x] Some extras are only an additional charge and the card says so.
+- [x] The extras that occupy real equipment name it and its quantity; the reservations already subtract it from availability.
